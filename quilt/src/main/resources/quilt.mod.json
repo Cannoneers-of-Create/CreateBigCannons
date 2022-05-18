@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "mixin": [
+    "examplemod.mixins.json",
+    "examplemod-common.mixins.json"
+  ],
+  "quilt_loader": {
+    "group": "${group}",
+    "id": "examplemod",
+    "version": "${version}",
+    "name": "Example Mod",
+    "description": "This is an example description! Tell everyone what your mod is about!",
+    "authors": ["Me!"],
+    "contact": {
+      "sources": "https://github.com/architectury/architectury-templates"
+    },
+    "license": "Insert License Here",
+    "icon": "assets/examplemod/icon.png",
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "environment": "*",
+    "entrypoints": {
+      "init": [
+        "net.examplemod.quilt.ExampleModQuilt"
+      ]
+    },
+    "depends": [
+      {
+        "id": "quilt_loader",
+        "version": "*"
+      },
+      {
+        "id": "quilt_base",
+        "version": "*"
+      },
+      {
+        "id": "minecraft",
+        "version": ">=1.18.2"
+      },
+      {
+        "id": "architectury",
+        "version": ">=4.4.59"
+      }
+    ]
+  }
+}
