@@ -1,0 +1,26 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+license="MIT License"
+
+[[mods]]
+modId="createbigcannons"
+version="${file.jarVersion}"
+displayName="Create Big Cannons"
+logoFile="logo.png"
+credits="Made by rbasamoyai"
+authors="rbasamoyai"
+description='''Artillery engineering comes to Create'''
+
+[[dependencies.createbigcannons]]
+    modId="forge"
+    mandatory=true
+    versionRange="[40,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.createbigcannons]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.2,1.19)"
+    ordering="NONE"
+    side="BOTH"

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "createbigcannons:block/cast_iron_cannon_chamber_side",
+    "end": "createbigcannons:block/cast_iron_cannon_chamber_end"
+  }
+}
