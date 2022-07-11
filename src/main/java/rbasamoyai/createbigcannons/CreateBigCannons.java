@@ -18,6 +18,9 @@ public class CreateBigCannons {
 	private static final NonNullSupplier<CreateRegistrate> REGISTRATE = CreateRegistrate.lazy(MOD_ID);
 	
 	public CreateBigCannons() {
+		LangGen.prepare();
+		
+		ModGroup.register();
 		CBCBlocks.register();
 		CBCBlockEntities.register();
 	}

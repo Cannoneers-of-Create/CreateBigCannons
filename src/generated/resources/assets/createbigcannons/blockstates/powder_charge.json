@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "createbigcannons:block/powder_charge",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "createbigcannons:block/powder_charge"
+    },
+    "axis=z": {
+      "model": "createbigcannons:block/powder_charge",
+      "x": 90,
+      "y": 180
+    }
+  }
+}

@@ -1,4 +1,8 @@
 {
+  "block.createbigcannons.cannon_loader": "Cannon Loader",
   "block.createbigcannons.cast_iron_cannon_barrel": "Cast Iron Cannon Barrel",
-  "block.createbigcannons.cast_iron_cannon_chamber": "Cast Iron Cannon Chamber"
+  "block.createbigcannons.cast_iron_cannon_chamber": "Cast Iron Cannon Chamber",
+  "block.createbigcannons.powder_charge": "Powder Charge",
+  "block.createbigcannons.ram_head": "Ram Head",
+  "itemGroup.createbigcannons": "Create Big Cannons"
 }

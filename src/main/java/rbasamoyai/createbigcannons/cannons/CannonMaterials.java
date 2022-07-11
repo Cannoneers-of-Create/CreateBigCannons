@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.cannons;
 public enum CannonMaterials implements CannonMaterial {
 	CAST_IRON("cast_iron", 1d / 1d, 2, FailureMode.FRAGMENT),
 	BRONZE("bronze", 3d / 2d, 4, FailureMode.RUPTURE),
-	STEEL("steel", 3d / 1d, 6, FailureMode.FRAGMENT);
+	STEEL("steel", 2d / 1d, 6, FailureMode.FRAGMENT);
 
 	private final String name;
 	private final double squibRatio;

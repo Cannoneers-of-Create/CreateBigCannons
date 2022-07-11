@@ -1,0 +1,308 @@
+package rbasamoyai.createbigcannons.cannonloading;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
+
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
+import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionType;
+import com.simibubi.create.content.contraptions.components.structureMovement.TranslatingContraption;
+import com.simibubi.create.content.contraptions.components.structureMovement.piston.PistonExtensionPoleBlock;
+import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionLighter;
+import com.simibubi.create.foundation.config.AllConfigs;
+import com.simibubi.create.foundation.utility.VecHelper;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import net.minecraft.world.phys.AABB;
+import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannons.CannonBehavior;
+import rbasamoyai.createbigcannons.cannons.CannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.CannonTubeBlock;
+
+public class CannonLoadingContraption extends TranslatingContraption {
+	
+	public static final ContraptionType TYPE = ContraptionType.register(CreateBigCannons.resource("cannon_loader").toString(), CannonLoadingContraption::new);
+	
+	protected int extensionLength;
+	protected int initialExtensionProgress;
+	protected Direction orientation;	
+	protected LoadingHead loadingHead;
+	
+	private AABB pistonContraptionHitbox;
+	private boolean retract;
+	
+	private static final DirectionProperty FACING = BlockStateProperties.FACING;
+	private static final BooleanProperty MOVING = CannonLoaderBlock.MOVING;
+	private static final EnumProperty<Direction.Axis> AXIS = RotatedPillarBlock.AXIS; 
+	
+	public CannonLoadingContraption() {}
+	
+	public CannonLoadingContraption(Direction direction, boolean retract) {
+		this.orientation = direction;
+		this.retract = retract;
+	}
+	
+	@Override
+	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
+		if (!this.collectExtensions(level, pos, this.orientation)) return false;
+		int count = this.blocks.size();
+		
+		if (!this.searchMovedStructure(level, this.anchor, this.retract ? this.orientation.getOpposite() : this.orientation)) {
+			return false;
+		}
+		this.bounds = this.blocks.size() == count ? this.pistonContraptionHitbox : this.bounds.minmax(this.pistonContraptionHitbox);
+		return true;
+	}
+	
+	private boolean collectExtensions(Level level, BlockPos pos, Direction direction) throws AssemblyException {
+		if (!CBCBlocks.CANNON_LOADER.has(level.getBlockState(pos))) return false;
+		
+		List<StructureBlockInfo> poles = new ArrayList<>();
+		BlockPos start = pos;
+		BlockState nextBlock = level.getBlockState(start.relative(direction));
+		int extensionsInFront = 0;
+		Direction.Axis blockAxis = direction.getAxis();
+		this.loadingHead = LoadingHead.NOTHING;		
+		
+		PistonExtensionPoleBlock.PlacementHelper matcher = PistonExtensionPoleBlock.PlacementHelper.get();
+		while (matcher.matchesAxis(nextBlock, blockAxis)
+			|| this.isValidLoaderHead(nextBlock) && nextBlock.getValue(FACING).getAxis() == blockAxis
+			|| this.isValidCannonBlock(level, nextBlock, start.relative(direction)) && nextBlock.getValue(AXIS) == blockAxis) {
+			start = start.relative(direction);
+			
+			if (this.isValidCannonBlock(level, nextBlock, start)) {
+				StructureBlockInfo containedBlock = ((CannonBlockEntity) level.getBlockEntity(start)).getBehaviour(CannonBehavior.TYPE).block();
+				nextBlock = containedBlock.state;
+				if (matcher.matchesAxis(nextBlock, blockAxis)) {
+					poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
+				} else if (this.isValidLoaderHead(nextBlock)) {
+					poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
+					if (CBCBlocks.RAM_HEAD.has(nextBlock)) {
+						this.loadingHead = LoadingHead.RAM_HEAD;
+					} else {
+						this.loadingHead = LoadingHead.EXTRACTOR_HOOK;
+					}
+					break;
+				}
+			} else {
+				poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
+				
+				if (this.isValidLoaderHead(nextBlock)) {
+					if (CBCBlocks.RAM_HEAD.has(nextBlock)) {
+						this.loadingHead = LoadingHead.RAM_HEAD;
+					} else {
+						this.loadingHead = LoadingHead.EXTRACTOR_HOOK;
+					}
+					break;
+				}
+			}
+			
+			extensionsInFront++;
+			
+			nextBlock = level.getBlockState(start.relative(direction));
+			
+			if (extensionsInFront > CannonLoaderBlock.maxAllowedLoaderLength()) {
+				throw AssemblyException.tooManyPistonPoles();
+			}
+		}
+		
+		poles.add(new StructureBlockInfo(pos, AllBlocks.PISTON_EXTENSION_POLE.getDefaultState().setValue(FACING, direction), null));
+		
+		BlockPos end = pos;
+		int extensionsInBack = 0;
+		Direction opposite = direction.getOpposite();
+		nextBlock = level.getBlockState(end.relative(opposite));
+		
+		while (matcher.matchesAxis(nextBlock, blockAxis)) {
+			end = end.relative(opposite);
+			poles.add(new StructureBlockInfo(end, nextBlock.setValue(FACING, direction), null));
+			extensionsInBack++;
+			nextBlock = level.getBlockState(end.relative(opposite));
+			
+			if (extensionsInFront + extensionsInBack > CannonLoaderBlock.maxAllowedLoaderLength()) {
+				throw AssemblyException.tooManyPistonPoles();
+			}
+		}
+		
+		this.extensionLength = extensionsInFront + extensionsInBack;
+		
+		if (this.extensionLength == 0) {
+			throw AssemblyException.noPistonPoles();
+		}
+		
+		this.anchor = pos.relative(direction, this.initialExtensionProgress + 2);
+		this.initialExtensionProgress = extensionsInFront;
+		this.pistonContraptionHitbox = new AABB(BlockPos.ZERO.relative(direction, this.loadingHead == LoadingHead.NOTHING ? -2 : -1), BlockPos.ZERO.relative(direction, -this.extensionLength - 2)).expandTowards(1, 1, 1);
+		
+		this.bounds = new AABB(0, 0, 0, 0, 0, 0);
+		
+		for (StructureBlockInfo pole : poles) {
+			BlockPos relPos = pole.pos.relative(direction, -extensionsInFront);
+			BlockPos localPos = relPos.subtract(this.anchor);
+			this.getBlocks().put(localPos, new StructureBlockInfo(localPos, pole.state, null));
+		}
+		
+		return true;
+	}
+
+	private boolean isValidLoaderHead(BlockState state) {
+		return CBCBlocks.RAM_HEAD.has(state);
+	}
+	
+	private boolean isValidCannonBlock(LevelAccessor level, BlockState state, BlockPos pos) {
+		return state.getBlock() instanceof CannonTubeBlock && level.getBlockEntity(pos) instanceof CannonBlockEntity;
+	}
+	
+	@Override
+	protected void addBlock(BlockPos pos, Pair<StructureBlockInfo, BlockEntity> pair) {
+		BlockEntity blockEntity = pair.getRight();
+		if (blockEntity instanceof CannonBlockEntity) {
+			StructureBlockInfo containedInfo = ((CannonBlockEntity) blockEntity).getBehaviour(CannonBehavior.TYPE).block();
+			pair = Pair.of(containedInfo, blockEntity);
+		}
+		super.addBlock(pos.relative(this.orientation, -this.initialExtensionProgress), pair);
+	}
+	
+	@Override
+	protected boolean addToInitialFrontier(Level level, BlockPos pos, Direction forcedDirection, Queue<BlockPos> frontier) throws AssemblyException {
+		frontier.clear();
+		boolean retracting = forcedDirection != this.orientation;
+		if (retracting && this.loadingHead != LoadingHead.EXTRACTOR_HOOK) return true;
+		
+		for (int offset = 0; offset <= AllConfigs.SERVER.kinetics.maxChassisRange.get(); ++offset) {
+			if (offset == 1 && retracting) return true;
+			BlockPos currentPos = pos.relative(this.orientation, offset + this.initialExtensionProgress);
+			if (retracting && level.isOutsideBuildHeight(currentPos)) {
+				return true;
+			}
+			if (!level.isLoaded(currentPos)) {
+				throw AssemblyException.unloadedChunk(currentPos);
+			}
+			BlockState state = level.getBlockState(currentPos);
+			if (this.isValidLoadBlock(state, level, currentPos)) {
+				frontier.add(currentPos);
+			} else if (this.isValidCannonBlock(level, state, currentPos) && state.getValue(AXIS) == forcedDirection.getAxis()) {
+				BlockEntity blockEntity = level.getBlockEntity(currentPos);
+				if (!(blockEntity instanceof CannonBlockEntity)) return true;
+				StructureBlockInfo blockInfo = ((CannonBlockEntity) blockEntity).getBehaviour(CannonBehavior.TYPE).block();
+				if (this.isValidLoadBlock(blockInfo.state, level, currentPos)) {
+					frontier.add(currentPos);
+				} else {
+					return true;
+				}
+			} else {
+				return true;
+			}
+		}
+		
+		return true;
+	}
+	
+	private boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos) {
+		if (CBCBlocks.POWDER_CHARGE.has(state)) {
+			return state.getValue(AXIS) == this.orientation.getAxis();
+		}
+		
+		return false;
+	}
+	
+	@Override
+	protected boolean customBlockPlacement(LevelAccessor level, BlockPos pos, BlockState state) {
+		BlockPos levelPos = this.anchor.relative(this.orientation, -2);
+		BlockState loaderState = level.getBlockState(levelPos);
+		BlockEntity blockEntity = level.getBlockEntity(levelPos);
+		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
+		
+		if (pos.equals(levelPos)) {
+			level.setBlock(levelPos, loaderState.setValue(MOVING, false), 3 | 16);
+			return true;
+		}
+		
+		BlockPos entityAnchor = new BlockPos(((CannonLoaderBlockEntity) blockEntity).movedContraption.getAnchorVec().add(0.5d, 0.5d, 0.5d));
+		
+		BlockPos blockPos = pos.subtract(entityAnchor);
+		StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
+		BlockEntity blockEntity1 = level.getBlockEntity(pos);
+		
+		if (blockEntity1 instanceof CannonBlockEntity) {
+			CannonBlockEntity cannon = (CannonBlockEntity) blockEntity1;
+			return cannon.getBehaviour(CannonBehavior.TYPE).tryLoadingBlock(blockInfo);
+		}
+		
+		return false;
+	}
+	
+	@Override
+	protected boolean customBlockRemoval(LevelAccessor level, BlockPos pos, BlockState state) {
+		BlockPos loaderPos = this.anchor.relative(this.orientation, -2);
+		BlockState loaderState = level.getBlockState(loaderPos);
+		if (pos.equals(loaderPos) && CBCBlocks.CANNON_LOADER.has(loaderState)) {
+			level.setBlock(loaderPos, loaderState.setValue(MOVING, true), 66 | 16);
+			return true;
+		}
+		
+		BlockEntity blockEntity = level.getBlockEntity(loaderPos);
+		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
+		BlockEntity blockEntity1 = level.getBlockEntity(pos);
+		
+		if (blockEntity1 instanceof CannonBlockEntity) {
+			CannonBlockEntity cannon = (CannonBlockEntity) blockEntity1;
+			cannon.getBehaviour(CannonBehavior.TYPE).removeBlock();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	@Override
+	protected boolean isAnchoringBlockAt(BlockPos pos) {
+		return this.pistonContraptionHitbox.contains(VecHelper.getCenterOf(pos.subtract(this.anchor)));
+	}
+	
+	@Override
+	public void readNBT(Level level, CompoundTag tag, boolean spawnData) {
+		super.readNBT(level, tag, spawnData);
+		this.initialExtensionProgress = tag.getInt("InitialLength");
+		this.extensionLength = tag.getInt("ExtensionLength");
+		this.orientation = Direction.from3DDataValue(tag.getInt("Orientation"));
+	}
+	
+	@Override
+	public CompoundTag writeNBT(boolean spawnPacket) {
+		CompoundTag tag = super.writeNBT(spawnPacket);
+		tag.putInt("InitialLength", this.initialExtensionProgress);
+		tag.putInt("ExtensionLength", this.extensionLength);
+		tag.putInt("Orientation", this.orientation.get3DDataValue());
+		return tag;
+	}
+	
+	@Override protected ContraptionType getType() { return TYPE; }
+	
+	@Override
+	public ContraptionLighter<?> makeLighter() {
+		return new CannonLoaderLighter(this);
+	}
+	
+	public static enum LoadingHead {
+		RAM_HEAD,
+		EXTRACTOR_HOOK,
+		NOTHING
+	}
+	
+}

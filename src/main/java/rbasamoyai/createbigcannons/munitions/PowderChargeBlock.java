@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons;
+package rbasamoyai.createbigcannons.munitions;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.utility.VoxelShaper;
@@ -14,22 +14,22 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CannonBarrelBlock extends CannonTubeBlock {
+public class PowderChargeBlock extends RotatedPillarBlock {
 
 	private static final EnumProperty<Axis> AXIS = RotatedPillarBlock.AXIS;
 	
 	private final VoxelShaper shapes;
 	
-	public CannonBarrelBlock(BlockBehaviour.Properties properties, CannonMaterial material) {
-		super(properties, material);
+	public PowderChargeBlock(BlockBehaviour.Properties properties) {
+		super(properties);
 		this.shapes = this.makeShapes();
 	}
 	
-	protected VoxelShaper makeShapes() {
-		VoxelShape base = Block.box(2, 0, 2, 14, 16, 14);
+	private VoxelShaper makeShapes() {
+		VoxelShape base = Block.box(3, 0, 3, 13, 16, 13);
 		return new AllShapes.Builder(base).forAxis();
 	}
-
+	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
 		return this.shapes.get(state.getValue(AXIS));

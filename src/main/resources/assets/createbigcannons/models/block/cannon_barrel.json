@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench",
-	"parent": "block/block",
+	"parent": "minecraft:block/block",
 	"elements": [
 		{
 			"from": [2, 0, 2],

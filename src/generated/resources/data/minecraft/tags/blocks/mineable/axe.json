@@ -1,8 +1,6 @@
 {
   "replace": false,
   "values": [
-    "createbigcannons:cast_iron_cannon_barrel",
-    "createbigcannons:cast_iron_cannon_chamber",
     "createbigcannons:cannon_loader",
     "createbigcannons:ram_head"
   ]
