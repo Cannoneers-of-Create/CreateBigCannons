@@ -8,7 +8,6 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -20,7 +19,7 @@ public class CannonBarrelBlock extends CannonTubeBlock {
 	
 	private final VoxelShaper shapes;
 	
-	public CannonBarrelBlock(BlockBehaviour.Properties properties, CannonMaterial material) {
+	public CannonBarrelBlock(Properties properties, CannonMaterial material) {
 		super(properties, material);
 		this.shapes = this.makeShapes();
 	}

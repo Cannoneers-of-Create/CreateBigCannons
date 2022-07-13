@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons;
 
 import com.simibubi.create.Create;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
@@ -11,6 +12,17 @@ public class ModGroup {
 		@Override
 		public ItemStack makeIcon() {
 			return CBCBlocks.CAST_IRON_CANNON_BARREL.asStack();
+		}
+		
+		public void fillItemList(NonNullList<ItemStack> list) {
+			list.add(CBCBlocks.CAST_IRON_CANNON_END.asStack());
+			list.add(CBCBlocks.CAST_IRON_SLIDING_BREECH.asStack());
+			list.add(CBCBlocks.CAST_IRON_CANNON_CHAMBER.asStack());
+			list.add(CBCBlocks.CAST_IRON_CANNON_BARREL.asStack());
+			list.add(CBCBlocks.CANNON_LOADER.asStack());
+			list.add(CBCBlocks.RAM_HEAD.asStack());
+			list.add(CBCBlocks.WORM_HEAD.asStack());
+			list.add(CBCBlocks.POWDER_CHARGE.asStack());
 		}
 	};
 	

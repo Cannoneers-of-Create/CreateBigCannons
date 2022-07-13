@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "createbigcannons:cast_iron_cannon_barrel",
-    "createbigcannons:cast_iron_cannon_chamber"
+    "createbigcannons:cast_iron_cannon_chamber",
+    "createbigcannons:cast_iron_cannon_end",
+    "createbigcannons:cast_iron_sliding_breech"
   ]
 }

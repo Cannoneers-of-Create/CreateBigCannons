@@ -6,10 +6,12 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Con
 import com.simibubi.create.content.contraptions.components.structureMovement.DirectionalExtenderScrollOptionSlot;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.LinearActuatorTileEntity;
 import com.simibubi.create.foundation.tileEntity.behaviour.ValueBoxTransform;
+import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -40,13 +42,13 @@ public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
 		if (!(this.level.getBlockState(this.worldPosition).getBlock() instanceof CannonLoaderBlock)) return;
 		
 		Direction facing = this.getBlockState().getValue(CannonLoaderBlock.FACING);
-		CannonLoadingContraption contraption = new CannonLoadingContraption(facing, this.getMovementSpeed() < 0.0f);
+		CannonLoadingContraption contraption = new CannonLoadingContraption(facing, this.getMovementSpeed() < 0);
 		if (!contraption.assemble(this.level, this.worldPosition)) {
 			return;
 		}
 		
 		Direction positive = Direction.get(Direction.AxisDirection.POSITIVE, facing.getAxis());
-		Direction movementDirection = (this.getSpeed() > 0.0f) ^ facing.getAxis() != Direction.Axis.Z ? positive : positive.getOpposite();
+		Direction movementDirection = (this.getSpeed() > 0) ^ facing.getAxis() != Direction.Axis.Z ? positive : positive.getOpposite();
 		BlockPos anchor = contraption.anchor.relative(facing, contraption.initialExtensionProgress);
 		if (CannonLoaderCollider.isCollidingWithWorld(this.level, contraption, anchor.relative(movementDirection), movementDirection)) {
 			return;
@@ -54,7 +56,7 @@ public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
 		
 		this.extensionLength = contraption.extensionLength;
 		float resultingOffset = contraption.initialExtensionProgress + Math.signum(this.getMovementSpeed()) * 0.5f;
-		if (resultingOffset <= 0.0f || resultingOffset >= extensionLength) {
+		if (resultingOffset <= 0 || resultingOffset >= this.extensionLength) {
 			return;
 		}
 		
@@ -107,6 +109,28 @@ public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
 		this.movedContraption.move(motion.x, motion.y, motion.z);
 		return CannonLoaderCollider.collideBlocks(this.movedContraption);
 	}
+	
+	@Override
+	protected void collided() {
+		super.collided();
+		if (!this.running && this.getMovementSpeed() > 0) {
+			this.assembleNextTick = true;
+		}
+	}
+	
+	@Override
+	public float getMovementSpeed() {
+		float movementSpeed = Mth.clamp(convertToLinear(this.getSpeed()), -0.49f, 0.49f);
+		if (this.level.isClientSide) {
+			movementSpeed *= ServerSpeedProvider.get();
+		}
+		Direction facing = this.getBlockState().getValue(CannonLoaderBlock.FACING);
+		int movementModifier = facing.getAxisDirection().getStep() * (facing.getAxis() == Direction.Axis.Z ? -1 : 1);
+		movementSpeed = movementSpeed * -movementModifier + this.clientOffsetDiff * 0.5f;
+		
+		movementSpeed = Mth.clamp(movementSpeed, 0 - this.offset, this.extensionLength - this.offset);
+		return movementSpeed;
+	}
 
 	@Override protected int getExtensionRange() { return this.extensionLength; }
 
@@ -129,7 +153,7 @@ public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
 	@Override
 	protected Vec3 toPosition(float offset) {
 		Vec3 position = Vec3.atLowerCornerOf(this.getBlockState().getValue(CannonLoaderBlock.FACING).getNormal()).scale(offset);
-		return position.add(Vec3.atLowerCornerOf(movedContraption.getContraption().anchor));
+		return position.add(Vec3.atLowerCornerOf(this.movedContraption.getContraption().anchor));
 	}
 
 }

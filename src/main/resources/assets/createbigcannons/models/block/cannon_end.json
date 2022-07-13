@@ -1,0 +1,40 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 8, 16],
+			"faces": {
+				"north": {"uv": [0, 8, 16, 16], "texture": "#side"},
+				"east": {"uv": [0, 8, 16, 16], "texture": "#side"},
+				"south": {"uv": [0, 8, 16, 16], "texture": "#side"},
+				"west": {"uv": [0, 8, 16, 16], "texture": "#side"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#top"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#bottom"}
+			}
+		},
+		{
+			"from": [6, 8, 6],
+			"to": [10, 10, 10],
+			"faces": {
+				"north": {"uv": [1, 6, 5, 8], "texture": "#knob"},
+				"east": {"uv": [1, 6, 5, 8], "texture": "#knob"},
+				"south": {"uv": [1, 6, 5, 8], "texture": "#knob"},
+				"west": {"uv": [1, 6, 5, 8], "texture": "#knob"}
+			}
+		},
+		{
+			"from": [5, 10, 5],
+			"to": [11, 16, 11],
+			"faces": {
+				"north": {"uv": [0, 0, 6, 6], "texture": "#knob"},
+				"east": {"uv": [6, 0, 12, 6], "texture": "#knob"},
+				"south": {"uv": [0, 0, 6, 6], "texture": "#knob"},
+				"west": {"uv": [6, 0, 12, 6], "texture": "#knob"},
+				"up": {"uv": [0, 10, 6, 16], "texture": "#knob"},
+				"down": {"uv": [6, 10, 12, 16], "texture": "#knob"}
+			}
+		}
+	]
+}

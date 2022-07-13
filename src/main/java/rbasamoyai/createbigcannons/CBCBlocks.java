@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons;
 
+import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.builders.BlockBuilder;
 import com.simibubi.create.repack.registrate.util.entry.BlockEntry;
@@ -13,9 +14,12 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
+import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.CannonChamberBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterials;
+import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
+import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
 
@@ -27,15 +31,29 @@ public class CBCBlocks {
 	public static final BlockEntry<CannonBarrelBlock> CAST_IRON_CANNON_BARREL = REGISTRATE
 			.block("cast_iron_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterials.CAST_IRON))
 			.transform(castIron())
-			.transform(CBCBuilderTransformers.cannonBarrel("cast_iron"))
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/cast_iron"))
 			.simpleItem()
 			.register();
 	
 	public static final BlockEntry<CannonChamberBlock> CAST_IRON_CANNON_CHAMBER = REGISTRATE
 			.block("cast_iron_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterials.CAST_IRON))
 			.transform(castIron())
-			.transform(CBCBuilderTransformers.cannonChamber("cast_iron"))
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/cast_iron"))
 			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<CannonEndBlock> CAST_IRON_CANNON_END = REGISTRATE
+			.block("cast_iron_cannon_end", p -> new CannonEndBlock(p, CannonMaterials.CAST_IRON))
+			.transform(castIron())
+			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/cast_iron"))
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<SlidingBreechBlock> CAST_IRON_SLIDING_BREECH = REGISTRATE
+			.block("cast_iron_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterials.CAST_IRON))
+			.transform(castIron())
+			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
+			.transform(BlockStressDefaults.setImpact(16.0d))
 			.register();
 	
 	public static final BlockEntry<CannonLoaderBlock> CANNON_LOADER = REGISTRATE
@@ -43,6 +61,7 @@ public class CBCBlocks {
 			.properties(p -> p.color(MaterialColor.PODZOL))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.cannonLoader())
+			.transform(BlockStressDefaults.setImpact(8.0d))
 			.item()
 			.model(CBCBuilderTransformers.cannonLoaderItemModel())
 			.build()
@@ -53,6 +72,15 @@ public class CBCBlocks {
 			.initialProperties(() -> Blocks.PISTON_HEAD)
 			.properties(p -> p.sound(SoundType.WOOD))
 			.transform(CBCBuilderTransformers.ramHead())
+			.transform(axeOrPickaxe())
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<WormHeadBlock> WORM_HEAD = REGISTRATE
+			.block("worm_head", WormHeadBlock::new)
+			.initialProperties(() -> Blocks.PISTON_HEAD)
+			.properties(p -> p.sound(SoundType.METAL))
+			.transform(CBCBuilderTransformers.wormHead())
 			.transform(axeOrPickaxe())
 			.simpleItem()
 			.register();

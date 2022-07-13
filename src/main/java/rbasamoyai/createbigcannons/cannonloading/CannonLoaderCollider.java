@@ -8,16 +8,13 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Tra
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.cannons.CannonBehavior;
-import rbasamoyai.createbigcannons.cannons.CannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.CannonTubeBlock;
+import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 
 public class CannonLoaderCollider {
 
@@ -59,14 +56,15 @@ public class CannonLoaderCollider {
 			
 			for (BlockPos colliderPos : contraption.getColliders(level, movementDirection)) {
 				colliderPos = colliderPos.offset(gridPos).subtract(new BlockPos(otherPosition));
-				if (otherContraption.getBlocks().containsKey(colliderPos)) return true;
+				if (!otherContraption.getBlocks().containsKey(colliderPos)) {
+					continue;
+				}
+				return true;
 			}
 		}
 		
 		return false;
 	}
-	
-	private static final EnumProperty<Direction.Axis> AXIS = RotatedPillarBlock.AXIS;
 	
 	public static boolean isCollidingWithWorld(Level level, CannonLoadingContraption contraption, BlockPos anchor, Direction movementDirection) {
 		for (BlockPos pos : contraption.getColliders(level, movementDirection)) {
@@ -77,12 +75,11 @@ public class CannonLoaderCollider {
 			StructureBlockInfo blockInfo = contraption.getBlocks().get(pos);
 			boolean emptyCollider = collidedState.getCollisionShape(level, pos).isEmpty();
 			
-			if (collidedState.getBlock() instanceof CannonTubeBlock && collidedState.getValue(AXIS) == movementDirection.getAxis()) {
+			if (collidedState.getBlock() instanceof CannonBlock && ((CannonBlock) collidedState.getBlock()).getAxis(collidedState) == movementDirection.getAxis()) {
 				BlockEntity blockEntity = level.getBlockEntity(colliderPos);
-				if (blockEntity instanceof CannonBlockEntity && !((CannonBlockEntity) blockEntity).getBehaviour(CannonBehavior.TYPE).canLoadBlock(blockInfo)) {
-					return true;
+				if (blockEntity instanceof ICannonBlockEntity && ((ICannonBlockEntity) blockEntity).cannonBehavior().canLoadBlock(blockInfo)) {
+					continue;
 				}
-				continue;
 			}
 			
 			if (!collidedState.getMaterial().isReplaceable() && !emptyCollider) {

@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.cannonloading;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -31,9 +32,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannons.CannonBehavior;
-import rbasamoyai.createbigcannons.cannons.CannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.CannonTubeBlock;
+import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 
 public class CannonLoadingContraption extends TranslatingContraption {
 	
@@ -83,11 +83,11 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		PistonExtensionPoleBlock.PlacementHelper matcher = PistonExtensionPoleBlock.PlacementHelper.get();
 		while (matcher.matchesAxis(nextBlock, blockAxis)
 			|| this.isValidLoaderHead(nextBlock) && nextBlock.getValue(FACING).getAxis() == blockAxis
-			|| this.isValidCannonBlock(level, nextBlock, start.relative(direction)) && nextBlock.getValue(AXIS) == blockAxis) {
+			|| this.isValidCannonBlock(level, nextBlock, start.relative(direction)) && this.matchesCannonAxis(nextBlock, blockAxis)) {
 			start = start.relative(direction);
 			
 			if (this.isValidCannonBlock(level, nextBlock, start)) {
-				StructureBlockInfo containedBlock = ((CannonBlockEntity) level.getBlockEntity(start)).getBehaviour(CannonBehavior.TYPE).block();
+				StructureBlockInfo containedBlock = ((ICannonBlockEntity) level.getBlockEntity(start)).cannonBehavior().block();
 				nextBlock = containedBlock.state;
 				if (matcher.matchesAxis(nextBlock, blockAxis)) {
 					poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
@@ -96,8 +96,10 @@ public class CannonLoadingContraption extends TranslatingContraption {
 					if (CBCBlocks.RAM_HEAD.has(nextBlock)) {
 						this.loadingHead = LoadingHead.RAM_HEAD;
 					} else {
-						this.loadingHead = LoadingHead.EXTRACTOR_HOOK;
+						this.loadingHead = LoadingHead.WORM_HEAD;
 					}
+					break;
+				} else if (nextBlock.isAir()) {
 					break;
 				}
 			} else {
@@ -107,7 +109,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 					if (CBCBlocks.RAM_HEAD.has(nextBlock)) {
 						this.loadingHead = LoadingHead.RAM_HEAD;
 					} else {
-						this.loadingHead = LoadingHead.EXTRACTOR_HOOK;
+						this.loadingHead = LoadingHead.WORM_HEAD;
 					}
 					break;
 				}
@@ -148,7 +150,10 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		
 		this.anchor = pos.relative(direction, this.initialExtensionProgress + 2);
 		this.initialExtensionProgress = extensionsInFront;
-		this.pistonContraptionHitbox = new AABB(BlockPos.ZERO.relative(direction, this.loadingHead == LoadingHead.NOTHING ? -2 : -1), BlockPos.ZERO.relative(direction, -this.extensionLength - 2)).expandTowards(1, 1, 1);
+		this.pistonContraptionHitbox = new AABB(
+				BlockPos.ZERO.relative(direction, this.loadingHead == LoadingHead.NOTHING ? -2 : -1),
+				BlockPos.ZERO.relative(direction, -this.extensionLength - 2))
+				.expandTowards(1, 1, 1);
 		
 		this.bounds = new AABB(0, 0, 0, 0, 0, 0);
 		
@@ -160,21 +165,60 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		
 		return true;
 	}
+	
+	@Override
+	protected boolean moveBlock(Level level, Direction direction, Queue<BlockPos> frontier, Set<BlockPos> visited) throws AssemblyException {
+		BlockPos pos = frontier.poll();
+		if (pos == null) return false;
+		visited.add(pos);
+		
+		if (level.isOutsideBuildHeight(pos)) return true;
+		if (!level.isLoaded(pos)) throw AssemblyException.unloadedChunk(pos);
+		if (this.isAnchoringBlockAt(pos)) return true;
+		BlockState state = level.getBlockState(pos);
+		
+		BlockPos ahead = pos.relative(direction);
+		if (this.isAnchoringBlockAt(ahead)) return true;
+		if (this.isValidLoadBlock(state, level, ahead)) {
+			frontier.add(ahead);
+		}
+		
+		if (this.isValidCannonBlock(level, state, ahead) && this.matchesCannonAxis(state, direction.getAxis())) {
+			frontier.add(ahead);
+		}
+		
+		this.addBlock(pos, this.capture(level, pos));
+		if (this.blocks.size() <= AllConfigs.SERVER.kinetics.maxBlocksMoved.get()) {
+			return true;
+		}
+		throw AssemblyException.structureTooLarge();
+	}
 
 	private boolean isValidLoaderHead(BlockState state) {
-		return CBCBlocks.RAM_HEAD.has(state);
+		return CBCBlocks.RAM_HEAD.has(state) || CBCBlocks.WORM_HEAD.has(state);
 	}
 	
 	private boolean isValidCannonBlock(LevelAccessor level, BlockState state, BlockPos pos) {
-		return state.getBlock() instanceof CannonTubeBlock && level.getBlockEntity(pos) instanceof CannonBlockEntity;
+		return state.getBlock() instanceof CannonBlock && level.getBlockEntity(pos) instanceof ICannonBlockEntity;
+	}
+	
+	private boolean matchesCannonAxis(BlockState state, Direction.Axis axis) {
+		return ((CannonBlock) state.getBlock()).getAxis(state) == axis;
 	}
 	
 	@Override
 	protected void addBlock(BlockPos pos, Pair<StructureBlockInfo, BlockEntity> pair) {
 		BlockEntity blockEntity = pair.getRight();
-		if (blockEntity instanceof CannonBlockEntity) {
-			StructureBlockInfo containedInfo = ((CannonBlockEntity) blockEntity).getBehaviour(CannonBehavior.TYPE).block();
-			pair = Pair.of(containedInfo, blockEntity);
+		if (blockEntity instanceof ICannonBlockEntity) {
+			StructureBlockInfo containedInfo = ((ICannonBlockEntity) blockEntity).cannonBehavior().block();
+			BlockEntity containedBlockEntity = null;
+			if (containedInfo.nbt != null) {
+				containedInfo.nbt.putInt("x", pos.getX());
+				containedInfo.nbt.putInt("y", pos.getY());
+				containedInfo.nbt.putInt("z", pos.getZ());
+				containedBlockEntity = BlockEntity.loadStatic(pos, containedInfo.state, containedInfo.nbt);
+			}
+			pair = Pair.of(containedInfo, containedBlockEntity);
 		}
 		super.addBlock(pos.relative(this.orientation, -this.initialExtensionProgress), pair);
 	}
@@ -183,7 +227,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 	protected boolean addToInitialFrontier(Level level, BlockPos pos, Direction forcedDirection, Queue<BlockPos> frontier) throws AssemblyException {
 		frontier.clear();
 		boolean retracting = forcedDirection != this.orientation;
-		if (retracting && this.loadingHead != LoadingHead.EXTRACTOR_HOOK) return true;
+		if (retracting != (this.loadingHead == LoadingHead.WORM_HEAD)) return true;
 		
 		for (int offset = 0; offset <= AllConfigs.SERVER.kinetics.maxChassisRange.get(); ++offset) {
 			if (offset == 1 && retracting) return true;
@@ -197,10 +241,10 @@ public class CannonLoadingContraption extends TranslatingContraption {
 			BlockState state = level.getBlockState(currentPos);
 			if (this.isValidLoadBlock(state, level, currentPos)) {
 				frontier.add(currentPos);
-			} else if (this.isValidCannonBlock(level, state, currentPos) && state.getValue(AXIS) == forcedDirection.getAxis()) {
+			} else if (this.isValidCannonBlock(level, state, currentPos) && this.matchesCannonAxis(state, forcedDirection.getAxis())) {
 				BlockEntity blockEntity = level.getBlockEntity(currentPos);
-				if (!(blockEntity instanceof CannonBlockEntity)) return true;
-				StructureBlockInfo blockInfo = ((CannonBlockEntity) blockEntity).getBehaviour(CannonBehavior.TYPE).block();
+				if (!(blockEntity instanceof ICannonBlockEntity)) return true;
+				StructureBlockInfo blockInfo = ((ICannonBlockEntity) blockEntity).cannonBehavior().block();
 				if (this.isValidLoadBlock(blockInfo.state, level, currentPos)) {
 					frontier.add(currentPos);
 				} else {
@@ -240,9 +284,9 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
 		BlockEntity blockEntity1 = level.getBlockEntity(pos);
 		
-		if (blockEntity1 instanceof CannonBlockEntity) {
-			CannonBlockEntity cannon = (CannonBlockEntity) blockEntity1;
-			return cannon.getBehaviour(CannonBehavior.TYPE).tryLoadingBlock(blockInfo);
+		if (blockEntity1 instanceof ICannonBlockEntity) {
+			ICannonBlockEntity cannon = (ICannonBlockEntity) blockEntity1;
+			return cannon.cannonBehavior().tryLoadingBlock(blockInfo);
 		}
 		
 		return false;
@@ -261,9 +305,9 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
 		BlockEntity blockEntity1 = level.getBlockEntity(pos);
 		
-		if (blockEntity1 instanceof CannonBlockEntity) {
-			CannonBlockEntity cannon = (CannonBlockEntity) blockEntity1;
-			cannon.getBehaviour(CannonBehavior.TYPE).removeBlock();
+		if (blockEntity1 instanceof ICannonBlockEntity) {
+			ICannonBlockEntity cannon = (ICannonBlockEntity) blockEntity1;
+			cannon.cannonBehavior().removeBlock();
 			return true;
 		}
 		
@@ -301,7 +345,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 	
 	public static enum LoadingHead {
 		RAM_HEAD,
-		EXTRACTOR_HOOK,
+		WORM_HEAD,
 		NOTHING
 	}
 	

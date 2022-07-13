@@ -20,7 +20,7 @@ public class PowderChargeBlock extends RotatedPillarBlock {
 	
 	private final VoxelShaper shapes;
 	
-	public PowderChargeBlock(BlockBehaviour.Properties properties) {
+	public PowderChargeBlock(Properties properties) {
 		super(properties);
 		this.shapes = this.makeShapes();
 	}

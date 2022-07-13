@@ -20,6 +20,7 @@ build
 # other
 eclipse
 run
+thetextvicdontsaythe.txt
 
 # Files from Forge MDK
 forge*changelog.txt

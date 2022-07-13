@@ -2,7 +2,10 @@
   "block.createbigcannons.cannon_loader": "\u0279\u01DDp\u0250o\uA780 uouu\u0250\u0186",
   "block.createbigcannons.cast_iron_cannon_barrel": "\u05DF\u01DD\u0279\u0279\u0250\u15FA uouu\u0250\u0186 uo\u0279I \u0287s\u0250\u0186",
   "block.createbigcannons.cast_iron_cannon_chamber": "\u0279\u01DDq\u026F\u0250\u0265\u0186 uouu\u0250\u0186 uo\u0279I \u0287s\u0250\u0186",
+  "block.createbigcannons.cast_iron_cannon_end": "pu\u018E uouu\u0250\u0186 uo\u0279I \u0287s\u0250\u0186",
+  "block.createbigcannons.cast_iron_sliding_breech": "\u0265\u0254\u01DD\u01DD\u0279\u15FA bu\u0131p\u0131\u05DFS uo\u0279I \u0287s\u0250\u0186",
   "block.createbigcannons.powder_charge": "\u01DDb\u0279\u0250\u0265\u0186 \u0279\u01DDp\u028Do\u0500",
   "block.createbigcannons.ram_head": "p\u0250\u01DDH \u026F\u0250\u1D1A",
+  "block.createbigcannons.worm_head": "p\u0250\u01DDH \u026F\u0279oM",
   "itemGroup.createbigcannons": "suouu\u0250\u0186 b\u0131\u15FA \u01DD\u0287\u0250\u01DD\u0279\u0186"
 }

@@ -6,10 +6,10 @@ import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -26,14 +26,14 @@ public class CannonLoaderBlock extends DirectionalAxisKineticBlock implements IT
 	
 	private final VoxelShaper shapes;
 	
-	public CannonLoaderBlock(BlockBehaviour.Properties properties) {
+	public CannonLoaderBlock(Properties properties) {
 		super(properties);
 		this.shapes = this.makeShapes();
 		this.registerDefaultState(this.getStateDefinition().any().setValue(MOVING, false));
 	}
 	
 	private VoxelShaper makeShapes() {
-		VoxelShape base = Shapes.or(Block.box(0, 0, 0, 16, 12, 16), Block.box(6, 12, 6, 10, 16, 10));
+		VoxelShape base = Shapes.or(box(0, 0, 0, 16, 12, 16), box(6, 12, 6, 10, 16, 10));
 		return new AllShapes.Builder(base).forDirectional();
 	}
 	
@@ -46,6 +46,11 @@ public class CannonLoaderBlock extends DirectionalAxisKineticBlock implements IT
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
 		return this.shapes.get(state.getValue(FACING));
+	}
+	
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
 	}
 	
 	public static int maxAllowedLoaderLength() {

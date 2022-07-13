@@ -7,7 +7,11 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannons {
@@ -18,11 +22,19 @@ public class CreateBigCannons {
 	private static final NonNullSupplier<CreateRegistrate> REGISTRATE = CreateRegistrate.lazy(MOD_ID);
 	
 	public CreateBigCannons() {
+		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+		
 		LangGen.prepare();
 		
 		ModGroup.register();
 		CBCBlocks.register();
 		CBCBlockEntities.register();
+		
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.prepareClient(modEventBus));
+	}
+	
+	private void prepareClient(IEventBus modEventBus) {
+		CBCBlockPartials.init();
 	}
 	
 	public static CreateRegistrate registrate() {
