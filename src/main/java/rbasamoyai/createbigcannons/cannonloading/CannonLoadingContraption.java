@@ -31,18 +31,16 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 
 public class CannonLoadingContraption extends TranslatingContraption {
 	
-	public static final ContraptionType TYPE = ContraptionType.register(CreateBigCannons.resource("cannon_loader").toString(), CannonLoadingContraption::new);
-	
 	protected int extensionLength;
 	protected int initialExtensionProgress;
 	protected Direction orientation;	
-	protected LoadingHead loadingHead;
+	protected LoadingHead loadingHead = LoadingHead.NOTHING;
 	
 	private AABB pistonContraptionHitbox;
 	private boolean retract;
@@ -262,7 +260,9 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		if (CBCBlocks.POWDER_CHARGE.has(state)) {
 			return state.getValue(AXIS) == this.orientation.getAxis();
 		}
-		
+		if (CBCBlocks.SOLID_SHOT.has(state)) {
+			return state.getValue(FACING) == this.orientation;
+		}
 		return false;
 	}
 	
@@ -325,6 +325,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		this.initialExtensionProgress = tag.getInt("InitialLength");
 		this.extensionLength = tag.getInt("ExtensionLength");
 		this.orientation = Direction.from3DDataValue(tag.getInt("Orientation"));
+		this.loadingHead = LoadingHead.fromOrdinal(tag.getInt("LoadingHead"));
 	}
 	
 	@Override
@@ -333,10 +334,11 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		tag.putInt("InitialLength", this.initialExtensionProgress);
 		tag.putInt("ExtensionLength", this.extensionLength);
 		tag.putInt("Orientation", this.orientation.get3DDataValue());
+		tag.putInt("LoadingHead", this.loadingHead == null ? LoadingHead.NOTHING.ordinal() : this.loadingHead.ordinal());
 		return tag;
 	}
 	
-	@Override protected ContraptionType getType() { return TYPE; }
+	@Override protected ContraptionType getType() { return CBCContraptionTypes.CANNON_LOADER; }
 	
 	@Override
 	public ContraptionLighter<?> makeLighter() {
@@ -346,7 +348,13 @@ public class CannonLoadingContraption extends TranslatingContraption {
 	public static enum LoadingHead {
 		RAM_HEAD,
 		WORM_HEAD,
-		NOTHING
+		NOTHING;
+		
+		private static final LoadingHead[] VALUES = values();
+		
+		public static LoadingHead fromOrdinal(int ordinal) {
+			return ordinal <= 0 && ordinal < VALUES.length ? VALUES[ordinal] : NOTHING;
+		}
 	}
 	
 }

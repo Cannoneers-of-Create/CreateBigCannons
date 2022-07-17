@@ -1,11 +1,19 @@
 {
   "block.createbigcannons.cannon_loader": "Cannon Loader",
+  "block.createbigcannons.cannon_mount": "Cannon Mount",
   "block.createbigcannons.cast_iron_cannon_barrel": "Cast Iron Cannon Barrel",
   "block.createbigcannons.cast_iron_cannon_chamber": "Cast Iron Cannon Chamber",
   "block.createbigcannons.cast_iron_cannon_end": "Cast Iron Cannon End",
   "block.createbigcannons.cast_iron_sliding_breech": "Cast Iron Sliding Breech",
   "block.createbigcannons.powder_charge": "Powder Charge",
   "block.createbigcannons.ram_head": "Ram Head",
+  "block.createbigcannons.solid_shot": "Solid Shot",
   "block.createbigcannons.worm_head": "Worm Head",
+  "block.createbigcannons.yaw_controller": "Yaw Controller",
+  "entity.createbigcannons.pitch_contraption": "Pitch Contraption",
+  "exception.createbigcannons.cannon_mount.cannonBlockOutsideOfWorld": "Cannon assembly area at [%1$s, %2$s, %3$s] is out of bounds",
+  "exception.createbigcannons.cannon_mount.cannonLoaderInsideDuringAssembly": "Cannon block at [%1$s, %2$s, %3$s] contains a cannon loader part",
+  "exception.createbigcannons.cannon_mount.cannonTooLarge": "Cannon is longer than the maximum length of %s",
+  "exception.createbigcannons.cannon_mount.invalidCannon": "A cannon must have one and only one opening and one and only one closed end",
   "itemGroup.createbigcannons": "Create Big Cannons"
 }

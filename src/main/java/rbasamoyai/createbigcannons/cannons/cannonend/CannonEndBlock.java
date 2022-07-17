@@ -1,13 +1,16 @@
 package rbasamoyai.createbigcannons.cannons.cannonend;
 
+import java.util.Optional;
+
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.WrenchableDirectionalBlock;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -32,7 +35,9 @@ public class CannonEndBlock extends WrenchableDirectionalBlock implements Cannon
 	}
 	
 	@Override public CannonMaterial getCannonMaterial() { return this.cannonMaterial; }
-	@Override public Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
+	@Override public Direction.Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
+	@Override public Optional<Direction> getFacing(BlockState state) { return Optional.of(state.getValue(FACING).getOpposite()); }
+	@Override public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return CannonEnd.CLOSED; }
 	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {

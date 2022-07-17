@@ -15,6 +15,8 @@ public class ModGroup {
 		}
 		
 		public void fillItemList(NonNullList<ItemStack> list) {
+			list.add(CBCBlocks.CANNON_MOUNT.asStack());
+			list.add(CBCBlocks.YAW_CONTROLLER.asStack());
 			list.add(CBCBlocks.CAST_IRON_CANNON_END.asStack());
 			list.add(CBCBlocks.CAST_IRON_SLIDING_BREECH.asStack());
 			list.add(CBCBlocks.CAST_IRON_CANNON_CHAMBER.asStack());
@@ -22,6 +24,7 @@ public class ModGroup {
 			list.add(CBCBlocks.CANNON_LOADER.asStack());
 			list.add(CBCBlocks.RAM_HEAD.asStack());
 			list.add(CBCBlocks.WORM_HEAD.asStack());
+			list.add(CBCBlocks.SOLID_SHOT.asStack());
 			list.add(CBCBlocks.POWDER_CHARGE.asStack());
 		}
 	};

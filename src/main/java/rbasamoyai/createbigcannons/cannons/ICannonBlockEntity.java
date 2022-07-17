@@ -25,6 +25,7 @@ public interface ICannonBlockEntity {
 		
 		if (CBCBlocks.RAM_HEAD.has(blockInfo.state)
 		|| CBCBlocks.WORM_HEAD.has(blockInfo.state)
+		|| CBCBlocks.SOLID_SHOT.has(blockInfo.state)
 		|| AllBlocks.PISTON_EXTENSION_POLE.has(blockInfo.state)) {
 			
 			return blockInfo.state.getValue(BlockStateProperties.FACING).getAxis() == cannonAxis;

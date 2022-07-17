@@ -12,6 +12,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import rbasamoyai.createbigcannons.datagen.LangGen;
 
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannons {
@@ -29,6 +30,9 @@ public class CreateBigCannons {
 		ModGroup.register();
 		CBCBlocks.register();
 		CBCBlockEntities.register();
+		CBCEntityTypes.register();
+		
+		CBCContraptionTypes.prepare();
 		
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.prepareClient(modEventBus));
 	}

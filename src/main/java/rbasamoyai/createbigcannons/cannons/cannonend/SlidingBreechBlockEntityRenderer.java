@@ -48,6 +48,8 @@ public class SlidingBreechBlockEntityRenderer extends KineticTileEntityRenderer 
 		boolean horizontal = facing.getAxis().isHorizontal();
 		boolean alongFirst = blockState.getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
 		
+		ms.pushPose();
+		
 		if (horizontal && (facing.getAxis() == Direction.Axis.X) != alongFirst) {
 			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(facing));
 			Quaternion q1 = Direction.EAST.step().rotationDegrees(90.0f);
@@ -73,6 +75,8 @@ public class SlidingBreechBlockEntityRenderer extends KineticTileEntityRenderer 
 		
 		SuperByteBuffer breechblockRender = CachedBufferer.partialFacing(this.getPartialModelForState(blockState), blockState, facing);
 		breechblockRender.translate(normal.x(), normal.y(), normal.z()).light(light).renderInto(ms, buffer.getBuffer(RenderType.solid()));
+		
+		ms.popPose();
 	}
 	
 	@Override

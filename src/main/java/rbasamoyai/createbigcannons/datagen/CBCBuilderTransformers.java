@@ -3,15 +3,10 @@ package rbasamoyai.createbigcannons.datagen;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.repack.registrate.builders.BlockBuilder;
-import com.simibubi.create.repack.registrate.providers.DataGenContext;
-import com.simibubi.create.repack.registrate.providers.RegistrateItemModelProvider;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullBiConsumer;
 import com.simibubi.create.repack.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
@@ -100,24 +95,49 @@ public class CBCBuilderTransformers {
 	}
 	
 	public static <T extends DirectionalAxisKineticBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonLoader() {
+		ResourceLocation itemModelLoc = CreateBigCannons.resource("block/cannon_loader_item");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
-				.blockstate(new CannonLoaderGen()::generate);
+				.blockstate(new CannonLoaderGen()::generate)
+				.item()
+				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemModelLoc)))
+				.build();
 	}
 	
-	public static NonNullBiConsumer<DataGenContext<Item, BlockItem>, RegistrateItemModelProvider> cannonLoaderItemModel() {
-		return (c, p) -> {
-			ResourceLocation itemLoc = CreateBigCannons.resource("cannon_loader");
-			ResourceLocation parentLoc = CreateBigCannons.resource("block/cannon_loader_item");
-			p.getBuilder(itemLoc.toString()).parent(p.getExistingFile(parentLoc));
-		};
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> solidShot() {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/solid_shot");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::solid)
+				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(baseLoc)));
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> powderCharge() {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/powder_charge");
 		return b -> b.properties(p -> p.noOcclusion())
-				.addLayer(() -> RenderType::cutoutMipped)
+				.addLayer(() -> RenderType::solid)
 				.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().getExistingFile(baseLoc)));
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonMount() {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/cannon_mount/cannon_mount");
+		ResourceLocation itemModelLoc = CreateBigCannons.resource("block/cannon_mount/cannon_mount_item");		
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> p.horizontalBlock(c.get(), p.models().getExistingFile(baseLoc), 0))
+				.item()
+				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemModelLoc)))
+				.build();
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> yawController() {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/cannon_mount/yaw_controller");
+		ResourceLocation itemModelLoc = CreateBigCannons.resource("block/cannon_mount/yaw_controller_item");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getExistingFile(baseLoc)))
+				.item()
+				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemModelLoc)))
+				.build();
 	}
 	
 }

@@ -1,10 +1,15 @@
 package rbasamoyai.createbigcannons.cannons.cannonend;
 
+import java.util.Optional;
+
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
 
-import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
@@ -21,8 +26,15 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.cannonMaterial; }
-	@Override public Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
-
+	@Override public Direction.Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
+	@Override public Optional<Direction> getFacing(BlockState state) { return Optional.empty(); }
+	@Override
+	public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) {
+		BlockEntity be = level.getBlockEntity(pos);
+		if (!(be instanceof SlidingBreechBlockEntity)) return CannonEnd.OPEN;
+		return ((SlidingBreechBlockEntity) be).getOpenProgress() > 0.0f ? CannonEnd.OPEN : CannonEnd.CLOSED;
+	}
+	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());

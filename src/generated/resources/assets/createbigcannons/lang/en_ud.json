@@ -1,11 +1,19 @@
 {
   "block.createbigcannons.cannon_loader": "\u0279\u01DDp\u0250o\uA780 uouu\u0250\u0186",
+  "block.createbigcannons.cannon_mount": "\u0287unoW uouu\u0250\u0186",
   "block.createbigcannons.cast_iron_cannon_barrel": "\u05DF\u01DD\u0279\u0279\u0250\u15FA uouu\u0250\u0186 uo\u0279I \u0287s\u0250\u0186",
   "block.createbigcannons.cast_iron_cannon_chamber": "\u0279\u01DDq\u026F\u0250\u0265\u0186 uouu\u0250\u0186 uo\u0279I \u0287s\u0250\u0186",
   "block.createbigcannons.cast_iron_cannon_end": "pu\u018E uouu\u0250\u0186 uo\u0279I \u0287s\u0250\u0186",
   "block.createbigcannons.cast_iron_sliding_breech": "\u0265\u0254\u01DD\u01DD\u0279\u15FA bu\u0131p\u0131\u05DFS uo\u0279I \u0287s\u0250\u0186",
   "block.createbigcannons.powder_charge": "\u01DDb\u0279\u0250\u0265\u0186 \u0279\u01DDp\u028Do\u0500",
   "block.createbigcannons.ram_head": "p\u0250\u01DDH \u026F\u0250\u1D1A",
+  "block.createbigcannons.solid_shot": "\u0287o\u0265S p\u0131\u05DFoS",
   "block.createbigcannons.worm_head": "p\u0250\u01DDH \u026F\u0279oM",
+  "block.createbigcannons.yaw_controller": "\u0279\u01DD\u05DF\u05DFo\u0279\u0287uo\u0186 \u028D\u0250\u028E",
+  "entity.createbigcannons.pitch_contraption": "uo\u0131\u0287d\u0250\u0279\u0287uo\u0186 \u0265\u0254\u0287\u0131\u0500",
+  "exception.createbigcannons.cannon_mount.cannonBlockOutsideOfWorld": "spunoq \u025Fo \u0287no s\u0131 ]%3$s '%2$s '%1$s[ \u0287\u0250 \u0250\u01DD\u0279\u0250 \u028E\u05DFq\u026F\u01DDss\u0250 uouu\u0250\u0186",
+  "exception.createbigcannons.cannon_mount.cannonLoaderInsideDuringAssembly": "\u0287\u0279\u0250d \u0279\u01DDp\u0250o\u05DF uouu\u0250\u0254 \u0250 su\u0131\u0250\u0287uo\u0254 ]%3$s '%2$s '%1$s[ \u0287\u0250 \u029E\u0254o\u05DFq uouu\u0250\u0186",
+  "exception.createbigcannons.cannon_mount.cannonTooLarge": "%s \u025Fo \u0265\u0287bu\u01DD\u05DF \u026Fn\u026F\u0131x\u0250\u026F \u01DD\u0265\u0287 u\u0250\u0265\u0287 \u0279\u01DDbuo\u05DF s\u0131 uouu\u0250\u0186",
+  "exception.createbigcannons.cannon_mount.invalidCannon": "pu\u01DD p\u01DDso\u05DF\u0254 \u01DDuo \u028E\u05DFuo pu\u0250 \u01DDuo pu\u0250 bu\u0131u\u01DDdo \u01DDuo \u028E\u05DFuo pu\u0250 \u01DDuo \u01DD\u028C\u0250\u0265 \u0287sn\u026F uouu\u0250\u0254 \u2C6F",
   "itemGroup.createbigcannons": "suouu\u0250\u0186 b\u0131\u15FA \u01DD\u0287\u0250\u01DD\u0279\u0186"
 }
