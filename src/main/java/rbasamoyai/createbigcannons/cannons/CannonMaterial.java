@@ -38,7 +38,7 @@ public record CannonMaterial(ResourceLocation name, double squibRatio, float wei
 		return this.squibRatio;
 	}
 	
-	public static enum FailureMode {
+	public enum FailureMode {
 		RUPTURE,
 		FRAGMENT
 	}

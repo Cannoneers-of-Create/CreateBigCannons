@@ -32,6 +32,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 
@@ -173,16 +174,21 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		if (level.isOutsideBuildHeight(pos)) return true;
 		if (!level.isLoaded(pos)) throw AssemblyException.unloadedChunk(pos);
 		if (this.isAnchoringBlockAt(pos)) return true;
-		BlockState state = level.getBlockState(pos);
 		
 		BlockPos ahead = pos.relative(direction);
+		BlockState state = level.getBlockState(ahead);
 		if (this.isAnchoringBlockAt(ahead)) return true;
 		if (this.isValidLoadBlock(state, level, ahead)) {
 			frontier.add(ahead);
 		}
 		
 		if (this.isValidCannonBlock(level, state, ahead) && this.matchesCannonAxis(state, direction.getAxis())) {
-			frontier.add(ahead);
+			BlockEntity blockEntity = level.getBlockEntity(ahead);
+			if (!(blockEntity instanceof ICannonBlockEntity)) return true;
+			StructureBlockInfo blockInfo = ((ICannonBlockEntity) blockEntity).cannonBehavior().block();
+			if (this.isValidLoadBlock(blockInfo.state, level, ahead)) {
+				frontier.add(ahead);
+			}
 		}
 		
 		this.addBlock(pos, this.capture(level, pos));
@@ -257,11 +263,12 @@ public class CannonLoadingContraption extends TranslatingContraption {
 	}
 	
 	private boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos) {
+		Direction.Axis axis = this.orientation.getAxis();
 		if (CBCBlocks.POWDER_CHARGE.has(state)) {
-			return state.getValue(AXIS) == this.orientation.getAxis();
+			return state.getValue(AXIS) == axis;
 		}
-		if (CBCBlocks.SOLID_SHOT.has(state)) {
-			return state.getValue(FACING) == this.orientation;
+		if (state.is(CBCTags.Blocks.CANNON_PROJECTILES)) {
+			return state.getValue(FACING).getAxis() == axis;
 		}
 		return false;
 	}

@@ -11,6 +11,7 @@
   "block.createbigcannons.worm_head": "p\u0250\u01DDH \u026F\u0279oM",
   "block.createbigcannons.yaw_controller": "\u0279\u01DD\u05DF\u05DFo\u0279\u0287uo\u0186 \u028D\u0250\u028E",
   "entity.createbigcannons.pitch_contraption": "uo\u0131\u0287d\u0250\u0279\u0287uo\u0186 \u0265\u0254\u0287\u0131\u0500",
+  "entity.createbigcannons.shot": "\u0287o\u0265S",
   "exception.createbigcannons.cannon_mount.cannonBlockOutsideOfWorld": "spunoq \u025Fo \u0287no s\u0131 ]%3$s '%2$s '%1$s[ \u0287\u0250 \u0250\u01DD\u0279\u0250 \u028E\u05DFq\u026F\u01DDss\u0250 uouu\u0250\u0186",
   "exception.createbigcannons.cannon_mount.cannonLoaderInsideDuringAssembly": "\u0287\u0279\u0250d \u0279\u01DDp\u0250o\u05DF uouu\u0250\u0254 \u0250 su\u0131\u0250\u0287uo\u0254 ]%3$s '%2$s '%1$s[ \u0287\u0250 \u029E\u0254o\u05DFq uouu\u0250\u0186",
   "exception.createbigcannons.cannon_mount.cannonTooLarge": "%s \u025Fo \u0265\u0287bu\u01DD\u05DF \u026Fn\u026F\u0131x\u0250\u026F \u01DD\u0265\u0287 u\u0250\u0265\u0287 \u0279\u01DDbuo\u05DF s\u0131 uouu\u0250\u0186",

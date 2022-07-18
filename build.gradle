@@ -80,8 +80,6 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/createSrgToMcp/output.srg"
             args '--mod', 'createbigcannons', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
             mods {
                 createbigcannons {

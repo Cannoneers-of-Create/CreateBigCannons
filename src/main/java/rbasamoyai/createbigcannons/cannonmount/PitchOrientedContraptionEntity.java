@@ -4,10 +4,12 @@ import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.OrientedContraptionEntity;
+import com.simibubi.create.foundation.utility.VecHelper;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.mixin.MixinContraptionRotationState;
 
@@ -59,6 +61,22 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			}
 			tstack.unCentre();
 		}
+	}
+	
+	@Override
+	public Vec3 applyRotation(Vec3 localPos, float partialTicks) {
+		localPos = VecHelper.rotate(localPos, this.getViewXRot(partialTicks), Direction.Axis.X);
+		localPos = VecHelper.rotate(localPos, this.getViewYRot(partialTicks), Direction.Axis.Y);
+		localPos = VecHelper.rotate(localPos, this.getInitialYaw(), Direction.Axis.Y);
+		return localPos;
+	}
+	
+	@Override
+	public Vec3 reverseRotation(Vec3 localPos, float partialTicks) {
+		localPos = VecHelper.rotate(localPos, -this.getInitialYaw(), Direction.Axis.Y);
+		localPos = VecHelper.rotate(localPos, -this.getViewYRot(partialTicks), Direction.Axis.Y);
+		localPos = VecHelper.rotate(localPos, -this.getViewXRot(partialTicks), Direction.Axis.X);
+		return localPos;
 	}
 
 }

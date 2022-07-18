@@ -6,6 +6,9 @@ import com.simibubi.create.repack.registrate.util.entry.EntityEntry;
 
 import net.minecraft.world.entity.MobCategory;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.CannonProjectileRenderer;
+import rbasamoyai.createbigcannons.munitions.ShotProjectile;
 
 public class CBCEntityTypes {
 
@@ -17,6 +20,12 @@ public class CBCEntityTypes {
 					.fireImmune())
 			.properties(AbstractContraptionEntity::build)
 			.renderer(() -> OrientedContraptionEntityRenderer::new)
+			.register();
+	
+	public static final EntityEntry<ShotProjectile> SHOT = CreateBigCannons.registrate()
+			.entity("shot", ShotProjectile::new, MobCategory.MISC)
+			.properties(AbstractCannonProjectile::build)
+			.renderer(() -> CannonProjectileRenderer::new)
 			.register();
 	
 	public static void register() {}

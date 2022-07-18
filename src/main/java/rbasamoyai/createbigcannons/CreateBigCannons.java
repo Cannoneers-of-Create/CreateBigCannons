@@ -31,14 +31,18 @@ public class CreateBigCannons {
 		CBCBlocks.register();
 		CBCBlockEntities.register();
 		CBCEntityTypes.register();
-		
 		CBCContraptionTypes.prepare();
+		
+		CBCParticleTypes.PARTICLE_TYPES.register(modEventBus);		
+		
+		CBCTags.register();
 		
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.prepareClient(modEventBus));
 	}
 	
 	private void prepareClient(IEventBus modEventBus) {
 		CBCBlockPartials.init();
+		modEventBus.addListener(CBCParticles::onRegisterParticleFactories);
 	}
 	
 	public static CreateRegistrate registrate() {

@@ -14,6 +14,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -118,6 +119,9 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		}
 		if (firePowered != prevFirePowered) {
 			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(CannonMountBlock.FIRE_POWERED, firePowered), 3);
+			if (firePowered && this.running && this.mountedContraption != null && this.level instanceof ServerLevel) {
+				((MountedCannonContraption) this.mountedContraption.getContraption()).fireShot((ServerLevel) this.level, this.mountedContraption);
+			}
 		}
 	}
 	
@@ -130,6 +134,9 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	}
 	
 	public float getPitchOffset(float partialTicks) {
+		if (!this.running) {
+			return this.cannonPitch;
+		}
 		return this.cannonPitch + convertToAngular(this.getSpeed()) * 0.1f * partialTicks;
 	}
 	
@@ -142,6 +149,9 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	}
 	
 	public float getYawOffset(float partialTicks) {
+		if (!this.running) {
+			return this.cannonYaw;
+		}
 		return this.cannonYaw + convertToAngular(this.getYawSpeed()) * 0.1f * partialTicks;
 	}
 	

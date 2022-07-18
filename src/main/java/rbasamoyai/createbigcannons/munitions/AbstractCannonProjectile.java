@@ -1,0 +1,156 @@
+package rbasamoyai.createbigcannons.munitions;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+
+public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile {
+
+	private static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> BREAKTHROUGH_POWER = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
+	protected int inGroundTime = 0;
+	
+	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
+		super(type, level);
+	}
+	
+	@Override
+	public void tick() {
+		if (this.isInGround()) {
+			this.setDeltaMovement(Vec3.ZERO);
+			if (this.shouldFall()) {
+				this.setInGround(false);
+			} else if (!this.level.isClientSide) {
+				this.inGroundTime++;
+				
+				if (this.inGroundTime == 200) {
+					this.discard();
+				}
+			}
+		} else {
+			this.inGroundTime = 0;
+			if (!this.isNoGravity()) {
+				this.setDeltaMovement(this.getDeltaMovement().add(0.0f, -0.05f, 0.0f));
+			}
+		}
+		super.tick();
+	}
+	
+	@Override
+	protected void onHitEntity(EntityHitResult result) {
+		super.onHitEntity(result);
+		if (!this.level.isClientSide) {
+			Entity entity = result.getEntity();
+			entity.setDeltaMovement(this.getDeltaMovement().scale(2.0f));
+			entity.hurt(DamageSource.thrown(this, null), 50);
+			if (result.getEntity().isAlive()) {
+				this.setBreakthroughPower((byte) Math.max(0, this.getBreakthroughPower() - 2));
+				if (this.getBreakthroughPower() == 0) {
+					this.discard();
+				}
+			}
+		}
+	}
+	
+	@Override
+	protected void onHitBlock(BlockHitResult result) {
+		super.onHitBlock(result);
+		if (!this.level.isClientSide) {
+			Vec3 hitLoc = result.getLocation();
+			byte breakthroughPower = this.getBreakthroughPower();
+			if (breakthroughPower > 0) {
+				Vec3 currentVel = this.getDeltaMovement();
+				
+				Explosion explode = this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 1, Explosion.BlockInteraction.DESTROY);
+				this.setDeltaMovement(currentVel);
+				this.setBreakthroughPower((byte)(breakthroughPower - 1));
+				
+				BlockPos pos = result.getBlockPos();
+				BlockState remainingBlock = this.level.getBlockState(pos);
+				if (!remainingBlock.isAir()) {
+					this.setBreakthroughPower((byte) Math.max(0, this.getBreakthroughPower() - 9));
+					if (remainingBlock.getDestroySpeed(this.level, pos) != -1.0) {
+						remainingBlock.onBlockExploded(this.level, pos, explode);
+					} else {
+						this.setBreakthroughPower((byte) 0);
+					}
+				}
+			}
+			if (this.getBreakthroughPower() <= 0) {
+				this.setInGround(true);
+				this.setPos(hitLoc);
+			}
+		}
+	}
+	
+	@Override
+	protected void defineSynchedData() {
+		this.entityData.define(ID_FLAGS, (byte) 0);
+		this.entityData.define(BREAKTHROUGH_POWER, (byte) 0);
+	}
+	
+	public void setInGround(boolean inGround) {
+		if (inGround) {
+			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) | 1));
+		} else {
+			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) & 0b11111110));
+		}
+	}
+	
+	public boolean isInGround() {
+		return (this.entityData.get(ID_FLAGS) & 1) != 0;
+	}
+	
+	private boolean shouldFall() {
+		return this.isInGround() && this.level.noCollision(new AABB(this.position(), this.position()).inflate(0.06d));
+	}
+	
+	@Override
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+	}
+	
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+	}
+	
+	public void setBreakthroughPower(byte power) {
+		this.entityData.set(BREAKTHROUGH_POWER, power);
+	}
+	
+	public byte getBreakthroughPower() {
+		return this.entityData.get(BREAKTHROUGH_POWER);
+	}
+
+	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
+		builder.setTrackingRange(4)
+				.setUpdateInterval(20)
+				.setShouldReceiveVelocityUpdates(true)
+				.fireImmune()
+				.sized(0.8f, 0.8f);
+	}
+	
+	@Override
+	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
+		return 0.4f;
+	}
+	
+	public abstract BlockState getRenderedBlockState();
+	
+}

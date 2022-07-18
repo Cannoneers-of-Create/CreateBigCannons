@@ -11,6 +11,7 @@
   "block.createbigcannons.worm_head": "Worm Head",
   "block.createbigcannons.yaw_controller": "Yaw Controller",
   "entity.createbigcannons.pitch_contraption": "Pitch Contraption",
+  "entity.createbigcannons.shot": "Shot",
   "exception.createbigcannons.cannon_mount.cannonBlockOutsideOfWorld": "Cannon assembly area at [%1$s, %2$s, %3$s] is out of bounds",
   "exception.createbigcannons.cannon_mount.cannonLoaderInsideDuringAssembly": "Cannon block at [%1$s, %2$s, %3$s] contains a cannon loader part",
   "exception.createbigcannons.cannon_mount.cannonTooLarge": "Cannon is longer than the maximum length of %s",
