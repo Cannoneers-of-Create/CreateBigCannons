@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.cannonmount;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 
 import com.simibubi.create.AllBlocks;
@@ -35,6 +36,7 @@ import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
@@ -222,19 +224,25 @@ public class MountedCannonContraption extends Contraption {
 		StructureBlockInfo foundProjectile = null;
 		int chargesUsed = 0;
 		BlockPos currentPos = BlockPos.ZERO;
-		for (CannonBlockEntityHolder<?> cbeh : this.cannonBlockEntities) {
-			StructureBlockInfo containedBlockInfo = cbeh.blockEntity.cannonBehavior().block();			
+		for (ListIterator<CannonBlockEntityHolder<?>> iter = this.cannonBlockEntities.listIterator(); iter.hasNext(); ) {
+			CannonBlockEntityHolder<?> cbeh = iter.next();
+			CannonBehavior behavior = cbeh.blockEntity.cannonBehavior();
+			StructureBlockInfo containedBlockInfo = behavior.block();	
 			
 			if (CBCBlocks.POWDER_CHARGE.has(containedBlockInfo.state) && foundProjectile == null) {
+				if (!cbeh.blockInfo.state.is(CBCTags.Blocks.THICK_TUBING) && level.getRandom().nextDouble() < 0.25d) {
+					this.fail(currentPos, level, entity, cbeh);
+					return;
+				}
+				this.consumeBlock(behavior, cbeh, iter);
 				++chargesUsed;
-				continue;
-			}
-			if (containedBlockInfo.state.is(CBCTags.Blocks.CANNON_PROJECTILES)) {
+			} else if (containedBlockInfo.state.is(CBCTags.Blocks.CANNON_PROJECTILES)) {
+				if (chargesUsed == 0) return;
 				foundProjectile = cbeh.blockInfo;
-				continue;
-			}
-			if (!containedBlockInfo.state.isAir() && foundProjectile != null) {
-				Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(cbeh.blockEntity.getBlockPos()), 1.0f);
+				this.consumeBlock(behavior, cbeh, iter);
+			} else if (!containedBlockInfo.state.isAir() && foundProjectile != null) {
+				this.fail(currentPos, level, entity, cbeh);
+				return;
 			}
 			
 			currentPos = cbeh.blockEntity.getBlockPos();
@@ -246,15 +254,33 @@ public class MountedCannonContraption extends Contraption {
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(Vec3.atCenterOf(this.anchor)).normalize();
 		
-		AbstractCannonProjectile projectile = new ShotProjectile(CBCEntityTypes.SHOT.get(), level);
-		projectile.setPos(spawnPos);
-		projectile.shoot(vec.x, vec.y, vec.z, 2, 1.0f);
-		level.addFreshEntity(projectile);
+		if (foundProjectile != null) {
+			AbstractCannonProjectile projectile = new ShotProjectile(CBCEntityTypes.SHOT.get(), level);
+			projectile.setPos(spawnPos);
+			projectile.shoot(vec.x, vec.y, vec.z, chargesUsed, 1.0f);
+			level.addFreshEntity(projectile);
+		}
 		
 		for (ServerPlayer player : level.players()) {
 			level.sendParticles(player, new CannonPlumeParticleData(chargesUsed), true, spawnPos.x, spawnPos.y, spawnPos.z, 0, vec.x, vec.y, vec.z, 1.0f);
 		}
 		level.playSound(null, spawnPos.x, spawnPos.y, spawnPos.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 20.0f, 0.0f);
+	}
+	
+	private void consumeBlock(CannonBehavior behavior, CannonBlockEntityHolder<?> cbeh, ListIterator<CannonBlockEntityHolder<?>> iter) {
+		behavior.removeBlock();
+		CompoundTag tag = cbeh.blockEntity.saveWithFullMetadata();
+		tag.remove("x");
+		tag.remove("y");
+		tag.remove("z");
+		StructureBlockInfo consumedInfo = new StructureBlockInfo(cbeh.blockInfo.pos, cbeh.blockInfo.state, tag);
+		this.getBlocks().put(cbeh.blockInfo.pos, consumedInfo);
+		iter.set(new CannonBlockEntityHolder<>(cbeh.blockEntity, consumedInfo));
+	}
+	
+	public void fail(BlockPos localPos, Level level, AbstractContraptionEntity entity, CannonBlockEntityHolder<?> cbeh) {
+		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(cbeh.blockEntity.getBlockPos()), 1.0f);
+		
 	}
 	
 	@Override

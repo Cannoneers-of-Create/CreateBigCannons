@@ -15,8 +15,8 @@ public class CBCTags {
 	
 	public static class Blocks {
 		public static final TagKey<Block>
-			CANNON_PROJECTILES = createAndGenerateBlockTag(CreateBigCannons.resource("cannon_projectiles"));
-		
+			CANNON_PROJECTILES = createAndGenerateBlockTag(CreateBigCannons.resource("cannon_projectiles")),
+			THICK_TUBING = createAndGenerateBlockTag(CreateBigCannons.resource("thick_tubing"));
 		
 		public static TagKey<Block> createAndGenerateBlockTag(ResourceLocation loc) {
 			TagKey<Block> tag = BlockTags.create(loc); 
@@ -34,7 +34,7 @@ public class CBCTags {
 		}
 		
 		public static void sectionRegister() {
-			addBlocksToBlockTag(CANNON_PROJECTILES, () -> CBCBlocks.SOLID_SHOT.get());
+			
 		}
 		
 		@FunctionalInterface public interface BlockProvider { Block get(); }

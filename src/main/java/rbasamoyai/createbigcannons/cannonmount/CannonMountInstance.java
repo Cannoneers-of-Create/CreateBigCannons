@@ -7,13 +7,17 @@ import com.jozufozu.flywheel.api.instance.DynamicInstance;
 import com.jozufozu.flywheel.core.Materials;
 import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
 import com.jozufozu.flywheel.util.AnimationTickHolder;
+import com.mojang.math.Constants;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.simibubi.create.AllBlockPartials;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.KineticTileInstance;
 import com.simibubi.create.content.contraptions.base.flwdata.RotatingData;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,7 +26,8 @@ import rbasamoyai.createbigcannons.CBCBlockPartials;
 public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEntity> implements DynamicInstance {
 
 	private final OrientedData rotatingMount;
-	private final OrientedData rotatingMountShaft;
+	private final OrientedData rotatingMountShaft1;
+	private final OrientedData rotatingMountShaft2;
 	private final RotatingData pitchShaft;
 	private final RotatingData yawShaft;
 	
@@ -48,11 +53,21 @@ public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEnt
 				.createInstance();
 		this.rotatingMount.setPosition(this.getInstancePosition().above());
 		
-		this.rotatingMountShaft = dispatcher.defaultCutout()
+		this.rotatingMountShaft1 = dispatcher.defaultCutout()
 				.material(Materials.ORIENTED)
-				.getModel(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, Direction.Axis.X))
+				.getModel(AllBlockPartials.SHAFT_HALF, blockState, Direction.EAST)
 				.createInstance();
-		this.rotatingMountShaft.setPosition(this.getInstancePosition().above(2));
+		
+		this.rotatingMountShaft1.setPosition(this.getInstancePosition().above(2));
+		this.rotatingMountShaft1.nudge(-0.25f, 0.0f, 0.0f);
+		
+		this.rotatingMountShaft2 = dispatcher.defaultCutout()
+				.material(Materials.ORIENTED)
+				.getModel(AllBlockPartials.SHAFT_HALF, blockState, Direction.WEST)
+				.createInstance();
+		this.rotatingMountShaft2.setPosition(this.getInstancePosition().above(2));
+		this.rotatingMountShaft2.nudge(0.25f, 0.0f, 0.0f);
+				
 		
 		this.pitchShaft = shaftInstance.createInstance();
 		this.pitchShaft
@@ -78,7 +93,8 @@ public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEnt
 	@Override
 	public void remove() {
 		this.rotatingMount.delete();
-		this.rotatingMountShaft.delete();
+		this.rotatingMountShaft1.delete();
+		this.rotatingMountShaft2.delete();
 		this.pitchShaft.delete();
 		this.yawShaft.delete();
 	}
@@ -96,19 +112,35 @@ public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEnt
 	public void beginFrame() {
 		this.transformModels();
 		float partialTicks = AnimationTickHolder.getPartialTicks();
-		Quaternion pitch = Vector3f.XP.rotationDegrees(this.cannonMount.getPitchOffset(partialTicks));
-		Quaternion yaw = Vector3f.YN.rotationDegrees(this.cannonMount.getYawOffset(partialTicks));
-		Quaternion yaw1 = yaw.copy();
-		yaw1.mul(pitch);
-		this.rotatingMountShaft.setRotation(yaw1);
-		this.rotatingMount.setRotation(yaw);
+		
+		float yaw = this.cannonMount.getYawOffset(partialTicks);
+		Quaternion qyaw = Vector3f.YN.rotationDegrees(yaw);
+		this.rotatingMount.setRotation(qyaw);
+		
+		float pitch = this.cannonMount.getPitchOffset(partialTicks);
+		Quaternion qpitch = Vector3f.XN.rotationDegrees(pitch);
+		Quaternion qyaw1 = qyaw.copy();
+		qyaw1.mul(qpitch);
+		this.rotatingMountShaft1.setRotation(qyaw1);
+		this.rotatingMountShaft2.setRotation(qyaw1);
+		
+		BlockPos hub = this.getInstancePosition().above(2);
+		
+		float nx = Mth.cos(Constants.DEG_TO_RAD * yaw);
+		float nz = Mth.sin(Constants.DEG_TO_RAD * yaw);
+		this.rotatingMountShaft1.setPosition(hub);
+		this.rotatingMountShaft1.nudge(nx * 0.25f, 0.0f, nz * 0.25f);
+		
+		this.rotatingMountShaft2.setPosition(hub);
+		this.rotatingMountShaft2.nudge(nx * -0.25f, 0.0f, nz * -0.25f);
 	}
 	
 	@Override
 	public void updateLight() {
 		super.updateLight();
 		this.relight(this.pos, this.rotatingMount);
-		this.relight(this.pos, this.rotatingMountShaft);
+		this.relight(this.pos, this.rotatingMountShaft1);
+		this.relight(this.pos, this.rotatingMountShaft2);
 		this.relight(this.pos, this.pitchShaft);
 		this.relight(this.pos, this.yawShaft);
 	}

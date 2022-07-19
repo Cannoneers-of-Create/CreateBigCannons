@@ -8,6 +8,7 @@ import com.simibubi.create.repack.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
@@ -31,6 +32,7 @@ public class CBCBuilderTransformers {
 		ResourceLocation endLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_chamber_end");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
+				.tag(CBCTags.Blocks.THICK_TUBING)
 				.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().withExistingParent(c.getName(), "block/cube_column")
 						.texture("side", sideLoc)
 						.texture("end", endLoc)

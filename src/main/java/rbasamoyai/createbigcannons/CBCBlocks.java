@@ -95,6 +95,7 @@ public class CBCBlocks {
 			.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.solidShot())
+			.tag(CBCTags.Blocks.CANNON_PROJECTILES)
 			.simpleItem()
 			.register();
 	
