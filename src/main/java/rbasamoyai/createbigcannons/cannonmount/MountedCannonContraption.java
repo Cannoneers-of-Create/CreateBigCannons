@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.cannonmount;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Optional;
 
 import com.simibubi.create.AllBlocks;
@@ -23,6 +25,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -33,16 +36,16 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
-import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.cannons.CannonMaterial.FailureMode;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.ShotProjectile;
+import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
 public class MountedCannonContraption extends Contraption {
 	
@@ -185,6 +188,7 @@ public class MountedCannonContraption extends Contraption {
 			StructureBlockInfo localBlockInfo = new StructureBlockInfo(localPos, blockInfo.state, blockInfo.nbt);
 			this.getBlocks().put(localPos, localBlockInfo);
 			
+			if (blockInfo.nbt == null) continue;
 			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state, blockInfo.nbt);
 			if (!(be instanceof ICannonBlockEntity)) continue;
 			this.cannonBlockEntities.add(new CannonBlockEntityHolder<>((BlockEntity & ICannonBlockEntity) be, localBlockInfo));
@@ -223,7 +227,12 @@ public class MountedCannonContraption extends Contraption {
 	public void fireShot(ServerLevel level, AbstractContraptionEntity entity) {
 		StructureBlockInfo foundProjectile = null;
 		int chargesUsed = 0;
+		int barrelTravelled = 0;
 		BlockPos currentPos = BlockPos.ZERO;
+		
+		boolean failed = false;
+		CannonBlockEntityHolder<?> failedHolder = null;
+		
 		for (ListIterator<CannonBlockEntityHolder<?>> iter = this.cannonBlockEntities.listIterator(); iter.hasNext(); ) {
 			CannonBlockEntityHolder<?> cbeh = iter.next();
 			CannonBehavior behavior = cbeh.blockEntity.cannonBehavior();
@@ -231,22 +240,48 @@ public class MountedCannonContraption extends Contraption {
 			
 			if (CBCBlocks.POWDER_CHARGE.has(containedBlockInfo.state) && foundProjectile == null) {
 				if (!cbeh.blockInfo.state.is(CBCTags.Blocks.THICK_TUBING) && level.getRandom().nextDouble() < 0.25d) {
-					this.fail(currentPos, level, entity, cbeh);
-					return;
+					failed = true;
+					failedHolder = cbeh;
+					break;
 				}
 				this.consumeBlock(behavior, cbeh, iter);
 				++chargesUsed;
-			} else if (containedBlockInfo.state.is(CBCTags.Blocks.CANNON_PROJECTILES)) {
+			} else if (containedBlockInfo.state.getBlock() instanceof ProjectileBlock && foundProjectile == null) {
 				if (chargesUsed == 0) return;
-				foundProjectile = cbeh.blockInfo;
+				foundProjectile = containedBlockInfo;
 				this.consumeBlock(behavior, cbeh, iter);
 			} else if (!containedBlockInfo.state.isAir() && foundProjectile != null) {
-				this.fail(currentPos, level, entity, cbeh);
-				return;
+				failed = true;
+				failedHolder = cbeh;
+				break;
 			}
 			
 			currentPos = cbeh.blockEntity.getBlockPos();
+			
+			if (foundProjectile != null) {
+				++barrelTravelled;
+				
+				if (chargesUsed > 0 && (double) barrelTravelled / (double) chargesUsed > this.cannonMaterial.squibRatio()) {
+					cbeh.blockEntity.cannonBehavior().loadBlock(foundProjectile);
+					CompoundTag tag = cbeh.blockEntity.saveWithFullMetadata();
+					tag.remove("x");
+					tag.remove("y");
+					tag.remove("z");
+					StructureBlockInfo squibInfo = new StructureBlockInfo(cbeh.blockInfo.pos, cbeh.blockInfo.state, tag);
+					this.getBlocks().put(cbeh.blockInfo.pos, squibInfo);
+					iter.set(new CannonBlockEntityHolder<>(cbeh.blockEntity, squibInfo));
+					
+					Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+					level.playSound(null, squibPos.x, squibPos.y, squibPos.z, SoundEvents.STONE_BREAK, SoundSource.BLOCKS, 10.0f, 0.0f);
+					return;
+				}
+			}
 		}
+		if (failed && failedHolder != null) {
+			this.fail(currentPos, level, entity, failedHolder, chargesUsed);
+			return;
+		}
+		
 		if (chargesUsed == 0) {
 			return;
 		}
@@ -254,8 +289,9 @@ public class MountedCannonContraption extends Contraption {
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(Vec3.atCenterOf(this.anchor)).normalize();
 		
-		if (foundProjectile != null) {
-			AbstractCannonProjectile projectile = new ShotProjectile(CBCEntityTypes.SHOT.get(), level);
+		if (foundProjectile != null && foundProjectile.state.getBlock() instanceof ProjectileBlock) {
+			BlockEntity projectileBE = foundProjectile.nbt == null ? null : BlockEntity.loadStatic(foundProjectile.pos, foundProjectile.state, foundProjectile.nbt);
+			AbstractCannonProjectile projectile = ((ProjectileBlock) foundProjectile.state.getBlock()).getProjectile(level, foundProjectile.state, foundProjectile.pos, projectileBE);
 			projectile.setPos(spawnPos);
 			projectile.shoot(vec.x, vec.y, vec.z, chargesUsed, 1.0f);
 			level.addFreshEntity(projectile);
@@ -278,20 +314,32 @@ public class MountedCannonContraption extends Contraption {
 		iter.set(new CannonBlockEntityHolder<>(cbeh.blockEntity, consumedInfo));
 	}
 	
-	public void fail(BlockPos localPos, Level level, AbstractContraptionEntity entity, CannonBlockEntityHolder<?> cbeh) {
+	public void fail(BlockPos localPos, Level level, AbstractContraptionEntity entity, CannonBlockEntityHolder<?> cbeh, int charges) {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(cbeh.blockEntity.getBlockPos()), 1.0f);
-		
+		if (this.cannonMaterial.failureMode() == FailureMode.RUPTURE) {
+			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 3, Explosion.BlockInteraction.NONE);
+		} else {
+			for (Iterator<Map.Entry<BlockPos, StructureBlockInfo>> iter = this.blocks.entrySet().iterator(); iter.hasNext(); ) {
+				Map.Entry<BlockPos, StructureBlockInfo> entry = iter.next();
+				//Vec3 globalPos = entity.toGlobalVector(Vec3.atCenterOf(entry.getKey()), 1.0f);
+				this.cannonBlockEntities.removeIf(cbeh1 -> cbeh1.blockInfo.pos.equals(entry.getKey()));
+				iter.remove();
+			}
+			
+			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, charges * 2, Explosion.BlockInteraction.DESTROY);
+			entity.discard();
+		}
 	}
 	
 	@Override
-	public void onEntityTick(Level level) {
-		super.onEntityTick(level);
+	public void tickStorage(AbstractContraptionEntity entity) {
+		super.tickStorage(entity);
 		
 		if (this.anchor != null) {
-			BlockEntity possibleMount = level.getBlockEntity(this.anchor.below(2));
-			if (possibleMount instanceof CannonMountBlockEntity && this.entity instanceof PitchOrientedContraptionEntity) {
+			BlockEntity possibleMount = entity.getLevel().getBlockEntity(this.anchor.below(2));
+			if (possibleMount instanceof CannonMountBlockEntity && entity instanceof PitchOrientedContraptionEntity) {
 				CannonMountBlockEntity mount = (CannonMountBlockEntity) possibleMount;
-				PitchOrientedContraptionEntity poce = (PitchOrientedContraptionEntity) this.entity;
+				PitchOrientedContraptionEntity poce = (PitchOrientedContraptionEntity) entity;
 				if (!mount.isAttachedTo(poce)) {
 					mount.attach(poce);
 				}
@@ -321,7 +369,8 @@ public class MountedCannonContraption extends Contraption {
 	
 	protected void loadBlockEntities() {
 		this.cannonBlockEntities.clear();
-		for (StructureBlockInfo blockInfo : this.getBlocks().values()) { 
+		for (StructureBlockInfo blockInfo : this.getBlocks().values()) {
+			if (blockInfo.nbt == null) continue;
 			BlockEntity be = BlockEntity.loadStatic(blockInfo.pos, blockInfo.state, blockInfo.nbt);
 			if (!(be instanceof ICannonBlockEntity)) continue;
 			this.cannonBlockEntities.add(new CannonBlockEntityHolder<>((BlockEntity & ICannonBlockEntity) be, blockInfo));

@@ -7,7 +7,8 @@ public class CBCBlockPartials {
 	public static final PartialModel
 		CAST_IRON_SLIDING_BREECHBLOCK = block("sliding_breechblock/cast_iron_sliding_breechblock"),
 		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
-		YAW_SHAFT = block("cannon_mount/yaw_axis");
+		YAW_SHAFT = block("cannon_mount/yaw_axis"),
+		FUZE = block("fuze");
 	
 	private static PartialModel block(String path) {
 		return new PartialModel(CreateBigCannons.resource("block/" + path));

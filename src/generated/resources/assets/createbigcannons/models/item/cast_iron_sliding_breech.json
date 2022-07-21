@@ -8,7 +8,6 @@
     "breechblock_top": "createbigcannons:block/sliding_breech/cast_iron_sliding_breech_breechblock_top",
     "breechblock_end": "createbigcannons:block/sliding_breech/cast_iron_sliding_breech_breechblock_end",
     "breechblock_side": "createbigcannons:block/sliding_breech/cast_iron_sliding_breech_breechblock_side",
-    "breechblock_bottom": "createbigcannons:block/sliding_breech/cast_iron_sliding_breech_breechblock_bottom",
-    "particle": "createbigcannons:block/sliding_breech/cast_iron_sliding_breech_side"
+    "breechblock_bottom": "createbigcannons:block/sliding_breech/cast_iron_sliding_breech_breechblock_bottom"
   }
 }

@@ -18,10 +18,5 @@ public class ShotProjectile extends AbstractCannonProjectile {
 	public BlockState getRenderedBlockState() {
 		return CBCBlocks.SOLID_SHOT.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);
 	}
-	
-	@Override
-	protected float getInertia() {
-		return 0.99f;
-	}
 
 }

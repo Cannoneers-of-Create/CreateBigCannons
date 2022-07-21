@@ -26,6 +26,7 @@ import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
+import rbasamoyai.createbigcannons.munitions.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.SolidShotBlock;
 
@@ -94,8 +95,18 @@ public class CBCBlocks {
 			.properties(p -> p.strength(2.0f, 3.0f))
 			.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 			.transform(axeOrPickaxe())
-			.transform(CBCBuilderTransformers.solidShot())
-			.tag(CBCTags.Blocks.CANNON_PROJECTILES)
+			.transform(CBCBuilderTransformers.projectile("projectile/solid_shot"))
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<HEShellBlock> HE_SHELL = REGISTRATE
+			.block("he_shell", HEShellBlock::new)
+			.initialProperties(Material.METAL, MaterialColor.COLOR_GREEN)
+			.properties(p -> p.strength(2.0f, 3.0f))
+			.properties(p -> p.sound(SoundType.STONE))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.projectile("projectile/he_shell"))
+			.lang("High Explosive (HE) Shell")
 			.simpleItem()
 			.register();
 	

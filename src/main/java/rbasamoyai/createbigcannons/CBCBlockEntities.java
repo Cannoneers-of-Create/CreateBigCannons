@@ -13,6 +13,9 @@ import rbasamoyai.createbigcannons.cannons.CannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechInstance;
+import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
+import rbasamoyai.createbigcannons.munitions.FuzedBlockEntityRenderer;
+import rbasamoyai.createbigcannons.munitions.FuzedBlockInstance;
 
 public class CBCBlockEntities {
 
@@ -45,6 +48,13 @@ public class CBCBlockEntities {
 			.tileEntity("yaw_controller", YawControllerBlockEntity::new)
 			.instance(() -> YawControllerInstance::new)
 			.validBlocks(CBCBlocks.YAW_CONTROLLER)
+			.register();
+	
+	public static final BlockEntityEntry<FuzedBlockEntity> FUZED_BLOCK = CreateBigCannons.registrate()
+			.tileEntity("fuzed_block", FuzedBlockEntity::new)
+			.instance(() -> FuzedBlockInstance::new)
+			.renderer(() -> FuzedBlockEntityRenderer::new)
+			.validBlocks(CBCBlocks.HE_SHELL)
 			.register();
 	
 	public static void register() {}

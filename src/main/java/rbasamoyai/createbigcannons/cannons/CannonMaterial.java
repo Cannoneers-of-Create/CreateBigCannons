@@ -27,9 +27,9 @@ public record CannonMaterial(ResourceLocation name, double squibRatio, float wei
 	
 	/**
 	 * The squib ratio describes the maximum ratio of <b>cannon barrel</b> to
-	 * <b>cannon chamber</b> that cannons of this material can safely operate
-	 * at. If the squib ratio exceeds this value, the cannon squib chance is
-	 * increased.
+	 * <b>ignited powder charges</b> that cannons of this material can safely
+	 * operate at. If the squib ratio exceeds this value, the cannon squib
+	 * chance is increased.
 	 * 
 	 * @return A double representing the squib ratio of the material
 	 */

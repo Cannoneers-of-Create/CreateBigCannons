@@ -15,7 +15,6 @@ public class CBCTags {
 	
 	public static class Blocks {
 		public static final TagKey<Block>
-			CANNON_PROJECTILES = createAndGenerateBlockTag(CreateBigCannons.resource("cannon_projectiles")),
 			THICK_TUBING = createAndGenerateBlockTag(CreateBigCannons.resource("thick_tubing"));
 		
 		public static TagKey<Block> createAndGenerateBlockTag(ResourceLocation loc) {

@@ -24,8 +24,10 @@ public class ModGroup {
 			list.add(CBCBlocks.CANNON_LOADER.asStack());
 			list.add(CBCBlocks.RAM_HEAD.asStack());
 			list.add(CBCBlocks.WORM_HEAD.asStack());
-			list.add(CBCBlocks.SOLID_SHOT.asStack());
 			list.add(CBCBlocks.POWDER_CHARGE.asStack());
+			list.add(CBCBlocks.SOLID_SHOT.asStack());
+			list.add(CBCBlocks.HE_SHELL.asStack());
+			list.add(CBCItems.IMPACT_FUZE.asStack());
 		}
 	};
 	

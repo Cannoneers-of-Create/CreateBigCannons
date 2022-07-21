@@ -4,7 +4,7 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
-public class LangGen {
+public class CBCLangGen {
 
 	public static final CreateRegistrate REGISTRATE = CreateBigCannons.registrate();
 	
@@ -13,6 +13,8 @@ public class LangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonTooLarge", "Cannon is longer than the maximum length of %s");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "invalidCannon", "A cannon must have one and only one opening and one and only one closed end");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonLoaderInsideDuringAssembly", "Cannon block at [%1$s, %2$s, %3$s] contains a cannon loader part");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "player", "%s was ripped up by shrapnel");
 	}
 	
 }

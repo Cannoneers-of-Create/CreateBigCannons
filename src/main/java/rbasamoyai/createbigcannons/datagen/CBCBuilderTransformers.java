@@ -77,8 +77,7 @@ public class CBCBuilderTransformers {
 					.texture("breechblock_top", breechblockTopLoc)
 					.texture("breechblock_end", breechblockEndLoc)
 					.texture("breechblock_side", breechblockSideLoc)
-					.texture("breechblock_bottom", breechblockBottomLoc)
-					.texture("particle", sideLoc))
+					.texture("breechblock_bottom", breechblockBottomLoc))
 				.build();
 	}
 	
@@ -106,11 +105,18 @@ public class CBCBuilderTransformers {
 				.build();
 	}
 	
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> solidShot() {
-		ResourceLocation baseLoc = CreateBigCannons.resource("block/solid_shot");
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> projectile(String pathAndMaterial) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/projectile_block");
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial);
+		ResourceLocation topLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_top");
+		ResourceLocation bottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_bottom");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::solid)
-				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(baseLoc)));
+				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
+						.texture("side", sideLoc)
+						.texture("top", topLoc)
+						.texture("bottom", bottomLoc)
+						.texture("particle", topLoc)));
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> powderCharge() {

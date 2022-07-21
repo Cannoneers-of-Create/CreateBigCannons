@@ -1,10 +1,13 @@
 package rbasamoyai.createbigcannons.munitions;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -49,6 +52,13 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			}
 		}
 		super.tick();
+		for (int i = 0; i < 10; ++i) {
+			double partial = i * 0.1f;
+			double dx = Mth.lerp(partial, this.xOld, this.getX());
+			double dy = Mth.lerp(partial, this.yOld, this.getY());
+			double dz = Mth.lerp(partial, this.zOld, this.getZ());
+			this.level.addParticle(this.getTrailParticle(), dx, dy, dz, 0.0d, 0.0d, 0.0d);
+		}
 	}
 	
 	@Override
@@ -76,7 +86,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			if (breakthroughPower > 0) {
 				Vec3 currentVel = this.getDeltaMovement();
 				
-				Explosion explode = this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 1, Explosion.BlockInteraction.DESTROY);
+				Explosion explode = this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.DESTROY);
 				this.setDeltaMovement(currentVel);
 				this.setBreakthroughPower((byte)(breakthroughPower - 1));
 				
@@ -149,6 +159,16 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	@Override
 	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
 		return 0.4f;
+	}
+	
+	@Override
+	protected float getInertia() {
+		return 0.99f;
+	}
+	
+	@Override
+	protected ParticleOptions getTrailParticle() {
+		return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
 	}
 	
 	public abstract BlockState getRenderedBlockState();

@@ -28,6 +28,6 @@ description='''Artillery engineering comes to Create'''
 [[dependencies.createbigcannons]]
 	modId="create"
 	mandatory=true
-	versionRange="[0.4,)"
+	versionRange="[0.5,)"
 	ordering="NONE"
 	side="BOTH"

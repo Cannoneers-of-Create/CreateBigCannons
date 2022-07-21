@@ -8,6 +8,7 @@ import net.minecraft.world.entity.MobCategory;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonProjectileRenderer;
+import rbasamoyai.createbigcannons.munitions.HEShellProjectile;
 import rbasamoyai.createbigcannons.munitions.ShotProjectile;
 
 public class CBCEntityTypes {
@@ -26,6 +27,13 @@ public class CBCEntityTypes {
 			.entity("shot", ShotProjectile::new, MobCategory.MISC)
 			.properties(AbstractCannonProjectile::build)
 			.renderer(() -> CannonProjectileRenderer::new)
+			.register();
+	
+	public static final EntityEntry<HEShellProjectile> HE_SHELL = CreateBigCannons.registrate()
+			.entity("he_shell", HEShellProjectile::new, MobCategory.MISC)
+			.properties(AbstractCannonProjectile::build)
+			.renderer(() -> CannonProjectileRenderer::new)
+			.lang("High Explosive (HE) Shell")
 			.register();
 	
 	public static void register() {}

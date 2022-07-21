@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import rbasamoyai.createbigcannons.datagen.LangGen;
+import rbasamoyai.createbigcannons.datagen.CBCLangGen;
 
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannons {
@@ -25,10 +25,11 @@ public class CreateBigCannons {
 	public CreateBigCannons() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		
-		LangGen.prepare();
+		CBCLangGen.prepare();
 		
 		ModGroup.register();
 		CBCBlocks.register();
+		CBCItems.register();
 		CBCBlockEntities.register();
 		CBCEntityTypes.register();
 		CBCContraptionTypes.prepare();

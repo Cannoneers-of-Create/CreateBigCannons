@@ -7,6 +7,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
 public interface ICannonBlockEntity {
 
@@ -25,8 +26,8 @@ public interface ICannonBlockEntity {
 		
 		if (CBCBlocks.RAM_HEAD.has(blockInfo.state)
 		|| CBCBlocks.WORM_HEAD.has(blockInfo.state)
-		|| CBCBlocks.SOLID_SHOT.has(blockInfo.state)
-		|| AllBlocks.PISTON_EXTENSION_POLE.has(blockInfo.state)) {
+		|| AllBlocks.PISTON_EXTENSION_POLE.has(blockInfo.state)
+		|| blockInfo.state.getBlock() instanceof ProjectileBlock) {
 			
 			return blockInfo.state.getValue(BlockStateProperties.FACING).getAxis() == cannonAxis;
 		}

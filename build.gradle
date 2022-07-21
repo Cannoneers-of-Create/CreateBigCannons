@@ -15,11 +15,12 @@ buildscript {
 plugins {
     id 'eclipse'
     id 'maven-publish'
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
-version = '1.18.2-1.0'
+version = '1.18.2-0.1-beta'
 group = 'rbasamoyai.createbigcannons' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createbigcannons'
 
@@ -101,7 +102,7 @@ repositories {
 	maven {
 		// JEI
 		name 'Progwm16 maven'
-		url 'https://dvs1.progwm16.com/files/maven'
+		url 'https://dvs1.progwml6.com/files/maven'
 	}
     maven {
     	// Mixed mappings, Registrate, Flywheel
@@ -119,8 +120,12 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.1.54'
     
-    implementation fg.deobf("curse.maven:create-328085:3737418") // Create
-    implementation fg.deobf("curse.maven:flywheel-486392:3737402") // Flywheel
+    implementation fg.deobf("com.simibubi.create:Create:mc${create_version}") // Create
+    implementation fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:${flywheel_version}") // Flywheel
+    
+    // JEI
+    compileOnly fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}")
     
     annotationProcessor "org.spongepowered:mixin:0.8.3:processor"
     testAnnotationProcessor "org.spongepowered:mixin:0.8.3:processor"

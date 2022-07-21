@@ -5,6 +5,7 @@
     "createbigcannons:ram_head",
     "createbigcannons:worm_head",
     "createbigcannons:solid_shot",
+    "createbigcannons:he_shell",
     "createbigcannons:cannon_mount",
     "createbigcannons:yaw_controller"
   ]

@@ -32,9 +32,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
-import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
 public class CannonLoadingContraption extends TranslatingContraption {
 	
@@ -267,7 +267,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		if (CBCBlocks.POWDER_CHARGE.has(state)) {
 			return state.getValue(AXIS) == axis;
 		}
-		if (state.is(CBCTags.Blocks.CANNON_PROJECTILES)) {
+		if (state.getBlock() instanceof ProjectileBlock) {
 			return state.getValue(FACING).getAxis() == axis;
 		}
 		return false;
@@ -279,21 +279,24 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		BlockState loaderState = level.getBlockState(levelPos);
 		BlockEntity blockEntity = level.getBlockEntity(levelPos);
 		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
+		CannonLoaderBlockEntity clbe = (CannonLoaderBlockEntity) blockEntity;
 		
 		if (pos.equals(levelPos)) {
 			level.setBlock(levelPos, loaderState.setValue(MOVING, false), 3 | 16);
 			return true;
 		}
 		
-		BlockPos entityAnchor = new BlockPos(((CannonLoaderBlockEntity) blockEntity).movedContraption.getAnchorVec().add(0.5d, 0.5d, 0.5d));
+		if (clbe.movedContraption != null) {
+			BlockPos entityAnchor = new BlockPos(clbe.movedContraption.getAnchorVec().add(0.5d, 0.5d, 0.5d));
 		
-		BlockPos blockPos = pos.subtract(entityAnchor);
-		StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
-		BlockEntity blockEntity1 = level.getBlockEntity(pos);
-		
-		if (blockEntity1 instanceof ICannonBlockEntity) {
-			ICannonBlockEntity cannon = (ICannonBlockEntity) blockEntity1;
-			return cannon.cannonBehavior().tryLoadingBlock(blockInfo);
+			BlockPos blockPos = pos.subtract(entityAnchor);
+			StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
+			BlockEntity blockEntity1 = level.getBlockEntity(pos);
+			
+			if (blockEntity1 instanceof ICannonBlockEntity) {
+				ICannonBlockEntity cannon = (ICannonBlockEntity) blockEntity1;
+				return cannon.cannonBehavior().tryLoadingBlock(blockInfo);
+			}
 		}
 		
 		return false;
