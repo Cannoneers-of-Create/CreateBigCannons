@@ -46,7 +46,8 @@ public abstract class FuzedProjectileBlock extends ProjectileBlock implements IT
 						player.addItem(h.extractItem(0, 1, false));
 						level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
 					} else if (h.getStackInSlot(0).isEmpty() && player.getItemInHand(hand).getItem() instanceof FuzeItem) {
-						player.setItemInHand(hand, h.insertItem(0, player.getItemInHand(hand), false));
+						ItemStack itemResult = h.insertItem(0, player.getItemInHand(hand), false);
+						if (!player.getAbilities().instabuild) player.setItemInHand(hand, itemResult);
 						level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
 					}
 				});

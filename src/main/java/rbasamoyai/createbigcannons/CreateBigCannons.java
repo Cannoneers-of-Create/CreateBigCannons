@@ -11,8 +11,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import rbasamoyai.createbigcannons.datagen.CBCLangGen;
+import rbasamoyai.createbigcannons.network.CBCNetwork;
 
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannons {
@@ -32,13 +34,21 @@ public class CreateBigCannons {
 		CBCItems.register();
 		CBCBlockEntities.register();
 		CBCEntityTypes.register();
+		CBCMenuTypes.register();
+		
 		CBCContraptionTypes.prepare();
 		
 		CBCParticleTypes.PARTICLE_TYPES.register(modEventBus);		
 		
 		CBCTags.register();
 		
+		modEventBus.addListener(this::onCommonSetup);
+		
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.prepareClient(modEventBus));
+	}
+	
+	public void onCommonSetup(FMLCommonSetupEvent event) {
+		CBCNetwork.init();
 	}
 	
 	private void prepareClient(IEventBus modEventBus) {

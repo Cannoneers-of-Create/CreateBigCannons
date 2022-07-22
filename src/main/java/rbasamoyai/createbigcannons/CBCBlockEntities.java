@@ -54,7 +54,7 @@ public class CBCBlockEntities {
 			.tileEntity("fuzed_block", FuzedBlockEntity::new)
 			.instance(() -> FuzedBlockInstance::new)
 			.renderer(() -> FuzedBlockEntityRenderer::new)
-			.validBlocks(CBCBlocks.HE_SHELL)
+			.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL)
 			.register();
 	
 	public static void register() {}

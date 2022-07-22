@@ -10,6 +10,9 @@ import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.HEShellProjectile;
 import rbasamoyai.createbigcannons.munitions.ShotProjectile;
+import rbasamoyai.createbigcannons.munitions.Shrapnel;
+import rbasamoyai.createbigcannons.munitions.ShrapnelRenderer;
+import rbasamoyai.createbigcannons.munitions.ShrapnelShellProjectile;
 
 public class CBCEntityTypes {
 
@@ -34,6 +37,18 @@ public class CBCEntityTypes {
 			.properties(AbstractCannonProjectile::build)
 			.renderer(() -> CannonProjectileRenderer::new)
 			.lang("High Explosive (HE) Shell")
+			.register();
+	
+	public static final EntityEntry<ShrapnelShellProjectile> SHRAPNEL_SHELL = CreateBigCannons.registrate()
+			.entity("shrapnel_shell", ShrapnelShellProjectile::new, MobCategory.MISC)
+			.properties(AbstractCannonProjectile::build)
+			.renderer(() -> CannonProjectileRenderer::new)
+			.register();
+	
+	public static final EntityEntry<Shrapnel> SHRAPNEL = CreateBigCannons.registrate()
+			.entity("shrapnel", Shrapnel::new, MobCategory.MISC)
+			.properties(Shrapnel::build)
+			.renderer(() -> ShrapnelRenderer::new)
 			.register();
 	
 	public static void register() {}

@@ -41,7 +41,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			} else if (!this.level.isClientSide) {
 				this.inGroundTime++;
 				
-				if (this.inGroundTime == 200) {
+				if (this.inGroundTime == 400) {
 					this.discard();
 				}
 			}

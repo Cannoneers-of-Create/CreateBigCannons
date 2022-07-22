@@ -1,14 +1,12 @@
 package rbasamoyai.createbigcannons;
 
-import com.simibubi.create.Create;
-
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 public class ModGroup {
 	
-	public static final CreativeModeTab GROUP = new CreativeModeTab(Create.PALETTES_CREATIVE_TAB.getId() + 1, CreateBigCannons.MOD_ID) {
+	public static final CreativeModeTab GROUP = new CreativeModeTab(CreateBigCannons.MOD_ID) {
 		@Override
 		public ItemStack makeIcon() {
 			return CBCBlocks.CAST_IRON_CANNON_BARREL.asStack();
@@ -27,7 +25,9 @@ public class ModGroup {
 			list.add(CBCBlocks.POWDER_CHARGE.asStack());
 			list.add(CBCBlocks.SOLID_SHOT.asStack());
 			list.add(CBCBlocks.HE_SHELL.asStack());
+			list.add(CBCBlocks.SHRAPNEL_SHELL.asStack());
 			list.add(CBCItems.IMPACT_FUZE.asStack());
+			list.add(CBCItems.TIMED_FUZE.asStack());
 		}
 	};
 	

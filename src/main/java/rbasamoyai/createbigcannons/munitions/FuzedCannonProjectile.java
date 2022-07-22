@@ -21,7 +21,7 @@ public abstract class FuzedCannonProjectile extends AbstractCannonProjectile {
 	public void tick() {
 		super.tick();
 		
-		if (this.fuze.getItem() instanceof FuzeItem && ((FuzeItem) this.fuze.getItem()).onProjectileTick(this.fuze, this)) {
+		if (!this.level.isClientSide && this.fuze.getItem() instanceof FuzeItem && ((FuzeItem) this.fuze.getItem()).onProjectileTick(this.fuze, this)) {
 			this.detonate();
 		}
 	}
@@ -29,7 +29,7 @@ public abstract class FuzedCannonProjectile extends AbstractCannonProjectile {
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (this.fuze.getItem() instanceof FuzeItem && ((FuzeItem) this.fuze.getItem()).onProjectileImpact(this.fuze, this, result)) {
+		if (!this.level.isClientSide && this.fuze.getItem() instanceof FuzeItem && ((FuzeItem) this.fuze.getItem()).onProjectileImpact(this.fuze, this, result)) {
 			this.detonate();
 		}
 	}
@@ -37,7 +37,7 @@ public abstract class FuzedCannonProjectile extends AbstractCannonProjectile {
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.put("Fuze", fuze.serializeNBT());
+		tag.put("Fuze", this.fuze.serializeNBT());
 	}
 	
 	@Override

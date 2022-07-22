@@ -28,6 +28,7 @@ import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
+import rbasamoyai.createbigcannons.munitions.ShrapnelShellBlock;
 import rbasamoyai.createbigcannons.munitions.SolidShotBlock;
 
 public class CBCBlocks {
@@ -101,12 +102,18 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<HEShellBlock> HE_SHELL = REGISTRATE
 			.block("he_shell", HEShellBlock::new)
-			.initialProperties(Material.METAL, MaterialColor.COLOR_GREEN)
-			.properties(p -> p.strength(2.0f, 3.0f))
-			.properties(p -> p.sound(SoundType.STONE))
+			.transform(shell(MaterialColor.COLOR_RED))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.projectile("projectile/he_shell"))
 			.lang("High Explosive (HE) Shell")
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<ShrapnelShellBlock> SHRAPNEL_SHELL = REGISTRATE
+			.block("shrapnel_shell", ShrapnelShellBlock::new)
+			.transform(shell(MaterialColor.COLOR_GREEN))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
 			.simpleItem()
 			.register();
 	
@@ -140,6 +147,12 @@ public class CBCBlocks {
 				.properties(p -> p.requiresCorrectToolForDrops())
 				.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 				.tag(BlockTags.NEEDS_IRON_TOOL);
+	}
+	
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> shell(MaterialColor color) {
+		return b -> b.initialProperties(Material.EXPLOSIVE, color)
+				.properties(p -> p.strength(2.0f, 3.0f))
+				.properties(p -> p.sound(SoundType.STONE));
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> axeOrPickaxe() {

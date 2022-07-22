@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createbigcannons:block/shrapnel_shell",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "createbigcannons:block/shrapnel_shell"
+    },
+    "facing=north": {
+      "model": "createbigcannons:block/shrapnel_shell",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "createbigcannons:block/shrapnel_shell",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "createbigcannons:block/shrapnel_shell",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "createbigcannons:block/shrapnel_shell",
+      "x": 90,
+      "y": 90
+    }
+  }
+}
