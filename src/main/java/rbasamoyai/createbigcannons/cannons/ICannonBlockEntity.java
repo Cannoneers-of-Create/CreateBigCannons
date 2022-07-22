@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.cannons;
 import com.simibubi.create.AllBlocks;
 
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
@@ -10,13 +11,12 @@ import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
 public interface ICannonBlockEntity {
-
-	BlockState getBlockState();
+	
 	CannonBehavior cannonBehavior();
 	
 	default boolean canLoadBlock(StructureBlockInfo blockInfo) {
 		if (blockInfo == null) return false;
-		BlockState cannonState = this.getBlockState();
+		BlockState cannonState = ((BlockEntity) this).getBlockState();
 		if (!(cannonState.getBlock() instanceof CannonBlock)) return false;
 		Axis cannonAxis = ((CannonBlock) cannonState.getBlock()).getAxis(cannonState);
 		
