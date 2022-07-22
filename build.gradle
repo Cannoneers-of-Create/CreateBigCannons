@@ -23,7 +23,6 @@ apply plugin: 'org.spongepowered.mixin'
 version = '1.18.2-0.1-beta'
 group = 'rbasamoyai.createbigcannons' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'createbigcannons'
-
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
@@ -168,4 +167,14 @@ publishing {
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+task assumeUnchanged(type: Exec){
+
+    workingDir(project.rootDir)
+    commandLine 'git', 'update-index', '--assume-unchanged', '.classpath', '.project', '.settings/org.eclipse.buildship.core.prefs'
+}
+
+tasks.matching { it.name != 'assumeUnchanged' }.all { Task task ->
+    task.dependsOn assumeUnchanged
 }
