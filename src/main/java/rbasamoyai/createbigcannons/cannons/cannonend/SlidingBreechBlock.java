@@ -37,7 +37,10 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(FACING, context.getNearestLookingDirection().getOpposite());
+		Direction facing = context.getNearestLookingDirection().getOpposite();
+		return this.defaultBlockState()
+				.setValue(FACING, facing)
+				.setValue(AXIS_ALONG_FIRST_COORDINATE, facing.getAxis() == Direction.Axis.Z);
 	}
 
 	@Override public Class<SlidingBreechBlockEntity> getTileEntityClass() { return SlidingBreechBlockEntity.class; }
