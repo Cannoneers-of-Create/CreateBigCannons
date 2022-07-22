@@ -36,6 +36,6 @@ jobs:
     - name: Archive Artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: Compiled .jars
+        name: compiled .jar
         path: build/libs/
     
