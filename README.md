@@ -1,6 +1,6 @@
 # CreateBigCannons
 
-[![Java CI with Gradle](https://github.com/realRobotix/CreateBigCannons/actions/workflows/gradle.yml/badge.svg)](https://github.com/realRobotix/CreateBigCannons/actions/workflows/gradle.yml)
+[![Java CI with Gradle](https://github.com/rbasamoyai/CreateBigCannons/actions/workflows/gradle.yml/badge.svg)](https://github.com/rbasamoyai/CreateBigCannons/actions/workflows/gradle.yml)
 
 A Minecraft mod for building large cannons with the Create mod.
 
