@@ -169,3 +169,12 @@ publishing {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
+
+task assumeUnchanged(type: Exec){
+    workingDir(project.rootDir)
+    commandLine 'git', 'update-index', '--assume-unchanged', '.classpath', '.project', '.settings/org.eclipse.buildship.core.prefs'
+}
+
+tasks.matching { it.name != 'assumeUnchanged' }.all { Task task ->
+    task.dependsOn assumeUnchanged
+}
