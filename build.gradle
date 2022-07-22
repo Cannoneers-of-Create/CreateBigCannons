@@ -171,7 +171,6 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 task assumeUnchanged(type: Exec){
-
     workingDir(project.rootDir)
     commandLine 'git', 'update-index', '--assume-unchanged', '.classpath', '.project', '.settings/org.eclipse.buildship.core.prefs'
 }
