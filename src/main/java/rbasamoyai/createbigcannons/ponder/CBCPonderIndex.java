@@ -11,7 +11,8 @@ public class CBCPonderIndex {
 	
 	public static void register() {
 		HELPER.forComponents(CBCBlocks.CANNON_MOUNT, CBCBlocks.YAW_CONTROLLER)
-			.addStoryBoard("cannon_mount/assembly_and_use", CannonMountScenes::assemblyAndUse);
+			.addStoryBoard("cannon_mount/assembly_and_use", CannonMountScenes::assemblyAndUse)
+			.addStoryBoard("cannon_mount/firing_big_cannons", CannonMountScenes::firingBigCannons);
 	}
 	
 }

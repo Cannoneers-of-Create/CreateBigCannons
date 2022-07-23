@@ -3,13 +3,12 @@ package rbasamoyai.createbigcannons.ponder;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jozufozu.flywheel.util.Color;
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.Selection;
-import com.simibubi.create.foundation.ponder.content.BearingScenes;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
+import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
 import com.simibubi.create.foundation.ponder.instruction.FadeOutOfSceneInstruction;
 
 import net.minecraft.core.BlockPos;
@@ -17,6 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticleData;
 
 public class CannonMountScenes {
 
@@ -113,7 +113,16 @@ public class CannonMountScenes {
 			.attachKeyFrame()
 			.text("Power the cannon mount to aim the cannon up and down.")
 			.pointAt(util.vector.blockSurface(new BlockPos(2, 3, 2), Direction.SOUTH));
-		scene.idle(90);
+		scene.idle(40);
+		scene.world.setKineticSpeed(util.select.position(1, 2, 2), 0.0f);
+		scene.world.setKineticSpeed(util.select.position(1, 2, 3), 0.0f);
+		scene.world.setKineticSpeed(util.select.position(2, 3, 3), 0.0f);
+		scene.world.setKineticSpeed(cannonMount, 0.0f);
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
+			tag.putFloat("PitchSpeed", 0.0f);
+		});
+		
+		scene.idle(50);
 		
 		scene.world.setKineticSpeed(util.select.position(1, 1, 1), 16.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 1, 2), -8.0f);
@@ -135,12 +144,73 @@ public class CannonMountScenes {
 		
 		scene.idle(30);
 		scene.world.rotateSection(cannon, 30, 90, 30, 50); // S -> E
-		
 		scene.idle(50);
 		scene.world.rotateSection(cannon, 30, 90, -30, 50); // E -> N
-		
 		scene.idle(50);
 		scene.world.rotateSection(cannon, -30, 90, -30, 50); // N -> W
+		scene.idle(50);
+		
+		scene.world.setKineticSpeed(util.select.layers(1, 2), 0.0f);
+		scene.world.setKineticSpeed(util.select.position(2, 2, 2), 0.0f);
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
+			tag.putFloat("YawSpeed", 0.0f);
+		});
+		
+		scene.markAsFinished();
+	}
+	
+	public static void firingBigCannons(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_mount/firing_big_cannons", "Firing Big Cannons");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+		
+		BlockPos fireLeverPos = new BlockPos(3, 2, 2);
+		
+		scene.world.modifyBlock(new BlockPos(1, 2, 2), state -> state.setValue(LeverBlock.POWERED, true), false);
+		Selection showSelection = util.select.fromTo(0, 1, 0, 4, 2, 4).substract(util.select.position(fireLeverPos));
+		scene.world.showSection(showSelection, Direction.DOWN);
+		scene.idle(40);
+		ElementLink<WorldSectionElement> cannon = scene.world.showIndependentSection(util.select.fromTo(0, 4, 2, 4, 4, 2), Direction.WEST);
+		scene.idle(30);
+		
+		Selection cannonMount = util.select.position(2, 2, 2);
+		
+		scene.world.setKineticSpeed(util.select.position(1, 1, 2), 16.0f);
+		scene.world.setKineticSpeed(util.select.position(1, 1, 3), 16.0f);
+		scene.world.setKineticSpeed(util.select.position(2, 2, 3), -8.0f);
+		scene.world.setKineticSpeed(cannonMount, -8.0f);
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
+			tag.putFloat("PitchSpeed", 8.0f);
+			tag.putFloat("CannonYaw", Direction.WEST.toYRot());
+			tag.putFloat("CannonPitch", 0);
+		});
+		scene.world.rotateSection(cannon, 0, 0, -30, 40);
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(new BlockPos(2, 2, 2), 30, 40));
+		scene.idle(40);
+		scene.world.setKineticSpeed(util.select.position(1, 1, 2), 0.0f);
+		scene.world.setKineticSpeed(util.select.position(1, 1, 3), 0.0f);
+		scene.world.setKineticSpeed(util.select.position(2, 2, 3), 0.0f);
+		scene.world.setKineticSpeed(cannonMount, 0.0f);
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
+			tag.putFloat("PitchSpeed", 0.0f);
+		});
+		
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("After loading, assembling, and aiming the cannon, big cannons are ready to fire.");
+		scene.idle(80);
+		scene.rotateCameraY(180.0f);
+		scene.idle(40);
+		scene.overlay.showText(80)
+			.text("Power the lit cannon face on the cannon mount to fire the mounted cannon.")
+			.pointAt(util.vector.blockSurface(new BlockPos(2, 2, 2), Direction.EAST));
+		scene.idle(90);
+		
+		scene.world.showIndependentSectionImmediately(util.select.position(fireLeverPos));
+		scene.idle(30);
+		scene.world.modifyBlock(fireLeverPos, state -> state.setValue(LeverBlock.POWERED, true), false);
+		scene.effects.createRedstoneParticles(fireLeverPos, 0xFF0000, 10);
+		scene.effects.emitParticles(new Vec3(-0.2d, 6.25d, 2.5), Emitter.withinBlockSpace(new CannonPlumeParticleData(2), new Vec3(-0.87d, 0.5d, 0.0d)), 1, 10);
 		
 		scene.idle(20);
 		scene.markAsFinished();

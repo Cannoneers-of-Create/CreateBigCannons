@@ -23,6 +23,10 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".ponder.cannon_mount/assembly_and_use.text_2", "To assemble a cannon, power the hammer face with a redstone signal.");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".ponder.cannon_mount/assembly_and_use.text_3", "Power the cannon mount to aim the cannon up and down.");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".ponder.cannon_mount/assembly_and_use.text_4", "A yaw controller is needed to aim the cannon left and right.");
+		
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".ponder.cannon_mount/firing_big_cannons.header", "Firing Big Cannons");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".ponder.cannon_mount/firing_big_cannons.text_1", "After loading, assembling, and aiming the cannon, big cannons are ready to fire.");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".ponder.cannon_mount/firing_big_cannons.text_2", "Power the lit cannon face on the cannon mount to fire the mounted cannon.");
 		PonderLocalization.provideRegistrateLang(REGISTRATE);
 	}
 	
