@@ -3,10 +3,18 @@ package rbasamoyai.createbigcannons;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticle;
+import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 
-public class CBCParticles {
+public class CreateBigCannonsClient {
 
+	public static void prepareClient(IEventBus modEventBus) {
+		CBCBlockPartials.init();
+		CBCPonderIndex.register();
+		modEventBus.addListener(CreateBigCannonsClient::onRegisterParticleFactories);
+	}
+	
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
 		@SuppressWarnings("resource")
 		ParticleEngine engine = Minecraft.getInstance().particleEngine;

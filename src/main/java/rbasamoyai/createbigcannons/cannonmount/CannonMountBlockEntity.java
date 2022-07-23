@@ -140,6 +140,8 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		return this.cannonPitch + convertToAngular(this.getSpeed()) * 0.1f * partialTicks;
 	}
 	
+	public void setPitch(float pitch) { this.cannonPitch = pitch; }
+	
 	public float getYawSpeed() {
 		return this.overStressed ? 0 : this.getTheoreticalYawSpeed();
 	}
@@ -154,6 +156,8 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		}
 		return this.cannonYaw + convertToAngular(this.getYawSpeed()) * 0.1f * partialTicks;
 	}
+	
+	public void setYaw(float yaw) { this.cannonYaw = yaw; }
 	
 	public float getAngularSpeed(Supplier<Float> sup, float clientDiff) {
 		float speed = convertToAngular(sup.get()) * 0.1f;
@@ -230,6 +234,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		tag.putBoolean("Running", this.running);
 		tag.putFloat("CannonYaw", this.cannonYaw);
 		tag.putFloat("CannonPitch", this.cannonPitch);
+		tag.putFloat("YawSpeed", this.yawSpeed);
 		AssemblyException.write(tag, this.lastException);
 	}
 	
@@ -240,6 +245,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.cannonYaw = tag.getFloat("CannonYaw");
 		this.cannonPitch = tag.getFloat("CannonPitch");
 		this.lastException = AssemblyException.read(tag);
+		this.yawSpeed = tag.getFloat("YawSpeed");
 		
 		if (!clientPacket) return;
 		
@@ -253,6 +259,15 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		} else {
 			this.mountedContraption = null;
 		}
+	}
+	
+	@Override
+	protected void setRemovedNotDueToChunkUnload() {
+		this.remove = true;
+		if (!this.level.isClientSide) {
+			this.disassemble();
+		}
+		super.setRemovedNotDueToChunkUnload();
 	}
 	
 	public void attach(PitchOrientedContraptionEntity contraption) {

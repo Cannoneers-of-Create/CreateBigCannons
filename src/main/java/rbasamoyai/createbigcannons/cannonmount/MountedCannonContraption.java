@@ -127,7 +127,7 @@ public class MountedCannonContraption extends Contraption {
 			BlockState nextState = level.getBlockState(pos.relative(positive));
 			
 			CannonEnd positiveEnd = startEnd;
-			while (this.isValidCannonBlock(level, nextState, start.relative(positive)) && this.isConnectedToCannon(level, startState, positive, material)) {
+			while (this.isValidCannonBlock(level, nextState, start.relative(positive)) && this.isConnectedToCannon(level, nextState, positive, material)) {
 				start = start.relative(positive);
 				cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getTileEntityNBT(level, start)));
 				cannonLength++;
