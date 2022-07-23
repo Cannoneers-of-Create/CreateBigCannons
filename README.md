@@ -4,6 +4,8 @@
 [![Discord Invite](https://img.shields.io/discord/996633868692111381?label=discord&color=5865f2)](https://discord.gg/vgfMMUUgvT)
 [![License](https://img.shields.io/github/license/rbasamoyai/CreateBigCannons?color=900c3f)](../../actions/workflows/gradle.yml)
 
+### [**DOWNLOAD**](DOWNLOAD.md)
+
 A Minecraft mod for building large cannons with the Create mod.
 
 Currently implemented:
