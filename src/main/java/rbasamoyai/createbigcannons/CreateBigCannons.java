@@ -44,16 +44,11 @@ public class CreateBigCannons {
 		
 		modEventBus.addListener(this::onCommonSetup);
 		
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.prepareClient(modEventBus));
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CreateBigCannonsClient.prepareClient(modEventBus));
 	}
 	
 	public void onCommonSetup(FMLCommonSetupEvent event) {
 		CBCNetwork.init();
-	}
-	
-	private void prepareClient(IEventBus modEventBus) {
-		CBCBlockPartials.init();
-		modEventBus.addListener(CBCParticles::onRegisterParticleFactories);
 	}
 	
 	public static CreateRegistrate registrate() {

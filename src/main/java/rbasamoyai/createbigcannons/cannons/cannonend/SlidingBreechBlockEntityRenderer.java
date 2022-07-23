@@ -50,21 +50,23 @@ public class SlidingBreechBlockEntityRenderer extends KineticTileEntityRenderer 
 		
 		ms.pushPose();
 		
+		Quaternion qrot;
+		
 		if (horizontal && (facing.getAxis() == Direction.Axis.X) != alongFirst) {
 			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(facing));
 			Quaternion q1 = Direction.EAST.step().rotationDegrees(90.0f);
 			q.mul(q1);
-			ms.mulPose(q);
+			qrot = q;
 			axis = Direction.Axis.Y;
 		} else if (horizontal) {
 			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(facing) - 90.0f);
 			Quaternion q1 = Direction.SOUTH.step().rotationDegrees(90.0f);
 			q.mul(q1);
-			ms.mulPose(q);
+			qrot = q;
 			axis = alongFirst ? Direction.Axis.Z : Axis.X;
 		} else {
 			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(facing) - (alongFirst ? 0.0f : 90.0f));
-			ms.mulPose(q);
+			qrot = q;
 			axis = alongFirst ? Direction.Axis.Z : Direction.Axis.X;
 		}
 		
@@ -74,7 +76,11 @@ public class SlidingBreechBlockEntityRenderer extends KineticTileEntityRenderer 
 		normal.mul(renderedBreechblockOffset);
 		
 		SuperByteBuffer breechblockRender = CachedBufferer.partialFacing(this.getPartialModelForState(blockState), blockState, facing);
-		breechblockRender.translate(normal.x(), normal.y(), normal.z()).light(light).renderInto(ms, buffer.getBuffer(RenderType.solid()));
+		breechblockRender
+				.translate(normal.x(), normal.y(), normal.z())
+				.rotateCentered(qrot)
+				.light(light)
+				.renderInto(ms, buffer.getBuffer(RenderType.solid()));
 		
 		ms.popPose();
 	}
