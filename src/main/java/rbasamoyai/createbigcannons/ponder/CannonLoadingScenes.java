@@ -4,10 +4,13 @@ import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
+import com.simibubi.create.foundation.ponder.Selection;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
+import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
@@ -125,14 +128,95 @@ public class CannonLoadingScenes {
 		scene.markAsFinished();
 	}
 	
-	public static void optimalCannonLoads(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_loader/optimal_cannon_loads", "Optimal Cannon Loads");
+	public static void cannonLoads(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_loader/cannon_loads", "Optimal Cannon Loads");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 		
+		Selection cannon = util.select.fromTo(0, 1, 2, 4, 1, 2);
+		scene.world.showSection(cannon, Direction.DOWN);
+		scene.idle(40);
+		scene.overlay.showText(100).text("When loading a cannon, care must be taken to ensure that cannon loads are safe and effective.");
+		scene.idle(110);
 		
+		scene.overlay.showText(80).text("A cannon's material has two factors that can cause the cannon to fail; its squib ratio and its strength.");
+		scene.idle(90);
 		
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("The squib ratio determines the minimum length of barrel per Powder Charge a projectile can safely travel through before possibly getting stuck.");
+		scene.idle(90);
+		
+		Selection safeLoad = util.select.fromTo(0, 2, 2, 3, 2, 2);
+		scene.world.showSection(safeLoad, Direction.UP);
+		scene.overlay.showText(80).text("For example, the squib ratio of cast iron is 1 barrel to 1 Powder Charge.");
 		scene.idle(20);
+		
+		AABB bb1 = new AABB(util.grid.at(3, 2, 2));
+		AABB bb2 = new AABB(util.grid.at(1, 1, 2));
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.WHITE, bb1, bb1, 20);
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.WHITE, bb2, bb2, 20);
+		scene.idle(20);
+		
+		AABB bb3 = bb1.move(util.vector.of(-1, 0, 0));
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.WHITE, bb1, bb3, 20);
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.WHITE, bb2, bb2.move(util.vector.of(-1, 0, 0)), 20);
+		
+		scene.idle(40);
+		
+		scene.overlay.showText(80).text("The barrel that the loaded projectile is in is also counted towards the distance travelled.");
+		scene.idle(120);
+		
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("The strength of a cannon determines the maximum amount of Powder Charges that can be loaded, after which the cannon has a chance to burst when firing.");
+		scene.idle(90);
+		
+		scene.overlay.showText(80)
+			.text("For example, cast iron is strong enough to safely handle 2 Powder Charges.");
+		scene.idle(20);
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.WHITE, bb1, bb1, 20);
+		scene.idle(20);
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.WHITE, bb1, bb3, 20);
+		scene.idle(70);
+		scene.world.hideSection(safeLoad, Direction.UP);
+		scene.idle(20);
+		
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("Unsafe loads in a cannon...");
+		scene.idle(90);
+		
+		scene.overlay.showText(80)
+			.text("...such as not loading enough Powder Charges...");
+		ElementLink<WorldSectionElement> notEnoughCharges = scene.world.showIndependentSection(util.select.fromTo(2, 2, 1, 3, 2, 1), Direction.DOWN);
+		scene.world.moveSection(notEnoughCharges, util.vector.of(0, 0, 1), 0);
+		scene.idle(70);
+		scene.world.hideIndependentSection(notEnoughCharges, Direction.UP);
+		scene.idle(20);
+		
+		scene.overlay.showText(80)
+			.text("...loading too many Powder Charges...");
+		ElementLink<WorldSectionElement> tooManyCharges = scene.world.showIndependentSection(util.select.fromTo(0, 2, 4, 3, 2, 4), Direction.DOWN);
+		scene.world.moveSection(tooManyCharges, util.vector.of(0, 0, -2), 0);
+		scene.idle(70);
+		scene.world.hideIndependentSection(tooManyCharges, Direction.UP);
+		scene.idle(20);
+
+		scene.overlay.showText(80)
+			.text("...allowing a fired projectile to collide with another object in the barrel...");
+		ElementLink<WorldSectionElement> obstructedLoad = scene.world.showIndependentSection(util.select.fromTo(0, 2, 3, 3, 2, 3), Direction.DOWN);
+		scene.world.moveSection(obstructedLoad, util.vector.of(0, 0, -1), 0);
+		scene.idle(70);
+		scene.world.hideIndependentSection(obstructedLoad, Direction.DOWN);
+		scene.idle(20);
+		
+		scene.overlay.showText(80).text("...can cause catastrophic failure and pose a major threat to the surrounding environment.");
+		scene.idle(20);
+		scene.world.hideSection(cannon, null);
+		scene.effects.emitParticles(util.vector.centerOf(2, 1, 2), Emitter.simple(ParticleTypes.EXPLOSION_EMITTER, util.vector.of(0, 0, 0)), 1, 10);
+		scene.idle(80);
+		
 		scene.markAsFinished();
 	}
 	
