@@ -1,6 +1,6 @@
-# Download
+# How to manually download nightly versions
 
-## ***WARNING: Due to the mod still being in heavy development, there is no release currently, but we provide !!!UNSTABLE!!! "nightly" builds.***
+## ***WARNING: NIGHTLY VERSIONS MIGHT BE UNSTABLE***
 
 ### How to download:
 
