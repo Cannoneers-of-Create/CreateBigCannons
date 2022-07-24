@@ -13,7 +13,6 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import rbasamoyai.createbigcannons.datagen.CBCLangGen;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 
 @Mod(CreateBigCannons.MOD_ID)
@@ -26,8 +25,6 @@ public class CreateBigCannons {
 	
 	public CreateBigCannons() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		
-		CBCLangGen.prepare();
 		
 		ModGroup.register();
 		CBCBlocks.register();
