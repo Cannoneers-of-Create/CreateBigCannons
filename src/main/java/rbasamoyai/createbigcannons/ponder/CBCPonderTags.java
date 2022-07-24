@@ -10,8 +10,13 @@ public class CBCPonderTags {
 	public static final PonderTag
 	
 	OPERATING_CANNONS = create("operating_cannons")
-		.item(CBCBlocks.SOLID_SHOT.get(), true, false)
+		.item(CBCBlocks.CANNON_MOUNT.get(), true, false)
 		.defaultLang("Operating Cannons", "How to use big cannons safely and effectively")
+		.addToIndex(),
+	
+	MUNITIONS = create("munitions")
+		.item(CBCBlocks.SOLID_SHOT.get(), true, false)
+		.defaultLang("Munitions", "Blocks that make up cannon loads, and what they can do")
 		.addToIndex();
 	
 	public static PonderTag create(String id) {

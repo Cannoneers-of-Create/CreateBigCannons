@@ -1,3 +1,4 @@
+
 package rbasamoyai.createbigcannons;
 
 import net.minecraft.client.Minecraft;
@@ -10,7 +11,7 @@ import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 
 public class CreateBigCannonsClient {
 
-	public static void prepareClient(IEventBus modEventBus) {
+	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
 		modEventBus.addListener(CreateBigCannonsClient::onClientSetup);
 		modEventBus.addListener(CreateBigCannonsClient::onRegisterParticleFactories);

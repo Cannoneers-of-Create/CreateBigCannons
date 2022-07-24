@@ -8,6 +8,7 @@ import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
@@ -41,7 +42,7 @@ public class CreateBigCannons {
 		
 		modEventBus.addListener(this::onCommonSetup);
 		
-		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CreateBigCannonsClient.prepareClient(modEventBus));
+		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CreateBigCannonsClient.prepareClient(modEventBus, MinecraftForge.EVENT_BUS));
 	}
 	
 	public void onCommonSetup(FMLCommonSetupEvent event) {

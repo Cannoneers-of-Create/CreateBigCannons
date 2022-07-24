@@ -23,7 +23,7 @@ public class CBCPonderIndex {
 			.addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons);
 		
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.POWDER_CHARGE)
-			.addStoryBoard("cannon_loader/cannon_loads", CannonLoadingScenes::cannonLoads);
+			.addStoryBoard("cannon_loader/cannon_loads", CannonLoadingScenes::cannonLoads, CBCPonderTags.MUNITIONS);
 	}
 	
 	public static void registerTags() {
