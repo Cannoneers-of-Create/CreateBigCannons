@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.items.CapabilityItemHandler;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
 
 public class FuzedBlockEntityRenderer extends SafeTileEntityRenderer<FuzedBlockEntity> {
@@ -25,12 +24,10 @@ public class FuzedBlockEntityRenderer extends SafeTileEntityRenderer<FuzedBlockE
 		if (Backend.canUseInstancing(blockEntity.getLevel())) return;
 		
 		Direction facing = blockEntity.getBlockState().getValue(BlockStateProperties.FACING);
-		blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing).ifPresent(h -> {
-			if (!h.getStackInSlot(0).isEmpty()) {
-				SuperByteBuffer fuzeRender = CachedBufferer.partialFacing(CBCBlockPartials.FUZE, blockEntity.getBlockState(), facing);
-				fuzeRender.renderInto(posestack, buffers.getBuffer(RenderType.cutout()));
-			}
-		});
+		if (!blockEntity.getFuze().isEmpty()) {
+			SuperByteBuffer fuzeRender = CachedBufferer.partialFacing(CBCBlockPartials.FUZE, blockEntity.getBlockState(), facing);
+			fuzeRender.renderInto(posestack, buffers.getBuffer(RenderType.cutout()));
+		}
 	}
 
 }

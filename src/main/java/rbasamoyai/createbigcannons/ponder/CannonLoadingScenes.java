@@ -1,22 +1,28 @@
 package rbasamoyai.createbigcannons.ponder;
 
+import com.simibubi.create.content.contraptions.components.deployer.DeployerTileEntity;
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
 import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.Selection;
+import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
+import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
 
 public class CannonLoadingScenes {
 
@@ -129,7 +135,7 @@ public class CannonLoadingScenes {
 	}
 	
 	public static void cannonLoads(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_loader/cannon_loads", "Optimal Cannon Loads");
+		scene.title("munitions/cannon_loads", "Cannon Loads");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 		
@@ -216,6 +222,65 @@ public class CannonLoadingScenes {
 		scene.world.hideSection(cannon, null);
 		scene.effects.emitParticles(util.vector.centerOf(2, 1, 2), Emitter.simple(ParticleTypes.EXPLOSION_EMITTER, util.vector.of(0, 0, 0)), 1, 10);
 		scene.idle(80);
+		
+		scene.markAsFinished();
+	}
+	
+	public static void fuzingMunitions(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("munitions/fuzing_munitions", "Fuzing Munitions");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+		
+		BlockPos munitionPos = util.grid.at(2, 1, 3);
+		Selection munitionSel = util.select.position(munitionPos);
+		scene.idle(20);
+		scene.world.showSection(munitionSel, Direction.NORTH);
+		scene.idle(30);
+		
+		scene.overlay.showText(80)
+			.text("Fuzes can be attached to certain projectiles to detonate them under certain conditions.")
+			.pointAt(util.vector.centerOf(2, 1, 3));
+		scene.idle(40);
+		
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN)
+				.rightClick()
+				.withItem(CBCItems.IMPACT_FUZE.asStack()), 60);
+		scene.idle(20);
+		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.IMPACT_FUZE.asStack().serializeNBT()));
+		scene.idle(50);
+		
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("Right-click the projectile head with an empty hand to remove any fuzes present.")
+			.pointAt(util.vector.centerOf(2, 1, 3));
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN).rightClick(), 60);
+		scene.idle(20);
+		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.remove("Fuze"));
+		scene.idle(60);
+		
+		Selection kineticSel = util.select.fromTo(2, 1, 1, 5, 1, 1);
+		Selection largeCog = util.select.position(5, 0, 2);
+		scene.world.showSection(kineticSel, Direction.WEST);
+		scene.world.showSection(largeCog, Direction.WEST);
+		
+		BlockPos deployerPos = util.grid.at(2, 1, 1);
+		scene.world.modifyTileNBT(util.select.position(deployerPos), DeployerTileEntity.class, tag -> tag.put("HeldItem", CBCItems.TIMED_FUZE.asStack().serializeNBT()));
+		
+		scene.world.setKineticSpeed(kineticSel, 32.0f);
+		scene.world.setKineticSpeed(largeCog, -16.0f);
+		
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("Fuzing projectiles can be automated with Deployers.")
+			.pointAt(util.vector.centerOf(deployerPos));
+		scene.idle(90);
+		scene.world.moveDeployer(deployerPos, 1, 25);
+		scene.idle(26);
+		scene.world.modifyTileNBT(util.select.position(deployerPos), DeployerTileEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.serializeNBT()));
+		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.TIMED_FUZE.asStack().serializeNBT()));
+		scene.world.moveDeployer(deployerPos, -1, 25);
+		scene.idle(46);
 		
 		scene.markAsFinished();
 	}

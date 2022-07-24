@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons;
 
+import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.util.entry.ItemEntry;
 
@@ -10,6 +11,10 @@ public class CBCItems {
 
 	private static final CreateRegistrate REGISTRATE = CreateBigCannons.registrate()
 			.creativeModeTab(() -> ModGroup.GROUP);
+	
+	static {
+		REGISTRATE.startSection(AllSections.LOGISTICS);
+	}
 	
 	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new).register();
 	public static final ItemEntry<TimedFuzeItem> TIMED_FUZE = REGISTRATE.item("timed_fuze", TimedFuzeItem::new).register();

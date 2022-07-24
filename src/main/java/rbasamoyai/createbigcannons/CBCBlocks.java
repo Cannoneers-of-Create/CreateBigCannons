@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons;
 
+import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.repack.registrate.builders.BlockBuilder;
@@ -35,6 +36,10 @@ public class CBCBlocks {
 
 	private static final CreateRegistrate REGISTRATE = CreateBigCannons.registrate()
 			.creativeModeTab(() -> ModGroup.GROUP);
+	
+	static {
+		REGISTRATE.startSection(AllSections.KINETICS);
+	}
 	
 	public static final BlockEntry<CannonBarrelBlock> CAST_IRON_CANNON_BARREL = REGISTRATE
 			.block("cast_iron_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.CAST_IRON))
@@ -90,6 +95,10 @@ public class CBCBlocks {
 			.simpleItem()
 			.register();
 	
+	static {
+		REGISTRATE.startSection(AllSections.LOGISTICS);
+	}
+	
 	public static final BlockEntry<SolidShotBlock> SOLID_SHOT = REGISTRATE
 			.block("solid_shot", SolidShotBlock::new)
 			.initialProperties(Material.METAL)
@@ -124,6 +133,10 @@ public class CBCBlocks {
 			.transform(CBCBuilderTransformers.powderCharge())
 			.simpleItem()
 			.register();
+	
+	static {
+		REGISTRATE.startSection(AllSections.KINETICS);
+	}
 	
 	public static final BlockEntry<CannonMountBlock> CANNON_MOUNT = REGISTRATE
 			.block("cannon_mount", CannonMountBlock::new)

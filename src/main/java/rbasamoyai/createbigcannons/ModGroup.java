@@ -9,7 +9,7 @@ public class ModGroup {
 	public static final CreativeModeTab GROUP = new CreativeModeTab(CreateBigCannons.MOD_ID) {
 		@Override
 		public ItemStack makeIcon() {
-			return CBCBlocks.CAST_IRON_CANNON_BARREL.asStack();
+			return CBCBlocks.SOLID_SHOT.asStack();
 		}
 		
 		public void fillItemList(NonNullList<ItemStack> list) {

@@ -7,6 +7,7 @@ import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
 
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CBCPonderIndex {
@@ -23,7 +24,10 @@ public class CBCPonderIndex {
 			.addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons);
 		
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.POWDER_CHARGE)
-			.addStoryBoard("cannon_loader/cannon_loads", CannonLoadingScenes::cannonLoads, CBCPonderTags.MUNITIONS);
+			.addStoryBoard("munitions/cannon_loads", CannonLoadingScenes::cannonLoads, CBCPonderTags.MUNITIONS);
+		
+		HELPER.forComponents(CBCItems.IMPACT_FUZE, CBCItems.TIMED_FUZE, CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL)
+			.addStoryBoard("munitions/fuzing_munitions", CannonLoadingScenes::fuzingMunitions, CBCPonderTags.MUNITIONS);
 	}
 	
 	public static void registerTags() {
@@ -34,6 +38,12 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.RAM_HEAD)
 			.add(CBCBlocks.WORM_HEAD)
 			.add(AllBlocks.PISTON_EXTENSION_POLE);
+		PonderRegistry.TAGS.forTag(CBCPonderTags.MUNITIONS)
+			.add(CBCBlocks.POWDER_CHARGE)
+			.add(CBCBlocks.HE_SHELL)
+			.add(CBCBlocks.SHRAPNEL_SHELL)
+			.add(CBCItems.IMPACT_FUZE)
+			.add(CBCItems.TIMED_FUZE);
 	}
 	
 	public static void registerLang() {

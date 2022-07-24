@@ -9,17 +9,18 @@ import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.items.CapabilityItemHandler;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
 
 public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> implements DynamicInstance {
 
 	private final OrientedData fuze;
 	private final Direction facing;
+	private final FuzedBlockEntity shell;
 	
 	public FuzedBlockInstance(MaterialManager materialManager, FuzedBlockEntity blockEntity) {
 		super(materialManager, blockEntity);
 		
+		this.shell = blockEntity;
 		this.facing = this.blockState.getValue(BlockStateProperties.FACING);		
 		this.fuze = materialManager.defaultCutout()
 				.material(Materials.ORIENTED)
@@ -28,14 +29,11 @@ public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> im
 		this.fuze.setPosition(this.instancePos);
 	}
 
-	@Override public BlockPos getWorldPosition() { return this.blockEntity.getBlockPos(); }
+	@Override public BlockPos getWorldPosition() { return this.shell.getBlockPos(); }
 	
 	@Override
 	public void beginFrame() {
-		boolean hasFuze = this.blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, this.facing)
-				.map(h -> !h.getStackInSlot(0).isEmpty())
-				.orElse(false);
-		this.fuze.setColor((byte) 255, (byte) 255, (byte) 255, hasFuze ? (byte) 255 : (byte) 0);
+		this.fuze.setColor((byte) 255, (byte) 255, (byte) 255, this.shell.getFuze().isEmpty() ? (byte) 0 : (byte) 255);
 	}
 
 	@Override
