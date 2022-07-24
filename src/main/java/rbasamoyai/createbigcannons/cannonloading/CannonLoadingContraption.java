@@ -77,7 +77,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		BlockState nextBlock = level.getBlockState(start.relative(direction));
 		int extensionsInFront = 0;
 		Direction.Axis blockAxis = direction.getAxis();
-		this.loadingHead = LoadingHead.NOTHING;		
+		this.loadingHead = LoadingHead.NOTHING;
 		
 		PistonExtensionPoleBlock.PlacementHelper matcher = PistonExtensionPoleBlock.PlacementHelper.get();
 		while (matcher.matchesAxis(nextBlock, blockAxis)
