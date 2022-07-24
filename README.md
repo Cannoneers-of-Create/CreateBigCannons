@@ -1,7 +1,7 @@
 # Create Big Cannons
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/rbasamoyai/CreateBigCannons/Java%20CI%20with%20Gradle)](../../actions/workflows/gradle.yml)
-[![Discord Invite](https://img.shields.io/discord/996633868692111381?label=discord&color=5865f2)](https://discord.gg/vgfMMUUgvT)
+[![Discord Invite](https://img.shields.io/discord/996633868692111381?label=Discord&color=5865f2)](https://discord.gg/vgfMMUUgvT)
 [![License](https://img.shields.io/github/license/rbasamoyai/CreateBigCannons?color=900c3f)](LICENSE)
 [![Curse Forge](https://cf.way2muchnoise.eu/full_646668_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/create-big-cannons)
 [![Curse Forge](https://cf.way2muchnoise.eu/versions/Avalilable%20for%20MC_646668_all.svg)](https://www.curseforge.com/minecraft/mc-mods/create-big-cannons)
