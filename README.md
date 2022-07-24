@@ -1,4 +1,4 @@
-# Create: Big Cannons
+# Create Big Cannons
 
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/rbasamoyai/CreateBigCannons/Java%20CI%20with%20Gradle)](../../actions/workflows/gradle.yml)
 [![Discord Invite](https://img.shields.io/discord/996633868692111381?label=discord&color=5865f2)](https://discord.gg/vgfMMUUgvT)
@@ -8,10 +8,9 @@
 
 <h3> <a href="https://www.curseforge.com/minecraft/mc-mods/create-big-cannons"> <strong style="color: #f16436"> DOWNLOAD </strong> </a> </h3>
 
-<p>Create: Big Cannons an addon for Create about building big cannons that work with Create.</p>
+<p>Create Big Cannons an addon for Create about building big cannons that work with Create.</p>
 <br>
 <p><img src="https://i.imgur.com/9BbUMSK.png" width="472" height="250"></p>
-<br>
 <h4><strong>What's there?</strong></h4>
 <p>Create Big Cannons (CBC) currently has:</p>
 <ul>
@@ -23,13 +22,11 @@
 </ul>
 <br>
 <p><img src="https://i.imgur.com/XRI9PmW.png" width="469" height="153"></p>
-<br>
 <h4><strong>What can I use big cannons for?</strong></h4>
 <p>CBC is mostly meant as a mod for multiplayer PvP servers. Use big cannons to blow up your foes' bases, valuables, and more!</p>
 <br>
 <p>An example of an autoloading cannon (not an autocannon!)</p>
 <p><img src="https://i.imgur.com/vzeKdza.png" width="472" height="250"></p>
-<br>
 <h4><strong>What dependencies are required?</strong></h4>
 <p><a href="https://www.curseforge.com/minecraft/mc-mods/create" rel="nofollow">Create</a> and <a href="https://www.curseforge.com/minecraft/mc-mods/flywheel" rel="nofollow">Flywheel</a>&nbsp;are required. Additionally, <a href="https://www.curseforge.com/minecraft/mc-mods/create-alloyed" rel="nofollow">Create: Alloyed</a> is an optional dependency if you want to access higher tier cannon materials.</p>
 <br>
@@ -40,5 +37,4 @@
 <p>- No, see above if you want to make your own backport though.</p>
 <br>
 <p>An rbasamoyai mod.</p>
-<br>
 <h4><a href="https://discord.gg/vgfMMUUgvT" rel="nofollow"><strong>Join the Discord here.</strong></a></h4>
