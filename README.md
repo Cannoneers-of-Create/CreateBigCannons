@@ -8,7 +8,7 @@
 
 <h3> <a href="https://www.curseforge.com/minecraft/mc-mods/create-big-cannons"> <strong style="color: #f16436"> DOWNLOAD </strong> </a> </h3>
 
-<p>Create Big Cannons an addon for Create about building big cannons that work with Create.</p>
+<p><strong>Create Big Cannons</strong> is an addon for Create about building big cannons that work with Create.</p>
 <br>
 <p><img src="https://i.imgur.com/9BbUMSK.png" width="472" height="250"></p>
 <h4><strong>What's there?</strong></h4>
@@ -37,4 +37,3 @@
 <p>- No, see above if you want to make your own backport though.</p>
 <br>
 <p>An rbasamoyai mod.</p>
-<h4><a href="https://discord.gg/vgfMMUUgvT" rel="nofollow"><strong>Join the Discord here.</strong></a></h4>
