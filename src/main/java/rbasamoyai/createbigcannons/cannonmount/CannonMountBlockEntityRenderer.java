@@ -48,8 +48,7 @@ public class CannonMountBlockEntityRenderer extends KineticTileEntityRenderer {
 		rotatingMount.translate(0.0d, 1.0d, 0.0d).light(light).rotateCentered(qyaw).renderInto(ms, solidBuf);
 		
 		float pitch = cmbe.getPitchOffset(partialTicks);
-		boolean flag = cmbe.getContraptionDirection().getAxis() == Direction.Axis.X;
-		Quaternion qpitch = Vector3f.XP.rotationDegrees(flag ? pitch : -pitch);
+		Quaternion qpitch = Vector3f.XP.rotationDegrees(cmbe.getContraptionDirection() == Direction.SOUTH ? -pitch : pitch);
 		Quaternion qyaw1 = qyaw.copy();
 		qyaw1.mul(qpitch);
 		

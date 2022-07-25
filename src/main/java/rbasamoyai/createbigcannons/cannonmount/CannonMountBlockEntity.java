@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -73,7 +74,16 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 			float newYaw = this.cannonYaw + yawSpeed;
 			float newPitch = this.cannonPitch + pitchSpeed;
 			this.cannonYaw = (float) (newYaw % 360.0f);
-			this.cannonPitch = this.mountedContraption == null ? 0.0f : Mth.clamp((float) (newPitch % 360.0f), -60.0f, 30.0f);
+			
+			if (this.mountedContraption == null) {
+				this.cannonPitch = 0.0f;
+			} else {
+				Direction dir = this.getContraptionDirection();
+				boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+				float cu = flag ? 60.0f : 30.0f;
+				float cd = flag ? -30.0f : -60.0f;
+				this.cannonPitch = Mth.clamp((float) (newPitch % 360.0f), cd, cu);
+			}
 		}
 		
 		this.applyRotation();
