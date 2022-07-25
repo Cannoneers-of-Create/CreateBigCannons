@@ -34,6 +34,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.CBCTags;
@@ -377,6 +379,7 @@ public class MountedCannonContraption extends Contraption {
 		}
 	}
 	
+	@OnlyIn(Dist.CLIENT)
 	@Override
 	public ContraptionLighter<?> makeLighter() {
 		return new AnchoredLighter(this);

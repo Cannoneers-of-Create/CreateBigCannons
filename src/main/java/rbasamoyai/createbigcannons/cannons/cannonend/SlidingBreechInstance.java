@@ -46,7 +46,7 @@ public class SlidingBreechInstance extends ShaftInstance implements DynamicInsta
 			this.breechblock.setRotation(q);
 			this.axis = Direction.Axis.Y;
 		} else if (horizontal) {
-			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(this.facing) - 90.0f);
+			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(this.facing) + 90.0f);
 			Quaternion q1 = Direction.SOUTH.step().rotationDegrees(90.0f);
 			q.mul(q1);
 			this.breechblock.setRotation(q);

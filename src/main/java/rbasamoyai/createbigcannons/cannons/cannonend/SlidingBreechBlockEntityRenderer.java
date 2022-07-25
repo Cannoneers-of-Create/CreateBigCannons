@@ -47,25 +47,30 @@ public class SlidingBreechBlockEntityRenderer extends KineticTileEntityRenderer 
 		Direction.Axis axis;
 		boolean horizontal = facing.getAxis().isHorizontal();
 		boolean alongFirst = blockState.getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
+		boolean isX = facing.getAxis() == Direction.Axis.X;
 		
 		ms.pushPose();
 		
 		Quaternion qrot;
 		
 		if (horizontal && (facing.getAxis() == Direction.Axis.X) != alongFirst) {
-			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(facing));
-			Quaternion q1 = Direction.EAST.step().rotationDegrees(90.0f);
+			Direction dir = isX ? Direction.SOUTH : Direction.EAST;
+			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(facing) + (isX ? 90.0f : 0.0f));
+			Quaternion q1 = dir.step().rotationDegrees(90.0f);
 			q.mul(q1);
 			qrot = q;
 			axis = Direction.Axis.Y;
 		} else if (horizontal) {
-			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(facing) - 90.0f);
-			Quaternion q1 = Direction.SOUTH.step().rotationDegrees(90.0f);
+			Direction dir = isX ? Direction.EAST : Direction.SOUTH;
+			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(facing) + (isX ? 0.0f : 90.0f));
+			Quaternion q1 = dir.step().rotationDegrees(90.0f);
 			q.mul(q1);
 			qrot = q;
 			axis = alongFirst ? Direction.Axis.Z : Axis.X;
 		} else {
-			Quaternion q = Direction.UP.step().rotationDegrees(AngleHelper.horizontalAngle(facing) - (alongFirst ? 0.0f : 90.0f));
+			Quaternion q = Direction.UP.step().rotationDegrees(alongFirst ? 0.0f : 90.0f);
+			Quaternion q1 = Direction.EAST.step().rotationDegrees(90.0f);
+			q.mul(q1);
 			qrot = q;
 			axis = alongFirst ? Direction.Axis.Z : Direction.Axis.X;
 		}

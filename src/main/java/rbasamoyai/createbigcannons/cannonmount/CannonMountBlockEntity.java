@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -145,6 +146,10 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	}
 	
 	public void setYaw(float yaw) { this.cannonYaw = yaw; }
+	
+	public Direction getContraptionDirection() {
+		return this.mountedContraption == null ? Direction.NORTH : ((MountedCannonContraption) this.mountedContraption.getContraption()).initialOrientation();
+	}
 	
 	public float getAngularSpeed(Supplier<Float> sup, float clientDiff) {
 		float speed = convertToAngular(sup.get()) * 0.1f;
