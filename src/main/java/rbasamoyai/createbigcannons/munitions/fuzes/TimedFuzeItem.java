@@ -12,6 +12,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
+import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.munitions.FuzedCannonProjectile;
 
 public class TimedFuzeItem extends FuzeItem implements MenuProvider {
@@ -56,6 +57,12 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public Component getDisplayName() {
 		return this.getDescription();
+	}
+	
+	public static ItemStack getCreativeTabItem(int defaultFuze) {
+		ItemStack stack = CBCItems.TIMED_FUZE.asStack();
+		stack.getOrCreateTag().putInt("FuzeTimer", defaultFuze);
+		return stack;
 	}
 	
 }

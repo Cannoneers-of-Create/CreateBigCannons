@@ -90,6 +90,12 @@ public class TimedFuzeScreen extends AbstractSimiContainerScreen<TimedFuzeContai
 		this.updateServer();
 	}
 	
+	@Override
+	public void onClose() {
+		this.updateServer();
+		super.onClose();
+	}
+	
 	private void updateServer() {
 		CBCNetwork.INSTANCE.sendToServer(new ServerboundTimedFuzePacket(20 + this.setTime.getState() * 5));
 	}

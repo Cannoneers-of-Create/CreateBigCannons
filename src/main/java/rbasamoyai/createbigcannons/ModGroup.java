@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
 public class ModGroup {
 	
@@ -27,7 +28,7 @@ public class ModGroup {
 			list.add(CBCBlocks.HE_SHELL.asStack());
 			list.add(CBCBlocks.SHRAPNEL_SHELL.asStack());
 			list.add(CBCItems.IMPACT_FUZE.asStack());
-			list.add(CBCItems.TIMED_FUZE.asStack());
+			list.add(TimedFuzeItem.getCreativeTabItem(20));
 		}
 	};
 	
