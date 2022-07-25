@@ -22,6 +22,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "player", "%s was ripped up by shrapnel");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %s s %s ticks");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "materialProperties", "Cannon Properties");
 		
 		tooltip(CBCBlocks.SOLID_SHOT)
 		.header("SOLID SHOT")
@@ -41,6 +42,10 @@ public class CBCLangGen {
 		.header("IMPACT FUZE")
 		.summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact.")
 		.conditionAndBehavior("Detonation", "The fuze _may_ detonate on _projectile impact_.");
+		
+		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.chance", "Impact Chance");
+		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to detonate.");
+		// \u0025 is %, which string formatting errors on
 		
 		tooltip(CBCItems.TIMED_FUZE)
 		.header("TIMED FUZE")

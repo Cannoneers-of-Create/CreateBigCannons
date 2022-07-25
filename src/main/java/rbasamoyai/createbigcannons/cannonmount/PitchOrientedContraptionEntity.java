@@ -11,7 +11,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
-import rbasamoyai.createbigcannons.mixin.MixinContraptionRotationState;
 
 public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
@@ -30,14 +29,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	
 	@Override
 	public ContraptionRotationState getRotationState() {
-		ContraptionRotationState crs = super.getRotationState();
-		MixinContraptionRotationState crsmixin = (MixinContraptionRotationState) crs;
-		
-		float zRot = crsmixin.getZRotation();
-		crsmixin.setXRotation(zRot);
-		crsmixin.setZRotation(0.0f);
-		
-		return crs;
+		return new CBCContraptionRotationState(this);
 	}
 	
 	@Override
@@ -65,7 +57,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	
 	@Override
 	public Vec3 applyRotation(Vec3 localPos, float partialTicks) {
-		localPos = VecHelper.rotate(localPos, this.getViewXRot(partialTicks), Direction.Axis.X);
+		localPos = VecHelper.rotate(localPos, this.getViewXRot(partialTicks), this.getInitialOrientation().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
 		localPos = VecHelper.rotate(localPos, this.getViewYRot(partialTicks), Direction.Axis.Y);
 		localPos = VecHelper.rotate(localPos, this.getInitialYaw(), Direction.Axis.Y);
 		return localPos;
@@ -75,7 +67,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	public Vec3 reverseRotation(Vec3 localPos, float partialTicks) {
 		localPos = VecHelper.rotate(localPos, -this.getInitialYaw(), Direction.Axis.Y);
 		localPos = VecHelper.rotate(localPos, -this.getViewYRot(partialTicks), Direction.Axis.Y);
-		localPos = VecHelper.rotate(localPos, -this.getViewXRot(partialTicks), Direction.Axis.X);
+		localPos = VecHelper.rotate(localPos, -this.getViewXRot(partialTicks), this.getInitialOrientation().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
 		return localPos;
 	}
 

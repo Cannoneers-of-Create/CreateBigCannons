@@ -1,4 +1,5 @@
 {
+  "block.createbigcannons.cannon.materialProperties": "Cannon Properties",
   "block.createbigcannons.cannon_loader": "Cannon Loader",
   "block.createbigcannons.cannon_mount": "Cannon Mount",
   "block.createbigcannons.cast_iron_cannon_barrel": "Cast Iron Cannon Barrel",
@@ -75,6 +76,8 @@
   "item.createbigcannons.impact_fuze": "Impact Fuze",
   "item.createbigcannons.impact_fuze.tooltip": "IMPACT FUZE",
   "item.createbigcannons.impact_fuze.tooltip.behaviour1": "The fuze _may_ detonate on _projectile impact_.",
+  "item.createbigcannons.impact_fuze.tooltip.chance": "Impact Chance",
+  "item.createbigcannons.impact_fuze.tooltip.chance.value": "Upon impact this fuze has a _%s%%_ chance to detonate.",
   "item.createbigcannons.impact_fuze.tooltip.condition1": "Detonation",
   "item.createbigcannons.impact_fuze.tooltip.summary": "Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact.",
   "item.createbigcannons.timed_fuze": "Timed Fuze",

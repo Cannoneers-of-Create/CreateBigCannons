@@ -1,4 +1,5 @@
 {
+  "block.createbigcannons.cannon.materialProperties": "s\u01DD\u0131\u0287\u0279\u01DDdo\u0279\u0500 uouu\u0250\u0186",
   "block.createbigcannons.cannon_loader": "\u0279\u01DDp\u0250o\uA780 uouu\u0250\u0186",
   "block.createbigcannons.cannon_mount": "\u0287unoW uouu\u0250\u0186",
   "block.createbigcannons.cast_iron_cannon_barrel": "\u05DF\u01DD\u0279\u0279\u0250\u15FA uouu\u0250\u0186 uo\u0279I \u0287s\u0250\u0186",
@@ -75,6 +76,8 @@
   "item.createbigcannons.impact_fuze": "\u01DDzn\u2132 \u0287\u0254\u0250d\u026FI",
   "item.createbigcannons.impact_fuze.tooltip": "\u018EZ\u2229\u2132 \u27D8\u0186\u2C6F\u0500WI",
   "item.createbigcannons.impact_fuze.tooltip.behaviour1": "\u02D9\u203E\u0287\u0254\u0250d\u026F\u0131 \u01DD\u05DF\u0131\u0287\u0254\u01DD\u0638o\u0279d\u203E uo \u01DD\u0287\u0250uo\u0287\u01DDp \u203E\u028E\u0250\u026F\u203E \u01DDzn\u025F \u01DD\u0265\u27D8",
+  "item.createbigcannons.impact_fuze.tooltip.chance": "\u01DD\u0254u\u0250\u0265\u0186 \u0287\u0254\u0250d\u026FI",
+  "item.createbigcannons.impact_fuze.tooltip.chance.value": "\u02D9\u01DD\u0287\u0250uo\u0287\u01DDp o\u0287 \u01DD\u0254u\u0250\u0265\u0254 \u203E%s%%\u203E \u0250 s\u0250\u0265 \u01DDzn\u025F s\u0131\u0265\u0287 \u0287\u0254\u0250d\u026F\u0131 uod\u2229",
   "item.createbigcannons.impact_fuze.tooltip.condition1": "uo\u0131\u0287\u0250uo\u0287\u01DD\u15E1",
   "item.createbigcannons.impact_fuze.tooltip.summary": "\u02D9\u0287\u0254\u0250d\u026F\u0131 uo \u01DD\u0287\u0250uo\u0287\u01DDp s\u028E\u0250\u028D\u05DF\u0250 \u0287ou s\u01DDop \u0287\u0131 '\u203E\u028E\u0287\u0131\u0254\u0131\u05DFd\u026F\u0131s\u203E s\u0287\u0131 o\u0287 \u01DDn\u15E1 \u02D9\u203Ebu\u0131\u0265\u0287\u01DD\u026Fos s\u0287\u0131\u0265\u203E \u01DD\u05DF\u0131\u0287\u0254\u01DD\u0638o\u0279d \u01DD\u0265\u0287 u\u01DD\u0265\u028D s\u01DD\u0287\u0250uo\u0287\u01DD\u15E1",
   "item.createbigcannons.timed_fuze": "\u01DDzn\u2132 p\u01DD\u026F\u0131\u27D8",

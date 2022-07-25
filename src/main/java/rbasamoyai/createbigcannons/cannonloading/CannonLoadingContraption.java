@@ -30,6 +30,8 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
@@ -350,6 +352,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 	
 	@Override protected ContraptionType getType() { return CBCContraptionTypes.CANNON_LOADER; }
 	
+	@OnlyIn(Dist.CLIENT) // disgusting.
 	@Override
 	public ContraptionLighter<?> makeLighter() {
 		return new CannonLoaderLighter(this);
