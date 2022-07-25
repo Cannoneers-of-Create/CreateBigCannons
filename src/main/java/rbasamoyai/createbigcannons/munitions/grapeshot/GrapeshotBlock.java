@@ -1,22 +1,22 @@
-package rbasamoyai.createbigcannons.munitions;
+package rbasamoyai.createbigcannons.munitions.grapeshot;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
+import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
-public class ShrapnelShellBlock extends FuzedProjectileBlock {
+public class GrapeshotBlock extends ProjectileBlock {
 
-	public ShrapnelShellBlock(Properties properties) {
+	public GrapeshotBlock(Properties properties) {
 		super(properties);
 	}
 	
 	@Override
 	public AbstractCannonProjectile getProjectile(Level level, BlockState state, BlockPos pos, BlockEntity blockEntity) {
-		ShrapnelShellProjectile projectile = CBCEntityTypes.SHRAPNEL_SHELL.create(level);
-		projectile.setFuze(getFuze(blockEntity));
-		return projectile;
+		return CBCEntityTypes.BAG_OF_GRAPESHOT.create(level);
 	}
 
 }

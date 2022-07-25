@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.munitions;
+package rbasamoyai.createbigcannons.munitions.shrapnel;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

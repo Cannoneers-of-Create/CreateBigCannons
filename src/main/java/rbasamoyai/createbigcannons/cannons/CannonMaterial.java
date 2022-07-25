@@ -21,6 +21,7 @@ public record CannonMaterial(ResourceLocation name, double squibRatio, float wei
 	}
 	
 	public static final CannonMaterial
+		WROUGHT_IRON = register(CreateBigCannons.resource("cast_iron"), 1d / 1d, 2.0f, 1, FailureMode.RUPTURE),
 		CAST_IRON = register(CreateBigCannons.resource("cast_iron"), 1d / 1d, 3.0f, 2, FailureMode.FRAGMENT),
 		BRONZE = register(CreateBigCannons.resource("bronze"), 3d / 2d, 2.0f, 4, FailureMode.RUPTURE),
 		STEEL = register(CreateBigCannons.resource("steel"), 2d / 1d, 5.0f, 6, FailureMode.FRAGMENT);

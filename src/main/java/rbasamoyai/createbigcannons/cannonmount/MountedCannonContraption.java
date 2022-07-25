@@ -241,7 +241,7 @@ public class MountedCannonContraption extends Contraption {
 			StructureBlockInfo containedBlockInfo = behavior.block();	
 			
 			if (CBCBlocks.POWDER_CHARGE.has(containedBlockInfo.state) && foundProjectile == null) {
-				if (!cbeh.blockInfo.state.is(CBCTags.Blocks.THICK_TUBING) && level.getRandom().nextDouble() < 0.25d) {
+				if (!cbeh.blockInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && level.getRandom().nextDouble() < 0.25d) {
 					failed = true;
 					failedHolder = cbeh;
 					break;

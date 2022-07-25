@@ -32,7 +32,7 @@ public class CBCBuilderTransformers {
 		ResourceLocation endLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_chamber_end");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
-				.tag(CBCTags.Blocks.THICK_TUBING)
+				.tag(CBCTags.BlockCBC.THICK_TUBING)
 				.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().withExistingParent(c.getName(), "block/cube_column")
 						.texture("side", sideLoc)
 						.texture("end", endLoc)

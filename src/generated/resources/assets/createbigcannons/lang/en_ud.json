@@ -1,4 +1,9 @@
 {
+  "block.createbigcannons.bag_of_grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279\u2141 \u025Fo b\u0250\u15FA",
+  "block.createbigcannons.bag_of_grapeshot.tooltip": "\u27D8OHS\u018E\u0500\u2C6F\u1D1A\u2141 \u2132O \u2141\u2C6F\u15FA",
+  "block.createbigcannons.bag_of_grapeshot.tooltip.behaviour1": "\u203E\u02D9bu\u0131\u0279\u0131\u025F uodn s\u01DD\u0287\u0250\u0279b\u01DD\u0287u\u0131s\u0131\u15E1\u203E \u02D9\u0287o\u0265s\u01DDd\u0250\u0279b s\u01DDs\u0250\u01DD\u05DF\u01DD\u1D1A",
+  "block.createbigcannons.bag_of_grapeshot.tooltip.condition1": "bu\u0131\u0279\u0131\u2132 uO",
+  "block.createbigcannons.bag_of_grapeshot.tooltip.summary": "\u02D9\u203Epoo\u028D\u203E s\u0250 \u0265\u0254ns s\u029E\u0254o\u05DFq \u0287\u025Fos \u01DDb\u0250\u026F\u0250p u\u0250\u0254 \u0265\u0254\u0131\u0265\u028D '\u203E\u0287o\u0265s\u01DDd\u0250\u0279b\u203E su\u0131\u0250\u0287uo\u0186",
   "block.createbigcannons.cannon.materialProperties": "s\u01DD\u0131\u0287\u0279\u01DDdo\u0279\u0500 uouu\u0250\u0186",
   "block.createbigcannons.cannon_loader": "\u0279\u01DDp\u0250o\uA780 uouu\u0250\u0186",
   "block.createbigcannons.cannon_mount": "\u0287unoW uouu\u0250\u0186",
@@ -64,6 +69,8 @@
   "createbigcannons.ponder.tag.operating_cannons.description": "\u028E\u05DF\u01DD\u028C\u0131\u0287\u0254\u01DD\u025F\u025F\u01DD pu\u0250 \u028E\u05DF\u01DD\u025F\u0250s suouu\u0250\u0254 b\u0131q \u01DDsn o\u0287 \u028DoH",
   "death.attack.createbigcannons.shrapnel": "\u05DF\u01DDud\u0250\u0279\u0265s \u028Eq dn p\u01DDdd\u0131\u0279 s\u0250\u028D %s",
   "death.attack.createbigcannons.shrapnel.player": "\u05DF\u01DDud\u0250\u0279\u0265s \u028Eq dn p\u01DDdd\u0131\u0279 s\u0250\u028D %s",
+  "entity.createbigcannons.bag_of_grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279\u2141 \u025FO b\u0250\u15FA",
+  "entity.createbigcannons.grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279\u2141",
   "entity.createbigcannons.he_shell": "\u05DF\u05DF\u01DD\u0265S )\u018EH( \u01DD\u028C\u0131so\u05DFdx\u018E \u0265b\u0131H",
   "entity.createbigcannons.pitch_contraption": "uo\u0131\u0287d\u0250\u0279\u0287uo\u0186 \u0265\u0254\u0287\u0131\u0500",
   "entity.createbigcannons.shot": "\u0287o\u0265S",

@@ -27,10 +27,11 @@ import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
-import rbasamoyai.createbigcannons.munitions.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
-import rbasamoyai.createbigcannons.munitions.ShrapnelShellBlock;
-import rbasamoyai.createbigcannons.munitions.SolidShotBlock;
+import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
+import rbasamoyai.createbigcannons.munitions.heshell.HEShellBlock;
+import rbasamoyai.createbigcannons.munitions.shot.SolidShotBlock;
+import rbasamoyai.createbigcannons.munitions.shrapnel.ShrapnelShellBlock;
 
 public class CBCBlocks {
 
@@ -123,6 +124,15 @@ public class CBCBlocks {
 			.transform(shell(MaterialColor.COLOR_GREEN))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<GrapeshotBlock> BAG_OF_GRAPESHOT = REGISTRATE
+			.block("bag_of_grapeshot", GrapeshotBlock::new)
+			.initialProperties(Material.METAL, MaterialColor.WOOL)
+			.properties(p -> p.sound(SoundType.WOOL))
+			.transform(CBCBuilderTransformers.projectile("projectile/grapeshot"))
+			.lang("Bag of Grapeshot")
 			.simpleItem()
 			.register();
 	

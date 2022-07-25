@@ -1,4 +1,9 @@
 {
+  "block.createbigcannons.bag_of_grapeshot": "Bag of Grapeshot",
+  "block.createbigcannons.bag_of_grapeshot.tooltip": "BAG OF GRAPESHOT",
+  "block.createbigcannons.bag_of_grapeshot.tooltip.behaviour1": "Releases grapeshot. _Disintegrates upon firing._",
+  "block.createbigcannons.bag_of_grapeshot.tooltip.condition1": "On Firing",
+  "block.createbigcannons.bag_of_grapeshot.tooltip.summary": "Contains _grapeshot_, which can damage soft blocks such as _wood_.",
   "block.createbigcannons.cannon.materialProperties": "Cannon Properties",
   "block.createbigcannons.cannon_loader": "Cannon Loader",
   "block.createbigcannons.cannon_mount": "Cannon Mount",
@@ -64,6 +69,8 @@
   "createbigcannons.ponder.tag.operating_cannons.description": "How to use big cannons safely and effectively",
   "death.attack.createbigcannons.shrapnel": "%s was ripped up by shrapnel",
   "death.attack.createbigcannons.shrapnel.player": "%s was ripped up by shrapnel",
+  "entity.createbigcannons.bag_of_grapeshot": "Bag Of Grapeshot",
+  "entity.createbigcannons.grapeshot": "Grapeshot",
   "entity.createbigcannons.he_shell": "High Explosive (HE) Shell",
   "entity.createbigcannons.pitch_contraption": "Pitch Contraption",
   "entity.createbigcannons.shot": "Shot",

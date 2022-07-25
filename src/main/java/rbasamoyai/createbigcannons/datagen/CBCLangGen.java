@@ -28,6 +28,11 @@ public class CBCLangGen {
 		.header("SOLID SHOT")
 		.summary("_High penetrating force._ Best suited for _soft targets_ such as _wooden structures and thin walls_. _Cannot be fuzed and detonated._");
 		
+		tooltip(CBCBlocks.BAG_OF_GRAPESHOT)
+		.header("BAG OF GRAPESHOT")
+		.summary("Contains _grapeshot_, which can damage soft blocks such as _wood_.")
+		.conditionAndBehavior("On Firing", "Releases grapeshot. _Disintegrates upon firing._");
+		
 		tooltip(CBCBlocks.HE_SHELL)
 		.header("HIGH EXPLOSIVE (HE) SHELL")
 		.summary("Delivers _explosive_ force to the battlefield.")

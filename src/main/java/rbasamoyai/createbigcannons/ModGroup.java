@@ -25,6 +25,7 @@ public class ModGroup {
 			list.add(CBCBlocks.WORM_HEAD.asStack());
 			list.add(CBCBlocks.POWDER_CHARGE.asStack());
 			list.add(CBCBlocks.SOLID_SHOT.asStack());
+			list.add(CBCBlocks.BAG_OF_GRAPESHOT.asStack());
 			list.add(CBCBlocks.HE_SHELL.asStack());
 			list.add(CBCBlocks.SHRAPNEL_SHELL.asStack());
 			list.add(CBCItems.IMPACT_FUZE.asStack());

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.munitions;
+package rbasamoyai.createbigcannons.munitions.shrapnel;
 
 import java.util.Random;
 
@@ -6,21 +6,22 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.CBCEntityTypes;
+import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class Shrapnel extends AbstractHurtingProjectile {
-
-	public static final DamageSource SHRAPNEL = new DamageSource(CreateBigCannons.MOD_ID + ".shrapnel");
 	
 	private int age;
 	
@@ -53,19 +54,34 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		BlockPos pos = result.getBlockPos();
-		this.level.playSound(null, pos, this.level.getBlockState(pos).getSoundType().getBreakSound(), SoundSource.NEUTRAL, 1.0f, 2.0f);
+		BlockState state = this.level.getBlockState(pos);
+		if (!this.level.isClientSide) {
+			if (state.is(this.getDestroyBlockTag())) {
+				this.level.destroyBlock(pos, false, this);
+			} else {
+				this.level.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.NEUTRAL, 1.0f, 2.0f);
+			}
+		}
 		this.discard();
+	}
+	
+	protected TagKey<Block> getDestroyBlockTag() {
+		return CBCTags.BlockCBC.SHRAPNEL_DESTROYS;
 	}
 	
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
-		if (result.getEntity().getType() == CBCEntityTypes.SHRAPNEL.get()) {
+		if (result.getEntity().getType() == this.getType()) {
 			return;
 		}
-		result.getEntity().hurt(SHRAPNEL, 10.0f);
+		result.getEntity().hurt(this.getDamageSource(), this.getDamage());
 		result.getEntity().invulnerableTime = 0;
 		this.discard();
 	}
+	
+	public static final DamageSource SHRAPNEL = new DamageSource(CreateBigCannons.MOD_ID + ".shrapnel");
+	protected DamageSource getDamageSource() { return SHRAPNEL; }
+	protected float getDamage() { return 10.0f; }
 	
 	public static void build(EntityType.Builder<? extends Shrapnel> builder) {
 		builder.setTrackingRange(3)
@@ -79,7 +95,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	
 	@Override protected float getInertia() { return 0.99f; }
 	
-	public static void spawnShrapnelBurst(Level level, Vec3 position, Vec3 initialVelocity, int count, double spread) {
+	public static void spawnShrapnelBurst(Level level, EntityType<? extends Shrapnel> type, Vec3 position, Vec3 initialVelocity, int count, double spread) {
 		Vec3 forward = initialVelocity.normalize();
 		Vec3 right = forward.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = forward.cross(right);
@@ -94,7 +110,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 					.add(right.scale((random.nextDouble() - random.nextDouble()) * velScale * spread))
 					.add(up.scale((random.nextDouble() - random.nextDouble()) * velScale * spread));
 			
-			Shrapnel shrapnel = new Shrapnel(CBCEntityTypes.SHRAPNEL.get(), level);
+			Shrapnel shrapnel = type.create(level);
 			double rx = position.x + (random.nextDouble() - random.nextDouble()) * 0.0625d;
 			double ry = position.y + (random.nextDouble() - random.nextDouble()) * 0.0625d;
 			double rz = position.z + (random.nextDouble() - random.nextDouble()) * 0.0625d;
