@@ -21,6 +21,7 @@ public class CBCBuilderTransformers {
 		ResourceLocation endLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_barrel_end");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
+				.tag(CBCTags.BlockCBC.REDUCES_SPREAD)
 				.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().withExistingParent(c.getName(), baseLoc)
 					.texture("side", sideLoc)
 					.texture("end", endLoc)

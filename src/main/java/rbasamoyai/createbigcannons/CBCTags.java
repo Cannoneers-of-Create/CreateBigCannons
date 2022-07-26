@@ -21,6 +21,7 @@ public class CBCTags {
 	public static class BlockCBC {
 		public static final TagKey<Block>
 			THICK_TUBING = createAndGenerateBlockTag(CreateBigCannons.resource("thick_tubing")),
+			REDUCES_SPREAD = createAndGenerateBlockTag(CreateBigCannons.resource("reduces_spread")),
 			SHRAPNEL_DESTROYS = createAndGenerateBlockTag(CreateBigCannons.resource("shrapnel_shatterable")),
 			GRAPESHOT_DESTROYS = createAndGenerateBlockTag(CreateBigCannons.resource("grapeshot_shatterable"));
 		

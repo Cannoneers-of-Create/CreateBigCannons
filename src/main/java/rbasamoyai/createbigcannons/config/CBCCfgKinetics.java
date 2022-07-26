@@ -4,7 +4,7 @@ import com.simibubi.create.foundation.config.ConfigBase;
 
 public class CBCCfgKinetics extends ConfigBase {
 
-	public final ConfigInt maxLoaderLength = i(32, 3, "maxLoaderLength", Comments.maxLoaderLength);
+	public final ConfigInt maxLoaderLength = i(64, 3, "maxLoaderLength", Comments.maxLoaderLength);
 	
 	@Override public String getName() { return "kinetics"; }
 	
