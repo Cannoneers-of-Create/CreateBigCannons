@@ -237,6 +237,7 @@ public class MountedCannonContraption extends Contraption {
 		
 		boolean failed = false;
 		CannonBlockEntityHolder<?> failedHolder = null;
+		boolean noInitialCharge = true;
 		
 		for (ListIterator<CannonBlockEntityHolder<?>> iter = this.cannonBlockEntities.listIterator(); iter.hasNext(); ) {
 			CannonBlockEntityHolder<?> cbeh = iter.next();
@@ -251,6 +252,7 @@ public class MountedCannonContraption extends Contraption {
 				}
 				this.consumeBlock(behavior, cbeh, iter);
 				++chargesUsed;
+				noInitialCharge = false;
 			} else if (containedBlockInfo.state.getBlock() instanceof ProjectileBlock && foundProjectile == null) {
 				if (chargesUsed == 0) return;
 				foundProjectile = containedBlockInfo;
@@ -262,6 +264,8 @@ public class MountedCannonContraption extends Contraption {
 			}
 			
 			currentPos = cbeh.blockEntity.getBlockPos();
+			
+			if (noInitialCharge) return;
 			
 			if (foundProjectile != null) {
 				++barrelTravelled;
@@ -398,7 +402,7 @@ public class MountedCannonContraption extends Contraption {
 	}
 	
 	private static int getMaxCannonLength() {
-		return 32; // TODO: config max cannon length
+		return CBCConfigs.SERVER.cannons.maxCannonLength.get();
 	}
 
 	@Override public boolean canBeStabilized(Direction direction, BlockPos pos) { return true; }

@@ -21,10 +21,12 @@ public record CannonMaterial(ResourceLocation name, double squibRatio, float wei
 	}
 	
 	public static final CannonMaterial
+		LOG = register(CreateBigCannons.resource("log"), 0d / 1d, 1.0f, 0, FailureMode.FRAGMENT),
 		WROUGHT_IRON = register(CreateBigCannons.resource("cast_iron"), 1d / 1d, 2.0f, 1, FailureMode.RUPTURE),
 		CAST_IRON = register(CreateBigCannons.resource("cast_iron"), 1d / 1d, 3.0f, 2, FailureMode.FRAGMENT),
 		BRONZE = register(CreateBigCannons.resource("bronze"), 3d / 2d, 2.0f, 4, FailureMode.RUPTURE),
-		STEEL = register(CreateBigCannons.resource("steel"), 2d / 1d, 5.0f, 6, FailureMode.FRAGMENT);
+		STEEL = register(CreateBigCannons.resource("steel"), 2d / 1d, 5.0f, 6, FailureMode.FRAGMENT),
+		NETHER_GUNMETAL = register(CreateBigCannons.resource("nether_gunmetal"), 3d / 1d, 6.0f, 8, FailureMode.RUPTURE);
 	
 	/**
 	 * The squib ratio describes the maximum ratio of <b>cannon barrel</b> to

@@ -18,6 +18,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class CannonLoaderBlock extends DirectionalAxisKineticBlock implements ITE<CannonLoaderBlockEntity> {
 
@@ -54,7 +55,7 @@ public class CannonLoaderBlock extends DirectionalAxisKineticBlock implements IT
 	}
 	
 	public static int maxAllowedLoaderLength() {
-		return 32; // TODO: config
+		return CBCConfigs.SERVER.kinetics.maxLoaderLength.get();
 	}
 
 	@Override public Class<CannonLoaderBlockEntity> getTileEntityClass() { return CannonLoaderBlockEntity.class; }

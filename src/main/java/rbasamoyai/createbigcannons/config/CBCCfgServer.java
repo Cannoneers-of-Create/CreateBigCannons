@@ -6,6 +6,8 @@ public class CBCCfgServer extends CBCConfigBase {
 	
 	public final CBCCfgFailure failure = nested(0, CBCCfgFailure::new, Comments.failure);
 	public final CBCCfgMunitions munitions = nested(0, CBCCfgMunitions::new, Comments.munitions);
+	public final CBCCfgCannons cannons = nested(1, CBCCfgCannons::new, Comments.cannons);
+	public final CBCCfgKinetics kinetics = nested(1, CBCCfgKinetics::new, Comments.kinetics);
 	
 	@Override public String getName() { return "server"; }
 
@@ -21,6 +23,8 @@ public class CBCCfgServer extends CBCConfigBase {
 				"  and \"pops\" instead of \"booming\", or \"pop and no smoke\"." };
 		static String failure = "These values affect the extent of cannon failure.";
 		static String munitions = "These values affect the characteristics of cannon munitions.";
+		static String cannons = "These values affect the characteristics of cannon materials and cannon structures";
+		static String kinetics = "These values affect contraptions other than the cannon mount.";
 	}
 	
 }
