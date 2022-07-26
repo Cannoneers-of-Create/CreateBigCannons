@@ -42,6 +42,8 @@ public class CBCBlocks {
 		REGISTRATE.startSection(AllSections.KINETICS);
 	}
 	
+	//////// Cast Iron cannon blocks ////////
+	
 	public static final BlockEntry<CannonBarrelBlock> CAST_IRON_CANNON_BARREL = REGISTRATE
 			.block("cast_iron_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.CAST_IRON))
 			.transform(castIron())
@@ -69,6 +71,38 @@ public class CBCBlocks {
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
 			.transform(BlockStressDefaults.setImpact(16.0d))
 			.register();
+	
+	//////// Bronze cannon blocks ////////
+	
+	public static final BlockEntry<CannonBarrelBlock> BRONZE_CANNON_BARREL = REGISTRATE
+			.block("bronze_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.BRONZE))
+			.transform(castIron())
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/bronze"))
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<CannonChamberBlock> BRONZE_CANNON_CHAMBER = REGISTRATE
+			.block("bronze_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.BRONZE))
+			.transform(castIron())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/bronze"))
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<CannonEndBlock> BRONZE_CANNON_END = REGISTRATE
+			.block("bronze_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.BRONZE))
+			.transform(castIron())
+			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/bronze"))
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<SlidingBreechBlock> BRONZE_SLIDING_BREECH = REGISTRATE
+			.block("bronze_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.BRONZE))
+			.transform(castIron())
+			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
+			.transform(BlockStressDefaults.setImpact(12.0d))
+			.register();
+	
+	//////// Other blocks ////////
 	
 	public static final BlockEntry<CannonLoaderBlock> CANNON_LOADER = REGISTRATE
 			.block("cannon_loader", CannonLoaderBlock::new)
@@ -99,6 +133,8 @@ public class CBCBlocks {
 	static {
 		REGISTRATE.startSection(AllSections.LOGISTICS);
 	}
+	
+	//////// Projectiles ////////
 	
 	public static final BlockEntry<SolidShotBlock> SOLID_SHOT = REGISTRATE
 			.block("solid_shot", SolidShotBlock::new)

@@ -201,7 +201,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(this.level, this.worldPosition);
 	}
 	
-	protected void disassemble() {
+	public void disassemble() {
 		if (!this.running && this.mountedContraption == null) return;
 		if (this.mountedContraption != null) {
 			this.resetContraptionToOffset();

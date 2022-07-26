@@ -237,6 +237,7 @@ public class MountedCannonContraption extends Contraption {
 		
 		boolean failed = false;
 		CannonBlockEntityHolder<?> failedHolder = null;
+		int count = 0;
 		boolean noInitialCharge = true;
 		
 		for (ListIterator<CannonBlockEntityHolder<?>> iter = this.cannonBlockEntities.listIterator(); iter.hasNext(); ) {
@@ -265,7 +266,7 @@ public class MountedCannonContraption extends Contraption {
 			
 			currentPos = cbeh.blockEntity.getBlockPos();
 			
-			if (noInitialCharge) return;
+			if (noInitialCharge && count >= 1) return;
 			
 			if (foundProjectile != null) {
 				++barrelTravelled;
@@ -285,6 +286,7 @@ public class MountedCannonContraption extends Contraption {
 					return;
 				}
 			}
+			++count;
 		}
 		if (failed && failedHolder != null) {
 			this.fail(currentPos, level, entity, failedHolder, chargesUsed);
@@ -335,6 +337,12 @@ public class MountedCannonContraption extends Contraption {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(cbeh.blockEntity.getBlockPos()), 1.0f);
 		if (this.cannonMaterial.failureMode() == FailureMode.RUPTURE) {
 			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 3, Explosion.BlockInteraction.NONE);
+			if (this.anchor != null) {
+				BlockEntity possibleMount = entity.getLevel().getBlockEntity(this.anchor.below(2));
+				if (possibleMount instanceof CannonMountBlockEntity) {
+					((CannonMountBlockEntity) possibleMount).disassemble();;
+				}
+			}
 		} else {
 			for (Iterator<Map.Entry<BlockPos, StructureBlockInfo>> iter = this.blocks.entrySet().iterator(); iter.hasNext(); ) {
 				Map.Entry<BlockPos, StructureBlockInfo> entry = iter.next();

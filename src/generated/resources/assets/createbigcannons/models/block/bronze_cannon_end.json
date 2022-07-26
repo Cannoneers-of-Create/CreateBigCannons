@@ -1,0 +1,10 @@
+{
+  "parent": "createbigcannons:block/cannon_end",
+  "textures": {
+    "side": "createbigcannons:block/cannon_end/bronze_cannon_end_side",
+    "top": "createbigcannons:block/cannon_end/bronze_cannon_end_top",
+    "bottom": "createbigcannons:block/cannon_end/bronze_cannon_end_bottom",
+    "knob": "createbigcannons:block/cannon_end/bronze_cannon_end_knob",
+    "particle": "createbigcannons:block/cannon_end/bronze_cannon_end_top"
+  }
+}

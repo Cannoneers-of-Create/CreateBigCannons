@@ -17,6 +17,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
+import rbasamoyai.createbigcannons.cannons.CannonBlock;
 
 public class SlidingBreechInstance extends ShaftInstance implements DynamicInstance {
 
@@ -86,7 +87,7 @@ public class SlidingBreechInstance extends ShaftInstance implements DynamicInsta
 	}
 	
 	private PartialModel getPartialModelForState(BlockState state) {
-		return CBCBlockPartials.CAST_IRON_SLIDING_BREECHBLOCK;
+		return state.getBlock() instanceof CannonBlock ? CBCBlockPartials.breechblockFor(((CannonBlock) state.getBlock()).getCannonMaterial()) : CBCBlockPartials.CAST_IRON_SLIDING_BREECHBLOCK;
 	}
 
 }
