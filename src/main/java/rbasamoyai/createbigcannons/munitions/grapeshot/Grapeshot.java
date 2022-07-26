@@ -22,6 +22,5 @@ public class Grapeshot extends Shrapnel {
 	
 	private static final DamageSource GRAPESHOT = new DamageSource(CreateBigCannons.MOD_ID + ".grapeshot");
 	@Override protected DamageSource getDamageSource() { return GRAPESHOT; }
-	@Override protected float getDamage() { return 19.0f; }
 
 }

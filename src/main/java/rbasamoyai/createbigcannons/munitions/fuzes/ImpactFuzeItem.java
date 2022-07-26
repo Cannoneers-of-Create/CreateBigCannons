@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.FuzedCannonProjectile;
 
 public class ImpactFuzeItem extends FuzeItem {
@@ -39,7 +40,7 @@ public class ImpactFuzeItem extends FuzeItem {
 	}
 	
 	protected float getDetonateChance() {
-		return 0.67f;
+		return CBCConfigs.SERVER.munitions.impactFuzeDetonationChance.getF();
 	}
 	
 }

@@ -133,7 +133,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.54'
+    minecraft 'net.minecraftforge:forge:1.18.2-40.1.68'
     
     implementation fg.deobf("com.simibubi.create:Create:mc${create_version}") // Create
     implementation fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:${flywheel_version}") // Flywheel

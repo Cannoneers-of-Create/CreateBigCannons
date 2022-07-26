@@ -21,6 +21,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile {
 
@@ -68,6 +69,8 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			Entity entity = result.getEntity();
 			entity.setDeltaMovement(this.getDeltaMovement().scale(2.0f));
 			entity.hurt(DamageSource.thrown(this, null), 50);
+			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
+			
 			if (result.getEntity().isAlive()) {
 				this.setBreakthroughPower((byte) Math.max(0, this.getBreakthroughPower() - 2));
 				if (this.getBreakthroughPower() == 0) {

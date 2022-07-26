@@ -28,14 +28,16 @@ public class CBCContraptionRotationState extends ContraptionRotationState {
 		if (this.matrix != null) return this.matrix;
 		
 		this.matrix = new Matrix3d().asIdentity();
-		boolean flag = ((MountedCannonContraption) this.entity.getContraption()).initialOrientation().getAxis() == Direction.Axis.Z;
+		boolean flag = ((MountedCannonContraption) this.entity.getContraption()).initialOrientation().getAxis() == Direction.Axis.X;
 		if (this.hasVerticalRotation()) {
+			float yawAdjust = this.yaw;
 			if (flag) {
-				this.matrix.multiply(new Matrix3d().asXRotation(AngleHelper.rad(-this.entity.pitch)));
+				this.matrix.multiply(new Matrix3d().asZRotation(AngleHelper.rad(-this.entity.pitch)));
+				yawAdjust += 180.0f;
 			} else {
-				this.matrix.multiply(new Matrix3d().asZRotation(AngleHelper.rad(this.entity.pitch)));
+				this.matrix.multiply(new Matrix3d().asXRotation(AngleHelper.rad(-this.entity.pitch)));
 			}
-			this.matrix.multiply(new Matrix3d().asYRotation(AngleHelper.rad(this.yaw)));
+			this.matrix.multiply(new Matrix3d().asYRotation(AngleHelper.rad(yawAdjust)));
 		} else {
 			this.matrix.multiply(new Matrix3d().asYRotation(AngleHelper.rad(-this.yaw)));
 		}

@@ -20,10 +20,12 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class Shrapnel extends AbstractHurtingProjectile {
 	
 	private int age;
+	protected float damage;
 	
 	public Shrapnel(EntityType<? extends Shrapnel> type, Level level) {
 		super(type, level);
@@ -42,13 +44,18 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putInt("Age", this.age);
+		tag.putFloat("Damage", this.damage);
 	}
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		this.age = tag.getInt("Age");
+		this.damage = tag.getFloat("Damage");
 	}
+	
+	public void setDamage(float damage) { this.damage = damage; }
+	public float getDamage() { return this.damage; }
 	
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
@@ -74,14 +81,13 @@ public class Shrapnel extends AbstractHurtingProjectile {
 		if (result.getEntity().getType() == this.getType()) {
 			return;
 		}
-		result.getEntity().hurt(this.getDamageSource(), this.getDamage());
-		result.getEntity().invulnerableTime = 0;
+		result.getEntity().hurt(this.getDamageSource(), this.damage);
+		if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
 		this.discard();
 	}
 	
 	public static final DamageSource SHRAPNEL = new DamageSource(CreateBigCannons.MOD_ID + ".shrapnel");
 	protected DamageSource getDamageSource() { return SHRAPNEL; }
-	protected float getDamage() { return 10.0f; }
 	
 	public static void build(EntityType.Builder<? extends Shrapnel> builder) {
 		builder.setTrackingRange(3)
@@ -95,7 +101,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	
 	@Override protected float getInertia() { return 0.99f; }
 	
-	public static void spawnShrapnelBurst(Level level, EntityType<? extends Shrapnel> type, Vec3 position, Vec3 initialVelocity, int count, double spread) {
+	public static void spawnShrapnelBurst(Level level, EntityType<? extends Shrapnel> type, Vec3 position, Vec3 initialVelocity, int count, double spread, float damage) {
 		Vec3 forward = initialVelocity.normalize();
 		Vec3 right = forward.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = forward.cross(right);
@@ -116,6 +122,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 			double rz = position.z + (random.nextDouble() - random.nextDouble()) * 0.0625d;
 			shrapnel.setPos(rx, ry, rz);
 			shrapnel.setDeltaMovement(vel);
+			shrapnel.setDamage(damage);
 			
 			if (!level.addFreshEntity(shrapnel)) {
 				++failCount;

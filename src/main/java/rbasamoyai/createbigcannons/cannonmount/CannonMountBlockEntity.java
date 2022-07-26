@@ -65,7 +65,12 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 			this.clientPitchDiff *= 0.5f;
 		}
 		
-		if (!this.running) return;
+		if (!this.running) {
+			if (CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) {
+				this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
+			}
+			return;
+		}
 		
 		if (!(this.mountedContraption != null && this.mountedContraption.isStalled())) {
 			float yawSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);

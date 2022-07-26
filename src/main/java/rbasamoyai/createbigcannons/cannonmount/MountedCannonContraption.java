@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
@@ -46,6 +47,7 @@ import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial.FailureMode;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
@@ -231,6 +233,7 @@ public class MountedCannonContraption extends Contraption {
 		int chargesUsed = 0;
 		int barrelTravelled = 0;
 		BlockPos currentPos = BlockPos.ZERO;
+		Random rand = level.getRandom();
 		
 		boolean failed = false;
 		CannonBlockEntityHolder<?> failedHolder = null;
@@ -241,7 +244,7 @@ public class MountedCannonContraption extends Contraption {
 			StructureBlockInfo containedBlockInfo = behavior.block();	
 			
 			if (CBCBlocks.POWDER_CHARGE.has(containedBlockInfo.state) && foundProjectile == null) {
-				if (!cbeh.blockInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && level.getRandom().nextDouble() < 0.25d) {
+				if (!cbeh.blockInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && rollBarrelBurst(rand)) {
 					failed = true;
 					failedHolder = cbeh;
 					break;
@@ -263,7 +266,7 @@ public class MountedCannonContraption extends Contraption {
 			if (foundProjectile != null) {
 				++barrelTravelled;
 				
-				if (chargesUsed > 0 && (double) barrelTravelled / (double) chargesUsed > this.cannonMaterial.squibRatio()) {
+				if (chargesUsed > 0 && (double) barrelTravelled / (double) chargesUsed > this.cannonMaterial.squibRatio() && rollSquib(rand)) {
 					cbeh.blockEntity.cannonBehavior().loadBlock(foundProjectile);
 					CompoundTag tag = cbeh.blockEntity.saveWithFullMetadata();
 					tag.remove("x");
@@ -316,6 +319,14 @@ public class MountedCannonContraption extends Contraption {
 		iter.set(new CannonBlockEntityHolder<>(cbeh.blockEntity, consumedInfo));
 	}
 	
+	private static boolean rollSquib(Random random) {
+		return random.nextFloat() <= CBCConfigs.SERVER.failure.squibChance.getF();
+	}
+	
+	private static boolean rollBarrelBurst(Random random) {
+		return random.nextFloat() <= CBCConfigs.SERVER.failure.barrelChargeBurstChance.getF();
+	}
+	
 	public void fail(BlockPos localPos, Level level, AbstractContraptionEntity entity, CannonBlockEntityHolder<?> cbeh, int charges) {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(cbeh.blockEntity.getBlockPos()), 1.0f);
 		if (this.cannonMaterial.failureMode() == FailureMode.RUPTURE) {
@@ -328,7 +339,8 @@ public class MountedCannonContraption extends Contraption {
 				iter.remove();
 			}
 			
-			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, charges * 2, Explosion.BlockInteraction.DESTROY);
+			float power = (float) charges * CBCConfigs.SERVER.failure.failureExplosionPower.getF();
+			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, power, Explosion.BlockInteraction.DESTROY);
 			entity.discard();
 		}
 	}

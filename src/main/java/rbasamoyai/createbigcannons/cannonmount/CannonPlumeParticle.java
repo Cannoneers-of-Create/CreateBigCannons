@@ -8,11 +8,13 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class CannonPlumeParticle extends NoRenderParticle {
 
 	private final Vec3 direction;
 	private final float scale;
+	private final boolean plumesEnabled = CBCConfigs.CLIENT.showCannonPlumes.get();
 	
 	private int life = 0;
 	private final int lifetime = 20;
@@ -25,6 +27,7 @@ public class CannonPlumeParticle extends NoRenderParticle {
 	
 	@Override
 	public void tick() {
+		if (!this.plumesEnabled) return;
 		int count = Mth.ceil(this.scale * 20);
 		
 		Vec3 right = this.direction.cross(new Vec3(Direction.UP.step()));
