@@ -109,5 +109,5 @@
   "item.createbigcannons.timed_fuze.tooltip.condition1": "Когда нажата кнопка R",
   "item.createbigcannons.timed_fuze.tooltip.condition2": "Подрыв",
   "item.createbigcannons.timed_fuze.tooltip.summary": "Детонирует снаряд по истечению _заданого времени_ после запуска.",
-  "itemGroup.createbigcannons": "Create: Большие Пушки"
+  "itemGroup.createbigcannons": "Create Big Cannons"
 }
