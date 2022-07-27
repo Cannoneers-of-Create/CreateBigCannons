@@ -11,6 +11,8 @@ import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
+import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
 
 public class CBCBuilderTransformers {
@@ -56,7 +58,7 @@ public class CBCBuilderTransformers {
 						.texture("particle", topLoc)));
 	}
 	
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreech(String pathAndMaterial) {
+	public static <T extends Block & CannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreech(String pathAndMaterial) {
 		ResourceLocation itemBaseLoc = CreateBigCannons.resource("block/sliding_breech_item");
 		ResourceLocation holeLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_hole");
 		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_side");
@@ -69,7 +71,7 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
 				.blockstate(new SlidingBreechBlockGen(pathAndMaterial)::generate)
-				.item()
+				.item(CannonBlockItem::new)
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 					.texture("hole", holeLoc)
 					.texture("side", sideLoc)

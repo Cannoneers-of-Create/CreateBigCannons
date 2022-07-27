@@ -139,7 +139,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		if (!this.running) {
 			return this.cannonPitch;
 		}
-		return this.cannonPitch + convertToAngular(this.getSpeed()) * 0.1f * partialTicks;
+		return this.cannonPitch + convertToAngular(this.getSpeed()) * 0.125f * partialTicks;
 	}
 	
 	public void setPitch(float pitch) { this.cannonPitch = pitch; }
@@ -156,7 +156,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		if (!this.running) {
 			return this.cannonYaw;
 		}
-		return this.cannonYaw + convertToAngular(this.getYawSpeed()) * 0.1f * partialTicks;
+		return this.cannonYaw + convertToAngular(this.getYawSpeed()) * 0.125f * partialTicks;
 	}
 	
 	public void setYaw(float yaw) { this.cannonYaw = yaw; }
@@ -166,7 +166,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	}
 	
 	public float getAngularSpeed(Supplier<Float> sup, float clientDiff) {
-		float speed = convertToAngular(sup.get()) * 0.1f;
+		float speed = convertToAngular(sup.get()) * 0.125f;
 		if (sup.get() == 0) {
 			speed = 0;
 		}

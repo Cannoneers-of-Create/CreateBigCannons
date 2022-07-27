@@ -22,6 +22,7 @@ import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBarrelBlock;
+import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonChamberBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
@@ -48,14 +49,14 @@ public class CBCBlocks {
 			.block("cast_iron_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.CAST_IRON))
 			.transform(castIron())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/cast_iron"))
-			.simpleItem()
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonChamberBlock> CAST_IRON_CANNON_CHAMBER = REGISTRATE
 			.block("cast_iron_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.CAST_IRON))
 			.transform(castIron())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/cast_iron"))
-			.simpleItem()
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonEndBlock> CAST_IRON_CANNON_END = REGISTRATE
@@ -78,21 +79,21 @@ public class CBCBlocks {
 			.block("bronze_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.BRONZE))
 			.transform(castIron())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/bronze"))
-			.simpleItem()
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonChamberBlock> BRONZE_CANNON_CHAMBER = REGISTRATE
 			.block("bronze_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.BRONZE))
 			.transform(castIron())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/bronze"))
-			.simpleItem()
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonEndBlock> BRONZE_CANNON_END = REGISTRATE
 			.block("bronze_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.BRONZE))
 			.transform(castIron())
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/bronze"))
-			.simpleItem()
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<SlidingBreechBlock> BRONZE_SLIDING_BREECH = REGISTRATE

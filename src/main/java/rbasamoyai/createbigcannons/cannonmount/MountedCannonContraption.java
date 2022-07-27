@@ -26,6 +26,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -354,12 +355,21 @@ public class MountedCannonContraption extends Contraption {
 	
 	public void fail(BlockPos localPos, Level level, AbstractContraptionEntity entity, CannonBlockEntityHolder<?> cbeh, int charges) {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(cbeh.blockEntity.getBlockPos()), 1.0f);
+		float failScale = CBCConfigs.SERVER.failure.failureExplosionPower.getF();
 		if (this.cannonMaterial.failureMode() == FailureMode.RUPTURE) {
-			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 3, Explosion.BlockInteraction.NONE);
+			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2 * failScale + 1, Explosion.BlockInteraction.NONE);
 			if (this.anchor != null) {
+				int failInt = Mth.ceil(failScale);
+				BlockPos startPos = localPos.relative(this.initialOrientation.getOpposite(), failInt);
+				for (int i = 0; i < failInt * 2 + 1; ++i) {
+					BlockPos pos = startPos.relative(this.initialOrientation, i);
+					this.blocks.remove(pos);
+					this.cannonBlockEntities.removeIf(cbeh1 -> cbeh.blockInfo.pos.equals(pos));
+				}
+				
 				BlockEntity possibleMount = entity.getLevel().getBlockEntity(this.anchor.below(2));
 				if (possibleMount instanceof CannonMountBlockEntity) {
-					((CannonMountBlockEntity) possibleMount).disassemble();;
+					((CannonMountBlockEntity) possibleMount).disassemble();
 				}
 			}
 		} else {
@@ -370,7 +380,7 @@ public class MountedCannonContraption extends Contraption {
 				iter.remove();
 			}
 			
-			float power = (float) charges * CBCConfigs.SERVER.failure.failureExplosionPower.getF();
+			float power = (float) charges * failScale;
 			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, power, Explosion.BlockInteraction.DESTROY);
 			entity.discard();
 		}

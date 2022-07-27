@@ -31,6 +31,7 @@ public class ImpactFuzeItem extends FuzeItem {
 	
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
 		ItemDescription.Palette palette = AllSections.of(stack).getTooltipPalette();
 		if (Screen.hasShiftDown()) {
 			String key = this.getDescriptionId() + ".tooltip.chance";
