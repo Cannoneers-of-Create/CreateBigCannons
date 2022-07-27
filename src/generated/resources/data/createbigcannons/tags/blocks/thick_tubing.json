@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "createbigcannons:wrought_iron_cannon_chamber",
     "createbigcannons:cast_iron_cannon_chamber",
     "createbigcannons:bronze_cannon_chamber"
   ]

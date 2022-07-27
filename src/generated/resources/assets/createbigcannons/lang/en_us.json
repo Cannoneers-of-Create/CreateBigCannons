@@ -40,6 +40,8 @@
   "block.createbigcannons.solid_shot.tooltip": "SOLID SHOT",
   "block.createbigcannons.solid_shot.tooltip.summary": "_High penetrating force._ Best suited for _soft targets_ such as _wooden structures and thin walls_. _Cannot be fuzed and detonated._",
   "block.createbigcannons.worm_head": "Worm Head",
+  "block.createbigcannons.wrought_iron_cannon_chamber": "Wrought Iron Cannon Chamber",
+  "block.createbigcannons.wrought_iron_cannon_end": "Wrought Iron Cannon End",
   "block.createbigcannons.yaw_controller": "Yaw Controller",
   "createbigcannons.gui.set_timed_fuze.time": "Fuze Time: %s s %s ticks",
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.header": "Loading Big Cannons",
