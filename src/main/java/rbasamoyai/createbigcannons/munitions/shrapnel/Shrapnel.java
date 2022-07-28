@@ -73,7 +73,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	}
 	
 	protected TagKey<Block> getDestroyBlockTag() {
-		return CBCTags.BlockCBC.SHRAPNEL_DESTROYS;
+		return CBCTags.BlockCBC.SHRAPNEL_SHATTERABLE;
 	}
 	
 	@Override
