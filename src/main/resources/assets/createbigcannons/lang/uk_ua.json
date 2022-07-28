@@ -106,7 +106,7 @@
   "item.createbigcannons.impact_fuze.tooltip.summary": "Вибухає коли снаряд _вдаряється в щось_. Через _занадто простого механізму спрацьовування_, він не завжди детонує при попаданні.",
   "item.createbigcannons.timed_fuze": "Детонатор із Таймером",
   "item.createbigcannons.timed_fuze.tooltip": "ДЕТОНАТОР ІЗ ТАЙМЕРОМ",
-  "item.createbigcannons.timed_fuze.tooltip.behaviour1": "Відкриває меню _Встановлення Таймера Підривника_ , де таймер підривника може бути змінено.",
+  "item.createbigcannons.timed_fuze.tooltip.behaviour1": "Відкриває меню _Встановлення Таймера Детонатора_ , де таймер Детонатора може бути змінено.",
   "item.createbigcannons.timed_fuze.tooltip.behaviour2": "Підривник підриває снаряд, після певного часу після пострілу.",
   "item.createbigcannons.timed_fuze.tooltip.condition1": "Коли натиснуто кнопку R",
   "item.createbigcannons.timed_fuze.tooltip.condition2": "Підрив",
