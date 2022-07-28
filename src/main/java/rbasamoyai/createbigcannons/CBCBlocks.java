@@ -43,32 +43,48 @@ public class CBCBlocks {
 		REGISTRATE.startSection(AllSections.KINETICS);
 	}
 	
+	//////// Wrought Iron cannon blocks ////////
+	
+	public static final BlockEntry<CannonChamberBlock> WROUGHT_IRON_CANNON_CHAMBER = REGISTRATE
+			.block("wrought_iron_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.WROUGHT_IRON))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/wrought_iron"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonEndBlock> WROUGHT_IRON_CANNON_END = REGISTRATE
+			.block("wrought_iron_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.WROUGHT_IRON))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/wrought_iron"))
+			.simpleItem()
+			.register();
+	
 	//////// Cast Iron cannon blocks ////////
 	
 	public static final BlockEntry<CannonBarrelBlock> CAST_IRON_CANNON_BARREL = REGISTRATE
 			.block("cast_iron_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.CAST_IRON))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/cast_iron"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonChamberBlock> CAST_IRON_CANNON_CHAMBER = REGISTRATE
 			.block("cast_iron_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.CAST_IRON))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/cast_iron"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonEndBlock> CAST_IRON_CANNON_END = REGISTRATE
 			.block("cast_iron_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.CAST_IRON))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/cast_iron"))
 			.simpleItem()
 			.register();
 	
 	public static final BlockEntry<SlidingBreechBlock> CAST_IRON_SLIDING_BREECH = REGISTRATE
 			.block("cast_iron_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.CAST_IRON))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
 			.transform(BlockStressDefaults.setImpact(16.0d))
 			.register();
@@ -77,28 +93,28 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<CannonBarrelBlock> BRONZE_CANNON_BARREL = REGISTRATE
 			.block("bronze_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.BRONZE))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/bronze"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonChamberBlock> BRONZE_CANNON_CHAMBER = REGISTRATE
 			.block("bronze_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.BRONZE))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/bronze"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonEndBlock> BRONZE_CANNON_END = REGISTRATE
 			.block("bronze_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.BRONZE))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/bronze"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<SlidingBreechBlock> BRONZE_SLIDING_BREECH = REGISTRATE
 			.block("bronze_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.BRONZE))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
 			.transform(BlockStressDefaults.setImpact(12.0d))
 			.register();
@@ -200,7 +216,7 @@ public class CBCBlocks {
 			.transform(CBCBuilderTransformers.yawController())
 			.register();
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> castIron() {
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock() {
 		return b -> b.initialProperties(Material.METAL)
 				.properties(p -> p.strength(5.0f, 6.0f))
 				.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
