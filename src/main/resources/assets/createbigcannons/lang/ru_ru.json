@@ -43,7 +43,7 @@
   "block.createbigcannons.wrought_iron_cannon_chamber": "Камера сгорания Кованой Пушки",
   "block.createbigcannons.wrought_iron_cannon_end": "Конец Кованой Пушки",
   "block.createbigcannons.yaw_controller": "Контроллер поворота Пушки",
-  "createbigcannons.gui.set_timed_fuze.time": "Время срабатывания: %s s %s тиков",
+  "createbigcannons.gui.set_timed_fuze.time": "Время срабатывания: %s s %s тактов",
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.header": "Заряжает Пушки",
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.text_1": "Заряжатели Пушек работают также как и механические поршни, используя Удлинители Поршней что-бы увеличить дальность заряжания.",
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.text_2": "Они должны быть оснащены Головками что-бы хоть что-то делать, Такими как Червячная Головка или Толкательная Головка.",
