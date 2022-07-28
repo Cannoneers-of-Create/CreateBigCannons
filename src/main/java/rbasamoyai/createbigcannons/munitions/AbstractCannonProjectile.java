@@ -67,6 +67,8 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		super.onHitEntity(result);
 		if (!this.level.isClientSide) {
 			Entity entity = result.getEntity();
+			if (entity instanceof AbstractCannonProjectile) return;
+			
 			entity.setDeltaMovement(this.getDeltaMovement().scale(2.0f));
 			entity.hurt(DamageSource.thrown(this, null), 50);
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
