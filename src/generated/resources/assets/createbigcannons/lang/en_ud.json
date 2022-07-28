@@ -29,6 +29,8 @@
   "block.createbigcannons.he_shell.tooltip.behaviour1": "\u02D9\u203E\u27D8N\u27D8\u203E u\u0250\u0265\u0287 \u0279\u01DD\u028Dod \u01DD\u0279o\u026F \u0287\u0131q \u0250 \u0265\u0287\u0131\u028D s\u01DDpo\u05DFdx\u018E",
   "block.createbigcannons.he_shell.tooltip.condition1": "uo\u0131\u0287\u0250uo\u0287\u01DD\u15E1 uO",
   "block.createbigcannons.he_shell.tooltip.summary": "\u02D9p\u05DF\u01DD\u0131\u025F\u01DD\u05DF\u0287\u0287\u0250q \u01DD\u0265\u0287 o\u0287 \u01DD\u0254\u0279o\u025F \u203E\u01DD\u028C\u0131so\u05DFdx\u01DD\u203E s\u0279\u01DD\u028C\u0131\u05DF\u01DD\u15E1",
+  "block.createbigcannons.log_cannon_chamber": "\u0279\u01DDq\u026F\u0250\u0265\u0186 uouu\u0250\u0186 bo\uA780",
+  "block.createbigcannons.log_cannon_end": "pu\u018E uouu\u0250\u0186 bo\uA780",
   "block.createbigcannons.powder_charge": "\u01DDb\u0279\u0250\u0265\u0186 \u0279\u01DDp\u028Do\u0500",
   "block.createbigcannons.ram_head": "p\u0250\u01DDH \u026F\u0250\u1D1A",
   "block.createbigcannons.shrapnel_shell": "\u05DF\u05DF\u01DD\u0265S \u05DF\u01DDud\u0250\u0279\u0265S",

@@ -43,6 +43,22 @@ public class CBCBlocks {
 		REGISTRATE.startSection(AllSections.KINETICS);
 	}
 	
+	//////// Log cannon blocks ////////
+	
+	public static final BlockEntry<CannonChamberBlock> LOG_CANNON_CHAMBER = REGISTRATE
+			.block("log_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.LOG))
+			.transform(logCannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/log"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonEndBlock> LOG_CANNON_END = REGISTRATE
+			.block("log_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.LOG))
+			.transform(logCannonBlock())
+			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/log"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
 	//////// Wrought Iron cannon blocks ////////
 	
 	public static final BlockEntry<CannonChamberBlock> WROUGHT_IRON_CANNON_CHAMBER = REGISTRATE
@@ -56,7 +72,7 @@ public class CBCBlocks {
 			.block("wrought_iron_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.WROUGHT_IRON))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/wrought_iron"))
-			.simpleItem()
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	//////// Cast Iron cannon blocks ////////
@@ -79,7 +95,7 @@ public class CBCBlocks {
 			.block("cast_iron_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.CAST_IRON))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/cast_iron"))
-			.simpleItem()
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<SlidingBreechBlock> CAST_IRON_SLIDING_BREECH = REGISTRATE
@@ -223,6 +239,13 @@ public class CBCBlocks {
 				.properties(p -> p.requiresCorrectToolForDrops())
 				.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 				.tag(BlockTags.NEEDS_IRON_TOOL);
+	}
+	
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> logCannonBlock() {
+		return b -> b.initialProperties(Material.WOOD, MaterialColor.CRIMSON_STEM)
+				.properties(p -> p.strength(2.0f))
+				.properties(p -> p.sound(SoundType.WOOD))
+				.tag(BlockTags.MINEABLE_WITH_AXE);
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> shell(MaterialColor color) {

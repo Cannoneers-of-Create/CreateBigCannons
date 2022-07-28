@@ -17,6 +17,8 @@ public class ModGroup {
 		public void fillItemList(NonNullList<ItemStack> list) {
 			list.add(CBCBlocks.CANNON_MOUNT.asStack());
 			list.add(CBCBlocks.YAW_CONTROLLER.asStack());
+			list.add(CBCBlocks.LOG_CANNON_END.asStack());
+			list.add(CBCBlocks.LOG_CANNON_CHAMBER.asStack());
 			list.add(CBCBlocks.WROUGHT_IRON_CANNON_END.asStack());
 			list.add(CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER.asStack());
 			list.add(CBCBlocks.CAST_IRON_CANNON_END.asStack());
