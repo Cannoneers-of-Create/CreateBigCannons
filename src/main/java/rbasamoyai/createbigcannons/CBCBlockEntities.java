@@ -23,15 +23,18 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<CannonBlockEntity> CANNON = CreateBigCannons.registrate()
 			.tileEntity("cannon", CannonBlockEntity::new)
-			.validBlocks(CBCBlocks.CAST_IRON_CANNON_BARREL, CBCBlocks.CAST_IRON_CANNON_CHAMBER,
-						CBCBlocks.BRONZE_CANNON_BARREL, CBCBlocks.BRONZE_CANNON_CHAMBER)
+			.validBlocks(CBCBlocks.LOG_CANNON_CHAMBER,
+						CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER,
+						CBCBlocks.CAST_IRON_CANNON_BARREL, CBCBlocks.CAST_IRON_CANNON_CHAMBER,
+						CBCBlocks.BRONZE_CANNON_BARREL, CBCBlocks.BRONZE_CANNON_CHAMBER,
+						CBCBlocks.STEEL_CANNON_BARREL, CBCBlocks.STEEL_CANNON_CHAMBER)
 			.register();
 	
 	public static final BlockEntityEntry<SlidingBreechBlockEntity> SLIDING_BREECH = CreateBigCannons.registrate()
 			.tileEntity("sliding_breech", SlidingBreechBlockEntity::new)
 			.instance(() -> SlidingBreechInstance::new, false)
 			.renderer(() -> SlidingBreechBlockEntityRenderer::new)
-			.validBlocks(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH)
+			.validBlocks(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
 			.register();
 	
 	public static final BlockEntityEntry<CannonLoaderBlockEntity> CANNON_LOADER = CreateBigCannons.registrate()

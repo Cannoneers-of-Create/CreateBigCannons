@@ -135,6 +135,29 @@ public class CBCBlocks {
 			.transform(BlockStressDefaults.setImpact(12.0d))
 			.register();
 	
+	//////// Steel cannon blocks ////////
+	
+	public static final BlockEntry<CannonBarrelBlock> STEEL_CANNON_BARREL = REGISTRATE
+			.block("steel_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.STEEL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/steel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonChamberBlock> STEEL_CANNON_CHAMBER = REGISTRATE
+			.block("steel_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.STEEL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/steel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<SlidingBreechBlock> STEEL_SLIDING_BREECH = REGISTRATE
+			.block("steel_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.STEEL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
+			.transform(BlockStressDefaults.setImpact(32.0d))
+			.register();
+	
 	//////// Other blocks ////////
 	
 	public static final BlockEntry<CannonLoaderBlock> CANNON_LOADER = REGISTRATE

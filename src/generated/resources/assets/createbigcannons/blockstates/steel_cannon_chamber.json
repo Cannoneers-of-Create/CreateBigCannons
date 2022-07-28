@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "createbigcannons:block/steel_cannon_chamber",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "createbigcannons:block/steel_cannon_chamber"
+    },
+    "axis=z": {
+      "model": "createbigcannons:block/steel_cannon_chamber",
+      "x": 90,
+      "y": 180
+    }
+  }
+}

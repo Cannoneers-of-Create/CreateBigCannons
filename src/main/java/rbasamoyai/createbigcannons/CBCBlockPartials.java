@@ -15,6 +15,7 @@ public class CBCBlockPartials {
 	public static final PartialModel
 		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.CAST_IRON, "sliding_breechblock/cast_iron_sliding_breechblock"),
 		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.BRONZE, "sliding_breechblock/bronze_sliding_breechblock"),
+		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.STEEL, "sliding_breechblock/steel_sliding_breechblock"),
 		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
 		YAW_SHAFT = block("cannon_mount/yaw_axis"),
 		FUZE = block("fuze");
