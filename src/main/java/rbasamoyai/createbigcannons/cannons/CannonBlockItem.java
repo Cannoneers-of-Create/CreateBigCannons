@@ -66,11 +66,11 @@ public class CannonBlockItem<T extends Block & CannonBlock> extends BlockItem {
 			}
 			
 			tooltip.add(new TextComponent(I18n.get(rootKey + ".squibRatio")).withStyle(ChatFormatting.GRAY));
-			double squibRatio = material.squibRatio();
 			if (hasGoggles) {
-				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".squibRatio.goggles", String.format("%.2f", squibRatio)), palette.color, palette.hColor, 1));
+				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".squibRatio.goggles", material.squibRatioNum(), material.squibRatioDem()), palette.color, palette.hColor, 1));
 			} else {
-				tooltip.add(getNoGogglesMeter(squibRatio < 1d ? 0 : Mth.ceil(squibRatio * 5d / 3d), false, true));
+				double squibRatio = material.squibRatio();
+				tooltip.add(getNoGogglesMeter(squibRatio < 1d ? 0 : Mth.ceil(material.squibRatio() * 5d / 3d), false, true));
 			}
 			
 			tooltip.add(new TextComponent(I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));

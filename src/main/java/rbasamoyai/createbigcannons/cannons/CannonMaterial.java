@@ -6,12 +6,12 @@ import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
-public record CannonMaterial(ResourceLocation name, double squibRatio, float weight, int maxSafeCharges, FailureMode failureMode) {
+public record CannonMaterial(ResourceLocation name, int squibRatioNum, int squibRatioDem, float weight, int maxSafeCharges, FailureMode failureMode) {
 
 	public static final Map<ResourceLocation, CannonMaterial> CANNON_MATERIALS = new HashMap<>();
 	
-	public static CannonMaterial register(ResourceLocation loc, double squibRatio, float weight, int maxCharges, FailureMode failureMode) {
-		CannonMaterial material = new CannonMaterial(loc, squibRatio, weight, maxCharges, failureMode);
+	public static CannonMaterial register(ResourceLocation loc, int num, int dem, float weight, int maxCharges, FailureMode failureMode) {
+		CannonMaterial material = new CannonMaterial(loc, num, dem, weight, maxCharges, failureMode);
 		CANNON_MATERIALS.put(material.name(), material);
 		return material;
 	}
@@ -21,12 +21,12 @@ public record CannonMaterial(ResourceLocation name, double squibRatio, float wei
 	}
 	
 	public static final CannonMaterial
-		LOG = register(CreateBigCannons.resource("log"), 0d / 1d, 1.0f, 0, FailureMode.FRAGMENT),
-		WROUGHT_IRON = register(CreateBigCannons.resource("cast_iron"), 1d / 1d, 2.0f, 1, FailureMode.RUPTURE),
-		CAST_IRON = register(CreateBigCannons.resource("cast_iron"), 1d / 1d, 3.0f, 2, FailureMode.FRAGMENT),
-		BRONZE = register(CreateBigCannons.resource("bronze"), 3d / 2d, 2.0f, 4, FailureMode.RUPTURE),
-		STEEL = register(CreateBigCannons.resource("steel"), 2d / 1d, 5.0f, 6, FailureMode.FRAGMENT),
-		NETHER_GUNMETAL = register(CreateBigCannons.resource("nether_gunmetal"), 3d / 1d, 6.0f, 8, FailureMode.RUPTURE);
+		LOG = register(CreateBigCannons.resource("log"), 0, 1, 1.0f, 0, FailureMode.FRAGMENT),
+		WROUGHT_IRON = register(CreateBigCannons.resource("cast_iron"), 1, 1, 2.0f, 1, FailureMode.RUPTURE),
+		CAST_IRON = register(CreateBigCannons.resource("cast_iron"), 1, 1, 3.0f, 2, FailureMode.FRAGMENT),
+		BRONZE = register(CreateBigCannons.resource("bronze"), 3, 2, 2.0f, 4, FailureMode.RUPTURE),
+		STEEL = register(CreateBigCannons.resource("steel"), 2, 1, 5.0f, 6, FailureMode.FRAGMENT),
+		NETHER_GUNMETAL = register(CreateBigCannons.resource("nether_gunmetal"), 3, 1, 6.0f, 8, FailureMode.RUPTURE);
 	
 	/**
 	 * The squib ratio describes the maximum ratio of <b>cannon barrel</b> to
@@ -36,9 +36,8 @@ public record CannonMaterial(ResourceLocation name, double squibRatio, float wei
 	 * 
 	 * @return A double representing the squib ratio of the material
 	 */
-	@Override // overriden for note
 	public double squibRatio() {
-		return this.squibRatio;
+		return this.squibRatioDem == 0 ? 0 : (double) this.squibRatioNum / (double) this.squibRatioDem;
 	}
 	
 	public enum FailureMode {
