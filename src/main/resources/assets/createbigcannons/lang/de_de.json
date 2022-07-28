@@ -1,6 +1,6 @@
 {
     "block.createbigcannons.bag_of_grapeshot": "Traubenhagel Beutel",
-    "block.createbigcannons.bag_of_grapeshot.tooltip": "TRUABENHAGEL BEUTEL",
+    "block.createbigcannons.bag_of_grapeshot.tooltip": "TRAUBENHAGEL BEUTEL",
     "block.createbigcannons.bag_of_grapeshot.tooltip.behaviour1": "Setzt Traubenhagel frei. _Zerfällt beim Abschuss._",
     "block.createbigcannons.bag_of_grapeshot.tooltip.condition1": "Beim Abschuss",
     "block.createbigcannons.bag_of_grapeshot.tooltip.summary": "Enthält _Traubenhagel_, das weiche Blöcke wie _Holz_ beschädigen kann.",
