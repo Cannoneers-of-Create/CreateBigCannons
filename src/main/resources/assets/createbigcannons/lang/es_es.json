@@ -1,7 +1,7 @@
 {
   "block.createbigcannons.bag_of_grapeshot": "Bolsa de perdigones",
   "block.createbigcannons.bag_of_grapeshot.tooltip": "BOLSA DE PERDIGONES",
-  "block.createbigcannons.bag_of_grapeshot.tooltip.behaviour1": "Lanza los perdigones. Se desintegra al disparar.",
+  "block.createbigcannons.bag_of_grapeshot.tooltip.behaviour1": "Lanza los perdigones. _Se desintegra al disparar._",
   "block.createbigcannons.bag_of_grapeshot.tooltip.condition1": "Mientras dispara",
   "block.createbigcannons.bag_of_grapeshot.tooltip.summary": "Contiene _perdigones_, que puede dañar bloques blandos como la _madera_.",
   "block.createbigcannons.bronze_cannon_barrel": "Tambor de cañón de bronze",
