@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannonmount;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
@@ -14,7 +16,7 @@ public class CannonPlumeParticle extends NoRenderParticle {
 
 	private final Vec3 direction;
 	private final float scale;
-	private final boolean plumesEnabled = CBCConfigs.CLIENT.showCannonPlumes.get();
+	private final boolean plumesEnabled;
 	
 	private int life = 0;
 	private final int lifetime = 20;
@@ -23,6 +25,8 @@ public class CannonPlumeParticle extends NoRenderParticle {
 		super(level, x, y, z);
 		this.direction = direction;
 		this.scale = scale;
+		Minecraft mc = Minecraft.getInstance();
+		this.plumesEnabled = CBCConfigs.CLIENT.showCannonPlumes.get() && mc.options.particles == ParticleStatus.ALL;
 	}
 	
 	@Override

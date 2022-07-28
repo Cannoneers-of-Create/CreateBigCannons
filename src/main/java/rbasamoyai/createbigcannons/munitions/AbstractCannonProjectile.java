@@ -53,12 +53,14 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			}
 		}
 		super.tick();
-		for (int i = 0; i < 10; ++i) {
-			double partial = i * 0.1f;
-			double dx = Mth.lerp(partial, this.xOld, this.getX());
-			double dy = Mth.lerp(partial, this.yOld, this.getY());
-			double dz = Mth.lerp(partial, this.zOld, this.getZ());
-			this.level.addParticle(this.getTrailParticle(), dx, dy, dz, 0.0d, 0.0d, 0.0d);
+		if (!this.isInGround()) {
+			for (int i = 0; i < 10; ++i) {
+				double partial = i * 0.1f;
+				double dx = Mth.lerp(partial, this.xOld, this.getX());
+				double dy = Mth.lerp(partial, this.yOld, this.getY());
+				double dz = Mth.lerp(partial, this.zOld, this.getZ());
+				this.level.addParticle(this.getTrailParticle(), dx, dy, dz, 0.0d, 0.0d, 0.0d);
+			}
 		}
 	}
 	
