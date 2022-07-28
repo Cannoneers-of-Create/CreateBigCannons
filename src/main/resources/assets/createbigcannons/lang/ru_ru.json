@@ -15,7 +15,6 @@
   "block.createbigcannons.cannon.tooltip.squibRatio": "Пропорция Взрыва",
   "block.createbigcannons.cannon.tooltip.squibRatio.goggles": "_%s Ствол(ов) присоединено_ к _%s Заряд(ов) Пороха_",
   "block.createbigcannons.cannon.tooltip.strength": "Прочность",
-  "block.createbigcannons.cannon.tooltip.strength.goggles": "_%s (s)_",
   "block.createbigcannons.cannon.tooltip.strength.goggles": "_%s Заряд(ов) Пороха_",
   "block.createbigcannons.cannon.tooltip.weightImpact": "Сила Столкновения",
   "block.createbigcannons.cannon.tooltip.weightImpact.goggles": "_%sx Об/мин_",
