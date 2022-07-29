@@ -11,7 +11,6 @@ import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
@@ -42,7 +41,7 @@ public class ScrewBreechInstance extends HalfShaftInstance implements DynamicIns
 		Vector3f height = normal.copy();
 		height.mul(heightOffset);
 		
-		boolean isY = this.facing.getAxis() == Axis.Y;
+		boolean isY = this.facing.getAxis() == Direction.Axis.Y;
 		Quaternion q = Vector3f.XP.rotationDegrees(isY ? this.facing == Direction.DOWN ? 180.0f : 0.0f : 90.0f);
 		Quaternion q1 = Vector3f.YP.rotationDegrees(isY ? 0.0f : -this.facing.toYRot());
 		Quaternion q2 = normal.rotationDegrees(rotationOffset);

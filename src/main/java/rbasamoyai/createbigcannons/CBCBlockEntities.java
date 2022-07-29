@@ -13,6 +13,7 @@ import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerInstance;
 import rbasamoyai.createbigcannons.cannons.CannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechInstance;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntityRenderer;
@@ -42,6 +43,7 @@ public class CBCBlockEntities {
 	public static final BlockEntityEntry<ScrewBreechBlockEntity> SCREW_BREECH = CreateBigCannons.registrate()
 			.tileEntity("screw_breech", ScrewBreechBlockEntity::new)
 			.instance(() -> ScrewBreechInstance::new, false)
+			.renderer(() -> ScrewBreechBlockEntityRenderer::new)
 			.validBlocks(CBCBlocks.STEEL_SCREW_BREECH)
 			.register();
 	
