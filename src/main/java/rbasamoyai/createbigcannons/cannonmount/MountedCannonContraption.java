@@ -58,6 +58,7 @@ public class MountedCannonContraption extends Contraption {
 	private Direction initialOrientation = Direction.NORTH;
 	private BlockPos startPos = BlockPos.ZERO;
 	private List<CannonBlockEntityHolder<?>> cannonBlockEntities = new ArrayList<>();
+	private boolean isWeakBreech = false;
 	
 	public MountedCannonContraption() {}
 	
@@ -101,6 +102,7 @@ public class MountedCannonContraption extends Contraption {
 			BlockState nextState = level.getBlockState(pos.relative(startFacing));
 			
 			CannonEnd cannonEnd = CannonEnd.CLOSED;
+			this.isWeakBreech = startState.is(CBCTags.BlockCBC.WEAK_CANNON_END);
 			
 			while (this.isValidCannonBlock(level, nextState, start.relative(startFacing)) && this.isConnectedToCannon(level, nextState, startFacing, material)) {
 				start = start.relative(startFacing);
@@ -244,6 +246,10 @@ public class MountedCannonContraption extends Contraption {
 		float spreadAdd = CBCConfigs.SERVER.cannons.powderChargeSpread.getF();
 		float spreadSub = CBCConfigs.SERVER.cannons.barrelSpreadReduction.getF();
 		
+		int maxSafeCharges = this.isWeakBreech
+				? Math.min(this.cannonMaterial.maxSafeCharges(), CBCConfigs.SERVER.cannons.weakBreechStrength.get())
+				: this.cannonMaterial.maxSafeCharges();
+		
 		for (ListIterator<CannonBlockEntityHolder<?>> iter = this.cannonBlockEntities.listIterator(); iter.hasNext(); ) {
 			CannonBlockEntityHolder<?> cbeh = iter.next();
 			
@@ -256,19 +262,16 @@ public class MountedCannonContraption extends Contraption {
 			StructureBlockInfo containedBlockInfo = behavior.block();	
 			
 			if (CBCBlocks.POWDER_CHARGE.has(containedBlockInfo.state) && foundProjectile == null) {
-				if (!cbeh.blockInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && rollBarrelBurst(rand)) {
-					failed = true;
-					failedHolder = cbeh;
-					break;
-				}
-				if (chargesUsed > this.cannonMaterial.maxSafeCharges() && rollOverloadBurst(rand)) {
-					failed = true;
-					failedHolder = cbeh;
-					break;
-				}
 				this.consumeBlock(behavior, cbeh, iter);
 				++chargesUsed;
 				spread += spreadAdd;
+				
+				if (!cbeh.blockInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && rollBarrelBurst(rand)
+					|| chargesUsed > maxSafeCharges && rollOverloadBurst(rand)) {
+					failed = true;
+					failedHolder = cbeh;
+					break;
+				}
 			} else if (containedBlockInfo.state.getBlock() instanceof ProjectileBlock && foundProjectile == null) {
 				if (chargesUsed == 0) return;
 				foundProjectile = containedBlockInfo;
@@ -416,6 +419,7 @@ public class MountedCannonContraption extends Contraption {
 			tag.putString("InitialOrientation", this.initialOrientation.getSerializedName());
 		}
 		tag.putLong("LocalStartingPos", this.startPos == null ? 0L : this.startPos.asLong());
+		tag.putBoolean("WeakBreech", this.isWeakBreech);
 		return tag;
 	}
 	
@@ -425,6 +429,7 @@ public class MountedCannonContraption extends Contraption {
 		this.cannonMaterial = CannonMaterial.fromName(new ResourceLocation(tag.getString("CannonMaterial")));
 		this.initialOrientation = tag.contains("InitialOrientation", Tag.TAG_STRING) ? Direction.byName(tag.getString("InitialOrientation")) : Direction.NORTH;
 		this.startPos = BlockPos.of(tag.getLong("LocalStartingPos"));
+		this.isWeakBreech = tag.getBoolean("WeakBreech");
 		this.loadBlockEntities();
 	}
 	

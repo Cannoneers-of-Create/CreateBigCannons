@@ -16,6 +16,8 @@
   "block.createbigcannons.cannon.tooltip.squibRatio.goggles": "\u203E)s(\u01DDb\u0279\u0250\u0265\u0186 \u0279\u01DDp\u028Do\u0500 %s\u203E o\u0287 \u203Ep\u01DD\u05DF\u05DF\u01DD\u028C\u0250\u0279\u0287 )s(\u05DF\u01DD\u0279\u0279\u0250q %s\u203E",
   "block.createbigcannons.cannon.tooltip.strength": "\u0265\u0287bu\u01DD\u0279\u0287S",
   "block.createbigcannons.cannon.tooltip.strength.goggles": "\u203E)s(\u01DDb\u0279\u0250\u0265\u0186 \u0279\u01DDp\u028Do\u0500 %s\u203E",
+  "block.createbigcannons.cannon.tooltip.weakCannonEnd": "pu\u018E uouu\u0250\u0186 \u029E\u0250\u01DDM",
+  "block.createbigcannons.cannon.tooltip.weakCannonEnd.desc": "\u02D9\u203E)s(\u01DDb\u0279\u0250\u0265\u0186 \u0279\u01DDp\u028Do\u0500 %s\u203E o\u0287 dn \u01DD\u05DFpu\u0250\u0265 \u028E\u05DF\u01DD\u025F\u0250s \u028E\u05DFuo u\u0250\u0254 bu\u0131so\u05DF\u0254 \u01DD\u0265\u0287 s\u0250 s\u0131\u0265\u0287 \u0265\u0287\u0131\u028D \u0287\u05DF\u0131nq suouu\u0250\u0186",
   "block.createbigcannons.cannon.tooltip.weightImpact": "\u0287\u0254\u0250d\u026FI \u0287\u0265b\u0131\u01DDM",
   "block.createbigcannons.cannon.tooltip.weightImpact.goggles": "\u203EW\u0500\u1D1A x%s\u203E",
   "block.createbigcannons.cannon_loader": "\u0279\u01DDp\u0250o\uA780 uouu\u0250\u0186",

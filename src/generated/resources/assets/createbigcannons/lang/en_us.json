@@ -16,6 +16,8 @@
   "block.createbigcannons.cannon.tooltip.squibRatio.goggles": "_%s barrel(s) travelled_ to _%s Powder Charge(s)_",
   "block.createbigcannons.cannon.tooltip.strength": "Strength",
   "block.createbigcannons.cannon.tooltip.strength.goggles": "_%s Powder Charge(s)_",
+  "block.createbigcannons.cannon.tooltip.weakCannonEnd": "Weak Cannon End",
+  "block.createbigcannons.cannon.tooltip.weakCannonEnd.desc": "Cannons built with this as the closing can only safely handle up to _%s Powder Charge(s)_.",
   "block.createbigcannons.cannon.tooltip.weightImpact": "Weight Impact",
   "block.createbigcannons.cannon.tooltip.weightImpact.goggles": "_%sx RPM_",
   "block.createbigcannons.cannon_loader": "Cannon Loader",

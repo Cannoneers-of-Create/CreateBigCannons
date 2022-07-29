@@ -68,6 +68,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure", "On Failure");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.rupture", "The cannon _ruptures_ on failure.");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.fragment", "The cannon _fragments_ on failure.");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd", "Weak Cannon End");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd.desc", "Cannons built with this as the closing can only safely handle up to _%s Powder Charge(s)_.");
 	}
 	
 	private static class TooltipBuilder {
