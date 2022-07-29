@@ -15,6 +15,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import rbasamoyai.createbigcannons.cannons.CannonChecks;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 
@@ -39,6 +40,7 @@ public class CreateBigCannons {
 		CBCMenuTypes.register();
 		
 		CBCContraptionTypes.prepare();
+		CannonChecks.register();
 		
 		CBCParticleTypes.PARTICLE_TYPES.register(modEventBus);		
 		

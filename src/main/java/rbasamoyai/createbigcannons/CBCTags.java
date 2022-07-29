@@ -23,7 +23,8 @@ public class CBCTags {
 			THICK_TUBING = createAndGenerateBlockTag(CreateBigCannons.resource("thick_tubing")),
 			REDUCES_SPREAD = createAndGenerateBlockTag(CreateBigCannons.resource("reduces_spread")),
 			SHRAPNEL_SHATTERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("shrapnel_shatterable")),
-			GRAPESHOT_SHATTERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("grapeshot_shatterable"));
+			GRAPESHOT_SHATTERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("grapeshot_shatterable")),
+			WEAK_CANNON_END = createAndGenerateBlockTag(CreateBigCannons.resource("weak_cannon_end"));
 		
 		public static TagKey<Block> createAndGenerateBlockTag(ResourceLocation loc) {
 			TagKey<Block> tag = BlockTags.create(loc); 

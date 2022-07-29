@@ -13,6 +13,7 @@
     "createbigcannons:bronze_sliding_breech",
     "createbigcannons:steel_cannon_barrel",
     "createbigcannons:steel_cannon_chamber",
-    "createbigcannons:steel_sliding_breech"
+    "createbigcannons:steel_sliding_breech",
+    "createbigcannons:steel_screw_breech"
   ]
 }

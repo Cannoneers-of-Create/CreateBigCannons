@@ -30,6 +30,7 @@ public class ModGroup {
 			list.add(CBCBlocks.BRONZE_CANNON_CHAMBER.asStack());
 			list.add(CBCBlocks.BRONZE_CANNON_BARREL.asStack());
 			list.add(CBCBlocks.STEEL_SLIDING_BREECH.asStack());
+			list.add(CBCBlocks.STEEL_SCREW_BREECH.asStack());
 			list.add(CBCBlocks.STEEL_CANNON_CHAMBER.asStack());
 			list.add(CBCBlocks.STEEL_CANNON_BARREL.asStack());
 			list.add(CBCBlocks.CANNON_LOADER.asStack());

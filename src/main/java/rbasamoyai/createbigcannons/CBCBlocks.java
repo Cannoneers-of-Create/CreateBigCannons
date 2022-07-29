@@ -26,6 +26,7 @@ import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonChamberBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
+import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
@@ -156,6 +157,13 @@ public class CBCBlocks {
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
 			.transform(BlockStressDefaults.setImpact(32.0d))
+			.register();
+	
+	public static final BlockEntry<ScrewBreechBlock> STEEL_SCREW_BREECH = REGISTRATE
+			.block("steel_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.STEEL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.screwBreech("screw_breech/steel"))
+			.transform(BlockStressDefaults.setImpact(8.0d))
 			.register();
 	
 	//////// Other blocks ////////
