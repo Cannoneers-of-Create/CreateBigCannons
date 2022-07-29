@@ -153,6 +153,7 @@ public class MountedCannonContraption extends Contraption {
 				if (positiveEnd == CannonEnd.CLOSED) break;
 			}
 			BlockPos positiveEndPos = cannonLength == 1 ? start : start.relative(negative);
+			BlockState positiveEndState = level.getBlockState(start);
 			
 			start = pos;
 			nextState = level.getBlockState(pos.relative(negative));
@@ -177,6 +178,7 @@ public class MountedCannonContraption extends Contraption {
 				if (negativeEnd == CannonEnd.CLOSED) break;
 			}
 			BlockPos negativeEndPos = start.relative(positive);
+			BlockState negativeEndState = level.getBlockState(start);
 			
 			if (positiveEnd == negativeEnd) {
 				throw invalidCannon();
@@ -185,6 +187,8 @@ public class MountedCannonContraption extends Contraption {
 			boolean openEndFlag = positiveEnd == CannonEnd.OPEN;
 			this.initialOrientation = openEndFlag ? positive : negative;
 			this.startPos = openEndFlag ? negativeEndPos : positiveEndPos;
+			
+			this.isWeakBreech = openEndFlag ? negativeEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END) : positiveEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END);
 		}
 		
 		this.anchor = pos;
@@ -280,6 +284,10 @@ public class MountedCannonContraption extends Contraption {
 				failed = true;
 				failedHolder = cbeh;
 				break;
+			} else if (foundProjectile == null && containedBlockInfo.state.isAir() && rollFailToIgnite(rand)) {
+				Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+				level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cbeh.blockInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
+				return;
 			}
 			
 			currentPos = cbeh.blockInfo.pos;
@@ -360,6 +368,10 @@ public class MountedCannonContraption extends Contraption {
 	
 	private static boolean rollOverloadBurst(Random random) {
 		return random.nextFloat() <= CBCConfigs.SERVER.failure.overloadBurstChance.getF();
+	}
+	
+	private static boolean rollFailToIgnite(Random random) {
+		return random.nextFloat() <= CBCConfigs.SERVER.failure.interruptedIgnitionChance.getF();
 	}
 	
 	public void fail(BlockPos localPos, Level level, AbstractContraptionEntity entity, CannonBlockEntityHolder<?> cbeh, int charges) {
