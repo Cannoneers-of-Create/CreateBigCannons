@@ -66,7 +66,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 		return open == OpenState.OPEN || open == OpenState.PARTIAL ? CannonEnd.OPEN : CannonEnd.CLOSED;
 	}
 	@Override public Axis getRotationAxis(BlockState state) { return this.getAxis(state); }
-	@Override public PushReaction getPistonPushReaction(BlockState state) { return isOpen(state) ? PushReaction.NORMAL : PushReaction.BLOCK; }	
+	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.NORMAL; }	
 	
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
