@@ -118,7 +118,7 @@
   "item.createbigcannons.timed_fuze.tooltip.condition2": "Detonacja",
   "item.createbigcannons.timed_fuze.tooltip.summary": "Detonuje po _ustalonym czasie_ od wystrzału.",
   "itemGroup.createbigcannons": "Create Big Cannons [PL]"
-  "block.createbigcannons.nether_gunmetal_cannon_barrel": "Lufa Armatnia z Netherytowego Spiżu",
-  "block.createbigcannons.nether_gunmetal_cannon_chamber": "Komora Armaty z Netherytowego Spiżu",
-  "block.createbigcannons.nether_gunmetal_screw_breech": "Zamek śrubowy z Netherytowego Spiżu"
+  "block.createbigcannons.nether_gunmetal_cannon_barrel": "Lufa Armatnia z Netherstali",
+  "block.createbigcannons.nether_gunmetal_cannon_chamber": "Komora Armaty z Netherstali",
+  "block.createbigcannons.nether_gunmetal_screw_breech": "Zamek śrubowy z Netherstali"
 }
