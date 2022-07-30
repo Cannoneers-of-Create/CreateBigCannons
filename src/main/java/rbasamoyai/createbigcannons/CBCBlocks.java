@@ -166,12 +166,13 @@ public class CBCBlocks {
 			.transform(BlockStressDefaults.setImpact(16.0d))
 			.register();
 	
-	//////// Nether Gunmetal cannon blocks ////////
+	//////// Nethersteel "Nether Gunmetal" cannon blocks ////////
 	
 	public static final BlockEntry<CannonBarrelBlock> NETHER_GUNMETAL_CANNON_BARREL = REGISTRATE
 			.block("nether_gunmetal_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.NETHER_GUNMETAL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/nether_gunmetal"))
+			.lang("Nethersteel Cannon Barrel")
 			.item(CannonBlockItem::new).build()
 			.register();
 	
@@ -179,12 +180,14 @@ public class CBCBlocks {
 			.block("nether_gunmetal_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.NETHER_GUNMETAL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/nether_gunmetal"))
+			.lang("Nethersteel Cannon Chamber")
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<ScrewBreechBlock> NETHER_GUNMETAL_SCREW_BREECH = REGISTRATE
 			.block("nether_gunmetal_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.NETHER_GUNMETAL))
 			.transform(strongCannonBlock())
+			.lang("Nethersteel Screw Breech")
 			.transform(CBCBuilderTransformers.screwBreech("screw_breech/nether_gunmetal"))
 			.transform(BlockStressDefaults.setImpact(40.0d))
 			.register();

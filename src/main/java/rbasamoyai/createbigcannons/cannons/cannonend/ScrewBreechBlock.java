@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<ScrewBreechBlockEntity>, CannonBlock {
 
@@ -66,7 +67,8 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 		return open == OpenState.OPEN || open == OpenState.PARTIAL ? CannonEnd.OPEN : CannonEnd.CLOSED;
 	}
 	@Override public Axis getRotationAxis(BlockState state) { return this.getAxis(state); }
-	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.NORMAL; }	
+	
+	@Override public PushReaction getPistonPushReaction(BlockState state) { return CBCConfigs.SERVER.cannons.cannonsBlocksAreAttached.get() || isOpen(state) ? PushReaction.NORMAL : PushReaction.BLOCK; }	
 	
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
