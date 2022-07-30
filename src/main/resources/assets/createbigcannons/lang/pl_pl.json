@@ -45,6 +45,7 @@
   "block.createbigcannons.steel_cannon_barrel": "Lufa Armatnia ze Stali",
   "block.createbigcannons.steel_cannon_chamber": "Komora Armaty ze Stali",
   "block.createbigcannons.steel_sliding_breech": "Komora Nabojowa ze Stali",
+  "block.createbigcannons.steel_screw_breech": "Zamek śrubowy ze Stali"
   "block.createbigcannons.log_cannon_chamber": "Komora Armaty z Drewna",
   "block.createbigcannons.log_cannon_end": "Końcówka Armaty z Drewna",
   "block.createbigcannons.yaw_controller": "Kontroler Obrotu",
@@ -117,4 +118,7 @@
   "item.createbigcannons.timed_fuze.tooltip.condition2": "Detonacja",
   "item.createbigcannons.timed_fuze.tooltip.summary": "Detonuje po _ustalonym czasie_ od wystrzału.",
   "itemGroup.createbigcannons": "Create Big Cannons [PL]"
+  "block.createbigcannons.nether_gunmetal_cannon_barrel": "Lufa Armatnia z Netherytowego Spiżu",
+  "block.createbigcannons.nether_gunmetal_cannon_chamber": "Komora Armaty z Netherytowego Spiżu",
+  "block.createbigcannons.nether_gunmetal_screw_breech": "Zamek śrubowy z Netherytowego Spiżu"
 }
