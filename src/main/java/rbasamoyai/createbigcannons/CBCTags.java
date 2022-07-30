@@ -22,8 +22,9 @@ public class CBCTags {
 		public static final TagKey<Block>
 			THICK_TUBING = createAndGenerateBlockTag(CreateBigCannons.resource("thick_tubing")),
 			REDUCES_SPREAD = createAndGenerateBlockTag(CreateBigCannons.resource("reduces_spread")),
-			SHRAPNEL_DESTROYS = createAndGenerateBlockTag(CreateBigCannons.resource("shrapnel_shatterable")),
-			GRAPESHOT_DESTROYS = createAndGenerateBlockTag(CreateBigCannons.resource("grapeshot_shatterable"));
+			SHRAPNEL_SHATTERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("shrapnel_shatterable")),
+			GRAPESHOT_SHATTERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("grapeshot_shatterable")),
+			WEAK_CANNON_END = createAndGenerateBlockTag(CreateBigCannons.resource("weak_cannon_end"));
 		
 		public static TagKey<Block> createAndGenerateBlockTag(ResourceLocation loc) {
 			TagKey<Block> tag = BlockTags.create(loc); 
@@ -54,11 +55,11 @@ public class CBCTags {
 		}
 		
 		public static void sectionRegister() {
-			addTagsToBlockTag(SHRAPNEL_DESTROYS, Arrays.asList(Tags.Blocks.GLASS, Tags.Blocks.GLASS_PANES, BlockTags.LEAVES));
-			addBlocksToBlockTag(SHRAPNEL_DESTROYS, Blocks.FLOWER_POT);
+			addTagsToBlockTag(SHRAPNEL_SHATTERABLE, Arrays.asList(Tags.Blocks.GLASS, Tags.Blocks.GLASS_PANES, BlockTags.LEAVES));
+			addBlocksToBlockTag(SHRAPNEL_SHATTERABLE, Blocks.FLOWER_POT);
 			
-			addTagsToBlockTag(GRAPESHOT_DESTROYS, Arrays.asList(SHRAPNEL_DESTROYS, BlockTags.PLANKS, BlockTags.WOODEN_SLABS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_FENCES, BlockTags.FENCE_GATES, BlockTags.LOGS));
-			addBlocksToBlockTag(GRAPESHOT_DESTROYS, Blocks.MELON, Blocks.PUMPKIN);
+			addTagsToBlockTag(GRAPESHOT_SHATTERABLE, Arrays.asList(SHRAPNEL_SHATTERABLE, BlockTags.PLANKS, BlockTags.WOODEN_SLABS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_FENCES, BlockTags.FENCE_GATES, BlockTags.LOGS, BlockTags.WOOL));
+			addBlocksToBlockTag(GRAPESHOT_SHATTERABLE, Blocks.MELON, Blocks.PUMPKIN);
 		}
 		
 		@FunctionalInterface public interface BlockProvider { Block get(); }

@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "createbigcannons:block/nether_gunmetal_cannon_barrel",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "createbigcannons:block/nether_gunmetal_cannon_barrel"
+    },
+    "axis=z": {
+      "model": "createbigcannons:block/nether_gunmetal_cannon_barrel",
+      "x": 90,
+      "y": 180
+    }
+  }
+}

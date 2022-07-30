@@ -58,6 +58,7 @@ public class MountedCannonContraption extends Contraption {
 	private Direction initialOrientation = Direction.NORTH;
 	private BlockPos startPos = BlockPos.ZERO;
 	private List<CannonBlockEntityHolder<?>> cannonBlockEntities = new ArrayList<>();
+	private boolean isWeakBreech = false;
 	
 	public MountedCannonContraption() {}
 	
@@ -101,6 +102,7 @@ public class MountedCannonContraption extends Contraption {
 			BlockState nextState = level.getBlockState(pos.relative(startFacing));
 			
 			CannonEnd cannonEnd = CannonEnd.CLOSED;
+			this.isWeakBreech = startState.is(CBCTags.BlockCBC.WEAK_CANNON_END);
 			
 			while (this.isValidCannonBlock(level, nextState, start.relative(startFacing)) && this.isConnectedToCannon(level, nextState, startFacing, material)) {
 				start = start.relative(startFacing);
@@ -150,7 +152,8 @@ public class MountedCannonContraption extends Contraption {
 				}
 				if (positiveEnd == CannonEnd.CLOSED) break;
 			}
-			BlockPos positiveEndPos = start.relative(negative);
+			BlockPos positiveEndPos = cannonLength == 1 ? start : start.relative(negative);
+			BlockState positiveEndState = level.getBlockState(start);
 			
 			start = pos;
 			nextState = level.getBlockState(pos.relative(negative));
@@ -175,6 +178,7 @@ public class MountedCannonContraption extends Contraption {
 				if (negativeEnd == CannonEnd.CLOSED) break;
 			}
 			BlockPos negativeEndPos = start.relative(positive);
+			BlockState negativeEndState = level.getBlockState(start);
 			
 			if (positiveEnd == negativeEnd) {
 				throw invalidCannon();
@@ -183,7 +187,11 @@ public class MountedCannonContraption extends Contraption {
 			boolean openEndFlag = positiveEnd == CannonEnd.OPEN;
 			this.initialOrientation = openEndFlag ? positive : negative;
 			this.startPos = openEndFlag ? negativeEndPos : positiveEndPos;
+			
+			this.isWeakBreech = openEndFlag ? negativeEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END) : positiveEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END);
 		}
+		
+		this.isWeakBreech &= CBCConfigs.SERVER.cannons.weakBreechStrength.get() == -1;
 		
 		this.anchor = pos;
 		this.startPos = this.startPos.subtract(this.anchor);
@@ -210,8 +218,8 @@ public class MountedCannonContraption extends Contraption {
 	
 	private boolean hasCannonLoaderInside(LevelAccessor level, BlockState state, BlockPos pos) {
 		BlockEntity be = level.getBlockEntity(pos);
-		if (!(be instanceof ICannonBlockEntity)) return false;
-		BlockState containedState = ((ICannonBlockEntity) be).cannonBehavior().block().state;
+		if (!(be instanceof ICannonBlockEntity cannon)) return false;
+		BlockState containedState = cannon.cannonBehavior().block().state;
 		return CBCBlocks.RAM_HEAD.has(containedState) || CBCBlocks.WORM_HEAD.has(containedState) || AllBlocks.PISTON_EXTENSION_POLE.has(containedState);
 	}
 	
@@ -244,39 +252,50 @@ public class MountedCannonContraption extends Contraption {
 		float spreadAdd = CBCConfigs.SERVER.cannons.powderChargeSpread.getF();
 		float spreadSub = CBCConfigs.SERVER.cannons.barrelSpreadReduction.getF();
 		
+		int maxSafeCharges = this.isWeakBreech
+				? Math.min(this.cannonMaterial.maxSafeCharges(), CBCConfigs.SERVER.cannons.weakBreechStrength.get())
+				: this.cannonMaterial.maxSafeCharges();
+		
 		for (ListIterator<CannonBlockEntityHolder<?>> iter = this.cannonBlockEntities.listIterator(); iter.hasNext(); ) {
 			CannonBlockEntityHolder<?> cbeh = iter.next();
+			
+			Vec3 startDiff = Vec3.atLowerCornerOf(cbeh.blockInfo.pos.subtract(this.startPos));
+			if (!cbeh.blockInfo.pos.equals(this.startPos) && Direction.getNearest(startDiff.x, startDiff.y, startDiff.z) != this.initialOrientation) {
+				continue;
+			}
+			
 			CannonBehavior behavior = cbeh.blockEntity.cannonBehavior();
 			StructureBlockInfo containedBlockInfo = behavior.block();	
 			
 			if (CBCBlocks.POWDER_CHARGE.has(containedBlockInfo.state) && foundProjectile == null) {
-				if (!cbeh.blockInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && rollBarrelBurst(rand)) {
-					failed = true;
-					failedHolder = cbeh;
-					break;
-				}
-				if (chargesUsed > this.cannonMaterial.maxSafeCharges() && rollOverloadBurst(rand)) {
-					failed = true;
-					failedHolder = cbeh;
-					break;
-				}
 				this.consumeBlock(behavior, cbeh, iter);
 				++chargesUsed;
+				spread += spreadAdd;
+				
+				if (!cbeh.blockInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && rollBarrelBurst(rand)
+					|| chargesUsed > maxSafeCharges && rollOverloadBurst(rand)) {
+					failed = true;
+					failedHolder = cbeh;
+					break;
+				}
 			} else if (containedBlockInfo.state.getBlock() instanceof ProjectileBlock && foundProjectile == null) {
 				if (chargesUsed == 0) return;
 				foundProjectile = containedBlockInfo;
 				this.consumeBlock(behavior, cbeh, iter);
-				spread += spreadAdd;
 			} else if (!containedBlockInfo.state.isAir() && foundProjectile != null) {
 				failed = true;
 				failedHolder = cbeh;
 				break;
+			} else if (foundProjectile == null && containedBlockInfo.state.isAir() && rollFailToIgnite(rand)) {
+				Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+				level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cbeh.blockInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
+				return;
 			}
 			
-			currentPos = cbeh.blockEntity.getBlockPos();
+			currentPos = cbeh.blockInfo.pos;
 			
 			BlockState cannonState = cbeh.blockInfo.state;
-			if (cannonState.getBlock() instanceof CannonBlock && ((CannonBlock) cannonState.getBlock()).getOpeningType(level, cannonState, currentPos) == CannonEnd.OPEN) {
+			if (cannonState.getBlock() instanceof CannonBlock cannon && cannon.getOpeningType(level, cannonState, currentPos) == CannonEnd.OPEN) {
 				++count;
 			}
 			
@@ -316,9 +335,9 @@ public class MountedCannonContraption extends Contraption {
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(Vec3.atCenterOf(this.anchor)).normalize();
 		
-		if (foundProjectile != null && foundProjectile.state.getBlock() instanceof ProjectileBlock) {
+		if (foundProjectile != null && foundProjectile.state.getBlock() instanceof ProjectileBlock projectileBlock) {
 			BlockEntity projectileBE = foundProjectile.nbt == null ? null : BlockEntity.loadStatic(foundProjectile.pos, foundProjectile.state, foundProjectile.nbt);
-			AbstractCannonProjectile projectile = ((ProjectileBlock) foundProjectile.state.getBlock()).getProjectile(level, foundProjectile.state, foundProjectile.pos, projectileBE);
+			AbstractCannonProjectile projectile = projectileBlock.getProjectile(level, foundProjectile.state, foundProjectile.pos, projectileBE);
 			projectile.setPos(spawnPos);
 			projectile.shoot(vec.x, vec.y, vec.z, chargesUsed, spread);
 			level.addFreshEntity(projectile);
@@ -353,6 +372,10 @@ public class MountedCannonContraption extends Contraption {
 		return random.nextFloat() <= CBCConfigs.SERVER.failure.overloadBurstChance.getF();
 	}
 	
+	private static boolean rollFailToIgnite(Random random) {
+		return random.nextFloat() <= CBCConfigs.SERVER.failure.interruptedIgnitionChance.getF();
+	}
+	
 	public void fail(BlockPos localPos, Level level, AbstractContraptionEntity entity, CannonBlockEntityHolder<?> cbeh, int charges) {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(cbeh.blockEntity.getBlockPos()), 1.0f);
 		float failScale = CBCConfigs.SERVER.failure.failureExplosionPower.getF();
@@ -368,8 +391,8 @@ public class MountedCannonContraption extends Contraption {
 				}
 				
 				BlockEntity possibleMount = entity.getLevel().getBlockEntity(this.anchor.below(2));
-				if (possibleMount instanceof CannonMountBlockEntity) {
-					((CannonMountBlockEntity) possibleMount).disassemble();
+				if (possibleMount instanceof CannonMountBlockEntity mount) {
+					mount.disassemble();
 				}
 			}
 		} else {
@@ -392,12 +415,8 @@ public class MountedCannonContraption extends Contraption {
 		
 		if (this.anchor != null) {
 			BlockEntity possibleMount = entity.getLevel().getBlockEntity(this.anchor.below(2));
-			if (possibleMount instanceof CannonMountBlockEntity && entity instanceof PitchOrientedContraptionEntity) {
-				CannonMountBlockEntity mount = (CannonMountBlockEntity) possibleMount;
-				PitchOrientedContraptionEntity poce = (PitchOrientedContraptionEntity) entity;
-				if (!mount.isAttachedTo(poce)) {
-					mount.attach(poce);
-				}
+			if (possibleMount instanceof CannonMountBlockEntity mount && entity instanceof PitchOrientedContraptionEntity poce && !mount.isAttachedTo(poce)) {
+				mount.attach(poce);
 			}
 		}
 	}
@@ -410,6 +429,7 @@ public class MountedCannonContraption extends Contraption {
 			tag.putString("InitialOrientation", this.initialOrientation.getSerializedName());
 		}
 		tag.putLong("LocalStartingPos", this.startPos == null ? 0L : this.startPos.asLong());
+		tag.putBoolean("WeakBreech", this.isWeakBreech);
 		return tag;
 	}
 	
@@ -419,6 +439,7 @@ public class MountedCannonContraption extends Contraption {
 		this.cannonMaterial = CannonMaterial.fromName(new ResourceLocation(tag.getString("CannonMaterial")));
 		this.initialOrientation = tag.contains("InitialOrientation", Tag.TAG_STRING) ? Direction.byName(tag.getString("InitialOrientation")) : Direction.NORTH;
 		this.startPos = BlockPos.of(tag.getLong("LocalStartingPos"));
+		this.isWeakBreech = tag.getBoolean("WeakBreech");
 		this.loadBlockEntities();
 	}
 	

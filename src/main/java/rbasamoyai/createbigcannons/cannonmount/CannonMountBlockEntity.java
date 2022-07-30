@@ -121,8 +121,8 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		}
 		if (firePowered != prevFirePowered) {
 			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(CannonMountBlock.FIRE_POWERED, firePowered), 3);
-			if (firePowered && this.running && this.mountedContraption != null && this.level instanceof ServerLevel) {
-				((MountedCannonContraption) this.mountedContraption.getContraption()).fireShot((ServerLevel) this.level, this.mountedContraption);
+			if (firePowered && this.running && this.mountedContraption != null && this.level instanceof ServerLevel slevel) {
+				((MountedCannonContraption) this.mountedContraption.getContraption()).fireShot(slevel, this.mountedContraption);
 			}
 		}
 	}

@@ -7,6 +7,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.FuzedCannonProjectile;
 
 public class HEShellProjectile extends FuzedCannonProjectile {
@@ -18,7 +19,7 @@ public class HEShellProjectile extends FuzedCannonProjectile {
 	
 	@Override
 	protected void detonate() {
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 6, Explosion.BlockInteraction.DESTROY);
+		this.level.explode(null, this.getX(), this.getY(), this.getZ(), CBCConfigs.SERVER.munitions.heShellPower.getF(), Explosion.BlockInteraction.DESTROY);
 		this.discard();
 	}
 

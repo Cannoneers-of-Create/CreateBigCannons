@@ -39,6 +39,7 @@ public class CreateBigCannons {
 		CBCMenuTypes.register();
 		
 		CBCContraptionTypes.prepare();
+		CBCChecks.register();
 		
 		CBCParticleTypes.PARTICLE_TYPES.register(modEventBus);		
 		

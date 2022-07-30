@@ -70,6 +70,7 @@ public class CBCBuilderTransformers {
 		ResourceLocation breechblockBottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_breechblock_bottom");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
+				.tag(CBCTags.BlockCBC.WEAK_CANNON_END)
 				.blockstate(new SlidingBreechBlockGen(pathAndMaterial)::generate)
 				.item(CannonBlockItem::new)
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
@@ -81,6 +82,29 @@ public class CBCBuilderTransformers {
 					.texture("breechblock_end", breechblockEndLoc)
 					.texture("breechblock_side", breechblockSideLoc)
 					.texture("breechblock_bottom", breechblockBottomLoc))
+				.build();
+	}
+	
+	public static <T extends Block & CannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreech(String pathAndMaterial) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/screw_breech");
+		ResourceLocation itemBaseLoc = CreateBigCannons.resource("block/screw_breech_item");
+		ResourceLocation topLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_screw_breech_top");
+		ResourceLocation bottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_screw_breech_bottom");
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_screw_breech_side");
+		ResourceLocation lockLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_screw_lock");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
+					.texture("side", sideLoc)
+					.texture("top", topLoc)
+					.texture("bottom", bottomLoc)
+					.texture("particle", topLoc)))
+				.item(CannonBlockItem::new)
+				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
+					.texture("side", sideLoc)
+					.texture("top", topLoc)
+					.texture("bottom", bottomLoc)
+					.texture("lock", lockLoc))
 				.build();
 	}
 	

@@ -186,8 +186,8 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		
 		if (this.isValidCannonBlock(level, state, ahead) && this.matchesCannonAxis(state, direction.getAxis())) {
 			BlockEntity blockEntity = level.getBlockEntity(ahead);
-			if (!(blockEntity instanceof ICannonBlockEntity)) return true;
-			StructureBlockInfo blockInfo = ((ICannonBlockEntity) blockEntity).cannonBehavior().block();
+			if (!(blockEntity instanceof ICannonBlockEntity cannon)) return true;
+			StructureBlockInfo blockInfo = cannon.cannonBehavior().block();
 			if (this.isValidLoadBlock(blockInfo.state, level, ahead)) {
 				frontier.add(ahead);
 			}
@@ -215,8 +215,8 @@ public class CannonLoadingContraption extends TranslatingContraption {
 	@Override
 	protected void addBlock(BlockPos pos, Pair<StructureBlockInfo, BlockEntity> pair) {
 		BlockEntity blockEntity = pair.getRight();
-		if (blockEntity instanceof ICannonBlockEntity) {
-			StructureBlockInfo containedInfo = ((ICannonBlockEntity) blockEntity).cannonBehavior().block();
+		if (blockEntity instanceof ICannonBlockEntity cannon) {
+			StructureBlockInfo containedInfo = cannon.cannonBehavior().block();
 			BlockEntity containedBlockEntity = null;
 			if (containedInfo.nbt != null) {
 				containedInfo.nbt.putInt("x", pos.getX());
@@ -249,8 +249,8 @@ public class CannonLoadingContraption extends TranslatingContraption {
 				frontier.add(currentPos);
 			} else if (this.isValidCannonBlock(level, state, currentPos) && this.matchesCannonAxis(state, forcedDirection.getAxis())) {
 				BlockEntity blockEntity = level.getBlockEntity(currentPos);
-				if (!(blockEntity instanceof ICannonBlockEntity)) return true;
-				StructureBlockInfo blockInfo = ((ICannonBlockEntity) blockEntity).cannonBehavior().block();
+				if (!(blockEntity instanceof ICannonBlockEntity cannon)) return true;
+				StructureBlockInfo blockInfo = cannon.cannonBehavior().block();
 				if (this.isValidLoadBlock(blockInfo.state, level, currentPos)) {
 					frontier.add(currentPos);
 				} else {
@@ -280,8 +280,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		BlockPos levelPos = this.anchor.relative(this.orientation, -2);
 		BlockState loaderState = level.getBlockState(levelPos);
 		BlockEntity blockEntity = level.getBlockEntity(levelPos);
-		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
-		CannonLoaderBlockEntity clbe = (CannonLoaderBlockEntity) blockEntity;
+		if (!(blockEntity instanceof CannonLoaderBlockEntity clbe) || blockEntity.isRemoved()) return true;
 		
 		if (pos.equals(levelPos)) {
 			level.setBlock(levelPos, loaderState.setValue(MOVING, false), 3 | 16);
@@ -295,8 +294,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 			StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
 			BlockEntity blockEntity1 = level.getBlockEntity(pos);
 			
-			if (blockEntity1 instanceof ICannonBlockEntity) {
-				ICannonBlockEntity cannon = (ICannonBlockEntity) blockEntity1;
+			if (blockEntity1 instanceof ICannonBlockEntity cannon) {
 				return cannon.cannonBehavior().tryLoadingBlock(blockInfo);
 			}
 		}
@@ -317,8 +315,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
 		BlockEntity blockEntity1 = level.getBlockEntity(pos);
 		
-		if (blockEntity1 instanceof ICannonBlockEntity) {
-			ICannonBlockEntity cannon = (ICannonBlockEntity) blockEntity1;
+		if (blockEntity1 instanceof ICannonBlockEntity cannon) {
 			cannon.cannonBehavior().removeBlock();
 			return true;
 		}

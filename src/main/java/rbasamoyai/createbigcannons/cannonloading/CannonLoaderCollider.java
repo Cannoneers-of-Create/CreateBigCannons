@@ -47,8 +47,8 @@ public class CannonLoaderCollider {
 			
 			Vec3 otherMotion = otherContraptionEntity.getDeltaMovement();
 			TranslatingContraption otherContraption = (TranslatingContraption) otherContraptionEntity.getContraption();
-			AABB otherBounds = contraptionEntity.getBoundingBox();
-			Vec3 otherPosition = contraptionEntity.position();
+			AABB otherBounds = otherContraptionEntity.getBoundingBox();
+			Vec3 otherPosition = otherContraptionEntity.position();
 			
 			if (otherContraption == null) return false;
 			if (otherBounds == null) return false;

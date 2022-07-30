@@ -30,7 +30,7 @@ public class CannonEndBlock extends WrenchableDirectionalBlock implements Cannon
 	}
 	
 	private VoxelShaper makeShapes() {
-		VoxelShape base = Shapes.or(box(0, 0, 0, 16, 8, 16), box(6, 8, 6, 10, 10, 10), box(5, 10, 5, 11, 16, 11));
+		VoxelShape base = Shapes.or(box(0, 0, 0, 16, 8, 16), box(6, 8, 6, 10, 16, 10));
 		return new AllShapes.Builder(base).forDirectional();
 	}
 	

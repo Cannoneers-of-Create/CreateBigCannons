@@ -26,6 +26,7 @@ import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonChamberBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
+import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
@@ -43,32 +44,64 @@ public class CBCBlocks {
 		REGISTRATE.startSection(AllSections.KINETICS);
 	}
 	
+	//////// Log cannon blocks ////////
+	
+	public static final BlockEntry<CannonChamberBlock> LOG_CANNON_CHAMBER = REGISTRATE
+			.block("log_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.LOG))
+			.transform(logCannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/log"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonEndBlock> LOG_CANNON_END = REGISTRATE
+			.block("log_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.LOG))
+			.transform(logCannonBlock())
+			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/log"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	//////// Wrought Iron cannon blocks ////////
+	
+	public static final BlockEntry<CannonChamberBlock> WROUGHT_IRON_CANNON_CHAMBER = REGISTRATE
+			.block("wrought_iron_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.WROUGHT_IRON))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/wrought_iron"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonEndBlock> WROUGHT_IRON_CANNON_END = REGISTRATE
+			.block("wrought_iron_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.WROUGHT_IRON))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/wrought_iron"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
 	//////// Cast Iron cannon blocks ////////
 	
 	public static final BlockEntry<CannonBarrelBlock> CAST_IRON_CANNON_BARREL = REGISTRATE
 			.block("cast_iron_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.CAST_IRON))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/cast_iron"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonChamberBlock> CAST_IRON_CANNON_CHAMBER = REGISTRATE
 			.block("cast_iron_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.CAST_IRON))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/cast_iron"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonEndBlock> CAST_IRON_CANNON_END = REGISTRATE
 			.block("cast_iron_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.CAST_IRON))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/cast_iron"))
-			.simpleItem()
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<SlidingBreechBlock> CAST_IRON_SLIDING_BREECH = REGISTRATE
 			.block("cast_iron_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.CAST_IRON))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
 			.transform(BlockStressDefaults.setImpact(16.0d))
 			.register();
@@ -77,30 +110,86 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<CannonBarrelBlock> BRONZE_CANNON_BARREL = REGISTRATE
 			.block("bronze_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.BRONZE))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/bronze"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonChamberBlock> BRONZE_CANNON_CHAMBER = REGISTRATE
 			.block("bronze_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.BRONZE))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/bronze"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<CannonEndBlock> BRONZE_CANNON_END = REGISTRATE
 			.block("bronze_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.BRONZE))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/bronze"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<SlidingBreechBlock> BRONZE_SLIDING_BREECH = REGISTRATE
 			.block("bronze_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.BRONZE))
-			.transform(castIron())
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
 			.transform(BlockStressDefaults.setImpact(12.0d))
+			.register();
+	
+	//////// Steel cannon blocks ////////
+	
+	public static final BlockEntry<CannonBarrelBlock> STEEL_CANNON_BARREL = REGISTRATE
+			.block("steel_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.STEEL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/steel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonChamberBlock> STEEL_CANNON_CHAMBER = REGISTRATE
+			.block("steel_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.STEEL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/steel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<SlidingBreechBlock> STEEL_SLIDING_BREECH = REGISTRATE
+			.block("steel_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.STEEL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
+			.transform(BlockStressDefaults.setImpact(32.0d))
+			.register();
+	
+	public static final BlockEntry<ScrewBreechBlock> STEEL_SCREW_BREECH = REGISTRATE
+			.block("steel_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.STEEL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.screwBreech("screw_breech/steel"))
+			.transform(BlockStressDefaults.setImpact(16.0d))
+			.register();
+	
+	//////// Nethersteel "Nether Gunmetal" cannon blocks ////////
+	
+	public static final BlockEntry<CannonBarrelBlock> NETHER_GUNMETAL_CANNON_BARREL = REGISTRATE
+			.block("nether_gunmetal_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.NETHER_GUNMETAL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/nether_gunmetal"))
+			.lang("Nethersteel Cannon Barrel")
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonChamberBlock> NETHER_GUNMETAL_CANNON_CHAMBER = REGISTRATE
+			.block("nether_gunmetal_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.NETHER_GUNMETAL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/nether_gunmetal"))
+			.lang("Nethersteel Cannon Chamber")
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<ScrewBreechBlock> NETHER_GUNMETAL_SCREW_BREECH = REGISTRATE
+			.block("nether_gunmetal_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.NETHER_GUNMETAL))
+			.transform(strongCannonBlock())
+			.lang("Nethersteel Screw Breech")
+			.transform(CBCBuilderTransformers.screwBreech("screw_breech/nether_gunmetal"))
+			.transform(BlockStressDefaults.setImpact(40.0d))
 			.register();
 	
 	//////// Other blocks ////////
@@ -185,6 +274,8 @@ public class CBCBlocks {
 		REGISTRATE.startSection(AllSections.KINETICS);
 	}
 	
+	//////// Cannon mount blocks ////////
+	
 	public static final BlockEntry<CannonMountBlock> CANNON_MOUNT = REGISTRATE
 			.block("cannon_mount", CannonMountBlock::new)
 			.properties(p -> p.color(MaterialColor.PODZOL))
@@ -200,13 +291,29 @@ public class CBCBlocks {
 			.transform(CBCBuilderTransformers.yawController())
 			.register();
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> castIron() {
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock() {
 		return b -> b.initialProperties(Material.METAL)
 				.properties(p -> p.strength(5.0f, 6.0f))
 				.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 				.properties(p -> p.requiresCorrectToolForDrops())
 				.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 				.tag(BlockTags.NEEDS_IRON_TOOL);
+	}
+	
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> logCannonBlock() {
+		return b -> b.initialProperties(Material.WOOD, MaterialColor.CRIMSON_STEM)
+				.properties(p -> p.strength(2.0f))
+				.properties(p -> p.sound(SoundType.WOOD))
+				.tag(BlockTags.MINEABLE_WITH_AXE);
+	}
+	
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> strongCannonBlock() {
+		return b -> b.initialProperties(Material.METAL)
+				.properties(p -> p.strength(50.0f, 1200.0f))
+				.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+				.properties(p -> p.requiresCorrectToolForDrops())
+				.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+				.tag(BlockTags.NEEDS_DIAMOND_TOOL);
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> shell(MaterialColor color) {

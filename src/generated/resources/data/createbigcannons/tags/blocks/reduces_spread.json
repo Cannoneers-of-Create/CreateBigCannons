@@ -2,6 +2,8 @@
   "replace": false,
   "values": [
     "createbigcannons:cast_iron_cannon_barrel",
-    "createbigcannons:bronze_cannon_barrel"
+    "createbigcannons:bronze_cannon_barrel",
+    "createbigcannons:steel_cannon_barrel",
+    "createbigcannons:nether_gunmetal_cannon_barrel"
   ]
 }

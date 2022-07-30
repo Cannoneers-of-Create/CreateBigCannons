@@ -17,6 +17,10 @@ public class ModGroup {
 		public void fillItemList(NonNullList<ItemStack> list) {
 			list.add(CBCBlocks.CANNON_MOUNT.asStack());
 			list.add(CBCBlocks.YAW_CONTROLLER.asStack());
+			list.add(CBCBlocks.LOG_CANNON_END.asStack());
+			list.add(CBCBlocks.LOG_CANNON_CHAMBER.asStack());
+			list.add(CBCBlocks.WROUGHT_IRON_CANNON_END.asStack());
+			list.add(CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER.asStack());
 			list.add(CBCBlocks.CAST_IRON_CANNON_END.asStack());
 			list.add(CBCBlocks.CAST_IRON_SLIDING_BREECH.asStack());
 			list.add(CBCBlocks.CAST_IRON_CANNON_CHAMBER.asStack());
@@ -25,6 +29,13 @@ public class ModGroup {
 			list.add(CBCBlocks.BRONZE_SLIDING_BREECH.asStack());
 			list.add(CBCBlocks.BRONZE_CANNON_CHAMBER.asStack());
 			list.add(CBCBlocks.BRONZE_CANNON_BARREL.asStack());
+			list.add(CBCBlocks.STEEL_SLIDING_BREECH.asStack());
+			list.add(CBCBlocks.STEEL_SCREW_BREECH.asStack());
+			list.add(CBCBlocks.STEEL_CANNON_CHAMBER.asStack());
+			list.add(CBCBlocks.STEEL_CANNON_BARREL.asStack());
+			list.add(CBCBlocks.NETHER_GUNMETAL_SCREW_BREECH.asStack());
+			list.add(CBCBlocks.NETHER_GUNMETAL_CANNON_CHAMBER.asStack());
+			list.add(CBCBlocks.NETHER_GUNMETAL_CANNON_BARREL.asStack());
 			list.add(CBCBlocks.CANNON_LOADER.asStack());
 			list.add(CBCBlocks.RAM_HEAD.asStack());
 			list.add(CBCBlocks.WORM_HEAD.asStack());

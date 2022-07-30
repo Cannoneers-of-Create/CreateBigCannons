@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions;
 
 import com.simibubi.create.AllShapes;
+import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
@@ -13,7 +14,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class PowderChargeBlock extends RotatedPillarBlock {
+public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable {
 
 	private static final EnumProperty<Axis> AXIS = RotatedPillarBlock.AXIS;
 	

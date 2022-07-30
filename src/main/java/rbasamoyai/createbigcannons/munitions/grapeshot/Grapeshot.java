@@ -17,7 +17,7 @@ public class Grapeshot extends Shrapnel {
 	
 	@Override
 	protected TagKey<Block> getDestroyBlockTag() {
-		return CBCTags.BlockCBC.GRAPESHOT_DESTROYS;
+		return CBCTags.BlockCBC.GRAPESHOT_SHATTERABLE;
 	}
 	
 	private static final DamageSource GRAPESHOT = new DamageSource(CreateBigCannons.MOD_ID + ".grapeshot");
