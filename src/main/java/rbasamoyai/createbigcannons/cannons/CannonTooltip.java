@@ -79,7 +79,7 @@ public class CannonTooltip {
 			String failKey = material.failureMode() == FailureMode.RUPTURE ? ".onFailure.rupture" : ".onFailure.fragment";
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + failKey), palette.color, palette.hColor, 1));
 			
-			if (block.builtInRegistryHolder().is(CBCTags.BlockCBC.WEAK_CANNON_END)) {
+			if (block.builtInRegistryHolder().is(CBCTags.BlockCBC.WEAK_CANNON_END) && CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1) {
 				int weakCharges = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
 				tooltip.add(new TextComponent(I18n.get(rootKey + ".weakCannonEnd")).withStyle(ChatFormatting.GRAY));
 				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weakCannonEnd.desc", weakCharges), palette.color, palette.hColor, 1));

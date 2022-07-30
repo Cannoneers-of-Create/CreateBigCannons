@@ -191,6 +191,8 @@ public class MountedCannonContraption extends Contraption {
 			this.isWeakBreech = openEndFlag ? negativeEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END) : positiveEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END);
 		}
 		
+		this.isWeakBreech &= CBCConfigs.SERVER.cannons.weakBreechStrength.get() == -1;
+		
 		this.anchor = pos;
 		this.startPos = this.startPos.subtract(this.anchor);
 		this.cannonBlockEntities.clear();
