@@ -19,6 +19,7 @@ public class CBCBlockPartials {
 		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.STEEL, "sliding_breechblock/steel_sliding_breechblock"),
 		
 		STEEL_SCREW_LOCK = screwLockPartial(CannonMaterial.STEEL, "screw_lock/steel_screw_lock"),
+		NETHER_GUNMETAL_SCREW_LOCK = screwLockPartial(CannonMaterial.NETHER_GUNMETAL, "screw_lock/nether_gunmetal_screw_lock"),
 		
 		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
 		YAW_SHAFT = block("cannon_mount/yaw_axis"),

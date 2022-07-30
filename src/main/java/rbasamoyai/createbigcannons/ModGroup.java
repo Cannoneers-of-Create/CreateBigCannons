@@ -33,6 +33,9 @@ public class ModGroup {
 			list.add(CBCBlocks.STEEL_SCREW_BREECH.asStack());
 			list.add(CBCBlocks.STEEL_CANNON_CHAMBER.asStack());
 			list.add(CBCBlocks.STEEL_CANNON_BARREL.asStack());
+			list.add(CBCBlocks.NETHER_GUNMETAL_SCREW_BREECH.asStack());
+			list.add(CBCBlocks.NETHER_GUNMETAL_CANNON_CHAMBER.asStack());
+			list.add(CBCBlocks.NETHER_GUNMETAL_CANNON_BARREL.asStack());
 			list.add(CBCBlocks.CANNON_LOADER.asStack());
 			list.add(CBCBlocks.RAM_HEAD.asStack());
 			list.add(CBCBlocks.WORM_HEAD.asStack());

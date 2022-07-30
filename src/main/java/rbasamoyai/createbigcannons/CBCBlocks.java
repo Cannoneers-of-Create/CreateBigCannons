@@ -163,7 +163,30 @@ public class CBCBlocks {
 			.block("steel_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.STEEL))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.screwBreech("screw_breech/steel"))
-			.transform(BlockStressDefaults.setImpact(8.0d))
+			.transform(BlockStressDefaults.setImpact(16.0d))
+			.register();
+	
+	//////// Nether Gunmetal cannon blocks ////////
+	
+	public static final BlockEntry<CannonBarrelBlock> NETHER_GUNMETAL_CANNON_BARREL = REGISTRATE
+			.block("nether_gunmetal_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.NETHER_GUNMETAL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/nether_gunmetal"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonChamberBlock> NETHER_GUNMETAL_CANNON_CHAMBER = REGISTRATE
+			.block("nether_gunmetal_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.NETHER_GUNMETAL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/nether_gunmetal"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<ScrewBreechBlock> NETHER_GUNMETAL_SCREW_BREECH = REGISTRATE
+			.block("nether_gunmetal_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.NETHER_GUNMETAL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.screwBreech("screw_breech/nether_gunmetal"))
+			.transform(BlockStressDefaults.setImpact(40.0d))
 			.register();
 	
 	//////// Other blocks ////////
@@ -248,6 +271,8 @@ public class CBCBlocks {
 		REGISTRATE.startSection(AllSections.KINETICS);
 	}
 	
+	//////// Cannon mount blocks ////////
+	
 	public static final BlockEntry<CannonMountBlock> CANNON_MOUNT = REGISTRATE
 			.block("cannon_mount", CannonMountBlock::new)
 			.properties(p -> p.color(MaterialColor.PODZOL))
@@ -277,6 +302,15 @@ public class CBCBlocks {
 				.properties(p -> p.strength(2.0f))
 				.properties(p -> p.sound(SoundType.WOOD))
 				.tag(BlockTags.MINEABLE_WITH_AXE);
+	}
+	
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> strongCannonBlock() {
+		return b -> b.initialProperties(Material.METAL)
+				.properties(p -> p.strength(50.0f, 1200.0f))
+				.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+				.properties(p -> p.requiresCorrectToolForDrops())
+				.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+				.tag(BlockTags.NEEDS_DIAMOND_TOOL);
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> shell(MaterialColor color) {

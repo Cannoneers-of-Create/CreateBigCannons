@@ -30,7 +30,8 @@ public class CBCBlockEntities {
 						CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER,
 						CBCBlocks.CAST_IRON_CANNON_BARREL, CBCBlocks.CAST_IRON_CANNON_CHAMBER,
 						CBCBlocks.BRONZE_CANNON_BARREL, CBCBlocks.BRONZE_CANNON_CHAMBER,
-						CBCBlocks.STEEL_CANNON_BARREL, CBCBlocks.STEEL_CANNON_CHAMBER)
+						CBCBlocks.STEEL_CANNON_BARREL, CBCBlocks.STEEL_CANNON_CHAMBER,
+						CBCBlocks.NETHER_GUNMETAL_CANNON_BARREL, CBCBlocks.NETHER_GUNMETAL_CANNON_CHAMBER)
 			.register();
 	
 	public static final BlockEntityEntry<SlidingBreechBlockEntity> SLIDING_BREECH = CreateBigCannons.registrate()
@@ -44,7 +45,7 @@ public class CBCBlockEntities {
 			.tileEntity("screw_breech", ScrewBreechBlockEntity::new)
 			.instance(() -> ScrewBreechInstance::new, false)
 			.renderer(() -> ScrewBreechBlockEntityRenderer::new)
-			.validBlocks(CBCBlocks.STEEL_SCREW_BREECH)
+			.validBlocks(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHER_GUNMETAL_SCREW_BREECH)
 			.register();
 	
 	public static final BlockEntityEntry<CannonLoaderBlockEntity> CANNON_LOADER = CreateBigCannons.registrate()
