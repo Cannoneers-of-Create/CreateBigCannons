@@ -1,29 +1,23 @@
 {
   "itemGroup.createbigcannons": "Create: Big Cannons",
-
   "block.createbigcannons.bag_of_grapeshot": "Мешок с дробью",
   "block.createbigcannons.he_shell": "Фугасный снаряд",
   "block.createbigcannons.shrapnel_shell": "Шрапнельный снаряд",
   "block.createbigcannons.solid_shot": "Тяжёлый снаряд",
-
   "block.createbigcannons.bag_of_grapeshot.tooltip": "МЕШОК С ДРОБЬЮ",
   "block.createbigcannons.bag_of_grapeshot.tooltip.behaviour1": " Выпускает крупную дробь. _Разделяется_ на _части_ после выстрела.",
   "block.createbigcannons.bag_of_grapeshot.tooltip.condition1": "При Выстреле:",
   "block.createbigcannons.bag_of_grapeshot.tooltip.summary": "Содержит _крупную дробь_, которая может повредить такие мягкие блоки, как _дерево_.",
-
   "block.createbigcannons.he_shell.tooltip": "ФУГАСНЫЙ СНАРЯД",
   "block.createbigcannons.he_shell.tooltip.behaviour1": " Взрывается чуть _мощнее_ чем _Динамит_.",
   "block.createbigcannons.he_shell.tooltip.condition1": "При Детонации:",
   "block.createbigcannons.he_shell.tooltip.summary": " Доставляет _взрывную_ силу на поле боя.",
-
   "block.createbigcannons.shrapnel_shell.tooltip": "ШРАПНЕЛЬНЫЙ СНАРЯД",
   "block.createbigcannons.shrapnel_shell.tooltip.behaviour1": " Выпускает _шрапнель_ в своём направлении. _Шрапнель_ покрывает довольно _большую_ територию.",
   "block.createbigcannons.shrapnel_shell.tooltip.condition1": "При Детонации:",
   "block.createbigcannons.shrapnel_shell.tooltip.summary": "Покрывает поле битвы _шрапнелью_ когда _сдетонирован_.",
-
   "block.createbigcannons.solid_shot.tooltip": "ТЯЖЁЛЫЙ СНАРЯД",
   "block.createbigcannons.solid_shot.tooltip.summary": "Большая _проникающая сила_. Больше всего _подходит_ для _легкобронированных_ целей, таких как _деревянные_ постройки и тонкие стены. Нельзя поставить никакие _детонаторы_.",
-
   "block.createbigcannons.bronze_cannon_barrel": "Дуло Бронзовой Пушки",
   "block.createbigcannons.bronze_cannon_chamber": "Ствол Бронзовой Пушки",
   "block.createbigcannons.bronze_cannon_end": "Конец Бронзовой Пушки",
@@ -43,7 +37,6 @@
   "block.createbigcannons.wrought_iron_cannon_end": "Конец Кованой Пушки",
   "block.createbigcannons.log_cannon_chamber": "Ствол Деревянной Пушки",
   "block.createbigcannons.log_cannon_end": "Конец Деревянной Пушки",
-
   "block.createbigcannons.cannon.tooltip.weakCannonEnd": "Убавка Прочности Пушки:",
   "block.createbigcannons.cannon.tooltip.weakCannonEnd.desc": "Пушки с этим блоком на конце могут безопасно выдержать только до _%s Пороховых Заряд-а(ов)_.",
   "block.createbigcannons.cannon.tooltip.materialProperties": "Свойства:",
@@ -56,16 +49,13 @@
   "block.createbigcannons.cannon.tooltip.strength.goggles": "Макс. _%s_ _Заряд-а(ов)_ Пороха",
   "block.createbigcannons.cannon.tooltip.weightImpact": "Создаваемая нагрузка для Крепления:",
   "block.createbigcannons.cannon.tooltip.weightImpact.goggles": "_%sx_ об./мин.",
-
   "block.createbigcannons.cannon_loader": "Пушечный заряжатель",
   "block.createbigcannons.cannon_mount": "Пушечное крепление",
   "block.createbigcannons.powder_charge": "Пороховой заряд",
   "block.createbigcannons.ram_head": "Толкательная насадка",
   "block.createbigcannons.worm_head": "Пружинная насадка",
   "block.createbigcannons.yaw_controller": "Контроллер поворота Пушки",
-
   "createbigcannons.gui.set_timed_fuze.time": "Время срабатывания: %s s %s тактов",
-
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.header": "Заряжание Пушки",
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.text_1": "Заряжатели Пушек работают также, как и механические поршни, используя Удлинители Поршней, чтобы увеличить дальность заряжания.",
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.text_2": "Они должны быть оснащены Насадками, чтобы хоть что-то делать, Такими как Пружинная или Толкательная Насадки.",
@@ -73,19 +63,16 @@
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.text_4": "Однако, Пружинная Насадка может быть установлена если необходимо починить заклинившую Пушку.",
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.text_5": "Перед заряжанием Пушки, её необходимо разобрать.",
   "createbigcannons.ponder.cannon_loader/loading_big_cannons.text_6": "Во время заряжания Пушки, Пушечный Заряжатель, Боеприпасы, и Пушка должны быть расположены на одной оси.",
-
   "createbigcannons.ponder.cannon_mount/assembly_and_use.header": "Как Собрать и Использовать Пушку",
   "createbigcannons.ponder.cannon_mount/assembly_and_use.text_1": "Пушку нужно поставить на Пушечное Крепление чтобы она считалась собранными.",
   "createbigcannons.ponder.cannon_mount/assembly_and_use.text_2": "Чтобы собрать Пушку, нужен редстоун сигнал со стороны молотка.",
   "createbigcannons.ponder.cannon_mount/assembly_and_use.text_3": "Подайте Силу Вращения к Пушечному Креплению чтобы прицелиться вверх и вниз.",
   "createbigcannons.ponder.cannon_mount/assembly_and_use.text_4": "Контроллер поворота Пушки необходим для прицеливания влево и вправо.",
-
   "createbigcannons.ponder.cannon_mount/firing_big_cannons.header": "Стрельба из Пушки",
   "createbigcannons.ponder.cannon_mount/firing_big_cannons.text_1": "После зарядки, сборки и наведения на цель, Пушка готова к выстрелу.",
   "createbigcannons.ponder.cannon_mount/firing_big_cannons.text_2": "Чтобы выстрелить из Пушки, необходим редстоун сигнал со стороны запала.",
   "createbigcannons.ponder.cannon_mount/firing_big_cannons.text_3": "Чтобы разобрать пушку и подготовить ее к следующему выстрелу, перестаньте подавать редстоун сигнал со стороны молотка.",
   "createbigcannons.ponder.cannon_mount/firing_big_cannons.text_4": "Пушка мгновенно возвращается в то положение, в котором она была собрана изначально.",
-
   "createbigcannons.ponder.munitions/cannon_loads.header": "То, что можно заряжать в Пушку",
   "createbigcannons.ponder.munitions/cannon_loads.text_1": "При заряжании Пушки необходимо следить за тем, чтобы заряжание Пушки было безопасным и эффективным.",
   "createbigcannons.ponder.munitions/cannon_loads.text_10": "...загрузка слишком большого количества пороховых зарядов...",
@@ -99,23 +86,18 @@
   "createbigcannons.ponder.munitions/cannon_loads.text_7": "Чугун, например, достаточно прочен чтобы безопасно работать с 2 Пороховыми Зарядами.",
   "createbigcannons.ponder.munitions/cannon_loads.text_8": "Небезопасные заряды в Пушке...",
   "createbigcannons.ponder.munitions/cannon_loads.text_9": "...такие как зарядка недостаточного количества Пороховых Зарядов...",
-
   "createbigcannons.ponder.munitions/fuzing_munitions.header": "Детонируемые Боеприпасы",
   "createbigcannons.ponder.munitions/fuzing_munitions.text_1": "Взрыватели могут быть присоединены к некоторым снарядам, что бы они могли сдетонировать в определённых ситуациях.",
   "createbigcannons.ponder.munitions/fuzing_munitions.text_2": "Щелкните ПКМ по наконечнику снаряда чтобы убрать все присоединённые к нему взрыватели.",
   "createbigcannons.ponder.munitions/fuzing_munitions.text_3": "Установка Взрывателей может быть автоматизирована с помощью Автономных Активаторов.",
-
   "createbigcannons.ponder.tag.munitions": "Боеприпасы",
   "createbigcannons.ponder.tag.munitions.description": "Какие блоки могут быть заряжены в Пушку и какой эффект они дают",
-
   "createbigcannons.ponder.tag.operating_cannons": "Управление Пушкой",
   "createbigcannons.ponder.tag.operating_cannons.description": "Как безопасно пользоваться Пушкой",
-
   "death.attack.createbigcannons.grapeshot": "%s не смог убежать от дроби",
   "death.attack.createbigcannons.grapeshot.player": "%s был разорван дробью",
   "death.attack.createbigcannons.shrapnel": "%s был растерзан шрапнелью",
   "death.attack.createbigcannons.shrapnel.player": "%s был порван на куски шрапнелью",
-
   "entity.createbigcannons.bag_of_grapeshot": "Мешок с дробью",
   "entity.createbigcannons.grapeshot": "Дробь",
   "entity.createbigcannons.he_shell": "Фугасный снаряд",
@@ -123,12 +105,10 @@
   "entity.createbigcannons.shot": "Снаряд",
   "entity.createbigcannons.shrapnel": "Шрапнель",
   "entity.createbigcannons.shrapnel_shell": "Шрапнельный снаряд",
-
   "exception.createbigcannons.cannon_mount.cannonBlockOutsideOfWorld": "Часть Пушки в [%s, %s, %s] выходит за границы сборки.",
   "exception.createbigcannons.cannon_mount.cannonLoaderInsideDuringAssembly": "Блок пушки в [%s, %s, %s] содержит в себе часть Заряжателя Пушки.",
   "exception.createbigcannons.cannon_mount.cannonTooLarge": "Длина текущей Пушки превышает максимальную длину в %s блоков.",
   "exception.createbigcannons.cannon_mount.invalidCannon": "Пушка должна иметь только один открытый выход и только один закрытый конец.",
-
   "item.createbigcannons.impact_fuze": "Контактный взрыватель",
   "item.createbigcannons.impact_fuze.tooltip": "КОНТАКТНЫЙ ВЗРЫВАТЕЛЬ",
   "item.createbigcannons.impact_fuze.tooltip.behaviour1": "Взрыватель _может сдетонировать при попадании_.",
@@ -136,7 +116,6 @@
   "item.createbigcannons.impact_fuze.tooltip.chance.value": "Этот _Взрыватель_ имеет _%s%% шанс детонации_.",
   "item.createbigcannons.impact_fuze.tooltip.condition1": "Условия Подрыва:",
   "item.createbigcannons.impact_fuze.tooltip.summary": "_Детонирует_ когда снаряд _ударяется во что-то_. Из-за слишком _простого_ механизма срабатывания, он не всегда _детонирует_ при попадании.",
-
   "item.createbigcannons.timed_fuze": "Взрыватель с Таймером",
   "item.createbigcannons.timed_fuze.tooltip": "ВЗРЫВАТЕЛЬ С ТАЙМЕРОМ",
   "item.createbigcannons.timed_fuze.tooltip.behaviour1": "Открывает меню _Установка Таймера Взрывателя_ , где таймер взрывателя может быть _изменён_.",
