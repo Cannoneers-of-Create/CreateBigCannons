@@ -51,38 +51,38 @@ public class CannonTooltip {
 			String rootKey = "block." + CreateBigCannons.MOD_ID + ".cannon.tooltip";
 			tooltip.add(new TextComponent(I18n.get(rootKey + ".materialProperties")).withStyle(ChatFormatting.GRAY));
 			
-			tooltip.add(new TextComponent(I18n.get(rootKey + ".strength")).withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".strength")).withStyle(ChatFormatting.GRAY));
 			int strength = material.maxSafeCharges();
 			if (hasGoggles) {
-				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".strength.goggles", strength), palette.color, palette.hColor, 1));
+				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".strength.goggles", strength), palette.color, palette.hColor, 2));
 			} else {
 				tooltip.add(getNoGogglesMeter(strength == 0 ? 0 : strength / 2 + 1, false, true));
 			}
 			
-			tooltip.add(new TextComponent(I18n.get(rootKey + ".squibRatio")).withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".squibRatio")).withStyle(ChatFormatting.GRAY));
 			if (hasGoggles) {
-				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".squibRatio.goggles", material.squibRatioNum(), material.squibRatioDem()), palette.color, palette.hColor, 1));
+				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".squibRatio.goggles", material.squibRatioNum(), material.squibRatioDem()), palette.color, palette.hColor, 2));
 			} else {
 				double squibRatio = material.squibRatio();
 				tooltip.add(getNoGogglesMeter(squibRatio < 1d ? 0 : Mth.ceil(material.squibRatio() * 5d / 3d), false, true));
 			}
 			
-			tooltip.add(new TextComponent(I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
 			float weightImpact = material.weight();
 			if (hasGoggles) {
-				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weightImpact.goggles", String.format("%.2f", weightImpact)), palette.color, palette.hColor, 1));
+				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weightImpact.goggles", String.format("%.2f", weightImpact)), palette.color, palette.hColor, 2));
 			} else {
 				tooltip.add(getNoGogglesMeter(weightImpact < 1d ? 0 : (int)(weightImpact * 0.5f), true, true));
 			}
 			
-			tooltip.add(new TextComponent(I18n.get(rootKey + ".onFailure")).withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".onFailure")).withStyle(ChatFormatting.GRAY));
 			String failKey = material.failureMode() == FailureMode.RUPTURE ? ".onFailure.rupture" : ".onFailure.fragment";
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + failKey), palette.color, palette.hColor, 1));
 			
 			if (block.builtInRegistryHolder().is(CBCTags.BlockCBC.WEAK_CANNON_END) && CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1) {
 				int weakCharges = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
-				tooltip.add(new TextComponent(I18n.get(rootKey + ".weakCannonEnd")).withStyle(ChatFormatting.GRAY));
-				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weakCannonEnd.desc", weakCharges), palette.color, palette.hColor, 1));
+				tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weakCannonEnd")).withStyle(ChatFormatting.GRAY));
+				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weakCannonEnd.desc", weakCharges), palette.color, palette.hColor, 2));
 			}
 		}
 	}
@@ -95,7 +95,7 @@ public class CannonTooltip {
 			case 4, 5 -> ChatFormatting.YELLOW;
 			default -> canBeInvalid ? ChatFormatting.DARK_GRAY : value < 0 ? ChatFormatting.RED : ChatFormatting.YELLOW;
 		};
-		return new TextComponent(ItemDescription.makeProgressBar(5, outOfFive)).withStyle(color);
+		return new TextComponent(" " + ItemDescription.makeProgressBar(5, outOfFive)).withStyle(color);
 	}
 	
 }

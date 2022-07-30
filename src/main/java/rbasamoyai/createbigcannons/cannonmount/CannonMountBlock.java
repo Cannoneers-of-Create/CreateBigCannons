@@ -13,6 +13,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -54,6 +56,16 @@ public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlo
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
 		return face.getAxis() == this.getRotationAxis(state);
+	}
+	
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(HORIZONTAL_FACING, rotation.rotate(state.getValue(HORIZONTAL_FACING)));
+	}
+	
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.setValue(HORIZONTAL_FACING, mirror.mirror(state.getValue(HORIZONTAL_FACING)));
 	}
 
 	@Override public Class<CannonMountBlockEntity> getTileEntityClass() { return CannonMountBlockEntity.class; }
