@@ -17,15 +17,15 @@ public class YawControllerBlockEntity extends KineticTileEntity {
 	public void tick() {
 		super.tick();		
 		BlockEntity be = this.level.getBlockEntity(this.worldPosition.above());
-		if (be instanceof CannonMountBlockEntity && ((CannonMountBlockEntity) be).isRunning()) {
-			((CannonMountBlockEntity) be).yawSpeed = this.getSpeed();
+		if (be instanceof CannonMountBlockEntity cmbe && cmbe.isRunning()) {
+			cmbe.yawSpeed = this.getSpeed();
 		}
 	}
 	
 	@Override
 	public float calculateStressApplied() {
 		BlockEntity be = this.level.getBlockEntity(this.worldPosition.above());
-		return be instanceof CannonMountBlockEntity ? ((CannonMountBlockEntity) be).calculateStressApplied() : 0.0f;
+		return be instanceof CannonMountBlockEntity cmbe ? cmbe.calculateStressApplied() : 0.0f;
 	}
 	
 }

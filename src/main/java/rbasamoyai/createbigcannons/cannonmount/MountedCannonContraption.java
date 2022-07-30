@@ -218,8 +218,8 @@ public class MountedCannonContraption extends Contraption {
 	
 	private boolean hasCannonLoaderInside(LevelAccessor level, BlockState state, BlockPos pos) {
 		BlockEntity be = level.getBlockEntity(pos);
-		if (!(be instanceof ICannonBlockEntity)) return false;
-		BlockState containedState = ((ICannonBlockEntity) be).cannonBehavior().block().state;
+		if (!(be instanceof ICannonBlockEntity cannon)) return false;
+		BlockState containedState = cannon.cannonBehavior().block().state;
 		return CBCBlocks.RAM_HEAD.has(containedState) || CBCBlocks.WORM_HEAD.has(containedState) || AllBlocks.PISTON_EXTENSION_POLE.has(containedState);
 	}
 	
@@ -295,7 +295,7 @@ public class MountedCannonContraption extends Contraption {
 			currentPos = cbeh.blockInfo.pos;
 			
 			BlockState cannonState = cbeh.blockInfo.state;
-			if (cannonState.getBlock() instanceof CannonBlock && ((CannonBlock) cannonState.getBlock()).getOpeningType(level, cannonState, currentPos) == CannonEnd.OPEN) {
+			if (cannonState.getBlock() instanceof CannonBlock cannon && cannon.getOpeningType(level, cannonState, currentPos) == CannonEnd.OPEN) {
 				++count;
 			}
 			
@@ -335,9 +335,9 @@ public class MountedCannonContraption extends Contraption {
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(Vec3.atCenterOf(this.anchor)).normalize();
 		
-		if (foundProjectile != null && foundProjectile.state.getBlock() instanceof ProjectileBlock) {
+		if (foundProjectile != null && foundProjectile.state.getBlock() instanceof ProjectileBlock projectileBlock) {
 			BlockEntity projectileBE = foundProjectile.nbt == null ? null : BlockEntity.loadStatic(foundProjectile.pos, foundProjectile.state, foundProjectile.nbt);
-			AbstractCannonProjectile projectile = ((ProjectileBlock) foundProjectile.state.getBlock()).getProjectile(level, foundProjectile.state, foundProjectile.pos, projectileBE);
+			AbstractCannonProjectile projectile = projectileBlock.getProjectile(level, foundProjectile.state, foundProjectile.pos, projectileBE);
 			projectile.setPos(spawnPos);
 			projectile.shoot(vec.x, vec.y, vec.z, chargesUsed, spread);
 			level.addFreshEntity(projectile);
@@ -391,8 +391,8 @@ public class MountedCannonContraption extends Contraption {
 				}
 				
 				BlockEntity possibleMount = entity.getLevel().getBlockEntity(this.anchor.below(2));
-				if (possibleMount instanceof CannonMountBlockEntity) {
-					((CannonMountBlockEntity) possibleMount).disassemble();
+				if (possibleMount instanceof CannonMountBlockEntity mount) {
+					mount.disassemble();
 				}
 			}
 		} else {
@@ -415,12 +415,8 @@ public class MountedCannonContraption extends Contraption {
 		
 		if (this.anchor != null) {
 			BlockEntity possibleMount = entity.getLevel().getBlockEntity(this.anchor.below(2));
-			if (possibleMount instanceof CannonMountBlockEntity && entity instanceof PitchOrientedContraptionEntity) {
-				CannonMountBlockEntity mount = (CannonMountBlockEntity) possibleMount;
-				PitchOrientedContraptionEntity poce = (PitchOrientedContraptionEntity) entity;
-				if (!mount.isAttachedTo(poce)) {
-					mount.attach(poce);
-				}
+			if (possibleMount instanceof CannonMountBlockEntity mount && entity instanceof PitchOrientedContraptionEntity poce && !mount.isAttachedTo(poce)) {
+				mount.attach(poce);
 			}
 		}
 	}

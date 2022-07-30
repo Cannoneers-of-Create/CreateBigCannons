@@ -17,8 +17,8 @@ public interface ICannonBlockEntity {
 	default boolean canLoadBlock(StructureBlockInfo blockInfo) {
 		if (blockInfo == null) return false;
 		BlockState cannonState = ((BlockEntity) this).getBlockState();
-		if (!(cannonState.getBlock() instanceof CannonBlock)) return false;
-		Axis cannonAxis = ((CannonBlock) cannonState.getBlock()).getAxis(cannonState);
+		if (!(cannonState.getBlock() instanceof CannonBlock cannon)) return false;
+		Axis cannonAxis = cannon.getAxis(cannonState);
 		
 		if (!this.cannonBehavior().block().state.isAir()) {
 			return false;
