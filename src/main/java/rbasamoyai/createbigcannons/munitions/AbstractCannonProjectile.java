@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions;
 
+import com.mojang.math.Constants;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -52,7 +54,33 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 				this.setDeltaMovement(this.getDeltaMovement().add(0.0f, -0.05f, 0.0f));
 			}
 		}
+		
+		if (this.xRotO == 0 && this.yRotO == 0) {
+			Vec3 vel = this.getDeltaMovement();
+			this.setYRot((float)(Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
+			this.setXRot((float)(Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
+			
+			this.yRotO = this.getYRot();
+			this.xRotO = this.getXRot();
+		}
+		
+		float oldXRot = this.xRotO;
+		float oldYRot = this.yRotO;
+		
 		super.tick();
+		
+		this.xRotO = oldXRot;
+		this.yRotO = oldYRot;
+		
+		if (!this.isInGround()) {
+			Vec3 vel = this.getDeltaMovement();
+			this.setYRot((float)(Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
+			this.setXRot((float)(Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
+			
+			this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+			this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+		}
+		
 		if (!this.isInGround()) {
 			for (int i = 0; i < 10; ++i) {
 				double partial = i * 0.1f;

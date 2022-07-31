@@ -252,6 +252,8 @@ public class MountedCannonContraption extends Contraption {
 		float spreadAdd = CBCConfigs.SERVER.cannons.powderChargeSpread.getF();
 		float spreadSub = CBCConfigs.SERVER.cannons.barrelSpreadReduction.getF();
 		
+		boolean emptyNoProjectile = false;
+		
 		int maxSafeCharges = this.isWeakBreech
 				? Math.min(this.cannonMaterial.maxSafeCharges(), CBCConfigs.SERVER.cannons.weakBreechStrength.get())
 				: this.cannonMaterial.maxSafeCharges();
@@ -278,18 +280,29 @@ public class MountedCannonContraption extends Contraption {
 					failedHolder = cbeh;
 					break;
 				}
+				if (emptyNoProjectile && rollFailToIgnite(rand)) {
+					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cbeh.blockInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
+					return;
+				}
+				emptyNoProjectile = false;
 			} else if (containedBlockInfo.state.getBlock() instanceof ProjectileBlock && foundProjectile == null) {
 				if (chargesUsed == 0) return;
 				foundProjectile = containedBlockInfo;
+				if (emptyNoProjectile && rollFailToIgnite(rand)) {
+					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cbeh.blockInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
+					return;
+				}
 				this.consumeBlock(behavior, cbeh, iter);
+				emptyNoProjectile = false;
 			} else if (!containedBlockInfo.state.isAir() && foundProjectile != null) {
 				failed = true;
 				failedHolder = cbeh;
 				break;
-			} else if (foundProjectile == null && containedBlockInfo.state.isAir() && rollFailToIgnite(rand)) {
-				Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
-				level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cbeh.blockInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
-				return;
+			} else if (foundProjectile == null && containedBlockInfo.state.isAir()) {
+				emptyNoProjectile = true;
+				chargesUsed = Math.max(chargesUsed - 1, 0);
 			}
 			
 			currentPos = cbeh.blockInfo.pos;
@@ -340,6 +353,8 @@ public class MountedCannonContraption extends Contraption {
 			AbstractCannonProjectile projectile = projectileBlock.getProjectile(level, foundProjectile.state, foundProjectile.pos, projectileBE);
 			projectile.setPos(spawnPos);
 			projectile.shoot(vec.x, vec.y, vec.z, chargesUsed, spread);
+			projectile.xRotO = projectile.getXRot();
+			projectile.yRotO = projectile.getYRot();
 			level.addFreshEntity(projectile);
 		}
 		
