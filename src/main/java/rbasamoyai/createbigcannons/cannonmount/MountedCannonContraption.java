@@ -466,6 +466,7 @@ public class MountedCannonContraption extends Contraption {
 			if (!(be instanceof ICannonBlockEntity)) continue;
 			this.cannonBlockEntities.add(new CannonBlockEntityHolder<>((BlockEntity & ICannonBlockEntity) be, blockInfo));
 		}
+		this.cannonBlockEntities.sort((a, b) -> Integer.compare(a.blockInfo.pos.distManhattan(this.startPos), b.blockInfo.pos.distManhattan(this.startPos)));
 	}
 	
 	@OnlyIn(Dist.CLIENT)
