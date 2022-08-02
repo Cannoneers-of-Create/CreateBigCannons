@@ -376,19 +376,23 @@ public class MountedCannonContraption extends Contraption {
 	}
 	
 	private static boolean rollSquib(Random random) {
-		return random.nextFloat() <= CBCConfigs.SERVER.failure.squibChance.getF();
+		float f = CBCConfigs.SERVER.failure.squibChance.getF();
+		return f == 0 ? false : random.nextFloat() <= f;
 	}
 	
 	private static boolean rollBarrelBurst(Random random) {
-		return random.nextFloat() <= CBCConfigs.SERVER.failure.barrelChargeBurstChance.getF();
+		float f = CBCConfigs.SERVER.failure.barrelChargeBurstChance.getF();
+		return f == 0 ? false : random.nextFloat() <= f;
 	}
 	
 	private static boolean rollOverloadBurst(Random random) {
-		return random.nextFloat() <= CBCConfigs.SERVER.failure.overloadBurstChance.getF();
+		float f = CBCConfigs.SERVER.failure.overloadBurstChance.getF();
+		return f == 0 ? false : random.nextFloat() <= f;
 	}
 	
 	private static boolean rollFailToIgnite(Random random) {
-		return random.nextFloat() <= CBCConfigs.SERVER.failure.interruptedIgnitionChance.getF();
+		float f = CBCConfigs.SERVER.failure.interruptedIgnitionChance.getF();
+		return f == 0 ? false : random.nextFloat() <= f;
 	}
 	
 	public void fail(BlockPos localPos, Level level, AbstractContraptionEntity entity, CannonBlockEntityHolder<?> cbeh, int charges) {

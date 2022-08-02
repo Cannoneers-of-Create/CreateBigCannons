@@ -28,6 +28,7 @@ import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
+import rbasamoyai.createbigcannons.crafting.CastingSandItem;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
@@ -190,6 +191,15 @@ public class CBCBlocks {
 			.lang("Nethersteel Screw Breech")
 			.transform(CBCBuilderTransformers.screwBreech("screw_breech/nether_gunmetal"))
 			.transform(BlockStressDefaults.setImpact(40.0d))
+			.register();
+	
+	//////// Casting blocks ////////
+	
+	public static final BlockEntry<Block> CASTING_SAND = REGISTRATE
+			.block("casting_sand", Block::new)
+			.initialProperties(() -> Blocks.SAND)
+			.item(CastingSandItem::new)
+			.build()
 			.register();
 	
 	//////// Other blocks ////////
