@@ -9,6 +9,7 @@ import net.minecraft.world.entity.MobCategory;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonProjectileRenderer;
+import rbasamoyai.createbigcannons.munitions.blank.BlankProjectile;
 import rbasamoyai.createbigcannons.munitions.grapeshot.Grapeshot;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotRenderer;
@@ -29,7 +30,8 @@ public class CBCEntityTypes {
 			.properties(AbstractContraptionEntity::build)
 			.renderer(() -> OrientedContraptionEntityRenderer::new)
 			.register();
-	
+
+	public static final EntityEntry<BlankProjectile> BLANK = cannonProjectile("blank", BlankProjectile::new);
 	public static final EntityEntry<ShotProjectile> SHOT = cannonProjectile("shot", ShotProjectile::new);
 	public static final EntityEntry<HEShellProjectile> HE_SHELL = cannonProjectile("he_shell", HEShellProjectile::new, "High Explosive (HE) Shell");
 	public static final EntityEntry<ShrapnelShellProjectile> SHRAPNEL_SHELL = cannonProjectile("shrapnel_shell", ShrapnelShellProjectile::new);

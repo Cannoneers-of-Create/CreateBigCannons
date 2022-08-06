@@ -6,6 +6,7 @@
     "createbigcannons:cannon_loader",
     "createbigcannons:ram_head",
     "createbigcannons:worm_head",
+    "createbigcannons:blank",
     "createbigcannons:solid_shot",
     "createbigcannons:he_shell",
     "createbigcannons:shrapnel_shell",

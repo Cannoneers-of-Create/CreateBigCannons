@@ -1,0 +1,9 @@
+{
+  "parent": "createbigcannons:block/projectile_block",
+  "textures": {
+    "side": "createbigcannons:block/projectile/blank",
+    "top": "createbigcannons:block/projectile/blank_top",
+    "bottom": "createbigcannons:block/projectile/blank_bottom",
+    "particle": "createbigcannons:block/projectile/blank_top"
+  }
+}

@@ -24,6 +24,10 @@ public class CBCLangGen {
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "player", "%s was blown out by grapeshot");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %s s %s ticks");
+
+		tooltip(CBCBlocks.BLANK)
+		.header("BLANK")
+		.summary("_No penetrating force._ Best suited for decorative or ceremonial shots. _Cannot be fuzed and detonated._");
 		
 		tooltip(CBCBlocks.SOLID_SHOT)
 		.header("SOLID SHOT")

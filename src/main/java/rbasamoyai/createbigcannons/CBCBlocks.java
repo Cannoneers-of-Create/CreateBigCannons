@@ -30,6 +30,7 @@ import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
+import rbasamoyai.createbigcannons.munitions.blank.BlankBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
 import rbasamoyai.createbigcannons.munitions.heshell.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.shot.SolidShotBlock;
@@ -225,6 +226,16 @@ public class CBCBlocks {
 	}
 	
 	//////// Projectiles ////////
+
+	public static final BlockEntry<BlankBlock> BLANK = REGISTRATE
+			.block("blank", BlankBlock::new)
+			.initialProperties(Material.METAL)
+			.properties(p -> p.strength(2.0f, 3.0f))
+			.properties(p -> p.sound(SoundType.WOOL))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.projectile("projectile/blank"))
+			.simpleItem()
+			.register();
 	
 	public static final BlockEntry<SolidShotBlock> SOLID_SHOT = REGISTRATE
 			.block("solid_shot", SolidShotBlock::new)
