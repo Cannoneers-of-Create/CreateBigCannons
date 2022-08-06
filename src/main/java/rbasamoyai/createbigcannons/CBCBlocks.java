@@ -28,7 +28,9 @@ import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
-import rbasamoyai.createbigcannons.crafting.CastingSandItem;
+import rbasamoyai.createbigcannons.crafting.CannonCastBlock;
+import rbasamoyai.createbigcannons.crafting.CannonCastMouldBlock;
+import rbasamoyai.createbigcannons.crafting.CannonCastShape;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
@@ -193,16 +195,7 @@ public class CBCBlocks {
 			.transform(BlockStressDefaults.setImpact(40.0d))
 			.register();
 	
-	//////// Casting blocks ////////
-	
-	public static final BlockEntry<Block> CASTING_SAND = REGISTRATE
-			.block("casting_sand", Block::new)
-			.initialProperties(() -> Blocks.SAND)
-			.item(CastingSandItem::new)
-			.build()
-			.register();
-	
-	//////// Other blocks ////////
+	//////// Cannon loading blocks ////////
 	
 	public static final BlockEntry<CannonLoaderBlock> CANNON_LOADER = REGISTRATE
 			.block("cannon_loader", CannonLoaderBlock::new)
@@ -230,6 +223,23 @@ public class CBCBlocks {
 			.simpleItem()
 			.register();
 	
+	//////// Cannon mount blocks ////////
+		
+	public static final BlockEntry<CannonMountBlock> CANNON_MOUNT = REGISTRATE
+			.block("cannon_mount", CannonMountBlock::new)
+			.properties(p -> p.color(MaterialColor.PODZOL))
+			.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.cannonMount())
+			.register();
+	
+	public static final BlockEntry<YawControllerBlock> YAW_CONTROLLER = REGISTRATE
+			.block("yaw_controller", YawControllerBlock::new)
+			.properties(p -> p.color(MaterialColor.PODZOL))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.yawController())
+			.register();
+		
 	static {
 		REGISTRATE.startSection(AllSections.LOGISTICS);
 	}
@@ -280,25 +290,44 @@ public class CBCBlocks {
 			.simpleItem()
 			.register();
 	
-	static {
-		REGISTRATE.startSection(AllSections.KINETICS);
-	}
+	//////// Crafting blocks ////////
 	
-	//////// Cannon mount blocks ////////
-	
-	public static final BlockEntry<CannonMountBlock> CANNON_MOUNT = REGISTRATE
-			.block("cannon_mount", CannonMountBlock::new)
-			.properties(p -> p.color(MaterialColor.PODZOL))
-			.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
-			.transform(axeOrPickaxe())
-			.transform(CBCBuilderTransformers.cannonMount())
+	public static final BlockEntry<Block> CASTING_SAND = REGISTRATE
+			.block("casting_sand", Block::new)
+			.transform(castingSand())
+			.simpleItem()
 			.register();
 	
-	public static final BlockEntry<YawControllerBlock> YAW_CONTROLLER = REGISTRATE
-			.block("yaw_controller", YawControllerBlock::new)
-			.properties(p -> p.color(MaterialColor.PODZOL))
-			.transform(axeOrPickaxe())
-			.transform(CBCBuilderTransformers.yawController())
+	public static final BlockEntry<CannonCastBlock> CANNON_CAST = REGISTRATE
+			.block("cannon_cast", CannonCastBlock::new)
+			.transform(castingSand())
+			.properties(p -> p.noOcclusion())
+			.transform(CBCBuilderTransformers.invisibleWithParticle("block/casting_sand"))
+			.register();
+	
+	public static final BlockEntry<CannonCastMouldBlock> VERY_SMALL_CAST_MOULD = REGISTRATE
+			.block("very_small_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(2, 0, 2, 14, 17, 14), CannonCastShape.VERY_SMALL))
+			.transform(CBCBuilderTransformers.castMould("very_small"))
+			.register();
+	
+	public static final BlockEntry<CannonCastMouldBlock> SMALL_CAST_MOULD = REGISTRATE
+			.block("small_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(1, 0, 1, 15, 17, 15), CannonCastShape.SMALL))
+			.transform(CBCBuilderTransformers.castMould("small"))
+			.register();
+	
+	public static final BlockEntry<CannonCastMouldBlock> MEDIUM_CAST_MOULD = REGISTRATE
+			.block("medium_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(0, 0, 0, 16, 17, 16), CannonCastShape.MEDIUM))
+			.transform(CBCBuilderTransformers.castMould("medium"))
+			.register();
+	
+	public static final BlockEntry<CannonCastMouldBlock> LARGE_CAST_MOULD = REGISTRATE
+			.block("large_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(-1, 0, -1, 17, 17, 17), CannonCastShape.LARGE))
+			.transform(CBCBuilderTransformers.castMould("large"))
+			.register();
+	
+	public static final BlockEntry<CannonCastMouldBlock> VERY_LARGE_CAST_MOULD = REGISTRATE
+			.block("very_large_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(-2, 0, -2, 18, 17, 18), CannonCastShape.VERY_LARGE))
+			.transform(CBCBuilderTransformers.castMould("very_large"))
 			.register();
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock() {
@@ -330,6 +359,11 @@ public class CBCBlocks {
 		return b -> b.initialProperties(Material.EXPLOSIVE, color)
 				.properties(p -> p.strength(2.0f, 3.0f))
 				.properties(p -> p.sound(SoundType.STONE));
+	}
+	
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> castingSand() {
+		return b -> b.initialProperties(() -> Blocks.SAND)
+				.tag(BlockTags.MINEABLE_WITH_SHOVEL);
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> axeOrPickaxe() {

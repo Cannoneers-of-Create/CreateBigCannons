@@ -7,13 +7,18 @@ import com.simibubi.create.repack.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
+import rbasamoyai.createbigcannons.crafting.CannonCastMouldBlock;
 
 public class CBCBuilderTransformers {
 
@@ -172,6 +177,35 @@ public class CBCBuilderTransformers {
 				.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getExistingFile(baseLoc)))
 				.item()
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemModelLoc)))
+				.build();
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> invisibleWithParticle(String path) {
+		return b -> b.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getBuilder(c.getName())
+				.texture("particle", CreateBigCannons.resource(path))));
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> castMould(String size) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/cast_mould/" + size + "_cast_mould");
+		ResourceLocation sandLoc = CreateBigCannons.resource("block/casting_sand");
+		return b -> b.initialProperties(Material.WOOD, MaterialColor.PODZOL)
+				.properties(p -> p.strength(2.0f, 3.0f))
+				.properties(p -> p.sound(SoundType.WOOD))
+				.properties(p -> p.noOcclusion())
+				.tag(BlockTags.MINEABLE_WITH_AXE)
+				.addLayer(() -> RenderType::solid)
+				.blockstate((c, p) -> p.getMultipartBuilder(c.get())
+						.part()
+							.modelFile(p.models().getExistingFile(baseLoc))
+							.addModel()
+							.end()
+						.part()
+							.modelFile(p.models().getExistingFile(sandLoc))
+							.addModel()
+							.condition(CannonCastMouldBlock.SAND, true)
+							.end())
+				.item()
+				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(baseLoc)))
 				.build();
 	}
 	

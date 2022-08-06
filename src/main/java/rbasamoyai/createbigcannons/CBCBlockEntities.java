@@ -18,6 +18,8 @@ import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechInstance;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechInstance;
+import rbasamoyai.createbigcannons.crafting.CannonCastBlockEntity;
+import rbasamoyai.createbigcannons.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockInstance;
@@ -74,6 +76,12 @@ public class CBCBlockEntities {
 			.instance(() -> FuzedBlockInstance::new)
 			.renderer(() -> FuzedBlockEntityRenderer::new)
 			.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL)
+			.register();
+	
+	public static final BlockEntityEntry<CannonCastBlockEntity> CANNON_CAST = CreateBigCannons.registrate()
+			.tileEntity("cannon_cast", CannonCastBlockEntity::new)
+			.renderer(() -> CannonCastBlockEntityRenderer::new)
+			.validBlocks(CBCBlocks.CANNON_CAST)
 			.register();
 	
 	public static void register() {}

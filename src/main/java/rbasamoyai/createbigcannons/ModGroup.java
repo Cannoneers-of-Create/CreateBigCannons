@@ -46,6 +46,12 @@ public class ModGroup {
 			list.add(CBCBlocks.SHRAPNEL_SHELL.asStack());
 			list.add(CBCItems.IMPACT_FUZE.asStack());
 			list.add(TimedFuzeItem.getCreativeTabItem(20));
+			list.add(CBCBlocks.CASTING_SAND.asStack());
+			list.add(CBCBlocks.VERY_SMALL_CAST_MOULD.asStack());
+			list.add(CBCBlocks.SMALL_CAST_MOULD.asStack());
+			list.add(CBCBlocks.MEDIUM_CAST_MOULD.asStack());
+			list.add(CBCBlocks.LARGE_CAST_MOULD.asStack());
+			list.add(CBCBlocks.VERY_LARGE_CAST_MOULD.asStack());
 		}
 	};
 	

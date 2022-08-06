@@ -1,0 +1,17 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "createbigcannons:block/cast_mould/medium_cast_mould"
+      }
+    },
+    {
+      "when": {
+        "sand": "true"
+      },
+      "apply": {
+        "model": "createbigcannons:block/casting_sand"
+      }
+    }
+  ]
+}
