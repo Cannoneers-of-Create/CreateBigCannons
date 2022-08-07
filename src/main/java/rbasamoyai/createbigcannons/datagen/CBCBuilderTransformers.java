@@ -29,7 +29,7 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
 				.tag(CBCTags.BlockCBC.REDUCES_SPREAD)
-				.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().withExistingParent(c.getName(), baseLoc)
+				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
 					.texture("side", sideLoc)
 					.texture("end", endLoc)
 					.texture("particle", sideLoc)));
@@ -41,7 +41,7 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
 				.tag(CBCTags.BlockCBC.THICK_TUBING)
-				.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().withExistingParent(c.getName(), "block/cube_column")
+				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), "block/cube_column")
 						.texture("side", sideLoc)
 						.texture("end", endLoc)
 						.texture("particle", sideLoc)));

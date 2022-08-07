@@ -12,6 +12,7 @@ import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntity;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerInstance;
 import rbasamoyai.createbigcannons.cannons.CannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechInstance;
@@ -48,6 +49,11 @@ public class CBCBlockEntities {
 			.instance(() -> ScrewBreechInstance::new, false)
 			.renderer(() -> ScrewBreechBlockEntityRenderer::new)
 			.validBlocks(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHER_GUNMETAL_SCREW_BREECH)
+			.register();
+	
+	public static final BlockEntityEntry<CannonEndBlockEntity> CANNON_END = CreateBigCannons.registrate()
+			.tileEntity("cannon_end", CannonEndBlockEntity::new)
+			.validBlocks(CBCBlocks.LOG_CANNON_END, CBCBlocks.WROUGHT_IRON_CANNON_END, CBCBlocks.CAST_IRON_CANNON_END, CBCBlocks.BRONZE_CANNON_END)
 			.register();
 	
 	public static final BlockEntityEntry<CannonLoaderBlockEntity> CANNON_LOADER = CreateBigCannons.registrate()

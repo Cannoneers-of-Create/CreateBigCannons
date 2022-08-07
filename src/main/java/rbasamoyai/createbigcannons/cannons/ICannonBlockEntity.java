@@ -18,7 +18,7 @@ public interface ICannonBlockEntity {
 		if (blockInfo == null) return false;
 		BlockState cannonState = ((BlockEntity) this).getBlockState();
 		if (!(cannonState.getBlock() instanceof CannonBlock cannon)) return false;
-		Axis cannonAxis = cannon.getAxis(cannonState);
+		Axis cannonAxis = cannon.getFacing(cannonState).getAxis();
 		
 		if (!this.cannonBehavior().block().state.isAir()) {
 			return false;

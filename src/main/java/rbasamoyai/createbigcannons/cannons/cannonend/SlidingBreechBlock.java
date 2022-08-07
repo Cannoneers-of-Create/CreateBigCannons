@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.cannonend;
 
-import java.util.Optional;
-
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
 
@@ -12,6 +10,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
@@ -26,14 +25,16 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.cannonMaterial; }
-	@Override public Direction.Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
-	@Override public Optional<Direction> getFacing(BlockState state) { return Optional.empty(); }
+	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
+	
 	@Override
 	public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) {
 		BlockEntity be = level.getBlockEntity(pos);
-		if (!(be instanceof SlidingBreechBlockEntity)) return CannonEnd.OPEN;
-		return ((SlidingBreechBlockEntity) be).getOpenProgress() > 0.0f ? CannonEnd.OPEN : CannonEnd.CLOSED;
+		if (!(be instanceof SlidingBreechBlockEntity breech)) return CannonEnd.OPEN;
+		return breech.getOpenProgress() > 0.0f ? CannonEnd.OPEN : CannonEnd.CLOSED;
 	}
+	
+	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -41,6 +42,13 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 		return this.defaultBlockState()
 				.setValue(FACING, facing)
 				.setValue(AXIS_ALONG_FIRST_COORDINATE, facing.getAxis() == Direction.Axis.Z);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!level.isClientSide) CannonBlock.onRemoveCannon(state, level, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
 	@Override public Class<SlidingBreechBlockEntity> getTileEntityClass() { return SlidingBreechBlockEntity.class; }

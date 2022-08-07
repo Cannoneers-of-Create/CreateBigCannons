@@ -209,7 +209,7 @@ public class CannonLoadingContraption extends TranslatingContraption {
 	}
 	
 	private boolean matchesCannonAxis(BlockState state, Direction.Axis axis) {
-		return ((CannonBlock) state.getBlock()).getAxis(state) == axis;
+		return ((CannonBlock) state.getBlock()).getFacing(state).getAxis() == axis;
 	}
 	
 	@Override
