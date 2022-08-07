@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
@@ -52,10 +53,27 @@ public class CBCChecks {
 		return state.getBlock() instanceof CannonBlock ? CheckResult.SUCCESS : CheckResult.PASS;
 	}
 	
+	public static CheckResult unmovableCannonMount(BlockState state, Level level, BlockPos pos) {
+		return level.getBlockEntity(pos) instanceof CannonMountBlockEntity mount ? mount.isRunning() ? CheckResult.FAIL : CheckResult.PASS : CheckResult.PASS;
+	}
+	
+	public static CheckResult attachedMountBlocks(BlockState state, Level level, BlockPos pos, Direction attached) {
+		BlockState attachedTo = level.getBlockState(pos.relative(attached));
+		if (CBCBlocks.CANNON_MOUNT.has(state) && CBCBlocks.YAW_CONTROLLER.has(attachedTo)) {
+			return attached == Direction.DOWN ? CheckResult.SUCCESS : CheckResult.PASS;
+		}
+		if (CBCBlocks.CANNON_MOUNT.has(attachedTo) && CBCBlocks.YAW_CONTROLLER.has(state)) {
+			return attached == Direction.UP ? CheckResult.SUCCESS : CheckResult.PASS;
+		}
+		return CheckResult.PASS;
+	}
+	
 	public static void register() {
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckCannons);
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckCannonLoader);
+		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedMountBlocks);
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::overridePushReactionCheck);
+		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::unmovableCannonMount);
 	}
 	
 }
