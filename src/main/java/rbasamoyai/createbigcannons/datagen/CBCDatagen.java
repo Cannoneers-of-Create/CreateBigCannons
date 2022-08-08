@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.datagen;
 
+import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
@@ -12,6 +13,11 @@ public class CBCDatagen {
 	
 	@SubscribeEvent
 	public static void onDatagen(GatherDataEvent event) {
+		DataGenerator gen = event.getGenerator();
+		if (event.includeServer()) {
+			gen.addProvider(new CannonCastRecipeGen(gen));
+		}
+		
 		CBCLangGen.prepare();
 		
 		CBCPonderTags.register();

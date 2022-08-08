@@ -34,7 +34,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements IMultiTile
 	protected FluidTank fluid;
 	protected LazyOptional<IFluidHandler> fluidOptional = null;
 	protected List<CannonCastShape> structure = new ArrayList<>();
-	protected CannonCastShape renderedSize = CannonCastShape.VERY_SMALL;
+	protected CannonCastShape renderedShape = CannonCastShape.VERY_SMALL;
 	protected BlockPos controllerPos;
 	protected BlockPos lastKnownPos;
 	protected boolean updateConnectivity;
@@ -95,7 +95,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements IMultiTile
 		super.write(tag, clientPacket);
 		this.fluid.writeToNBT(tag);
 		if (this.canRenderCastModel()) {
-			tag.putString("RenderedSize", this.renderedSize.getSerializedName());
+			tag.putString("RenderedSize", this.renderedShape.name().toString());
 		}
 		if (this.lastKnownPos != null) {
 			tag.put("LastKnownPos", NbtUtils.writeBlockPos(this.lastKnownPos));
@@ -109,7 +109,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements IMultiTile
 			if (!this.structure.isEmpty()) {
 				ListTag structureTag = new ListTag();
 				for (CannonCastShape sz : this.structure) {
-					structureTag.add(StringTag.valueOf(sz.getSerializedName()));
+					structureTag.add(StringTag.valueOf(sz.name().toString()));
 				}
 				tag.put("Structure", structureTag);
 			}
@@ -123,7 +123,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements IMultiTile
 		super.read(tag, clientPacket);
 		this.fluid.readFromNBT(tag);
 		if (tag.contains("RenderedSize")) {
-			this.renderedSize = CannonCastShape.byId(tag.getString("RenderedSize"));
+			this.renderedShape = CannonCastShape.byId(tag.getString("RenderedSize"));
 		}
 		this.updateConnectivity = tag.contains("Uninitialized");
 		if (tag.contains("LastKnownPos")) {
@@ -176,18 +176,18 @@ public class CannonCastBlockEntity extends SmartTileEntity implements IMultiTile
 	}
 	
 	public void initializeCastMultiblock(CannonCastShape size) {
-		this.renderedSize = size;
+		this.renderedShape = size;
 		if (this.level.getBlockEntity(this.worldPosition.below()) instanceof CannonCastBlockEntity otherCast
 			&& otherCast.getType() == this.getType()
 			&& otherCast.getHeight() < getMaxHeight()
 			/*&& false*/) {
 			this.controllerPos = otherCast.getController();
 			CannonCastBlockEntity controller = otherCast.getControllerTE();
-			controller.fluid.setCapacity(controller.fluid.getCapacity() + this.renderedSize.fluidSize());
+			controller.fluid.setCapacity(controller.fluid.getCapacity() + this.renderedShape.fluidSize());
 			controller.height += 1;
 			controller.notifyUpdate();
 		} else {
-			this.fluid = new FluidTank(this.renderedSize.fluidSize());
+			this.fluid = new FluidTank(this.renderedShape.fluidSize());
 		}
 		for (Iterator<BlockPos> iter = BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1)).iterator(); iter.hasNext(); ) {
 			BlockPos pos = iter.next();
@@ -205,7 +205,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements IMultiTile
 		if (this.canRenderCastModel()) {
 			CannonCastBlockEntity controller = this.getControllerTE();
 			controller.height -= 1;
-			controller.fluid.setCapacity(Math.max(1, controller.fluid.getCapacity() - this.renderedSize.fluidSize()));
+			controller.fluid.setCapacity(Math.max(1, controller.fluid.getCapacity() - this.renderedShape.fluidSize()));
 			
 			
 			
@@ -318,6 +318,6 @@ public class CannonCastBlockEntity extends SmartTileEntity implements IMultiTile
 		return super.createRenderBoundingBox();
 	}
 	
-	public CannonCastShape getRenderedSize() { return this.renderedSize; }
+	public CannonCastShape getRenderedSize() { return this.renderedShape; }
 
 }

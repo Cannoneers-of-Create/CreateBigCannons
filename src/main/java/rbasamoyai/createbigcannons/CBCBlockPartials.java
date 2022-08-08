@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons;
 
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ public class CBCBlockPartials {
 
 	private static final Map<CannonMaterial, PartialModel> BREECHBLOCK_BY_MATERIAL = new HashMap<>();
 	private static final Map<CannonMaterial, PartialModel> SCREW_LOCK_BY_MATERIAL = new HashMap<>();
-	private static final Map<CannonCastShape, PartialModel> CANNON_CAST_BY_SIZE = new EnumMap<>(CannonCastShape.class);
+	private static final Map<CannonCastShape, PartialModel> CANNON_CAST_BY_SIZE = new HashMap<>();
 	
 	public static final PartialModel
 		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.CAST_IRON, "sliding_breechblock/cast_iron_sliding_breechblock"),

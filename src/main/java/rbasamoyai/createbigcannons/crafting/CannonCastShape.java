@@ -1,32 +1,42 @@
 package rbasamoyai.createbigcannons.crafting;
 
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.resources.ResourceLocation;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 
-public enum CannonCastShape implements StringRepresentable {
-	VERY_SMALL(1008, "very_small"),
-	SMALL(1296, "small"),
-	MEDIUM(1728, "medium"),
-	LARGE(2016, "large"),
-	VERY_LARGE(2880, "very_large");
+public class CannonCastShape {
 	
-	private static final Map<String, CannonCastShape> BY_ID = Arrays.stream(values()).collect(Collectors.toMap(CannonCastShape::getSerializedName, Function.identity()));
+	public static final Map<ResourceLocation, CannonCastShape> SHAPES = new HashMap<>();
+	public static final CannonCastShape	
+		VERY_SMALL = register(CreateBigCannons.resource("very_small"), 1008),
+		SMALL = register(CreateBigCannons.resource("small"), 1296),
+		MEDIUM = register(CreateBigCannons.resource("medium"), 1728),
+		LARGE = register(CreateBigCannons.resource("large"), 2016),
+		VERY_LARGE = register(CreateBigCannons.resource("very_large"), 2880);
 	
 	private final int fluidSize;
-	private final String name;
+	private final ResourceLocation name;
 	
-	private CannonCastShape(int fluidSize, String name) {
+	private CannonCastShape(ResourceLocation name, int fluidSize) {
 		this.fluidSize = fluidSize;
 		this.name = name;
 	}
 	
-	public int fluidSize() { return this.fluidSize; }
-	@Override public String getSerializedName() { return this.name; }
+	public static CannonCastShape register(ResourceLocation name, int fluidSize) {
+		CannonCastShape shape = new CannonCastShape(name, fluidSize);
+		
+		return shape;
+	}
 	
-	public static CannonCastShape byId(String name) { return BY_ID.getOrDefault(name, MEDIUM); }	
+	public int fluidSize() { return this.fluidSize; }
+	public ResourceLocation name() { return this.name; }
+	
+	public static CannonCastShape byId(String name) {
+		return SHAPES.getOrDefault(new ResourceLocation(name), VERY_SMALL);
+	}
+	
+	public static void register() {}
 	
 }
