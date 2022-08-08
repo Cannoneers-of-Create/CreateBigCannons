@@ -52,7 +52,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
-		return this.shapes.get(this.getFacing(state));
+		return this.shapes.get(state.getValue(FACING));
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.material; }
@@ -62,13 +62,13 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 		OpenState open = state.getValue(OPEN);
 		return open == OpenState.OPEN || open == OpenState.PARTIAL ? CannonEnd.OPEN : CannonEnd.CLOSED;
 	}
-	@Override public Axis getRotationAxis(BlockState state) { return this.getFacing(state).getAxis(); }
+	@Override public Axis getRotationAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
 	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 	@Override public boolean isDoubleSidedCannon(BlockState state) { return false; }
 	
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-		return face == this.getFacing(state);
+		return face == state.getValue(FACING);
 	}
 	
 	public static boolean isOpen(BlockState state) {

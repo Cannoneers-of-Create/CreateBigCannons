@@ -11,6 +11,7 @@ import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
@@ -36,7 +37,7 @@ public class ScrewBreechInstance extends HalfShaftInstance implements DynamicIns
 	private void transformModels() {
 		float renderedScrewLockOffset = this.breech.getRenderedBlockOffset(AnimationTickHolder.getPartialTicks());
 		float heightOffset = renderedScrewLockOffset * 0.25f;
-		float rotationOffset = renderedScrewLockOffset * 360.0f;
+		float rotationOffset = renderedScrewLockOffset * (this.facing.getAxisDirection() == AxisDirection.POSITIVE ? 360.0f : -360.0f);
 		Vector3f normal = this.facing.step();
 		Vector3f height = normal.copy();
 		height.mul(heightOffset);

@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
@@ -37,13 +38,13 @@ public class ScrewBreechBlockEntityRenderer extends KineticTileEntityRenderer {
 		
 		float renderedScrewLockOffset = ((ScrewBreechBlockEntity) te).getRenderedBlockOffset(AnimationTickHolder.getPartialTicks());
 		float heightOffset = renderedScrewLockOffset * 0.25f;
-		float rotationOffset = renderedScrewLockOffset * 360.0f;
+		float rotationOffset = renderedScrewLockOffset * (facing.getAxisDirection() == AxisDirection.POSITIVE ? 360.0f : -360.0f);
 		Vector3f normal = facing.step();
 		Vector3f height = normal.copy();
 		height.mul(heightOffset);
 		
 		boolean isY = facing.getAxis() == Direction.Axis.Y;
-		Quaternion q = Vector3f.XP.rotationDegrees(isY ? facing == Direction.DOWN ? 180.0f : 0.0f : 90.0f);
+		Quaternion q = Vector3f.XP.rotationDegrees(90.0f);
 		Quaternion q1 = Vector3f.YP.rotationDegrees(isY ? 0.0f : -facing.toYRot());
 		Quaternion q2 = normal.rotationDegrees(rotationOffset);
 		q1.mul(q);
