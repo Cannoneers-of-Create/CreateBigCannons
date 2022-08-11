@@ -3,10 +3,11 @@ package rbasamoyai.createbigcannons.network;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.simple.SimpleChannel;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.crafting.BlockRecipesManager.ClientboundRecipesPacket;
 
 public class CBCNetwork {
 
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "1.1.0";
 	
 	public static final SimpleChannel INSTANCE = construct();
 	
@@ -24,6 +25,12 @@ public class CBCNetwork {
 				.encoder(ServerboundTimedFuzePacket::encode)
 				.decoder(ServerboundTimedFuzePacket::new)
 				.consumer(ServerboundTimedFuzePacket::handle)
+				.add();
+		
+		channel.messageBuilder(ClientboundRecipesPacket.class, id++)
+				.encoder(ClientboundRecipesPacket::encode)
+				.decoder(ClientboundRecipesPacket::new)
+				.consumer(ClientboundRecipesPacket::handle)
 				.add();
 		
 		return channel;

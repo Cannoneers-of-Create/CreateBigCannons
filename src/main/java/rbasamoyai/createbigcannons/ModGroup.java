@@ -52,6 +52,8 @@ public class ModGroup {
 			list.add(CBCBlocks.MEDIUM_CAST_MOULD.asStack());
 			list.add(CBCBlocks.LARGE_CAST_MOULD.asStack());
 			list.add(CBCBlocks.VERY_LARGE_CAST_MOULD.asStack());
+			list.add(CBCBlocks.CANNON_END_CAST_MOULD.asStack());
+			list.add(CBCBlocks.UNBORED_SLIDING_BREECH_CAST_MOULD.asStack());
 			list.add(new ItemStack(CBCFluids.MOLTEN_CAST_IRON.get().getBucket()));
 		}
 	};

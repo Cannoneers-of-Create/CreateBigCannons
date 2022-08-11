@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.network;
 import java.util.function.Supplier;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.network.NetworkEvent;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeContainer;
 
@@ -26,9 +25,7 @@ public class ServerboundTimedFuzePacket {
 	public void handle(Supplier<NetworkEvent.Context> sup) {
 		NetworkEvent.Context ctx = sup.get();
 		ctx.enqueueWork(() -> {
-			AbstractContainerMenu ct = ctx.getSender().containerMenu;
-			if (!(ct instanceof TimedFuzeContainer)) return;
-			((TimedFuzeContainer) ct).setTime(this.time);
+			if (ctx.getSender().containerMenu instanceof TimedFuzeContainer ct) ct.setTime(this.time);
 		});
 		ctx.setPacketHandled(true);
 	}

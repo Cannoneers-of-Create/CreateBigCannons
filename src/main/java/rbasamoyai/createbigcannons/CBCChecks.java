@@ -16,7 +16,7 @@ import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 
 public class CBCChecks {
 
-	public static CheckResult attachedCheckCannons(BlockState state, Level level, BlockPos pos, Direction attached) {
+	private static CheckResult attachedCheckCannons(BlockState state, Level level, BlockPos pos, Direction attached) {
 		if (!(state.getBlock() instanceof CannonBlock cannonBlock)) return CheckResult.PASS;
 		BlockState attachedState = level.getBlockState(pos.relative(attached));
 		if (!(attachedState.getBlock() instanceof CannonBlock otherBlock)) return CheckResult.PASS;
@@ -36,7 +36,7 @@ public class CBCChecks {
 		return CheckResult.of(result);
 	}
 	
-	public static CheckResult attachedCheckCannonLoader(BlockState state, Level level, BlockPos pos, Direction attached) {
+	private static CheckResult attachedCheckCannonLoader(BlockState state, Level level, BlockPos pos, Direction attached) {
 		if (CBCBlocks.CANNON_LOADER.has(state)
 			|| AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
 			return CheckResult.of(state.getValue(BlockStateProperties.FACING).getAxis() == attached.getAxis());
@@ -49,15 +49,15 @@ public class CBCChecks {
 		return CheckResult.PASS;
 	}
 	
-	public static CheckResult overridePushReactionCheck(BlockState state, Level level, BlockPos pos) {
-		return state.getBlock() instanceof CannonBlock ? CheckResult.SUCCESS : CheckResult.PASS;
+	private static CheckResult overridePushReactionCheck(BlockState state, Level level, BlockPos pos) {
+		return state.getBlock() instanceof CannonBlock cBlock ? CheckResult.of(!cBlock.isImmovable(state)) : CheckResult.PASS;
 	}
 	
-	public static CheckResult unmovableCannonMount(BlockState state, Level level, BlockPos pos) {
+	private static CheckResult unmovableCannonMount(BlockState state, Level level, BlockPos pos) {
 		return level.getBlockEntity(pos) instanceof CannonMountBlockEntity mount ? mount.isRunning() ? CheckResult.FAIL : CheckResult.PASS : CheckResult.PASS;
 	}
 	
-	public static CheckResult attachedMountBlocks(BlockState state, Level level, BlockPos pos, Direction attached) {
+	private static CheckResult attachedMountBlocks(BlockState state, Level level, BlockPos pos, Direction attached) {
 		BlockState attachedTo = level.getBlockState(pos.relative(attached));
 		if (CBCBlocks.CANNON_MOUNT.has(state) && CBCBlocks.YAW_CONTROLLER.has(attachedTo)) {
 			return attached == Direction.DOWN ? CheckResult.SUCCESS : CheckResult.PASS;

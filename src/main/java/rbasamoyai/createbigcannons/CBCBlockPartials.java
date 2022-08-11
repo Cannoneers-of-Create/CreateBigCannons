@@ -28,6 +28,8 @@ public class CBCBlockPartials {
 		MEDIUM_CANNON_CAST = cannonCastPartial(CannonCastShape.MEDIUM, "cannon_cast/medium_cannon_cast"),
 		LARGECANNON_CAST = cannonCastPartial(CannonCastShape.LARGE, "cannon_cast/large_cannon_cast"),
 		VERY_LARGE_CANNON_CAST = cannonCastPartial(CannonCastShape.VERY_LARGE, "cannon_cast/very_large_cannon_cast"),
+		CANNON_END_CAST = cannonCastPartial(CannonCastShape.CANNON_END, "cannon_cast/cannon_end_cast"),
+		UNBORED_SLIDING_BREECH_CAST = cannonCastPartial(CannonCastShape.UNBORED_SLIDING_BREECH, "cannon_cast/unbored_sliding_breech_cast"),
 		
 		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
 		YAW_SHAFT = block("cannon_mount/yaw_axis"),

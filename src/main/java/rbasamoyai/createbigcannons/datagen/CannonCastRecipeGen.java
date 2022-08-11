@@ -21,7 +21,9 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCFluids;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -91,16 +93,87 @@ public class CannonCastRecipeGen implements DataProvider {
 	}
 	
 	protected void registerRecipes(Consumer<CannonCastingRecipe> cons) {
-		cons.accept(recipe(CannonCastShape.VERY_SMALL, FluidIngredient.fromFluid(CBCFluids.MOLTEN_CAST_IRON.get(), 1), CBCBlocks.CAST_IRON_CANNON_BARREL.get(), "cast_iron_barrel_cast"));
+		builder("cast_iron_cannon_barrel")
+		.castingShape(CannonCastShape.VERY_SMALL)
+		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.result(CBCBlocks.CAST_IRON_CANNON_BARREL.get())
+		.save(cons);
+		
+		builder("cast_iron_cannon_chamber")
+		.castingShape(CannonCastShape.MEDIUM)
+		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.result(CBCBlocks.CAST_IRON_CANNON_CHAMBER.get())
+		.castingTime(1800)
+		.save(cons);
+		
+		builder("cast_iron_cannon_end")
+		.castingShape(CannonCastShape.CANNON_END)
+		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.result(CBCBlocks.CAST_IRON_CANNON_END.get())
+		.castingTime(1500)
+		.save(cons);
+		
+		builder("cast_iron_sliding_breech_unbored")
+		.castingShape(CannonCastShape.UNBORED_SLIDING_BREECH)
+		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.result(CBCBlocks.CAST_IRON_SLIDING_BREECH.get())
+		.castingTime(1500)
+		.save(cons);
 	}
 	
-	protected CannonCastingRecipe recipe(CannonCastShape shape, FluidIngredient ingredient, Block result, String name) {
-		return new CannonCastingRecipe(shape, ingredient, result, new ResourceLocation(this.modid, name)); 
+	protected Builder builder(String name) {
+		return new Builder(name);
 	}
 
 	@Override
 	public String getName() {
 		return "Cannon Casting Recipes: " + this.modid;
+	}
+	
+	private class Builder {
+		private final ResourceLocation id;
+		
+		private CannonCastShape shape = null;
+		private FluidIngredient ingredient = null;
+		private int castingTime = 1200;
+		private Block result = null;
+		
+		private Builder(String name) {
+			this.id = new ResourceLocation(CannonCastRecipeGen.this.modid, name);
+		}
+		
+		public Builder castingShape(CannonCastShape shape) {
+			this.shape = shape;
+			return this;
+		}
+		
+		public Builder ingredient(Fluid ingredient) {
+			this.ingredient = FluidIngredient.fromFluid(ingredient, 1);
+			return this;
+		}
+		
+		public Builder ingredient(TagKey<Fluid> ingredient) {
+			this.ingredient = FluidIngredient.fromTag(ingredient, 1);
+			return this;
+		}
+		
+		public Builder castingTime(int castingTime) {
+			this.castingTime = castingTime;
+			return this;
+		}
+		
+		public Builder result(Block result) {
+			this.result = result;
+			return this;
+		}
+		
+		public void save(Consumer<CannonCastingRecipe> cons) {
+			Objects.requireNonNull(this.shape, "Recipe " + this.id.toString() + " has no casting shape specified");
+			Objects.requireNonNull(this.ingredient, "Recipe " + this.id.toString() + " has no fluid ingredient specified");
+			Objects.requireNonNull(this.result, "Recipe " + this.id.toString() + " has no result specified");
+			cons.accept(new CannonCastingRecipe(this.shape, this.ingredient, this.result, this.castingTime, this.id));
+		}
+		
 	}
 
 }

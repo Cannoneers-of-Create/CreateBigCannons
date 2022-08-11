@@ -16,6 +16,8 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
 import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
@@ -31,6 +33,7 @@ import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.crafting.CannonCastBlock;
 import rbasamoyai.createbigcannons.crafting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.CannonCastShape;
+import rbasamoyai.createbigcannons.crafting.FinishedCannonCastBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
@@ -305,30 +308,33 @@ public class CBCBlocks {
 			.transform(CBCBuilderTransformers.invisibleWithParticle("block/casting_sand"))
 			.register();
 	
-	public static final BlockEntry<CannonCastMouldBlock> VERY_SMALL_CAST_MOULD = REGISTRATE
-			.block("very_small_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(2, 0, 2, 14, 17, 14), CannonCastShape.VERY_SMALL))
-			.transform(CBCBuilderTransformers.castMould("very_small"))
+	public static final BlockEntry<FinishedCannonCastBlock> FINISHED_CANNON_CAST = REGISTRATE
+			.block("finished_cannon_cast", FinishedCannonCastBlock::new)
+			.transform(castingSand())
+			.properties(p -> p.noOcclusion())
+			.transform(CBCBuilderTransformers.invisibleWithParticle("block/casting_sand"))
 			.register();
 	
-	public static final BlockEntry<CannonCastMouldBlock> SMALL_CAST_MOULD = REGISTRATE
-			.block("small_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(1, 0, 1, 15, 17, 15), CannonCastShape.SMALL))
-			.transform(CBCBuilderTransformers.castMould("small"))
-			.register();
+	public static final BlockEntry<CannonCastMouldBlock> VERY_SMALL_CAST_MOULD =
+			castMould("very_small", Block.box(2, 0, 2, 14, 17, 14), CannonCastShape.VERY_SMALL);
 	
-	public static final BlockEntry<CannonCastMouldBlock> MEDIUM_CAST_MOULD = REGISTRATE
-			.block("medium_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(0, 0, 0, 16, 17, 16), CannonCastShape.MEDIUM))
-			.transform(CBCBuilderTransformers.castMould("medium"))
-			.register();
+	public static final BlockEntry<CannonCastMouldBlock> SMALL_CAST_MOULD =
+			castMould("small", Block.box(1, 0, 1, 15, 17, 15), CannonCastShape.SMALL);
 	
-	public static final BlockEntry<CannonCastMouldBlock> LARGE_CAST_MOULD = REGISTRATE
-			.block("large_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(-1, 0, -1, 17, 17, 17), CannonCastShape.LARGE))
-			.transform(CBCBuilderTransformers.castMould("large"))
-			.register();
+	public static final BlockEntry<CannonCastMouldBlock> MEDIUM_CAST_MOULD =
+			castMould("medium", Block.box(0, 0, 0, 16, 17, 16), CannonCastShape.MEDIUM);
 	
-	public static final BlockEntry<CannonCastMouldBlock> VERY_LARGE_CAST_MOULD = REGISTRATE
-			.block("very_large_cast_mould", p -> new CannonCastMouldBlock(p, Block.box(-2, 0, -2, 18, 17, 18), CannonCastShape.VERY_LARGE))
-			.transform(CBCBuilderTransformers.castMould("very_large"))
-			.register();
+	public static final BlockEntry<CannonCastMouldBlock> LARGE_CAST_MOULD =
+			castMould("large", Block.box(-1, 0, -1, 17, 17, 17), CannonCastShape.LARGE);
+	
+	public static final BlockEntry<CannonCastMouldBlock> VERY_LARGE_CAST_MOULD =
+			castMould("very_large", Block.box(-2, 0, -2, 18, 17, 18), CannonCastShape.VERY_LARGE);
+	
+	public static final BlockEntry<CannonCastMouldBlock> CANNON_END_CAST_MOULD =
+			castMould("cannon_end", Shapes.or(Block.box(5, 0, 5, 11, 6, 11), Block.box(6, 6, 6, 10, 8, 10), Block.box(0, 8, 0, 16, 16, 16)), CannonCastShape.CANNON_END);
+	
+	public static final BlockEntry<CannonCastMouldBlock> UNBORED_SLIDING_BREECH_CAST_MOULD =
+			castMould("unbored_sliding_breech", Block.box(0, 0, 0, 16, 17, 16), CannonCastShape.UNBORED_SLIDING_BREECH);
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock() {
 		return b -> b.initialProperties(Material.METAL)
@@ -369,6 +375,12 @@ public class CBCBlocks {
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> axeOrPickaxe() {
 		return b -> b.tag(BlockTags.MINEABLE_WITH_AXE)
 				.tag(BlockTags.MINEABLE_WITH_PICKAXE);
+	}
+	
+	private static BlockEntry<CannonCastMouldBlock> castMould(String name, VoxelShape blockShape, CannonCastShape castShape) {
+		return REGISTRATE.block(name + "_cast_mould", p -> new CannonCastMouldBlock(p, blockShape, castShape))
+				.transform(CBCBuilderTransformers.castMould(name))
+				.register();
 	}
 	
 	private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) { return false; }
