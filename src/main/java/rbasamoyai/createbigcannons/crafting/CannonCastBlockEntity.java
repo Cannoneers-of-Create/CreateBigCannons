@@ -362,17 +362,19 @@ public class CannonCastBlockEntity extends SmartTileEntity {
 		}
 		if (this.level.getBlockEntity(this.worldPosition.above()) instanceof CannonCastBlockEntity otherCast && otherCast.isController()) {
 			CannonCastBlockEntity controller = this.getControllerTE();
-			controller.height += otherCast.height;
-			controller.fluid.setCapacity(controller.fluid.getCapacity() + this.castShape.fluidSize());
-			controller.fluid.fill(otherCast.fluid.drain(otherCast.fluid.getCapacity(), FluidAction.EXECUTE), FluidAction.EXECUTE);
-			controller.structure.addAll(otherCast.structure);
-			
-			otherCast.fluid = new FluidTank(1);
-			otherCast.height = 1;
-			otherCast.structure = new ArrayList<>();
-			
-			controller.updatePotentialCastsAbove();
-			controller.notifyUpdate();
+			if (controller.height + otherCast.height <= getMaxHeight()) {
+				controller.height += otherCast.height;
+				controller.fluid.setCapacity(controller.fluid.getCapacity() + this.castShape.fluidSize());
+				controller.fluid.fill(otherCast.fluid.drain(otherCast.fluid.getCapacity(), FluidAction.EXECUTE), FluidAction.EXECUTE);
+				controller.structure.addAll(otherCast.structure);
+				
+				otherCast.fluid = new FluidTank(1);
+				otherCast.height = 1;
+				otherCast.structure = new ArrayList<>();
+				
+				controller.updatePotentialCastsAbove();
+				controller.notifyUpdate();
+			}
 		}
 		
 		for (Iterator<BlockPos> iter = BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1)).iterator(); iter.hasNext(); ) {

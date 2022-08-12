@@ -4,6 +4,7 @@
     "createbigcannons:log_cannon_chamber",
     "createbigcannons:wrought_iron_cannon_chamber",
     "createbigcannons:cast_iron_cannon_chamber",
+    "createbigcannons:unbored_cast_iron_cannon_chamber",
     "createbigcannons:bronze_cannon_chamber",
     "createbigcannons:steel_cannon_chamber",
     "createbigcannons:nether_gunmetal_cannon_chamber"

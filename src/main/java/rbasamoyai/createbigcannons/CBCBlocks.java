@@ -34,6 +34,7 @@ import rbasamoyai.createbigcannons.crafting.CannonCastBlock;
 import rbasamoyai.createbigcannons.crafting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.FinishedCannonCastBlock;
+import rbasamoyai.createbigcannons.crafting.UnboredCannonBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
@@ -110,6 +111,20 @@ public class CBCBlocks {
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
 			.transform(BlockStressDefaults.setImpact(16.0d))
+			.register();
+	
+	public static final BlockEntry<UnboredCannonBlock> UNBORED_CAST_IRON_CANNON_BARREL = REGISTRATE
+			.block("unbored_cast_iron_cannon_barrel", p -> UnboredCannonBlock.verySmall(p, CannonMaterial.CAST_IRON, CAST_IRON_CANNON_BARREL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/cast_iron", "cannon_barrel/unbored_cast_iron"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<UnboredCannonBlock> UNBORED_CAST_IRON_CANNON_CHAMBER = REGISTRATE
+			.block("unbored_cast_iron_cannon_chamber", p -> UnboredCannonBlock.medium(p, CannonMaterial.CAST_IRON, CAST_IRON_CANNON_CHAMBER))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/cast_iron", "cannon_chamber/unbored_cast_iron"))
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	//////// Bronze cannon blocks ////////

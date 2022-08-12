@@ -96,13 +96,13 @@ public class CannonCastRecipeGen implements DataProvider {
 		builder("cast_iron_cannon_barrel")
 		.castingShape(CannonCastShape.VERY_SMALL)
 		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
-		.result(CBCBlocks.CAST_IRON_CANNON_BARREL.get())
+		.result(CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL.get())
 		.save(cons);
 		
 		builder("cast_iron_cannon_chamber")
 		.castingShape(CannonCastShape.MEDIUM)
 		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
-		.result(CBCBlocks.CAST_IRON_CANNON_CHAMBER.get())
+		.result(CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER.get())
 		.castingTime(1800)
 		.save(cons);
 		

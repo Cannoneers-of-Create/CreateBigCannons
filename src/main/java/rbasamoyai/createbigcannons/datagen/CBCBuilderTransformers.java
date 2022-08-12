@@ -23,9 +23,13 @@ import rbasamoyai.createbigcannons.crafting.CannonCastMouldBlock;
 public class CBCBuilderTransformers {
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBarrel(String pathAndMaterial) {
+		return cannonBarrel(pathAndMaterial, pathAndMaterial);
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBarrel(String sidePathAndMaterial, String endPathAndMaterial) {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/cannon_barrel");
-		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_barrel_side");
-		ResourceLocation endLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_barrel_end");
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + sidePathAndMaterial + "_cannon_barrel_side");
+		ResourceLocation endLoc = CreateBigCannons.resource("block/" + endPathAndMaterial + "_cannon_barrel_end");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
 				.tag(CBCTags.BlockCBC.REDUCES_SPREAD)
@@ -36,8 +40,12 @@ public class CBCBuilderTransformers {
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonChamber(String pathAndMaterial) {
-		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_chamber_side");
-		ResourceLocation endLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_chamber_end");
+		return cannonChamber(pathAndMaterial, pathAndMaterial);
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonChamber(String sidePathAndMaterial, String endPathAndMaterial) {
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + sidePathAndMaterial + "_cannon_chamber_side");
+		ResourceLocation endLoc = CreateBigCannons.resource("block/" + endPathAndMaterial + "_cannon_chamber_end");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
 				.tag(CBCTags.BlockCBC.THICK_TUBING)

@@ -22,7 +22,6 @@ public class CannonEndBlockEntity extends SmartTileEntity implements ICannonBloc
 
 	@Override
 	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-		super.addBehavioursDeferred(behaviours);
 		behaviours.add(this.cannonBehavior = new CannonBehavior(this, this::canLoadBlock));
 	}
 	

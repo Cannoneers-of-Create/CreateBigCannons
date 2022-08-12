@@ -7,5 +7,5 @@
     "amount": 1
   },
   "casting_time": 1200,
-  "result": "createbigcannons:cast_iron_cannon_barrel"
+  "result": "createbigcannons:unbored_cast_iron_cannon_barrel"
 }
