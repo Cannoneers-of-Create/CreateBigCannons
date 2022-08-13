@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.crafting;
+package rbasamoyai.createbigcannons.crafting.casting;
 
 import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.fluid.FluidIngredient;

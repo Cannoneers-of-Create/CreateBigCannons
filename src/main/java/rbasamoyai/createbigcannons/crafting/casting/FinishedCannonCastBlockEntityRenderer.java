@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.crafting;
+package rbasamoyai.createbigcannons.crafting.casting;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.render.CachedBufferer;

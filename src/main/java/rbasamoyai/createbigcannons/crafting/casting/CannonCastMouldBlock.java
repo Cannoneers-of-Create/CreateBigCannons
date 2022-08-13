@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.crafting;
+package rbasamoyai.createbigcannons.crafting.casting;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;

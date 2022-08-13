@@ -27,8 +27,8 @@ import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCFluids;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.crafting.CannonCastShape;
-import rbasamoyai.createbigcannons.crafting.CannonCastingRecipe;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 
 public class CannonCastRecipeGen implements DataProvider {
 

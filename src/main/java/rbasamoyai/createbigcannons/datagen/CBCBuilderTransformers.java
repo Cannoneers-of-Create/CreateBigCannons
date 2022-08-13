@@ -18,7 +18,7 @@ import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
-import rbasamoyai.createbigcannons.crafting.CannonCastMouldBlock;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 
 public class CBCBuilderTransformers {
 

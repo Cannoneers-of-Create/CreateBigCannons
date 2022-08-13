@@ -7,7 +7,7 @@ import com.jozufozu.flywheel.core.PartialModel;
 
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
-import rbasamoyai.createbigcannons.crafting.CannonCastShape;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class CBCBlockPartials {
 

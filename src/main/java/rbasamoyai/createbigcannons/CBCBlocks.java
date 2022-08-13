@@ -30,11 +30,11 @@ import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
-import rbasamoyai.createbigcannons.crafting.CannonCastBlock;
-import rbasamoyai.createbigcannons.crafting.CannonCastMouldBlock;
-import rbasamoyai.createbigcannons.crafting.CannonCastShape;
-import rbasamoyai.createbigcannons.crafting.FinishedCannonCastBlock;
 import rbasamoyai.createbigcannons.crafting.UnboredCannonBlock;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlock;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
@@ -257,6 +257,8 @@ public class CBCBlocks {
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.yawController())
 			.register();
+	
+	//////// Cannon boring blocks ////////
 		
 	static {
 		REGISTRATE.startSection(AllSections.LOGISTICS);

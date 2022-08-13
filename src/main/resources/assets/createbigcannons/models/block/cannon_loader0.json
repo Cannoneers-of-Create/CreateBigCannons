@@ -2,12 +2,12 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
 	"textures": {
-		"3": "createbigcannons:block/cannon_loader_bottom",
-		"5": "createbigcannons:block/cannon_loader_top",
-		"6": "createbigcannons:block/cannon_loader_side",
-		"7": "createbigcannons:block/cannon_loader_nook",
-		"8": "createbigcannons:block/cannon_loader_side1",
-		"particle": "createbigcannons:block/cannon_loader_top"
+		"3": "createbigcannons:block/pole_contraption_bottom",
+		"5": "createbigcannons:block/pole_contraption_top",
+		"6": "createbigcannons:block/pole_contraption_side",
+		"7": "createbigcannons:block/pole_contraption_nook",
+		"8": "createbigcannons:block/pole_contraption_side1",
+		"particle": "createbigcannons:block/pole_contraption_top"
 	},
 	"elements": [
 		{

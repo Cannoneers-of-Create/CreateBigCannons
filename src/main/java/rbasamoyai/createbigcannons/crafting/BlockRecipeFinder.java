@@ -13,6 +13,7 @@ import com.google.common.cache.CacheBuilder;
 
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 
 public class BlockRecipeFinder {
 

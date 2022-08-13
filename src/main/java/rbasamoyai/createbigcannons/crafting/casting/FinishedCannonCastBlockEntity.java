@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.crafting;
+package rbasamoyai.createbigcannons.crafting.casting;
 
 import java.util.List;
 

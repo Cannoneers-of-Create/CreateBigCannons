@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.crafting;
+package rbasamoyai.createbigcannons.crafting.casting;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +36,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 
 public class CannonCastBlockEntity extends SmartTileEntity {
 
