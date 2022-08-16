@@ -10,11 +10,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionType;
-import com.simibubi.create.content.contraptions.components.structureMovement.TranslatingContraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.PistonExtensionPoleBlock;
-import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionLighter;
 import com.simibubi.create.foundation.config.AllConfigs;
-import com.simibubi.create.foundation.utility.VecHelper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,23 +27,16 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
-public class CannonLoadingContraption extends TranslatingContraption {
+public class CannonLoadingContraption extends PoleContraption {
 	
-	protected int extensionLength;
-	protected int initialExtensionProgress;
-	protected Direction orientation;	
 	protected LoadingHead loadingHead = LoadingHead.NOTHING;
-	
-	private AABB pistonContraptionHitbox;
-	private boolean retract;
 	
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final BooleanProperty MOVING = CannonLoaderBlock.MOVING;
@@ -55,23 +45,11 @@ public class CannonLoadingContraption extends TranslatingContraption {
 	public CannonLoadingContraption() {}
 	
 	public CannonLoadingContraption(Direction direction, boolean retract) {
-		this.orientation = direction;
-		this.retract = retract;
+		super(direction, retract);
 	}
 	
 	@Override
-	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
-		if (!this.collectExtensions(level, pos, this.orientation)) return false;
-		int count = this.blocks.size();
-		
-		if (!this.searchMovedStructure(level, this.anchor, this.retract ? this.orientation.getOpposite() : this.orientation)) {
-			return false;
-		}
-		this.bounds = this.blocks.size() == count ? this.pistonContraptionHitbox : this.bounds.minmax(this.pistonContraptionHitbox);
-		return true;
-	}
-	
-	private boolean collectExtensions(Level level, BlockPos pos, Direction direction) throws AssemblyException {
+	protected boolean collectExtensions(Level level, BlockPos pos, Direction direction) throws AssemblyException {
 		if (!CBCBlocks.CANNON_LOADER.has(level.getBlockState(pos))) return false;
 		
 		List<StructureBlockInfo> poles = new ArrayList<>();
@@ -324,38 +302,21 @@ public class CannonLoadingContraption extends TranslatingContraption {
 	}
 	
 	@Override
-	protected boolean isAnchoringBlockAt(BlockPos pos) {
-		return this.pistonContraptionHitbox.contains(VecHelper.getCenterOf(pos.subtract(this.anchor)));
-	}
-	
-	@Override
 	public void readNBT(Level level, CompoundTag tag, boolean spawnData) {
 		super.readNBT(level, tag, spawnData);
-		this.initialExtensionProgress = tag.getInt("InitialLength");
-		this.extensionLength = tag.getInt("ExtensionLength");
-		this.orientation = Direction.from3DDataValue(tag.getInt("Orientation"));
 		this.loadingHead = LoadingHead.fromOrdinal(tag.getInt("LoadingHead"));
 	}
 	
 	@Override
 	public CompoundTag writeNBT(boolean spawnPacket) {
 		CompoundTag tag = super.writeNBT(spawnPacket);
-		tag.putInt("InitialLength", this.initialExtensionProgress);
-		tag.putInt("ExtensionLength", this.extensionLength);
-		tag.putInt("Orientation", this.orientation.get3DDataValue());
 		tag.putInt("LoadingHead", this.loadingHead == null ? LoadingHead.NOTHING.ordinal() : this.loadingHead.ordinal());
 		return tag;
 	}
 	
 	@Override protected ContraptionType getType() { return CBCContraptionTypes.CANNON_LOADER; }
 	
-	@OnlyIn(Dist.CLIENT) // disgusting.
-	@Override
-	public ContraptionLighter<?> makeLighter() {
-		return new CannonLoaderLighter(this);
-	}
-	
-	public static enum LoadingHead {
+	public enum LoadingHead {
 		RAM_HEAD,
 		WORM_HEAD,
 		NOTHING;

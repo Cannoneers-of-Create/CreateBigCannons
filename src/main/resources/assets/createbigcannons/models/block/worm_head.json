@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
 	"textures": {
-		"0": "minecraft:block/piston_side",
+		"0": "block/piston_side",
 		"1": "create:block/pole_end",
 		"2": "createbigcannons:block/worm_head",
 		"particle": "createbigcannons:block/worm_head"

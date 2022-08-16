@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.crafting;
+package rbasamoyai.createbigcannons.crafting.boring;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;

@@ -21,6 +21,8 @@
   "block.createbigcannons.cannon.tooltip.weightImpact": "Weight Impact",
   "block.createbigcannons.cannon.tooltip.weightImpact.goggles": "_%sx RPM_",
   "block.createbigcannons.cannon_cast": "Cannon Cast",
+  "block.createbigcannons.cannon_drill": "Cannon Drill",
+  "block.createbigcannons.cannon_drill_bit": "Cannon Drill Bit",
   "block.createbigcannons.cannon_end_cast_mould": "Cannon End Cast Mould",
   "block.createbigcannons.cannon_loader": "Cannon Loader",
   "block.createbigcannons.cannon_mount": "Cannon Mount",

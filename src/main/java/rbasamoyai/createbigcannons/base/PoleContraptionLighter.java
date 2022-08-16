@@ -1,13 +1,13 @@
-package rbasamoyai.createbigcannons.cannonloading;
+package rbasamoyai.createbigcannons.base;
 
 import com.jozufozu.flywheel.util.box.GridAlignedBB;
 import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionLighter;
 
 import net.minecraft.core.Vec3i;
 
-public class CannonLoaderLighter extends ContraptionLighter<CannonLoadingContraption> {
+public class PoleContraptionLighter extends ContraptionLighter<PoleContraption> {
 
-	protected CannonLoaderLighter(CannonLoadingContraption contraption) {
+	protected PoleContraptionLighter(PoleContraption contraption) {
 		super(contraption);
 	}
 

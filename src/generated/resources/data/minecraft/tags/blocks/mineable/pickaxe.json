@@ -25,6 +25,8 @@
     "createbigcannons:worm_head",
     "createbigcannons:cannon_mount",
     "createbigcannons:yaw_controller",
+    "createbigcannons:cannon_drill",
+    "createbigcannons:cannon_drill_bit",
     "createbigcannons:solid_shot",
     "createbigcannons:he_shell",
     "createbigcannons:shrapnel_shell"

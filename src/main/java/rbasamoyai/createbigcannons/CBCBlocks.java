@@ -30,7 +30,9 @@ import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
-import rbasamoyai.createbigcannons.crafting.UnboredCannonBlock;
+import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
+import rbasamoyai.createbigcannons.crafting.boring.DrillBitBlock;
+import rbasamoyai.createbigcannons.crafting.boring.UnboredCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
@@ -259,7 +261,29 @@ public class CBCBlocks {
 			.register();
 	
 	//////// Cannon boring blocks ////////
-		
+	
+	public static final BlockEntry<CannonDrillBlock> CANNON_DRILL = REGISTRATE
+			.block("cannon_drill", CannonDrillBlock::new)
+			.properties(p -> p.color(MaterialColor.PODZOL))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.cannonDrill())
+			.transform(BlockStressDefaults.setImpact(8.0d))
+			.register();
+	
+	public static final BlockEntry<DrillBitBlock> CANNON_DRILL_BIT = REGISTRATE
+			.block("cannon_drill_bit", DrillBitBlock::new)
+			.properties(p -> p.color(MaterialColor.STONE))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.cannonDrillBit())
+			.register();
+	
+	/*
+	 * public static final BlockEntry<CannonLatheBlock> CANNON_LATHE =
+	 * REGISTRATE .block("cannon_lathe", CannonLatheBlock::new) .properties(p ->
+	 * p.color(MaterialColor.PODZOL)) .transform(axeOrPickaxe())
+	 * .transform(CBCBuilderTransformers.cannonLathe()) .register();
+	 */
+	
 	static {
 		REGISTRATE.startSection(AllSections.LOGISTICS);
 	}

@@ -1,10 +1,12 @@
-package rbasamoyai.createbigcannons.cannonloading;
+package rbasamoyai.createbigcannons.crafting.boring;
 
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
+import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionCollider;
 import com.simibubi.create.content.contraptions.components.structureMovement.ControlledContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.DirectionalExtenderScrollOptionSlot;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.LinearActuatorTileEntity;
+import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
 import com.simibubi.create.foundation.tileEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
@@ -16,15 +18,16 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
 
-public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
-	
+public class CannonDrillBlockEntity extends LinearActuatorTileEntity {
+
 	protected int extensionLength;
 	
-	public CannonLoaderBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
-		super(typeIn, pos, state);
+	public CannonDrillBlockEntity(BlockEntityType<? extends CannonDrillBlockEntity> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
 	}
-	
+
 	@Override
 	protected void read(CompoundTag compound, boolean clientPacket) {
 		this.extensionLength = compound.getInt("ExtensionLength");
@@ -39,10 +42,10 @@ public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
 
 	@Override
 	protected void assemble() throws AssemblyException {
-		if (!(this.level.getBlockState(this.worldPosition).getBlock() instanceof CannonLoaderBlock)) return;
+		if (!(this.level.getBlockState(this.worldPosition).getBlock() instanceof CannonDrillBlock)) return;
 		
 		Direction facing = this.getBlockState().getValue(CannonLoaderBlock.FACING);
-		CannonLoadingContraption contraption = new CannonLoadingContraption(facing, this.getMovementSpeed() < 0);
+		CannonDrillingContraption contraption = new CannonDrillingContraption(facing, this.getMovementSpeed() < 0);
 		if (!contraption.assemble(this.level, this.worldPosition)) {
 			return;
 		}
@@ -50,7 +53,7 @@ public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
 		Direction positive = Direction.get(Direction.AxisDirection.POSITIVE, facing.getAxis());
 		Direction movementDirection = (this.getSpeed() > 0) ^ facing.getAxis() != Direction.Axis.Z ? positive : positive.getOpposite();
 		BlockPos anchor = contraption.anchor.relative(facing, contraption.initialExtensionProgress());
-		if (CannonLoaderCollider.isCollidingWithWorld(this.level, contraption, anchor.relative(movementDirection), movementDirection)) {
+		if (ContraptionCollider.isCollidingWithWorld(this.level, contraption, anchor.relative(movementDirection), movementDirection)) {
 			return;
 		}
 		
@@ -79,7 +82,7 @@ public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
 	public void disassemble() {
 		if (!this.running && this.movedContraption == null) return;
 		if (!this.remove) {
-			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonLoaderBlock.MOVING, false), 3 | 16);
+			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonDrillBlock.STATE, PistonState.EXTENDED), 3 | 16);
 		}
 		if (this.movedContraption != null) {
 			this.resetContraptionToOffset();
@@ -91,23 +94,8 @@ public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
 		this.sendData();
 		
 		if (this.remove) {
-			CBCBlocks.CANNON_LOADER.get().playerWillDestroy(this.level, this.worldPosition, this.getBlockState(), null);
+			CBCBlocks.CANNON_DRILL.get().playerWillDestroy(this.level, this.worldPosition, this.getBlockState(), null);
 		}
-	}
-	
-	@Override
-	protected boolean moveAndCollideContraption() {
-		if (this.movedContraption == null) {
-			return false;
-		}
-		if (this.movedContraption.isStalled()) {
-			this.movedContraption.setDeltaMovement(Vec3.ZERO);			
-			return false;
-		}
-		Vec3 motion = this.getMotionVector();
-		this.movedContraption.setContraptionMotion(motion);
-		this.movedContraption.move(motion.x, motion.y, motion.z);
-		return CannonLoaderCollider.collideBlocks(this.movedContraption);
 	}
 	
 	@Override
@@ -136,7 +124,7 @@ public class CannonLoaderBlockEntity extends LinearActuatorTileEntity {
 
 	@Override
 	protected int getInitialOffset() {
-		return this.movedContraption == null ? 0 : ((CannonLoadingContraption) this.movedContraption.getContraption()).initialExtensionProgress();
+		return this.movedContraption == null ? 0 : ((CannonDrillingContraption) this.movedContraption.getContraption()).initialExtensionProgress();
 	}
 
 	@Override

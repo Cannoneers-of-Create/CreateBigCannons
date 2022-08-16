@@ -2,16 +2,17 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
 	"textures": {
-		"0": "minecraft:block/piston_side",
+		"0": "block/piston_side",
 		"1": "createbigcannons:block/pole_contraption_bottom",
 		"2": "createbigcannons:block/pole_contraption_nook",
 		"3": "createbigcannons:block/pole_contraption_side",
-		"4": "createbigcannons:blockpole_contraption_side1",
+		"4": "createbigcannons:block/pole_contraption_side1",
 		"5": "createbigcannons:block/pole_contraption_top",
-		"6": "createbigcannons:block/pole_end",
-		"7": "createbigcannons:block/pipes",
+		"6": "create:block/pole_end",
+		"7": "create:block/pipes",
 		"8": "create:block/axis",
 		"9": "create:block/axis_top",
+		"10": "createbigcannons:block/cannon_drill_bit",
 		"particle": "createbigcannons:block/pole_contraption_nook"
 	},
 	"elements": [
@@ -96,6 +97,19 @@
 			}
 		},
 		{
+			"from": [5, 7, -6],
+			"to": [11, 9, 0],
+			"rotation": {"angle": 22.5, "axis": "z", "origin": [8, 8, 0]},
+			"faces": {
+				"north": {"uv": [0, 8, 6, 10], "texture": "#10"},
+				"east": {"uv": [0, 6, 6, 8], "texture": "#10"},
+				"south": {"uv": [0, 10, 6, 8], "texture": "#10"},
+				"west": {"uv": [0, 8, 6, 6], "texture": "#10"},
+				"up": {"uv": [0, 0, 6, 6], "texture": "#10"},
+				"down": {"uv": [0, 0, 6, 6], "rotation": 180, "texture": "#10"}
+			}
+		},
+		{
 			"from": [6, 0, 6],
 			"to": [10, 16, 10],
 			"faces": {
@@ -116,11 +130,12 @@
 		4,
 		5,
 		6,
+		7,
 		{
 			"name": "shaft",
 			"origin": [8, 8, 8],
 			"color": 0,
-			"children": [7]
+			"children": [8]
 		}
 	]
 }

@@ -19,6 +19,8 @@ import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechInstance;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechInstance;
+import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
@@ -63,21 +65,21 @@ public class CBCBlockEntities {
 			.tileEntity("cannon_loader", CannonLoaderBlockEntity::new)
 			.instance(() -> ShaftInstance::new, false)
 			.renderer(() -> CannonLoaderBlockEntityRenderer::new)
-			.validBlocks(CBCBlocks.CANNON_LOADER)
+			.validBlock(CBCBlocks.CANNON_LOADER)
 			.register();
 	
 	public static final BlockEntityEntry<CannonMountBlockEntity> CANNON_MOUNT = CreateBigCannons.registrate()
 			.tileEntity("cannon_mount", CannonMountBlockEntity::new)
 			.instance(() -> CannonMountInstance::new)
 			.renderer(() -> CannonMountBlockEntityRenderer::new)
-			.validBlocks(CBCBlocks.CANNON_MOUNT)
+			.validBlock(CBCBlocks.CANNON_MOUNT)
 			.register();
 	
 	public static final BlockEntityEntry<YawControllerBlockEntity> YAW_CONTROLLER = CreateBigCannons.registrate()
 			.tileEntity("yaw_controller", YawControllerBlockEntity::new)
 			.instance(() -> YawControllerInstance::new)
 			.renderer(() -> YawControllerBlockEntityRenderer::new)
-			.validBlocks(CBCBlocks.YAW_CONTROLLER)
+			.validBlock(CBCBlocks.YAW_CONTROLLER)
 			.register();
 	
 	public static final BlockEntityEntry<FuzedBlockEntity> FUZED_BLOCK = CreateBigCannons.registrate()
@@ -90,7 +92,7 @@ public class CBCBlockEntities {
 	public static final BlockEntityEntry<CannonCastBlockEntity> CANNON_CAST = CreateBigCannons.registrate()
 			.tileEntity("cannon_cast", CannonCastBlockEntity::new)
 			.renderer(() -> CannonCastBlockEntityRenderer::new)
-			.validBlocks(CBCBlocks.CANNON_CAST)
+			.validBlock(CBCBlocks.CANNON_CAST)
 			.register();
 	
 	public static final BlockEntityEntry<FinishedCannonCastBlockEntity> FINISHED_CANNON_CAST = CreateBigCannons.registrate()
@@ -98,6 +100,14 @@ public class CBCBlockEntities {
 			.renderer(() -> FinishedCannonCastBlockEntityRenderer::new)
 			.validBlock(CBCBlocks.FINISHED_CANNON_CAST)
 			.register();
+	
+	public static final BlockEntityEntry<CannonDrillBlockEntity> CANNON_DRILL = CreateBigCannons.registrate()
+			.tileEntity("cannon_drill", CannonDrillBlockEntity::new)
+			.instance(() -> ShaftInstance::new)
+			.renderer(() -> CannonDrillBlockEntityRenderer::new)
+			.validBlock(CBCBlocks.CANNON_DRILL)
+			.register();
+			
 	
 	public static void register() {}
 	
