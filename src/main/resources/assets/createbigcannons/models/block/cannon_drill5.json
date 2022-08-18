@@ -10,7 +10,7 @@
 		"5": "create:block/pipes",
 		"6": "create:block/pole_end",
 		"7": "block/piston_side",
-		"particle": "createbigcannons:block/pole_contraption_bottom"
+		"particle": "createbigcannons:block/pole_contraption_nook"
 	},
 	"elements": [
 		{

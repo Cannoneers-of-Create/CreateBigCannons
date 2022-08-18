@@ -18,6 +18,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class CannonDrillBlock extends DirectionalAxisKineticBlock implements ITE<CannonDrillBlockEntity> {
 
@@ -47,5 +48,9 @@ public class CannonDrillBlock extends DirectionalAxisKineticBlock implements ITE
 
 	@Override public Class<CannonDrillBlockEntity> getTileEntityClass() { return CannonDrillBlockEntity.class; }
 	@Override public BlockEntityType<? extends CannonDrillBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_DRILL.get(); }
+	
+	public static int maxAllowedDrillLength() {
+		return CBCConfigs.SERVER.crafting.maxCannonDrillLength.get();
+	}
 
 }

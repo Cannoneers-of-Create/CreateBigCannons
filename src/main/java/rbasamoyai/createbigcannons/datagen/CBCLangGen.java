@@ -70,6 +70,11 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.fragment", "The cannon _fragments_ on failure.");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd", "Weak Cannon End");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd.desc", "Cannons built with this as the closing can only safely handle up to _%s Powder Charge(s)_.");
+		
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "encounteredProblem", "The cannon drill has encountered a problem:");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "dryBore", "The cannon drill requires water to operate");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooWeak", "The cannon drill must be operating at the same RPM or faster as the target lathe");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "none", "The cannon drill did not fail, this should not be displaying");
 	}
 	
 	private static class TooltipBuilder {

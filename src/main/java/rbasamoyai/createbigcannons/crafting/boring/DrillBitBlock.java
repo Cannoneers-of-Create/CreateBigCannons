@@ -1,6 +1,8 @@
 package rbasamoyai.createbigcannons.crafting.boring;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
+import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
 import com.simibubi.create.foundation.block.WrenchableDirectionalBlock;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
@@ -10,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
@@ -56,6 +59,35 @@ public class DrillBitBlock extends WrenchableDirectionalBlock implements SimpleW
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return this.shapes.get(state.getValue(FACING));
 	}
+	
+	@Override
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		Direction direction = state.getValue(FACING);
+		BlockPos drillBase = null;
+		
+		for (int i = 1; i < CannonDrillBlock.maxAllowedDrillLength(); ++i) {
+			BlockPos currentPos = pos.relative(direction.getOpposite(), i);
+			BlockState block = level.getBlockState(currentPos);
+			
+			if (isExtensionPole(block) && direction.getAxis() == block.getValue(BlockStateProperties.FACING).getAxis()) continue;
+			if (isDrillBlock(block) && block.getValue(FACING) == direction) drillBase = currentPos;
+			
+			break;
+		}
+		
+		if (drillBase != null) {
+			BlockPos basePos = drillBase.immutable();
+			BlockPos.betweenClosedStream(drillBase, pos.immutable())
+			.filter(p -> !p.equals(pos) && !p.equals(basePos))
+			.forEach(p -> level.destroyBlock(p, !player.isCreative()));
+			level.setBlockAndUpdate(basePos, level.getBlockState(basePos).setValue(CannonDrillBlock.STATE, PistonState.RETRACTED));
+		}
+		
+		super.playerWillDestroy(level, pos, state, player);
+	}
+	
+	private static boolean isExtensionPole(BlockState state) { return AllBlocks.PISTON_EXTENSION_POLE.has(state); }
+	private static boolean isDrillBlock(BlockState state) { return CBCBlocks.CANNON_DRILL.has(state); }
 	
 	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.NORMAL; }
 	

@@ -33,6 +33,12 @@ public class CBCNetwork {
 				.consumer(ClientboundRecipesPacket::handle)
 				.add();
 		
+		channel.messageBuilder(ClientboundUpdateContraptionPacket.class, id++)
+				.encoder(ClientboundUpdateContraptionPacket::encode)
+				.decoder(ClientboundUpdateContraptionPacket::new)
+				.consumer(ClientboundUpdateContraptionPacket::handle)
+				.add();
+		
 		return channel;
 	}
 	

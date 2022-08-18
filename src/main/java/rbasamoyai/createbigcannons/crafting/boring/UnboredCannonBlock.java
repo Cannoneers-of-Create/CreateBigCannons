@@ -6,7 +6,6 @@ import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -41,7 +40,7 @@ public class UnboredCannonBlock extends SolidCannonBlock implements Transformabl
 	}
 
 	@Override
-	public BlockState getBoredBlockState(BlockState state, Level level, BlockPos pos) {
+	public BlockState getBoredBlockState(BlockState state) {
 		if (this.boredBlock == null) {
 			this.boredBlock = this.boredBlockSup.get();
 		}

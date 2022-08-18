@@ -23,7 +23,6 @@ import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.base.PoleContraption;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
 
 public class CannonDrillingContraption extends PoleContraption {
 	
@@ -55,7 +54,7 @@ public class CannonDrillingContraption extends PoleContraption {
 			
 			nextBlock = level.getBlockState(start.relative(direction));
 			
-			if (extensionsInFront > CannonLoaderBlock.maxAllowedLoaderLength()) {
+			if (extensionsInFront > CannonDrillBlock.maxAllowedDrillLength()) {
 				throw AssemblyException.tooManyPistonPoles();
 			}
 		}
@@ -77,7 +76,7 @@ public class CannonDrillingContraption extends PoleContraption {
 			extensionsInBack++;
 			nextBlock = level.getBlockState(end.relative(opposite));
 			
-			if (extensionsInFront + extensionsInBack > 32) {
+			if (extensionsInFront + extensionsInBack > CannonDrillBlock.maxAllowedDrillLength()) {
 				throw AssemblyException.tooManyPistonPoles();
 			}
 		}
@@ -91,7 +90,7 @@ public class CannonDrillingContraption extends PoleContraption {
 		this.anchor = pos.relative(direction, this.initialExtensionProgress + 1);
 		this.initialExtensionProgress = extensionsInFront;
 		this.pistonContraptionHitbox = new AABB(
-				BlockPos.ZERO.relative(direction, -1),
+				BlockPos.ZERO,
 				BlockPos.ZERO.relative(direction, -this.extensionLength - 1))
 				.expandTowards(1, 1, 1);
 		

@@ -277,13 +277,6 @@ public class CBCBlocks {
 			.transform(CBCBuilderTransformers.cannonDrillBit())
 			.register();
 	
-	/*
-	 * public static final BlockEntry<CannonLatheBlock> CANNON_LATHE =
-	 * REGISTRATE .block("cannon_lathe", CannonLatheBlock::new) .properties(p ->
-	 * p.color(MaterialColor.PODZOL)) .transform(axeOrPickaxe())
-	 * .transform(CBCBuilderTransformers.cannonLathe()) .register();
-	 */
-	
 	static {
 		REGISTRATE.startSection(AllSections.LOGISTICS);
 	}

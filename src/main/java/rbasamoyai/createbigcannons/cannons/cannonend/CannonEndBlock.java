@@ -38,4 +38,6 @@ public class CannonEndBlock extends SolidCannonBlock {
 		return this.shapes.get(state.getValue(FACING));
 	}
 	
+	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
+	
 }

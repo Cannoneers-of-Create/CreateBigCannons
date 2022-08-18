@@ -11,7 +11,7 @@
 		"6": "createbigcannons:block/pole_contraption_top",
 		"7": "create:block/pole_end",
 		"8": "createbigcannons:block/cannon_drill_bit",
-		"particle": "create:block/pipes"
+		"particle": "createbigcannons:block/pole_contraption_nook"
 	},
 	"elements": [
 		{

@@ -9,12 +9,12 @@ import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
 public interface CannonBlock {
 
 	CannonMaterial getCannonMaterial();
-	default CannonMaterial getCannonMaterial(Level level, BlockState state, BlockPos pos) { return this.getCannonMaterial(); }
 	
 	Direction getFacing(BlockState state);
 	CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos);
 	default boolean isDoubleSidedCannon(BlockState state) { return true; }
 	default boolean isImmovable(BlockState state) { return false; }
+	default boolean canInteractWithDrill(BlockState state) { return true; }
 	
 	public static void onRemoveCannon(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() instanceof CannonBlock cBlock) {	

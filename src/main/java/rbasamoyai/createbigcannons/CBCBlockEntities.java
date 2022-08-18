@@ -107,7 +107,6 @@ public class CBCBlockEntities {
 			.renderer(() -> CannonDrillBlockEntityRenderer::new)
 			.validBlock(CBCBlocks.CANNON_DRILL)
 			.register();
-			
 	
 	public static void register() {}
 	

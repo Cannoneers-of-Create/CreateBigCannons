@@ -7,10 +7,10 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigBool invulProjectileHurt = b(false, "invulnerableAfterProjectileHurt", Comments.invulnerableAfterProjectileHurt);
 	public final ConfigFloat heShellPower = f(6, 0, "heShellPower", Comments.heShellPower);
 	
-	public final ConfigGroup fuzes = group(1, "fuzes", "Projectile Fuzes"); 
+	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes"); 
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
 	
-	public final ConfigGroup groupedMunitions = group(1, "groupedMunitions", "Grouped Munitions");
+	public final ConfigGroup groupedMunitions = group(0, "groupedMunitions", "Grouped Munitions");
 	public final ConfigInt shrapnelCount = i(50, 1, "shrapnelCount", Comments.shrapnelCount);
 	public final ConfigFloat shrapnelSpread = f(0.25f, 0.01f, "shrapnelSpread", Comments.shrapnelSpread);
 	public final ConfigFloat shrapnelDamage = f(10.0f, 0.0f, "shrapnelDamage", Comments.shrapnelDamage);

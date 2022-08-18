@@ -163,13 +163,6 @@ public class CBCBuilderTransformers {
 				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(baseLoc)));
 	}
 	
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonLathe() {
-		ResourceLocation baseLoc = CreateBigCannons.resource("block/cannon_lathe");
-		return b -> b.properties(p -> p.noOcclusion())
-				.addLayer(() -> RenderType::cutoutMipped)
-				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(baseLoc)));
-	}
-	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> projectile(String pathAndMaterial) {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/projectile_block");
 		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial);

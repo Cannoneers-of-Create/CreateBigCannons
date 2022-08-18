@@ -36,6 +36,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 
 public class CannonCastBlockEntity extends SmartTileEntity {
@@ -527,7 +528,7 @@ public class CannonCastBlockEntity extends SmartTileEntity {
 	}
 	
 	public static int getMaxHeight() {
-		return 32; // TODO: Config
+		return CBCConfigs.SERVER.crafting.maxCannonCastHeight.get();
 	}
 	public int getHeight() { return this.height; }
 	public void setHeight(int height) { this.height = height; }
