@@ -17,9 +17,12 @@ import com.simibubi.create.content.contraptions.components.structureMovement.bea
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.LinearActuatorTileEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
 import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.tileEntity.behaviour.ValueBoxTransform;
+import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,10 +50,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.network.PacketDistributor;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
-import rbasamoyai.createbigcannons.crafting.casting.DrillExceptionTooltip;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
@@ -393,7 +395,14 @@ public class CannonDrillBlockEntity extends LinearActuatorTileEntity {
 		this.containedFluidTooltip(tooltip, isPlayerSneaking, this.getFluidOptional());
 		if (this.failureReason != FailureReason.NONE) {
 			tooltip.add(TextComponent.EMPTY);
-			DrillExceptionTooltip.addToTooltip(this.failureReason, tooltip, isPlayerSneaking);
+			Lang.builder("exception")
+				.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip.encounteredProblem")
+				.style(ChatFormatting.GOLD)
+				.forGoggles(tooltip);
+			Component exceptionText = Lang.builder("exception")
+					.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip." + this.failureReason.getSerializedName())
+					.component();
+			tooltip.addAll(TooltipHelper.cutTextComponent(exceptionText, ChatFormatting.GRAY, ChatFormatting.WHITE));
 		}
 		
 		return true;

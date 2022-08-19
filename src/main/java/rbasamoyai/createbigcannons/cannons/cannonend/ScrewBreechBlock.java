@@ -9,6 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -84,6 +86,8 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	
 	@Override public Class<ScrewBreechBlockEntity> getTileEntityClass() { return ScrewBreechBlockEntity.class; }
 	@Override public BlockEntityType<? extends ScrewBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.SCREW_BREECH.get(); }
+	
+	@Override public InteractionResult onWrenched(BlockState state, UseOnContext context) { return InteractionResult.PASS; }
 
 	public enum OpenState implements StringRepresentable {
 		CLOSED("closed"),

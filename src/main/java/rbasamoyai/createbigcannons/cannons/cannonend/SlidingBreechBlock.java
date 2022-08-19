@@ -5,7 +5,9 @@ import com.simibubi.create.foundation.block.ITE;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -43,6 +45,8 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 				.setValue(FACING, facing)
 				.setValue(AXIS_ALONG_FIRST_COORDINATE, facing.getAxis() == Direction.Axis.Z);
 	}
+	
+	@Override public InteractionResult onWrenched(BlockState state, UseOnContext context) { return InteractionResult.PASS; }
 	
 	@SuppressWarnings("deprecation")
 	@Override

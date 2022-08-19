@@ -4,7 +4,6 @@
     "hole": "createbigcannons:block/sliding_breech/steel_sliding_breech_hole",
     "side": "createbigcannons:block/sliding_breech/steel_sliding_breech_side",
     "side_hole": "createbigcannons:block/sliding_breech/steel_sliding_breech_side_hole",
-    "inside": "createbigcannons:block/sliding_breech/steel_sliding_breech_inside",
-    "particle": "createbigcannons:block/sliding_breech/steel_sliding_breech_side"
+    "inside": "createbigcannons:block/sliding_breech/steel_sliding_breech_inside"
   }
 }

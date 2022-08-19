@@ -16,9 +16,9 @@ public class CBCBlockPartials {
 	private static final Map<CannonCastShape, PartialModel> CANNON_CAST_BY_SIZE = new HashMap<>();
 	
 	public static final PartialModel
-		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.CAST_IRON, "sliding_breechblock/cast_iron_sliding_breechblock"),
-		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.BRONZE, "sliding_breechblock/bronze_sliding_breechblock"),
-		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.STEEL, "sliding_breechblock/steel_sliding_breechblock"),
+		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.CAST_IRON, "cast_iron_sliding_breechblock"),
+		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.BRONZE, "bronze_sliding_breechblock"),
+		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.STEEL, "steel_sliding_breechblock"),
 		
 		STEEL_SCREW_LOCK = screwLockPartial(CannonMaterial.STEEL, "screw_lock/steel_screw_lock"),
 		NETHER_GUNMETAL_SCREW_LOCK = screwLockPartial(CannonMaterial.NETHER_GUNMETAL, "screw_lock/nether_gunmetal_screw_lock"),
@@ -40,7 +40,7 @@ public class CBCBlockPartials {
 	}
 	
 	private static PartialModel breechblockPartial(CannonMaterial material, String path) {
-		return breechblockPartial(material, CreateBigCannons.resource("block/" + path));
+		return breechblockPartial(material, CreateBigCannons.resource("item/" + path));
 	}
 	
 	public static PartialModel breechblockPartial(CannonMaterial material, ResourceLocation loc) {
@@ -54,7 +54,7 @@ public class CBCBlockPartials {
 	}
 	
 	private static PartialModel screwLockPartial(CannonMaterial material, String path) {
-		return screwLockPartial(material, CreateBigCannons.resource("block/" + path));
+		return screwLockPartial(material, CreateBigCannons.resource("item/" + path));
 	}
 	
 	public static PartialModel screwLockPartial(CannonMaterial material, ResourceLocation loc) {

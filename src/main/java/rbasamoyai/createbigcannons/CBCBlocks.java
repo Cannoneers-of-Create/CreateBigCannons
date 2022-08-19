@@ -23,20 +23,21 @@ import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
 import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerBlock;
-import rbasamoyai.createbigcannons.cannons.CannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
-import rbasamoyai.createbigcannons.cannons.CannonChamberBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.cannons.CannonTubeBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBitBlock;
 import rbasamoyai.createbigcannons.crafting.boring.UnboredCannonBlock;
+import rbasamoyai.createbigcannons.crafting.boring.UnboredSlidingBreechBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlock;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
@@ -55,8 +56,8 @@ public class CBCBlocks {
 	
 	//////// Log cannon blocks ////////
 	
-	public static final BlockEntry<CannonChamberBlock> LOG_CANNON_CHAMBER = REGISTRATE
-			.block("log_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.LOG))
+	public static final BlockEntry<CannonTubeBlock> LOG_CANNON_CHAMBER = REGISTRATE
+			.block("log_cannon_chamber", p -> CannonTubeBlock.medium(p, CannonMaterial.LOG))
 			.transform(logCannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/log"))
 			.item(CannonBlockItem::new).build()
@@ -71,8 +72,8 @@ public class CBCBlocks {
 	
 	//////// Wrought Iron cannon blocks ////////
 	
-	public static final BlockEntry<CannonChamberBlock> WROUGHT_IRON_CANNON_CHAMBER = REGISTRATE
-			.block("wrought_iron_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.WROUGHT_IRON))
+	public static final BlockEntry<CannonTubeBlock> WROUGHT_IRON_CANNON_CHAMBER = REGISTRATE
+			.block("wrought_iron_cannon_chamber", p -> CannonTubeBlock.medium(p, CannonMaterial.WROUGHT_IRON))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/wrought_iron"))
 			.item(CannonBlockItem::new).build()
@@ -87,15 +88,15 @@ public class CBCBlocks {
 	
 	//////// Cast Iron cannon blocks ////////
 	
-	public static final BlockEntry<CannonBarrelBlock> CAST_IRON_CANNON_BARREL = REGISTRATE
-			.block("cast_iron_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.CAST_IRON))
+	public static final BlockEntry<CannonTubeBlock> CAST_IRON_CANNON_BARREL = REGISTRATE
+			.block("cast_iron_cannon_barrel", p -> CannonTubeBlock.verySmall(p, CannonMaterial.CAST_IRON))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/cast_iron"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
-	public static final BlockEntry<CannonChamberBlock> CAST_IRON_CANNON_CHAMBER = REGISTRATE
-			.block("cast_iron_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.CAST_IRON))
+	public static final BlockEntry<CannonTubeBlock> CAST_IRON_CANNON_CHAMBER = REGISTRATE
+			.block("cast_iron_cannon_chamber", p -> CannonTubeBlock.medium(p, CannonMaterial.CAST_IRON))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/cast_iron"))
 			.item(CannonBlockItem::new).build()
@@ -129,17 +130,31 @@ public class CBCBlocks {
 			.item(CannonBlockItem::new).build()
 			.register();
 	
+	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_CAST_IRON_SLIDING_BREECH = REGISTRATE
+			.block("incomplete_cast_iron_sliding_breech", p -> new IncompleteSlidingBreechBlock(p, CannonMaterial.CAST_IRON, CBCItems.CAST_IRON_SLIDING_BREECHBLOCK, CAST_IRON_SLIDING_BREECH))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.slidingBreechIncomplete("sliding_breech/cast_iron"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<UnboredSlidingBreechBlock> UNBORED_CAST_IRON_SLIDING_BREECH = REGISTRATE
+			.block("unbored_cast_iron_sliding_breech", p -> new UnboredSlidingBreechBlock(p, CannonMaterial.CAST_IRON, INCOMPLETE_CAST_IRON_SLIDING_BREECH, Shapes.block()))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.slidingBreechUnbored("sliding_breech/unbored_cast_iron"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
 	//////// Bronze cannon blocks ////////
 	
-	public static final BlockEntry<CannonBarrelBlock> BRONZE_CANNON_BARREL = REGISTRATE
-			.block("bronze_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.BRONZE))
+	public static final BlockEntry<CannonTubeBlock> BRONZE_CANNON_BARREL = REGISTRATE
+			.block("bronze_cannon_barrel", p -> CannonTubeBlock.verySmall(p, CannonMaterial.BRONZE))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/bronze"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
-	public static final BlockEntry<CannonChamberBlock> BRONZE_CANNON_CHAMBER = REGISTRATE
-			.block("bronze_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.BRONZE))
+	public static final BlockEntry<CannonTubeBlock> BRONZE_CANNON_CHAMBER = REGISTRATE
+			.block("bronze_cannon_chamber", p -> CannonTubeBlock.medium(p, CannonMaterial.BRONZE))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/bronze"))
 			.item(CannonBlockItem::new).build()
@@ -161,15 +176,15 @@ public class CBCBlocks {
 	
 	//////// Steel cannon blocks ////////
 	
-	public static final BlockEntry<CannonBarrelBlock> STEEL_CANNON_BARREL = REGISTRATE
-			.block("steel_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.STEEL))
+	public static final BlockEntry<CannonTubeBlock> STEEL_CANNON_BARREL = REGISTRATE
+			.block("steel_cannon_barrel", p -> CannonTubeBlock.verySmall(p, CannonMaterial.STEEL))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/steel"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
-	public static final BlockEntry<CannonChamberBlock> STEEL_CANNON_CHAMBER = REGISTRATE
-			.block("steel_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.STEEL))
+	public static final BlockEntry<CannonTubeBlock> STEEL_CANNON_CHAMBER = REGISTRATE
+			.block("steel_cannon_chamber", p -> CannonTubeBlock.medium(p, CannonMaterial.STEEL))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/steel"))
 			.item(CannonBlockItem::new).build()
@@ -191,16 +206,16 @@ public class CBCBlocks {
 	
 	//////// Nethersteel "Nether Gunmetal" cannon blocks ////////
 	
-	public static final BlockEntry<CannonBarrelBlock> NETHER_GUNMETAL_CANNON_BARREL = REGISTRATE
-			.block("nether_gunmetal_cannon_barrel", p -> new CannonBarrelBlock(p, CannonMaterial.NETHER_GUNMETAL))
+	public static final BlockEntry<CannonTubeBlock> NETHER_GUNMETAL_CANNON_BARREL = REGISTRATE
+			.block("nether_gunmetal_cannon_barrel", p -> CannonTubeBlock.verySmall(p, CannonMaterial.NETHER_GUNMETAL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/nether_gunmetal"))
 			.lang("Nethersteel Cannon Barrel")
 			.item(CannonBlockItem::new).build()
 			.register();
 	
-	public static final BlockEntry<CannonChamberBlock> NETHER_GUNMETAL_CANNON_CHAMBER = REGISTRATE
-			.block("nether_gunmetal_cannon_chamber", p -> new CannonChamberBlock(p, CannonMaterial.NETHER_GUNMETAL))
+	public static final BlockEntry<CannonTubeBlock> NETHER_GUNMETAL_CANNON_CHAMBER = REGISTRATE
+			.block("nether_gunmetal_cannon_chamber", p -> CannonTubeBlock.medium(p, CannonMaterial.NETHER_GUNMETAL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/nether_gunmetal"))
 			.lang("Nethersteel Cannon Chamber")

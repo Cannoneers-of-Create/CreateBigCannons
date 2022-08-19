@@ -25,6 +25,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntityRenderer;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteCannonBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockInstance;
@@ -58,7 +59,7 @@ public class CBCBlockEntities {
 	public static final BlockEntityEntry<CannonEndBlockEntity> CANNON_END = CreateBigCannons.registrate()
 			.tileEntity("cannon_end", CannonEndBlockEntity::new)
 			.validBlocks(CBCBlocks.LOG_CANNON_END, CBCBlocks.WROUGHT_IRON_CANNON_END, CBCBlocks.CAST_IRON_CANNON_END, CBCBlocks.BRONZE_CANNON_END,
-						CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL, CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER)
+						CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL, CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER, CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH)
 			.register();
 	
 	public static final BlockEntityEntry<CannonLoaderBlockEntity> CANNON_LOADER = CreateBigCannons.registrate()
@@ -106,6 +107,11 @@ public class CBCBlockEntities {
 			.instance(() -> ShaftInstance::new)
 			.renderer(() -> CannonDrillBlockEntityRenderer::new)
 			.validBlock(CBCBlocks.CANNON_DRILL)
+			.register();
+	
+	public static final BlockEntityEntry<IncompleteCannonBlockEntity> INCOMPLETE_CANNON = CreateBigCannons.registrate()
+			.tileEntity("incomplete_cannon", IncompleteCannonBlockEntity::new)
+			.validBlocks(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH)
 			.register();
 	
 	public static void register() {}

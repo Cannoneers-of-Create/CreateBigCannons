@@ -57,6 +57,11 @@ public class ModGroup {
 			list.add(new ItemStack(CBCFluids.MOLTEN_CAST_IRON.get().getBucket()));
 			list.add(CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL.asStack());
 			list.add(CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER.asStack());
+			list.add(CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH.asStack());
+			list.add(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH.asStack());
+			list.add(CBCItems.CAST_IRON_SLIDING_BREECHBLOCK.asStack());
+			list.add(CBCItems.BRONZE_SLIDING_BREECHBLOCK.asStack());
+			list.add(CBCItems.STEEL_SLIDING_BREECHBLOCK.asStack());
 			list.add(CBCBlocks.CANNON_DRILL.asStack());
 		}
 	};

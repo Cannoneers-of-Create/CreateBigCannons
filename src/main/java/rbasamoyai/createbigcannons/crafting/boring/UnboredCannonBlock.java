@@ -7,14 +7,17 @@ import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.SolidCannonBlock;
+import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlockEntity;
 
-public class UnboredCannonBlock extends SolidCannonBlock implements TransformableByBoring {
+public class UnboredCannonBlock extends SolidCannonBlock<CannonEndBlockEntity> implements TransformableByBoring {
 
 	private final NonNullSupplier<? extends Block> boredBlockSup;
 	private Block boredBlock;
@@ -45,10 +48,12 @@ public class UnboredCannonBlock extends SolidCannonBlock implements Transformabl
 			this.boredBlock = this.boredBlockSup.get();
 		}
 		BlockState bored = this.boredBlock.delegate.get().defaultBlockState();
-		if (bored.hasProperty(FACING)) {
-			bored = bored.setValue(FACING, state.getValue(FACING));
-		}
-		return bored;
+		return bored.hasProperty(FACING) ? bored.setValue(FACING, state.getValue(FACING)) : bored;
 	}
+	
+	@Override public boolean isComplete(BlockState state) { return false; }
+
+	@Override public Class<CannonEndBlockEntity> getTileEntityClass() { return CannonEndBlockEntity.class; }
+	@Override public BlockEntityType<? extends CannonEndBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_END.get(); }
 
 }

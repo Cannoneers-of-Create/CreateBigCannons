@@ -113,10 +113,10 @@ public class CannonCastRecipeGen implements DataProvider {
 		.castingTime(1500)
 		.save(cons);
 		
-		builder("cast_iron_sliding_breech_unbored")
+		builder("cast_iron_sliding_breech")
 		.castingShape(CannonCastShape.UNBORED_SLIDING_BREECH)
 		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
-		.result(CBCBlocks.CAST_IRON_SLIDING_BREECH.get())
+		.result(CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH.get())
 		.castingTime(1500)
 		.save(cons);
 	}

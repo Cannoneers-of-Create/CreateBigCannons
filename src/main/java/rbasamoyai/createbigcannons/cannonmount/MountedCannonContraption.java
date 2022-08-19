@@ -101,6 +101,11 @@ public class MountedCannonContraption extends Contraption {
 		CannonEnd positiveEnd = startEnd;
 		while (this.isValidCannonBlock(level, nextState, start.relative(positive)) && this.isConnectedToCannon(level, nextState, start.relative(positive), positive, material)) {
 			start = start.relative(positive);
+			
+			if (!((CannonBlock) nextState.getBlock()).isComplete(nextState)) {
+				throw hasIncompleteCannonBlocks(start);
+			}
+			
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getTileEntityNBT(level, start)));
 			cannonLength++;
 			
@@ -126,6 +131,11 @@ public class MountedCannonContraption extends Contraption {
 		CannonEnd negativeEnd = startEnd;
 		while (this.isValidCannonBlock(level, nextState, start.relative(negative)) && this.isConnectedToCannon(level, nextState, start.relative(negative), negative, material)) {
 			start = start.relative(negative);
+			
+			if (!((CannonBlock) nextState.getBlock()).isComplete(nextState)) {
+				throw hasIncompleteCannonBlocks(start);
+			}
+			
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getTileEntityNBT(level, start)));
 			cannonLength++;
 			
@@ -462,6 +472,10 @@ public class MountedCannonContraption extends Contraption {
 	
 	public static AssemblyException cannonLoaderInsideDuringAssembly(BlockPos pos) {
 		return new AssemblyException(new TranslatableComponent("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonLoaderInsideDuringAssembly", pos.getX(), pos.getY(), pos.getZ()));
+	}
+	
+	public static AssemblyException hasIncompleteCannonBlocks(BlockPos pos) {
+		return new AssemblyException(new TranslatableComponent("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.hasIncompleteCannonBlocks", pos.getX(), pos.getY(), pos.getZ()));
 	}
 	
 	protected static class CannonBlockEntityHolder<T extends BlockEntity & ICannonBlockEntity> {

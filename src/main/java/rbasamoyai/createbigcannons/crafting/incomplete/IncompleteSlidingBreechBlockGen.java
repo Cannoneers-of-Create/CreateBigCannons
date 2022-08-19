@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.cannonend;
+package rbasamoyai.createbigcannons.crafting.incomplete;
 
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.data.SpecialBlockStateGen;
@@ -13,19 +13,20 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.ModelFile;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
-public class SlidingBreechBlockGen extends SpecialBlockStateGen {
+public class IncompleteSlidingBreechBlockGen extends SpecialBlockStateGen {
 
 	private final String pathAndMaterial;
 	
-	public SlidingBreechBlockGen(String pathAndMaterial) {
+	public IncompleteSlidingBreechBlockGen(String pathAndMaterial) {
 		this.pathAndMaterial = pathAndMaterial;
 	}
 	
 	@Override
 	public <T extends Block> ModelFile getModel(DataGenContext<Block, T> context, RegistrateBlockstateProvider provider, BlockState state) {
+		int stage = state.getValue(IncompleteSlidingBreechBlock.STAGE);
 		boolean axisAlongFirst = state.getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
 		boolean rotated = (state.getValue(BlockStateProperties.FACING).getAxis() == Direction.Axis.X) == axisAlongFirst;
-		String suf = rotated ? "_rotated" : "";
+		String suf = (stage == 0 ? "" : "_axis") + (rotated ? "_rotated" : "");
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/sliding_breech" + suf);
 		
 		ResourceLocation holeLoc = CreateBigCannons.resource("block/" + this.pathAndMaterial + "_sliding_breech_hole");
@@ -38,7 +39,7 @@ public class SlidingBreechBlockGen extends SpecialBlockStateGen {
 				.texture("side_hole", sideHoleLoc)
 				.texture("inside", insideLoc);
 	}
-
+	
 	@Override
 	protected int getXRotation(BlockState state) {
 		Direction facing = state.getValue(BlockStateProperties.FACING);
@@ -50,5 +51,5 @@ public class SlidingBreechBlockGen extends SpecialBlockStateGen {
 		Direction facing = state.getValue(BlockStateProperties.FACING);
 		return facing.getAxis().isVertical() ? 0 : this.horizontalAngle(facing) + 180;
 	}
-	
+
 }

@@ -1,42 +1,44 @@
 package rbasamoyai.createbigcannons.cannons;
 
+import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.block.WrenchableDirectionalBlock;
+import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
 
-public class CannonTubeBlock extends WrenchableDirectionalBlock implements ITE<CannonBlockEntity>, CannonBlock {
+public class CannonTubeBlock extends CannonBaseBlock implements ITE<CannonBlockEntity> {
 	
-	public static final EnumProperty<Axis> AXIS = RotatedPillarBlock.AXIS;
+	private final VoxelShaper shapes;
 	
-	private final CannonMaterial material;
-	
-	public CannonTubeBlock(Properties properties, CannonMaterial material) {
-		super(properties);
-		this.material = material;
+	public CannonTubeBlock(Properties properties, CannonMaterial material, VoxelShape base) {
+		super(properties, material);
+		this.shapes = new AllShapes.Builder(base).forDirectional();
 	}
 	
-	@Override public CannonMaterial getCannonMaterial() { return this.material; }
-	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
-	@Override public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return CannonEnd.OPEN; }
-	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }	
-
-	@SuppressWarnings("deprecation")
+	public static CannonTubeBlock medium(Properties properties, CannonMaterial material) {
+		return new CannonTubeBlock(properties, material, Shapes.block());
+	}
+	
+	public static CannonTubeBlock verySmall(Properties properties, CannonMaterial material) {
+		return new CannonTubeBlock(properties, material, Block.box(2, 0, 2, 14, 16, 14));
+	}
+	
 	@Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!level.isClientSide) CannonBlock.onRemoveCannon(state, level, pos, newState, isMoving);
-		super.onRemove(state, level, pos, newState, isMoving);
+	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
+		return this.shapes.get(this.getFacing(state));
 	}
+	
+	@Override public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return CannonEnd.OPEN; }
 	
 	@Override public Class<CannonBlockEntity> getTileEntityClass() { return CannonBlockEntity.class; }
 	@Override public BlockEntityType<? extends CannonBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON.get(); }

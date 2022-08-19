@@ -3,11 +3,13 @@ package rbasamoyai.createbigcannons.datagen;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.repack.registrate.builders.BlockBuilder;
+import com.simibubi.create.repack.registrate.builders.ItemBuilder;
 import com.simibubi.create.repack.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
@@ -20,6 +22,7 @@ import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillGen;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlockGen;
 
 public class CBCBuilderTransformers {
 
@@ -97,6 +100,18 @@ public class CBCBuilderTransformers {
 					.texture("breechblock_side", breechblockSideLoc)
 					.texture("breechblock_bottom", breechblockBottomLoc))
 				.build();
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreechUnbored(String pathAndMaterial) {
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate(new SlidingBreechBlockGen(pathAndMaterial)::generate);
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreechIncomplete(String pathAndMaterial) {
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate(new IncompleteSlidingBreechBlockGen(pathAndMaterial)::generate);
 	}
 	
 	public static <T extends Block & CannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreech(String pathAndMaterial) {
@@ -209,6 +224,20 @@ public class CBCBuilderTransformers {
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> invisibleWithParticle(String path) {
 		return b -> b.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getBuilder(c.getName())
 				.texture("particle", CreateBigCannons.resource(path))));
+	}
+	
+	public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> slidingBreechblock(String pathAndMaterial) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("item/sliding_breechblock");
+		ResourceLocation topLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_breechblock_top");
+		ResourceLocation endLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_breechblock_end");
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_breechblock_side");
+		ResourceLocation bottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_breechblock_bottom");
+		return b -> b.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(baseLoc))
+				.texture("top", topLoc)
+				.texture("end", endLoc)
+				.texture("side", sideLoc)
+				.texture("bottom", bottomLoc)
+				.texture("particle", topLoc));
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> castMould(String size) {
