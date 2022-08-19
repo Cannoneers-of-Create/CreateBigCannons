@@ -67,13 +67,16 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 		level.playSound(player, pos, SoundEvents.NETHERITE_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
 		if (!level.isClientSide) {
 			if (!player.isCreative()) stack.shrink(1);
-			if (stage == 0) {
-				level.setBlock(pos, state.setValue(STAGE, 1), 3 | 16);
-			} else {
-				if (this.result == null) {
-					this.result = this.resultSupplier.get();
-				}
-				this.withTileEntityDo(level, pos, cbe -> {
+			this.withTileEntityDo(level, pos, cbe -> {
+				CannonBehavior behavior = cbe.cannonBehavior();
+				cbe.setRemoved();
+				
+				if (stage == 0) {
+					level.setBlock(pos, state.setValue(STAGE, 1), 3 | 16);
+				} else {
+					if (this.result == null) {
+						this.result = this.resultSupplier.get();
+					}
 					BlockState newState = this.result.delegate.get().defaultBlockState();
 					if (newState.hasProperty(FACING)) {
 						newState = newState.setValue(FACING, state.getValue(FACING));
@@ -81,18 +84,20 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 					if (newState.hasProperty(ALONG_FIRST)) {
 						newState = newState.setValue(ALONG_FIRST, state.getValue(ALONG_FIRST));
 					}
-					CannonBehavior behavior = cbe.cannonBehavior();
-					cbe.setRemoved();
 					level.setBlock(pos, newState, 3 | 16);
-					
-					BlockEntity be = level.getBlockEntity(pos);
-					if (!(be instanceof ICannonBlockEntity cbe1)) return;
-					CannonBehavior behavior1 = cbe1.cannonBehavior();
-					for (Direction dir : Direction.values()) {
-						behavior1.setConnectedFace(dir, behavior.isConnectedTo(dir));
+				}
+				
+				BlockEntity be = level.getBlockEntity(pos);
+				if (!(be instanceof ICannonBlockEntity cbe1)) return;
+				CannonBehavior behavior1 = cbe1.cannonBehavior();
+				for (Direction dir : Direction.values()) {
+					boolean isConnected = behavior.isConnectedTo(dir.getOpposite());
+					behavior1.setConnectedFace(dir, isConnected);
+					if (level.getBlockEntity(pos.relative(dir)) instanceof ICannonBlockEntity cbe2) {
+						cbe2.cannonBehavior().setConnectedFace(dir.getOpposite(), isConnected);
 					}
-				});
-			}
+				}
+			});
 		}
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
@@ -128,5 +133,7 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 	}
 
 	@Override public int progress(BlockState state) { return state.getValue(STAGE); }
+	
+	@Override public boolean isComplete(BlockState state) { return false; }
 
 }

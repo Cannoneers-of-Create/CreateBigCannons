@@ -174,6 +174,34 @@ public class CBCBlocks {
 			.transform(BlockStressDefaults.setImpact(12.0d))
 			.register();
 	
+	public static final BlockEntry<UnboredCannonBlock> UNBORED_BRONZE_CANNON_BARREL = REGISTRATE
+			.block("unbored_bronze_cannon_barrel", p -> UnboredCannonBlock.verySmall(p, CannonMaterial.BRONZE, BRONZE_CANNON_BARREL))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/bronze", "cannon_barrel/unbored_bronze"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<UnboredCannonBlock> UNBORED_BRONZE_CANNON_CHAMBER = REGISTRATE
+			.block("unbored_bronze_cannon_chamber", p -> UnboredCannonBlock.medium(p, CannonMaterial.BRONZE, BRONZE_CANNON_CHAMBER))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/bronze", "cannon_chamber/unbored_bronze"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_BRONZE_SLIDING_BREECH = REGISTRATE
+			.block("incomplete_bronze_sliding_breech", p -> new IncompleteSlidingBreechBlock(p, CannonMaterial.BRONZE, CBCItems.BRONZE_SLIDING_BREECHBLOCK, BRONZE_SLIDING_BREECH))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.slidingBreechIncomplete("sliding_breech/bronze"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<UnboredSlidingBreechBlock> UNBORED_BRONZE_SLIDING_BREECH = REGISTRATE
+			.block("unbored_bronze_sliding_breech", p -> new UnboredSlidingBreechBlock(p, CannonMaterial.BRONZE, INCOMPLETE_BRONZE_SLIDING_BREECH, Shapes.block()))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.slidingBreechUnbored("sliding_breech/unbored_bronze"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
 	//////// Steel cannon blocks ////////
 	
 	public static final BlockEntry<CannonTubeBlock> STEEL_CANNON_BARREL = REGISTRATE

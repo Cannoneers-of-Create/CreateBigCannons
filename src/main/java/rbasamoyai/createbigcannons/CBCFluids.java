@@ -20,7 +20,21 @@ public class CBCFluids {
 			.tag(AllTags.forgeFluidTag("molten_cast_iron"))
 			.attributes(b -> b.viscosity(1250)
 					.density(7100)
-					.temperature(1100))
+					.temperature(1200))
+			.properties(p -> p.levelDecreasePerBlock(2)
+					.tickRate(25)
+					.slopeFindDistance(3)
+					.explosionResistance(100f))
+			.source(ForgeFlowingFluid.Source::new)
+			.register();
+	
+	public static final FluidEntry<ForgeFlowingFluid.Flowing> MOLTEN_BRONZE =
+			standardFluid("molten_bronze", NoColorFluidAttributes::new)
+			.lang(f -> "fluid.createbigcannons.molten_bronze", "Molten Bronze")
+			.tag(AllTags.forgeFluidTag("molten_bronze"))
+			.attributes(b -> b.viscosity(1250)
+					.density(8770)
+					.temperature(920))
 			.properties(p -> p.levelDecreasePerBlock(2)
 					.tickRate(25)
 					.slopeFindDistance(3)

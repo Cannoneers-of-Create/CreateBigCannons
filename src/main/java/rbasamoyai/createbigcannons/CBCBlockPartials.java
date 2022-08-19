@@ -54,7 +54,7 @@ public class CBCBlockPartials {
 	}
 	
 	private static PartialModel screwLockPartial(CannonMaterial material, String path) {
-		return screwLockPartial(material, CreateBigCannons.resource("item/" + path));
+		return screwLockPartial(material, CreateBigCannons.resource("block/" + path));
 	}
 	
 	public static PartialModel screwLockPartial(CannonMaterial material, ResourceLocation loc) {

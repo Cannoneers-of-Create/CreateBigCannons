@@ -119,6 +119,33 @@ public class CannonCastRecipeGen implements DataProvider {
 		.result(CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH.get())
 		.castingTime(1500)
 		.save(cons);
+		
+		builder("bronze_cannon_barrel")
+		.castingShape(CannonCastShape.VERY_SMALL)
+		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.result(CBCBlocks.UNBORED_BRONZE_CANNON_BARREL.get())
+		.save(cons);
+		
+		builder("bronze_cannon_chamber")
+		.castingShape(CannonCastShape.MEDIUM)
+		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.result(CBCBlocks.UNBORED_BRONZE_CANNON_CHAMBER.get())
+		.castingTime(1800)
+		.save(cons);
+		
+		builder("bronze_cannon_end")
+		.castingShape(CannonCastShape.CANNON_END)
+		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.result(CBCBlocks.BRONZE_CANNON_END.get())
+		.castingTime(1500)
+		.save(cons);
+		
+		builder("bronze_sliding_breech")
+		.castingShape(CannonCastShape.UNBORED_SLIDING_BREECH)
+		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.result(CBCBlocks.UNBORED_BRONZE_SLIDING_BREECH.get())
+		.castingTime(1500)
+		.save(cons);
 	}
 	
 	protected Builder builder(String name) {
