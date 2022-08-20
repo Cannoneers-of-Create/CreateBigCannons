@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons;
 
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.OrientedContraptionEntityRenderer;
-import com.simibubi.create.repack.registrate.util.entry.EntityEntry;
+import com.tterrag.registrate.util.entry.EntityEntry;
 
 import net.minecraft.world.entity.EntityType.EntityFactory;
 import net.minecraft.world.entity.MobCategory;

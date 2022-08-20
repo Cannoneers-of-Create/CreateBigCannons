@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.repack.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.ProviderType;
 
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;

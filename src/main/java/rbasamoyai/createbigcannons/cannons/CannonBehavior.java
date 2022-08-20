@@ -8,7 +8,6 @@ import java.util.function.Predicate;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.tileEntity.behaviour.BehaviourType;
-import com.simibubi.create.foundation.utility.DirectionHelper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -74,7 +73,7 @@ public class CannonBehavior extends TileEntityBehaviour {
 				this.connectedTowards.forEach(d -> {
 					Direction dc = d;
 					for (int i = 0; i < rotation.ordinal(); ++i) {
-						dc = DirectionHelper.rotateAround(dc, rotationAxis);
+						dc = dc.getClockWise(rotationAxis);
 					}
 					copyFrom.add(dc);
 				});

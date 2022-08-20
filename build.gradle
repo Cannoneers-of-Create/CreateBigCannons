@@ -7,7 +7,7 @@ buildscript {
         maven { url = 'https://repo.spongepowered.org/repository/maven-public' }
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${forgegradle_version}", changing: true
         classpath "org.spongepowered:mixingradle:${mixingradle_version}"
     }
 }
@@ -30,10 +30,10 @@ def getGitHash = { ->
 }
 
 if (cbc_release == "true") {
-    version = "${cbc_minecraft_version}-${cbc_release_version}"
+    version = "${mc_version}-${cbc_release_version}"
 }
 else {
-    version = "${cbc_minecraft_version}-nightly-${getGitHash}"
+    version = "${mc_version}-nightly-${getGitHash}"
 }
 
 group = 'rbasamoyai.createbigcannons' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
@@ -133,17 +133,18 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.1.68'
+    minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     
-    implementation fg.deobf("com.simibubi.create:Create:mc${create_version}") // Create
-    implementation fg.deobf("com.jozufozu.flywheel:Flywheel-Forge:${flywheel_version}") // Flywheel
+    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
+    implementation fg.deobf("com.simibubi.create:create-${mc_version}:${create_version}:slim") { transitive = false } // Create
+    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${mc_version}:${flywheel_version}") // Flywheel
     
     // JEI
-    compileOnly fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${jei_minecraft_version}:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}")
     
-    annotationProcessor "org.spongepowered:mixin:0.8.3:processor"
-    testAnnotationProcessor "org.spongepowered:mixin:0.8.3:processor"
+    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
+    testAnnotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 }
 
 // Example for how to get properties into the manifest for reading at runtime.

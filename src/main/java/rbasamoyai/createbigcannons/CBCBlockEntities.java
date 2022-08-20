@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons;
 
 import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
-import com.simibubi.create.repack.registrate.util.entry.BlockEntityEntry;
+import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntityRenderer;

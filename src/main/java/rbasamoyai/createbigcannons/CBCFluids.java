@@ -2,9 +2,9 @@ package rbasamoyai.createbigcannons;
 
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.repack.registrate.builders.FluidBuilder;
-import com.simibubi.create.repack.registrate.util.entry.FluidEntry;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullBiFunction;
+import com.tterrag.registrate.builders.FluidBuilder;
+import com.tterrag.registrate.util.entry.FluidEntry;
+import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockAndTintGetter;

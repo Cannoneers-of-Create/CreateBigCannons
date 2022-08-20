@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.crafting.boring;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.utility.VoxelShaper;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
