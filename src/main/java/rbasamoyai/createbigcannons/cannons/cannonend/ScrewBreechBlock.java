@@ -67,6 +67,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	@Override public Axis getRotationAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
 	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 	@Override public boolean isDoubleSidedCannon(BlockState state) { return false; }
+	@Override public boolean isComplete(BlockState state) { return true; }
 	
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {

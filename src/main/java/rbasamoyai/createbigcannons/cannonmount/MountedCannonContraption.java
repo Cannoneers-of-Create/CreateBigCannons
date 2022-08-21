@@ -74,10 +74,15 @@ public class MountedCannonContraption extends Contraption {
 		
 		BlockState startState = level.getBlockState(pos);
 		
-		if (!(startState.getBlock() instanceof CannonBlock)) {
+		if (!(startState.getBlock() instanceof CannonBlock startCannon)) {
 			return false;
 		}
-		CannonBlock startCannon = (CannonBlock) startState.getBlock();
+		if (!startCannon.isComplete(startState)) {
+			throw hasIncompleteCannonBlocks(pos);
+		}
+		if (this.hasCannonLoaderInside(level, startState, pos)) {
+			throw cannonLoaderInsideDuringAssembly(pos);
+		}
 		Direction.Axis axis = startCannon.getFacing(startState).getAxis();
 		if (axis != facing.getAxis() && axis.isHorizontal()) {
 			return false;
@@ -122,7 +127,7 @@ public class MountedCannonContraption extends Contraption {
 			}
 			if (positiveEnd == CannonEnd.CLOSED) break;
 		}
-		BlockPos positiveEndPos = cannonLength == 1 ? start : start.relative(negative);
+		BlockPos positiveEndPos = positiveEnd == CannonEnd.OPEN ? start : start.relative(negative);
 		BlockState positiveEndState = level.getBlockState(start);
 		
 		start = pos;
@@ -152,7 +157,7 @@ public class MountedCannonContraption extends Contraption {
 			}
 			if (negativeEnd == CannonEnd.CLOSED) break;
 		}
-		BlockPos negativeEndPos = start.relative(positive);
+		BlockPos negativeEndPos = negativeEnd == CannonEnd.OPEN ? start : start.relative(positive);
 		BlockState negativeEndState = level.getBlockState(start);
 		
 		if (positiveEnd == negativeEnd) {

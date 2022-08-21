@@ -59,5 +59,6 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	@Override public BlockEntityType<? extends SlidingBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.SLIDING_BREECH.get(); }
 	
 	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
+	@Override public boolean isComplete(BlockState state) { return true; }
 	
 }

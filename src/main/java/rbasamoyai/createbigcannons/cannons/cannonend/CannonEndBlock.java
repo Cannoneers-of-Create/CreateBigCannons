@@ -44,6 +44,7 @@ public class CannonEndBlock extends SolidCannonBlock<CannonEndBlockEntity> {
 	}
 	
 	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
+	@Override public boolean isComplete(BlockState state) { return true; }
 
 	@Override public Class<CannonEndBlockEntity> getTileEntityClass() { return CannonEndBlockEntity.class; }
 	@Override public BlockEntityType<? extends CannonEndBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_END.get(); }

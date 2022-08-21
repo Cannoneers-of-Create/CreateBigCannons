@@ -39,6 +39,7 @@ public class CannonTubeBlock extends CannonBaseBlock implements ITE<CannonBlockE
 	}
 	
 	@Override public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return CannonEnd.OPEN; }
+	@Override public boolean isComplete(BlockState state) { return true; }
 	
 	@Override public Class<CannonBlockEntity> getTileEntityClass() { return CannonBlockEntity.class; }
 	@Override public BlockEntityType<? extends CannonBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON.get(); }
