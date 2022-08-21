@@ -6,19 +6,15 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionCollider;
 import com.simibubi.create.content.contraptions.components.structureMovement.ControlledContraptionEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.DirectionalExtenderScrollOptionSlot;
 import com.simibubi.create.content.contraptions.components.structureMovement.bearing.BearingContraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.piston.LinearActuatorTileEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.tileEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
@@ -51,15 +47,15 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.network.PacketDistributor;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.base.PoleContraption;
+import rbasamoyai.createbigcannons.base.PoleMoverBlockEntity;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
-public class CannonDrillBlockEntity extends LinearActuatorTileEntity {
+public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 
 	protected BlockPos boringPos;
-	protected int extensionLength;
 	protected float boreSpeed;
 	protected float addedStressImpact;
 	protected FailureReason failureReason = FailureReason.NONE;
@@ -105,7 +101,6 @@ public class CannonDrillBlockEntity extends LinearActuatorTileEntity {
 	protected void read(CompoundTag compound, boolean clientPacket) {
 		super.read(compound, clientPacket);
 		this.boringPos = compound.contains("BoringPos") ? NbtUtils.readBlockPos(compound.getCompound("BoringPos")) : null;
-		this.extensionLength = compound.getInt("ExtensionLength");
 		this.lubricant.readFromNBT(compound.getCompound("FluidContent"));
 		
 		if (!clientPacket) return;
@@ -118,7 +113,6 @@ public class CannonDrillBlockEntity extends LinearActuatorTileEntity {
 	protected void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
 		if (this.boringPos != null) compound.put("BoringPos", NbtUtils.writeBlockPos(this.boringPos));
-		compound.putInt("ExtensionLength", this.extensionLength);
 		compound.put("FluidContent", this.lubricant.writeToNBT(new CompoundTag()));
 		
 		if (!clientPacket) return;
@@ -128,43 +122,17 @@ public class CannonDrillBlockEntity extends LinearActuatorTileEntity {
 	}
 
 	@Override
-	protected void assemble() throws AssemblyException {
-		if (!(this.level.getBlockState(this.worldPosition).getBlock() instanceof CannonDrillBlock)) return;
+	protected PoleContraption innerAssemble() throws AssemblyException {
+		if (!(this.level.getBlockState(this.worldPosition).getBlock() instanceof CannonDrillBlock)) return null;
 		
-		Direction facing = this.getBlockState().getValue(CannonLoaderBlock.FACING);
+		Direction facing = this.getBlockState().getValue(CannonDrillBlock.FACING);
 		CannonDrillingContraption contraption = new CannonDrillingContraption(facing, this.getMovementSpeed() < 0);
-		if (!contraption.assemble(this.level, this.worldPosition)) {
-			return;
-		}
+		if (!contraption.assemble(this.level, this.worldPosition)) return null;
 		
 		Direction positive = Direction.get(Direction.AxisDirection.POSITIVE, facing.getAxis());
 		Direction movementDirection = (this.getSpeed() > 0) ^ facing.getAxis() != Direction.Axis.Z ? positive : positive.getOpposite();
 		BlockPos anchor = contraption.anchor.relative(facing, contraption.initialExtensionProgress());
-		if (ContraptionCollider.isCollidingWithWorld(this.level, contraption, anchor.relative(movementDirection), movementDirection)) {
-			return;
-		}
-		
-		this.extensionLength = contraption.extensionLength();
-		float resultingOffset = contraption.initialExtensionProgress() + Math.signum(this.getMovementSpeed()) * 0.5f;
-		if (resultingOffset <= 0 || resultingOffset >= this.extensionLength) {
-			return;
-		}
-		
-		this.running = true;
-		this.offset = contraption.initialExtensionProgress();
-		this.sendData();
-		this.clientOffsetDiff = 0;
-		
-		BlockPos startPos = BlockPos.ZERO.relative(facing, contraption.initialExtensionProgress());
-		contraption.removeBlocksFromWorld(this.level, startPos);
-		this.movedContraption = ControlledContraptionEntity.create(this.getLevel(), this, contraption);
-		this.resetContraptionToOffset();
-		this.forceMove = true;
-		this.level.addFreshEntity(this.movedContraption);
-		
-		this.failureReason = FailureReason.NONE;
-		
-		AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(this.level, this.worldPosition);
+		return ContraptionCollider.isCollidingWithWorld(this.level, contraption, anchor.relative(movementDirection), movementDirection) ? null : contraption;
 	}
 
 	@Override
@@ -173,23 +141,7 @@ public class CannonDrillBlockEntity extends LinearActuatorTileEntity {
 		if (!this.remove) {
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonDrillBlock.STATE, PistonState.EXTENDED), 3 | 16);
 		}
-		if (this.movedContraption != null) {
-			this.resetContraptionToOffset();
-			this.movedContraption.disassemble();
-			AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.level, this.worldPosition);
-		}
-		this.running = false;
-		this.movedContraption = null;
-		
-		this.boringPos = null;
-		this.boreSpeed = 0;
-		this.addedStressImpact = 0;
-		
-		this.sendData();
-		
-		if (this.remove) {
-			CBCBlocks.CANNON_DRILL.get().playerWillDestroy(this.level, this.worldPosition, this.getBlockState(), null);
-		}
+		super.disassemble();
 	}
 	
 	@Override
@@ -333,19 +285,6 @@ public class CannonDrillBlockEntity extends LinearActuatorTileEntity {
 	}
 	
 	@Override
-	public void onSpeedChanged(float prevSpeed) {
-		super.onSpeedChanged(prevSpeed);
-	}
-	
-	@Override
-	protected void collided() {
-		super.collided();
-		if (!this.running && this.getMovementSpeed() > 0) {
-			this.assembleNextTick = true;
-		}
-	}
-	
-	@Override
 	public float calculateStressApplied() {
 		return this.lastStressApplied = super.calculateStressApplied() + this.addedStressImpact;
 	}
@@ -356,36 +295,12 @@ public class CannonDrillBlockEntity extends LinearActuatorTileEntity {
 		if (this.level.isClientSide) {
 			movementSpeed *= ServerSpeedProvider.get();
 		}
-		Direction facing = this.getBlockState().getValue(CannonLoaderBlock.FACING);
+		Direction facing = this.getBlockState().getValue(CannonDrillBlock.FACING);
 		int movementModifier = facing.getAxisDirection().getStep() * (facing.getAxis() == Direction.Axis.Z ? -1 : 1);
 		movementSpeed = movementSpeed * -movementModifier + this.clientOffsetDiff * 0.5f;
 		
 		movementSpeed = Mth.clamp(movementSpeed, 0 - this.offset, this.extensionLength - this.offset);
 		return movementSpeed;
-	}
-
-	@Override protected int getExtensionRange() { return this.extensionLength; }
-
-	@Override
-	protected int getInitialOffset() {
-		return this.movedContraption == null ? 0 : ((CannonDrillingContraption) this.movedContraption.getContraption()).initialExtensionProgress();
-	}
-
-	@Override
-	protected ValueBoxTransform getMovementModeSlot() {
-		return new DirectionalExtenderScrollOptionSlot((state, d) -> false);
-	}
-
-	@Override
-	protected Vec3 toMotionVector(float speed) {
-		Direction facing = this.getBlockState().getValue(CannonLoaderBlock.FACING);
-		return Vec3.atLowerCornerOf(facing.getNormal()).scale(speed);
-	}
-
-	@Override
-	protected Vec3 toPosition(float offset) {
-		Vec3 position = Vec3.atLowerCornerOf(this.getBlockState().getValue(CannonLoaderBlock.FACING).getNormal()).scale(offset);
-		return position.add(Vec3.atLowerCornerOf(this.movedContraption.getContraption().anchor));
 	}
 	
 	@Override
