@@ -112,7 +112,7 @@
   "createbigcannons.ponder.munitions/cannon_loads.header": "То, что можно заряжать в Пушку",
   "createbigcannons.ponder.munitions/cannon_loads.text_1": "При заряжании Пушки необходимо следить за тем, чтобы заряжание Пушки было безопасным и эффективным.",
   "createbigcannons.ponder.munitions/cannon_loads.text_10": "...загрузка слишком большого количества пороховых зарядов...",
-  "createbigcannons.ponder.munitions/cannon_loads.text_11": "...допуск столкновения выпущеного снаряда с каким-либо объектом в дуле Пушки...",
+  "createbigcannons.ponder.munitions/cannon_loads.text_11": "...допуск столкновения выпущщеного снаряда с каким-либо объектом в дуле Пушки...",
   "createbigcannons.ponder.munitions/cannon_loads.text_12": "...может привести к катастрофическому разрушению и представлять серьезную угрозу для окружающей среды.",
   "createbigcannons.ponder.munitions/cannon_loads.text_2": "Пушки имеют 2 основных Параметра; это Макс. Длина Дула и Прочность.",
   "createbigcannons.ponder.munitions/cannon_loads.text_3": "Макс. Длина Дула зависит от материала и количества Пороховых Зарядов, а также показывает коэффициент Длины дула к Зарядам без шанса застревания Снаряда в Дуле.",
