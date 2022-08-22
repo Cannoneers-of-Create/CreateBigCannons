@@ -18,6 +18,7 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import rbasamoyai.createbigcannons.base.CBCCommonEvents;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
@@ -57,6 +58,7 @@ public class CreateBigCannons {
 		
 		forgeEventBus.addListener(this::onAddReloadListeners);
 		forgeEventBus.addListener(this::onDatapackSync);
+		CBCCommonEvents.register(forgeEventBus);
 		
 		CBCConfigs.registerConfigs(mlContext);
 		

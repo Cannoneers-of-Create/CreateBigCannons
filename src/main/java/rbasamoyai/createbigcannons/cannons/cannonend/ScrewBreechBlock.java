@@ -88,7 +88,10 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	@Override public Class<ScrewBreechBlockEntity> getTileEntityClass() { return ScrewBreechBlockEntity.class; }
 	@Override public BlockEntityType<? extends ScrewBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.SCREW_BREECH.get(); }
 	
-	@Override public InteractionResult onWrenched(BlockState state, UseOnContext context) { return InteractionResult.PASS; }
+	@Override
+	public InteractionResult onWrenched(BlockState state, UseOnContext context) {
+		return isOpen(state) ? super.onWrenched(state, context) : InteractionResult.PASS;
+	}
 
 	public enum OpenState implements StringRepresentable {
 		CLOSED("closed"),

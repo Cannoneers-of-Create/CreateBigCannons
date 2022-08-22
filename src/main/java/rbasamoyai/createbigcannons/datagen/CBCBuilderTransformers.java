@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.datagen;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -175,6 +176,7 @@ public class CBCBuilderTransformers {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/cannon_drill_bit");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
+				.loot((t, p) -> t.dropOther(p, AllBlocks.PISTON_EXTENSION_POLE.get()))
 				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(baseLoc)));
 	}
 	

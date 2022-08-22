@@ -19,7 +19,6 @@ public class ScrewBreechBlockEntity extends KineticTileEntity implements ICannon
 
 	private CannonBehavior cannonBehavior;
 	private float openProgress;
-	private float oldProgress;
 	
 	public ScrewBreechBlockEntity(BlockEntityType<? extends ScrewBreechBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -39,20 +38,19 @@ public class ScrewBreechBlockEntity extends KineticTileEntity implements ICannon
 	public void tick() {
 		super.tick();
 		
-		this.oldProgress = this.openProgress;
-		
 		if (this.getSpeed() == 0) return;
 		float progress = this.getOpeningSpeed();
 		if (Math.abs(progress) > 0) {
 			this.openProgress = Mth.clamp(this.openProgress + progress, 0.0f, 1.0f);
 		}
 		
-		if (this.oldProgress <= 0 && this.openProgress > 0) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.PARTIAL), 3);
-		} else if (this.oldProgress < 1 && this.openProgress >= 1) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.OPEN), 3);
-		} else if (this.oldProgress > 0 && this.openProgress <= 0) {
+		OpenState openState = this.getBlockState().getValue(ScrewBreechBlock.OPEN);
+		if (this.openProgress <= 0 && openState != OpenState.CLOSED) {
 			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.CLOSED), 3);
+		} else if (this.openProgress >= 1 && openState != OpenState.OPEN) {
+			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.OPEN), 3);
+		} else if (this.openProgress > 0 && this.openProgress < 1 && openState != OpenState.PARTIAL) {
+			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.PARTIAL), 3);
 		}
 	}
 	
