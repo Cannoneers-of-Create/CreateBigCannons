@@ -136,7 +136,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     
     compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
-    implementation fg.deobf("com.simibubi.create:create-${mc_version}:${create_version}:slim") { transitive = false } // Create
+    implementation fg.deobf("com.simibubi.create:create-${mc_version}:${create_version}:all") { transitive = false } // Create
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${mc_version}:${flywheel_version}") // Flywheel
     
     // JEI
