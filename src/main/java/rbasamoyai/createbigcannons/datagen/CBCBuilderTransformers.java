@@ -22,6 +22,8 @@ import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillGen;
+import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderGen;
+import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlockGen;
 
@@ -58,6 +60,24 @@ public class CBCBuilderTransformers {
 						.texture("side", sideLoc)
 						.texture("end", endLoc)
 						.texture("particle", sideLoc)));
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> sizedCannon(String model, String pathAndMaterial) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/" + model);
+		ResourceLocation tubeLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_tube");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
+						.texture("tube", tubeLoc)));
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> sizedHollowCannon(String sizePath, String pathAndMaterial) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/" + sizePath + "_cannon_tube");
+		ResourceLocation tubeLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_tube");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
+						.texture("tube", tubeLoc)));
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonEnd(String pathAndMaterial) {
@@ -139,17 +159,15 @@ public class CBCBuilderTransformers {
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> ramHead() {
-		ResourceLocation baseLoc = CreateBigCannons.resource("block/ram_head");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
-				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(baseLoc)));
+				.blockstate(BlockStateGen.directionalBlockProvider(false));
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> wormHead() {
-		ResourceLocation baseLoc = CreateBigCannons.resource("block/worm_head");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
-				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(baseLoc)));
+				.blockstate(BlockStateGen.directionalBlockProvider(false));
 	}
 	
 	public static <T extends DirectionalAxisKineticBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonLoader() {
@@ -173,11 +191,29 @@ public class CBCBuilderTransformers {
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonDrillBit() {
-		ResourceLocation baseLoc = CreateBigCannons.resource("block/cannon_drill_bit");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
 				.loot((t, p) -> t.dropOther(p, AllBlocks.PISTON_EXTENSION_POLE.get()))
-				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(baseLoc)));
+				.blockstate(BlockStateGen.directionalBlockProvider(false));
+	}
+	
+	public static <T extends DirectionalAxisKineticBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBuilder() {
+		ResourceLocation itemModelLoc = CreateBigCannons.resource("item/cannon_builder");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate(new CannonBuilderGen()::generate)
+				.item()
+				.model((c, p) -> p.getExistingFile(itemModelLoc))
+				.build();
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBuilderHead() {
+		ResourceLocation notAttachedLoc = CreateBigCannons.resource("block/cannon_builder/cannon_builder_head");
+		ResourceLocation attachedLoc = CreateBigCannons.resource("block/cannon_builder/cannon_builder_head_attached");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.loot((t, p) -> t.dropOther(p, AllBlocks.PISTON_EXTENSION_POLE.get()))
+				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> p.models().getExistingFile(s.getValue(CannonBuilderHeadBlock.ATTACHED) ? attachedLoc : notAttachedLoc)));
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> projectile(String pathAndMaterial) {

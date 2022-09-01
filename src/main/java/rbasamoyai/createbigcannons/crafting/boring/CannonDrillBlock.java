@@ -30,14 +30,11 @@ public class CannonDrillBlock extends DirectionalAxisKineticBlock implements ITE
 
 	public static final EnumProperty<PistonState> STATE = MechanicalPistonBlock.STATE;
 	
-	private final VoxelShaper shapes;
-	private final VoxelShaper shapesRectracted;
+	private final VoxelShaper shapesRetracted;
 	
 	public CannonDrillBlock(Properties properties) {
 		super(properties);
-		VoxelShape base = Shapes.or(Block.box(0, 0, 0, 16, 12, 16), Block.box(6, 12, 6, 10, 16, 10));
-		this.shapes = new AllShapes.Builder(base).forDirectional();
-		this.shapesRectracted = new AllShapes.Builder(Shapes.or(base, Block.box(5, 16, 5, 11, 22, 11))).forDirectional();
+		this.shapesRetracted = new AllShapes.Builder(Block.box(5, 16, 5, 11, 22, 11)).forDirectional();
 		this.registerDefaultState(this.getStateDefinition().any().setValue(STATE, PistonState.RETRACTED));
 	}
 	
@@ -88,7 +85,8 @@ public class CannonDrillBlock extends DirectionalAxisKineticBlock implements ITE
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
-		return state.getValue(STATE) == PistonState.RETRACTED ? this.shapesRectracted.get(state.getValue(FACING)) : this.shapes.get(state.getValue(FACING));
+		VoxelShape base = AllShapes.MECHANICAL_PISTON_EXTENDED.get(state.getValue(FACING));
+		return state.getValue(STATE) == PistonState.RETRACTED ? Shapes.or(base, this.shapesRetracted.get(state.getValue(FACING))) : base;
 	}
 
 	@Override public Class<CannonDrillBlockEntity> getTileEntityClass() { return CannonDrillBlockEntity.class; }

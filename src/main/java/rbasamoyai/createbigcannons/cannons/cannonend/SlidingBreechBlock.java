@@ -16,6 +16,7 @@ import net.minecraft.world.level.material.PushReaction;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements ITE<SlidingBreechBlockEntity>, CannonBlock {
 
@@ -27,6 +28,7 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.cannonMaterial; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.UNBORED_SLIDING_BREECH; }	
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
 	
 	@Override
@@ -51,7 +53,7 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!level.isClientSide) CannonBlock.onRemoveCannon(state, level, pos, newState, isMoving);
+		if (!level.isClientSide) this.onRemoveCannon(state, level, pos, newState, isMoving);
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 

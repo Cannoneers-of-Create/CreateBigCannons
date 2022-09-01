@@ -10,6 +10,8 @@
     "createbigcannons:yaw_controller",
     "createbigcannons:cannon_drill",
     "createbigcannons:cannon_drill_bit",
+    "createbigcannons:cannon_builder",
+    "createbigcannons:cannon_builder_head",
     "createbigcannons:solid_shot",
     "createbigcannons:he_shell",
     "createbigcannons:shrapnel_shell",

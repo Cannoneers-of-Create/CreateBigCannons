@@ -26,6 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<ScrewBreechBlockEntity>, CannonBlock {
 
@@ -58,6 +59,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.material; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.MEDIUM; }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING).getOpposite(); }
 	@Override
 	public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) {
@@ -81,7 +83,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (!level.isClientSide) CannonBlock.onRemoveCannon(state, level, pos, newState, isMoving);
+		if (!level.isClientSide) this.onRemoveCannon(state, level, pos, newState, isMoving);
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 	

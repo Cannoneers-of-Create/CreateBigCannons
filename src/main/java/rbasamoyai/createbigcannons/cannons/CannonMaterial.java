@@ -21,6 +21,7 @@ public record CannonMaterial(ResourceLocation name, int squibRatioNum, int squib
 	}
 	
 	public static final CannonMaterial
+		INCOMPLETE_LAYERED = register(CreateBigCannons.resource("incomplete_layered"), 0, 1, 1.0f, 0, FailureMode.FRAGMENT),
 		LOG = register(CreateBigCannons.resource("log"), 0, 1, 1.0f, 0, FailureMode.FRAGMENT),
 		WROUGHT_IRON = register(CreateBigCannons.resource("cast_iron"), 1, 1, 2.0f, 1, FailureMode.RUPTURE),
 		CAST_IRON = register(CreateBigCannons.resource("cast_iron"), 1, 1, 3.0f, 2, FailureMode.FRAGMENT),

@@ -251,6 +251,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 					if (latheBlockInfo.nbt != null && boredState.getBlock() instanceof ITE<?> boredBE) {
 						latheBlockInfo.nbt.putString("id", boredBE.getTileEntityType().getRegistryName().toString());
 					}
+					
 					StructureBlockInfo newInfo = new StructureBlockInfo(boringOffset, boredState, latheBlockInfo.nbt);
 					lathe.getBlocks().put(boringOffset, newInfo);
 					bearing.notifyUpdate();

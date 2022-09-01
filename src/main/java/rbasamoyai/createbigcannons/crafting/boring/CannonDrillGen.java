@@ -17,13 +17,8 @@ public class CannonDrillGen extends SpecialBlockStateGen {
 	public <T extends Block> ModelFile getModel(DataGenContext<Block, T> context, RegistrateBlockstateProvider provider, BlockState state) {
 		boolean axisAlongFirst = state.getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
 		boolean rotated = state.getValue(CannonDrillBlock.FACING).getAxis() == Direction.Axis.X ^ axisAlongFirst;
-		int base = switch (state.getValue(CannonDrillBlock.STATE)) {
-			case RETRACTED -> 0;
-			case MOVING -> 2;
-			default -> 4;
-		};
-		int suf = base + (rotated ? 0 : 1);
-		return provider.models().getExistingFile(CreateBigCannons.resource("block/cannon_drill" + suf));
+		String suf = state.getValue(CannonDrillBlock.STATE).getSerializedName() + (rotated ? "_rotated" : "");
+		return provider.models().getExistingFile(CreateBigCannons.resource("block/cannon_drill/" + suf));
 	}
 
 	@Override

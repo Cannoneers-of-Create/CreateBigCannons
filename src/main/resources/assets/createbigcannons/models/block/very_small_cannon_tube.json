@@ -1,0 +1,55 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "#tube",
+		"particle": "#tube"
+	},
+	"elements": [
+		{
+			"from": [2, 0, 2],
+			"to": [3, 16, 14],
+			"faces": {
+				"north": {"uv": [3.5, 0, 3.75, 4], "texture": "#0"},
+				"east": {"uv": [5.25, 0, 8.25, 4], "texture": "#0"},
+				"south": {"uv": [0.75, 0, 1, 4], "texture": "#0"},
+				"west": {"uv": [0.75, 0, 3.75, 4], "texture": "#0"},
+				"up": {"uv": [12, 4, 12.25, 7], "texture": "#0"},
+				"down": {"uv": [14.75, 4, 15, 7], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"from": [13, 0, 2],
+			"to": [14, 16, 14],
+			"faces": {
+				"north": {"uv": [0.75, 0, 1, 4], "texture": "#0"},
+				"east": {"uv": [0.75, 0, 3.75, 4], "texture": "#0"},
+				"south": {"uv": [3.5, 0, 3.75, 4], "texture": "#0"},
+				"west": {"uv": [5.25, 0, 8.25, 4], "texture": "#0"},
+				"up": {"uv": [14.75, 4, 15, 7], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [12, 4, 12.25, 7], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 0, 2],
+			"to": [13, 16, 3],
+			"faces": {
+				"north": {"uv": [1, 0, 3.5, 4], "texture": "#0"},
+				"south": {"uv": [5.5, 0, 8, 4], "texture": "#0"},
+				"up": {"uv": [12.25, 4, 14.75, 4.25], "texture": "#0"},
+				"down": {"uv": [12.25, 4, 14.75, 4.25], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 0, 13],
+			"to": [13, 16, 14],
+			"faces": {
+				"north": {"uv": [5.5, 0, 8, 4], "texture": "#0"},
+				"south": {"uv": [1, 0, 3.5, 4], "texture": "#0"},
+				"up": {"uv": [12.25, 6.75, 14.75, 7], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [12.25, 6.75, 14.75, 7], "rotation": 180, "texture": "#0"}
+			}
+		}
+	]
+}

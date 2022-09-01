@@ -164,13 +164,15 @@ public class CannonCastBlockEntity extends SmartTileEntity {
 		
 		if (tag.contains("Size")) {
 			this.castShape = CannonCastShape.byId(new ResourceLocation(tag.getString("Size")));
+			if (this.castShape == null) this.castShape = CannonCastShape.VERY_SMALL;
 		}
 		
 		this.structure.clear();
 		if (tag.contains("Structure")) {
 			ListTag list = tag.getList("Structure", Tag.TAG_STRING);
 			for (int i = 0; i < list.size(); ++i) {
-				this.structure.add(CannonCastShape.byId(new ResourceLocation(list.getString(i))));
+				CannonCastShape shape = CannonCastShape.byId(new ResourceLocation(list.getString(i)));
+				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL : shape);
 			}
 			this.height = tag.getInt("Height");
 			this.fluid.setCapacity(this.calculateCapacityFromStructure());

@@ -203,7 +203,8 @@ public class MountedCannonContraption extends Contraption {
 	}
 	
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, CannonMaterial material) {
-		if (((CannonBlock) state.getBlock()).getCannonMaterial() != material) return false;
+		CannonBlock cBlock = (CannonBlock) state.getBlock();
+		if (cBlock.getCannonMaterialInLevel(level, state, pos) != material) return false;
 		return ((ICannonBlockEntity) level.getBlockEntity(pos)).cannonBehavior().isConnectedTo(connection);
 	}
 	

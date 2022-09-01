@@ -16,31 +16,48 @@ import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.SolidCannonBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlockEntity;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class UnboredCannonBlock extends SolidCannonBlock<CannonEndBlockEntity> implements TransformableByBoring {
 
 	private final NonNullSupplier<? extends Block> boredBlockSup;
 	private Block boredBlock;
 	private final VoxelShaper shapes;
+	private final CannonCastShape cannonShape;
 	
-	public UnboredCannonBlock(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup, VoxelShape baseShape) {
+	public UnboredCannonBlock(Properties properties, CannonMaterial material, CannonCastShape cannonShape, NonNullSupplier<? extends Block> boredBlockSup, VoxelShape baseShape) {
 		super(properties, material);
 		this.boredBlockSup = boredBlockSup;
 		this.shapes = new AllShapes.Builder(baseShape).forDirectional();
+		this.cannonShape = cannonShape;
 	}
 	
 	public static UnboredCannonBlock verySmall(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
-		return new UnboredCannonBlock(properties, material, boredBlockSup, Block.box(2, 0, 2, 14, 16, 14));
+		return new UnboredCannonBlock(properties, material, CannonCastShape.VERY_SMALL, boredBlockSup, Block.box(2, 0, 2, 14, 16, 14));
+	}
+
+	public static UnboredCannonBlock small(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
+		return new UnboredCannonBlock(properties, material, CannonCastShape.SMALL, boredBlockSup, Block.box(1, 0, 1, 15, 16, 15));
 	}
 	
 	public static UnboredCannonBlock medium(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
-		return new UnboredCannonBlock(properties, material, boredBlockSup, Shapes.block());
+		return new UnboredCannonBlock(properties, material, CannonCastShape.MEDIUM, boredBlockSup, Shapes.block());
 	}
-	
+
+	public static UnboredCannonBlock large(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
+		return new UnboredCannonBlock(properties, material, CannonCastShape.LARGE, boredBlockSup, Block.box(-1, 0, -1, 17, 16, 17));
+	}
+
+	public static UnboredCannonBlock veryLarge(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
+		return new UnboredCannonBlock(properties, material, CannonCastShape.VERY_LARGE, boredBlockSup, Block.box(-2, 0, -2, 18, 16, 18));
+	}
+		
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
 		return this.shapes.get(state.getValue(FACING));
 	}
+	
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape; }
 
 	@Override
 	public BlockState getBoredBlockState(BlockState state) {

@@ -158,16 +158,18 @@ public class CannonLoadingContraption extends PoleContraption {
 		BlockPos ahead = pos.relative(direction);
 		BlockState state = level.getBlockState(ahead);
 		if (this.isAnchoringBlockAt(ahead)) return true;
-		if (this.isValidLoadBlock(state, level, ahead)) {
-			frontier.add(ahead);
-		}
-		
-		if (this.isValidCannonBlock(level, state, ahead) && this.matchesCannonAxis(state, direction.getAxis())) {
-			BlockEntity blockEntity = level.getBlockEntity(ahead);
-			if (!(blockEntity instanceof ICannonBlockEntity cannon)) return true;
-			StructureBlockInfo blockInfo = cannon.cannonBehavior().block();
-			if (this.isValidLoadBlock(blockInfo.state, level, ahead)) {
+		if (!visited.contains(ahead)) {
+			if (this.isValidLoadBlock(state, level, ahead)) {
 				frontier.add(ahead);
+			}
+			
+			if (this.isValidCannonBlock(level, state, ahead) && this.matchesCannonAxis(state, direction.getAxis())) {
+				BlockEntity blockEntity = level.getBlockEntity(ahead);
+				if (!(blockEntity instanceof ICannonBlockEntity cannon)) return true;
+				StructureBlockInfo blockInfo = cannon.cannonBehavior().block();
+				if (this.isValidLoadBlock(blockInfo.state, level, ahead)) {
+					frontier.add(ahead);
+				}
 			}
 		}
 		

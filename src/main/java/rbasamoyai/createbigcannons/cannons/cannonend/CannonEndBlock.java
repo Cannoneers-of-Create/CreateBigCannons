@@ -15,6 +15,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.SolidCannonBlock;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class CannonEndBlock extends SolidCannonBlock<CannonEndBlockEntity> {
 
@@ -45,6 +46,8 @@ public class CannonEndBlock extends SolidCannonBlock<CannonEndBlockEntity> {
 	
 	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
 	@Override public boolean isComplete(BlockState state) { return true; }
+	
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.CANNON_END; }
 
 	@Override public Class<CannonEndBlockEntity> getTileEntityClass() { return CannonEndBlockEntity.class; }
 	@Override public BlockEntityType<? extends CannonEndBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_END.get(); }

@@ -15,6 +15,9 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
+import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderState;
+import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 
 public class CBCCommonEvents {
 
@@ -30,6 +33,14 @@ public class CBCCommonEvents {
 					drill.onLengthBroken();
 				}
 				return;
+			}
+			BlockPos builderPos = destroyPoleContraption(CBCBlocks.CANNON_BUILDER_HEAD.get(), CBCBlocks.CANNON_BUILDER.get(), CannonBuilderBlock.maxAllowedBuilderLength(), event);
+			if (builderPos != null) {
+				level.setBlock(builderPos, level.getBlockState(builderPos).setValue(CannonBuilderBlock.STATE, BuilderState.UNACTIVATED), 3);
+				if (level.getBlockEntity(pos) instanceof CannonBuilderBlockEntity builder) {
+					builder.onLengthBroken();
+				}
+				return;			
 			}
 		}
 	}

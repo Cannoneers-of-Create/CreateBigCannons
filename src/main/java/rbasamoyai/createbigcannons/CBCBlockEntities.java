@@ -1,10 +1,10 @@
 package rbasamoyai.createbigcannons;
 
+import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonRenderer;
 import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntity;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountInstance;
@@ -20,7 +20,9 @@ import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechInstance;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
-import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntityRenderer;
+import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
+import rbasamoyai.createbigcannons.crafting.builtup.LayeredCannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.builtup.LayeredCannonBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
@@ -38,7 +40,7 @@ public class CBCBlockEntities {
 						CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER,
 						CBCBlocks.CAST_IRON_CANNON_BARREL, CBCBlocks.CAST_IRON_CANNON_CHAMBER,
 						CBCBlocks.BRONZE_CANNON_BARREL, CBCBlocks.BRONZE_CANNON_CHAMBER,
-						CBCBlocks.STEEL_CANNON_BARREL, CBCBlocks.STEEL_CANNON_CHAMBER,
+						CBCBlocks.STEEL_CANNON_BARREL, CBCBlocks.BUILT_UP_STEEL_CANNON_BARREL, CBCBlocks.STEEL_CANNON_CHAMBER, CBCBlocks.BUILT_UP_STEEL_CANNON_CHAMBER, CBCBlocks.THICK_STEEL_CANNON_CHAMBER,
 						CBCBlocks.NETHER_GUNMETAL_CANNON_BARREL, CBCBlocks.NETHER_GUNMETAL_CANNON_CHAMBER)
 			.register();
 	
@@ -60,13 +62,15 @@ public class CBCBlockEntities {
 			.tileEntity("cannon_end", CannonEndBlockEntity::new)
 			.validBlocks(CBCBlocks.LOG_CANNON_END, CBCBlocks.WROUGHT_IRON_CANNON_END, CBCBlocks.CAST_IRON_CANNON_END, CBCBlocks.BRONZE_CANNON_END,
 						CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL, CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER, CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH,
-						CBCBlocks.UNBORED_BRONZE_CANNON_BARREL, CBCBlocks.UNBORED_BRONZE_CANNON_CHAMBER, CBCBlocks.UNBORED_BRONZE_SLIDING_BREECH)
+						CBCBlocks.UNBORED_BRONZE_CANNON_BARREL, CBCBlocks.UNBORED_BRONZE_CANNON_CHAMBER, CBCBlocks.UNBORED_BRONZE_SLIDING_BREECH,
+						CBCBlocks.UNBORED_VERY_SMALL_STEEL_CANNON_LAYER, CBCBlocks.UNBORED_SMALL_STEEL_CANNON_LAYER, CBCBlocks.UNBORED_MEDIUM_STEEL_CANNON_LAYER,
+						CBCBlocks.UNBORED_LARGE_STEEL_CANNON_LAYER, CBCBlocks.UNBORED_VERY_LARGE_STEEL_CANNON_LAYER, CBCBlocks.UNBORED_STEEL_SLIDING_BREECH)
 			.register();
 	
 	public static final BlockEntityEntry<CannonLoaderBlockEntity> CANNON_LOADER = CreateBigCannons.registrate()
 			.tileEntity("cannon_loader", CannonLoaderBlockEntity::new)
 			.instance(() -> ShaftInstance::new, false)
-			.renderer(() -> CannonLoaderBlockEntityRenderer::new)
+			.renderer(() -> MechanicalPistonRenderer::new)
 			.validBlock(CBCBlocks.CANNON_LOADER)
 			.register();
 	
@@ -106,13 +110,27 @@ public class CBCBlockEntities {
 	public static final BlockEntityEntry<CannonDrillBlockEntity> CANNON_DRILL = CreateBigCannons.registrate()
 			.tileEntity("cannon_drill", CannonDrillBlockEntity::new)
 			.instance(() -> ShaftInstance::new)
-			.renderer(() -> CannonDrillBlockEntityRenderer::new)
+			.renderer(() -> MechanicalPistonRenderer::new)
 			.validBlock(CBCBlocks.CANNON_DRILL)
 			.register();
 	
 	public static final BlockEntityEntry<IncompleteCannonBlockEntity> INCOMPLETE_CANNON = CreateBigCannons.registrate()
 			.tileEntity("incomplete_cannon", IncompleteCannonBlockEntity::new)
-			.validBlocks(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH)
+			.validBlocks(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH)
+			.register();
+	
+	public static final BlockEntityEntry<CannonBuilderBlockEntity> CANNON_BUILDER = CreateBigCannons.registrate()
+			.tileEntity("cannon_builder", CannonBuilderBlockEntity::new)
+			.instance(() -> ShaftInstance::new)
+			.renderer(() -> MechanicalPistonRenderer::new)
+			.validBlock(CBCBlocks.CANNON_BUILDER)
+			.register();
+	
+	public static final BlockEntityEntry<LayeredCannonBlockEntity> LAYERED_CANNON = CreateBigCannons.registrate()
+			.tileEntity("layered_cannon", LayeredCannonBlockEntity::new)
+			.renderer(() -> LayeredCannonBlockEntityRenderer::new)
+			.validBlocks(CBCBlocks.BUILT_UP_CANNON,
+					CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER, CBCBlocks.SMALL_STEEL_CANNON_LAYER, CBCBlocks.MEDIUM_STEEL_CANNON_LAYER, CBCBlocks.LARGE_STEEL_CANNON_LAYER, CBCBlocks.VERY_LARGE_STEEL_CANNON_LAYER)
 			.register();
 	
 	public static void register() {}
