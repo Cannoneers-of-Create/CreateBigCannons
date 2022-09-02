@@ -36,12 +36,12 @@ public class CannonProjectileRenderer<T extends AbstractCannonProjectile> extend
 			poseStack.pushPose();
 			BlockPos pos = entity.blockPosition();
 			
-			Quaternion q = Vector3f.YP.rotationDegrees(-entity.getViewYRot(partialTicks));
-			Quaternion q1 = Vector3f.XP.rotationDegrees(-entity.getViewXRot(partialTicks));
+			Quaternion q = Vector3f.YP.rotationDegrees(entity.getViewYRot(partialTicks) + 180.0f);
+			Quaternion q1 = Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks));
 			q.mul(q1);
 			poseStack.mulPose(q);
 			
-			poseStack.translate(-0.5d, -0.1f, -0.5d);
+			poseStack.translate(-0.5d, -0.1d, -0.5d);
 			
 			BlockRenderDispatcher brd = Minecraft.getInstance().getBlockRenderer();
 			for (RenderType type : RenderType.chunkBufferLayers()) {

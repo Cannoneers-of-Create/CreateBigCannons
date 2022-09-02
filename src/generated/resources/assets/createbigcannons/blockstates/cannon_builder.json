@@ -1,0 +1,420 @@
+{
+  "variants": {
+    "axis_along_first=false,facing=down,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated"
+    },
+    "axis_along_first=true,facing=up,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated"
+    },
+    "axis_along_first=false,facing=north,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,powered=false,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=down,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated"
+    },
+    "axis_along_first=true,facing=up,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated"
+    },
+    "axis_along_first=false,facing=north,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,powered=true,state=unactivated": {
+      "model": "createbigcannons:block/cannon_builder/unactivated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=down,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated"
+    },
+    "axis_along_first=true,facing=up,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated"
+    },
+    "axis_along_first=false,facing=north,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,powered=false,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=down,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated"
+    },
+    "axis_along_first=true,facing=up,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated"
+    },
+    "axis_along_first=false,facing=north,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,powered=true,state=activated": {
+      "model": "createbigcannons:block/cannon_builder/activated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=down,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving"
+    },
+    "axis_along_first=true,facing=up,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated"
+    },
+    "axis_along_first=false,facing=north,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,powered=false,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=down,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving"
+    },
+    "axis_along_first=true,facing=up,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated"
+    },
+    "axis_along_first=false,facing=north,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,powered=true,state=moving": {
+      "model": "createbigcannons:block/cannon_builder/moving",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=down,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended"
+    },
+    "axis_along_first=true,facing=up,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated"
+    },
+    "axis_along_first=false,facing=north,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,powered=false,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=down,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended"
+    },
+    "axis_along_first=true,facing=up,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated"
+    },
+    "axis_along_first=false,facing=north,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,powered=true,state=extended": {
+      "model": "createbigcannons:block/cannon_builder/extended",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

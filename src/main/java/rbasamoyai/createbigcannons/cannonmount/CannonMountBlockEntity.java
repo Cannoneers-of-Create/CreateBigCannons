@@ -66,7 +66,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		}
 		
 		if (!this.running) {
-			if (CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) {
+			if (!this.level.isClientSide && CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) {
 				this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
 			}
 			return;

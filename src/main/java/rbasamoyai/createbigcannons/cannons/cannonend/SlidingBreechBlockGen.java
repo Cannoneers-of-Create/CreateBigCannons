@@ -2,8 +2,8 @@ package rbasamoyai.createbigcannons.cannons.cannonend;
 
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.data.SpecialBlockStateGen;
-import com.simibubi.create.repack.registrate.providers.DataGenContext;
-import com.simibubi.create.repack.registrate.providers.RegistrateBlockstateProvider;
+import com.tterrag.registrate.providers.DataGenContext;
+import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -36,8 +36,7 @@ public class SlidingBreechBlockGen extends SpecialBlockStateGen {
 				.texture("hole", holeLoc)
 				.texture("side", sideLoc)
 				.texture("side_hole", sideHoleLoc)
-				.texture("inside", insideLoc)
-				.texture("particle", sideLoc);
+				.texture("inside", insideLoc);
 	}
 
 	@Override

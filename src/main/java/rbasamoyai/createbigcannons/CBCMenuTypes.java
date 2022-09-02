@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons;
 
-import com.simibubi.create.repack.registrate.util.entry.MenuEntry;
+import com.tterrag.registrate.util.entry.MenuEntry;
 
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeContainer;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeScreen;

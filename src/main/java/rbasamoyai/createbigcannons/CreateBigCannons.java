@@ -4,18 +4,25 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.repack.registrate.util.nullness.NonNullSupplier;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import rbasamoyai.createbigcannons.base.CBCCommonEvents;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
+import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 
 @Mod(CreateBigCannons.MOD_ID)
@@ -37,7 +44,9 @@ public class CreateBigCannons {
 		CBCBlockEntities.register();
 		CBCEntityTypes.register();
 		CBCMenuTypes.register();
+		CBCFluids.register();
 		
+		CannonCastShape.register();
 		CBCContraptionTypes.prepare();
 		CBCChecks.register();
 		
@@ -47,13 +56,31 @@ public class CreateBigCannons {
 		
 		modEventBus.addListener(this::onCommonSetup);
 		
+		forgeEventBus.addListener(this::onAddReloadListeners);
+		forgeEventBus.addListener(this::onDatapackSync);
+		CBCCommonEvents.register(forgeEventBus);
+		
 		CBCConfigs.registerConfigs(mlContext);
 		
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CreateBigCannonsClient.prepareClient(modEventBus, forgeEventBus));
 	}
 	
-	public void onCommonSetup(FMLCommonSetupEvent event) {
+	private void onCommonSetup(FMLCommonSetupEvent event) {
 		CBCNetwork.init();
+	}
+	
+	private void onAddReloadListeners(AddReloadListenerEvent event) {
+		event.addListener(BlockRecipeFinder.LISTENER);
+		event.addListener(BlockRecipesManager.ReloadListener.INSTANCE);
+	}
+	
+	private void onDatapackSync(OnDatapackSyncEvent event) {
+		ServerPlayer player = event.getPlayer();
+		if (player == null) {
+			BlockRecipesManager.syncToAll();
+		} else {
+			BlockRecipesManager.syncTo(player);
+		}
 	}
 	
 	public static CreateRegistrate registrate() {

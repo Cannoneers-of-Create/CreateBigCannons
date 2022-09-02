@@ -1,9 +1,9 @@
 package rbasamoyai.createbigcannons.datagen;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.simibubi.create.repack.registrate.util.entry.BlockEntry;
-import com.simibubi.create.repack.registrate.util.entry.ItemEntry;
-import com.simibubi.create.repack.registrate.util.entry.ItemProviderEntry;
+import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.entry.ItemEntry;
+import com.tterrag.registrate.util.entry.ItemProviderEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CBCBlocks;
@@ -19,6 +19,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonTooLarge", "Cannon is longer than the maximum length of %s");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "invalidCannon", "A cannon must have one and only one opening and one and only one closed end");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonLoaderInsideDuringAssembly", "Cannon block at [%s, %s, %s] contains a cannon loader part");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "hasIncompleteCannonBlocks", "Cannon block at [%s, %s, %s] has not finished the crafting process");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "player", "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
@@ -58,6 +59,10 @@ public class CBCLangGen {
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Timed Fuze_ menu, where the fuze duration can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile has been in the world for the set time.");
 		
+		tooltip(CBCItems.CANNON_CAST_WAND)
+		.header("CANNON CAST WAND")
+		.summary("Use on cannon casts to _instantly complete_ the casting process.");
+		
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.materialProperties", "Cannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength", "Strength");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.goggles", "_%s Powder Charge(s)_");
@@ -70,6 +75,13 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.fragment", "The cannon _fragments_ on failure.");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd", "Weak Cannon End");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd.desc", "Cannons built with this as the closing can only safely handle up to _%s Powder Charge(s)_.");
+		
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.encounteredProblem", "The cannon drill has encountered a problem:");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.dryBore", "The cannon drill requires water to operate");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.tooWeak", "The cannon drill must be operating at the same RPM or faster as the target lathe");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.none", "The cannon drill did not fail, this should not be displaying");
+		
+		REGISTRATE.addLang("block", CreateBigCannons.resource("incomplete_block"), "tooltip.requiredParts", "This block requires the following parts:");
 	}
 	
 	private static class TooltipBuilder {

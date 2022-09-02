@@ -1,0 +1,9 @@
+{
+  "parent": "createbigcannons:block/sliding_breech",
+  "textures": {
+    "hole": "createbigcannons:block/sliding_breech/unbored_bronze_sliding_breech_hole",
+    "side": "createbigcannons:block/sliding_breech/unbored_bronze_sliding_breech_side",
+    "side_hole": "createbigcannons:block/sliding_breech/unbored_bronze_sliding_breech_side_hole",
+    "inside": "createbigcannons:block/sliding_breech/unbored_bronze_sliding_breech_inside"
+  }
+}

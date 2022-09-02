@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.cannonend;
 
-import java.util.Optional;
-
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
@@ -11,6 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -26,7 +26,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<ScrewBreechBlockEntity>, CannonBlock {
 
@@ -59,16 +59,17 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.material; }
-	@Override public Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
-	@Override public Optional<Direction> getFacing(BlockState state) { return Optional.of(state.getValue(FACING).getOpposite()); }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.MEDIUM; }
+	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING).getOpposite(); }
 	@Override
 	public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) {
 		OpenState open = state.getValue(OPEN);
 		return open == OpenState.OPEN || open == OpenState.PARTIAL ? CannonEnd.OPEN : CannonEnd.CLOSED;
 	}
-	@Override public Axis getRotationAxis(BlockState state) { return this.getAxis(state); }
-	
-	@Override public PushReaction getPistonPushReaction(BlockState state) { return CBCConfigs.SERVER.cannons.cannonsBlocksAreAttached.get() || isOpen(state) ? PushReaction.NORMAL : PushReaction.BLOCK; }	
+	@Override public Axis getRotationAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
+	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
+	@Override public boolean isDoubleSidedCannon(BlockState state) { return false; }
+	@Override public boolean isComplete(BlockState state) { return true; }
 	
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
@@ -79,8 +80,20 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 		return state.hasProperty(OPEN) ? state.getValue(OPEN).isOpen() : false;
 	}
 	
+	@SuppressWarnings("deprecation")
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if (!level.isClientSide) this.onRemoveCannon(state, level, pos, newState, isMoving);
+		super.onRemove(state, level, pos, newState, isMoving);
+	}
+	
 	@Override public Class<ScrewBreechBlockEntity> getTileEntityClass() { return ScrewBreechBlockEntity.class; }
 	@Override public BlockEntityType<? extends ScrewBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.SCREW_BREECH.get(); }
+	
+	@Override
+	public InteractionResult onWrenched(BlockState state, UseOnContext context) {
+		return isOpen(state) ? super.onWrenched(state, context) : InteractionResult.PASS;
+	}
 
 	public enum OpenState implements StringRepresentable {
 		CLOSED("closed"),
@@ -96,5 +109,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 		public boolean isOpen() { return this == OPEN; }
 		@Override public String getSerializedName() { return this.name; }
 	}
+	
+	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
 	
 }

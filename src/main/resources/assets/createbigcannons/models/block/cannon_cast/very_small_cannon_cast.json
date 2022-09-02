@@ -1,0 +1,55 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "createbigcannons:block/cannon_cast_side1",
+		"1": "createbigcannons:block/cannon_cast_top"
+	},
+	"elements": [
+		{
+			"from": [-16, 0, -16],
+			"to": [32, 16, 2],
+			"faces": {
+				"north": {"uv": [0, 0, 12, 4], "texture": "#1"},
+				"east": {"uv": [7.5, 12, 12, 16], "texture": "#1"},
+				"south": {"uv": [0, 0, 12, 4], "texture": "#0"},
+				"west": {"uv": [0, 12, 4.5, 16], "texture": "#1"},
+				"up": {"uv": [0, 0, 12, 4.5], "texture": "#1"},
+				"down": {"uv": [0, 7.5, 12, 12], "rotation": 180, "texture": "#1"}
+			}
+		},
+		{
+			"from": [-16, 0, 14],
+			"to": [32, 16, 32],
+			"faces": {
+				"north": {"uv": [0, 0, 12, 4], "texture": "#0"},
+				"east": {"uv": [0, 12, 4.5, 16], "texture": "#1"},
+				"south": {"uv": [0, 12, 12, 16], "texture": "#1"},
+				"west": {"uv": [7.5, 12, 12, 16], "texture": "#1"},
+				"up": {"uv": [0, 7.5, 12, 12], "texture": "#1"},
+				"down": {"uv": [0, 0, 12, 4.5], "rotation": 180, "texture": "#1"}
+			}
+		},
+		{
+			"from": [-16, 0, 2],
+			"to": [2, 16, 14],
+			"faces": {
+				"east": {"uv": [4.5, 0, 7.5, 4], "texture": "#0"},
+				"west": {"uv": [4.5, 12, 7.5, 16], "texture": "#1"},
+				"up": {"uv": [0, 4.5, 4.5, 7.5], "texture": "#1"},
+				"down": {"uv": [7.5, 4.5, 12, 7.5], "rotation": 180, "texture": "#1"}
+			}
+		},
+		{
+			"from": [14, 0, 2],
+			"to": [32, 16, 14],
+			"faces": {
+				"east": {"uv": [4.5, 12, 7.5, 16], "texture": "#1"},
+				"west": {"uv": [4.5, 0, 7.5, 4], "texture": "#0"},
+				"up": {"uv": [7.5, 4.5, 12, 7.5], "texture": "#1"},
+				"down": {"uv": [0, 4.5, 4.5, 7.5], "rotation": 180, "texture": "#1"}
+			}
+		}
+	]
+}

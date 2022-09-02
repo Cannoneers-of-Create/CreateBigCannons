@@ -4,12 +4,12 @@
 	"textures": {
 		"0": "minecraft:block/piston_side",
 		"1": "create:block/pole_end",
-		"2": "createbigcannons:block/cannon_loader_bottom",
-		"3": "createbigcannons:block/cannon_loader_nook",
-		"4": "createbigcannons:block/cannon_loader_side",
-		"5": "createbigcannons:block/cannon_loader_side1",
-		"6": "createbigcannons:block/cannon_loader_top",
-		"particle": "createbigcannons:block/cannon_loader_top"
+		"2": "createbigcannons:block/pole_contraption_bottom",
+		"3": "createbigcannons:block/pole_contraption_nook",
+		"4": "createbigcannons:block/pole_contraption_side",
+		"5": "createbigcannons:block/pole_contraption_side1",
+		"6": "createbigcannons:block/pole_contraption_top",
+		"particle": "createbigcannons:block/pole_contraption_top"
 	},
 	"elements": [
 		{

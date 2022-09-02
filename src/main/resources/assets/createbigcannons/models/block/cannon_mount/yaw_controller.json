@@ -3,7 +3,7 @@
 	"parent": "minecraft:block/block",
 	"textures": {
 		"0": "createbigcannons:block/cannon_mount/cannon_mount_side_shaft",
-		"1": "createbigcannons:block/cannon_loader_nook",
+		"1": "createbigcannons:block/pole_contraption_nook",
 		"2": "createbigcannons:block/cannon_mount/yaw_controller_side",
 		"particle": "createbigcannons:block/cannon_mount/yaw_controller_side"
 	},

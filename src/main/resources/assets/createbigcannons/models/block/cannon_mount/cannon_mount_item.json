@@ -3,7 +3,7 @@
 	"textures": {
 		"1": "createbigcannons:block/cannon_mount/cannon_mount_side_shaft",
 		"3": "createbigcannons:block/cannon_mount/cannon_mount_top",
-		"4": "createbigcannons:block/cannon_loader_nook",
+		"4": "createbigcannons:block/pole_contraption_nook",
 		"5": "createbigcannons:block/cannon_mount/cannon_mount_firing",
 		"6": "createbigcannons:block/cannon_mount/cannon_mount_toggle",
 		"7": "createbigcannons:block/cannon_mount/rotating_mount_plate",

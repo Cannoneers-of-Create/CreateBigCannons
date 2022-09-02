@@ -107,7 +107,7 @@ public class CannonMountScenes {
 			tag.putFloat("PitchSpeed", 8.0f);
 		});
 		scene.world.rotateSection(cannon, 0, 0, -30, 40);
-		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(util.grid.at(2, 3, 2), 30, 40));
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(util.grid.at(2, 3, 2), -30, 40));
 		
 		scene.overlay.showText(80)
 			.attachKeyFrame()
@@ -185,7 +185,7 @@ public class CannonMountScenes {
 			tag.putFloat("CannonPitch", 0);
 		});
 		scene.world.rotateSection(cannon, 0, 0, -30, 40);
-		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(util.grid.at(2, 2, 2), 30, 40));
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(util.grid.at(2, 2, 2), -30, 40));
 		scene.idle(40);
 		scene.world.setKineticSpeed(util.select.position(1, 1, 2), 0.0f);
 		scene.world.setKineticSpeed(util.select.position(1, 1, 3), 0.0f);

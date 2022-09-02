@@ -19,13 +19,12 @@ import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 public class CannonLoaderCollider {
 
 	public static boolean collideBlocks(AbstractContraptionEntity contraptionEntity) {
-		if (!(contraptionEntity.getContraption() instanceof CannonLoadingContraption)) {
+		if (!(contraptionEntity.getContraption() instanceof CannonLoadingContraption contraption)) {
 			return ContraptionCollider.collideBlocks(contraptionEntity);
 		}
 		
 		Level level = contraptionEntity.getCommandSenderWorld();
 		Vec3 motion = contraptionEntity.getDeltaMovement();
-		CannonLoadingContraption contraption = (CannonLoadingContraption) contraptionEntity.getContraption();
 		AABB bounds = contraptionEntity.getBoundingBox();
 		Vec3 position = contraptionEntity.position();
 		BlockPos gridPos = new BlockPos(position);
@@ -75,9 +74,9 @@ public class CannonLoaderCollider {
 			StructureBlockInfo blockInfo = contraption.getBlocks().get(pos);
 			boolean emptyCollider = collidedState.getCollisionShape(level, pos).isEmpty();
 			
-			if (collidedState.getBlock() instanceof CannonBlock && ((CannonBlock) collidedState.getBlock()).getAxis(collidedState) == movementDirection.getAxis()) {
+			if (collidedState.getBlock() instanceof CannonBlock cannonBlock && cannonBlock.getFacing(collidedState).getAxis() == movementDirection.getAxis()) {
 				BlockEntity blockEntity = level.getBlockEntity(colliderPos);
-				if (blockEntity instanceof ICannonBlockEntity && ((ICannonBlockEntity) blockEntity).cannonBehavior().canLoadBlock(blockInfo)) {
+				if (blockEntity instanceof ICannonBlockEntity cbe && cbe.cannonBehavior().canLoadBlock(blockInfo)) {
 					continue;
 				}
 			}
