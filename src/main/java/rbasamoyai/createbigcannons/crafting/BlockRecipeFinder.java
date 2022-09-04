@@ -13,29 +13,28 @@ import com.google.common.cache.CacheBuilder;
 
 import net.minecraft.server.packs.resources.ResourceManagerReloadListener;
 import net.minecraft.world.level.Level;
-import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 
 public class BlockRecipeFinder {
 
-	private static Cache<Object, List<CannonCastingRecipe>> cannonRecipeCache = CacheBuilder.newBuilder().build();
+	private static Cache<Object, List<BlockRecipe>> blockRecipeCache = CacheBuilder.newBuilder().build();
 	
-	public static List<CannonCastingRecipe> get(@Nullable Object cacheKey, Level level, Predicate<CannonCastingRecipe> predicates) {
+	public static List<BlockRecipe> get(@Nullable Object cacheKey, Level level, Predicate<BlockRecipe> predicates) {
 		if (cacheKey == null) return startSearch(level, predicates);
 		
 		try {
-			return cannonRecipeCache.get(cacheKey, () -> startSearch(level, predicates));
+			return blockRecipeCache.get(cacheKey, () -> startSearch(level, predicates));
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}		
 		return Collections.emptyList();
 	}
 	
-	private static List<CannonCastingRecipe> startSearch(Level level, Predicate<? super CannonCastingRecipe> predicates) {
+	private static List<BlockRecipe> startSearch(Level level, Predicate<? super BlockRecipe> predicates) {
 		return BlockRecipesManager.getRecipes().stream().filter(predicates).collect(Collectors.toList());
 	}
 	
 	public static final ResourceManagerReloadListener LISTENER = manager -> {
-		cannonRecipeCache.invalidateAll();
+		blockRecipeCache.invalidateAll();
 	};
 	
 }

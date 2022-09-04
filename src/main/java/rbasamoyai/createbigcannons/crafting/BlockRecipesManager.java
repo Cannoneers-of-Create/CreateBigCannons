@@ -17,27 +17,34 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
-import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 
 public class BlockRecipesManager {
 
-	private static final Map<ResourceLocation, CannonCastingRecipe> CANNON_RECIPES = new HashMap<>();
+	private static final Map<ResourceLocation, BlockRecipe> BLOCK_RECIPES = new HashMap<>();
 	
-	public static Collection<CannonCastingRecipe> getRecipes() {
-		return CANNON_RECIPES.values();
+	public static Collection<BlockRecipe> getRecipes() {
+		return BLOCK_RECIPES.values();
 	}
 	
 	public static void clear() {
-		CANNON_RECIPES.clear();
+		BLOCK_RECIPES.clear();
 	}
 	
 	public static void writeBuf(FriendlyByteBuf buf) {
-		buf.writeVarInt(CANNON_RECIPES.size());
-		for (Map.Entry<ResourceLocation, CannonCastingRecipe> entry : CANNON_RECIPES.entrySet()) {
+		buf.writeVarInt(BLOCK_RECIPES.size());
+		for (Map.Entry<ResourceLocation, BlockRecipe> entry : BLOCK_RECIPES.entrySet()) {
 			buf.writeResourceLocation(entry.getKey());
-			entry.getValue().toBuffer(buf);
+			toNetworkCasted(buf, entry.getValue());
 		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends BlockRecipe> void toNetworkCasted(FriendlyByteBuf buf, T recipe) {
+		BlockRecipeSerializer<T> ser = (BlockRecipeSerializer<T>) recipe.getSerializer();
+		buf.writeResourceLocation(ser.getRegistryName());
+		ser.toNetwork(buf, recipe);
 	}
 	
 	public static void readBuf(FriendlyByteBuf buf) {
@@ -45,7 +52,8 @@ public class BlockRecipesManager {
 		int sz = buf.readVarInt();
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation id = buf.readResourceLocation();
-			CANNON_RECIPES.put(id, CannonCastingRecipe.fromBuf(id, buf));
+			ResourceLocation type = buf.readResourceLocation();
+			BLOCK_RECIPES.put(id, CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromNetwork(id, buf));
 		}
 	}
 	
@@ -74,8 +82,8 @@ public class BlockRecipesManager {
 				if (el.isJsonObject()) {
 					ResourceLocation id = entry.getKey();
 					JsonObject obj = el.getAsJsonObject();
-					CannonCastingRecipe recipe = CannonCastingRecipe.fromJson(id, obj);
-					CANNON_RECIPES.put(id, recipe);
+					ResourceLocation type = new ResourceLocation(obj.get("type").getAsString());
+					BLOCK_RECIPES.put(id, CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromJson(id, obj));
 				}
 			}
 		}
