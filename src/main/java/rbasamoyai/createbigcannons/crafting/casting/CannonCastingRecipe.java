@@ -13,7 +13,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 
@@ -38,16 +37,6 @@ public class CannonCastingRecipe implements BlockRecipe {
 	public Block result() { return this.result; }
 	public int castingTime() { return this.castingTime; }
 	public ResourceLocation id() { return this.id; }
-	
-	public JsonObject serializeRecipe() {
-		JsonObject obj = new JsonObject();
-		obj.addProperty("type", CreateBigCannons.resource("cannon_casting").toString());
-		obj.addProperty("cast_shape", this.requiredShape.name().toString());
-		obj.add("fluid", this.ingredient().serialize());
-		obj.addProperty("casting_time", this.castingTime);
-		obj.addProperty("result", this.result.getRegistryName().toString());
-		return obj;
-	}
 	
 	@Override
 	public boolean matches(Level level, BlockPos pos) {
