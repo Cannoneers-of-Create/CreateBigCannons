@@ -276,13 +276,13 @@ public class CannonBuildingContraption extends PoleContraption {
 		if (cBlock.getFacing(state).getAxis() != dir.getAxis()
 		|| cBlock.getShapeInLevel(level, state, pos) != shape
 		|| !(level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe)
-		|| !cbe.cannonBehavior().isConnectedTo(dir.getOpposite())) return false;
+		|| !cbe.cannonBehavior().isConnectedTo(dir)) return false;
 		
 		BlockEntity be = level.getBlockEntity(pos.relative(dir));
 		if (be instanceof LayeredCannonBlockEntity layered) {
 			return layered.isLayerConnectedTo(dir.getOpposite(), shape);
 		} else if (be instanceof ICannonBlockEntity cbe1) {
-			return cbe.cannonBehavior().isConnectedTo(dir.getOpposite());
+			return cbe1.cannonBehavior().isConnectedTo(dir.getOpposite());
 		} else {
 			return false;
 		}

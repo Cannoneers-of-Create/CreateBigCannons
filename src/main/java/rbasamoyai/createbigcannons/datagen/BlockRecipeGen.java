@@ -41,6 +41,7 @@ public abstract class BlockRecipeGen implements DataProvider {
 	
 	public static void registerAll(DataGenerator gen) {
 		GENERATORS.add(new CannonCastRecipeGen(gen));
+		GENERATORS.add(new BuiltUpHeatingRecipeGen(gen));
 		
 		gen.addProvider(new DataProvider() {	
 			@Override
@@ -106,10 +107,10 @@ public abstract class BlockRecipeGen implements DataProvider {
 		}
 	}
 	
-	protected abstract void registerRecipes(Consumer<FinishedBlockRecipe> result);
+	protected abstract void registerRecipes(Consumer<FinishedBlockRecipe> cons);
 	
 	@Override
-	public String toString() {
+	public String getName() {
 		return "Create Big Cannons Block Recipes: " + (this.info == null ? "unknown id" : this.info);
 	}
 

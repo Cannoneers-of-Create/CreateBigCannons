@@ -45,6 +45,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.PoleContraption;
@@ -249,7 +250,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 				if (this.farEnoughFromPos(movementDirection, pos)) {
 					BlockState boredState = unbored.getBoredBlockState(latheBlockInfo.state);
 					if (latheBlockInfo.nbt != null && boredState.getBlock() instanceof ITE<?> boredBE) {
-						latheBlockInfo.nbt.putString("id", boredBE.getTileEntityType().getRegistryName().toString());
+						latheBlockInfo.nbt.putString("id", ForgeRegistries.BLOCK_ENTITIES.getKey(boredBE.getTileEntityType()).toString());
 					}
 					
 					StructureBlockInfo newInfo = new StructureBlockInfo(boringOffset, boredState, latheBlockInfo.nbt);

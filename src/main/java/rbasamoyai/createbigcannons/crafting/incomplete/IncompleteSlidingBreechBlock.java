@@ -92,7 +92,7 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 				if (!(be instanceof ICannonBlockEntity cbe1)) return;
 				CannonBehavior behavior1 = cbe1.cannonBehavior();
 				for (Direction dir : Direction.values()) {
-					boolean isConnected = behavior.isConnectedTo(dir.getOpposite());
+					boolean isConnected = behavior.isConnectedTo(dir);
 					behavior1.setConnectedFace(dir, isConnected);
 					if (level.getBlockEntity(pos.relative(dir)) instanceof ICannonBlockEntity cbe2) {
 						cbe2.cannonBehavior().setConnectedFace(dir.getOpposite(), isConnected);

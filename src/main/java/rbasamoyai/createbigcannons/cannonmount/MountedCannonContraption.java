@@ -205,7 +205,7 @@ public class MountedCannonContraption extends Contraption {
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, CannonMaterial material) {
 		CannonBlock cBlock = (CannonBlock) state.getBlock();
 		if (cBlock.getCannonMaterialInLevel(level, state, pos) != material) return false;
-		return ((ICannonBlockEntity) level.getBlockEntity(pos)).cannonBehavior().isConnectedTo(connection);
+		return ((ICannonBlockEntity) level.getBlockEntity(pos)).cannonBehavior().isConnectedTo(connection.getOpposite());
 	}
 	
 	public float getWeightForStress() {

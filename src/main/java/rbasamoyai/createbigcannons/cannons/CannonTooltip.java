@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial.FailureMode;
@@ -29,7 +30,6 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class CannonTooltip {
 
-	@SuppressWarnings("deprecation")
 	public static <T extends Block & CannonBlock> void appendText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
 		boolean desc = Screen.hasShiftDown();
 		
@@ -79,7 +79,7 @@ public class CannonTooltip {
 			String failKey = material.failureMode() == FailureMode.RUPTURE ? ".onFailure.rupture" : ".onFailure.fragment";
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + failKey), palette.color, palette.hColor, 1));
 			
-			if (block.builtInRegistryHolder().is(CBCTags.BlockCBC.WEAK_CANNON_END) && CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1) {
+			if (ForgeRegistries.BLOCKS.tags().getTag(CBCTags.BlockCBC.WEAK_CANNON_END).contains(block) && CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1) {
 				int weakCharges = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
 				tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weakCannonEnd")).withStyle(ChatFormatting.GRAY));
 				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weakCannonEnd.desc", weakCharges), palette.color, palette.hColor, 2));

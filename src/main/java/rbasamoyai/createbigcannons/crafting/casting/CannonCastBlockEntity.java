@@ -283,7 +283,7 @@ public class CannonCastBlockEntity extends SmartTileEntity {
 	}
 	
 	protected boolean matchingRecipeCache(BlockRecipe recipe) {
-		return recipe instanceof CannonCastingRecipe cast && cast.ingredient().test(this.fluid.getFluid());
+		return recipe instanceof CannonCastingRecipe;
 	}
 	
 	protected boolean shapeMatches(CannonCastingRecipe recipe) {

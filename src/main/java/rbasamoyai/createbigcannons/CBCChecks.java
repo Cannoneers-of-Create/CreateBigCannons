@@ -25,7 +25,7 @@ public class CBCChecks {
 			return CheckResult.PASS;
 		}
 		
-		boolean result = cbe.cannonBehavior().isConnectedTo(attached.getOpposite()) && cbe1.cannonBehavior().isConnectedTo(attached);
+		boolean result = cbe.cannonBehavior().isConnectedTo(attached) && cbe1.cannonBehavior().isConnectedTo(attached.getOpposite());
 		
 		if (cannonBlock instanceof ScrewBreechBlock) {
 			result &= !ScrewBreechBlock.isOpen(state);

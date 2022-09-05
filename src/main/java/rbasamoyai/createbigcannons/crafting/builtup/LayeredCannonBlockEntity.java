@@ -7,13 +7,19 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.simibubi.create.content.contraptions.processing.InWorldProcessing.Type;
+import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
+import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
 import com.simibubi.create.foundation.utility.Iterate;
 
 import net.minecraft.core.BlockPos;
@@ -23,6 +29,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -39,17 +46,24 @@ import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.crafting.BlockRecipe;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannonBlockEntity {
 
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
+	private static final Object BUILT_UP_HEATING_RECIPES_KEY = new Object();
 	
 	private CannonBehavior cannonBehavior;
 	private CannonMaterial baseMaterial;
 	private Map<CannonCastShape, Block> layeredBlocks = new HashMap<>();
 	private Multimap<Direction, CannonCastShape> layersConnectedTowards = HashMultimap.create();
 	private Direction currentFacing;
+	
+	private TransportedItemStack clockStack = new TransportedItemStack(ItemStack.EMPTY);
+	private int completionProgress;
 	
 	public LayeredCannonBlockEntity(BlockEntityType<? extends LayeredCannonBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -94,6 +108,34 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 				this.setChanged();
 			}
 		}
+		
+		if (this.clockStack.processedBy == Type.BLASTING) {
+			++this.completionProgress;
+			this.sendData();
+			int cap = CBCConfigs.SERVER.crafting.builtUpCannonHeatingTime.get();
+			if (this.completionProgress >= cap) {
+				this.completionProgress = cap;
+				if (!this.level.isClientSide && !this.tryFinishHeating()) this.completionProgress = 0;
+			}
+		} else if (this.completionProgress > 0) {
+			--this.completionProgress;
+			this.sendData();
+		}
+	}
+	
+	private boolean tryFinishHeating() {
+		List<BlockRecipe> recipes = BlockRecipeFinder.get(BUILT_UP_HEATING_RECIPES_KEY, this.level, this::matchingRecipeCache);
+		if (recipes.isEmpty()) return false;
+		Optional<BlockRecipe> recipe = recipes.stream()
+				.filter(r -> r.matches(this.level, this.worldPosition))
+				.findFirst();
+		if (!recipe.isPresent()) return false;
+		recipe.get().assembleInWorld(this.level, this.worldPosition);
+		return true;
+	}
+	
+	private boolean matchingRecipeCache(BlockRecipe recipe) {
+		return recipe instanceof BuiltUpHeatingRecipe;
 	}
 	
 	private static Direction.Axis getRotationAxis(Direction prev, Direction current) {
@@ -150,7 +192,7 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 			}
 		}
 		for (Direction dir : Iterate.directions) {
-			boolean connect = this.cannonBehavior.isConnectedTo(dir.getOpposite());
+			boolean connect = this.cannonBehavior.isConnectedTo(dir);
 			newLayer.cannonBehavior.setConnectedFace(dir, connect);		
 		}
 		return newLayer;
@@ -206,7 +248,7 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 				BlockEntity be1 = newLayered.level.getBlockEntity(pos1);
 				BlockState state1 = newLayered.level.getBlockState(pos1);
 				if (be1 instanceof ICannonBlockEntity cbe && state1.getBlock() instanceof CannonBlock cBlock && cBlock.getCannonMaterialInLevel(newLayered.level, state1, pos1) == newLayered.baseMaterial) {
-					boolean connect = this.cannonBehavior.isConnectedTo(dir.getOpposite());
+					boolean connect = this.cannonBehavior.isConnectedTo(dir);
 					newLayered.cannonBehavior.setConnectedFace(dir, connect);
 					cbe.cannonBehavior().setConnectedFace(dir.getOpposite(), connect);
 				}
@@ -249,6 +291,13 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 	@Override
 	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
 		behaviours.add(this.cannonBehavior = new CannonBehavior(this, this::canLoadBlock));
+		behaviours.add(new TransportedItemStackHandlerBehaviour(this, this::clockCallback));
+	}
+	
+	private void clockCallback(float maxDistanceFromCenter, Function<TransportedItemStack, TransportedResult> func) {
+		this.clockStack.processedBy = Type.NONE;
+		func.apply(this.clockStack);
+		this.clockStack.processingTime = -1;
 	}
 	
 	@Override
@@ -279,6 +328,7 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 		if (this.currentFacing != null) {
 			tag.putString("Facing", this.currentFacing.getSerializedName());
 		}
+		if (this.completionProgress > 0) tag.putInt("Progress", this.completionProgress);
 	}
 	
 	@Override
@@ -302,6 +352,7 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 			}
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;
+		this.completionProgress = tag.getInt("Progress");
 	}
 	
 	@Override public boolean canLoadBlock(StructureBlockInfo blockInfo) { return false; }

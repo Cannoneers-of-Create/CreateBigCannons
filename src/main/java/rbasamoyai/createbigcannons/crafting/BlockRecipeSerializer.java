@@ -14,6 +14,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 
 public interface BlockRecipeSerializer<T extends BlockRecipe> extends IForgeRegistryEntry<BlockRecipeSerializer<?>> {
@@ -22,7 +23,8 @@ public interface BlockRecipeSerializer<T extends BlockRecipe> extends IForgeRegi
 	T fromNetwork(ResourceLocation id, FriendlyByteBuf buf);
 	void toNetwork(FriendlyByteBuf buf, T recipe);
 	
-	public static final Entry<CannonCastingRecipe> CANNON_CASTING = register("cannon_casting", CannonCastingRecipe.Serializer::new); 
+	public static final Entry<CannonCastingRecipe> CANNON_CASTING = register("cannon_casting", CannonCastingRecipe.Serializer::new);
+	public static final Entry<BuiltUpHeatingRecipe> BUILT_UP_HEATING = register("built_up_heating", BuiltUpHeatingRecipe.Serializer::new);
 	
 	private static <T extends BlockRecipe> Entry<T> register(String id, NonNullSupplier<BlockRecipeSerializer<T>> fac) {
 		AbstractRegistrate<?> reg = CreateBigCannons.registrate();

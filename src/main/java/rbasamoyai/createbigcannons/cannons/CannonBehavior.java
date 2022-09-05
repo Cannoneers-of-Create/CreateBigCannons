@@ -84,8 +84,8 @@ public class CannonBehavior extends TileEntityBehaviour {
 		}
 	}
 	
-	public boolean isConnectedTo(Direction from) {
-		return this.connectedTowards.contains(from.getOpposite());
+	public boolean isConnectedTo(Direction face) {
+		return this.connectedTowards.contains(face);
 	}
 	
 	public void setConnectedFace(Direction face, boolean isConnected) {

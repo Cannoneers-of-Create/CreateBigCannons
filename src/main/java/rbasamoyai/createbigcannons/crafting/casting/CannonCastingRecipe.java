@@ -34,7 +34,6 @@ public class CannonCastingRecipe implements BlockRecipe {
 	
 	public CannonCastShape shape() { return this.requiredShape; }
 	public FluidIngredient ingredient() { return this.ingredient; }
-	public Block result() { return this.result; }
 	public int castingTime() { return this.castingTime; }
 	public ResourceLocation id() { return this.id; }
 	
@@ -84,7 +83,7 @@ public class CannonCastingRecipe implements BlockRecipe {
 		public void toNetwork(FriendlyByteBuf buf, CannonCastingRecipe recipe) {
 			buf.writeResourceLocation(recipe.shape().name())
 			.writeVarInt(recipe.castingTime())
-			.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.result());
+			.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.getResultBlock());
 			recipe.ingredient().write(buf);
 		}
 	}

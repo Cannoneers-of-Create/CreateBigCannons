@@ -43,7 +43,7 @@ public class BlockRecipesManager {
 	@SuppressWarnings("unchecked")
 	public static <T extends BlockRecipe> void toNetworkCasted(FriendlyByteBuf buf, T recipe) {
 		BlockRecipeSerializer<T> ser = (BlockRecipeSerializer<T>) recipe.getSerializer();
-		buf.writeResourceLocation(ser.getRegistryName());
+		buf.writeResourceLocation(CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getKey(ser));
 		ser.toNetwork(buf, recipe);
 	}
 	
