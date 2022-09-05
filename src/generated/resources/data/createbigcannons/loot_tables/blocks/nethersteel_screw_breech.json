@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createbigcannons:nether_gunmetal_screw_breech"
+          "name": "createbigcannons:nethersteel_screw_breech"
         }
       ],
       "conditions": [

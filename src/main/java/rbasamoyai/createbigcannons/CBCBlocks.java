@@ -349,27 +349,24 @@ public class CBCBlocks {
 	
 	//////// Nethersteel "Nether Gunmetal" cannon blocks ////////
 	
-	public static final BlockEntry<CannonTubeBlock> NETHER_GUNMETAL_CANNON_BARREL = REGISTRATE
-			.block("nether_gunmetal_cannon_barrel", p -> CannonTubeBlock.verySmall(p, CannonMaterial.NETHER_GUNMETAL))
+	public static final BlockEntry<CannonTubeBlock> NETHERSTEEL_CANNON_BARREL = REGISTRATE
+			.block("nethersteel_cannon_barrel", p -> CannonTubeBlock.verySmall(p, CannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
-			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/nether_gunmetal"))
-			.lang("Nethersteel Cannon Barrel")
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/nethersteel"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
-	public static final BlockEntry<CannonTubeBlock> NETHER_GUNMETAL_CANNON_CHAMBER = REGISTRATE
-			.block("nether_gunmetal_cannon_chamber", p -> CannonTubeBlock.medium(p, CannonMaterial.NETHER_GUNMETAL))
+	public static final BlockEntry<CannonTubeBlock> NETHERSTEEL_CANNON_CHAMBER = REGISTRATE
+			.block("nethersteel_cannon_chamber", p -> CannonTubeBlock.medium(p, CannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
-			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/nether_gunmetal"))
-			.lang("Nethersteel Cannon Chamber")
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/nethersteel"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
-	public static final BlockEntry<ScrewBreechBlock> NETHER_GUNMETAL_SCREW_BREECH = REGISTRATE
-			.block("nether_gunmetal_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.NETHER_GUNMETAL))
+	public static final BlockEntry<ScrewBreechBlock> NETHERSTEEL_SCREW_BREECH = REGISTRATE
+			.block("nethersteel_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
-			.lang("Nethersteel Screw Breech")
-			.transform(CBCBuilderTransformers.screwBreech("screw_breech/nether_gunmetal"))
+			.transform(CBCBuilderTransformers.screwBreech("screw_breech/nethersteel"))
 			.transform(BlockStressDefaults.setImpact(40.0d))
 			.register();
 	

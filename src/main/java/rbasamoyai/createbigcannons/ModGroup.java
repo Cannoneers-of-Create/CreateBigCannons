@@ -45,9 +45,9 @@ public class ModGroup {
 				CBCBlocks.BUILT_UP_STEEL_CANNON_BARREL.asStack(),
 				CBCBlocks.STEEL_CANNON_BARREL.asStack(),
 				
-				CBCBlocks.NETHER_GUNMETAL_SCREW_BREECH.asStack(),
-				CBCBlocks.NETHER_GUNMETAL_CANNON_CHAMBER.asStack(),
-				CBCBlocks.NETHER_GUNMETAL_CANNON_BARREL.asStack(),
+				CBCBlocks.NETHERSTEEL_SCREW_BREECH.asStack(),
+				CBCBlocks.NETHERSTEEL_CANNON_CHAMBER.asStack(),
+				CBCBlocks.NETHERSTEEL_CANNON_BARREL.asStack(),
 				
 				CBCBlocks.CANNON_LOADER.asStack(),
 				CBCBlocks.RAM_HEAD.asStack(),
@@ -60,7 +60,7 @@ public class ModGroup {
 				CBCItems.IMPACT_FUZE.asStack(),
 				TimedFuzeItem.getCreativeTabItem(20),
 				
-				CBCItems.CANNON_CAST_WAND.asStack(),
+				CBCItems.CANNON_CRAFTING_WAND.asStack(),
 				CBCBlocks.CASTING_SAND.asStack(),
 				CBCBlocks.VERY_SMALL_CAST_MOULD.asStack(),
 				CBCBlocks.SMALL_CAST_MOULD.asStack(),

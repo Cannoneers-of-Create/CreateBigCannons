@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createbigcannons:nether_gunmetal_cannon_chamber"
+          "name": "createbigcannons:nethersteel_cannon_barrel"
         }
       ],
       "conditions": [

@@ -1,6 +1,6 @@
 {
 	"parent": "createbigcannons:block/screw_lock/screw_lock",
 	"textures": {
-		"lock": "createbigcannons:block/screw_breech/nether_gunmetal_screw_lock"
+		"lock": "createbigcannons:block/screw_breech/nethersteel_screw_lock"
 	}
 }

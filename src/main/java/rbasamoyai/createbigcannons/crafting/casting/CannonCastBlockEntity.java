@@ -21,6 +21,8 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,8 +40,9 @@ import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
+import rbasamoyai.createbigcannons.crafting.WandActionable;
 
-public class CannonCastBlockEntity extends SmartTileEntity {
+public class CannonCastBlockEntity extends SmartTileEntity implements WandActionable {
 
 	private static final Object CASTING_RECIPES_KEY = new Object();
 	
@@ -326,6 +329,12 @@ public class CannonCastBlockEntity extends SmartTileEntity {
 				cbe1.cannonBehavior().setConnectedFace(Direction.UP, true);
 			}
 		}
+	}
+	
+	@Override
+	public InteractionResult onWandUsed(UseOnContext context) {
+		if (!this.level.isClientSide) this.getControllerTE().castingTime = 0;
+		return InteractionResult.sidedSuccess(this.level.isClientSide);
 	}
 	
 	public void initializeCastMultiblock(CannonCastShape size) {

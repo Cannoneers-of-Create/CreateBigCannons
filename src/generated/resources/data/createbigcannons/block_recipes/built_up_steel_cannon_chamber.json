@@ -13,12 +13,12 @@
     },
     {
       "blocks": [
-        "createbigcannons:small_steel_cannon_layer"
+        "createbigcannons:very_small_steel_cannon_layer"
       ]
     },
     {
       "blocks": [
-        "createbigcannons:very_small_steel_cannon_layer"
+        "createbigcannons:small_steel_cannon_layer"
       ]
     }
   ],

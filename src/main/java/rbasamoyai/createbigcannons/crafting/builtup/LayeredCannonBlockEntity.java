@@ -29,7 +29,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
@@ -49,9 +51,10 @@ import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
+import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannonBlockEntity {
+public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannonBlockEntity, WandActionable {
 
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final Object BUILT_UP_HEATING_RECIPES_KEY = new Object();
@@ -132,6 +135,12 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 		if (!recipe.isPresent()) return false;
 		recipe.get().assembleInWorld(this.level, this.worldPosition);
 		return true;
+	}
+	
+	@Override
+	public InteractionResult onWandUsed(UseOnContext context) {
+		if (!this.level.isClientSide) this.tryFinishHeating();
+		return InteractionResult.sidedSuccess(this.level.isClientSide);
 	}
 	
 	private boolean matchingRecipeCache(BlockRecipe recipe) {

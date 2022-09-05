@@ -59,9 +59,9 @@ public class CBCLangGen {
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Timed Fuze_ menu, where the fuze duration can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile has been in the world for the set time.");
 		
-		tooltip(CBCItems.CANNON_CAST_WAND)
-		.header("CANNON CAST WAND")
-		.summary("Use on cannon casts to _instantly complete_ the casting process.");
+		tooltip(CBCItems.CANNON_CRAFTING_WAND)
+		.header("CANNON CRAFTING WAND")
+		.summary("Use on various cannon crafting processes such as _casting and heating_ to _instantly finish_ the process.");
 		
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.materialProperties", "Cannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength", "Strength");
