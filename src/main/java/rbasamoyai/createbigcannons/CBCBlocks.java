@@ -347,7 +347,7 @@ public class CBCBlocks {
 			.transform(BlockStressDefaults.setImpact(16.0d))
 			.register();
 	
-	//////// Nethersteel "Nether Gunmetal" cannon blocks ////////
+	//////// Nethersteel cannon blocks ////////
 	
 	public static final BlockEntry<CannonTubeBlock> NETHERSTEEL_CANNON_BARREL = REGISTRATE
 			.block("nethersteel_cannon_barrel", p -> CannonTubeBlock.verySmall(p, CannonMaterial.NETHERSTEEL))
@@ -356,10 +356,106 @@ public class CBCBlocks {
 			.item(CannonBlockItem::new).build()
 			.register();
 	
+	public static final BlockEntry<CannonTubeBlock> BUILT_UP_NETHERSTEEL_CANNON_BARREL = REGISTRATE
+			.block("built_up_nethersteel_cannon_barrel", p -> CannonTubeBlock.small(p, CannonMaterial.NETHERSTEEL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedCannon("built_up_cannon_barrel", "cannon_tubing/nethersteel"))
+			.tag(CBCTags.BlockCBC.REDUCES_SPREAD)
+			.lang("Built-Up Nethersteel Cannon Barrel")
+			.item(CannonBlockItem::new).build()
+			.register();
+	
 	public static final BlockEntry<CannonTubeBlock> NETHERSTEEL_CANNON_CHAMBER = REGISTRATE
 			.block("nethersteel_cannon_chamber", p -> CannonTubeBlock.medium(p, CannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonTubeBlock> BUILT_UP_NETHERSTEEL_CANNON_CHAMBER = REGISTRATE
+			.block("built_up_nethersteel_cannon_chamber", p -> CannonTubeBlock.large(p, CannonMaterial.NETHERSTEEL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedCannon("built_up_cannon_chamber", "cannon_tubing/nethersteel"))
+			.tag(CBCTags.BlockCBC.THICK_TUBING)
+			.lang("Built-Up Steel Cannon Chamber")
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonTubeBlock> THICK_NETHERSTEEL_CANNON_CHAMBER = REGISTRATE
+			.block("thick_nethersteel_cannon_chamber", p -> CannonTubeBlock.veryLarge(p, CannonMaterial.NETHERSTEEL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedCannon("thick_cannon_chamber", "cannon_tubing/nethersteel"))
+			.tag(CBCTags.BlockCBC.THICK_TUBING)
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonLayerBlock> VERY_SMALL_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("very_small_nethersteel_cannon_layer", p -> new CannonLayerBlock(p, CannonMaterial.NETHERSTEEL, CannonCastShape.VERY_SMALL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedHollowCannon("very_small", "cannon_tubing/nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonLayerBlock> SMALL_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("small_nethersteel_cannon_layer", p -> new CannonLayerBlock(p, CannonMaterial.NETHERSTEEL, CannonCastShape.SMALL))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedHollowCannon("small", "cannon_tubing/nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonLayerBlock> MEDIUM_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("medium_nethersteel_cannon_layer", p -> new CannonLayerBlock(p, CannonMaterial.NETHERSTEEL, CannonCastShape.MEDIUM))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedHollowCannon("medium", "cannon_tubing/nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonLayerBlock> LARGE_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("large_nethersteel_cannon_layer", p -> new CannonLayerBlock(p, CannonMaterial.NETHERSTEEL, CannonCastShape.LARGE))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedHollowCannon("large", "cannon_tubing/nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<CannonLayerBlock> VERY_LARGE_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("very_large_nethersteel_cannon_layer", p -> new CannonLayerBlock(p, CannonMaterial.NETHERSTEEL, CannonCastShape.VERY_LARGE))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedHollowCannon("very_large", "cannon_tubing/nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();	
+	
+	public static final BlockEntry<UnboredCannonBlock> UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("unbored_very_small_cannon_layer", p -> UnboredCannonBlock.verySmall(p, CannonMaterial.NETHERSTEEL, VERY_SMALL_NETHERSTEEL_CANNON_LAYER))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/nethersteel", "cannon_barrel/unbored_nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<UnboredCannonBlock> UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("unbored_small_nethersteel_cannon_layer", p -> UnboredCannonBlock.small(p, CannonMaterial.NETHERSTEEL, SMALL_NETHERSTEEL_CANNON_LAYER))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedCannon("built_up_cannon_barrel", "cannon_tubing/unbored_nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<UnboredCannonBlock> UNBORED_MEDIUM_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("unbored_medium_nethersteel_cannon_layer", p -> UnboredCannonBlock.medium(p, CannonMaterial.NETHERSTEEL, MEDIUM_NETHERSTEEL_CANNON_LAYER))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/nethersteel", "cannon_chamber/unbored_nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<UnboredCannonBlock> UNBORED_LARGE_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("unbored_large_nethersteel_cannon_layer", p -> UnboredCannonBlock.large(p, CannonMaterial.NETHERSTEEL, LARGE_NETHERSTEEL_CANNON_LAYER))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedCannon("built_up_cannon_chamber", "cannon_tubing/unbored_nethersteel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
+	public static final BlockEntry<UnboredCannonBlock> UNBORED_VERY_LARGE_NETHERSTEEL_CANNON_LAYER = REGISTRATE
+			.block("unbored_very_large_nethersteel_cannon_layer", p -> UnboredCannonBlock.large(p, CannonMaterial.NETHERSTEEL, VERY_LARGE_NETHERSTEEL_CANNON_LAYER))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.sizedCannon("thick_cannon_chamber", "cannon_tubing/unbored_nethersteel"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	

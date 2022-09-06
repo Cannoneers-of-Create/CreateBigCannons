@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.datagen;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -95,6 +95,71 @@ public class BuiltUpHeatingRecipeGen extends BlockRecipeGen {
 		.endLayer()
 		.result(CBCBlocks.THICK_STEEL_CANNON_CHAMBER.get())
 		.save(cons);
+		
+		builder("nethersteel_cannon_barrel")
+		.addLayer()
+			.withBlocks(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.result(CBCBlocks.NETHERSTEEL_CANNON_BARREL.get())
+		.save(cons);
+		
+		builder("built_up_nethersteel_cannon_barrel")
+		.addLayer()
+			.withBlocks(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.result(CBCBlocks.BUILT_UP_NETHERSTEEL_CANNON_BARREL.get())
+		.save(cons);
+	
+		builder("nethersteel_cannon_chamber")
+		.addLayer()
+			.withBlocks(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.MEDIUM_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.result(CBCBlocks.NETHERSTEEL_CANNON_CHAMBER.get())
+		.save(cons);
+		
+		builder("built_up_nethersteel_cannon_chamber")
+		.addLayer()
+			.withBlocks(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.MEDIUM_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.result(CBCBlocks.BUILT_UP_NETHERSTEEL_CANNON_CHAMBER.get())
+		.save(cons);
+		
+		builder("thick_nethersteel_cannon_chamber")
+		.addLayer()
+			.withBlocks(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.MEDIUM_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.addLayer()
+			.withBlocks(CBCBlocks.VERY_LARGE_NETHERSTEEL_CANNON_LAYER.get())
+		.endLayer()
+		.result(CBCBlocks.THICK_NETHERSTEEL_CANNON_CHAMBER.get())
+		.save(cons);
 	}
 	
 	protected Builder builder(String name) {
@@ -104,7 +169,7 @@ public class BuiltUpHeatingRecipeGen extends BlockRecipeGen {
 	private class Builder {
 		private final ResourceLocation id;
 		
-		private Set<LayerPredicate> layers = new HashSet<>();
+		private Set<LayerPredicate> layers = new LinkedHashSet<>();
 		private Block result = null;
 		
 		private Builder(String name) {
@@ -138,7 +203,7 @@ public class BuiltUpHeatingRecipeGen extends BlockRecipeGen {
 		
 		public LayerBuilder withBlocks(Block... addBlocks) {
 			if (addBlocks == null || addBlocks.length == 0) return this;
-			if (this.blocks == null) this.blocks = new HashSet<>();
+			if (this.blocks == null) this.blocks = new LinkedHashSet<>();
 			for (Block add : addBlocks) {
 				if (add != null) this.blocks.add(add);
 			}

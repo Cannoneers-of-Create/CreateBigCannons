@@ -113,6 +113,7 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 		}
 		
 		if (this.clockStack.processedBy == Type.BLASTING) {
+			this.clockStack.processedBy = Type.NONE;
 			++this.completionProgress;
 			this.sendData();
 			int cap = CBCConfigs.SERVER.crafting.builtUpCannonHeatingTime.get();
