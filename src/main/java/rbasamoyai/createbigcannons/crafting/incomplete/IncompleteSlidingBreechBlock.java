@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
+import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
+import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.core.BlockPos;
@@ -20,6 +22,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,7 +37,7 @@ import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.SolidCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCannonBlockEntity> implements IncompleteCannonBlock {
+public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCannonBlockEntity> implements IncompleteCannonBlock, ITransformableBlock {
 	
 	public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 1);	
 	public static final BooleanProperty ALONG_FIRST = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
@@ -106,9 +109,10 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction facing = context.getNearestLookingDirection().getOpposite();
+		Direction horizontal = context.getHorizontalDirection();
 		return this.defaultBlockState()
 				.setValue(FACING, facing)
-				.setValue(ALONG_FIRST, facing.getAxis() == Direction.Axis.Z);
+				.setValue(ALONG_FIRST, horizontal.getAxis() == Direction.Axis.Z);
 	}
 	
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
@@ -137,5 +141,20 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 	@Override public int progress(BlockState state) { return state.getValue(STAGE); }
 	
 	@Override public boolean isComplete(BlockState state) { return false; }
+	
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		if (rotation.ordinal() % 2 == 1) state = state.cycle(ALONG_FIRST);
+		return super.rotate(state, rotation);
+	}
+	
+	@Override
+	public BlockState transform(BlockState state, StructureTransform transform) {
+		if (transform.mirror != null) state = this.mirror(state, transform.mirror);
+		if (transform.rotationAxis == Direction.Axis.Y) return this.rotate(state, transform.rotation);
+		Direction newFacing = transform.rotateFacing(state.getValue(FACING));
+		if (transform.rotationAxis == newFacing.getAxis() && transform.rotation.ordinal() % 2 == 1) state = state.cycle(ALONG_FIRST);
+		return state.setValue(FACING, newFacing);
+	}
 
 }
