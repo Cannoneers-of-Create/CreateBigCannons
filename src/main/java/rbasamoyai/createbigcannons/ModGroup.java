@@ -71,7 +71,8 @@ public class ModGroup {
 				CBCBlocks.LARGE_CAST_MOULD.asStack(),
 				CBCBlocks.VERY_LARGE_CAST_MOULD.asStack(),
 				CBCBlocks.CANNON_END_CAST_MOULD.asStack(),
-				CBCBlocks.UNBORED_SLIDING_BREECH_CAST_MOULD.asStack(),
+				CBCBlocks.SLIDING_BREECH_CAST_MOULD.asStack(),
+				CBCBlocks.SCREW_BREECH_CAST_MOULD.asStack(),
 				
 				CBCBlocks.CANNON_DRILL.asStack(),
 				CBCBlocks.CANNON_BUILDER.asStack(),				
@@ -90,7 +91,7 @@ public class ModGroup {
 				CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH.asStack(),
 				CBCItems.BRONZE_SLIDING_BREECHBLOCK.asStack(),
 				
-				// new ItemStack(CBCFluids.MOLTEN_STEEL.get().getBucket()),
+				new ItemStack(CBCFluids.MOLTEN_STEEL.get().getBucket()),
 				CBCBlocks.UNBORED_VERY_SMALL_STEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.UNBORED_SMALL_STEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.UNBORED_MEDIUM_STEEL_CANNON_LAYER.asStack(),
@@ -107,10 +108,11 @@ public class ModGroup {
 				CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH.asStack(),	
 				CBCItems.STEEL_SLIDING_BREECHBLOCK.asStack(),
 				
+				CBCBlocks.UNBORED_STEEL_SCREW_BREECH.asStack(),
 				CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH.asStack(),
 				CBCItems.STEEL_SCREW_LOCK.asStack(),
 				
-				//new ItemStack(CBCFluids.MOLTEN_NETHERSTEEL.get().getBucket()),
+				new ItemStack(CBCFluids.MOLTEN_NETHERSTEEL.get().getBucket()),
 				CBCBlocks.UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.UNBORED_MEDIUM_NETHERSTEEL_CANNON_LAYER.asStack(),
@@ -123,9 +125,10 @@ public class ModGroup {
 				CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.VERY_LARGE_NETHERSTEEL_CANNON_LAYER.asStack(),
 
+				CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH.asStack(),
 				CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH.asStack(),
 				CBCItems.NETHERSTEEL_SCREW_LOCK.asStack()));
-}
+		}
 	};
 	
 	public static void register() {

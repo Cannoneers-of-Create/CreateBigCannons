@@ -42,6 +42,33 @@ public class CBCFluids {
 			.source(ForgeFlowingFluid.Source::new)
 			.register();
 	
+	public static final FluidEntry<ForgeFlowingFluid.Flowing> MOLTEN_STEEL =
+			standardFluid("molten_steel", NoColorFluidAttributes::new)
+			.lang(f -> "fluid.createbigcannons.molten_steel", "Molten Steel")
+			.tag(AllTags.forgeFluidTag("molten_steel"))
+			.attributes(b -> b.viscosity(1250)
+					.density(7040)
+					.temperature(1430))
+			.properties(p -> p.levelDecreasePerBlock(2)
+					.tickRate(25)
+					.slopeFindDistance(3)
+					.explosionResistance(100f))
+			.source(ForgeFlowingFluid.Source::new)
+			.register();
+	
+	public static final FluidEntry<ForgeFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
+			standardFluid("molten_nethersteel", NoColorFluidAttributes::new)
+			.lang(f -> "fluid.createbigcannons.molten_nethersteel", "Molten Nethersteel")
+			.attributes(b -> b.viscosity(1250)
+					.density(7040)
+					.temperature(1430))
+			.properties(p -> p.levelDecreasePerBlock(2)
+					.tickRate(25)
+					.slopeFindDistance(3)
+					.explosionResistance(100f))
+			.source(ForgeFlowingFluid.Source::new)
+			.register();
+	
 	private static FluidBuilder<ForgeFlowingFluid.Flowing, CreateRegistrate> standardFluid(String name, NonNullBiFunction<FluidAttributes.Builder, Fluid, FluidAttributes> factory) {
 		return CreateBigCannons.registrate()
 				.fluid(name, CreateBigCannons.resource("fluid/" + name + "_still"), CreateBigCannons.resource("fluid/" + name + "_flowing"), factory);

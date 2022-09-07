@@ -125,6 +125,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	@Override
 	protected PoleContraption innerAssemble() throws AssemblyException {
 		if (!(this.level.getBlockState(this.worldPosition).getBlock() instanceof CannonDrillBlock)) return null;
+		this.failureReason = FailureReason.NONE;
 		
 		Direction facing = this.getBlockState().getValue(CannonDrillBlock.FACING);
 		CannonDrillingContraption contraption = new CannonDrillingContraption(facing, this.getMovementSpeed() < 0);
@@ -319,7 +320,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 			Component exceptionText = Lang.builder("exception")
 					.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip." + this.failureReason.getSerializedName())
 					.component();
-			tooltip.addAll(TooltipHelper.cutTextComponent(exceptionText, ChatFormatting.GRAY, ChatFormatting.WHITE));
+			tooltip.addAll(TooltipHelper.cutTextComponent(exceptionText, ChatFormatting.GRAY, ChatFormatting.WHITE, 4));
 		}
 		
 		return true;

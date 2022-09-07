@@ -33,11 +33,11 @@ public class UnboredCannonBlock extends SolidCannonBlock<CannonEndBlockEntity> i
 	}
 	
 	public static UnboredCannonBlock verySmall(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
-		return new UnboredCannonBlock(properties, material, CannonCastShape.VERY_SMALL, boredBlockSup, Block.box(2, 0, 2, 14, 16, 14));
+		return new UnboredCannonBlock(properties, material, CannonCastShape.VERY_SMALL, boredBlockSup, box(2, 0, 2, 14, 16, 14));
 	}
 
 	public static UnboredCannonBlock small(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
-		return new UnboredCannonBlock(properties, material, CannonCastShape.SMALL, boredBlockSup, Block.box(1, 0, 1, 15, 16, 15));
+		return new UnboredCannonBlock(properties, material, CannonCastShape.SMALL, boredBlockSup, box(1, 0, 1, 15, 16, 15));
 	}
 	
 	public static UnboredCannonBlock medium(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
@@ -45,11 +45,11 @@ public class UnboredCannonBlock extends SolidCannonBlock<CannonEndBlockEntity> i
 	}
 
 	public static UnboredCannonBlock large(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
-		return new UnboredCannonBlock(properties, material, CannonCastShape.LARGE, boredBlockSup, Block.box(-1, 0, -1, 17, 16, 17));
+		return new UnboredCannonBlock(properties, material, CannonCastShape.LARGE, boredBlockSup, box(-1, 0, -1, 17, 16, 17));
 	}
 
 	public static UnboredCannonBlock veryLarge(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup) {
-		return new UnboredCannonBlock(properties, material, CannonCastShape.VERY_LARGE, boredBlockSup, Block.box(-2, 0, -2, 18, 16, 18));
+		return new UnboredCannonBlock(properties, material, CannonCastShape.VERY_LARGE, boredBlockSup, box(-2, 0, -2, 18, 16, 18));
 	}
 		
 	@Override

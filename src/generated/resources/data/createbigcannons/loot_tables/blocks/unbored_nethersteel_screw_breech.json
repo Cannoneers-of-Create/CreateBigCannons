@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createbigcannons:unbored_sliding_breech_cast_mould"
+          "name": "createbigcannons:unbored_nethersteel_screw_breech"
         }
       ],
       "conditions": [
