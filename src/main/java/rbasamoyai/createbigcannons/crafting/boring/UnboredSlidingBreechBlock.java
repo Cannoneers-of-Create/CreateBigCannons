@@ -21,7 +21,7 @@ public class UnboredSlidingBreechBlock extends UnboredCannonBlock implements ITr
 	public static final BooleanProperty ALONG_FIRST = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 	
 	public UnboredSlidingBreechBlock(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup, VoxelShape baseShape) {
-		super(properties, material, CannonCastShape.UNBORED_SLIDING_BREECH, boredBlockSup, baseShape);
+		super(properties, material, CannonCastShape.SLIDING_BREECH, boredBlockSup, baseShape);
 	}
 	
 	@Override

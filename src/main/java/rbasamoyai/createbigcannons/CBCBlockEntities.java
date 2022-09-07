@@ -118,7 +118,8 @@ public class CBCBlockEntities {
 	
 	public static final BlockEntityEntry<IncompleteCannonBlockEntity> INCOMPLETE_CANNON = CreateBigCannons.registrate()
 			.tileEntity("incomplete_cannon", IncompleteCannonBlockEntity::new)
-			.validBlocks(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH)
+			.validBlocks(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH,
+					CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH, CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH)
 			.register();
 	
 	public static final BlockEntityEntry<CannonBuilderBlockEntity> CANNON_BUILDER = CreateBigCannons.registrate()

@@ -36,6 +36,7 @@
     "createbigcannons:steel_sliding_breech",
     "createbigcannons:incomplete_steel_sliding_breech",
     "createbigcannons:unbored_steel_sliding_breech",
-    "createbigcannons:steel_screw_breech"
+    "createbigcannons:steel_screw_breech",
+    "createbigcannons:incomplete_steel_screw_breech"
   ]
 }

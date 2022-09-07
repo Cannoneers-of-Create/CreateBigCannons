@@ -38,6 +38,16 @@ public class CBCItems {
 			.transform(CBCBuilderTransformers.slidingBreechblock("sliding_breech/steel"))
 			.register();
 	
+	public static final ItemEntry<Item> STEEL_SCREW_LOCK = REGISTRATE
+			.item("steel_screw_lock", Item::new)
+			.transform(CBCBuilderTransformers.screwLock("screw_breech/steel"))
+			.register();
+	
+	public static final ItemEntry<Item> NETHERSTEEL_SCREW_LOCK = REGISTRATE
+			.item("nethersteel_screw_lock", Item::new)
+			.transform(CBCBuilderTransformers.screwLock("screw_breech/nethersteel"))
+			.register();
+	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);
 	}

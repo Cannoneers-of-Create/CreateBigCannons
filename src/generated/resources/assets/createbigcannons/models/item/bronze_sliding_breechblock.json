@@ -4,7 +4,6 @@
     "top": "createbigcannons:block/sliding_breech/bronze_sliding_breech_breechblock_top",
     "end": "createbigcannons:block/sliding_breech/bronze_sliding_breech_breechblock_end",
     "side": "createbigcannons:block/sliding_breech/bronze_sliding_breech_breechblock_side",
-    "bottom": "createbigcannons:block/sliding_breech/bronze_sliding_breech_breechblock_bottom",
-    "particle": "createbigcannons:block/sliding_breech/bronze_sliding_breech_breechblock_top"
+    "bottom": "createbigcannons:block/sliding_breech/bronze_sliding_breech_breechblock_bottom"
   }
 }

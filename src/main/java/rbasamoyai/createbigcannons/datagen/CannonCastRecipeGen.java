@@ -52,7 +52,7 @@ public class CannonCastRecipeGen extends BlockRecipeGen {
 		.save(cons);
 		
 		builder("cast_iron_sliding_breech")
-		.castingShape(CannonCastShape.UNBORED_SLIDING_BREECH)
+		.castingShape(CannonCastShape.SLIDING_BREECH)
 		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
 		.result(CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH.get())
 		.castingTime(1500)
@@ -79,7 +79,7 @@ public class CannonCastRecipeGen extends BlockRecipeGen {
 		.save(cons);
 		
 		builder("bronze_sliding_breech")
-		.castingShape(CannonCastShape.UNBORED_SLIDING_BREECH)
+		.castingShape(CannonCastShape.SLIDING_BREECH)
 		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
 		.result(CBCBlocks.UNBORED_BRONZE_SLIDING_BREECH.get())
 		.castingTime(1500)

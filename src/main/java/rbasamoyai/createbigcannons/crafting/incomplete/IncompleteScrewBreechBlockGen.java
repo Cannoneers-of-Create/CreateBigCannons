@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.crafting.incomplete;
 
-import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.data.SpecialBlockStateGen;
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
@@ -13,31 +12,28 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.ModelFile;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
-public class IncompleteSlidingBreechBlockGen extends SpecialBlockStateGen {
+public class IncompleteScrewBreechBlockGen extends SpecialBlockStateGen {
 
 	private final String pathAndMaterial;
 	
-	public IncompleteSlidingBreechBlockGen(String pathAndMaterial) {
+	public IncompleteScrewBreechBlockGen(String pathAndMaterial) {
 		this.pathAndMaterial = pathAndMaterial;
 	}
 	
 	@Override
 	public <T extends Block> ModelFile getModel(DataGenContext<Block, T> context, RegistrateBlockstateProvider provider, BlockState state) {
-		int stage = state.getValue(IncompleteSlidingBreechBlock.STAGE_2);
-		boolean axisAlongFirst = state.getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
-		boolean rotated = (state.getValue(BlockStateProperties.FACING).getAxis() == Direction.Axis.X) == axisAlongFirst;
-		String suf = (stage == 0 ? "" : "_axis") + (rotated ? "_rotated" : "");
-		ResourceLocation baseLoc = CreateBigCannons.resource("block/sliding_breech" + suf);
+		int stage = state.getValue(IncompleteScrewBreechBlock.STAGE_2);
+		String suf = stage == 0 ? "" : "_axis";
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/screw_breech" + suf);
 		
-		ResourceLocation holeLoc = CreateBigCannons.resource("block/" + this.pathAndMaterial + "_sliding_breech_hole");
-		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + this.pathAndMaterial + "_sliding_breech_side");
-		ResourceLocation sideHoleLoc = CreateBigCannons.resource("block/" + this.pathAndMaterial + "_sliding_breech_side_hole");
-		ResourceLocation insideLoc = CreateBigCannons.resource("block/" + this.pathAndMaterial + "_sliding_breech_inside");
+		ResourceLocation topLoc = CreateBigCannons.resource("block/" + this.pathAndMaterial + "_screw_breech_top");
+		ResourceLocation bottomLoc = CreateBigCannons.resource("block/" + this.pathAndMaterial + "_screw_breech_bottom");
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + this.pathAndMaterial + "_screw_breech_side");
 		return provider.models().withExistingParent(context.getName() + suf, baseLoc)
-				.texture("hole", holeLoc)
 				.texture("side", sideLoc)
-				.texture("side_hole", sideHoleLoc)
-				.texture("inside", insideLoc);
+				.texture("top", topLoc)
+				.texture("bottom", bottomLoc)
+				.texture("particle", topLoc);
 	}
 	
 	@Override

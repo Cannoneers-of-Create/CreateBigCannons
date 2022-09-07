@@ -107,6 +107,9 @@ public class ModGroup {
 				CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH.asStack(),	
 				CBCItems.STEEL_SLIDING_BREECHBLOCK.asStack(),
 				
+				CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH.asStack(),
+				CBCItems.STEEL_SCREW_LOCK.asStack(),
+				
 				//new ItemStack(CBCFluids.MOLTEN_NETHERSTEEL.get().getBucket()),
 				CBCBlocks.UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER.asStack(),
@@ -118,8 +121,11 @@ public class ModGroup {
 				CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.MEDIUM_NETHERSTEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER.asStack(),
-				CBCBlocks.VERY_LARGE_NETHERSTEEL_CANNON_LAYER.asStack()));
-		}
+				CBCBlocks.VERY_LARGE_NETHERSTEEL_CANNON_LAYER.asStack(),
+
+				CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH.asStack(),
+				CBCItems.NETHERSTEEL_SCREW_LOCK.asStack()));
+}
 	};
 	
 	public static void register() {

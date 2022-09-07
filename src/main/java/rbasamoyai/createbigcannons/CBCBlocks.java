@@ -42,6 +42,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlock;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
@@ -347,6 +348,13 @@ public class CBCBlocks {
 			.transform(BlockStressDefaults.setImpact(16.0d))
 			.register();
 	
+	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_STEEL_SCREW_BREECH = REGISTRATE
+			.block("incomplete_steel_screw_breech", p -> new IncompleteScrewBreechBlock(p, CannonMaterial.STEEL, CBCItems.STEEL_SCREW_LOCK, STEEL_SCREW_BREECH))
+			.transform(cannonBlock())
+			.transform(CBCBuilderTransformers.screwBreechIncomplete("screw_breech/steel"))
+			.item(CannonBlockItem::new).build()
+			.register();
+	
 	//////// Nethersteel cannon blocks ////////
 	
 	public static final BlockEntry<CannonTubeBlock> NETHERSTEEL_CANNON_BARREL = REGISTRATE
@@ -464,6 +472,13 @@ public class CBCBlocks {
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.screwBreech("screw_breech/nethersteel"))
 			.transform(BlockStressDefaults.setImpact(40.0d))
+			.register();
+	
+	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_NETHERSTEEL_SCREW_BREECH = REGISTRATE
+			.block("incomplete_nethersteel_screw_breech", p -> new IncompleteScrewBreechBlock(p, CannonMaterial.NETHERSTEEL, CBCItems.NETHERSTEEL_SCREW_LOCK, NETHERSTEEL_SCREW_BREECH))
+			.transform(strongCannonBlock())
+			.transform(CBCBuilderTransformers.screwBreechIncomplete("screw_breech/nethersteel"))
+			.item(CannonBlockItem::new).build()
 			.register();
 	
 	//////// Cannon loading blocks ////////
@@ -646,7 +661,7 @@ public class CBCBlocks {
 			castMould("cannon_end", Shapes.or(Block.box(5, 0, 5, 11, 6, 11), Block.box(6, 6, 6, 10, 8, 10), Block.box(0, 8, 0, 16, 16, 16)), CannonCastShape.CANNON_END);
 	
 	public static final BlockEntry<CannonCastMouldBlock> UNBORED_SLIDING_BREECH_CAST_MOULD =
-			castMould("unbored_sliding_breech", Block.box(0, 0, 0, 16, 17, 16), CannonCastShape.UNBORED_SLIDING_BREECH);
+			castMould("unbored_sliding_breech", Block.box(0, 0, 0, 16, 17, 16), CannonCastShape.SLIDING_BREECH);
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock() {
 		return b -> b.initialProperties(Material.METAL)

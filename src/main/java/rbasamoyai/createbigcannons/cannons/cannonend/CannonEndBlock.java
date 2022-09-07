@@ -1,8 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.cannonend;
 
-import com.simibubi.create.AllShapes;
-import com.simibubi.create.foundation.utility.VoxelShaper;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -10,26 +7,19 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.CBCShapes;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.SolidCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class CannonEndBlock extends SolidCannonBlock<CannonEndBlockEntity> {
-
-	private final VoxelShaper shapes;
 	
 	public CannonEndBlock(Properties properties, CannonMaterial cannonMaterial) {
 		super(properties, cannonMaterial);
-		this.shapes = this.makeShapes();
 	}
 	
-	private VoxelShaper makeShapes() {
-		VoxelShape base = Shapes.or(box(0, 0, 0, 16, 8, 16), box(6, 8, 6, 10, 10, 10), box(5, 10, 5, 11, 16, 11));
-		return new AllShapes.Builder(base).forDirectional();
-	}
 	@Override public boolean isDoubleSidedCannon(BlockState state) { return false; }
 	
 	@Override public Direction getFacing(BlockState state) { return super.getFacing(state).getOpposite(); }
@@ -41,7 +31,7 @@ public class CannonEndBlock extends SolidCannonBlock<CannonEndBlockEntity> {
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
-		return this.shapes.get(state.getValue(FACING));
+		return CBCShapes.CANNON_END.get(state.getValue(FACING));
 	}
 	
 	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
