@@ -88,7 +88,7 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<CannonEndBlock> WROUGHT_IRON_CANNON_END = REGISTRATE
 			.block("wrought_iron_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.WROUGHT_IRON))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/wrought_iron"))
 			.item(CannonBlockItem::new).build()
 			.register();
@@ -111,14 +111,14 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<CannonEndBlock> CAST_IRON_CANNON_END = REGISTRATE
 			.block("cast_iron_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.CAST_IRON))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/cast_iron"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<SlidingBreechBlock> CAST_IRON_SLIDING_BREECH = REGISTRATE
 			.block("cast_iron_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.CAST_IRON))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
 			.transform(BlockStressDefaults.setImpact(16.0d))
 			.register();
@@ -139,7 +139,7 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_CAST_IRON_SLIDING_BREECH = REGISTRATE
 			.block("incomplete_cast_iron_sliding_breech", p -> new IncompleteSlidingBreechBlock(p, CannonMaterial.CAST_IRON, CBCItems.CAST_IRON_SLIDING_BREECHBLOCK, CAST_IRON_SLIDING_BREECH))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreechIncomplete("sliding_breech/cast_iron"))
 			.item(CannonBlockItem::new).build()
 			.register();
@@ -169,14 +169,14 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<CannonEndBlock> BRONZE_CANNON_END = REGISTRATE
 			.block("bronze_cannon_end", p -> new CannonEndBlock(p, CannonMaterial.BRONZE))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.cannonEnd("cannon_end/bronze"))
 			.item(CannonBlockItem::new).build()
 			.register();
 	
 	public static final BlockEntry<SlidingBreechBlock> BRONZE_SLIDING_BREECH = REGISTRATE
 			.block("bronze_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.BRONZE))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
 			.transform(BlockStressDefaults.setImpact(12.0d))
 			.register();
@@ -197,7 +197,7 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_BRONZE_SLIDING_BREECH = REGISTRATE
 			.block("incomplete_bronze_sliding_breech", p -> new IncompleteSlidingBreechBlock(p, CannonMaterial.BRONZE, CBCItems.BRONZE_SLIDING_BREECHBLOCK, BRONZE_SLIDING_BREECH))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreechIncomplete("sliding_breech/bronze"))
 			.item(CannonBlockItem::new).build()
 			.register();
@@ -323,14 +323,14 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<SlidingBreechBlock> STEEL_SLIDING_BREECH = REGISTRATE
 			.block("steel_sliding_breech", p -> new SlidingBreechBlock(p, CannonMaterial.STEEL))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
 			.transform(BlockStressDefaults.setImpact(32.0d))
 			.register();
 	
 	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_STEEL_SLIDING_BREECH = REGISTRATE
 			.block("incomplete_steel_sliding_breech", p -> new IncompleteSlidingBreechBlock(p, CannonMaterial.STEEL, CBCItems.STEEL_SLIDING_BREECHBLOCK, STEEL_SLIDING_BREECH))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreechIncomplete("sliding_breech/steel"))
 			.item(CannonBlockItem::new).build()
 			.register();
@@ -344,14 +344,14 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<ScrewBreechBlock> STEEL_SCREW_BREECH = REGISTRATE
 			.block("steel_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.STEEL))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.screwBreech("screw_breech/steel"))
 			.transform(BlockStressDefaults.setImpact(16.0d))
 			.register();
 	
 	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_STEEL_SCREW_BREECH = REGISTRATE
 			.block("incomplete_steel_screw_breech", p -> new IncompleteScrewBreechBlock(p, CannonMaterial.STEEL, CBCItems.STEEL_SCREW_LOCK, STEEL_SCREW_BREECH))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.screwBreechIncomplete("screw_breech/steel"))
 			.item(CannonBlockItem::new).build()
 			.register();
@@ -477,14 +477,14 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<ScrewBreechBlock> NETHERSTEEL_SCREW_BREECH = REGISTRATE
 			.block("nethersteel_screw_breech", p -> new ScrewBreechBlock(p, CannonMaterial.NETHERSTEEL))
-			.transform(strongCannonBlock())
+			.transform(strongCannonBlock(false))
 			.transform(CBCBuilderTransformers.screwBreech("screw_breech/nethersteel"))
 			.transform(BlockStressDefaults.setImpact(40.0d))
 			.register();
 	
 	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_NETHERSTEEL_SCREW_BREECH = REGISTRATE
 			.block("incomplete_nethersteel_screw_breech", p -> new IncompleteScrewBreechBlock(p, CannonMaterial.NETHERSTEEL, CBCItems.NETHERSTEEL_SCREW_LOCK, NETHERSTEEL_SCREW_BREECH))
-			.transform(strongCannonBlock())
+			.transform(strongCannonBlock(false))
 			.transform(CBCBuilderTransformers.screwBreechIncomplete("screw_breech/nethersteel"))
 			.item(CannonBlockItem::new).build()
 			.register();
@@ -682,28 +682,45 @@ public class CBCBlocks {
 			castMould("screw_breech", Block.box(0, 8, 0, 16, 17, 16), CannonCastShape.SCREW_BREECH);
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock() {
-		return b -> b.initialProperties(Material.METAL)
+		return cannonBlock(true);
+	}
+	
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock(boolean canPassThrough) {
+		NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> transform = b -> b.initialProperties(Material.METAL)
 				.properties(p -> p.strength(5.0f, 6.0f))
 				.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 				.properties(p -> p.requiresCorrectToolForDrops())
 				.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 				.tag(BlockTags.NEEDS_IRON_TOOL);
+		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> logCannonBlock() {
-		return b -> b.initialProperties(Material.WOOD, MaterialColor.CRIMSON_STEM)
+		return logCannonBlock(true);
+	}
+	
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> logCannonBlock(boolean canPassThrough) {
+		NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> transform = b -> b.initialProperties(Material.WOOD, MaterialColor.CRIMSON_STEM)
 				.properties(p -> p.strength(2.0f))
 				.properties(p -> p.sound(SoundType.WOOD))
-				.tag(BlockTags.MINEABLE_WITH_AXE);
+				.tag(BlockTags.MINEABLE_WITH_AXE)
+				.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH);
+		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> strongCannonBlock() {
-		return b -> b.initialProperties(Material.METAL)
+		return strongCannonBlock(true);
+	}
+	
+	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> strongCannonBlock(boolean canPassThrough) {
+		NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> transform = b -> b.initialProperties(Material.METAL)
 				.properties(p -> p.strength(50.0f, 1200.0f))
 				.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 				.properties(p -> p.requiresCorrectToolForDrops())
 				.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-				.tag(BlockTags.NEEDS_DIAMOND_TOOL);
+				.tag(BlockTags.NEEDS_DIAMOND_TOOL)
+				.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH);
+		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> shell(MaterialColor color) {

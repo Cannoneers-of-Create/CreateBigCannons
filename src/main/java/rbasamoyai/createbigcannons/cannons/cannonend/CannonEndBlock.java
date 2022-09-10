@@ -34,7 +34,6 @@ public class CannonEndBlock extends SolidCannonBlock<CannonEndBlockEntity> {
 		return CBCShapes.CANNON_END.get(state.getValue(FACING));
 	}
 	
-	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
 	@Override public boolean isComplete(BlockState state) { return true; }
 	
 	@Override public CannonCastShape getCannonShape() { return CannonCastShape.CANNON_END; }

@@ -27,7 +27,6 @@ public interface CannonBlock {
 	
 	default boolean isDoubleSidedCannon(BlockState state) { return true; }
 	default boolean isImmovable(BlockState state) { return false; }
-	default boolean canInteractWithDrill(BlockState state) { return true; }
 	
 	default void onRemoveCannon(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() instanceof CannonBlock cBlock) {	

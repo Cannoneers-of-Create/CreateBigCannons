@@ -101,6 +101,4 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 		@Override public String getSerializedName() { return this.name; }
 	}
 	
-	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
-	
 }

@@ -77,10 +77,13 @@ public class CannonBuilderCollider {
 			
 			if (contraption.isActivated) {
 				if (be instanceof LayeredCannonBlockEntity layered) {
-					if (contraption.entity == null && contraption.getBlocks().keySet().contains(pos)) continue;
-					if (CBCBlocks.CANNON_BUILDER_HEAD.has(blockInfo.state)) return true;
+					if (CBCBlocks.CANNON_BUILDER_HEAD.has(blockInfo.state)) {
+						if (contraption.entity == null && contraption.getBlocks().keySet().contains(colliderPos.subtract(contraption.anchor))) continue;
+						return true;
+					}
 					BlockEntity be1 = contraption.presentTileEntities.get(pos);
 					if (be1 instanceof LayeredCannonBlockEntity layered1) {
+						if (contraption.entity == null && contraption.getBlocks().keySet().contains(pos)) continue;
 						if (layered.isCollidingWith(blockInfo, layered1, movementDirection)) return true;
 						continue;
 					}
