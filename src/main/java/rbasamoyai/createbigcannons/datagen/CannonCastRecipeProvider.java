@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import com.google.gson.JsonObject;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import net.minecraft.data.DataGenerator;
@@ -18,26 +19,26 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class CannonCastRecipeGen extends BlockRecipeGen {
+public class CannonCastRecipeProvider extends BlockRecipeProvider {
 	
-	CannonCastRecipeGen(DataGenerator gen) {
+	CannonCastRecipeProvider(DataGenerator gen) {
 		this(CreateBigCannons.MOD_ID, gen);
 	}
 	
-	public CannonCastRecipeGen(String modid, DataGenerator gen) {
+	public CannonCastRecipeProvider(String modid, DataGenerator gen) {
 		super(modid, gen);
 		this.info = CreateBigCannons.resource("cannon_casting");
 	}
 	
 	@Override
 	protected void registerRecipes(Consumer<FinishedBlockRecipe> cons) {
-		builder("cast_iron_cannon_barrel")
+		builder("unbored_cast_iron_cannon_barrel")
 		.castingShape(CannonCastShape.VERY_SMALL)
 		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
 		.result(CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL.get())
 		.save(cons);
 		
-		builder("cast_iron_cannon_chamber")
+		builder("unbored_cast_iron_cannon_chamber")
 		.castingShape(CannonCastShape.MEDIUM)
 		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
 		.result(CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER.get())
@@ -51,38 +52,133 @@ public class CannonCastRecipeGen extends BlockRecipeGen {
 		.castingTime(1500)
 		.save(cons);
 		
-		builder("cast_iron_sliding_breech")
+		builder("unbored_cast_iron_sliding_breech")
 		.castingShape(CannonCastShape.SLIDING_BREECH)
 		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
 		.result(CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH.get())
 		.castingTime(1500)
 		.save(cons);
 		
-		builder("bronze_cannon_barrel")
+		TagKey<Fluid> bronzeTag = AllTags.forgeFluidTag("molten_bronze");
+		
+		builder("unbored_bronze_cannon_barrel")
 		.castingShape(CannonCastShape.VERY_SMALL)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.UNBORED_BRONZE_CANNON_BARREL.get())
 		.save(cons);
 		
-		builder("bronze_cannon_chamber")
+		builder("unbored_bronze_cannon_chamber")
 		.castingShape(CannonCastShape.MEDIUM)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.UNBORED_BRONZE_CANNON_CHAMBER.get())
 		.castingTime(1800)
 		.save(cons);
 		
 		builder("bronze_cannon_end")
 		.castingShape(CannonCastShape.CANNON_END)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.BRONZE_CANNON_END.get())
 		.castingTime(1500)
 		.save(cons);
 		
-		builder("bronze_sliding_breech")
+		builder("unbored_bronze_sliding_breech")
 		.castingShape(CannonCastShape.SLIDING_BREECH)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.UNBORED_BRONZE_SLIDING_BREECH.get())
 		.castingTime(1500)
+		.save(cons);
+		
+		TagKey<Fluid> steelTag = AllTags.forgeFluidTag("molten_steel");
+		
+		builder("unbored_very_small_steel_cannon_layer")
+		.castingShape(CannonCastShape.VERY_SMALL)
+		.ingredient(steelTag)
+		.result(CBCBlocks.UNBORED_VERY_SMALL_STEEL_CANNON_LAYER.get())
+		.castingTime(2400)
+		.save(cons);
+		
+		builder("unbored_small_steel_cannon_layer")
+		.castingShape(CannonCastShape.SMALL)
+		.ingredient(steelTag)
+		.result(CBCBlocks.UNBORED_SMALL_STEEL_CANNON_LAYER.get())
+		.castingTime(3000)
+		.save(cons);
+		
+		builder("unbored_medium_steel_cannon_layer")
+		.castingShape(CannonCastShape.MEDIUM)
+		.ingredient(steelTag)
+		.result(CBCBlocks.UNBORED_MEDIUM_STEEL_CANNON_LAYER.get())
+		.castingTime(3600)
+		.save(cons);
+		
+		builder("unbored_large_steel_cannon_layer")
+		.castingShape(CannonCastShape.LARGE)
+		.ingredient(steelTag)
+		.result(CBCBlocks.UNBORED_LARGE_STEEL_CANNON_LAYER.get())
+		.castingTime(4200)
+		.save(cons);
+		
+		builder("unbored_very_large_steel_cannon_layer")
+		.castingShape(CannonCastShape.VERY_LARGE)
+		.ingredient(steelTag)
+		.result(CBCBlocks.UNBORED_VERY_LARGE_STEEL_CANNON_LAYER.get())
+		.castingTime(4800)
+		.save(cons);
+		
+		builder("unbored_steel_sliding_breech")
+		.castingShape(CannonCastShape.SLIDING_BREECH)
+		.ingredient(steelTag)
+		.result(CBCBlocks.UNBORED_STEEL_SLIDING_BREECH.get())
+		.castingTime(3000)
+		.save(cons);
+		
+		builder("unbored_steel_screw_breech")
+		.castingShape(CannonCastShape.SCREW_BREECH)
+		.ingredient(steelTag)
+		.result(CBCBlocks.UNBORED_STEEL_SCREW_BREECH.get())
+		.castingTime(3000)
+		.save(cons);
+		
+		builder("unbored_very_small_nethersteel_cannon_layer")
+		.castingShape(CannonCastShape.VERY_SMALL)
+		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.result(CBCBlocks.UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.castingTime(2400)
+		.save(cons);
+		
+		builder("unbored_small_nethersteel_cannon_layer")
+		.castingShape(CannonCastShape.SMALL)
+		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.result(CBCBlocks.UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER.get())
+		.castingTime(3000)
+		.save(cons);
+		
+		builder("unbored_medium_nethersteel_cannon_layer")
+		.castingShape(CannonCastShape.MEDIUM)
+		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.result(CBCBlocks.UNBORED_MEDIUM_NETHERSTEEL_CANNON_LAYER.get())
+		.castingTime(3600)
+		.save(cons);
+		
+		builder("unbored_large_nethersteel_cannon_layer")
+		.castingShape(CannonCastShape.LARGE)
+		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.result(CBCBlocks.UNBORED_LARGE_NETHERSTEEL_CANNON_LAYER.get())
+		.castingTime(4200)
+		.save(cons);
+		
+		builder("unbored_very_large_nethersteel_cannon_layer")
+		.castingShape(CannonCastShape.VERY_LARGE)
+		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.result(CBCBlocks.UNBORED_VERY_LARGE_NETHERSTEEL_CANNON_LAYER.get())
+		.castingTime(4800)
+		.save(cons);
+		
+		builder("unbored_nethersteel_screw_breech")
+		.castingShape(CannonCastShape.SCREW_BREECH)
+		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.result(CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH.get())
+		.castingTime(3000)
 		.save(cons);
 	}
 	
@@ -99,7 +195,7 @@ public class CannonCastRecipeGen extends BlockRecipeGen {
 		private Block result = null;
 		
 		private Builder(String name) {
-			this.id = new ResourceLocation(CannonCastRecipeGen.this.modid, name);
+			this.id = new ResourceLocation(CannonCastRecipeProvider.this.modid, name);
 		}
 		
 		public Builder castingShape(CannonCastShape shape) {

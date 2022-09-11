@@ -40,7 +40,8 @@ public class CannonCastingRecipe implements BlockRecipe {
 	@Override
 	public boolean matches(Level level, BlockPos pos) {
 		if (!(level.getBlockEntity(pos) instanceof CannonCastBlockEntity cast)) return false;
-		if (!(level.getBlockEntity(cast.getCenterBlock()) instanceof CannonCastBlockEntity centerCast) || centerCast.castShape != this.requiredShape) return false;
+		if (!cast.getControllerTE().structure.contains(this.requiredShape)) return false;
+		if (cast.getControllerTE().fluid.getFluid().isEmpty()) return false;
 		return this.ingredient.test(cast.getControllerTE().fluid.getFluid());
 	}
 

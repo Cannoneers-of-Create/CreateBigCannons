@@ -23,7 +23,7 @@ import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
 import net.minecraft.resources.ResourceLocation;
 
-public abstract class BlockRecipeGen implements DataProvider {
+public abstract class BlockRecipeProvider implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
@@ -32,16 +32,16 @@ public abstract class BlockRecipeGen implements DataProvider {
 	protected final String modid;
 	protected ResourceLocation info;
 	
-	public BlockRecipeGen(String modid, DataGenerator gen) {
+	public BlockRecipeProvider(String modid, DataGenerator gen) {
 		this.modid = modid;
 		this.gen = gen;
 	}
 	
-	protected static final List<BlockRecipeGen> GENERATORS = new ArrayList<>();
+	protected static final List<BlockRecipeProvider> GENERATORS = new ArrayList<>();
 	
 	public static void registerAll(DataGenerator gen) {
-		GENERATORS.add(new CannonCastRecipeGen(gen));
-		GENERATORS.add(new BuiltUpHeatingRecipeGen(gen));
+		GENERATORS.add(new CannonCastRecipeProvider(gen));
+		GENERATORS.add(new BuiltUpHeatingRecipeProvider(gen));
 		
 		gen.addProvider(new DataProvider() {	
 			@Override

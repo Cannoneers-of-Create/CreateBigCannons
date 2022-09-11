@@ -18,13 +18,13 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe.LayerPredicate;
 
-public class BuiltUpHeatingRecipeGen extends BlockRecipeGen {
+public class BuiltUpHeatingRecipeProvider extends BlockRecipeProvider {
 
-	BuiltUpHeatingRecipeGen(DataGenerator gen) {
+	BuiltUpHeatingRecipeProvider(DataGenerator gen) {
 		this(CreateBigCannons.MOD_ID, gen);
 	}
 	
-	public BuiltUpHeatingRecipeGen(String modid, DataGenerator gen) {
+	public BuiltUpHeatingRecipeProvider(String modid, DataGenerator gen) {
 		super(modid, gen);
 		this.info = CreateBigCannons.resource("built_up_heating");
 	}
@@ -173,7 +173,7 @@ public class BuiltUpHeatingRecipeGen extends BlockRecipeGen {
 		private Block result = null;
 		
 		private Builder(String name) {
-			this.id = new ResourceLocation(BuiltUpHeatingRecipeGen.this.modid, name);
+			this.id = new ResourceLocation(BuiltUpHeatingRecipeProvider.this.modid, name);
 		}
 		
 		public LayerBuilder addLayer() {
