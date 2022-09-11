@@ -5,7 +5,7 @@ import com.simibubi.create.foundation.config.ConfigBase;
 public class CBCCfgMunitions extends ConfigBase {
 
 	public final ConfigBool invulProjectileHurt = b(false, "invulnerableAfterProjectileHurt", Comments.invulnerableAfterProjectileHurt);
-	public final ConfigFloat heShellPower = f(6, 0, "heShellPower", Comments.heShellPower);
+	public final ConfigFloat heShellPower = f(10, 0, "heShellPower", Comments.heShellPower);
 	
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes"); 
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);

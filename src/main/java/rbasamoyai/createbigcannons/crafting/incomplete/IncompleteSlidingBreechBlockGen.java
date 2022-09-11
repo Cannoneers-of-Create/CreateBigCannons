@@ -23,7 +23,7 @@ public class IncompleteSlidingBreechBlockGen extends SpecialBlockStateGen {
 	
 	@Override
 	public <T extends Block> ModelFile getModel(DataGenContext<Block, T> context, RegistrateBlockstateProvider provider, BlockState state) {
-		int stage = state.getValue(IncompleteSlidingBreechBlock.STAGE);
+		int stage = state.getValue(IncompleteSlidingBreechBlock.STAGE_2);
 		boolean axisAlongFirst = state.getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
 		boolean rotated = (state.getValue(BlockStateProperties.FACING).getAxis() == Direction.Axis.X) == axisAlongFirst;
 		String suf = (stage == 0 ? "" : "_axis") + (rotated ? "_rotated" : "");

@@ -19,8 +19,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
@@ -38,6 +40,8 @@ public class CreateBigCannons {
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		ModLoadingContext mlContext = ModLoadingContext.get();
 		
+		CBCRegistries.init();
+		
 		ModGroup.register();
 		CBCBlocks.register();
 		CBCItems.register();
@@ -49,6 +53,7 @@ public class CreateBigCannons {
 		CannonCastShape.register();
 		CBCContraptionTypes.prepare();
 		CBCChecks.register();
+		BlockRecipeSerializer.register();
 		
 		CBCParticleTypes.PARTICLE_TYPES.register(modEventBus);		
 		

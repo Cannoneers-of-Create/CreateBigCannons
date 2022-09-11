@@ -45,7 +45,6 @@ public class CannonBuildingContraption extends PoleContraption {
 
 	protected boolean isActivated = false;
 	protected CannonMaterial material = null;
-	protected CannonCastShape grabShape = null;
 	
 	public CannonBuildingContraption() {}
 	
@@ -142,12 +141,13 @@ public class CannonBuildingContraption extends PoleContraption {
 		CannonCastShape fullShape = null;
 		Map<BlockPos, Pair<StructureBlockInfo, BlockEntity>> preAddedBlocks = new HashMap<>();
 		Direction opposite = this.orientation.getOpposite();
+		boolean firstBlock = true;
 		
 		for (int offset = 0; offset <= CBCConfigs.SERVER.crafting.maxCannonBuilderRange.get(); ++offset) {
 			BlockPos currentPos = pos.relative(this.orientation, offset + this.initialExtensionProgress);
 			if (retracting && level.isOutsideBuildHeight(currentPos)) {
 				preAddedBlocks.forEach(this::addBlock);
-				return this.material != null && this.grabShape != null;
+				return this.material != null && !firstBlock;
 			}
 			if (!level.isLoaded(currentPos)) throw AssemblyException.unloadedChunk(currentPos);
 			
@@ -158,10 +158,10 @@ public class CannonBuildingContraption extends PoleContraption {
 				
 				if (level.getBlockEntity(currentPos) instanceof LayeredCannonBlockEntity layered) {				
 					if (fullShape == null && connectedShapes.isEmpty()) {
-						if (this.grabShape == null) {
+						if (firstBlock) {
 							CannonCastShape topShape = layered.getTopCannonShape();
 							connectedShapes.add(topShape);
-							this.grabShape = topShape;
+							firstBlock = false;
 						} else if (!preAddedBlocks.isEmpty()) {
 							break;
 						} else {
@@ -187,9 +187,9 @@ public class CannonBuildingContraption extends PoleContraption {
 				} else {
 					CannonCastShape shape = cBlock.getShapeInLevel(level, state, currentPos);
 					if (fullShape == null && !isConnected(connectedShapes, shape)) {
-						if (this.grabShape == null) {
+						if (firstBlock) {
 							connectedShapes.add(shape);
-							this.grabShape = shape;
+							firstBlock = false;
 						} else if (!preAddedBlocks.isEmpty()) {
 							break;
 						} else {
@@ -243,7 +243,7 @@ public class CannonBuildingContraption extends PoleContraption {
 			}
 		}
 		
-		if (this.material != null && this.grabShape != null) {
+		if (this.material != null && !firstBlock) {
 			preAddedBlocks.forEach(this::addBlock);
 		} else {
 			this.isActivated = false;
@@ -276,13 +276,13 @@ public class CannonBuildingContraption extends PoleContraption {
 		if (cBlock.getFacing(state).getAxis() != dir.getAxis()
 		|| cBlock.getShapeInLevel(level, state, pos) != shape
 		|| !(level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe)
-		|| !cbe.cannonBehavior().isConnectedTo(dir.getOpposite())) return false;
+		|| !cbe.cannonBehavior().isConnectedTo(dir)) return false;
 		
 		BlockEntity be = level.getBlockEntity(pos.relative(dir));
 		if (be instanceof LayeredCannonBlockEntity layered) {
 			return layered.isLayerConnectedTo(dir.getOpposite(), shape);
 		} else if (be instanceof ICannonBlockEntity cbe1) {
-			return cbe.cannonBehavior().isConnectedTo(dir.getOpposite());
+			return cbe1.cannonBehavior().isConnectedTo(dir.getOpposite());
 		} else {
 			return false;
 		}
@@ -398,7 +398,6 @@ public class CannonBuildingContraption extends PoleContraption {
 		CompoundTag tag = super.writeNBT(spawnPacket);
 		tag.putBoolean("Activated", this.isActivated);
 		if (this.material != null) tag.putString("Material", this.material.name().toString());
-		if (this.grabShape != null) tag.putString("InitialShape", this.grabShape.name().toString());
 		return tag;
 	}
 	
@@ -409,9 +408,6 @@ public class CannonBuildingContraption extends PoleContraption {
 		
 		this.material = CannonMaterial.fromName(new ResourceLocation(tag.getString("Material")));
 		if (this.material == null) this.material = CannonMaterial.STEEL;
-		
-		this.grabShape = CannonCastShape.byId(new ResourceLocation(tag.getString("InitialShape")));
-		if (this.grabShape == null) this.grabShape = CannonCastShape.VERY_SMALL;
 	}
 
 	@Override protected ContraptionType getType() { return CBCContraptionTypes.CANNON_BUILDER; }

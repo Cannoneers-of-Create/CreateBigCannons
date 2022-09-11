@@ -3,14 +3,21 @@ package rbasamoyai.createbigcannons.crafting.casting;
 import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.registries.ForgeRegistries;
-import rbasamoyai.createbigcannons.CreateBigCannons;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+import rbasamoyai.createbigcannons.crafting.BlockRecipe;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 
-public class CannonCastingRecipe {
-
+public class CannonCastingRecipe implements BlockRecipe {
+	
 	private final CannonCastShape requiredShape;
 	private final FluidIngredient ingredient;
 	private final Block result;
@@ -27,41 +34,58 @@ public class CannonCastingRecipe {
 	
 	public CannonCastShape shape() { return this.requiredShape; }
 	public FluidIngredient ingredient() { return this.ingredient; }
-	public Block result() { return this.result; }
 	public int castingTime() { return this.castingTime; }
 	public ResourceLocation id() { return this.id; }
 	
-	public JsonObject serializeRecipe() {
-		JsonObject obj = new JsonObject();
-		obj.addProperty("type", CreateBigCannons.resource("cannon_casting").toString());
-		obj.addProperty("cast_shape", this.requiredShape.name().toString());
-		obj.add("fluid", this.ingredient().serialize());
-		obj.addProperty("casting_time", this.castingTime);
-		obj.addProperty("result", this.result.getRegistryName().toString());
-		return obj;
+	@Override
+	public boolean matches(Level level, BlockPos pos) {
+		if (!(level.getBlockEntity(pos) instanceof CannonCastBlockEntity cast)) return false;
+		if (!(level.getBlockEntity(cast.getCenterBlock()) instanceof CannonCastBlockEntity centerCast) || centerCast.castShape != this.requiredShape) return false;
+		return this.ingredient.test(cast.getControllerTE().fluid.getFluid());
 	}
-	
-	public void toBuffer(FriendlyByteBuf buf) {
-		buf.writeResourceLocation(this.requiredShape.name())
-		.writeVarInt(this.castingTime)
-		.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, this.result);
-		this.ingredient.write(buf);
+
+	@Override
+	public void assembleInWorld(Level level, BlockPos pos) {
+		if (!(level.getBlockEntity(pos) instanceof CannonCastBlockEntity cast) || !cast.canRenderCastModel()) return;
+		cast.setRemoved();
+		BlockState state = this.result.defaultBlockState();
+		if (state.hasProperty(BlockStateProperties.FACING)) {
+			state = state.setValue(BlockStateProperties.FACING, Direction.DOWN);
+		}
+		this.requiredShape.applyTo(state);
+		level.setBlock(pos, state, 11);
 	}
+
+	@Override public Block getResultBlock() { return this.result; }
+	@Override public ResourceLocation getId() { return this.id; }
+	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.CANNON_CASTING.get(); }
 	
-	public static CannonCastingRecipe fromJson(ResourceLocation loc, JsonObject obj) {
-		CannonCastShape shape = CannonCastShape.byId(new ResourceLocation(obj.get("cast_shape").getAsString()));
-		FluidIngredient ingredient = FluidIngredient.deserialize(obj.get("fluid"));
-		int castingTime = obj.get("casting_time").getAsInt();
-		Block result = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(obj.get("result").getAsString()));
-		return new CannonCastingRecipe(shape, ingredient, result, castingTime, loc);
-	}
-	
-	public static CannonCastingRecipe fromBuf(ResourceLocation id, FriendlyByteBuf buf) {
-		CannonCastShape shape = CannonCastShape.byId(buf.readResourceLocation());
-		int castingTime = buf.readVarInt();
-		Block result = buf.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
-		FluidIngredient ingredient = FluidIngredient.read(buf);
-		return new CannonCastingRecipe(shape, ingredient, result, castingTime, id);
+	public static class Serializer extends ForgeRegistryEntry<BlockRecipeSerializer<?>> implements BlockRecipeSerializer<CannonCastingRecipe> {
+		@Override
+		public CannonCastingRecipe fromJson(ResourceLocation id, JsonObject obj) {
+			CannonCastShape shape = CannonCastShape.byId(new ResourceLocation(obj.get("cast_shape").getAsString()));
+			FluidIngredient ingredient = FluidIngredient.deserialize(obj.get("fluid"));
+			int castingTime = obj.get("casting_time").getAsInt();
+			Block result = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(obj.get("result").getAsString()));
+			return new CannonCastingRecipe(shape, ingredient, result, castingTime, id);
+		}
+
+		@Override
+		public CannonCastingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+			CannonCastShape shape = CannonCastShape.byId(buf.readResourceLocation());
+			int castingTime = buf.readVarInt();
+			Block result = buf.readRegistryIdUnsafe(ForgeRegistries.BLOCKS);
+			FluidIngredient ingredient = FluidIngredient.read(buf);
+			return new CannonCastingRecipe(shape, ingredient, result, castingTime, id);
+		}
+
+		@Override
+		public void toNetwork(FriendlyByteBuf buf, CannonCastingRecipe recipe) {
+			buf.writeResourceLocation(recipe.shape().name())
+			.writeVarInt(recipe.castingTime())
+			.writeRegistryIdUnsafe(ForgeRegistries.BLOCKS, recipe.getResultBlock());
+			recipe.ingredient().write(buf);
+		}
 	}
 	
 }

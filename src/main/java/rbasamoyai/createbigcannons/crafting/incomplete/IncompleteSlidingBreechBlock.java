@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
+import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
+import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.core.BlockPos;
@@ -20,12 +22,12 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
@@ -34,9 +36,8 @@ import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.SolidCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCannonBlockEntity> implements IncompleteCannonBlock {
+public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCannonBlockEntity> implements IncompleteCannonBlock, ITransformableBlock {
 	
-	public static final IntegerProperty STAGE = IntegerProperty.create("stage", 0, 1);	
 	public static final BooleanProperty ALONG_FIRST = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 	
 	private final NonNullSupplier<? extends Item> secondItemSupplier;
@@ -49,20 +50,20 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 		super(properties, material);
 		this.secondItemSupplier = secondItemSupplier;
 		this.resultSupplier = resultSupplier;
-		this.registerDefaultState(this.defaultBlockState().setValue(STAGE, 0).setValue(ALONG_FIRST, false));
+		this.registerDefaultState(this.defaultBlockState().setValue(STAGE_2, 0).setValue(ALONG_FIRST, false));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(STAGE);
+		builder.add(STAGE_2);
 		builder.add(ALONG_FIRST);
 	}
 	
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
-		int stage = state.getValue(STAGE);
+		int stage = state.getValue(STAGE_2);
 		if (stage == 0 && !AllBlocks.SHAFT.is(stack.getItem())) return InteractionResult.PASS;
 		if (stage == 1 && !stack.is(this.resolveSecondItem())) return InteractionResult.PASS;
 		level.playSound(player, pos, SoundEvents.NETHERITE_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
@@ -73,7 +74,7 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 				cbe.setRemoved();
 				
 				if (stage == 0) {
-					level.setBlock(pos, state.setValue(STAGE, 1), 3 | 16);
+					level.setBlock(pos, state.setValue(STAGE_2, 1), 3 | 16);
 				} else {
 					if (this.result == null) {
 						this.result = this.resultSupplier.get();
@@ -92,7 +93,7 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 				if (!(be instanceof ICannonBlockEntity cbe1)) return;
 				CannonBehavior behavior1 = cbe1.cannonBehavior();
 				for (Direction dir : Direction.values()) {
-					boolean isConnected = behavior.isConnectedTo(dir.getOpposite());
+					boolean isConnected = behavior.isConnectedTo(dir);
 					behavior1.setConnectedFace(dir, isConnected);
 					if (level.getBlockEntity(pos.relative(dir)) instanceof ICannonBlockEntity cbe2) {
 						cbe2.cannonBehavior().setConnectedFace(dir.getOpposite(), isConnected);
@@ -106,13 +107,13 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction facing = context.getNearestLookingDirection().getOpposite();
+		Direction horizontal = context.getHorizontalDirection();
 		return this.defaultBlockState()
 				.setValue(FACING, facing)
-				.setValue(ALONG_FIRST, facing.getAxis() == Direction.Axis.Z);
+				.setValue(ALONG_FIRST, horizontal.getAxis() == Direction.Axis.Z);
 	}
 	
-	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.UNBORED_SLIDING_BREECH; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH; }
 	
 	@Override public Class<IncompleteCannonBlockEntity> getTileEntityClass() { return IncompleteCannonBlockEntity.class; }
 	@Override public BlockEntityType<? extends IncompleteCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.INCOMPLETE_CANNON.get(); }
@@ -134,8 +135,23 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 		return this.resolvedSecondItem.delegate.get();
 	}
 
-	@Override public int progress(BlockState state) { return state.getValue(STAGE); }
+	@Override public int progress(BlockState state) { return state.getValue(STAGE_2); }
 	
 	@Override public boolean isComplete(BlockState state) { return false; }
+	
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		if (rotation.ordinal() % 2 == 1) state = state.cycle(ALONG_FIRST);
+		return super.rotate(state, rotation);
+	}
+	
+	@Override
+	public BlockState transform(BlockState state, StructureTransform transform) {
+		if (transform.mirror != null) state = this.mirror(state, transform.mirror);
+		if (transform.rotationAxis == Direction.Axis.Y) return this.rotate(state, transform.rotation);
+		Direction newFacing = transform.rotateFacing(state.getValue(FACING));
+		if (transform.rotationAxis == newFacing.getAxis() && transform.rotation.ordinal() % 2 == 1) state = state.cycle(ALONG_FIRST);
+		return state.setValue(FACING, newFacing);
+	}
 
 }

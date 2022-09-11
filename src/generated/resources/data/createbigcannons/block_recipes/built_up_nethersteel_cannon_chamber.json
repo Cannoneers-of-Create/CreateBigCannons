@@ -1,0 +1,26 @@
+{
+  "type": "createbigcannons:built_up_heating",
+  "layers": [
+    {
+      "blocks": [
+        "createbigcannons:very_small_nethersteel_cannon_layer"
+      ]
+    },
+    {
+      "blocks": [
+        "createbigcannons:small_nethersteel_cannon_layer"
+      ]
+    },
+    {
+      "blocks": [
+        "createbigcannons:medium_nethersteel_cannon_layer"
+      ]
+    },
+    {
+      "blocks": [
+        "createbigcannons:large_nethersteel_cannon_layer"
+      ]
+    }
+  ],
+  "result": "createbigcannons:built_up_nethersteel_cannon_chamber"
+}

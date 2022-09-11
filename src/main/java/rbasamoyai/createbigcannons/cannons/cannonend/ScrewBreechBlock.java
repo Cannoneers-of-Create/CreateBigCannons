@@ -1,9 +1,7 @@
 package rbasamoyai.createbigcannons.cannons.cannonend;
 
-import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -21,9 +19,9 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.CBCShapes;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
@@ -33,18 +31,11 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	public static final EnumProperty<OpenState> OPEN = EnumProperty.create("open", OpenState.class);
 	
 	private final CannonMaterial material;
-	private final VoxelShaper shapes;
 	
 	public ScrewBreechBlock(Properties properties, CannonMaterial material) {
 		super(properties);
 		this.material = material;
-		this.shapes = this.makeShapes();
 		this.registerDefaultState(this.getStateDefinition().any().setValue(OPEN, OpenState.CLOSED));
-	}
-	
-	private VoxelShaper makeShapes() {
-		VoxelShape base = Shapes.or(box(0, 0, 0, 16, 8, 16), box(6, 8, 6, 10, 16, 10));
-		return new AllShapes.Builder(base).forDirectional();
 	}
 	
 	@Override
@@ -55,11 +46,11 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
-		return this.shapes.get(state.getValue(FACING));
+		return CBCShapes.SCREW_BREECH.get(state.getValue(FACING));
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.material; }
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.MEDIUM; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH; }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING).getOpposite(); }
 	@Override
 	public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) {
@@ -109,7 +100,5 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 		public boolean isOpen() { return this == OPEN; }
 		@Override public String getSerializedName() { return this.name; }
 	}
-	
-	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
 	
 }

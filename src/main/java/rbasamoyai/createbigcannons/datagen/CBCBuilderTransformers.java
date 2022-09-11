@@ -25,6 +25,7 @@ import rbasamoyai.createbigcannons.crafting.boring.CannonDrillGen;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderGen;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlockGen;
 
 public class CBCBuilderTransformers {
@@ -158,6 +159,40 @@ public class CBCBuilderTransformers {
 				.build();
 	}
 	
+	public static <T extends Block & CannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreechUnbored(String pathAndMaterial, String typePathAndMaterial) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/screw_breech");
+		ResourceLocation itemBaseLoc = CreateBigCannons.resource("block/screw_breech_item");
+		ResourceLocation topLoc = CreateBigCannons.resource("block/" + typePathAndMaterial + "_screw_breech_top");
+		ResourceLocation bottomLoc = CreateBigCannons.resource("block/" + typePathAndMaterial + "_screw_breech_bottom");
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_screw_breech_side");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
+					.texture("side", sideLoc)
+					.texture("top", topLoc)
+					.texture("bottom", bottomLoc)
+					.texture("particle", topLoc)))
+				.item(CannonBlockItem::new)
+				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
+					.texture("side", sideLoc)
+					.texture("top", topLoc)
+					.texture("bottom", bottomLoc))
+				.build();
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreechIncomplete(String pathAndMaterial) {
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate(new IncompleteScrewBreechBlockGen(pathAndMaterial)::generate);
+	}
+	
+	public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> screwLock(String pathAndMaterial) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("item/screw_lock");
+		ResourceLocation lockLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_screw_lock");
+		return b -> b.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(baseLoc))
+				.texture("lock", lockLoc));
+	}
+	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> ramHead() {
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
@@ -274,8 +309,7 @@ public class CBCBuilderTransformers {
 				.texture("top", topLoc)
 				.texture("end", endLoc)
 				.texture("side", sideLoc)
-				.texture("bottom", bottomLoc)
-				.texture("particle", topLoc));
+				.texture("bottom", bottomLoc));
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> castMould(String size) {

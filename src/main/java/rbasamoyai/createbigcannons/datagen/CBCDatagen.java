@@ -15,14 +15,15 @@ public class CBCDatagen {
 	public static void onDatagen(GatherDataEvent event) {
 		DataGenerator gen = event.getGenerator();
 		if (event.includeServer()) {
-			gen.addProvider(new CannonCastRecipeGen(gen));
+			BlockRecipeGen.registerAll(gen);
 		}
-		
-		CBCLangGen.prepare();
-		
-		CBCPonderTags.register();
-		CBCPonderIndex.register();
-		CBCPonderIndex.registerLang();
+		if (event.includeClient()) {
+			CBCLangGen.prepare();
+			
+			CBCPonderTags.register();
+			CBCPonderIndex.register();
+			CBCPonderIndex.registerLang();
+		}
 	}
 	
 }

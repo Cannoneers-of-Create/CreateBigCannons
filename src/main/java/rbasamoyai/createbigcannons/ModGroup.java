@@ -45,9 +45,12 @@ public class ModGroup {
 				CBCBlocks.BUILT_UP_STEEL_CANNON_BARREL.asStack(),
 				CBCBlocks.STEEL_CANNON_BARREL.asStack(),
 				
-				CBCBlocks.NETHER_GUNMETAL_SCREW_BREECH.asStack(),
-				CBCBlocks.NETHER_GUNMETAL_CANNON_CHAMBER.asStack(),
-				CBCBlocks.NETHER_GUNMETAL_CANNON_BARREL.asStack(),
+				CBCBlocks.NETHERSTEEL_SCREW_BREECH.asStack(),
+				CBCBlocks.THICK_NETHERSTEEL_CANNON_CHAMBER.asStack(),
+				CBCBlocks.BUILT_UP_NETHERSTEEL_CANNON_CHAMBER.asStack(),
+				CBCBlocks.NETHERSTEEL_CANNON_CHAMBER.asStack(),
+				CBCBlocks.BUILT_UP_NETHERSTEEL_CANNON_BARREL.asStack(),
+				CBCBlocks.NETHERSTEEL_CANNON_BARREL.asStack(),
 				
 				CBCBlocks.CANNON_LOADER.asStack(),
 				CBCBlocks.RAM_HEAD.asStack(),
@@ -60,7 +63,7 @@ public class ModGroup {
 				CBCItems.IMPACT_FUZE.asStack(),
 				TimedFuzeItem.getCreativeTabItem(20),
 				
-				CBCItems.CANNON_CAST_WAND.asStack(),
+				CBCItems.CANNON_CRAFTING_WAND.asStack(),
 				CBCBlocks.CASTING_SAND.asStack(),
 				CBCBlocks.VERY_SMALL_CAST_MOULD.asStack(),
 				CBCBlocks.SMALL_CAST_MOULD.asStack(),
@@ -68,7 +71,8 @@ public class ModGroup {
 				CBCBlocks.LARGE_CAST_MOULD.asStack(),
 				CBCBlocks.VERY_LARGE_CAST_MOULD.asStack(),
 				CBCBlocks.CANNON_END_CAST_MOULD.asStack(),
-				CBCBlocks.UNBORED_SLIDING_BREECH_CAST_MOULD.asStack(),
+				CBCBlocks.SLIDING_BREECH_CAST_MOULD.asStack(),
+				CBCBlocks.SCREW_BREECH_CAST_MOULD.asStack(),
 				
 				CBCBlocks.CANNON_DRILL.asStack(),
 				CBCBlocks.CANNON_BUILDER.asStack(),				
@@ -87,7 +91,7 @@ public class ModGroup {
 				CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH.asStack(),
 				CBCItems.BRONZE_SLIDING_BREECHBLOCK.asStack(),
 				
-				// new ItemStack(CBCFluids.MOLTEN_STEEL.get().getBucket()),
+				new ItemStack(CBCFluids.MOLTEN_STEEL.get().getBucket()),
 				CBCBlocks.UNBORED_VERY_SMALL_STEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.UNBORED_SMALL_STEEL_CANNON_LAYER.asStack(),
 				CBCBlocks.UNBORED_MEDIUM_STEEL_CANNON_LAYER.asStack(),
@@ -102,7 +106,28 @@ public class ModGroup {
 				
 				CBCBlocks.UNBORED_STEEL_SLIDING_BREECH.asStack(),
 				CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH.asStack(),	
-				CBCItems.STEEL_SLIDING_BREECHBLOCK.asStack()));
+				CBCItems.STEEL_SLIDING_BREECHBLOCK.asStack(),
+				
+				CBCBlocks.UNBORED_STEEL_SCREW_BREECH.asStack(),
+				CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH.asStack(),
+				CBCItems.STEEL_SCREW_LOCK.asStack(),
+				
+				new ItemStack(CBCFluids.MOLTEN_NETHERSTEEL.get().getBucket()),
+				CBCBlocks.UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER.asStack(),
+				CBCBlocks.UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER.asStack(),
+				CBCBlocks.UNBORED_MEDIUM_NETHERSTEEL_CANNON_LAYER.asStack(),
+				CBCBlocks.UNBORED_LARGE_NETHERSTEEL_CANNON_LAYER.asStack(),
+				CBCBlocks.UNBORED_VERY_LARGE_NETHERSTEEL_CANNON_LAYER.asStack(),
+				
+				CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.asStack(),
+				CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.asStack(),
+				CBCBlocks.MEDIUM_NETHERSTEEL_CANNON_LAYER.asStack(),
+				CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER.asStack(),
+				CBCBlocks.VERY_LARGE_NETHERSTEEL_CANNON_LAYER.asStack(),
+
+				CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH.asStack(),
+				CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH.asStack(),
+				CBCItems.NETHERSTEEL_SCREW_LOCK.asStack()));
 		}
 	};
 	

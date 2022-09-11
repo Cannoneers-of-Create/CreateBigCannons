@@ -21,11 +21,12 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -37,9 +38,11 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
+import rbasamoyai.createbigcannons.crafting.WandActionable;
 
-public class CannonCastBlockEntity extends SmartTileEntity {
+public class CannonCastBlockEntity extends SmartTileEntity implements WandActionable {
 
 	private static final Object CASTING_RECIPES_KEY = new Object();
 	
@@ -275,14 +278,15 @@ public class CannonCastBlockEntity extends SmartTileEntity {
 	
 	protected void updateRecipes() {
 		this.recipes.clear();
-		List<CannonCastingRecipe> list = BlockRecipeFinder.get(CASTING_RECIPES_KEY, this.level, this::matchingRecipeCache);
+		List<BlockRecipe> list = BlockRecipeFinder.get(CASTING_RECIPES_KEY, this.level, this::matchingRecipeCache);
 		list.stream()
-		.filter(this::shapeMatches)
+		.map(CannonCastingRecipe.class::cast)
+		.filter(r -> r.matches(this.level, this.worldPosition))
 		.forEach(r -> this.recipes.put(r.shape(), r));
 	}
 	
-	protected boolean matchingRecipeCache(CannonCastingRecipe recipe) {
-		return recipe.ingredient().test(this.fluid.getFluid());
+	protected boolean matchingRecipeCache(BlockRecipe recipe) {
+		return recipe instanceof CannonCastingRecipe;
 	}
 	
 	protected boolean shapeMatches(CannonCastingRecipe recipe) {
@@ -300,53 +304,37 @@ public class CannonCastBlockEntity extends SmartTileEntity {
 	protected void finishCasting() {
 		if (!this.isController() || this.structure.isEmpty()) return;
 		for (int y = 0; y < this.height; ++y) {
+			if (this.structure.size() <= y) continue;
+			CannonCastingRecipe recipe = this.recipes.get(this.structure.get(y));
+			if (recipe == null) break;
+			
 			BlockPos pos = this.worldPosition.above(y);
 			if (!(this.level.getBlockEntity(pos) instanceof CannonCastBlockEntity cast)) break;
-			for (int x = -1; x < 2; ++x) {
-				for (int z = -1; z < 2; ++z) {
-					BlockPos pos1 = pos.offset(x, 0, z);
-					if ((x != 0 || z != 0) && this.level.getBlockEntity(pos1) instanceof CannonCastBlockEntity cast1) {
-						cast1.setRemoved();
-						this.level.setBlock(pos1, CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), 11);
-						if (!(this.level.getBlockEntity(pos1) instanceof FinishedCannonCastBlockEntity fCast)) continue;
-						if (x == -1 && z == -1) {
-							fCast.setRenderedShape(cast.castShape);
-						} else {
-							fCast.setCentralBlock(pos.offset(-1, 0, -1));
-						}
-					}
+			BlockPos corner = pos.offset(-1, 0, -1);
+			BlockPos.betweenClosedStream(corner, pos.offset(1, 0, 1)).forEach(pos1 -> {
+				if (pos.equals(pos1) || !(this.level.getBlockEntity(pos1) instanceof CannonCastBlockEntity cast1)) return;
+				cast1.setRemoved();
+				this.level.setBlock(pos1, CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), 11);
+				if (!(this.level.getBlockEntity(pos1) instanceof FinishedCannonCastBlockEntity fCast)) return;
+				if (pos1.equals(corner)) {
+					fCast.setRenderedShape(cast.castShape);
+				} else {
+					fCast.setCentralBlock(corner);
 				}
-			}
-			if (y == 0 || this.structure.size() <= y) continue;
-			cast.setRemoved();
+			});
+			recipe.assembleInWorld(this.level, pos);
 			
-			CannonCastingRecipe recipe = this.recipes.get(this.structure.get(y));
-			BlockState state = recipe == null ? Blocks.AIR.defaultBlockState() : recipe.result().defaultBlockState();
-			if (state.hasProperty(BlockStateProperties.FACING)) {
-				state = state.setValue(BlockStateProperties.FACING, Direction.DOWN);
-			}
-			if (recipe != null) state = recipe.shape().applyTo(state);
-			this.level.setBlock(pos, state, 11);
-			
-			if (this.level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe && this.level.getBlockEntity(pos.below()) instanceof ICannonBlockEntity cbe1) {
+			if (y > 0 && this.level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe && this.level.getBlockEntity(pos.below()) instanceof ICannonBlockEntity cbe1) {
 				cbe.cannonBehavior().setConnectedFace(Direction.DOWN, true);
 				cbe1.cannonBehavior().setConnectedFace(Direction.UP, true);
 			}
 		}
-		
-		this.setRemoved();
-		CannonCastingRecipe recipe = this.recipes.get(this.structure.get(0));
-		BlockState state = recipe == null ? Blocks.AIR.defaultBlockState() : recipe.result().defaultBlockState();
-		if (state.hasProperty(BlockStateProperties.FACING)) {
-			state = state.setValue(BlockStateProperties.FACING, Direction.DOWN);
-		}
-		if (recipe != null) state = recipe.shape().applyTo(state);
-		this.level.setBlock(this.worldPosition, state, 11);
-		
-		if (this.level.getBlockEntity(this.worldPosition) instanceof ICannonBlockEntity cbe && this.level.getBlockEntity(this.worldPosition.above()) instanceof ICannonBlockEntity cbe1) {
-			cbe.cannonBehavior().setConnectedFace(Direction.UP, true);
-			cbe1.cannonBehavior().setConnectedFace(Direction.DOWN, true);
-		}
+	}
+	
+	@Override
+	public InteractionResult onWandUsed(UseOnContext context) {
+		if (!this.level.isClientSide) this.getControllerTE().castingTime = 0;
+		return InteractionResult.sidedSuccess(this.level.isClientSide);
 	}
 	
 	public void initializeCastMultiblock(CannonCastShape size) {

@@ -6,7 +6,7 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import rbasamoyai.createbigcannons.crafting.casting.CastingWandItem;
+import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
@@ -38,12 +38,22 @@ public class CBCItems {
 			.transform(CBCBuilderTransformers.slidingBreechblock("sliding_breech/steel"))
 			.register();
 	
+	public static final ItemEntry<Item> STEEL_SCREW_LOCK = REGISTRATE
+			.item("steel_screw_lock", Item::new)
+			.transform(CBCBuilderTransformers.screwLock("screw_breech/steel"))
+			.register();
+	
+	public static final ItemEntry<Item> NETHERSTEEL_SCREW_LOCK = REGISTRATE
+			.item("nethersteel_screw_lock", Item::new)
+			.transform(CBCBuilderTransformers.screwLock("screw_breech/nethersteel"))
+			.register();
+	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);
 	}
 	
-	public static final ItemEntry<CastingWandItem> CANNON_CAST_WAND = REGISTRATE
-			.item("cannon_cast_wand", CastingWandItem::new)
+	public static final ItemEntry<CannonCraftingWandItem> CANNON_CRAFTING_WAND = REGISTRATE
+			.item("cannon_crafting_wand", CannonCraftingWandItem::new)
 			.properties(p -> p.stacksTo(1))
 			.properties(p -> p.rarity(Rarity.EPIC))
 			.model((c, p) -> {})

@@ -20,7 +20,8 @@ public class CannonCastShape {
 		LARGE = register(CreateBigCannons.resource("large"), 2016, 18),
 		VERY_LARGE = register(CreateBigCannons.resource("very_large"), 2880, 20),
 		CANNON_END = register(CreateBigCannons.resource("cannon_end"), 1296, 16),
-		UNBORED_SLIDING_BREECH = register(CreateBigCannons.resource("unbored_cannon_breech"), 1296, 16, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false));
+		SLIDING_BREECH = register(CreateBigCannons.resource("sliding_breech"), 1296, 16, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false)),
+		SCREW_BREECH = register(CreateBigCannons.resource("screw_breech"), 1296, 16);
 	
 	private final int fluidSize;
 	private final int diameter;

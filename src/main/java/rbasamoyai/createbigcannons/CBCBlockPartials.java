@@ -20,8 +20,8 @@ public class CBCBlockPartials {
 		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.BRONZE, "bronze_sliding_breechblock"),
 		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.STEEL, "steel_sliding_breechblock"),
 		
-		STEEL_SCREW_LOCK = screwLockPartial(CannonMaterial.STEEL, "screw_lock/steel_screw_lock"),
-		NETHER_GUNMETAL_SCREW_LOCK = screwLockPartial(CannonMaterial.NETHER_GUNMETAL, "screw_lock/nether_gunmetal_screw_lock"),
+		STEEL_SCREW_LOCK = screwLockPartial(CannonMaterial.STEEL, "steel_screw_lock"),
+		NETHERSTEEL_SCREW_LOCK = screwLockPartial(CannonMaterial.NETHERSTEEL, "nethersteel_screw_lock"),
 		
 		VERY_SMALL_CANNON_CAST = cannonCastPartial(CannonCastShape.VERY_SMALL, "cannon_cast/very_small_cannon_cast"),
 		SMALL_CANNON_CAST = cannonCastPartial(CannonCastShape.SMALL, "cannon_cast/small_cannon_cast"),
@@ -29,7 +29,8 @@ public class CBCBlockPartials {
 		LARGECANNON_CAST = cannonCastPartial(CannonCastShape.LARGE, "cannon_cast/large_cannon_cast"),
 		VERY_LARGE_CANNON_CAST = cannonCastPartial(CannonCastShape.VERY_LARGE, "cannon_cast/very_large_cannon_cast"),
 		CANNON_END_CAST = cannonCastPartial(CannonCastShape.CANNON_END, "cannon_cast/cannon_end_cast"),
-		UNBORED_SLIDING_BREECH_CAST = cannonCastPartial(CannonCastShape.UNBORED_SLIDING_BREECH, "cannon_cast/unbored_sliding_breech_cast"),
+		SLIDING_BREECH_CAST = cannonCastPartial(CannonCastShape.SLIDING_BREECH, "cannon_cast/sliding_breech_cast"),
+		SCREW_BREECH_CAST = cannonCastPartial(CannonCastShape.SCREW_BREECH, "cannon_cast/screw_breech_cast"),
 		
 		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
 		YAW_SHAFT = block("cannon_mount/yaw_axis"),
@@ -54,7 +55,7 @@ public class CBCBlockPartials {
 	}
 	
 	private static PartialModel screwLockPartial(CannonMaterial material, String path) {
-		return screwLockPartial(material, CreateBigCannons.resource("block/" + path));
+		return screwLockPartial(material, CreateBigCannons.resource("item/" + path));
 	}
 	
 	public static PartialModel screwLockPartial(CannonMaterial material, ResourceLocation loc) {

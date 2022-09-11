@@ -28,7 +28,7 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.cannonMaterial; }
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.UNBORED_SLIDING_BREECH; }	
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH; }	
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
 	
 	@Override
@@ -43,9 +43,10 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction facing = context.getNearestLookingDirection().getOpposite();
+		Direction horizontal = context.getHorizontalDirection();
 		return this.defaultBlockState()
 				.setValue(FACING, facing)
-				.setValue(AXIS_ALONG_FIRST_COORDINATE, facing.getAxis() == Direction.Axis.Z);
+				.setValue(AXIS_ALONG_FIRST_COORDINATE, horizontal.getAxis() == Direction.Axis.Z);
 	}
 	
 	@Override public InteractionResult onWrenched(BlockState state, UseOnContext context) { return InteractionResult.PASS; }
@@ -60,7 +61,6 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	@Override public Class<SlidingBreechBlockEntity> getTileEntityClass() { return SlidingBreechBlockEntity.class; }
 	@Override public BlockEntityType<? extends SlidingBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.SLIDING_BREECH.get(); }
 	
-	@Override public boolean canInteractWithDrill(BlockState state) { return false; }
 	@Override public boolean isComplete(BlockState state) { return true; }
 	
 }
