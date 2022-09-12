@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:powder_charge"
+    ]
+  },
+  "criteria": {
+    "has_packed_gunpowder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "createbigcannons:packed_gunpowder"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:powder_charge"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_packed_gunpowder",
+      "has_the_recipe"
+    ]
+  ]
+}

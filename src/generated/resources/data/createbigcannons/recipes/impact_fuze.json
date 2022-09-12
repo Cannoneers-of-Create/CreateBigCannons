@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "T",
+    "R"
+  ],
+  "key": {
+    "T": {
+      "tag": "createbigcannons:impact_fuze_head"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:impact_fuze"
+  }
+}

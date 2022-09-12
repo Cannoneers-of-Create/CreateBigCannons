@@ -16,6 +16,8 @@ public class CBCDatagen {
 		DataGenerator gen = event.getGenerator();
 		if (event.includeServer()) {
 			BlockRecipeProvider.registerAll(gen);
+			gen.addProvider(new CBCCraftingRecipeProvider(gen));
+			gen.addProvider(new CBCCompactingRecipeProvider(gen));
 		}
 		if (event.includeClient()) {
 			CBCLangGen.prepare();

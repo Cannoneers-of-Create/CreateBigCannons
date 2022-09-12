@@ -48,6 +48,9 @@ public class CBCItems {
 			.transform(CBCBuilderTransformers.screwLock("screw_breech/nethersteel"))
 			.register();
 	
+	public static final ItemEntry<Item> PACKED_GUNPOWDER = REGISTRATE.item("packed_gunpowder", Item::new).register();
+	public static final ItemEntry<Item> EMPTY_POWDER_CHARGE = REGISTRATE.item("empty_powder_charge", Item::new).register();
+	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);
 	}

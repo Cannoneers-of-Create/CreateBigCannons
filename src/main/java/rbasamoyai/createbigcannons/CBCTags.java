@@ -2,14 +2,20 @@ package rbasamoyai.createbigcannons;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
 
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
@@ -39,10 +45,10 @@ public class CBCTags {
 			});
 		}
 		
-		public static void addBlocksToBlockTag(TagKey<Block> tag, BlockProvider... blocks) {
+		public static void addBlocksToBlockTag(TagKey<Block> tag, List<Supplier<? extends Block>> blocks) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = prov.tag(tag);
-				for (BlockProvider bp : blocks) {
+				for (Supplier<? extends Block> bp : blocks) {
 					app.add(bp.get());
 				}
 			});
@@ -56,14 +62,50 @@ public class CBCTags {
 		}
 		
 		public static void sectionRegister() {
-			addTagsToBlockTag(SHRAPNEL_SHATTERABLE, Arrays.asList(Tags.Blocks.GLASS, Tags.Blocks.GLASS_PANES, BlockTags.LEAVES));
+			addTagsToBlockTag(SHRAPNEL_SHATTERABLE, Arrays.asList(Tags.Blocks.GLASS, Tags.Blocks.GLASS_PANES, BlockTags.LEAVES, BlockTags.WOOL));
 			addBlocksToBlockTag(SHRAPNEL_SHATTERABLE, Blocks.FLOWER_POT);
 			
-			addTagsToBlockTag(GRAPESHOT_SHATTERABLE, Arrays.asList(SHRAPNEL_SHATTERABLE, BlockTags.PLANKS, BlockTags.WOODEN_SLABS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_FENCES, BlockTags.FENCE_GATES, BlockTags.LOGS, BlockTags.WOOL));
+			addTagsToBlockTag(GRAPESHOT_SHATTERABLE, Arrays.asList(SHRAPNEL_SHATTERABLE, BlockTags.PLANKS, BlockTags.WOODEN_SLABS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_FENCES, BlockTags.FENCE_GATES, BlockTags.LOGS));
 			addBlocksToBlockTag(GRAPESHOT_SHATTERABLE, Blocks.MELON, Blocks.PUMPKIN);
+			addBlocksToBlockTag(GRAPESHOT_SHATTERABLE, Arrays.asList(AllBlocks.ANDESITE_CASING));
+		}
+	}
+	
+	public static class ItemCBC {
+		public static final TagKey<Item>
+			IMPACT_FUZE_HEAD = createAndGenerateItemTag(CreateBigCannons.resource("impact_fuze_head"));
+		
+		public static TagKey<Item> createAndGenerateItemTag(ResourceLocation loc) {
+			TagKey<Item> tag = ItemTags.create(loc); 
+			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> prov.tag(tag));
+			return tag;
 		}
 		
-		@FunctionalInterface public interface BlockProvider { Block get(); }
+		public static void addItemsToItemTag(TagKey<Item> tag, Item... items) {
+			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
+				prov.tag(tag).add(items);
+			});
+		}
+		
+		public static void addItemsToItemTag(TagKey<Item> tag, ItemLike... items) {
+			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
+				TagAppender<Item> app = prov.tag(tag);
+				for (ItemLike bp : items) {
+					app.add(bp.asItem());
+				}
+			});
+		}
+		
+		public static void addTagsToItemTag(TagKey<Item> tag, List<TagKey<Item>> tags) {
+			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
+				TagAppender<Item> app = prov.tag(tag);
+				tags.forEach(app::addTag);
+			});
+		}
+		
+		public static void sectionRegister() {
+			addItemsToItemTag(IMPACT_FUZE_HEAD, Items.STONE_BUTTON, Items.POLISHED_BLACKSTONE_BUTTON);
+		}
 	}
 		
 	public static void register() {
