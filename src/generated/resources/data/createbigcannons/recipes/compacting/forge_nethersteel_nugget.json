@@ -1,0 +1,14 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "fluidTag": "forge:molten_nethersteel",
+      "amount": 16
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:nethersteel_nugget"
+    }
+  ]
+}

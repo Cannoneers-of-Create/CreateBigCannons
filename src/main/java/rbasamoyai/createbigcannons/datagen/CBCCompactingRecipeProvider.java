@@ -41,6 +41,12 @@ public class CBCCompactingRecipeProvider extends ProcessingRecipeGen {
 
 	FORGE_STEEL_INGOT = create(CreateBigCannons.resource("forge_steel_ingot"), b -> b.whenModLoaded("alloyed")
 			.require(AllTags.forgeFluidTag("molten_steel"), 144)
-			.output(1, new ResourceLocation("alloyed", "steel_ingot"), 1));
+			.output(1, new ResourceLocation("alloyed", "steel_ingot"), 1)),
+	
+	FORGE_NETHERSTEEL_INGOT = create(CreateBigCannons.resource("forge_nethersteel_ingot"), b -> b.require(AllTags.forgeFluidTag("molten_nethersteel"), 144)
+			.output(CBCItems.NETHERSTEEL_INGOT.get())),
+	
+	FORGE_NETHERSTEEL_NUGGET = create(CreateBigCannons.resource("forge_nethersteel_nugget"), b -> b.require(AllTags.forgeFluidTag("molten_nethersteel"), 16)
+			.output(CBCItems.NETHERSTEEL_NUGGET.get()));
 		
 }

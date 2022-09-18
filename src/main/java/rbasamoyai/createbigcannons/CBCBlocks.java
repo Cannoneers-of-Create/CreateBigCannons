@@ -598,6 +598,13 @@ public class CBCBlocks {
 			.simpleItem()
 			.register();
 	
+	public static final BlockEntry<Block> NETHERSTEEL_BLOCK = REGISTRATE
+			.block("nethersteel_block", Block::new)
+			.initialProperties(() -> Blocks.NETHERITE_BLOCK)
+			.lang("Block of Nethersteel")
+			.simpleItem()
+			.register();
+	
 	//////// Projectiles ////////
 	
 	public static final BlockEntry<SolidShotBlock> SOLID_SHOT = REGISTRATE

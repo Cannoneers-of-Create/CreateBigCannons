@@ -54,6 +54,9 @@ public class CBCItems {
 	public static final ItemEntry<Item> CAST_IRON_INGOT = REGISTRATE.item("cast_iron_ingot", Item::new).tag(CBCTags.ItemCBC.INGOT_CAST_IRON).register();
 	public static final ItemEntry<Item> CAST_IRON_NUGGET = REGISTRATE.item("cast_iron_nugget", Item::new).tag(CBCTags.ItemCBC.NUGGET_CAST_IRON).register();
 	
+	public static final ItemEntry<Item> NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new).register();
+	public static final ItemEntry<Item> NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new).register();
+	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);
 	}

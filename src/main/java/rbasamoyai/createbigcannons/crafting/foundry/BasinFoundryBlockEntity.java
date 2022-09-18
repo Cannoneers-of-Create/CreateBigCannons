@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.CBCRecipeTypes;
 
 public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
@@ -58,8 +57,6 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 	
 	@Override
 	public void tick() {
-		boolean oldRunning = this.running;
-		
 		super.tick();
 		if (!this.level.isClientSide && (this.currentRecipe == null || this.meltingTime == -1)) {
 			--this.recipeCooldown;
@@ -84,10 +81,6 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 			}
 			
 			if (this.meltingTime > 0) --this.meltingTime;
-		}
-		
-		if (oldRunning != this.running && this.level.isClientSide) {
-			CreateBigCannons.LOGGER.debug("Running status changed from {} to {}, count was {}", oldRunning, this.running, this.meltingTime);
 		}
 	}
 	

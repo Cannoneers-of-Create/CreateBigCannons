@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
 
 import net.minecraft.data.DataGenerator;
 import rbasamoyai.createbigcannons.CBCFluids;
+import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.CBCRecipeTypes;
@@ -38,6 +39,26 @@ public class MeltingRecipeProvider extends ProcessingRecipeGen {
 	MELT_BRONZE_NUGGET = create(CreateBigCannons.resource("melt_bronze_nugget"), b -> b.require(CBCTags.ItemCBC.NUGGET_BRONZE)
 			.duration(20)
 			.requiresHeat(HeatCondition.HEATED)
-			.output(CBCFluids.MOLTEN_BRONZE.get(), 16));
+			.output(CBCFluids.MOLTEN_BRONZE.get(), 16)),
 
+	MELT_STEEL_INGOT = create(CreateBigCannons.resource("melt_steel_ingot"), b -> b.require(CBCTags.ItemCBC.INGOT_STEEL)
+			.duration(180)
+			.requiresHeat(HeatCondition.HEATED)
+			.output(CBCFluids.MOLTEN_STEEL.get(), 144)),
+	
+	MELT_STEEL_NUGGET = create(CreateBigCannons.resource("melt_steel_nugget"), b -> b.require(CBCTags.ItemCBC.NUGGET_STEEL)
+			.duration(20)
+			.requiresHeat(HeatCondition.HEATED)
+			.output(CBCFluids.MOLTEN_STEEL.get(), 16)),
+	
+	MELT_NETHERSTEEL_INGOT = create(CreateBigCannons.resource("melt_nethersteel_ingot"), b -> b.require(CBCItems.NETHERSTEEL_INGOT.get())
+			.duration(180)
+			.requiresHeat(HeatCondition.HEATED)
+			.output(CBCFluids.MOLTEN_NETHERSTEEL.get(), 144)),
+	
+	MELT_NETHERSTEEL_NUGGET = create(CreateBigCannons.resource("melt_nethersteel_nugget"), b -> b.require(CBCItems.NETHERSTEEL_NUGGET.get())
+			.duration(20)
+			.requiresHeat(HeatCondition.HEATED)
+			.output(CBCFluids.MOLTEN_NETHERSTEEL.get(), 16));
+	
 }

@@ -79,7 +79,9 @@ public class CBCTags {
 			NUGGET_CAST_IRON = forgeTag("nuggets/cast_iron"),
 			INGOT_CAST_IRON = forgeTag("ingots/cast_iron"),
 			NUGGET_BRONZE = forgeTag("nuggets/bronze"),
-			INGOT_BRONZE = forgeTag("ingots/bronze");
+			INGOT_BRONZE = forgeTag("ingots/bronze"),
+			NUGGET_STEEL = forgeTag("nuggets/steel"),
+			INGOT_STEEL = forgeTag("ingots/steel");
 		
 		public static TagKey<Item> createAndGenerateItemTag(ResourceLocation loc) {
 			TagKey<Item> tag = ItemTags.create(loc); 
