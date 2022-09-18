@@ -18,6 +18,7 @@ public class CBCDatagen {
 			BlockRecipeProvider.registerAll(gen);
 			gen.addProvider(new CBCCraftingRecipeProvider(gen));
 			gen.addProvider(new CBCCompactingRecipeProvider(gen));
+			gen.addProvider(new MeltingRecipeProvider(gen));
 		}
 		if (event.includeClient()) {
 			CBCLangGen.prepare();

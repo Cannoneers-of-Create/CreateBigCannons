@@ -55,7 +55,17 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.requires(CBCItems.PACKED_GUNPOWDER.get(), 3)
 		.requires(CBCItems.EMPTY_POWDER_CHARGE.get())
 		.unlockedBy(getHasName(CBCItems.PACKED_GUNPOWDER.get()), has(CBCItems.PACKED_GUNPOWDER.get()))
-		.save(cons);	
+		.save(cons);
+		
+		ShapelessRecipeBuilder.shapeless(CBCBlocks.CASTING_SAND.get())
+		.requires(Items.SAND, 2)
+		.requires(Items.DIRT)
+		.requires(Items.CLAY_BALL)
+		.unlockedBy(getHasName(Items.SAND), has(Items.SAND))
+		.save(cons);
+		
+		nineBlockStorageRecipesRecipesWithCustomUnpacking(cons, CBCItems.CAST_IRON_INGOT.get(), CBCBlocks.CAST_IRON_BLOCK.get(), "cast_iron_ingot_from_block", "cast_iron_ingot");
+		nineBlockStorageRecipesWithCustomPacking(cons, CBCItems.CAST_IRON_NUGGET.get(), CBCItems.CAST_IRON_INGOT.get(), "cast_iron_ingot_from_nuggets", "cast_iron_ingot");
 	}
 	
 	@Override public String getName() { return "Create Big Cannons Recipes: Crafting"; }

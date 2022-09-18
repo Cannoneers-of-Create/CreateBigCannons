@@ -27,6 +27,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntityRenderer;
+import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteCannonBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntityRenderer;
@@ -135,6 +136,11 @@ public class CBCBlockEntities {
 			.validBlocks(CBCBlocks.BUILT_UP_CANNON,
 					CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER, CBCBlocks.SMALL_STEEL_CANNON_LAYER, CBCBlocks.MEDIUM_STEEL_CANNON_LAYER, CBCBlocks.LARGE_STEEL_CANNON_LAYER, CBCBlocks.VERY_LARGE_STEEL_CANNON_LAYER,
 					CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER, CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER, CBCBlocks.MEDIUM_NETHERSTEEL_CANNON_LAYER, CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER, CBCBlocks.VERY_LARGE_NETHERSTEEL_CANNON_LAYER)
+			.register();
+	
+	public static final BlockEntityEntry<BasinFoundryBlockEntity> BASIN_FOUNDRY = CreateBigCannons.registrate()
+			.tileEntity("basin_foundry", BasinFoundryBlockEntity::new)
+			.validBlock(CBCBlocks.BASIN_FOUNDRY_LID)
 			.register();
 	
 	public static void register() {}

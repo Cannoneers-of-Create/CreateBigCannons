@@ -129,8 +129,13 @@ public class ModGroup {
 				CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH.asStack(),
 				CBCItems.NETHERSTEEL_SCREW_LOCK.asStack(),
 				
+				CBCBlocks.BASIN_FOUNDRY_LID.asStack(),
+				
 				CBCItems.PACKED_GUNPOWDER.asStack(),
-				CBCItems.EMPTY_POWDER_CHARGE.asStack()));
+				CBCItems.EMPTY_POWDER_CHARGE.asStack(),
+				CBCItems.CAST_IRON_NUGGET.asStack(),
+				CBCItems.CAST_IRON_INGOT.asStack(),
+				CBCBlocks.CAST_IRON_BLOCK.asStack()));
 		}
 	};
 	

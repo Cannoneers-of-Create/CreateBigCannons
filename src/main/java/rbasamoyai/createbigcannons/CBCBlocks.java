@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons;
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
@@ -43,6 +44,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlock;
+import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryLidBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
@@ -589,6 +591,13 @@ public class CBCBlocks {
 		REGISTRATE.startSection(AllSections.LOGISTICS);
 	}
 	
+	public static final BlockEntry<Block> CAST_IRON_BLOCK = REGISTRATE
+			.block("cast_iron_block", Block::new)
+			.initialProperties(Material.METAL)
+			.lang("Block of Cast Iron")
+			.simpleItem()
+			.register();
+	
 	//////// Projectiles ////////
 	
 	public static final BlockEntry<SolidShotBlock> SOLID_SHOT = REGISTRATE
@@ -680,6 +689,16 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<CannonCastMouldBlock> SCREW_BREECH_CAST_MOULD =
 			castMould("screw_breech", Block.box(0, 8, 0, 16, 17, 16), CannonCastShape.SCREW_BREECH);
+	
+	public static final BlockEntry<BasinFoundryLidBlock> BASIN_FOUNDRY_LID = REGISTRATE
+			.block("basin_foundry_lid", BasinFoundryLidBlock::new)
+			.initialProperties(SharedProperties::stone)
+			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
+			.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+			.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+			.blockstate((b, p) -> p.simpleBlock(b.get(), p.models().getExistingFile(CreateBigCannons.resource("block/basin_foundry_lid"))))
+			.simpleItem()
+			.register();
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock() {
 		return cannonBlock(true);

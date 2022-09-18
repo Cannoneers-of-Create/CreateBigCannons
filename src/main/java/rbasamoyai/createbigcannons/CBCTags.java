@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -19,6 +20,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class CBCTags {
 
@@ -73,10 +75,20 @@ public class CBCTags {
 	
 	public static class ItemCBC {
 		public static final TagKey<Item>
-			IMPACT_FUZE_HEAD = createAndGenerateItemTag(CreateBigCannons.resource("impact_fuze_head"));
+			IMPACT_FUZE_HEAD = createAndGenerateItemTag(CreateBigCannons.resource("impact_fuze_head")),
+			NUGGET_CAST_IRON = forgeTag("nuggets/cast_iron"),
+			INGOT_CAST_IRON = forgeTag("ingots/cast_iron"),
+			NUGGET_BRONZE = forgeTag("nuggets/bronze"),
+			INGOT_BRONZE = forgeTag("ingots/bronze");
 		
 		public static TagKey<Item> createAndGenerateItemTag(ResourceLocation loc) {
 			TagKey<Item> tag = ItemTags.create(loc); 
+			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> prov.tag(tag));
+			return tag;
+		}
+		
+		public static TagKey<Item> forgeTag(String path) {
+			TagKey<Item> tag = ForgeRegistries.ITEMS.tags().createOptionalTagKey(new ResourceLocation("forge", path), Collections.emptySet());
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> prov.tag(tag));
 			return tag;
 		}

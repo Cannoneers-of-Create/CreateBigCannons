@@ -24,6 +24,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
+import rbasamoyai.createbigcannons.crafting.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 
@@ -49,6 +50,7 @@ public class CreateBigCannons {
 		CBCEntityTypes.register();
 		CBCMenuTypes.register();
 		CBCFluids.register();
+		CBCRecipeTypes.register(modEventBus);
 		
 		CannonCastShape.register();
 		CBCContraptionTypes.prepare();
