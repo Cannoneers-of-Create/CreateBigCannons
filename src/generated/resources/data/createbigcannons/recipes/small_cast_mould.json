@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FPF"
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "F": {
+      "tag": "minecraft:fences"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:small_cast_mould"
+  }
+}

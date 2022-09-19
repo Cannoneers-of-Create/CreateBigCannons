@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " G ",
+    "SCS",
+    " P "
+  ],
+  "key": {
+    "C": {
+      "item": "create:andesite_casing"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "S": {
+      "item": "create:shaft"
+    },
+    "P": {
+      "item": "create:piston_extension_pole"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:cannon_loader"
+  }
+}

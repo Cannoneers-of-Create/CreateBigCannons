@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " L ",
+    "LGL",
+    " L "
+  ],
+  "key": {
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:log_cannon_chamber"
+  }
+}

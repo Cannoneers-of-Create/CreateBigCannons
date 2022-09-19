@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "pD ",
+    "SCS",
+    " Pp"
+  ],
+  "key": {
+    "C": {
+      "item": "create:andesite_casing"
+    },
+    "D": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "create:shaft"
+    },
+    "P": {
+      "item": "create:piston_extension_pole"
+    },
+    "p": {
+      "item": "create:fluid_pipe"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:cannon_drill"
+  }
+}

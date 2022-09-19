@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:bag_of_grapeshot"
+    ]
+  },
+  "criteria": {
+    "has_shot_balls": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "createbigcannons:shot_balls"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:bag_of_grapeshot"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_shot_balls",
+      "has_the_recipe"
+    ]
+  ]
+}

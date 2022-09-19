@@ -57,6 +57,8 @@ public class CBCItems {
 	public static final ItemEntry<Item> NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new).register();
 	public static final ItemEntry<Item> NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new).register();
 	
+	public static final ItemEntry<Item> SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register();
+	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);
 	}

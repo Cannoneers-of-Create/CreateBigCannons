@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:cannon_loader"
+    ]
+  },
+  "criteria": {
+    "has_piston_extension_pole": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "create:piston_extension_pole"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:cannon_loader"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_piston_extension_pole",
+      "has_the_recipe"
+    ]
+  ]
+}

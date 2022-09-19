@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:shot_balls"
+    ]
+  },
+  "criteria": {
+    "has_iron_nugget": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_nugget"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:shot_balls"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_nugget",
+      "has_the_recipe"
+    ]
+  ]
+}

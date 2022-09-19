@@ -124,6 +124,7 @@ public class CBCTags {
 		
 	public static void register() {
 		BlockCBC.sectionRegister();
+		ItemCBC.sectionRegister();
 	}
 	
 }

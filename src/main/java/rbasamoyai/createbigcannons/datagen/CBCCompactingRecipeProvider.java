@@ -2,12 +2,15 @@ package rbasamoyai.createbigcannons.datagen;
 
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.AllTags;
+import com.simibubi.create.content.contraptions.processing.HeatCondition;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
 
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.CBCFluids;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
@@ -43,10 +46,19 @@ public class CBCCompactingRecipeProvider extends ProcessingRecipeGen {
 			.require(AllTags.forgeFluidTag("molten_steel"), 144)
 			.output(1, new ResourceLocation("alloyed", "steel_ingot"), 1)),
 	
-	FORGE_NETHERSTEEL_INGOT = create(CreateBigCannons.resource("forge_nethersteel_ingot"), b -> b.require(AllTags.forgeFluidTag("molten_nethersteel"), 144)
+	FORGE_NETHERSTEEL_INGOT = create(CreateBigCannons.resource("forge_nethersteel_ingot"), b -> b.require(CBCFluids.MOLTEN_NETHERSTEEL.get(), 144)
 			.output(CBCItems.NETHERSTEEL_INGOT.get())),
 	
-	FORGE_NETHERSTEEL_NUGGET = create(CreateBigCannons.resource("forge_nethersteel_nugget"), b -> b.require(AllTags.forgeFluidTag("molten_nethersteel"), 16)
-			.output(CBCItems.NETHERSTEEL_NUGGET.get()));
+	FORGE_NETHERSTEEL_NUGGET = create(CreateBigCannons.resource("forge_nethersteel_nugget"), b -> b.require(CBCFluids.MOLTEN_NETHERSTEEL.get(), 16)
+			.output(CBCItems.NETHERSTEEL_NUGGET.get())),
 		
+	// The following are reimplemented from Create Deco
+	IRON_TO_CAST_IRON_INGOT = create(CreateBigCannons.resource("iron_to_cast_iron_ingot"), b -> b.require(Items.IRON_INGOT)
+			.requiresHeat(HeatCondition.HEATED)
+			.output(CBCItems.CAST_IRON_INGOT.get())),
+	
+	IRON_TO_CAST_IRON_BLOCK = create(CreateBigCannons.resource("iron_to_cast_iron_block"), b -> b.require(Items.IRON_BLOCK)
+			.requiresHeat(HeatCondition.HEATED)
+			.output(CBCBlocks.CAST_IRON_BLOCK.get()));
+
 }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:steel_screw_lock"
+    ]
+  },
+  "criteria": {
+    "has_steel_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/steel"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:steel_screw_lock"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

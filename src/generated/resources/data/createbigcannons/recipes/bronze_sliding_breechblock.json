@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "CIC",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/bronze"
+    },
+    "C": {
+      "item": "create:cogwheel"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:bronze_sliding_breechblock"
+  }
+}

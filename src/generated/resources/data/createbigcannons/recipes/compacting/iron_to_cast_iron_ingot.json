@@ -1,0 +1,14 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_ingot"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:cast_iron_ingot"
+    }
+  ],
+  "heatRequirement": "heated"
+}

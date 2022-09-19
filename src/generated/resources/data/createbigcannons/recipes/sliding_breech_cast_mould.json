@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SLS"
+  ],
+  "key": {
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "S": {
+      "tag": "minecraft:slabs"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:sliding_breech_cast_mould"
+  }
+}

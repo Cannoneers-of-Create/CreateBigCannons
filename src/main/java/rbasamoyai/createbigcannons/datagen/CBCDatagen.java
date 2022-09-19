@@ -19,6 +19,7 @@ public class CBCDatagen {
 			gen.addProvider(new CBCCraftingRecipeProvider(gen));
 			gen.addProvider(new CBCCompactingRecipeProvider(gen));
 			gen.addProvider(new MeltingRecipeProvider(gen));
+			gen.addProvider(new CBCMixingRecipeProvider(gen));
 		}
 		if (event.includeClient()) {
 			CBCLangGen.prepare();

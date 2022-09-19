@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:cast_iron_sliding_breechblock"
+    ]
+  },
+  "criteria": {
+    "has_cast_iron_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/cast_iron"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:cast_iron_sliding_breechblock"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cast_iron_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

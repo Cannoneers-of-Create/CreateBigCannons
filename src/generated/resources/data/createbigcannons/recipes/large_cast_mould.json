@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "FLF"
+  ],
+  "key": {
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "F": {
+      "tag": "minecraft:fences"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:large_cast_mould"
+  }
+}

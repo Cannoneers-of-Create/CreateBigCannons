@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "K"
+  ],
+  "key": {
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "K": {
+      "tag": "minecraft:wooden_buttons"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:cannon_end_cast_mould"
+  }
+}

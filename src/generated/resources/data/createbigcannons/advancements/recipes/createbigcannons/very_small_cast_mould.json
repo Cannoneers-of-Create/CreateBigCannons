@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:very_small_cast_mould"
+    ]
+  },
+  "criteria": {
+    "has_casting_sand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "createbigcannons:casting_sand"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:very_small_cast_mould"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_casting_sand",
+      "has_the_recipe"
+    ]
+  ]
+}
