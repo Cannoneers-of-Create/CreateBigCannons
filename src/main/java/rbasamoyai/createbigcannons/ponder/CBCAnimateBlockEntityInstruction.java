@@ -10,6 +10,8 @@ import com.simibubi.create.foundation.ponder.instruction.AnimateTileEntityInstru
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntity;
 
 public class CBCAnimateBlockEntityInstruction extends AnimateTileEntityInstruction {
 
@@ -31,6 +33,20 @@ public class CBCAnimateBlockEntityInstruction extends AnimateTileEntityInstructi
 			(level, t) -> castIfPresent(level, location, CannonMountBlockEntity.class)
 				.ifPresent(mount -> mount.setYaw(t)),
 			level -> castIfPresent(level, location, CannonMountBlockEntity.class).map(mount -> mount.getYawOffset(1.0f)).orElse(0.0f));
+	}
+	
+	public static CBCAnimateBlockEntityInstruction animateSlidingBreech(BlockPos location, float offset, int ticks) {
+		return new CBCAnimateBlockEntityInstruction(location, offset, ticks,
+			(level, t) -> castIfPresent(level, location, SlidingBreechBlockEntity.class)
+				.ifPresent(breech -> breech.setOpenProgress(t)),
+			level -> castIfPresent(level, location, SlidingBreechBlockEntity.class).map(breech -> breech.getRenderedBlockOffset(1.0f)).orElse(0.0f));
+	}
+	
+	public static CBCAnimateBlockEntityInstruction animateScrewBreech(BlockPos location, float offset, int ticks) {
+		return new CBCAnimateBlockEntityInstruction(location, offset, ticks,
+			(level, t) -> castIfPresent(level, location, ScrewBreechBlockEntity.class)
+				.ifPresent(breech -> breech.setOpenProgress(t)),
+			level -> castIfPresent(level, location, ScrewBreechBlockEntity.class).map(breech -> breech.getRenderedBlockOffset(1.0f)).orElse(0.0f));
 	}
 	
 	private static <T> Optional<T> castIfPresent(PonderWorld level, BlockPos pos, Class<T> clazz) {
