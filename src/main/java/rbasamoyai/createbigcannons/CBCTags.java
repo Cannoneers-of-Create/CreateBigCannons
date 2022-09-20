@@ -78,10 +78,13 @@ public class CBCTags {
 			IMPACT_FUZE_HEAD = createAndGenerateItemTag(CreateBigCannons.resource("impact_fuze_head")),
 			NUGGET_CAST_IRON = forgeTag("nuggets/cast_iron"),
 			INGOT_CAST_IRON = forgeTag("ingots/cast_iron"),
+			BLOCK_CAST_IRON = forgeTag("blocks/cast_iron"),
 			NUGGET_BRONZE = forgeTag("nuggets/bronze"),
 			INGOT_BRONZE = forgeTag("ingots/bronze"),
+			BLOCK_BRONZE = forgeTag("blocks/bronze"),
 			NUGGET_STEEL = forgeTag("nuggets/steel"),
-			INGOT_STEEL = forgeTag("ingots/steel");
+			INGOT_STEEL = forgeTag("ingots/steel"),
+			BLOCK_STEEL = forgeTag("blocks/steel");
 		
 		public static TagKey<Item> createAndGenerateItemTag(ResourceLocation loc) {
 			TagKey<Item> tag = ItemTags.create(loc); 
@@ -117,8 +120,20 @@ public class CBCTags {
 			});
 		}
 		
+		public static void addIdsToItemTag(TagKey<Item> tag, ResourceLocation... ids) {
+			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
+				TagAppender<Item> app = prov.tag(tag);
+				for (ResourceLocation id : ids) {
+					app.addOptional(id);
+				}
+			});
+		}
+		
 		public static void sectionRegister() {
 			addItemsToItemTag(IMPACT_FUZE_HEAD, Items.STONE_BUTTON, Items.POLISHED_BLACKSTONE_BUTTON);
+			addIdsToItemTag(BLOCK_BRONZE, alloyed("bronze_block"));
+			addIdsToItemTag(BLOCK_STEEL, alloyed("steel_block"));
+			addIdsToItemTag(BLOCK_CAST_IRON, createdeco("cast_iron_block"));
 		}
 	}
 		
@@ -126,5 +141,8 @@ public class CBCTags {
 		BlockCBC.sectionRegister();
 		ItemCBC.sectionRegister();
 	}
+	
+	private static ResourceLocation alloyed(String path) { return new ResourceLocation("alloyed", path); }
+	private static ResourceLocation createdeco(String path) { return new ResourceLocation("createdeco", path); }
 	
 }

@@ -7,7 +7,7 @@
   ],
   "key": {
     "I": {
-      "item": "createbigcannons:cast_iron_ingot"
+      "tag": "forge:ingots/cast_iron"
     },
     "S": {
       "tag": "minecraft:wooden_slabs"

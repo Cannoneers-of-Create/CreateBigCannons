@@ -1,0 +1,16 @@
+{
+  "type": "createbigcannons:melting",
+  "ingredients": [
+    {
+      "tag": "forge:blocks/cast_iron"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "createbigcannons:molten_cast_iron",
+      "amount": 1296
+    }
+  ],
+  "processingTime": 1620,
+  "heatRequirement": "heated"
+}

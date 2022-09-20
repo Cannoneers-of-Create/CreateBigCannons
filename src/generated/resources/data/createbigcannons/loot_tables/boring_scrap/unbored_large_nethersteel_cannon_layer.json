@@ -1,0 +1,43 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 64.0,
+              "add": false
+            }
+          ],
+          "name": "createbigcannons:nethersteel_nugget"
+        }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 39.0,
+                "max": 49.0
+              },
+              "add": false
+            }
+          ],
+          "name": "createbigcannons:nethersteel_nugget"
+        }
+      ]
+    }
+  ]
+}

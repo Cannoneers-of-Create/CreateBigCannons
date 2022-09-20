@@ -47,11 +47,6 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.pattern("W W")
 		.pattern("WSW")
 		.unlockedBy("has_wool", has(ItemTags.WOOL))
-		.save(cons);;
-		
-		ShapelessRecipeBuilder.shapeless(CBCItems.PACKED_GUNPOWDER.get())
-		.requires(Items.GUNPOWDER, 9)
-		.unlockedBy(getHasName(Items.GUNPOWDER), has(Items.GUNPOWDER))
 		.save(cons);
 		
 		ShapelessRecipeBuilder.shapeless(CBCBlocks.POWDER_CHARGE.get())
@@ -79,19 +74,25 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.pattern("III")
 		.pattern(" S ")
 		.unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
+		.unlockedBy("has_cast_iron_ingot", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
 		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCBlocks.SOLID_SHOT.get())
-		.define('I', CBCItems.CAST_IRON_INGOT.get()).define('S', ItemTags.WOODEN_SLABS)
+		.define('I', CBCTags.ItemCBC.INGOT_CAST_IRON).define('S', ItemTags.WOODEN_SLABS)
 		.pattern("I")
 		.pattern("I")
 		.pattern("S")
 		.unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
+		.unlockedBy("has_cast_iron_ingot", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
 		.save(cons, CreateBigCannons.resource("solid_shot_cast_iron"));
 		
-		ShapelessRecipeBuilder.shapeless(CBCItems.SHOT_BALLS.get())
-		.requires(Items.IRON_NUGGET, 9)
+		ShapedRecipeBuilder.shaped(CBCItems.SHOT_BALLS.get(), 2)
+		.define('i', Items.IRON_NUGGET).define('I', Items.IRON_INGOT)
+		.pattern("iii")
+		.pattern("iIi")
+		.pattern("iii")
 		.unlockedBy(getHasName(Items.IRON_NUGGET), has(Items.IRON_NUGGET))
+		.unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
 		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCBlocks.BAG_OF_GRAPESHOT.get())

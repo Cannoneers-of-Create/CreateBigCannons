@@ -27,16 +27,23 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
@@ -351,7 +358,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	}
 	
 	protected void tryFinishingBoring() {
-		if (this.level.isClientSide || this.latheEntity == null || this.movedContraption == null || this.boringPos == null) return;
+		if (!(this.level instanceof ServerLevel slevel)  || this.latheEntity == null || this.movedContraption == null || this.boringPos == null) return;
 		
 		if (!(this.latheEntity.getContraption() instanceof BearingContraption lathe)) return;
 		BlockPos boringOffset = this.boringPos.subtract(new BlockPos(this.latheEntity.position()));
@@ -372,6 +379,16 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		StructureBlockInfo newInfo = new StructureBlockInfo(boringOffset, boredState, latheBlockInfo.nbt);
 		lathe.getBlocks().put(boringOffset, newInfo);
 		bearing.notifyUpdate();
+		
+		ResourceLocation unboredId = ForgeRegistries.BLOCKS.getKey(latheBlockInfo.state.getBlock());
+		LootTable table = slevel.getServer().getLootTables().get(new ResourceLocation(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
+		List<ItemStack> scrap = table.getRandomItems(new LootContext.Builder(slevel)
+				.withRandom(slevel.random)
+				.withParameter(LootContextParams.BLOCK_STATE, latheBlockInfo.state)
+				.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.boringPos))
+				.withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+				.create(LootContextParamSets.BLOCK));
+		scrap.forEach(s -> Block.popResource(this.level, this.boringPos, s));
 		
 		this.level.playSound(null, this.boringPos, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0f, 1.0f);
 		CBCNetwork.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this.latheEntity), new ClientboundUpdateContraptionPacket(this.latheEntity, boringOffset, newInfo));

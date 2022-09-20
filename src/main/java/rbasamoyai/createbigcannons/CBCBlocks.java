@@ -595,7 +595,9 @@ public class CBCBlocks {
 			.block("cast_iron_block", Block::new)
 			.initialProperties(Material.METAL)
 			.lang("Block of Cast Iron")
-			.simpleItem()
+			.item()
+			.tag(CBCTags.ItemCBC.BLOCK_CAST_IRON)
+			.build()
 			.register();
 	
 	public static final BlockEntry<Block> NETHERSTEEL_BLOCK = REGISTRATE
