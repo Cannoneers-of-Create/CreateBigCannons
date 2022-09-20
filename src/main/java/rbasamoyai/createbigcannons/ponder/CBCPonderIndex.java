@@ -28,6 +28,12 @@ public class CBCPonderIndex {
 		
 		HELPER.forComponents(CBCItems.IMPACT_FUZE, CBCItems.TIMED_FUZE, CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL)
 			.addStoryBoard("munitions/fuzing_munitions", CannonLoadingScenes::fuzingMunitions, CBCPonderTags.MUNITIONS);
+		
+		HELPER.forComponents(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
+			.addStoryBoard("cannon_kinetics/sliding_breech", CannonKineticsScenes::slidingBreech);
+		
+		HELPER.forComponents(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
+			.addStoryBoard("cannon_kinetics/screw_breech", CannonKineticsScenes::screwBreech);
 	}
 	
 	public static void registerTags() {
@@ -37,7 +43,12 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.CANNON_LOADER)
 			.add(CBCBlocks.RAM_HEAD)
 			.add(CBCBlocks.WORM_HEAD)
-			.add(AllBlocks.PISTON_EXTENSION_POLE);
+			.add(AllBlocks.PISTON_EXTENSION_POLE)
+			.add(CBCBlocks.CAST_IRON_SLIDING_BREECH)
+			.add(CBCBlocks.BRONZE_SLIDING_BREECH)
+			.add(CBCBlocks.STEEL_SLIDING_BREECH)
+			.add(CBCBlocks.STEEL_SCREW_BREECH)
+			.add(CBCBlocks.NETHERSTEEL_SCREW_BREECH);
 		PonderRegistry.TAGS.forTag(CBCPonderTags.MUNITIONS)
 			.add(CBCBlocks.POWDER_CHARGE)
 			.add(CBCBlocks.HE_SHELL)

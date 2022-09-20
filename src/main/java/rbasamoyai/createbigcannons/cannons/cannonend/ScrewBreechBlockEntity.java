@@ -62,6 +62,9 @@ public class ScrewBreechBlockEntity extends KineticTileEntity implements ICannon
 		return Mth.clamp(this.openProgress + this.getOpeningSpeed() * partialTicks, 0.0f, 1.0f);
 	}
 	
+	public float getOpenProgress() { return this.openProgress; }
+	public void setOpenProgress(float openProgress) { this.openProgress = openProgress; }
+	
 	@Override
 	protected void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
