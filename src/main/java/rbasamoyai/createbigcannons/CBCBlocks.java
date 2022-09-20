@@ -289,7 +289,7 @@ public class CBCBlocks {
 			.register();	
 	
 	public static final BlockEntry<UnboredCannonBlock> UNBORED_VERY_SMALL_STEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_very_small_cannon_layer", p -> UnboredCannonBlock.verySmall(p, CannonMaterial.STEEL, VERY_SMALL_STEEL_CANNON_LAYER))
+			.block("unbored_very_small_steel_cannon_layer", p -> UnboredCannonBlock.verySmall(p, CannonMaterial.STEEL, VERY_SMALL_STEEL_CANNON_LAYER))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/steel", "cannon_barrel/unbored_steel"))
 			.item(CannonBlockItem::new).build()
@@ -443,7 +443,7 @@ public class CBCBlocks {
 			.register();	
 	
 	public static final BlockEntry<UnboredCannonBlock> UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_very_small_cannon_layer", p -> UnboredCannonBlock.verySmall(p, CannonMaterial.NETHERSTEEL, VERY_SMALL_NETHERSTEEL_CANNON_LAYER))
+			.block("unbored_very_small_nethersteel_cannon_layer", p -> UnboredCannonBlock.verySmall(p, CannonMaterial.NETHERSTEEL, VERY_SMALL_NETHERSTEEL_CANNON_LAYER))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/nethersteel", "cannon_barrel/unbored_nethersteel"))
 			.item(CannonBlockItem::new).build()
@@ -702,6 +702,7 @@ public class CBCBlocks {
 			.initialProperties(SharedProperties::stone)
 			.properties(p -> p.color(MaterialColor.COLOR_GRAY))
 			.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+			.properties(p -> p.noOcclusion())
 			.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 			.blockstate((b, p) -> p.simpleBlock(b.get(), p.models().getExistingFile(CreateBigCannons.resource("block/basin_foundry_lid"))))
 			.simpleItem()
