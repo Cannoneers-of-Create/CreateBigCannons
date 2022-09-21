@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.datagen;
+package rbasamoyai.createbigcannons.datagen.loot;
 
 import java.util.List;
 import java.util.Map;

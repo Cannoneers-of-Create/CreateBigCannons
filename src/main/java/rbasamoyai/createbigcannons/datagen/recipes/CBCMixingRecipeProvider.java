@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.datagen;
+package rbasamoyai.createbigcannons.datagen.recipes;
 
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.contraptions.processing.HeatCondition;

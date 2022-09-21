@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.datagen;
+package rbasamoyai.createbigcannons.datagen.loot;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
