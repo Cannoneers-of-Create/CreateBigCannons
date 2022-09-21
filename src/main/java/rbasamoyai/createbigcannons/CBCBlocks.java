@@ -49,6 +49,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBloc
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
+import rbasamoyai.createbigcannons.munitions.apshell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
 import rbasamoyai.createbigcannons.munitions.heshell.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.shot.SolidShotBlock;
@@ -631,6 +632,15 @@ public class CBCBlocks {
 			.transform(shell(MaterialColor.COLOR_GREEN))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<APShellBlock> AP_SHELL = REGISTRATE
+			.block("ap_shell", APShellBlock::new)
+			.transform(shell(MaterialColor.COLOR_BLUE))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.projectile("projectile/ap_shell"))
+			.lang("Armor Piercing (AP) Shell")
 			.simpleItem()
 			.register();
 	

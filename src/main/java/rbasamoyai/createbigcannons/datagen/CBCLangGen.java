@@ -45,6 +45,11 @@ public class CBCLangGen {
 		.summary("Peppers the battlefield with _shrapnel bullets_ when detonated.")
 		.conditionAndBehavior("On Detonation", "Releases _shrapnel_ in its direction. The shrapnel _spreads out over a wide area._");
 		
+		tooltip(CBCBlocks.AP_SHELL)
+		.header("ARMOR PIERCING (AP) SHELL")
+		.summary("Can effectively _pierce through blocks_, detonating inside protected structures.")
+		.conditionAndBehavior("On Detonation", "Explodes.");
+		
 		tooltip(CBCItems.IMPACT_FUZE)
 		.header("IMPACT FUZE")
 		.summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact.")
