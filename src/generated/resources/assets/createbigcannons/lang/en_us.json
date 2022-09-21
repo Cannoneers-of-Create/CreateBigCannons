@@ -136,7 +136,7 @@
   "createbigcannons.ponder.cannon_mount/firing_big_cannons.text_2": "Power the lit cannon face on the cannon mount to fire the mounted cannon.",
   "createbigcannons.ponder.cannon_mount/firing_big_cannons.text_3": "To disassemble the cannon to prepare it for the next shot, unpower the hammer face.",
   "createbigcannons.ponder.cannon_mount/firing_big_cannons.text_4": "The cannon instantly snaps back to the position it was assembled at when disassembled.",
-  "createbigcannons.ponder.cannon_mount/screw_breech.header": "Using a Sliding Breech",
+  "createbigcannons.ponder.cannon_mount/screw_breech.header": "Using a Screw Breech",
   "createbigcannons.ponder.cannon_mount/screw_breech.text_1": "Screw Breeches are strong breech blocks that do not suffer strength penalties unlike Sliding Breeches.",
   "createbigcannons.ponder.cannon_mount/screw_breech.text_2": "Use rotational force to unlock screw breeches.",
   "createbigcannons.ponder.cannon_mount/screw_breech.text_3": "Once the screw breech is fully unlocked, use kinetic contraptions to move it out of the way for loading.",

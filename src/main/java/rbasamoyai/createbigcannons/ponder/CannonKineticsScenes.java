@@ -80,7 +80,7 @@ public class CannonKineticsScenes {
 	}
 	
 	public static void screwBreech(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_mount/screw_breech", "Using a Sliding Breech");
+		scene.title("cannon_mount/screw_breech", "Using a Screw Breech");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 		
