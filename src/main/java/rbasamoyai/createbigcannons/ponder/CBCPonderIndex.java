@@ -26,7 +26,7 @@ public class CBCPonderIndex {
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.POWDER_CHARGE)
 			.addStoryBoard("munitions/cannon_loads", CannonLoadingScenes::cannonLoads, CBCPonderTags.MUNITIONS);
 		
-		HELPER.forComponents(CBCItems.IMPACT_FUZE, CBCItems.TIMED_FUZE, CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL)
+		HELPER.forComponents(CBCItems.IMPACT_FUZE, CBCItems.TIMED_FUZE, CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL)
 			.addStoryBoard("munitions/fuzing_munitions", CannonLoadingScenes::fuzingMunitions, CBCPonderTags.MUNITIONS);
 		
 		HELPER.forComponents(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
@@ -53,6 +53,7 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.POWDER_CHARGE)
 			.add(CBCBlocks.HE_SHELL)
 			.add(CBCBlocks.SHRAPNEL_SHELL)
+			.add(CBCBlocks.AP_SHELL)
 			.add(CBCItems.IMPACT_FUZE)
 			.add(CBCItems.TIMED_FUZE);
 	}

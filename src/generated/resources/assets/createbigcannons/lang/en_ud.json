@@ -1,4 +1,9 @@
 {
+  "block.createbigcannons.ap_shell": "\u05DF\u05DF\u01DD\u0265S )\u0500\u2C6F( bu\u0131\u0254\u0279\u01DD\u0131\u0500 \u0279o\u026F\u0279\u2C6F",
+  "block.createbigcannons.ap_shell.tooltip": "\uA780\uA780\u018EHS )\u0500\u2C6F( \u2141NI\u0186\u1D1A\u018EI\u0500 \u1D1AOW\u1D1A\u2C6F",
+  "block.createbigcannons.ap_shell.tooltip.behaviour1": "\u02D9s\u01DDpo\u05DFdx\u018E",
+  "block.createbigcannons.ap_shell.tooltip.condition1": "uo\u0131\u0287\u0250uo\u0287\u01DD\u15E1 uO",
+  "block.createbigcannons.ap_shell.tooltip.summary": "\u02D9s\u01DD\u0279n\u0287\u0254n\u0279\u0287s p\u01DD\u0287\u0254\u01DD\u0287o\u0279d \u01DDp\u0131su\u0131 bu\u0131\u0287\u0250uo\u0287\u01DDp '\u203Es\u029E\u0254o\u05DFq \u0265bno\u0279\u0265\u0287 \u01DD\u0254\u0279\u01DD\u0131d\u203E \u028E\u05DF\u01DD\u028C\u0131\u0287\u0254\u01DD\u025F\u025F\u01DD u\u0250\u0186",
   "block.createbigcannons.bag_of_grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279\u2141 \u025Fo b\u0250\u15FA",
   "block.createbigcannons.bag_of_grapeshot.tooltip": "\u27D8OHS\u018E\u0500\u2C6F\u1D1A\u2141 \u2132O \u2141\u2C6F\u15FA",
   "block.createbigcannons.bag_of_grapeshot.tooltip.behaviour1": "\u203E\u02D9bu\u0131\u0279\u0131\u025F uodn s\u01DD\u0287\u0250\u0279b\u01DD\u0287u\u0131s\u0131\u15E1\u203E \u02D9\u0287o\u0265s\u01DDd\u0250\u0279b s\u01DDs\u0250\u01DD\u05DF\u01DD\u1D1A",
@@ -171,6 +176,7 @@
   "death.attack.createbigcannons.grapeshot.player": "\u0287o\u0265s\u01DDd\u0250\u0279b \u028Eq \u0287no u\u028Do\u05DFq s\u0250\u028D %s",
   "death.attack.createbigcannons.shrapnel": "\u05DF\u01DDud\u0250\u0279\u0265s \u028Eq dn p\u01DDdd\u0131\u0279 s\u0250\u028D %s",
   "death.attack.createbigcannons.shrapnel.player": "\u05DF\u01DDud\u0250\u0279\u0265s \u028Eq dn p\u01DDdd\u0131\u0279 s\u0250\u028D %s",
+  "entity.createbigcannons.ap_shell": "\u05DF\u05DF\u01DD\u0265S )\u0500\u2C6F( bu\u0131\u0254\u0279\u01DD\u0131\u0500 \u0279o\u026F\u0279\u2C6F",
   "entity.createbigcannons.bag_of_grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279\u2141 \u025FO b\u0250\u15FA",
   "entity.createbigcannons.grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279\u2141",
   "entity.createbigcannons.he_shell": "\u05DF\u05DF\u01DD\u0265S )\u018EH( \u01DD\u028C\u0131so\u05DFdx\u018E \u0265b\u0131H",

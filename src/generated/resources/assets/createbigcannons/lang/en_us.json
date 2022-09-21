@@ -1,4 +1,9 @@
 {
+  "block.createbigcannons.ap_shell": "Armor Piercing (AP) Shell",
+  "block.createbigcannons.ap_shell.tooltip": "ARMOR PIERCING (AP) SHELL",
+  "block.createbigcannons.ap_shell.tooltip.behaviour1": "Explodes.",
+  "block.createbigcannons.ap_shell.tooltip.condition1": "On Detonation",
+  "block.createbigcannons.ap_shell.tooltip.summary": "Can effectively _pierce through blocks_, detonating inside protected structures.",
   "block.createbigcannons.bag_of_grapeshot": "Bag of Grapeshot",
   "block.createbigcannons.bag_of_grapeshot.tooltip": "BAG OF GRAPESHOT",
   "block.createbigcannons.bag_of_grapeshot.tooltip.behaviour1": "Releases grapeshot. _Disintegrates upon firing._",
@@ -171,6 +176,7 @@
   "death.attack.createbigcannons.grapeshot.player": "%s was blown out by grapeshot",
   "death.attack.createbigcannons.shrapnel": "%s was ripped up by shrapnel",
   "death.attack.createbigcannons.shrapnel.player": "%s was ripped up by shrapnel",
+  "entity.createbigcannons.ap_shell": "Armor Piercing (AP) Shell",
   "entity.createbigcannons.bag_of_grapeshot": "Bag Of Grapeshot",
   "entity.createbigcannons.grapeshot": "Grapeshot",
   "entity.createbigcannons.he_shell": "High Explosive (HE) Shell",

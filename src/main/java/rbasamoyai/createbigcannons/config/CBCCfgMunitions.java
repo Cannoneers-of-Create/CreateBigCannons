@@ -6,6 +6,7 @@ public class CBCCfgMunitions extends ConfigBase {
 
 	public final ConfigBool invulProjectileHurt = b(false, "invulnerableAfterProjectileHurt", Comments.invulnerableAfterProjectileHurt);
 	public final ConfigFloat heShellPower = f(10, 0, "heShellPower", Comments.heShellPower);
+	public final ConfigFloat apShellPower = f(5, 0, "apShellPower", Comments.apShellPower);
 	
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes"); 
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
@@ -24,6 +25,7 @@ public class CBCCfgMunitions extends ConfigBase {
 	private static class Comments {
 		static String invulnerableAfterProjectileHurt = "If an entity should be invulnerable for a while after being hit by a mod projectile.";
 		static String heShellPower = "How powerful the High Explosive (HE) shell is. For reference, a block of TNT has an explosion power of 4.";
+		static String apShellPower = "How powerful the Armor Piercing (AP) shell is. For reference, a block of TNT has an explosion power of 4.";
 		static String impactFuzeDetonationChance = "Chance that the Impact Fuze will detonate on hitting something. 0 is 0%, 1 is 100%.";
 		static String shrapnelCount = "Amount of shrapnel bullets that a Shrapnel Shell releases on detonation.";
 		static String shrapnelSpread = "How much shrapnel bullets spread on release.";

@@ -59,6 +59,7 @@ public class ModGroup {
 				CBCBlocks.SOLID_SHOT.asStack(),
 				CBCBlocks.BAG_OF_GRAPESHOT.asStack(),
 				CBCBlocks.HE_SHELL.asStack(),
+				CBCBlocks.AP_SHELL.asStack(),
 				CBCBlocks.SHRAPNEL_SHELL.asStack(),
 				CBCItems.IMPACT_FUZE.asStack(),
 				TimedFuzeItem.getCreativeTabItem(20),

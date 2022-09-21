@@ -9,6 +9,7 @@ import net.minecraft.world.entity.MobCategory;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonProjectileRenderer;
+import rbasamoyai.createbigcannons.munitions.apshell.APShellProjectile;
 import rbasamoyai.createbigcannons.munitions.grapeshot.Grapeshot;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotRenderer;
@@ -34,6 +35,7 @@ public class CBCEntityTypes {
 	public static final EntityEntry<HEShellProjectile> HE_SHELL = cannonProjectile("he_shell", HEShellProjectile::new, "High Explosive (HE) Shell");
 	public static final EntityEntry<ShrapnelShellProjectile> SHRAPNEL_SHELL = cannonProjectile("shrapnel_shell", ShrapnelShellProjectile::new);
 	public static final EntityEntry<GrapeshotCannonProjectile> BAG_OF_GRAPESHOT = cannonProjectile("bag_of_grapeshot", GrapeshotCannonProjectile::new);
+	public static final EntityEntry<APShellProjectile> AP_SHELL = cannonProjectile("ap_shell", APShellProjectile::new, "Armor Piercing (AP) Shell");
 	
 	public static final EntityEntry<Shrapnel> SHRAPNEL = CreateBigCannons.registrate()
 			.entity("shrapnel", Shrapnel::new, MobCategory.MISC)

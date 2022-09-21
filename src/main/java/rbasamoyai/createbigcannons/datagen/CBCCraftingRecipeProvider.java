@@ -114,7 +114,15 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.HE_SHELL.get())
 		.key('I', Items.IRON_INGOT).key('T', Items.TNT).key('S', ItemTags.WOODEN_SLABS)
 		.patternLine(" I ")
+		.patternLine("III")
 		.patternLine("ITI")
+		.patternLine(" S ")
+		.build(cons);
+		
+		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.AP_SHELL.get())
+		.key('I', Items.IRON_INGOT).key('C', CBCTags.ItemCBC.INGOT_CAST_IRON).key('T', Items.TNT).key('S', ItemTags.WOODEN_SLABS)
+		.patternLine(" C ")
+		.patternLine("ICI")
 		.patternLine("ITI")
 		.patternLine(" S ")
 		.build(cons);

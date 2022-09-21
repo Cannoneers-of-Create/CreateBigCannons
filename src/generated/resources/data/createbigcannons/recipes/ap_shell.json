@@ -1,14 +1,17 @@
 {
   "type": "create:mechanical_crafting",
   "pattern": [
-    " I ",
-    "III",
+    " C ",
+    "ICI",
     "ITI",
     " S "
   ],
   "key": {
     "I": {
       "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "tag": "forge:ingots/cast_iron"
     },
     "T": {
       "item": "minecraft:tnt"
@@ -18,7 +21,7 @@
     }
   },
   "result": {
-    "item": "createbigcannons:he_shell"
+    "item": "createbigcannons:ap_shell"
   },
   "acceptMirrored": true
 }
