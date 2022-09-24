@@ -48,6 +48,13 @@ public class CBCPonderIndex {
 		HELPER.forComponents(AllBlocks.ENCASED_FAN)
 			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons);
 		*/
+		
+		HELPER.forComponents(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH,
+				CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH, CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH)
+			.addStoryBoard("cannon_crafting/incomplete_cannon_blocks", CannonCraftingScenes::incompleteCannonBlocks);
+		
+		HELPER.forComponents(CBCBlocks.BASIN_FOUNDRY_LID)
+			.addStoryBoard("cannon_crafting/basin_foundry", CannonCraftingScenes::basinFoundry);
 	}
 	
 	public static void registerTags() {
@@ -76,7 +83,12 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.CASTING_SAND)
 			.add(CBCBlocks.CANNON_DRILL)
 			.add(CBCBlocks.CANNON_BUILDER)
-			.add(AllBlocks.ENCASED_FAN);
+			.add(AllBlocks.ENCASED_FAN)
+			.add(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH)
+			.add(CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH)
+			.add(CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH)
+			.add(CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH)
+			.add(CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH);
 	}
 	
 	public static void registerLang() {

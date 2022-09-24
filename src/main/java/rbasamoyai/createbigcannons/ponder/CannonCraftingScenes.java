@@ -2,6 +2,9 @@ package rbasamoyai.createbigcannons.ponder;
 
 import java.util.function.UnaryOperator;
 
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
+import com.simibubi.create.content.contraptions.components.deployer.DeployerTileEntity;
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
@@ -13,6 +16,7 @@ import com.simibubi.create.foundation.utility.Pointing;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -21,6 +25,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteCannonBlock;
 
 public class CannonCraftingScenes {
 
@@ -234,9 +239,104 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 	
+	public static void incompleteCannonBlocks(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_crafting/incomplete_cannon_blocks", "Incomplete Cannon Blocks");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+		scene.idle(20);
+		
+		scene.world.showSection(util.select.fromTo(2, 1, 1, 2, 1, 4), Direction.DOWN);
+		scene.idle(20);
+		
+		BlockPos incompletePos = util.grid.at(2, 1, 2);
+		scene.overlay.showText(60)
+			.text("Some bored cannon blocks need additional items to be completed.")
+			.pointAt(util.vector.centerOf(incompletePos));
+		scene.idle(80);
+		
+		scene.overlay.showText(120)
+			.text("These are usually cannon breech blocks.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(20);
+		
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(incompletePos), Pointing.DOWN).withItem(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH.asStack()), 40);
+		scene.idle(60);
+		
+		scene.world.modifyBlock(util.grid.at(2, 1, 4), copyPropertyTo(FACING, CBCBlocks.STEEL_CANNON_BARREL.getDefaultState()), true);
+		scene.world.modifyBlock(util.grid.at(2, 1, 3), copyPropertyTo(FACING, CBCBlocks.STEEL_CANNON_CHAMBER.getDefaultState()), true);
+		scene.world.modifyBlock(incompletePos, copyPropertyTo(FACING, CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH.getDefaultState()), true);
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(incompletePos), Pointing.DOWN).withItem(CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH.asStack()), 40);
+		scene.idle(60);
+		
+		scene.world.modifyBlock(util.grid.at(2, 1, 4), copyPropertyTo(FACING, CBCBlocks.CAST_IRON_CANNON_BARREL.getDefaultState()), true);
+		scene.world.modifyBlock(util.grid.at(2, 1, 3), copyPropertyTo(FACING, CBCBlocks.CAST_IRON_CANNON_CHAMBER.getDefaultState()), true);
+		scene.world.modifyBlock(incompletePos, copyPropertyTo(FACING, CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH.getDefaultState().setValue(ALONG_FIRST, true)), true);
+		scene.idle(20);
+		
+		scene.addKeyframe();
+		
+		scene.overlay.showText(60)
+			.text("Use the listed items on the block to complete it.")
+			.pointAt(util.vector.centerOf(incompletePos))
+			.colored(PonderPalette.GREEN);
+		scene.idle(20);
+		
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(incompletePos), Pointing.DOWN).rightClick().withItem(AllBlocks.SHAFT.asStack()), 40);
+		scene.idle(10);
+		scene.world.modifyBlock(incompletePos, setStateValue(IncompleteCannonBlock.STAGE_2, 1), false);
+		scene.idle(40);
+		
+		Selection deployerGearDown = util.select.position(3, 0, 5);
+		Selection deployerGearUp = util.select.fromTo(4, 1, 2, 4, 1, 5);
+		scene.world.showSection(deployerGearDown, Direction.WEST);
+		scene.idle(5);
+		scene.world.showSection(deployerGearUp, Direction.WEST);
+		scene.idle(15);
+		
+		BlockPos deployerPos = util.grid.at(4, 1, 2);
+		scene.overlay.showText(80)
+			.text("Deployers can also complete incomplete cannon blocks.")
+			.pointAt(util.vector.centerOf(deployerPos))
+			.colored(PonderPalette.BLUE);
+		scene.idle(20);
+		ItemStack breechblock = CBCItems.CAST_IRON_SLIDING_BREECHBLOCK.asStack();
+		Selection deployer = util.select.position(deployerPos);
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(deployerPos), Pointing.DOWN).withItem(breechblock), 40);
+		scene.idle(30);
+		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", breechblock.serializeNBT()));
+		scene.idle(15);
+		
+		scene.world.setKineticSpeed(deployerGearDown, -16);
+		scene.world.setKineticSpeed(deployerGearUp, 32);
+		scene.world.moveDeployer(deployerPos, 1, 25);
+		scene.idle(25);
+		
+		scene.world.modifyBlock(incompletePos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_SLIDING_BREECH.getDefaultState().setValue(ALONG_FIRST, true)), false);
+		
+		scene.idle(10);
+		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.serializeNBT()));
+		scene.world.setKineticSpeed(deployerGearDown, 16);
+		scene.world.setKineticSpeed(deployerGearUp, -32);
+		scene.world.moveDeployer(deployerPos, -1, 25);
+		scene.idle(35);
+		
+		scene.markAsFinished();
+	}
+	
+	public static void basinFoundry(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_crafting/basin_foundry", "Incomplete Cannon Blocks");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+		
+		
+		
+		scene.markAsFinished();
+	}
+	
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private static final BooleanProperty ATTACHED = CannonBuilderHeadBlock.ATTACHED;
+	private static final BooleanProperty ALONG_FIRST = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 	
 	private static <T extends Comparable<T>> UnaryOperator<BlockState> copyPropertyTo(Property<T> property, BlockState newState) {
 		return state -> state.hasProperty(property) && newState.hasProperty(property) ? newState.setValue(property, state.getValue(property)) : newState;
