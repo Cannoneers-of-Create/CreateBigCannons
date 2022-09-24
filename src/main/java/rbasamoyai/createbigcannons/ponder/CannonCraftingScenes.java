@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.ponder;
 
+import java.util.function.UnaryOperator;
+
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
@@ -9,12 +11,16 @@ import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.utility.Pointing;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 
 public class CannonCraftingScenes {
 
@@ -91,7 +97,7 @@ public class CannonCraftingScenes {
 		
 		scene.addKeyframe();
 		
-		scene.world.modifyBlock(util.grid.at(5, 1, 1), state -> boreBlock(state, CBCBlocks.CAST_IRON_CANNON_BARREL.getDefaultState()), false);
+		scene.world.modifyBlock(util.grid.at(5, 1, 1), copyPropertyTo(FACING, CBCBlocks.CAST_IRON_CANNON_BARREL.getDefaultState()), false);
 		scene.idle(20);
 		scene.overlay.showText(60)
 			.text("Bored cannon blocks drop scrap items.")
@@ -102,7 +108,7 @@ public class CannonCraftingScenes {
 		scene.overlay.showControls(new InputWindowElement(util.vector.centerOf(5, 1, 1), Pointing.DOWN).withItem(CBCItems.CAST_IRON_NUGGET.asStack()), 40);
 		scene.idle(67);
 		
-		scene.world.modifyBlock(util.grid.at(6, 1, 1), state -> boreBlock(state, CBCBlocks.CAST_IRON_CANNON_CHAMBER.getDefaultState()), false);
+		scene.world.modifyBlock(util.grid.at(6, 1, 1), copyPropertyTo(FACING, CBCBlocks.CAST_IRON_CANNON_CHAMBER.getDefaultState()), false);
 		scene.idle(10);
 		
 		scene.world.setKineticSpeed(drillGearDown, -16);
@@ -113,16 +119,109 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 	
-	private static final DirectionProperty FACING = BlockStateProperties.FACING;
-	private static BlockState boreBlock(BlockState state, BlockState newState) {
-		return state.hasProperty(FACING) && newState.hasProperty(FACING) ? newState.setValue(FACING, state.getValue(FACING)) : newState;
-	}
-	
 	public static void cannonBuilding(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("cannon_crafting/cannon_building", "Building Built-Up Cannons");
 		scene.configureBasePlate(6, 0, 3);
 		scene.world.showSection(util.select.cuboid(util.grid.zero(), util.grid.at(9, 0, 3)), Direction.UP);
 		
+		Selection builderGearDown = util.select.position(4, 0, 3);
+		Selection builderGearUp = util.select.fromTo(3, 1, 1, 3, 1, 3);
+		scene.world.showSection(builderGearDown, Direction.UP);
+		scene.world.showSection(builderGearUp, Direction.UP);
+		ElementLink<WorldSectionElement> builderPiston = scene.world.showIndependentSection(util.select.fromTo(0, 2, 1, 3, 2, 1), Direction.UP);
+		scene.world.moveSection(builderPiston, util.vector.of(0, -1, 0), 0);
+		scene.idle(15);
+		
+		scene.world.showSection(util.select.fromTo(6, 1, 1, 8, 1, 1), Direction.DOWN);
+		scene.idle(30);
+		
+		scene.overlay.showText(80)
+			.text("Cannon Builders are used to put together the layers of built-up cannons.")
+			.pointAt(util.vector.centerOf(3, 1, 1));
+		scene.idle(60);
+		
+		ElementLink<WorldSectionElement> layer1 = scene.world.showIndependentSection(util.select.fromTo(6, 1, 2, 7, 1, 2), Direction.DOWN);
+		scene.world.moveSection(layer1, util.vector.of(-2, 0, -1), 0);
+		scene.idle(40);
+		
+		scene.overlay.showText(80)
+			.text("Pulse the Cannon Builder with power to toggle its attachment state.")
+			.pointAt(util.vector.centerOf(3, 1, 1));
+		scene.idle(20);
+		BlockPos leverPos = util.grid.at(3, 1, 0);
+		scene.world.showSection(util.select.position(leverPos), null);
+		scene.idle(10);
+		scene.world.modifyBlock(leverPos, setStateValue(POWERED, true), false);
+		scene.effects.createRedstoneParticles(leverPos, 0xFF0000, 10);
+		BlockPos headPos = util.grid.at(3, 2, 1);
+		scene.world.modifyBlock(headPos, setStateValue(ATTACHED, true), false);
+		scene.idle(15);
+		scene.world.modifyBlock(leverPos, setStateValue(POWERED, false), false);
+		scene.idle(15);
+		scene.world.setKineticSpeed(builderGearDown, 16);
+		scene.world.setKineticSpeed(builderGearUp, -32);
+		
+		scene.world.moveSection(builderPiston, util.vector.of(2, 0, 0), 32);
+		scene.world.moveSection(layer1, util.vector.of(2, 0, 0), 32);
+		scene.idle(40);
+		
+		scene.world.modifyBlock(leverPos, setStateValue(POWERED, true), false);
+		scene.effects.createRedstoneParticles(leverPos, 0xFF0000, 10);
+		scene.world.modifyBlock(headPos, setStateValue(ATTACHED, false), false);
+		scene.idle(15);
+		scene.world.modifyBlock(leverPos, setStateValue(POWERED, false), false);
+		scene.idle(15);
+		
+		scene.world.setKineticSpeed(builderGearDown, -16);
+		scene.world.setKineticSpeed(builderGearUp, 32);
+		scene.world.moveSection(builderPiston, util.vector.of(-2, 0, 0), 32);
+		scene.idle(40);
+		
+		ElementLink<WorldSectionElement> layer2 = scene.world.showIndependentSection(util.select.position(6, 1, 0), Direction.DOWN);
+		scene.world.moveSection(layer2, util.vector.of(-2, 0, 1), 0);
+		scene.idle(20);
+		scene.world.modifyBlock(leverPos, setStateValue(POWERED, true), false);
+		scene.effects.createRedstoneParticles(leverPos, 0xFF0000, 10);
+		scene.world.modifyBlock(headPos, setStateValue(ATTACHED, true), false);
+		scene.idle(15);
+		scene.world.modifyBlock(leverPos, setStateValue(POWERED, false), false);
+		scene.idle(15);
+		scene.world.setKineticSpeed(builderGearDown, 16);
+		scene.world.setKineticSpeed(builderGearUp, -32);
+		
+		scene.world.moveSection(builderPiston, util.vector.of(2, 0, 0), 32);
+		scene.world.moveSection(layer2, util.vector.of(2, 0, 0), 32);
+		scene.idle(40);
+		
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("When grabbing layers from built-up blocks, the outermost layer will always be grabbed")
+			.colored(PonderPalette.RED)
+			.pointAt(util.vector.topOf(6, 1, 1));
+		scene.idle(20);
+		
+		scene.world.setKineticSpeed(builderGearDown, -16);
+		scene.world.setKineticSpeed(builderGearUp, 32);
+		scene.world.moveSection(builderPiston, util.vector.of(-2, 0, 0), 32);
+		scene.world.moveSection(layer2, util.vector.of(-2, 0, 0), 32);
+		scene.idle(40);
+		
+		scene.world.setKineticSpeed(builderGearDown, 16);
+		scene.world.setKineticSpeed(builderGearUp, -32);
+		scene.world.moveSection(builderPiston, util.vector.of(2, 0, 0), 32);
+		scene.world.moveSection(layer2, util.vector.of(2, 0, 0), 32);
+		scene.idle(40);
+		
+		scene.world.modifyBlock(leverPos, setStateValue(POWERED, true), false);
+		scene.effects.createRedstoneParticles(leverPos, 0xFF0000, 10);
+		scene.world.modifyBlock(headPos, setStateValue(ATTACHED, false), false);
+		scene.idle(15);
+		scene.world.modifyBlock(leverPos, setStateValue(POWERED, false), false);
+		scene.idle(15);
+		scene.world.setKineticSpeed(builderGearDown, -16);
+		scene.world.setKineticSpeed(builderGearUp, 32);
+		scene.world.moveSection(builderPiston, util.vector.of(-2, 0, 0), 32);
+		scene.idle(60);
 		
 		scene.markAsFinished();
 	}
@@ -133,6 +232,22 @@ public class CannonCraftingScenes {
 		scene.showBasePlate();
 		
 		scene.markAsFinished();
+	}
+	
+	private static final DirectionProperty FACING = BlockStateProperties.FACING;
+	private static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+	private static final BooleanProperty ATTACHED = CannonBuilderHeadBlock.ATTACHED;
+	
+	private static <T extends Comparable<T>> UnaryOperator<BlockState> copyPropertyTo(Property<T> property, BlockState newState) {
+		return state -> state.hasProperty(property) && newState.hasProperty(property) ? newState.setValue(property, state.getValue(property)) : newState;
+	}
+	
+	private static <T extends Comparable<T>> UnaryOperator<BlockState> setStateValue(Property<T> property, T value) {
+		return state -> state.hasProperty(property) ? state.setValue(property, value) : state;
+	}
+	
+	private static UnaryOperator<BlockState> setBlock(BlockState newState) {
+		return state -> newState;
 	}
 	
 }
