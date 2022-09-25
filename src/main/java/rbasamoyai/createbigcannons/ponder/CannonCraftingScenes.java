@@ -1,10 +1,14 @@
 package rbasamoyai.createbigcannons.ponder;
 
+import java.util.Random;
 import java.util.function.UnaryOperator;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.contraptions.components.deployer.DeployerTileEntity;
+import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
+import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
@@ -12,17 +16,27 @@ import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
 import com.simibubi.create.foundation.ponder.Selection;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
+import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
 import com.simibubi.create.foundation.utility.Pointing;
+import com.simibubi.create.foundation.utility.VecHelper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.CBCFluids;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteCannonBlock;
@@ -324,11 +338,57 @@ public class CannonCraftingScenes {
 	}
 	
 	public static void basinFoundry(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/basin_foundry", "Incomplete Cannon Blocks");
+		scene.title("cannon_crafting/basin_foundry", "Using the Basin Foundry Lid");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
+		scene.world.showSection(util.select.fromTo(1, 1, 2, 1, 2, 2), Direction.UP);
+		scene.idle(15);
+		scene.world.showSection(util.select.position(1, 3, 2), Direction.DOWN);
+		scene.idle(20);
 		
+		scene.overlay.showText(60)
+			.text("Basin Foundry Lids are used to melt down metals for cannon casting.")
+			.pointAt(util.vector.centerOf(1, 3, 2).subtract(0, -0.25, 0));
+		scene.idle(80);
 		
+		scene.overlay.showText(60)
+			.text("They must be heated to process melting recipes.")
+			.pointAt(util.vector.centerOf(1, 1, 2));
+		scene.idle(60);
+		
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(1, 2, 2), Pointing.DOWN).withItem(CBCItems.CAST_IRON_INGOT.asStack()), 10);
+		scene.idle(10);
+		scene.world.modifyBlock(util.grid.at(1, 1, 2), setStateValue(BlazeBurnerBlock.HEAT_LEVEL, HeatLevel.KINDLED), false);
+		Random rand = new Random();
+		for (int i = 0; i < 20; ++i) {
+			float angle = rand.nextFloat() * 360.0f;
+			Vec3 offset = new Vec3(0, 0, 0.25f);
+			offset = VecHelper.rotate(offset, angle, Axis.Y);
+			Vec3 target = VecHelper.rotate(offset, -25, Axis.Y).add(0, .5f, 0);
+			target = VecHelper.offsetRandomly(target.subtract(offset), rand, 1 / 128f);
+			Emitter foundryLava = Emitter.simple(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.LAVA.defaultBlockState()), target);
+			scene.effects.emitParticles(util.vector.topOf(1, 2, 2).add(0, 0.25, 0), foundryLava, 5, 1);
+			scene.idle(5);
+		}
+		
+		Selection pumpGearDown = util.select.position(5, 0, 2);
+		Selection pumpGearUp = util.select.fromTo(5, 1, 3, 2, 1, 3);
+		Selection pump = util.select.position(2, 2, 2);
+		scene.world.showSection(pumpGearDown, Direction.NORTH);
+		scene.idle(5);
+		scene.world.showSection(pumpGearUp, Direction.NORTH);
+		scene.idle(5);
+		scene.world.showSection(util.select.fromTo(2, 2, 2, 3, 1, 2), Direction.DOWN);
+		scene.idle(20);
+		scene.world.setKineticSpeed(pumpGearDown, -16);
+		scene.world.setKineticSpeed(pumpGearUp, 32);
+		scene.world.setKineticSpeed(pump, -64);
+		scene.world.propagatePipeChange(util.grid.at(2, 2, 2));
+		scene.idle(20);
+		
+		scene.world.modifyTileEntity(util.grid.at(3, 1, 2), FluidTankTileEntity.class, tank -> tank.getTankInventory()
+				.fill(new FluidStack(CBCFluids.MOLTEN_CAST_IRON.get(), 8000), FluidAction.EXECUTE));
+		scene.idle(20);
 		
 		scene.markAsFinished();
 	}

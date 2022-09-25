@@ -89,8 +89,7 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 		float angle = this.level.random.nextFloat() * 360.0f;
 		Vec3 offset = new Vec3(0, 0, 0.25f);
 		offset = VecHelper.rotate(offset, angle, Axis.Y);
-		Vec3 target = VecHelper.rotate(offset, getSpeed() > 0 ? 25 : -25, Axis.Y)
-			.add(0, .5f, 0);
+		Vec3 target = VecHelper.rotate(offset, -25, Axis.Y).add(0, .5f, 0);
 		Vec3 center = offset.add(Vec3.atBottomCenterOf(this.worldPosition));
 		target = VecHelper.offsetRandomly(target.subtract(offset), this.level.random, 1 / 128f);
 		this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.LAVA.defaultBlockState()), center.x, center.y + 0.3, center.z, target.x, target.y, target.z);
