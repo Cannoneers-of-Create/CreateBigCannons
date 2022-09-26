@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
+import com.simibubi.create.foundation.tileEntity.IMultiTileContainer;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
@@ -14,6 +15,7 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -42,7 +44,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 
-public class CannonCastBlockEntity extends SmartTileEntity implements WandActionable {
+public class CannonCastBlockEntity extends SmartTileEntity implements WandActionable, IMultiTileContainer {
 
 	private static final Object CASTING_RECIPES_KEY = new Object();
 	
@@ -51,6 +53,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	protected List<CannonCastShape> structure = new ArrayList<>();
 	protected CannonCastShape castShape = CannonCastShape.VERY_SMALL;
 	protected BlockPos controllerPos;
+	protected BlockPos lastKnownPos;
 	protected int height;
 	protected FluidStack leakage = FluidStack.EMPTY;
 	protected boolean forceFluidLevelUpdate;
@@ -232,12 +235,24 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			}
 		}
 		
+		if (this.lastKnownPos == null) {
+			this.lastKnownPos = this.worldPosition;
+		} else if (!this.lastKnownPos.equals(this.worldPosition) && this.worldPosition != null) {
+			this.onPositionChanged();
+			return;
+		}
+		
 		if (this.fluidLevel != null) {
 			this.fluidLevel.tickChaser();
 		}
 		if (this.isController()) {
 			this.tickCastingBehavior();
 		}
+	}
+	
+	private void onPositionChanged() {
+		this.removeController(true);
+		this.lastKnownPos = this.worldPosition;
 	}
 	
 	protected void tickCastingBehavior() {
@@ -498,18 +513,23 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	
 	public float getCastingState() { return this.startCastingTime < 1 ? 0.0f : 1.0f - (float) this.castingTime / (float) this.startCastingTime; } 
 
+	@Override
 	public BlockPos getController() {
 		return this.isController() ? this.worldPosition : this.controllerPos;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
 	public CannonCastBlockEntity getControllerTE() {
 		return this.isController() ? this : this.level.getBlockEntity(this.controllerPos) instanceof CannonCastBlockEntity cast ? cast : null;
 	}
 
+	@Override
 	public boolean isController() {
 		return this.controllerPos == null || this.worldPosition.equals(this.controllerPos);
 	}
 
+	@Override
 	public void setController(BlockPos pos) {
 		if (this.level.isClientSide || this.isVirtual() || pos.equals(this.controllerPos)) return;
 		this.controllerPos = pos;
@@ -537,5 +557,25 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	}
 	
 	public CannonCastShape getRenderedSize() { return this.castShape; }
+
+	@Override
+	public void removeController(boolean keepContents) {
+		this.refreshCap();
+		this.notifyUpdate();
+	}
+
+	@Override public BlockPos getLastKnownPos() { return this.lastKnownPos; }
+
+	@Override public void preventConnectivityUpdate() {}
+
+	@Override
+	public void notifyMultiUpdated() {
+		
+	}
+
+	@Override public Axis getMainConnectionAxis() { return Axis.Y; }
+	@Override public int getMaxLength(Axis longAxis, int width) { return longAxis == Axis.Y ? CBCConfigs.SERVER.crafting.maxCannonCastHeight.get() : 3; }
+	@Override public int getMaxWidth() { return 3; }
+	@Override public void setWidth(int width) {}
 
 }
