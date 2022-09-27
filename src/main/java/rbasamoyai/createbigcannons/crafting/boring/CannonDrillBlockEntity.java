@@ -213,7 +213,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	@Override
 	protected boolean moveAndCollideContraption() {
 		if (super.moveAndCollideContraption()) {
-			this.tryFinishingBoring();
+			this.collideWithContraptionToBore(); // We do a little extra processing :trol:
 			this.boreSpeed = 0;
 			this.addedStressImpact = 0;
 			this.latheEntity = null;
@@ -360,7 +360,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	protected void tryFinishingBoring() {
 		if (!(this.level instanceof ServerLevel slevel)  || this.latheEntity == null || this.movedContraption == null || this.boringPos == null) return;
 		
-		if (!(this.latheEntity.getContraption() instanceof BearingContraption lathe)) return;
+		if (!(this.latheEntity.getContraption() instanceof BearingContraption lathe) || lathe.stalled) return;
 		BlockPos boringOffset = this.boringPos.subtract(new BlockPos(this.latheEntity.position()));
 		if (!lathe.getBlocks().containsKey(boringOffset)) return;
 		
