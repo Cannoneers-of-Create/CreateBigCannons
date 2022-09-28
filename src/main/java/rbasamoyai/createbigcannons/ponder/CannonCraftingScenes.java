@@ -241,21 +241,22 @@ public class CannonCraftingScenes {
 		scene.world.setBlocks(util.select.fromTo(1, 3, 1, 3, 3, 3).substract(innerCast), Blocks.AIR.defaultBlockState(), true);
 		scene.idle(80);
 		
+		deployerGearUp = util.select.fromTo(3, 1, 0, 5, 1, 0);
+		BlockPos deployerPos1 = util.grid.at(3, 1, 0);
 		scene.world.showSection(deployerGearDown, Direction.NORTH);
 		scene.idle(5);
 		scene.world.showSection(deployerGearUp, Direction.DOWN);
-		ElementLink<WorldSectionElement> lowerDeployerGear = scene.world.showIndependentSection(util.select.fromTo(2, 2, 0, 3, 2, 0), Direction.DOWN);
-		scene.world.moveSection(lowerDeployerGear, util.vector.of(1, -1, 0), 0);
+		scene.world.setKineticSpeed(deployerGearUp, -32);
 		scene.idle(30);
 		scene.overlay.showText(60)
 			.text("Deployers can also remove finished casts.")
 			.colored(PonderPalette.BLUE)
 			.pointAt(util.vector.centerOf(3, 1, 0));
 		scene.idle(20);	
-		scene.world.moveDeployer(deployerPos, 1, 25);
+		scene.world.moveDeployer(deployerPos1, 1, 25);
 		scene.idle(26);
 		scene.world.setBlocks(util.select.fromTo(1, 2, 1, 3, 2, 3).substract(innerCast), Blocks.AIR.defaultBlockState(), true);
-		scene.world.moveDeployer(deployerPos, -1, 25);
+		scene.world.moveDeployer(deployerPos1, -1, 25);
 		scene.idle(36);
 		
 		scene.markAsFinished();
