@@ -1,19 +1,23 @@
 package rbasamoyai.createbigcannons.compat.jei;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.jei.CreateJEI;
 import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.EmptyBackground;
+import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.content.contraptions.processing.BasinRecipe;
 import com.simibubi.create.foundation.utility.Components;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -23,12 +27,19 @@ import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.level.ItemLike;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.crafting.BlockRecipe;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
+import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.CBCRecipeTypes;
+import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 import rbasamoyai.createbigcannons.crafting.foundry.MeltingRecipe;
 
 @JeiPlugin
+@SuppressWarnings("unused")
 public class CBCJEI implements IModPlugin {
 
 	private final List<PackedCategory<?>> allCategories = new ArrayList<>();
@@ -53,6 +64,22 @@ public class CBCJEI implements IModPlugin {
 				meltingSupplier,
 				meltingCatalysts);
 		this.allCategories.add(PackedCategory.packCreateCategory(new MeltingCategory(meltingInfo)));
+		
+		PackedCategory<?>
+		
+		cannon_casting = builder(CannonCastingRecipe.class)
+			.addTypedRecipes(BlockRecipeType.CANNON_CASTING.get())
+			.catalyst(CBCBlocks.CASTING_SAND::asStack)
+			.itemIcon(CBCBlocks.CASTING_SAND.get())
+			.emptyBackground(177, 103)
+			.build("cannon_casting", CannonCastingCategory::new),
+			
+		built_up_heating = builder(BuiltUpHeatingRecipe.class)
+			.addTypedRecipes(BlockRecipeType.BUILT_UP_HEATING.get())
+			.catalyst(AllBlocks.ENCASED_FAN::asStack)
+			.itemIcon(AllBlocks.ENCASED_FAN.get())
+			.emptyBackground(177, 103)
+			.build("built_up_heating", null);
 	}
 	
 	private static final ResourceLocation PLUGIN_ID = CreateBigCannons.resource("jei_plugin");	
@@ -75,16 +102,106 @@ public class CBCJEI implements IModPlugin {
 		this.allCategories.forEach(c -> c.registerCatalysts(registration));
 	}
 	
+	private class BlockRecipeCategoryBuilder<T extends BlockRecipe> {
+		private final Class<? extends T> recipeClass;
+		
+		private IDrawable background;
+		private IDrawable icon;
+		private final List<Consumer<List<T>>> recipeConsumers = new ArrayList<>();
+		private final List<Supplier<? extends ItemStack>> catalysts = new ArrayList<>();
+		
+		public BlockRecipeCategoryBuilder(Class<? extends T> recipeClass) {
+			this.recipeClass = recipeClass;
+		}
+		
+		public BlockRecipeCategoryBuilder<T> addRecipeListConsumer(Consumer<List<T>> cons) {
+			this.recipeConsumers.add(cons);
+			return this;
+		}
+		
+		public BlockRecipeCategoryBuilder<T> addRecipes(Supplier<Collection<? extends T>> sup) {
+			return this.addRecipeListConsumer(list -> list.addAll(sup.get()));
+		}
+		
+		public BlockRecipeCategoryBuilder<T> addTypedRecipes(BlockRecipeType<?> type) {
+			return this.addRecipeListConsumer(list -> CBCJEI.<T>consumeTypedRecipes(list::add, type));
+		}
+		
+		public BlockRecipeCategoryBuilder<T> catalyst(Supplier<? extends ItemStack> catalyst) {
+			this.catalysts.add(catalyst);
+			return this;
+		}
+		
+		public BlockRecipeCategoryBuilder<T> background(IDrawable background) {
+			this.background = background;
+			return this;
+		}
+		
+		public BlockRecipeCategoryBuilder<T> emptyBackground(int width, int height) {
+			return this.background(new EmptyBackground(width, height));
+		}
+		
+		public BlockRecipeCategoryBuilder<T> icon(IDrawable icon) {
+			this.icon = icon;
+			return this;
+		}
+		
+		public BlockRecipeCategoryBuilder<T> itemIcon(ItemLike item) {
+			return this.icon(new ItemIcon(() -> new ItemStack(item)));
+		}
+		
+		public BlockRecipeCategoryBuilder<T> doubleItemIcon(ItemLike item, ItemLike item1) {
+			return this.icon(new DoubleItemIcon(() -> new ItemStack(item), () -> new ItemStack(item1)));
+		}
+		
+		public PackedCategory<T> build(String id, CBCBlockRecipeCategory.Factory<T> fac) {
+			Supplier<List<T>> recipesSupplier = () -> {
+				List<T> recipes = new ArrayList<>();
+				for (Consumer<List<T>> cons : this.recipeConsumers) cons.accept(recipes);
+				return recipes;
+			};
+			CBCBlockRecipeCategory.Info<T> info = new CBCBlockRecipeCategory.Info<>(
+					new mezz.jei.api.recipe.RecipeType<>(CreateBigCannons.resource(id), this.recipeClass),
+					Components.translatable(CreateBigCannons.MOD_ID + ".recipe." + id),
+					this.background,
+					this.icon,
+					recipesSupplier,
+					this.catalysts);
+			PackedCategory<T> packedCat = PackedCategory.packBlockRecipeCategory(fac.create(info));
+			allCategories.add(packedCat);
+			return packedCat;
+		}
+	}
+	
+	private <T extends BlockRecipe> BlockRecipeCategoryBuilder<T> builder(Class<? extends T> recipeClass) {
+		return new BlockRecipeCategoryBuilder<>(recipeClass);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static <T extends BlockRecipe> void consumeTypedRecipes(Consumer<T> cons, BlockRecipeType<?> type) {
+		Collection<BlockRecipe> col = BlockRecipesManager.getRecipesOfType(type);
+		col.forEach(r -> cons.accept((T) r));
+	}
+	
 	interface PackedCategory<T> {
 		IRecipeCategory<T> asCategory();
 		RecipeType<T> getType();
 		void registerRecipes(IRecipeRegistration reg);
 		void registerCatalysts(IRecipeCatalystRegistration reg);
 		
-		public static <R extends Recipe<?>> PackedCategory<R> packCreateCategory(CreateRecipeCategory<R> cat) {
-			return new PackedCategory<R>() {
-				@Override public IRecipeCategory<R> asCategory() { return cat; }
-				@Override public RecipeType<R> getType() { return cat.getRecipeType(); }
+		public static <T extends Recipe<?>> PackedCategory<T> packCreateCategory(CreateRecipeCategory<T> cat) {
+			return new PackedCategory<>() {
+				@Override public IRecipeCategory<T> asCategory() { return cat; }
+				@Override public RecipeType<T> getType() { return cat.getRecipeType(); }
+				@Override public void registerRecipes(IRecipeRegistration reg) { cat.registerRecipes(reg); }
+				@Override public void registerCatalysts(IRecipeCatalystRegistration reg) { cat.registerCatalysts(reg); }
+			};
+		}
+		
+		public static <T extends BlockRecipe> PackedCategory<T> packBlockRecipeCategory(CBCBlockRecipeCategory<T> cat) {
+			return new PackedCategory<>() {
+				@Override public IRecipeCategory<T> asCategory() { return cat; }
+				@Override public RecipeType<T> getType() { return cat.getRecipeType(); }
 				@Override public void registerRecipes(IRecipeRegistration reg) { cat.registerRecipes(reg); }
 				@Override public void registerCatalysts(IRecipeCatalystRegistration reg) { cat.registerCatalysts(reg); }
 			};

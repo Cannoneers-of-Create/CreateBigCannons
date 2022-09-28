@@ -15,6 +15,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 
 public class CannonCastingRecipe implements BlockRecipe {
 	
@@ -60,6 +61,7 @@ public class CannonCastingRecipe implements BlockRecipe {
 	@Override public Block getResultBlock() { return this.result; }
 	@Override public ResourceLocation getId() { return this.id; }
 	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.CANNON_CASTING.get(); }
+	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.CANNON_CASTING.get(); }
 	
 	public static class Serializer extends ForgeRegistryEntry<BlockRecipeSerializer<?>> implements BlockRecipeSerializer<CannonCastingRecipe> {
 		@Override
