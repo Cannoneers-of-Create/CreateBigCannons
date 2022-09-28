@@ -27,6 +27,7 @@ import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 
 public class BuiltUpHeatingRecipe implements BlockRecipe {
 
@@ -79,6 +80,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 	@Override public Block getResultBlock() { return this.result; }
 	@Override public ResourceLocation getId() { return this.id; }
 	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.BUILT_UP_HEATING.get(); }
+	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.BUILT_UP_HEATING.get(); }
 
 	public static class Serializer extends ForgeRegistryEntry<BlockRecipeSerializer<?>> implements BlockRecipeSerializer<BuiltUpHeatingRecipe> {
 		@Override
