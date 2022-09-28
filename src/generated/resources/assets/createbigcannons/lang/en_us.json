@@ -200,6 +200,7 @@
   "createbigcannons.ponder.tag.munitions.description": "Blocks that make up cannon loads, and what they can do",
   "createbigcannons.ponder.tag.operating_cannons": "Operating Cannons",
   "createbigcannons.ponder.tag.operating_cannons.description": "How to use big cannons safely and effectively",
+  "createbigcannons.recipe.melting": "Basin Melting",
   "death.attack.createbigcannons.grapeshot": "%s was blown out by grapeshot",
   "death.attack.createbigcannons.grapeshot.player": "%s was blown out by grapeshot",
   "death.attack.createbigcannons.shrapnel": "%s was ripped up by shrapnel",

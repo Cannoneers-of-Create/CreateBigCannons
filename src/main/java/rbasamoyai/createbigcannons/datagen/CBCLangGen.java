@@ -87,6 +87,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.none", "The cannon drill did not fail, this should not be displaying");
 		
 		REGISTRATE.addLang("block", CreateBigCannons.resource("incomplete_block"), "tooltip.requiredParts", "This block requires the following parts:");
+		
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".recipe.melting", "Basin Melting");
 	}
 	
 	private static class TooltipBuilder {
