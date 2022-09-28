@@ -7,12 +7,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createbigcannons:medium_nethersteel_cannon_layer"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 5.0,
+              "add": false
+            }
+          ],
+          "name": "createbigcannons:nethersteel_nugget"
         }
       ]
     }

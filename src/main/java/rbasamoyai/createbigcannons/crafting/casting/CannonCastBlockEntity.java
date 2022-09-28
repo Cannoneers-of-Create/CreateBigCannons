@@ -130,12 +130,15 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		return this.isController() ? this.fluid : this.getControllerTE().createHandlerForCap();
 	}
 	
+	public FluidTank getTank() { return this.fluid; }
+	
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
 		super.write(tag, clientPacket);
 		if (this.canRenderCastModel()) {
 			tag.putString("Size", this.castShape.name().toString());
 		}
+		if (this.lastKnownPos != null) tag.put("LastKnownPos", NbtUtils.writeBlockPos(this.lastKnownPos));
 		
 		if (this.isController()) {
 			if (!this.structure.isEmpty()) {
@@ -172,6 +175,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			this.castShape = CannonCastShape.byId(new ResourceLocation(tag.getString("Size")));
 			if (this.castShape == null) this.castShape = CannonCastShape.VERY_SMALL;
 		}
+		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
 		
 		this.structure.clear();
 		if (tag.contains("Structure")) {
@@ -531,7 +535,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 
 	@Override
 	public void setController(BlockPos pos) {
-		if (this.level.isClientSide || this.isVirtual() || pos.equals(this.controllerPos)) return;
+		if (this.level.isClientSide && !this.isVirtual() || pos.equals(this.controllerPos)) return;
 		this.controllerPos = pos;
 		this.refreshCap();
 		this.notifyUpdate();

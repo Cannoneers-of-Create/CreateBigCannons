@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.ponder;
 
 import java.util.Random;
+import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 import com.simibubi.create.AllBlocks;
@@ -17,6 +18,7 @@ import com.simibubi.create.foundation.ponder.Selection;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
+import com.simibubi.create.foundation.ponder.instruction.FadeOutOfSceneInstruction;
 import com.simibubi.create.foundation.utility.Pointing;
 import com.simibubi.create.foundation.utility.VecHelper;
 
@@ -25,6 +27,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,6 +43,10 @@ import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCFluids;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteCannonBlock;
 
 public class CannonCraftingScenes {
@@ -47,6 +55,208 @@ public class CannonCraftingScenes {
 		scene.title("cannon_crafting/cannon_casting", "Cannon Casting");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
+		
+		scene.world.modifyTileNBT(util.select.fromTo(2, 2, 2, 2, 3, 2), CannonCastBlockEntity.class, setUnfinishedCannonShape(CannonCastShape.MEDIUM));
+		
+		scene.idle(15);
+		int placeDelay = 3;
+		scene.world.showSection(util.select.position(3, 1, 1), Direction.DOWN);
+		scene.idle(placeDelay);
+		scene.world.showSection(util.select.position(2, 1, 1), Direction.DOWN);
+		scene.idle(placeDelay);
+		scene.world.showSection(util.select.position(1, 1, 1), Direction.DOWN);
+		scene.idle(placeDelay);
+		scene.world.showSection(util.select.position(1, 1, 2), Direction.DOWN);
+		scene.idle(placeDelay);
+		scene.world.showSection(util.select.position(1, 1, 3), Direction.DOWN);
+		scene.idle(placeDelay);
+		scene.world.showSection(util.select.position(2, 1, 3), Direction.DOWN);
+		scene.idle(placeDelay);
+		scene.world.showSection(util.select.position(3, 1, 3), Direction.DOWN);
+		scene.idle(placeDelay);
+		scene.world.showSection(util.select.position(3, 1, 2), Direction.DOWN);
+		scene.idle(placeDelay + 15);
+		
+		Vec3 castCenter = util.vector.centerOf(2, 1, 2);
+		scene.overlay.showText(60)
+			.text("Cannon Casts are the first block recipe for cannon blocks.")
+			.pointAt(castCenter);
+		scene.idle(80);
+		
+		scene.overlay.showText(60)
+			.text("Use a cannon mould to build a cast layer.")
+			.pointAt(castCenter);
+		scene.idle(40);
+		
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 1, 2), Pointing.DOWN).withItem(CBCBlocks.MEDIUM_CAST_MOULD.asStack()), 10);
+		scene.idle(15);
+		scene.world.showSection(util.select.position(2, 1, 2), null);
+		scene.idle(30);
+		
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 1, 2), Pointing.DOWN).withItem(CBCBlocks.CASTING_SAND.asStack()), 10);
+		scene.idle(15);
+		scene.world.modifyBlock(util.grid.at(2, 1, 2), setStateValue(CannonCastMouldBlock.SAND, true), false);
+		Emitter mouldSandEmitter = Emitter.simple(new BlockParticleOption(ParticleTypes.BLOCK, CBCBlocks.CASTING_SAND.getDefaultState()), util.vector.of(0, 1, 0));
+		scene.effects.emitParticles(castCenter.add(0, 1, 0), mouldSandEmitter, 10, 1);
+		scene.idle(30);
+		
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 1, 2), Pointing.DOWN).rightClick(), 10);
+		scene.idle(15);
+		scene.world.hideSection(util.select.fromTo(1, 1, 1, 3, 1, 3), null);
+		ElementLink<WorldSectionElement> cast = scene.world.showIndependentSectionImmediately(util.select.fromTo(1, 2, 1, 3, 2, 3));
+		scene.world.moveSection(cast, util.vector.of(0, -1, 0), 0);
+		scene.idle(30);
+		
+		Selection deployerGearDown = util.select.position(5, 0, 1);
+		Selection deployerGearUp = util.select.position(5, 1, 0);
+		Selection deployerGearReverse = util.select.fromTo(2, 2, 0, 5, 2, 0);
+		scene.world.showSection(deployerGearDown, Direction.NORTH);
+		scene.idle(5);
+		scene.world.showSection(deployerGearUp, Direction.DOWN);
+		scene.idle(5);
+		scene.world.showSection(deployerGearReverse, Direction.DOWN);
+		scene.idle(30);
+		
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("Deployers can also interact with cannon casts.")
+			.colored(PonderPalette.BLUE)
+			.pointAt(util.vector.centerOf(2, 2, 0));
+		scene.idle(20);
+		
+		ElementLink<WorldSectionElement> reusedFirstLayer = scene.world.showIndependentSection(util.select.fromTo(1, 1, 1, 3, 1, 3).substract(util.select.position(2, 1, 2)), Direction.DOWN);
+		scene.world.moveSection(reusedFirstLayer, util.vector.of(0, 1, 0), 0);
+		scene.idle(30);
+		
+		BlockPos deployerPos = util.grid.at(2, 2, 0);
+		Selection deployer = util.select.position(deployerPos);
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 2, 0), Pointing.DOWN).withItem(CBCBlocks.MEDIUM_CAST_MOULD.asStack()), 10);
+		scene.idle(15);
+		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, putItemInDeployer(CBCBlocks.MEDIUM_CAST_MOULD.asStack()));
+		scene.idle(10);
+		
+		scene.world.setKineticSpeed(deployerGearDown, 16);
+		scene.world.setKineticSpeed(deployerGearUp, -32);
+		scene.world.setKineticSpeed(deployerGearReverse, 32);
+		scene.world.moveDeployer(deployerPos, 1, 25);
+		scene.idle(26);
+		scene.world.modifyBlock(util.grid.at(2, 1, 2), setStateValue(CannonCastMouldBlock.SAND, false), false);
+		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, putItemInDeployer(ItemStack.EMPTY));
+		ElementLink<WorldSectionElement> reusedFirstLayerCore = scene.world.showIndependentSectionImmediately(util.select.position(2, 1, 2));
+		scene.world.moveSection(reusedFirstLayerCore, util.vector.of(0, 1, 0), 0);
+		scene.world.moveDeployer(deployerPos, -1, 25);
+		scene.idle(36);
+		
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 2, 0), Pointing.DOWN).withItem(CBCBlocks.CASTING_SAND.asStack()), 10);
+		scene.idle(15);
+		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, putItemInDeployer(CBCBlocks.CASTING_SAND.asStack()));
+		scene.idle(10);
+		scene.world.moveDeployer(deployerPos, 1, 25);
+		scene.idle(26);
+		scene.world.modifyBlock(util.grid.at(2, 1, 2), setStateValue(CannonCastMouldBlock.SAND, true), false);
+		scene.effects.emitParticles(castCenter.add(0, 2, 0), mouldSandEmitter, 10, 1);
+		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, putItemInDeployer(ItemStack.EMPTY));
+		scene.world.moveDeployer(deployerPos, -1, 25);
+		scene.idle(36);
+		
+		scene.world.moveDeployer(deployerPos, 1, 25);
+		scene.idle(26);
+		scene.addInstruction(new FadeOutOfSceneInstruction<>(0, null, reusedFirstLayer));
+		scene.addInstruction(new FadeOutOfSceneInstruction<>(0, null, reusedFirstLayerCore));
+		ElementLink<WorldSectionElement> cast2 = scene.world.showIndependentSectionImmediately(util.select.fromTo(1, 3, 1, 3, 3, 3));
+		scene.world.moveSection(cast2, util.vector.of(0, -1, 0), 0);
+		scene.world.moveDeployer(deployerPos, -1, 25);
+		scene.idle(36);
+		scene.world.hideSection(deployerGearDown.add(deployerGearUp).add(deployerGearReverse), Direction.EAST);
+		scene.idle(20);
+		
+		scene.addKeyframe();
+		
+		scene.world.showSection(util.select.fromTo(0, 1, 2, 0, 2, 2), Direction.DOWN);
+		ElementLink<WorldSectionElement> upperLayer = scene.world.showIndependentSection(util.select.fromTo(0, 4, 2, 2, 4, 2), Direction.DOWN);
+		scene.world.moveSection(upperLayer, util.vector.of(0, -1, 0), 0);
+		Selection pumpGear = util.select.fromTo(2, 1, 5, 2, 4, 5);
+		Selection pumpGear1 = util.select.position(1, 4, 5).add(util.select.position(1, 4, 3));
+		Selection pumpGear2 = util.select.position(1, 4, 4).add(util.select.position(1, 4, 2));
+		scene.world.showSectionAndMerge(pumpGear, Direction.DOWN, upperLayer);
+		scene.idle(5);
+		scene.world.showSectionAndMerge(pumpGear1, Direction.EAST, upperLayer);
+		scene.idle(5);
+		scene.world.showSectionAndMerge(util.select.position(1, 4, 4), Direction.EAST, upperLayer);
+		scene.idle(30);
+		
+		scene.world.setKineticSpeed(pumpGear, 16);
+		scene.world.setKineticSpeed(pumpGear1, -16);
+		scene.world.setKineticSpeed(pumpGear2, 16);
+		scene.world.propagatePipeChange(util.grid.at(1, 4, 2));
+		scene.idle(15);
+		
+		scene.overlay.showText(60)
+			.text("Fill the cast with molten metal to start the casting process.")
+			.colored(PonderPalette.GREEN);
+		scene.idle(20);
+		
+		BlockPos tankPos = util.grid.at(0, 1, 2);
+		BlockPos castPos = util.grid.at(2, 2, 2);
+		FluidStack content = new FluidStack(CBCFluids.MOLTEN_CAST_IRON.get(), 144);
+		for (int i = 0; i < 24; ++i) {
+			scene.world.modifyTileEntity(tankPos, FluidTankTileEntity.class, tank -> tank.getTankInventory()
+					.drain(144, FluidAction.EXECUTE));
+			scene.world.modifyTileEntity(castPos, CannonCastBlockEntity.class, cast1 -> cast1.getTank()
+					.fill(content, FluidAction.EXECUTE));
+			scene.idle(5);
+		}
+		scene.idle(40);
+		
+		scene.world.hideIndependentSection(upperLayer, Direction.UP);
+		scene.world.hideSection(pumpGear, Direction.UP);
+		scene.world.hideSection(util.select.fromTo(0, 1, 2, 0, 2, 2), Direction.UP);
+		scene.idle(30);
+		
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("After being completely filled up, the cannon cast takes some time to solidify.")
+			.pointAt(util.vector.topOf(2, 2, 2));
+		scene.idle(100);
+		scene.overlay.showText(80)
+			.text("The time it takes for the casting process to finish depends on the size of the cast.")
+			.colored(PonderPalette.RED);
+		scene.idle(120);
+		
+		Selection innerCast = util.select.fromTo(2, 2, 2, 2, 3, 2);
+		scene.world.setBlocks(util.select.fromTo(1, 2, 1, 3, 3, 3).substract(innerCast), CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), false);
+		scene.world.setBlocks(innerCast, CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.UP), false);
+		Selection centerBlocks = util.select.fromTo(1, 2, 1, 1, 3, 1);
+		scene.world.modifyTileNBT(centerBlocks, FinishedCannonCastBlockEntity.class, setFinishedCannonShape(CannonCastShape.MEDIUM));
+		scene.world.modifyTileNBT(util.select.fromTo(1, 2, 1, 3, 2, 3).substract(centerBlocks), FinishedCannonCastBlockEntity.class, setCentralBlock(util.grid.at(1, 2, 1)));
+		scene.world.modifyTileNBT(util.select.fromTo(1, 3, 1, 3, 3, 3).substract(centerBlocks), FinishedCannonCastBlockEntity.class, setCentralBlock(util.grid.at(1, 3, 1)));
+		scene.idle(20);
+		
+		scene.overlay.showText(80)
+			.text("The finished cannon cast can be removed by breaking or interacting with it.")
+			.pointAt(util.vector.blockSurface(util.grid.at(1, 2, 1), Direction.WEST));
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 2, 1), Direction.NORTH), Pointing.RIGHT).leftClick(), 20);
+		scene.idle(30);
+		scene.world.setBlocks(util.select.fromTo(1, 3, 1, 3, 3, 3).substract(innerCast), Blocks.AIR.defaultBlockState(), true);
+		scene.idle(80);
+		
+		scene.world.showSection(deployerGearDown, Direction.NORTH);
+		scene.idle(5);
+		scene.world.showSection(deployerGearUp, Direction.DOWN);
+		ElementLink<WorldSectionElement> lowerDeployerGear = scene.world.showIndependentSection(util.select.fromTo(2, 2, 0, 3, 2, 0), Direction.DOWN);
+		scene.world.moveSection(lowerDeployerGear, util.vector.of(1, -1, 0), 0);
+		scene.idle(30);
+		scene.overlay.showText(60)
+			.text("Deployers can also remove finished casts.")
+			.colored(PonderPalette.BLUE)
+			.pointAt(util.vector.centerOf(3, 1, 0));
+		scene.idle(20);	
+		scene.world.moveDeployer(deployerPos, 1, 25);
+		scene.idle(26);
+		scene.world.setBlocks(util.select.fromTo(1, 2, 1, 3, 2, 3).substract(innerCast), Blocks.AIR.defaultBlockState(), true);
+		scene.world.moveDeployer(deployerPos, -1, 25);
+		scene.idle(36);
 		
 		scene.markAsFinished();
 	}
@@ -406,8 +616,20 @@ public class CannonCraftingScenes {
 		return state -> state.hasProperty(property) ? state.setValue(property, value) : state;
 	}
 	
-	private static UnaryOperator<BlockState> setBlock(BlockState newState) {
-		return state -> newState;
+	private static Consumer<CompoundTag> putItemInDeployer(ItemStack stack) {
+		return tag -> tag.put("HeldItem", stack.serializeNBT());
+	}
+	
+	private static Consumer<CompoundTag> setUnfinishedCannonShape(CannonCastShape shape) {
+		return tag -> tag.putString("Size", shape.name().toString());
+	}
+	
+	private static Consumer<CompoundTag> setCentralBlock(BlockPos pos) {
+		return tag -> tag.put("CentralBlock", NbtUtils.writeBlockPos(pos));
+	}
+	
+	private static Consumer<CompoundTag> setFinishedCannonShape(CannonCastShape shape) {
+		return tag -> tag.putString("RenderedShape", shape.name().toString());
 	}
 	
 }

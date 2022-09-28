@@ -5,6 +5,8 @@ import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
+import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.client.renderer.RenderType;
@@ -15,6 +17,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.entries.TagEntry;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
@@ -334,6 +343,22 @@ public class CBCBuilderTransformers {
 				.item()
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(baseLoc)))
 				.build();
+	}
+	
+	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> castIronScrapLoot(int count) {
+		return (t, u) -> t.add(u, LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.CAST_IRON_NUGGET.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count))))));
+	}
+
+	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> bronzeScrapLoot(int count) {
+		return (t, u) -> t.add(u, LootTable.lootTable().withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_BRONZE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count))))));
+	}
+	
+	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> steelScrapLoot(int count) {
+		return (t, u) -> t.add(u, LootTable.lootTable().withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count))))));
+	}
+	
+	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> nethersteelScrapLoot(int count) {
+		return (t, u) -> t.add(u, LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.NETHERSTEEL_NUGGET.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count))))));
 	}
 	
 }
