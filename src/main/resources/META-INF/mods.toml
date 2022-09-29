@@ -35,7 +35,7 @@ description='''Artillery engineering comes to Create'''
 [[dependencies.createbigcannons]]
 	modId="flywheel"
 	mandatory=true
-	versionRange="[0.6.6,)"
+	versionRange="[0.6.5,0.6.7)"
 	ordering="NONE"
 	side="BOTH"
 	
