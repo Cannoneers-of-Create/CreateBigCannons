@@ -213,17 +213,17 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	@Override
 	protected boolean moveAndCollideContraption() {
 		if (super.moveAndCollideContraption()) {
-			this.collideWithContraptionToBore(); // We do a little extra processing :trol:
+			this.collideWithContraptionToBore(true);
 			this.boreSpeed = 0;
 			this.addedStressImpact = 0;
 			this.latheEntity = null;
 			return true;
 		}
 		
-		return this.collideWithContraptionToBore();
+		return this.collideWithContraptionToBore(false);
 	}
 	
-	private boolean collideWithContraptionToBore() {
+	private boolean collideWithContraptionToBore(boolean collide) {
 		if (this.level.isClientSide) return false;
 		
 		CannonDrillingContraption drill = (CannonDrillingContraption) this.movedContraption.getContraption();
@@ -243,6 +243,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		if (movementDirection.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
 			gridPos = gridPos.relative(movementDirection);
 		}
+		if (collide) gridPos = gridPos.relative(movementDirection.getOpposite());
 		
 		boolean isBoringBlock = false;
 		
@@ -293,11 +294,12 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 					continue;
 				}
 				
+				BlockPos currentPos = collide ? globalPos.relative(movementDirection) : globalPos;
 				if (this.boringPos == null) {
-					this.boringPos = globalPos;
-				} else if (!this.boringPos.equals(globalPos)) {
+					this.boringPos = currentPos;
+				} else if (!this.boringPos.equals(currentPos)) {
 					this.tryFinishingBoring();
-					this.boringPos = globalPos;
+					this.boringPos = currentPos;
 				}
 				
 				int drainSpeed = (int) Mth.abs(bearing.getSpeed() * 0.5f);
