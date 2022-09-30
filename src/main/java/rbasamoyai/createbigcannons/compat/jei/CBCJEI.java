@@ -12,6 +12,7 @@ import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
+import com.simibubi.create.compat.jei.category.ProcessingViaFanCategory;
 import com.simibubi.create.content.contraptions.processing.BasinRecipe;
 import com.simibubi.create.foundation.utility.Components;
 
@@ -77,7 +78,7 @@ public class CBCJEI implements IModPlugin {
 		built_up_heating = builder(BuiltUpHeatingRecipe.class)
 			.addTypedRecipes(BlockRecipeType.BUILT_UP_HEATING.get())
 			.catalyst(CBCBlocks.CANNON_BUILDER::asStack)
-			.catalyst(AllBlocks.ENCASED_FAN::asStack)
+			.catalyst(ProcessingViaFanCategory.getFan("fan_blasting"))
 			.itemIcon(CBCBlocks.CANNON_BUILDER.get())
 			.emptyBackground(177, 103)
 			.build("built_up_heating", BuiltUpHeatingCategory::new);

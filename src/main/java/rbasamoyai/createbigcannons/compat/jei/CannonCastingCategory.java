@@ -28,10 +28,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 	}
 	
 	@Override
-	public void draw(CannonCastingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, stack, mouseX, mouseY);
-		
-		CBCGuiTextures.CANNON_CAST_SHADOW.render(stack, 40, 45);
+	public void draw(CannonCastingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {CBCGuiTextures.CANNON_CAST_SHADOW.render(stack, 40, 45);
 		this.cannonCast.withShape(recipe.shape()).draw(stack, this.getBackground().getWidth() / 2 - 15, 55);
 		CBCGuiTextures.CASTING_ARROW.render(stack, 21, 47);
 		CBCGuiTextures.CASTING_ARROW_1.render(stack, 124, 27);

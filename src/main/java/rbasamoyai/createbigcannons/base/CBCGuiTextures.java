@@ -14,7 +14,8 @@ public enum CBCGuiTextures implements ScreenElement {
 	// JEI Icons
 	CASTING_ARROW("jei_icons", 0, 0, 32, 32),
 	CASTING_ARROW_1("jei_icons", 32, 0, 32, 32),
-	CANNON_CAST_SHADOW("jei_icons", 64, 0, 96, 32)
+	CANNON_CAST_SHADOW("jei_icons", 64, 0, 96, 32),
+	CANNON_BUILDING_ARROW("jei_icons", 160, 0, 8, 32)
 	
 	;
 	
