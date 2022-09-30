@@ -27,6 +27,7 @@ public class CreateBigCannonsClient {
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		CBCPonderIndex.register();
 		CBCPonderIndex.registerTags();
+		CBCBlockPartials.resolveDeferredModels();
 	}
 	
 }

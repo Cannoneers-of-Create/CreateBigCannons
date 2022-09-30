@@ -28,7 +28,7 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.cannonMaterial; }
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH; }	
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH.get(); }	
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
 	
 	@Override

@@ -7,11 +7,11 @@ import com.simibubi.create.content.contraptions.processing.BasinRecipe;
 import com.simibubi.create.content.contraptions.processing.HeatCondition;
 
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import rbasamoyai.createbigcannons.compat.jei.animated.AnimatedBasinFoundryLid;
+import rbasamoyai.createbigcannons.compat.jei.animated.BasinFoundryLidElement;
 
 public class MeltingCategory extends BasinCategory {
 
-	private final AnimatedBasinFoundryLid lid = new AnimatedBasinFoundryLid();
+	private final BasinFoundryLidElement lid = new BasinFoundryLidElement();
 	private final AnimatedBlazeBurner heater = new AnimatedBlazeBurner();
 	
 	public MeltingCategory(Info<BasinRecipe> info) {

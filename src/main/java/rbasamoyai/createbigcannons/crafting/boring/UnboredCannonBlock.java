@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.crafting.boring;
 
+import java.util.function.Supplier;
+
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
@@ -23,9 +25,9 @@ public class UnboredCannonBlock extends SolidCannonBlock<CannonEndBlockEntity> i
 	private final NonNullSupplier<? extends Block> boredBlockSup;
 	private Block boredBlock;
 	private final VoxelShaper shapes;
-	private final CannonCastShape cannonShape;
+	private final Supplier<CannonCastShape> cannonShape;
 	
-	public UnboredCannonBlock(Properties properties, CannonMaterial material, CannonCastShape cannonShape, NonNullSupplier<? extends Block> boredBlockSup, VoxelShape baseShape) {
+	public UnboredCannonBlock(Properties properties, CannonMaterial material, Supplier<CannonCastShape> cannonShape, NonNullSupplier<? extends Block> boredBlockSup, VoxelShape baseShape) {
 		super(properties, material);
 		this.boredBlockSup = boredBlockSup;
 		this.shapes = new AllShapes.Builder(baseShape).forDirectional();
@@ -57,7 +59,7 @@ public class UnboredCannonBlock extends SolidCannonBlock<CannonEndBlockEntity> i
 		return this.shapes.get(state.getValue(FACING));
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape; }
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
 
 	@Override
 	public BlockState getBoredBlockState(BlockState state) {

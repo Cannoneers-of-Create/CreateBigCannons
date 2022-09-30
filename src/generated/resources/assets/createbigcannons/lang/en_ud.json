@@ -200,7 +200,6 @@
   "createbigcannons.ponder.tag.munitions.description": "op u\u0250\u0254 \u028E\u01DD\u0265\u0287 \u0287\u0250\u0265\u028D pu\u0250 'sp\u0250o\u05DF uouu\u0250\u0254 dn \u01DD\u029E\u0250\u026F \u0287\u0250\u0265\u0287 s\u029E\u0254o\u05DF\u15FA",
   "createbigcannons.ponder.tag.operating_cannons": "suouu\u0250\u0186 bu\u0131\u0287\u0250\u0279\u01DDdO",
   "createbigcannons.ponder.tag.operating_cannons.description": "\u028E\u05DF\u01DD\u028C\u0131\u0287\u0254\u01DD\u025F\u025F\u01DD pu\u0250 \u028E\u05DF\u01DD\u025F\u0250s suouu\u0250\u0254 b\u0131q \u01DDsn o\u0287 \u028DoH",
-  "createbigcannons.recipe.melting": "bu\u0131\u0287\u05DF\u01DDW u\u0131s\u0250\u15FA",
   "death.attack.createbigcannons.grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279b \u028Eq \u0287no u\u028Do\u05DFq s\u0250\u028D %s",
   "death.attack.createbigcannons.grapeshot.player": "\u0287o\u0265s\u01DDd\u0250\u0279b \u028Eq \u0287no u\u028Do\u05DFq s\u0250\u028D %s",
   "death.attack.createbigcannons.shrapnel": "\u05DF\u01DDud\u0250\u0279\u0265s \u028Eq dn p\u01DDdd\u0131\u0279 s\u0250\u028D %s",
@@ -255,5 +254,9 @@
   "item.createbigcannons.timed_fuze.tooltip.condition1": "p\u01DD\u029E\u0254\u0131\u05DF\u0186-\u1D1A u\u01DD\u0265M",
   "item.createbigcannons.timed_fuze.tooltip.condition2": "uo\u0131\u0287\u0250uo\u0287\u01DD\u15E1",
   "item.createbigcannons.timed_fuze.tooltip.summary": "\u02D9\u0265\u0254un\u0250\u05DF \u026Fo\u0279\u025F \u203E\u01DD\u026F\u0131\u0287 \u0287\u01DDs\u203E \u0250 \u0279\u01DD\u0287\u025F\u0250 s\u01DD\u0287\u0250uo\u0287\u01DD\u15E1",
-  "itemGroup.createbigcannons": "suouu\u0250\u0186 b\u0131\u15FA \u01DD\u0287\u0250\u01DD\u0279\u0186"
+  "itemGroup.createbigcannons": "suouu\u0250\u0186 b\u0131\u15FA \u01DD\u0287\u0250\u01DD\u0279\u0186",
+  "recipe.createbigcannons.added_casting_time": "%ss :\u01DD\u026F\u0131\u0287 bu\u0131\u0287s\u0250\u0254 p\u01DDpp\u2C6F",
+  "recipe.createbigcannons.built_up_heating": "bu\u0131p\u05DF\u0131n\u15FA uouu\u0250\u0186",
+  "recipe.createbigcannons.cannon_casting": "bu\u0131\u0287s\u0250\u0186 uouu\u0250\u0186",
+  "recipe.createbigcannons.melting": "bu\u0131\u0287\u05DF\u01DDW u\u0131s\u0250\u15FA"
 }

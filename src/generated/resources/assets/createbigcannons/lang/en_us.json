@@ -200,7 +200,6 @@
   "createbigcannons.ponder.tag.munitions.description": "Blocks that make up cannon loads, and what they can do",
   "createbigcannons.ponder.tag.operating_cannons": "Operating Cannons",
   "createbigcannons.ponder.tag.operating_cannons.description": "How to use big cannons safely and effectively",
-  "createbigcannons.recipe.melting": "Basin Melting",
   "death.attack.createbigcannons.grapeshot": "%s was blown out by grapeshot",
   "death.attack.createbigcannons.grapeshot.player": "%s was blown out by grapeshot",
   "death.attack.createbigcannons.shrapnel": "%s was ripped up by shrapnel",
@@ -255,5 +254,9 @@
   "item.createbigcannons.timed_fuze.tooltip.condition1": "When R-Clicked",
   "item.createbigcannons.timed_fuze.tooltip.condition2": "Detonation",
   "item.createbigcannons.timed_fuze.tooltip.summary": "Detonates after a _set time_ from launch.",
-  "itemGroup.createbigcannons": "Create Big Cannons"
+  "itemGroup.createbigcannons": "Create Big Cannons",
+  "recipe.createbigcannons.added_casting_time": "Added casting time: %ss",
+  "recipe.createbigcannons.built_up_heating": "Cannon Building",
+  "recipe.createbigcannons.cannon_casting": "Cannon Casting",
+  "recipe.createbigcannons.melting": "Basin Melting"
 }

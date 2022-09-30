@@ -37,7 +37,7 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredC
 	}
 	
 	@Override public CannonMaterial getCannonMaterial() { return CannonMaterial.INCOMPLETE_LAYERED; }
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.MEDIUM; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.MEDIUM.get(); }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
 	
 	@Override

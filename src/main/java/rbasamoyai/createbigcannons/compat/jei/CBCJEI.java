@@ -58,7 +58,7 @@ public class CBCJEI implements IModPlugin {
 		meltingCatalysts.add(AllBlocks.BASIN::asStack);
 		CreateRecipeCategory.Info<BasinRecipe> meltingInfo = new CreateRecipeCategory.Info<BasinRecipe>(
 				new mezz.jei.api.recipe.RecipeType<>(CreateBigCannons.resource("melting"), BasinRecipe.class),
-				Components.translatable(CreateBigCannons.MOD_ID + ".recipe.melting"),
+				Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
 				new EmptyBackground(177, 103),
 				new DoubleItemIcon(AllBlocks.BASIN::asStack, CBCBlocks.BASIN_FOUNDRY_LID::asStack),
 				meltingSupplier,
@@ -76,10 +76,11 @@ public class CBCJEI implements IModPlugin {
 			
 		built_up_heating = builder(BuiltUpHeatingRecipe.class)
 			.addTypedRecipes(BlockRecipeType.BUILT_UP_HEATING.get())
+			.catalyst(CBCBlocks.CANNON_BUILDER::asStack)
 			.catalyst(AllBlocks.ENCASED_FAN::asStack)
-			.itemIcon(AllBlocks.ENCASED_FAN.get())
+			.itemIcon(CBCBlocks.CANNON_BUILDER.get())
 			.emptyBackground(177, 103)
-			.build("built_up_heating", null);
+			.build("built_up_heating", BuiltUpHeatingCategory::new);
 	}
 	
 	private static final ResourceLocation PLUGIN_ID = CreateBigCannons.resource("jei_plugin");	
@@ -162,7 +163,7 @@ public class CBCJEI implements IModPlugin {
 			};
 			CBCBlockRecipeCategory.Info<T> info = new CBCBlockRecipeCategory.Info<>(
 					new mezz.jei.api.recipe.RecipeType<>(CreateBigCannons.resource(id), this.recipeClass),
-					Components.translatable(CreateBigCannons.MOD_ID + ".recipe." + id),
+					Components.translatable("recipe." + CreateBigCannons.MOD_ID + "." + id),
 					this.background,
 					this.icon,
 					recipesSupplier,

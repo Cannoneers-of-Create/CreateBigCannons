@@ -53,7 +53,7 @@ public class CreateBigCannons {
 		CBCFluids.register();
 		CBCRecipeTypes.register(modEventBus);
 		
-		CannonCastShape.register();
+		CannonCastShape.CANNON_CAST_SHAPES.register(modEventBus);
 		CBCContraptionTypes.prepare();
 		CBCChecks.register();
 		BlockRecipeSerializer.register();

@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import com.jozufozu.flywheel.core.PartialModel;
 
@@ -14,6 +17,8 @@ public class CBCBlockPartials {
 	private static final Map<CannonMaterial, PartialModel> BREECHBLOCK_BY_MATERIAL = new HashMap<>();
 	private static final Map<CannonMaterial, PartialModel> SCREW_LOCK_BY_MATERIAL = new HashMap<>();
 	private static final Map<CannonCastShape, PartialModel> CANNON_CAST_BY_SIZE = new HashMap<>();
+	
+	private static final Collection<Runnable> DEFERRED_MODEL_CALLBACKS = new ArrayList<>(); 
 	
 	public static final PartialModel
 		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.CAST_IRON, "cast_iron_sliding_breechblock"),
@@ -68,8 +73,12 @@ public class CBCBlockPartials {
 		return SCREW_LOCK_BY_MATERIAL.getOrDefault(material, STEEL_SCREW_LOCK);
 	}
 	
-	private static PartialModel cannonCastPartial(CannonCastShape size, String path) {
-		return cannonCastPartial(size, CreateBigCannons.resource("block/" + path));
+	private static PartialModel cannonCastPartial(Supplier<CannonCastShape> size, String path) {
+		PartialModel model = new PartialModel(CreateBigCannons.resource("block/" + path));
+		DEFERRED_MODEL_CALLBACKS.add(() -> {
+			CANNON_CAST_BY_SIZE.put(size.get(), model);
+		});
+		return model;
 	}
 	
 	public static PartialModel cannonCastPartial(CannonCastShape size, ResourceLocation loc) {
@@ -83,5 +92,10 @@ public class CBCBlockPartials {
 	}
 	
 	public static void init() {}
+	
+	public static void resolveDeferredModels() {
+		for (Runnable run : DEFERRED_MODEL_CALLBACKS) run.run();
+		DEFERRED_MODEL_CALLBACKS.clear();
+	}
 	
 }

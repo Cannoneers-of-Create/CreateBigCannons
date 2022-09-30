@@ -38,6 +38,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
@@ -51,7 +52,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	protected FluidTank fluid;
 	protected LazyOptional<IFluidHandler> fluidOptional = null;
 	protected List<CannonCastShape> structure = new ArrayList<>();
-	protected CannonCastShape castShape = CannonCastShape.VERY_SMALL;
+	protected CannonCastShape castShape = CannonCastShape.VERY_SMALL.get();
 	protected BlockPos controllerPos;
 	protected BlockPos lastKnownPos;
 	protected int height;
@@ -136,7 +137,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	protected void write(CompoundTag tag, boolean clientPacket) {
 		super.write(tag, clientPacket);
 		if (this.canRenderCastModel()) {
-			tag.putString("Size", this.castShape.name().toString());
+			tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this.castShape).toString());
 		}
 		if (this.lastKnownPos != null) tag.put("LastKnownPos", NbtUtils.writeBlockPos(this.lastKnownPos));
 		
@@ -144,7 +145,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			if (!this.structure.isEmpty()) {
 				ListTag structureTag = new ListTag();
 				for (CannonCastShape sz : this.structure) {
-					structureTag.add(StringTag.valueOf(sz.name().toString()));
+					structureTag.add(StringTag.valueOf(CBCRegistries.CANNON_CAST_SHAPES.get().getKey(sz).toString()));
 				}
 				tag.put("Structure", structureTag);
 			}
@@ -172,8 +173,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		int prevHeight = this.getControllerTE() == null ? 0 : this.getControllerTE().height;
 		
 		if (tag.contains("Size")) {
-			this.castShape = CannonCastShape.byId(new ResourceLocation(tag.getString("Size")));
-			if (this.castShape == null) this.castShape = CannonCastShape.VERY_SMALL;
+			this.castShape = CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(tag.getString("Size")));
+			if (this.castShape == null) this.castShape = CannonCastShape.VERY_SMALL.get();
 		}
 		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
 		
@@ -181,8 +182,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		if (tag.contains("Structure")) {
 			ListTag list = tag.getList("Structure", Tag.TAG_STRING);
 			for (int i = 0; i < list.size(); ++i) {
-				CannonCastShape shape = CannonCastShape.byId(new ResourceLocation(list.getString(i)));
-				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL : shape);
+				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(list.getString(i)));
+				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL.get() : shape);
 			}
 			this.height = tag.getInt("Height");
 			this.fluid.setCapacity(this.calculateCapacityFromStructure());

@@ -50,7 +50,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.material; }
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH.get(); }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING).getOpposite(); }
 	@Override
 	public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) {

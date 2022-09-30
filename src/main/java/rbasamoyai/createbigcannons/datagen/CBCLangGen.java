@@ -88,7 +88,11 @@ public class CBCLangGen {
 		
 		REGISTRATE.addLang("block", CreateBigCannons.resource("incomplete_block"), "tooltip.requiredParts", "This block requires the following parts:");
 		
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".recipe.melting", "Basin Melting");
+		REGISTRATE.addLang("recipe", CreateBigCannons.resource("melting"), "Basin Melting");
+		REGISTRATE.addLang("recipe", CreateBigCannons.resource("cannon_casting"), "Cannon Casting");
+		REGISTRATE.addLang("recipe", CreateBigCannons.resource("built_up_heating"), "Cannon Building");
+		
+		REGISTRATE.addLang("recipe", CreateBigCannons.resource("added_casting_time"), "Added casting time: %ss");
 	}
 	
 	private static class TooltipBuilder {

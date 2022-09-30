@@ -12,10 +12,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 
 public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 
-	private CannonCastShape renderedShape = CannonCastShape.VERY_SMALL;
+	private CannonCastShape renderedShape = CannonCastShape.VERY_SMALL.get();
 	private BlockPos centralBlock;
 	
 	public FinishedCannonCastBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -49,7 +50,7 @@ public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 		if (!this.isCentralBlock()) {
 			tag.put("CentralBlock", NbtUtils.writeBlockPos(this.centralBlock));
 		} else {
-			tag.putString("RenderedShape", this.renderedShape.name().toString());
+			tag.putString("RenderedShape", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this.renderedShape).toString());
 		}
 	}
 	
@@ -57,7 +58,7 @@ public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
 		this.centralBlock = tag.contains("CentralBlock") ? NbtUtils.readBlockPos(tag.getCompound("CentralBlock")) : null;
-		this.renderedShape = tag.contains("RenderedShape") ? CannonCastShape.byId(new ResourceLocation(tag.getString("RenderedShape"))) : CannonCastShape.VERY_SMALL;
+		this.renderedShape = tag.contains("RenderedShape") ? CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(tag.getString("RenderedShape"))) : CannonCastShape.VERY_SMALL.get();
 	}
 
 }

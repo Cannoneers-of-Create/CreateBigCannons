@@ -95,7 +95,7 @@ public class IncompleteScrewBreechBlock extends SolidCannonBlock<IncompleteCanno
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH.get(); }
 	
 	@Override public Class<IncompleteCannonBlockEntity> getTileEntityClass() { return IncompleteCannonBlockEntity.class; }
 	@Override public BlockEntityType<? extends IncompleteCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.INCOMPLETE_CANNON.get(); }

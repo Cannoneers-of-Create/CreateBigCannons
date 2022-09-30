@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons;
 
+import java.util.function.Supplier;
+
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -833,7 +835,7 @@ public class CBCBlocks {
 				.tag(BlockTags.MINEABLE_WITH_PICKAXE);
 	}
 	
-	private static BlockEntry<CannonCastMouldBlock> castMould(String name, VoxelShape blockShape, CannonCastShape castShape) {
+	private static BlockEntry<CannonCastMouldBlock> castMould(String name, VoxelShape blockShape, Supplier<CannonCastShape> castShape) {
 		return REGISTRATE.block(name + "_cast_mould", p -> new CannonCastMouldBlock(p, blockShape, castShape))
 				.transform(CBCBuilderTransformers.castMould(name))
 				.register();
