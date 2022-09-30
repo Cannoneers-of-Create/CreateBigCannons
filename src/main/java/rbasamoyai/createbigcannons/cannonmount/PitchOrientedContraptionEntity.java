@@ -33,26 +33,24 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	}
 	
 	@Override
-	public void doLocalTransforms(float partialTicks, PoseStack[] poseStacks) {
+	public void applyLocalTransforms(PoseStack stack, float partialTicks) {
 		float initialYaw = this.getInitialYaw();
 		float pitch = this.getViewXRot(partialTicks);
 		float yaw = this.getViewYRot(partialTicks) + initialYaw;
 		
-		for (PoseStack stack : poseStacks) {
-			stack.translate(-0.5f, 0.0f, -0.5f);
-			
-			TransformStack tstack = TransformStack.cast(stack)
-					.nudge(this.getId())
-					.centre()
-					.rotateY(yaw);
-			
-			if (this.getInitialOrientation().getAxis() == Direction.Axis.X) {
-				tstack.rotateZ(pitch);
-			} else {
-				tstack.rotateX(pitch);
-			}
-			tstack.unCentre();
+		stack.translate(-0.5f, 0.0f, -0.5f);
+		
+		TransformStack tstack = TransformStack.cast(stack)
+				.nudge(this.getId())
+				.centre()
+				.rotateY(yaw);
+		
+		if (this.getInitialOrientation().getAxis() == Direction.Axis.X) {
+			tstack.rotateZ(pitch);
+		} else {
+			tstack.rotateX(pitch);
 		}
+		tstack.unCentre();
 	}
 	
 	@Override

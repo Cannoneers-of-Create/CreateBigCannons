@@ -28,14 +28,14 @@ description='''Artillery engineering comes to Create'''
 [[dependencies.createbigcannons]]
 	modId="create"
 	mandatory=true
-	versionRange="[0.5.0d,)"
+	versionRange="[0.5.0.e,)"
 	ordering="NONE"
 	side="BOTH"
 	
 [[dependencies.createbigcannons]]
 	modId="flywheel"
 	mandatory=true
-	versionRange="[0.6.5,)"
+	versionRange="[0.6.5,0.6.7)"
 	ordering="NONE"
 	side="BOTH"
 	
