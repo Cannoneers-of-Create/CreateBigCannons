@@ -259,5 +259,6 @@
   "recipe.createbigcannons.built_up_heating": "Cannon Building",
   "recipe.createbigcannons.cannon_boring": "Cannon Boring",
   "recipe.createbigcannons.cannon_casting": "Cannon Casting",
+  "recipe.createbigcannons.incomplete_cannon_blocks": "Incomplete Cannon Blocks",
   "recipe.createbigcannons.melting": "Basin Melting"
 }

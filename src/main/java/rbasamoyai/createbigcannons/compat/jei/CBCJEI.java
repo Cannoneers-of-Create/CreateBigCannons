@@ -13,7 +13,6 @@ import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.ProcessingViaFanCategory;
-import com.simibubi.create.content.contraptions.components.deployer.ManualApplicationRecipe;
 import com.simibubi.create.content.contraptions.processing.BasinRecipe;
 import com.simibubi.create.foundation.utility.Components;
 
@@ -91,7 +90,13 @@ public class CBCJEI implements IModPlugin {
 			.catalyst(AllBlocks.WINDMILL_BEARING::asStack)
 			.itemIcon(CBCBlocks.CANNON_DRILL.get())
 			.emptyBackground(177, 77)
-			.build("cannon_boring", CannonBoringCategory::new);
+			.build("cannon_boring", CannonBoringCategory::new),
+			
+		incomplete_cannon_blocks = builder(IncompleteCannonBlockRecipe.class)
+			.addRecipes(IncompleteCannonBlockRecipe::makeAllIncompleteRecipes)
+			.itemIcon(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH.get())
+			.emptyBackground(177, 60)
+			.build("incomplete_cannon_blocks", IncompleteCannonBlockCategory::new);
 		
 	}
 	
