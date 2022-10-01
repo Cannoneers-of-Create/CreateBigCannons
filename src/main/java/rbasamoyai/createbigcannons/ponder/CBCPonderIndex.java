@@ -42,12 +42,11 @@ public class CBCPonderIndex {
 			.addStoryBoard("cannon_crafting/cannon_boring", CannonCraftingScenes::cannonBoring);
 		
 		HELPER.forComponents(CBCBlocks.CANNON_BUILDER)
-			.addStoryBoard("cannon_crafting/cannon_building", CannonCraftingScenes::cannonBuilding);
-		
-		/*
+			.addStoryBoard("cannon_crafting/cannon_building", CannonCraftingScenes::cannonBuilding)
+			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons);
+
 		HELPER.forComponents(AllBlocks.ENCASED_FAN)
 			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons);
-		*/
 		
 		HELPER.forComponents(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH,
 				CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH, CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH)

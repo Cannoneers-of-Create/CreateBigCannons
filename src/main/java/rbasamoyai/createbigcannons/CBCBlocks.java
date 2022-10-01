@@ -438,7 +438,7 @@ public class CBCBlocks {
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.sizedCannon("built_up_cannon_chamber", "cannon_tubing/nethersteel"))
 			.tag(CBCTags.BlockCBC.THICK_TUBING)
-			.lang("Built-Up Steel Cannon Chamber")
+			.lang("Built-Up Nethersteel Cannon Chamber")
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 			.item(CannonBlockItem::new).build()
 			.register();

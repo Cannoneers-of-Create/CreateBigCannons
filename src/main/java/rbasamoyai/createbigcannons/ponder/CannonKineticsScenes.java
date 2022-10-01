@@ -54,7 +54,7 @@ public class CannonKineticsScenes {
 		scene.idle(15);
 		
 		scene.overlay.showText(80)
-			.text("Once the sliding breech is fully opened, cannon muntions can be loaded through the breech.")
+			.text("Once the sliding breech is fully opened, cannon munitions can be loaded through the breech.")
 			.pointAt(util.vector.centerOf(munitionPos))
 			.colored(PonderPalette.GREEN);
 		scene.idle(15);

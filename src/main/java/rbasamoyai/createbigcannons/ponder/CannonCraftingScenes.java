@@ -462,6 +462,47 @@ public class CannonCraftingScenes {
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 		
+		scene.world.showSection(util.select.fromTo(0, 1, 2, 2, 1, 2), Direction.UP);
+		scene.idle(20);
+		ElementLink<WorldSectionElement> smallLayer = scene.world.showIndependentSection(util.select.fromTo(0, 1, 3, 1, 1, 3), Direction.EAST);
+		scene.world.moveSection(smallLayer, util.vector.of(0, 0, -1), 0);
+		scene.idle(10);
+		ElementLink<WorldSectionElement> mediumLayer = scene.world.showIndependentSection(util.select.position(0, 1, 1), Direction.EAST);
+		scene.world.moveSection(mediumLayer, util.vector.of(0, 0, 1), 0);
+		scene.idle(30);
+		
+		scene.world.setKineticSpeed(util.select.position(5, 0, 3), -16);
+		scene.world.setKineticSpeed(util.select.position(5, 1, 2), 32);
+		scene.world.setKineticSpeed(util.select.fromTo(4, 2, 2, 5, 2, 2), -32);
+		scene.world.setBlock(util.grid.at(2, 2, 2), Blocks.AIR.defaultBlockState(), false);
+		
+		scene.world.showSection(util.select.fromTo(3, 2, 2, 4, 2, 2), Direction.WEST);
+		scene.idle(10);
+		scene.world.showSection(util.select.fromTo(5, 2, 2, 5, 0, 3), Direction.WEST);
+		scene.idle(30);
+		
+		scene.overlay.showText(60)
+			.text("Blasting built-up cannon layers turns them into built-up cannon blocks.")
+			.pointAt(util.vector.centerOf(1, 1, 2));
+		scene.idle(80);
+		
+		scene.overlay.showText(80)
+			.text("The process works similar to bulk blasting of items, using a fan blowing into a lava block to produce a heating current.")
+			.pointAt(util.vector.blockSurface(util.grid.at(4, 2, 2), Direction.WEST));
+		scene.idle(100);
+		
+		scene.overlay.showText(60)
+			.text("It takes a while for the cannon layers to transform into cannon blocks.");
+		scene.idle(40);
+		
+		scene.world.setBlock(util.grid.at(0, 1, 2), CBCBlocks.STEEL_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.WEST), true);
+		scene.world.setBlock(util.grid.at(1, 1, 2), CBCBlocks.BUILT_UP_STEEL_CANNON_BARREL.getDefaultState().setValue(FACING, Direction.WEST), true);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.STEEL_CANNON_BARREL.getDefaultState().setValue(FACING, Direction.WEST), true);
+		
+		scene.idle(5);
+		scene.world.setKineticSpeed(util.select.everywhere(), 0);
+		scene.idle(30);
+		
 		scene.markAsFinished();
 	}
 	
