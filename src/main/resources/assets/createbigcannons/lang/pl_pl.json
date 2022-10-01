@@ -30,7 +30,7 @@
   "block.createbigcannons.cannon.tooltip.weakCannonEnd": "Słaby Tylec",
   "block.createbigcannons.cannon.tooltip.weakCannonEnd.desc": "Armaty z tym tylcem mogą bezpiecznie wytrzymać wybuch maksymalnie _%s Ładunków Prochowych_.",
   "block.createbigcannons.cannon.tooltip.weightImpact": "Wpływ na Wagę",
-  "block.createbigcannons.cannon.tooltip.weightImpact.goggles": "_%sx RPM_",
+  "block.createbigcannons.cannon.tooltip.weightImpact.goggles": "_%sx Ob/min_",
   "block.createbigcannons.cannon_builder": "Składacz Armat",
   "block.createbigcannons.cannon_builder_head": "Głowica Składacza Armat",
   "block.createbigcannons.cannon_cast": "Odlew Armaty",
