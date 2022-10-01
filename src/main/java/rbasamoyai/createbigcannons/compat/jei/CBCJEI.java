@@ -13,6 +13,7 @@ import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.ProcessingViaFanCategory;
+import com.simibubi.create.content.contraptions.components.deployer.ManualApplicationRecipe;
 import com.simibubi.create.content.contraptions.processing.BasinRecipe;
 import com.simibubi.create.foundation.utility.Components;
 
@@ -81,7 +82,17 @@ public class CBCJEI implements IModPlugin {
 			.catalyst(ProcessingViaFanCategory.getFan("fan_blasting"))
 			.itemIcon(CBCBlocks.CANNON_BUILDER.get())
 			.emptyBackground(177, 103)
-			.build("built_up_heating", BuiltUpHeatingCategory::new);
+			.build("built_up_heating", BuiltUpHeatingCategory::new),
+			
+		cannon_boring_blocks = builder(CannonBoringRecipe.class)
+			.addRecipes(CannonBoringRecipe::makeAllBoringRecipes)
+			.catalyst(CBCBlocks.CANNON_DRILL::asStack)
+			.catalyst(AllBlocks.MECHANICAL_BEARING::asStack)
+			.catalyst(AllBlocks.WINDMILL_BEARING::asStack)
+			.itemIcon(CBCBlocks.CANNON_DRILL.get())
+			.emptyBackground(177, 77)
+			.build("cannon_boring", CannonBoringCategory::new);
+		
 	}
 	
 	private static final ResourceLocation PLUGIN_ID = CreateBigCannons.resource("jei_plugin");	

@@ -91,6 +91,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("melting"), "Basin Melting");
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("cannon_casting"), "Cannon Casting");
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("built_up_heating"), "Cannon Building");
+		REGISTRATE.addLang("recipe", CreateBigCannons.resource("cannon_boring"), "Cannon Boring");
+		REGISTRATE.addLang("recipe", CreateBigCannons.resource("incomplete_cannon_blocks"), "Incomplete Cannon Blocks");
 		
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("added_casting_time"), "Added casting time: %ss");
 	}
