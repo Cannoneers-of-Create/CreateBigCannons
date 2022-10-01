@@ -244,7 +244,7 @@
   "item.createbigcannons.nethersteel_nugget": "Pepita de acero del nether",
   "item.createbigcannons.nethersteel_screw_lock": "Tornillo de acero del nether",
   "item.createbigcannons.packed_gunpowder": "Pólvora comprimida",
-  "item.createbigcannons.shot_balls": "bolas de tiro",
+  "item.createbigcannons.shot_balls": "Perdigones",
   "item.createbigcannons.steel_screw_lock": "Tornillo de acero",
   "item.createbigcannons.steel_sliding_breechblock": "Cerrojo de acero",
   "item.createbigcannons.timed_fuze": "Espoleta de tiempo",
@@ -255,4 +255,8 @@
   "item.createbigcannons.timed_fuze.tooltip.condition2": "Detonacion",
   "item.createbigcannons.timed_fuze.tooltip.summary": "Detona después de un _tiempo establecido_ desde el lanzamiento.",
   "itemGroup.createbigcannons": "Create Big Cannons"
+  "recipe.createbigcannons.added_casting_time": "Tiempo de enfriamiento: %ss",
+  "recipe.createbigcannons.built_up_heating": "Construcción del cañon",
+  "recipe.createbigcannons.cannon_casting": "Fundición",
+  "recipe.createbigcannons.melting": "Cuenca de funcidión"
 }
