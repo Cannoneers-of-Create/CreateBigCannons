@@ -39,7 +39,10 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 	public void setRecipe(IRecipeLayoutBuilder builder, CannonCastingRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 16, 27)
 			.setBackground(getRenderedSlot(), -1, -1)
-			.addIngredients(ForgeTypes.FLUID_STACK, withImprovedVisibility(recipe.ingredient().getMatchingFluidStacks()))
+			.addIngredients(ForgeTypes.FLUID_STACK, withImprovedVisibility(recipe.ingredient().getMatchingFluidStacks().stream().map(fs -> {
+				fs.setAmount(recipe.shape().fluidSize());
+				return fs;
+			}).toList()))
 			.addTooltipCallback(addFluidTooltip());
 		
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 142, 62)
