@@ -57,7 +57,7 @@ public class CannonCastMouldBlock extends Block {
 				level.playSound(player, pos, SoundEvents.SAND_PLACE, SoundSource.PLAYERS, 1.0f, 0.0f);
 			} else {
 				level.setBlock(pos, state.setValue(SAND, false), 3);
-				if (!level.isClientSide) {
+				if (!level.isClientSide && !player.isCreative()) {
 					player.addItem(CBCBlocks.CASTING_SAND.asStack());
 				}
 				level.playSound(player, pos, SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 1.0f, 1.0f);
