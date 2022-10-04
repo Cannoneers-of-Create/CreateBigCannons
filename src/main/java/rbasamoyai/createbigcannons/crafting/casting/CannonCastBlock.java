@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
 import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -47,4 +48,14 @@ public class CannonCastBlock extends Block implements ITE<CannonCastBlockEntity>
 	@Override public Class<CannonCastBlockEntity> getTileEntityClass() { return CannonCastBlockEntity.class; }
 	@Override public BlockEntityType<? extends CannonCastBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_CAST.get(); }
 
+	@Override public boolean hasAnalogOutputSignal(BlockState state) { return true; }
+	
+	@Override
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+		return this.getTileEntityOptional(level, pos)
+				.map(CannonCastBlockEntity::getControllerTE)
+				.map(CannonCastBlockEntity::getFillState)
+				.map(ComparatorUtil::fractionToRedstoneLevel)
+				.orElse(0);
+	}
 }

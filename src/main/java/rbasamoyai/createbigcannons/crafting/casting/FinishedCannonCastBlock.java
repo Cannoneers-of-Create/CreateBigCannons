@@ -59,6 +59,6 @@ public class FinishedCannonCastBlock extends Block implements ITE<FinishedCannon
 	}
 	
 	@Override public boolean hasAnalogOutputSignal(BlockState state) { return true; }
-	@Override public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) { return 1; }
+	@Override public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) { return 15; }
 	
 }
