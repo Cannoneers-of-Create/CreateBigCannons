@@ -43,19 +43,22 @@ public class CannonDrillingContraption extends PoleContraption {
 		BlockState nextBlock = level.getBlockState(start.relative(direction));
 		int extensionsInFront = 0;
 		Direction.Axis blockAxis = direction.getAxis();
+		int maxPoles = CannonDrillBlock.maxAllowedDrillLength();
 		
 		PistonExtensionPoleBlock.PlacementHelper matcher = PistonExtensionPoleBlock.PlacementHelper.get();
-		while (matcher.matchesAxis(nextBlock, blockAxis) || isDrillBit(nextBlock) && nextBlock.getValue(FACING) == direction) {
-			start = start.relative(direction);
-			poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
-			
-			extensionsInFront++;
-			if (isDrillBit(nextBlock)) break;
-			
-			nextBlock = level.getBlockState(start.relative(direction));
-			
-			if (extensionsInFront > CannonDrillBlock.maxAllowedDrillLength()) {
-				throw AssemblyException.tooManyPistonPoles();
+		if (level.getBlockState(pos).getValue(CannonDrillBlock.STATE) == PistonState.EXTENDED) {
+			while (matcher.matchesAxis(nextBlock, blockAxis) || isDrillBit(nextBlock) && nextBlock.getValue(FACING) == direction) {
+				start = start.relative(direction);
+				poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
+				
+				extensionsInFront++;
+				if (isDrillBit(nextBlock)) break;
+				
+				nextBlock = level.getBlockState(start.relative(direction));
+				
+				if (extensionsInFront > maxPoles) {
+					throw new AssemblyException("tooManyPistonPoles", maxPoles);
+				}
 			}
 		}
 		
@@ -76,8 +79,8 @@ public class CannonDrillingContraption extends PoleContraption {
 			extensionsInBack++;
 			nextBlock = level.getBlockState(end.relative(opposite));
 			
-			if (extensionsInFront + extensionsInBack > CannonDrillBlock.maxAllowedDrillLength()) {
-				throw AssemblyException.tooManyPistonPoles();
+			if (extensionsInFront + extensionsInBack > maxPoles) {
+				throw new AssemblyException("tooManyPistonPoles", maxPoles);
 			}
 		}
 		

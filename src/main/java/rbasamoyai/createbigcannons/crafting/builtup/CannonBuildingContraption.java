@@ -65,20 +65,22 @@ public class CannonBuildingContraption extends PoleContraption {
 		Direction.Axis blockAxis = direction.getAxis();
 		
 		PistonExtensionPoleBlock.PlacementHelper matcher = PistonExtensionPoleBlock.PlacementHelper.get();
-		while (matcher.matchesAxis(nextBlock, blockAxis) || isBuilderHead(nextBlock) && nextBlock.getValue(FACING) == direction) {
-			start = start.relative(direction);
-			poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
-			
-			extensionsInFront++;
-			if (isBuilderHead(nextBlock)) {
-				this.isActivated = nextBlock.getValue(CannonBuilderHeadBlock.ATTACHED);
-				break;
-			}
-			
-			nextBlock = level.getBlockState(start.relative(direction));
-			
-			if (extensionsInFront > CannonBuilderBlock.maxAllowedBuilderLength()) {
-				throw AssemblyException.tooManyPistonPoles();
+		if (level.getBlockState(pos).getValue(CannonBuilderBlock.STATE) == BuilderState.EXTENDED) {
+			while (matcher.matchesAxis(nextBlock, blockAxis) || isBuilderHead(nextBlock) && nextBlock.getValue(FACING) == direction) {
+				start = start.relative(direction);
+				poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
+				
+				extensionsInFront++;
+				if (isBuilderHead(nextBlock)) {
+					this.isActivated = nextBlock.getValue(CannonBuilderHeadBlock.ATTACHED);
+					break;
+				}
+				
+				nextBlock = level.getBlockState(start.relative(direction));
+				
+				if (extensionsInFront > CannonBuilderBlock.maxAllowedBuilderLength()) {
+					throw AssemblyException.tooManyPistonPoles();
+				}
 			}
 		}
 		
