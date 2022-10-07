@@ -235,8 +235,9 @@ public class MountedCannonContraption extends Contraption {
 		
 		boolean emptyNoProjectile = false;
 		
-		int maxSafeCharges = this.isWeakBreech
-				? Math.min(this.cannonMaterial.maxSafeCharges(), CBCConfigs.SERVER.cannons.weakBreechStrength.get())
+		int weakBreechStrength = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
+		int maxSafeCharges = this.isWeakBreech && weakBreechStrength > -1
+				? Math.min(this.cannonMaterial.maxSafeCharges(), weakBreechStrength)
 				: this.cannonMaterial.maxSafeCharges();
 		
 		for (ListIterator<CannonBlockEntityHolder<?>> iter = this.cannonBlockEntities.listIterator(); iter.hasNext(); ) {
