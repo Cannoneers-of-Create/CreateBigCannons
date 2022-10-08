@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.tileEntity.IMultiTileContainer;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
@@ -72,10 +73,12 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	public CannonCastBlockEntity(BlockEntityType<? extends CannonCastBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		this.fluid = new SmartFluidTank(1, this::onFluidStackChanged);
+		this.fluidOptional = LazyOptional.of(() -> this.fluid);
 		this.height = 1;
 		this.forceFluidLevelUpdate = true;
 		this.updateRecipes = true;
 		this.startCastingTime = 1;
+		this.refreshCap();
 	}
 	
 	@Override public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
@@ -135,7 +138,6 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
-		super.write(tag, clientPacket);
 		if (this.canRenderCastModel()) {
 			tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this.castShape).toString());
 		}
@@ -158,6 +160,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		} else {
 			tag.put("Controller", NbtUtils.writeBlockPos(this.controllerPos));
 		}
+		
+		super.write(tag, clientPacket);
 		
 		if (!clientPacket) return;
 		if (this.forceFluidLevelUpdate) tag.putBoolean("ForceFluidUpdate", true);
@@ -197,12 +201,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			this.controllerPos = NbtUtils.readBlockPos(tag.getCompound("Controller"));
 		}
 		
-		if (this.isController()) {
-			float fillState = this.getFillState();
-			if (tag.contains("ForceFluidLevel") || this.fluidLevel == null) {
-				this.fluidLevel = LerpedFloat.linear().startWithValue(fillState);
-				this.fluidLevel.chase(fillState, 0.5f, Chaser.EXP);
-			}
+		if (tag.contains("ForceFluidLevel") || this.fluidLevel == null) {
+			this.fluidLevel = LerpedFloat.linear().startWithValue(this.getFillState());
 		}
 		
 		if (!clientPacket) return;
@@ -212,16 +212,37 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			if (this.isController()) this.fluid.setCapacity(this.calculateCapacityFromStructure());
 			this.invalidateRenderBoundingBox();
 		}
-		if (tag.contains("LazySync") && this.fluidLevel != null) {
+		if (this.isController()) {
+			float fillState = this.getFillState();
+			if (tag.contains("ForceFluidLevel") || this.fluidLevel == null) {
+				this.fluidLevel = LerpedFloat.linear().startWithValue(fillState);
+			}
+			this.fluidLevel.chase(fillState, 0.5f, Chaser.EXP);
+		}		
+		if (tag.contains("LazySync")) {
 			this.fluidLevel.chase(this.fluidLevel.getChaseTarget(), 0.125f, Chaser.EXP);
 		}
 	}
 	
 	protected void onFluidStackChanged(FluidStack stack) {
 		if (!this.hasLevel()) return;
+
+		for (int yOffset = 0; yOffset < this.height; yOffset++) {
+			for (int xOffset = 0; xOffset < 3; xOffset++) {
+				for (int zOffset = 0; zOffset < 3; zOffset++) {
+					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
+					CannonCastBlockEntity castAt = ConnectivityHandler.partAt(this.getType(), this.level, pos);
+					if (castAt == null) continue;
+					this.level.updateNeighbourForOutputSignal(pos, castAt.getBlockState().getBlock());
+				}
+			}
+		}
+		
 		if (!this.level.isClientSide) {
 			this.notifyUpdate();
-		} else {
+		}
+		
+		if (this.isVirtual()) {
 			if (this.fluidLevel == null) {
 				this.fluidLevel = LerpedFloat.linear().startWithValue(this.getFillState());
 			}
@@ -398,7 +419,10 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 				childCast.notifyUpdate();
 			}
 		}
-		this.getControllerTE().updateRecipes = true;
+		CannonCastBlockEntity controller = this.getControllerTE();
+		controller.updateRecipes = true;
+		controller.forceFluidLevelUpdate = true;
+		controller.sendData();
 		this.notifyUpdate();
 	}
 	

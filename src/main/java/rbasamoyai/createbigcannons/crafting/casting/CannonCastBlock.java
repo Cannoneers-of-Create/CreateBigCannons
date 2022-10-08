@@ -1,9 +1,9 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
 import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.tileEntity.ComparatorUtil;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -55,7 +55,11 @@ public class CannonCastBlock extends Block implements ITE<CannonCastBlockEntity>
 		return this.getTileEntityOptional(level, pos)
 				.map(CannonCastBlockEntity::getControllerTE)
 				.map(CannonCastBlockEntity::getFillState)
-				.map(ComparatorUtil::fractionToRedstoneLevel)
+				.map(CannonCastBlock::castFractionToRedstoneLevel)
 				.orElse(0);
+	}
+	
+	public static int castFractionToRedstoneLevel(float frac) {
+		return Mth.floor(Mth.clamp(frac * 13 + (frac > 0 ? 1 : 0), 0, 14));
 	}
 }
