@@ -34,12 +34,12 @@ public class ProximityFuzeScreen extends AbstractSimiContainerScreen<ProximityFu
 		super.init();
 		
 		this.setDistance = new ScrollInput(this.leftPos + 36, this.topPos + 29, 102, 18)
-				.withRange(1, 21)
+				.withRange(1, 33)
 				.calling(state -> {
 					this.lastUpdated = 0;
 					this.setDistance.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.set_proximity_fuze.distance", state).component());
 				})
-				.setState(Mth.clamp(this.menu.getDistance(), 1, 21));
+				.setState(Mth.clamp(this.menu.getDistance(), 1, 33));
 		
 		this.setDistance.onChanged();
 		this.addRenderableWidget(this.setDistance);
@@ -55,7 +55,7 @@ public class ProximityFuzeScreen extends AbstractSimiContainerScreen<ProximityFu
 		
 		CBCGuiTextures.PROXIMITY_FUZE_BG.render(poseStack, this.leftPos, this.topPos);
 		drawCenteredString(poseStack, this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
-		int top = 20;
+		int top = 32;
 		double s = 100.0d / (double)(top - 1);
 		int offsX = this.setDistance.getState();
 		offsX = offsX == top ? 100 : (int) Math.ceil((double) offsX * s - s);
