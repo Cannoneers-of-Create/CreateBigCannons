@@ -253,7 +253,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	@Override
 	public void tick() {
 		super.tick();
-		this.invalidateRenderBoundingBox();
+		//this.invalidateRenderBoundingBox();
 		if (this.syncCooldown > 0) {
 			this.syncCooldown--;
 			if (this.syncCooldown == 0 && this.queuedSync) {
@@ -359,6 +359,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 				if (!(this.level.getBlockEntity(pos1) instanceof FinishedCannonCastBlockEntity fCast)) return;
 				if (pos1.equals(corner)) {
 					fCast.setRenderedShape(cast.castShape);
+					fCast.setHeight(this.height);
+					fCast.setRootBlock(this.worldPosition.offset(-1, 0, -1));
 				} else {
 					fCast.setCentralBlock(corner);
 				}
@@ -560,6 +562,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 
 	@Override
 	public void setController(BlockPos pos) {
+		if (this.level.isClientSide) this.invalidateRenderBoundingBox();
 		if (this.level.isClientSide && !this.isVirtual() || pos.equals(this.controllerPos)) return;
 		this.controllerPos = pos;
 		this.refreshCap();
