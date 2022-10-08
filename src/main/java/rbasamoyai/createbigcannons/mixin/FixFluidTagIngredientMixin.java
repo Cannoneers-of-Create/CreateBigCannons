@@ -12,7 +12,6 @@ import com.simibubi.create.foundation.fluid.FluidIngredient.FluidTagIngredient;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 
 @Mixin(FluidTagIngredient.class)
 public abstract class FixFluidTagIngredientMixin {
@@ -26,7 +25,6 @@ public abstract class FixFluidTagIngredientMixin {
 	public void createbigcannons$testInternal(FluidStack stack, CallbackInfoReturnable<Boolean> cbi) {
 		FluidTagIngredient self = (FluidTagIngredient) (Object) this;
 		if (tag == null) {
-			CreateBigCannons.LOGGER.info("In mixin");
 			for (FluidStack accepted : self.getMatchingFluidStacks()) {
 				if (accepted.getFluid().isSame(stack.getFluid())) {
 					cbi.setReturnValue(true);
