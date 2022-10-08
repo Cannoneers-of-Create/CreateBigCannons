@@ -34,11 +34,19 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCItems.TIMED_FUZE.get())
-		.define('I', Items.IRON_INGOT).define('M', AllItems.PRECISION_MECHANISM.get()).define('R', Items.REDSTONE)
+		.define('I', Items.IRON_INGOT).define('C', Items.CLOCK).define('R', Items.REDSTONE)
 		.pattern("I")
-		.pattern("M")
+		.pattern("C")
 		.pattern("R")
-		.unlockedBy(getHasName(AllItems.PRECISION_MECHANISM.get()), has(AllItems.PRECISION_MECHANISM.get()))
+		.unlockedBy(getHasName(Items.CLOCK), has(Items.CLOCK))
+		.save(cons);
+		
+		ShapedRecipeBuilder.shaped(CBCItems.PROXIMITY_FUZE.get())
+		.define('A', Items.IRON_BARS).define('C', Items.QUARTZ).define('R', Items.REDSTONE).define('I', Items.IRON_INGOT)
+		.pattern(" A ")
+		.pattern("RCR")
+		.pattern(" I ")
+		.unlockedBy(getHasName(Items.IRON_BARS), has(Items.IRON_BARS))
 		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCItems.EMPTY_POWDER_CHARGE.get())
@@ -114,7 +122,7 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.HE_SHELL.get())
 		.key('I', Items.IRON_INGOT).key('T', Items.TNT).key('S', ItemTags.WOODEN_SLABS)
 		.patternLine(" I ")
-		.patternLine("III")
+		.patternLine("ITI")
 		.patternLine("ITI")
 		.patternLine(" S ")
 		.build(cons);

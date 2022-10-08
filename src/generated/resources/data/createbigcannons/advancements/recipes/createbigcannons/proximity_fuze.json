@@ -2,17 +2,17 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "createbigcannons:timed_fuze"
+      "createbigcannons:proximity_fuze"
     ]
   },
   "criteria": {
-    "has_clock": {
+    "has_iron_bars": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:clock"
+              "minecraft:iron_bars"
             ]
           }
         ]
@@ -21,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "createbigcannons:timed_fuze"
+        "recipe": "createbigcannons:proximity_fuze"
       }
     }
   },
   "requirements": [
     [
-      "has_clock",
+      "has_iron_bars",
       "has_the_recipe"
     ]
   ]

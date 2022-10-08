@@ -7,7 +7,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipesManager.ClientboundRecip
 
 public class CBCNetwork {
 
-	public static final String VERSION = "1.1.0";
+	public static final String VERSION = "1.2.0";
 	
 	public static final SimpleChannel INSTANCE = construct();
 	
@@ -37,6 +37,12 @@ public class CBCNetwork {
 				.encoder(ClientboundUpdateContraptionPacket::encode)
 				.decoder(ClientboundUpdateContraptionPacket::new)
 				.consumer(ClientboundUpdateContraptionPacket::handle)
+				.add();
+		
+		channel.messageBuilder(ServerboundProximityFuzePacket.class, id++)
+				.encoder(ServerboundProximityFuzePacket::encode)
+				.decoder(ServerboundProximityFuzePacket::new)
+				.consumer(ServerboundProximityFuzePacket::handle)
 				.add();
 		
 		return channel;

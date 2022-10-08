@@ -15,15 +15,15 @@ import net.minecraft.world.entity.player.Inventory;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCGuiTextures;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
-import rbasamoyai.createbigcannons.network.ServerboundTimedFuzePacket;
+import rbasamoyai.createbigcannons.network.ServerboundProximityFuzePacket;
 
-public class TimedFuzeScreen extends AbstractSimiContainerScreen<TimedFuzeContainer> {
+public class ProximityFuzeScreen extends AbstractSimiContainerScreen<ProximityFuzeContainer> {
 	
-	private ScrollInput setTime;
+	private ScrollInput setDistance;
 	private IconButton confirmButton;
 	private int lastUpdated = -1;	
 	
-	public TimedFuzeScreen(TimedFuzeContainer menu, Inventory playerInv, Component title) {
+	public ProximityFuzeScreen(ProximityFuzeContainer menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
 	}
 	
@@ -33,19 +33,16 @@ public class TimedFuzeScreen extends AbstractSimiContainerScreen<TimedFuzeContai
 		this.setWindowOffset(1, 0);
 		super.init();
 		
-		this.setTime = new ScrollInput(this.leftPos + 36, this.topPos + 29, 102, 18)
-				.withRange(0, 100)
+		this.setDistance = new ScrollInput(this.leftPos + 36, this.topPos + 29, 102, 18)
+				.withRange(1, 21)
 				.calling(state -> {
 					this.lastUpdated = 0;
-					int time = 20 + state * 5;
-					int seconds = time / 20;
-					int ticks = time - seconds * 20;
-					this.setTime.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
+					this.setDistance.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.set_proximity_fuze.distance", state).component());
 				})
-				.setState(Mth.clamp(this.menu.getTime() / 5 - 4, 0, 100));
+				.setState(Mth.clamp(this.menu.getDistance(), 1, 21));
 		
-		this.setTime.onChanged();
-		this.addRenderableWidget(this.setTime);
+		this.setDistance.onChanged();
+		this.addRenderableWidget(this.setDistance);
 		
 		this.confirmButton = new IconButton(this.leftPos + this.imageWidth - 33, this.topPos + this.imageHeight - 24, AllIcons.I_CONFIRM);
 		this.confirmButton.withCallback(this::onClose);
@@ -56,9 +53,13 @@ public class TimedFuzeScreen extends AbstractSimiContainerScreen<TimedFuzeContai
 	protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		
-		CBCGuiTextures.TIMED_FUZE_BG.render(poseStack, this.leftPos, this.topPos);
+		CBCGuiTextures.PROXIMITY_FUZE_BG.render(poseStack, this.leftPos, this.topPos);
 		drawCenteredString(poseStack, this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
-		CBCGuiTextures.TIMED_FUZE_SELECTOR.render(poseStack, this.leftPos + 34 + this.setTime.getState(), this.topPos + 21);
+		int top = 20;
+		double s = 100.0d / (double)(top - 1);
+		int offsX = this.setDistance.getState();
+		offsX = offsX == top ? 100 : (int) Math.ceil((double) offsX * s - s);
+		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(poseStack, this.leftPos + 32 + offsX, this.topPos + 21);
 		
 		GuiGameElement.of(this.menu.getStackToRender())
 			.<GuiGameElement.GuiItemRenderBuilder>at(this.leftPos + 185, this.topPos + 26, -200)
@@ -92,7 +93,7 @@ public class TimedFuzeScreen extends AbstractSimiContainerScreen<TimedFuzeContai
 	}
 	
 	private void updateServer() {
-		CBCNetwork.INSTANCE.sendToServer(new ServerboundTimedFuzePacket(20 + this.setTime.getState() * 5));
+		CBCNetwork.INSTANCE.sendToServer(new ServerboundProximityFuzePacket(this.setDistance.getState()));
 	}
 
 }

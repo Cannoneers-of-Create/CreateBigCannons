@@ -5,6 +5,7 @@ import java.util.Arrays;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
 public class ModGroup {
@@ -63,6 +64,7 @@ public class ModGroup {
 				CBCBlocks.SHRAPNEL_SHELL.asStack(),
 				CBCItems.IMPACT_FUZE.asStack(),
 				TimedFuzeItem.getCreativeTabItem(20),
+				ProximityFuzeItem.getCreativeTabItem(1),
 				
 				CBCItems.CANNON_CRAFTING_WAND.asStack(),
 				CBCBlocks.CASTING_SAND.asStack(),

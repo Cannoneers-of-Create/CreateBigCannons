@@ -25,6 +25,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "player", "%s was blown out by grapeshot");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %s s %s ticks");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.distance", "Detonation Distance: %s blocks");
 		
 		tooltip(CBCBlocks.SOLID_SHOT)
 		.header("SOLID SHOT")
@@ -63,6 +64,12 @@ public class CBCLangGen {
 		.summary("Detonates after a _set time_ from launch.")
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Timed Fuze_ menu, where the fuze duration can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile has been in the world for the set time.");
+		
+		tooltip(CBCItems.PROXIMITY_FUZE)
+		.header("PROXIMITY FUZE")
+		.summary("Detonates when it _gets close_ to a block.")
+		.conditionAndBehavior("When R-Clicked", "Opens the _Set Proximity Fuze_ menu, where the detonation distance can be set.")
+		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile gets is within the set range of a block.");
 		
 		tooltip(CBCItems.CANNON_CRAFTING_WAND)
 		.header("CANNON CRAFTING WAND")

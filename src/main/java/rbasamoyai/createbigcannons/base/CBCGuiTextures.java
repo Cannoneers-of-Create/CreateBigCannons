@@ -15,7 +15,15 @@ public enum CBCGuiTextures implements ScreenElement {
 	CASTING_ARROW("jei_icons", 0, 0, 32, 32),
 	CASTING_ARROW_1("jei_icons", 32, 0, 32, 32),
 	CANNON_CAST_SHADOW("jei_icons", 64, 0, 96, 32),
-	CANNON_BUILDING_ARROW("jei_icons", 160, 0, 8, 32)
+	CANNON_BUILDING_ARROW("jei_icons", 160, 0, 8, 32),
+	
+	// Fuze GUI
+	// Timed Fuze
+	TIMED_FUZE_BG("backgrounds1", 0, 0, 179, 83),
+	TIMED_FUZE_SELECTOR("backgrounds1", 179, 0, 7, 26),
+	// Proximity Fuze
+	PROXIMITY_FUZE_BG("backgrounds1", 0, 91, 179, 83),
+	PROXIMITY_FUZE_SELECTOR("backgrounds1", 179, 91, 9, 26),
 	
 	;
 	

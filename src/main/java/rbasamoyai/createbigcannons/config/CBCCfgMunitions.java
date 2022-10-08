@@ -10,6 +10,7 @@ public class CBCCfgMunitions extends ConfigBase {
 	
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes"); 
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
+	public final ConfigInt proximityFuzeArmingTime = i(20, 0, "proximityFuzeArmingTime", Comments.proximityFuzeArmingTime);
 	
 	public final ConfigGroup groupedMunitions = group(0, "groupedMunitions", "Grouped Munitions");
 	public final ConfigInt shrapnelCount = i(50, 1, "shrapnelCount", Comments.shrapnelCount);
@@ -27,6 +28,9 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String heShellPower = "How powerful the High Explosive (HE) shell is. For reference, a block of TNT has an explosion power of 4.";
 		static String apShellPower = "How powerful the Armor Piercing (AP) shell is. For reference, a block of TNT has an explosion power of 4.";
 		static String impactFuzeDetonationChance = "Chance that the Impact Fuze will detonate on hitting something. 0 is 0%, 1 is 100%.";
+		static String[] proximityFuzeArmingTime = new String[] {"Time it takes for a proximity fuze to arm itself in ticks.",
+				"(For reference, there are 20 ticks in 1 second.)",
+				"After the fuze has been in the air for the specified arming time, it will detonate when it gets close enough to a block or entity." };
 		static String shrapnelCount = "Amount of shrapnel bullets that a Shrapnel Shell releases on detonation.";
 		static String shrapnelSpread = "How much shrapnel bullets spread on release.";
 		static String shrapnelDamage = "How much damage a shrapnel bullet does.";
