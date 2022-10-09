@@ -116,9 +116,10 @@ public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEnt
 		float yaw = this.cannonMount.getYawOffset(partialTicks);
 		Quaternion qyaw = Vector3f.YN.rotationDegrees(yaw);
 		this.rotatingMount.setRotation(qyaw);
-		
 		float pitch = this.cannonMount.getPitchOffset(partialTicks);
-		Quaternion qpitch = Vector3f.XP.rotationDegrees(this.cannonMount.getContraptionDirection() == Direction.SOUTH ? -pitch : pitch);
+		Direction facing = this.cannonMount.getContraptionDirection();
+		boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
+		Quaternion qpitch = Vector3f.XP.rotationDegrees(flag ? -pitch : pitch);
 		Quaternion qyaw1 = qyaw.copy();
 		qyaw1.mul(qpitch);
 		this.rotatingMountShaft1.setRotation(qyaw1);
