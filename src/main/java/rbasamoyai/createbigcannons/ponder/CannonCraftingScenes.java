@@ -10,6 +10,7 @@ import com.simibubi.create.content.contraptions.components.deployer.DeployerTile
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
+import com.simibubi.create.content.logistics.block.redstone.NixieTubeTileEntity;
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
@@ -31,6 +32,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ComparatorBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -214,6 +216,28 @@ public class CannonCraftingScenes {
 		scene.world.hideSection(util.select.fromTo(0, 1, 2, 0, 2, 2), Direction.UP);
 		scene.idle(30);
 		
+		scene.rotateCameraY(90);
+		scene.idle(15);
+		Selection comparatorSel = util.select.fromTo(4, 1, 2, 5, 1, 2).add(util.select.position(5, 0, 2));
+		scene.world.showSection(comparatorSel, Direction.DOWN);
+		scene.world.modifyBlock(util.grid.at(4, 1, 2), setStateValue(ComparatorBlock.POWERED, true), false);
+		scene.world.modifyTileNBT(util.select.position(5, 1, 2), NixieTubeTileEntity.class, tag -> tag.putInt("RedstoneStrength", 14));
+		scene.idle(20);
+		Vec3 comparator = util.vector.centerOf(4, 1, 2);
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("Cannon casts output a signal that can be read by comparators.")
+			.pointAt(comparator);
+		scene.idle(80);
+		scene.overlay.showText(80)
+			.text("They output a signal from 0 to 14 measuring how full the cast is, and 15 when the cast is finished.")
+			.pointAt(comparator);
+		scene.idle(100);
+		scene.world.hideSection(comparatorSel, Direction.UP);
+		scene.idle(30);
+		scene.rotateCameraY(-90);
+		scene.idle(15);
+		
 		scene.overlay.showText(80)
 			.attachKeyFrame()
 			.text("After being completely filled up, the cannon cast takes some time to solidify.")
@@ -250,7 +274,7 @@ public class CannonCraftingScenes {
 		scene.world.setKineticSpeed(deployerGearUp, -32);
 		scene.idle(30);
 		scene.overlay.showText(60)
-			.text("Deployers can also remove finished casts.")
+			.text("It is possible to automate the removal of finished casts.")
 			.colored(PonderPalette.BLUE)
 			.pointAt(util.vector.centerOf(3, 1, 0));
 		scene.idle(20);	
