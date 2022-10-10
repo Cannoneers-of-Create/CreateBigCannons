@@ -56,7 +56,6 @@ public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 			for (BlockPos pos : BlockPos.betweenClosed(this.worldPosition, this.worldPosition.offset(2, 0, 2))) {
 				BlockPos posI = pos.immutable();
 				if (posI.equals(this.worldPosition.offset(1, 0, 1))) continue;
-				this.level.removeBlockEntity(posI);
 				this.level.setBlock(posI, Blocks.AIR.defaultBlockState(), 11);
 			}
 		} else if (this.level.getBlockEntity(this.centralBlock) instanceof FinishedCannonCastBlockEntity cast && cast.isCentralBlock()) {

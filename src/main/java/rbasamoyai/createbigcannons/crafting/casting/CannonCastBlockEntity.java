@@ -30,6 +30,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -59,16 +60,19 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	protected int height;
 	protected FluidStack leakage = FluidStack.EMPTY;
 	protected boolean forceFluidLevelUpdate;
+	protected boolean forceCastLevelUpdate;
 	protected int castingTime;
 	protected int startCastingTime;
 	protected Map<CannonCastShape, CannonCastingRecipe> recipes = new HashMap<>();
+	protected List<BlockState> resultPreview = new ArrayList<>();
 	protected boolean updateRecipes;
 	
 	private static final int SYNC_RATE = 8;
 	protected boolean queuedSync;
 	protected int syncCooldown;
 	
-	private LerpedFloat fluidLevel; 
+	private LerpedFloat fluidLevel;
+	private LerpedFloat castLevel;
 	
 	public CannonCastBlockEntity(BlockEntityType<? extends CannonCastBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -76,6 +80,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		this.fluidOptional = LazyOptional.of(() -> this.fluid);
 		this.height = 1;
 		this.forceFluidLevelUpdate = true;
+		this.forceCastLevelUpdate = true;
 		this.updateRecipes = true;
 		this.startCastingTime = 1;
 		this.refreshCap();
@@ -157,6 +162,20 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			if (this.castingTime > 0) tag.putInt("CastingTime", this.castingTime);
 			if (this.startCastingTime > 1) tag.putInt("StartCastingTime", this.startCastingTime);
 			if (this.updateRecipes) tag.putBoolean("UpdateRecipes", true);
+			
+			if (!this.recipes.isEmpty() && !this.structure.isEmpty()) {
+				ListTag previewList = new ListTag();
+				for (CannonCastShape shape : this.structure) {
+					if (this.recipes.containsKey(shape)) {
+						BlockState state = this.recipes.get(shape).getResultBlock().defaultBlockState();
+						if (state.hasProperty(BlockStateProperties.FACING)) state = state.setValue(BlockStateProperties.FACING, Direction.DOWN);
+						previewList.add(NbtUtils.writeBlockState(shape.applyTo(state)));
+					} else {
+						previewList.add(new CompoundTag());
+					}
+				}
+				tag.put("Preview", previewList);
+			}
 		} else {
 			tag.put("Controller", NbtUtils.writeBlockPos(this.controllerPos));
 		}
@@ -164,9 +183,12 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		super.write(tag, clientPacket);
 		
 		if (!clientPacket) return;
-		if (this.forceFluidLevelUpdate) tag.putBoolean("ForceFluidUpdate", true);
+		if (this.forceFluidLevelUpdate) tag.putBoolean("ForceFluidLevel", true);
+		if (this.forceCastLevelUpdate) tag.putBoolean("ForceCastLevel", true);
 		if (this.queuedSync) tag.putBoolean("LazySync", true);
+		
 		this.forceFluidLevelUpdate = false;
+		this.forceCastLevelUpdate = false;
 	}
 	
 	@Override
@@ -196,6 +218,13 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			this.castingTime = Math.max(tag.getInt("CastingTime"), 0);
 			this.startCastingTime = Math.max(tag.getInt("StartCastingTime"), 1);
 			this.updateRecipes = tag.contains("UpdateRecipes");
+			
+			this.resultPreview.clear();
+			ListTag preview = tag.getList("Preview", Tag.TAG_COMPOUND);
+			for (int i = 0; i < preview.size(); ++i) {
+				this.resultPreview.add(NbtUtils.readBlockState(preview.getCompound(i)));
+			}
+			
 			this.controllerPos = null;
 		} else if (tag.contains("Controller")) {
 			this.controllerPos = NbtUtils.readBlockPos(tag.getCompound("Controller"));
@@ -203,6 +232,9 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		
 		if (tag.contains("ForceFluidLevel") || this.fluidLevel == null) {
 			this.fluidLevel = LerpedFloat.linear().startWithValue(this.getFillState());
+		}
+		if (tag.contains("ForceCastLevel") || this.castLevel == null) {
+			this.castLevel = LerpedFloat.linear().startWithValue(this.getCastingState());
 		}
 		
 		if (!clientPacket) return;
@@ -218,9 +250,16 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 				this.fluidLevel = LerpedFloat.linear().startWithValue(fillState);
 			}
 			this.fluidLevel.chase(fillState, 0.5f, Chaser.EXP);
+			
+			float castState = this.getCastingState();
+			if (tag.contains("ForceCastLevel") || this.castLevel == null) {
+				this.castLevel = LerpedFloat.linear().startWithValue(castState);
+			}
+			this.castLevel.chase(castState, 0.5f, Chaser.EXP);
 		}		
 		if (tag.contains("LazySync")) {
 			this.fluidLevel.chase(this.fluidLevel.getChaseTarget(), 0.125f, Chaser.EXP);
+			this.castLevel.chase(this.castLevel.getChaseTarget(), 0.125f, Chaser.EXP);
 		}
 	}
 	
@@ -253,7 +292,6 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	@Override
 	public void tick() {
 		super.tick();
-		//this.invalidateRenderBoundingBox();
 		if (this.syncCooldown > 0) {
 			this.syncCooldown--;
 			if (this.syncCooldown == 0 && this.queuedSync) {
@@ -268,9 +306,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			return;
 		}
 		
-		if (this.fluidLevel != null) {
-			this.fluidLevel.tickChaser();
-		}
+		if (this.fluidLevel != null) this.fluidLevel.tickChaser();
+		if (this.castLevel != null) this.castLevel.tickChaser();
 		if (this.isController()) {
 			this.tickCastingBehavior();
 		}
@@ -309,10 +346,15 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 					this.updateRecipes = false;
 				}
 				this.castingTime--;
+				this.notifyUpdate();
 				if (this.castingTime <= 0) {
 					this.finishCasting();
 					return;
 				}
+			} else {
+				this.startCastingTime = 1;
+				this.castingTime = 0;
+				this.updateRecipes = true;
 			}
 		}
 	}
@@ -424,7 +466,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		CannonCastBlockEntity controller = this.getControllerTE();
 		controller.updateRecipes = true;
 		controller.forceFluidLevelUpdate = true;
-		controller.sendData();
+		controller.forceCastLevelUpdate = true;
+		controller.notifyUpdate();
 		this.notifyUpdate();
 	}
 	
@@ -476,25 +519,14 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 				}
 			}
 			
-			List<BlockPos> toRemove = new ArrayList<>();
-			for (Iterator<BlockPos> iter = BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1)).iterator(); iter.hasNext(); ) {
-				BlockPos pos = iter.next();
-				if (CBCBlocks.CANNON_CAST.has(this.level.getBlockState(pos))) {
-					toRemove.add(pos.immutable());
-				}
-			}
-			
-			this.setRemoved();
-			for (BlockPos pos : toRemove) {
-				this.level.removeBlockEntity(pos);
-				this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+			for (BlockPos pos : BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1))) {
+				if (CBCBlocks.CANNON_CAST.has(this.level.getBlockState(pos))) this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
 			}
 			
 			if (!addLeak.isEmpty() && addLeak.getAmount() >= 1000) {
 				this.level.setBlock(this.worldPosition, addLeak.getFluid().defaultFluidState().createLegacyBlock(), 11);
 			}
 		} else if (this.level.getBlockEntity(this.getCenterBlock()) instanceof CannonCastBlockEntity otherCast) {
-			this.level.removeBlockEntity(this.worldPosition);
 			otherCast.destroyCastMultiblockAtLayer();
 		}
 	}
@@ -542,7 +574,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	public LerpedFloat getFluidLevel() { return this.fluidLevel; }
 	public void setFluidLevel(LerpedFloat level) { this.fluidLevel = level; }
 	
-	public float getCastingState() { return this.startCastingTime < 1 ? 0.0f : 1.0f - (float) this.castingTime / (float) this.startCastingTime; } 
+	public float getCastingState() { return this.startCastingTime <= 1 ? 0.0f : 1.0f - (float) this.castingTime / (float) this.startCastingTime; }
+	public LerpedFloat getCastingLevel() { return this.castLevel; }
 
 	@Override
 	public BlockPos getController() {

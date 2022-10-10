@@ -26,11 +26,13 @@ public class CannonCastBlock extends Block implements ITE<CannonCastBlockEntity>
 		super(properties);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean dropContents) {
 		if (state.hasBlockEntity() && (state.getBlock() != newState.getBlock() || !newState.hasBlockEntity())) {
 			this.withTileEntityDo(level, pos, CannonCastBlockEntity::destroyCastMultiblockAtLayer);
 		}
+		super.onRemove(state, level, pos, newState, dropContents);
 	}
 	
 	@Override
