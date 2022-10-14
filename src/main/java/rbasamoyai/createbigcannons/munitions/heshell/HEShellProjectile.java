@@ -14,7 +14,7 @@ public class HEShellProjectile extends FuzedCannonProjectile {
 
 	public HEShellProjectile(EntityType<? extends HEShellProjectile> type, Level level) {
 		super(type, level);
-		this.setBreakthroughPower((byte) 5);
+		this.setBreakthroughPower((byte) 1);
 	}
 	
 	@Override
