@@ -12,7 +12,6 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 
@@ -26,7 +25,7 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 	
 	@Override
 	public void draw(IncompleteCannonBlockRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
-		Font font = Minecraft.getInstance().font;
+		Minecraft mc = Minecraft.getInstance();
 		AllGuiTextures.JEI_LONG_ARROW.render(stack, 54, 44);
 		
 		int sz = recipe.ingredients().size();
@@ -36,7 +35,7 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 			int j = i - 1;
 			int posX = base + 24 * j;
 			Component num = Components.literal(this.romans[Math.min(j, 6)]);
-			font.draw(stack, num, font.width(num) / -2 + posX, 2, 0x888888);
+			mc.font.draw(stack, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
 		}
 	}
 	

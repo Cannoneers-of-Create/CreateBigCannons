@@ -13,7 +13,6 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -35,8 +34,8 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 		CBCGuiTextures.CASTING_ARROW.render(stack, 21, 47);
 		CBCGuiTextures.CASTING_ARROW_1.render(stack, 124, 27);
 		Component text = Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".added_casting_time", String.format("%.2f", (float) recipe.castingTime() / 20.0f));
-		Font font = Minecraft.getInstance().font;
-		font.draw(stack, text, (177 - font.width(text)) / 2, 90, 4210752);
+		Minecraft mc = Minecraft.getInstance();
+		mc.font.draw(stack, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
 	}
 	
 	@Override
