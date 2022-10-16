@@ -346,7 +346,20 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
-		if (TransformableByBoring.wasJustBored(tag)) {
+		boolean justBored = TransformableByBoring.wasJustBored(tag);		
+		
+		this.layersConnectedTowards.clear();
+		CompoundTag layerConnectionTag = tag.getCompound("LayerConnections");
+		for (Direction dir : Iterate.directions) {
+			if (!layerConnectionTag.contains(dir.getSerializedName())) continue;
+			ListTag connections = layerConnectionTag.getList(dir.getSerializedName(), Tag.TAG_STRING);
+			for (int i = 0; i < connections.size(); ++i) {
+				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(connections.getString(i)));
+				if (shape != null) this.layersConnectedTowards.put(dir, shape);
+			}
+		}		
+		
+		if (justBored) {
 			tag.remove("JustBored");
 			return;
 		}
@@ -357,16 +370,6 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 		for (int i = 0; i < layers.size(); ++i) {
 			CompoundTag entry = layers.getCompound(i);
 			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(entry.getString("Shape"))), ForgeRegistries.BLOCKS.getValue(new ResourceLocation(entry.getString("Block"))));
-		}
-		this.layersConnectedTowards.clear();
-		CompoundTag layerConnectionTag = tag.getCompound("LayerConnections");
-		for (Direction dir : Iterate.directions) {
-			if (!layerConnectionTag.contains(dir.getSerializedName())) continue;
-			ListTag connections = layerConnectionTag.getList(dir.getSerializedName(), Tag.TAG_STRING);
-			for (int i = 0; i < connections.size(); ++i) {
-				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(connections.getString(i)));
-				if (shape != null) this.layersConnectedTowards.put(dir, shape);
-			}
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;
 		this.completionProgress = tag.getInt("Progress");

@@ -24,7 +24,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -35,6 +37,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -57,9 +60,13 @@ import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.base.PoleMoverBlockEntity;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.builtup.LayeredCannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
@@ -243,12 +250,12 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		BlockPos gridPos = new BlockPos(pos);
 		Vec3 motion = this.movedContraption.getDeltaMovement();
 		
+		if (drill == null || bounds == null) return false;
+		
 		Direction facing = drill.orientation();
 		Direction positive = Direction.fromAxisAndDirection(facing.getAxis(), Direction.AxisDirection.POSITIVE);
 		Vec3 mask = (new Vec3(1, 1, 1)).subtract(positive.getStepX(), positive.getStepY(), positive.getStepZ());
 		BlockPos maskedPos = new BlockPos(pos.multiply(mask));
-		
-		if (drill == null || bounds == null) return false;
 		
 		Direction movementDirection = Direction.getNearest(motion.x, motion.y, motion.z);
 		if (movementDirection.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
@@ -386,14 +393,46 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		
 		StructureBlockInfo latheBlockInfo = lathe.getBlocks().get(boringOffset);
 		if (!(latheBlockInfo.state.getBlock() instanceof TransformableByBoring unbored)) return;
+		Direction facing = ((CannonDrillingContraption) this.movedContraption.getContraption()).orientation();
 		
 		BlockState boredState = unbored.getBoredBlockState(latheBlockInfo.state);
 		if (latheBlockInfo.nbt != null && boredState.getBlock() instanceof ITE<?> boredBE) {
-			latheBlockInfo.nbt.putString("id", ForgeRegistries.BLOCK_ENTITIES.getKey(boredBE.getTileEntityType()).toString());
+			BlockEntity be = boredBE.newBlockEntity(BlockPos.ZERO, boredState);
 			latheBlockInfo.nbt.putBoolean("JustBored", true);
+			
+			if (boredState.getBlock() instanceof CannonBlock cBlock && be instanceof LayeredCannonBlockEntity layered) {
+				CannonCastShape shape = cBlock.getCannonShape();
+				CompoundTag layerConnectionsTag = new CompoundTag();
+				Direction opp = facing.getOpposite();
+				
+				StructureBlockInfo nextBlockInfo = lathe.getBlocks().get(boringOffset.relative(facing));
+				if (nextBlockInfo != null && nextBlockInfo.nbt != null) {
+					BlockEntity be1 = BlockEntity.loadStatic(BlockPos.ZERO, nextBlockInfo.state, nextBlockInfo.nbt);
+					if (be1 instanceof LayeredCannonBlockEntity layered1 && layered1.isLayerConnectedTo(opp, shape) 
+						|| be1 instanceof ICannonBlockEntity cbe1 && cbe1.cannonBehavior().isConnectedTo(opp)) {
+						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
+						ListTag list = new ListTag();
+						list.add(StringTag.valueOf(key.toString()));
+						layerConnectionsTag.put(facing.getSerializedName(), list);
+					}
+				}
+				StructureBlockInfo prevBlockInfo = lathe.getBlocks().get(boringOffset.relative(opp));
+				if (prevBlockInfo != null && prevBlockInfo.nbt != null) {
+					BlockEntity be2 = BlockEntity.loadStatic(BlockPos.ZERO, prevBlockInfo.state, prevBlockInfo.nbt);
+					if (be2 instanceof LayeredCannonBlockEntity layered2 && layered2.isLayerConnectedTo(facing, shape)
+						|| be2 instanceof ICannonBlockEntity cbe2 && cbe2.cannonBehavior().isConnectedTo(facing)) {
+						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
+						ListTag list = new ListTag();
+						list.add(StringTag.valueOf(key.toString()));
+						layerConnectionsTag.put(opp.getSerializedName(), list);
+					}
+				}
+				
+				latheBlockInfo.nbt.put("LayerConnections", layerConnectionsTag);
+			}
 		}
 		
-		BlockPos bearingPos = new BlockPos(this.latheEntity.getAnchorVec()).relative(((CannonDrillingContraption) this.movedContraption.getContraption()).orientation());
+		BlockPos bearingPos = new BlockPos(this.latheEntity.getAnchorVec()).relative(facing);
 		if (!(this.level.getBlockEntity(bearingPos) instanceof MechanicalBearingTileEntity bearing)) return;
 		
 		StructureBlockInfo newInfo = new StructureBlockInfo(boringOffset, boredState, latheBlockInfo.nbt);
