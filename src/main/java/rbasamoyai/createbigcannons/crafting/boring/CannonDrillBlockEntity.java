@@ -221,6 +221,15 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	}
 	
 	@Override
+	public void tick() {
+		if (!this.level.isClientSide && this.running && this.movedContraption != null && this.offset + this.getMovementSpeed() >= this.getExtensionRange()) {
+			this.collideWithContraptionToBore(null, false);
+		}
+		
+		super.tick();
+	}
+	
+	@Override
 	protected boolean moveAndCollideContraption() {
 		if (super.moveAndCollideContraption()) {
 			this.collideWithContraptionToBore(null, true);
@@ -257,11 +266,10 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		Vec3 mask = (new Vec3(1, 1, 1)).subtract(positive.getStepX(), positive.getStepY(), positive.getStepZ());
 		BlockPos maskedPos = new BlockPos(pos.multiply(mask));
 		
-		Direction movementDirection = Direction.getNearest(motion.x, motion.y, motion.z);
-		if (movementDirection.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
+		Direction movementDirection = collide ? drill.orientation() : Direction.getNearest(motion.x, motion.y, motion.z);
+		if (!collide && movementDirection.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
 			gridPos = gridPos.relative(movementDirection);
 		}
-		if (collide) gridPos = gridPos.relative(movementDirection.getOpposite());
 		
 		boolean isBoringBlock = false;
 		
@@ -312,7 +320,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 				return true;
 			}
 			
-			BlockPos currentPos = collide ? globalPos.relative(movementDirection) : globalPos;
+			BlockPos currentPos = collide || this.offset + this.getMovementSpeed() >= this.getExtensionRange() ? globalPos.relative(movementDirection) : globalPos;
 			if (this.boringPos == null) {
 				this.boringPos = currentPos;
 			} else if (!this.boringPos.equals(currentPos)) {
