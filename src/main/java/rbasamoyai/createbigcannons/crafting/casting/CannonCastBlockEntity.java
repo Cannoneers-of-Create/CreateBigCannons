@@ -292,6 +292,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	@Override
 	public void tick() {
 		super.tick();
+		this.invalidateRenderBoundingBox();
 		if (this.syncCooldown > 0) {
 			this.syncCooldown--;
 			if (this.syncCooldown == 0 && this.queuedSync) {
