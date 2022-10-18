@@ -31,7 +31,9 @@ public class CBCTags {
 			THICK_TUBING = createAndGenerateBlockTag(CreateBigCannons.resource("thick_tubing")),
 			REDUCES_SPREAD = createAndGenerateBlockTag(CreateBigCannons.resource("reduces_spread")),
 			SHRAPNEL_SHATTERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("shrapnel_shatterable")),
+			SHRAPNEL_VULNERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("shrapnel_vulnerable")),
 			GRAPESHOT_SHATTERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("grapeshot_shatterable")),
+			GRAPESHOT_VULNERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("grapeshot_vulnerable")),
 			WEAK_CANNON_END = createAndGenerateBlockTag(CreateBigCannons.resource("weak_cannon_end")),
 			DRILL_CAN_PASS_THROUGH = createAndGenerateBlockTag(CreateBigCannons.resource("drill_can_pass_through"));
 		
@@ -64,12 +66,23 @@ public class CBCTags {
 		}
 		
 		public static void sectionRegister() {
-			addTagsToBlockTag(SHRAPNEL_SHATTERABLE, Arrays.asList(Tags.Blocks.GLASS, Tags.Blocks.GLASS_PANES, BlockTags.LEAVES, BlockTags.WOOL));
-			addBlocksToBlockTag(SHRAPNEL_SHATTERABLE, Blocks.FLOWER_POT);
+			addTagsToBlockTag(SHRAPNEL_SHATTERABLE, Arrays.asList(BlockTags.IMPERMEABLE, Tags.Blocks.GLASS_PANES, BlockTags.LEAVES, BlockTags.WOOL, BlockTags.FLOWER_POTS));
+			addBlocksToBlockTag(SHRAPNEL_SHATTERABLE, Blocks.TRIPWIRE);
+			addBlocksToBlockTag(SHRAPNEL_SHATTERABLE, Arrays.asList(AllBlocks.FRAMED_GLASS_DOOR, AllBlocks.FRAMED_GLASS_TRAPDOOR, AllBlocks.ROPE));
 			
-			addTagsToBlockTag(GRAPESHOT_SHATTERABLE, Arrays.asList(SHRAPNEL_SHATTERABLE, BlockTags.PLANKS, BlockTags.WOODEN_SLABS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_FENCES, BlockTags.FENCE_GATES, BlockTags.LOGS));
-			addBlocksToBlockTag(GRAPESHOT_SHATTERABLE, Blocks.MELON, Blocks.PUMPKIN);
-			addBlocksToBlockTag(GRAPESHOT_SHATTERABLE, Arrays.asList(AllBlocks.ANDESITE_CASING));
+			addTagsToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(BlockTags.PLANKS, BlockTags.WOODEN_SLABS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_FENCES, BlockTags.FENCE_GATES, BlockTags.LOGS, BlockTags.WOODEN_DOORS, BlockTags.WOODEN_TRAPDOORS));
+			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Blocks.MELON, Blocks.PUMPKIN);
+			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(AllBlocks.BELT, AllBlocks.SHAFT, AllBlocks.COGWHEEL, AllBlocks.LARGE_COGWHEEL, AllBlocks.POWERED_SHAFT, AllBlocks.GANTRY_SHAFT));
+			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(AllBlocks.ANDESITE_CASING, AllBlocks.ANDESITE_ENCASED_COGWHEEL, AllBlocks.ANDESITE_ENCASED_LARGE_COGWHEEL, AllBlocks.ANDESITE_ENCASED_SHAFT));
+			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(AllBlocks.MECHANICAL_BEARING, AllBlocks.MECHANICAL_DRILL, AllBlocks.MECHANICAL_HARVESTER, AllBlocks.MECHANICAL_MIXER, AllBlocks.MECHANICAL_PISTON, AllBlocks.MECHANICAL_PISTON_HEAD, AllBlocks.MECHANICAL_PLOUGH, AllBlocks.MECHANICAL_PRESS, AllBlocks.MECHANICAL_SAW, AllBlocks.STICKY_MECHANICAL_PISTON, AllBlocks.PISTON_EXTENSION_POLE, AllBlocks.ROPE_PULLEY));
+			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(AllBlocks.ANDESITE_TUNNEL, AllBlocks.ANDESITE_BELT_FUNNEL, AllBlocks.ANDESITE_FUNNEL));
+			
+			addTagsToBlockTag(GRAPESHOT_SHATTERABLE, Arrays.asList(SHRAPNEL_SHATTERABLE, SHRAPNEL_VULNERABLE));
+			
+			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, Blocks.IRON_DOOR, Blocks.IRON_TRAPDOOR, Blocks.IRON_BARS);
+			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, Arrays.asList(AllBlocks.BRASS_CASING, AllBlocks.BRASS_ENCASED_COGWHEEL, AllBlocks.BRASS_ENCASED_LARGE_COGWHEEL, AllBlocks.BRASS_ENCASED_SHAFT, AllBlocks.MECHANICAL_CRAFTER, AllBlocks.MECHANICAL_ARM));
+			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, Arrays.asList(AllBlocks.COPPER_CASING, AllBlocks.ENCASED_FLUID_PIPE, AllBlocks.FLUID_PIPE, AllBlocks.GLASS_FLUID_PIPE, AllBlocks.FLUID_VALVE, AllBlocks.COPPER_VALVE_HANDLE, AllBlocks.MECHANICAL_PUMP, AllBlocks.HOSE_PULLEY));
+			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, Arrays.asList(AllBlocks.BRASS_TUNNEL, AllBlocks.BRASS_BELT_FUNNEL, AllBlocks.BRASS_FUNNEL));
 		}
 	}
 	

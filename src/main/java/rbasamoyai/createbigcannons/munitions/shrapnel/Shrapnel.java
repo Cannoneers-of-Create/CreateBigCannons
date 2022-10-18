@@ -6,14 +6,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -63,7 +61,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 		BlockPos pos = result.getBlockPos();
 		BlockState state = this.level.getBlockState(pos);
 		if (!this.level.isClientSide) {
-			if (state.is(this.getDestroyBlockTag())) {
+			if (this.canDestroyBlock(state)) {
 				this.level.destroyBlock(pos, false, this);
 			} else {
 				this.level.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.NEUTRAL, 1.0f, 2.0f);
@@ -72,8 +70,9 @@ public class Shrapnel extends AbstractHurtingProjectile {
 		this.discard();
 	}
 	
-	protected TagKey<Block> getDestroyBlockTag() {
-		return CBCTags.BlockCBC.SHRAPNEL_SHATTERABLE;
+	protected boolean canDestroyBlock(BlockState state) {
+		return state.is(CBCTags.BlockCBC.SHRAPNEL_SHATTERABLE)
+			|| state.is(CBCTags.BlockCBC.SHRAPNEL_VULNERABLE) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.shrapnelVulnerableBreakChance.getF();
 	}
 	
 	@Override

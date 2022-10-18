@@ -2,14 +2,6 @@
   "replace": false,
   "values": [
     "#createbigcannons:shrapnel_shatterable",
-    "#minecraft:planks",
-    "#minecraft:wooden_slabs",
-    "#minecraft:wooden_stairs",
-    "#minecraft:wooden_fences",
-    "#minecraft:fence_gates",
-    "#minecraft:logs",
-    "minecraft:melon",
-    "minecraft:pumpkin",
-    "create:andesite_casing"
+    "#createbigcannons:shrapnel_vulnerable"
   ]
 }
