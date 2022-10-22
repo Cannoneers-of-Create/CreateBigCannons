@@ -1,10 +1,16 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
 import java.util.Iterator;
+import java.util.List;
 
+import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.foundation.utility.Lang;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,6 +25,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.FuzedCannonProjectile;
 
@@ -88,6 +95,15 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		ItemStack stack = CBCItems.PROXIMITY_FUZE.asStack();
 		stack.getOrCreateTag().putInt("DetonationDistance", 1);
 		return stack;
+	}
+	
+	@Override
+	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
+		super.addExtraInfo(tooltip, isSneaking, stack);
+		MutableComponent info = Lang.builder("item")
+				.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", stack.getOrCreateTag().getInt("DetonationDistance"))
+				.component();
+		tooltip.addAll(TooltipHelper.cutTextComponent(info, ChatFormatting.GRAY, ChatFormatting.GREEN, 6));
 	}
 
 }

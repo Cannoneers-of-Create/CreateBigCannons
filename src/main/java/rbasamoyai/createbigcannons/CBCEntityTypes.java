@@ -4,12 +4,15 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Abs
 import com.simibubi.create.content.contraptions.components.structureMovement.OrientedContraptionEntityRenderer;
 import com.tterrag.registrate.util.entry.EntityEntry;
 
+import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.world.entity.EntityType.EntityFactory;
 import net.minecraft.world.entity.MobCategory;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.apshell.APShellProjectile;
+import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlob;
+import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellProjectile;
 import rbasamoyai.createbigcannons.munitions.grapeshot.Grapeshot;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotRenderer;
@@ -36,6 +39,7 @@ public class CBCEntityTypes {
 	public static final EntityEntry<ShrapnelShellProjectile> SHRAPNEL_SHELL = cannonProjectile("shrapnel_shell", ShrapnelShellProjectile::new);
 	public static final EntityEntry<GrapeshotCannonProjectile> BAG_OF_GRAPESHOT = cannonProjectile("bag_of_grapeshot", GrapeshotCannonProjectile::new);
 	public static final EntityEntry<APShellProjectile> AP_SHELL = cannonProjectile("ap_shell", APShellProjectile::new, "Armor Piercing (AP) Shell");
+	public static final EntityEntry<FluidShellProjectile> FLUID_SHELL = cannonProjectile("fluid_shell", FluidShellProjectile::new);
 	
 	public static final EntityEntry<Shrapnel> SHRAPNEL = CreateBigCannons.registrate()
 			.entity("shrapnel", Shrapnel::new, MobCategory.MISC)
@@ -47,6 +51,12 @@ public class CBCEntityTypes {
 			.entity("grapeshot", Grapeshot::new, MobCategory.MISC)
 			.properties(Shrapnel::build)
 			.renderer(() -> GrapeshotRenderer::new)
+			.register();
+	
+	public static final EntityEntry<FluidBlob> FLUID_BLOB = CreateBigCannons.registrate()
+			.entity("fluid_blob", FluidBlob::new, MobCategory.MISC)
+			.properties(Shrapnel::build)
+			.renderer(() -> NoopRenderer::new)
 			.register();
 	
 	private static <T extends AbstractCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory) {

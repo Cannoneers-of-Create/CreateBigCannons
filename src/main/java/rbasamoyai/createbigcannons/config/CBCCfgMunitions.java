@@ -26,6 +26,11 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat grapeshotDamage = f(19.0f, 0.0f, "grapeshotDamage", Comments.grapeshotDamage);
 	public final ConfigFloat grapeshotVulnerableBreakChance = f(0.33f, 0, 1, "grapeshotVulernableBreakChance", Comments.grapeshotVulnerableBreakChance);
 	
+	public final ConfigInt fluidShellCapacity = i(2000, 1, "fluidShellCapacity", Comments.fluidShellCapacity);
+	public final ConfigInt mbPerFluidBlob = i(250, 125, "millibucketsPerFluidBlob", Comments.mbPerFluidBlob);
+	public final ConfigFloat fluidBlobSpread = f(1f, 0.01f, "fluidBlobSpread", Comments.fluidBlobSpread);
+	public final ConfigInt mbPerAoeRadius = i(250, 125, "millibucketsPerAreaOfEffectRadius", Comments.mbPerAoeRadius);
+	
 	@Override public String getName() { return "munitions"; }
 
 	private static class Comments {
@@ -49,6 +54,12 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String grapeshotSpread = "How much grapeshot rounds spread on release.";
 		static String grapeshotDamage = "How much damage a grapeshot round does.";
 		static String grapeshotVulnerableBreakChance = "Chance that blocks that may be destroyed by grapeshot will be so. 0 is 0% (never), 1 is 100% (always).";
+		static String fluidShellCapacity = "How much fluid in millibuckets (mB) a Fluid Shell can contain.";
+		static String[] mbPerFluidBlob = new String[] { "The amount of fluid in millibuckets (mB) required to spawn a Fluid Blob on Fluid Shell detonation.",
+				"Any remaining fluid after spawning will be rounded up to one additional projectile."
+		};
+		static String fluidBlobSpread = "How much Fluid Blobs spread on release.";
+		static String mbPerAoeRadius = "How many millibuckets (mB) of fluid in a Fluid Blob are required to increase its area of effect (AOE) by one block in each direction.";
 	}
 	
 	public enum GriefState {

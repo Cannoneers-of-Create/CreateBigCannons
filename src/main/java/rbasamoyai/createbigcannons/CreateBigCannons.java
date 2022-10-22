@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,6 +28,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlob;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 
 @Mod(CreateBigCannons.MOD_ID)
@@ -71,6 +73,8 @@ public class CreateBigCannons {
 		
 		CBCConfigs.registerConfigs(mlContext);
 		
+		this.registerSerializers();
+		
 		DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CreateBigCannonsClient.prepareClient(modEventBus, forgeEventBus));
 	}
 	
@@ -98,6 +102,10 @@ public class CreateBigCannons {
 	
 	public static ResourceLocation resource(String path) {
 		return new ResourceLocation(MOD_ID, path);
+	}
+	
+	private void registerSerializers() {
+		EntityDataSerializers.registerSerializer(FluidBlob.FLUID_STACK_SERIALIZER);
 	}
 	
 }

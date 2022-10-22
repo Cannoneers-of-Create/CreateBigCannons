@@ -23,6 +23,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.TagEntry;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -261,17 +262,24 @@ public class CBCBuilderTransformers {
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> projectile(String pathAndMaterial) {
-		ResourceLocation baseLoc = CreateBigCannons.resource("block/projectile_block");
+		return projectile(pathAndMaterial, true);
+	}
+	
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> projectile(String pathAndMaterial, boolean useStandardModel) {
+		ResourceLocation baseLoc = CreateBigCannons.resource(String.format("block/%sprojectile_block", useStandardModel ? "standard_" : ""));
 		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial);
 		ResourceLocation topLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_top");
 		ResourceLocation bottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_bottom");
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::solid)
-				.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
+				.blockstate((c, p) -> {
+					BlockModelBuilder builder = p.models().withExistingParent(c.getName(), baseLoc)
 						.texture("side", sideLoc)
 						.texture("top", topLoc)
-						.texture("bottom", bottomLoc)
-						.texture("particle", topLoc)));
+						.texture("particle", topLoc);
+					if (!useStandardModel) builder.texture("bottom", bottomLoc);
+					p.directionalBlock(c.get(), builder);
+				});
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> powderCharge() {

@@ -1,0 +1,6 @@
+{
+	"parent": "createbigcannons:block/projectile_block",
+	"textures": {
+		"bottom": "createbigcannons:block/projectile/standard_bottom"
+	}
+}

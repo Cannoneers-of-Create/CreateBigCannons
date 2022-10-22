@@ -6,9 +6,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.FuzedProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.SimpleShellBlock;
 
-public class ShrapnelShellBlock extends FuzedProjectileBlock {
+public class ShrapnelShellBlock extends SimpleShellBlock {
 
 	public ShrapnelShellBlock(Properties properties) {
 		super(properties);

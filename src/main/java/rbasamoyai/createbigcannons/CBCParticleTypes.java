@@ -7,6 +7,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticleData;
+import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlobParticleData;
 
 public class CBCParticleTypes {
 
@@ -17,6 +18,14 @@ public class CBCParticleTypes {
 				@Override
 				public Codec<CannonPlumeParticleData> codec() {
 					return CannonPlumeParticleData.CODEC;
+				}
+			});
+
+	public static final RegistryObject<ParticleType<FluidBlobParticleData>> FLUID_BLOB = PARTICLE_TYPES.register("fluid_blob",
+			() -> new ParticleType<FluidBlobParticleData>(false, FluidBlobParticleData.DESERIALIZER) {
+				@Override
+				public Codec<FluidBlobParticleData> codec() {
+					return FluidBlobParticleData.CODEC;
 				}
 			});
 	

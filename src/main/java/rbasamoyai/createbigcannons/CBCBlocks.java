@@ -52,6 +52,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBl
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.apshell.APShellBlock;
+import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
 import rbasamoyai.createbigcannons.munitions.heshell.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.shot.SolidShotBlock;
@@ -700,6 +701,14 @@ public class CBCBlocks {
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.projectile("projectile/ap_shell"))
 			.lang("Armor Piercing (AP) Shell")
+			.simpleItem()
+			.register();
+	
+	public static final BlockEntry<FluidShellBlock> FLUID_SHELL = REGISTRATE
+			.block("fluid_shell", FluidShellBlock::new)
+			.transform(shell(MaterialColor.COLOR_ORANGE))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.projectile("projectile/fluid_shell"))
 			.simpleItem()
 			.register();
 	

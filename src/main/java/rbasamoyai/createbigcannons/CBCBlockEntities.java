@@ -32,6 +32,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteCannonBlockEnti
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockInstance;
+import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellBlockEntity;
 
 public class CBCBlockEntities {
 
@@ -96,6 +97,13 @@ public class CBCBlockEntities {
 			.instance(() -> FuzedBlockInstance::new)
 			.renderer(() -> FuzedBlockEntityRenderer::new)
 			.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL)
+			.register();
+	
+	public static final BlockEntityEntry<FluidShellBlockEntity> FLUID_SHELL = CreateBigCannons.registrate()
+			.tileEntity("fluid_shell", FluidShellBlockEntity::new)
+			.instance(() -> FuzedBlockInstance::new)
+			.renderer(() -> FuzedBlockEntityRenderer::new)
+			.validBlock(CBCBlocks.FLUID_SHELL)
 			.register();
 	
 	public static final BlockEntityEntry<CannonCastBlockEntity> CANNON_CAST = CreateBigCannons.registrate()

@@ -119,7 +119,14 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		if (!this.level.isClientSide) {
 			Vec3 hitLoc = result.getLocation();
 			byte breakthroughPower = this.getBreakthroughPower();
-			if (breakthroughPower > 0) {
+			
+			if (breakthroughPower <= 0) {
+				if (CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE) {
+					this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.NONE);
+				}
+				this.setInGround(true);
+				this.setPos(hitLoc);
+			} else {
 				Vec3 currentVel = this.getDeltaMovement();
 				
 				Explosion explode = this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.DESTROY);
@@ -136,13 +143,6 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 						this.setBreakthroughPower((byte) 0);
 					}
 				}
-			}
-			if (this.getBreakthroughPower() <= 0) {
-				if (CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE) {
-					this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.NONE);
-				}
-				this.setInGround(true);
-				this.setPos(hitLoc);
 			}
 		}
 	}
