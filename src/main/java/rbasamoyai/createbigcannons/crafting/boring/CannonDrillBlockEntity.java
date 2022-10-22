@@ -15,6 +15,7 @@ import com.simibubi.create.content.contraptions.components.structureMovement.bea
 import com.simibubi.create.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
 import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
@@ -51,6 +52,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
@@ -80,9 +82,13 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	protected FluidTank lubricant;
 	private LazyOptional<IFluidHandler> fluidOptional;
 	
+	private static final int SYNC_RATE = 8;
+	protected boolean queuedSync;
+	protected int syncCooldown;
+	
 	public CannonDrillBlockEntity(BlockEntityType<? extends CannonDrillBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		this.lubricant = new FluidTank(1000, fs -> fs.getFluid() == Fluids.WATER);
+		this.lubricant = new SmartFluidTank(1000, this::onFluidStackChanged).setValidator(fs -> fs.getFluid() == Fluids.WATER);
 	}
 	
 	@Override
@@ -113,6 +119,23 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	public void invalidateCaps() {
 		super.invalidateCaps();
 		if (this.fluidOptional != null) this.fluidOptional.invalidate();
+	}
+	
+	protected void onFluidStackChanged(FluidStack newStack) {
+		if (!this.level.isClientSide) {
+			this.notifyUpdate();
+		}
+	}
+	
+	@Override
+	public void sendData() {
+		if (this.syncCooldown > 0) {
+			this.queuedSync = true;
+			return;
+		}
+		super.sendData();
+		this.queuedSync = false;
+		this.syncCooldown = SYNC_RATE;
 	}
 
 	@Override
@@ -227,6 +250,13 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		}
 		
 		super.tick();
+		
+		if (this.syncCooldown > 0) {
+			this.syncCooldown--;
+			if (this.syncCooldown == 0 && this.queuedSync) {
+				this.sendData();
+			}
+		}
 	}
 	
 	@Override
