@@ -21,6 +21,7 @@ public class FluidShellProjectile extends FuzedCannonProjectile {
 	
 	public FluidShellProjectile(EntityType<? extends FluidShellProjectile> type, Level level) {
 		super(type, level);
+		this.setBreakthroughPower((byte) 1);
 	}
 	
 	public void setFluid(FluidStack stack) {
