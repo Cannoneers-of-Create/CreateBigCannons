@@ -29,7 +29,8 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigInt fluidShellCapacity = i(2000, 1, "fluidShellCapacity", Comments.fluidShellCapacity);
 	public final ConfigInt mbPerFluidBlob = i(250, 125, "millibucketsPerFluidBlob", Comments.mbPerFluidBlob);
 	public final ConfigFloat fluidBlobSpread = f(1f, 0.01f, "fluidBlobSpread", Comments.fluidBlobSpread);
-	public final ConfigInt mbPerAoeRadius = i(250, 125, "millibucketsPerAreaOfEffectRadius", Comments.mbPerAoeRadius);
+	public final ConfigInt mbPerAoeRadius = i(125, 125, "millibucketsPerAreaOfEffectRadius", Comments.mbPerAoeRadius);
+	public final ConfigFloat fluidBlobBlockAffectChance = f(0.5f, 0, 1, "fluidBlobBlockEffectChance", Comments.fluidBlobBlockAffectChance);
 	
 	@Override public String getName() { return "munitions"; }
 
@@ -60,6 +61,7 @@ public class CBCCfgMunitions extends ConfigBase {
 		};
 		static String fluidBlobSpread = "How much Fluid Blobs spread on release.";
 		static String mbPerAoeRadius = "How many millibuckets (mB) of fluid in a Fluid Blob are required to increase its area of effect (AOE) by one block in each direction.";
+		static String fluidBlobBlockAffectChance = "The chance of a fluid blob affecting a block in its area of effect (AOE). 0 is 0% (never), 1 is 100% (always).";
 	}
 	
 	public enum GriefState {

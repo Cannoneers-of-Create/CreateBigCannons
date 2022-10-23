@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.fluidshell;
 
-import java.util.Iterator;
-
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.contraptions.particle.AirParticleData;
 
@@ -122,6 +120,7 @@ public class FluidBlob extends Shrapnel {
 	}
 	
 	protected void onHitPos(BlockPos pos) {
+		if (this.level.isClientSide) return;
 		Fluid fluidType = this.getFluidStack().getFluid();
 		if (fluidType == Fluids.WATER) {
 			this.douseFire(pos);
@@ -137,8 +136,12 @@ public class FluidBlob extends Shrapnel {
 	}
 	
 	private void douseFire(BlockPos root) {
-		for (Iterator<BlockPos> iter = BlockPos.betweenClosedStream(this.getAreaOfEffect(root)).iterator(); iter.hasNext(); ) {
-			BlockPos pos = iter.next();
+		float chance = getBlockAffectChance();
+		AABB bounds = this.getAreaOfEffect(root);
+		BlockPos pos1 = new BlockPos(Math.floor(bounds.minX), Math.floor(bounds.minY), Math.floor(bounds.minZ));
+		BlockPos pos2 = new BlockPos(Math.floor(bounds.maxX), Math.floor(bounds.maxY), Math.floor(bounds.maxZ));
+		for (BlockPos pos : BlockPos.betweenClosed(pos1, pos2)) {
+			if (chance == 0 || this.random.nextFloat() > chance) continue;
 			BlockState state = this.level.getBlockState(pos);
 			if (state.is(BlockTags.FIRE)) {
 				this.level.removeBlock(pos, false);
@@ -153,13 +156,18 @@ public class FluidBlob extends Shrapnel {
 	}
 	
 	private void spawnFire(BlockPos root) {
-		for (Iterator<BlockPos> iter = BlockPos.betweenClosedStream(this.getAreaOfEffect(root)).iterator(); iter.hasNext(); ) {
-			BlockPos pos = iter.next();
-			if (this.level.isEmptyBlock(pos)) {
+		float chance = getBlockAffectChance();
+		AABB bounds = this.getAreaOfEffect(root);
+		BlockPos pos1 = new BlockPos(Math.floor(bounds.minX), Math.floor(bounds.minY), Math.floor(bounds.minZ));
+		BlockPos pos2 = new BlockPos(Math.floor(bounds.maxX), Math.floor(bounds.maxY), Math.floor(bounds.maxZ));
+		for (BlockPos pos : BlockPos.betweenClosed(pos1, pos2)) {
+			if (chance > 0 && this.random.nextFloat() <= chance && this.level.isEmptyBlock(pos)) {
 				this.level.setBlockAndUpdate(pos, BaseFireBlock.getState(this.level, pos));
 			}
 		}
 	}
+	
+	public static float getBlockAffectChance() { return CBCConfigs.SERVER.munitions.fluidBlobBlockAffectChance.getF(); }
 	
 	private void spawnAreaEffectCloud(BlockPos pos) {
 		CompoundTag tag = this.getFluidStack().getTag();
