@@ -683,6 +683,7 @@ public class CBCBlocks {
 			.transform(shell(MaterialColor.COLOR_RED))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.projectile("projectile/he_shell"))
+			.loot(CBCBuilderTransformers.shellLoot())
 			.lang("High Explosive (HE) Shell")
 			.simpleItem()
 			.register();
@@ -692,6 +693,7 @@ public class CBCBlocks {
 			.transform(shell(MaterialColor.COLOR_GREEN))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
+			.loot(CBCBuilderTransformers.shellLoot())
 			.simpleItem()
 			.register();
 	
@@ -700,6 +702,7 @@ public class CBCBlocks {
 			.transform(shell(MaterialColor.COLOR_BLUE))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.projectile("projectile/ap_shell"))
+			.loot(CBCBuilderTransformers.shellLoot())
 			.lang("Armor Piercing (AP) Shell")
 			.simpleItem()
 			.register();
@@ -709,6 +712,7 @@ public class CBCBlocks {
 			.transform(shell(MaterialColor.COLOR_ORANGE))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.projectile("projectile/fluid_shell"))
+			.loot(CBCBuilderTransformers.shellLoot(f -> f.copy("FluidContent", "BlockEntityTag.FluidContent")))
 			.simpleItem()
 			.register();
 	
