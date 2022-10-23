@@ -135,6 +135,14 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.patternLine(" S ")
 		.build(cons);
 		
+		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.FLUID_SHELL.get())
+		.key('I', Items.IRON_INGOT).key('P', AllBlocks.FLUID_PIPE.get()).key('S', ItemTags.WOODEN_SLABS)
+		.patternLine(" I ")
+		.patternLine("IPI")
+		.patternLine("IPI")
+		.patternLine(" S ")
+		.build(cons);
+		
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_LOADER.get())
 		.define('C', AllBlocks.ANDESITE_CASING.get()).define('G', Items.GUNPOWDER).define('S', AllBlocks.SHAFT.get()).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
 		.pattern(" G ")
