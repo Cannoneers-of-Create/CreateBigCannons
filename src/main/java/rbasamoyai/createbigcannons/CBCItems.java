@@ -8,6 +8,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
+import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
@@ -60,6 +61,12 @@ public class CBCItems {
 	public static final ItemEntry<Item> NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new).register();
 	
 	public static final ItemEntry<Item> SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register();
+	
+	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE
+			.item("ram_rod", RamRodItem::new)
+			.properties(p -> p.stacksTo(1))
+			.model((c, p) -> p.getExistingFile(c.getId()))
+			.register();
 	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);

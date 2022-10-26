@@ -273,6 +273,7 @@
   "item.createbigcannons.proximity_fuze.tooltip.condition2": "Detonation",
   "item.createbigcannons.proximity_fuze.tooltip.shell_info": "Detonation Distance: _%s blocks_",
   "item.createbigcannons.proximity_fuze.tooltip.summary": "Detonates when it _gets close_ to a block.",
+  "item.createbigcannons.ram_rod": "Ram Rod",
   "item.createbigcannons.shot_balls": "Shot Balls",
   "item.createbigcannons.steel_screw_lock": "Steel Screw Lock",
   "item.createbigcannons.steel_sliding_breechblock": "Steel Sliding Breechblock",
