@@ -142,7 +142,10 @@ public class ModGroup {
 				CBCBlocks.CAST_IRON_BLOCK.asStack(),
 				CBCItems.NETHERSTEEL_NUGGET.asStack(),
 				CBCItems.NETHERSTEEL_INGOT.asStack(),
-				CBCBlocks.NETHERSTEEL_BLOCK.asStack()));
+				CBCBlocks.NETHERSTEEL_BLOCK.asStack(),
+				
+				CBCItems.RAM_ROD.asStack(),
+				CBCItems.WORM.asStack()));
 		}
 	};
 	

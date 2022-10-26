@@ -87,6 +87,31 @@ public class CBCLangGen {
 		.header("CANNON CRAFTING WAND")
 		.summary("Use on various cannon crafting processes such as _casting, boring, assembly,_ and _heating_ to _instantly finish_ the process.");
 		
+		tooltip(CBCItems.RAM_ROD)
+		.header("RAM ROD")
+		.summary("Used for _manually loading a cannon_ instead of using the Cannon Loader contraption. _Consumes saturation and hunger points_, with more for every block pushed.")
+		.controlAndAction("R-Click on Cannon Block", "Pushes munition blocks further into the cannon. Can push munition blocks out if applicable.")
+		.controlAndAction("R-Click on a Munition Block", "Pushes munition blocks. A string of munition blocks _must be connected to a valid cannon block_ to be pushed.");
+		
+		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength", "Push Strength");
+		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength.value", "Up to _%s blocks_");
+		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.reach", "Reach");
+		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.reach.value", "Up to _%s blocks_ inside a cannon");
+		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.deployerCanUse", "Can Be Used by Deployers");
+		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.deployerCanUse.yes", "_Yes_");
+		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.deployerCanUse.no", "_No_");
+		
+		tooltip(CBCItems.WORM)
+		.header("WORM")
+		.summary("Used for _manually extracting munitions from a cannon_ instead of using the Cannon Loader Contraption. _Consumes saturation and hunger points._")
+		.controlAndAction("R-Click on Cannon Block", "Pulls munition blocks towards the end of the cannon. Can only pull one block at a time.");
+		
+		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.reach", "Reach");
+		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.reach.value", "Up to _%s blocks_ inside a cannon");
+		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.deployerCanUse", "Can Be Used by Deployers");
+		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.deployerCanUse.yes", "_Yes_");
+		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.deployerCanUse.no", "_No_");
+		
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.materialProperties", "Cannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength", "Strength");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.goggles", "_%s Powder Charge(s)_");

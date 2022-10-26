@@ -331,6 +331,22 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.pattern("III")
 		.unlockedBy(getHasName(CBCItems.NETHERSTEEL_INGOT.get()), has(CBCItems.NETHERSTEEL_INGOT.get()))
 		.save(cons);
+		
+		ShapedRecipeBuilder.shaped(CBCItems.RAM_ROD.get())
+		.define('H', CBCBlocks.RAM_HEAD.get()).define('S', Items.STICK)
+		.pattern("H")
+		.pattern("S")
+		.pattern("S")
+		.unlockedBy(getHasName(CBCBlocks.RAM_HEAD.get()), has(CBCBlocks.RAM_HEAD.get()))
+		.save(cons);
+		
+		ShapedRecipeBuilder.shaped(CBCItems.WORM.get())
+		.define('H', CBCBlocks.WORM_HEAD.get()).define('S', Items.STICK)
+		.pattern("H")
+		.pattern("S")
+		.pattern("S")
+		.unlockedBy(getHasName(CBCBlocks.WORM_HEAD.get()), has(CBCBlocks.WORM_HEAD.get()))
+		.save(cons);
 	}
 	
 	@Override public String getName() { return "Create Big Cannons Recipes: Crafting"; }
