@@ -285,6 +285,7 @@
   "item.createbigcannons.timed_fuze.tooltip.condition2": "Detonation",
   "item.createbigcannons.timed_fuze.tooltip.shell_info": "Time to Detonate: _%ss %s ticks_",
   "item.createbigcannons.timed_fuze.tooltip.summary": "Detonates after a _set time_ from launch.",
+  "item.createbigcannons.worm": "Worm",
   "itemGroup.createbigcannons": "Create Big Cannons",
   "recipe.createbigcannons.added_casting_time": "Added casting time: %ss",
   "recipe.createbigcannons.built_up_heating": "Cannon Building",

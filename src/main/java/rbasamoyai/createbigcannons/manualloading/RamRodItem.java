@@ -113,9 +113,9 @@ public class RamRodItem extends Item {
 					}
 				}
 			}
-			player.causeFoodExhaustion(toPush.size() * CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
 			level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1, 1);
 		}
+		player.causeFoodExhaustion(toPush.size() * CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
 		player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
