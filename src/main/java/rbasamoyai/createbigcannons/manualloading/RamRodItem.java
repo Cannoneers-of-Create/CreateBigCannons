@@ -2,18 +2,35 @@ package rbasamoyai.createbigcannons.manualloading;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.contraptions.components.deployer.DeployerFakePlayer;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.NBTProcessors;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -30,14 +47,28 @@ import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
 public class RamRodItem extends Item {
 
+	public static final UUID BASE_ATTACK_KNOCKBACK_UUID = UUID.fromString("bfa4160d-4ef0-4069-9569-3dfd2765f1c6");
+	
+	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+	
 	public RamRodItem(Properties properties) {
 		super(properties);
+		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 4.0d, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -3.0d, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(BASE_ATTACK_KNOCKBACK_UUID, "Tool modifier", 2.5d, AttributeModifier.Operation.ADDITION));
+		this.defaultModifiers = builder.build();
+	}
+	
+	@Override
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+		return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
 	}
 	
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Player player = context.getPlayer();
-		if (player instanceof DeployerFakePlayer && !CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get()) return InteractionResult.PASS;
+		if (player instanceof DeployerFakePlayer && !deployersCanUse()) return InteractionResult.PASS;
 		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 		Direction pushDirection = context.getClickedFace().getOpposite();
@@ -45,7 +76,7 @@ public class RamRodItem extends Item {
 		int k = 0;
 		if (level.getBlockEntity(pos) instanceof ICannonBlockEntity) {
 			k = -1;
-			for (int i = 0; i < CBCConfigs.SERVER.cannons.ramRodReach.get(); ++i) {
+			for (int i = 0; i < getReach(); ++i) {
 				BlockPos pos1 = pos.relative(pushDirection, i);
 				BlockState state1 = level.getBlockState(pos1);
 				if (state1.isAir()) continue;
@@ -63,7 +94,7 @@ public class RamRodItem extends Item {
 		
 		List<StructureBlockInfo> toPush = new ArrayList<>();
 		boolean encounteredCannon = false;
-		int maxCount = CBCConfigs.SERVER.cannons.ramRodStrength.get();
+		int maxCount = getPushStrength();
 		for (int i = 0; i < maxCount + 1; ++i) {
 			BlockPos pos1 = pos.relative(pushDirection, i + k);
 			BlockState state1 = level.getBlockState(pos1);
@@ -130,4 +161,29 @@ public class RamRodItem extends Item {
 		return false;
 	}
 
+	@Override
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
+		ItemDescription.Palette palette = AllSections.of(stack).getTooltipPalette();
+		if (Screen.hasShiftDown()) {
+			String keyBase = this.getDescriptionId() + ".tooltip.";
+			
+			String key = keyBase + "pushStrength";
+			tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", getPushStrength()), palette.color, palette.hColor, 1));
+			
+			String key1 = keyBase + "reach";
+			tooltip.add(new TextComponent(I18n.get(key1)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key1 + ".value", getReach()), palette.color, palette.hColor, 1));
+			
+			String key2 = keyBase + "deployerCanUse";
+			tooltip.add(new TextComponent(I18n.get(key2)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key2 + (deployersCanUse() ? ".yes" : ".no")), palette.color, palette.hColor, 1));
+		}
+	}
+	
+	public static int getPushStrength() { return CBCConfigs.SERVER.cannons.ramRodStrength.get(); }
+	public static int getReach() { return CBCConfigs.SERVER.cannons.ramRodReach.get(); }
+	public static boolean deployersCanUse() { return CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get(); }
+	
 }

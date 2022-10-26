@@ -1,16 +1,34 @@
 package rbasamoyai.createbigcannons.manualloading;
 
+import java.util.List;
+
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.contraptions.components.deployer.DeployerFakePlayer;
+import com.simibubi.create.foundation.item.ItemDescription;
+import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.NBTProcessors;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,9 +41,20 @@ import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class WormItem extends Item {
-
+	
+	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
+	
 	public WormItem(Properties properties) {
 		super(properties);
+		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 6.0d, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.5d, AttributeModifier.Operation.ADDITION));
+		this.defaultModifiers = builder.build();
+	}
+	
+	@Override
+	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+		return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getAttributeModifiers(slot, stack);
 	}
 	
 	@Override
@@ -76,5 +105,25 @@ public class WormItem extends Item {
 	public static boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos, Direction dir) {
 		return state.getBlock() instanceof CannonBlock cBlock && cBlock.getOpeningType(level, state, pos) == CannonEnd.OPEN;
 	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
+		ItemDescription.Palette palette = AllSections.of(stack).getTooltipPalette();
+		if (Screen.hasShiftDown()) {
+			String keyBase = this.getDescriptionId() + ".tooltip.";
+			
+			String key = keyBase + "reach";
+			tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", getReach()), palette.color, palette.hColor, 1));
+			
+			String key1 = keyBase + "deployerCanUse";
+			tooltip.add(new TextComponent(I18n.get(key1)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key1 + (deployersCanUse() ? ".yes" : ".no")), palette.color, palette.hColor, 1));
+		}
+	}
+	
+	public static int getReach() { return CBCConfigs.SERVER.cannons.ramRodReach.get(); }
+	public static boolean deployersCanUse() { return CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get(); }
 	
 }
