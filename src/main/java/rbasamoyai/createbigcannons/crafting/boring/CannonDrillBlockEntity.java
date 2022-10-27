@@ -300,6 +300,9 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		if (!collide && movementDirection.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
 			gridPos = gridPos.relative(movementDirection);
 		}
+		if (collide) {
+			gridPos = gridPos.relative(movementDirection.getOpposite());
+		}
 		
 		boolean isBoringBlock = false;
 		
