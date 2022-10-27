@@ -18,15 +18,17 @@ public class CannonCastShape extends ForgeRegistryEntry<CannonCastShape> {
 	
 	public static final DeferredRegister<CannonCastShape> CANNON_CAST_SHAPES = DeferredRegister.create(CBCRegistries.Keys.CANNON_CAST_SHAPES, CreateBigCannons.MOD_ID);
 	
+	private static final int INGOT_SIZE_MB = 90;
+	
 	public static final RegistryObject<CannonCastShape>	
-		VERY_SMALL = CANNON_CAST_SHAPES.register("very_small", () -> new CannonCastShape(1008, 12, CBCBlocks.VERY_SMALL_CAST_MOULD)),
-		SMALL = CANNON_CAST_SHAPES.register("small", () -> new CannonCastShape(1296, 14, CBCBlocks.SMALL_CAST_MOULD)),
-		MEDIUM = CANNON_CAST_SHAPES.register("medium", () -> new CannonCastShape(1728, 16, CBCBlocks.MEDIUM_CAST_MOULD)),
-		LARGE = CANNON_CAST_SHAPES.register("large", () -> new CannonCastShape(2016, 18, CBCBlocks.LARGE_CAST_MOULD)),
-		VERY_LARGE = CANNON_CAST_SHAPES.register("very_large", () -> new CannonCastShape(2880, 20, CBCBlocks.VERY_LARGE_CAST_MOULD)),
-		CANNON_END = CANNON_CAST_SHAPES.register("cannon_end", () -> new CannonCastShape(1296, 16, CBCBlocks.CANNON_END_CAST_MOULD)),
-		SLIDING_BREECH = CANNON_CAST_SHAPES.register("sliding_breech", () -> new CannonCastShape(1296, 16, CBCBlocks.SLIDING_BREECH_CAST_MOULD, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false))),
-		SCREW_BREECH = CANNON_CAST_SHAPES.register("screw_breech", () -> new CannonCastShape(1296, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD));
+		VERY_SMALL = CANNON_CAST_SHAPES.register("very_small", () -> new CannonCastShape(7 * INGOT_SIZE_MB, 12, CBCBlocks.VERY_SMALL_CAST_MOULD)),
+		SMALL = CANNON_CAST_SHAPES.register("small", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 14, CBCBlocks.SMALL_CAST_MOULD)),
+		MEDIUM = CANNON_CAST_SHAPES.register("medium", () -> new CannonCastShape(12 * INGOT_SIZE_MB, 16, CBCBlocks.MEDIUM_CAST_MOULD)),
+		LARGE = CANNON_CAST_SHAPES.register("large", () -> new CannonCastShape(14 * INGOT_SIZE_MB, 18, CBCBlocks.LARGE_CAST_MOULD)),
+		VERY_LARGE = CANNON_CAST_SHAPES.register("very_large", () -> new CannonCastShape(20 * INGOT_SIZE_MB, 20, CBCBlocks.VERY_LARGE_CAST_MOULD)),
+		CANNON_END = CANNON_CAST_SHAPES.register("cannon_end", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.CANNON_END_CAST_MOULD)),
+		SLIDING_BREECH = CANNON_CAST_SHAPES.register("sliding_breech", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SLIDING_BREECH_CAST_MOULD, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false))),
+		SCREW_BREECH = CANNON_CAST_SHAPES.register("screw_breech", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD));
 	
 	private final int fluidSize;
 	private final int diameter;
