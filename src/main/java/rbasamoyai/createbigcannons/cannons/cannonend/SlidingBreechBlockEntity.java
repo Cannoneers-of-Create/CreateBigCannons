@@ -23,6 +23,7 @@ public class SlidingBreechBlockEntity extends AbstractCannonBreechBlockEntity {
 	@Override public boolean isOpen() { return this.openProgress >= 1.0f; }
 	public float getOpenProgress() { return this.openProgress; }
 	public void setOpenProgress(float openProgress) { this.openProgress = openProgress; }
+	public CannonEnd getOpeningType() { return CannonEnd.getOpeningType(this.openProgress); } 
 
 	@Override
 	public CannonBehavior cannonBehavior() {

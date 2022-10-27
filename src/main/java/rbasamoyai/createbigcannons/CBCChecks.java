@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 
 public class CBCChecks {
@@ -28,10 +29,10 @@ public class CBCChecks {
 		boolean result = cbe.cannonBehavior().isConnectedTo(attached) && cbe1.cannonBehavior().isConnectedTo(attached.getOpposite());
 		
 		if (cannonBlock instanceof ScrewBreechBlock) {
-			result &= !ScrewBreechBlock.isOpen(state);
+			result &= cannonBlock.getOpeningType(level, state, pos) != CannonEnd.OPEN;
 		}
 		if (otherBlock instanceof ScrewBreechBlock) {
-			result &= !ScrewBreechBlock.isOpen(attachedState) && attachedState.getValue(BlockStateProperties.FACING) == attached;
+			result &= cannonBlock.getOpeningType(level, state, pos) != CannonEnd.OPEN && attachedState.getValue(BlockStateProperties.FACING) == attached;
 		}
 		return CheckResult.of(result);
 	}

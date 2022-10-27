@@ -9,7 +9,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -33,9 +32,7 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	
 	@Override
 	public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) {
-		BlockEntity be = level.getBlockEntity(pos);
-		if (!(be instanceof SlidingBreechBlockEntity breech)) return CannonEnd.OPEN;
-		return breech.getOpenProgress() > 0.0f ? CannonEnd.OPEN : CannonEnd.CLOSED;
+		return level.getBlockEntity(pos) instanceof SlidingBreechBlockEntity breech ? breech.getOpeningType() : CannonEnd.OPEN;
 	}
 	
 	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
