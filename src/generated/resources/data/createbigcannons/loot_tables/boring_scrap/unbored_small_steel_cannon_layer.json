@@ -6,7 +6,7 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:tag",
+          "type": "minecraft:item",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -14,8 +14,7 @@
               "add": false
             }
           ],
-          "name": "forge:nuggets/steel",
-          "expand": true
+          "name": "createbigcannons:steel_scrap"
         }
       ]
     },
@@ -24,7 +23,7 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:tag",
+          "type": "minecraft:item",
           "functions": [
             {
               "function": "minecraft:set_count",
@@ -36,8 +35,7 @@
               "add": false
             }
           ],
-          "name": "forge:nuggets/steel",
-          "expand": true
+          "name": "createbigcannons:steel_scrap"
         }
       ]
     }

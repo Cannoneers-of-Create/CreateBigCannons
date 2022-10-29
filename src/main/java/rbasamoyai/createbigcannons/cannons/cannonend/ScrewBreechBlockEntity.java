@@ -15,7 +15,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock.OpenState;
 
 public class ScrewBreechBlockEntity extends KineticTileEntity implements ICannonBlockEntity {
 
@@ -46,22 +45,22 @@ public class ScrewBreechBlockEntity extends KineticTileEntity implements ICannon
 			this.openProgress = Mth.clamp(this.openProgress + progress, 0.0f, 1.0f);
 		}
 		
-		OpenState openState = this.getBlockState().getValue(ScrewBreechBlock.OPEN);
+		CannonEnd openState = this.getBlockState().getValue(ScrewBreechBlock.OPEN);
 		Direction facing = this.getBlockState().getValue(BlockStateProperties.FACING).getOpposite();
-		if (this.openProgress <= 0 && openState != OpenState.CLOSED) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.CLOSED), 3);
+		if (this.openProgress <= 0 && openState != CannonEnd.CLOSED) {
+			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, CannonEnd.CLOSED), 3);
 			this.cannonBehavior.setConnectedFace(facing, true);
 			if (this.level.getBlockEntity(this.worldPosition.relative(facing)) instanceof ICannonBlockEntity cbe) {
 				cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), true);
 			}
-		} else if (this.openProgress >= 1 && openState != OpenState.OPEN) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.OPEN), 3);
+		} else if (this.openProgress >= 1 && openState != CannonEnd.OPEN) {
+			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, CannonEnd.OPEN), 3);
 			this.cannonBehavior.setConnectedFace(facing, false);
 			if (this.level.getBlockEntity(this.worldPosition.relative(facing)) instanceof ICannonBlockEntity cbe) {
 				cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), false);
 			}
-		} else if (this.openProgress > 0 && this.openProgress < 1 && openState != OpenState.PARTIAL) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.PARTIAL), 3);
+		} else if (this.openProgress > 0 && this.openProgress < 1 && openState != CannonEnd.PARTIAL) {
+			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, CannonEnd.PARTIAL), 3);
 		}
 	}
 	

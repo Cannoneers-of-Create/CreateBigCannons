@@ -39,9 +39,9 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String heShellPower = "How powerful the High Explosive (HE) shell is. For reference, a block of TNT has an explosion power of 4.";
 		static String apShellPower = "How powerful the Armor Piercing (AP) shell is. For reference, a block of TNT has an explosion power of 4.";
 		static String[] damageRestriction = new String[] { "The extent to which cannon projectiles can damage surrounding blocks.",
-				"ALL_DAMAGE - projectiles will destroy anything they hit, if applicable. Explosive projectiles will destroy blocks on detonation.",
-				"NO_EXPLOSIVE_DAMAGE - projectiles will destroy anything they hit, if applicable. Explosive projectiles will only harm entities on detonation.",
-				"NO_DAMAGE - projectiles will not destroy anything they hit, and will only deal entity damage. Explosive projectiles will only harm entities on detonation."
+				"All Damage - projectiles will destroy anything they hit, if applicable. Explosive projectiles will destroy blocks on detonation.",
+				"No Explosive Damage - projectiles will destroy anything they hit, if applicable. Explosive projectiles will only harm entities on detonation.",
+				"No Damage - projectiles will not destroy anything they hit, and will only deal entity damage. Explosive projectiles will only harm entities on detonation."
 		};
 		static String impactFuzeDetonationChance = "Chance that the Impact Fuze will detonate on hitting something. 0 is 0% (never), 1 is 100% (always).";
 		static String[] proximityFuzeArmingTime = new String[] { "Time it takes for a proximity fuze to arm itself in ticks.",

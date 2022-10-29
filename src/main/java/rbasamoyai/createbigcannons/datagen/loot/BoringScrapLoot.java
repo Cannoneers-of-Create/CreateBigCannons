@@ -37,41 +37,41 @@ public class BoringScrapLoot implements Consumer<BiConsumer<ResourceLocation, Lo
 				.add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_BRONZE).apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 50))))
 				));
 		cons.accept(loc(CBCBlocks.UNBORED_BRONZE_CANNON_CHAMBER.get()), LootTable.lootTable()
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_BRONZE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_BRONZE).apply(SetItemCountFunction.setCount(UniformGenerator.between(21, 31)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.BRONZE_SCRAP.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.BRONZE_SCRAP.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(21, 31)))))
 				);
 		cons.accept(loc(CBCBlocks.UNBORED_BRONZE_SLIDING_BREECH.get()), LootTable.lootTable()
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_BRONZE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(58)))))
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_BRONZE).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 10)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.BRONZE_SCRAP.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(58)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.BRONZE_SCRAP.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 10)))))
 				);
 		
 		cons.accept(loc(CBCBlocks.UNBORED_VERY_SMALL_STEEL_CANNON_LAYER.get()), LootTable.lootTable().withPool(LootPool.lootPool()
 				.add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(UniformGenerator.between(40, 50))))
 				));
 		cons.accept(loc(CBCBlocks.UNBORED_SMALL_STEEL_CANNON_LAYER.get()), LootTable.lootTable()
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(58)))))
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 10)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(58)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 10)))))
 				);
 		cons.accept(loc(CBCBlocks.UNBORED_MEDIUM_STEEL_CANNON_LAYER.get()), LootTable.lootTable()
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(UniformGenerator.between(21, 31))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(21, 31))))
 				));
 		cons.accept(loc(CBCBlocks.UNBORED_LARGE_STEEL_CANNON_LAYER.get()), LootTable.lootTable()
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(UniformGenerator.between(39, 49)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(39, 49)))))
 				);
 		cons.accept(loc(CBCBlocks.UNBORED_VERY_LARGE_STEEL_CANNON_LAYER.get()), LootTable.lootTable()
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(UniformGenerator.between(29, 39)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(64)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(29, 39)))))
 				);
 		cons.accept(loc(CBCBlocks.UNBORED_STEEL_SLIDING_BREECH.get()), LootTable.lootTable()
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(58)))))
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 10)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(58)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 10)))))
 				);
 		cons.accept(loc(CBCBlocks.UNBORED_STEEL_SCREW_BREECH.get()), LootTable.lootTable()
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(58)))))
-				.withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 10)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(58)))))
+				.withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.STEEL_SCRAP.get()).apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 10)))))
 				);
 		
 		cons.accept(loc(CBCBlocks.UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get()), LootTable.lootTable().withPool(LootPool.lootPool()

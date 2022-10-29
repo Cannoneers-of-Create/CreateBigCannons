@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.compat.jei;
 
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.addFluidTooltip;
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRenderedSlot;
-import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.withImprovedVisibility;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.utility.Components;
@@ -42,10 +41,10 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 	public void setRecipe(IRecipeLayoutBuilder builder, CannonCastingRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 16, 27)
 			.setBackground(getRenderedSlot(), -1, -1)
-			.addIngredients(ForgeTypes.FLUID_STACK, withImprovedVisibility(recipe.ingredient().getMatchingFluidStacks().stream().map(fs -> {
+			.addIngredients(ForgeTypes.FLUID_STACK, recipe.ingredient().getMatchingFluidStacks().stream().map(fs -> {
 				fs.setAmount(recipe.shape().fluidSize());
 				return fs;
-			}).toList()))
+			}).toList())
 			.addTooltipCallback(addFluidTooltip());
 		
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 142, 62)
