@@ -280,10 +280,14 @@ public class MountedCannonContraption extends Contraption {
 				}
 				this.consumeBlock(behavior, cbeh, iter);
 				emptyNoProjectile = false;
-			} else if (!containedBlockInfo.state.isAir() && foundProjectile != null && canFail) {
-				failed = true;
-				failedHolder = cbeh;
-				break;
+			} else if (!containedBlockInfo.state.isAir() && foundProjectile != null) {
+				if (canFail) {
+					failed = true;
+					failedHolder = cbeh;
+					break;
+				} else {
+					this.consumeBlock(behavior, cbeh, iter);
+				}
 			} else if (foundProjectile == null && containedBlockInfo.state.isAir()) {
 				if (count == 0) return;
 				emptyNoProjectile = true;
