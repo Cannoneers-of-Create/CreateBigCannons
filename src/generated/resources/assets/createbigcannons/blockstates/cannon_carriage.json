@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "createbigcannons:block/cannon_carriage/block"
+    },
+    "facing=south": {
+      "model": "createbigcannons:block/cannon_carriage/block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "createbigcannons:block/cannon_carriage/block",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "createbigcannons:block/cannon_carriage/block",
+      "y": 90
+    }
+  }
+}

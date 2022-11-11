@@ -27,6 +27,7 @@ import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
 import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerBlock;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.CannonTubeBlock;
@@ -600,6 +601,13 @@ public class CBCBlocks {
 			.properties(p -> p.color(MaterialColor.PODZOL))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.yawController())
+			.register();
+
+	public static final BlockEntry<CannonCarriageBlock> CANNON_CARRIAGE = REGISTRATE
+			.block("cannon_carriage", CannonCarriageBlock::new)
+			.properties(p -> p.color(MaterialColor.PODZOL))
+			.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
+			.transform(CBCBuilderTransformers.cannonCarriage())
 			.register();
 	
 	//////// Cannon crafting mechanism blocks ////////

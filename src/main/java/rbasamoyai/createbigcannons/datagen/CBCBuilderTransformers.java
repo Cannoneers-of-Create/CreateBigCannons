@@ -314,7 +314,17 @@ public class CBCBuilderTransformers {
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemModelLoc)))
 				.build();
 	}
-	
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonCarriage() {
+		ResourceLocation blockLoc = CreateBigCannons.resource("block/cannon_carriage/block");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> p.horizontalBlock(c.get(), p.models().getExistingFile(blockLoc)))
+				.item()
+				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(blockLoc)))
+				.build();
+	}
+
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> invisibleWithParticle(String path) {
 		return b -> b.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getBuilder(c.getName())
 				.texture("particle", CreateBigCannons.resource(path))));

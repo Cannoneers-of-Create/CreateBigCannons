@@ -145,7 +145,8 @@ public class ModGroup {
 				CBCBlocks.NETHERSTEEL_BLOCK.asStack(),
 				
 				CBCItems.RAM_ROD.asStack(),
-				CBCItems.WORM.asStack()));
+				CBCItems.WORM.asStack(),
+				CBCBlocks.CANNON_CARRIAGE.asStack()));
 		}
 	};
 	

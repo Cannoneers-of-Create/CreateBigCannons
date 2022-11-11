@@ -1,0 +1,27 @@
+# Made in Blockbench 4.4.3
+newmtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+map_Kd #front
+
+newmtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+map_Kd #side
+
+newmtl m_a6868bef-9f49-c886-1316-002680f08ed9
+map_Kd #back
+
+newmtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+map_Kd #top
+
+newmtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+map_Kd #bottom
+
+newmtl m_4da8bdcd-1d6f-61cb-668b-73da2e414eac
+map_Kd #block
+
+newmtl m_016e6d76-1621-21a6-0878-6771635fe047
+map_Kd #wheel
+
+newmtl m_a24c3d8e-8967-ba60-3a69-024cc31d850c
+map_Kd #axis
+
+newmtl m_74929b80-a9ec-8bd2-e7d4-34db64f08b9a
+map_Kd #axis_top
