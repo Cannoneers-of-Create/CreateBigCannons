@@ -1,20 +1,20 @@
 # Made in Blockbench 4.4.3
-newmtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+newmtl Cannon_Carriage_Front
 map_Kd #front
 
-newmtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+newmtl Cannon_Carriage_Side
 map_Kd #side
 
-newmtl m_a6868bef-9f49-c886-1316-002680f08ed9
+newmtl Cannon_Carriage_Back
 map_Kd #back
 
-newmtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+newmtl Cannon_Carriage_Top
 map_Kd #top
 
-newmtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+newmtl Cannon_Carriage_Bottom
 map_Kd #bottom
 
-newmtl m_4da8bdcd-1d6f-61cb-668b-73da2e414eac
+newmtl Cannon_Carriage_Block
 map_Kd #block
 
 newmtl m_016e6d76-1621-21a6-0878-6771635fe047

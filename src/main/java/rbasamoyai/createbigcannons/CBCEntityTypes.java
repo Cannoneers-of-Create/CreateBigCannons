@@ -8,6 +8,8 @@ import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.world.entity.EntityType.EntityFactory;
 import net.minecraft.world.entity.MobCategory;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageRenderer;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.apshell.APShellProjectile;
@@ -57,6 +59,12 @@ public class CBCEntityTypes {
 			.entity("fluid_blob", FluidBlob::new, MobCategory.MISC)
 			.properties(Shrapnel::build)
 			.renderer(() -> NoopRenderer::new)
+			.register();
+
+	public static final EntityEntry<CannonCarriageEntity> CANNON_CARRIAGE = CreateBigCannons.registrate()
+			.entity("cannon_carriage", CannonCarriageEntity::new, MobCategory.MISC)
+			.properties(CannonCarriageEntity::build)
+			.renderer(() -> CannonCarriageRenderer::new)
 			.register();
 	
 	private static <T extends AbstractCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory) {

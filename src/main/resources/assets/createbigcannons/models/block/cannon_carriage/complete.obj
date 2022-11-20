@@ -40,17 +40,17 @@ vn 0 0 1
 vn -1 0 0
 vn 0 1 0
 vn 0 -1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 4/4/1 7/3/1 5/2/1 2/1/1
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 3/8/2 4/7/2 2/6/2 1/5/2
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 8/12/3 3/11/3 1/10/3 6/9/3
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 7/16/4 8/15/4 6/14/4 5/13/4
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 6/20/5 1/19/5 2/18/5 5/17/5
-usemtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+usemtl Cannon_Carriage_Bottom
 f 7/24/6 4/23/6 3/22/6 8/21/6
 o cube024
 v 0 0.96875 2
@@ -91,17 +91,17 @@ vn 0 0 1
 vn -1 0 0
 vn 0 1 0
 vn 0 -1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 12/28/7 15/27/7 13/26/7 10/25/7
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 11/32/8 12/31/8 10/30/8 9/29/8
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 16/36/9 11/35/9 9/34/9 14/33/9
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 15/40/10 16/39/10 14/38/10 13/37/10
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 14/44/11 9/43/11 10/42/11 13/41/11
-usemtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+usemtl Cannon_Carriage_Bottom
 f 15/48/12 12/47/12 11/46/12 16/45/12
 o cube023
 v 1.1875 0.46875 2
@@ -142,17 +142,17 @@ vn 0 0 1
 vn -1 0 0
 vn 0 1 0
 vn 0 -1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 20/52/13 23/51/13 21/50/13 18/49/13
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 19/56/14 20/55/14 18/54/14 17/53/14
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 24/60/15 19/59/15 17/58/15 22/57/15
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 23/64/16 24/63/16 22/62/16 21/61/16
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 22/68/17 17/67/17 18/66/17 21/65/17
-usemtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+usemtl Cannon_Carriage_Bottom
 f 23/72/18 20/71/18 19/70/18 24/69/18
 o cube022
 v 1.1875 0.96875 2
@@ -193,17 +193,17 @@ vn 0 0 1
 vn -1 0 0
 vn 0 1 0
 vn 0 -1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 28/76/19 31/75/19 29/74/19 26/73/19
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 27/80/20 28/79/20 26/78/20 25/77/20
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 32/84/21 27/83/21 25/82/21 30/81/21
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 31/88/22 32/87/22 30/86/22 29/85/22
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 30/92/23 25/91/23 26/90/23 29/89/23
-usemtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+usemtl Cannon_Carriage_Bottom
 f 31/96/24 28/95/24 27/94/24 32/93/24
 o cube021
 v 0 1.09375 1.625
@@ -239,15 +239,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 36/100/25 39/99/25 37/98/25 34/97/25
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 35/104/26 36/103/26 34/102/26 33/101/26
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 40/108/27 35/107/27 33/106/27 38/105/27
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 39/112/28 40/111/28 38/110/28 37/109/28
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 38/116/29 33/115/29 34/114/29 37/113/29
 o cube020
 v 0 1.21875 1.25
@@ -283,15 +283,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 44/120/30 47/119/30 45/118/30 42/117/30
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 43/124/31 44/123/31 42/122/31 41/121/31
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 48/128/32 43/127/32 41/126/32 46/125/32
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 47/132/33 48/131/33 46/130/33 45/129/33
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 46/136/34 41/135/34 42/134/34 45/133/34
 o cube019
 v 0 1.34375 0.875
@@ -327,15 +327,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 52/140/35 55/139/35 53/138/35 50/137/35
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 51/144/36 52/143/36 50/142/36 49/141/36
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 56/148/37 51/147/37 49/146/37 54/145/37
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 55/152/38 56/151/38 54/150/38 53/149/38
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 54/156/39 49/155/39 50/154/39 53/153/39
 o cube018
 v 1.1875 1.09375 1.625
@@ -371,15 +371,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 60/160/40 63/159/40 61/158/40 58/157/40
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 59/164/41 60/163/41 58/162/41 57/161/41
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 64/168/42 59/167/42 57/166/42 62/165/42
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 63/172/43 64/171/43 62/170/43 61/169/43
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 62/176/44 57/175/44 58/174/44 61/173/44
 o cube017
 v 1.1875 1.21875 1.25
@@ -415,15 +415,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 68/180/45 71/179/45 69/178/45 66/177/45
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 67/184/46 68/183/46 66/182/46 65/181/46
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 72/188/47 67/187/47 65/186/47 70/185/47
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 71/192/48 72/191/48 70/190/48 69/189/48
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 70/196/49 65/195/49 66/194/49 69/193/49
 o cube016
 v 1.1875 1.34375 0.875
@@ -459,15 +459,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 76/200/50 79/199/50 77/198/50 74/197/50
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 75/204/51 76/203/51 74/202/51 73/201/51
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 80/208/52 75/207/52 73/206/52 78/205/52
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 79/212/53 80/211/53 78/210/53 77/209/53
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 78/216/54 73/215/54 74/214/54 77/213/54
 o cube015
 v 0.6875 0.4922237796097484 2.027493959832839
@@ -508,7 +508,7 @@ vn 0 -0.3826834323650897 0.9238795325112867
 vn -1 0 0
 vn 0 0.9238795325112867 0.3826834323650897
 vn 0 -0.9238795325112867 -0.3826834323650897
-usemtl m_4da8bdcd-1d6f-61cb-668b-73da2e414eac
+usemtl Cannon_Carriage_Block
 f 84/220/55 87/219/55 85/218/55 82/217/55
 f 83/224/56 84/223/56 82/222/56 81/221/56
 f 88/228/57 83/227/57 81/226/57 86/225/57
@@ -554,17 +554,17 @@ vn 0 0 1
 vn -1 0 0
 vn 0 1 0
 vn 0 -1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 92/244/61 95/243/61 93/242/61 90/241/61
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 91/248/62 92/247/62 90/246/62 89/245/62
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 96/252/63 91/251/63 89/250/63 94/249/63
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 95/256/64 96/255/64 94/254/64 93/253/64
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 94/260/65 89/259/65 90/258/65 93/257/65
-usemtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+usemtl Cannon_Carriage_Bottom
 f 95/264/66 92/263/66 91/262/66 96/261/66
 o cube013
 v 1.1875 0.34375 0.4375
@@ -605,17 +605,17 @@ vn 0 0 1
 vn -1 0 0
 vn 0 1 0
 vn 0 -1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 100/268/67 103/267/67 101/266/67 98/265/67
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 99/272/68 100/271/68 98/270/68 97/269/68
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 104/276/69 99/275/69 97/274/69 102/273/69
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 103/280/70 104/279/70 102/278/70 101/277/70
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 102/284/71 97/283/71 98/282/71 101/281/71
-usemtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+usemtl Cannon_Carriage_Bottom
 f 103/288/72 100/287/72 99/286/72 104/285/72
 o cube012
 v 1.1875 0.34375 1.75
@@ -651,15 +651,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 -1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 108/292/73 111/291/73 109/290/73 106/289/73
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 107/296/74 108/295/74 106/294/74 105/293/74
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 112/300/75 107/299/75 105/298/75 110/297/75
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 111/304/76 112/303/76 110/302/76 109/301/76
-usemtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+usemtl Cannon_Carriage_Bottom
 f 111/308/77 108/307/77 107/306/77 112/305/77
 o cube011
 v 0 1.53125 0.6875
@@ -695,15 +695,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 116/312/78 119/311/78 117/310/78 114/309/78
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 115/316/79 116/315/79 114/314/79 113/313/79
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 120/320/80 115/319/80 113/318/80 118/317/80
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 119/324/81 120/323/81 118/322/81 117/321/81
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 118/328/82 113/327/82 114/326/82 117/325/82
 o cube010
 v 0 1.59375 0.625
@@ -739,15 +739,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 124/332/83 127/331/83 125/330/83 122/329/83
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 123/336/84 124/335/84 122/334/84 121/333/84
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 128/340/85 123/339/85 121/338/85 126/337/85
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 127/344/86 128/343/86 126/342/86 125/341/86
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 126/348/87 121/347/87 122/346/87 125/345/87
 o cube009
 v 1.1875 1.59375 0.625
@@ -783,15 +783,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 132/352/88 135/351/88 133/350/88 130/349/88
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 131/356/89 132/355/89 130/354/89 129/353/89
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 136/360/90 131/359/90 129/358/90 134/357/90
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 135/364/91 136/363/91 134/362/91 133/361/91
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 134/368/92 129/367/92 130/366/92 133/365/92
 o cube008
 v 1.1875 1.53125 0.6875
@@ -827,15 +827,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 140/372/93 143/371/93 141/370/93 138/369/93
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 139/376/94 140/375/94 138/374/94 137/373/94
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 144/380/95 139/379/95 137/378/95 142/377/95
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 143/384/96 144/383/96 142/382/96 141/381/96
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 142/388/97 137/387/97 138/386/97 141/385/97
 o cube007
 v 1.1875 1.46875 0.75
@@ -871,15 +871,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 148/392/98 151/391/98 149/390/98 146/389/98
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 147/396/99 148/395/99 146/394/99 145/393/99
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 152/400/100 147/399/100 145/398/100 150/397/100
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 151/404/101 152/403/101 150/402/101 149/401/101
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 150/408/102 145/407/102 146/406/102 149/405/102
 o cube006
 v 0 1.46875 0.75
@@ -915,15 +915,15 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 156/412/103 159/411/103 157/410/103 154/409/103
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 155/416/104 156/415/104 154/414/104 153/413/104
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 160/420/105 155/419/105 153/418/105 158/417/105
-usemtl m_3dd4e960-d16b-d7a4-2992-b243344ad47e
+usemtl Cannon_Carriage_Side
 f 159/424/106 160/423/106 158/422/106 157/421/106
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 158/428/107 153/427/107 154/426/107 157/425/107
 o cube005
 v 1 0.84375 0.3125
@@ -954,13 +954,13 @@ vn 0 0 -1
 vn 0 0 1
 vn 0 1 0
 vn 0 -1 0
-usemtl m_7e0d8a92-4d1e-18f3-1395-2033889194c4
+usemtl Cannon_Carriage_Front
 f 164/432/108 167/431/108 165/430/108 162/429/108
-usemtl m_a6868bef-9f49-c886-1316-002680f08ed9
+usemtl Cannon_Carriage_Back
 f 168/436/109 163/435/109 161/434/109 166/433/109
-usemtl m_75abecba-c910-f9f2-6238-6add22e06bc1
+usemtl Cannon_Carriage_Top
 f 166/440/110 161/439/110 162/438/110 165/437/110
-usemtl m_8cbded26-6fe9-e2b4-69f3-bc33df8b40fc
+usemtl Cannon_Carriage_Bottom
 f 167/444/111 164/443/111 163/442/111 168/441/111
 o cylinder004
 v -0.1875 0.25 0.34375

@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
 
 public class CannonMountBlockEntity extends KineticTileEntity implements IDisplayAssemblyExceptions {
 
@@ -185,9 +186,10 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		}
 		
 		MountedCannonContraption mountedCannon = new MountedCannonContraption();
-		if (!mountedCannon.assemble(this.level, assemblyPos)) {
-			return;
-		}
+		if (!mountedCannon.assemble(this.level, assemblyPos)) return;
+		Direction facing = this.getBlockState().getValue(CannonMountBlock.HORIZONTAL_FACING);
+		Direction facing1 = mountedCannon.initialOrientation();
+		if (facing.getAxis() != facing1.getAxis() && facing1.getAxis().isHorizontal()) return;
 		this.running = true;
 		
 		mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);

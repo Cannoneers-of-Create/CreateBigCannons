@@ -1,10 +1,14 @@
 
 package rbasamoyai.createbigcannons;
 
+import java.awt.event.KeyEvent;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Camera;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
@@ -14,8 +18,11 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.lwjgl.glfw.GLFW;
+import rbasamoyai.createbigcannons.base.CBCClientEvents;
 import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticle;
 import rbasamoyai.createbigcannons.cannonmount.CannonSmokeParticle;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlobParticle;
@@ -23,10 +30,17 @@ import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 
 public class CreateBigCannonsClient {
 
+	private static final String KEY_ROOT = CreateBigCannons.MOD_ID + ".key";
+	private static final String KEY_CATEGORY = KEY_ROOT + ".category.base";
+	public static final KeyMapping PITCH_MODE = new KeyMapping(KEY_ROOT + ".pitchMode", InputConstants.KEY_C, KEY_CATEGORY);
+	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fireControlledCannon", InputConstants.KEY_F, KEY_CATEGORY);
+
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
 		modEventBus.addListener(CreateBigCannonsClient::onClientSetup);
 		modEventBus.addListener(CreateBigCannonsClient::onRegisterParticleFactories);
+
+		CBCClientEvents.register(forgeEventBus);
 		
 		forgeEventBus.addListener(CreateBigCannonsClient::getFogColor);
 		forgeEventBus.addListener(CreateBigCannonsClient::getFogDensity);

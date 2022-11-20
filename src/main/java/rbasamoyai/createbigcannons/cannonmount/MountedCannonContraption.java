@@ -70,8 +70,6 @@ public class MountedCannonContraption extends Contraption {
 	}
 	
 	private boolean collectCannonBlocks(Level level, BlockPos pos) throws AssemblyException {
-		Direction facing = level.getBlockState(pos.below(2)).getValue(BlockStateProperties.HORIZONTAL_FACING);
-		
 		BlockState startState = level.getBlockState(pos);
 		
 		if (!(startState.getBlock() instanceof CannonBlock startCannon)) {
@@ -84,9 +82,6 @@ public class MountedCannonContraption extends Contraption {
 			throw cannonLoaderInsideDuringAssembly(pos);
 		}
 		Direction.Axis axis = startCannon.getFacing(startState).getAxis();
-		if (axis != facing.getAxis() && axis.isHorizontal()) {
-			return false;
-		}
 		CannonMaterial material = startCannon.getCannonMaterial();
 		CannonEnd startEnd = startCannon.getOpeningType(level, startState, pos);
 		

@@ -1,5 +1,5 @@
 # Made in Blockbench 4.4.3
-mtllib cannon_carriage_wheel.mtl
+mtllib carriage_wheel.mtl
 
 o cylinder
 v 0 0 0
@@ -124,7 +124,7 @@ vn 0 1 0
 vn 0 -1 0
 vn -2.680315483308929e-16 0 1
 vn 0 1 0
-usemtl Wheel
+usemtl Cannon_Carriage_Wheel
 f 5/1/1 3/2/1 1/3/1
 f 3/4/2 5/5/2 6/6/2 4/7/2
 f 4/8/3 6/9/3 2/10/3
@@ -183,7 +183,7 @@ vn 1 0 0
 vn 0 0 1
 vn -1 0 0
 vn 0 1 0
-usemtl Wheel
+usemtl Cannon_Carriage_Wheel
 f 22/84/25 25/83/25 23/82/25 20/81/25
 f 21/88/26 22/87/26 20/86/26 19/85/26
 f 26/92/27 21/91/27 19/90/27 24/89/27

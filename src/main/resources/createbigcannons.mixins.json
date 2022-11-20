@@ -9,6 +9,7 @@
 		"BearingCannonDrillFinderMixin"
 	],
 	"client": [
+		"CannonCarriagePoseMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
