@@ -9,6 +9,8 @@ public interface ControlPitchContraption {
     void attach(PitchOrientedContraptionEntity poce);
     void onStall();
 
+    void disassemble();
+
     public interface Block extends ControlPitchContraption {
         BlockPos getControllerBlockPos();
     }

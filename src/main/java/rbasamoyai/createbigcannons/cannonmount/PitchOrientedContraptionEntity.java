@@ -79,6 +79,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			this.prevPitch = this.pitch;
 		}
 
+		this.contraption.anchor = this.blockPosition();
+
 		ControlPitchContraption controller = this.getController();
 		if (controller == null) {
 			this.disassemble();

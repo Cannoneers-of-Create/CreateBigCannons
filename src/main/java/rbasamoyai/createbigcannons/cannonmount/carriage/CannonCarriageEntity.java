@@ -229,7 +229,18 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		}
 		if (AllItems.WRENCH.isIn(stack)) {
-			if (!this.level.isClientSide) this.disassemble(false);
+			if (!this.level.isClientSide) this.disassemble();
+
+			Direction dir = this.getDirection();
+			BlockPos placePos = this.blockPosition();
+
+			if (this.level.getBlockState(placePos).getDestroySpeed(this.level, placePos) != -1) {
+				this.level.destroyBlock(placePos, true);
+				this.level.setBlock(placePos, CBCBlocks.CANNON_CARRIAGE.getDefaultState()
+						.setValue(CannonCarriageBlock.FACING, dir)
+						.setValue(CannonCarriageBlock.SADDLED, this.isCannonRider()), 11);
+			}
+
 			return InteractionResult.sidedSuccess(this.level.isClientSide);
 		}
 		if (stack.is(Items.SADDLE) && !this.isCannonRider()) {
@@ -275,18 +286,10 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	@Override public boolean canBeCollidedWith() { return true; }
 
-	public void disassemble(boolean destroy) {
-		Direction dir = this.getDirection();
-		BlockPos placePos = this.blockPosition();
+	public void disassemble() {
 		if (this.cannonContraption != null) {
 			this.resetContraptionToOffset();
 			this.cannonContraption.stopRiding();
-		}
-		if (!destroy && this.level.getBlockState(placePos).getDestroySpeed(this.level, placePos) != -1) {
-			this.level.destroyBlock(placePos, true);
-			this.level.setBlock(placePos, CBCBlocks.CANNON_CARRIAGE.getDefaultState()
-					.setValue(CannonCarriageBlock.FACING, dir)
-					.setValue(CannonCarriageBlock.SADDLED, this.isCannonRider()), 11);
 		}
 		AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.level, this.blockPosition());
 		this.discard();
@@ -327,7 +330,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 				this.spawnAtLocation(CBCBlocks.CANNON_CARRIAGE.asStack());
 				if (this.isCannonRider()) this.spawnAtLocation(Items.SADDLE);
 			}
-			this.disassemble(true);
+			this.disassemble();
 		}
 		return true;
 	}

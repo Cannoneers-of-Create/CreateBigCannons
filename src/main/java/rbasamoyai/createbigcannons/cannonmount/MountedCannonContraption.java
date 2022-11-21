@@ -166,12 +166,13 @@ public class MountedCannonContraption extends Contraption {
 		this.isWeakBreech = openEndFlag ? negativeEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END) : positiveEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END);
 		
 		this.isWeakBreech &= CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1;
-		
+
 		this.anchor = pos;
-		this.startPos = this.startPos.subtract(this.anchor);
+
+		this.startPos = this.startPos.subtract(pos);
 		this.cannonBlockEntities.clear();
 		for (StructureBlockInfo blockInfo : cannonBlocks) {
-			BlockPos localPos = blockInfo.pos.subtract(this.anchor);
+			BlockPos localPos = blockInfo.pos.subtract(pos);
 			StructureBlockInfo localBlockInfo = new StructureBlockInfo(localPos, blockInfo.state, blockInfo.nbt);
 			this.getBlocks().put(localPos, localBlockInfo);
 			
@@ -212,7 +213,7 @@ public class MountedCannonContraption extends Contraption {
 	
 	public Direction initialOrientation() { return this.initialOrientation; }
 	
-	public void fireShot(ServerLevel level, AbstractContraptionEntity entity) {
+	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity) {
 		StructureBlockInfo foundProjectile = null;
 		float chargesUsed = 0;
 		float smokeScale = 0;
@@ -323,7 +324,7 @@ public class MountedCannonContraption extends Contraption {
 		}
 		
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
-		Vec3 vec = spawnPos.subtract(Vec3.atCenterOf(this.anchor)).normalize();
+		Vec3 vec = spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
 		
 		if (foundProjectile != null && foundProjectile.state.getBlock() instanceof ProjectileBlock projectileBlock) {
 			BlockEntity projectileBE = foundProjectile.nbt == null ? null : BlockEntity.loadStatic(foundProjectile.pos, foundProjectile.state, foundProjectile.nbt);
@@ -372,25 +373,21 @@ public class MountedCannonContraption extends Contraption {
 		return f == 0 ? false : random.nextFloat() <= f;
 	}
 	
-	public void fail(BlockPos localPos, Level level, AbstractContraptionEntity entity, CannonBlockEntityHolder<?> cbeh, int charges) {
+	public void fail(BlockPos localPos, Level level, PitchOrientedContraptionEntity entity, CannonBlockEntityHolder<?> cbeh, int charges) {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(cbeh.blockEntity.getBlockPos()), 1.0f);
 		float failScale = CBCConfigs.SERVER.failure.failureExplosionPower.getF();
 		if (this.cannonMaterial.failureMode() == FailureMode.RUPTURE) {
 			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2 * failScale + 1, Explosion.BlockInteraction.NONE);
-			if (this.anchor != null) {
-				int failInt = Mth.ceil(failScale);
-				BlockPos startPos = localPos.relative(this.initialOrientation.getOpposite(), failInt);
-				for (int i = 0; i < failInt * 2 + 1; ++i) {
-					BlockPos pos = startPos.relative(this.initialOrientation, i);
-					this.blocks.remove(pos);
-					this.cannonBlockEntities.removeIf(cbeh1 -> cbeh.blockInfo.pos.equals(pos));
-				}
-				
-				BlockEntity possibleMount = entity.getLevel().getBlockEntity(this.anchor.below(2));
-				if (possibleMount instanceof CannonMountBlockEntity mount) {
-					mount.disassemble();
-				}
+			int failInt = Mth.ceil(failScale);
+			BlockPos startPos = localPos.relative(this.initialOrientation.getOpposite(), failInt);
+			for (int i = 0; i < failInt * 2 + 1; ++i) {
+				BlockPos pos = startPos.relative(this.initialOrientation, i);
+				this.blocks.remove(pos);
+				this.cannonBlockEntities.removeIf(cbeh1 -> cbeh.blockInfo.pos.equals(pos));
 			}
+
+			ControlPitchContraption controller = entity.getController();
+			if (controller != null) controller.disassemble();
 		} else {
 			for (Iterator<Map.Entry<BlockPos, StructureBlockInfo>> iter = this.blocks.entrySet().iterator(); iter.hasNext(); ) {
 				Map.Entry<BlockPos, StructureBlockInfo> entry = iter.next();
