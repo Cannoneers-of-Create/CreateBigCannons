@@ -41,10 +41,12 @@ public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity>
         stack.mulPose(Vector3f.YP.rotationDegrees(180 - entityYaw));
 
         carriageBuf.translate(-0.5, 0, -0.5)
+                .light(light)
                 .renderInto(stack, vcons);
 
         axleBuf.translate(-0.5, 27 / 32f, -0.5)
                 .rotateCentered(Direction.EAST, carriage.getXRot() * Mth.DEG_TO_RAD)
+                .light(light)
                 .renderInto(stack, vcons);
 
         Vector4f oldWheel = carriage.previousWheelState;
@@ -54,24 +56,28 @@ public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity>
                 .rotateX(90)
                 .rotateZ(90)
                 .rotateY(Mth.lerp(partialTicks, oldWheel.x(), newWheel.x()))
+                .light(light)
                 .renderInto(stack, vcons);
 
         wheelBuf.translate(-11 / 16f, 0.25, 37 / 32f)
                 .rotateX(90)
                 .rotateZ(90)
                 .rotateY(Mth.lerp(partialTicks, oldWheel.y(), newWheel.y()))
+                .light(light)
                 .renderInto(stack, vcons);
 
         wheelBuf.translate(11 / 16f, 0.25, -5 / 32f)
                 .rotateX(90)
                 .rotateZ(-90)
                 .rotateY(Mth.lerp(partialTicks, oldWheel.z(), newWheel.z()))
+                .light(light)
                 .renderInto(stack, vcons);
 
         wheelBuf.translate(11 / 16f, 0.25, 37 / 32f)
                 .rotateX(90)
                 .rotateZ(-90)
                 .rotateY(Mth.lerp(partialTicks, oldWheel.w(), newWheel.w()))
+                .light(light)
                 .renderInto(stack, vcons);
 
         stack.popPose();

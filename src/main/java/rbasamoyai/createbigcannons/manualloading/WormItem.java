@@ -65,7 +65,7 @@ public class WormItem extends Item {
 		BlockPos pos = context.getClickedPos();
 		Direction reachDirection = context.getClickedFace().getOpposite();
 		
-		for (int i = 0; i < CBCConfigs.SERVER.cannons.ramRodReach.get(); ++i) {
+		for (int i = 0; i < CBCConfigs.SERVER.cannons.wormReach.get(); ++i) {
 			BlockPos pos1 = pos.relative(reachDirection, i);
 			BlockState state1 = level.getBlockState(pos1);
 			if (!isValidLoadBlock(state1, level, pos1, reachDirection) || !(level.getBlockEntity(pos1) instanceof ICannonBlockEntity cbe)) return InteractionResult.FAIL;

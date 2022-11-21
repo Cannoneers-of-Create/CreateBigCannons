@@ -1,20 +1,11 @@
 package rbasamoyai.createbigcannons.cannonmount;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.Random;
-
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionType;
-import com.simibubi.create.content.contraptions.components.structureMovement.bearing.AnchoredLighter;
+import com.simibubi.create.content.contraptions.components.structureMovement.NonStationaryLighter;
 import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionLighter;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +22,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -50,6 +40,8 @@ import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
+
+import java.util.*;
 
 public class MountedCannonContraption extends Contraption {
 	
@@ -81,7 +73,6 @@ public class MountedCannonContraption extends Contraption {
 		if (this.hasCannonLoaderInside(level, startState, pos)) {
 			throw cannonLoaderInsideDuringAssembly(pos);
 		}
-		Direction.Axis axis = startCannon.getFacing(startState).getAxis();
 		CannonMaterial material = startCannon.getCannonMaterial();
 		CannonEnd startEnd = startCannon.getOpeningType(level, startState, pos);
 		
@@ -360,22 +351,22 @@ public class MountedCannonContraption extends Contraption {
 	
 	private static boolean rollSquib(Random random) {
 		float f = CBCConfigs.SERVER.failure.squibChance.getF();
-		return f == 0 ? false : random.nextFloat() <= f;
+		return f != 0 && random.nextFloat() <= f;
 	}
 	
 	private static boolean rollBarrelBurst(Random random) {
 		float f = CBCConfigs.SERVER.failure.barrelChargeBurstChance.getF();
-		return f == 0 ? false : random.nextFloat() <= f;
+		return f != 0 && random.nextFloat() <= f;
 	}
 	
 	private static boolean rollOverloadBurst(Random random) {
 		float f = CBCConfigs.SERVER.failure.overloadBurstChance.getF();
-		return f == 0 ? false : random.nextFloat() <= f;
+		return f != 0 && random.nextFloat() <= f;
 	}
 	
 	private static boolean rollFailToIgnite(Random random) {
 		float f = CBCConfigs.SERVER.failure.interruptedIgnitionChance.getF();
-		return f == 0 ? false : random.nextFloat() <= f;
+		return f != 0 && random.nextFloat() <= f;
 	}
 	
 	public void fail(BlockPos localPos, Level level, PitchOrientedContraptionEntity entity, CannonBlockEntityHolder<?> cbeh, int charges) {
@@ -441,10 +432,7 @@ public class MountedCannonContraption extends Contraption {
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	@Override
-	public ContraptionLighter<?> makeLighter() {
-		return new AnchoredLighter(this);
-	}
+	@Override public ContraptionLighter<?> makeLighter() { return new NonStationaryLighter<>(this); }
 	
 	private static int getMaxCannonLength() {
 		return CBCConfigs.SERVER.cannons.maxCannonLength.get();

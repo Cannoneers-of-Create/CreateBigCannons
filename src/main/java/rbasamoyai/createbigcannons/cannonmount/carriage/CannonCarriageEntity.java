@@ -23,9 +23,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
@@ -38,10 +40,10 @@ import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.cannonmount.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannonmount.MountedCannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
-
-import java.util.Vector;
 
 public class CannonCarriageEntity extends Entity implements ControlPitchContraption {
 
@@ -147,26 +149,37 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 		Vector4f newState = this.getWheelState();
 
-		if (this.inputLeft) deltaYaw -= 1;
-		if (this.inputRight) deltaYaw += 1;
+		float wMod = this.getWeightModifier();
+		float turnRate = CBCConfigs.SERVER.cannons.carriageTurnRate.getF() * wMod;
+		float speed = CBCConfigs.SERVER.cannons.carriageSpeed.getF() * wMod;
+
+		if (this.inputLeft) deltaYaw -= turnRate;
+		if (this.inputRight) deltaYaw += turnRate;
 		this.setYRot(this.getYRot() + deltaYaw);
 		float f = deltaYaw * 7;
 		newState.add(f, f, f, f);
 
 		float f1 = 0;
 		if (this.inputPitch) {
-			if (this.inputForward) f1 -= 1;
-			if (this.inputBackward) f1 += 1;
+			if (this.inputForward) f1 -= turnRate;
+			if (this.inputBackward) f1 += turnRate;
 			this.setXRot(Mth.clamp(this.getXRot() - f1, -30, 30));
 		} else {
-			if (this.inputForward) f1 += 0.04f;
-			if (this.inputBackward) f1 -= 0.005f;
+			if (this.inputForward) f1 += speed;
+			if (this.inputBackward) f1 -= speed * 0.125f;
 			this.setDeltaMovement(this.getDeltaMovement()
 					.add((double) Mth.sin(-this.getYRot() * Mth.DEG_TO_RAD) * f1, 0.0d, (double) Mth.cos(this.getYRot() * Mth.DEG_TO_RAD) * f1));
 			float f2 = f1 * 200;
 			newState.add(f2, f2, -f2, -f2);
 		}
 		this.setWheelState(newState);
+	}
+
+	protected float getWeightModifier() {
+		if (!CBCConfigs.SERVER.cannons.cannonWeightAffectsCarriageSpeed.get()) return 1;
+		if (this.cannonContraption == null || !(this.cannonContraption.getContraption() instanceof MountedCannonContraption cannon)) return 1;
+		float weight = cannon.getWeightForStress();
+		return weight <= 0.0f ? 1 : CannonMaterial.CAST_IRON.weight() * 5 / weight; // Base weight is a 5 long cast iron cannon.
 	}
 
 	@Override
