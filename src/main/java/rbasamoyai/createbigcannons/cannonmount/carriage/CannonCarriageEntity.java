@@ -166,7 +166,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			this.setXRot(Mth.clamp(this.getXRot() - f1, -30, 30));
 		} else {
 			if (this.inputForward) f1 += speed;
-			if (this.inputBackward) f1 -= speed * 0.125f;
+			if (this.inputBackward) f1 -= speed * 0.5f;
 			this.setDeltaMovement(this.getDeltaMovement()
 					.add((double) Mth.sin(-this.getYRot() * Mth.DEG_TO_RAD) * f1, 0.0d, (double) Mth.cos(this.getYRot() * Mth.DEG_TO_RAD) * f1));
 			float f2 = f1 * 200;
