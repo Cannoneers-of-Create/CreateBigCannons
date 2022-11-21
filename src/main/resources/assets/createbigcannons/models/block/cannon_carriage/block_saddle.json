@@ -1,0 +1,6 @@
+{
+  "parent": "createbigcannons:block/cannon_carriage/textures",
+  "loader": "forge:obj",
+  "flip-v": true,
+  "model": "createbigcannons:models/block/cannon_carriage/complete_saddled.obj"
+}

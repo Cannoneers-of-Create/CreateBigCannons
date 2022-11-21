@@ -225,6 +225,7 @@
   "death.attack.createbigcannons.shrapnel.player": "%s was ripped up by shrapnel",
   "entity.createbigcannons.ap_shell": "Armor Piercing (AP) Shell",
   "entity.createbigcannons.bag_of_grapeshot": "Bag Of Grapeshot",
+  "entity.createbigcannons.cannon_carriage": "Cannon Carriage",
   "entity.createbigcannons.fluid_blob": "Fluid Blob",
   "entity.createbigcannons.fluid_shell": "Fluid Shell",
   "entity.createbigcannons.grapeshot": "Grapeshot",

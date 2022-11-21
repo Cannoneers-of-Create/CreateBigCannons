@@ -43,7 +43,8 @@ public class CBCBlockPartials {
 
 		CANNON_CARRIAGE = block("cannon_carriage/carriage"),
 		CANNON_CARRIAGE_AXLE = block("cannon_carriage/carriage_axle"),
-		CANNON_CARRIAGE_WHEEL = block("cannon_carriage/carriage_wheel");
+		CANNON_CARRIAGE_WHEEL = block("cannon_carriage/carriage_wheel"),
+		CANNON_CARRIAGE_SADDLE = block("cannon_carriage/carriage_saddle");
 	
 	private static PartialModel block(String path) {
 		return new PartialModel(CreateBigCannons.resource("block/" + path));

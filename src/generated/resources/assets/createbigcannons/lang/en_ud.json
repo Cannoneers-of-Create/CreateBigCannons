@@ -225,6 +225,7 @@
   "death.attack.createbigcannons.shrapnel.player": "\u05DF\u01DDud\u0250\u0279\u0265s \u028Eq dn p\u01DDdd\u0131\u0279 s\u0250\u028D %s",
   "entity.createbigcannons.ap_shell": "\u05DF\u05DF\u01DD\u0265S )\u0500\u2C6F( bu\u0131\u0254\u0279\u01DD\u0131\u0500 \u0279o\u026F\u0279\u2C6F",
   "entity.createbigcannons.bag_of_grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279\u2141 \u025FO b\u0250\u15FA",
+  "entity.createbigcannons.cannon_carriage": "\u01DDb\u0250\u0131\u0279\u0279\u0250\u0186 uouu\u0250\u0186",
   "entity.createbigcannons.fluid_blob": "qo\u05DF\u15FA p\u0131n\u05DF\u2132",
   "entity.createbigcannons.fluid_shell": "\u05DF\u05DF\u01DD\u0265S p\u0131n\u05DF\u2132",
   "entity.createbigcannons.grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279\u2141",

@@ -2,12 +2,9 @@ package rbasamoyai.createbigcannons.cannonmount.carriage;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -15,11 +12,9 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
 import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 
 public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity> {
 
@@ -31,9 +26,10 @@ public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity>
     public void render(CannonCarriageEntity carriage, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffers, int light) {
         VertexConsumer vcons = buffers.getBuffer(RenderType.cutoutMipped());
 
-        BlockState state = CBCBlocks.CANNON_CARRIAGE.getDefaultState();
+        boolean cannonRider = carriage.isCannonRider();
+        BlockState state = CBCBlocks.CANNON_CARRIAGE.getDefaultState().setValue(CannonCarriageBlock.SADDLED, cannonRider);
 
-        SuperByteBuffer carriageBuf = CachedBufferer.partial(CBCBlockPartials.CANNON_CARRIAGE, state);
+        SuperByteBuffer carriageBuf = CachedBufferer.partial(cannonRider ? CBCBlockPartials.CANNON_CARRIAGE_SADDLE : CBCBlockPartials.CANNON_CARRIAGE, state);
         SuperByteBuffer axleBuf = CachedBufferer.partial(CBCBlockPartials.CANNON_CARRIAGE_AXLE, state);
         SuperByteBuffer wheelBuf = CachedBufferer.partial(CBCBlockPartials.CANNON_CARRIAGE_WHEEL, state);
 

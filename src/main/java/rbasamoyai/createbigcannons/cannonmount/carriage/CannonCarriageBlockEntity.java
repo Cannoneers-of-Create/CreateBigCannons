@@ -29,6 +29,7 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity implements IDisp
         CannonCarriageEntity carriage = CBCEntityTypes.CANNON_CARRIAGE.create(this.level);
         carriage.setPos(Vec3.atBottomCenterOf(this.getBlockPos()).add(0, 0.125, 0));
         carriage.setYRot(facing.toYRot());
+        carriage.setCannonRider(this.getBlockState().getValue(CannonCarriageBlock.SADDLED));
         this.level.addFreshEntity(carriage);
 
         try {
