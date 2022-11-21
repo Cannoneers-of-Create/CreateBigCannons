@@ -4,7 +4,6 @@ import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
-
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCItems;
@@ -142,6 +141,10 @@ public class CBCLangGen {
 		
 		REGISTRATE.addLang("block", CreateBigCannons.resource("shell"), "tooltip.fuze", "Fuze:");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("shell"), "tooltip.fuze.none", "(none)");
+
+		REGISTRATE.addLang("key", CreateBigCannons.resource("category"), "Create Big Cannons");
+		REGISTRATE.addLang("key", CreateBigCannons.resource("pitch_mode"), "Change Carriage Mode");
+		REGISTRATE.addLang("key", CreateBigCannons.resource("fire_controlled_cannon"), "Fire Controlled Cannon");
 	}
 	
 	private static class TooltipBuilder {
