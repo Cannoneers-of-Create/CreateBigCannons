@@ -91,7 +91,15 @@ public class CBCLangGen {
 		.summary("Used for _manually loading a cannon_ instead of using the Cannon Loader contraption. _Consumes saturation and hunger points_, with more for every block pushed.")
 		.controlAndAction("R-Click on Cannon Block", "Pushes munition blocks further into the cannon. Can push munition blocks out if applicable.")
 		.controlAndAction("R-Click on a Munition Block", "Pushes munition blocks. A string of munition blocks _must be connected to a valid cannon block_ to be pushed.");
-		
+
+		tooltip(CBCBlocks.CANNON_CARRIAGE)
+		.header("CANNON_CARRIAGE")
+		.summary("_Mobile_ cannon mount. Can be _moved around_, but _cannot be automated_ like the Cannon Mount.");
+
+		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.keyPressed", "When [_%s_] held down");
+		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.fireCannon", "_Fires cannon_ on carriage if present. _Repeatedly fires cannon_ if possible.");
+		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.pitchMode", "The forward/backward keys _set pitch_ instead of moving the cannon.");
+
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength", "Push Strength");
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength.value", "Up to _%s blocks_");
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.reach", "Reach");
