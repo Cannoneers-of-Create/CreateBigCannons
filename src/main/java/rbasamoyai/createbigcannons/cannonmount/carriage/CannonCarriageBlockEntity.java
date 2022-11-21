@@ -25,16 +25,25 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity implements IDisp
     }
 
     public void tryAssemble() {
+        Direction facing = this.getBlockState().getValue(CannonCarriageBlock.FACING);
+        CannonCarriageEntity carriage = CBCEntityTypes.CANNON_CARRIAGE.create(this.level);
+        carriage.setPos(Vec3.atBottomCenterOf(this.getBlockPos()).add(0, 0.125, 0));
+        carriage.setYRot(facing.toYRot());
+        this.level.addFreshEntity(carriage);
+
         try {
-            this.assemble();
+            this.assemble(carriage);
             this.lastException = null;
         } catch (AssemblyException e) {
             this.lastException = e;
             this.sendData();
         }
+
+        this.setRemoved();
+        this.level.removeBlock(this.worldPosition, false);
     }
 
-    protected void assemble() throws AssemblyException {
+    protected void assemble(CannonCarriageEntity carriage) throws AssemblyException {
         if (!CBCBlocks.CANNON_CARRIAGE.has(this.getBlockState())) return;
         BlockPos assemblyPos = this.worldPosition.above();
         if (this.level.isOutsideBuildHeight(assemblyPos)) {
@@ -42,26 +51,18 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity implements IDisp
         }
 
         Direction facing = this.getBlockState().getValue(CannonCarriageBlock.FACING);
-        CannonCarriageEntity carriage = CBCEntityTypes.CANNON_CARRIAGE.create(this.level);
-        carriage.setPos(Vec3.atCenterOf(this.getBlockPos()));
-        carriage.setYRot(facing.toYRot());
-        this.level.addFreshEntity(carriage);
 
         MountedCannonContraption mountedCannon = new MountedCannonContraption();
         if (mountedCannon.assemble(this.level, assemblyPos)) {
             if (mountedCannon.initialOrientation() != facing) {
                 // TODO: throw error for incorrect orientation
-                return;
             }
             mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
-            PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing);
-            carriage.setCannonContraption(contraptionEntity);
+            PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing, false);
+            carriage.attach(contraptionEntity);
             carriage.applyRotation();
             this.level.addFreshEntity(contraptionEntity);
         }
-
-        this.setRemoved();
-        this.level.removeBlock(this.worldPosition, false);
 
         AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(this.level, this.worldPosition);
     }

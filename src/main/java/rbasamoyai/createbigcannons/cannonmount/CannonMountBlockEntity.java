@@ -4,8 +4,10 @@ import java.util.function.Supplier;
 
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.IDisplayAssemblyExceptions;
+import com.simibubi.create.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
@@ -24,7 +26,7 @@ import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
 
-public class CannonMountBlockEntity extends KineticTileEntity implements IDisplayAssemblyExceptions {
+public class CannonMountBlockEntity extends KineticTileEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block {
 
 	private static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	
@@ -98,9 +100,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	
 	protected void applyRotation() {
 		if (this.mountedContraption == null) return;
-		this.mountedContraption.prevPitch = this.prevPitch;
 		this.mountedContraption.pitch = this.cannonPitch;
-		this.mountedContraption.prevYaw = this.prevYaw;
 		this.mountedContraption.yaw = this.cannonYaw;
 	}
 	
@@ -193,7 +193,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.running = true;
 		
 		mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
-		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, this.getBlockState().getValue(HORIZONTAL_FACING));
+		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, this.getBlockState().getValue(HORIZONTAL_FACING), this);
 		this.mountedContraption = contraptionEntity;
 		this.resetContraptionToOffset();
 		this.level.addFreshEntity(contraptionEntity);
@@ -277,15 +277,25 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		}
 		super.setRemovedNotDueToChunkUnload();
 	}
-	
+
+	@Override
+	public boolean isAttachedTo(AbstractContraptionEntity entity) {
+		return this.mountedContraption == entity;
+	}
+
+	@Override
 	public void attach(PitchOrientedContraptionEntity contraption) {
+		if (!(contraption.getContraption() instanceof MountedCannonContraption)) return;
 		this.mountedContraption = contraption;
 		if (!this.level.isClientSide) {
 			this.running = true;
 			this.sendData();
 		}
 	}
-	
+
+	@Override public void onStall() { if (!this.level.isClientSide) this.sendData(); }
+	@Override public BlockPos getControllerBlockPos() { return this.worldPosition; }
+
 	public boolean isAttachedTo(PitchOrientedContraptionEntity contraption) {
 		return this.mountedContraption == contraption;
 	}

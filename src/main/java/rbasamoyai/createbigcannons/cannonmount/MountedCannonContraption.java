@@ -406,18 +406,6 @@ public class MountedCannonContraption extends Contraption {
 	}
 	
 	@Override
-	public void tickStorage(AbstractContraptionEntity entity) {
-		super.tickStorage(entity);
-		
-		if (this.anchor != null) {
-			BlockEntity possibleMount = entity.getLevel().getBlockEntity(this.anchor.below(2));
-			if (possibleMount instanceof CannonMountBlockEntity mount && entity instanceof PitchOrientedContraptionEntity poce && !mount.isAttachedTo(poce)) {
-				mount.attach(poce);
-			}
-		}
-	}
-	
-	@Override
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);
 		tag.putString("CannonMaterial", this.cannonMaterial == null ? CannonMaterial.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());

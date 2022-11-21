@@ -3,7 +3,9 @@ package rbasamoyai.createbigcannons.cannonmount.carriage;
 import com.mojang.math.Vector3f;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
+import com.simibubi.create.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -31,10 +33,11 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
+import rbasamoyai.createbigcannons.cannonmount.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannonmount.MountedCannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 
-public class CannonCarriageEntity extends Entity {
+public class CannonCarriageEntity extends Entity implements ControlPitchContraption {
 
 	private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
@@ -90,15 +93,6 @@ public class CannonCarriageEntity extends Entity {
 		} else {
 			this.setDeltaMovement(Vec3.ZERO);
 		}
-
-		boolean hasPoce = false;
-		for (Entity e : this.getPassengers()) {
-			if (!(e instanceof PitchOrientedContraptionEntity poce)) continue;
-			this.cannonContraption = poce;
-			hasPoce = true;
-			break;
-		}
-		if (!hasPoce) this.cannonContraption = null;
 
 		this.applyRotation();
 	}
@@ -238,6 +232,7 @@ public class CannonCarriageEntity extends Entity {
 			this.cannonContraption.stopRiding();
 		}
 		if (!destroy && this.level.getBlockState(placePos).getDestroySpeed(this.level, placePos) != -1) {
+			this.level.destroyBlock(placePos, true);
 			this.level.setBlock(placePos, CBCBlocks.CANNON_CARRIAGE.getDefaultState().setValue(CannonCarriageBlock.FACING, dir), 11);
 		}
 		AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.level, this.blockPosition());
@@ -255,15 +250,16 @@ public class CannonCarriageEntity extends Entity {
 
 	public void applyRotation() {
 		if (this.cannonContraption == null) return;
-		this.cannonContraption.prevPitch = this.xRotO;
-		this.cannonContraption.pitch = this.getXRot();
+		if (this.level.isClientSide) {
+			int x = 0;
+		}
+
+		Direction dir = this.cannonContraption.getInitialOrientation();
+		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+		this.cannonContraption.prevPitch = flag ? this.xRotO : -this.getXRot();
+		this.cannonContraption.pitch = flag ? this.getXRot() : -this.getXRot();
 		this.cannonContraption.prevYaw = this.yRotO;
 		this.cannonContraption.yaw = this.getYRot();
-	}
-
-	public void setCannonContraption(PitchOrientedContraptionEntity contraption) {
-		contraption.startRiding(this);
-		this.cannonContraption = contraption;
 	}
 
 	@Override
@@ -318,4 +314,15 @@ public class CannonCarriageEntity extends Entity {
 				.sized(1.5f, 1.5f);
 	}
 
+	@Override public boolean isAttachedTo(AbstractContraptionEntity entity) { return this.cannonContraption == entity; }
+
+	@Override
+	public void attach(PitchOrientedContraptionEntity poce) {
+		if (!(poce.getContraption() instanceof MountedCannonContraption)) return;
+		poce.startRiding(this);
+		this.cannonContraption = poce;
+		this.positionRider(poce);
+	}
+
+	@Override public void onStall() {}
 }
