@@ -222,6 +222,7 @@ public class MountedCannonContraption extends Contraption {
 		Random rand = level.getRandom();
 		
 		boolean failed = false;
+		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		CannonBlockEntityHolder<?> failedHolder = null;
 		int count = 0;
 		
@@ -253,13 +254,13 @@ public class MountedCannonContraption extends Contraption {
 				++smokeScale;
 				spread += spreadAdd;
 				
-				if (!cbeh.blockInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && rollBarrelBurst(rand)
-					|| chargesUsed > maxSafeCharges && rollOverloadBurst(rand)) {
+				if (canFail && (!cbeh.blockInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && rollBarrelBurst(rand)
+					|| chargesUsed > maxSafeCharges && rollOverloadBurst(rand))) {
 					failed = true;
 					failedHolder = cbeh;
 					break;
 				}
-				if (emptyNoProjectile && rollFailToIgnite(rand)) {
+				if (emptyNoProjectile && rollFailToIgnite(rand) && canFail) {
 					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cbeh.blockInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
 					return;
@@ -268,7 +269,7 @@ public class MountedCannonContraption extends Contraption {
 			} else if (containedBlockInfo.state.getBlock() instanceof ProjectileBlock && foundProjectile == null) {
 				if (chargesUsed == 0) return;
 				foundProjectile = containedBlockInfo;
-				if (emptyNoProjectile && rollFailToIgnite(rand)) {
+				if (emptyNoProjectile && rollFailToIgnite(rand) && canFail) {
 					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cbeh.blockInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
 					return;
@@ -276,9 +277,13 @@ public class MountedCannonContraption extends Contraption {
 				this.consumeBlock(behavior, cbeh, iter);
 				emptyNoProjectile = false;
 			} else if (!containedBlockInfo.state.isAir() && foundProjectile != null) {
-				failed = true;
-				failedHolder = cbeh;
-				break;
+				if (canFail) {
+					failed = true;
+					failedHolder = cbeh;
+					break;
+				} else {
+					this.consumeBlock(behavior, cbeh, iter);
+				}
 			} else if (foundProjectile == null && containedBlockInfo.state.isAir()) {
 				if (count == 0) return;
 				emptyNoProjectile = true;
@@ -314,7 +319,7 @@ public class MountedCannonContraption extends Contraption {
 				}
 			}	
 		}
-		if (failed && failedHolder != null) {
+		if (canFail && failed && failedHolder != null) {
 			this.fail(currentPos, level, entity, failedHolder, (int) chargesUsed);
 			return;
 		}

@@ -19,10 +19,11 @@ public class CBCChecks {
 
 	private static CheckResult attachedCheckCannons(BlockState state, Level level, BlockPos pos, Direction attached) {
 		if (!(state.getBlock() instanceof CannonBlock cannonBlock)) return CheckResult.PASS;
-		BlockState attachedState = level.getBlockState(pos.relative(attached));
+		BlockPos otherPos = pos.relative(attached);
+		BlockState attachedState = level.getBlockState(otherPos);
 		if (!(attachedState.getBlock() instanceof CannonBlock otherBlock)) return CheckResult.PASS;
 		
-		if (!(level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe) || !(level.getBlockEntity(pos.relative(attached)) instanceof ICannonBlockEntity cbe1)) {
+		if (!(level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe) || !(level.getBlockEntity(otherPos) instanceof ICannonBlockEntity cbe1)) {
 			return CheckResult.PASS;
 		}
 		
@@ -32,7 +33,7 @@ public class CBCChecks {
 			result &= cannonBlock.getOpeningType(level, state, pos) != CannonEnd.OPEN;
 		}
 		if (otherBlock instanceof ScrewBreechBlock) {
-			result &= cannonBlock.getOpeningType(level, state, pos) != CannonEnd.OPEN && attachedState.getValue(BlockStateProperties.FACING) == attached;
+			result &= otherBlock.getOpeningType(level, attachedState, otherPos) != CannonEnd.OPEN && attachedState.getValue(BlockStateProperties.FACING) == attached;
 		}
 		return CheckResult.of(result);
 	}
