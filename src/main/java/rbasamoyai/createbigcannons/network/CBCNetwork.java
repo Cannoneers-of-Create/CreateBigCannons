@@ -50,6 +50,12 @@ public class CBCNetwork {
 				.decoder(ServerboundFiringActionPacket::new)
 				.consumer(ServerboundFiringActionPacket::handle)
 				.add();
+
+		channel.messageBuilder(ServerboundCarriageWheelPacket.class, id++)
+				.encoder(ServerboundCarriageWheelPacket::encode)
+				.decoder(ServerboundCarriageWheelPacket::new)
+				.consumer(ServerboundCarriageWheelPacket::handle)
+				.add();
 		
 		return channel;
 	}

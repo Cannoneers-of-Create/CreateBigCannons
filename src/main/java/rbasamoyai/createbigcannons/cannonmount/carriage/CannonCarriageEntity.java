@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannonmount.carriage;
 
+import com.mojang.math.Vector4f;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
@@ -7,6 +8,9 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Con
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.FloatTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -21,6 +25,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.GameRules;
@@ -33,6 +38,10 @@ import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.cannonmount.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannonmount.MountedCannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.network.CBCNetwork;
+import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
+
+import java.util.Vector;
 
 public class CannonCarriageEntity extends Entity implements ControlPitchContraption {
 
@@ -40,6 +49,10 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
 	private static final EntityDataAccessor<Boolean> DATA_ID_RIDER = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LF = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RF = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LB = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RB = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
 
 	private boolean inputForward;
 	private boolean inputBackward;
@@ -53,6 +66,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	private double lerpZ;
 	private double lerpYRot;
 	private double lerpXRot;
+	public Vector4f previousWheelState = new Vector4f(0, 0, 0, 0);
 
 	private PitchOrientedContraptionEntity cannonContraption;
 	
@@ -66,6 +80,10 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		this.entityData.define(DATA_ID_HURTDIR, 0);
 		this.entityData.define(DATA_ID_DAMAGE, 0f);
 		this.entityData.define(DATA_ID_RIDER, false);
+		this.entityData.define(DATA_ID_WHEEL_LF, 0f);
+		this.entityData.define(DATA_ID_WHEEL_RF, 0f);
+		this.entityData.define(DATA_ID_WHEEL_LB, 0f);
+		this.entityData.define(DATA_ID_WHEEL_RB, 0f);
 	}
 
 	@Override public boolean isPickable() { return !this.isRemoved(); }
@@ -83,9 +101,14 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 		this.tickLerp();
 
+		this.previousWheelState = this.getWheelState();
+
 		if (this.isControlledByLocalInstance()) {
 			this.moveCarriage();
-			if (this.level.isClientSide) this.controlCarriage();
+			if (this.level.isClientSide) {
+				this.controlCarriage();
+				CBCNetwork.INSTANCE.sendToServer(new ServerboundCarriageWheelPacket(this));
+			}
 			this.move(MoverType.SELF, this.getDeltaMovement());
 		} else {
 			this.setDeltaMovement(Vec3.ZERO);
@@ -121,21 +144,29 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	private void controlCarriage() {
 		if (!this.hasPlayerController() || !this.isOnGround()) return;
 		float deltaYaw = 0;
+
+		Vector4f newState = this.getWheelState();
+
 		if (this.inputLeft) deltaYaw -= 1;
 		if (this.inputRight) deltaYaw += 1;
 		this.setYRot(this.getYRot() + deltaYaw);
+		float f = deltaYaw * 7;
+		newState.add(f, f, f, f);
 
-		float f = 0;
+		float f1 = 0;
 		if (this.inputPitch) {
-			if (this.inputForward) f -= 1;
-			if (this.inputBackward) f += 1;
-			this.setXRot(Mth.clamp(this.getXRot() - f, -30, 30));
+			if (this.inputForward) f1 -= 1;
+			if (this.inputBackward) f1 += 1;
+			this.setXRot(Mth.clamp(this.getXRot() - f1, -30, 30));
 		} else {
-			if (this.inputForward) f += 0.04f;
-			if (this.inputBackward) f -= 0.005f;
+			if (this.inputForward) f1 += 0.04f;
+			if (this.inputBackward) f1 -= 0.005f;
 			this.setDeltaMovement(this.getDeltaMovement()
-					.add((double) Mth.sin(-this.getYRot() * Mth.DEG_TO_RAD) * f, 0.0d, (double) Mth.cos(this.getYRot() * Mth.DEG_TO_RAD) * f));
+					.add((double) Mth.sin(-this.getYRot() * Mth.DEG_TO_RAD) * f1, 0.0d, (double) Mth.cos(this.getYRot() * Mth.DEG_TO_RAD) * f1));
+			float f2 = f1 * 200;
+			newState.add(f2, f2, -f2, -f2);
 		}
+		this.setWheelState(newState);
 	}
 
 	@Override
@@ -313,11 +344,25 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	public void setCannonRider(boolean cannonRider) { this.entityData.set(DATA_ID_RIDER, cannonRider); }
 	public boolean isCannonRider() { return this.entityData.get(DATA_ID_RIDER); }
 
+	public void setWheelState(Vector4f vec) {
+		this.entityData.set(DATA_ID_WHEEL_LF, vec.x());
+		this.entityData.set(DATA_ID_WHEEL_RF, vec.y());
+		this.entityData.set(DATA_ID_WHEEL_LB, vec.z());
+		this.entityData.set(DATA_ID_WHEEL_RB, vec.w());
+	}
+
+	public Vector4f getWheelState() {
+		return new Vector4f(this.entityData.get(DATA_ID_WHEEL_LF), this.entityData.get(DATA_ID_WHEEL_RF), this.entityData.get(DATA_ID_WHEEL_LB), this.entityData.get(DATA_ID_WHEEL_RB));
+	}
+
 	@Override
 	protected void readAdditionalSaveData(CompoundTag tag) {
 		this.setDamage(tag.getFloat("Damage"));
 		this.setHurtTime(tag.getInt("HurtTime"));
 		this.setHurtDir(tag.getInt("HurtDir"));
+
+		ListTag wheelStateTag = tag.getList("WheelState", Tag.TAG_FLOAT);
+		this.setWheelState(new Vector4f(wheelStateTag.getFloat(0), wheelStateTag.getFloat(1), wheelStateTag.getFloat(2), wheelStateTag.getFloat(3)));
 	}
 
 	@Override
@@ -325,6 +370,14 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		tag.putFloat("Damage", this.getDamage());
 		tag.putInt("HurtTime", this.getHurtTime());
 		tag.putInt("HurtDir", this.getHurtDir());
+
+		ListTag wheelStateTag = new ListTag();
+		Vector4f wheelState = this.getWheelState();
+		wheelStateTag.add(FloatTag.valueOf(Mth.wrapDegrees(wheelState.x())));
+		wheelStateTag.add(FloatTag.valueOf(Mth.wrapDegrees(wheelState.y())));
+		wheelStateTag.add(FloatTag.valueOf(Mth.wrapDegrees(wheelState.z())));
+		wheelStateTag.add(FloatTag.valueOf(Mth.wrapDegrees(wheelState.w())));
+		tag.put("WheelState", wheelStateTag);
 	}
 
 	@Override public Packet<?> getAddEntityPacket() { return new ClientboundAddEntityPacket(this); }

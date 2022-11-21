@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.cannonmount.carriage;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -46,24 +47,31 @@ public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity>
                 .rotateCentered(Direction.EAST, carriage.getXRot() * Mth.DEG_TO_RAD)
                 .renderInto(stack, vcons);
 
+        Vector4f oldWheel = carriage.previousWheelState;
+        Vector4f newWheel = carriage.getWheelState();
+
         wheelBuf.translate(-11 / 16f, 0.25, -5 / 32f)
                 .rotateX(90)
                 .rotateZ(90)
+                .rotateY(Mth.lerp(partialTicks, oldWheel.x(), newWheel.x()))
                 .renderInto(stack, vcons);
 
         wheelBuf.translate(-11 / 16f, 0.25, 37 / 32f)
                 .rotateX(90)
                 .rotateZ(90)
+                .rotateY(Mth.lerp(partialTicks, oldWheel.y(), newWheel.y()))
                 .renderInto(stack, vcons);
 
         wheelBuf.translate(11 / 16f, 0.25, -5 / 32f)
                 .rotateX(90)
                 .rotateZ(-90)
+                .rotateY(Mth.lerp(partialTicks, oldWheel.z(), newWheel.z()))
                 .renderInto(stack, vcons);
 
         wheelBuf.translate(11 / 16f, 0.25, 37 / 32f)
                 .rotateX(90)
                 .rotateZ(-90)
+                .rotateY(Mth.lerp(partialTicks, oldWheel.w(), newWheel.w()))
                 .renderInto(stack, vcons);
 
         stack.popPose();
