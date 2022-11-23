@@ -56,6 +56,8 @@ import rbasamoyai.createbigcannons.munitions.apshell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
 import rbasamoyai.createbigcannons.munitions.heshell.HEShellBlock;
+import rbasamoyai.createbigcannons.munitions.mortarstone.MortarStoneBlock;
+import rbasamoyai.createbigcannons.munitions.mortarstone.MortarStoneItem;
 import rbasamoyai.createbigcannons.munitions.shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.shrapnel.ShrapnelShellBlock;
 
@@ -731,6 +733,13 @@ public class CBCBlocks {
 			.transform(CBCBuilderTransformers.projectile("projectile/grapeshot"))
 			.lang("Bag of Grapeshot")
 			.simpleItem()
+			.register();
+
+	public static final BlockEntry<MortarStoneBlock> MORTAR_STONE = REGISTRATE
+			.block("mortar_stone", MortarStoneBlock::new)
+			.initialProperties(() -> SharedProperties.stone())
+			.transform(CBCBuilderTransformers.projectile("projectile/mortar_stone"))
+			.item(MortarStoneItem::new).build()
 			.register();
 	
 	public static final BlockEntry<PowderChargeBlock> POWDER_CHARGE = REGISTRATE

@@ -13,6 +13,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.common.Tags;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
@@ -93,6 +94,14 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
 		.unlockedBy("has_cast_iron_ingot", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
 		.save(cons, CreateBigCannons.resource("solid_shot_cast_iron"));
+
+		ShapedRecipeBuilder.shaped(CBCBlocks.MORTAR_STONE.get())
+		.define('S', Tags.Items.STONE).define('s', ItemTags.WOODEN_SLABS)
+		.pattern(" S ")
+		.pattern("SSS")
+		.pattern(" s ")
+		.unlockedBy("has_stone", has(Tags.Items.STONE))
+		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCItems.SHOT_BALLS.get(), 2)
 		.define('i', Items.IRON_NUGGET).define('I', Items.IRON_INGOT)

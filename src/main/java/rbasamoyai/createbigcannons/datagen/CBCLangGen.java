@@ -30,6 +30,13 @@ public class CBCLangGen {
 		tooltip(CBCBlocks.SOLID_SHOT)
 		.header("SOLID SHOT")
 		.summary("_High penetrating force._ Best suited for _soft targets_ such as _wooden structures and thin walls_. _Cannot be fuzed and detonated._");
+
+		tooltip(CBCBlocks.MORTAR_STONE)
+		.header("MORTAR STONE")
+		.summary("Powerful stone that _explodes on impact._ _Flies further_ than other projectiles. Good for attacking _walls and fortifications._ _Cannot be fuzed and detonated._ Will _break_ if too many Powder Charges are used.");
+
+		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges", "Maximum Powder Charges");
+		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges.value", "This mortar stone can handle up to _%s Powder Charges_ (or equivalent) before breaking.");
 		
 		tooltip(CBCBlocks.BAG_OF_GRAPESHOT)
 		.header("BAG OF GRAPESHOT")
