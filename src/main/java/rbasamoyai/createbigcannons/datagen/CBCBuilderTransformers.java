@@ -33,6 +33,7 @@ import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
@@ -322,7 +323,7 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::cutoutMipped)
 				.blockstate((c, p) -> p.horizontalBlock(c.get(), s -> p.models().getExistingFile(s.getValue(CannonCarriageBlock.SADDLED) ? saddleLoc : blockLoc)))
-				.item()
+				.item(CannonCarriageBlockItem::new)
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(blockLoc)))
 				.build();
 	}

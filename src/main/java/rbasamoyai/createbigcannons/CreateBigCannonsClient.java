@@ -1,49 +1,48 @@
 
 package rbasamoyai.createbigcannons;
 
-import java.awt.event.KeyEvent;
-import java.util.Arrays;
-import java.util.List;
-
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.KeyboardHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
-import net.minecraftforge.client.settings.KeyConflictContext;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import org.lwjgl.glfw.GLFW;
-import rbasamoyai.createbigcannons.base.CBCClientEvents;
 import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticle;
 import rbasamoyai.createbigcannons.cannonmount.CannonSmokeParticle;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlobParticle;
+import rbasamoyai.createbigcannons.network.CBCNetwork;
+import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class CreateBigCannonsClient {
 
-	private static final String KEY_ROOT = CreateBigCannons.MOD_ID + ".key";
-	private static final String KEY_CATEGORY = KEY_ROOT + ".category.base";
-	public static final KeyMapping PITCH_MODE = new KeyMapping(KEY_ROOT + ".pitchMode", InputConstants.KEY_C, KEY_CATEGORY);
-	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fireControlledCannon", InputConstants.KEY_F, KEY_CATEGORY);
+	private static final String KEY_ROOT = "key." + CreateBigCannons.MOD_ID;
+	private static final String KEY_CATEGORY = KEY_ROOT + ".category";
+	public static final KeyMapping PITCH_MODE = new KeyMapping(KEY_ROOT + ".pitch_mode", InputConstants.KEY_C, KEY_CATEGORY);
+	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.KEY_F, KEY_CATEGORY);
 
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
 		modEventBus.addListener(CreateBigCannonsClient::onClientSetup);
 		modEventBus.addListener(CreateBigCannonsClient::onRegisterParticleFactories);
-
-		CBCClientEvents.register(forgeEventBus);
 		
 		forgeEventBus.addListener(CreateBigCannonsClient::getFogColor);
 		forgeEventBus.addListener(CreateBigCannonsClient::getFogDensity);
+		forgeEventBus.addListener(CreateBigCannonsClient::onClientGameTick);
 	}
 	
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
@@ -59,6 +58,8 @@ public class CreateBigCannonsClient {
 		CBCPonderIndex.register();
 		CBCPonderIndex.registerTags();
 		CBCBlockPartials.resolveDeferredModels();
+		ClientRegistry.registerKeyBinding(PITCH_MODE);
+		ClientRegistry.registerKeyBinding(FIRE_CONTROLLED_CANNON);
 	}
 	
 	public static void getFogColor(FogColors event) {
@@ -120,6 +121,22 @@ public class CreateBigCannonsClient {
 				event.scaleFarPlaneDistance(1f / 32f);
 				event.setCanceled(true);
 				return;
+			}
+		}
+	}
+
+	public static void onClientGameTick(TickEvent.ClientTickEvent evt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.player == null) return;
+		if (mc.player.getVehicle() instanceof CannonCarriageEntity carriage) {
+			net.minecraft.client.player.Input input = mc.player.input;
+			boolean isPitching = CreateBigCannonsClient.PITCH_MODE.isDown();
+			boolean isFiring = CreateBigCannonsClient.FIRE_CONTROLLED_CANNON.isDown();
+			carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
+			mc.player.handsBusy |= input.left | input.right | input.up | input.down | isFiring;
+
+			if (isFiring) {
+				CBCNetwork.INSTANCE.sendToServer(new ServerboundFiringActionPacket());
 			}
 		}
 	}
