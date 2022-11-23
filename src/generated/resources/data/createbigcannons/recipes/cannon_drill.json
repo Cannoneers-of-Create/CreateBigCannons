@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "pD ",
-    "SCS",
-    " Pp"
+    " D ",
+    "pCp",
+    " P "
   ],
   "key": {
     "C": {
@@ -11,9 +11,6 @@
     },
     "D": {
       "item": "minecraft:iron_ingot"
-    },
-    "S": {
-      "item": "create:shaft"
     },
     "P": {
       "item": "create:piston_extension_pole"
