@@ -122,7 +122,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	}
 	
 	protected void onFluidStackChanged(FluidStack newStack) {
-		if (!this.level.isClientSide) {
+		if (this.hasLevel() && !this.level.isClientSide) {
 			this.notifyUpdate();
 		}
 	}

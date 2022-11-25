@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons;
 
-import java.util.function.Supplier;
-
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -9,7 +7,6 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -27,17 +24,14 @@ import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
 import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerBlock;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.CannonTubeBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
-import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
-import rbasamoyai.createbigcannons.crafting.boring.DrillBitBlock;
-import rbasamoyai.createbigcannons.crafting.boring.UnboredCannonBlock;
-import rbasamoyai.createbigcannons.crafting.boring.UnboredScrewBreechBlock;
-import rbasamoyai.createbigcannons.crafting.boring.UnboredSlidingBreechBlock;
+import rbasamoyai.createbigcannons.crafting.boring.*;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpCannonBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
@@ -55,8 +49,12 @@ import rbasamoyai.createbigcannons.munitions.apshell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellBlock;
 import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
 import rbasamoyai.createbigcannons.munitions.heshell.HEShellBlock;
+import rbasamoyai.createbigcannons.munitions.mortarstone.MortarStoneBlock;
+import rbasamoyai.createbigcannons.munitions.mortarstone.MortarStoneItem;
 import rbasamoyai.createbigcannons.munitions.shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.shrapnel.ShrapnelShellBlock;
+
+import java.util.function.Supplier;
 
 public class CBCBlocks {
 
@@ -601,6 +599,13 @@ public class CBCBlocks {
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.yawController())
 			.register();
+
+	public static final BlockEntry<CannonCarriageBlock> CANNON_CARRIAGE = REGISTRATE
+			.block("cannon_carriage", CannonCarriageBlock::new)
+			.properties(p -> p.color(MaterialColor.PODZOL))
+			.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
+			.transform(CBCBuilderTransformers.cannonCarriage())
+			.register();
 	
 	//////// Cannon crafting mechanism blocks ////////
 	
@@ -723,6 +728,13 @@ public class CBCBlocks {
 			.transform(CBCBuilderTransformers.projectile("projectile/grapeshot"))
 			.lang("Bag of Grapeshot")
 			.simpleItem()
+			.register();
+
+	public static final BlockEntry<MortarStoneBlock> MORTAR_STONE = REGISTRATE
+			.block("mortar_stone", MortarStoneBlock::new)
+			.initialProperties(() -> SharedProperties.stone())
+			.transform(CBCBuilderTransformers.projectile("projectile/mortar_stone"))
+			.item(MortarStoneItem::new).build()
 			.register();
 	
 	public static final BlockEntry<PowderChargeBlock> POWDER_CHARGE = REGISTRATE

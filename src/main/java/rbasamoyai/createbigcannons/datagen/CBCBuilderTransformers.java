@@ -32,6 +32,8 @@ import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
@@ -314,7 +316,18 @@ public class CBCBuilderTransformers {
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemModelLoc)))
 				.build();
 	}
-	
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonCarriage() {
+		ResourceLocation blockLoc = CreateBigCannons.resource("block/cannon_carriage/block");
+		ResourceLocation saddleLoc = CreateBigCannons.resource("block/cannon_carriage/block_saddle");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> p.horizontalBlock(c.get(), s -> p.models().getExistingFile(s.getValue(CannonCarriageBlock.SADDLED) ? saddleLoc : blockLoc)))
+				.item(CannonCarriageBlockItem::new)
+				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(blockLoc)))
+				.build();
+	}
+
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> invisibleWithParticle(String path) {
 		return b -> b.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getBuilder(c.getName())
 				.texture("particle", CreateBigCannons.resource(path))));

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "hHh",
-    "SCS",
+    " C ",
     " P "
   ],
   "key": {
@@ -14,9 +14,6 @@
     },
     "h": {
       "item": "minecraft:iron_nugget"
-    },
-    "S": {
-      "item": "create:shaft"
     },
     "P": {
       "item": "create:piston_extension_pole"

@@ -13,6 +13,7 @@ import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.common.Tags;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
@@ -51,14 +52,14 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		
 		ShapedRecipeBuilder.shaped(CBCItems.EMPTY_POWDER_CHARGE.get())
 		.define('W', ItemTags.WOOL).define('S', Items.STRING)
-		.pattern("WSW")
-		.pattern("W W")
-		.pattern("WSW")
+		.pattern("S")
+		.pattern("W")
+		.pattern("S")
 		.unlockedBy("has_wool", has(ItemTags.WOOL))
 		.save(cons);
 		
 		ShapelessRecipeBuilder.shapeless(CBCBlocks.POWDER_CHARGE.get())
-		.requires(CBCItems.PACKED_GUNPOWDER.get(), 3)
+		.requires(CBCItems.PACKED_GUNPOWDER.get())
 		.requires(CBCItems.EMPTY_POWDER_CHARGE.get())
 		.unlockedBy(getHasName(CBCItems.PACKED_GUNPOWDER.get()), has(CBCItems.PACKED_GUNPOWDER.get()))
 		.save(cons);
@@ -93,6 +94,14 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.unlockedBy(getHasName(Items.IRON_INGOT), has(Items.IRON_INGOT))
 		.unlockedBy("has_cast_iron_ingot", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
 		.save(cons, CreateBigCannons.resource("solid_shot_cast_iron"));
+
+		ShapedRecipeBuilder.shaped(CBCBlocks.MORTAR_STONE.get())
+		.define('S', Tags.Items.STONE).define('s', ItemTags.WOODEN_SLABS)
+		.pattern(" S ")
+		.pattern("SSS")
+		.pattern(" s ")
+		.unlockedBy("has_stone", has(Tags.Items.STONE))
+		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCItems.SHOT_BALLS.get(), 2)
 		.define('i', Items.IRON_NUGGET).define('I', Items.IRON_INGOT)
@@ -144,10 +153,10 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.build(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_LOADER.get())
-		.define('C', AllBlocks.ANDESITE_CASING.get()).define('G', Items.GUNPOWDER).define('S', AllBlocks.SHAFT.get()).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
-		.pattern(" G ")
-		.pattern("SCS")
-		.pattern(" P ")
+		.define('C', AllBlocks.ANDESITE_CASING.get()).define('G', Items.GUNPOWDER).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
+		.pattern("G")
+		.pattern("C")
+		.pattern("P")
 		.unlockedBy(getHasName(AllBlocks.PISTON_EXTENSION_POLE.get()), has(AllBlocks.PISTON_EXTENSION_POLE.get()))
 		.save(cons);
 		
@@ -166,28 +175,20 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_BUILDER.get())
-		.define('C', AllBlocks.ANDESITE_CASING.get()).define('H', AllItems.IRON_SHEET.get()).define('h', Items.IRON_NUGGET).define('S', AllBlocks.SHAFT.get()).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
+		.define('C', AllBlocks.ANDESITE_CASING.get()).define('H', AllItems.IRON_SHEET.get()).define('h', Items.IRON_NUGGET).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
 		.pattern("hHh")
-		.pattern("SCS")
+		.pattern(" C ")
 		.pattern(" P ")
 		.unlockedBy(getHasName(AllBlocks.PISTON_EXTENSION_POLE.get()), has(AllBlocks.PISTON_EXTENSION_POLE.get()))
 		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_DRILL.get())
-		.define('C', AllBlocks.ANDESITE_CASING.get()).define('D', Items.IRON_INGOT).define('S', AllBlocks.SHAFT.get()).define('P', AllBlocks.PISTON_EXTENSION_POLE.get()).define('p', AllBlocks.FLUID_PIPE.get())
-		.pattern("pD ")
-		.pattern("SCS")
-		.pattern(" Pp")
+		.define('C', AllBlocks.ANDESITE_CASING.get()).define('D', Items.IRON_INGOT).define('P', AllBlocks.PISTON_EXTENSION_POLE.get()).define('p', AllBlocks.FLUID_PIPE.get())
+		.pattern(" D ")
+		.pattern("pCp")
+		.pattern(" P ")
 		.unlockedBy(getHasName(AllBlocks.PISTON_EXTENSION_POLE.get()), has(AllBlocks.PISTON_EXTENSION_POLE.get()))
 		.save(cons);
-		
-		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_DRILL.get())
-		.define('C', AllBlocks.ANDESITE_CASING.get()).define('D', Items.IRON_INGOT).define('S', AllBlocks.SHAFT.get()).define('P', AllBlocks.PISTON_EXTENSION_POLE.get()).define('p', AllBlocks.FLUID_PIPE.get())
-		.pattern(" Dp")
-		.pattern("SCS")
-		.pattern("pP ")
-		.unlockedBy(getHasName(AllBlocks.PISTON_EXTENSION_POLE.get()), has(AllBlocks.PISTON_EXTENSION_POLE.get()))
-		.save(cons, CreateBigCannons.resource("cannon_drill1"));
 		
 		ShapedRecipeBuilder.shaped(CBCBlocks.BASIN_FOUNDRY_LID.get())
 		.define('A', AllItems.ANDESITE_ALLOY.get())

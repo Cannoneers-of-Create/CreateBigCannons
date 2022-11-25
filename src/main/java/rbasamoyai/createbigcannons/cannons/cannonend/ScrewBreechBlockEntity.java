@@ -60,7 +60,12 @@ public class ScrewBreechBlockEntity extends KineticTileEntity implements ICannon
 				cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), false);
 			}
 		} else if (this.openProgress > 0 && this.openProgress < 1 && openState != CannonEnd.PARTIAL) {
+			boolean previouslyConnected = this.cannonBehavior.isConnectedTo(facing);
 			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, CannonEnd.PARTIAL), 3);
+			this.cannonBehavior.setConnectedFace(facing, previouslyConnected);
+			if (this.level.getBlockEntity(this.worldPosition.relative(facing)) instanceof ICannonBlockEntity cbe) {
+				cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), previouslyConnected);
+			}
 		}
 	}
 	

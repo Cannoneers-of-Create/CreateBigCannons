@@ -39,7 +39,12 @@ public class CBCBlockPartials {
 		
 		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
 		YAW_SHAFT = block("cannon_mount/yaw_axis"),
-		FUZE = block("fuze");
+		FUZE = block("fuze"),
+
+		CANNON_CARRIAGE = block("cannon_carriage/carriage"),
+		CANNON_CARRIAGE_AXLE = block("cannon_carriage/carriage_axle"),
+		CANNON_CARRIAGE_WHEEL = block("cannon_carriage/carriage_wheel"),
+		CANNON_CARRIAGE_SADDLE = block("cannon_carriage/carriage_saddle");
 	
 	private static PartialModel block(String path) {
 		return new PartialModel(CreateBigCannons.resource("block/" + path));

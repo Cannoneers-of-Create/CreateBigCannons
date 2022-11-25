@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
 
@@ -49,40 +50,41 @@ public class CBCTags {
 			});
 		}
 		
-		public static void addBlocksToBlockTag(TagKey<Block> tag, List<Supplier<? extends Block>> blocks) {
+		public static void addBlocksToBlockTag(TagKey<Block> tag, Supplier<List<? extends Block>> blocks) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = prov.tag(tag);
-				for (Supplier<? extends Block> bp : blocks) {
-					app.add(bp.get());
+				for (Block b : blocks.get()) {
+					app.add(b);
 				}
 			});
 		}
 		
-		public static void addTagsToBlockTag(TagKey<Block> tag, List<TagKey<Block>> tags) {
+		public static void addTagsToBlockTag(TagKey<Block> tag, Supplier<List<TagKey<Block>>> tags) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = prov.tag(tag);
-				tags.forEach(app::addTag);
+				tags.get().forEach(app::addTag);
 			});
 		}
 		
 		public static void sectionRegister() {
-			addTagsToBlockTag(SHRAPNEL_SHATTERABLE, Arrays.asList(BlockTags.IMPERMEABLE, Tags.Blocks.GLASS_PANES, BlockTags.LEAVES, BlockTags.WOOL, BlockTags.FLOWER_POTS));
+			addTagsToBlockTag(SHRAPNEL_SHATTERABLE, () -> Arrays.asList(BlockTags.IMPERMEABLE, Tags.Blocks.GLASS_PANES, BlockTags.LEAVES, BlockTags.WOOL, BlockTags.FLOWER_POTS));
+			addTagsToBlockTag(SHRAPNEL_SHATTERABLE, () -> Arrays.asList(AllTags.AllBlockTags.WINDMILL_SAILS.tag));
 			addBlocksToBlockTag(SHRAPNEL_SHATTERABLE, Blocks.TRIPWIRE);
-			addBlocksToBlockTag(SHRAPNEL_SHATTERABLE, Arrays.asList(AllBlocks.FRAMED_GLASS_DOOR, AllBlocks.FRAMED_GLASS_TRAPDOOR, AllBlocks.ROPE));
+			addBlocksToBlockTag(SHRAPNEL_SHATTERABLE, () -> Arrays.asList(AllBlocks.FRAMED_GLASS_DOOR.get(), AllBlocks.FRAMED_GLASS_TRAPDOOR.get(), AllBlocks.ROPE.get()));
 			
-			addTagsToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(BlockTags.PLANKS, BlockTags.WOODEN_SLABS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_FENCES, BlockTags.FENCE_GATES, BlockTags.LOGS, BlockTags.WOODEN_DOORS, BlockTags.WOODEN_TRAPDOORS));
+			addTagsToBlockTag(SHRAPNEL_VULNERABLE, () -> Arrays.asList(BlockTags.PLANKS, BlockTags.WOODEN_SLABS, BlockTags.WOODEN_STAIRS, BlockTags.WOODEN_FENCES, BlockTags.FENCE_GATES, BlockTags.LOGS, BlockTags.WOODEN_DOORS, BlockTags.WOODEN_TRAPDOORS));
 			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Blocks.MELON, Blocks.PUMPKIN);
-			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(AllBlocks.BELT, AllBlocks.SHAFT, AllBlocks.COGWHEEL, AllBlocks.LARGE_COGWHEEL, AllBlocks.POWERED_SHAFT, AllBlocks.GANTRY_SHAFT));
-			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(AllBlocks.ANDESITE_CASING, AllBlocks.ANDESITE_ENCASED_COGWHEEL, AllBlocks.ANDESITE_ENCASED_LARGE_COGWHEEL, AllBlocks.ANDESITE_ENCASED_SHAFT));
-			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(AllBlocks.MECHANICAL_BEARING, AllBlocks.MECHANICAL_DRILL, AllBlocks.MECHANICAL_HARVESTER, AllBlocks.MECHANICAL_MIXER, AllBlocks.MECHANICAL_PISTON, AllBlocks.MECHANICAL_PISTON_HEAD, AllBlocks.MECHANICAL_PLOUGH, AllBlocks.MECHANICAL_PRESS, AllBlocks.MECHANICAL_SAW, AllBlocks.STICKY_MECHANICAL_PISTON, AllBlocks.PISTON_EXTENSION_POLE, AllBlocks.ROPE_PULLEY));
-			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, Arrays.asList(AllBlocks.ANDESITE_TUNNEL, AllBlocks.ANDESITE_BELT_FUNNEL, AllBlocks.ANDESITE_FUNNEL));
+			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, () -> Arrays.asList(AllBlocks.BELT.get(), AllBlocks.SHAFT.get(), AllBlocks.COGWHEEL.get(), AllBlocks.LARGE_COGWHEEL.get(), AllBlocks.POWERED_SHAFT.get(), AllBlocks.GANTRY_SHAFT.get()));
+			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, () -> Arrays.asList(AllBlocks.ANDESITE_CASING.get(), AllBlocks.ANDESITE_ENCASED_COGWHEEL.get(), AllBlocks.ANDESITE_ENCASED_LARGE_COGWHEEL.get(), AllBlocks.ANDESITE_ENCASED_SHAFT.get()));
+			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, () -> Arrays.asList(AllBlocks.MECHANICAL_BEARING.get(), AllBlocks.MECHANICAL_DRILL.get(), AllBlocks.MECHANICAL_HARVESTER.get(), AllBlocks.MECHANICAL_MIXER.get(), AllBlocks.MECHANICAL_PISTON.get(), AllBlocks.MECHANICAL_PISTON_HEAD.get(), AllBlocks.MECHANICAL_PLOUGH.get(), AllBlocks.MECHANICAL_PRESS.get(), AllBlocks.MECHANICAL_SAW.get(), AllBlocks.STICKY_MECHANICAL_PISTON.get(), AllBlocks.PISTON_EXTENSION_POLE.get(), AllBlocks.ROPE_PULLEY.get()));
+			addBlocksToBlockTag(SHRAPNEL_VULNERABLE, () -> Arrays.asList(AllBlocks.ANDESITE_TUNNEL.get(), AllBlocks.ANDESITE_BELT_FUNNEL.get(), AllBlocks.ANDESITE_FUNNEL.get()));
 			
-			addTagsToBlockTag(GRAPESHOT_SHATTERABLE, Arrays.asList(SHRAPNEL_SHATTERABLE, SHRAPNEL_VULNERABLE));
+			addTagsToBlockTag(GRAPESHOT_SHATTERABLE, () -> Arrays.asList(SHRAPNEL_SHATTERABLE, SHRAPNEL_VULNERABLE));
 			
 			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, Blocks.IRON_DOOR, Blocks.IRON_TRAPDOOR, Blocks.IRON_BARS);
-			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, Arrays.asList(AllBlocks.BRASS_CASING, AllBlocks.BRASS_ENCASED_COGWHEEL, AllBlocks.BRASS_ENCASED_LARGE_COGWHEEL, AllBlocks.BRASS_ENCASED_SHAFT, AllBlocks.MECHANICAL_CRAFTER, AllBlocks.MECHANICAL_ARM));
-			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, Arrays.asList(AllBlocks.COPPER_CASING, AllBlocks.ENCASED_FLUID_PIPE, AllBlocks.FLUID_PIPE, AllBlocks.GLASS_FLUID_PIPE, AllBlocks.FLUID_VALVE, AllBlocks.COPPER_VALVE_HANDLE, AllBlocks.MECHANICAL_PUMP, AllBlocks.HOSE_PULLEY));
-			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, Arrays.asList(AllBlocks.BRASS_TUNNEL, AllBlocks.BRASS_BELT_FUNNEL, AllBlocks.BRASS_FUNNEL));
+			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, () -> Arrays.asList(AllBlocks.BRASS_CASING.get(), AllBlocks.BRASS_ENCASED_COGWHEEL.get(), AllBlocks.BRASS_ENCASED_LARGE_COGWHEEL.get(), AllBlocks.BRASS_ENCASED_SHAFT.get(), AllBlocks.MECHANICAL_CRAFTER.get(), AllBlocks.MECHANICAL_ARM.get()));
+			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, () -> Arrays.asList(AllBlocks.COPPER_CASING.get(), AllBlocks.ENCASED_FLUID_PIPE.get(), AllBlocks.FLUID_PIPE.get(), AllBlocks.GLASS_FLUID_PIPE.get(), AllBlocks.FLUID_VALVE.get(), AllBlocks.COPPER_VALVE_HANDLE.get(), AllBlocks.MECHANICAL_PUMP.get(), AllBlocks.HOSE_PULLEY.get()));
+			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, () -> Arrays.asList(AllBlocks.BRASS_TUNNEL.get(), AllBlocks.BRASS_BELT_FUNNEL.get(), AllBlocks.BRASS_FUNNEL.get()));
 		}
 	}
 	

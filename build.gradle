@@ -36,7 +36,7 @@ else {
     version = "${mc_version}-nightly-${getGitHash}"
 }
 
-group = 'rbasamoyai.createbigcannons' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'rbasamoyai.createbigcannons'
 archivesBaseName = 'createbigcannons'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -45,7 +45,7 @@ println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty '
 minecraft {
     mappings channel: 'official', version: '1.18.2'
 
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
@@ -96,7 +96,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'createbigcannons', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'createbigcannons', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'), '--existing-mod', 'create'
             mods {
                 createbigcannons {
                     source sourceSets.main

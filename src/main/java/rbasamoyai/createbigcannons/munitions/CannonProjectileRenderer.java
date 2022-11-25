@@ -42,8 +42,6 @@ public class CannonProjectileRenderer<T extends AbstractCannonProjectile> extend
 			super.render(entity, entityYaw, partialTicks, poseStack, buffers, packedLight);
 		}
 	}
-	
-	private static final ResourceLocation TEXTURE_INVALID = CreateBigCannons.resource("textures/entity/invalid.png");
-	@Override public ResourceLocation getTextureLocation(T projectile) { return TEXTURE_INVALID; }
+	@Override public ResourceLocation getTextureLocation(T projectile) { return null; }
 
 }

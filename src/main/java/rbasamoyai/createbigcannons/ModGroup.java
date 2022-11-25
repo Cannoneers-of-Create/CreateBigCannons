@@ -58,6 +58,7 @@ public class ModGroup {
 				CBCBlocks.WORM_HEAD.asStack(),
 				CBCBlocks.POWDER_CHARGE.asStack(),
 				CBCBlocks.SOLID_SHOT.asStack(),
+				CBCBlocks.MORTAR_STONE.asStack(),
 				CBCBlocks.BAG_OF_GRAPESHOT.asStack(),
 				CBCBlocks.HE_SHELL.asStack(),
 				CBCBlocks.AP_SHELL.asStack(),
@@ -145,7 +146,8 @@ public class ModGroup {
 				CBCBlocks.NETHERSTEEL_BLOCK.asStack(),
 				
 				CBCItems.RAM_ROD.asStack(),
-				CBCItems.WORM.asStack()));
+				CBCItems.WORM.asStack(),
+				CBCBlocks.CANNON_CARRIAGE.asStack()));
 		}
 	};
 	

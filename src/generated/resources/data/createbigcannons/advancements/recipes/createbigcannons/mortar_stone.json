@@ -2,18 +2,16 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "createbigcannons:cannon_drill1"
+      "createbigcannons:mortar_stone"
     ]
   },
   "criteria": {
-    "has_piston_extension_pole": {
+    "has_stone": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "create:piston_extension_pole"
-            ]
+            "tag": "forge:stone"
           }
         ]
       }
@@ -21,13 +19,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "createbigcannons:cannon_drill1"
+        "recipe": "createbigcannons:mortar_stone"
       }
     }
   },
   "requirements": [
     [
-      "has_piston_extension_pole",
+      "has_stone",
       "has_the_recipe"
     ]
   ]

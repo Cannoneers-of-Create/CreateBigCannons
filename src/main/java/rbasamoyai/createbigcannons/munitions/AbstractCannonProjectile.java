@@ -52,7 +52,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		} else {
 			this.inGroundTime = 0;
 			if (!this.isNoGravity()) {
-				this.setDeltaMovement(this.getDeltaMovement().add(0.0f, -0.05f, 0.0f));
+				this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
 			}
 		}
 		
@@ -101,7 +101,8 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			if (entity instanceof AbstractCannonProjectile) return;
 			
 			entity.setDeltaMovement(this.getDeltaMovement().scale(2.0f));
-			entity.hurt(DamageSource.thrown(this, null), 50);
+			DamageSource source = DamageSource.thrown(this, null).bypassArmor();
+			entity.hurt(source, 50);
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
 			
 			if (result.getEntity().isAlive()) {
@@ -195,21 +196,20 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 				.sized(0.8f, 0.8f);
 	}
 	
-	@Override
-	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
+	@Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
 		return 0.4f;
 	}
-	
-	@Override
-	protected float getInertia() {
+	@Override protected float getInertia() {
 		return 0.99f;
 	}
+	protected float getGravity() { return -0.05f; }
 	
-	@Override
-	protected ParticleOptions getTrailParticle() {
+	@Override protected ParticleOptions getTrailParticle() {
 		return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
 	}
 	
 	public abstract BlockState getRenderedBlockState();
+
+	public void setChargePower(float power) {}
 	
 }

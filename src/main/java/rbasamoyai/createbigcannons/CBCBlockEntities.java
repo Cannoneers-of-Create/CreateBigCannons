@@ -11,6 +11,7 @@ import rbasamoyai.createbigcannons.cannonmount.CannonMountInstance;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntity;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerInstance;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockEntity;
 import rbasamoyai.createbigcannons.cannons.CannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntity;
@@ -91,12 +92,17 @@ public class CBCBlockEntities {
 			.renderer(() -> YawControllerBlockEntityRenderer::new)
 			.validBlock(CBCBlocks.YAW_CONTROLLER)
 			.register();
-	
+
+	public static final BlockEntityEntry<CannonCarriageBlockEntity> CANNON_CARRIAGE = CreateBigCannons.registrate()
+			.tileEntity("cannon_carriage", CannonCarriageBlockEntity::new)
+			.validBlock(CBCBlocks.CANNON_CARRIAGE)
+			.register();
+
 	public static final BlockEntityEntry<FuzedBlockEntity> FUZED_BLOCK = CreateBigCannons.registrate()
 			.tileEntity("fuzed_block", FuzedBlockEntity::new)
 			.instance(() -> FuzedBlockInstance::new)
 			.renderer(() -> FuzedBlockEntityRenderer::new)
-			.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL)
+			.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL)
 			.register();
 	
 	public static final BlockEntityEntry<FluidShellBlockEntity> FLUID_SHELL = CreateBigCannons.registrate()
@@ -150,7 +156,7 @@ public class CBCBlockEntities {
 			.tileEntity("basin_foundry", BasinFoundryBlockEntity::new)
 			.validBlock(CBCBlocks.BASIN_FOUNDRY_LID)
 			.register();
-	
+
 	public static void register() {}
 	
 }

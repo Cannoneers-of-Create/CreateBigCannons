@@ -8,7 +8,9 @@ public class CBCCfgMunitions extends ConfigBase {
 
 	public final ConfigBool invulProjectileHurt = b(false, "invulnerableAfterProjectileHurt", Comments.invulnerableAfterProjectileHurt);
 	public final ConfigFloat heShellPower = f(10, 0, "heShellPower", Comments.heShellPower);
-	public final ConfigFloat apShellPower = f(5, 0, "apShellPower", Comments.apShellPower);
+	public final ConfigFloat apShellPower = f(4, 0, "apShellPower", Comments.apShellPower);
+	public final ConfigFloat mortarStonePower = f(4, 0, "mortarStonePower", Comments.mortarStonePower);
+	public final ConfigFloat maxMortarStoneCharges = f(2, -1, "maximumMortarStonePowderCharges", Comments.maxMortarStoneCharges);
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
 	
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes"); 
@@ -38,6 +40,8 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String invulnerableAfterProjectileHurt = "If an entity should be invulnerable for a while after being hit by a mod projectile.";
 		static String heShellPower = "How powerful the High Explosive (HE) shell is. For reference, a block of TNT has an explosion power of 4.";
 		static String apShellPower = "How powerful the Armor Piercing (AP) shell is. For reference, a block of TNT has an explosion power of 4.";
+		static String mortarStonePower = "How powerful the Mortar Stone is. For reference, a block of TNT has an explosion power of 4.";
+		static String maxMortarStoneCharges = "How many Powder Charges a Mortar Stone can handle before breaking. Set to less than 0 to make Mortar Stones unbreakable.";
 		static String[] damageRestriction = new String[] { "The extent to which cannon projectiles can damage surrounding blocks.",
 				"All Damage - projectiles will destroy anything they hit, if applicable. Explosive projectiles will destroy blocks on detonation.",
 				"No Explosive Damage - projectiles will destroy anything they hit, if applicable. Explosive projectiles will only harm entities on detonation.",
