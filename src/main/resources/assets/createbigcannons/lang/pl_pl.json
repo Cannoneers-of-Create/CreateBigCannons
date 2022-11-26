@@ -279,6 +279,7 @@
   "item.createbigcannons.nethersteel_nugget": "Bryłka netherstali",
   "item.createbigcannons.nethersteel_screw_lock": "Śruba tylca śrubowego z netherstali",
   "item.createbigcannons.packed_gunpowder": "Upakowany proch strzelniczy",
+  "item.createbigcannons.pair_of_cannon_wheels": "Para kół do armaty",
   "item.createbigcannons.proximity_fuze": "Zapalnik zbliżeniowy",
   "item.createbigcannons.proximity_fuze.tooltip": "ZAPALNIK ZBLIŻENIOWY",
   "item.createbigcannons.proximity_fuze.tooltip.behaviour1": "Otwiera menu _Ustaw zapalnik zbliżeniowy_ gdzie można ustawić dystans detonacji.",
