@@ -101,7 +101,8 @@ public class CBCLangGen {
 
 		tooltip(CBCBlocks.CANNON_CARRIAGE)
 		.header("CANNON_CARRIAGE")
-		.summary("_Mobile_ cannon mount. Can be _moved around_, but _cannot be automated_ like the Cannon Mount.");
+		.summary("_Mobile_ cannon mount. Can be _moved around_, but _cannot be automated_ like the Cannon Mount.")
+		.conditionAndBehavior("When R-Clicked with Wrench", "Assembles or disassembles the carriage. The carriage does not need to have a cannon mounted.");
 
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.keyPressed", "When [_%s_] held down");
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.fireCannon", "_Fires cannon_ on carriage if present. _Repeatedly fires cannon_ if possible.");
