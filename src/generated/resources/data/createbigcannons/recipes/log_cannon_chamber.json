@@ -10,7 +10,7 @@
       "tag": "minecraft:logs"
     },
     "G": {
-      "item": "minecraft:gunpowder"
+      "tag": "forge:gunpowder"
     }
   },
   "result": {

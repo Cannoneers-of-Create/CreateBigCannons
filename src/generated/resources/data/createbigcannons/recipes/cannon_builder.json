@@ -10,10 +10,10 @@
       "item": "create:andesite_casing"
     },
     "H": {
-      "item": "create:iron_sheet"
+      "tag": "forge:plates/iron"
     },
     "h": {
-      "item": "minecraft:iron_nugget"
+      "tag": "forge:nuggets/iron"
     },
     "P": {
       "item": "create:piston_extension_pole"

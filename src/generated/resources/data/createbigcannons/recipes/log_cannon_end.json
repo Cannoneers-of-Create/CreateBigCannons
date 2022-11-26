@@ -13,7 +13,7 @@
       "tag": "minecraft:wooden_buttons"
     },
     "G": {
-      "item": "minecraft:gunpowder"
+      "tag": "forge:gunpowder"
     }
   },
   "result": {

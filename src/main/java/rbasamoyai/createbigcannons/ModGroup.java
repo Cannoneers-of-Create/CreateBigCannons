@@ -147,7 +147,8 @@ public class ModGroup {
 				
 				CBCItems.RAM_ROD.asStack(),
 				CBCItems.WORM.asStack(),
-				CBCBlocks.CANNON_CARRIAGE.asStack()));
+				CBCBlocks.CANNON_CARRIAGE.asStack(),
+				CBCItems.PAIR_OF_CANNON_WHEELS.asStack()));
 		}
 	};
 	

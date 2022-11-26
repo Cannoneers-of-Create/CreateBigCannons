@@ -8,7 +8,7 @@
   ],
   "key": {
     "I": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     },
     "L": {
       "item": "createbigcannons:shot_balls"
@@ -17,7 +17,7 @@
       "tag": "minecraft:wooden_slabs"
     },
     "P": {
-      "item": "minecraft:gunpowder"
+      "tag": "forge:gunpowder"
     }
   },
   "result": {
