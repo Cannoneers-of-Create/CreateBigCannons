@@ -9,7 +9,7 @@
       "tag": "createbigcannons:impact_fuze_head"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "tag": "forge:dusts/redstone"
     }
   },
   "result": {

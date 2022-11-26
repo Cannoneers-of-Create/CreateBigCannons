@@ -6,12 +6,12 @@
     ]
   },
   "criteria": {
-    "has_wool": {
+    "has_gunpowder": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "tag": "minecraft:wool"
+            "tag": "forge:gunpowder"
           }
         ]
       }
@@ -25,7 +25,7 @@
   },
   "requirements": [
     [
-      "has_wool",
+      "has_gunpowder",
       "has_the_recipe"
     ]
   ]

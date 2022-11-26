@@ -2,7 +2,7 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "createbigcannons:wrought_iron_cannon_end"
+      "createbigcannons:cannon_carriage"
     ]
   },
   "criteria": {
@@ -19,7 +19,7 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "createbigcannons:wrought_iron_cannon_end"
+        "recipe": "createbigcannons:cannon_carriage"
       }
     }
   },

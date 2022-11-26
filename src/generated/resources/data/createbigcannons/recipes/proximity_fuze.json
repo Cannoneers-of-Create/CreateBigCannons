@@ -10,13 +10,13 @@
       "item": "minecraft:iron_bars"
     },
     "C": {
-      "item": "minecraft:quartz"
+      "tag": "forge:gems/quartz"
     },
     "R": {
-      "item": "minecraft:redstone"
+      "tag": "forge:dusts/redstone"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     }
   },
   "result": {

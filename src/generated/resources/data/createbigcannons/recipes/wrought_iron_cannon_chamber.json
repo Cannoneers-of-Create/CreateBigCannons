@@ -7,10 +7,10 @@
   ],
   "key": {
     "I": {
-      "item": "create:iron_sheet"
+      "tag": "forge:plates/iron"
     },
     "G": {
-      "item": "minecraft:gunpowder"
+      "tag": "forge:gunpowder"
     }
   },
   "result": {

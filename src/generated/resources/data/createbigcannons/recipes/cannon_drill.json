@@ -10,7 +10,7 @@
       "item": "create:andesite_casing"
     },
     "D": {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
     },
     "P": {
       "item": "create:piston_extension_pole"

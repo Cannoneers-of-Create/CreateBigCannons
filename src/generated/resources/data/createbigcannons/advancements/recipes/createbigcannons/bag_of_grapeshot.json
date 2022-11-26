@@ -6,14 +6,22 @@
     ]
   },
   "criteria": {
-    "has_shot_balls": {
+    "has_iron_nugget": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "createbigcannons:shot_balls"
-            ]
+            "tag": "forge:nuggets/iron"
+          }
+        ]
+      }
+    },
+    "has_iron_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:ingots/iron"
           }
         ]
       }
@@ -27,7 +35,8 @@
   },
   "requirements": [
     [
-      "has_shot_balls",
+      "has_iron_nugget",
+      "has_iron_ingot",
       "has_the_recipe"
     ]
   ]

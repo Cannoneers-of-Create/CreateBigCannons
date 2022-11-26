@@ -77,6 +77,8 @@ public class CBCItems {
 			.properties(p -> p.stacksTo(1))
 			.model((c, p) -> p.getExistingFile(c.getId()))
 			.register();
+
+	public static final ItemEntry<Item> PAIR_OF_CANNON_WHEELS = REGISTRATE.item("pair_of_cannon_wheels", Item::new).register();
 	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);

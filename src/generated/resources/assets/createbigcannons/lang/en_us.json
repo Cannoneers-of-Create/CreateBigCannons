@@ -279,6 +279,7 @@
   "item.createbigcannons.nethersteel_nugget": "Nethersteel Nugget",
   "item.createbigcannons.nethersteel_screw_lock": "Nethersteel Screw Lock",
   "item.createbigcannons.packed_gunpowder": "Packed Gunpowder",
+  "item.createbigcannons.pair_of_cannon_wheels": "Pair Of Cannon Wheels",
   "item.createbigcannons.proximity_fuze": "Proximity Fuze",
   "item.createbigcannons.proximity_fuze.tooltip": "PROXIMITY FUZE",
   "item.createbigcannons.proximity_fuze.tooltip.behaviour1": "Opens the _Set Proximity Fuze_ menu, where the detonation distance can be set.",
