@@ -3,10 +3,8 @@ package rbasamoyai.createbigcannons.cannonmount;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
-import com.simibubi.create.content.contraptions.components.structureMovement.IControlContraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.OrientedContraptionEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -15,17 +13,38 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
-
-import javax.naming.ldap.Control;
 
 public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	private BlockPos controllerPos;
 	private boolean updatesOwnRotation = true;
+	private LazyOptional<IItemHandler> itemOptional;
 
 	public PitchOrientedContraptionEntity(EntityType<? extends PitchOrientedContraptionEntity> type, Level level) {
 		super(type, level);
+	}
+
+	@NotNull
+	@Override
+	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			if (this.itemOptional == null) this.itemOptional = this.contraption instanceof AbstractMountedCannonContraption cannon ? cannon.getItemOptional() : LazyOptional.empty();
+			return this.itemOptional.cast();
+		}
+		return super.getCapability(cap, side);
+	}
+
+	@Override
+	public void invalidateCaps() {
+		super.invalidateCaps();
+		if (this.itemOptional != null) this.itemOptional.invalidate();
 	}
 
 	public static PitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, boolean updatesOwnRotation) {
@@ -80,16 +99,21 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		}
 
 		this.contraption.anchor = this.blockPosition();
+		if (this.contraption instanceof AbstractMountedCannonContraption mounted) mounted.tick(this.level, this);
 
 		ControlPitchContraption controller = this.getController();
 		if (controller == null) {
-			this.disassemble();
+			if (!this.level.isClientSide) this.disassemble();
 			return;
 		}
 		if (!controller.isAttachedTo(this)) {
 			controller.attach(this);
 			if (this.level.isClientSide) this.setPos(this.getX(), this.getY(), this.getZ());
 		}
+	}
+
+	public void handleAnimation() {
+		if (this.contraption instanceof AbstractMountedCannonContraption mounted) mounted.animate();
 	}
 
 	@Override

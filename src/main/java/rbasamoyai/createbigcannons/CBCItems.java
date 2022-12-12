@@ -10,6 +10,8 @@ import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.apround.APAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
@@ -65,7 +67,19 @@ public class CBCItems {
 	public static final ItemEntry<Item> STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new).tag(CBCTags.ItemCBC.NUGGET_STEEL).register();
 	
 	public static final ItemEntry<Item> SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register();
-	
+
+	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE.item("autocannon_cartridge", AutocannonCartridgeItem::new)
+			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/autocannon_cartridge")))
+			.register();
+	public static final ItemEntry<Item> EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
+			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/empty_autocannon_cartridge")))
+			.register();
+
+	public static final ItemEntry<APAutocannonRoundItem> AP_AUTOCANNON_ROUND = REGISTRATE
+			.item("ap_autocannon_round", APAutocannonRoundItem::new)
+			.lang("Armor Piercing (AP) Autocannon Round")
+			.register();
+
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE
 			.item("ram_rod", RamRodItem::new)
 			.properties(p -> p.stacksTo(1))

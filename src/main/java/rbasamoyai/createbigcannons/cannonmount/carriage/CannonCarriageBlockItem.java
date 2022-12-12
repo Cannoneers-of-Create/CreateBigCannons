@@ -12,13 +12,13 @@ import java.util.List;
 
 public class CannonCarriageBlockItem extends BlockItem {
 
-    public CannonCarriageBlockItem(Block block, Properties properties) {
-        super(block, properties);
-    }
+	public CannonCarriageBlockItem(Block block, Properties properties) {
+		super(block, properties);
+	}
 
-    @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
-        CannonCarriageTooltip.appendText(stack, level, tooltip, flag, this);
-    }
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
+		if (level != null) CannonCarriageTooltip.appendText(stack, level, tooltip, flag, this);
+	}
 }

@@ -13,6 +13,9 @@ import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageRenderer;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.apshell.APShellProjectile;
+import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileRenderer;
+import rbasamoyai.createbigcannons.munitions.autocannon.apround.APAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlob;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellProjectile;
 import rbasamoyai.createbigcannons.munitions.grapeshot.Grapeshot;
@@ -68,8 +71,10 @@ public class CBCEntityTypes {
 			.properties(CannonCarriageEntity::build)
 			.renderer(() -> CannonCarriageRenderer::new)
 			.register();
-	
-	private static <T extends AbstractCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory) {
+    public static final EntityEntry<APAutocannonProjectile> AP_AUTOCANNON = autocannonProjectile("ap_autocannon", APAutocannonProjectile::new, "Armor Piercing (AP) Autocannon Round");
+
+
+    private static <T extends AbstractCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory) {
 		return CreateBigCannons.registrate()
 				.entity(id, factory, MobCategory.MISC)
 				.properties(AbstractCannonProjectile::build)
@@ -82,6 +87,23 @@ public class CBCEntityTypes {
 				.entity(id, factory, MobCategory.MISC)
 				.properties(AbstractCannonProjectile::build)
 				.renderer(() -> CannonProjectileRenderer::new)
+				.lang(enUSdiffLang)
+				.register();
+	}
+
+	private static <T extends AbstractAutocannonProjectile> EntityEntry<T> autocannonProjectile(String id, EntityFactory<T> factory) {
+		return CreateBigCannons.registrate()
+				.entity(id, factory, MobCategory.MISC)
+				.properties(AbstractAutocannonProjectile::buildAutocannon)
+				.renderer(() -> AutocannonProjectileRenderer::new)
+				.register();
+	}
+
+	private static <T extends AbstractAutocannonProjectile> EntityEntry<T> autocannonProjectile(String id, EntityFactory<T> factory, String enUSdiffLang) {
+		return CreateBigCannons.registrate()
+				.entity(id, factory, MobCategory.MISC)
+				.properties(AbstractAutocannonProjectile::buildAutocannon)
+				.renderer(() -> AutocannonProjectileRenderer::new)
 				.lang(enUSdiffLang)
 				.register();
 	}

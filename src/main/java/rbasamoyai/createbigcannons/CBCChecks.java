@@ -12,6 +12,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 
@@ -52,7 +54,9 @@ public class CBCChecks {
 	}
 	
 	private static CheckResult overridePushReactionCheck(BlockState state, Level level, BlockPos pos) {
-		return state.getBlock() instanceof CannonBlock cBlock ? CheckResult.of(!cBlock.isImmovable(state)) : CheckResult.PASS;
+		if (state.getBlock() instanceof CannonBlock cBlock) return CheckResult.of(!cBlock.isImmovable(state));
+		if (state.getBlock() instanceof AutocannonBlock) return CheckResult.SUCCESS;
+		return CheckResult.PASS;
 	}
 	
 	private static CheckResult unmovableCannonMount(BlockState state, Level level, BlockPos pos) {
@@ -69,6 +73,20 @@ public class CBCChecks {
 		}
 		return CheckResult.PASS;
 	}
+
+	private static CheckResult attachedCheckAutocannons(BlockState state, Level level, BlockPos pos, Direction attached) {
+		if (!(state.getBlock() instanceof AutocannonBlock)) return CheckResult.PASS;
+		BlockPos otherPos = pos.relative(attached);
+		BlockState attachedState = level.getBlockState(otherPos);
+		if (!(attachedState.getBlock() instanceof AutocannonBlock)) return CheckResult.PASS;
+
+		if (!(level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe) || !(level.getBlockEntity(otherPos) instanceof IAutocannonBlockEntity cbe1)) {
+			return CheckResult.PASS;
+		}
+
+		boolean result = cbe.cannonBehavior().isConnectedTo(attached) && cbe1.cannonBehavior().isConnectedTo(attached.getOpposite());
+		return CheckResult.of(result);
+	}
 	
 	public static void register() {
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckCannons);
@@ -76,6 +94,7 @@ public class CBCChecks {
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedMountBlocks);
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::overridePushReactionCheck);
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::unmovableCannonMount);
+		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckAutocannons);
 	}
 	
 }

@@ -13,6 +13,7 @@ import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerInstance;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockEntity;
 import rbasamoyai.createbigcannons.cannons.CannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.*;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntityRenderer;
@@ -155,6 +156,25 @@ public class CBCBlockEntities {
 	public static final BlockEntityEntry<BasinFoundryBlockEntity> BASIN_FOUNDRY = CreateBigCannons.registrate()
 			.tileEntity("basin_foundry", BasinFoundryBlockEntity::new)
 			.validBlock(CBCBlocks.BASIN_FOUNDRY_LID)
+			.register();
+
+	public static final BlockEntityEntry<AutocannonBlockEntity> AUTOCANNON = CreateBigCannons.registrate()
+			.tileEntity("autocannon", AutocannonBlockEntity::new)
+			.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_BARREL)
+			.register();
+
+	public static final BlockEntityEntry<AutocannonBreechBlockEntity> AUTOCANNON_BREECH = CreateBigCannons.registrate()
+			.tileEntity("autocannon_breech", AutocannonBreechBlockEntity::new)
+			.instance(() -> AutocannonBreechInstance::new)
+			.renderer(() -> AutocannonBreechRenderer::new)
+			.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_BREECH)
+			.register();
+
+	public static final BlockEntityEntry<AutocannonRecoilSpringBlockEntity> AUTOCANNON_RECOIL_SPRING = CreateBigCannons.registrate()
+			.tileEntity("autocannon_recoil_spring", AutocannonRecoilSpringBlockEntity::new)
+			.instance(() -> AutocannonRecoilSpringInstance::new)
+			.renderer(() -> AutocannonRecoilSpringRenderer::new)
+			.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_RECOIL_SPRING)
 			.register();
 
 	public static void register() {}

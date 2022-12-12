@@ -1,22 +1,25 @@
 package rbasamoyai.createbigcannons;
 
+import com.jozufozu.flywheel.core.PartialModel;
+import net.minecraft.resources.ResourceLocation;
+import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.jozufozu.flywheel.core.PartialModel;
-
-import net.minecraft.resources.ResourceLocation;
-import rbasamoyai.createbigcannons.cannons.CannonMaterial;
-import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-
 public class CBCBlockPartials {
 
 	private static final Map<CannonMaterial, PartialModel> BREECHBLOCK_BY_MATERIAL = new HashMap<>();
 	private static final Map<CannonMaterial, PartialModel> SCREW_LOCK_BY_MATERIAL = new HashMap<>();
 	private static final Map<CannonCastShape, PartialModel> CANNON_CAST_BY_SIZE = new HashMap<>();
+
+	private static final Map<AutocannonMaterial, PartialModel> AUTOCANNON_SPRING_BY_MATERIAL = new HashMap<>();
+	private static final Map<AutocannonMaterial, PartialModel> AUTOCANNON_EJECTOR_BY_MATERIAL = new HashMap<>();
 	
 	private static final Collection<Runnable> DEFERRED_MODEL_CALLBACKS = new ArrayList<>(); 
 	
@@ -44,11 +47,15 @@ public class CBCBlockPartials {
 		CANNON_CARRIAGE = block("cannon_carriage/carriage"),
 		CANNON_CARRIAGE_AXLE = block("cannon_carriage/carriage_axle"),
 		CANNON_CARRIAGE_WHEEL = block("cannon_carriage/carriage_wheel"),
-		CANNON_CARRIAGE_SADDLE = block("cannon_carriage/carriage_saddle");
+		CANNON_CARRIAGE_SADDLE = block("cannon_carriage/carriage_saddle"),
+
+		CAST_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(AutocannonMaterial.CAST_IRON, "autocannon/cast_iron_autocannon_spring"),
+		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.CAST_IRON, "autocannon/cast_iron_autocannon_ejector");
 	
 	private static PartialModel block(String path) {
 		return new PartialModel(CreateBigCannons.resource("block/" + path));
 	}
+	private static PartialModel entity(String path) { return new PartialModel(CreateBigCannons.resource("entity/" + path)); }
 	
 	private static PartialModel breechblockPartial(CannonMaterial material, String path) {
 		return breechblockPartial(material, CreateBigCannons.resource("item/" + path));
@@ -94,6 +101,34 @@ public class CBCBlockPartials {
 	
 	public static PartialModel cannonCastFor(CannonCastShape size) {
 		return CANNON_CAST_BY_SIZE.getOrDefault(size, VERY_SMALL_CANNON_CAST);
+	}
+
+	private static PartialModel autocannonSpringPartial(AutocannonMaterial material, String path) {
+		return autocannonSpringPartial(material, CreateBigCannons.resource("block/" + path));
+	}
+
+	public static PartialModel autocannonSpringPartial(AutocannonMaterial material, ResourceLocation loc) {
+		PartialModel model = new PartialModel(loc);
+		AUTOCANNON_SPRING_BY_MATERIAL.put(material, model);
+		return model;
+	}
+
+	public static PartialModel autocannonSpringFor(AutocannonMaterial material) {
+		return AUTOCANNON_SPRING_BY_MATERIAL.getOrDefault(material, CAST_IRON_AUTOCANNON_SPRING);
+	}
+
+	private static PartialModel autocannonEjectorPartial(AutocannonMaterial material, String path) {
+		return autocannonEjectorPartial(material, CreateBigCannons.resource("block/" + path));
+	}
+
+	public static PartialModel autocannonEjectorPartial(AutocannonMaterial material, ResourceLocation loc) {
+		PartialModel model = new PartialModel(loc);
+		AUTOCANNON_EJECTOR_BY_MATERIAL.put(material, model);
+		return model;
+	}
+
+	public static PartialModel autocannonEjectorFor(AutocannonMaterial material) {
+		return AUTOCANNON_EJECTOR_BY_MATERIAL.getOrDefault(material, CAST_IRON_AUTOCANNON_EJECTOR);
 	}
 	
 	public static void init() {}

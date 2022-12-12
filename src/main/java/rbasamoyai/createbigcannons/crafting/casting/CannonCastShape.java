@@ -28,7 +28,12 @@ public class CannonCastShape extends ForgeRegistryEntry<CannonCastShape> {
 		VERY_LARGE = CANNON_CAST_SHAPES.register("very_large", () -> new CannonCastShape(20 * INGOT_SIZE_MB, 20, CBCBlocks.VERY_LARGE_CAST_MOULD)),
 		CANNON_END = CANNON_CAST_SHAPES.register("cannon_end", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.CANNON_END_CAST_MOULD)),
 		SLIDING_BREECH = CANNON_CAST_SHAPES.register("sliding_breech", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SLIDING_BREECH_CAST_MOULD, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false))),
-		SCREW_BREECH = CANNON_CAST_SHAPES.register("screw_breech", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD));
+		SCREW_BREECH = CANNON_CAST_SHAPES.register("screw_breech", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD)),
+
+		AUTOCANNON_BARREL = CANNON_CAST_SHAPES.register("autocannon_barrel", () -> new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR)),
+		AUTOCANNON_BARREL_FLANGED = CANNON_CAST_SHAPES.register("autocannon_barrel_flanged", () -> new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR)),
+		AUTOCANNON_BREECH = CANNON_CAST_SHAPES.register("autocannon_breech", () -> new CannonCastShape(4 * INGOT_SIZE_MB, 8, () -> Blocks.AIR)),
+		AUTOCANNON_RECOIL_SPRING = CANNON_CAST_SHAPES.register("autocannon_recoil_spring", () -> new CannonCastShape(4 * INGOT_SIZE_MB, 6, () -> Blocks.AIR));
 	
 	private final int fluidSize;
 	private final int diameter;

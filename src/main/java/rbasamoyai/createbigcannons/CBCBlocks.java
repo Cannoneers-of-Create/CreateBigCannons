@@ -28,6 +28,7 @@ import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.CannonTubeBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.*;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlock;
@@ -553,6 +554,29 @@ public class CBCBlocks {
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(15))
 			.transform(CBCBuilderTransformers.screwBreechUnbored("screw_breech/nethersteel", "screw_breech/unbored_nethersteel"))
 			.item(CannonBlockItem::new).build()
+			.register();
+
+	//////// Cast iron autocannon blocks ////////
+
+	public static final BlockEntry<AutocannonBarrelBlock> CAST_IRON_AUTOCANNON_BARREL = REGISTRATE
+			.block("cast_iron_autocannon_barrel", p -> new AutocannonBarrelBlock(p, AutocannonMaterial.CAST_IRON))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.castIronScrapLoot(2))
+			.transform(CBCBuilderTransformers.autocannonBarrel("autocannon/cast_iron"))
+			.register();
+
+	public static final BlockEntry<AutocannonBreechBlock> CAST_IRON_AUTOCANNON_BREECH = REGISTRATE
+			.block("cast_iron_autocannon_breech", p -> new AutocannonBreechBlock(p, AutocannonMaterial.CAST_IRON))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.castIronScrapLoot(4))
+			.transform(CBCBuilderTransformers.autocannonBreech("autocannon/cast_iron"))
+			.register();
+
+	public static final BlockEntry<AutocannonRecoilSpringBlock> CAST_IRON_AUTOCANNON_RECOIL_SPRING = REGISTRATE
+			.block("cast_iron_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, AutocannonMaterial.CAST_IRON))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.castIronScrapLoot(3))
+			.transform(CBCBuilderTransformers.autocannonRecoilSpring("autocannon/cast_iron"))
 			.register();
 	
 	//////// Cannon loading blocks ////////

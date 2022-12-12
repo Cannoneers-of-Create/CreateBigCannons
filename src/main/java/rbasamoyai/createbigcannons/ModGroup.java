@@ -148,7 +148,15 @@ public class ModGroup {
 				CBCItems.RAM_ROD.asStack(),
 				CBCItems.WORM.asStack(),
 				CBCBlocks.CANNON_CARRIAGE.asStack(),
-				CBCItems.PAIR_OF_CANNON_WHEELS.asStack()));
+				CBCItems.PAIR_OF_CANNON_WHEELS.asStack(),
+
+				CBCBlocks.CAST_IRON_AUTOCANNON_BARREL.asStack(),
+				CBCBlocks.CAST_IRON_AUTOCANNON_BREECH.asStack(),
+				CBCBlocks.CAST_IRON_AUTOCANNON_RECOIL_SPRING.asStack(),
+
+				CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(),
+				CBCItems.AP_AUTOCANNON_ROUND.get().getCreativeTabCartridgeItem(),
+				CBCItems.AP_AUTOCANNON_ROUND.asStack()));
 		}
 	};
 	
