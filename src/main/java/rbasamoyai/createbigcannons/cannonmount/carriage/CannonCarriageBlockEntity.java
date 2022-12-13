@@ -56,7 +56,7 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity {
 
 		AbstractMountedCannonContraption mountedCannon = this.getContraption(assemblyPos);
 		if (mountedCannon != null && mountedCannon.assemble(this.level, assemblyPos)) {
-			if (mountedCannon.initialOrientation() != facing) {
+			if (mountedCannon.initialOrientation() == facing) {
 				mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
 				PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing, false);
 				carriage.attach(contraptionEntity);
