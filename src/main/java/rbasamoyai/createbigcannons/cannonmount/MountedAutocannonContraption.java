@@ -22,7 +22,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
@@ -203,9 +202,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			|| !(this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech)
 			|| !breech.canFire()) return;
 
-		LazyOptional<IItemHandler> lzop = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		ItemStack foundProjectile = lzop.map(h -> h.extractItem(0, 1, false)).orElse(ItemStack.EMPTY);
-		breech.cannonBehavior().removeItem();
+		ItemStack foundProjectile = breech.extractNextInput();
 		if (!(foundProjectile.getItem() instanceof AutocannonCartridgeItem round) || !AutocannonCartridgeItem.hasProjectile(foundProjectile)) return;
 
 		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.initialOrientation.getOpposite())), 1.0f);
