@@ -139,7 +139,13 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.fragment", "The cannon _fragments_ on failure.");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd", "Weak Cannon End");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd.desc", "Cannons built with this as the closing can only safely handle up to _%s Powder Charge(s)_.");
-		
+
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.materialProperties", "Autocannon Properties");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxLength", "Maximum Length");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxLength.goggles", "_%s blocks_ (including chamber)");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.weightImpact", "Weight Impact");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.weightImpact.goggles", "_%sx RPM_");
+
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.encounteredProblem", "The cannon drill has encountered a problem:");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.dryBore", "The cannon drill requires water to operate");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.tooWeak", "The cannon drill must be operating at the same RPM or faster as the target lathe");

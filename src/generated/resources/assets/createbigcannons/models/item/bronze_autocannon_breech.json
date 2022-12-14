@@ -1,0 +1,6 @@
+{
+  "parent": "createbigcannons:block/autocannon/breech_item",
+  "textures": {
+    "material": "createbigcannons:block/autocannon/bronze_autocannon"
+  }
+}

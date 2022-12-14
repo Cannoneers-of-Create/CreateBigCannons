@@ -2,7 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "createbigcannons:item/autocannon_cartridge",
 	"textures": {
-		"0": "createbigcannons:item/autocannon_cartridge"
+		"0": "createbigcannons:item/autocannon_cartridge",
+		"particle": "#0"
 	},
 	"elements": [
 		{

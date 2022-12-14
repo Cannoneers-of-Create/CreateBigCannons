@@ -28,6 +28,7 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
         poseStack.scale(2.0f, 2.0f, 2.0f);
         poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
         poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0f));
+        poseStack.translate(0, -0.2, 0);
 
         PoseStack.Pose lastPose = poseStack.last();
         Matrix4f pose = lastPose.pose();

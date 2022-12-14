@@ -92,7 +92,10 @@ public class CBCItems {
 			.model((c, p) -> p.getExistingFile(c.getId()))
 			.register();
 
-	public static final ItemEntry<Item> PAIR_OF_CANNON_WHEELS = REGISTRATE.item("pair_of_cannon_wheels", Item::new).register();
+	public static final ItemEntry<Item> PAIR_OF_CANNON_WHEELS = REGISTRATE
+			.item("pair_of_cannon_wheels", Item::new)
+			.lang("Pair of Cannon Wheels")
+			.register();
 	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);

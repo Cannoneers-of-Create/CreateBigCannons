@@ -10,6 +10,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
+import rbasamoyai.createbigcannons.cannons.CannonTooltip;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class AutocannonBlockItem<T extends Block & AutocannonBlock> extends Bloc
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
+        CannonTooltip.appendTextAutocannon(stack, level, tooltip, flag, this.autocannonBlock);
     }
 
     @Override

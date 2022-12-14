@@ -26,6 +26,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial.FailureMode;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class CannonTooltip {
@@ -96,6 +98,45 @@ public class CannonTooltip {
 			default -> canBeInvalid ? ChatFormatting.DARK_GRAY : value < 0 ? ChatFormatting.RED : ChatFormatting.YELLOW;
 		};
 		return new TextComponent(" " + ItemDescription.makeProgressBar(5, outOfFive)).withStyle(color);
+	}
+
+	public static <T extends Block & AutocannonBlock> void appendTextAutocannon(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
+		boolean desc = Screen.hasShiftDown();
+
+		String[] holdDesc = Lang.translateDirect("tooltip.holdForDescription", "$").getString().split("\\$");
+		if (holdDesc.length >= 2) {
+			Component keyShift = Lang.translateDirect("tooltip.keyShift");
+			MutableComponent tabBuilder = new TextComponent("");
+			tabBuilder.append(new TextComponent(holdDesc[0]).withStyle(ChatFormatting.DARK_GRAY));
+			tabBuilder.append(keyShift.plainCopy().withStyle(desc ? ChatFormatting.WHITE : ChatFormatting.GRAY));
+			tabBuilder.append(new TextComponent(holdDesc[1]).withStyle(ChatFormatting.DARK_GRAY));
+			tooltip.add(tabBuilder);
+		}
+
+		ItemDescription.Palette palette = AllSections.of(stack).getTooltipPalette();
+		if (desc) {
+			AutocannonMaterial material = block.getAutocannonMaterial();
+			Minecraft mc = Minecraft.getInstance();
+			boolean hasGoggles = GogglesItem.isWearingGoggles(mc.player);
+			String rootKey = "block." + CreateBigCannons.MOD_ID + ".autocannon.tooltip";
+			tooltip.add(new TextComponent(I18n.get(rootKey + ".materialProperties")).withStyle(ChatFormatting.GRAY));
+
+			int maxLength = material.maxLength();
+			tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".maxLength")).withStyle(ChatFormatting.GRAY));
+			if (hasGoggles) {
+				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".maxLength.goggles", maxLength + 1), palette.color, palette.hColor, 2));
+			} else {
+				tooltip.add(getNoGogglesMeter(maxLength == 0 ? 0 : (maxLength - 1) / 2 + 1, false, true));
+			}
+
+			tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
+			float weightImpact = material.weight();
+			if (hasGoggles) {
+				tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weightImpact.goggles", String.format("%.2f", weightImpact)), palette.color, palette.hColor, 2));
+			} else {
+				tooltip.add(getNoGogglesMeter(weightImpact < 1d ? 0 : Mth.ceil(weightImpact), true, true));
+			}
+		}
 	}
 	
 }
