@@ -43,6 +43,8 @@ public class CreateBigCannons {
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		ModLoadingContext mlContext = ModLoadingContext.get();
 
+		REGISTRATE.registerEventListeners(modEventBus);
+
 		CBCRegistries.init();
 		
 		ModGroup.register();

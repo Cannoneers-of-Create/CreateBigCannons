@@ -40,7 +40,7 @@ public class CBCEntityTypes {
 			.properties(AbstractContraptionEntity::build)
 			.renderer(() -> OrientedContraptionEntityRenderer::new)
 			.register();
-	
+
 	public static final EntityEntry<ShotProjectile> SHOT = cannonProjectile("shot", ShotProjectile::new);
 	public static final EntityEntry<HEShellProjectile> HE_SHELL = cannonProjectile("he_shell", HEShellProjectile::new, "High Explosive (HE) Shell");
 	public static final EntityEntry<ShrapnelShellProjectile> SHRAPNEL_SHELL = cannonProjectile("shrapnel_shell", ShrapnelShellProjectile::new);
