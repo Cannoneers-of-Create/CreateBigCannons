@@ -5,7 +5,6 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "createbigcannons.refmap.json",
 	"mixins": [
-		"FixFluidTagIngredientMixin",
 		"BearingCannonDrillFinderMixin"
 	],
 	"client": [
