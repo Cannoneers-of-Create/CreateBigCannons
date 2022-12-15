@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.datagen;
 
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
@@ -8,10 +7,9 @@ import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCLangGen {
-
-	public static final CreateRegistrate REGISTRATE = CreateBigCannons.registrate();
 	
 	public static void prepare() {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonBlockOutsideOfWorld", "Cannon assembly area at [%s, %s, %s] is out of bounds");

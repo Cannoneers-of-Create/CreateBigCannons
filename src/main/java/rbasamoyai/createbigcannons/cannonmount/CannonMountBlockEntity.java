@@ -93,7 +93,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 			float pitchSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
 			float newYaw = this.cannonYaw + yawSpeed;
 			float newPitch = this.cannonPitch + pitchSpeed;
-			this.cannonYaw = (float) (newYaw % 360.0f);
+			this.cannonYaw = newYaw % 360.0f;
 			
 			if (this.mountedContraption == null) {
 				this.cannonPitch = 0.0f;
@@ -102,7 +102,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 				boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
 				float cu = flag ? this.getMaxElevate() : this.getMaxDepress();
 				float cd = flag ? -this.getMaxDepress() : -this.getMaxElevate();
-				this.cannonPitch = Mth.clamp((float) (newPitch % 360.0f), cd, cu);
+				this.cannonPitch = Mth.clamp(newPitch % 360.0f, cd, cu);
 			}
 		}
 		
@@ -291,14 +291,12 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 			this.mountedContraption = null;
 		}
 	}
-	
+
 	@Override
-	protected void setRemovedNotDueToChunkUnload() {
+	public void remove() {
 		this.remove = true;
-		if (!this.level.isClientSide) {
-			this.disassemble();
-		}
-		super.setRemovedNotDueToChunkUnload();
+		if (!this.level.isClientSide) this.disassemble();
+		super.remove();
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons;
 
 import com.simibubi.create.content.AllSections;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
@@ -15,11 +14,13 @@ import rbasamoyai.createbigcannons.munitions.autocannon.apround.APAutocannonRoun
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCItems {
 
-	private static final CreateRegistrate REGISTRATE = CreateBigCannons.registrate()
-			.creativeModeTab(() -> ModGroup.GROUP);
+	static {
+		REGISTRATE.creativeModeTab(() -> ModGroup.GROUP);
+	}
 	
 	static {
 		REGISTRATE.startSection(AllSections.LOGISTICS);

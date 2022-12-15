@@ -70,7 +70,7 @@ public class CBCFluids {
 			.register();
 	
 	private static FluidBuilder<ForgeFlowingFluid.Flowing, CreateRegistrate> standardFluid(String name, NonNullBiFunction<FluidAttributes.Builder, Fluid, FluidAttributes> factory) {
-		return CreateBigCannons.registrate()
+		return CreateBigCannons.REGISTRATE
 				.fluid(name, CreateBigCannons.resource("fluid/" + name + "_still"), CreateBigCannons.resource("fluid/" + name + "_flow"), factory);
 	}
 	

@@ -10,17 +10,18 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCRegistries {
 
 	public static final Supplier<IForgeRegistry<BlockRecipeSerializer<?>>> BLOCK_RECIPE_SERIALIZERS =
-			CreateBigCannons.registrate().makeRegistry("block_recipe_serializers", BlockRecipeSerializer.class, CBCRegistries::makeRegBlockRecipeSerializer);
+			REGISTRATE.makeRegistry("block_recipe_serializers", BlockRecipeSerializer.class, CBCRegistries::makeRegBlockRecipeSerializer);
 	
 	public static final Supplier<IForgeRegistry<BlockRecipeType<?>>> BLOCK_RECIPE_TYPES =
-			CreateBigCannons.registrate().makeRegistry("block_recipe_types", BlockRecipeType.class, CBCRegistries::makeRegBlockRecipeType);
+			REGISTRATE.makeRegistry("block_recipe_types", BlockRecipeType.class, CBCRegistries::makeRegBlockRecipeType);
 	
 	public static final Supplier<IForgeRegistry<CannonCastShape>> CANNON_CAST_SHAPES =
-			CreateBigCannons.registrate().makeRegistry("cannon_cast_shapes", CannonCastShape.class, CBCRegistries::makeRegCannonCastShape);
+			REGISTRATE.makeRegistry("cannon_cast_shapes", CannonCastShape.class, CBCRegistries::makeRegCannonCastShape);
 	
 	private static RegistryBuilder<BlockRecipeSerializer<?>> makeRegBlockRecipeSerializer() {
 		return new RegistryBuilder<BlockRecipeSerializer<?>>().allowModification();

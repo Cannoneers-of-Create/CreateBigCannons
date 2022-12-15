@@ -169,7 +169,7 @@ public class ModGroup {
 	};
 	
 	public static void register() {
-		CreateBigCannons.registrate().creativeModeTab(() -> GROUP, "Create Big Cannons");
+		CreateBigCannons.REGISTRATE.creativeModeTab(() -> GROUP, "Create Big Cannons");
 	}
 	
 }

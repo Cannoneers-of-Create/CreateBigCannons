@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons;
 
 import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.block.BlockStressDefaults;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -55,13 +54,16 @@ import rbasamoyai.createbigcannons.munitions.mortarstone.MortarStoneItem;
 import rbasamoyai.createbigcannons.munitions.shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.shrapnel.ShrapnelShellBlock;
 
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
+
 import java.util.function.Supplier;
 
 public class CBCBlocks {
 
-	private static final CreateRegistrate REGISTRATE = CreateBigCannons.registrate()
-			.creativeModeTab(() -> ModGroup.GROUP);
-	
+	static {
+		REGISTRATE.creativeModeTab(() -> ModGroup.GROUP);
+	}
+
 	static {
 		REGISTRATE.startSection(AllSections.KINETICS);
 	}
@@ -802,7 +804,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<MortarStoneBlock> MORTAR_STONE = REGISTRATE
 			.block("mortar_stone", MortarStoneBlock::new)
-			.initialProperties(() -> SharedProperties.stone())
+			.initialProperties(SharedProperties::stone)
 			.transform(CBCBuilderTransformers.projectile("projectile/mortar_stone"))
 			.item(MortarStoneItem::new).build()
 			.register();

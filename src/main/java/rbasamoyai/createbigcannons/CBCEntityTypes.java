@@ -27,10 +27,11 @@ import rbasamoyai.createbigcannons.munitions.shot.ShotProjectile;
 import rbasamoyai.createbigcannons.munitions.shrapnel.Shrapnel;
 import rbasamoyai.createbigcannons.munitions.shrapnel.ShrapnelRenderer;
 import rbasamoyai.createbigcannons.munitions.shrapnel.ShrapnelShellProjectile;
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCEntityTypes {
 
-	public static final EntityEntry<PitchOrientedContraptionEntity> PITCH_ORIENTED_CONTRAPTION = CreateBigCannons.registrate()
+	public static final EntityEntry<PitchOrientedContraptionEntity> PITCH_ORIENTED_CONTRAPTION = REGISTRATE
 			.entity("pitch_contraption", PitchOrientedContraptionEntity::new, MobCategory.MISC)
 			.properties(b -> b.setTrackingRange(16)
 					.setUpdateInterval(3)
@@ -48,25 +49,25 @@ public class CBCEntityTypes {
 	public static final EntityEntry<FluidShellProjectile> FLUID_SHELL = cannonProjectile("fluid_shell", FluidShellProjectile::new);
 	public static final EntityEntry<MortarStoneProjectile> MORTAR_STONE = cannonProjectile("mortar_stone", MortarStoneProjectile::new);
 	
-	public static final EntityEntry<Shrapnel> SHRAPNEL = CreateBigCannons.registrate()
+	public static final EntityEntry<Shrapnel> SHRAPNEL = REGISTRATE
 			.entity("shrapnel", Shrapnel::new, MobCategory.MISC)
 			.properties(Shrapnel::build)
 			.renderer(() -> ShrapnelRenderer::new)
 			.register();
 	
-	public static final EntityEntry<Grapeshot> GRAPESHOT = CreateBigCannons.registrate()
+	public static final EntityEntry<Grapeshot> GRAPESHOT = REGISTRATE
 			.entity("grapeshot", Grapeshot::new, MobCategory.MISC)
 			.properties(Shrapnel::build)
 			.renderer(() -> GrapeshotRenderer::new)
 			.register();
 	
-	public static final EntityEntry<FluidBlob> FLUID_BLOB = CreateBigCannons.registrate()
+	public static final EntityEntry<FluidBlob> FLUID_BLOB = REGISTRATE
 			.entity("fluid_blob", FluidBlob::new, MobCategory.MISC)
 			.properties(Shrapnel::build)
 			.renderer(() -> NoopRenderer::new)
 			.register();
 
-	public static final EntityEntry<CannonCarriageEntity> CANNON_CARRIAGE = CreateBigCannons.registrate()
+	public static final EntityEntry<CannonCarriageEntity> CANNON_CARRIAGE = REGISTRATE
 			.entity("cannon_carriage", CannonCarriageEntity::new, MobCategory.MISC)
 			.properties(CannonCarriageEntity::build)
 			.renderer(() -> CannonCarriageRenderer::new)
@@ -75,7 +76,7 @@ public class CBCEntityTypes {
 
 
     private static <T extends AbstractCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory) {
-		return CreateBigCannons.registrate()
+		return REGISTRATE
 				.entity(id, factory, MobCategory.MISC)
 				.properties(AbstractCannonProjectile::build)
 				.renderer(() -> CannonProjectileRenderer::new)
@@ -83,7 +84,7 @@ public class CBCEntityTypes {
 	}
 	
 	private static <T extends AbstractCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory, String enUSdiffLang) {
-		return CreateBigCannons.registrate()
+		return REGISTRATE
 				.entity(id, factory, MobCategory.MISC)
 				.properties(AbstractCannonProjectile::build)
 				.renderer(() -> CannonProjectileRenderer::new)
@@ -92,7 +93,7 @@ public class CBCEntityTypes {
 	}
 
 	private static <T extends AbstractAutocannonProjectile> EntityEntry<T> autocannonProjectile(String id, EntityFactory<T> factory) {
-		return CreateBigCannons.registrate()
+		return REGISTRATE
 				.entity(id, factory, MobCategory.MISC)
 				.properties(AbstractAutocannonProjectile::buildAutocannon)
 				.renderer(() -> AutocannonProjectileRenderer::new)
@@ -100,7 +101,7 @@ public class CBCEntityTypes {
 	}
 
 	private static <T extends AbstractAutocannonProjectile> EntityEntry<T> autocannonProjectile(String id, EntityFactory<T> factory, String enUSdiffLang) {
-		return CreateBigCannons.registrate()
+		return REGISTRATE
 				.entity(id, factory, MobCategory.MISC)
 				.properties(AbstractAutocannonProjectile::buildAutocannon)
 				.renderer(() -> AutocannonProjectileRenderer::new)
