@@ -203,7 +203,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			|| !breech.canFire()) return;
 
 		ItemStack foundProjectile = breech.extractNextInput();
-		if (!(foundProjectile.getItem() instanceof AutocannonCartridgeItem round) || !AutocannonCartridgeItem.hasProjectile(foundProjectile)) return;
+		if (!(foundProjectile.getItem() instanceof AutocannonCartridgeItem round)) return;
 
 		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.initialOrientation.getOpposite())), 1.0f);
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
