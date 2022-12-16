@@ -1,14 +1,8 @@
 package rbasamoyai.createbigcannons;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Supplier;
-
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
 import com.tterrag.registrate.providers.ProviderType;
-
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -21,6 +15,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Supplier;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
@@ -35,7 +34,16 @@ public class CBCTags {
 			GRAPESHOT_SHATTERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("grapeshot_shatterable")),
 			GRAPESHOT_VULNERABLE = createAndGenerateBlockTag(CreateBigCannons.resource("grapeshot_vulnerable")),
 			WEAK_CANNON_END = createAndGenerateBlockTag(CreateBigCannons.resource("weak_cannon_end")),
-			DRILL_CAN_PASS_THROUGH = createAndGenerateBlockTag(CreateBigCannons.resource("drill_can_pass_through"));
+			DRILL_CAN_PASS_THROUGH = createAndGenerateBlockTag(CreateBigCannons.resource("drill_can_pass_through")),
+			BIG_CANNON_NO_RESISTANCE = createAndGenerateBlockTag(CreateBigCannons.resource("big_cannon_no_resistance")),
+			BIG_CANNON_RESISTANT = createAndGenerateBlockTag(CreateBigCannons.resource("big_cannon_resistant")),
+			BIG_CANNON_BLOCKING = createAndGenerateBlockTag(CreateBigCannons.resource("big_cannon_absorbing")),
+			MEDIUM_CANNON_NO_RESISTANCE = createAndGenerateBlockTag(CreateBigCannons.resource("medium_cannon_no_resistance")),
+			MEDIUM_CANNON_RESISTANT = createAndGenerateBlockTag(CreateBigCannons.resource("medium_cannon_resistant")),
+			MEDIUM_CANNON_BLOCKING = createAndGenerateBlockTag(CreateBigCannons.resource("medium_cannon_blocking")),
+			AUTOCANNON_NO_RESISTANCE = createAndGenerateBlockTag(CreateBigCannons.resource("autocannon_no_resistance")),
+			AUTOCANNON_RESISTANT = createAndGenerateBlockTag(CreateBigCannons.resource("autocannon_resistant")),
+			AUTOCANNON_BLOCKING = createAndGenerateBlockTag(CreateBigCannons.resource("autocannon_resistant"));
 		
 		public static TagKey<Block> createAndGenerateBlockTag(ResourceLocation loc) {
 			TagKey<Block> tag = BlockTags.create(loc); 
@@ -84,6 +92,13 @@ public class CBCTags {
 			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, () -> Arrays.asList(AllBlocks.BRASS_CASING.get(), AllBlocks.BRASS_ENCASED_COGWHEEL.get(), AllBlocks.BRASS_ENCASED_LARGE_COGWHEEL.get(), AllBlocks.BRASS_ENCASED_SHAFT.get(), AllBlocks.MECHANICAL_CRAFTER.get(), AllBlocks.MECHANICAL_ARM.get()));
 			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, () -> Arrays.asList(AllBlocks.COPPER_CASING.get(), AllBlocks.ENCASED_FLUID_PIPE.get(), AllBlocks.FLUID_PIPE.get(), AllBlocks.GLASS_FLUID_PIPE.get(), AllBlocks.FLUID_VALVE.get(), AllBlocks.COPPER_VALVE_HANDLE.get(), AllBlocks.MECHANICAL_PUMP.get(), AllBlocks.HOSE_PULLEY.get()));
 			addBlocksToBlockTag(GRAPESHOT_VULNERABLE, () -> Arrays.asList(AllBlocks.BRASS_TUNNEL.get(), AllBlocks.BRASS_BELT_FUNNEL.get(), AllBlocks.BRASS_FUNNEL.get()));
+
+			addTagsToBlockTag(BIG_CANNON_RESISTANT, () -> Arrays.asList(Tags.Blocks.OBSIDIAN));
+
+			addTagsToBlockTag(MEDIUM_CANNON_RESISTANT, () -> Arrays.asList(Tags.Blocks.STORAGE_BLOCKS_IRON, Tags.Blocks.STORAGE_BLOCKS_DIAMOND));
+			addTagsToBlockTag(MEDIUM_CANNON_BLOCKING, () -> Arrays.asList(Tags.Blocks.OBSIDIAN));
+
+			addTagsToBlockTag(AUTOCANNON_BLOCKING, () -> Arrays.asList(Tags.Blocks.OBSIDIAN));
 		}
 	}
 	
