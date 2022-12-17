@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.ponder;
 
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
@@ -13,7 +12,6 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 public class CBCPonderIndex {
 
 	private static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(CreateBigCannons.MOD_ID);
-	private static final CreateRegistrate REGISTRATE = CreateBigCannons.registrate();
 	
 	public static void register() {
 		HELPER.forComponents(CBCBlocks.CANNON_MOUNT, CBCBlocks.YAW_CONTROLLER)
@@ -92,7 +90,7 @@ public class CBCPonderIndex {
 	}
 	
 	public static void registerLang() {
-		PonderLocalization.provideRegistrateLang(REGISTRATE);
+		PonderLocalization.provideRegistrateLang(CreateBigCannons.REGISTRATE);
 	}
 	
 }

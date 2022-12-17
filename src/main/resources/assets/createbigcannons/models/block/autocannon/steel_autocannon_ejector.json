@@ -1,0 +1,6 @@
+{
+  "parent": "createbigcannons:block/autocannon/ejector",
+  "textures": {
+    "material": "createbigcannons:block/autocannon/steel_autocannon"
+  }
+}

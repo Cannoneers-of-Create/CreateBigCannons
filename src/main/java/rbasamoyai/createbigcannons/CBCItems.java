@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons;
 
 import com.simibubi.create.content.AllSections;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
@@ -10,14 +9,18 @@ import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.apround.APAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCItems {
 
-	private static final CreateRegistrate REGISTRATE = CreateBigCannons.registrate()
-			.creativeModeTab(() -> ModGroup.GROUP);
+	static {
+		REGISTRATE.creativeModeTab(() -> ModGroup.GROUP);
+	}
 	
 	static {
 		REGISTRATE.startSection(AllSections.LOGISTICS);
@@ -65,7 +68,19 @@ public class CBCItems {
 	public static final ItemEntry<Item> STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new).tag(CBCTags.ItemCBC.NUGGET_STEEL).register();
 	
 	public static final ItemEntry<Item> SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register();
-	
+
+	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE.item("autocannon_cartridge", AutocannonCartridgeItem::new)
+			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/autocannon_cartridge")))
+			.register();
+	public static final ItemEntry<Item> EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
+			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/empty_autocannon_cartridge")))
+			.register();
+
+	public static final ItemEntry<APAutocannonRoundItem> AP_AUTOCANNON_ROUND = REGISTRATE
+			.item("ap_autocannon_round", APAutocannonRoundItem::new)
+			.lang("Armor Piercing (AP) Autocannon Round")
+			.register();
+
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE
 			.item("ram_rod", RamRodItem::new)
 			.properties(p -> p.stacksTo(1))
@@ -78,7 +93,10 @@ public class CBCItems {
 			.model((c, p) -> p.getExistingFile(c.getId()))
 			.register();
 
-	public static final ItemEntry<Item> PAIR_OF_CANNON_WHEELS = REGISTRATE.item("pair_of_cannon_wheels", Item::new).register();
+	public static final ItemEntry<Item> PAIR_OF_CANNON_WHEELS = REGISTRATE
+			.item("pair_of_cannon_wheels", Item::new)
+			.lang("Pair of Cannon Wheels")
+			.register();
 	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);

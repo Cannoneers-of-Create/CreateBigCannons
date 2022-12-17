@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceLocation;
@@ -37,13 +36,15 @@ public class CreateBigCannons {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MOD_ID = "createbigcannons";
 	
-	private static final NonNullSupplier<CreateRegistrate> REGISTRATE = CreateRegistrate.lazy(MOD_ID);
+	public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
 	
 	public CreateBigCannons() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 		IEventBus forgeEventBus = MinecraftForge.EVENT_BUS;
 		ModLoadingContext mlContext = ModLoadingContext.get();
-		
+
+		REGISTRATE.registerEventListeners(modEventBus);
+
 		CBCRegistries.init();
 		
 		ModGroup.register();
@@ -94,10 +95,6 @@ public class CreateBigCannons {
 		} else {
 			BlockRecipesManager.syncTo(player);
 		}
-	}
-	
-	public static CreateRegistrate registrate() {
-		return REGISTRATE.get();
 	}
 	
 	public static ResourceLocation resource(String path) {

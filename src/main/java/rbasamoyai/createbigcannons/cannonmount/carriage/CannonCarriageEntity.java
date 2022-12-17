@@ -37,8 +37,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
+import rbasamoyai.createbigcannons.cannonmount.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.ControlPitchContraption;
-import rbasamoyai.createbigcannons.cannonmount.MountedCannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -122,7 +122,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	public void tryFiringShot() {
 		if (this.level instanceof ServerLevel slevel && this.cannonContraption != null) {
 			Contraption contraption = this.cannonContraption.getContraption();
-			if (contraption instanceof MountedCannonContraption cannon) {
+			if (contraption instanceof AbstractMountedCannonContraption cannon) {
 				cannon.fireShot(slevel, this.cannonContraption);
 			}
 		}
@@ -177,7 +177,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	protected float getWeightModifier() {
 		if (!CBCConfigs.SERVER.cannons.cannonWeightAffectsCarriageSpeed.get()) return 1;
-		if (this.cannonContraption == null || !(this.cannonContraption.getContraption() instanceof MountedCannonContraption cannon)) return 1;
+		if (this.cannonContraption == null || !(this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon)) return 1;
 		float weight = cannon.getWeightForStress();
 		return weight <= 0.0f ? 1 : CannonMaterial.CAST_IRON.weight() * 5 / weight; // Base weight is a 5 long cast iron cannon.
 	}
@@ -409,7 +409,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	@Override
 	public void attach(PitchOrientedContraptionEntity poce) {
-		if (!(poce.getContraption() instanceof MountedCannonContraption)) return;
+		if (!(poce.getContraption() instanceof AbstractMountedCannonContraption)) return;
 		poce.startRiding(this);
 		this.cannonContraption = poce;
 		this.positionRider(poce);

@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.providers.ProviderType;
 
 import net.minecraft.data.tags.TagsProvider.TagAppender;
@@ -23,9 +22,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class CBCTags {
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
-	private static final CreateRegistrate REGISTRATE = CreateBigCannons.registrate();
+public class CBCTags {
 	
 	public static class BlockCBC {
 		public static final TagKey<Block>

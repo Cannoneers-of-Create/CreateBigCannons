@@ -9,7 +9,6 @@ import com.tterrag.registrate.providers.loot.RegistrateBlockLootTables;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
-
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -36,6 +35,9 @@ import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillGen;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderGen;
@@ -207,6 +209,43 @@ public class CBCBuilderTransformers {
 		ResourceLocation lockLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_screw_lock");
 		return b -> b.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(baseLoc))
 				.texture("lock", lockLoc));
+	}
+
+	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonBarrel(String pathAndMaterial) {
+		ResourceLocation texLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon");
+		return b -> b.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> {
+					String name = c.getName() + "_" + (s.getValue(AutocannonBarrelBlock.ASSEMBLED) ? "assembled" : s.getValue(AutocannonBarrelBlock.BARREL_END).getSerializedName());
+					if (s.getValue(AutocannonBarrelBlock.ASSEMBLED)) return p.models().getBuilder(name).texture("particle", texLoc);
+					ResourceLocation loc = switch (s.getValue(AutocannonBarrelBlock.BARREL_END)) {
+						case FLANGED -> CreateBigCannons.resource("block/autocannon/barrel_flanged");
+						default -> CreateBigCannons.resource("block/autocannon/barrel");
+					};
+					return p.models().withExistingParent(name, loc).texture("material", texLoc);
+				}))
+				.item(AutocannonBlockItem::new)
+				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/barrel")).texture("material", texLoc))
+				.build();
+	}
+
+	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonBreech(String pathAndMaterial) {
+		ResourceLocation texLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon");
+		return b -> b.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p,
+						$ -> p.models().withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/breech")).texture("material", texLoc)))
+				.item(AutocannonBlockItem::new)
+				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/breech_item")).texture("material", texLoc))
+				.build();
+	}
+
+	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonRecoilSpring(String pathAndMaterial) {
+		ResourceLocation texLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon");
+		return b -> b.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p,
+						$ -> p.models().withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring")).texture("material", texLoc)))
+				.item(AutocannonBlockItem::new)
+				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring_item")).texture("material", texLoc))
+				.build();
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> ramHead() {

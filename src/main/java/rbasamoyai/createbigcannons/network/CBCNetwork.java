@@ -56,6 +56,12 @@ public class CBCNetwork {
 				.decoder(ServerboundCarriageWheelPacket::new)
 				.consumer(ServerboundCarriageWheelPacket::handle)
 				.add();
+
+		channel.messageBuilder(ClientboundAnimateCannonContraptionPacket.class, id++)
+				.encoder(ClientboundAnimateCannonContraptionPacket::encode)
+				.decoder(ClientboundAnimateCannonContraptionPacket::new)
+				.consumer(ClientboundAnimateCannonContraptionPacket::handle)
+				.add();
 		
 		return channel;
 	}

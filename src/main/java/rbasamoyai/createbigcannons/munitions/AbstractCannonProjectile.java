@@ -28,9 +28,10 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile {
 
-	private static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> BREAKTHROUGH_POWER = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	protected int inGroundTime = 0;
+	protected float damage = 50;
 	
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
@@ -100,9 +101,9 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			Entity entity = result.getEntity();
 			if (entity instanceof AbstractCannonProjectile) return;
 			
-			entity.setDeltaMovement(this.getDeltaMovement().scale(2.0f));
+			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
 			DamageSource source = DamageSource.thrown(this, null).bypassArmor();
-			entity.hurt(source, 50);
+			entity.hurt(source, this.damage);
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
 			
 			if (result.getEntity().isAlive()) {
@@ -113,6 +114,8 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			}
 		}
 	}
+
+	protected float getKnockback(Entity target) { return 2.0f; }
 	
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
@@ -130,7 +133,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			} else {
 				Vec3 currentVel = this.getDeltaMovement();
 				
-				Explosion explode = this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.DESTROY);
+				Explosion explode = this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, this.getPenetratingExplosionPower(), Explosion.BlockInteraction.DESTROY);
 				this.setDeltaMovement(currentVel);
 				this.setBreakthroughPower((byte)(breakthroughPower - 1));
 				
@@ -147,7 +150,11 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			}
 		}
 	}
-	
+
+	protected float getPenetratingExplosionPower() { return 2; }
+
+	@Override public boolean hurt(DamageSource source, float damage) { return false; }
+
 	@Override
 	protected void defineSynchedData() {
 		this.entityData.define(ID_FLAGS, (byte) 0);
@@ -173,11 +180,17 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
+		tag.putByte("Power", this.getBreakthroughPower());
+		tag.putBoolean("InGround", this.isInGround());
+		tag.putFloat("Damage", this.damage);
 	}
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
+		this.setBreakthroughPower(tag.getByte("Power"));
+		this.setInGround(tag.getBoolean("InGround"));
+		this.damage = tag.getFloat("Damage");
 	}
 	
 	public void setBreakthroughPower(byte power) {
@@ -197,7 +210,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	}
 	
 	@Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return 0.4f;
+		return dimensions.height * 0.5f;
 	}
 	@Override protected float getInertia() {
 		return 0.99f;
