@@ -34,6 +34,7 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	@Override
 	protected void expireProjectile() {
 		if (this.fuze.getItem() instanceof FuzeItem fuzeItem && fuzeItem.onProjectileExpiry(this.fuze, this)) this.detonate();
+		super.expireProjectile();
 	}
 
 	@Override
