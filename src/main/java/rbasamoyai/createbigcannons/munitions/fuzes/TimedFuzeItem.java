@@ -95,7 +95,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		tooltip.add(Lang.builder("item")
-				.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info", seconds, ticks)
+				.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info.item", seconds, ticks)
 				.component());
 	}
 

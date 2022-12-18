@@ -45,7 +45,7 @@ public class CannonTooltip {
 			tooltip.add(tabBuilder);
 		}
 		
-		ItemDescription.Palette palette = AllSections.of(stack).getTooltipPalette();
+		ItemDescription.Palette palette = getPalette(level, stack);
 		if (desc) {
 			CannonMaterial material = block.getCannonMaterial();
 			Minecraft mc = Minecraft.getInstance();
@@ -100,6 +100,10 @@ public class CannonTooltip {
 		return new TextComponent(" " + ItemDescription.makeProgressBar(5, outOfFive)).withStyle(color);
 	}
 
+	private static ItemDescription.Palette getPalette(Level level, ItemStack stack) {
+		return level == null ? AllSections.UNASSIGNED.getTooltipPalette() : AllSections.of(stack).getTooltipPalette();
+	}
+
 	public static <T extends Block & AutocannonBlock> void appendTextAutocannon(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
 		boolean desc = Screen.hasShiftDown();
 
@@ -113,7 +117,7 @@ public class CannonTooltip {
 			tooltip.add(tabBuilder);
 		}
 
-		ItemDescription.Palette palette = AllSections.of(stack).getTooltipPalette();
+		ItemDescription.Palette palette = getPalette(level, stack);
 		if (desc) {
 			AutocannonMaterial material = block.getAutocannonMaterial();
 			Minecraft mc = Minecraft.getInstance();

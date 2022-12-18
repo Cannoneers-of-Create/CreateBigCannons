@@ -42,7 +42,11 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 		CompoundTag tag = stack.getOrCreateTag();
 		ItemStack fuze = tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Fuze")) : ItemStack.EMPTY;
 		if (!fuze.isEmpty()) {
-			Lang.builder("block").translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze").add(new TextComponent(" ")).add(fuze.getDisplayName().copy());
+			Lang.builder("block")
+					.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
+					.add(new TextComponent(" "))
+					.add(fuze.getDisplayName().copy())
+					.addTo(tooltip);
             if (flag.isAdvanced() && fuze.getItem() instanceof FuzeItem) {
                 List<Component> subTooltip = new ArrayList<>();
                 fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
