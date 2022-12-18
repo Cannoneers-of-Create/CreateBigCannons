@@ -33,8 +33,12 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 		if (!this.level.isClientSide) {
 			this.ageRemaining--;
-			if (this.ageRemaining <= 0) this.discard();
+			if (this.ageRemaining <= 0) this.expireProjectile();
 		}
+	}
+
+	protected void expireProjectile() {
+		this.discard();
 	}
 
 	public void setTracer(boolean tracer) {

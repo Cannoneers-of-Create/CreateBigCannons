@@ -41,7 +41,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 			this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
 		}
 		
-		if (!this.level.isClientSide && this.age > 200) {
+		if (!this.level.isClientSide && this.age > 20) {
 			this.discard();
 		}
 	}

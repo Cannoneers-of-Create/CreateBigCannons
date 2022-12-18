@@ -16,6 +16,7 @@ import rbasamoyai.createbigcannons.munitions.apshell.APShellProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.autocannon.apround.APAutocannonProjectile;
+import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlob;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellProjectile;
 import rbasamoyai.createbigcannons.munitions.grapeshot.Grapeshot;
@@ -73,6 +74,7 @@ public class CBCEntityTypes {
 			.renderer(() -> CannonCarriageRenderer::new)
 			.register();
     public static final EntityEntry<APAutocannonProjectile> AP_AUTOCANNON = autocannonProjectile("ap_autocannon", APAutocannonProjectile::new, "Armor Piercing (AP) Autocannon Round");
+	public static final EntityEntry<FlakAutocannonProjectile> FLAK_AUTOCANNON = autocannonProjectile("flak_autocannon", FlakAutocannonProjectile::new, "Flak Autocannon Round");
 
 
     private static <T extends AbstractCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory) {

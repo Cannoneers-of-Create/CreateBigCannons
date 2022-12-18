@@ -113,7 +113,8 @@ public class CBCTags {
 			BLOCK_BRONZE = forgeTag("blocks/bronze"),
 			NUGGET_STEEL = forgeTag("nuggets/steel"),
 			INGOT_STEEL = forgeTag("ingots/steel"),
-			BLOCK_STEEL = forgeTag("blocks/steel");
+			BLOCK_STEEL = forgeTag("blocks/steel"),
+			AUTOCANNON_ROUND = createAndGenerateItemTag(CreateBigCannons.resource("autocannon_round"));
 		
 		public static TagKey<Item> createAndGenerateItemTag(ResourceLocation loc) {
 			TagKey<Item> tag = ItemTags.create(loc); 
