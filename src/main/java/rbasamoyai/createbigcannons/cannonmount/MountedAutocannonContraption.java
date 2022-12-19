@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannonmount;
 
+import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionType;
 import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
@@ -25,6 +26,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.*;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
@@ -41,8 +43,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 	private AutocannonMaterial cannonMaterial;
 	private BlockPos recoilSpringPos;
-
-
 
 	public MountedAutocannonContraption() { super (45, 90); }
 
@@ -286,16 +286,30 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	public void tick(Level level, PitchOrientedContraptionEntity entity) {
 		super.tick(level, entity);
 
-		if (level instanceof ServerLevel slevel) this.fireShot(slevel, entity);
+		if (level instanceof ServerLevel slevel && this.canFireAutonomously(entity)) this.fireShot(slevel, entity);
 
 		for (Map.Entry<BlockPos, BlockEntity> entry : this.presentTileEntities.entrySet()) {
 			if (entry.getValue() instanceof IAutocannonBlockEntity autocannon) autocannon.tickFromContraption(level, entity, entry.getKey());
 		}
 	}
 
+	private boolean canFireAutonomously(AbstractContraptionEntity entity) {
+		return !(entity.getVehicle() instanceof CannonCarriageEntity carriage);
+	}
+
 	@Override
 	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {
 		if (this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech) breech.setFireRate(firePower);
+	}
+
+	public void trySettingFireRateCarriage(int fireRateAdjustment) {
+		if (this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech
+			&& (fireRateAdjustment > 0 || breech.getFireRate() > 1)) // Can't turn off carriage autocannon
+			breech.setFireRate(breech.getFireRate() + fireRateAdjustment);
+	}
+
+	public int getReferencedFireRate() {
+		return this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech ? breech.getActualFireRate() : 0;
 	}
 
 	@Override public float getWeightForStress() { return this.cannonMaterial == null ? this.blocks.size() : this.blocks.size() * this.cannonMaterial.weight(); }

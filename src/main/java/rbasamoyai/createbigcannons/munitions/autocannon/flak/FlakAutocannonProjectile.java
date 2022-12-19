@@ -42,8 +42,6 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 		super.onHit(result);
 		if (!this.level.isClientSide && this.fuze.getItem() instanceof FuzeItem fuzeItem && fuzeItem.onProjectileImpact(this.fuze, this, result)) {
 			this.detonate();
-		} else {
-			this.discard();
 		}
 	}
 

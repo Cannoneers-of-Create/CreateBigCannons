@@ -77,6 +77,11 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 
 	public void setFireRate(int power) { this.fireRate = Mth.clamp(power, 0, 15); }
 	public int getFireRate() { return this.fireRate; }
+	public int getActualFireRate() {
+		if (this.fireRate < 1 || this.fireRate > 15) return 0;
+		int cooldown = FIRE_RATES[this.fireRate - 1];
+		return 1200 / cooldown;
+	}
 	public boolean canFire() { return this.getFireRate() > 0 && this.firingCooldown <= 0; }
 
 	public void handleFiring() {

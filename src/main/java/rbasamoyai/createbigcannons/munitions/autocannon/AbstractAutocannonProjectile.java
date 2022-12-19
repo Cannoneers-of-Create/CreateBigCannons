@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
@@ -47,6 +48,12 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		} else {
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) & 0b11111101));
 		}
+	}
+
+	@Override
+	protected void onHit(HitResult result) {
+		super.onHit(result);
+		if (this.getBreakthroughPower() <= 0) this.discard();
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
