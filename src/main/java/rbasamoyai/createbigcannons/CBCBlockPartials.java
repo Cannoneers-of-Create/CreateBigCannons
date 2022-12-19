@@ -55,7 +55,9 @@ public class CBCBlockPartials {
 
 		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.CAST_IRON, "autocannon/cast_iron_autocannon_ejector"),
 		BRONZE_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.BRONZE, "autocannon/bronze_autocannon_ejector"),
-		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.STEEL, "autocannon/steel_autocannon_ejector");
+		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.STEEL, "autocannon/steel_autocannon_ejector"),
+
+		AUTOCANNON_ROUND = entity("autocannon_round");
 	
 	private static PartialModel block(String path) {
 		return new PartialModel(CreateBigCannons.resource("block/" + path));
