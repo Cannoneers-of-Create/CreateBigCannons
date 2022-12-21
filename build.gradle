@@ -42,7 +42,7 @@ if (cbc_release == "true") {
     version = "${mc_version}-${cbc_release_version}"
 }
 else {
-    version = "${getGitBranch}-nightly-${getGitHash}"
+    version = "${mc_version}-nightly-${getGitHash}"
 }
 
 group = 'rbasamoyai.createbigcannons'

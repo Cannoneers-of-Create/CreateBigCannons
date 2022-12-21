@@ -27,6 +27,13 @@ jobs:
               id: get_hash
               run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
+            - name: Get MC version
+              uses: christian-draeger/read-properties@908f99d3334be3802ec7cb528395a69d19914e7b
+              id: get_mc_version
+              with:
+                  path: gradle.properties
+                  properties: mc_version
+
             - name: Send building message to discord
               if: github.event_name == 'push'
               uses: realRobotix/action-discord-notifier@release-master
@@ -59,5 +66,5 @@ jobs:
             - name: Archive Artifacts
               uses: actions/upload-artifact@v3
               with:
-                  name: createbigcannons-${{ steps.get_branch.outputs.branch }}-nightly-${{ steps.get_hash.outputs.sha_short }}
+                  name: createbigcannons-${{ steps.get_mc_version.outputs.mc_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
                   path: build/libs/
