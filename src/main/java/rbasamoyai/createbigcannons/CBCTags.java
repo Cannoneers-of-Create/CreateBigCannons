@@ -107,13 +107,13 @@ public class CBCTags {
 			IMPACT_FUZE_HEAD = createAndGenerateItemTag(CreateBigCannons.resource("impact_fuze_head")),
 			NUGGET_CAST_IRON = forgeTag("nuggets/cast_iron"),
 			INGOT_CAST_IRON = forgeTag("ingots/cast_iron"),
-			BLOCK_CAST_IRON = forgeTag("blocks/cast_iron"),
+			BLOCK_CAST_IRON = forgeTag("storage_blocks/cast_iron"),
 			NUGGET_BRONZE = forgeTag("nuggets/bronze"),
 			INGOT_BRONZE = forgeTag("ingots/bronze"),
-			BLOCK_BRONZE = forgeTag("blocks/bronze"),
+			BLOCK_BRONZE = forgeTag("storage_blocks/bronze"),
 			NUGGET_STEEL = forgeTag("nuggets/steel"),
 			INGOT_STEEL = forgeTag("ingots/steel"),
-			BLOCK_STEEL = forgeTag("blocks/steel"),
+			BLOCK_STEEL = forgeTag("storage_blocks/steel"),
 			AUTOCANNON_ROUND = createAndGenerateItemTag(CreateBigCannons.resource("autocannon_round"));
 		
 		public static TagKey<Item> createAndGenerateItemTag(ResourceLocation loc) {
