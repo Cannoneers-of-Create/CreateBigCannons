@@ -124,7 +124,10 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			this.setDeltaMovement(Vec3.ZERO);
 		}
 
-		if (!this.level.isClientSide && this.getControllingPassenger() instanceof Player player) {
+		if (!this.level.isClientSide
+			&& this.getControllingPassenger() instanceof Player player
+			&& this.cannonContraption != null
+			&& this.cannonContraption.getContraption() instanceof MountedAutocannonContraption) {
 			player.displayClientMessage(new TranslatableComponent("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate", this.getActualFireRate()), true);
 		}
 
