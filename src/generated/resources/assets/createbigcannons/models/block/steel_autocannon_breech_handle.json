@@ -1,5 +1,5 @@
 {
-  "parent": "createbigcannons:block/autocannon/breech",
+  "parent": "createbigcannons:block/autocannon/breech_handle",
   "textures": {
     "material": "createbigcannons:block/autocannon/steel_autocannon",
     "handle": "createbigcannons:block/autocannon/steel_autocannon_handle"

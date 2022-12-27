@@ -1,0 +1,7 @@
+{
+  "parent": "createbigcannons:block/autocannon/seat",
+  "textures": {
+    "side": "create:block/seat/side_brown",
+    "top": "create:block/seat/top_brown"
+  }
+}

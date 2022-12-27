@@ -1,28 +1,54 @@
 {
   "variants": {
-    "facing=down": {
+    "facing=down,handle=false": {
       "model": "createbigcannons:block/bronze_autocannon_breech",
       "x": 180
     },
-    "facing=up": {
+    "facing=up,handle=false": {
       "model": "createbigcannons:block/bronze_autocannon_breech"
     },
-    "facing=north": {
+    "facing=north,handle=false": {
       "model": "createbigcannons:block/bronze_autocannon_breech",
       "x": 90
     },
-    "facing=south": {
+    "facing=south,handle=false": {
       "model": "createbigcannons:block/bronze_autocannon_breech",
       "x": 90,
       "y": 180
     },
-    "facing=west": {
+    "facing=west,handle=false": {
       "model": "createbigcannons:block/bronze_autocannon_breech",
       "x": 90,
       "y": 270
     },
-    "facing=east": {
+    "facing=east,handle=false": {
       "model": "createbigcannons:block/bronze_autocannon_breech",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,handle=true": {
+      "model": "createbigcannons:block/bronze_autocannon_breech_handle",
+      "x": 180
+    },
+    "facing=up,handle=true": {
+      "model": "createbigcannons:block/bronze_autocannon_breech_handle"
+    },
+    "facing=north,handle=true": {
+      "model": "createbigcannons:block/bronze_autocannon_breech_handle",
+      "x": 90
+    },
+    "facing=south,handle=true": {
+      "model": "createbigcannons:block/bronze_autocannon_breech_handle",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,handle=true": {
+      "model": "createbigcannons:block/bronze_autocannon_breech_handle",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,handle=true": {
+      "model": "createbigcannons:block/bronze_autocannon_breech_handle",
       "x": 90,
       "y": 90
     }

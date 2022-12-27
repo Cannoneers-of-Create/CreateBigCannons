@@ -159,6 +159,11 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		return true;
 	}
 
+	private boolean hasHandle() {
+		StructureBlockInfo info = this.blocks.get(this.startPos);
+		return info != null && info.state.hasProperty(AutocannonBreechBlock.HANDLE) && info.state.getValue(AutocannonBreechBlock.HANDLE);
+	}
+
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, AutocannonMaterial material) {
 		AutocannonBlock cBlock = (AutocannonBlock) state.getBlock();
 		if (cBlock.getAutocannonMaterialInLevel(level, state, pos) != material) return false;
@@ -205,14 +210,17 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		ItemStack foundProjectile = breech.extractNextInput();
 		if (!(foundProjectile.getItem() instanceof AutocannonCartridgeItem round)) return;
 
-		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.initialOrientation.getOpposite())), 1.0f);
+		boolean handle = breech.getBlockState().getValue(AutocannonBreechBlock.HANDLE);
+
+		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(handle ? Direction.DOWN : this.initialOrientation.getOpposite())), 1.0f);
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
 		ItemStack ejectStack = round.getEmptyCartridge(foundProjectile);
 		if (!ejectStack.isEmpty()) {
 			ItemStack output = breech.insertOutput(ejectStack);
 			if (!output.isEmpty()) {
 				ItemEntity ejectEntity = new ItemEntity(level, ejectPos.x, ejectPos.y, ejectPos.z, ejectStack);
-				ejectEntity.setDeltaMovement(ejectPos.subtract(centerPos).normalize().scale(0.5));
+				Vec3 eject = ejectPos.subtract(centerPos).normalize();
+				ejectEntity.setDeltaMovement(eject.scale(handle ? 0.1 : 0.5));
 				level.addFreshEntity(ejectEntity);
 			}
 		}
@@ -294,7 +302,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	}
 
 	private boolean canFireAutonomously(AbstractContraptionEntity entity) {
-		return !(entity.getVehicle() instanceof CannonCarriageEntity carriage);
+		return !(entity.getVehicle() instanceof CannonCarriageEntity);
 	}
 
 	@Override

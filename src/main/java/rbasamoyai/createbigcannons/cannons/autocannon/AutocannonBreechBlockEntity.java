@@ -1,14 +1,18 @@
 package rbasamoyai.createbigcannons.cannons.autocannon;
 
+import com.jozufozu.flywheel.backend.instancing.InstancedRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +46,8 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 	private int fireRate = 7;
 	private int firingCooldown;
 	private int animateTicks = 5;
+	private DyeColor seat = null;
+	private boolean updateInstance = true;
 
 	private final Deque<ItemStack> inputBuffer = new LinkedList<>();
 	private ItemStack outputBuffer = ItemStack.EMPTY;
@@ -98,6 +104,28 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 		return Mth.sin(f * Mth.HALF_PI);
 	}
 
+	public void setSeatColor(DyeColor color) {
+		this.seat = color;
+		this.updateInstance = true;
+		this.notifyUpdate();
+	}
+
+	public DyeColor getSeatColor() { return this.seat; }
+
+	public boolean shouldUpdateInstance() {
+		if (this.updateInstance) {
+			this.updateInstance = false;
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void requestModelDataUpdate() {
+		super.requestModelDataUpdate();
+		if (!this.remove) DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> InstancedRenderDispatcher.enqueueUpdate(this));
+	}
+
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
@@ -105,12 +133,17 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 		this.firingCooldown = tag.getInt("Cooldown");
 		this.animateTicks = tag.getInt("AnimateTicks");
 		this.outputBuffer = tag.contains("Output") ? ItemStack.of(tag.getCompound("Output")) : ItemStack.EMPTY;
+		this.seat = DyeColor.byName(tag.getString("Seat"), null);
 
 		this.inputBuffer.clear();
 		ListTag inputTag = tag.getList("Input", Tag.TAG_COMPOUND);
 		for (int i = 0; i < inputTag.size(); ++i) {
 			this.inputBuffer.add(ItemStack.of(inputTag.getCompound(i)));
 		}
+
+		if (!clientPacket) return;
+		this.updateInstance = tag.contains("UpdateInstance");
+		if (!this.isVirtual()) this.requestModelDataUpdate();
 	}
 
 	@Override
@@ -120,12 +153,16 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 		tag.putInt("Cooldown", this.firingCooldown);
 		tag.putInt("AnimateTicks", this.animateTicks);
 		if (this.outputBuffer != null && !this.outputBuffer.isEmpty()) tag.put("Output", this.outputBuffer.serializeNBT());
+		if (this.seat != null) tag.putString("Seat", this.seat.getSerializedName());
 
 		if (!this.inputBuffer.isEmpty()) {
 			tag.put("Input", this.inputBuffer.stream()
 					.map(ItemStack::serializeNBT)
 					.collect(Collectors.toCollection(ListTag::new)));
 		}
+
+		if (!clientPacket) return;
+		if (this.updateInstance) tag.putBoolean("UpdateInstance", true);
 	}
 
 	public boolean isInputFull() { return this.inputBuffer.size() >= this.getQueueLimit(); }
