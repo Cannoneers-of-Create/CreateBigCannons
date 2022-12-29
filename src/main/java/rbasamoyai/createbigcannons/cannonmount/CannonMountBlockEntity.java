@@ -116,8 +116,18 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	
 	protected void applyRotation() {
 		if (this.mountedContraption == null) return;
-		this.mountedContraption.pitch = this.cannonPitch;
-		this.mountedContraption.yaw = this.cannonYaw;
+		if (this.mountedContraption.canBeTurnedByController(this)) {
+			this.mountedContraption.pitch = this.cannonPitch;
+			this.mountedContraption.yaw = this.cannonYaw;
+		} else {
+			this.cannonPitch = this.mountedContraption.pitch;
+			this.cannonYaw = this.mountedContraption.yaw;
+			this.prevPitch = this.cannonPitch;
+			this.prevYaw = this.cannonYaw;
+
+			this.mountedContraption.setXRot(this.mountedContraption.pitch);
+			this.mountedContraption.setYRot(this.mountedContraption.yaw);
+		}
 	}
 	
 	public void onRedstoneUpdate(boolean assemblyPowered, boolean prevAssemblyPowered, boolean firePowered, boolean prevFirePowered, int firePower) {

@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
@@ -94,6 +95,11 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 	}
 
 	@Override public boolean canBeStabilized(Direction direction, BlockPos pos) { return true; }
+
+	public boolean canBeTurnedByPassenger(Entity entity) { return false; }
+	public boolean canBeTurnedByController(ControlPitchContraption control) { return true; }
+
+	public BlockPos getSeatPos(Entity entity) { return null; }
 
 	@OnlyIn(Dist.CLIENT)
 	@Override public ContraptionLighter<?> makeLighter() { return new NonStationaryLighter<>(this); }

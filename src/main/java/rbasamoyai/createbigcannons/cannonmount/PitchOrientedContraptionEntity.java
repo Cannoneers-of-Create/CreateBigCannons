@@ -11,7 +11,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -110,6 +113,11 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			controller.attach(this);
 			if (this.level.isClientSide) this.setPos(this.getX(), this.getY(), this.getZ());
 		}
+
+		if (!this.level.isClientSide && !this.canBeTurnedByController(this.getController())) {
+			this.yaw = this.getYRot();
+			this.pitch = this.getXRot();
+		}
 	}
 
 	public void handleAnimation() {
@@ -169,5 +177,59 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		localPos = VecHelper.rotate(localPos, -this.getViewXRot(partialTicks), this.getInitialOrientation().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
 		return localPos;
 	}
+
+	public float getRotationCoefficient() {
+		return 0.75f;
+	}
+
+	@Override
+	public void onPassengerTurned(Entity entity) {
+		if (this.contraption instanceof AbstractMountedCannonContraption cannon && cannon.canBeTurnedByPassenger(entity)) {
+			Direction dir = this.getInitialOrientation();
+			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+			this.prevPitch = flag ? -entity.xRotO : entity.xRotO;
+			this.pitch = flag ? -entity.getXRot() : entity.getXRot();
+			this.prevYaw = entity.yRotO;
+			this.yaw = entity.getYRot();
+
+			entity.setYBodyRot(entity.getYRot());
+		}
+	}
+
+	@Override
+	public void addSittingPassenger(Entity passenger, int seatIndex) {
+		if (passenger instanceof Mob mob && mob.getLeashHolder() instanceof Player player) {
+			super.addSittingPassenger(player, seatIndex);
+		} else {
+			super.addSittingPassenger(passenger, seatIndex);
+		}
+	}
+
+	@Override
+	public Vec3 getPassengerPosition(Entity passenger, float partialTicks) {
+		if (passenger != this.getControllingPassenger() || !(this.contraption instanceof AbstractMountedCannonContraption cannon))
+			return super.getPassengerPosition(passenger, partialTicks);
+
+		BlockPos seat = cannon.getSeatPos(passenger);
+		if (seat == null) return null;
+		AABB bb = passenger.getBoundingBox();
+		double ySize = bb.getYsize();
+		return this.toGlobalVector(Vec3.atLowerCornerOf(seat)
+				.add(.5, passenger.getMyRidingOffset() + ySize - .65f, .5), partialTicks)
+				.add(VecHelper.getCenterOf(BlockPos.ZERO))
+				.subtract(0.5, ySize, 0.5);
+	}
+
+	@Nullable
+	@Override
+	public Entity getControllingPassenger() {
+		return this.getFirstPassenger() instanceof Player player ? player : null;
+	}
+
+	public boolean canBeTurnedByController(ControlPitchContraption control) {
+		return this.contraption instanceof AbstractMountedCannonContraption cannon && cannon.canBeTurnedByController(control);
+	}
+
+	public static float getRotationCap() { return 0.1f; }
 
 }

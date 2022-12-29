@@ -371,10 +371,17 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 		Direction dir = this.cannonContraption.getInitialOrientation();
 		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-		this.cannonContraption.prevPitch = flag ? this.xRotO : -this.xRotO;
-		this.cannonContraption.pitch = flag ? this.getXRot() : -this.getXRot();
-		this.cannonContraption.prevYaw = this.yRotO;
-		this.cannonContraption.yaw = this.getYRot();
+		if (this.cannonContraption.canBeTurnedByController(this)) {
+			this.cannonContraption.prevPitch = flag ? this.xRotO : -this.xRotO;
+			this.cannonContraption.pitch = flag ? this.getXRot() : -this.getXRot();
+			this.cannonContraption.prevYaw = this.yRotO;
+			this.cannonContraption.yaw = this.getYRot();
+		} else {
+			this.xRotO = flag ? this.cannonContraption.prevPitch : -this.cannonContraption.prevPitch;
+			this.setXRot(flag ? this.cannonContraption.pitch : -this.cannonContraption.pitch);
+			this.yRotO = this.cannonContraption.prevYaw;
+			this.setYRot(this.cannonContraption.yaw);
+		}
 	}
 
 	@Override
