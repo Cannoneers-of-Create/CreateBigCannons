@@ -195,7 +195,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	@Override
 	public void onPassengerTurned(Entity entity) {
 		if (this.contraption instanceof AbstractMountedCannonContraption cannon && cannon.canBeTurnedByPassenger(entity)) {
-			boolean flag = this.rotationFlag();
+			Direction dir = this.getInitialOrientation();
+			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
 			this.prevPitch = flag ? -entity.xRotO : entity.xRotO;
 			this.pitch = flag ? -entity.getXRot() : entity.getXRot();
 			this.prevYaw = entity.yRotO;
@@ -205,20 +206,13 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		}
 	}
 
-	private boolean rotationFlag() {
-		Direction dir = this.getInitialOrientation();
-		boolean directionCond = this.getController() instanceof CannonMountBlockEntity cmbe && cmbe.getBlockState().getValue(CannonMountBlock.HORIZONTAL_FACING) == dir
-				|| dir.getAxisDirection() == Direction.AxisDirection.POSITIVE;
-		return directionCond == (dir.getAxis() == Direction.Axis.X);
-	}
-
 	@Override
 	public void addSittingPassenger(Entity passenger, int seatIndex) {
 		if (passenger instanceof Mob mob && mob.getLeashHolder() instanceof Player player) {
 			this.addSittingPassenger(player, seatIndex);
 		}
-		passenger.setXRot(this.getXRot());
-		passenger.setYRot(this.getYRot());
+		passenger.setXRot(this.pitch);
+		passenger.setYRot(this.yaw);
 		super.addSittingPassenger(passenger, seatIndex);
 	}
 

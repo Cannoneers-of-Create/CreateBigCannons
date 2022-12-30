@@ -14,7 +14,6 @@ import com.simibubi.create.content.contraptions.base.KineticTileInstance;
 import com.simibubi.create.content.contraptions.base.flwdata.RotatingData;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LightLayer;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
 
@@ -25,17 +24,13 @@ public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEnt
 	private final RotatingData pitchShaft;
 	private final RotatingData yawShaft;
 	
-	private final CannonMountBlockEntity cannonMount;
-	
 	public CannonMountInstance(MaterialManager dispatcher, CannonMountBlockEntity tile) {
 		super(dispatcher, tile);
-		this.cannonMount = tile;
 		
 		int blockLight = this.world.getBrightness(LightLayer.BLOCK, this.pos);
 		int skyLight = this.world.getBrightness(LightLayer.SKY, this.pos);
-		
-		BlockState blockState = this.cannonMount.getBlockState();
-		Direction facing = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+
+		Direction facing = this.blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 		Direction.Axis pitchAxis = facing.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
 		
 		Material<RotatingData> rotatingMaterial = this.getRotatingMaterial();
@@ -43,13 +38,13 @@ public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEnt
 		
 		this.rotatingMount = dispatcher.defaultCutout()
 				.material(Materials.ORIENTED)
-				.getModel(CBCBlockPartials.ROTATING_MOUNT, blockState)
+				.getModel(CBCBlockPartials.ROTATING_MOUNT, this.blockState)
 				.createInstance();
 		this.rotatingMount.setPosition(this.getInstancePosition().above());
 		
 		this.rotatingMountShaft = dispatcher.defaultCutout()
 				.material(Materials.ORIENTED)
-				.getModel(CBCBlockPartials.CANNON_CARRIAGE_AXLE, blockState, Direction.NORTH)
+				.getModel(CBCBlockPartials.CANNON_CARRIAGE_AXLE, this.blockState, Direction.NORTH)
 				.createInstance();
 		
 		this.rotatingMountShaft.setPosition(this.getInstancePosition().above(2));
@@ -84,12 +79,11 @@ public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEnt
 	}
 	
 	private void transformModels() {
-		BlockState blockState = this.cannonMount.getBlockState();
-		Direction facing = blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+		Direction facing = this.blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 		Direction.Axis pitchAxis = facing.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
 		
 		this.updateRotation(this.pitchShaft, pitchAxis, this.getTileSpeed());
-		this.updateRotation(this.yawShaft, Direction.Axis.Y, this.cannonMount.getYawSpeed());
+		this.updateRotation(this.yawShaft, Direction.Axis.Y, this.blockEntity.getYawSpeed());
 	}
 
 	@Override
@@ -97,13 +91,12 @@ public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEnt
 		this.transformModels();
 		float partialTicks = AnimationTickHolder.getPartialTicks();
 		
-		float yaw = this.cannonMount.getYawOffset(partialTicks);
+		float yaw = this.blockEntity.getYawOffset(partialTicks);
 		Quaternion qyaw = Vector3f.YN.rotationDegrees(yaw);
 		this.rotatingMount.setRotation(qyaw);
-		float pitch = this.cannonMount.getPitchOffset(partialTicks);
-		Direction facing = this.cannonMount.getContraptionDirection();
-		Direction mountFacing = this.blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
-		boolean flag = facing.getAxisDirection() == mountFacing.getAxisDirection();
+		float pitch = this.blockEntity.getPitchOffset(partialTicks);
+		Direction facing = this.blockEntity.getContraptionDirection();
+		boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
 		Quaternion qpitch = Vector3f.XP.rotationDegrees(flag ? -pitch : pitch);
 		Quaternion qyaw1 = qyaw.copy();
 		qyaw1.mul(qpitch);

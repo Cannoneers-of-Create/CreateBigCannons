@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -260,7 +261,14 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			} else {
 				behavior.removeItem();
 				if (canFail) {
-					// TODO: fail
+					Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
+					level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2, Explosion.BlockInteraction.NONE);
+					for (int i = 0; i < 10; ++i) {
+						BlockPos pos = this.startPos.relative(this.initialOrientation, i);
+						this.blocks.remove(pos);
+					}
+					ControlPitchContraption controller = entity.getController();
+					if (controller != null) controller.disassemble();
 				}
 				return;
 			}

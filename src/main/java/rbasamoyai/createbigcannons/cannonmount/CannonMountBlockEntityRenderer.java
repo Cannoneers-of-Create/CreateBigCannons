@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
 
 public class CannonMountBlockEntityRenderer extends KineticTileEntityRenderer {
@@ -46,7 +45,8 @@ public class CannonMountBlockEntityRenderer extends KineticTileEntityRenderer {
 		rotatingMount.translate(0.0d, 1.0d, 0.0d).light(light).rotateCentered(qyaw).renderInto(ms, solidBuf);
 		
 		float pitch = cmbe.getPitchOffset(partialTicks);
-		boolean flag = cmbe.getContraptionDirection().getAxisDirection() == state.getValue(BlockStateProperties.HORIZONTAL_FACING).getAxisDirection();
+		Direction facing = cmbe.getContraptionDirection();
+		boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
 		Quaternion qpitch = Vector3f.XP.rotationDegrees(flag ? -pitch : pitch);
 		Quaternion qyaw1 = qyaw.copy();
 		qyaw1.mul(qpitch);

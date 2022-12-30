@@ -87,8 +87,9 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 			}
 			return;
 		}
-		
-		if (!(this.mountedContraption != null && this.mountedContraption.isStalled())) {
+
+		boolean flag = this.mountedContraption != null && this.mountedContraption.canBeTurnedByController(this);
+		if (!(this.mountedContraption != null && this.mountedContraption.isStalled()) && flag) {
 			float yawSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);
 			float pitchSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
 			float newYaw = this.cannonYaw + yawSpeed;
@@ -99,9 +100,9 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 				this.cannonPitch = 0.0f;
 			} else {
 				Direction dir = this.getContraptionDirection();
-				boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-				float cu = flag ? this.getMaxElevate() : this.getMaxDepress();
-				float cd = flag ? -this.getMaxDepress() : -this.getMaxElevate();
+				boolean flag1 = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+				float cu = flag1 ? this.getMaxElevate() : this.getMaxDepress();
+				float cd = flag1 ? -this.getMaxDepress() : -this.getMaxElevate();
 				this.cannonPitch = Mth.clamp(newPitch % 360.0f, cd, cu);
 			}
 		}
@@ -122,6 +123,8 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		} else {
 			this.cannonPitch = this.mountedContraption.pitch;
 			this.cannonYaw = this.mountedContraption.yaw;
+			this.prevPitch = this.cannonPitch;
+			this.prevYaw = this.cannonYaw;
 
 			this.mountedContraption.setXRot(this.mountedContraption.pitch);
 			this.mountedContraption.setYRot(this.mountedContraption.yaw);
@@ -217,7 +220,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.running = true;
 		
 		mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
-		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, this.getBlockState().getValue(HORIZONTAL_FACING), this);
+		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing1, this);
 		this.mountedContraption = contraptionEntity;
 		this.resetContraptionToOffset();
 		this.level.addFreshEntity(contraptionEntity);
@@ -252,9 +255,13 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	protected void resetContraptionToOffset() {
 		if (this.mountedContraption == null) return;
 		this.cannonPitch = 0;
-		this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
+		this.cannonYaw = this.getContraptionDirection().toYRot();
+
 		this.mountedContraption.pitch = this.cannonPitch;
 		this.mountedContraption.yaw = this.cannonYaw;
+		this.mountedContraption.setXRot(this.cannonPitch);
+		this.mountedContraption.setYRot(this.cannonYaw);
+
 		Vec3 vec = Vec3.atBottomCenterOf((this.worldPosition.above(2)));
 		this.mountedContraption.setPos(vec);
 	}

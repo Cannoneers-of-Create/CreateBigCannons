@@ -84,10 +84,10 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Au
         level.setBlock(pos, newState, 3);
         AutocannonBreechBlockEntity autocannon1 = this.getTileEntity(level, pos);
         if (autocannon1 != null) {
-            boolean previouslyConnected = autocannon.cannonBehavior().isConnectedTo(facing.getOpposite());
-            autocannon1.cannonBehavior().setConnectedFace(facing.getOpposite(), previouslyConnected);
-            if (level.getBlockEntity(pos.relative(facing.getOpposite())) instanceof AutocannonBlockEntity autocannon2) {
-                autocannon2.cannonBehavior().setConnectedFace(facing, previouslyConnected);
+            boolean previouslyConnected = autocannon.cannonBehavior().isConnectedTo(facing);
+            autocannon1.cannonBehavior().setConnectedFace(facing, previouslyConnected);
+            if (level.getBlockEntity(pos.relative(facing)) instanceof AutocannonBlockEntity autocannon2) {
+                autocannon2.cannonBehavior().setConnectedFace(facing.getOpposite(), previouslyConnected);
             }
 
             if (!newState.getValue(HANDLE) ) {
