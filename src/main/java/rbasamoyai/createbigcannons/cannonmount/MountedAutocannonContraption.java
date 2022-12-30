@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.cannonmount;
 
-import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionType;
 import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
@@ -30,7 +29,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.*;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
@@ -288,6 +286,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		CBCNetwork.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new ClientboundAnimateCannonContraptionPacket(entity));
 
 		for (ServerPlayer player : level.players()) {
+			if (entity.getControllingPassenger() == player) continue;
 			level.sendParticles(player, new CannonPlumeParticleData(0.1f), true, particlePos.x, particlePos.y, particlePos.z, 0, vec1.x, vec1.y, vec1.z, 1.0f);
 		}
 		level.playSound(null, spawnPos.x, spawnPos.y, spawnPos.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0f, 2.0f);
@@ -304,7 +303,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	public void tick(Level level, PitchOrientedContraptionEntity entity) {
 		super.tick(level, entity);
 
-		if (level instanceof ServerLevel slevel && this.canFireWithoutPlayer(entity)) this.fireShot(slevel, entity);
+		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController())) this.fireShot(slevel, entity);
 
 		for (Map.Entry<BlockPos, BlockEntity> entry : this.presentTileEntities.entrySet()) {
 			if (entry.getValue() instanceof IAutocannonBlockEntity autocannon) autocannon.tickFromContraption(level, entity, entry.getKey());
@@ -316,15 +315,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		return entity == this.entity.getControllingPassenger() ? this.startPos.relative(this.initialOrientation.getOpposite()) : super.getSeatPos(entity);
 	}
 
-	private boolean canFireWithoutPlayer(AbstractContraptionEntity entity) {
-		return /*!this.isHandle &&*/ !(entity.getVehicle() instanceof CannonCarriageEntity);
-	}
-
 	@Override public boolean canBeTurnedByController(ControlPitchContraption control) { return !this.isHandle; }
 
 	@Override public boolean canBeTurnedByPassenger(Entity entity) {
 		return this.isHandle && entity instanceof Player;
 	}
+	@Override public boolean canBeFiredOnController(ControlPitchContraption control) { return !this.isHandle && this.entity.getVehicle() == control; }
 
 	@Override
 	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {

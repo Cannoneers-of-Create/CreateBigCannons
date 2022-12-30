@@ -122,8 +122,6 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		} else {
 			this.cannonPitch = this.mountedContraption.pitch;
 			this.cannonYaw = this.mountedContraption.yaw;
-			this.prevPitch = this.cannonPitch;
-			this.prevYaw = this.cannonYaw;
 
 			this.mountedContraption.setXRot(this.mountedContraption.pitch);
 			this.mountedContraption.setYRot(this.mountedContraption.yaw);
@@ -255,7 +253,8 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		if (this.mountedContraption == null) return;
 		this.cannonPitch = 0;
 		this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
-		this.applyRotation();
+		this.mountedContraption.pitch = this.cannonPitch;
+		this.mountedContraption.yaw = this.cannonYaw;
 		Vec3 vec = Vec3.atBottomCenterOf((this.worldPosition.above(2)));
 		this.mountedContraption.setPos(vec);
 	}
@@ -327,10 +326,11 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	@Override public void onStall() { if (!this.level.isClientSide) this.sendData(); }
 	@Override public BlockPos getControllerBlockPos() { return this.worldPosition; }
 
-	public boolean isAttachedTo(PitchOrientedContraptionEntity contraption) {
-		return this.mountedContraption == contraption;
+	@Override
+	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).above();
 	}
-	
+
 	@Override public AssemblyException getLastAssemblyException() { return this.lastException; }
 	
 	public static AssemblyException cannonBlockOutsideOfWorld(BlockPos pos) {

@@ -11,8 +11,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
@@ -26,6 +28,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
@@ -37,7 +40,7 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Au
 
     public AutocannonBreechBlock(Properties properties, AutocannonMaterial material) {
         super(properties, material);
-        this.registerDefaultState(this.getStateDefinition().any().setValue(HANDLE, false));
+        this.registerDefaultState(this.defaultBlockState().setValue(HANDLE, false));
     }
 
     @Override
@@ -77,13 +80,28 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Au
         AutocannonBlockEntity autocannon = this.getTileEntity(level, pos);
         Direction facing = this.getFacing(state);
 
-        level.setBlock(context.getClickedPos(), state.cycle(HANDLE), 3);
-        AutocannonBlockEntity autocannon1 = this.getTileEntity(level, pos);
+        BlockState newState = state.cycle(HANDLE);
+        level.setBlock(pos, newState, 3);
+        AutocannonBreechBlockEntity autocannon1 = this.getTileEntity(level, pos);
         if (autocannon1 != null) {
             boolean previouslyConnected = autocannon.cannonBehavior().isConnectedTo(facing.getOpposite());
             autocannon1.cannonBehavior().setConnectedFace(facing.getOpposite(), previouslyConnected);
             if (level.getBlockEntity(pos.relative(facing.getOpposite())) instanceof AutocannonBlockEntity autocannon2) {
                 autocannon2.cannonBehavior().setConnectedFace(facing, previouslyConnected);
+            }
+
+            if (!newState.getValue(HANDLE) ) {
+                DyeColor seat = autocannon1.getSeatColor();
+                if (seat != null) {
+                    ItemStack drop = AllBlocks.SEATS.get(seat).asStack();
+                    Player player = context.getPlayer();
+                    if (!player.addItem(drop) && !player.isCreative()) {
+                        Vec3 spawnLoc = Vec3.atCenterOf(pos);
+                        ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, drop);
+                        level.addFreshEntity(dropEntity);
+                    }
+                }
+                autocannon1.setSeatColor(null);
             }
         }
         return InteractionResult.CONSUME;
@@ -105,7 +123,15 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Au
                 return InteractionResult.sidedSuccess(level.isClientSide);
             } else if (stack.isEmpty() && breech.getSeatColor() != null) {
                 if (!level.isClientSide) {
-                    player.addItem(AllBlocks.SEATS.get(breech.getSeatColor()).asStack());
+                    DyeColor seat = breech.getSeatColor();
+                    if (seat != null) {
+                        ItemStack drop = AllBlocks.SEATS.get(seat).asStack();
+                        if (!player.addItem(drop) && !player.isCreative()) {
+                            Vec3 spawnLoc = Vec3.atCenterOf(pos);
+                            ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, drop);
+                            level.addFreshEntity(dropEntity);
+                        }
+                    }
                     breech.setSeatColor(null);
                     level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0f, 1.0f);
                 }
@@ -114,4 +140,5 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Au
         }
         return super.use(state, level, pos, player, hand, result);
     }
+
 }

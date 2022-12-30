@@ -9,8 +9,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -27,7 +30,7 @@ import rbasamoyai.createbigcannons.CBCEntityTypes;
 public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	private BlockPos controllerPos;
-	private boolean updatesOwnRotation = true;
+	private boolean updatesOwnRotation;
 	private LazyOptional<IItemHandler> itemOptional;
 
 	public PitchOrientedContraptionEntity(EntityType<? extends PitchOrientedContraptionEntity> type, Level level) {
@@ -142,6 +145,13 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	}
 
 	@Override
+	public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+		float prevYaw = this.yaw;
+		super.onSyncedDataUpdated(key);
+		this.yaw = prevYaw;
+	}
+
+	@Override
 	public void applyLocalTransforms(PoseStack stack, float partialTicks) {
 		float initialYaw = this.getInitialYaw();
 		float pitch = this.getViewXRot(partialTicks);
@@ -185,8 +195,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	@Override
 	public void onPassengerTurned(Entity entity) {
 		if (this.contraption instanceof AbstractMountedCannonContraption cannon && cannon.canBeTurnedByPassenger(entity)) {
-			Direction dir = this.getInitialOrientation();
-			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+			boolean flag = this.rotationFlag();
 			this.prevPitch = flag ? -entity.xRotO : entity.xRotO;
 			this.pitch = flag ? -entity.getXRot() : entity.getXRot();
 			this.prevYaw = entity.yRotO;
@@ -196,13 +205,21 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		}
 	}
 
+	private boolean rotationFlag() {
+		Direction dir = this.getInitialOrientation();
+		boolean directionCond = this.getController() instanceof CannonMountBlockEntity cmbe && cmbe.getBlockState().getValue(CannonMountBlock.HORIZONTAL_FACING) == dir
+				|| dir.getAxisDirection() == Direction.AxisDirection.POSITIVE;
+		return directionCond == (dir.getAxis() == Direction.Axis.X);
+	}
+
 	@Override
 	public void addSittingPassenger(Entity passenger, int seatIndex) {
 		if (passenger instanceof Mob mob && mob.getLeashHolder() instanceof Player player) {
-			super.addSittingPassenger(player, seatIndex);
-		} else {
-			super.addSittingPassenger(passenger, seatIndex);
+			this.addSittingPassenger(player, seatIndex);
 		}
+		passenger.setXRot(this.getXRot());
+		passenger.setYRot(this.getYRot());
+		super.addSittingPassenger(passenger, seatIndex);
 	}
 
 	@Override
@@ -220,6 +237,12 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 				.subtract(0.5, ySize, 0.5);
 	}
 
+	@Override
+	public Vec3 getDismountLocationForPassenger(LivingEntity entityLiving) {
+		ControlPitchContraption controller = this.getController();
+		return controller != null ? Vec3.atCenterOf(controller.getDismountPositionForContraption(this)) : super.getDismountLocationForPassenger(entityLiving);
+	}
+
 	@Nullable
 	@Override
 	public Entity getControllingPassenger() {
@@ -228,6 +251,10 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	public boolean canBeTurnedByController(ControlPitchContraption control) {
 		return this.contraption instanceof AbstractMountedCannonContraption cannon && cannon.canBeTurnedByController(control);
+	}
+
+	public void tryFiringShot() {
+		if (this.contraption instanceof AbstractMountedCannonContraption cannon && this.level instanceof ServerLevel slevel) cannon.fireShot(slevel, this);
 	}
 
 	public static float getRotationCap() { return 0.1f; }

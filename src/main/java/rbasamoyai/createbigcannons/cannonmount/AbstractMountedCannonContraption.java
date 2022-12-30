@@ -98,6 +98,7 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 
 	public boolean canBeTurnedByPassenger(Entity entity) { return false; }
 	public boolean canBeTurnedByController(ControlPitchContraption control) { return true; }
+	public boolean canBeFiredOnController(ControlPitchContraption control) { return true; }
 
 	public BlockPos getSeatPos(Entity entity) { return null; }
 

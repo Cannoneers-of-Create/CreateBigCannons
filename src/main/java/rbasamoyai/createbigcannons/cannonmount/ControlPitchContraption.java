@@ -11,6 +11,8 @@ public interface ControlPitchContraption {
 
     void disassemble();
 
+    BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce);
+
     public interface Block extends ControlPitchContraption {
         BlockPos getControllerBlockPos();
     }

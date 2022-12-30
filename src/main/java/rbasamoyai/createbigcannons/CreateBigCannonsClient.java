@@ -7,12 +7,14 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
+import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.event.TickEvent;
@@ -20,6 +22,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticle;
 import rbasamoyai.createbigcannons.cannonmount.CannonSmokeParticle;
+import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlobParticle;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
@@ -35,7 +38,7 @@ public class CreateBigCannonsClient {
 	private static final String KEY_ROOT = "key." + CreateBigCannons.MOD_ID;
 	private static final String KEY_CATEGORY = KEY_ROOT + ".category";
 	public static final KeyMapping PITCH_MODE = new KeyMapping(KEY_ROOT + ".pitch_mode", InputConstants.MOUSE_BUTTON_LEFT, KEY_CATEGORY);
-	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.KEY_F, KEY_CATEGORY);
+	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.MOUSE_BUTTON_LEFT, KEY_CATEGORY);
 
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
@@ -46,6 +49,7 @@ public class CreateBigCannonsClient {
 		forgeEventBus.addListener(CreateBigCannonsClient::getFogDensity);
 		forgeEventBus.addListener(CreateBigCannonsClient::onClientGameTick);
 		forgeEventBus.addListener(CreateBigCannonsClient::onScrollMouse);
+		forgeEventBus.addListener(CreateBigCannonsClient::onFovModify);
 	}
 	
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
@@ -134,11 +138,13 @@ public class CreateBigCannonsClient {
 		if (mc.player.getVehicle() instanceof CannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
 			boolean isPitching = CreateBigCannonsClient.PITCH_MODE.isDown();
-			boolean isFiring = CreateBigCannonsClient.FIRE_CONTROLLED_CANNON.isDown();
 			carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
-			mc.player.handsBusy |= input.left | input.right | input.up | input.down | isFiring;
+			mc.player.handsBusy |= input.left | input.right | input.up | input.down;
+		}
 
-			if (isFiring) CBCNetwork.INSTANCE.sendToServer(new ServerboundFiringActionPacket());
+		if (CreateBigCannonsClient.FIRE_CONTROLLED_CANNON.isDown() && isControllingCannon(mc.player)) {
+			mc.player.handsBusy = true;
+			CBCNetwork.INSTANCE.sendToServer(new ServerboundFiringActionPacket());
 		}
 	}
 
@@ -156,6 +162,17 @@ public class CreateBigCannonsClient {
 				if (evt.isCancelable()) evt.setCanceled(true);
 			}
 		}
+	}
+
+	public static void onFovModify(FOVModifierEvent evt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.player == null || !mc.options.getCameraType().isFirstPerson()) return;
+		if (mc.options.keyUse.isDown() && isControllingCannon(mc.player)) evt.setNewfov(evt.getFov() * 0.5f);
+	}
+
+	private static boolean isControllingCannon(Entity entity) {
+		Entity vehicle = entity.getVehicle();
+		return vehicle instanceof CannonCarriageEntity || vehicle instanceof PitchOrientedContraptionEntity;
 	}
 	
 }

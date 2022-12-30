@@ -137,7 +137,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	public void tryFiringShot() {
 		if (this.level instanceof ServerLevel slevel && this.cannonContraption != null) {
 			Contraption contraption = this.cannonContraption.getContraption();
-			if (contraption instanceof AbstractMountedCannonContraption cannon) {
+			if (contraption instanceof AbstractMountedCannonContraption cannon && cannon.canBeFiredOnController(this)) {
 				if (this.getControllingPassenger() instanceof Player player) {
 					if (cannon instanceof MountedAutocannonContraption autocannon) {
 						autocannon.getItemOptional().ifPresent(h -> {
@@ -471,6 +471,11 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		poce.startRiding(this);
 		this.cannonContraption = poce;
 		this.positionRider(poce);
+	}
+
+	@Override
+	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+		return this.blockPosition().relative(this.getDirection().getOpposite()).above();
 	}
 
 	@Override public void onStall() {}

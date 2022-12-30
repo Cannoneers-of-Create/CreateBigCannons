@@ -113,8 +113,8 @@ public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEnt
 	@Override
 	public void updateLight() {
 		super.updateLight();
-		this.relight(this.pos, this.rotatingMount);
-		this.relight(this.pos, this.rotatingMountShaft);
+		this.relight(this.pos.relative(Direction.UP), this.rotatingMount);
+		this.relight(this.pos.relative(Direction.UP, 2), this.rotatingMountShaft);
 		this.relight(this.pos, this.pitchShaft);
 		this.relight(this.pos, this.yawShaft);
 	}
