@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/steel"
+    },
+    "S": {
+      "item": "create:shaft"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:steel_screw_lock"
+  }
+}

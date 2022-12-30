@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:cast_iron_block",
+    {
+      "id": "createdeco:cast_iron_block",
+      "required": false
+    }
+  ]
+}

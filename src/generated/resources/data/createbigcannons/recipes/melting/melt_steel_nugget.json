@@ -1,0 +1,16 @@
+{
+  "type": "createbigcannons:melting",
+  "ingredients": [
+    {
+      "tag": "forge:nuggets/steel"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "createbigcannons:molten_steel",
+      "amount": 10
+    }
+  ],
+  "processingTime": 20,
+  "heatRequirement": "heated"
+}

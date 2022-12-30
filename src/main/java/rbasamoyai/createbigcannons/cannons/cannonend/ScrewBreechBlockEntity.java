@@ -6,14 +6,15 @@ import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock.OpenState;
 
 public class ScrewBreechBlockEntity extends KineticTileEntity implements ICannonBlockEntity {
 
@@ -44,13 +45,27 @@ public class ScrewBreechBlockEntity extends KineticTileEntity implements ICannon
 			this.openProgress = Mth.clamp(this.openProgress + progress, 0.0f, 1.0f);
 		}
 		
-		OpenState openState = this.getBlockState().getValue(ScrewBreechBlock.OPEN);
-		if (this.openProgress <= 0 && openState != OpenState.CLOSED) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.CLOSED), 3);
-		} else if (this.openProgress >= 1 && openState != OpenState.OPEN) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.OPEN), 3);
-		} else if (this.openProgress > 0 && this.openProgress < 1 && openState != OpenState.PARTIAL) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, OpenState.PARTIAL), 3);
+		CannonEnd openState = this.getBlockState().getValue(ScrewBreechBlock.OPEN);
+		Direction facing = this.getBlockState().getValue(BlockStateProperties.FACING).getOpposite();
+		if (this.openProgress <= 0 && openState != CannonEnd.CLOSED) {
+			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, CannonEnd.CLOSED), 3);
+			this.cannonBehavior.setConnectedFace(facing, true);
+			if (this.level.getBlockEntity(this.worldPosition.relative(facing)) instanceof ICannonBlockEntity cbe) {
+				cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), true);
+			}
+		} else if (this.openProgress >= 1 && openState != CannonEnd.OPEN) {
+			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, CannonEnd.OPEN), 3);
+			this.cannonBehavior.setConnectedFace(facing, false);
+			if (this.level.getBlockEntity(this.worldPosition.relative(facing)) instanceof ICannonBlockEntity cbe) {
+				cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), false);
+			}
+		} else if (this.openProgress > 0 && this.openProgress < 1 && openState != CannonEnd.PARTIAL) {
+			boolean previouslyConnected = this.cannonBehavior.isConnectedTo(facing);
+			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, CannonEnd.PARTIAL), 3);
+			this.cannonBehavior.setConnectedFace(facing, previouslyConnected);
+			if (this.level.getBlockEntity(this.worldPosition.relative(facing)) instanceof ICannonBlockEntity cbe) {
+				cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), previouslyConnected);
+			}
 		}
 	}
 	
@@ -61,6 +76,9 @@ public class ScrewBreechBlockEntity extends KineticTileEntity implements ICannon
 	public float getRenderedBlockOffset(float partialTicks) {
 		return Mth.clamp(this.openProgress + this.getOpeningSpeed() * partialTicks, 0.0f, 1.0f);
 	}
+	
+	public float getOpenProgress() { return this.openProgress; }
+	public void setOpenProgress(float openProgress) { this.openProgress = openProgress; }
 	
 	@Override
 	protected void write(CompoundTag compound, boolean clientPacket) {

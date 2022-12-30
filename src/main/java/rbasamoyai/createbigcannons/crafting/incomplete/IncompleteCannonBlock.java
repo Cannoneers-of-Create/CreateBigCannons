@@ -12,5 +12,6 @@ public interface IncompleteCannonBlock {
 	
 	List<ItemLike> requiredItems();
 	int progress(BlockState state);
+	BlockState getCompleteBlockState(BlockState state);
 	
 }

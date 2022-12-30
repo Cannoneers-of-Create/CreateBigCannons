@@ -7,12 +7,24 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Fuze",
+                  "target": "BlockEntityTag.Fuze",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
           "name": "createbigcannons:he_shell"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ]
     }

@@ -6,13 +6,16 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "createbigcannons:bronze_cannon_end"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:tag",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 10.0,
+              "add": false
+            }
+          ],
+          "name": "forge:nuggets/bronze",
+          "expand": true
         }
       ]
     }

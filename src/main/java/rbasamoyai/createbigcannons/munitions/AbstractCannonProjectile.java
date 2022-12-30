@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.munitions;
 
 import com.mojang.math.Constants;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -9,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -16,20 +16,25 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCTags;
+import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile {
 
-	private static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
+	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Byte> BREAKTHROUGH_POWER = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	protected int inGroundTime = 0;
+	protected float damage = 50;
 	
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
@@ -51,7 +56,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		} else {
 			this.inGroundTime = 0;
 			if (!this.isNoGravity()) {
-				this.setDeltaMovement(this.getDeltaMovement().add(0.0f, -0.05f, 0.0f));
+				this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
 			}
 		}
 		
@@ -97,10 +102,11 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		super.onHitEntity(result);
 		if (!this.level.isClientSide) {
 			Entity entity = result.getEntity();
-			if (entity instanceof AbstractCannonProjectile) return;
+			if (entity instanceof Projectile) return;
 			
-			entity.setDeltaMovement(this.getDeltaMovement().scale(2.0f));
-			entity.hurt(DamageSource.thrown(this, null), 50);
+			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
+			DamageSource source = DamageSource.thrown(this, null).bypassArmor();
+			entity.hurt(source, this.damage);
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
 			
 			if (result.getEntity().isAlive()) {
@@ -111,38 +117,58 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			}
 		}
 	}
+
+	protected float getKnockback(Entity target) { return 2.0f; }
 	
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		if (!this.level.isClientSide) {
 			Vec3 hitLoc = result.getLocation();
-			byte breakthroughPower = this.getBreakthroughPower();
-			if (breakthroughPower > 0) {
+			
+			if (this.canBreakBlock(result)) {
 				Vec3 currentVel = this.getDeltaMovement();
-				
-				Explosion explode = this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.DESTROY);
-				this.setDeltaMovement(currentVel);
-				this.setBreakthroughPower((byte)(breakthroughPower - 1));
-				
 				BlockPos pos = result.getBlockPos();
-				BlockState remainingBlock = this.level.getBlockState(pos);
-				if (!remainingBlock.isAir()) {
-					this.setBreakthroughPower((byte) Math.max(0, this.getBreakthroughPower() - 9));
-					if (remainingBlock.getDestroySpeed(this.level, pos) != -1.0) {
-						remainingBlock.onBlockExploded(this.level, pos, explode);
-					} else {
-						this.setBreakthroughPower((byte) 0);
-					}
+				BlockState oldState = this.level.getBlockState(pos);
+				this.level.destroyBlock(pos, false);
+				this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, this.getPenetratingExplosionPower(), Explosion.BlockInteraction.DESTROY);
+				this.setDeltaMovement(currentVel);
+				this.setPenetrationPoints(result, oldState);
+			} else {
+				if (CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE) {
+					this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.NONE);
 				}
-			}
-			if (this.getBreakthroughPower() <= 0) {
 				this.setInGround(true);
 				this.setPos(hitLoc);
+				this.setBreakthroughPower((byte) 0);
 			}
 		}
 	}
-	
+
+	protected boolean canBreakBlock(BlockHitResult result) {
+		if (this.getBreakthroughPower() <= 0) return false;
+		BlockPos pos = result.getBlockPos();
+		BlockState remainingBlock = this.level.getBlockState(pos);
+		return !remainingBlock.is(this.blockingTag()) && remainingBlock.getDestroySpeed(this.level, pos) != -1.0;
+	}
+
+	protected void setPenetrationPoints(BlockHitResult result, BlockState hitBlock) {
+		boolean resistant = hitBlock.is(this.resistantTag()) || !hitBlock.is(this.noResistanceTag()) && this.isResistantFallback(result, hitBlock);
+		this.setBreakthroughPower((byte)(this.getBreakthroughPower() - (resistant ? 3 : 1)));
+	}
+
+	protected TagKey<Block> noResistanceTag() { return CBCTags.BlockCBC.BIG_CANNON_NO_RESISTANCE; }
+	protected TagKey<Block> resistantTag() { return CBCTags.BlockCBC.BIG_CANNON_RESISTANT; }
+	protected TagKey<Block> blockingTag() { return CBCTags.BlockCBC.BIG_CANNON_BLOCKING; }
+
+	protected boolean isResistantFallback(BlockHitResult result, BlockState hitBlock) {
+		return false;
+	}
+
+	protected float getPenetratingExplosionPower() { return 2; }
+
+	@Override public boolean hurt(DamageSource source, float damage) { return false; }
+
 	@Override
 	protected void defineSynchedData() {
 		this.entityData.define(ID_FLAGS, (byte) 0);
@@ -168,11 +194,17 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
+		tag.putByte("Power", this.getBreakthroughPower());
+		tag.putBoolean("InGround", this.isInGround());
+		tag.putFloat("Damage", this.damage);
 	}
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
+		this.setBreakthroughPower(tag.getByte("Power"));
+		this.setInGround(tag.getBoolean("InGround"));
+		this.damage = tag.getFloat("Damage");
 	}
 	
 	public void setBreakthroughPower(byte power) {
@@ -180,7 +212,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	}
 	
 	public byte getBreakthroughPower() {
-		return this.entityData.get(BREAKTHROUGH_POWER);
+		return CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE ? 0 : this.entityData.get(BREAKTHROUGH_POWER);
 	}
 
 	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
@@ -191,21 +223,20 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 				.sized(0.8f, 0.8f);
 	}
 	
-	@Override
-	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return 0.4f;
+	@Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
+		return dimensions.height * 0.5f;
 	}
-	
-	@Override
-	protected float getInertia() {
+	@Override protected float getInertia() {
 		return 0.99f;
 	}
+	protected float getGravity() { return -0.05f; }
 	
-	@Override
-	protected ParticleOptions getTrailParticle() {
+	@Override protected ParticleOptions getTrailParticle() {
 		return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
 	}
 	
 	public abstract BlockState getRenderedBlockState();
+
+	public void setChargePower(float power) {}
 	
 }

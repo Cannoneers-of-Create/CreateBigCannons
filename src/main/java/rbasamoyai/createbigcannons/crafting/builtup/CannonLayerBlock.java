@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
+import java.util.function.Supplier;
+
 import com.simibubi.create.foundation.block.ITE;
 
 import net.minecraft.core.BlockPos;
@@ -14,9 +16,9 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class CannonLayerBlock extends CannonBaseBlock implements ITE<LayeredCannonBlockEntity> {
 
-	private final CannonCastShape shape;
+	private final Supplier<CannonCastShape> shape;
 	
-	public CannonLayerBlock(Properties properties, CannonMaterial material, CannonCastShape shape) {
+	public CannonLayerBlock(Properties properties, CannonMaterial material, Supplier<CannonCastShape> shape) {
 		super(properties, material);
 		this.shape = shape;
 	}
@@ -25,11 +27,11 @@ public class CannonLayerBlock extends CannonBaseBlock implements ITE<LayeredCann
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean dropItems) {
 		if (level.getBlockEntity(pos) instanceof LayeredCannonBlockEntity layered) {
 			layered.setBaseMaterial(this.getCannonMaterial());
-			layered.setLayer(this.shape, this);
+			layered.setLayer(this.shape.get(), this);
 		}
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return this.shape; }
+	@Override public CannonCastShape getCannonShape() { return this.shape.get(); }
 	@Override public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return CannonEnd.CLOSED; }
 	@Override public boolean isComplete(BlockState state) { return false; }
 	

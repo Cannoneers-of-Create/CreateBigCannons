@@ -22,19 +22,25 @@ import rbasamoyai.createbigcannons.network.CBCNetwork;
 
 public class BlockRecipesManager {
 
-	private static final Map<ResourceLocation, BlockRecipe> BLOCK_RECIPES = new HashMap<>();
+	private static final Map<ResourceLocation, BlockRecipe> BLOCK_RECIPES_BY_NAME = new HashMap<>();
+	private static final Map<BlockRecipeType<?>, Map<ResourceLocation, BlockRecipe>> BLOCK_RECIPES_BY_TYPE = new HashMap<>();
 	
 	public static Collection<BlockRecipe> getRecipes() {
-		return BLOCK_RECIPES.values();
+		return BLOCK_RECIPES_BY_NAME.values();
+	}
+	
+	public static Collection<BlockRecipe> getRecipesOfType(BlockRecipeType<?> type) {
+		return BLOCK_RECIPES_BY_TYPE.getOrDefault(type, new HashMap<>()).values();
 	}
 	
 	public static void clear() {
-		BLOCK_RECIPES.clear();
+		BLOCK_RECIPES_BY_NAME.clear();
+		BLOCK_RECIPES_BY_TYPE.clear();
 	}
 	
 	public static void writeBuf(FriendlyByteBuf buf) {
-		buf.writeVarInt(BLOCK_RECIPES.size());
-		for (Map.Entry<ResourceLocation, BlockRecipe> entry : BLOCK_RECIPES.entrySet()) {
+		buf.writeVarInt(BLOCK_RECIPES_BY_NAME.size());
+		for (Map.Entry<ResourceLocation, BlockRecipe> entry : BLOCK_RECIPES_BY_NAME.entrySet()) {
 			buf.writeResourceLocation(entry.getKey());
 			toNetworkCasted(buf, entry.getValue());
 		}
@@ -53,7 +59,12 @@ public class BlockRecipesManager {
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation id = buf.readResourceLocation();
 			ResourceLocation type = buf.readResourceLocation();
-			BLOCK_RECIPES.put(id, CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromNetwork(id, buf));
+			BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromNetwork(id, buf);
+			BLOCK_RECIPES_BY_NAME.put(id, recipe);
+			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().getValue(type);
+			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
+				BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
+			BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
 		}
 	}
 	
@@ -83,7 +94,12 @@ public class BlockRecipesManager {
 					ResourceLocation id = entry.getKey();
 					JsonObject obj = el.getAsJsonObject();
 					ResourceLocation type = new ResourceLocation(obj.get("type").getAsString());
-					BLOCK_RECIPES.put(id, CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromJson(id, obj));
+					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromJson(id, obj);
+					BLOCK_RECIPES_BY_NAME.put(id, recipe);
+					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().getValue(type);
+					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
+						BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
+					BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
 				}
 			}
 		}

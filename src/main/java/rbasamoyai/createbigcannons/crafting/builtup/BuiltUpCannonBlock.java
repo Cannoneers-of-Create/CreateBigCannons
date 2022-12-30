@@ -4,6 +4,9 @@ import com.simibubi.create.foundation.block.ITE;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -14,6 +17,7 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
@@ -33,7 +37,7 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredC
 	}
 	
 	@Override public CannonMaterial getCannonMaterial() { return CannonMaterial.INCOMPLETE_LAYERED; }
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.MEDIUM; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.MEDIUM.get(); }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
 	
 	@Override
@@ -58,5 +62,10 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredC
 	
 	@Override public BlockState rotate(BlockState state, Rotation rotation) { return state.setValue(FACING, rotation.rotate(state.getValue(FACING))); }
 	@Override public BlockState mirror(BlockState state, Mirror mirror) { return state.setValue(FACING, mirror.mirror(state.getValue(FACING))); }
+	
+	@Override
+	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+		return ItemStack.EMPTY;
+	}
 
 }

@@ -10,16 +10,14 @@ import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCGuiTextures;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundTimedFuzePacket;
 
 public class TimedFuzeScreen extends AbstractSimiContainerScreen<TimedFuzeContainer> {
-
-	private static final ResourceLocation GUI_BACKGROUND = CreateBigCannons.resource("textures/gui/set_timed_fuze.png");
 	
 	private ScrollInput setTime;
 	private IconButton confirmButton;
@@ -58,12 +56,9 @@ public class TimedFuzeScreen extends AbstractSimiContainerScreen<TimedFuzeContai
 	protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		
-		RenderSystem.setShaderTexture(0, GUI_BACKGROUND);
-		this.blit(poseStack, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+		CBCGuiTextures.TIMED_FUZE_BG.render(poseStack, this.leftPos, this.topPos);
 		drawCenteredString(poseStack, this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
-		
-		RenderSystem.setShaderTexture(0, GUI_BACKGROUND);
-		this.blit(poseStack, this.leftPos + 34 + this.setTime.getState(), this.topPos + 21, 179, 0, 7, 26);
+		CBCGuiTextures.TIMED_FUZE_SELECTOR.render(poseStack, this.leftPos + 34 + this.setTime.getState(), this.topPos + 21);
 		
 		GuiGameElement.of(this.menu.getStackToRender())
 			.<GuiGameElement.GuiItemRenderBuilder>at(this.leftPos + 185, this.topPos + 26, -200)

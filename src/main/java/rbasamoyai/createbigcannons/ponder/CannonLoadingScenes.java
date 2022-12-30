@@ -57,7 +57,8 @@ public class CannonLoadingScenes {
 		scene.idle(90);
 		scene.overlay.showText(80)
 			.text("Under normal circumstances, the Ram Head should be used.")
-			.pointAt(util.vector.centerOf(headScenePos));
+			.pointAt(util.vector.centerOf(headScenePos))
+			.colored(PonderPalette.GREEN);
 		scene.idle(100);
 		
 		scene.world.modifyBlock(headPos, state -> {
@@ -66,7 +67,8 @@ public class CannonLoadingScenes {
 		}, true);
 		scene.overlay.showText(80)
 			.text("However, the Worm Head can be attached if the cannon needs to be unjammed.")
-			.pointAt(util.vector.centerOf(headScenePos));
+			.pointAt(util.vector.centerOf(headScenePos))
+			.colored(PonderPalette.BLUE);
 		scene.idle(100);
 		
 		scene.world.modifyBlock(headPos, state -> {
@@ -145,7 +147,7 @@ public class CannonLoadingScenes {
 		scene.overlay.showText(100).text("When loading a cannon, care must be taken to ensure that cannon loads are safe and effective.");
 		scene.idle(110);
 		
-		scene.overlay.showText(80).text("A cannon's material has two factors that can cause the cannon to fail; its squib ratio and its strength.");
+		scene.overlay.showText(80).text("A cannon's material has two factors that can cause the cannon to fail; its squib ratio and its strength.").colored(PonderPalette.RED);
 		scene.idle(90);
 		
 		scene.overlay.showText(80)
@@ -190,7 +192,8 @@ public class CannonLoadingScenes {
 		
 		scene.overlay.showText(80)
 			.attachKeyFrame()
-			.text("Unsafe loads in a cannon...");
+			.text("Unsafe loads in a cannon...")
+			.colored(PonderPalette.RED);
 		scene.idle(90);
 		
 		scene.overlay.showText(80)
@@ -217,7 +220,7 @@ public class CannonLoadingScenes {
 		scene.world.hideIndependentSection(obstructedLoad, Direction.DOWN);
 		scene.idle(20);
 		
-		scene.overlay.showText(80).text("...can cause catastrophic failure and pose a major threat to the surrounding environment.");
+		scene.overlay.showText(80).text("...can cause catastrophic failure and pose a major threat to the surrounding environment.").colored(PonderPalette.RED);
 		scene.idle(20);
 		scene.world.hideSection(cannon, null);
 		scene.effects.emitParticles(util.vector.centerOf(2, 1, 2), Emitter.simple(ParticleTypes.EXPLOSION_EMITTER, util.vector.of(0, 0, 0)), 1, 10);

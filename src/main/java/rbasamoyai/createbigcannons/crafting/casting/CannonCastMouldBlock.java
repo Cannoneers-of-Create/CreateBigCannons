@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
+import java.util.function.Supplier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -23,9 +25,9 @@ public class CannonCastMouldBlock extends Block {
 
 	public static final BooleanProperty SAND = BooleanProperty.create("sand");
 	private final VoxelShape noSandShape;
-	private final CannonCastShape size;
+	private final Supplier<CannonCastShape> size;
 	
-	public CannonCastMouldBlock(Properties properties, VoxelShape noSandShape, CannonCastShape size) {
+	public CannonCastMouldBlock(Properties properties, VoxelShape noSandShape, Supplier<CannonCastShape> size) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(SAND, false));
 		this.noSandShape = noSandShape;
@@ -49,13 +51,13 @@ public class CannonCastMouldBlock extends Block {
 			if (this.isSurroundingAreaCompleteForTransformation(state, level, pos)) {
 				level.setBlock(pos, CBCBlocks.CANNON_CAST.getDefaultState(), 11);
 				if (!level.isClientSide && level.getBlockEntity(pos) instanceof CannonCastBlockEntity cast) {
-					cast.initializeCastMultiblock(this.size);
+					cast.initializeCastMultiblock(this.size.get());
 					if (!player.isCreative()) player.addItem(new ItemStack(this.asItem()));
 				}
 				level.playSound(player, pos, SoundEvents.SAND_PLACE, SoundSource.PLAYERS, 1.0f, 0.0f);
 			} else {
 				level.setBlock(pos, state.setValue(SAND, false), 3);
-				if (!level.isClientSide) {
+				if (!level.isClientSide && !player.isCreative()) {
 					player.addItem(CBCBlocks.CASTING_SAND.asStack());
 				}
 				level.playSound(player, pos, SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 1.0f, 1.0f);

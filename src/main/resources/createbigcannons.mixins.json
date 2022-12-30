@@ -3,10 +3,13 @@
 	"minVersion": 0.8,
 	"package": "rbasamoyai.createbigcannons.mixin",
 	"compatibilityLevel": "JAVA_8",
-	"refmap": "steampowered.refmap.json",
+	"refmap": "createbigcannons.refmap.json",
 	"mixins": [
+		"BearingCannonDrillFinderMixin",
+		"EntityTurnMixin"
 	],
 	"client": [
+		"CannonCarriagePoseMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

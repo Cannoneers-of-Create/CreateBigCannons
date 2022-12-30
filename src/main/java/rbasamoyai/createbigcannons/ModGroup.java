@@ -5,6 +5,7 @@ import java.util.Arrays;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
 public class ModGroup {
@@ -57,11 +58,15 @@ public class ModGroup {
 				CBCBlocks.WORM_HEAD.asStack(),
 				CBCBlocks.POWDER_CHARGE.asStack(),
 				CBCBlocks.SOLID_SHOT.asStack(),
+				CBCBlocks.MORTAR_STONE.asStack(),
 				CBCBlocks.BAG_OF_GRAPESHOT.asStack(),
 				CBCBlocks.HE_SHELL.asStack(),
+				CBCBlocks.AP_SHELL.asStack(),
 				CBCBlocks.SHRAPNEL_SHELL.asStack(),
+				CBCBlocks.FLUID_SHELL.asStack(),
 				CBCItems.IMPACT_FUZE.asStack(),
 				TimedFuzeItem.getCreativeTabItem(20),
+				ProximityFuzeItem.getCreativeTabItem(1),
 				
 				CBCItems.CANNON_CRAFTING_WAND.asStack(),
 				CBCBlocks.CASTING_SAND.asStack(),
@@ -127,12 +132,47 @@ public class ModGroup {
 
 				CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH.asStack(),
 				CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH.asStack(),
-				CBCItems.NETHERSTEEL_SCREW_LOCK.asStack()));
+				CBCItems.NETHERSTEEL_SCREW_LOCK.asStack(),
+				
+				CBCBlocks.BASIN_FOUNDRY_LID.asStack(),
+				
+				CBCItems.PACKED_GUNPOWDER.asStack(),
+				CBCItems.EMPTY_POWDER_CHARGE.asStack(),
+				CBCItems.CAST_IRON_NUGGET.asStack(),
+				CBCItems.CAST_IRON_INGOT.asStack(),
+				CBCBlocks.CAST_IRON_BLOCK.asStack(),
+				CBCItems.NETHERSTEEL_NUGGET.asStack(),
+				CBCItems.NETHERSTEEL_INGOT.asStack(),
+				CBCBlocks.NETHERSTEEL_BLOCK.asStack(),
+				
+				CBCItems.RAM_ROD.asStack(),
+				CBCItems.WORM.asStack(),
+				CBCBlocks.CANNON_CARRIAGE.asStack(),
+				CBCItems.PAIR_OF_CANNON_WHEELS.asStack(),
+
+				CBCBlocks.CAST_IRON_AUTOCANNON_BREECH.asStack(),
+				CBCBlocks.CAST_IRON_AUTOCANNON_RECOIL_SPRING.asStack(),
+				CBCBlocks.CAST_IRON_AUTOCANNON_BARREL.asStack(),
+
+				CBCBlocks.BRONZE_AUTOCANNON_BREECH.asStack(),
+				CBCBlocks.BRONZE_AUTOCANNON_RECOIL_SPRING.asStack(),
+				CBCBlocks.BRONZE_AUTOCANNON_BARREL.asStack(),
+
+				CBCBlocks.STEEL_AUTOCANNON_BREECH.asStack(),
+				CBCBlocks.STEEL_AUTOCANNON_RECOIL_SPRING.asStack(),
+				CBCBlocks.STEEL_AUTOCANNON_BARREL.asStack(),
+
+				CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(),
+				CBCItems.FILLED_AUTOCANNON_CARTRIDGE.asStack(),
+				CBCItems.AP_AUTOCANNON_ROUND.get().getCreativeTabCartridgeItem(),
+				CBCItems.AP_AUTOCANNON_ROUND.asStack(),
+				CBCItems.FLAK_AUTOCANNON_ROUND.get().getCreativeTabCartridgeItem(),
+				CBCItems.FLAK_AUTOCANNON_ROUND.asStack()));
 		}
 	};
 	
 	public static void register() {
-		CreateBigCannons.registrate().creativeModeTab(() -> GROUP, "Create Big Cannons");
+		CreateBigCannons.REGISTRATE.creativeModeTab(() -> GROUP, "Create Big Cannons");
 	}
 	
 }

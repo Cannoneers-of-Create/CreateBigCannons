@@ -1,52 +1,64 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistryEntry;
+import net.minecraftforge.registries.RegistryObject;
+import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 
-public class CannonCastShape {
+public class CannonCastShape extends ForgeRegistryEntry<CannonCastShape> {
 	
-	private static final Map<ResourceLocation, CannonCastShape> SHAPES = new HashMap<>();
-	public static final CannonCastShape	
-		VERY_SMALL = register(CreateBigCannons.resource("very_small"), 1008, 12),
-		SMALL = register(CreateBigCannons.resource("small"), 1296, 14),
-		MEDIUM = register(CreateBigCannons.resource("medium"), 1728, 16),
-		LARGE = register(CreateBigCannons.resource("large"), 2016, 18),
-		VERY_LARGE = register(CreateBigCannons.resource("very_large"), 2880, 20),
-		CANNON_END = register(CreateBigCannons.resource("cannon_end"), 1296, 16),
-		SLIDING_BREECH = register(CreateBigCannons.resource("sliding_breech"), 1296, 16, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false)),
-		SCREW_BREECH = register(CreateBigCannons.resource("screw_breech"), 1296, 16);
+	public static final DeferredRegister<CannonCastShape> CANNON_CAST_SHAPES = DeferredRegister.create(CBCRegistries.Keys.CANNON_CAST_SHAPES, CreateBigCannons.MOD_ID);
+	
+	private static final int INGOT_SIZE_MB = 90;
+	
+	public static final RegistryObject<CannonCastShape>	
+		VERY_SMALL = CANNON_CAST_SHAPES.register("very_small", () -> new CannonCastShape(7 * INGOT_SIZE_MB, 12, CBCBlocks.VERY_SMALL_CAST_MOULD)),
+		SMALL = CANNON_CAST_SHAPES.register("small", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 14, CBCBlocks.SMALL_CAST_MOULD)),
+		MEDIUM = CANNON_CAST_SHAPES.register("medium", () -> new CannonCastShape(12 * INGOT_SIZE_MB, 16, CBCBlocks.MEDIUM_CAST_MOULD)),
+		LARGE = CANNON_CAST_SHAPES.register("large", () -> new CannonCastShape(14 * INGOT_SIZE_MB, 18, CBCBlocks.LARGE_CAST_MOULD)),
+		VERY_LARGE = CANNON_CAST_SHAPES.register("very_large", () -> new CannonCastShape(20 * INGOT_SIZE_MB, 20, CBCBlocks.VERY_LARGE_CAST_MOULD)),
+		CANNON_END = CANNON_CAST_SHAPES.register("cannon_end", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.CANNON_END_CAST_MOULD)),
+		SLIDING_BREECH = CANNON_CAST_SHAPES.register("sliding_breech", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SLIDING_BREECH_CAST_MOULD, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false))),
+		SCREW_BREECH = CANNON_CAST_SHAPES.register("screw_breech", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD)),
+
+		AUTOCANNON_BARREL = CANNON_CAST_SHAPES.register("autocannon_barrel", () -> new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR)),
+		AUTOCANNON_BARREL_FLANGED = CANNON_CAST_SHAPES.register("autocannon_barrel_flanged", () -> new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR)),
+		AUTOCANNON_BREECH = CANNON_CAST_SHAPES.register("autocannon_breech", () -> new CannonCastShape(4 * INGOT_SIZE_MB, 8, () -> Blocks.AIR)),
+		AUTOCANNON_RECOIL_SPRING = CANNON_CAST_SHAPES.register("autocannon_recoil_spring", () -> new CannonCastShape(4 * INGOT_SIZE_MB, 6, () -> Blocks.AIR));
 	
 	private final int fluidSize;
 	private final int diameter;
-	private final ResourceLocation name;
+	private final NonNullSupplier<? extends Block> castMould;
 	private final PropertySetter<?>[] properties;
 	
-	private CannonCastShape(ResourceLocation name, int fluidSize, int diameter, PropertySetter<?>... properties) {
+	private Block resolvedCastMould;
+	
+	public CannonCastShape(int fluidSize, int diameter, NonNullSupplier<? extends Block> castMould, PropertySetter<?>... properties) {
 		this.fluidSize = fluidSize;
 		this.diameter = diameter;
-		this.name = name;
+		this.castMould = castMould;
 		this.properties = properties;
-	}
-	
-	public static CannonCastShape register(ResourceLocation name, int fluidSize, int diameter, PropertySetter<?>... properties) {
-		if (SHAPES.containsKey(name)) {
-			throw new IllegalStateException("Duplicate cannon cast shape " + name.toString());
-		}
-		CannonCastShape shape = new CannonCastShape(name, fluidSize, diameter, properties);
-		SHAPES.put(name, shape);
-		return shape;
 	}
 	
 	public int fluidSize() { return this.fluidSize; }
 	public int diameter() { return this.diameter; }
-	public ResourceLocation name() { return this.name; }
+	
+	public Block castMould() {
+		if (this.resolvedCastMould == null) {
+			this.resolvedCastMould = this.castMould.get();
+			if (this.resolvedCastMould == null) this.resolvedCastMould = Blocks.AIR;
+		}
+		return this.resolvedCastMould;
+	}
 	
 	public BlockState applyTo(BlockState state) {
 		for (PropertySetter<?> setter : this.properties) {
@@ -55,13 +67,9 @@ public class CannonCastShape {
 		return state;
 	}
 	
-	public static CannonCastShape byId(ResourceLocation name) { return SHAPES.get(name); }
-	
-	public static void register() {}
-	
 	@Override
 	public String toString() {
-		return "CannonCastShape[" + this.name + ",fluidSize=" + this.fluidSize + ",diameter=" + this.diameter + "]";
+		return "CannonCastShape[" + CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this) + ",fluidSize=" + this.fluidSize + ",diameter=" + this.diameter + "]";
 	}
 	
 	public static class PropertySetter<T extends Comparable<T>> {

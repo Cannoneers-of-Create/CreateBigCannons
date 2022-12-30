@@ -1,0 +1,20 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "fluidTag": "forge:molten_bronze",
+      "amount": 90
+    }
+  ],
+  "results": [
+    {
+      "item": "alloyed:bronze_ingot"
+    }
+  ],
+  "conditions": [
+    {
+      "modid": "alloyed",
+      "type": "forge:mod_loaded"
+    }
+  ]
+}

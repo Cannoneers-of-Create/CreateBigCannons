@@ -6,13 +6,16 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "createbigcannons:unbored_bronze_cannon_barrel"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:tag",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 15.0,
+              "add": false
+            }
+          ],
+          "name": "forge:nuggets/bronze",
+          "expand": true
         }
       ]
     }

@@ -1,9 +1,15 @@
 {
   "replace": false,
   "values": [
-    "#forge:glass",
+    "#minecraft:impermeable",
     "#forge:glass_panes",
     "#minecraft:leaves",
-    "minecraft:flower_pot"
+    "#minecraft:wool",
+    "#minecraft:flower_pots",
+    "#create:windmill_sails",
+    "minecraft:tripwire",
+    "create:framed_glass_door",
+    "create:framed_glass_trapdoor",
+    "create:rope"
   ]
 }

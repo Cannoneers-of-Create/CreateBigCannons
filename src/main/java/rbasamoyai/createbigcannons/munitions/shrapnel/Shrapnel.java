@@ -1,22 +1,23 @@
 package rbasamoyai.createbigcannons.munitions.shrapnel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -35,7 +36,12 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	public void tick() {
 		super.tick();
 		++this.age;
-		if (!this.level.isClientSide && this.age > 200) {
+		
+		if (!this.isNoGravity() && this.getGravity() < 0) {
+			this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
+		}
+		
+		if (!this.level.isClientSide && this.age > 20) {
 			this.discard();
 		}
 	}
@@ -63,17 +69,17 @@ public class Shrapnel extends AbstractHurtingProjectile {
 		BlockPos pos = result.getBlockPos();
 		BlockState state = this.level.getBlockState(pos);
 		if (!this.level.isClientSide) {
-			if (state.is(this.getDestroyBlockTag())) {
+			if (this.canDestroyBlock(state)) {
 				this.level.destroyBlock(pos, false, this);
 			} else {
 				this.level.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.NEUTRAL, 1.0f, 2.0f);
 			}
 		}
-		this.discard();
 	}
 	
-	protected TagKey<Block> getDestroyBlockTag() {
-		return CBCTags.BlockCBC.SHRAPNEL_SHATTERABLE;
+	protected boolean canDestroyBlock(BlockState state) {
+		return state.is(CBCTags.BlockCBC.SHRAPNEL_SHATTERABLE)
+			|| state.is(CBCTags.BlockCBC.SHRAPNEL_VULNERABLE) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.shrapnelVulnerableBreakChance.getF();
 	}
 	
 	@Override
@@ -83,7 +89,12 @@ public class Shrapnel extends AbstractHurtingProjectile {
 		}
 		result.getEntity().hurt(this.getDamageSource(), this.damage);
 		if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
-		this.discard();
+	}
+	
+	@Override
+	protected void onHit(HitResult result) {
+		super.onHit(result);
+		if (!this.level.isClientSide && (!(result instanceof EntityHitResult eResult) || eResult.getEntity().getType() != this.getType())) this.discard();
 	}
 	
 	public static final DamageSource SHRAPNEL = new DamageSource(CreateBigCannons.MOD_ID + ".shrapnel");
@@ -101,14 +112,15 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	
 	@Override protected float getInertia() { return 0.99f; }
 	
-	public static void spawnShrapnelBurst(Level level, EntityType<? extends Shrapnel> type, Vec3 position, Vec3 initialVelocity, int count, double spread, float damage) {
+	protected double getGravity() { return 0; }
+	
+	public static <T extends Shrapnel> List<T> spawnShrapnelBurst(Level level, EntityType<T> type, Vec3 position, Vec3 initialVelocity, int count, double spread, float damage) {
 		Vec3 forward = initialVelocity.normalize();
 		Vec3 right = forward.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = forward.cross(right);
 		double length = initialVelocity.length();
 		Random random = level.getRandom();
-		
-		int failCount = 0;
+		List<T> list = new ArrayList<>();
 		
 		for (int i = 0; i < count; ++i) {
 			double velScale = length * (1.4d + 0.2d * random.nextDouble());
@@ -116,7 +128,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 					.add(right.scale((random.nextDouble() - random.nextDouble()) * velScale * spread))
 					.add(up.scale((random.nextDouble() - random.nextDouble()) * velScale * spread));
 			
-			Shrapnel shrapnel = type.create(level);
+			T shrapnel = type.create(level);
 			double rx = position.x + (random.nextDouble() - random.nextDouble()) * 0.0625d;
 			double ry = position.y + (random.nextDouble() - random.nextDouble()) * 0.0625d;
 			double rz = position.z + (random.nextDouble() - random.nextDouble()) * 0.0625d;
@@ -124,14 +136,13 @@ public class Shrapnel extends AbstractHurtingProjectile {
 			shrapnel.setDeltaMovement(vel);
 			shrapnel.setDamage(damage);
 			
-			if (!level.addFreshEntity(shrapnel)) {
-				++failCount;
-			}
+			if (level.addFreshEntity(shrapnel)) list.add(shrapnel);
 		}
 		
-		if (failCount > 0) {
-			CreateBigCannons.LOGGER.info("Shrapnel burst failed to spawn {} out of {} shrapnel bullets", failCount, count);
+		if (list.size() != count) {
+			CreateBigCannons.LOGGER.info("Shrapnel burst failed to spawn {} out of {} shrapnel bullets", count - list.size(), count);
 		}
+		return list;
 	}
 
 }

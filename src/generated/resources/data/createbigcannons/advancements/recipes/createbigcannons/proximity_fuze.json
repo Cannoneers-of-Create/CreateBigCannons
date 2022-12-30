@@ -1,0 +1,45 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:proximity_fuze"
+    ]
+  },
+  "criteria": {
+    "has_iron_bars": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:iron_bars"
+            ]
+          }
+        ]
+      }
+    },
+    "has_quartz": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:gems/quartz"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:proximity_fuze"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_bars",
+      "has_quartz",
+      "has_the_recipe"
+    ]
+  ]
+}

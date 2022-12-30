@@ -4,7 +4,6 @@ import com.jozufozu.flywheel.core.virtual.VirtualEmptyModelData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -14,7 +13,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CannonProjectileRenderer<T extends AbstractCannonProjectile> extends EntityRenderer<T> {
 
@@ -42,8 +40,7 @@ public class CannonProjectileRenderer<T extends AbstractCannonProjectile> extend
 			super.render(entity, entityYaw, partialTicks, poseStack, buffers, packedLight);
 		}
 	}
-	
-	private static final ResourceLocation TEXTURE_INVALID = CreateBigCannons.resource("textures/entity/invalid.png");
-	@Override public ResourceLocation getTextureLocation(T projectile) { return TEXTURE_INVALID; }
+
+	@Override public ResourceLocation getTextureLocation(T projectile) { return null; }
 
 }

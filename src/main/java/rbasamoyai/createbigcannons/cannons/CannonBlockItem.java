@@ -25,7 +25,7 @@ public class CannonBlockItem<T extends Block & CannonBlock> extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		CannonTooltip.appendText(stack, level, tooltip, flag, this.cannonBlock);		
+		if (level != null) CannonTooltip.appendText(stack, level, tooltip, flag, this.cannonBlock);
 	}
 	
 	@Override

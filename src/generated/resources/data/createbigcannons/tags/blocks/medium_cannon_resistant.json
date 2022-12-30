@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:storage_blocks/iron",
+    "#forge:storage_blocks/diamond"
+  ]
+}

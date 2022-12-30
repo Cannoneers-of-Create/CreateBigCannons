@@ -1,0 +1,16 @@
+{
+  "type": "createbigcannons:melting",
+  "ingredients": [
+    {
+      "item": "createbigcannons:nethersteel_block"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "createbigcannons:molten_nethersteel",
+      "amount": 810
+    }
+  ],
+  "processingTime": 1620,
+  "heatRequirement": "heated"
+}

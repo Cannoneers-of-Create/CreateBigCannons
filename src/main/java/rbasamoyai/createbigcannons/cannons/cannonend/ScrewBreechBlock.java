@@ -6,7 +6,6 @@ import com.simibubi.create.foundation.block.ITE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
@@ -28,14 +27,14 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<ScrewBreechBlockEntity>, CannonBlock {
 
-	public static final EnumProperty<OpenState> OPEN = EnumProperty.create("open", OpenState.class);
+	public static final EnumProperty<CannonEnd> OPEN = EnumProperty.create("open", CannonEnd.class);
 	
 	private final CannonMaterial material;
 	
 	public ScrewBreechBlock(Properties properties, CannonMaterial material) {
 		super(properties);
 		this.material = material;
-		this.registerDefaultState(this.getStateDefinition().any().setValue(OPEN, OpenState.CLOSED));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(OPEN, CannonEnd.CLOSED));
 	}
 	
 	@Override
@@ -50,13 +49,9 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	}
 
 	@Override public CannonMaterial getCannonMaterial() { return this.material; }
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH.get(); }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING).getOpposite(); }
-	@Override
-	public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) {
-		OpenState open = state.getValue(OPEN);
-		return open == OpenState.OPEN || open == OpenState.PARTIAL ? CannonEnd.OPEN : CannonEnd.CLOSED;
-	}
+	@Override public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return state.getValue(OPEN); }
 	@Override public Axis getRotationAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
 	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 	@Override public boolean isDoubleSidedCannon(BlockState state) { return false; }
@@ -65,10 +60,6 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
 		return face == state.getValue(FACING);
-	}
-	
-	public static boolean isOpen(BlockState state) {
-		return state.hasProperty(OPEN) ? state.getValue(OPEN).isOpen() : false;
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -83,22 +74,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	
 	@Override
 	public InteractionResult onWrenched(BlockState state, UseOnContext context) {
-		return isOpen(state) ? super.onWrenched(state, context) : InteractionResult.PASS;
-	}
-
-	public enum OpenState implements StringRepresentable {
-		CLOSED("closed"),
-		PARTIAL("partial"),
-		OPEN("open");
-		
-		private final String name;
-		
-		private OpenState(String name) {
-			this.name = name;
-		}
-		
-		public boolean isOpen() { return this == OPEN; }
-		@Override public String getSerializedName() { return this.name; }
+		return state.getValue(OPEN) == CannonEnd.OPEN ? super.onWrenched(state, context) : InteractionResult.PASS;
 	}
 	
 }

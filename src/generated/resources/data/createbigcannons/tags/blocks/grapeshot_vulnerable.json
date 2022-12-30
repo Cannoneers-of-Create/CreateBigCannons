@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:iron_door",
+    "minecraft:iron_trapdoor",
+    "minecraft:iron_bars",
+    "create:brass_casing",
+    "create:brass_encased_cogwheel",
+    "create:brass_encased_large_cogwheel",
+    "create:brass_encased_shaft",
+    "create:mechanical_crafter",
+    "create:mechanical_arm",
+    "create:copper_casing",
+    "create:encased_fluid_pipe",
+    "create:fluid_pipe",
+    "create:glass_fluid_pipe",
+    "create:fluid_valve",
+    "create:copper_valve_handle",
+    "create:mechanical_pump",
+    "create:hose_pulley",
+    "create:brass_tunnel",
+    "create:brass_belt_funnel",
+    "create:brass_funnel"
+  ]
+}

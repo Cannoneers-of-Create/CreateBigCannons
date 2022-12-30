@@ -29,6 +29,15 @@ def getGitHash = { ->
     return stdout.toString().trim()
 }
 
+def getGitBranch = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--abbrev-ref', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
 if (cbc_release == "true") {
     version = "${mc_version}-${cbc_release_version}"
 }
@@ -36,7 +45,7 @@ else {
     version = "${mc_version}-nightly-${getGitHash}"
 }
 
-group = 'rbasamoyai.createbigcannons' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+group = 'rbasamoyai.createbigcannons'
 archivesBaseName = 'createbigcannons'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -45,7 +54,7 @@ println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty '
 minecraft {
     mappings channel: 'official', version: '1.18.2'
 
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
@@ -96,7 +105,7 @@ minecraft {
             workingDirectory project.file('run')
             property 'forge.logging.markers', 'REGISTRIES'
             property 'forge.logging.console.level', 'debug'
-            args '--mod', 'createbigcannons', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            args '--mod', 'createbigcannons', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/'), '--existing-mod', 'create'
             mods {
                 createbigcannons {
                     source sourceSets.main
@@ -135,9 +144,9 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
     
-    compileOnly fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
-    implementation fg.deobf("com.simibubi.create:create-${mc_version}:${create_version}:all") { transitive = false } // Create
+    implementation fg.deobf("com.simibubi.create:create-${mc_version}:${create_version}:slim") { transitive = false } // Create
     implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${mc_version}:${flywheel_version}") // Flywheel
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}") // Registrate
     
     // JEI
     compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api")

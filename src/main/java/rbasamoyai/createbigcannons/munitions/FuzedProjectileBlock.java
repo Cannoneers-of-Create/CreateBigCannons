@@ -12,29 +12,24 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-public abstract class FuzedProjectileBlock extends ProjectileBlock implements ITE<FuzedBlockEntity> {
+public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends ProjectileBlock implements ITE<T> {
 
 	protected FuzedProjectileBlock(Properties properties) {
 		super(properties);
 	}
-	
-	@Override public Class<FuzedBlockEntity> getTileEntityClass() { return FuzedBlockEntity.class; }
-	@Override public BlockEntityType<? extends FuzedBlockEntity> getTileEntityType() { return CBCBlockEntities.FUZED_BLOCK.get(); }
 
 	protected static ItemStack getFuze(BlockEntity blockEntity) {
-		if (blockEntity == null) return ItemStack.EMPTY;
+		if (blockEntity == null || !blockEntity.getBlockState().hasProperty(FACING)) return ItemStack.EMPTY;
 		Direction facing = blockEntity.getBlockState().getValue(FACING);
 		LazyOptional<IItemHandler> items = blockEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, facing);
-		return items.map(h -> h.getStackInSlot(0)).orElse(ItemStack.EMPTY);
+		return items.lazyMap(h -> h.getStackInSlot(0)).lazyMap(ItemStack::copy).orElse(ItemStack.EMPTY);
 	}
 	
 	@Override

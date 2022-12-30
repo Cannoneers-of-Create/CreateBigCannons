@@ -77,14 +77,7 @@ public class IncompleteScrewBreechBlock extends SolidCannonBlock<IncompleteCanno
 				if (stage == 0) {
 					level.setBlock(pos, state.setValue(STAGE_2, 1), 3 | 16);
 				} else {
-					if (this.result == null) {
-						this.result = this.resultSupplier.get();
-					}
-					BlockState newState = this.result.delegate.get().defaultBlockState();
-					if (newState.hasProperty(FACING)) {
-						newState = newState.setValue(FACING, state.getValue(FACING));
-					}
-					level.setBlock(pos, newState, 3 | 16);
+					level.setBlock(pos, this.getCompleteBlockState(state), 3 | 16);
 				}
 				
 				BlockEntity be = level.getBlockEntity(pos);
@@ -102,7 +95,7 @@ public class IncompleteScrewBreechBlock extends SolidCannonBlock<IncompleteCanno
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH.get(); }
 	
 	@Override public Class<IncompleteCannonBlockEntity> getTileEntityClass() { return IncompleteCannonBlockEntity.class; }
 	@Override public BlockEntityType<? extends IncompleteCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.INCOMPLETE_CANNON.get(); }
@@ -133,5 +126,12 @@ public class IncompleteScrewBreechBlock extends SolidCannonBlock<IncompleteCanno
 	@Override public int progress(BlockState state) { return state.getValue(STAGE_2); }
 	
 	@Override public boolean isComplete(BlockState state) { return false; }
+	
+	@Override
+	public BlockState getCompleteBlockState(BlockState state) {
+		if (this.result == null) this.result = this.resultSupplier.get();
+		BlockState newState = this.result.delegate.get().defaultBlockState();
+		return newState.hasProperty(FACING) ? newState = newState.setValue(FACING, state.getValue(FACING)) : newState;
+	}
 	
 }

@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.crafting.casting;
 import com.simibubi.create.foundation.block.ITE;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -25,11 +26,13 @@ public class CannonCastBlock extends Block implements ITE<CannonCastBlockEntity>
 		super(properties);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean dropContents) {
 		if (state.hasBlockEntity() && (state.getBlock() != newState.getBlock() || !newState.hasBlockEntity())) {
 			this.withTileEntityDo(level, pos, CannonCastBlockEntity::destroyCastMultiblockAtLayer);
 		}
+		super.onRemove(state, level, pos, newState, dropContents);
 	}
 	
 	@Override
@@ -47,4 +50,18 @@ public class CannonCastBlock extends Block implements ITE<CannonCastBlockEntity>
 	@Override public Class<CannonCastBlockEntity> getTileEntityClass() { return CannonCastBlockEntity.class; }
 	@Override public BlockEntityType<? extends CannonCastBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_CAST.get(); }
 
+	@Override public boolean hasAnalogOutputSignal(BlockState state) { return true; }
+	
+	@Override
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+		return this.getTileEntityOptional(level, pos)
+				.map(CannonCastBlockEntity::getControllerTE)
+				.map(CannonCastBlockEntity::getFillState)
+				.map(CannonCastBlock::castFractionToRedstoneLevel)
+				.orElse(0);
+	}
+	
+	public static int castFractionToRedstoneLevel(float frac) {
+		return Mth.floor(Mth.clamp(frac * 13 + (frac > 0 ? 1 : 0), 0, 14));
+	}
 }

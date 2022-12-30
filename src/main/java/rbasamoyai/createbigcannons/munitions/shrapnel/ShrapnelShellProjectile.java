@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.munitions.shrapnel;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -22,7 +21,7 @@ public class ShrapnelShellProjectile extends FuzedCannonProjectile {
 	@Override
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, Explosion.BlockInteraction.DESTROY);
+		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
 		int count = CBCConfigs.SERVER.munitions.shrapnelCount.get();
 		float spread = CBCConfigs.SERVER.munitions.shrapnelSpread.getF();

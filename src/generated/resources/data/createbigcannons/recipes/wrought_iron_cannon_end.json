@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " K ",
+    "III",
+    " G "
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:plates/iron"
+    },
+    "K": {
+      "tag": "forge:ingots/iron"
+    },
+    "G": {
+      "tag": "forge:gunpowder"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:wrought_iron_cannon_end"
+  }
+}

@@ -1,6 +1,6 @@
 # Create Big Cannons
 
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/rbasamoyai/CreateBigCannons/Java%20CI%20with%20Gradle)](../../actions/workflows/gradle.yml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rbasamoyai/CreateBigCannons/gradle.yml)](../../actions/workflows/gradle.yml)
 [![Discord Invite](https://img.shields.io/discord/996633868692111381?label=Discord&color=5865f2)](https://discord.gg/vgfMMUUgvT)
 [![License](https://img.shields.io/github/license/rbasamoyai/CreateBigCannons?color=900c3f)](LICENSE)
 [![Curse Forge](https://cf.way2muchnoise.eu/full_646668_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/create-big-cannons)
@@ -12,13 +12,13 @@
 <br>
 <p><img src="https://i.imgur.com/9BbUMSK.png" width="472" height="250"></p>
 <h4><strong>What's there?</strong></h4>
-<p>Create Big Cannons (CBC) currently has:</p>
+<p>Create Big Cannons (CBC) has:</p>
 <ul>
 <li>Multiblock cannons, built out of various cannon blocks with different materials of different tiers</li>
-<li>Material tiers currently include cast iron, with bronze and steel to come soon (yes, this is pretty much just taken from Create: Alloyed and Create: Steam Powered.)</li>
 <li>Various projectiles to wreak destruction with such as solid shot, high explosive (HE), shrapnel, and more</li>
 <li>Kinetic-powered cannon mechanisms to load and aim your cannons, with dynamic energy requirements</li>
 <li>Different fuze items to set off certain projectiles (mostly just shells) under certain conditions</li>
+<li>A crafting system to build multiblock cannons using Create's kinetic system</li>
 </ul>
 <br>
 <p><img src="https://i.imgur.com/XRI9PmW.png" width="469" height="153"></p>

@@ -86,7 +86,9 @@ public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlo
 		boolean prevFirePowered = state.getValue(FIRE_POWERED);
 		boolean assemblyPowered = this.hasNeighborSignal(level, state, pos, ASSEMBLY_POWERED);
 		boolean firePowered = this.hasNeighborSignal(level, state, pos, FIRE_POWERED);
-		this.withTileEntityDo(level, pos, cmbe -> cmbe.onRedstoneUpdate(assemblyPowered, prevAssemblyPowered, firePowered, prevFirePowered));
+		Direction fireDirection = state.getValue(HORIZONTAL_FACING);
+		int firePower = level.getSignal(pos.relative(fireDirection), fireDirection);
+		this.withTileEntityDo(level, pos, cmbe -> cmbe.onRedstoneUpdate(assemblyPowered, prevAssemblyPowered, firePowered, prevFirePowered, firePower));
 	}
 	
 	private boolean hasNeighborSignal(Level level, BlockState state, BlockPos pos, BooleanProperty property) {

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "createbigcannons:cast_iron_ingot"
+    }
+  ],
+  "result": {
+    "item": "createbigcannons:cast_iron_nugget",
+    "count": 9
+  }
+}

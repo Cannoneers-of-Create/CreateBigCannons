@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannons;
 
+import java.util.function.Supplier;
+
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
@@ -20,9 +22,9 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 public class CannonTubeBlock extends CannonBaseBlock implements ITE<CannonBlockEntity> {
 	
 	private final VoxelShaper shapes;
-	private final CannonCastShape cannonShape;
+	private final Supplier<CannonCastShape> cannonShape;
 	
-	public CannonTubeBlock(Properties properties, CannonMaterial material, CannonCastShape cannonShape, VoxelShape base) {
+	public CannonTubeBlock(Properties properties, CannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape base) {
 		super(properties, material);
 		this.shapes = new AllShapes.Builder(base).forDirectional();
 		this.cannonShape = cannonShape;
@@ -48,7 +50,7 @@ public class CannonTubeBlock extends CannonBaseBlock implements ITE<CannonBlockE
 		return new CannonTubeBlock(properties, material, CannonCastShape.VERY_LARGE, Block.box(-2, 0, -2, 18, 16, 18));
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape; }
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {

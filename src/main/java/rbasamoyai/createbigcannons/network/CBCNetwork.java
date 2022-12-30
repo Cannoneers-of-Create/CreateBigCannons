@@ -7,7 +7,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipesManager.ClientboundRecip
 
 public class CBCNetwork {
 
-	public static final String VERSION = "1.1.0";
+	public static final String VERSION = "1.3.0";
 	
 	public static final SimpleChannel INSTANCE = construct();
 	
@@ -37,6 +37,36 @@ public class CBCNetwork {
 				.encoder(ClientboundUpdateContraptionPacket::encode)
 				.decoder(ClientboundUpdateContraptionPacket::new)
 				.consumer(ClientboundUpdateContraptionPacket::handle)
+				.add();
+		
+		channel.messageBuilder(ServerboundProximityFuzePacket.class, id++)
+				.encoder(ServerboundProximityFuzePacket::encode)
+				.decoder(ServerboundProximityFuzePacket::new)
+				.consumer(ServerboundProximityFuzePacket::handle)
+				.add();
+
+		channel.messageBuilder(ServerboundFiringActionPacket.class, id++)
+				.encoder(ServerboundFiringActionPacket::encode)
+				.decoder(ServerboundFiringActionPacket::new)
+				.consumer(ServerboundFiringActionPacket::handle)
+				.add();
+
+		channel.messageBuilder(ServerboundCarriageWheelPacket.class, id++)
+				.encoder(ServerboundCarriageWheelPacket::encode)
+				.decoder(ServerboundCarriageWheelPacket::new)
+				.consumer(ServerboundCarriageWheelPacket::handle)
+				.add();
+
+		channel.messageBuilder(ClientboundAnimateCannonContraptionPacket.class, id++)
+				.encoder(ClientboundAnimateCannonContraptionPacket::encode)
+				.decoder(ClientboundAnimateCannonContraptionPacket::new)
+				.consumer(ClientboundAnimateCannonContraptionPacket::handle)
+				.add();
+
+		channel.messageBuilder(ServerboundSetFireRatePacket.class, id++)
+				.encoder(ServerboundSetFireRatePacket::encode)
+				.decoder(ServerboundSetFireRatePacket::new)
+				.consumer(ServerboundSetFireRatePacket::handle)
 				.add();
 		
 		return channel;

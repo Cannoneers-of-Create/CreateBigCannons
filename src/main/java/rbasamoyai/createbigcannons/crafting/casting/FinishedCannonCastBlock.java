@@ -38,11 +38,13 @@ public class FinishedCannonCastBlock extends Block implements ITE<FinishedCannon
 	@Override public Class<FinishedCannonCastBlockEntity> getTileEntityClass() { return FinishedCannonCastBlockEntity.class; }
 	@Override public BlockEntityType<? extends FinishedCannonCastBlockEntity> getTileEntityType() { return CBCBlockEntities.FINISHED_CANNON_CAST.get(); }
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.hasBlockEntity() && (state.getBlock() != newState.getBlock() || !newState.hasBlockEntity())) {
 			this.withTileEntityDo(level, pos, FinishedCannonCastBlockEntity::removeCast);
 		}
+		super.onRemove(state, level, pos, newState, isMoving);
 	}
 	
 	@Override
@@ -57,5 +59,8 @@ public class FinishedCannonCastBlock extends Block implements ITE<FinishedCannon
 		}
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
+	
+	@Override public boolean hasAnalogOutputSignal(BlockState state) { return true; }
+	@Override public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) { return 15; }
 	
 }

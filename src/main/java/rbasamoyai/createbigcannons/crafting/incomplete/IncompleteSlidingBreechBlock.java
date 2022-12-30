@@ -76,17 +76,7 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 				if (stage == 0) {
 					level.setBlock(pos, state.setValue(STAGE_2, 1), 3 | 16);
 				} else {
-					if (this.result == null) {
-						this.result = this.resultSupplier.get();
-					}
-					BlockState newState = this.result.delegate.get().defaultBlockState();
-					if (newState.hasProperty(FACING)) {
-						newState = newState.setValue(FACING, state.getValue(FACING));
-					}
-					if (newState.hasProperty(ALONG_FIRST)) {
-						newState = newState.setValue(ALONG_FIRST, state.getValue(ALONG_FIRST));
-					}
-					level.setBlock(pos, newState, 3 | 16);
+					level.setBlock(pos, this.getCompleteBlockState(state), 3 | 16);
 				}
 				
 				BlockEntity be = level.getBlockEntity(pos);
@@ -113,7 +103,7 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 				.setValue(ALONG_FIRST, horizontal.getAxis() == Direction.Axis.Z);
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH; }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH.get(); }
 	
 	@Override public Class<IncompleteCannonBlockEntity> getTileEntityClass() { return IncompleteCannonBlockEntity.class; }
 	@Override public BlockEntityType<? extends IncompleteCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.INCOMPLETE_CANNON.get(); }
@@ -152,6 +142,14 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 		Direction newFacing = transform.rotateFacing(state.getValue(FACING));
 		if (transform.rotationAxis == newFacing.getAxis() && transform.rotation.ordinal() % 2 == 1) state = state.cycle(ALONG_FIRST);
 		return state.setValue(FACING, newFacing);
+	}
+	
+	@Override
+	public BlockState getCompleteBlockState(BlockState state) {
+		if (this.result == null) this.result = this.resultSupplier.get();
+		BlockState newState = this.result.delegate.get().defaultBlockState();
+		if (newState.hasProperty(FACING)) newState = newState.setValue(FACING, state.getValue(FACING));
+		return newState.hasProperty(ALONG_FIRST) ? newState = newState.setValue(ALONG_FIRST, state.getValue(ALONG_FIRST)) : newState;
 	}
 
 }

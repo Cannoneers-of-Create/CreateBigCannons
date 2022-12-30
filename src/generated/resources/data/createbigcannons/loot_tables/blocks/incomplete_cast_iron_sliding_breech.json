@@ -7,12 +7,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createbigcannons:incomplete_cast_iron_sliding_breech"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 10.0,
+              "add": false
+            }
+          ],
+          "name": "createbigcannons:cast_iron_nugget"
         }
       ]
     }

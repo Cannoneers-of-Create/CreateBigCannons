@@ -26,32 +26,6 @@
       "x": 90,
       "y": 90
     },
-    "facing=down,open=partial": {
-      "model": "createbigcannons:block/nethersteel_screw_breech",
-      "x": 180
-    },
-    "facing=up,open=partial": {
-      "model": "createbigcannons:block/nethersteel_screw_breech"
-    },
-    "facing=north,open=partial": {
-      "model": "createbigcannons:block/nethersteel_screw_breech",
-      "x": 90
-    },
-    "facing=south,open=partial": {
-      "model": "createbigcannons:block/nethersteel_screw_breech",
-      "x": 90,
-      "y": 180
-    },
-    "facing=west,open=partial": {
-      "model": "createbigcannons:block/nethersteel_screw_breech",
-      "x": 90,
-      "y": 270
-    },
-    "facing=east,open=partial": {
-      "model": "createbigcannons:block/nethersteel_screw_breech",
-      "x": 90,
-      "y": 90
-    },
     "facing=down,open=open": {
       "model": "createbigcannons:block/nethersteel_screw_breech",
       "x": 180
@@ -74,6 +48,32 @@
       "y": 270
     },
     "facing=east,open=open": {
+      "model": "createbigcannons:block/nethersteel_screw_breech",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,open=partial": {
+      "model": "createbigcannons:block/nethersteel_screw_breech",
+      "x": 180
+    },
+    "facing=up,open=partial": {
+      "model": "createbigcannons:block/nethersteel_screw_breech"
+    },
+    "facing=north,open=partial": {
+      "model": "createbigcannons:block/nethersteel_screw_breech",
+      "x": 90
+    },
+    "facing=south,open=partial": {
+      "model": "createbigcannons:block/nethersteel_screw_breech",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,open=partial": {
+      "model": "createbigcannons:block/nethersteel_screw_breech",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,open=partial": {
       "model": "createbigcannons:block/nethersteel_screw_breech",
       "x": 90,
       "y": 90

@@ -44,6 +44,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
@@ -320,7 +321,7 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 		ListTag layerTag = new ListTag();
 		for (Map.Entry<CannonCastShape, Block> e : this.layeredBlocks.entrySet()) {
 			CompoundTag entryTag = new CompoundTag();
-			entryTag.putString("Shape", e.getKey().name().toString());
+			entryTag.putString("Shape", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(e.getKey()).toString());
 			entryTag.putString("Block", ForgeRegistries.BLOCKS.getKey(e.getValue()).toString());
 			layerTag.add(entryTag);
 		}
@@ -330,7 +331,7 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 			if (!this.layersConnectedTowards.containsKey(dir)) continue;
 			layerConnectionTag.put(dir.getSerializedName(),
 				this.layersConnectedTowards.get(dir).stream()
-				.map(CannonCastShape::name)
+				.map(CBCRegistries.CANNON_CAST_SHAPES.get()::getKey)
 				.map(ResourceLocation::toString)
 				.map(StringTag::valueOf)
 				.collect(Collectors.toCollection(ListTag::new)));
@@ -345,7 +346,20 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
-		if (TransformableByBoring.wasJustBored(tag)) {
+		boolean justBored = TransformableByBoring.wasJustBored(tag);		
+		
+		this.layersConnectedTowards.clear();
+		CompoundTag layerConnectionTag = tag.getCompound("LayerConnections");
+		for (Direction dir : Iterate.directions) {
+			if (!layerConnectionTag.contains(dir.getSerializedName())) continue;
+			ListTag connections = layerConnectionTag.getList(dir.getSerializedName(), Tag.TAG_STRING);
+			for (int i = 0; i < connections.size(); ++i) {
+				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(connections.getString(i)));
+				if (shape != null) this.layersConnectedTowards.put(dir, shape);
+			}
+		}		
+		
+		if (justBored) {
 			tag.remove("JustBored");
 			return;
 		}
@@ -355,17 +369,7 @@ public class LayeredCannonBlockEntity extends SmartTileEntity implements ICannon
 		ListTag layers = tag.getList("Layers", Tag.TAG_COMPOUND);
 		for (int i = 0; i < layers.size(); ++i) {
 			CompoundTag entry = layers.getCompound(i);
-			this.layeredBlocks.put(CannonCastShape.byId(new ResourceLocation(entry.getString("Shape"))), ForgeRegistries.BLOCKS.getValue(new ResourceLocation(entry.getString("Block"))));
-		}
-		this.layersConnectedTowards.clear();
-		CompoundTag layerConnectionTag = tag.getCompound("LayerConnections");
-		for (Direction dir : Iterate.directions) {
-			if (!layerConnectionTag.contains(dir.getSerializedName())) continue;
-			ListTag connections = layerConnectionTag.getList(dir.getSerializedName(), Tag.TAG_STRING);
-			for (int i = 0; i < connections.size(); ++i) {
-				CannonCastShape shape = CannonCastShape.byId(new ResourceLocation(connections.getString(i)));
-				if (shape != null) this.layersConnectedTowards.put(dir, shape);
-			}
+			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(entry.getString("Shape"))), ForgeRegistries.BLOCKS.getValue(new ResourceLocation(entry.getString("Block"))));
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;
 		this.completionProgress = tag.getInt("Progress");

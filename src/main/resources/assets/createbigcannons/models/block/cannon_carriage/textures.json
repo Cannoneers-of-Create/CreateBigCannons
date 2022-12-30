@@ -1,0 +1,15 @@
+{
+  "textures": {
+    "wheel": "createbigcannons:block/cannon_carriage/wheel",
+    "front": "createbigcannons:block/cannon_carriage/front",
+    "back": "createbigcannons:block/cannon_carriage/back",
+    "side": "createbigcannons:block/cannon_carriage/side",
+    "top": "createbigcannons:block/cannon_carriage/top",
+    "bottom": "createbigcannons:block/cannon_carriage/bottom",
+    "block": "createbigcannons:block/cannon_carriage/block",
+    "axis": "create:block/axis",
+    "axis_top": "create:block/axis_top",
+    "saddle": "createbigcannons:block/cannon_carriage/saddle",
+    "particle": "createbigcannons:block/cannon_carriage/side"
+  }
+}

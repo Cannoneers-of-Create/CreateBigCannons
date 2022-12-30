@@ -6,13 +6,16 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "createbigcannons:incomplete_steel_sliding_breech"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
+          "type": "minecraft:tag",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 10.0,
+              "add": false
+            }
+          ],
+          "name": "forge:nuggets/steel",
+          "expand": true
         }
       ]
     }

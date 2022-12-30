@@ -17,4 +17,6 @@ public interface BlockRecipe {
 	
 	BlockRecipeSerializer<?> getSerializer();
 	
+	BlockRecipeType<?> getType();
+	
 }

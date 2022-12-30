@@ -1,0 +1,46 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "createbigcannons:item/autocannon_cartridge",
+		"particle": "createbigcannons:item/autocannon_cartridge"
+	},
+	"elements": [
+		{
+			"from": [7, 7, 2],
+			"to": [9, 9, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [2, 6, 4, 8], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [0, 4, 2, 16], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [2, 2, 4, 4], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [0, 4, 2, 16], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [0, 4, 2, 16], "texture": "#0"},
+				"down": {"uv": [0, 4, 2, 16], "rotation": 180, "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [90, 0, 0]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [90, 0, 0]
+		},
+		"firstperson_righthand": {
+			"rotation": [30, 0, 30]
+		},
+		"firstperson_lefthand": {
+			"rotation": [30, 0, 30]
+		},
+		"ground": {
+			"scale": [0.8, 0.8, 0.8]
+		},
+		"gui": {
+			"rotation": [45, 30, 0],
+			"scale": [1.25, 1.25, 1.25]
+		},
+		"fixed": {
+			"rotation": [90, 0, 0]
+		}
+	}
+}
