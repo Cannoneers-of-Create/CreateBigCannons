@@ -76,9 +76,12 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		
 		this.prevYaw = this.cannonYaw;
 		this.prevPitch = this.cannonPitch;
+
+		boolean flag = this.mountedContraption != null && this.mountedContraption.canBeTurnedByController(this);
+
 		if (this.level.isClientSide) {
-			this.clientYawDiff *= 0.5f;
-			this.clientPitchDiff *= 0.5f;
+			this.clientYawDiff = flag ? this.clientYawDiff * 0.5f : 0;
+			this.clientPitchDiff = flag ? this.clientPitchDiff * 0.5f : 0;
 		}
 		
 		if (!this.running) {
@@ -88,7 +91,6 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 			return;
 		}
 
-		boolean flag = this.mountedContraption != null && this.mountedContraption.canBeTurnedByController(this);
 		if (!(this.mountedContraption != null && this.mountedContraption.isStalled()) && flag) {
 			float yawSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);
 			float pitchSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
@@ -121,14 +123,19 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 			this.mountedContraption.pitch = this.cannonPitch;
 			this.mountedContraption.yaw = this.cannonYaw;
 		} else {
-			this.cannonPitch = this.mountedContraption.pitch;
-			this.cannonYaw = this.mountedContraption.yaw;
-			this.prevPitch = this.cannonPitch;
-			this.prevYaw = this.cannonYaw;
-
-			this.mountedContraption.setXRot(this.mountedContraption.pitch);
-			this.mountedContraption.setYRot(this.mountedContraption.yaw);
+			this.cannonPitch = this.mountedContraption.getXRot();
+			this.cannonYaw = this.mountedContraption.getYRot();
+			this.mountedContraption.pitch = this.cannonPitch;
+			this.mountedContraption.yaw = this.cannonYaw;
 		}
+	}
+
+	public void applyHandRotation() {
+		if (this.mountedContraption == null) return;
+		this.cannonPitch = this.mountedContraption.pitch;
+		this.cannonYaw = this.mountedContraption.yaw;
+		this.prevPitch = this.cannonPitch;
+		this.prevYaw = this.cannonYaw;
 	}
 	
 	public void onRedstoneUpdate(boolean assemblyPowered, boolean prevAssemblyPowered, boolean firePowered, boolean prevFirePowered, int firePower) {
@@ -259,8 +266,6 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 
 		this.mountedContraption.pitch = this.cannonPitch;
 		this.mountedContraption.yaw = this.cannonYaw;
-		this.mountedContraption.setXRot(this.cannonPitch);
-		this.mountedContraption.setYRot(this.cannonYaw);
 
 		Vec3 vec = Vec3.atBottomCenterOf((this.worldPosition.above(2)));
 		this.mountedContraption.setPos(vec);

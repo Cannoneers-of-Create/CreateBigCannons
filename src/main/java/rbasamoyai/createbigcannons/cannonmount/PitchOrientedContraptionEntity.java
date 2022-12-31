@@ -115,11 +115,6 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			controller.attach(this);
 			if (this.level.isClientSide) this.setPos(this.getX(), this.getY(), this.getZ());
 		}
-
-		if (!this.level.isClientSide && !this.canBeTurnedByController(this.getController())) {
-			//this.yaw = this.getYRot();
-			//this.pitch = this.getXRot();
-		}
 	}
 
 	public void handleAnimation() {
@@ -204,6 +199,12 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			entity.setYBodyRot(entity.getYRot());
 			if (CBCEntityTypes.CANNON_CARRIAGE.is(this.getVehicle())) {
 				this.getVehicle().onPassengerTurned(this);
+			} else if (this.getController() instanceof CannonMountBlockEntity mount) {
+				mount.applyHandRotation();
+				this.xRotO = this.prevPitch;
+				this.setXRot(this.pitch);
+				this.yRotO = this.prevYaw;
+				this.setYRot(this.yaw);
 			}
 		}
 	}
