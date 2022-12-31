@@ -17,7 +17,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -223,18 +222,19 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 		BlockPos seat = cannon.getSeatPos(passenger);
 		if (seat == null) return null;
-		AABB bb = passenger.getBoundingBox();
-		double ySize = bb.getYsize();
 		return this.toGlobalVector(Vec3.atLowerCornerOf(seat)
-				.add(.5, passenger.getMyRidingOffset() + ySize - .65f, .5), partialTicks)
-				.add(VecHelper.getCenterOf(BlockPos.ZERO))
-				.subtract(0.5, ySize, 0.5);
+				.add(.5, 1, .5), partialTicks)
+				.subtract(0, passenger.getEyeHeight(), 0);
 	}
 
 	@Override
 	public Vec3 getDismountLocationForPassenger(LivingEntity entityLiving) {
 		ControlPitchContraption controller = this.getController();
 		return controller != null ? Vec3.atCenterOf(controller.getDismountPositionForContraption(this)) : super.getDismountLocationForPassenger(entityLiving);
+	}
+
+	public BlockPos getSeatPos(Entity passenger) {
+		return ((AbstractMountedCannonContraption) this.contraption).getSeatPos(passenger);
 	}
 
 	@Nullable

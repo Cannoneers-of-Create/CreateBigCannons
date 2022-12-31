@@ -16,6 +16,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -328,7 +329,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override public boolean canBeTurnedByPassenger(Entity entity) {
 		return this.isHandle && entity instanceof Player;
 	}
-	@Override public boolean canBeFiredOnController(ControlPitchContraption control) { return !this.isHandle && this.entity.getVehicle() == control; }
+	@Override public boolean canBeFiredOnController(ControlPitchContraption control) { return !this.isHandle && this.entity.getVehicle() != control; }
 
 	@Override
 	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {
@@ -367,5 +368,9 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	}
 
 	@Override protected ContraptionType getType() { return CBCContraptionTypes.MOUNTED_AUTOCANNON; }
+
+	public DyeColor getSeatColor() {
+		return this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech ? breech.getSeatColor() : null;
+	}
 
 }

@@ -9,7 +9,7 @@
 		"EntityTurnMixin"
 	],
 	"client": [
-		"CannonCarriagePoseMixin"
+		"HumanoidPoseMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

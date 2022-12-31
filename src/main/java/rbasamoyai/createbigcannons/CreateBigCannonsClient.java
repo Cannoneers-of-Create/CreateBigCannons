@@ -2,21 +2,27 @@
 package rbasamoyai.createbigcannons;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
 import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -50,6 +56,7 @@ public class CreateBigCannonsClient {
 		forgeEventBus.addListener(CreateBigCannonsClient::onClientGameTick);
 		forgeEventBus.addListener(CreateBigCannonsClient::onScrollMouse);
 		forgeEventBus.addListener(CreateBigCannonsClient::onFovModify);
+		forgeEventBus.addListener(CreateBigCannonsClient::onPlayerRenderPre);
 	}
 	
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
@@ -168,6 +175,28 @@ public class CreateBigCannonsClient {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null || !mc.options.getCameraType().isFirstPerson()) return;
 		if (mc.options.keyUse.isDown() && isControllingCannon(mc.player)) evt.setNewfov(evt.getFov() * 0.5f);
+	}
+
+	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
+		PoseStack stack = evt.getPoseStack();
+		Player player = evt.getPlayer();
+		float pt = evt.getPartialTick();
+
+		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
+			Vector3f pVec = new Vector3f(player.getPosition(pt));
+			stack.translate(-pVec.x(), -pVec.y(), -pVec.z());
+
+			BlockPos seatPos = poce.getSeatPos(player);
+			double offs = player.getEyeHeight() + player.getMyRidingOffset() - 0.15;
+			Vec3 vec = new Vec3(poce.getInitialOrientation().step()).scale(0.25);
+			Vector3f pVec1 = new Vector3f(poce.toGlobalVector(Vec3.atCenterOf(seatPos).subtract(vec).subtract(0, offs, 0), pt));
+			stack.translate(pVec1.x(), pVec1.y(), pVec1.z());
+
+			float yr = (-Mth.lerp(pt, player.yRotO, player.getYRot()) + 90) * Mth.DEG_TO_RAD;
+			Vector3f vec3 = new Vector3f(Mth.sin(yr), 0, Mth.cos(yr));
+			float xr = Mth.lerp(pt, player.xRotO, player.getXRot());
+			stack.mulPose(vec3.rotationDegrees(xr));
+		}
 	}
 
 	private static boolean isControllingCannon(Entity entity) {
