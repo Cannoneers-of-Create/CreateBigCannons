@@ -6,7 +6,7 @@
 	"refmap": "createbigcannons.refmap.json",
 	"mixins": [
 		"BearingCannonDrillFinderMixin",
-		"EntityTurnMixin"
+		"EntityMixin"
 	],
 	"client": [
 		"HumanoidPoseMixin"
