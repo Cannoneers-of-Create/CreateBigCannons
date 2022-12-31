@@ -55,6 +55,8 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.setLazyTickRate(3);
 	}
 
+	@Override public BlockState getControllerState() { return this.getBlockState(); }
+
 	@NotNull
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -112,8 +114,8 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.applyRotation();
 	}
 
-	private float getMaxDepress() { return ((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).maximumDepression(); }
-	private float getMaxElevate() { return ((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).maximumElevation(); }
+	private float getMaxDepress() { return this.mountedContraption.maximumDepression(); }
+	private float getMaxElevate() { return this.mountedContraption.maximumElevation(); }
 	
 	public boolean isRunning() { return this.running; }
 	
@@ -263,9 +265,18 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		if (this.mountedContraption == null) return;
 		this.cannonPitch = 0;
 		this.cannonYaw = this.getContraptionDirection().toYRot();
+		this.prevPitch = this.cannonPitch;
+		this.prevYaw = this.cannonYaw;
 
 		this.mountedContraption.pitch = this.cannonPitch;
 		this.mountedContraption.yaw = this.cannonYaw;
+		this.mountedContraption.prevPitch = this.mountedContraption.pitch;
+		this.mountedContraption.prevYaw = this.mountedContraption.yaw;
+
+		this.mountedContraption.setXRot(this.cannonPitch);
+		this.mountedContraption.setYRot(this.cannonYaw);
+		this.mountedContraption.xRotO = this.mountedContraption.getXRot();
+		this.mountedContraption.yRotO = this.mountedContraption.getYRot();
 
 		Vec3 vec = Vec3.atBottomCenterOf((this.worldPosition.above(2)));
 		this.mountedContraption.setPos(vec);

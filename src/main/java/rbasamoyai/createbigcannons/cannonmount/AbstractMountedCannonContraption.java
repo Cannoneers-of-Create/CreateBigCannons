@@ -28,16 +28,8 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 	protected Direction initialOrientation = Direction.NORTH;
 	protected BlockPos startPos = BlockPos.ZERO;
 
-	private final float maxDepress;
-	private final float maxElevate;
-
-	protected AbstractMountedCannonContraption(float maxDepress, float maxElevate) {
-		this.maxDepress = maxDepress;
-		this.maxElevate = maxElevate;
-	}
-
-	public float maximumDepression() { return this.maxDepress; }
-	public float maximumElevation() { return this.maxElevate; }
+	public abstract float maximumDepression(ControlPitchContraption controller);
+	public abstract float maximumElevation(ControlPitchContraption controller);
 
 	public LazyOptional<IItemHandler> getItemOptional() { return LazyOptional.empty(); }
 

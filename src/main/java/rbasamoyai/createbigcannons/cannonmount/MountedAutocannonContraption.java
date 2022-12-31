@@ -29,6 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.network.PacketDistributor;
+import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.*;
@@ -49,7 +50,21 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	private BlockPos recoilSpringPos;
 	private boolean isHandle = false;
 
-	public MountedAutocannonContraption() { super (45, 90); }
+	@Override
+	public float maximumDepression(ControlPitchContraption controller) {
+		BlockState state = controller.getControllerState();
+		if (CBCBlocks.CANNON_MOUNT.has(state)) return 45;
+		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
+		return 0;
+	}
+
+	@Override
+	public float maximumElevation(ControlPitchContraption controller) {
+		BlockState state = controller.getControllerState();
+		if (CBCBlocks.CANNON_MOUNT.has(state)) return 90;
+		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return this.isHandle ? 45 : 90;
+		return 0;
+	}
 
 	@Override
 	public LazyOptional<IItemHandler> getItemOptional() {

@@ -40,9 +40,23 @@ public class MountedCannonContraption extends AbstractMountedCannonContraption {
 	private CannonMaterial cannonMaterial;
 	private List<CannonBlockEntityHolder<?>> cannonBlockEntities = new ArrayList<>();
 	private boolean isWeakBreech = false;
-	
-	public MountedCannonContraption() { super(30, 60); }
-	
+
+	@Override
+	public float maximumDepression(ControlPitchContraption controller) {
+		BlockState state = controller.getControllerState();
+		if (CBCBlocks.CANNON_MOUNT.has(state)) return 30;
+		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
+		return 0;
+	}
+
+	@Override
+	public float maximumElevation(ControlPitchContraption controller) {
+		BlockState state = controller.getControllerState();
+		if (CBCBlocks.CANNON_MOUNT.has(state)) return 60;
+		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 30;
+		return 0;
+	}
+
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
 		if (!this.collectCannonBlocks(level, pos)) return false;

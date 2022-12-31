@@ -121,6 +121,9 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		if (this.contraption instanceof AbstractMountedCannonContraption mounted) mounted.animate();
 	}
 
+	public float maximumDepression() { return this.contraption instanceof AbstractMountedCannonContraption cannon ? cannon.maximumDepression(this.getController()) : 90f; }
+	public float maximumElevation() { return this.contraption instanceof AbstractMountedCannonContraption cannon ? cannon.maximumElevation(this.getController()) : 90f; }
+
 	@Override
 	protected void onContraptionStalled() {
 		ControlPitchContraption controller = this.getController();

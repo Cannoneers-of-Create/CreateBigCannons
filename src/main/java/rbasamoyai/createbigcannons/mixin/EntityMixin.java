@@ -27,10 +27,13 @@ public abstract class EntityMixin {
 			float dyr = Mth.clamp((float) yaw * crot, -clamp, clamp);
 			self.setXRot(self.getXRot() + dxr);
 			self.setYRot(self.getYRot() + dyr);
-			self.setXRot(Mth.clamp(self.getXRot(), -90.0f, 90.0f));
+
+			float e = poce.maximumDepression();
+			float d = -poce.maximumElevation();
+			self.setXRot(Mth.clamp(self.getXRot(), d, e));
 			self.xRotO += dxr;
 			self.yRotO += dyr;
-			self.xRotO = Mth.clamp(self.xRotO, -90.0f, 90.0f);
+			self.xRotO = Mth.clamp(self.xRotO, d, e);
 
 			this.vehicle.onPassengerTurned(self);
 			if (ci.isCancellable()) ci.cancel();

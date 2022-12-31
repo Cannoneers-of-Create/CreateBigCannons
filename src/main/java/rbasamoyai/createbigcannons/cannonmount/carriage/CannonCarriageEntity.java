@@ -34,6 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
@@ -82,6 +83,8 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	public CannonCarriageEntity(EntityType<? extends CannonCarriageEntity> type, Level level) {
 		super(type, level);
 	}
+
+	public BlockState getControllerState() { return CBCBlocks.CANNON_CARRIAGE.getDefaultState(); }
 
 	@Override
 	protected void defineSynchedData() {
@@ -203,11 +206,11 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		}
 
 		float f1 = 0;
-		if (this.inputPitch) {
+		if (this.inputPitch && this.cannonContraption != null) {
 			if (flag) {
 				if (this.inputForward) f1 -= turnRate;
 				if (this.inputBackward) f1 += turnRate;
-				this.setXRot(Mth.clamp(this.getXRot() - f1, -30, 30));
+				this.setXRot(Mth.clamp(this.getXRot() - f1, -this.cannonContraption.maximumDepression(), this.cannonContraption.maximumElevation()));
 			}
 		} else {
 			if (this.inputForward) f1 += speed;
