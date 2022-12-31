@@ -45,11 +45,9 @@ public abstract class EntityMixin {
 		Entity self = (Entity) (Object) this;
 		if (this.vehicle instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(self) != null) {
 			Vec3 v = poce.toGlobalVector(Vec3.atCenterOf(poce.getSeatPos(self)), 1.0f);
-			float w = this.getBbWidth() * 0.5f;
+			float w = self.getBbWidth() * 0.5f;
 			cir.setReturnValue(new AABB(v.x - w, v.y - w, v.z - w, v.x + w, v.y + w, v.z + w));
 		}
 	}
-
-	@Shadow public abstract float getBbWidth();
 
 }
