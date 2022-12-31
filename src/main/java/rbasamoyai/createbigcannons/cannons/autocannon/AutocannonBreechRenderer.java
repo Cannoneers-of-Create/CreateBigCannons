@@ -5,7 +5,6 @@ import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
 import com.simibubi.create.foundation.tileEntity.renderer.SmartTileEntityRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -27,23 +26,31 @@ public class AutocannonBreechRenderer extends SmartTileEntityRenderer<Autocannon
 
         BlockState state = breech.getBlockState();
         Direction facing = state.getValue(AutocannonBreechBlock.FACING);
-        SuperByteBuffer ejectorBuf = CachedBufferer.partialFacing(getPartialModelForState(breech), state, facing);
 
         ms.pushPose();
 
-        Vector3f normal = facing.step();
-        normal.mul(breech.getAnimateOffset(partialTicks) * -0.5f);
-        ejectorBuf.translate(normal)
-                .rotateCentered(Vector3f.YP.rotationDegrees(facing.getAxis().isVertical() ? 180 : 0))
-                .light(light)
-                .renderInto(ms, buffer.getBuffer(RenderType.cutoutMipped()));
+        if (state.getValue(AutocannonBreechBlock.HANDLE)) {
+            if (breech.getSeatColor() != null) {
+                CachedBufferer.partialFacing(CBCBlockPartials.autocannonSeatFor(breech.getSeatColor()), state, facing)
+                        .rotateCentered(Vector3f.YP.rotationDegrees(facing.getAxis().isVertical() ? 180 : 0))
+                        .light(light)
+                        .renderInto(ms, buffer.getBuffer(RenderType.cutoutMipped()));
+            }
+        } else {
+            Vector3f normal = facing.step();
+            normal.mul(breech.getAnimateOffset(partialTicks) * -0.5f);
+            CachedBufferer.partialFacing(getPartialModelForState(breech), state, facing)
+                    .translate(normal)
+                    .rotateCentered(Vector3f.YP.rotationDegrees(facing.getAxis().isVertical() ? 180 : 0))
+                    .light(light)
+                    .renderInto(ms, buffer.getBuffer(RenderType.cutoutMipped()));
+        }
 
         ms.popPose();
     }
 
     private static PartialModel getPartialModelForState(AutocannonBreechBlockEntity breech) {
-        return breech.getSeatColor() != null ? CBCBlockPartials.autocannonSeatFor(breech.getSeatColor())
-                : breech.getBlockState().getBlock() instanceof AutocannonBlock cBlock
+        return breech.getBlockState().getBlock() instanceof AutocannonBlock cBlock
                 ? CBCBlockPartials.autocannonEjectorFor(cBlock.getAutocannonMaterial())
                 : CBCBlockPartials.CAST_IRON_AUTOCANNON_EJECTOR;
     }

@@ -4,7 +4,6 @@ import com.mojang.math.Vector4f;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -102,7 +101,9 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	@Nullable
 	@Override
 	public Entity getControllingPassenger() {
-		return this.getPassengers().stream().filter(Player.class::isInstance).findFirst().orElse(null);
+		return this.canTurnCannon()
+				? this.getPassengers().stream().filter(Player.class::isInstance).findFirst().orElse(null)
+				: this.cannonContraption.getControllingPassenger();
 	}
 
 	@Override
@@ -135,23 +136,22 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	public void tryFiringShot() {
-		if (this.level instanceof ServerLevel slevel && this.cannonContraption != null) {
-			Contraption contraption = this.cannonContraption.getContraption();
-			if (contraption instanceof AbstractMountedCannonContraption cannon && cannon.canBeFiredOnController(this)) {
-				if (this.getControllingPassenger() instanceof Player player) {
-					if (cannon instanceof MountedAutocannonContraption autocannon) {
-						autocannon.getItemOptional().ifPresent(h -> {
-							ItemStack stack = getValidStack(player, CBCItems.AUTOCANNON_CARTRIDGE::isIn);
-							ItemStack result = h.insertItem(1, stack, false);
-							if (!player.isCreative() && stack.getCount() != result.getCount()) {
-								stack.setCount(result.getCount());
-								if (stack.isEmpty()) player.getInventory().removeItem(stack);
-							}
-						});
-					}
+		if (this.level instanceof ServerLevel slevel
+				&& this.cannonContraption != null
+				&& this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
+			if (this.getControllingPassenger() instanceof Player player) {
+				if (cannon instanceof MountedAutocannonContraption autocannon) {
+					autocannon.getItemOptional().ifPresent(h -> {
+						ItemStack stack = getValidStack(player, CBCItems.AUTOCANNON_CARTRIDGE::isIn);
+						ItemStack result = h.insertItem(1, stack, false);
+						if (!player.isCreative() && stack.getCount() != result.getCount()) {
+							stack.setCount(result.getCount());
+							if (stack.isEmpty()) player.getInventory().removeItem(stack);
+						}
+					});
 				}
-				cannon.fireShot(slevel, this.cannonContraption);
 			}
+			cannon.fireShot(slevel, this.cannonContraption);
 		}
 	}
 
@@ -183,6 +183,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	private void controlCarriage() {
 		if (!this.hasPlayerController() || !this.isOnGround()) return;
+
 		float deltaYaw = 0;
 
 		Vector4f newState = this.getWheelState();
@@ -191,17 +192,23 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		float turnRate = CBCConfigs.SERVER.cannons.carriageTurnRate.getF() * wMod;
 		float speed = CBCConfigs.SERVER.cannons.carriageSpeed.getF() * wMod;
 
-		if (this.inputLeft) deltaYaw -= turnRate;
-		if (this.inputRight) deltaYaw += turnRate;
-		this.setYRot(this.getYRot() + deltaYaw);
-		float f = deltaYaw * 7;
-		newState.add(f, f, f, f);
+		boolean flag = this.canTurnCannon();
+
+		if (flag) {
+			if (this.inputLeft) deltaYaw -= turnRate;
+			if (this.inputRight) deltaYaw += turnRate;
+			this.setYRot(this.getYRot() + deltaYaw);
+			float f = deltaYaw * 7;
+			newState.add(f, f, f, f);
+		}
 
 		float f1 = 0;
 		if (this.inputPitch) {
-			if (this.inputForward) f1 -= turnRate;
-			if (this.inputBackward) f1 += turnRate;
-			this.setXRot(Mth.clamp(this.getXRot() - f1, -30, 30));
+			if (flag) {
+				if (this.inputForward) f1 -= turnRate;
+				if (this.inputBackward) f1 += turnRate;
+				this.setXRot(Mth.clamp(this.getXRot() - f1, -30, 30));
+			}
 		} else {
 			if (this.inputForward) f1 += speed;
 			if (this.inputBackward) f1 -= speed * 0.5f;
@@ -277,6 +284,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		if (stack.isEmpty()) {
 			if (this.hasPlayerController() || this.isUnderWater() || player.isUnderWater()) return InteractionResult.PASS;
 			if (this.level.isClientSide) return InteractionResult.SUCCESS;
+			if (!this.canTurnCannon()) return player.startRiding(this.cannonContraption) ? InteractionResult.CONSUME : InteractionResult.PASS;
 			return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		}
 		if (AllItems.WRENCH.isIn(stack)) {
@@ -305,6 +313,8 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		return super.interact(player, hand);
 	}
 
+	protected boolean canTurnCannon() { return this.cannonContraption == null || this.cannonContraption.canBeTurnedByController(this); }
+
 	@Override
 	protected boolean canAddPassenger(Entity entity) {
 		if (entity.getType() == EntityType.PLAYER) return !this.hasPlayerController();
@@ -312,7 +322,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	private boolean hasPlayerController() {
-		return this.getPassengers().stream().anyMatch(Player.class::isInstance);
+		return this.getControllingPassenger() != null;
 	}
 
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
@@ -371,12 +381,20 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 		Direction dir = this.cannonContraption.getInitialOrientation();
 		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-		if (this.cannonContraption.canBeTurnedByController(this)) {
-			this.cannonContraption.prevPitch = flag ? this.xRotO : -this.xRotO;
-			this.cannonContraption.pitch = flag ? this.getXRot() : -this.getXRot();
-			this.cannonContraption.prevYaw = this.yRotO;
-			this.cannonContraption.yaw = this.getYRot();
-		} else {
+		this.cannonContraption.prevPitch = flag ? this.xRotO : -this.xRotO;
+		this.cannonContraption.pitch = flag ? this.getXRot() : -this.getXRot();
+		this.cannonContraption.prevYaw = this.yRotO;
+		this.cannonContraption.yaw = this.getYRot();
+	}
+
+	@Override
+	public void onPassengerTurned(Entity entity) {
+		super.onPassengerTurned(entity);
+
+		if (this.cannonContraption == entity) {
+			Direction dir = this.cannonContraption.getInitialOrientation();
+			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+
 			this.xRotO = flag ? this.cannonContraption.prevPitch : -this.cannonContraption.prevPitch;
 			this.setXRot(flag ? this.cannonContraption.pitch : -this.cannonContraption.pitch);
 			this.yRotO = this.cannonContraption.prevYaw;

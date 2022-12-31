@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.network;
 
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageEntity;
@@ -16,8 +17,9 @@ public class ServerboundFiringActionPacket {
     public void handle(Supplier<NetworkEvent.Context> sup) {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
-            if (ctx.getSender().getVehicle() instanceof PitchOrientedContraptionEntity poce) poce.tryFiringShot();
-            if (ctx.getSender().getVehicle() instanceof CannonCarriageEntity carriage) carriage.tryFiringShot();
+            Entity rootVehicle = ctx.getSender().getRootVehicle();
+            if (rootVehicle instanceof PitchOrientedContraptionEntity poce) poce.tryFiringShot();
+            if (rootVehicle instanceof CannonCarriageEntity carriage) carriage.tryFiringShot();
         });
         ctx.setPacketHandled(true);
     }

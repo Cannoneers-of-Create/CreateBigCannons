@@ -113,7 +113,10 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Au
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         ItemStack stack = player.getItemInHand(hand);
         if (level.getBlockEntity(pos) instanceof AutocannonBreechBlockEntity breech) {
-            if (breech.getSeatColor() == null && stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof SeatBlock seat) {
+            if (breech.getSeatColor() == null
+                    && state.getValue(HANDLE)
+                    && stack.getItem() instanceof BlockItem blockItem
+                    && blockItem.getBlock() instanceof SeatBlock seat) {
                 if (!level.isClientSide) {
                     breech.setSeatColor(seat.getColor());
                     SoundType soundType = seat.defaultBlockState().getSoundType();

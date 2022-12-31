@@ -117,8 +117,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		}
 
 		if (!this.level.isClientSide && !this.canBeTurnedByController(this.getController())) {
-			this.yaw = this.getYRot();
-			this.pitch = this.getXRot();
+			//this.yaw = this.getYRot();
+			//this.pitch = this.getXRot();
 		}
 	}
 
@@ -202,6 +202,9 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			this.yaw = entity.getYRot();
 
 			entity.setYBodyRot(entity.getYRot());
+			if (CBCEntityTypes.CANNON_CARRIAGE.is(this.getVehicle())) {
+				this.getVehicle().onPassengerTurned(this);
+			}
 		}
 	}
 
@@ -210,9 +213,19 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		if (passenger instanceof Mob mob && mob.getLeashHolder() instanceof Player player) {
 			this.addSittingPassenger(player, seatIndex);
 		}
-		passenger.setXRot(this.pitch);
-		passenger.setYRot(this.yaw);
 		super.addSittingPassenger(passenger, seatIndex);
+	}
+
+	@Override
+	protected void addPassenger(Entity entity) {
+		super.addPassenger(entity);
+		Direction dir = this.getInitialOrientation();
+		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+
+		entity.setXRot(flag ? -this.pitch : this.prevPitch);
+		entity.setYRot(this.yaw);
+		entity.xRotO = flag ? -this.prevPitch : this.prevPitch;
+		entity.yRotO = this.prevYaw;
 	}
 
 	@Override

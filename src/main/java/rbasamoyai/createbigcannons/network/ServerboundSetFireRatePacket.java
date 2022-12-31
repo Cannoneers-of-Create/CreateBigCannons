@@ -25,7 +25,7 @@ public class ServerboundSetFireRatePacket {
     public void handle(Supplier<NetworkEvent.Context> sup) {
         NetworkEvent.Context ctx = sup.get();
         ctx.enqueueWork(() -> {
-            if (this.fireRateAdjustment != 0 && ctx.getSender().getVehicle() instanceof CannonCarriageEntity carriage) carriage.trySettingFireRateCarriage(this.fireRateAdjustment);
+            if (this.fireRateAdjustment != 0 && ctx.getSender().getRootVehicle() instanceof CannonCarriageEntity carriage) carriage.trySettingFireRateCarriage(this.fireRateAdjustment);
         });
         ctx.setPacketHandled(true);
     }

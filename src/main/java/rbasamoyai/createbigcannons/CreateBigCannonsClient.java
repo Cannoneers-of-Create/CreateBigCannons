@@ -142,7 +142,7 @@ public class CreateBigCannonsClient {
 	public static void onClientGameTick(TickEvent.ClientTickEvent evt) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null) return;
-		if (mc.player.getVehicle() instanceof CannonCarriageEntity carriage) {
+		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
 			boolean isPitching = CreateBigCannonsClient.PITCH_MODE.isDown();
 			carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
@@ -158,7 +158,7 @@ public class CreateBigCannonsClient {
 	public static void onScrollMouse(InputEvent.MouseScrollEvent evt) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null) return;
-		if (mc.player.getVehicle() instanceof CannonCarriageEntity) {
+		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity) {
 			double scrollDelta = evt.getScrollDelta();
 			int fireRateAdjustment = 0;
 			if (scrollDelta > 0) fireRateAdjustment = 1;
