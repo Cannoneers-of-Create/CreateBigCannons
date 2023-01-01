@@ -1,23 +1,13 @@
 package rbasamoyai.createbigcannons.manualloading;
 
-import java.util.List;
-
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.contraptions.components.deployer.DeployerFakePlayer;
-import com.simibubi.create.foundation.item.ItemDescription;
-import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.NBTProcessors;
-
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -39,6 +29,8 @@ import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+
+import java.util.List;
 
 public class WormItem extends Item {
 	
@@ -109,18 +101,7 @@ public class WormItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		ItemDescription.Palette palette = AllSections.of(stack).getTooltipPalette();
-		if (Screen.hasShiftDown()) {
-			String keyBase = this.getDescriptionId() + ".tooltip.";
-			
-			String key = keyBase + "reach";
-			tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
-			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", getReach()), palette.color, palette.hColor, 1));
-			
-			String key1 = keyBase + "deployerCanUse";
-			tooltip.add(new TextComponent(I18n.get(key1)).withStyle(ChatFormatting.GRAY));
-			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key1 + (deployersCanUse() ? ".yes" : ".no")), palette.color, palette.hColor, 1));
-		}
+
 	}
 	
 	public static int getReach() { return CBCConfigs.SERVER.cannons.ramRodReach.get(); }
