@@ -1,26 +1,19 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
-import java.util.function.Consumer;
-
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
-
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
-import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.CBCItems;
-import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.*;
+
+import java.util.function.Consumer;
 
 public class CBCCraftingRecipeProvider extends RecipeProvider {
 
@@ -371,6 +364,9 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.pattern("W W")
 		.unlockedBy("has_gunpowder", has(Tags.Items.GUNPOWDER))
 		.save(cons);
+
+		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING.getSerializer()).save(cons, "munition_fuzing");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY.getSerializer()).save(cons, "cartridge_assembly");
 	}
 	
 	@Override public String getName() { return "Create Big Cannons Recipes: Crafting"; }

@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.crafting.foundry;
 import com.simibubi.create.content.contraptions.processing.BasinRecipe;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder.ProcessingRecipeParams;
 
-import rbasamoyai.createbigcannons.crafting.CBCRecipeTypes;
+import rbasamoyai.createbigcannons.CBCRecipeTypes;
 
 public class MeltingRecipe extends BasinRecipe {
 

@@ -1,11 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -19,15 +15,20 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.FuzedCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
@@ -35,10 +36,11 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		super(properties);
 	}
 	
-	@Override public boolean onProjectileImpact(ItemStack stack, FuzedCannonProjectile projectile, HitResult result) { return true; }
-	
+	@Override public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result) { return true; }
+	@Override public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) { return true; }
+
 	@Override
-	public boolean onProjectileTick(ItemStack stack, FuzedCannonProjectile projectile) {
+	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
 		CompoundTag tag = stack.getOrCreateTag();
 		int airTime = tag.getInt("AirTime");
 		if (airTime > CBCConfigs.SERVER.munitions.proximityFuzeArmingTime.get()) tag.putBoolean("Armed", true);
@@ -104,6 +106,14 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 				.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", stack.getOrCreateTag().getInt("DetonationDistance"))
 				.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, ChatFormatting.GRAY, ChatFormatting.GREEN, 6));
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, level, tooltip, flag);
+		tooltip.add(Lang.builder("item")
+				.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info.item", stack.getOrCreateTag().getInt("DetonationDistance"))
+				.component());
 	}
 
 }

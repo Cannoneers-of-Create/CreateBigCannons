@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons;
 
 import com.simibubi.create.content.AllSections;
+import com.simibubi.create.content.contraptions.itemAssembly.SequencedAssemblyItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
@@ -11,6 +12,7 @@ import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.apround.APAutocannonRoundItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
@@ -72,13 +74,29 @@ public class CBCItems {
 	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE.item("autocannon_cartridge", AutocannonCartridgeItem::new)
 			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/autocannon_cartridge")))
 			.register();
-	public static final ItemEntry<Item> EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
+
+	public static final ItemEntry<Item> EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE
+			.item("empty_autocannon_cartridge", Item::new)
 			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/empty_autocannon_cartridge")))
+			.register();
+
+	public static final ItemEntry<SequencedAssemblyItem> PARTIALLY_FILLED_AUTOCANNON_CARTRIDGE = REGISTRATE
+			.item("partially_filled_autocannon_cartridge", SequencedAssemblyItem::new)
+			.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("item/filled_autocannon_cartridge")))
+			.register();
+
+	public static final ItemEntry<Item> FILLED_AUTOCANNON_CARTRIDGE = REGISTRATE
+			.item("filled_autocannon_cartridge", Item::new)
+			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/filled_autocannon_cartridge")))
 			.register();
 
 	public static final ItemEntry<APAutocannonRoundItem> AP_AUTOCANNON_ROUND = REGISTRATE
 			.item("ap_autocannon_round", APAutocannonRoundItem::new)
 			.lang("Armor Piercing (AP) Autocannon Round")
+			.register();
+
+	public static final ItemEntry<FlakAutocannonRoundItem> FLAK_AUTOCANNON_ROUND = REGISTRATE
+			.item("flak_autocannon_round", FlakAutocannonRoundItem::new)
 			.register();
 
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons;
+package rbasamoyai.createbigcannons.base;
 
 import java.util.List;
 
@@ -17,7 +17,9 @@ import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -25,14 +27,19 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.CreateBigCannonsClient;
+import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial.FailureMode;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.manualloading.RamRodItem;
+import rbasamoyai.createbigcannons.manualloading.WormItem;
 
-public class CannonTooltip {
+public class CBCTooltip {
 
-	public static <T extends Block & CannonBlock> void appendText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
+	public static <T extends Block & CannonBlock> void appendCannonBlockText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
 		boolean desc = Screen.hasShiftDown();
 		
 		String[] holdDesc = Lang.translateDirect("tooltip.holdForDescription", "$").getString().split("\\$");
@@ -45,7 +52,7 @@ public class CannonTooltip {
 			tooltip.add(tabBuilder);
 		}
 		
-		ItemDescription.Palette palette = AllSections.of(stack).getTooltipPalette();
+		ItemDescription.Palette palette = getPalette(level, stack);
 		if (desc) {
 			CannonMaterial material = block.getCannonMaterial();
 			Minecraft mc = Minecraft.getInstance();
@@ -100,6 +107,10 @@ public class CannonTooltip {
 		return new TextComponent(" " + ItemDescription.makeProgressBar(5, outOfFive)).withStyle(color);
 	}
 
+	public static ItemDescription.Palette getPalette(Level level, ItemStack stack) {
+		return level == null ? AllSections.UNASSIGNED.getTooltipPalette() : AllSections.of(stack).getTooltipPalette();
+	}
+
 	public static <T extends Block & AutocannonBlock> void appendTextAutocannon(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
 		boolean desc = Screen.hasShiftDown();
 
@@ -113,7 +124,7 @@ public class CannonTooltip {
 			tooltip.add(tabBuilder);
 		}
 
-		ItemDescription.Palette palette = AllSections.of(stack).getTooltipPalette();
+		ItemDescription.Palette palette = getPalette(level, stack);
 		if (desc) {
 			AutocannonMaterial material = block.getAutocannonMaterial();
 			Minecraft mc = Minecraft.getInstance();
@@ -138,5 +149,73 @@ public class CannonTooltip {
 			}
 		}
 	}
-	
+
+	public static void appendMortarStoneText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		ItemDescription.Palette palette = getPalette(level, stack);
+		if (Screen.hasShiftDown()) {
+			String key = stack.getDescriptionId() + ".tooltip.maximumCharges";
+			tooltip.add(new TranslatableComponent(key).withStyle(ChatFormatting.GRAY));
+			String value = String.format("%.2f", CBCConfigs.SERVER.munitions.maxMortarStoneCharges.get());
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", value), palette.color, palette.hColor, 1));
+		}
+	}
+
+	public static void appendRamRodText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		ItemDescription.Palette palette = getPalette(level, stack);
+		if (Screen.hasShiftDown()) {
+			String keyBase = stack.getDescriptionId() + ".tooltip.";
+
+			String key = keyBase + "pushStrength";
+			tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", RamRodItem.getPushStrength()), palette.color, palette.hColor, 1));
+
+			String key1 = keyBase + "reach";
+			tooltip.add(new TextComponent(I18n.get(key1)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key1 + ".value", RamRodItem.getReach()), palette.color, palette.hColor, 1));
+
+			String key2 = keyBase + "deployerCanUse";
+			tooltip.add(new TextComponent(I18n.get(key2)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key2 + (RamRodItem.deployersCanUse() ? ".yes" : ".no")), palette.color, palette.hColor, 1));
+		}
+	}
+
+	public static void appendWormText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+		ItemDescription.Palette palette = getPalette(level, stack);
+		if (Screen.hasShiftDown()) {
+			String keyBase = stack.getDescriptionId() + ".tooltip.";
+
+			String key = keyBase + "reach";
+			tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", WormItem.getReach()), palette.color, palette.hColor, 1));
+
+			String key1 = keyBase + "deployerCanUse";
+			tooltip.add(new TextComponent(I18n.get(key1)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key1 + (WormItem.deployersCanUse() ? ".yes" : ".no")), palette.color, palette.hColor, 1));
+		}
+	}
+
+	public static void appendImpactFuzeText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, float detChance) {
+		ItemDescription.Palette palette = getPalette(level, stack);
+		if (Screen.hasShiftDown()) {
+			String key = stack.getDescriptionId() + ".tooltip.chance";
+			tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", (int)(detChance * 100.0f)), palette.color, palette.hColor, 1));
+		}
+	}
+
+	public static void appendCannonCarriageText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, BlockItem block) {
+		ItemDescription.Palette palette = getPalette(level, stack);
+		if (Screen.hasShiftDown()) {
+			String key = block.getDescriptionId() + ".tooltip";
+
+			String fire = I18n.get(CreateBigCannonsClient.FIRE_CONTROLLED_CANNON.getTranslatedKeyMessage().getString());
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".keyPressed", fire), ChatFormatting.GRAY, ChatFormatting.WHITE));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".fireCannon"), palette.color, palette.hColor, 1));
+
+			String pitchMode = I18n.get(CreateBigCannonsClient.PITCH_MODE.getTranslatedKeyMessage().getString());
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".keyPressed", pitchMode), ChatFormatting.GRAY, ChatFormatting.WHITE));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".pitchMode"), palette.color, palette.hColor, 1));
+		}
+	}
+
 }

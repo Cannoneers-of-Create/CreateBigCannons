@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.munitions;
 
 import com.mojang.math.Constants;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -9,6 +8,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -16,13 +16,16 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
@@ -99,7 +102,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		super.onHitEntity(result);
 		if (!this.level.isClientSide) {
 			Entity entity = result.getEntity();
-			if (entity instanceof AbstractCannonProjectile) return;
+			if (entity instanceof Projectile) return;
 			
 			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
 			DamageSource source = DamageSource.thrown(this, null).bypassArmor();
@@ -122,33 +125,44 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		super.onHitBlock(result);
 		if (!this.level.isClientSide) {
 			Vec3 hitLoc = result.getLocation();
-			byte breakthroughPower = this.getBreakthroughPower();
 			
-			if (breakthroughPower <= 0) {
+			if (this.canBreakBlock(result)) {
+				Vec3 currentVel = this.getDeltaMovement();
+				BlockPos pos = result.getBlockPos();
+				BlockState oldState = this.level.getBlockState(pos);
+				this.level.destroyBlock(pos, false);
+				this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, this.getPenetratingExplosionPower(), Explosion.BlockInteraction.DESTROY);
+				this.setDeltaMovement(currentVel);
+				this.setPenetrationPoints(result, oldState);
+			} else {
 				if (CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE) {
 					this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.NONE);
 				}
 				this.setInGround(true);
 				this.setPos(hitLoc);
-			} else {
-				Vec3 currentVel = this.getDeltaMovement();
-				
-				Explosion explode = this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, this.getPenetratingExplosionPower(), Explosion.BlockInteraction.DESTROY);
-				this.setDeltaMovement(currentVel);
-				this.setBreakthroughPower((byte)(breakthroughPower - 1));
-				
-				BlockPos pos = result.getBlockPos();
-				BlockState remainingBlock = this.level.getBlockState(pos);
-				if (!remainingBlock.isAir()) {
-					this.setBreakthroughPower((byte) Math.max(0, this.getBreakthroughPower() - 9));
-					if (remainingBlock.getDestroySpeed(this.level, pos) != -1.0) {
-						remainingBlock.onBlockExploded(this.level, pos, explode);
-					} else {
-						this.setBreakthroughPower((byte) 0);
-					}
-				}
+				this.setBreakthroughPower((byte) 0);
 			}
 		}
+	}
+
+	protected boolean canBreakBlock(BlockHitResult result) {
+		if (this.getBreakthroughPower() <= 0) return false;
+		BlockPos pos = result.getBlockPos();
+		BlockState remainingBlock = this.level.getBlockState(pos);
+		return !remainingBlock.is(this.blockingTag()) && remainingBlock.getDestroySpeed(this.level, pos) != -1.0;
+	}
+
+	protected void setPenetrationPoints(BlockHitResult result, BlockState hitBlock) {
+		boolean resistant = hitBlock.is(this.resistantTag()) || !hitBlock.is(this.noResistanceTag()) && this.isResistantFallback(result, hitBlock);
+		this.setBreakthroughPower((byte)(this.getBreakthroughPower() - (resistant ? 3 : 1)));
+	}
+
+	protected TagKey<Block> noResistanceTag() { return CBCTags.BlockCBC.BIG_CANNON_NO_RESISTANCE; }
+	protected TagKey<Block> resistantTag() { return CBCTags.BlockCBC.BIG_CANNON_RESISTANT; }
+	protected TagKey<Block> blockingTag() { return CBCTags.BlockCBC.BIG_CANNON_BLOCKING; }
+
+	protected boolean isResistantFallback(BlockHitResult result, BlockState hitBlock) {
+		return false;
 	}
 
 	protected float getPenetratingExplosionPower() { return 2; }

@@ -17,6 +17,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "invalidCannon", "A cannon must have one and only one opening and one and only one closed end");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonLoaderInsideDuringAssembly", "Cannon block at [%s, %s, %s] contains a cannon loader part");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "hasIncompleteCannonBlocks", "Cannon block at [%s, %s, %s] has not finished the crafting process");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "noAutocannonBreech", "This cannon requires an autocannon breech to fire");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "player", "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
@@ -78,6 +79,7 @@ public class CBCLangGen {
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile has been in the world for the set time.");
 		
 		REGISTRATE.addLang("item", CBCItems.TIMED_FUZE.getId(), "tooltip.shell_info", "Time to Detonate: _%ss %s ticks_");
+		REGISTRATE.addLang("item", CBCItems.TIMED_FUZE.getId(), "tooltip.shell_info.item", "Time to Detonate: %ss %s ticks");
 		
 		tooltip(CBCItems.PROXIMITY_FUZE)
 		.header("PROXIMITY FUZE")
@@ -86,6 +88,7 @@ public class CBCLangGen {
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile gets is within the set range of a block.");
 		
 		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info", "Detonation Distance: _%s blocks_");
+		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info.item", "Detonation Distance: %s blocks");
 		
 		tooltip(CBCItems.CANNON_CRAFTING_WAND)
 		.header("CANNON CRAFTING WAND")
@@ -100,11 +103,13 @@ public class CBCLangGen {
 		tooltip(CBCBlocks.CANNON_CARRIAGE)
 		.header("CANNON_CARRIAGE")
 		.summary("_Mobile_ cannon mount. Can be _moved around_, but _cannot be automated_ like the Cannon Mount.")
-		.conditionAndBehavior("When R-Clicked with Wrench", "Assembles or disassembles the carriage. The carriage does not need to have a cannon mounted.");
+		.conditionAndBehavior("When R-Clicked with Wrench", "Assembles or disassembles the carriage. The carriage does not need to have a cannon mounted.")
+		.controlAndAction("When Mouse Wheel scrolled", "Changes the rate of fire of a mounted autocannon if present.");
 
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.keyPressed", "When [_%s_] held down");
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.fireCannon", "_Fires cannon_ on carriage if present. _Repeatedly fires cannon_ if possible.");
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.pitchMode", "The forward/backward keys _set pitch_ instead of moving the cannon.");
+		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "hotbar.fireRate", "Rate of fire: %s RPM");
 
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength", "Push Strength");
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength.value", "Up to _%s blocks_");
@@ -124,6 +129,15 @@ public class CBCLangGen {
 		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.deployerCanUse", "Can Be Used by Deployers");
 		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.deployerCanUse.yes", "_Yes_");
 		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.deployerCanUse.no", "_No_");
+
+		tooltip(CBCItems.AP_AUTOCANNON_ROUND)
+		.header("ARMOR PIERCING (AP) AUTOCANNON ROUND")
+		.summary("_Strong penetrating force._ Best suited for _soft targets_ such as _wooden structures and thin armor._ _Cannot be fuzed and detonated._");
+
+		tooltip(CBCItems.FLAK_AUTOCANNON_ROUND)
+		.header("FLAK AUTOCANNON ROUND")
+		.summary("Can be used to shoot out _airborne targets._ Peppers targets with _shrapnel._")
+		.conditionAndBehavior("On Detonation", "Releases _shrapnel_ in its direction. The shrapnel _spreads out over a wide area._");
 		
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.materialProperties", "Cannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength", "Strength");

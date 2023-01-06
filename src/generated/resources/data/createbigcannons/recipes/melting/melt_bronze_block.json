@@ -2,7 +2,7 @@
   "type": "createbigcannons:melting",
   "ingredients": [
     {
-      "tag": "forge:blocks/bronze"
+      "tag": "forge:storage_blocks/bronze"
     }
   ],
   "results": [

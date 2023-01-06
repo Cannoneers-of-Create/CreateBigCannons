@@ -4,7 +4,9 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
+import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
+import com.simibubi.create.foundation.render.CachedBufferer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -13,34 +15,25 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import rbasamoyai.createbigcannons.CreateBigCannons;
+import net.minecraft.world.level.block.Blocks;
+import rbasamoyai.createbigcannons.CBCBlockPartials;
 
 public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile> extends EntityRenderer<T> {
-
-    private static final RenderType NORMAL = RenderType.entityCutoutNoCull(CreateBigCannons.resource("textures/entity/shrapnel.png"));
-    private static final RenderType TRACER = RenderType.entityCutoutNoCull(CreateBigCannons.resource("textures/entity/tracer.png"));
 
     public AutocannonProjectileRenderer(EntityRendererProvider.Context context) { super(context); }
 
     @Override
     public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
+        Quaternion q = Vector3f.YP.rotationDegrees(entity.getViewYRot(partialTicks) + 180.0f);
+        Quaternion q1 = Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks));
+        q.mul(q1);
+
         poseStack.pushPose();
-        poseStack.scale(2.0f, 2.0f, 2.0f);
-        poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-        poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0f));
-        poseStack.translate(0, -0.2, 0);
-
-        PoseStack.Pose lastPose = poseStack.last();
-        Matrix4f pose = lastPose.pose();
-        Matrix3f normal = lastPose.normal();
-        VertexConsumer builder = buffers.getBuffer(entity.isTracer() ? TRACER : NORMAL);
-        if (entity.isTracer()) packedLight = LightTexture.FULL_BRIGHT;
-
-        vertex(builder, pose, normal, packedLight, 0.0f, 0, 0, 1);
-        vertex(builder, pose, normal, packedLight, 1.0f, 0, 1, 1);
-        vertex(builder, pose, normal, packedLight, 1.0f, 1, 1, 0);
-        vertex(builder, pose, normal, packedLight, 0.0f, 1, 0, 0);
-
+        CachedBufferer.partial(CBCBlockPartials.AUTOCANNON_ROUND, Blocks.AIR.defaultBlockState())
+                .translate(-0.5, -0.375, -0.5)
+                .rotateCentered(q)
+                .light(LightTexture.FULL_BRIGHT)
+                .renderInto(poseStack, buffers.getBuffer(RenderType.cutout()));
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffers, packedLight);
     }

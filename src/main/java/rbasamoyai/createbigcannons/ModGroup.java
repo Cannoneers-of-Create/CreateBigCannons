@@ -163,8 +163,11 @@ public class ModGroup {
 				CBCBlocks.STEEL_AUTOCANNON_BARREL.asStack(),
 
 				CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(),
+				CBCItems.FILLED_AUTOCANNON_CARTRIDGE.asStack(),
 				CBCItems.AP_AUTOCANNON_ROUND.get().getCreativeTabCartridgeItem(),
-				CBCItems.AP_AUTOCANNON_ROUND.asStack()));
+				CBCItems.AP_AUTOCANNON_ROUND.asStack(),
+				CBCItems.FLAK_AUTOCANNON_ROUND.get().getCreativeTabCartridgeItem(),
+				CBCItems.FLAK_AUTOCANNON_ROUND.asStack()));
 		}
 	};
 	

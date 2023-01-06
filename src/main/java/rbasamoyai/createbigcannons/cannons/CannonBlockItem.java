@@ -12,6 +12,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import rbasamoyai.createbigcannons.base.CBCTooltip;
 
 public class CannonBlockItem<T extends Block & CannonBlock> extends BlockItem {
 
@@ -25,7 +26,7 @@ public class CannonBlockItem<T extends Block & CannonBlock> extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		if (level != null) CannonTooltip.appendText(stack, level, tooltip, flag, this.cannonBlock);
+		if (level != null) CBCTooltip.appendCannonBlockText(stack, level, tooltip, flag, this.cannonBlock);
 	}
 	
 	@Override

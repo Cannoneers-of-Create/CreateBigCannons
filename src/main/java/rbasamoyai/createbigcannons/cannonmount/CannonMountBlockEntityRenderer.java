@@ -9,14 +9,12 @@ import com.mojang.math.Vector3f;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
 import com.simibubi.create.content.contraptions.base.KineticTileEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
 
 public class CannonMountBlockEntityRenderer extends KineticTileEntityRenderer {
@@ -37,16 +35,22 @@ public class CannonMountBlockEntityRenderer extends KineticTileEntityRenderer {
 		
 		ms.pushPose();
 		
-		SuperByteBuffer yawShaftRender = CachedBufferer.partialFacing(CBCBlockPartials.YAW_SHAFT, state, Direction.DOWN);
-		yawShaftRender.light(light).rotateCentered(Direction.UP, getYawAngle(cmbe)).renderInto(ms, solidBuf);
+		CachedBufferer.partialFacing(CBCBlockPartials.YAW_SHAFT, state, Direction.DOWN)
+				.light(light)
+				.rotateCentered(Direction.UP, getYawAngle(cmbe))
+				.renderInto(ms, solidBuf);
 		
 		float yaw = getMountYaw(cmbe);
 		Quaternion qyaw = Vector3f.YN.rotation(yaw);
-		SuperByteBuffer rotatingMount = CachedBufferer.partial(CBCBlockPartials.ROTATING_MOUNT, state);
-		rotatingMount.translate(0.0d, 1.0d, 0.0d).light(light).rotateCentered(qyaw).renderInto(ms, solidBuf);
+		CachedBufferer.partial(CBCBlockPartials.ROTATING_MOUNT, state)
+				.translate(0.0d, 1.0d, 0.0d)
+				.light(light)
+				.rotateCentered(qyaw)
+				.renderInto(ms, solidBuf);
 		
 		float pitch = cmbe.getPitchOffset(partialTicks);
-		boolean flag = cmbe.getContraptionDirection().getAxisDirection() == state.getValue(BlockStateProperties.HORIZONTAL_FACING).getAxisDirection();
+		Direction facing = cmbe.getContraptionDirection();
+		boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
 		Quaternion qpitch = Vector3f.XP.rotationDegrees(flag ? -pitch : pitch);
 		Quaternion qyaw1 = qyaw.copy();
 		qyaw1.mul(qpitch);

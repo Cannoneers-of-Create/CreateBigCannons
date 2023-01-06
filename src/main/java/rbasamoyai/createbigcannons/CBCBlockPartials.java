@@ -2,14 +2,12 @@ package rbasamoyai.createbigcannons;
 
 import com.jozufozu.flywheel.core.PartialModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.DyeColor;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class CBCBlockPartials {
@@ -20,6 +18,7 @@ public class CBCBlockPartials {
 
 	private static final Map<AutocannonMaterial, PartialModel> AUTOCANNON_SPRING_BY_MATERIAL = new HashMap<>();
 	private static final Map<AutocannonMaterial, PartialModel> AUTOCANNON_EJECTOR_BY_MATERIAL = new HashMap<>();
+	private static final Map<DyeColor, PartialModel> AUTOCANNON_SEAT_BY_COLOR = new EnumMap<>(DyeColor.class);
 	
 	private static final Collection<Runnable> DEFERRED_MODEL_CALLBACKS = new ArrayList<>(); 
 	
@@ -55,7 +54,27 @@ public class CBCBlockPartials {
 
 		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.CAST_IRON, "autocannon/cast_iron_autocannon_ejector"),
 		BRONZE_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.BRONZE, "autocannon/bronze_autocannon_ejector"),
-		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.STEEL, "autocannon/steel_autocannon_ejector");
+		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.STEEL, "autocannon/steel_autocannon_ejector"),
+
+		AUTOCANNON_ROUND = entity("autocannon_round"),
+
+		AUTOCANNON_SEAT_WHITE = autocannonSeatPartial(DyeColor.WHITE, "autocannon/seat_white"),
+		AUTOCANNON_SEAT_ORANGE = autocannonSeatPartial(DyeColor.ORANGE, "autocannon/seat_orange"),
+		AUTOCANNON_SEAT_MAGENTA = autocannonSeatPartial(DyeColor.MAGENTA, "autocannon/seat_magenta"),
+		AUTOCANNON_SEAT_LIGHT_BLUE = autocannonSeatPartial(DyeColor.LIGHT_BLUE, "autocannon/seat_light_blue"),
+		AUTOCANNON_SEAT_YELLOW = autocannonSeatPartial(DyeColor.YELLOW, "autocannon/seat_yellow"),
+		AUTOCANNON_SEAT_LIME = autocannonSeatPartial(DyeColor.LIME, "autocannon/seat_lime"),
+		AUTOCANNON_SEAT_PINK = autocannonSeatPartial(DyeColor.PINK, "autocannon/seat_pink"),
+		AUTOCANNON_SEAT_GRAY = autocannonSeatPartial(DyeColor.GRAY, "autocannon/seat_gray"),
+		AUTOCANNON_SEAT_LIGHT_GRAY = autocannonSeatPartial(DyeColor.LIGHT_GRAY, "autocannon/seat_light_gray"),
+		AUTOCANNON_SEAT_CYAN = autocannonSeatPartial(DyeColor.CYAN, "autocannon/seat_cyan"),
+		AUTOCANNON_SEAT_PURPLE = autocannonSeatPartial(DyeColor.PURPLE, "autocannon/seat_purple"),
+		AUTOCANNON_SEAT_BLUE = autocannonSeatPartial(DyeColor.BLUE, "autocannon/seat_blue"),
+		AUTOCANNON_SEAT_BROWN = autocannonSeatPartial(DyeColor.BROWN, "autocannon/seat_brown"),
+		AUTOCANNON_SEAT_GREEN = autocannonSeatPartial(DyeColor.GREEN, "autocannon/seat_green"),
+		AUTOCANNON_SEAT_RED = autocannonSeatPartial(DyeColor.RED, "autocannon/seat_red"),
+		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_block");
+
 	
 	private static PartialModel block(String path) {
 		return new PartialModel(CreateBigCannons.resource("block/" + path));
@@ -134,6 +153,20 @@ public class CBCBlockPartials {
 
 	public static PartialModel autocannonEjectorFor(AutocannonMaterial material) {
 		return AUTOCANNON_EJECTOR_BY_MATERIAL.getOrDefault(material, CAST_IRON_AUTOCANNON_EJECTOR);
+	}
+
+	private static PartialModel autocannonSeatPartial(DyeColor color, String path) {
+		return autocannonSeatPartial(color, CreateBigCannons.resource("block/" + path));
+	}
+
+	public static PartialModel autocannonSeatPartial(DyeColor color, ResourceLocation loc) {
+		PartialModel model = new PartialModel(loc);
+		AUTOCANNON_SEAT_BY_COLOR.put(color, model);
+		return model;
+	}
+
+	public static PartialModel autocannonSeatFor(DyeColor color) {
+		return AUTOCANNON_SEAT_BY_COLOR.getOrDefault(color, AUTOCANNON_SEAT_WHITE);
 	}
 	
 	public static void init() {}

@@ -25,7 +25,6 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
-import rbasamoyai.createbigcannons.crafting.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlob;
 import rbasamoyai.createbigcannons.network.CBCNetwork;

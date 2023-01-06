@@ -16,6 +16,7 @@ import rbasamoyai.createbigcannons.CBCBlockPartials;
 public class AutocannonBreechInstance extends BlockEntityInstance<AutocannonBreechBlockEntity> implements DynamicInstance {
 
     private final OrientedData ejector;
+    private final OrientedData seat;
     //private final OrientedData shell;
 
     private final Direction facing;
@@ -24,14 +25,19 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AutocannonBree
         super(manager, blockEntity);
 
         this.facing = this.blockState.getValue(BlockStateProperties.FACING);
+        Quaternion q = Vector3f.YP.rotationDegrees(this.facing.getAxis().isVertical() ? 180 : 0);
 
-        this.ejector = manager.defaultSolid()
+        this.ejector = manager.defaultCutout()
                 .material(Materials.ORIENTED)
                 .getModel(this.getPartialModelForState(), this.blockState, this.facing)
                 .createInstance();
-
-        Quaternion q = Vector3f.YP.rotationDegrees(this.facing.getAxis().isVertical() ? 180 : 0);
         this.ejector.setRotation(q);
+
+        this.seat = manager.defaultCutout()
+                .material(Materials.ORIENTED)
+                .getModel(CBCBlockPartials.autocannonSeatFor(blockEntity.getSeatColor()), this.blockState, this.facing)
+                .createInstance();
+        this.seat.setRotation(q);
 
         this.updateTransforms();
     }
@@ -39,22 +45,35 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AutocannonBree
     @Override public void beginFrame() { this.updateTransforms(); }
 
     private void updateTransforms() {
-        float offset = this.blockEntity.getAnimateOffset(AnimationTickHolder.getPartialTicks()) * 0.5f;
-        Vector3f normal = this.facing.getOpposite().step();
-        normal.mul(offset);
-        this.ejector.setPosition(this.getInstancePosition()).nudge(normal.x(), normal.y(), normal.z());
+        if (this.blockState.getValue(AutocannonBreechBlock.HANDLE)) {
+            this.ejector.setColor((byte) 255, (byte) 255, (byte) 255, (byte) 0);
+
+            this.seat.setPosition(this.getInstancePosition())
+                    .setColor((byte) 255, (byte) 255, (byte) 255, (byte) (this.blockEntity.getSeatColor() == null ? 0 : 255));
+        } else {
+            this.seat.setColor((byte) 255, (byte) 255, (byte) 255, (byte) 0);
+
+            float offset = this.blockEntity.getAnimateOffset(AnimationTickHolder.getPartialTicks()) * 0.5f;
+            Vector3f normal = this.facing.getOpposite().step();
+            normal.mul(offset);
+            this.ejector.setPosition(this.getInstancePosition()).nudge(normal.x(), normal.y(), normal.z()).setColor((byte) 255, (byte) 255, (byte) 255, (byte) 255);
+        }
     }
 
     @Override
     public void updateLight() {
         super.updateLight();
         this.relight(this.pos, this.ejector);
+        this.relight(this.pos, this.seat);
     }
 
     @Override
     protected void remove() {
         this.ejector.delete();
+        this.seat.delete();
     }
+
+    @Override public boolean shouldReset() { return super.shouldReset() || this.blockEntity.shouldUpdateInstance(); }
 
     private PartialModel getPartialModelForState() {
         return this.blockState.getBlock() instanceof AutocannonBlock cBlock

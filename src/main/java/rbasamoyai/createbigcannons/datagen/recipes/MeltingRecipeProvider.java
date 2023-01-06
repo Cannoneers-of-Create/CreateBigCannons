@@ -10,7 +10,7 @@ import rbasamoyai.createbigcannons.CBCFluids;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.crafting.CBCRecipeTypes;
+import rbasamoyai.createbigcannons.CBCRecipeTypes;
 
 public class MeltingRecipeProvider extends ProcessingRecipeGen {
 

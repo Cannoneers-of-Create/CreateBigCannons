@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.crafting.CBCRecipeTypes;
+import rbasamoyai.createbigcannons.CBCRecipeTypes;
 
 public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 

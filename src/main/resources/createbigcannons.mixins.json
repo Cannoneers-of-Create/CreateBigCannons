@@ -5,10 +5,11 @@
 	"compatibilityLevel": "JAVA_8",
 	"refmap": "createbigcannons.refmap.json",
 	"mixins": [
-		"BearingCannonDrillFinderMixin"
+		"BearingCannonDrillFinderMixin",
+		"EntityMixin"
 	],
 	"client": [
-		"CannonCarriagePoseMixin"
+		"HumanoidPoseMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

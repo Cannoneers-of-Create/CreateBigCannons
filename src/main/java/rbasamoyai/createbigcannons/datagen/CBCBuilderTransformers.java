@@ -38,6 +38,7 @@ import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockItem;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
 import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillGen;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderGen;
@@ -230,9 +231,17 @@ public class CBCBuilderTransformers {
 
 	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonBreech(String pathAndMaterial) {
 		ResourceLocation texLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon");
+		ResourceLocation texHandleLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon_handle");
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/autocannon/breech");
+		ResourceLocation handleLoc = CreateBigCannons.resource("block/autocannon/breech_handle");
 		return b -> b.addLayer(() -> RenderType::cutoutMipped)
 				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p,
-						$ -> p.models().withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/breech")).texture("material", texLoc)))
+						s -> {
+							boolean handle = s.getValue(AutocannonBreechBlock.HANDLE);
+							return p.models().withExistingParent(handle ? c.getName() + "_handle" : c.getName(), handle ? handleLoc : baseLoc)
+									.texture("material", texLoc)
+									.texture("handle", texHandleLoc);
+						}))
 				.item(AutocannonBlockItem::new)
 				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/breech_item")).texture("material", texLoc))
 				.build();

@@ -62,6 +62,12 @@ public class CBCNetwork {
 				.decoder(ClientboundAnimateCannonContraptionPacket::new)
 				.consumer(ClientboundAnimateCannonContraptionPacket::handle)
 				.add();
+
+		channel.messageBuilder(ServerboundSetFireRatePacket.class, id++)
+				.encoder(ServerboundSetFireRatePacket::encode)
+				.decoder(ServerboundSetFireRatePacket::new)
+				.consumer(ServerboundSetFireRatePacket::handle)
+				.add();
 		
 		return channel;
 	}

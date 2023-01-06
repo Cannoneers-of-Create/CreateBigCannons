@@ -4,13 +4,13 @@ import com.mojang.math.Vector4f;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -27,23 +27,31 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
+import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonmount.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannonmount.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
+
+import java.util.function.Predicate;
 
 public class CannonCarriageEntity extends Entity implements ControlPitchContraption {
 
@@ -76,6 +84,8 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		super(type, level);
 	}
 
+	public BlockState getControllerState() { return CBCBlocks.CANNON_CARRIAGE.getDefaultState(); }
+
 	@Override
 	protected void defineSynchedData() {
 		this.entityData.define(DATA_ID_HURT, 0);
@@ -94,7 +104,9 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	@Nullable
 	@Override
 	public Entity getControllingPassenger() {
-		return this.getPassengers().stream().filter(Player.class::isInstance).findFirst().orElse(null);
+		return this.canTurnCannon()
+				? this.getPassengers().stream().filter(Player.class::isInstance).findFirst().orElse(null)
+				: this.cannonContraption.getControllingPassenger();
 	}
 
 	@Override
@@ -116,16 +128,45 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			this.setDeltaMovement(Vec3.ZERO);
 		}
 
+		if (!this.level.isClientSide
+			&& this.getControllingPassenger() instanceof Player player
+			&& this.cannonContraption != null
+			&& this.cannonContraption.getContraption() instanceof MountedAutocannonContraption) {
+			player.displayClientMessage(new TranslatableComponent("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate", this.getActualFireRate()), true);
+		}
+
 		this.applyRotation();
 	}
 
 	public void tryFiringShot() {
-		if (this.level instanceof ServerLevel slevel && this.cannonContraption != null) {
-			Contraption contraption = this.cannonContraption.getContraption();
-			if (contraption instanceof AbstractMountedCannonContraption cannon) {
-				cannon.fireShot(slevel, this.cannonContraption);
+		if (this.level instanceof ServerLevel slevel
+				&& this.cannonContraption != null
+				&& this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
+			if (this.getControllingPassenger() instanceof Player player) {
+				if (cannon instanceof MountedAutocannonContraption autocannon) {
+					autocannon.getItemOptional().ifPresent(h -> {
+						ItemStack stack = getValidStack(player, CBCItems.AUTOCANNON_CARTRIDGE::isIn);
+						ItemStack result = h.insertItem(1, stack, false);
+						if (!player.isCreative() && stack.getCount() != result.getCount()) {
+							stack.setCount(result.getCount());
+							if (stack.isEmpty()) player.getInventory().removeItem(stack);
+						}
+					});
+				}
 			}
+			cannon.fireShot(slevel, this.cannonContraption);
 		}
+	}
+
+	public static ItemStack getValidStack(Player player, Predicate<ItemStack> pred) {
+		ItemStack held = ProjectileWeaponItem.getHeldProjectile(player, pred);
+		if (!held.isEmpty()) return held;
+		Inventory playerInv = player.getInventory();
+		for (int i = 0; i < playerInv.getContainerSize(); ++i) {
+			ItemStack stack = playerInv.getItem(i);
+			if (pred.test(stack)) return stack;
+		}
+		return ItemStack.EMPTY;
 	}
 
 	private void moveCarriage() {
@@ -145,6 +186,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	private void controlCarriage() {
 		if (!this.hasPlayerController() || !this.isOnGround()) return;
+
 		float deltaYaw = 0;
 
 		Vector4f newState = this.getWheelState();
@@ -153,17 +195,23 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		float turnRate = CBCConfigs.SERVER.cannons.carriageTurnRate.getF() * wMod;
 		float speed = CBCConfigs.SERVER.cannons.carriageSpeed.getF() * wMod;
 
-		if (this.inputLeft) deltaYaw -= turnRate;
-		if (this.inputRight) deltaYaw += turnRate;
-		this.setYRot(this.getYRot() + deltaYaw);
-		float f = deltaYaw * 7;
-		newState.add(f, f, f, f);
+		boolean flag = this.canTurnCannon();
+
+		if (flag) {
+			if (this.inputLeft) deltaYaw -= turnRate;
+			if (this.inputRight) deltaYaw += turnRate;
+			this.setYRot(this.getYRot() + deltaYaw);
+			float f = deltaYaw * 7;
+			newState.add(f, f, f, f);
+		}
 
 		float f1 = 0;
-		if (this.inputPitch) {
-			if (this.inputForward) f1 -= turnRate;
-			if (this.inputBackward) f1 += turnRate;
-			this.setXRot(Mth.clamp(this.getXRot() - f1, -30, 30));
+		if (this.inputPitch && this.cannonContraption != null) {
+			if (flag) {
+				if (this.inputForward) f1 -= turnRate;
+				if (this.inputBackward) f1 += turnRate;
+				this.setXRot(Mth.clamp(this.getXRot() - f1, -this.cannonContraption.maximumDepression(), this.cannonContraption.maximumElevation()));
+			}
 		} else {
 			if (this.inputForward) f1 += speed;
 			if (this.inputBackward) f1 -= speed * 0.5f;
@@ -239,6 +287,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		if (stack.isEmpty()) {
 			if (this.hasPlayerController() || this.isUnderWater() || player.isUnderWater()) return InteractionResult.PASS;
 			if (this.level.isClientSide) return InteractionResult.SUCCESS;
+			if (!this.canTurnCannon()) return player.startRiding(this.cannonContraption) ? InteractionResult.CONSUME : InteractionResult.PASS;
 			return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		}
 		if (AllItems.WRENCH.isIn(stack)) {
@@ -267,6 +316,8 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		return super.interact(player, hand);
 	}
 
+	protected boolean canTurnCannon() { return this.cannonContraption == null || this.cannonContraption.canBeTurnedByController(this); }
+
 	@Override
 	protected boolean canAddPassenger(Entity entity) {
 		if (entity.getType() == EntityType.PLAYER) return !this.hasPlayerController();
@@ -274,7 +325,18 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	private boolean hasPlayerController() {
-		return this.getPassengers().stream().anyMatch(Player.class::isInstance);
+		return this.getControllingPassenger() != null;
+	}
+
+	public void trySettingFireRateCarriage(int fireRateAdjustment) {
+		if (!this.level.isClientSide && this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon)
+			autocannon.trySettingFireRateCarriage(fireRateAdjustment);
+	}
+
+	public int getActualFireRate() {
+		return this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon
+				? autocannon.getReferencedFireRate()
+				: 0;
 	}
 
 	@Override
@@ -329,6 +391,21 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	@Override
+	public void onPassengerTurned(Entity entity) {
+		super.onPassengerTurned(entity);
+
+		if (this.cannonContraption == entity) {
+			Direction dir = this.cannonContraption.getInitialOrientation();
+			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+
+			this.xRotO = flag ? this.cannonContraption.prevPitch : -this.cannonContraption.prevPitch;
+			this.setXRot(flag ? this.cannonContraption.pitch : -this.cannonContraption.pitch);
+			this.yRotO = this.cannonContraption.prevYaw;
+			this.setYRot(this.cannonContraption.yaw);
+		}
+	}
+
+	@Override
 	public boolean hurt(DamageSource source, float damage) {
 		if (this.isInvulnerableTo(source)) return false;
 		if (this.level.isClientSide || this.isRemoved()) return true;
@@ -376,6 +453,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		this.setDamage(tag.getFloat("Damage"));
 		this.setHurtTime(tag.getInt("HurtTime"));
 		this.setHurtDir(tag.getInt("HurtDir"));
+		this.setCannonRider(tag.getBoolean("CannonRider"));
 
 		ListTag wheelStateTag = tag.getList("WheelState", Tag.TAG_FLOAT);
 		this.setWheelState(new Vector4f(wheelStateTag.getFloat(0), wheelStateTag.getFloat(1), wheelStateTag.getFloat(2), wheelStateTag.getFloat(3)));
@@ -386,6 +464,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		tag.putFloat("Damage", this.getDamage());
 		tag.putInt("HurtTime", this.getHurtTime());
 		tag.putInt("HurtDir", this.getHurtDir());
+		tag.putBoolean("CannonRider", this.isCannonRider());
 
 		ListTag wheelStateTag = new ListTag();
 		Vector4f wheelState = this.getWheelState();
@@ -413,6 +492,11 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		poce.startRiding(this);
 		this.cannonContraption = poce;
 		this.positionRider(poce);
+	}
+
+	@Override
+	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+		return this.blockPosition().relative(this.getDirection().getOpposite()).above();
 	}
 
 	@Override public void onStall() {}

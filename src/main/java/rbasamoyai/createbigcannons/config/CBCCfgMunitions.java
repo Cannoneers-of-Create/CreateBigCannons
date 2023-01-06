@@ -33,6 +33,10 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat fluidBlobSpread = f(1f, 0.01f, "fluidBlobSpread", Comments.fluidBlobSpread);
 	public final ConfigInt mbPerAoeRadius = i(125, 125, "millibucketsPerAreaOfEffectRadius", Comments.mbPerAoeRadius);
 	public final ConfigFloat fluidBlobBlockAffectChance = f(0.5f, 0, 1, "fluidBlobBlockEffectChance", Comments.fluidBlobBlockAffectChance);
+
+	public final ConfigInt flakCount = i(20, 1, "flakCount", Comments.flakCount);
+	public final ConfigFloat flakSpread = f(0.25f, 0.01f, "flakSpread", Comments.flakSpread);
+	public final ConfigFloat flakDamage = f(10.0f, 0.0f, "flakDamage", Comments.flakDamage);
 	
 	@Override public String getName() { return "munitions"; }
 
@@ -66,6 +70,9 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String fluidBlobSpread = "How much Fluid Blobs spread on release.";
 		static String mbPerAoeRadius = "How many millibuckets (mB) of fluid in a Fluid Blob are required to increase its area of effect (AOE) by one block in each direction.";
 		static String fluidBlobBlockAffectChance = "The chance of a fluid blob affecting a block in its area of effect (AOE). 0 is 0% (never), 1 is 100% (always).";
+		static String flakCount = "Amount of shrapnel bullets that a Flak Autocannon Shell releases on detonation.";
+		static String flakSpread = "How much flak shrapnel bullets spread on release.";
+		static String flakDamage = "How much damage a flak shrapnel bullet does.";
 	}
 	
 	public enum GriefState {

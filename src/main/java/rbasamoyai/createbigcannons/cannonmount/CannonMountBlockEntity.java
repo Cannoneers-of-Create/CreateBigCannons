@@ -55,6 +55,8 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.setLazyTickRate(3);
 	}
 
+	@Override public BlockState getControllerState() { return this.getBlockState(); }
+
 	@NotNull
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -76,9 +78,12 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		
 		this.prevYaw = this.cannonYaw;
 		this.prevPitch = this.cannonPitch;
+
+		boolean flag = this.mountedContraption != null && this.mountedContraption.canBeTurnedByController(this);
+
 		if (this.level.isClientSide) {
-			this.clientYawDiff *= 0.5f;
-			this.clientPitchDiff *= 0.5f;
+			this.clientYawDiff = flag ? this.clientYawDiff * 0.5f : 0;
+			this.clientPitchDiff = flag ? this.clientPitchDiff * 0.5f : 0;
 		}
 		
 		if (!this.running) {
@@ -87,8 +92,8 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 			}
 			return;
 		}
-		
-		if (!(this.mountedContraption != null && this.mountedContraption.isStalled())) {
+
+		if (!(this.mountedContraption != null && this.mountedContraption.isStalled()) && flag) {
 			float yawSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);
 			float pitchSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
 			float newYaw = this.cannonYaw + yawSpeed;
@@ -99,9 +104,9 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 				this.cannonPitch = 0.0f;
 			} else {
 				Direction dir = this.getContraptionDirection();
-				boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-				float cu = flag ? this.getMaxElevate() : this.getMaxDepress();
-				float cd = flag ? -this.getMaxDepress() : -this.getMaxElevate();
+				boolean flag1 = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+				float cu = flag1 ? this.getMaxElevate() : this.getMaxDepress();
+				float cd = flag1 ? -this.getMaxDepress() : -this.getMaxElevate();
 				this.cannonPitch = Mth.clamp(newPitch % 360.0f, cd, cu);
 			}
 		}
@@ -109,15 +114,30 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.applyRotation();
 	}
 
-	private float getMaxDepress() { return ((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).maximumDepression(); }
-	private float getMaxElevate() { return ((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).maximumElevation(); }
+	private float getMaxDepress() { return this.mountedContraption.maximumDepression(); }
+	private float getMaxElevate() { return this.mountedContraption.maximumElevation(); }
 	
 	public boolean isRunning() { return this.running; }
 	
 	protected void applyRotation() {
 		if (this.mountedContraption == null) return;
-		this.mountedContraption.pitch = this.cannonPitch;
-		this.mountedContraption.yaw = this.cannonYaw;
+		if (this.mountedContraption.canBeTurnedByController(this)) {
+			this.mountedContraption.pitch = this.cannonPitch;
+			this.mountedContraption.yaw = this.cannonYaw;
+		} else {
+			this.cannonPitch = this.mountedContraption.getXRot();
+			this.cannonYaw = this.mountedContraption.getYRot();
+			this.mountedContraption.pitch = this.cannonPitch;
+			this.mountedContraption.yaw = this.cannonYaw;
+		}
+	}
+
+	public void applyHandRotation() {
+		if (this.mountedContraption == null) return;
+		this.cannonPitch = this.mountedContraption.pitch;
+		this.cannonYaw = this.mountedContraption.yaw;
+		this.prevPitch = this.cannonPitch;
+		this.prevYaw = this.cannonYaw;
 	}
 	
 	public void onRedstoneUpdate(boolean assemblyPowered, boolean prevAssemblyPowered, boolean firePowered, boolean prevFirePowered, int firePower) {
@@ -209,7 +229,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.running = true;
 		
 		mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
-		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, this.getBlockState().getValue(HORIZONTAL_FACING), this);
+		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing1, this);
 		this.mountedContraption = contraptionEntity;
 		this.resetContraptionToOffset();
 		this.level.addFreshEntity(contraptionEntity);
@@ -244,8 +264,20 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	protected void resetContraptionToOffset() {
 		if (this.mountedContraption == null) return;
 		this.cannonPitch = 0;
-		this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
-		this.applyRotation();
+		this.cannonYaw = this.getContraptionDirection().toYRot();
+		this.prevPitch = this.cannonPitch;
+		this.prevYaw = this.cannonYaw;
+
+		this.mountedContraption.pitch = this.cannonPitch;
+		this.mountedContraption.yaw = this.cannonYaw;
+		this.mountedContraption.prevPitch = this.mountedContraption.pitch;
+		this.mountedContraption.prevYaw = this.mountedContraption.yaw;
+
+		this.mountedContraption.setXRot(this.cannonPitch);
+		this.mountedContraption.setYRot(this.cannonYaw);
+		this.mountedContraption.xRotO = this.mountedContraption.getXRot();
+		this.mountedContraption.yRotO = this.mountedContraption.getYRot();
+
 		Vec3 vec = Vec3.atBottomCenterOf((this.worldPosition.above(2)));
 		this.mountedContraption.setPos(vec);
 	}
@@ -317,10 +349,11 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	@Override public void onStall() { if (!this.level.isClientSide) this.sendData(); }
 	@Override public BlockPos getControllerBlockPos() { return this.worldPosition; }
 
-	public boolean isAttachedTo(PitchOrientedContraptionEntity contraption) {
-		return this.mountedContraption == contraption;
+	@Override
+	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).above();
 	}
-	
+
 	@Override public AssemblyException getLastAssemblyException() { return this.lastException; }
 	
 	public static AssemblyException cannonBlockOutsideOfWorld(BlockPos pos) {
