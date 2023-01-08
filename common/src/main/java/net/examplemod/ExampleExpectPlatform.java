@@ -2,8 +2,6 @@ package net.examplemod;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 
-import java.nio.file.Path;
-
 public class ExampleExpectPlatform {
     /**
      * an example of {@link ExpectPlatform}.
@@ -12,14 +10,14 @@ public class ExampleExpectPlatform {
      * platform sub-package, with its class suffixed with {@code Impl}.
      * <p>
      * Example:
-     * Expect: net.examplemod.ExampleExpectPlatform#makeCreateRegistrate()
-     * Actual Fabric: net.examplemod.fabric.ExampleExpectPlatformImpl#makeCreateRegistrate()
-     * Actual Forge: net.examplemod.forge.ExampleExpectPlatformImpl#makeCreateRegistrate()
+     * Expect: net.examplemod.ExampleExpectPlatform#platformName()
+     * Actual Fabric: net.examplemod.fabric.ExampleExpectPlatformImpl#platformName()
+     * Actual Forge: net.examplemod.forge.ExampleExpectPlatformImpl#platformName()
      * <p>
      * <a href="https://plugins.jetbrains.com/plugin/16210-architectury">You should also get the IntelliJ plugin to help with @ExpectPlatform.</a>
      */
     @ExpectPlatform
-    public static Path configDir() {
+    public static String platformName() {
         // Just throw an error, the content should get replaced at runtime.
         throw new AssertionError();
     }

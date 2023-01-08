@@ -1,8 +1,7 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "0.11.0-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.0-SNAPSHOT" apply false
     id "io.github.juuxel.loom-quiltflower" version "1.+" apply false // Quiltflower, a better decompiler
-    id "org.quiltmc.quilt-mappings-on-loom" version "4.2.+" // Quilt Mappings, for parameters and javadoc. Also hashed mojmap.
     id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
 }
 
@@ -14,89 +13,35 @@ subprojects {
     apply plugin: "dev.architectury.loom"
     apply plugin: "io.github.juuxel.loom-quiltflower"
 
-    boolean fabricLike = project.name != "forge"
-    boolean common = project.name == "common"
-
     loom {
         silentMojangMappingsLicense()
     }
 
     repositories {
         mavenCentral()
-        mavenLocal()
-        maven { url = "https://api.modrinth.com/maven" }
-        maven { url = "https://cursemaven.com" }
-        maven { url = "https://maven.parchmentmc.org" }
-        maven { url = "https://maven.fabricmc.net/" }
-        maven { url = "https://maven.tterrag.com/" }
-        maven { url = "https://storage.googleapis.com/devan-maven/" }
-        maven { url = "https://maven.shedaniel.me/" }
-        maven { url = "https://aperlambda.github.io/maven" }
-        maven { url = "https://ladysnake.jfrog.io/artifactory/mods" }
-        maven { url = "https://maven.kotlindiscord.com/repository/terraformers/" }
-        maven { url = "https://mvn.devos.one/releases/" }
-        maven { url = "https://mvn.devos.one/snapshots/" }
-        maven { url = "https://maven.terraformersmc.com/" }
-        maven { url = "https://maven.cafeteria.dev" }
-        maven { url = "https://jitpack.io/" }
-        maven { url = "https://maven.jamieswhiteshirt.com/libs-release" }
-        maven { url = "https://maven.gegy.dev" }
-        maven { url = "https://dvs1.progwml6.com/files/maven" }
-        maven { url = "https://maven.blamejared.com" }
-        maven { url = "https://maven.tterrag.com" }
-        maven { url = "https://www.cursemaven.com" }
-        maven { url = "https://harleyoconnor.com/maven" }
+        maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
+        maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
+        maven { url = "https://maven.parchmentmc.org" } // Parchment mappings
+        maven { url = "https://maven.quiltmc.org/repository/release" } // Quilt Mappings
+        maven { // Flywheel
+            url = "https://maven.tterrag.com/"
+            content {
+                // need to be specific here due to version overlaps
+                includeGroup("com.jozufozu.flywheel")
+            }
+        }
     }
 
     dependencies {
-        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        // layered mappings - Mojmap, parchment, QM
-        mappings loom.layered {
-            it.addLayer(quiltMappings.mappings("org.quiltmc:quilt-mappings:1.18.2+build.22:v2")) // https://lambdaurora.dev/tools/import_quilt.html
-            it.parchment("org.parchmentmc.data:parchment-1.18.2:BLEEDING-20220313.132143-1@zip") // https://ldtteam.jfrog.io/ui/native/parchmentmc-public/org/parchmentmc/data/parchment-1.18.1/BLEEDING-SNAPSHOT
-            it.officialMojangMappings {
-                setNameSyntheticMembers(false)
-            }
-        }
+        minecraft "com.mojang:minecraft:${minecraft_version}"
+        // layered mappings - Mojmap names, parchment and QM docs and parameters
+        mappings(loom.layered {
+            it.mappings("org.quiltmc:quilt-mappings:${minecraft_version}+build.${qm_version}:intermediary-v2")
+            it.parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+            it.officialMojangMappings { nameSyntheticMembers = false }
+        })
 
-        String createVersion = fabricLike ? rootProject.create_fabric_version : rootProject.create_forge_version
-        String createArtifact = fabricLike ? "com.simibubi:Create:" : "com.simibubi.create:Create:"
-        modImplementation createArtifact + createVersion
-
-        if (fabricLike) {
-            // dev env mods
-            modImplementation("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") { exclude(group: "net.fabricmc.fabric-api") }
-            modApi("me.shedaniel.cloth:basic-math:0.6.0")
-            modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
-            modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${project.rei_version}") { transitive = false }
-            modImplementation("me.shedaniel:RoughlyEnoughItems-fabric:${project.rei_version}") { transitive = false }
-            modImplementation("dev.architectury:architectury-fabric:${project.architectury_version}")
-            modLocalRuntime("maven.modrinth:lazydfu:0.1.2")
-
-            // dependencies
-
-            // Architectury API - required for REI, may be used for addons if desired.
-            // you will need to uncomment corresponding lines in the common and forge
-            // projects as well as the root gradle.properties if desired.
-            modApi("dev.architectury:architectury-fabric:${rootProject.architectury_version}")
-
-            modImplementation("io.github.fabricators_of_create:Porting-Lib:${project.port_lib_version}+${project.minecraft_version}.${project.port_lib_hash}")
-            modImplementation("me.alphamode:ForgeTags:${project.forge_tags_version}")
-            modImplementation("com.electronwill.night-config:core:${project.night_config_core_version}")
-            modImplementation("com.electronwill.night-config:toml:${project.night_config_toml_version}")
-            modImplementation("curse.maven:forge-config-api-port-fabric-547434:${project.config_api_id}") { transitive = false }
-            modImplementation("com.jamieswhiteshirt:reach-entity-attributes:${project.reach_entity_attributes_version}")
-            modImplementation("dev.cafeteria:fake-player-api:${project.fake_player_api_version}")
-            modImplementation("io.github.tropheusj:milk-lib:${project.milk_lib_version}")
-            modImplementation("me.luligabi:NoIndium:${project.no_indium_version}")
-            implementation("com.google.code.findbugs:jsr305:${project.jsr305_version}")
-
-            modImplementation("com.tterrag.registrate:Registrate:${project.registrate_fabric_version}")
-            modImplementation("com.jozufozu.flywheel:Flywheel-Fabric:${project.flywheel_fabric_version}")
-        } else {
-            modImplementation("com.tterrag.registrate:Registrate:${project.registrate_forge_version}")
-            modImplementation("com.jozufozu.flywheel:Flywheel-Forge:${project.flywheel_forge_version}")
-        }
+        // see each subproject for dependencies.
     }
 }
 

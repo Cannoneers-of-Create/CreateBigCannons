@@ -24,13 +24,41 @@ configurations {
     developmentForge.extendsFrom common
 }
 
-dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
-    // Architectury API - remove this line if you don't want it
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+repositories {
+    // mavens for Forge-exclusives
+    maven { url = "https://maven.theillusivec4.top/" } // Curios
+    maven { // Create Forge and Registrate Forge
+        url = "https://maven.tterrag.com/"
+        content {
+            includeGroup("com.tterrag.registrate")
+            includeGroup("com.simibubi.create")
+        }
+    }
+}
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+dependencies {
+    forge("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
+    common(project(path: ":common", configuration: "namedElements")) {
+        transitive = false
+        exclude(group: "com.simibubi.create") // exclude Create Fabric used in common
+    }
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
+        transitive = false
+        exclude(group: "com.simibubi.create") // exclude Create Fabric used in common
+    }
+
+    // Create and its dependencies
+    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}")
+    modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
+    modImplementation("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
+
+    modImplementation("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}")
+
+    // Development QOL
+    modLocalRuntime("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}") { transitive = false }
+    modLocalRuntime("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}") { transitive = false } // for REI
+    modLocalRuntime("dev.architectury:architectury-forge:${architectury_version}") // for REI
+    modLocalRuntime("me.shedaniel.cloth:basic-math:0.6.0") { transitive = false } // for REI
 }
 
 processResources {

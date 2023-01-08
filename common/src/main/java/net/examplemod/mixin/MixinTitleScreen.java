@@ -1,5 +1,6 @@
 package net.examplemod.mixin;
 
+import net.examplemod.ExampleMod;
 import net.minecraft.client.gui.screens.TitleScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -10,6 +11,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinTitleScreen {
     @Inject(at = @At("HEAD"), method = "init()V")
     private void init(CallbackInfo info) {
-        System.out.println("Hello from example architectury common mixin!");
+        ExampleMod.LOGGER.info("Hello from {}!", ExampleMod.class.getName());
     }
 }

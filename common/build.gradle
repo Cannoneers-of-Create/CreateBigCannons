@@ -6,12 +6,17 @@ loom {
     accessWidenerPath = file("src/main/resources/examplemod.accesswidener")
 }
 
+repositories {
+    maven { url = "https://mvn.devos.one/snapshots/" } // Create Fabric
+}
+
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    // Architectury API - remove this line if you don't want it
-    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    // Compile against Create Fabric in common
+    // beware of differences across platforms!
+    modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}") { transitive = false }
 }
 
 publishing {

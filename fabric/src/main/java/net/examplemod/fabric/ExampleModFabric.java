@@ -1,11 +1,11 @@
 package net.examplemod.fabric;
 
-import net.examplemod.fabriclike.ExampleModFabricLike;
+import net.examplemod.ExampleMod;
 import net.fabricmc.api.ModInitializer;
 
 public class ExampleModFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        ExampleModFabricLike.init();
+        ExampleMod.init();
     }
 }
