@@ -31,7 +31,7 @@ import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
 public class CannonLoadingContraption extends PoleContraption {
@@ -66,7 +66,7 @@ public class CannonLoadingContraption extends PoleContraption {
 			start = start.relative(direction);
 			
 			if (this.isValidCannonBlock(level, nextBlock, start)) {
-				StructureBlockInfo containedBlock = ((ICannonBlockEntity) level.getBlockEntity(start)).cannonBehavior().block();
+				StructureBlockInfo containedBlock = ((IBigCannonBlockEntity) level.getBlockEntity(start)).cannonBehavior().block();
 				nextBlock = containedBlock.state;
 				if (matcher.matchesAxis(nextBlock, blockAxis)) {
 					poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
@@ -165,7 +165,7 @@ public class CannonLoadingContraption extends PoleContraption {
 			
 			if (this.isValidCannonBlock(level, state, ahead) && this.matchesCannonAxis(state, direction.getAxis())) {
 				BlockEntity blockEntity = level.getBlockEntity(ahead);
-				if (!(blockEntity instanceof ICannonBlockEntity cannon)) return true;
+				if (!(blockEntity instanceof IBigCannonBlockEntity cannon)) return true;
 				StructureBlockInfo blockInfo = cannon.cannonBehavior().block();
 				if (this.isValidLoadBlock(blockInfo.state, level, ahead)) {
 					frontier.add(ahead);
@@ -185,7 +185,7 @@ public class CannonLoadingContraption extends PoleContraption {
 	}
 	
 	private boolean isValidCannonBlock(LevelAccessor level, BlockState state, BlockPos pos) {
-		return state.getBlock() instanceof CannonBlock && level.getBlockEntity(pos) instanceof ICannonBlockEntity;
+		return state.getBlock() instanceof CannonBlock && level.getBlockEntity(pos) instanceof IBigCannonBlockEntity;
 	}
 	
 	private boolean matchesCannonAxis(BlockState state, Direction.Axis axis) {
@@ -195,7 +195,7 @@ public class CannonLoadingContraption extends PoleContraption {
 	@Override
 	protected void addBlock(BlockPos pos, Pair<StructureBlockInfo, BlockEntity> pair) {
 		BlockEntity blockEntity = pair.getRight();
-		if (blockEntity instanceof ICannonBlockEntity cannon) {
+		if (blockEntity instanceof IBigCannonBlockEntity cannon) {
 			StructureBlockInfo containedInfo = cannon.cannonBehavior().block();
 			BlockEntity containedBlockEntity = null;
 			if (containedInfo.nbt != null) {
@@ -229,7 +229,7 @@ public class CannonLoadingContraption extends PoleContraption {
 				frontier.add(currentPos);
 			} else if (this.isValidCannonBlock(level, state, currentPos) && this.matchesCannonAxis(state, forcedDirection.getAxis())) {
 				BlockEntity blockEntity = level.getBlockEntity(currentPos);
-				if (!(blockEntity instanceof ICannonBlockEntity cannon)) return true;
+				if (!(blockEntity instanceof IBigCannonBlockEntity cannon)) return true;
 				StructureBlockInfo blockInfo = cannon.cannonBehavior().block();
 				if (this.isValidLoadBlock(blockInfo.state, level, currentPos)) {
 					frontier.add(currentPos);
@@ -274,7 +274,7 @@ public class CannonLoadingContraption extends PoleContraption {
 			StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
 			BlockEntity blockEntity1 = level.getBlockEntity(pos);
 			
-			if (blockEntity1 instanceof ICannonBlockEntity cannon) {
+			if (blockEntity1 instanceof IBigCannonBlockEntity cannon) {
 				return cannon.cannonBehavior().tryLoadingBlock(blockInfo);
 			}
 		}
@@ -295,7 +295,7 @@ public class CannonLoadingContraption extends PoleContraption {
 		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
 		BlockEntity blockEntity1 = level.getBlockEntity(pos);
 		
-		if (blockEntity1 instanceof ICannonBlockEntity cannon) {
+		if (blockEntity1 instanceof IBigCannonBlockEntity cannon) {
 			cannon.cannonBehavior().removeBlock();
 			return true;
 		}

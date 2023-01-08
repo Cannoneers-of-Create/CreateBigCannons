@@ -34,12 +34,12 @@ import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.CannonBlockItem;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
-import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockGen;
+import rbasamoyai.createbigcannons.cannons.big_cannons.SlidingBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillGen;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderGen;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
@@ -130,7 +130,7 @@ public class CBCBuilderTransformers {
 				.addLayer(() -> RenderType::cutoutMipped)
 				.tag(CBCTags.BlockCBC.WEAK_CANNON_END)
 				.blockstate(new SlidingBreechBlockGen(pathAndMaterial)::generate)
-				.item(CannonBlockItem::new)
+				.item(BigCannonBlockItem::new)
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 					.texture("hole", holeLoc)
 					.texture("side", sideLoc)
@@ -169,7 +169,7 @@ public class CBCBuilderTransformers {
 					.texture("top", topLoc)
 					.texture("bottom", bottomLoc)
 					.texture("particle", topLoc)))
-				.item(CannonBlockItem::new)
+				.item(BigCannonBlockItem::new)
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 					.texture("side", sideLoc)
 					.texture("top", topLoc)
@@ -191,7 +191,7 @@ public class CBCBuilderTransformers {
 					.texture("top", topLoc)
 					.texture("bottom", bottomLoc)
 					.texture("particle", topLoc)))
-				.item(CannonBlockItem::new)
+				.item(BigCannonBlockItem::new)
 				.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 					.texture("side", sideLoc)
 					.texture("top", topLoc)
@@ -231,7 +231,7 @@ public class CBCBuilderTransformers {
 
 	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonBreech(String pathAndMaterial) {
 		ResourceLocation texLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon");
-		ResourceLocation texHandleLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon_handle");
+		ResourceLocation texHandleLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon_1");
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/autocannon/breech");
 		ResourceLocation handleLoc = CreateBigCannons.resource("block/autocannon/breech_handle");
 		return b -> b.addLayer(() -> RenderType::cutoutMipped)

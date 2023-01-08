@@ -13,7 +13,7 @@ import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.cannonmount.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
-import rbasamoyai.createbigcannons.cannonmount.MountedCannonContraption;
+import rbasamoyai.createbigcannons.cannonmount.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannonmount.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
@@ -68,7 +68,7 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity {
 
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
 		Block block = this.level.getBlockState(pos).getBlock();
-		if (block instanceof CannonBlock) return new MountedCannonContraption();
+		if (block instanceof CannonBlock) return new MountedBigCannonContraption();
 		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
 		return null;
 	}

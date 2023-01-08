@@ -11,11 +11,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
-import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlock;
+import rbasamoyai.createbigcannons.cannons.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.ScrewBreechBlock;
 
 public class CBCChecks {
 
@@ -25,7 +25,7 @@ public class CBCChecks {
 		BlockState attachedState = level.getBlockState(otherPos);
 		if (!(attachedState.getBlock() instanceof CannonBlock otherBlock)) return CheckResult.PASS;
 		
-		if (!(level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe) || !(level.getBlockEntity(otherPos) instanceof ICannonBlockEntity cbe1)) {
+		if (!(level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe) || !(level.getBlockEntity(otherPos) instanceof IBigCannonBlockEntity cbe1)) {
 			return CheckResult.PASS;
 		}
 		

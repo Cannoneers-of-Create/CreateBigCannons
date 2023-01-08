@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons;
 import com.jozufozu.flywheel.core.PartialModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
-import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
@@ -12,8 +12,8 @@ import java.util.function.Supplier;
 
 public class CBCBlockPartials {
 
-	private static final Map<CannonMaterial, PartialModel> BREECHBLOCK_BY_MATERIAL = new HashMap<>();
-	private static final Map<CannonMaterial, PartialModel> SCREW_LOCK_BY_MATERIAL = new HashMap<>();
+	private static final Map<BigCannonMaterial, PartialModel> BREECHBLOCK_BY_MATERIAL = new HashMap<>();
+	private static final Map<BigCannonMaterial, PartialModel> SCREW_LOCK_BY_MATERIAL = new HashMap<>();
 	private static final Map<CannonCastShape, PartialModel> CANNON_CAST_BY_SIZE = new HashMap<>();
 
 	private static final Map<AutocannonMaterial, PartialModel> AUTOCANNON_SPRING_BY_MATERIAL = new HashMap<>();
@@ -23,12 +23,12 @@ public class CBCBlockPartials {
 	private static final Collection<Runnable> DEFERRED_MODEL_CALLBACKS = new ArrayList<>(); 
 	
 	public static final PartialModel
-		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.CAST_IRON, "cast_iron_sliding_breechblock"),
-		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.BRONZE, "bronze_sliding_breechblock"),
-		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(CannonMaterial.STEEL, "steel_sliding_breechblock"),
+		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(BigCannonMaterial.CAST_IRON, "cast_iron_sliding_breechblock"),
+		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(BigCannonMaterial.BRONZE, "bronze_sliding_breechblock"),
+		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(BigCannonMaterial.STEEL, "steel_sliding_breechblock"),
 		
-		STEEL_SCREW_LOCK = screwLockPartial(CannonMaterial.STEEL, "steel_screw_lock"),
-		NETHERSTEEL_SCREW_LOCK = screwLockPartial(CannonMaterial.NETHERSTEEL, "nethersteel_screw_lock"),
+		STEEL_SCREW_LOCK = screwLockPartial(BigCannonMaterial.STEEL, "steel_screw_lock"),
+		NETHERSTEEL_SCREW_LOCK = screwLockPartial(BigCannonMaterial.NETHERSTEEL, "nethersteel_screw_lock"),
 		
 		VERY_SMALL_CANNON_CAST = cannonCastPartial(CannonCastShape.VERY_SMALL, "cannon_cast/very_small_cannon_cast"),
 		SMALL_CANNON_CAST = cannonCastPartial(CannonCastShape.SMALL, "cannon_cast/small_cannon_cast"),
@@ -81,31 +81,31 @@ public class CBCBlockPartials {
 	}
 	private static PartialModel entity(String path) { return new PartialModel(CreateBigCannons.resource("entity/" + path)); }
 	
-	private static PartialModel breechblockPartial(CannonMaterial material, String path) {
+	private static PartialModel breechblockPartial(BigCannonMaterial material, String path) {
 		return breechblockPartial(material, CreateBigCannons.resource("item/" + path));
 	}
 	
-	public static PartialModel breechblockPartial(CannonMaterial material, ResourceLocation loc) {
+	public static PartialModel breechblockPartial(BigCannonMaterial material, ResourceLocation loc) {
 		PartialModel model = new PartialModel(loc);
 		BREECHBLOCK_BY_MATERIAL.put(material, model);
 		return model;
 	}
 	
-	public static PartialModel breechblockFor(CannonMaterial material) {
+	public static PartialModel breechblockFor(BigCannonMaterial material) {
 		return BREECHBLOCK_BY_MATERIAL.getOrDefault(material, CAST_IRON_SLIDING_BREECHBLOCK);
 	}
 	
-	private static PartialModel screwLockPartial(CannonMaterial material, String path) {
+	private static PartialModel screwLockPartial(BigCannonMaterial material, String path) {
 		return screwLockPartial(material, CreateBigCannons.resource("item/" + path));
 	}
 	
-	public static PartialModel screwLockPartial(CannonMaterial material, ResourceLocation loc) {
+	public static PartialModel screwLockPartial(BigCannonMaterial material, ResourceLocation loc) {
 		PartialModel model = new PartialModel(loc);
 		SCREW_LOCK_BY_MATERIAL.put(material, model);
 		return model;
 	}
 	
-	public static PartialModel screwLockFor(CannonMaterial material) {
+	public static PartialModel screwLockFor(BigCannonMaterial material) {
 		return SCREW_LOCK_BY_MATERIAL.getOrDefault(material, STEEL_SCREW_LOCK);
 	}
 	

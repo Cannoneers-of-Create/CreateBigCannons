@@ -29,8 +29,8 @@ import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.CreateBigCannonsClient;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.CannonMaterial;
-import rbasamoyai.createbigcannons.cannons.CannonMaterial.FailureMode;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.FailureMode;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -54,7 +54,7 @@ public class CBCTooltip {
 		
 		ItemDescription.Palette palette = getPalette(level, stack);
 		if (desc) {
-			CannonMaterial material = block.getCannonMaterial();
+			BigCannonMaterial material = block.getCannonMaterial();
 			Minecraft mc = Minecraft.getInstance();
 			boolean hasGoggles = GogglesItem.isWearingGoggles(mc.player);
 			String rootKey = "block." + CreateBigCannons.MOD_ID + ".cannon.tooltip";

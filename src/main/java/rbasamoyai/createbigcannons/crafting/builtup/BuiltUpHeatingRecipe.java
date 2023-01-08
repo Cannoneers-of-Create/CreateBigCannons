@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
@@ -48,7 +48,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 	
 	@Override
 	public boolean matches(Level level, BlockPos pos) {
-		if (!(level.getBlockEntity(pos) instanceof LayeredCannonBlockEntity layered)) return false;
+		if (!(level.getBlockEntity(pos) instanceof LayeredBigCannonBlockEntity layered)) return false;
 		if (layered.getLayers().size() != this.layers.size()) return false;
 		Set<LayerPredicate> copy = new HashSet<>(this.layers);
 		for (Block block : layered.getLayers().values()) {
@@ -68,7 +68,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 
 	@Override
 	public void assembleInWorld(Level level, BlockPos pos) {
-		if (!(level.getBlockEntity(pos) instanceof LayeredCannonBlockEntity layered)) return;
+		if (!(level.getBlockEntity(pos) instanceof LayeredBigCannonBlockEntity layered)) return;
 		BlockState oldState = level.getBlockState(pos);
 		if (!oldState.hasProperty(FACING)) return;
 		layered.setRemoved();
@@ -78,7 +78,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 		}
 		level.setBlock(pos, state, 11);
 		level.playSound(null, pos, SoundEvents.NETHERITE_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 2.0f);
-		if (!(level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe)) return;
+		if (!(level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe)) return;
 		CannonBlock.onPlace(level, pos);
 	}
 
