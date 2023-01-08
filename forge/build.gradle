@@ -38,34 +38,30 @@ repositories {
 
 dependencies {
     forge("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
-    common(project(path: ":common", configuration: "namedElements")) {
-        transitive = false
-        exclude(group: "com.simibubi.create") // exclude Create Fabric used in common
-    }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
-        transitive = false
-        exclude(group: "com.simibubi.create") // exclude Create Fabric used in common
-    }
+    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
     // Create and its dependencies
-    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}")
+    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
     modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
     modImplementation("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
 
-    modImplementation("top.theillusivec4.curios:curios-forge:${curios_minecraft_version}-${curios_version}")
-
     // Development QOL
-    modLocalRuntime("me.shedaniel:RoughlyEnoughItems-forge:${rei_version}") { transitive = false }
-    modLocalRuntime("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}") { transitive = false } // for REI
-    modLocalRuntime("dev.architectury:architectury-forge:${architectury_version}") // for REI
-    modLocalRuntime("me.shedaniel.cloth:basic-math:0.6.0") { transitive = false } // for REI
+    // JEI is pulled in transitively through Create.
 }
 
 processResources {
-    inputs.property "version", project.version
+    // set up properties for filling into metadata
+    Map<String, String> properties = Map.of(
+            "version", version,
+            "forge_version", forge_version.split("\\.")[0], // only specify major version of forge
+            "minecraft_version", minecraft_version,
+            "create_version", create_forge_version.split("-")[0] // cut off build number
+    )
+    properties.forEach((k, v) -> inputs.property(k, v))
 
     filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
+        expand properties
     }
 }
 
