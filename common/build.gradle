@@ -7,7 +7,14 @@ loom {
 }
 
 repositories {
-    maven { url = "https://mvn.devos.one/snapshots/" } // Create Fabric
+    // mavens for Create Fabric and dependencies
+    maven { url = "https://api.modrinth.com/maven" } // LazyDFU
+    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
+    maven { url = "https://mvn.devos.one/snapshots/" } // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
+    maven { url = "https://cursemaven.com" } // Forge Config API Port
+    maven { url = "https://maven.cafeteria.dev/releases" } // Fake Player API
+    maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
+    maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
 }
 
 dependencies {
@@ -16,7 +23,10 @@ dependencies {
     modImplementation("net.fabricmc:fabric-loader:${fabric_loader_version}")
     // Compile against Create Fabric in common
     // beware of differences across platforms!
-    modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}") { transitive = false }
+    // dependencies must also be pulled in to minimize problems, from remapping issues to compile errors.
+    // All dependencies except Flywheel and Registrate are NOT safe to use!
+    // Flywheel and Registrate must also be used carefully due to differences.
+    modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
 }
 
 publishing {
