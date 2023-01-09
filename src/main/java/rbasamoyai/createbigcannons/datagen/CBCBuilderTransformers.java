@@ -34,11 +34,11 @@ import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockItem;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.SlidingBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillGen;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderGen;
@@ -231,7 +231,7 @@ public class CBCBuilderTransformers {
 
 	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonBreech(String pathAndMaterial) {
 		ResourceLocation texLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon");
-		ResourceLocation texHandleLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon_1");
+		ResourceLocation tex1Loc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon_1");
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/autocannon/breech");
 		ResourceLocation handleLoc = CreateBigCannons.resource("block/autocannon/breech_handle");
 		return b -> b.addLayer(() -> RenderType::cutoutMipped)
@@ -240,7 +240,7 @@ public class CBCBuilderTransformers {
 							boolean handle = s.getValue(AutocannonBreechBlock.HANDLE);
 							return p.models().withExistingParent(handle ? c.getName() + "_handle" : c.getName(), handle ? handleLoc : baseLoc)
 									.texture("material", texLoc)
-									.texture("handle", texHandleLoc);
+									.texture("handle", tex1Loc);
 						}))
 				.item(AutocannonBlockItem::new)
 				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/breech_item")).texture("material", texLoc))
@@ -254,6 +254,35 @@ public class CBCBuilderTransformers {
 						$ -> p.models().withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring")).texture("material", texLoc)))
 				.item(AutocannonBlockItem::new)
 				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring_item")).texture("material", texLoc))
+				.build();
+	}
+
+	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> unboredAutocannonBarrel(String pathAndMaterial) {
+		return unboredAutocannonBlock(CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon"),
+				CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon_1"),
+				CreateBigCannons.resource("block/autocannon/unbored_barrel"));
+	}
+
+	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> unboredAutocannonRecoilSpring(String pathAndMaterial) {
+		return unboredAutocannonBlock(CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon"),
+				CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon_1"),
+				CreateBigCannons.resource("block/autocannon/unbored_recoil_spring"));
+	}
+
+	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> unboredAutocannonBreech(String pathAndMaterial) {
+		return unboredAutocannonBlock(CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon"),
+				CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon_1"),
+				CreateBigCannons.resource("block/autocannon/unbored_breech"));
+	}
+
+	private static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> unboredAutocannonBlock(ResourceLocation tex, ResourceLocation tex1, ResourceLocation model) {
+		return b -> b.addLayer(() -> RenderType::cutoutMipped)
+				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p,
+						$ -> p.models().withExistingParent(c.getName(), model)
+								.texture("material", tex)
+								.texture("material1", tex1)))
+				.item(AutocannonBlockItem::new)
+				.model((c, p) -> p.blockItem(c::get))
 				.build();
 	}
 	

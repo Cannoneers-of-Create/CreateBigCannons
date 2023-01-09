@@ -19,8 +19,10 @@ public class AutocannonBlockEntity extends SmartTileEntity implements IAutocanno
 
     @Override
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-        behaviours.add(this.behavior = new ItemCannonBehavior(this));
+        behaviours.add(this.behavior = this.makeBehavior());
     }
+
+    protected ItemCannonBehavior makeBehavior() { return new ItemCannonBehavior(this); }
 
     @Override public ItemCannonBehavior cannonBehavior() { return this.behavior; }
 

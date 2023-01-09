@@ -15,15 +15,13 @@ public class ItemCannonBehavior extends CannonBehavior {
         super(te);
     }
 
-    public ItemStack storedItem() { return this.containedStack; }
-
     public boolean tryLoadingItem(ItemStack stack) {
         if (!this.canLoadItem(stack)) return false;
         this.containedStack = stack;
         return true;
     }
 
-    protected boolean canLoadItem(ItemStack stack) {
+    public boolean canLoadItem(ItemStack stack) {
         return this.containedStack.isEmpty();
     }
 

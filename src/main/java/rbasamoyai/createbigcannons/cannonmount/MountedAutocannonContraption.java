@@ -190,7 +190,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, AutocannonMaterial material) {
 		AutocannonBlock cBlock = (AutocannonBlock) state.getBlock();
 		if (cBlock.getAutocannonMaterialInLevel(level, state, pos) != material) return false;
-		return ((IAutocannonBlockEntity) level.getBlockEntity(pos)).cannonBehavior().isConnectedTo(connection.getOpposite());
+		return level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe && cbe.cannonBehavior().isConnectedTo(connection.getOpposite());
 	}
 
 	public static AssemblyException noAutocannonBreech() {
@@ -256,13 +256,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		while (this.presentTileEntities.get(currentPos) instanceof IAutocannonBlockEntity autocannon) {
 			ItemCannonBehavior behavior = autocannon.cannonBehavior();
-			ItemStack stack = behavior.storedItem();
 
-			if (stack.isEmpty()) {
+			if (behavior.canLoadItem(foundProjectile)) {
 				++barrelTravelled;
 				if (barrelTravelled > this.cannonMaterial.maxLength()) {
 					StructureBlockInfo oldInfo = this.blocks.get(currentPos);
-					behavior.tryLoadingItem(stack);
+					behavior.tryLoadingItem(foundProjectile);
 					CompoundTag tag = this.presentTileEntities.get(currentPos).saveWithFullMetadata();
 					tag.remove("x");
 					tag.remove("y");

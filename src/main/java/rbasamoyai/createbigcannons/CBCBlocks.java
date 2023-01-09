@@ -569,19 +569,38 @@ public class CBCBlocks {
 
 	public static final BlockEntry<AutocannonBreechBlock> CAST_IRON_AUTOCANNON_BREECH = REGISTRATE
 			.block("cast_iron_autocannon_breech", p -> new AutocannonBreechBlock(p, AutocannonMaterial.CAST_IRON))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.loot(CBCBuilderTransformers.castIronScrapLoot(4))
 			.transform(CBCBuilderTransformers.autocannonBreech("autocannon/cast_iron"))
 			.register();
 
 	public static final BlockEntry<AutocannonRecoilSpringBlock> CAST_IRON_AUTOCANNON_RECOIL_SPRING = REGISTRATE
 			.block("cast_iron_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, AutocannonMaterial.CAST_IRON))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.loot(CBCBuilderTransformers.castIronScrapLoot(3))
 			.transform(CBCBuilderTransformers.autocannonRecoilSpring("autocannon/cast_iron"))
 			.register();
 
+	public static final BlockEntry<UnboredAutocannonBlock> UNBORED_CAST_IRON_AUTOCANNON_BARREL = REGISTRATE
+			.block("unbored_cast_iron_autocannon_barrel", p -> UnboredAutocannonBlock.barrel(p, AutocannonMaterial.CAST_IRON, CAST_IRON_AUTOCANNON_BARREL))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.castIronScrapLoot(4))
+			.transform(CBCBuilderTransformers.unboredAutocannonBarrel("autocannon/cast_iron"))
+			.register();
 
+	public static final BlockEntry<UnboredAutocannonBlock> UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING = REGISTRATE
+			.block("unbored_cast_iron_autocannon_recoil_spring", p -> UnboredAutocannonBlock.recoilSpring(p, AutocannonMaterial.CAST_IRON, CAST_IRON_AUTOCANNON_RECOIL_SPRING))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.castIronScrapLoot(6))
+			.transform(CBCBuilderTransformers.unboredAutocannonRecoilSpring("autocannon/cast_iron"))
+			.register();
+
+	public static final BlockEntry<UnboredAutocannonBlock> UNBORED_CAST_IRON_AUTOCANNON_BREECH = REGISTRATE
+			.block("unbored_cast_iron_autocannon_breech", p -> UnboredAutocannonBlock.breech(p, AutocannonMaterial.CAST_IRON, CAST_IRON_AUTOCANNON_BREECH))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.castIronScrapLoot(8))
+			.transform(CBCBuilderTransformers.unboredAutocannonBreech("autocannon/cast_iron"))
+			.register();
 	
 	//////// Bronze autocannon blocks ////////
 
@@ -594,16 +613,37 @@ public class CBCBlocks {
 
 	public static final BlockEntry<AutocannonBreechBlock> BRONZE_AUTOCANNON_BREECH = REGISTRATE
 			.block("bronze_autocannon_breech", p -> new AutocannonBreechBlock(p, AutocannonMaterial.BRONZE))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(4))
 			.transform(CBCBuilderTransformers.autocannonBreech("autocannon/bronze"))
 			.register();
 
 	public static final BlockEntry<AutocannonRecoilSpringBlock> BRONZE_AUTOCANNON_RECOIL_SPRING = REGISTRATE
 			.block("bronze_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, AutocannonMaterial.BRONZE))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(3))
 			.transform(CBCBuilderTransformers.autocannonRecoilSpring("autocannon/bronze"))
+			.register();
+
+	public static final BlockEntry<UnboredAutocannonBlock> UNBORED_BRONZE_AUTOCANNON_BARREL = REGISTRATE
+			.block("unbored_bronze_autocannon_barrel", p -> UnboredAutocannonBlock.barrel(p, AutocannonMaterial.BRONZE, BRONZE_AUTOCANNON_BARREL))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.bronzeScrapLoot(4))
+			.transform(CBCBuilderTransformers.unboredAutocannonBarrel("autocannon/bronze"))
+			.register();
+
+	public static final BlockEntry<UnboredAutocannonBlock> UNBORED_BRONZE_AUTOCANNON_RECOIL_SPRING = REGISTRATE
+			.block("unbored_bronze_autocannon_recoil_spring", p -> UnboredAutocannonBlock.recoilSpring(p, AutocannonMaterial.BRONZE, BRONZE_AUTOCANNON_RECOIL_SPRING))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.bronzeScrapLoot(6))
+			.transform(CBCBuilderTransformers.unboredAutocannonRecoilSpring("autocannon/bronze"))
+			.register();
+
+	public static final BlockEntry<UnboredAutocannonBlock> UNBORED_BRONZE_AUTOCANNON_BREECH = REGISTRATE
+			.block("unbored_bronze_autocannon_breech", p -> UnboredAutocannonBlock.breech(p, AutocannonMaterial.BRONZE, BRONZE_AUTOCANNON_BREECH))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.bronzeScrapLoot(8))
+			.transform(CBCBuilderTransformers.unboredAutocannonBreech("autocannon/bronze"))
 			.register();
 
 	//////// Steel autocannon blocks ////////
@@ -617,16 +657,37 @@ public class CBCBlocks {
 
 	public static final BlockEntry<AutocannonBreechBlock> STEEL_AUTOCANNON_BREECH = REGISTRATE
 			.block("steel_autocannon_breech", p -> new AutocannonBreechBlock(p, AutocannonMaterial.STEEL))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.loot(CBCBuilderTransformers.steelScrapLoot(4))
 			.transform(CBCBuilderTransformers.autocannonBreech("autocannon/steel"))
 			.register();
 
 	public static final BlockEntry<AutocannonRecoilSpringBlock> STEEL_AUTOCANNON_RECOIL_SPRING = REGISTRATE
 			.block("steel_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, AutocannonMaterial.STEEL))
-			.transform(cannonBlock())
+			.transform(cannonBlock(false))
 			.loot(CBCBuilderTransformers.steelScrapLoot(3))
 			.transform(CBCBuilderTransformers.autocannonRecoilSpring("autocannon/steel"))
+			.register();
+
+	public static final BlockEntry<UnboredAutocannonBlock> UNBORED_STEEL_AUTOCANNON_BARREL = REGISTRATE
+			.block("unbored_steel_autocannon_barrel", p -> UnboredAutocannonBlock.barrel(p, AutocannonMaterial.STEEL, STEEL_AUTOCANNON_BARREL))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.steelScrapLoot(4))
+			.transform(CBCBuilderTransformers.unboredAutocannonBarrel("autocannon/steel"))
+			.register();
+
+	public static final BlockEntry<UnboredAutocannonBlock> UNBORED_STEEL_AUTOCANNON_RECOIL_SPRING = REGISTRATE
+			.block("unbored_steel_autocannon_recoil_spring", p -> UnboredAutocannonBlock.recoilSpring(p, AutocannonMaterial.STEEL, STEEL_AUTOCANNON_RECOIL_SPRING))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.steelScrapLoot(6))
+			.transform(CBCBuilderTransformers.unboredAutocannonRecoilSpring("autocannon/steel"))
+			.register();
+
+	public static final BlockEntry<UnboredAutocannonBlock> UNBORED_STEEL_AUTOCANNON_BREECH = REGISTRATE
+			.block("unbored_steel_autocannon_breech", p -> UnboredAutocannonBlock.breech(p, AutocannonMaterial.STEEL, STEEL_AUTOCANNON_BREECH))
+			.transform(cannonBlock())
+			.loot(CBCBuilderTransformers.steelScrapLoot(8))
+			.transform(CBCBuilderTransformers.unboredAutocannonBreech("autocannon/steel"))
 			.register();
 	
 	//////// Cannon loading blocks ////////

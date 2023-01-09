@@ -6,20 +6,19 @@
       "bonus_rolls": 0.0,
       "entries": [
         {
-          "type": "minecraft:tag",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 40.0,
-                "max": 50.0
-              },
-              "add": false
-            }
-          ],
-          "name": "forge:nuggets/bronze",
-          "expand": true
+          "type": "minecraft:item",
+          "name": "createbigcannons:bronze_scrap"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 40.0,
+            "max": 50.0
+          },
+          "add": false
         }
       ]
     }

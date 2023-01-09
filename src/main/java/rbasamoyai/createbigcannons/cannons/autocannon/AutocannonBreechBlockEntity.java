@@ -19,8 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
@@ -177,6 +176,15 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 
 	public ItemStack extractNextInput() {
 		return this.inputBuffer.isEmpty() ? ItemStack.EMPTY : this.inputBuffer.poll();
+	}
+
+	public Collection<ItemStack> getDrops() {
+		Collection<ItemStack> list = new ArrayList<>();
+		for (ItemStack s : this.inputBuffer) {
+			if (!s.isEmpty()) list.add(s.copy());
+		}
+		if (!this.outputBuffer.isEmpty()) list.add(this.outputBuffer.copy());
+		return list;
 	}
 
 	public record BreechItemHandler(AutocannonBreechBlockEntity breech) implements IItemHandler {
