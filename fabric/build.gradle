@@ -42,7 +42,7 @@ dependencies {
     modImplementation("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
 
     // Development QOL
-    modLocalRuntime("maven.modrinth:lazydfu:0.1.2")
+    modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
     modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
 
     // Recipe Viewers - Create Fabric supports JEI, REI, and EMI.
@@ -66,6 +66,7 @@ processResources {
     // set up properties for filling into metadata
     Map<String, String> properties = Map.of(
             "version", version,
+            "fabric_loader_version", fabric_loader_version,
             "fabric_api_version", fabric_api_version,
             "minecraft_version", minecraft_version,
             "create_version", create_fabric_version // on fabric, use the entire version, unlike forge
