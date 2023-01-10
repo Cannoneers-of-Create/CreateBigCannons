@@ -247,7 +247,13 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	@Override
 	public Vec3 getDismountLocationForPassenger(LivingEntity entityLiving) {
 		ControlPitchContraption controller = this.getController();
-		return controller != null ? Vec3.atCenterOf(controller.getDismountPositionForContraption(this)) : super.getDismountLocationForPassenger(entityLiving);
+		Vec3 superResult = super.getDismountLocationForPassenger(entityLiving); // Call to process other stuff
+		return controller != null ? Vec3.atCenterOf(controller.getDismountPositionForContraption(this)) : superResult;
+	}
+
+	@Override
+	protected void removePassenger(Entity passenger) {
+		super.removePassenger(passenger);
 	}
 
 	public BlockPos getSeatPos(Entity passenger) {
