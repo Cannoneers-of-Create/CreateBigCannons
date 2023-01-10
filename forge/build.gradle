@@ -65,6 +65,15 @@ processResources {
     }
 }
 
+loom {
+    forge {
+        mixinConfig(
+                "examplemod-common.mixins.json",
+                "examplemod.mixins.json"
+        )
+    }
+}
+
 shadowJar {
     exclude "fabric.mod.json"
     exclude "architectury.common.json"
