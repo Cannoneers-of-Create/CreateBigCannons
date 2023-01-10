@@ -27,10 +27,6 @@ public class CBCBlockPartialsGen extends BlockModelProvider {
 		getBuilder("block/" + pathAndMaterial + "_autocannon_spring")
 				.parent(getExistingFile(CreateBigCannons.resource("block/autocannon/spring")))
 				.texture("material", CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon"));
-
-		getBuilder("block/" + pathAndMaterial + "_autocannon_ejector")
-				.parent(getExistingFile(CreateBigCannons.resource("block/autocannon/ejector")))
-				.texture("material", CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon"));
 	}
 
 	private void autocannonSeat() {

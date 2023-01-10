@@ -52,9 +52,9 @@ public class CBCBlockPartials {
 		BRONZE_AUTOCANNON_SPRING = autocannonSpringPartial(AutocannonMaterial.BRONZE, "autocannon/bronze_autocannon_spring"),
 		STEEL_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(AutocannonMaterial.STEEL, "autocannon/steel_autocannon_spring"),
 
-		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.CAST_IRON, "autocannon/cast_iron_autocannon_ejector"),
-		BRONZE_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.BRONZE, "autocannon/bronze_autocannon_ejector"),
-		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.STEEL, "autocannon/steel_autocannon_ejector"),
+		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.CAST_IRON, "cast_iron"),
+		BRONZE_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.BRONZE, "bronze"),
+		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.STEEL, "steel"),
 
 		AUTOCANNON_ROUND = entity("autocannon_round"),
 
@@ -73,7 +73,7 @@ public class CBCBlockPartials {
 		AUTOCANNON_SEAT_BROWN = autocannonSeatPartial(DyeColor.BROWN, "autocannon/seat_brown"),
 		AUTOCANNON_SEAT_GREEN = autocannonSeatPartial(DyeColor.GREEN, "autocannon/seat_green"),
 		AUTOCANNON_SEAT_RED = autocannonSeatPartial(DyeColor.RED, "autocannon/seat_red"),
-		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_block");
+		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_black");
 
 	
 	private static PartialModel block(String path) {
@@ -142,7 +142,7 @@ public class CBCBlockPartials {
 	}
 
 	private static PartialModel autocannonEjectorPartial(AutocannonMaterial material, String path) {
-		return autocannonEjectorPartial(material, CreateBigCannons.resource("block/" + path));
+		return autocannonEjectorPartial(material, CreateBigCannons.resource("item/" + path + "_autocannon_breech_extractor"));
 	}
 
 	public static PartialModel autocannonEjectorPartial(AutocannonMaterial material, ResourceLocation loc) {

@@ -1,5 +1,5 @@
 {
-  "parent": "createbigcannons:block/autocannon/ejector",
+  "parent": "createbigcannons:block/autocannon/extractor",
   "textures": {
     "material": "createbigcannons:block/autocannon/cast_iron_autocannon"
   }

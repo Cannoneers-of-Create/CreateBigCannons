@@ -22,7 +22,7 @@ public class IncompleteScrewBreechBlockGen extends SpecialBlockStateGen {
 	
 	@Override
 	public <T extends Block> ModelFile getModel(DataGenContext<Block, T> context, RegistrateBlockstateProvider provider, BlockState state) {
-		int stage = state.getValue(IncompleteScrewBreechBlockBig.STAGE_2);
+		int stage = state.getValue(IncompleteScrewBreechBlock.STAGE_2);
 		String suf = stage == 0 ? "" : "_axis";
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/screw_breech" + suf);
 		

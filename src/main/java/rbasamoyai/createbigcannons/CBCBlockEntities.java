@@ -30,6 +30,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntityRendere
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryBlockEntity;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntityRenderer;
@@ -181,9 +182,9 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<IncompleteAutocannonBlockEntity> INCOMPLETE_AUTOCANNON = REGISTRATE
 			.tileEntity("incomplete_autocannon", IncompleteAutocannonBlockEntity::new)
-			.validBlocks(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BARREL, CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BREECH,
-					CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BARREL, CBCBlocks.UNBORED_BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BREECH,
-					CBCBlocks.UNBORED_STEEL_AUTOCANNON_BARREL, CBCBlocks.UNBORED_STEEL_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_STEEL_AUTOCANNON_BREECH)
+			.validBlocks(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BARREL, CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_BREECH,
+					CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BARREL, CBCBlocks.UNBORED_BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_BREECH,
+					CBCBlocks.UNBORED_STEEL_AUTOCANNON_BARREL, CBCBlocks.UNBORED_STEEL_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_STEEL_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_BREECH)
 			.register();
 
 	public static void register() {}

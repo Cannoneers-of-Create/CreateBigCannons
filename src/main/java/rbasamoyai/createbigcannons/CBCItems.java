@@ -56,6 +56,20 @@ public class CBCItems {
 			.item("nethersteel_screw_lock", Item::new)
 			.transform(CBCBuilderTransformers.screwLock("screw_breech/nethersteel"))
 			.register();
+
+	public static final ItemEntry<Item> RECOIL_SPRING = REGISTRATE.item("recoil_spring", Item::new).register();
+
+	public static final ItemEntry<Item> CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE.item("cast_iron_autocannon_breech_extractor", Item::new)
+			.transform(CBCBuilderTransformers.autocannonBreechExtractor("autocannon/cast_iron"))
+			.register();
+
+	public static final ItemEntry<Item> BRONZE_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE.item("bronze_autocannon_breech_extractor", Item::new)
+			.transform(CBCBuilderTransformers.autocannonBreechExtractor("autocannon/bronze"))
+			.register();
+
+	public static final ItemEntry<Item> STEEL_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE.item("steel_autocannon_breech_extractor", Item::new)
+			.transform(CBCBuilderTransformers.autocannonBreechExtractor("autocannon/steel"))
+			.register();
 	
 	public static final ItemEntry<Item> PACKED_GUNPOWDER = REGISTRATE.item("packed_gunpowder", Item::new).register();
 	public static final ItemEntry<Item> EMPTY_POWDER_CHARGE = REGISTRATE.item("empty_powder_charge", Item::new).register();

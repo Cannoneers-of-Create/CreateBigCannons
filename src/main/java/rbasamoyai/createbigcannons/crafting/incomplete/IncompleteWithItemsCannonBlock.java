@@ -6,9 +6,9 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
-public interface IncompleteCannonBlock {
+public interface IncompleteWithItemsCannonBlock {
 
-	static final IntegerProperty STAGE_2 = IntegerProperty.create("stage", 0, 1);	
+	static final IntegerProperty STAGE_2 = IntegerProperty.create("stage", 0, 1);
 	
 	List<ItemLike> requiredItems();
 	int progress(BlockState state);

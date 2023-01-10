@@ -50,7 +50,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
-import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteCannonBlock;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteWithItemsCannonBlock;
 
 public class CannonCraftingScenes {
 
@@ -574,7 +574,7 @@ public class CannonCraftingScenes {
 		
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(incompletePos), Pointing.DOWN).rightClick().withItem(AllBlocks.SHAFT.asStack()), 40);
 		scene.idle(10);
-		scene.world.modifyBlock(incompletePos, setStateValue(IncompleteCannonBlock.STAGE_2, 1), false);
+		scene.world.modifyBlock(incompletePos, setStateValue(IncompleteWithItemsCannonBlock.STAGE_2, 1), false);
 		scene.idle(40);
 		
 		Selection deployerGearDown = util.select.position(3, 0, 5);
