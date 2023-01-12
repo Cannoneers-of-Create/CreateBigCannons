@@ -1,10 +1,6 @@
 package rbasamoyai.createbigcannons;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.simibubi.create.foundation.data.CreateRegistrate;
-
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,6 +14,8 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -61,7 +59,7 @@ public class CreateBigCannons {
 		BlockRecipeSerializer.register();
 		BlockRecipeType.register();
 		
-		CBCParticleTypes.PARTICLE_TYPES.register(modEventBus);		
+		CBCParticleTypes.PARTICLE_TYPES.register(modEventBus);
 		
 		CBCTags.register();
 		
@@ -80,6 +78,7 @@ public class CreateBigCannons {
 	
 	private void onCommonSetup(FMLCommonSetupEvent event) {
 		CBCNetwork.init();
+		FluidBlob.registerDefaultBlobEffects();
 	}
 	
 	private void onAddReloadListeners(AddReloadListenerEvent event) {
