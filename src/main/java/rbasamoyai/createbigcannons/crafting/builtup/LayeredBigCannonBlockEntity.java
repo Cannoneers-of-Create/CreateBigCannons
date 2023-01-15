@@ -260,7 +260,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 				BlockPos pos1 = newLayered.worldPosition.relative(dir);
 				BlockEntity be1 = newLayered.level.getBlockEntity(pos1);
 				BlockState state1 = newLayered.level.getBlockState(pos1);
-				if (be1 instanceof ICannonBlockEntity cbe && state1.getBlock() instanceof CannonBlock cBlock && cBlock.getCannonMaterialInLevel(newLayered.level, state1, pos1) == newLayered.baseMaterial) {
+				if (be1 instanceof ICannonBlockEntity<?> cbe && state1.getBlock() instanceof CannonBlock cBlock && cBlock.getCannonMaterialInLevel(newLayered.level, state1, pos1) == newLayered.baseMaterial) {
 					boolean connect = this.cannonBehavior.isConnectedTo(dir);
 					newLayered.cannonBehavior.setConnectedFace(dir, connect);
 					cbe.cannonBehavior().setConnectedFace(dir.getOpposite(), connect);

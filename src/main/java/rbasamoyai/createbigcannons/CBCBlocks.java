@@ -974,7 +974,16 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<CannonCastMouldBlock> SCREW_BREECH_CAST_MOULD =
 			castMould("screw_breech", Block.box(0, 8, 0, 16, 17, 16), CannonCastShape.SCREW_BREECH);
-	
+
+	public static final BlockEntry<CannonCastMouldBlock> AUTOCANNON_BREECH_CAST_MOULD =
+			castMould("autocannon_breech", Block.box(4, 0, 4, 12, 17, 12), CannonCastShape.AUTOCANNON_BREECH);
+
+	public static final BlockEntry<CannonCastMouldBlock> AUTOCANNON_RECOIL_SPRING_CAST_MOULD =
+			castMould("autocannon_recoil_spring", Block.box(5, 0, 5, 11, 17, 11), CannonCastShape.AUTOCANNON_RECOIL_SPRING);
+
+	public static final BlockEntry<CannonCastMouldBlock> AUTOCANNON_BARREL_CAST_MOULD =
+			castMould("autocannon_barrel", Block.box(6, 0, 6, 10, 17, 10), CannonCastShape.AUTOCANNON_BARREL);
+
 	public static final BlockEntry<BasinFoundryLidBlock> BASIN_FOUNDRY_LID = REGISTRATE
 			.block("basin_foundry_lid", BasinFoundryLidBlock::new)
 			.initialProperties(SharedProperties::stone)

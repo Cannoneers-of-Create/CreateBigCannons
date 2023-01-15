@@ -300,7 +300,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		if (!collide && movementDirection.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
 			gridPos = gridPos.relative(movementDirection);
 		}
-		if (collide) {
+		if (collide && movementDirection.getAxisDirection() == Direction.AxisDirection.NEGATIVE) {
 			gridPos = gridPos.relative(movementDirection.getOpposite());
 		}
 		
@@ -450,7 +450,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 				if (nextBlockInfo != null && nextBlockInfo.nbt != null) {
 					BlockEntity be1 = BlockEntity.loadStatic(BlockPos.ZERO, nextBlockInfo.state, nextBlockInfo.nbt);
 					if (be1 instanceof LayeredBigCannonBlockEntity layered1 && layered1.isLayerConnectedTo(opp, shape)
-						|| be1 instanceof ICannonBlockEntity cbe1 && cbe1.cannonBehavior().isConnectedTo(opp)) {
+						|| be1 instanceof ICannonBlockEntity<?> cbe1 && cbe1.cannonBehavior().isConnectedTo(opp)) {
 						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
 						ListTag list = new ListTag();
 						list.add(StringTag.valueOf(key.toString()));
@@ -461,7 +461,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 				if (prevBlockInfo != null && prevBlockInfo.nbt != null) {
 					BlockEntity be2 = BlockEntity.loadStatic(BlockPos.ZERO, prevBlockInfo.state, prevBlockInfo.nbt);
 					if (be2 instanceof LayeredBigCannonBlockEntity layered2 && layered2.isLayerConnectedTo(facing, shape)
-						|| be2 instanceof ICannonBlockEntity cbe2 && cbe2.cannonBehavior().isConnectedTo(facing)) {
+						|| be2 instanceof ICannonBlockEntity<?> cbe2 && cbe2.cannonBehavior().isConnectedTo(facing)) {
 						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
 						ListTag list = new ListTag();
 						list.add(StringTag.valueOf(key.toString()));

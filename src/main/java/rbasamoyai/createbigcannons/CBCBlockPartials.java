@@ -38,6 +38,9 @@ public class CBCBlockPartials {
 		CANNON_END_CAST = cannonCastPartial(CannonCastShape.CANNON_END, "cannon_cast/cannon_end_cast"),
 		SLIDING_BREECH_CAST = cannonCastPartial(CannonCastShape.SLIDING_BREECH, "cannon_cast/sliding_breech_cast"),
 		SCREW_BREECH_CAST = cannonCastPartial(CannonCastShape.SCREW_BREECH, "cannon_cast/screw_breech_cast"),
+		AUTOCANNON_BREECH_CAST = cannonCastPartial(CannonCastShape.AUTOCANNON_BREECH, "cannon_cast/autocannon_breech_cast"),
+		AUTOCANNON_RECOIL_SPRING_CAST = cannonCastPartial(CannonCastShape.AUTOCANNON_RECOIL_SPRING, "cannon_cast/autocannon_recoil_spring_cast"),
+		AUTOCANNON_BARREL_CAST = cannonCastPartial(CannonCastShape.AUTOCANNON_BARREL, "cannon_cast/autocannon_barrel_cast"),
 		
 		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
 		YAW_SHAFT = block("cannon_mount/yaw_axis"),

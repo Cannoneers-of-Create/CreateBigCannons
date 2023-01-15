@@ -86,7 +86,7 @@ public class IncompleteSlidingBreechBlock extends SolidBigCannonBlock<Incomplete
 				for (Direction dir : Direction.values()) {
 					boolean isConnected = behavior.isConnectedTo(dir);
 					behavior1.setConnectedFace(dir, isConnected);
-					if (level.getBlockEntity(pos.relative(dir)) instanceof ICannonBlockEntity cbe2) {
+					if (level.getBlockEntity(pos.relative(dir)) instanceof ICannonBlockEntity<?> cbe2) {
 						cbe2.cannonBehavior().setConnectedFace(dir.getOpposite(), isConnected);
 					}
 				}

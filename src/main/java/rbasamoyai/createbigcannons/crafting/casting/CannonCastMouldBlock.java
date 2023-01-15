@@ -50,8 +50,8 @@ public class CannonCastMouldBlock extends Block {
 		if (state.getValue(SAND) && stack.isEmpty()) {
 			if (this.isSurroundingAreaCompleteForTransformation(state, level, pos)) {
 				level.setBlock(pos, CBCBlocks.CANNON_CAST.getDefaultState(), 11);
-				if (!level.isClientSide && level.getBlockEntity(pos) instanceof CannonCastBlockEntity cast) {
-					cast.initializeCastMultiblock(this.size.get());
+				if (!level.isClientSide) {
+					if (level.getBlockEntity(pos) instanceof CannonCastBlockEntity cast) cast.initializeCastMultiblock(this.size.get());
 					if (!player.isCreative()) player.addItem(new ItemStack(this.asItem()));
 				}
 				level.playSound(player, pos, SoundEvents.SAND_PLACE, SoundSource.PLAYERS, 1.0f, 0.0f);
@@ -75,7 +75,7 @@ public class CannonCastMouldBlock extends Block {
 	}
 	
 	protected boolean isSurroundingAreaCompleteForTransformation(BlockState state, Level level, BlockPos pos) {
-		return BlockPos.betweenClosedStream(pos.offset(-1, 0, -1), pos.offset(1, 0, 1)).filter(p -> !pos.equals(p)).map(level::getBlockState).allMatch(CBCBlocks.CASTING_SAND::has);
+		return !this.size.get().isLarge() || BlockPos.betweenClosedStream(pos.offset(-1, 0, -1), pos.offset(1, 0, 1)).filter(p -> !pos.equals(p)).map(level::getBlockState).allMatch(CBCBlocks.CASTING_SAND::has);
 	}
 	
 }

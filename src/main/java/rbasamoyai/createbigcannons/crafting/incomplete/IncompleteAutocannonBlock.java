@@ -102,12 +102,12 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 				level.setBlock(pos, this.getCompleteBlockState(state), 3 | 16);
 
 				BlockEntity be = level.getBlockEntity(pos);
-				if (!(be instanceof ICannonBlockEntity cbe1)) return;
+				if (!(be instanceof ICannonBlockEntity<?> cbe1)) return;
 				CannonBehavior behavior1 = cbe1.cannonBehavior();
 				for (Direction dir : Direction.values()) {
 					boolean isConnected = behavior.isConnectedTo(dir);
 					behavior1.setConnectedFace(dir, isConnected);
-					if (level.getBlockEntity(pos.relative(dir)) instanceof ICannonBlockEntity cbe2) {
+					if (level.getBlockEntity(pos.relative(dir)) instanceof ICannonBlockEntity<?> cbe2) {
 						cbe2.cannonBehavior().setConnectedFace(dir.getOpposite(), isConnected);
 					}
 				}

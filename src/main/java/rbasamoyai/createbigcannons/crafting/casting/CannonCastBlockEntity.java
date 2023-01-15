@@ -54,7 +54,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	protected FluidTank fluid;
 	protected LazyOptional<IFluidHandler> fluidOptional = null;
 	protected List<CannonCastShape> structure = new ArrayList<>();
-	protected CannonCastShape castShape = CannonCastShape.VERY_SMALL.get();
+	protected CannonCastShape castShape = null;
 	protected BlockPos controllerPos;
 	protected BlockPos lastKnownPos;
 	protected int height;
@@ -143,7 +143,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
-		if (this.canRenderCastModel()) {
+		if (this.canRenderCastModel() && this.castShape != null) {
 			tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this.castShape).toString());
 		}
 		if (this.lastKnownPos != null) tag.put("LastKnownPos", NbtUtils.writeBlockPos(this.lastKnownPos));
@@ -158,8 +158,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			}
 			tag.putInt("Height", this.height);
 			tag.put("FluidContent", this.fluid.writeToNBT(new CompoundTag()));
+			tag.putInt("CastingTime", this.castingTime);
 			if (!this.leakage.isEmpty()) tag.put("Leakage", this.leakage.writeToNBT(new CompoundTag()));
-			if (this.castingTime > 0) tag.putInt("CastingTime", this.castingTime);
 			if (this.startCastingTime > 1) tag.putInt("StartCastingTime", this.startCastingTime);
 			if (this.updateRecipes) tag.putBoolean("UpdateRecipes", true);
 			
@@ -197,11 +197,8 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		
 		BlockPos controllerBefore = this.controllerPos;
 		int prevHeight = this.getControllerTE() == null ? 0 : this.getControllerTE().height;
-		
-		if (tag.contains("Size")) {
-			this.castShape = CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(tag.getString("Size")));
-			if (this.castShape == null) this.castShape = CannonCastShape.VERY_SMALL.get();
-		}
+
+		this.castShape = tag.contains("Size") ? CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(tag.getString("Size"))) : null;
 		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
 		
 		this.structure.clear();
@@ -391,26 +388,28 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			if (this.structure.size() <= y) continue;
 			CannonCastingRecipe recipe = this.recipes.get(this.structure.get(y));
 			if (recipe == null) break;
-			
+
 			BlockPos pos = this.worldPosition.above(y);
 			if (!(this.level.getBlockEntity(pos) instanceof CannonCastBlockEntity cast)) break;
 			BlockPos corner = pos.offset(-1, 0, -1);
-			BlockPos.betweenClosedStream(corner, pos.offset(1, 0, 1)).forEach(pos1 -> {
-				if (pos.equals(pos1) || !(this.level.getBlockEntity(pos1) instanceof CannonCastBlockEntity cast1)) return;
-				cast1.setRemoved();
-				this.level.setBlock(pos1, CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), 11);
-				if (!(this.level.getBlockEntity(pos1) instanceof FinishedCannonCastBlockEntity fCast)) return;
-				if (pos1.equals(corner)) {
-					fCast.setRenderedShape(cast.castShape);
-					fCast.setHeight(this.height);
-					fCast.setRootBlock(this.worldPosition.offset(-1, 0, -1));
-				} else {
-					fCast.setCentralBlock(corner);
-				}
-			});
+			if (cast.getRenderedSize().isLarge()) {
+				BlockPos.betweenClosedStream(corner, pos.offset(1, 0, 1)).forEach(pos1 -> {
+					if (pos.equals(pos1) || !(this.level.getBlockEntity(pos1) instanceof CannonCastBlockEntity cast1)) return;
+					cast1.setRemoved();
+					this.level.setBlock(pos1, CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), 11);
+					if (!(this.level.getBlockEntity(pos1) instanceof FinishedCannonCastBlockEntity fCast)) return;
+					if (pos1.equals(corner)) {
+						fCast.setRenderedShape(cast.castShape);
+						fCast.setHeight(this.height);
+						fCast.setRootBlock(this.worldPosition.offset(-1, 0, -1));
+					} else {
+						fCast.setCentralBlock(corner);
+					}
+				});
+			}
 			recipe.assembleInWorld(this.level, pos);
 			
-			if (y > 0 && this.level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe && this.level.getBlockEntity(pos.below()) instanceof ICannonBlockEntity cbe1) {
+			if (y > 0 && this.level.getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe && this.level.getBlockEntity(pos.below()) instanceof ICannonBlockEntity<?> cbe1) {
 				cbe.cannonBehavior().setConnectedFace(Direction.DOWN, true);
 				cbe1.cannonBehavior().setConnectedFace(Direction.UP, true);
 			}
@@ -425,6 +424,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	
 	public void initializeCastMultiblock(CannonCastShape size) {
 		this.castShape = size;
+		if (this.castShape == null) return;
 		if (this.level.getBlockEntity(this.worldPosition.below()) instanceof CannonCastBlockEntity otherCast
 			&& otherCast.getType() == this.getType()
 			&& otherCast.getHeight() < getMaxHeight()) {
@@ -454,14 +454,16 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 				controller.notifyUpdate();
 			}
 		}
-		
-		for (Iterator<BlockPos> iter = BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1)).iterator(); iter.hasNext(); ) {
-			BlockPos pos = iter.next();
-			if (pos.equals(this.worldPosition)) continue;
-			this.level.setBlock(pos, CBCBlocks.CANNON_CAST.getDefaultState(), 11);
-			if (this.level.getBlockEntity(pos) instanceof CannonCastBlockEntity childCast && childCast.getType() == this.getType()) {
-				childCast.controllerPos = this.getController();
-				childCast.notifyUpdate();
+
+		if (size.isLarge()) {
+			for (Iterator<BlockPos> iter = BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1)).iterator(); iter.hasNext(); ) {
+				BlockPos pos = iter.next();
+				if (pos.equals(this.worldPosition)) continue;
+				this.level.setBlock(pos, CBCBlocks.CANNON_CAST.getDefaultState(), 11);
+				if (this.level.getBlockEntity(pos) instanceof CannonCastBlockEntity childCast && childCast.getType() == this.getType()) {
+					childCast.controllerPos = this.getController();
+					childCast.notifyUpdate();
+				}
 			}
 		}
 		CannonCastBlockEntity controller = this.getControllerTE();
@@ -473,7 +475,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	}
 	
 	public void destroyCastMultiblockAtLayer() {
-		if (this.canRenderCastModel()) {
+		if (this.canRenderCastModel() && this.castShape != null) {
 			CannonCastBlockEntity controller = this.getControllerTE();
 			int thisIndex = this.worldPosition.getY() - controller.worldPosition.getY();
 			
@@ -519,9 +521,12 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 					otherCast.notifyUpdate();
 				}
 			}
-			
-			for (BlockPos pos : BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1))) {
-				if (CBCBlocks.CANNON_CAST.has(this.level.getBlockState(pos))) this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+
+			if (this.castShape.isLarge()) {
+				for (BlockPos pos : BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1))) {
+					if (CBCBlocks.CANNON_CAST.has(this.level.getBlockState(pos)))
+						this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+				}
 			}
 			
 			if (!addLeak.isEmpty() && addLeak.getAmount() >= 1000) {
@@ -548,11 +553,13 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		for (int y = 0; y < this.height; ++y) {
 			if (!(this.level.getBlockEntity(this.worldPosition.above(y)) instanceof CannonCastBlockEntity cast)) break;
 			if (y != 0) cast.setController(this.worldPosition);
-			for (int x = -1; x < 2; ++x) {
-				for (int z = -1; z < 2; ++z) {
-					if ((x != 0 || z != 0) && this.level.getBlockEntity(this.worldPosition.offset(x, y, z)) instanceof CannonCastBlockEntity cast1) {
-						cast1.setController(this.worldPosition);
-						cast1.setChanged();
+			if (cast.getRenderedSize().isLarge()) {
+				for (int x = -1; x < 2; ++x) {
+					for (int z = -1; z < 2; ++z) {
+						if ((x != 0 || z != 0) && this.level.getBlockEntity(this.worldPosition.offset(x, y, z)) instanceof CannonCastBlockEntity cast1) {
+							cast1.setController(this.worldPosition);
+							cast1.setChanged();
+						}
 					}
 				}
 			}

@@ -1,17 +1,12 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
-import java.util.List;
-import java.util.Random;
-
 import com.jozufozu.flywheel.core.virtual.VirtualEmptyModelData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
 import com.simibubi.create.foundation.tileEntity.renderer.SafeTileEntityRenderer;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
-
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
@@ -24,6 +19,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
+
+import java.util.List;
+import java.util.Random;
 
 public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<CannonCastBlockEntity> {
 
@@ -39,24 +37,28 @@ public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<Cannon
 		BlockState state = te.getBlockState();
 		
 		ms.pushPose();
-		
-		SuperByteBuffer castRender = CachedBufferer.partial(CBCBlockPartials.cannonCastFor(te.getRenderedSize()), state);
-		castRender
-			.light(light)
-			.renderInto(ms, buffer.getBuffer(RenderType.solid()));
+
+		CannonCastShape shape = te.getRenderedSize();
+		if (shape != null) {
+			CachedBufferer.partial(CBCBlockPartials.cannonCastFor(shape), state)
+					.light(light)
+					.renderInto(ms, buffer.getBuffer(RenderType.solid()));
+		}
 		
 		if (te.isController()) {
 			LerpedFloat levelLerped = te.getFluidLevel();
-			if (levelLerped != null) {
+			if (levelLerped != null && shape != null) {
 				float level = levelLerped.getValue(partialTicks);
 				FluidStack fstack = te.fluid.getFluid();
-				
-				float boxWidth = 2.875f;
-				float height = ((float) te.height - 0.125f) * level;   
+
+				boolean flag = shape.isLarge();
+				float boxWidth = flag ? 2.875f : 0.875f;
+				float height = ((float) te.height - 0.125f) * level;
 				
 				if (height > 0.0625f && !fstack.isEmpty()) {
 					ms.pushPose();
-					ms.translate(-0.9375f, 0.0625f, -0.9375f);
+					float f = flag ? -15 / 16f : 1 / 16f;
+					ms.translate(f, 0.0625f, f);
 					FluidRenderer.renderFluidBox(fstack, 0, 0, 0, boxWidth, height, boxWidth, buffer, ms, light, false);
 					ms.popPose();
 				}

@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"texture_size": [64, 64],
+	"textures": {
+		"0": "createbigcannons:block/cast_mould",
+		"particle": "createbigcannons:block/cast_mould"
+	},
+	"elements": [
+		{
+			"from": [4, 0, 4],
+			"to": [12, 17, 12],
+			"faces": {
+				"north": {"uv": [8, 4.5, 10, 8.75], "texture": "#0"},
+				"east": {"uv": [8, 4.5, 10, 8.75], "texture": "#0"},
+				"south": {"uv": [8, 4.5, 10, 8.75], "texture": "#0"},
+				"west": {"uv": [8, 4.5, 10, 8.75], "texture": "#0"},
+				"up": {"uv": [13.5, 0, 15.5, 2], "texture": "#0"},
+				"down": {"uv": [13.5, 0, 15.5, 2], "rotation": 180, "texture": "#0"}
+			}
+		}
+	]
+}
