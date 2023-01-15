@@ -3,9 +3,11 @@ package rbasamoyai.createbigcannons.crafting.casting;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistryEntry;
@@ -30,27 +32,44 @@ public class CannonCastShape extends ForgeRegistryEntry<CannonCastShape> {
 		SLIDING_BREECH = CANNON_CAST_SHAPES.register("sliding_breech", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SLIDING_BREECH_CAST_MOULD, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false))),
 		SCREW_BREECH = CANNON_CAST_SHAPES.register("screw_breech", () -> new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD)),
 
-		AUTOCANNON_BARREL = CANNON_CAST_SHAPES.register("autocannon_barrel", () -> new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR)),
-		AUTOCANNON_BARREL_FLANGED = CANNON_CAST_SHAPES.register("autocannon_barrel_flanged", () -> new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR)),
-		AUTOCANNON_BREECH = CANNON_CAST_SHAPES.register("autocannon_breech", () -> new CannonCastShape(4 * INGOT_SIZE_MB, 8, () -> Blocks.AIR)),
-		AUTOCANNON_RECOIL_SPRING = CANNON_CAST_SHAPES.register("autocannon_recoil_spring", () -> new CannonCastShape(4 * INGOT_SIZE_MB, 6, () -> Blocks.AIR));
+		AUTOCANNON_BARREL = CANNON_CAST_SHAPES.register("autocannon_barrel", () -> new CannonCastShape(3 * INGOT_SIZE_MB, 4, CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
+		AUTOCANNON_BARREL_FLANGED = CANNON_CAST_SHAPES.register("autocannon_barrel_flanged", () -> new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR, false)),
+		AUTOCANNON_BREECH = CANNON_CAST_SHAPES.register("autocannon_breech", () -> new CannonCastShape(4 * INGOT_SIZE_MB, 8, CBCBlocks.AUTOCANNON_BREECH_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
+		AUTOCANNON_RECOIL_SPRING = CANNON_CAST_SHAPES.register("autocannon_recoil_spring", () -> new CannonCastShape(4 * INGOT_SIZE_MB, 6, CBCBlocks.AUTOCANNON_RECOIL_SPRING_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP)));
 	
 	private final int fluidSize;
 	private final int diameter;
 	private final NonNullSupplier<? extends Block> castMould;
+	private final boolean isLarge;
 	private final PropertySetter<?>[] properties;
 	
 	private Block resolvedCastMould;
-	
+
+
+	/**
+	 * For old, big cannons. Is large (3x3) by default.
+	 *
+	 * @param fluidSize
+	 * @param diameter
+	 * @param castMould
+	 * @param properties
+	 */
+
 	public CannonCastShape(int fluidSize, int diameter, NonNullSupplier<? extends Block> castMould, PropertySetter<?>... properties) {
+		this(fluidSize, diameter, castMould, true, properties);
+	}
+	
+	public CannonCastShape(int fluidSize, int diameter, NonNullSupplier<? extends Block> castMould, boolean large, PropertySetter<?>... properties) {
 		this.fluidSize = fluidSize;
 		this.diameter = diameter;
 		this.castMould = castMould;
+		this.isLarge = large;
 		this.properties = properties;
 	}
 	
 	public int fluidSize() { return this.fluidSize; }
 	public int diameter() { return this.diameter; }
+	public boolean isLarge() { return this.isLarge; }
 	
 	public Block castMould() {
 		if (this.resolvedCastMould == null) {

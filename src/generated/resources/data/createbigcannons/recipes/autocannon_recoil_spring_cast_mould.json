@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "s",
+    "S",
+    "s"
+  ],
+  "key": {
+    "S": {
+      "tag": "minecraft:wooden_fences"
+    },
+    "s": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:autocannon_recoil_spring_cast_mould"
+  }
+}

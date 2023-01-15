@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
 import com.simibubi.create.foundation.block.ITE;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;

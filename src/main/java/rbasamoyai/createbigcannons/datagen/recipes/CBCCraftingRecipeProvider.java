@@ -246,7 +246,31 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.pattern("s")
 		.unlockedBy(getHasName(CBCBlocks.CASTING_SAND.get()), has(CBCBlocks.CASTING_SAND.get()))
 		.save(cons);
-		
+
+		ShapedRecipeBuilder.shaped(CBCBlocks.AUTOCANNON_BREECH_CAST_MOULD.get())
+		.define('S', ItemTags.WOODEN_FENCES).define('s', Items.STICK)
+		.pattern(" s ")
+		.pattern("sSs")
+		.pattern(" s ")
+		.unlockedBy(getHasName(CBCBlocks.CASTING_SAND.get()), has(CBCBlocks.CASTING_SAND.get()))
+		.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCBlocks.AUTOCANNON_RECOIL_SPRING_CAST_MOULD.get())
+		.define('S', ItemTags.WOODEN_FENCES).define('s', Items.STICK)
+		.pattern("s")
+		.pattern("S")
+		.pattern("s")
+		.unlockedBy(getHasName(CBCBlocks.CASTING_SAND.get()), has(CBCBlocks.CASTING_SAND.get()))
+		.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD.get())
+		.define('s', Items.STICK)
+		.pattern("s")
+		.pattern("s")
+		.pattern("s")
+		.unlockedBy(getHasName(CBCBlocks.CASTING_SAND.get()), has(CBCBlocks.CASTING_SAND.get()))
+		.save(cons);
+
 		ShapedRecipeBuilder.shaped(CBCBlocks.LOG_CANNON_END.get())
 		.define('L', ItemTags.LOGS).define('K', ItemTags.WOODEN_BUTTONS).define('G', Tags.Items.GUNPOWDER)
 		.pattern(" K ")

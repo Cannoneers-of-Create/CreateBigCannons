@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.registries.ForgeRegistries;
-import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteCannonBlock;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteWithItemsCannonBlock;
 
 public class IncompleteCannonBlockRecipe extends HardcodedBlockRecipe {
 
@@ -17,7 +17,7 @@ public class IncompleteCannonBlockRecipe extends HardcodedBlockRecipe {
 	public IncompleteCannonBlockRecipe(ResourceLocation id, Block result, Block start) {
 		super(id, result);
 		this.ingredients.add(new ItemStack(start));
-		if (start instanceof IncompleteCannonBlock incomplete) {
+		if (start instanceof IncompleteWithItemsCannonBlock incomplete) {
 			incomplete.requiredItems().stream().map(ItemStack::new).forEach(this.ingredients::add);
 		}
 	}
@@ -27,8 +27,8 @@ public class IncompleteCannonBlockRecipe extends HardcodedBlockRecipe {
 	public static Collection<IncompleteCannonBlockRecipe> makeAllIncompleteRecipes() {
 		return ForgeRegistries.BLOCKS.getValues()
 		.stream()
-		.filter(IncompleteCannonBlock.class::isInstance)
-		.map(b -> new IncompleteCannonBlockRecipe(null, ((IncompleteCannonBlock) b).getCompleteBlockState(b.defaultBlockState()).getBlock(), b))
+		.filter(IncompleteWithItemsCannonBlock.class::isInstance)
+		.map(b -> new IncompleteCannonBlockRecipe(null, ((IncompleteWithItemsCannonBlock) b).getCompleteBlockState(b.defaultBlockState()).getBlock(), b))
 		.toList();
 	}
 

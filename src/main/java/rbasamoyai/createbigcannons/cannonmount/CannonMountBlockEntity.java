@@ -241,7 +241,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
 		net.minecraft.world.level.block.Block block = this.level.getBlockState(pos).getBlock();
-		if (block instanceof CannonBlock) return new MountedCannonContraption();
+		if (block instanceof CannonBlock) return new MountedBigCannonContraption();
 		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
 		return null;
 	}

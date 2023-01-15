@@ -55,7 +55,7 @@ public class CannonCastingRecipe implements BlockRecipe {
 		if (state.hasProperty(BlockStateProperties.FACING)) {
 			state = state.setValue(BlockStateProperties.FACING, Direction.DOWN);
 		}
-		this.requiredShape.applyTo(state);
+		state = this.requiredShape.applyTo(state);
 		level.setBlock(pos, state, 11);
 	}
 

@@ -67,7 +67,7 @@ import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.base.PoleMoverBlockEntity;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.crafting.builtup.LayeredCannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
@@ -300,7 +300,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		if (!collide && movementDirection.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
 			gridPos = gridPos.relative(movementDirection);
 		}
-		if (collide) {
+		if (collide && movementDirection.getAxisDirection() == Direction.AxisDirection.NEGATIVE) {
 			gridPos = gridPos.relative(movementDirection.getOpposite());
 		}
 		
@@ -441,7 +441,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 			BlockEntity be = boredBE.newBlockEntity(BlockPos.ZERO, boredState);
 			latheBlockInfo.nbt.putBoolean("JustBored", true);
 			
-			if (boredState.getBlock() instanceof CannonBlock cBlock && be instanceof LayeredCannonBlockEntity layered) {
+			if (boredState.getBlock() instanceof CannonBlock cBlock && be instanceof LayeredBigCannonBlockEntity layered) {
 				CannonCastShape shape = cBlock.getCannonShape();
 				CompoundTag layerConnectionsTag = new CompoundTag();
 				Direction opp = facing.getOpposite();
@@ -449,8 +449,8 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 				StructureBlockInfo nextBlockInfo = lathe.getBlocks().get(boringOffset.relative(facing));
 				if (nextBlockInfo != null && nextBlockInfo.nbt != null) {
 					BlockEntity be1 = BlockEntity.loadStatic(BlockPos.ZERO, nextBlockInfo.state, nextBlockInfo.nbt);
-					if (be1 instanceof LayeredCannonBlockEntity layered1 && layered1.isLayerConnectedTo(opp, shape) 
-						|| be1 instanceof ICannonBlockEntity cbe1 && cbe1.cannonBehavior().isConnectedTo(opp)) {
+					if (be1 instanceof LayeredBigCannonBlockEntity layered1 && layered1.isLayerConnectedTo(opp, shape)
+						|| be1 instanceof ICannonBlockEntity<?> cbe1 && cbe1.cannonBehavior().isConnectedTo(opp)) {
 						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
 						ListTag list = new ListTag();
 						list.add(StringTag.valueOf(key.toString()));
@@ -460,8 +460,8 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 				StructureBlockInfo prevBlockInfo = lathe.getBlocks().get(boringOffset.relative(opp));
 				if (prevBlockInfo != null && prevBlockInfo.nbt != null) {
 					BlockEntity be2 = BlockEntity.loadStatic(BlockPos.ZERO, prevBlockInfo.state, prevBlockInfo.nbt);
-					if (be2 instanceof LayeredCannonBlockEntity layered2 && layered2.isLayerConnectedTo(facing, shape)
-						|| be2 instanceof ICannonBlockEntity cbe2 && cbe2.cannonBehavior().isConnectedTo(facing)) {
+					if (be2 instanceof LayeredBigCannonBlockEntity layered2 && layered2.isLayerConnectedTo(facing, shape)
+						|| be2 instanceof ICannonBlockEntity<?> cbe2 && cbe2.cannonBehavior().isConnectedTo(facing)) {
 						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
 						ListTag list = new ListTag();
 						list.add(StringTag.valueOf(key.toString()));

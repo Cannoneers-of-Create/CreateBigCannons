@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.model.data.EmptyModelData;
 
-public class LayeredCannonBlockEntityRenderer extends SmartTileEntityRenderer<LayeredCannonBlockEntity> {
+public class LayeredCannonBlockEntityRenderer extends SmartTileEntityRenderer<LayeredBigCannonBlockEntity> {
 
 	private final BlockRenderDispatcher dispatcher;
 	
@@ -23,7 +23,7 @@ public class LayeredCannonBlockEntityRenderer extends SmartTileEntityRenderer<La
 	}
 	
 	@Override
-	protected void renderSafe(LayeredCannonBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+	protected void renderSafe(LayeredBigCannonBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		if (be.getLayers().size() < 2) return;
 		for (Block block : be.getLayers().values()) {
 			BlockState state = block.defaultBlockState();
@@ -42,7 +42,7 @@ public class LayeredCannonBlockEntityRenderer extends SmartTileEntityRenderer<La
 	}
 	
 	@Override
-	public boolean shouldRender(LayeredCannonBlockEntity be, Vec3 vec) {
+	public boolean shouldRender(LayeredBigCannonBlockEntity be, Vec3 vec) {
 		return be.getLayers().size() > 1 && super.shouldRender(be, vec);
 	}
 

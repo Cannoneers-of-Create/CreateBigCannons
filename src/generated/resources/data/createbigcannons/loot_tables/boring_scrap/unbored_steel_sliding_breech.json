@@ -7,14 +7,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 58.0,
-              "add": false
-            }
-          ],
           "name": "createbigcannons:steel_scrap"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 58.0,
+          "add": false
         }
       ]
     },
@@ -24,18 +24,18 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 0.0,
-                "max": 10.0
-              },
-              "add": false
-            }
-          ],
           "name": "createbigcannons:steel_scrap"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 0.0,
+            "max": 10.0
+          },
+          "add": false
         }
       ]
     }

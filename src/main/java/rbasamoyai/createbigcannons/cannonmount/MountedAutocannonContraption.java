@@ -16,7 +16,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
@@ -32,6 +31,7 @@ import net.minecraftforge.network.PacketDistributor;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.*;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
@@ -190,7 +190,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, AutocannonMaterial material) {
 		AutocannonBlock cBlock = (AutocannonBlock) state.getBlock();
 		if (cBlock.getAutocannonMaterialInLevel(level, state, pos) != material) return false;
-		return ((IAutocannonBlockEntity) level.getBlockEntity(pos)).cannonBehavior().isConnectedTo(connection.getOpposite());
+		return level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe && cbe.cannonBehavior().isConnectedTo(connection.getOpposite());
 	}
 
 	public static AssemblyException noAutocannonBreech() {
@@ -256,13 +256,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		while (this.presentTileEntities.get(currentPos) instanceof IAutocannonBlockEntity autocannon) {
 			ItemCannonBehavior behavior = autocannon.cannonBehavior();
-			ItemStack stack = behavior.storedItem();
 
-			if (stack.isEmpty()) {
+			if (behavior.canLoadItem(foundProjectile)) {
 				++barrelTravelled;
 				if (barrelTravelled > this.cannonMaterial.maxLength()) {
 					StructureBlockInfo oldInfo = this.blocks.get(currentPos);
-					behavior.tryLoadingItem(stack);
+					behavior.tryLoadingItem(foundProjectile);
 					CompoundTag tag = this.presentTileEntities.get(currentPos).saveWithFullMetadata();
 					tag.remove("x");
 					tag.remove("y");
@@ -383,9 +382,5 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	}
 
 	@Override protected ContraptionType getType() { return CBCContraptionTypes.MOUNTED_AUTOCANNON; }
-
-	public DyeColor getSeatColor() {
-		return this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech ? breech.getSeatColor() : null;
-	}
 
 }

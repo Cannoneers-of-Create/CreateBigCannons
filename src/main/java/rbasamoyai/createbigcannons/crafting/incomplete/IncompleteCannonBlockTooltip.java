@@ -14,7 +14,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class IncompleteCannonBlockTooltip {
 
-	public static void addToTooltip(List<Component> tooltip, boolean isPlayerSneaking, IncompleteCannonBlock incomplete, BlockState state) {
+	public static void addToTooltip(List<Component> tooltip, boolean isPlayerSneaking, IncompleteWithItemsCannonBlock incomplete, BlockState state) {
 		Lang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".incomplete_block.tooltip.requiredParts")
 				.style(ChatFormatting.GOLD)

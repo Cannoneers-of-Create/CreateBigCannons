@@ -13,14 +13,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class UnboredSlidingBreechBlock extends UnboredCannonBlock implements ITransformableBlock {
+public class UnboredSlidingBreechBlock extends UnboredBigCannonBlock implements ITransformableBlock {
 
 	public static final BooleanProperty ALONG_FIRST = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 	
-	public UnboredSlidingBreechBlock(Properties properties, CannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup, VoxelShape baseShape) {
+	public UnboredSlidingBreechBlock(Properties properties, BigCannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup, VoxelShape baseShape) {
 		super(properties, material, CannonCastShape.SLIDING_BREECH, boredBlockSup, baseShape);
 	}
 	

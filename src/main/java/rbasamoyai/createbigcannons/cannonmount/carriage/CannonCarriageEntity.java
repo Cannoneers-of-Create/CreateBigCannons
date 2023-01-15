@@ -46,7 +46,7 @@ import rbasamoyai.createbigcannons.cannonmount.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannonmount.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
@@ -227,7 +227,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		if (!CBCConfigs.SERVER.cannons.cannonWeightAffectsCarriageSpeed.get()) return 1;
 		if (this.cannonContraption == null || !(this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon)) return 1;
 		float weight = cannon.getWeightForStress();
-		return weight <= 0.0f ? 1 : CannonMaterial.CAST_IRON.weight() * 5 / weight; // Base weight is a 5 long cast iron cannon.
+		return weight <= 0.0f ? 1 : BigCannonMaterial.CAST_IRON.weight() * 5 / weight; // Base weight is a 5 long cast iron cannon.
 	}
 
 	@Override

@@ -12,25 +12,26 @@ import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntity;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannonmount.YawControllerInstance;
 import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockEntity;
-import rbasamoyai.createbigcannons.cannons.CannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.*;
-import rbasamoyai.createbigcannons.cannons.cannonend.CannonEndBlockEntity;
-import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntity;
-import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechBlockEntityRenderer;
-import rbasamoyai.createbigcannons.cannons.cannonend.ScrewBreechInstance;
-import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntity;
-import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechBlockEntityRenderer;
-import rbasamoyai.createbigcannons.cannons.cannonend.SlidingBreechInstance;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEndBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.ScrewBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.ScrewBreechBlockEntityRenderer;
+import rbasamoyai.createbigcannons.cannons.big_cannons.ScrewBreechInstance;
+import rbasamoyai.createbigcannons.cannons.big_cannons.SlidingBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.SlidingBreechBlockEntityRenderer;
+import rbasamoyai.createbigcannons.cannons.big_cannons.SlidingBreechInstance;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
-import rbasamoyai.createbigcannons.crafting.builtup.LayeredCannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredCannonBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryBlockEntity;
-import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteCannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.FuzedBlockInstance;
@@ -40,8 +41,8 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCBlockEntities {
 
-	public static final BlockEntityEntry<CannonBlockEntity> CANNON = REGISTRATE
-			.tileEntity("cannon", CannonBlockEntity::new)
+	public static final BlockEntityEntry<BigCannonBlockEntity> CANNON = REGISTRATE
+			.tileEntity("cannon", BigCannonBlockEntity::new)
 			.validBlocks(CBCBlocks.LOG_CANNON_CHAMBER,
 						CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER,
 						CBCBlocks.CAST_IRON_CANNON_BARREL, CBCBlocks.CAST_IRON_CANNON_CHAMBER,
@@ -64,8 +65,8 @@ public class CBCBlockEntities {
 			.validBlocks(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
 			.register();
 	
-	public static final BlockEntityEntry<CannonEndBlockEntity> CANNON_END = REGISTRATE
-			.tileEntity("cannon_end", CannonEndBlockEntity::new)
+	public static final BlockEntityEntry<BigCannonEndBlockEntity> CANNON_END = REGISTRATE
+			.tileEntity("cannon_end", BigCannonEndBlockEntity::new)
 			.validBlocks(CBCBlocks.LOG_CANNON_END, CBCBlocks.WROUGHT_IRON_CANNON_END, CBCBlocks.CAST_IRON_CANNON_END, CBCBlocks.BRONZE_CANNON_END,
 						CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL, CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER, CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH,
 						CBCBlocks.UNBORED_BRONZE_CANNON_BARREL, CBCBlocks.UNBORED_BRONZE_CANNON_CHAMBER, CBCBlocks.UNBORED_BRONZE_SLIDING_BREECH,
@@ -134,8 +135,8 @@ public class CBCBlockEntities {
 			.validBlock(CBCBlocks.CANNON_DRILL)
 			.register();
 	
-	public static final BlockEntityEntry<IncompleteCannonBlockEntity> INCOMPLETE_CANNON = REGISTRATE
-			.tileEntity("incomplete_cannon", IncompleteCannonBlockEntity::new)
+	public static final BlockEntityEntry<IncompleteBigCannonBlockEntity> INCOMPLETE_CANNON = REGISTRATE
+			.tileEntity("incomplete_cannon", IncompleteBigCannonBlockEntity::new)
 			.validBlocks(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH,
 					CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH, CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH)
 			.register();
@@ -147,8 +148,8 @@ public class CBCBlockEntities {
 			.validBlock(CBCBlocks.CANNON_BUILDER)
 			.register();
 	
-	public static final BlockEntityEntry<LayeredCannonBlockEntity> LAYERED_CANNON = REGISTRATE
-			.tileEntity("layered_cannon", LayeredCannonBlockEntity::new)
+	public static final BlockEntityEntry<LayeredBigCannonBlockEntity> LAYERED_CANNON = REGISTRATE
+			.tileEntity("layered_cannon", LayeredBigCannonBlockEntity::new)
 			.renderer(() -> LayeredCannonBlockEntityRenderer::new)
 			.validBlocks(CBCBlocks.BUILT_UP_CANNON,
 					CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER, CBCBlocks.SMALL_STEEL_CANNON_LAYER, CBCBlocks.MEDIUM_STEEL_CANNON_LAYER, CBCBlocks.LARGE_STEEL_CANNON_LAYER, CBCBlocks.VERY_LARGE_STEEL_CANNON_LAYER,
@@ -177,6 +178,13 @@ public class CBCBlockEntities {
 			.instance(() -> AutocannonRecoilSpringInstance::new)
 			.renderer(() -> AutocannonRecoilSpringRenderer::new)
 			.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.STEEL_AUTOCANNON_RECOIL_SPRING)
+			.register();
+
+	public static final BlockEntityEntry<IncompleteAutocannonBlockEntity> INCOMPLETE_AUTOCANNON = REGISTRATE
+			.tileEntity("incomplete_autocannon", IncompleteAutocannonBlockEntity::new)
+			.validBlocks(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BARREL, CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_BREECH,
+					CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BARREL, CBCBlocks.UNBORED_BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_BREECH,
+					CBCBlocks.UNBORED_STEEL_AUTOCANNON_BARREL, CBCBlocks.UNBORED_STEEL_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_STEEL_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_BREECH)
 			.register();
 
 	public static void register() {}

@@ -107,7 +107,7 @@ public class DrillBitBlock extends WrenchableDirectionalBlock implements SimpleW
 		if (state.getValue(BlockStateProperties.WATERLOGGED)) {
 			level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
 		}
-		return state;
+		return super.updateShape(state, direction, neighbor, level, pos, neighborPos);
 	}
 	
 	@Override

@@ -20,11 +20,11 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.CannonMaterial;
-import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.CannonEnd;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredCannonBlockEntity>, CannonBlock {
+public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredBigCannonBlockEntity>, CannonBlock {
 	
 	public BuiltUpCannonBlock(Properties properties) {
 		super(properties);
@@ -36,13 +36,13 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredC
 		builder.add(FACING);
 	}
 	
-	@Override public CannonMaterial getCannonMaterial() { return CannonMaterial.INCOMPLETE_LAYERED; }
+	@Override public BigCannonMaterial getCannonMaterial() { return BigCannonMaterial.INCOMPLETE_LAYERED; }
 	@Override public CannonCastShape getCannonShape() { return CannonCastShape.MEDIUM.get(); }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
 	
 	@Override
-	public CannonMaterial getCannonMaterialInLevel(LevelAccessor level, BlockState state, BlockPos pos) {
-		return level.getBlockEntity(pos) instanceof LayeredCannonBlockEntity layered ? layered.getBaseMaterial() : this.getCannonMaterial();
+	public BigCannonMaterial getCannonMaterialInLevel(LevelAccessor level, BlockState state, BlockPos pos) {
+		return level.getBlockEntity(pos) instanceof LayeredBigCannonBlockEntity layered ? layered.getBaseMaterial() : this.getCannonMaterial();
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -57,8 +57,8 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredC
 	
 	@Override public RenderShape getRenderShape(BlockState state) { return RenderShape.INVISIBLE; }
 	
-	@Override public Class<LayeredCannonBlockEntity> getTileEntityClass() { return LayeredCannonBlockEntity.class; }
-	@Override public BlockEntityType<? extends LayeredCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.LAYERED_CANNON.get(); }
+	@Override public Class<LayeredBigCannonBlockEntity> getTileEntityClass() { return LayeredBigCannonBlockEntity.class; }
+	@Override public BlockEntityType<? extends LayeredBigCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.LAYERED_CANNON.get(); }
 	
 	@Override public BlockState rotate(BlockState state, Rotation rotation) { return state.setValue(FACING, rotation.rotate(state.getValue(FACING))); }
 	@Override public BlockState mirror(BlockState state, Mirror mirror) { return state.setValue(FACING, mirror.mirror(state.getValue(FACING))); }

@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 
 import java.util.List;
 
@@ -18,8 +19,10 @@ public class AutocannonBlockEntity extends SmartTileEntity implements IAutocanno
 
     @Override
     public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-        behaviours.add(this.behavior = new ItemCannonBehavior(this));
+        behaviours.add(this.behavior = this.makeBehavior());
     }
+
+    protected ItemCannonBehavior makeBehavior() { return new ItemCannonBehavior(this); }
 
     @Override public ItemCannonBehavior cannonBehavior() { return this.behavior; }
 

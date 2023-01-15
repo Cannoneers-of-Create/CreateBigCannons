@@ -1,24 +1,10 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.tuple.Pair;
-
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionType;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.PistonExtensionPoleBlock;
 import com.simibubi.create.foundation.utility.Iterate;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -31,20 +17,24 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
+import org.apache.commons.lang3.tuple.Pair;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.CannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderState;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 public class CannonBuildingContraption extends PoleContraption {
 
 	protected boolean isActivated = false;
-	protected CannonMaterial material = null;
+	protected BigCannonMaterial material = null;
 	
 	public CannonBuildingContraption() {}
 	
@@ -158,7 +148,7 @@ public class CannonBuildingContraption extends PoleContraption {
 				CannonBlock cBlock = ((CannonBlock) state.getBlock());
 				if (this.material == null) this.material = cBlock.getCannonMaterialInLevel(level, state, currentPos);
 				
-				if (level.getBlockEntity(currentPos) instanceof LayeredCannonBlockEntity layered) {				
+				if (level.getBlockEntity(currentPos) instanceof LayeredBigCannonBlockEntity layered) {
 					if (fullShape == null && connectedShapes.isEmpty()) {
 						if (firstBlock) {
 							CannonCastShape topShape = layered.getTopCannonShape();
@@ -170,7 +160,7 @@ public class CannonBuildingContraption extends PoleContraption {
 							return false;
 						}
 					}
-					LayeredCannonBlockEntity split = fullShape == null ? layered.getSplitBlockEntity(connectedShapes, offset == 0 ? null : opposite) : layered.getSplitBlockEntity(fullShape, opposite);
+					LayeredBigCannonBlockEntity split = fullShape == null ? layered.getSplitBlockEntity(connectedShapes, offset == 0 ? null : opposite) : layered.getSplitBlockEntity(fullShape, opposite);
 					if (split.isEmpty()) break;
 					if (layered.getLayers().size() > 1 && offset == 0 && forcedDirection == this.orientation) {
 						return false;
@@ -201,9 +191,9 @@ public class CannonBuildingContraption extends PoleContraption {
 					
 					for (int back = 1; back < offset; ++back) {
 						BlockPos backPos = currentPos.relative(opposite, back);
-						if (!(level.getBlockEntity(backPos) instanceof LayeredCannonBlockEntity layered)) break;
+						if (!(level.getBlockEntity(backPos) instanceof LayeredBigCannonBlockEntity layered)) break;
 						Pair<StructureBlockInfo, BlockEntity> backPair = preAddedBlocks.get(backPos);
-						if (!(backPair.getRight() instanceof LayeredCannonBlockEntity layered1)) break;
+						if (!(backPair.getRight() instanceof LayeredBigCannonBlockEntity layered1)) break;
 						
 						Set<CannonCastShape> backConnected = layered.getConnectedTo(this.orientation)
 								.stream()
@@ -263,7 +253,7 @@ public class CannonBuildingContraption extends PoleContraption {
 	}
 	
 	private boolean isValidCannonBlock(Level level, BlockState state, BlockPos currentPos) {
-		return state.getBlock() instanceof CannonBlock && level.getBlockEntity(currentPos) instanceof ICannonBlockEntity;
+		return state.getBlock() instanceof CannonBlock && level.getBlockEntity(currentPos) instanceof ICannonBlockEntity<?>;
 	}
 	
 	private static boolean matchesCannonAxis(BlockState state, Direction.Axis axis) {
@@ -271,19 +261,19 @@ public class CannonBuildingContraption extends PoleContraption {
 	}
 	
 	private boolean matchesCurrentMaterial(Level level, BlockState state, BlockPos pos) {
-		return this.material == null ? true : ((CannonBlock) state.getBlock()).getCannonMaterialInLevel(level, state, pos) == this.material;
+		return this.material == null || ((CannonBlock) state.getBlock()).getCannonMaterialInLevel(level, state, pos) == this.material;
 	}
 	
 	private static boolean isConnectedTo(Level level, CannonCastShape shape, CannonBlock cBlock, BlockState state, BlockPos pos, Direction dir) {
 		if (cBlock.getFacing(state).getAxis() != dir.getAxis()
 		|| cBlock.getShapeInLevel(level, state, pos) != shape
-		|| !(level.getBlockEntity(pos) instanceof ICannonBlockEntity cbe)
+		|| !(level.getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe)
 		|| !cbe.cannonBehavior().isConnectedTo(dir)) return false;
 		
 		BlockEntity be = level.getBlockEntity(pos.relative(dir));
-		if (be instanceof LayeredCannonBlockEntity layered) {
+		if (be instanceof LayeredBigCannonBlockEntity layered) {
 			return layered.isLayerConnectedTo(dir.getOpposite(), shape);
-		} else if (be instanceof ICannonBlockEntity cbe1) {
+		} else if (be instanceof ICannonBlockEntity<?> cbe1) {
 			return cbe1.cannonBehavior().isConnectedTo(dir.getOpposite());
 		} else {
 			return false;
@@ -324,10 +314,10 @@ public class CannonBuildingContraption extends PoleContraption {
 			StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
 			BlockEntity blockEntity1 = level.getBlockEntity(pos);
 			
-			if (blockEntity1 instanceof LayeredCannonBlockEntity layered) {
+			if (blockEntity1 instanceof LayeredBigCannonBlockEntity layered) {
 				if (blockInfo.nbt == null || !blockInfo.nbt.contains("id")) return true;
 				BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, blockInfo.nbt);
-				if (!(infoBE instanceof LayeredCannonBlockEntity layered1)) return true;
+				if (!(infoBE instanceof LayeredBigCannonBlockEntity layered1)) return true;
 				layered.addLayersOfOther(layered1);
 				layered.updateBlockstate();
 				layered.sendData();
@@ -353,10 +343,10 @@ public class CannonBuildingContraption extends PoleContraption {
 		StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
 		BlockEntity blockEntity1 = level.getBlockEntity(pos);
 		
-		if (blockInfo != null && blockEntity1 instanceof LayeredCannonBlockEntity layered) {
+		if (blockInfo != null && blockEntity1 instanceof LayeredBigCannonBlockEntity layered) {
 			if (blockInfo.nbt == null || !blockInfo.nbt.contains("id")) return true;
 			BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, blockInfo.nbt);
-			if (!(infoBE instanceof LayeredCannonBlockEntity layered1)) return true;
+			if (!(infoBE instanceof LayeredBigCannonBlockEntity layered1)) return true;
 			layered.removeLayersOfOther(layered1);
 			layered.updateBlockstate();
 			layered.sendData();
@@ -408,8 +398,8 @@ public class CannonBuildingContraption extends PoleContraption {
 		super.readNBT(level, tag, spawnData);
 		this.isActivated = tag.getBoolean("Activated");
 		
-		this.material = CannonMaterial.fromName(new ResourceLocation(tag.getString("Material")));
-		if (this.material == null) this.material = CannonMaterial.STEEL;
+		this.material = BigCannonMaterial.fromName(new ResourceLocation(tag.getString("Material")));
+		if (this.material == null) this.material = BigCannonMaterial.STEEL;
 	}
 
 	@Override protected ContraptionType getType() { return CBCContraptionTypes.CANNON_BUILDER; }

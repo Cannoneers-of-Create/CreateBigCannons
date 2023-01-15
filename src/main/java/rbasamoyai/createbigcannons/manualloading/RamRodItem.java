@@ -29,8 +29,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.CannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
 
@@ -67,7 +67,7 @@ public class RamRodItem extends Item {
 		Direction pushDirection = context.getClickedFace().getOpposite();
 		
 		int k = 0;
-		if (level.getBlockEntity(pos) instanceof ICannonBlockEntity) {
+		if (level.getBlockEntity(pos) instanceof IBigCannonBlockEntity) {
 			k = -1;
 			for (int i = 0; i < getReach(); ++i) {
 				BlockPos pos1 = pos.relative(pushDirection, i);
@@ -75,7 +75,7 @@ public class RamRodItem extends Item {
 				if (state1.isAir()) continue;
 				if (!isValidLoadBlock(state1, level, pos1, pushDirection)) return InteractionResult.FAIL;
 				
-				if (level.getBlockEntity(pos1) instanceof ICannonBlockEntity cbe) {
+				if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info = cbe.cannonBehavior().block();
 					if (info == null || info.state == null || info.state.isAir()) continue;
 				}
@@ -94,7 +94,7 @@ public class RamRodItem extends Item {
 			if (state1.isAir()) break;
 			if (!isValidLoadBlock(state1, level, pos1, pushDirection)) return InteractionResult.FAIL;
 			
-			if (level.getBlockEntity(pos1) instanceof ICannonBlockEntity cbe) {		
+			if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) {
 				encounteredCannon = true;
 				StructureBlockInfo info = cbe.cannonBehavior().block();
 				if (info == null || info.state == null || info.state.isAir()) break;
@@ -117,12 +117,12 @@ public class RamRodItem extends Item {
 			for (int i = toPush.size() - 1; i >= 0; --i) {
 				BlockPos pos1 = pos.relative(pushDirection, i + k);
 				
-				if (level.getBlockEntity(pos1) instanceof ICannonBlockEntity cbe) cbe.cannonBehavior().removeBlock();
+				if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) cbe.cannonBehavior().removeBlock();
 				else level.removeBlock(pos1, false);
 				
 				StructureBlockInfo info = toPush.get(i);
 				BlockPos pos2 = pos1.relative(pushDirection);
-				if (level.getBlockEntity(pos2) instanceof ICannonBlockEntity cbe) {
+				if (level.getBlockEntity(pos2) instanceof IBigCannonBlockEntity cbe) {
 					cbe.cannonBehavior().tryLoadingBlock(info);
 				} else {
 					level.setBlock(pos2, info.state, Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);

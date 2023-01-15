@@ -31,12 +31,13 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
-import rbasamoyai.createbigcannons.cannons.CannonMaterial;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.SolidCannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.SolidBigCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCannonBlockEntity> implements IncompleteCannonBlock, ITransformableBlock {
+public class IncompleteSlidingBreechBlock extends SolidBigCannonBlock<IncompleteBigCannonBlockEntity> implements IncompleteWithItemsCannonBlock, ITransformableBlock {
 	
 	public static final BooleanProperty ALONG_FIRST = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 	
@@ -46,7 +47,7 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 	private Block result;
 	private List<ItemLike> resolvedRequiredItems;
 	
-	public IncompleteSlidingBreechBlock(Properties properties, CannonMaterial material, NonNullSupplier<? extends Item> secondItemSupplier, NonNullSupplier<? extends Block> resultSupplier) {
+	public IncompleteSlidingBreechBlock(Properties properties, BigCannonMaterial material, NonNullSupplier<? extends Item> secondItemSupplier, NonNullSupplier<? extends Block> resultSupplier) {
 		super(properties, material);
 		this.secondItemSupplier = secondItemSupplier;
 		this.resultSupplier = resultSupplier;
@@ -80,12 +81,12 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 				}
 				
 				BlockEntity be = level.getBlockEntity(pos);
-				if (!(be instanceof ICannonBlockEntity cbe1)) return;
+				if (!(be instanceof IBigCannonBlockEntity cbe1)) return;
 				CannonBehavior behavior1 = cbe1.cannonBehavior();
 				for (Direction dir : Direction.values()) {
 					boolean isConnected = behavior.isConnectedTo(dir);
 					behavior1.setConnectedFace(dir, isConnected);
-					if (level.getBlockEntity(pos.relative(dir)) instanceof ICannonBlockEntity cbe2) {
+					if (level.getBlockEntity(pos.relative(dir)) instanceof ICannonBlockEntity<?> cbe2) {
 						cbe2.cannonBehavior().setConnectedFace(dir.getOpposite(), isConnected);
 					}
 				}
@@ -105,8 +106,8 @@ public class IncompleteSlidingBreechBlock extends SolidCannonBlock<IncompleteCan
 	
 	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH.get(); }
 	
-	@Override public Class<IncompleteCannonBlockEntity> getTileEntityClass() { return IncompleteCannonBlockEntity.class; }
-	@Override public BlockEntityType<? extends IncompleteCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.INCOMPLETE_CANNON.get(); }
+	@Override public Class<IncompleteBigCannonBlockEntity> getTileEntityClass() { return IncompleteBigCannonBlockEntity.class; }
+	@Override public BlockEntityType<? extends IncompleteBigCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.INCOMPLETE_CANNON.get(); }
 
 	@Override
 	public List<ItemLike> requiredItems() {

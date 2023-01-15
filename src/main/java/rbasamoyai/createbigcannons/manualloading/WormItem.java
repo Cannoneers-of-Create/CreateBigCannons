@@ -26,8 +26,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.cannonend.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.CannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 import java.util.List;
@@ -60,17 +60,17 @@ public class WormItem extends Item {
 		for (int i = 0; i < CBCConfigs.SERVER.cannons.wormReach.get(); ++i) {
 			BlockPos pos1 = pos.relative(reachDirection, i);
 			BlockState state1 = level.getBlockState(pos1);
-			if (!isValidLoadBlock(state1, level, pos1, reachDirection) || !(level.getBlockEntity(pos1) instanceof ICannonBlockEntity cbe)) return InteractionResult.FAIL;
+			if (!isValidLoadBlock(state1, level, pos1, reachDirection) || !(level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe)) return InteractionResult.FAIL;
 			StructureBlockInfo info = cbe.cannonBehavior().block();
 			if (info == null || info.state == null || info.state.isAir()) continue;
 			BlockPos pos2 = pos1.relative(context.getClickedFace());
-			if (level.getBlockEntity(pos2) instanceof ICannonBlockEntity cbe1 && !cbe1.canLoadBlock(info)
-				|| !(level.getBlockEntity(pos2) instanceof ICannonBlockEntity) && !level.getBlockState(pos2).isAir()) {
+			if (level.getBlockEntity(pos2) instanceof IBigCannonBlockEntity cbe1 && !cbe1.canLoadBlock(info)
+				|| !(level.getBlockEntity(pos2) instanceof IBigCannonBlockEntity) && !level.getBlockState(pos2).isAir()) {
 				return InteractionResult.FAIL;
 			}
 			
 			if (!level.isClientSide) {
-				if (level.getBlockEntity(pos2) instanceof ICannonBlockEntity cbe2) {
+				if (level.getBlockEntity(pos2) instanceof IBigCannonBlockEntity cbe2) {
 					cbe2.cannonBehavior().loadBlock(info);
 				} else if (level.getBlockState(pos2).isAir()) {
 					level.setBlock(pos2, info.state, Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);

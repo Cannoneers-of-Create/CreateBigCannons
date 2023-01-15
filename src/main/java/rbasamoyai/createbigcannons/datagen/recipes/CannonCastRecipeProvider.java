@@ -181,6 +181,69 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		.result(CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH.get())
 		.castingTime(3000)
 		.save(cons);
+
+		builder("unbored_cast_iron_autocannon_breech")
+		.castingShape(CannonCastShape.AUTOCANNON_BREECH.get())
+		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.result(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BREECH.get())
+		.castingTime(750)
+		.save(cons);
+
+		builder("unbored_cast_iron_autocannon_recoil_spring")
+		.castingShape(CannonCastShape.AUTOCANNON_RECOIL_SPRING.get())
+		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.result(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING.get())
+		.castingTime(750)
+		.save(cons);
+
+		builder("unbored_cast_iron_autocannon_barrel")
+		.castingShape(CannonCastShape.AUTOCANNON_BARREL.get())
+		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.result(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BARREL.get())
+		.castingTime(750)
+		.save(cons);
+
+		builder("unbored_bronze_autocannon_breech")
+		.castingShape(CannonCastShape.AUTOCANNON_BREECH.get())
+		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.result(CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BREECH.get())
+		.castingTime(750)
+		.save(cons);
+
+		builder("unbored_bronze_autocannon_recoil_spring")
+		.castingShape(CannonCastShape.AUTOCANNON_RECOIL_SPRING.get())
+		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.result(CBCBlocks.UNBORED_BRONZE_AUTOCANNON_RECOIL_SPRING.get())
+		.castingTime(750)
+		.save(cons);
+
+		builder("unbored_bronze_autocannon_barrel")
+		.castingShape(CannonCastShape.AUTOCANNON_BARREL.get())
+		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.result(CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BARREL.get())
+		.castingTime(750)
+		.save(cons);
+
+		builder("unbored_steel_autocannon_breech")
+		.castingShape(CannonCastShape.AUTOCANNON_BREECH.get())
+		.ingredient(CBCFluids.MOLTEN_STEEL.get())
+		.result(CBCBlocks.UNBORED_STEEL_AUTOCANNON_BREECH.get())
+		.castingTime(1500)
+		.save(cons);
+
+		builder("unbored_steel_autocannon_recoil_spring")
+		.castingShape(CannonCastShape.AUTOCANNON_RECOIL_SPRING.get())
+		.ingredient(CBCFluids.MOLTEN_STEEL.get())
+		.result(CBCBlocks.UNBORED_STEEL_AUTOCANNON_RECOIL_SPRING.get())
+		.castingTime(1500)
+		.save(cons);
+
+		builder("unbored_steel_autocannon_barrel")
+		.castingShape(CannonCastShape.AUTOCANNON_BARREL.get())
+		.ingredient(CBCFluids.MOLTEN_STEEL.get())
+		.result(CBCBlocks.UNBORED_STEEL_AUTOCANNON_BARREL.get())
+		.castingTime(1500)
+		.save(cons);
 	}
 	
 	protected Builder builder(String name) {

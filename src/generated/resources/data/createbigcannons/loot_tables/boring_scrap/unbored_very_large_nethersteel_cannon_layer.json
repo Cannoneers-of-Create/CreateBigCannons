@@ -7,14 +7,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 64.0,
-              "add": false
-            }
-          ],
           "name": "createbigcannons:nethersteel_nugget"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 64.0,
+          "add": false
         }
       ]
     },
@@ -24,14 +24,14 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": 64.0,
-              "add": false
-            }
-          ],
           "name": "createbigcannons:nethersteel_nugget"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": 64.0,
+          "add": false
         }
       ]
     },
@@ -41,18 +41,18 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 29.0,
-                "max": 39.0
-              },
-              "add": false
-            }
-          ],
           "name": "createbigcannons:nethersteel_nugget"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_count",
+          "count": {
+            "type": "minecraft:uniform",
+            "min": 29.0,
+            "max": 39.0
+          },
+          "add": false
         }
       ]
     }
