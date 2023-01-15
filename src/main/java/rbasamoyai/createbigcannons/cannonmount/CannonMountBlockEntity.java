@@ -250,6 +250,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		if (!this.running && this.mountedContraption == null) return;
 		if (this.mountedContraption != null) {
 			this.resetContraptionToOffset();
+			this.mountedContraption.save(new CompoundTag()); // Crude refresh of block data
 			this.mountedContraption.disassemble();
 			AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.level, this.worldPosition);
 		}

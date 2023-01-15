@@ -27,16 +27,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-
-import java.util.List;
 
 public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<AutocannonBreechBlockEntity>, IWrenchable {
 
@@ -146,15 +142,6 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Au
             }
         }
         return super.use(state, level, pos, player, hand, result);
-    }
-
-    @Override
-    public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-        List<ItemStack> drops = super.getDrops(state, builder);
-        this.withTileEntityDo(builder.getLevel(), new BlockPos(builder.getParameter(LootContextParams.ORIGIN)), breech -> {
-            drops.addAll(breech.getDrops());
-        });
-        return drops;
     }
 
 }

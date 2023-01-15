@@ -4,6 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.Containers;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,16 +31,21 @@ public interface AutocannonBlock {
     boolean isComplete(BlockState state);
 
     default void onRemoveCannon(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-        if (!(state.getBlock() instanceof AutocannonBlock cBlock)) return;
+        if (!(state.getBlock() instanceof AutocannonBlock cBlock) || state.is(newState.getBlock())) return;
         Direction facing = cBlock.getFacing(state);
         Direction opposite = facing.getOpposite();
         AutocannonMaterial material = cBlock.getAutocannonMaterial();
+
+        if (level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe) {
+            for (ItemStack stack : cbe.getDrops()) {
+                Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack.copy());
+            }
+        }
 
         if (cBlock.canConnectToSide(level, state, pos, facing)) {
             BlockPos pos1 = pos.relative(facing);
             BlockState state1 = level.getBlockState(pos1);
             BlockEntity be1 = level.getBlockEntity(pos1);
-
 
             if (state1.getBlock() instanceof AutocannonBlock cBlock1
                     && cBlock1.getAutocannonMaterialInLevel(level, state1, pos1) == material

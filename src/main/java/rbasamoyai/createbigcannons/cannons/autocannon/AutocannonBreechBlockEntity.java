@@ -178,8 +178,9 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 		return this.inputBuffer.isEmpty() ? ItemStack.EMPTY : this.inputBuffer.poll();
 	}
 
-	public Collection<ItemStack> getDrops() {
-		Collection<ItemStack> list = new ArrayList<>();
+	@Override
+	public List<ItemStack> getDrops() {
+		List<ItemStack> list = super.getDrops();
 		for (ItemStack s : this.inputBuffer) {
 			if (!s.isEmpty()) list.add(s.copy());
 		}
