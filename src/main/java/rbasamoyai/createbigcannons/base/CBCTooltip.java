@@ -108,7 +108,9 @@ public class CBCTooltip {
 	}
 
 	public static ItemDescription.Palette getPalette(Level level, ItemStack stack) {
-		return level == null ? AllSections.UNASSIGNED.getTooltipPalette() : AllSections.of(stack).getTooltipPalette();
+		if (level == null) return AllSections.UNASSIGNED.getTooltipPalette();
+		AllSections section = AllSections.of(stack);
+		return section == null ? AllSections.UNASSIGNED.getTooltipPalette() : section.getTooltipPalette();
 	}
 
 	public static <T extends Block & AutocannonBlock> void appendTextAutocannon(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
