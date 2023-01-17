@@ -50,6 +50,9 @@ jobs:
             - name: Grant execute permission for gradlew
               run: chmod +x gradlew
 
+            - name: Validate Gradle wrapper
+              uses: gradle/wrapper-validation-action@9aa31f26bc8e536d1faf4b332bb8365350743a18
+
             - name: Build jar
               uses: gradle/gradle-build-action@v2
               with:
@@ -62,6 +65,14 @@ jobs:
                   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
               with:
                   args: ./build/libs/*.*
+          
+            - name: Publish to GitHub Packages
+              if: github.event_name == 'push'
+              uses: gradle/gradle-build-action@v2
+              with:
+                  arguments: publishMavenJavaPublicationToGitHubPackagesRepository
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
             - name: Archive Artifacts
               uses: actions/upload-artifact@v3
