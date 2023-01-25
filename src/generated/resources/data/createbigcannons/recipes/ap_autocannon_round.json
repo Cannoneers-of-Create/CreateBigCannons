@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C",
+    "I"
+  ],
+  "key": {
+    "C": {
+      "tag": "forge:ingots/cast_iron"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:ap_autocannon_round",
+    "count": 4
+  }
+}

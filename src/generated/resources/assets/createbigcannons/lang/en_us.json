@@ -351,6 +351,7 @@
   "item.createbigcannons.packed_gunpowder": "Packed Gunpowder",
   "item.createbigcannons.pair_of_cannon_wheels": "Pair of Cannon Wheels",
   "item.createbigcannons.partially_filled_autocannon_cartridge": "Partially Filled Autocannon Cartridge",
+  "item.createbigcannons.partially_formed_autocannon_cartridge": "Partially Formed Autocannon Cartridge",
   "item.createbigcannons.proximity_fuze": "Proximity Fuze",
   "item.createbigcannons.proximity_fuze.tooltip": "PROXIMITY FUZE",
   "item.createbigcannons.proximity_fuze.tooltip.behaviour1": "Opens the _Set Proximity Fuze_ menu, where the detonation distance can be set.",

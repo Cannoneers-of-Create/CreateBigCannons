@@ -2,10 +2,10 @@ package rbasamoyai.createbigcannons.datagen.recipes;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.*;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -23,7 +23,7 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 	
 	@Override
 	protected void buildCraftingRecipes(Consumer<FinishedRecipe> cons) {
-		TagKey<Item> ironSheetTag = ItemTags.create(new ResourceLocation("forge", "plates/iron"));
+		TagKey<Item> ironSheetTag = AllTags.forgeItemTag("plates/iron");
 
 		ShapedRecipeBuilder.shaped(CBCItems.IMPACT_FUZE.get())
 		.define('T', CBCTags.ItemCBC.IMPACT_FUZE_HEAD).define('R', Tags.Items.DUSTS_REDSTONE)
@@ -151,6 +151,21 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.patternLine("IPI")
 		.patternLine(" S ")
 		.build(cons);
+
+		ShapedRecipeBuilder.shaped(CBCItems.AP_AUTOCANNON_ROUND.get(), 4)
+		.define('C', CBCTags.ItemCBC.INGOT_CAST_IRON).define('I', Tags.Items.INGOTS_IRON)
+		.pattern("C")
+		.pattern("I")
+		.unlockedBy("has_cast_iron", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
+		.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCItems.FLAK_AUTOCANNON_ROUND.get(), 2)
+		.define('S', CBCItems.SHOT_BALLS.get()).define('G', Tags.Items.GUNPOWDER).define('C', ironSheetTag)
+		.pattern("S")
+		.pattern("G")
+		.pattern("C")
+		.unlockedBy(getHasName(CBCItems.SHOT_BALLS.get()), has(CBCItems.SHOT_BALLS.get()))
+		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_LOADER.get())
 		.define('C', AllBlocks.ANDESITE_CASING.get()).define('G', Tags.Items.GUNPOWDER).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
