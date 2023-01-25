@@ -199,6 +199,7 @@
   "createbigcannons.ponder.cannon_crafting/cannon_casting.header": "Cannon Casting",
   "createbigcannons.ponder.cannon_crafting/cannon_casting.text_1": "Cannon Casts are the first block recipe for cannon blocks.",
   "createbigcannons.ponder.cannon_crafting/cannon_casting.text_10": "It is possible to automate the removal of finished casts.",
+  "createbigcannons.ponder.cannon_crafting/cannon_casting.text_11": "Smaller cannons such as autocannons shed the casting sand automatically.",
   "createbigcannons.ponder.cannon_crafting/cannon_casting.text_2": "Use a cannon mould to build a cast layer.",
   "createbigcannons.ponder.cannon_crafting/cannon_casting.text_3": "Deployers can also interact with cannon casts.",
   "createbigcannons.ponder.cannon_crafting/cannon_casting.text_4": "Fill the cast with molten metal to start the casting process.",

@@ -277,12 +277,18 @@ public class CannonCraftingScenes {
 			.text("It is possible to automate the removal of finished casts.")
 			.colored(PonderPalette.BLUE)
 			.pointAt(util.vector.centerOf(3, 1, 0));
-		scene.idle(20);	
+		scene.idle(20);
 		scene.world.moveDeployer(deployerPos1, 1, 25);
 		scene.idle(26);
 		scene.world.setBlocks(util.select.fromTo(1, 2, 1, 3, 2, 3).substract(innerCast), Blocks.AIR.defaultBlockState(), true);
 		scene.world.moveDeployer(deployerPos1, -1, 25);
 		scene.idle(36);
+
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("Smaller cannons such as autocannons shed the casting sand automatically.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(80);
 		
 		scene.markAsFinished();
 	}
