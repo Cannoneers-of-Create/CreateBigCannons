@@ -14,6 +14,7 @@ import com.simibubi.create.foundation.ponder.instruction.FadeOutOfSceneInstructi
 import com.simibubi.create.foundation.utility.Pointing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -21,6 +22,8 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticleData;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonRecoilSpringBlockEntity;
 
@@ -347,6 +350,108 @@ public class CannonMountScenes {
 		}
 
 		scene.idle(20);
+		scene.markAsFinished();
+	}
+
+	public static void customizingAutocannons(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_mount/customizing_autocannons", "Customizing Autocannons");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		scene.idle(20);
+		scene.world.showSection(util.select.position(2, 1, 2), Direction.DOWN);
+		scene.idle(20);
+		ElementLink<WorldSectionElement> autocannon = scene.world.showIndependentSection(util.select.fromTo(0, 3, 2, 4, 3, 2), Direction.WEST);
+		scene.idle(20);
+
+		scene.overlay.showText(80)
+			.text("Autocannons can be customized in a few ways, both cosmetic and functional.");
+		scene.idle(95);
+
+		BlockPos barrelEnd = util.grid.at(0, 3, 2);
+		scene.overlay.showText(100)
+			.attachKeyFrame()
+			.text("Wrenching the end of an autocannon will change the type of barrel end.")
+			.pointAt(util.vector.centerOf(barrelEnd));
+		scene.idle(20);
+		InputWindowElement barrelWrench = new InputWindowElement(util.vector.topOf(barrelEnd), Pointing.DOWN).withWrench();
+		scene.overlay.showControls(barrelWrench, 40);
+		scene.idle(30);
+		scene.world.modifyBlock(barrelEnd, setStateValue(AutocannonBarrelBlock.BARREL_END, AutocannonBarrelBlock.AutocannonBarrelEnd.FLANGED), false);
+		scene.idle(25);
+		scene.overlay.showControls(barrelWrench, 40);
+		scene.idle(30);
+		scene.world.modifyBlock(barrelEnd, setStateValue(AutocannonBarrelBlock.BARREL_END, AutocannonBarrelBlock.AutocannonBarrelEnd.NOTHING), false);
+		scene.idle(25);
+
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("Recoil Springs make the barrel push back when firing.")
+			.pointAt(util.vector.centerOf(2, 3, 2));
+		scene.idle(90);
+
+		scene.rotateCameraY(180);
+		BlockPos breechPos = util.grid.at(3, 3, 2);
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("Wrenching the autocannon breech will add handles.")
+			.pointAt(util.vector.topOf(breechPos));
+		scene.idle(20);
+		InputWindowElement breechWrench = new InputWindowElement(util.vector.topOf(breechPos), Pointing.DOWN).withWrench();
+		scene.overlay.showControls(breechWrench, 40);
+		scene.idle(30);
+		scene.world.modifyBlock(breechPos, setStateValue(AutocannonBreechBlock.HANDLE, true), false);
+		scene.idle(30);
+		scene.overlay.showText(100)
+			.text("Autocannons with handles are controlled by the player instead of by kinetics.");
+
+		BlockPos mountPos = util.grid.at(2, 1, 2);
+
+		scene.world.rotateSection(autocannon, 0, 0, -60, 40);
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(mountPos, -60, 40));
+		scene.idle(60);
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(mountPos, 60, 40));
+		scene.world.rotateSection(autocannon, 0, 0, 60, 40);
+		scene.idle(60);
+
+		scene.world.rotateSection(autocannon, 0, -30, 0, 20);
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountYaw(mountPos, 30, 20));
+		scene.idle(40);
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountYaw(mountPos, -60, 40));
+		scene.world.rotateSection(autocannon, 0, 60, 0, 40);
+		scene.idle(60);
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountYaw(mountPos, 30, 20));
+		scene.world.rotateSection(autocannon, 0, -30, 0, 20);
+		scene.idle(40);
+
+		scene.overlay.showText(100)
+			.attachKeyFrame()
+			.text("You can place a seat on the handle breech.")
+			.pointAt(util.vector.topOf(breechPos));
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(breechPos), Pointing.DOWN).rightClick(), 40);
+		scene.idle(30);
+		scene.world.modifyTileNBT(util.select.position(breechPos), AutocannonBreechBlockEntity.class, tag -> tag.putString("Seat", DyeColor.RED.getSerializedName()));
+		scene.idle(70);
+		scene.overlay.showText(60)
+			.text("Seats are purely cosmetic.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(80);
+
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("Wrenching the autocannon breech again will remove handles.")
+			.pointAt(util.vector.topOf(breechPos));
+		scene.idle(20);
+		scene.overlay.showControls(breechWrench, 40);
+		scene.idle(30);
+		scene.world.modifyBlock(breechPos, setStateValue(AutocannonBreechBlock.HANDLE, false), false);
+		scene.idle(30);
+		scene.overlay.showText(60)
+			.text("Any placed seats will be returned to the player or popped off.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(30);
+
 		scene.markAsFinished();
 	}
 
