@@ -22,7 +22,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
+public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implements AnimatedAutocannon {
 
 	protected static final int[] FIRE_RATES = new int[] {
 			120, // 10 rpm
@@ -102,6 +102,9 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 		float f = t < 1 ? t : (4.8f - t) / 3.8f;
 		return Mth.sin(f * Mth.HALF_PI);
 	}
+
+	@Override public void incrementAnimationTicks() { ++this.animateTicks; }
+	@Override public int getAnimationTicks() { return this.animateTicks; }
 
 	public void setSeatColor(DyeColor color) {
 		this.seat = color;
