@@ -101,7 +101,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 				case Y -> alongFirst ? Direction.Axis.Z : Direction.Axis.X;
 				default -> alongFirst ? Direction.Axis.Y : Direction.Axis.X;
 			};
-			if (pipeAxis == side.getAxis()) {
+			if (side != null && pipeAxis == side.getAxis()) {
 				return this.getFluidOptional().cast();
 			}
 		}
