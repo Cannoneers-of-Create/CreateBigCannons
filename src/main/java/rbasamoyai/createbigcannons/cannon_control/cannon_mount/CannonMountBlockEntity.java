@@ -25,13 +25,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannon_control.*;
+import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 
 import java.util.function.Supplier;
 
@@ -80,7 +80,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 				this.mountedContraption = null;
 			}
 		}
-		
+
 		this.prevYaw = this.cannonYaw;
 		this.prevPitch = this.cannonPitch;
 
@@ -92,8 +92,11 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		}
 		
 		if (!this.running) {
-			if (!this.level.isClientSide && CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) {
+			if (CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) {
 				this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
+				this.prevYaw = this.cannonYaw;
+				this.cannonPitch = 0;
+				this.prevPitch = 0;
 			}
 			return;
 		}
@@ -126,15 +129,12 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	
 	protected void applyRotation() {
 		if (this.mountedContraption == null) return;
-		if (this.mountedContraption.canBeTurnedByController(this)) {
-			this.mountedContraption.pitch = this.cannonPitch;
-			this.mountedContraption.yaw = this.cannonYaw;
-		} else {
+		if (!this.mountedContraption.canBeTurnedByController(this)) {
 			this.cannonPitch = this.mountedContraption.getXRot();
 			this.cannonYaw = this.mountedContraption.getYRot();
-			this.mountedContraption.pitch = this.cannonPitch;
-			this.mountedContraption.yaw = this.cannonYaw;
 		}
+		this.mountedContraption.pitch = this.cannonPitch;
+		this.mountedContraption.yaw = this.cannonYaw;
 	}
 
 	public void applyHandRotation() {
@@ -310,6 +310,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
+		boolean oldRunning = this.running;
 		this.running = tag.getBoolean("Running");
 		this.cannonYaw = tag.getFloat("CannonYaw");
 		this.cannonPitch = tag.getFloat("CannonPitch");
@@ -317,9 +318,13 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.yawSpeed = tag.getFloat("YawSpeed");
 		
 		if (!clientPacket) return;
+
+		if (!oldRunning) {
+			int x = 0;
+		}
 		
 		if (this.running) {
-			if (this.mountedContraption == null || !this.mountedContraption.isStalled()) {
+			if (oldRunning && (this.mountedContraption == null || !this.mountedContraption.isStalled())) {
 				this.clientYawDiff = AngleHelper.getShortestAngleDiff(this.prevYaw, this.cannonYaw);
 				this.clientPitchDiff = AngleHelper.getShortestAngleDiff(this.prevPitch, this.cannonPitch);
 				this.prevYaw = this.cannonYaw;
