@@ -14,7 +14,7 @@ import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AutocannonRecoilSpringBlockEntity extends AutocannonBlockEntity {
+public class AutocannonRecoilSpringBlockEntity extends AutocannonBlockEntity implements AnimatedAutocannon {
 
     public Map<BlockPos, BlockState> toAnimate = new HashMap<>();
 
@@ -82,5 +82,8 @@ public class AutocannonRecoilSpringBlockEntity extends AutocannonBlockEntity {
             this.toAnimate.put(NbtUtils.readBlockPos(block.getCompound("Pos")), NbtUtils.readBlockState(block.getCompound("Block")));
         }
     }
+
+    @Override public void incrementAnimationTicks() { ++this.animateTicks; }
+    @Override public int getAnimationTicks() { return this.animateTicks; }
 
 }

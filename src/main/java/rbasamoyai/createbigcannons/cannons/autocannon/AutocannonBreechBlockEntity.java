@@ -22,7 +22,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
+public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implements AnimatedAutocannon {
 
 	protected static final int[] FIRE_RATES = new int[] {
 			120, // 10 rpm
@@ -103,6 +103,9 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 		return Mth.sin(f * Mth.HALF_PI);
 	}
 
+	@Override public void incrementAnimationTicks() { ++this.animateTicks; }
+	@Override public int getAnimationTicks() { return this.animateTicks; }
+
 	public void setSeatColor(DyeColor color) {
 		this.seat = color;
 		this.updateInstance = true;
@@ -178,8 +181,9 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity {
 		return this.inputBuffer.isEmpty() ? ItemStack.EMPTY : this.inputBuffer.poll();
 	}
 
-	public Collection<ItemStack> getDrops() {
-		Collection<ItemStack> list = new ArrayList<>();
+	@Override
+	public List<ItemStack> getDrops() {
+		List<ItemStack> list = super.getDrops();
 		for (ItemStack s : this.inputBuffer) {
 			if (!s.isEmpty()) list.add(s.copy());
 		}

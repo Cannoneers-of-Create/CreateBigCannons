@@ -45,7 +45,7 @@ else {
     version = "${mc_version}-nightly-${getGitHash}"
 }
 
-group = 'rbasamoyai.createbigcannons'
+group = 'com.rbasamoyai'
 archivesBaseName = 'createbigcannons'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -162,7 +162,7 @@ jar {
         attributes([
                 "Specification-Title"     : "createbigcannons",
                 "Specification-Vendor"    : "rbasamoyai",
-                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Specification-Version"   : "${cbc_release_version}", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "rbasamoyai",
@@ -181,12 +181,23 @@ jar.finalizedBy('reobfJar')
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            groupId = group
+            artifactId = archivesBaseName
+            version = version
             artifact jar
         }
     }
     repositories {
         maven {
             url "file://${project.projectDir}/mcmodsrepo"
+        }
+        maven {
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/rbasamoyai/createbigcannons"
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
         }
     }
 }

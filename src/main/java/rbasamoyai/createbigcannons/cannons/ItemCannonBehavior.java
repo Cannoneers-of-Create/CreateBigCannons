@@ -24,10 +24,10 @@ public class ItemCannonBehavior extends CannonBehavior {
     public boolean canLoadItem(ItemStack stack) {
         return this.containedStack.isEmpty();
     }
-
     public void removeItem() {
         this.containedStack = ItemStack.EMPTY;
     }
+    public ItemStack getItem() { return this.containedStack; }
 
     @Override
     public void write(CompoundTag nbt, boolean spawnPacket) {

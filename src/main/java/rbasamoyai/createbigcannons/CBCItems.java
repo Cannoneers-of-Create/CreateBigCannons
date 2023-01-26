@@ -57,17 +57,34 @@ public class CBCItems {
 			.transform(CBCBuilderTransformers.screwLock("screw_breech/nethersteel"))
 			.register();
 
+	public static final ItemEntry<Item> SPRING_WIRE = REGISTRATE.item("spring_wire", Item::new).register();
+	public static final ItemEntry<SequencedAssemblyItem> PARTIAL_RECOIL_SPRING = REGISTRATE.item("partial_recoil_spring", SequencedAssemblyItem::new).register();
 	public static final ItemEntry<Item> RECOIL_SPRING = REGISTRATE.item("recoil_spring", Item::new).register();
 
-	public static final ItemEntry<Item> CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE.item("cast_iron_autocannon_breech_extractor", Item::new)
+	public static final ItemEntry<Item> CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE
+			.item("cast_iron_autocannon_breech_extractor", Item::new)
+			.transform(CBCBuilderTransformers.autocannonBreechExtractor("autocannon/cast_iron"))
+			.register();
+	public static final ItemEntry<SequencedAssemblyItem> PARTIAL_CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE
+			.item("partial_cast_iron_autocannon_breech_extractor", SequencedAssemblyItem::new)
 			.transform(CBCBuilderTransformers.autocannonBreechExtractor("autocannon/cast_iron"))
 			.register();
 
-	public static final ItemEntry<Item> BRONZE_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE.item("bronze_autocannon_breech_extractor", Item::new)
+	public static final ItemEntry<Item> BRONZE_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE
+			.item("bronze_autocannon_breech_extractor", Item::new)
+			.transform(CBCBuilderTransformers.autocannonBreechExtractor("autocannon/bronze"))
+			.register();
+	public static final ItemEntry<SequencedAssemblyItem> PARTIAL_BRONZE_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE
+			.item("partial_bronze_autocannon_breech_extractor", SequencedAssemblyItem::new)
 			.transform(CBCBuilderTransformers.autocannonBreechExtractor("autocannon/bronze"))
 			.register();
 
-	public static final ItemEntry<Item> STEEL_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE.item("steel_autocannon_breech_extractor", Item::new)
+	public static final ItemEntry<Item> STEEL_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE
+			.item("steel_autocannon_breech_extractor", Item::new)
+			.transform(CBCBuilderTransformers.autocannonBreechExtractor("autocannon/steel"))
+			.register();
+	public static final ItemEntry<SequencedAssemblyItem> PARTIAL_STEEL_AUTOCANNON_BREECH_EXTRACTOR = REGISTRATE
+			.item("partial_steel_autocannon_breech_extractor", SequencedAssemblyItem::new)
 			.transform(CBCBuilderTransformers.autocannonBreechExtractor("autocannon/steel"))
 			.register();
 	
@@ -87,6 +104,11 @@ public class CBCItems {
 
 	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE.item("autocannon_cartridge", AutocannonCartridgeItem::new)
 			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/autocannon_cartridge")))
+			.register();
+
+	public static final ItemEntry<SequencedAssemblyItem> PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE = REGISTRATE
+			.item("partially_formed_autocannon_cartridge", SequencedAssemblyItem::new)
+			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/partially_formed_autocannon_cartridge")))
 			.register();
 
 	public static final ItemEntry<Item> EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE

@@ -8,6 +8,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -74,6 +75,10 @@ public class CreateBigCannonsClient {
 		CBCBlockPartials.resolveDeferredModels();
 		ClientRegistry.registerKeyBinding(PITCH_MODE);
 		ClientRegistry.registerKeyBinding(FIRE_CONTROLLED_CANNON);
+
+		ItemProperties.register(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
+			return stack.getOrCreateTag().getCompound("SequencedAssembly").getInt("Step") - 1;
+		});
 	}
 	
 	public static void getFogColor(FogColors event) {

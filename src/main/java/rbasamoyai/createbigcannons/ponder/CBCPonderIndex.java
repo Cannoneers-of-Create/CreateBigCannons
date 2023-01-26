@@ -16,7 +16,9 @@ public class CBCPonderIndex {
 	public static void register() {
 		HELPER.forComponents(CBCBlocks.CANNON_MOUNT, CBCBlocks.YAW_CONTROLLER)
 			.addStoryBoard("cannon_mount/assembly_and_use", CannonMountScenes::assemblyAndUse)
-			.addStoryBoard("cannon_mount/firing_big_cannons", CannonMountScenes::firingBigCannons);
+			.addStoryBoard("cannon_mount/firing_big_cannons", CannonMountScenes::firingBigCannons)
+			.addStoryBoard("cannon_mount/using_autocannons", CannonMountScenes::usingAutocannons)
+			.addStoryBoard("cannon_mount/customizing_autocannons", CannonMountScenes::customizingAutocannons);
 		
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.RAM_HEAD, CBCBlocks.WORM_HEAD, AllBlocks.PISTON_EXTENSION_POLE)
 			.addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons);
@@ -47,7 +49,9 @@ public class CBCPonderIndex {
 			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons);
 		
 		HELPER.forComponents(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH,
-				CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH, CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH)
+				CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH, CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH,
+				CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_BREECH,
+				CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_RECOIL_SPRING)
 			.addStoryBoard("cannon_crafting/incomplete_cannon_blocks", CannonCraftingScenes::incompleteCannonBlocks);
 		
 		HELPER.forComponents(CBCBlocks.BASIN_FOUNDRY_LID)
@@ -86,7 +90,13 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH)
 			.add(CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH)
 			.add(CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH)
-			.add(CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH);
+			.add(CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH)
+			.add(CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_BREECH)
+			.add(CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_BREECH)
+			.add(CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_BREECH)
+			.add(CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_RECOIL_SPRING)
+			.add(CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_RECOIL_SPRING)
+			.add(CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_RECOIL_SPRING);
 	}
 	
 	public static void registerLang() {

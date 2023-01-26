@@ -7,7 +7,7 @@ modId="createbigcannons"
 version="${file.jarVersion}"
 displayName="Create Big Cannons"
 logoFile="logo.png"
-credits="Made by rbasamoyai / Re-used cast iron item assets by Kayladillo from Create Deco with permission"
+credits="Made by rbasamoyai"
 authors="rbasamoyai"
 description='''Artillery engineering comes to Create'''
 
@@ -28,7 +28,7 @@ description='''Artillery engineering comes to Create'''
 [[dependencies.createbigcannons]]
 	modId="create"
 	mandatory=true
-	versionRange="[0.5.0.g,)"
+	versionRange="[0.5.0.h,)"
 	ordering="NONE"
 	side="BOTH"
 	

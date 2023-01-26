@@ -18,12 +18,14 @@ import com.simibubi.create.foundation.utility.Components;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -97,7 +99,7 @@ public class CBCJEI implements IModPlugin {
 			.itemIcon(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH.get())
 			.emptyBackground(177, 60)
 			.build("incomplete_cannon_blocks", IncompleteCannonBlockCategory::new);
-		
+
 	}
 	
 	private static final ResourceLocation PLUGIN_ID = CreateBigCannons.resource("jei_plugin");	
@@ -113,13 +115,21 @@ public class CBCJEI implements IModPlugin {
 	public void registerRecipes(IRecipeRegistration registration) {
 		this.ingredientManager = registration.getIngredientManager();
 		this.allCategories.forEach(c -> c.registerRecipes(registration));
+
+		registration.addRecipes(RecipeTypes.CRAFTING, ItemMunitionRecipes.getFuzingRecipes());
+		registration.addRecipes(RecipeTypes.CRAFTING, ItemMunitionRecipes.getAutocannonRoundRecipes());
 	}
 	
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		this.allCategories.forEach(c -> c.registerCatalysts(registration));
 	}
-	
+
+	@Override
+	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+
+	}
+
 	private class BlockRecipeCategoryBuilder<T extends BlockRecipe> {
 		private final Class<? extends T> recipeClass;
 		
