@@ -194,7 +194,9 @@ public class ModGroup {
 
 				CBCBlocks.AUTOCANNON_BREECH_CAST_MOULD.asStack(),
 				CBCBlocks.AUTOCANNON_RECOIL_SPRING_CAST_MOULD.asStack(),
-				CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD.asStack()));
+				CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD.asStack(),
+
+				CBCItems.SPRING_WIRE.asStack()));
 		}
 	};
 	
