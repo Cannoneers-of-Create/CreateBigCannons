@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.network;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
-import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 
 import java.util.function.Supplier;
 

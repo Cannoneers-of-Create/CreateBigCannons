@@ -19,12 +19,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
-import rbasamoyai.createbigcannons.cannons.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredBigCannonBlockEntity>, CannonBlock {
+public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredBigCannonBlockEntity>, BigCannonBlock {
 	
 	public BuiltUpCannonBlock(Properties properties) {
 		super(properties);
@@ -52,7 +52,7 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredB
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 	
-	@Override public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return CannonEnd.CLOSED; }
+	@Override public BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return BigCannonEnd.CLOSED; }
 	@Override public boolean isComplete(BlockState state) { return false; }
 	
 	@Override public RenderShape getRenderShape(BlockState state) { return RenderShape.INVISIBLE; }

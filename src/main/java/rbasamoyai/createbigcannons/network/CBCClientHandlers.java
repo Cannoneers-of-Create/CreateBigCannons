@@ -6,7 +6,7 @@ import com.simibubi.create.content.contraptions.components.structureMovement.ren
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
-import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 
 public class CBCClientHandlers {
 

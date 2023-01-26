@@ -20,7 +20,6 @@ import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
 
 public class ScrewBreechBlockEntityRenderer extends KineticTileEntityRenderer {
 
@@ -68,7 +67,7 @@ public class ScrewBreechBlockEntityRenderer extends KineticTileEntityRenderer {
 	}
 	
 	private PartialModel getPartialModelForState(BlockState state) {
-		return state.getBlock() instanceof CannonBlock ? CBCBlockPartials.screwLockFor(((CannonBlock) state.getBlock()).getCannonMaterial()) : CBCBlockPartials.STEEL_SCREW_LOCK;
+		return state.getBlock() instanceof BigCannonBlock ? CBCBlockPartials.screwLockFor(((BigCannonBlock) state.getBlock()).getCannonMaterial()) : CBCBlockPartials.STEEL_SCREW_LOCK;
 	}
 
 }

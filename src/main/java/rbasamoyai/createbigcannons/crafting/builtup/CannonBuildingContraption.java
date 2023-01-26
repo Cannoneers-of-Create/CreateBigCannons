@@ -21,7 +21,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.base.PoleContraption;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -145,7 +145,7 @@ public class CannonBuildingContraption extends PoleContraption {
 			
 			BlockState state = level.getBlockState(currentPos);
 			if (this.isValidCannonBlock(level, state, currentPos) && matchesCannonAxis(state, this.orientation.getAxis()) && this.matchesCurrentMaterial(level, state, currentPos)) {
-				CannonBlock cBlock = ((CannonBlock) state.getBlock());
+				BigCannonBlock cBlock = ((BigCannonBlock) state.getBlock());
 				if (this.material == null) this.material = cBlock.getCannonMaterialInLevel(level, state, currentPos);
 				
 				if (level.getBlockEntity(currentPos) instanceof LayeredBigCannonBlockEntity layered) {
@@ -253,18 +253,18 @@ public class CannonBuildingContraption extends PoleContraption {
 	}
 	
 	private boolean isValidCannonBlock(Level level, BlockState state, BlockPos currentPos) {
-		return state.getBlock() instanceof CannonBlock && level.getBlockEntity(currentPos) instanceof ICannonBlockEntity<?>;
+		return state.getBlock() instanceof BigCannonBlock && level.getBlockEntity(currentPos) instanceof ICannonBlockEntity<?>;
 	}
 	
 	private static boolean matchesCannonAxis(BlockState state, Direction.Axis axis) {
-		return ((CannonBlock) state.getBlock()).getFacing(state).getAxis() == axis;
+		return ((BigCannonBlock) state.getBlock()).getFacing(state).getAxis() == axis;
 	}
 	
 	private boolean matchesCurrentMaterial(Level level, BlockState state, BlockPos pos) {
-		return this.material == null || ((CannonBlock) state.getBlock()).getCannonMaterialInLevel(level, state, pos) == this.material;
+		return this.material == null || ((BigCannonBlock) state.getBlock()).getCannonMaterialInLevel(level, state, pos) == this.material;
 	}
 	
-	private static boolean isConnectedTo(Level level, CannonCastShape shape, CannonBlock cBlock, BlockState state, BlockPos pos, Direction dir) {
+	private static boolean isConnectedTo(Level level, CannonCastShape shape, BigCannonBlock cBlock, BlockState state, BlockPos pos, Direction dir) {
 		if (cBlock.getFacing(state).getAxis() != dir.getAxis()
 		|| cBlock.getShapeInLevel(level, state, pos) != shape
 		|| !(level.getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe)

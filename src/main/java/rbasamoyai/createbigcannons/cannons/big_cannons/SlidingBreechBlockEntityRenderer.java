@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
 
 public class SlidingBreechBlockEntityRenderer extends KineticTileEntityRenderer {
 
@@ -97,7 +96,7 @@ public class SlidingBreechBlockEntityRenderer extends KineticTileEntityRenderer 
 	}
 	
 	private PartialModel getPartialModelForState(BlockState state) {
-		return state.getBlock() instanceof CannonBlock ? CBCBlockPartials.breechblockFor(((CannonBlock) state.getBlock()).getCannonMaterial()) : CBCBlockPartials.CAST_IRON_SLIDING_BREECHBLOCK;
+		return state.getBlock() instanceof BigCannonBlock ? CBCBlockPartials.breechblockFor(((BigCannonBlock) state.getBlock()).getCannonMaterial()) : CBCBlockPartials.CAST_IRON_SLIDING_BREECHBLOCK;
 	}
 	
 }

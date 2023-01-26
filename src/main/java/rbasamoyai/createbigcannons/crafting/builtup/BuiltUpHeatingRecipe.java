@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
@@ -79,7 +79,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 		level.setBlock(pos, state, 11);
 		level.playSound(null, pos, SoundEvents.NETHERITE_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 2.0f);
 		if (!(level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe)) return;
-		CannonBlock.onPlace(level, pos);
+		BigCannonBlock.onPlace(level, pos);
 	}
 
 	@Override public Block getResultBlock() { return this.result; }

@@ -8,7 +8,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import rbasamoyai.createbigcannons.cannons.CannonEnd;
 
 public class SlidingBreechBlockEntity extends AbstractBigCannonBreechBlockEntity {
 	
@@ -19,7 +18,7 @@ public class SlidingBreechBlockEntity extends AbstractBigCannonBreechBlockEntity
 	}
 	
 	@Override public boolean isOpen() { return this.openProgress >= 1.0f; }
-	public CannonEnd getOpeningType() { return CannonEnd.getOpeningType(this.openProgress); }
+	public BigCannonEnd getOpeningType() { return BigCannonEnd.getOpeningType(this.openProgress); }
 	
 	@Override
 	public void tick() {

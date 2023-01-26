@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons;
+package rbasamoyai.createbigcannons.cannons.big_cannons;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,18 +9,16 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
-import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public interface CannonBlock {
+public interface BigCannonBlock {
 
 	BigCannonMaterial getCannonMaterial();
 	CannonCastShape getCannonShape();
 	
 	Direction getFacing(BlockState state);
-	CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos);
+	BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos);
 	boolean isComplete(BlockState state);
 	
 	default BigCannonMaterial getCannonMaterialInLevel(LevelAccessor level, BlockState state, BlockPos pos) { return this.getCannonMaterial(); }
@@ -30,7 +28,7 @@ public interface CannonBlock {
 	default boolean isImmovable(BlockState state) { return false; }
 	
 	default void onRemoveCannon(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() instanceof CannonBlock cBlock) {	
+		if (state.getBlock() instanceof BigCannonBlock cBlock) {
 			Direction facing = cBlock.getFacing(state);
 			BigCannonMaterial material = cBlock.getCannonMaterial();
 			
@@ -38,7 +36,7 @@ public interface CannonBlock {
 			BlockState state1 = level.getBlockState(pos1);
 			BlockEntity be1 = level.getBlockEntity(pos1);
 			
-			if (state1.getBlock() instanceof CannonBlock cBlock1
+			if (state1.getBlock() instanceof BigCannonBlock cBlock1
 			&& cBlock1.getCannonMaterialInLevel(level, state1, pos1) == material
 			&& be1 instanceof IBigCannonBlockEntity cbe1) {
 				Direction facing1 = cBlock1.getFacing(state1);
@@ -58,7 +56,7 @@ public interface CannonBlock {
 			BlockEntity be2 = level.getBlockEntity(pos2);
 			
 			if (cBlock.isDoubleSidedCannon(state)
-			&& state2.getBlock() instanceof CannonBlock cBlock2
+			&& state2.getBlock() instanceof BigCannonBlock cBlock2
 			&& cBlock2.getCannonMaterialInLevel(level, state2, pos2) == material
 			&& be2 instanceof IBigCannonBlockEntity cbe2) {
 				Direction facing2 = cBlock2.getFacing(state2);
@@ -79,7 +77,7 @@ public interface CannonBlock {
 		BlockState state = level.getBlockState(pos);
 		if (!(level instanceof ServerLevel slevel)) return;
 		
-		if (state.getBlock() instanceof CannonBlock cBlock) {	
+		if (state.getBlock() instanceof BigCannonBlock cBlock) {
 			Direction facing = cBlock.getFacing(state);
 			Vec3 center = Vec3.atCenterOf(pos);
 			Vec3 offset = Vec3.atBottomCenterOf(facing.getNormal()).scale(0.5d);
@@ -97,7 +95,7 @@ public interface CannonBlock {
 				BlockState state1 = level.getBlockState(pos1);
 				BlockEntity be1 = level.getBlockEntity(pos1);
 				
-				if (state1.getBlock() instanceof CannonBlock cBlock1
+				if (state1.getBlock() instanceof BigCannonBlock cBlock1
 				&& cBlock1.getCannonMaterialInLevel(level, state1, pos1) == material
 				&& level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe1) {
 					Direction facing1 = cBlock1.getFacing(state1);
@@ -136,7 +134,7 @@ public interface CannonBlock {
 				BlockEntity be2 = level.getBlockEntity(pos2);
 				
 				if (cBlock.isDoubleSidedCannon(state)
-				&& state2.getBlock() instanceof CannonBlock cBlock2
+				&& state2.getBlock() instanceof BigCannonBlock cBlock2
 				&& cBlock2.getCannonMaterialInLevel(level, state2, pos2) == material
 				&& level.getBlockEntity(pos2) instanceof IBigCannonBlockEntity cbe2) {
 					Direction facing2 = cBlock2.getFacing(state2);

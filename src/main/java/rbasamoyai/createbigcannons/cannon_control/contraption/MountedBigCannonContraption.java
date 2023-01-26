@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount;
+package rbasamoyai.createbigcannons.cannon_control.contraption;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
@@ -23,12 +23,14 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.FailureMode;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
-import rbasamoyai.createbigcannons.cannons.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
@@ -68,7 +70,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	private boolean collectCannonBlocks(Level level, BlockPos pos) throws AssemblyException {
 		BlockState startState = level.getBlockState(pos);
 		
-		if (!(startState.getBlock() instanceof CannonBlock startCannon)) {
+		if (!(startState.getBlock() instanceof BigCannonBlock startCannon)) {
 			return false;
 		}
 		if (!startCannon.isComplete(startState)) {
@@ -78,7 +80,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			throw cannonLoaderInsideDuringAssembly(pos);
 		}
 		BigCannonMaterial material = startCannon.getCannonMaterial();
-		CannonEnd startEnd = startCannon.getOpeningType(level, startState, pos);
+		BigCannonEnd startEnd = startCannon.getOpeningType(level, startState, pos);
 		
 		List<StructureBlockInfo> cannonBlocks = new ArrayList<>();
 		cannonBlocks.add(new StructureBlockInfo(pos, startState, this.getTileEntityNBT(level, pos)));
@@ -93,18 +95,18 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		BlockPos start = pos;
 		BlockState nextState = level.getBlockState(pos.relative(positive));
 		
-		CannonEnd positiveEnd = startEnd;
+		BigCannonEnd positiveEnd = startEnd;
 		while (this.isValidCannonBlock(level, nextState, start.relative(positive)) && this.isConnectedToCannon(level, nextState, start.relative(positive), positive, material)) {
 			start = start.relative(positive);
 			
-			if (!((CannonBlock) nextState.getBlock()).isComplete(nextState)) {
+			if (!((BigCannonBlock) nextState.getBlock()).isComplete(nextState)) {
 				throw hasIncompleteCannonBlocks(start);
 			}
 			
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getTileEntityNBT(level, start)));
 			cannonLength++;
 			
-			positiveEnd = ((CannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);
+			positiveEnd = ((BigCannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);
 			
 			if (this.hasCannonLoaderInside(level, nextState, start)) {
 				throw cannonLoaderInsideDuringAssembly(start);
@@ -115,26 +117,26 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			if (cannonLength > getMaxCannonLength()) {
 				throw cannonTooLarge();
 			}
-			if (positiveEnd != CannonEnd.OPEN) break;
+			if (positiveEnd != BigCannonEnd.OPEN) break;
 		}
-		BlockPos positiveEndPos = positiveEnd == CannonEnd.OPEN ? start : start.relative(negative);
+		BlockPos positiveEndPos = positiveEnd == BigCannonEnd.OPEN ? start : start.relative(negative);
 		BlockState positiveEndState = level.getBlockState(start);
 		
 		start = pos;
 		nextState = level.getBlockState(pos.relative(negative));
 		
-		CannonEnd negativeEnd = startEnd;
+		BigCannonEnd negativeEnd = startEnd;
 		while (this.isValidCannonBlock(level, nextState, start.relative(negative)) && this.isConnectedToCannon(level, nextState, start.relative(negative), negative, material)) {
 			start = start.relative(negative);
 			
-			if (!((CannonBlock) nextState.getBlock()).isComplete(nextState)) {
+			if (!((BigCannonBlock) nextState.getBlock()).isComplete(nextState)) {
 				throw hasIncompleteCannonBlocks(start);
 			}
 			
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getTileEntityNBT(level, start)));
 			cannonLength++;
 			
-			negativeEnd = ((CannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);
+			negativeEnd = ((BigCannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);
 			
 			if (this.hasCannonLoaderInside(level, nextState, start)) {
 				throw cannonLoaderInsideDuringAssembly(start);
@@ -145,16 +147,16 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			if (cannonLength > getMaxCannonLength()) {
 				throw cannonTooLarge();
 			}
-			if (negativeEnd != CannonEnd.OPEN) break;
+			if (negativeEnd != BigCannonEnd.OPEN) break;
 		}
-		BlockPos negativeEndPos = negativeEnd == CannonEnd.OPEN ? start : start.relative(positive);
+		BlockPos negativeEndPos = negativeEnd == BigCannonEnd.OPEN ? start : start.relative(positive);
 		BlockState negativeEndState = level.getBlockState(start);
 		
 		if (positiveEnd == negativeEnd) {
 			throw invalidCannon();
 		}
 		
-		boolean openEndFlag = positiveEnd == CannonEnd.OPEN;
+		boolean openEndFlag = positiveEnd == BigCannonEnd.OPEN;
 		this.initialOrientation = openEndFlag ? positive : negative;
 		this.startPos = openEndFlag ? negativeEndPos : positiveEndPos;
 		
@@ -180,7 +182,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 	
 	private boolean isValidCannonBlock(LevelAccessor level, BlockState state, BlockPos pos) {
-		return state.getBlock() instanceof CannonBlock;
+		return state.getBlock() instanceof BigCannonBlock;
 	}
 	
 	private boolean hasCannonLoaderInside(LevelAccessor level, BlockState state, BlockPos pos) {
@@ -191,7 +193,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 	
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, BigCannonMaterial material) {
-		CannonBlock cBlock = (CannonBlock) state.getBlock();
+		BigCannonBlock cBlock = (BigCannonBlock) state.getBlock();
 		if (cBlock.getCannonMaterialInLevel(level, state, pos) != material) return false;
 		return ((IBigCannonBlockEntity) level.getBlockEntity(pos)).cannonBehavior().isConnectedTo(connection.getOpposite());
 	}
@@ -284,7 +286,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			currentPos = currentPos.relative(this.initialOrientation);
 
 			BlockState cannonState = cannonInfo.state;
-			if (cannonState.getBlock() instanceof CannonBlock cannon && cannon.getOpeningType(level, cannonState, currentPos) == CannonEnd.OPEN) {
+			if (cannonState.getBlock() instanceof BigCannonBlock cannon && cannon.getOpeningType(level, cannonState, currentPos) == BigCannonEnd.OPEN) {
 				++count;
 			}
 

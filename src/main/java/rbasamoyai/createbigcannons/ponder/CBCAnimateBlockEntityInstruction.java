@@ -4,7 +4,7 @@ import com.simibubi.create.foundation.ponder.PonderWorld;
 import com.simibubi.create.foundation.ponder.instruction.AnimateTileEntityInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
 
 import java.util.Optional;

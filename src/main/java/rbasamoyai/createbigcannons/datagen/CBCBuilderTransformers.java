@@ -31,9 +31,9 @@ import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
-import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
-import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockItem;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockItem;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockItem;
@@ -116,7 +116,7 @@ public class CBCBuilderTransformers {
 						.texture("particle", topLoc)));
 	}
 	
-	public static <T extends Block & CannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreech(String pathAndMaterial) {
+	public static <T extends Block & BigCannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreech(String pathAndMaterial) {
 		ResourceLocation itemBaseLoc = CreateBigCannons.resource("block/sliding_breech_item");
 		ResourceLocation holeLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_hole");
 		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_side");
@@ -155,7 +155,7 @@ public class CBCBuilderTransformers {
 				.blockstate(new IncompleteSlidingBreechBlockGen(pathAndMaterial)::generate);
 	}
 	
-	public static <T extends Block & CannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreech(String pathAndMaterial) {
+	public static <T extends Block & BigCannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreech(String pathAndMaterial) {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/screw_breech");
 		ResourceLocation itemBaseLoc = CreateBigCannons.resource("block/screw_breech_item");
 		ResourceLocation topLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_screw_breech_top");
@@ -178,7 +178,7 @@ public class CBCBuilderTransformers {
 				.build();
 	}
 	
-	public static <T extends Block & CannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreechUnbored(String pathAndMaterial, String typePathAndMaterial) {
+	public static <T extends Block & BigCannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreechUnbored(String pathAndMaterial, String typePathAndMaterial) {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/screw_breech");
 		ResourceLocation itemBaseLoc = CreateBigCannons.resource("block/screw_breech_item");
 		ResourceLocation topLoc = CreateBigCannons.resource("block/" + typePathAndMaterial + "_screw_breech_top");

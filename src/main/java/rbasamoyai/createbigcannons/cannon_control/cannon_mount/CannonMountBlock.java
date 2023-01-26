@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount;
+package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
 import java.util.Random;
 

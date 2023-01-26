@@ -11,9 +11,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.material.PushReaction;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
 
-public abstract class BigCannonBaseBlock extends DirectionalBlock implements CannonBlock {
+public abstract class BigCannonBaseBlock extends DirectionalBlock implements BigCannonBlock {
 
 	private final BigCannonMaterial material;
 	

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount.carriage;
+package rbasamoyai.createbigcannons.cannon_control.carriage;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;

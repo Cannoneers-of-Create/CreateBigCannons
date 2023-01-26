@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount;
+package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.base.KineticTileEntity;
@@ -25,7 +25,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannon_control.*;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 
 import java.util.function.Supplier;
@@ -241,7 +246,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
 		net.minecraft.world.level.block.Block block = this.level.getBlockState(pos).getBlock();
-		if (block instanceof CannonBlock) return new MountedBigCannonContraption();
+		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
 		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
 		return null;
 	}

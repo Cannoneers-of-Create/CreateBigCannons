@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount;
+package rbasamoyai.createbigcannons.cannon_control.effects;
 
 import com.mojang.math.Vector3f;
 

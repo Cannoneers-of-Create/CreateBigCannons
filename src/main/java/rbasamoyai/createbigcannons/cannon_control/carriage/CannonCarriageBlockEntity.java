@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount.carriage;
+package rbasamoyai.createbigcannons.cannon_control.carriage;
 
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
@@ -11,12 +11,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
-import rbasamoyai.createbigcannons.cannonmount.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
-import rbasamoyai.createbigcannons.cannonmount.MountedBigCannonContraption;
-import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannonmount.MountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 
 public class CannonCarriageBlockEntity extends SyncedTileEntity {
@@ -68,7 +68,7 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity {
 
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
 		Block block = this.level.getBlockState(pos).getBlock();
-		if (block instanceof CannonBlock) return new MountedBigCannonContraption();
+		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
 		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
 		return null;
 	}

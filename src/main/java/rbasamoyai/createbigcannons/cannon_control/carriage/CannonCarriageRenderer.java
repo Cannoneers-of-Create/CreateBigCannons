@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount.carriage;
+package rbasamoyai.createbigcannons.cannon_control.carriage;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

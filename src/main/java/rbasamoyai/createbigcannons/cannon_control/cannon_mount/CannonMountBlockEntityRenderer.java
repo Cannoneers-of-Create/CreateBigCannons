@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount;
+package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
 import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;

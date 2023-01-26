@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount.carriage;
+package rbasamoyai.createbigcannons.cannon_control.carriage;
 
 import com.mojang.math.Vector4f;
 import com.simibubi.create.AllItems;
@@ -42,10 +42,10 @@ import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannonmount.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannonmount.ControlPitchContraption;
-import rbasamoyai.createbigcannons.cannonmount.MountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.network.CBCNetwork;

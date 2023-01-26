@@ -65,7 +65,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.base.PoleMoverBlockEntity;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
@@ -392,7 +392,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 			
 			isBoringBlock = true;
 			
-			float weight = latheBlockInfo.state.getBlock() instanceof CannonBlock cBlock ? cBlock.getCannonMaterial().weight() : 1;
+			float weight = latheBlockInfo.state.getBlock() instanceof BigCannonBlock cBlock ? cBlock.getCannonMaterial().weight() : 1;
 			this.boreSpeed = bearing.getAngularSpeed() / 512f / (weight == 0 ? 1f : weight);
 			float fSpeed = Math.abs(this.boreSpeed);
 			this.boreSpeed = fSpeed * Math.signum(this.getSpeed());
@@ -441,7 +441,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 			BlockEntity be = boredBE.newBlockEntity(BlockPos.ZERO, boredState);
 			latheBlockInfo.nbt.putBoolean("JustBored", true);
 			
-			if (boredState.getBlock() instanceof CannonBlock cBlock && be instanceof LayeredBigCannonBlockEntity layered) {
+			if (boredState.getBlock() instanceof BigCannonBlock cBlock && be instanceof LayeredBigCannonBlockEntity layered) {
 				CannonCastShape shape = cBlock.getCannonShape();
 				CompoundTag layerConnectionsTag = new CompoundTag();
 				Direction opp = facing.getOpposite();

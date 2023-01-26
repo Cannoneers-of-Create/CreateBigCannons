@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonmount.carriage;
+package rbasamoyai.createbigcannons.cannon_control.carriage;
 
 import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;

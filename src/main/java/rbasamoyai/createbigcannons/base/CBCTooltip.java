@@ -28,7 +28,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.CreateBigCannonsClient;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.FailureMode;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
@@ -39,7 +39,7 @@ import rbasamoyai.createbigcannons.manualloading.WormItem;
 
 public class CBCTooltip {
 
-	public static <T extends Block & CannonBlock> void appendCannonBlockText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
+	public static <T extends Block & BigCannonBlock> void appendCannonBlockText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
 		boolean desc = Screen.hasShiftDown();
 		
 		String[] holdDesc = Lang.translateDirect("tooltip.holdForDescription", "$").getString().split("\\$");
