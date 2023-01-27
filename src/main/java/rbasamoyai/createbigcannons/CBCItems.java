@@ -106,6 +106,8 @@ public class CBCItems {
 			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/autocannon_cartridge")))
 			.register();
 
+	public static final ItemEntry<Item> AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register();
+	
 	public static final ItemEntry<SequencedAssemblyItem> PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE = REGISTRATE
 			.item("partially_formed_autocannon_cartridge", SequencedAssemblyItem::new)
 			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/partially_formed_autocannon_cartridge")))

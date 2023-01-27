@@ -1,7 +1,7 @@
 {
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "forge:plates/copper"
+    "item": "createbigcannons:autocannon_cartridge_sheet"
   },
   "transitionalItem": {
     "item": "createbigcannons:partially_formed_autocannon_cartridge"
@@ -23,12 +23,7 @@
   ],
   "results": [
     {
-      "item": "createbigcannons:empty_autocannon_cartridge",
-      "chance": 5.0
-    },
-    {
-      "item": "createbigcannons:empty_autocannon_cartridge",
-      "count": 2
+      "item": "createbigcannons:empty_autocannon_cartridge"
     }
   ],
   "loops": 6

@@ -1,13 +1,11 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
-import com.simibubi.create.AllTags;
 import com.simibubi.create.content.contraptions.components.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.contraptions.components.press.PressingRecipe;
 import com.simibubi.create.content.contraptions.components.saw.CuttingRecipe;
 import com.simibubi.create.content.contraptions.itemAssembly.SequencedAssemblyRecipeBuilder;
 import com.simibubi.create.foundation.data.recipe.CreateRecipeProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
@@ -29,31 +27,11 @@ public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 			.addStep(DeployerApplicationRecipe::new, rb -> rb.require(Tags.Items.GUNPOWDER))
 			.addOutput(CBCItems.FILLED_AUTOCANNON_CARTRIDGE.get(), 1)),
 
-	PRESSING_AUTOCANNON_CARTRIDGE_IRON = create("pressing_autocannon_cartridge_iron", b -> b.require(AllTags.forgeItemTag("plates/iron"))
+	PRESSING_AUTOCANNON_CARTRIDGE = create("pressing_autocannon_cartridge", b -> b.require(CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get())
 			.transitionTo(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get())
 			.loops(6)
 			.addStep(PressingRecipe::new, rb -> rb)
 			.addOutput(CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.get(), 1)),
-
-	PRESSING_AUTOCANNON_CARTRIDGE_COPPER = create("pressing_autocannon_cartridge_copper", b -> b.require(AllTags.forgeItemTag("plates/copper"))
-			.transitionTo(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get())
-			.loops(6)
-			.addStep(PressingRecipe::new, rb -> rb)
-			.addOutput(CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.get(), 5)
-			.addOutput(CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(2), 1)),
-
-	PRESSING_AUTOCANNON_CARTRIDGE_GOLD = create("pressing_autocannon_cartridge_gold", b -> b.require(AllTags.forgeItemTag("plates/gold"))
-			.transitionTo(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get())
-			.loops(6)
-			.addStep(PressingRecipe::new, rb -> rb)
-			.addOutput(CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(4), 1)
-			.addOutput(Items.GOLD_NUGGET.getDefaultInstance(), 5)),
-
-	PRESSING_AUTOCANNON_CARTRIDGE_BRASS = create("pressing_autocannon_cartridge_brass", b -> b.require(AllTags.forgeItemTag("plates/brass"))
-			.transitionTo(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get())
-			.loops(6)
-			.addStep(PressingRecipe::new, rb -> rb)
-			.addOutput(CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(4), 1)),
 
 	RECOIL_SPRING = create("recoil_spring", b -> b.require(CBCItems.SPRING_WIRE.get())
 			.transitionTo(CBCItems.PARTIAL_RECOIL_SPRING.get())
