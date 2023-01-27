@@ -2,20 +2,10 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "createbigcannons:solid_shot_cast_iron"
+      "createbigcannons:ap_shot"
     ]
   },
   "criteria": {
-    "has_iron_ingot": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "tag": "forge:ingots/iron"
-          }
-        ]
-      }
-    },
     "has_cast_iron_ingot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
@@ -29,13 +19,12 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "createbigcannons:solid_shot_cast_iron"
+        "recipe": "createbigcannons:ap_shot"
       }
     }
   },
   "requirements": [
     [
-      "has_iron_ingot",
       "has_cast_iron_ingot",
       "has_the_recipe"
     ]

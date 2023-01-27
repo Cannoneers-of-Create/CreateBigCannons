@@ -82,17 +82,15 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.pattern("III")
 		.pattern(" S ")
 		.unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON))
-		.unlockedBy("has_cast_iron_ingot", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
 		.save(cons);
 		
-		ShapedRecipeBuilder.shaped(CBCBlocks.SOLID_SHOT.get())
-		.define('I', CBCTags.ItemCBC.INGOT_CAST_IRON).define('S', ItemTags.WOODEN_SLABS)
-		.pattern("I")
-		.pattern("I")
-		.pattern("S")
-		.unlockedBy("has_iron_ingot", has(Tags.Items.INGOTS_IRON))
+		ShapedRecipeBuilder.shaped(CBCBlocks.AP_SHOT.get())
+		.define('C', CBCTags.ItemCBC.INGOT_CAST_IRON).define('I', Tags.Items.INGOTS_IRON).define('S', ItemTags.WOODEN_SLABS)
+		.pattern(" C ")
+		.pattern("III")
+		.pattern(" S ")
 		.unlockedBy("has_cast_iron_ingot", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
-		.save(cons, CreateBigCannons.resource("solid_shot_cast_iron"));
+		.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.MORTAR_STONE.get())
 		.define('S', Tags.Items.STONE).define('s', ItemTags.WOODEN_SLABS)
