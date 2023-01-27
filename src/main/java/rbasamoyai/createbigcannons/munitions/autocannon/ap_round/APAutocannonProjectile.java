@@ -8,7 +8,7 @@ public class APAutocannonProjectile extends AbstractAutocannonProjectile {
 
     public APAutocannonProjectile(EntityType<? extends APAutocannonProjectile> type, Level level) {
         super(type, level);
-        this.setBreakthroughPower((byte) 3);
+        this.setPenetrationPoints((byte) 3);
     }
 
 }

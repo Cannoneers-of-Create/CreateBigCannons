@@ -8,7 +8,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
@@ -53,12 +52,10 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (this.getBreakthroughPower() <= 0) this.discard();
+		if (this.getPenetrationPoints() <= 0) this.discard();
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
-
-	@Override public final BlockState getRenderedBlockState() { return Blocks.AIR.defaultBlockState(); }
 
 	@Override protected ParticleOptions getTrailParticle() { return new AirParticleData(1, 10); }
 

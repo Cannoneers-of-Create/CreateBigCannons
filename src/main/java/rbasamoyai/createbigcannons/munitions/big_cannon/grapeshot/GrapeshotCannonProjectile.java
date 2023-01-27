@@ -8,10 +8,10 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.big_cannon.DisintegratingCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.DisintegratingBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
-public class GrapeshotCannonProjectile extends DisintegratingCannonProjectile {
+public class GrapeshotCannonProjectile extends DisintegratingBigCannonProjectile {
 
 	public GrapeshotCannonProjectile(EntityType<? extends GrapeshotCannonProjectile> type, Level level) {
 		super(type, level);

@@ -12,16 +12,16 @@ import net.minecraftforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
-public class FluidShellProjectile extends FuzedCannonProjectile {
+public class FluidShellProjectile extends FuzedBigCannonProjectile {
 	
 	protected FluidStack finalFluid = FluidStack.EMPTY;
 	
 	public FluidShellProjectile(EntityType<? extends FluidShellProjectile> type, Level level) {
 		super(type, level);
-		this.setBreakthroughPower((byte) 1);
+		this.setPenetrationPoints((byte) 1);
 	}
 	
 	public void setFluid(FluidStack stack) {

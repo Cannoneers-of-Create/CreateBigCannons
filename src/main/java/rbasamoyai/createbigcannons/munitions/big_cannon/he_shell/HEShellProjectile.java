@@ -7,13 +7,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
 
-public class HEShellProjectile extends FuzedCannonProjectile {
+public class HEShellProjectile extends FuzedBigCannonProjectile {
 
 	public HEShellProjectile(EntityType<? extends HEShellProjectile> type, Level level) {
 		super(type, level);
-		this.setBreakthroughPower((byte) 1);
+		this.setPenetrationPoints((byte) 1);
 	}
 	
 	@Override

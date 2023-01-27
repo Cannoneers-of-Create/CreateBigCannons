@@ -2,11 +2,10 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
-public abstract class DisintegratingCannonProjectile extends AbstractCannonProjectile {
+public abstract class DisintegratingBigCannonProjectile extends AbstractBigCannonProjectile {
 	
-	protected DisintegratingCannonProjectile(EntityType<? extends DisintegratingCannonProjectile> type, Level level) {
+	protected DisintegratingBigCannonProjectile(EntityType<? extends DisintegratingBigCannonProjectile> type, Level level) {
 		super(type, level);
 	}
 

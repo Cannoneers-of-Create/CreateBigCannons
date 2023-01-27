@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.munitions;
+package rbasamoyai.createbigcannons.munitions.big_cannon;
 
 import com.jozufozu.flywheel.core.virtual.VirtualEmptyModelData;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,9 +14,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class CannonProjectileRenderer<T extends AbstractCannonProjectile> extends EntityRenderer<T> {
+public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> extends EntityRenderer<T> {
 
-	public CannonProjectileRenderer(EntityRendererProvider.Context context) {
+	public BigCannonProjectileRenderer(EntityRendererProvider.Context context) {
 		super(context);
 	}
 

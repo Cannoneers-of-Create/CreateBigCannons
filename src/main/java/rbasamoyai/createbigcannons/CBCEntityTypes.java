@@ -11,7 +11,8 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageRenderer;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.CannonProjectileRenderer;
+import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileRenderer;
@@ -79,19 +80,19 @@ public class CBCEntityTypes {
 	public static final EntityEntry<FlakAutocannonProjectile> FLAK_AUTOCANNON = autocannonProjectile("flak_autocannon", FlakAutocannonProjectile::new, "Flak Autocannon Round");
 
 
-    private static <T extends AbstractCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory) {
+    private static <T extends AbstractBigCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory) {
 		return REGISTRATE
 				.entity(id, factory, MobCategory.MISC)
 				.properties(AbstractCannonProjectile::build)
-				.renderer(() -> CannonProjectileRenderer::new)
+				.renderer(() -> BigCannonProjectileRenderer::new)
 				.register();
 	}
 	
-	private static <T extends AbstractCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory, String enUSdiffLang) {
+	private static <T extends AbstractBigCannonProjectile> EntityEntry<T> cannonProjectile(String id, EntityFactory<T> factory, String enUSdiffLang) {
 		return REGISTRATE
 				.entity(id, factory, MobCategory.MISC)
 				.properties(AbstractCannonProjectile::build)
-				.renderer(() -> CannonProjectileRenderer::new)
+				.renderer(() -> BigCannonProjectileRenderer::new)
 				.lang(enUSdiffLang)
 				.register();
 	}

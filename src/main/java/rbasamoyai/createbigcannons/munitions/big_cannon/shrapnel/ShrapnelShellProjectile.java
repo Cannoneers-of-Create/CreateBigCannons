@@ -9,13 +9,13 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
 
-public class ShrapnelShellProjectile extends FuzedCannonProjectile {
+public class ShrapnelShellProjectile extends FuzedBigCannonProjectile {
 
 	public ShrapnelShellProjectile(EntityType<? extends ShrapnelShellProjectile> type, Level level) {
 		super(type, level);
-		this.setBreakthroughPower((byte) 1);
+		this.setPenetrationPoints((byte) 1);
 	}
 	
 	@Override

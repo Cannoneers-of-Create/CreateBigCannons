@@ -6,13 +6,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 
-public class SolidShotProjectile extends AbstractCannonProjectile {
+public class SolidShotProjectile extends AbstractBigCannonProjectile {
 
 	public SolidShotProjectile(EntityType<? extends SolidShotProjectile> type, Level level) {
 		super(type, level);
-		this.setBreakthroughPower((byte) 5);
+		this.setPenetrationPoints((byte) 5);
 	}
 	
 	@Override

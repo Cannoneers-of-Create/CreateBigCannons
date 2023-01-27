@@ -16,15 +16,15 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 
-public class MortarStoneProjectile extends AbstractCannonProjectile {
+public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 
     private boolean tooManyCharges = false;
 
     public MortarStoneProjectile(EntityType<? extends MortarStoneProjectile> type, Level level) {
         super(type, level);
-        this.setBreakthroughPower((byte) 1);
+        this.setPenetrationPoints((byte) 1);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class MortarStoneProjectile extends AbstractCannonProjectile {
         if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
 
-            if (this.getBreakthroughPower() <= 0) {
+            if (this.getPenetrationPoints() <= 0) {
                 this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z,
                         CBCConfigs.SERVER.munitions.mortarStonePower.getF(),
                         CBCConfigs.SERVER.munitions.damageRestriction.get() == CBCCfgMunitions.GriefState.NO_DAMAGE ? Explosion.BlockInteraction.NONE : Explosion.BlockInteraction.DESTROY);

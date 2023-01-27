@@ -32,7 +32,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile {
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Byte> BREAKTHROUGH_POWER = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
+	private static final EntityDataAccessor<Byte> PENETRATION_POINTS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	protected int inGroundTime = 0;
 	protected float damage = 50;
 	
@@ -110,8 +110,8 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
 			
 			if (result.getEntity().isAlive()) {
-				this.setBreakthroughPower((byte) Math.max(0, this.getBreakthroughPower() - 2));
-				if (this.getBreakthroughPower() == 0) {
+				this.setPenetrationPoints((byte) Math.max(0, this.getPenetrationPoints() - 2));
+				if (this.getPenetrationPoints() == 0) {
 					this.discard();
 				}
 			}
@@ -140,13 +140,13 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 				}
 				this.setInGround(true);
 				this.setPos(hitLoc);
-				this.setBreakthroughPower((byte) 0);
+				this.setPenetrationPoints((byte) 0);
 			}
 		}
 	}
 
 	protected boolean canBreakBlock(BlockHitResult result) {
-		if (this.getBreakthroughPower() <= 0) return false;
+		if (this.getPenetrationPoints() <= 0) return false;
 		BlockPos pos = result.getBlockPos();
 		BlockState remainingBlock = this.level.getBlockState(pos);
 		return !remainingBlock.is(this.blockingTag()) && remainingBlock.getDestroySpeed(this.level, pos) != -1.0;
@@ -154,7 +154,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 
 	protected void setPenetrationPoints(BlockHitResult result, BlockState hitBlock) {
 		boolean resistant = hitBlock.is(this.resistantTag()) || !hitBlock.is(this.noResistanceTag()) && this.isResistantFallback(result, hitBlock);
-		this.setBreakthroughPower((byte)(this.getBreakthroughPower() - (resistant ? 3 : 1)));
+		this.setPenetrationPoints((byte)(this.getPenetrationPoints() - (resistant ? 3 : 1)));
 	}
 
 	protected TagKey<Block> noResistanceTag() { return CBCTags.BlockCBC.BIG_CANNON_NO_RESISTANCE; }
@@ -172,7 +172,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	@Override
 	protected void defineSynchedData() {
 		this.entityData.define(ID_FLAGS, (byte) 0);
-		this.entityData.define(BREAKTHROUGH_POWER, (byte) 0);
+		this.entityData.define(PENETRATION_POINTS, (byte) 0);
 	}
 	
 	public void setInGround(boolean inGround) {
@@ -194,7 +194,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.putByte("Power", this.getBreakthroughPower());
+		tag.putByte("Power", this.getPenetrationPoints());
 		tag.putBoolean("InGround", this.isInGround());
 		tag.putFloat("Damage", this.damage);
 	}
@@ -202,17 +202,17 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.setBreakthroughPower(tag.getByte("Power"));
+		this.setPenetrationPoints(tag.getByte("Power"));
 		this.setInGround(tag.getBoolean("InGround"));
 		this.damage = tag.getFloat("Damage");
 	}
 	
-	public void setBreakthroughPower(byte power) {
-		this.entityData.set(BREAKTHROUGH_POWER, power);
+	public void setPenetrationPoints(byte power) {
+		this.entityData.set(PENETRATION_POINTS, power);
 	}
 	
-	public byte getBreakthroughPower() {
-		return CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE ? 0 : this.entityData.get(BREAKTHROUGH_POWER);
+	public byte getPenetrationPoints() {
+		return CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE ? 0 : this.entityData.get(PENETRATION_POINTS);
 	}
 
 	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
@@ -234,8 +234,6 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	@Override protected ParticleOptions getTrailParticle() {
 		return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
 	}
-	
-	public abstract BlockState getRenderedBlockState();
 
 	public void setChargePower(float power) {}
 
