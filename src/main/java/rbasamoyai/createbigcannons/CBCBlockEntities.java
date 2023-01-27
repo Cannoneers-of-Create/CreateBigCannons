@@ -32,10 +32,10 @@ import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntit
 import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteBigCannonBlockEntity;
-import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
-import rbasamoyai.createbigcannons.munitions.FuzedBlockEntityRenderer;
-import rbasamoyai.createbigcannons.munitions.FuzedBlockInstance;
-import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntityRenderer;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockInstance;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlockEntity;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 

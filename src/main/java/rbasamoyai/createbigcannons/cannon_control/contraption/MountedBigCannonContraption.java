@@ -33,7 +33,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 import java.util.*;
 

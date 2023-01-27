@@ -31,7 +31,7 @@ import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticle;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticle;
-import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlobParticle;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticle;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;

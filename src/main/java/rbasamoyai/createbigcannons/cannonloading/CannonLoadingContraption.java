@@ -32,7 +32,7 @@ import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
-import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 public class CannonLoadingContraption extends PoleContraption {
 	

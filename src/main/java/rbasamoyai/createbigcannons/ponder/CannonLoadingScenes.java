@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
-import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 
 public class CannonLoadingScenes {
 

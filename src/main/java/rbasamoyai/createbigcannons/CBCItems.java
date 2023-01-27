@@ -11,7 +11,7 @@ import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
-import rbasamoyai.createbigcannons.munitions.autocannon.apround.APAutocannonRoundItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;

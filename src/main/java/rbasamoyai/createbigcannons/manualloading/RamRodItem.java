@@ -32,7 +32,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 import java.util.ArrayList;
 import java.util.List;

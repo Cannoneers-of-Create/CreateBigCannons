@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 public interface IBigCannonBlockEntity extends ICannonBlockEntity<BigCannonBehavior> {
 	

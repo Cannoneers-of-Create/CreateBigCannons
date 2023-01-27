@@ -45,15 +45,15 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
-import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
-import rbasamoyai.createbigcannons.munitions.apshell.APShellBlock;
-import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellBlock;
-import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
-import rbasamoyai.createbigcannons.munitions.heshell.HEShellBlock;
-import rbasamoyai.createbigcannons.munitions.mortarstone.MortarStoneBlock;
-import rbasamoyai.createbigcannons.munitions.mortarstone.MortarStoneItem;
-import rbasamoyai.createbigcannons.munitions.shot.SolidShotBlock;
-import rbasamoyai.createbigcannons.munitions.shrapnel.ShrapnelShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.PowderChargeBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
