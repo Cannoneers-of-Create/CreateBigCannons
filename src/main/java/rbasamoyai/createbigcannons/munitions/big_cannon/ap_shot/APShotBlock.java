@@ -6,9 +6,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
-public class APShotBlock extends SolidShotBlock {
+public class APShotBlock extends ProjectileBlock {
 
 	public APShotBlock(Properties properties) {
 		super(properties);
