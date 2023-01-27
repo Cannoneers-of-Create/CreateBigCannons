@@ -21,20 +21,18 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.CBCShapes;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
-import rbasamoyai.createbigcannons.cannons.CannonEnd;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<ScrewBreechBlockEntity>, CannonBlock {
+public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<ScrewBreechBlockEntity>, BigCannonBlock {
 
-	public static final EnumProperty<CannonEnd> OPEN = EnumProperty.create("open", CannonEnd.class);
+	public static final EnumProperty<BigCannonEnd> OPEN = EnumProperty.create("open", BigCannonEnd.class);
 	
 	private final BigCannonMaterial material;
 	
 	public ScrewBreechBlock(Properties properties, BigCannonMaterial material) {
 		super(properties);
 		this.material = material;
-		this.registerDefaultState(this.getStateDefinition().any().setValue(OPEN, CannonEnd.CLOSED));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(OPEN, BigCannonEnd.CLOSED));
 	}
 	
 	@Override
@@ -51,7 +49,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	@Override public BigCannonMaterial getCannonMaterial() { return this.material; }
 	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH.get(); }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING).getOpposite(); }
-	@Override public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return state.getValue(OPEN); }
+	@Override public BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return state.getValue(OPEN); }
 	@Override public Axis getRotationAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
 	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 	@Override public boolean isDoubleSidedCannon(BlockState state) { return false; }
@@ -74,7 +72,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	
 	@Override
 	public InteractionResult onWrenched(BlockState state, UseOnContext context) {
-		return state.getValue(OPEN) == CannonEnd.OPEN ? super.onWrenched(state, context) : InteractionResult.PASS;
+		return state.getValue(OPEN) == BigCannonEnd.OPEN ? super.onWrenched(state, context) : InteractionResult.PASS;
 	}
 	
 }

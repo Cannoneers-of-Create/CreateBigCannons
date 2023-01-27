@@ -9,21 +9,21 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.ScrewBreechBlock;
 
 public class CBCChecks {
 
 	private static CheckResult attachedCheckCannons(BlockState state, Level level, BlockPos pos, Direction attached) {
-		if (!(state.getBlock() instanceof CannonBlock cannonBlock)) return CheckResult.PASS;
+		if (!(state.getBlock() instanceof BigCannonBlock cannonBlock)) return CheckResult.PASS;
 		BlockPos otherPos = pos.relative(attached);
 		BlockState attachedState = level.getBlockState(otherPos);
-		if (!(attachedState.getBlock() instanceof CannonBlock otherBlock)) return CheckResult.PASS;
+		if (!(attachedState.getBlock() instanceof BigCannonBlock otherBlock)) return CheckResult.PASS;
 		
 		if (!(level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe) || !(level.getBlockEntity(otherPos) instanceof IBigCannonBlockEntity cbe1)) {
 			return CheckResult.PASS;
@@ -32,10 +32,10 @@ public class CBCChecks {
 		boolean result = cbe.cannonBehavior().isConnectedTo(attached) && cbe1.cannonBehavior().isConnectedTo(attached.getOpposite());
 		
 		if (cannonBlock instanceof ScrewBreechBlock) {
-			result &= cannonBlock.getOpeningType(level, state, pos) != CannonEnd.OPEN;
+			result &= cannonBlock.getOpeningType(level, state, pos) != BigCannonEnd.OPEN;
 		}
 		if (otherBlock instanceof ScrewBreechBlock) {
-			result &= otherBlock.getOpeningType(level, attachedState, otherPos) != CannonEnd.OPEN && attachedState.getValue(BlockStateProperties.FACING) == attached;
+			result &= otherBlock.getOpeningType(level, attachedState, otherPos) != BigCannonEnd.OPEN && attachedState.getValue(BlockStateProperties.FACING) == attached;
 		}
 		return CheckResult.of(result);
 	}
@@ -54,7 +54,7 @@ public class CBCChecks {
 	}
 	
 	private static CheckResult overridePushReactionCheck(BlockState state, Level level, BlockPos pos) {
-		if (state.getBlock() instanceof CannonBlock cBlock) return CheckResult.of(!cBlock.isImmovable(state));
+		if (state.getBlock() instanceof BigCannonBlock cBlock) return CheckResult.of(!cBlock.isImmovable(state));
 		if (state.getBlock() instanceof AutocannonBlock) return CheckResult.SUCCESS;
 		return CheckResult.PASS;
 	}

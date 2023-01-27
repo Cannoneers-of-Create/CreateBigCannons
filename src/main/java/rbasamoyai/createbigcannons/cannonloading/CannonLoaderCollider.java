@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 
 public class CannonLoaderCollider {
@@ -74,7 +74,7 @@ public class CannonLoaderCollider {
 			StructureBlockInfo blockInfo = contraption.getBlocks().get(pos);
 			boolean emptyCollider = collidedState.getCollisionShape(level, pos).isEmpty();
 			
-			if (collidedState.getBlock() instanceof CannonBlock cannonBlock && cannonBlock.getFacing(collidedState).getAxis() == movementDirection.getAxis()) {
+			if (collidedState.getBlock() instanceof BigCannonBlock cannonBlock && cannonBlock.getFacing(collidedState).getAxis() == movementDirection.getAxis()) {
 				BlockEntity blockEntity = level.getBlockEntity(colliderPos);
 				if (blockEntity instanceof IBigCannonBlockEntity cbe && cbe.cannonBehavior().canLoadBlock(blockInfo)) {
 					continue;

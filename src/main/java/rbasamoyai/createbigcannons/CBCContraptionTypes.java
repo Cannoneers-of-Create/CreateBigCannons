@@ -3,8 +3,8 @@ package rbasamoyai.createbigcannons;
 import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionType;
 
 import rbasamoyai.createbigcannons.cannonloading.CannonLoadingContraption;
-import rbasamoyai.createbigcannons.cannonmount.MountedBigCannonContraption;
-import rbasamoyai.createbigcannons.cannonmount.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillingContraption;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuildingContraption;
 

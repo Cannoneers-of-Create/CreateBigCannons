@@ -25,9 +25,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 import java.util.List;
@@ -95,7 +95,7 @@ public class WormItem extends Item {
 	}
 	
 	public static boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos, Direction dir) {
-		return state.getBlock() instanceof CannonBlock cBlock && cBlock.getOpeningType(level, state, pos) == CannonEnd.OPEN;
+		return state.getBlock() instanceof BigCannonBlock cBlock && cBlock.getOpeningType(level, state, pos) == BigCannonEnd.OPEN;
 	}
 	
 	@Override

@@ -6,9 +6,9 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticleData;
-import rbasamoyai.createbigcannons.cannonmount.CannonSmokeParticleData;
-import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlobParticleData;
+import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
+import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleData;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 
 public class CBCParticleTypes {
 

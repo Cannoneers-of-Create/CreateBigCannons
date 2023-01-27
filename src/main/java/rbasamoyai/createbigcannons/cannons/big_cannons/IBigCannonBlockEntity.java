@@ -7,16 +7,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 public interface IBigCannonBlockEntity extends ICannonBlockEntity<BigCannonBehavior> {
 	
 	default boolean canLoadBlock(StructureBlockInfo blockInfo) {
 		if (blockInfo == null) return false;
 		BlockState cannonState = ((BlockEntity) this).getBlockState();
-		if (!(cannonState.getBlock() instanceof CannonBlock cannon)) return false;
+		if (!(cannonState.getBlock() instanceof BigCannonBlock cannon)) return false;
 		Axis cannonAxis = cannon.getFacing(cannonState).getAxis();
 		
 		if (!this.cannonBehavior().block().state.isAir()) {

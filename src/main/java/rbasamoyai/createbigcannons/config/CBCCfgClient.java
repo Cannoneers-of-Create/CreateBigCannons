@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.config;
 
-import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticle.PlumeSetting;
+import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticle.PlumeSetting;
 
 public class CBCCfgClient extends CBCConfigBase {
 

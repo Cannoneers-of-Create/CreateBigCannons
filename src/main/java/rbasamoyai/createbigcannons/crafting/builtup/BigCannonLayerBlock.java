@@ -11,7 +11,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBaseBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
-import rbasamoyai.createbigcannons.cannons.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class BigCannonLayerBlock extends BigCannonBaseBlock implements ITE<LayeredBigCannonBlockEntity> {
@@ -32,7 +32,7 @@ public class BigCannonLayerBlock extends BigCannonBaseBlock implements ITE<Layer
 	}
 	
 	@Override public CannonCastShape getCannonShape() { return this.shape.get(); }
-	@Override public CannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return CannonEnd.CLOSED; }
+	@Override public BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return BigCannonEnd.CLOSED; }
 	@Override public boolean isComplete(BlockState state) { return false; }
 	
 	@Override public Class<LayeredBigCannonBlockEntity> getTileEntityClass() { return LayeredBigCannonBlockEntity.class; }

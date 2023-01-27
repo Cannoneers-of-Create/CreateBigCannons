@@ -1,7 +1,6 @@
 
 package rbasamoyai.createbigcannons;
 
-import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
@@ -27,11 +26,12 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import rbasamoyai.createbigcannons.cannonmount.CannonPlumeParticle;
-import rbasamoyai.createbigcannons.cannonmount.CannonSmokeParticle;
-import rbasamoyai.createbigcannons.cannonmount.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageEntity;
-import rbasamoyai.createbigcannons.munitions.fluidshell.FluidBlobParticle;
+import org.lwjgl.glfw.GLFW;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticle;
+import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticle;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticle;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
@@ -44,8 +44,8 @@ public class CreateBigCannonsClient {
 
 	private static final String KEY_ROOT = "key." + CreateBigCannons.MOD_ID;
 	private static final String KEY_CATEGORY = KEY_ROOT + ".category";
-	public static final KeyMapping PITCH_MODE = new KeyMapping(KEY_ROOT + ".pitch_mode", InputConstants.MOUSE_BUTTON_LEFT, KEY_CATEGORY);
-	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.MOUSE_BUTTON_LEFT, KEY_CATEGORY);
+	public static final KeyMapping PITCH_MODE = new KeyMapping(KEY_ROOT + ".pitch_mode", GLFW.GLFW_KEY_C, KEY_CATEGORY);
+	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fire_controlled_cannon", GLFW.GLFW_MOUSE_BUTTON_LEFT, KEY_CATEGORY);
 
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();

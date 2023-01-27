@@ -26,6 +26,7 @@ public class CBCDatagen {
 			gen.addProvider(new CBCMixingRecipeProvider(gen));
 			gen.addProvider(new CBCLootTableProvider(gen));
 			gen.addProvider(new CBCSequencedAssemblyRecipeProvider(gen));
+			gen.addProvider(new CBCCuttingRecipeProvider(gen));
 		}
 		if (event.includeClient()) {
 			CBCLangGen.prepare();

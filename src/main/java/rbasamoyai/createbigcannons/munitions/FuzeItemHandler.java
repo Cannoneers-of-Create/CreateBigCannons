@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.munitions;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class FuzeItemHandler implements IItemHandlerModifiable {

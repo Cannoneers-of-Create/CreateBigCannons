@@ -58,6 +58,7 @@ public class ModGroup {
 				CBCBlocks.WORM_HEAD.asStack(),
 				CBCBlocks.POWDER_CHARGE.asStack(),
 				CBCBlocks.SOLID_SHOT.asStack(),
+				CBCBlocks.AP_SHOT.asStack(),
 				CBCBlocks.MORTAR_STONE.asStack(),
 				CBCBlocks.BAG_OF_GRAPESHOT.asStack(),
 				CBCBlocks.HE_SHELL.asStack(),
@@ -162,6 +163,7 @@ public class ModGroup {
 				CBCBlocks.STEEL_AUTOCANNON_RECOIL_SPRING.asStack(),
 				CBCBlocks.STEEL_AUTOCANNON_BARREL.asStack(),
 
+				CBCItems.AUTOCANNON_CARTRIDGE_SHEET.asStack(),
 				CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(),
 				CBCItems.FILLED_AUTOCANNON_CARTRIDGE.asStack(),
 				CBCItems.AP_AUTOCANNON_ROUND.get().getCreativeTabCartridgeItem(),

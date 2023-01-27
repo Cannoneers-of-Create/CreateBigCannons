@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.munitions.fuzes;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -13,11 +12,11 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -27,7 +26,6 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
@@ -48,25 +46,13 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		tag.putInt("AirTime", ++airTime);
 		if (!armed) return false;
 		
-		double h = Math.max(tag.getInt("DetonationDistance"), 1);
-		double r = h * 0.5d;
-		double h1 = h * 0.5d;
-		Vec3 dir = projectile.getDeltaMovement().length() < 1e-4d ? new Vec3(0, -1, 0) : projectile.getDeltaMovement().normalize();
-		Vec3 p = projectile.position();
-		Vec3 p1 = p.add(dir.scale(h1));
-		double x0 = p1.x;
-		double y0 = p1.y;
-		double z0 = p1.z;
-		AABB roughBounds = new AABB(x0 - h1, y0 - h1, z0 - h1, x0 + h1, y0 + h1, z0 + h1).inflate(1);
-		for (Iterator<BlockPos> iter = BlockPos.betweenClosedStream(roughBounds).iterator(); iter.hasNext(); ) {
-			BlockPos bp = iter.next();
-			Vec3 p2 = Vec3.atCenterOf(bp).subtract(p);
-			double d = p2.dot(dir);
-			double r1 = d * r / h;
-			if (0 > d || d > h || p2.subtract(dir.scale(d)).lengthSqr() >= r1 * r1) continue;
-			if (!projectile.level.getBlockState(bp).isAir()) return true;
-		}
-		return false;
+		double l = Math.max(tag.getInt("DetonationDistance"), 1) * 1.5d;
+		Vec3 oldVel = projectile.getDeltaMovement();
+		projectile.setDeltaMovement(oldVel.normalize().scale(l));
+		HitResult scan = ProjectileUtil.getHitResult(projectile, projectile::canHitEntity);
+		projectile.setDeltaMovement(oldVel);
+
+		return scan.getType() != HitResult.Type.MISS;
 	}
 	
 	@Override

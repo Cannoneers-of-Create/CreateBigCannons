@@ -28,11 +28,11 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.CannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -149,8 +149,8 @@ public class RamRodItem extends Item {
 			return state.getValue(BlockStateProperties.AXIS) == dir.getAxis();
 		if (state.getBlock() instanceof ProjectileBlock)
 			return state.getValue(BlockStateProperties.FACING).getAxis() == dir.getAxis();
-		if (state.getBlock() instanceof CannonBlock cBlock)
-			return cBlock.getOpeningType(level, state, pos) == CannonEnd.OPEN && cBlock.getFacing(state).getAxis() == dir.getAxis();
+		if (state.getBlock() instanceof BigCannonBlock cBlock)
+			return cBlock.getOpeningType(level, state, pos) == BigCannonEnd.OPEN && cBlock.getFacing(state).getAxis() == dir.getAxis();
 		return false;
 	}
 

@@ -13,9 +13,8 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
 
-public class BigCannonBlockItem<T extends Block & CannonBlock> extends BlockItem {
+public class BigCannonBlockItem<T extends Block & BigCannonBlock> extends BlockItem {
 
 	private final T cannonBlock;
 	
@@ -33,7 +32,7 @@ public class BigCannonBlockItem<T extends Block & CannonBlock> extends BlockItem
 	@Override
 	public InteractionResult place(BlockPlaceContext context) {
 		InteractionResult result = super.place(context);
-		CannonBlock.onPlace(context.getLevel(), context.getClickedPos());
+		BigCannonBlock.onPlace(context.getLevel(), context.getClickedPos());
 		return result;
 	}
 

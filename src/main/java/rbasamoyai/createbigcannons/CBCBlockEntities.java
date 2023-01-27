@@ -5,13 +5,13 @@ import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntity;
-import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntity;
-import rbasamoyai.createbigcannons.cannonmount.CannonMountBlockEntityRenderer;
-import rbasamoyai.createbigcannons.cannonmount.CannonMountInstance;
-import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntity;
-import rbasamoyai.createbigcannons.cannonmount.YawControllerBlockEntityRenderer;
-import rbasamoyai.createbigcannons.cannonmount.YawControllerInstance;
-import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntityRenderer;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountInstance;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntityRenderer;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerInstance;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.*;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEndBlockEntity;
@@ -32,10 +32,10 @@ import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntit
 import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteBigCannonBlockEntity;
-import rbasamoyai.createbigcannons.munitions.FuzedBlockEntity;
-import rbasamoyai.createbigcannons.munitions.FuzedBlockEntityRenderer;
-import rbasamoyai.createbigcannons.munitions.FuzedBlockInstance;
-import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntityRenderer;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockInstance;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlockEntity;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 

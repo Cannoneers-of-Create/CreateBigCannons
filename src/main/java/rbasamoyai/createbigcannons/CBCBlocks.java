@@ -21,9 +21,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
 import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
-import rbasamoyai.createbigcannons.cannonmount.CannonMountBlock;
-import rbasamoyai.createbigcannons.cannonmount.YawControllerBlock;
-import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageBlock;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonTubeBlock;
@@ -45,15 +45,16 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
-import rbasamoyai.createbigcannons.munitions.PowderChargeBlock;
-import rbasamoyai.createbigcannons.munitions.apshell.APShellBlock;
-import rbasamoyai.createbigcannons.munitions.fluidshell.FluidShellBlock;
-import rbasamoyai.createbigcannons.munitions.grapeshot.GrapeshotBlock;
-import rbasamoyai.createbigcannons.munitions.heshell.HEShellBlock;
-import rbasamoyai.createbigcannons.munitions.mortarstone.MortarStoneBlock;
-import rbasamoyai.createbigcannons.munitions.mortarstone.MortarStoneItem;
-import rbasamoyai.createbigcannons.munitions.shot.SolidShotBlock;
-import rbasamoyai.createbigcannons.munitions.shrapnel.ShrapnelShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.PowderChargeBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
@@ -885,7 +886,15 @@ public class CBCBlocks {
 			.loot(CBCBuilderTransformers.shellLoot())
 			.simpleItem()
 			.register();
-	
+
+	public static final BlockEntry<APShotBlock> AP_SHOT = REGISTRATE
+			.block("ap_shot", APShotBlock::new)
+			.transform(shell(MaterialColor.COLOR_LIGHT_GRAY))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.projectile("projectile/ap_shot"))
+			.simpleItem()
+			.register();
+
 	public static final BlockEntry<APShellBlock> AP_SHELL = REGISTRATE
 			.block("ap_shell", APShellBlock::new)
 			.transform(shell(MaterialColor.COLOR_BLUE))

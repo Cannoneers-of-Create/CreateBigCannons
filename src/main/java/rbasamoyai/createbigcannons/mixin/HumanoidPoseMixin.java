@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import rbasamoyai.createbigcannons.CBCEntityTypes;
-import rbasamoyai.createbigcannons.cannonmount.carriage.CannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 
 @Mixin(HumanoidModel.class)
 public abstract class HumanoidPoseMixin extends AgeableListModel {

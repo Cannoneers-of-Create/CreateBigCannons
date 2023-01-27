@@ -238,5 +238,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	public abstract BlockState getRenderedBlockState();
 
 	public void setChargePower(float power) {}
-	
+
+	@Override public boolean canHitEntity(Entity entity) { return super.canHitEntity(entity); }
+
 }

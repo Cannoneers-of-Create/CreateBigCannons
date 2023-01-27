@@ -30,9 +30,9 @@ import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.base.PoleContraption;
-import rbasamoyai.createbigcannons.cannons.CannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
-import rbasamoyai.createbigcannons.munitions.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 public class CannonLoadingContraption extends PoleContraption {
 	
@@ -185,11 +185,11 @@ public class CannonLoadingContraption extends PoleContraption {
 	}
 	
 	private boolean isValidCannonBlock(LevelAccessor level, BlockState state, BlockPos pos) {
-		return state.getBlock() instanceof CannonBlock && level.getBlockEntity(pos) instanceof IBigCannonBlockEntity;
+		return state.getBlock() instanceof BigCannonBlock && level.getBlockEntity(pos) instanceof IBigCannonBlockEntity;
 	}
 	
 	private boolean matchesCannonAxis(BlockState state, Direction.Axis axis) {
-		return ((CannonBlock) state.getBlock()).getFacing(state).getAxis() == axis;
+		return ((BigCannonBlock) state.getBlock()).getFacing(state).getAxis() == axis;
 	}
 	
 	@Override

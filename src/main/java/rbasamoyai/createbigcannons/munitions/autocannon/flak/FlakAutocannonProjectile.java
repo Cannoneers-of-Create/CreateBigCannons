@@ -11,7 +11,7 @@ import rbasamoyai.createbigcannons.CBCEntityTypes;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
-import rbasamoyai.createbigcannons.munitions.shrapnel.Shrapnel;
+import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
 public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 
