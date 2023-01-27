@@ -8,9 +8,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
-public class ShotProjectile extends AbstractCannonProjectile {
+public class SolidShotProjectile extends AbstractCannonProjectile {
 
-	public ShotProjectile(EntityType<? extends ShotProjectile> type, Level level) {
+	public SolidShotProjectile(EntityType<? extends SolidShotProjectile> type, Level level) {
 		super(type, level);
 		this.setBreakthroughPower((byte) 5);
 	}

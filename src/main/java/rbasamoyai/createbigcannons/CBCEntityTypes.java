@@ -17,6 +17,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjec
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.Grapeshot;
@@ -24,7 +25,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotCanno
 import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneProjectile;
-import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.ShotProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellProjectile;
@@ -42,10 +43,11 @@ public class CBCEntityTypes {
 			.renderer(() -> OrientedContraptionEntityRenderer::new)
 			.register();
 
-	public static final EntityEntry<ShotProjectile> SHOT = cannonProjectile("shot", ShotProjectile::new);
+	public static final EntityEntry<SolidShotProjectile> SHOT = cannonProjectile("shot", SolidShotProjectile::new);
 	public static final EntityEntry<HEShellProjectile> HE_SHELL = cannonProjectile("he_shell", HEShellProjectile::new, "High Explosive (HE) Shell");
 	public static final EntityEntry<ShrapnelShellProjectile> SHRAPNEL_SHELL = cannonProjectile("shrapnel_shell", ShrapnelShellProjectile::new);
 	public static final EntityEntry<GrapeshotCannonProjectile> BAG_OF_GRAPESHOT = cannonProjectile("bag_of_grapeshot", GrapeshotCannonProjectile::new);
+	public static final EntityEntry<APShotProjectile> AP_SHOT = cannonProjectile("ap_shot", APShotProjectile::new);
 	public static final EntityEntry<APShellProjectile> AP_SHELL = cannonProjectile("ap_shell", APShellProjectile::new, "Armor Piercing (AP) Shell");
 	public static final EntityEntry<FluidShellProjectile> FLUID_SHELL = cannonProjectile("fluid_shell", FluidShellProjectile::new);
 	public static final EntityEntry<MortarStoneProjectile> MORTAR_STONE = cannonProjectile("mortar_stone", MortarStoneProjectile::new);

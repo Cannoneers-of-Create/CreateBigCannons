@@ -47,6 +47,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBl
 import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
@@ -885,7 +886,15 @@ public class CBCBlocks {
 			.loot(CBCBuilderTransformers.shellLoot())
 			.simpleItem()
 			.register();
-	
+
+	public static final BlockEntry<APShotBlock> AP_SHOT = REGISTRATE
+			.block("ap_shot", APShotBlock::new)
+			.transform(shell(MaterialColor.COLOR_LIGHT_GRAY))
+			.transform(axeOrPickaxe())
+			.transform(CBCBuilderTransformers.projectile("projectile/ap_shot"))
+			.simpleItem()
+			.register();
+
 	public static final BlockEntry<APShellBlock> AP_SHELL = REGISTRATE
 			.block("ap_shell", APShellBlock::new)
 			.transform(shell(MaterialColor.COLOR_BLUE))

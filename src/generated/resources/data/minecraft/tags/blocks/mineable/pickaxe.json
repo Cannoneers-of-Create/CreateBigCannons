@@ -95,6 +95,7 @@
     "createbigcannons:solid_shot",
     "createbigcannons:he_shell",
     "createbigcannons:shrapnel_shell",
+    "createbigcannons:ap_shot",
     "createbigcannons:ap_shell",
     "createbigcannons:fluid_shell",
     "createbigcannons:basin_foundry_lid"
