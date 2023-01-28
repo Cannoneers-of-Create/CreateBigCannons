@@ -5,6 +5,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 
@@ -12,12 +14,21 @@ public class SolidShotProjectile extends AbstractBigCannonProjectile {
 
 	public SolidShotProjectile(EntityType<? extends SolidShotProjectile> type, Level level) {
 		super(type, level);
-		this.setPenetrationPoints((byte) 5);
+		this.setPenetrationPoints(6);
 	}
 	
 	@Override
 	public BlockState getRenderedBlockState() {
 		return CBCBlocks.SOLID_SHOT.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);
+	}
+
+	@Override
+	protected boolean canDeflect(BlockHitResult result) {
+		if (!isDeflector(this.level.getBlockState(result.getBlockPos()))) return false;
+		Vec3 oldVel = this.getDeltaMovement();
+		Vec3 normal = new Vec3(result.getDirection().step());
+		double fc = normal.dot(oldVel) / oldVel.length();
+		return -1 <= fc && fc <= -0.5; // cos 180 <= fc <= cos 120
 	}
 
 }

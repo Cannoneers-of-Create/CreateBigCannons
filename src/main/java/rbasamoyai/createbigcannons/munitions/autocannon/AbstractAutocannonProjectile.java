@@ -3,16 +3,10 @@ package rbasamoyai.createbigcannons.munitions.autocannon;
 import com.simibubi.create.content.contraptions.particle.AirParticleData;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
-import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
@@ -61,16 +55,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	@Override protected float getGravity() { return 0; }
 	@Override protected float getInertia() { return 1; }
-
-    @Override protected TagKey<Block> blockingTag() { return CBCTags.BlockCBC.AUTOCANNON_BLOCKING; }
-    @Override protected TagKey<Block> resistantTag() { return CBCTags.BlockCBC.AUTOCANNON_RESISTANT; }
-    @Override protected TagKey<Block> noResistanceTag() { return CBCTags.BlockCBC.AUTOCANNON_NO_RESISTANCE; }
-
-    @Override
-    protected boolean isResistantFallback(BlockHitResult result, BlockState hitBlock) {
-        Material material = hitBlock.getMaterial();
-        return material == Material.STONE || material == Material.METAL || material == Material.HEAVY_METAL;
-    }
 
     @Override
 	public void addAdditionalSaveData(CompoundTag tag) {
