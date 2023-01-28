@@ -12,7 +12,7 @@ public class APShotProjectile extends AbstractBigCannonProjectile {
 
 	public APShotProjectile(EntityType<? extends APShotProjectile> type, Level level) {
 		super(type, level);
-		this.setPenetrationPoints((byte) 5);
+		this.setPenetrationPoints(18);
 	}
 
 	@Override

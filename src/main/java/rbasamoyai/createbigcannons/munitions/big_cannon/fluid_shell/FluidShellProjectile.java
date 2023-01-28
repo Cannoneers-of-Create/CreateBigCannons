@@ -21,7 +21,7 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 	
 	public FluidShellProjectile(EntityType<? extends FluidShellProjectile> type, Level level) {
 		super(type, level);
-		this.setPenetrationPoints((byte) 1);
+		this.setPenetrationPoints(3);
 	}
 	
 	public void setFluid(FluidStack stack) {

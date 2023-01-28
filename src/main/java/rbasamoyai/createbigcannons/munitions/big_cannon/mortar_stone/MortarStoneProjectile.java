@@ -24,7 +24,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 
     public MortarStoneProjectile(EntityType<? extends MortarStoneProjectile> type, Level level) {
         super(type, level);
-        this.setPenetrationPoints((byte) 1);
+        this.setPenetrationPoints(3);
     }
 
     @Override

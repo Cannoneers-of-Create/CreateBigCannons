@@ -15,7 +15,7 @@ public class ShrapnelShellProjectile extends FuzedBigCannonProjectile {
 
 	public ShrapnelShellProjectile(EntityType<? extends ShrapnelShellProjectile> type, Level level) {
 		super(type, level);
-		this.setPenetrationPoints((byte) 1);
+		this.setPenetrationPoints(3);
 	}
 	
 	@Override
