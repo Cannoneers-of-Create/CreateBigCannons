@@ -103,7 +103,7 @@ public abstract class BlockRecipeProvider implements DataProvider {
 			
 			cache.putNew(path, s1);
 		} catch (IOException e) {
-			LOGGER.error("Couldn't save casting recipe {}", path, e);
+			LOGGER.error("Couldn't save block recipe {}", path, e);
 		}
 	}
 	

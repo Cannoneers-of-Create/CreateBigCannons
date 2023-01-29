@@ -6,6 +6,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.datagen.assets.CBCBlockPartialsGen;
+import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
 import rbasamoyai.createbigcannons.datagen.loot.CBCLootTableProvider;
 import rbasamoyai.createbigcannons.datagen.recipes.*;
 import rbasamoyai.createbigcannons.datagen.values.BlockHardnessProvider;

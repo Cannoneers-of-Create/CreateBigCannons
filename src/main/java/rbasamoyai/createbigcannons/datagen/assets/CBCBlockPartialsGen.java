@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.datagen;
+package rbasamoyai.createbigcannons.datagen.assets;
 
 import com.simibubi.create.Create;
 import net.minecraft.data.DataGenerator;

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.datagen;
+package rbasamoyai.createbigcannons.datagen.assets;
 
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;

@@ -7,7 +7,7 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
-import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
+import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;

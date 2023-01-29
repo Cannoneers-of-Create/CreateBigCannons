@@ -44,7 +44,7 @@ import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryLidBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
-import rbasamoyai.createbigcannons.datagen.CBCBuilderTransformers;
+import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;

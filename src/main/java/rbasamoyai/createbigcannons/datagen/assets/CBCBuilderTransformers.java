@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.datagen;
+package rbasamoyai.createbigcannons.datagen.assets;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
