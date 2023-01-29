@@ -125,30 +125,15 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		if (!this.level.isClientSide) {
 			Vec3 hitLoc = result.getLocation();
 			BlockPos pos = result.getBlockPos();
+			Vec3 oldVel = this.getDeltaMovement();
 			BlockState oldState = this.level.getBlockState(pos);
 
-			boolean flag = true;
-			Vec3 oldVel = this.getDeltaMovement();
-			Vec3 normal = new Vec3(result.getDirection().step());
-			if (this.getPenetrationPoints() > 0) {
-				if (this.canDeflect(result)) {
-					// TODO: spall effect
-					this.setPos(hitLoc);
-					this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * 1.9)));
-					flag = false;
-				} else if (this.canRicochet(result)) {
-					this.setPos(hitLoc);
-					this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * 1.5)));
-					flag = false;
-				}
-			}
-
-			if (flag) {
+			BounceType bounce = this.canBounce(result);
+			if (bounce == BounceType.NO_BOUNCE) {
 				if (this.canBreakBlock(result)) {
-					Vec3 currentVel = this.getDeltaMovement();
 					this.level.destroyBlock(pos, false);
 					this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, this.getPenetratingExplosionPower(), Explosion.BlockInteraction.DESTROY);
-					this.setDeltaMovement(currentVel);
+					this.setDeltaMovement(oldVel);
 					this.setPenetrationPoints(result, oldState);
 				} else {
 					if (CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE) {
@@ -160,6 +145,13 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 					this.setPenetrationPoints((byte) 0);
 				}
 			} else {
+				if (bounce == BounceType.DEFLECT) {
+					// TODO: spall effect
+				}
+				Vec3 normal = new Vec3(result.getDirection().step());
+				this.setPos(hitLoc);
+				double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
+				this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity)));
 				this.setPenetrationPoints(Math.max(0, this.getPenetrationPoints() - oldState.getBlock().getExplosionResistance()));
 			}
 		}
@@ -181,11 +173,13 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		return material == Material.METAL || material == Material.HEAVY_METAL;
 	}
 
-	protected boolean canRicochet(BlockHitResult result) {
+	protected BounceType canBounce(BlockHitResult result) {
+		if (!CBCConfigs.SERVER.munitions.projectilesCanBounce.get() || this.getPenetrationPoints() <= 0) return BounceType.NO_BOUNCE;
 		Vec3 oldVel = this.getDeltaMovement();
 		Vec3 normal = new Vec3(result.getDirection().step());
 		double fc = normal.dot(oldVel) / oldVel.length();
-		return -0.5 <= fc && fc <= 0; // cos 120 <= fc <= cos 90
+		if (this.canDeflect(result) && -1 <= fc && fc <= -0.5) return BounceType.DEFLECT; // cos 180 <= fc <= cos 120
+		return -0.5 <= fc && fc <= 0 ? BounceType.RICOCHET : BounceType.NO_BOUNCE; // cos 120 <= fc <= cos 90
 	}
 
 	protected void setPenetrationPoints(BlockHitResult result, BlockState hitBlock) {
@@ -265,5 +259,11 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	public void setChargePower(float power) {}
 
 	@Override public boolean canHitEntity(Entity entity) { return super.canHitEntity(entity); }
+
+	public enum BounceType {
+		DEFLECT,
+		RICOCHET,
+		NO_BOUNCE
+	}
 
 }
