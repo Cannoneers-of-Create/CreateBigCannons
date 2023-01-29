@@ -1,6 +1,7 @@
 
 package rbasamoyai.createbigcannons;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import net.minecraft.client.Camera;
@@ -45,7 +46,7 @@ public class CreateBigCannonsClient {
 	private static final String KEY_ROOT = "key." + CreateBigCannons.MOD_ID;
 	private static final String KEY_CATEGORY = KEY_ROOT + ".category";
 	public static final KeyMapping PITCH_MODE = new KeyMapping(KEY_ROOT + ".pitch_mode", GLFW.GLFW_KEY_C, KEY_CATEGORY);
-	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fire_controlled_cannon", GLFW.GLFW_MOUSE_BUTTON_LEFT, KEY_CATEGORY);
+	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, KEY_CATEGORY);
 
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
