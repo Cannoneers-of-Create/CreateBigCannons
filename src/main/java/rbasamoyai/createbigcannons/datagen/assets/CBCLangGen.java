@@ -50,7 +50,11 @@ public class CBCLangGen {
 		.header("SHRAPNEL SHELL")
 		.summary("Peppers the battlefield with _shrapnel bullets_ when detonated.")
 		.conditionAndBehavior("On Detonation", "Releases _shrapnel_ in its direction. The shrapnel _spreads out over a wide area._");
-		
+
+		tooltip(CBCBlocks.AP_SHOT)
+		.header("ARMOR PIERCING (AP) SHOT")
+		.summary("Can effectively _pierce through blocks_. Good against _armored targets_. _Cannot be fuzed and detonated._");
+
 		tooltip(CBCBlocks.AP_SHELL)
 		.header("ARMOR PIERCING (AP) SHELL")
 		.summary("Can effectively _pierce through blocks_, detonating inside protected structures.")

@@ -892,6 +892,7 @@ public class CBCBlocks {
 			.transform(shell(MaterialColor.COLOR_LIGHT_GRAY))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.projectile("projectile/ap_shot"))
+			.lang("Armor Piercing (AP) Shot")
 			.simpleItem()
 			.register();
 
