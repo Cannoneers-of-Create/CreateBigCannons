@@ -8,6 +8,7 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.datagen.loot.CBCLootTableProvider;
 import rbasamoyai.createbigcannons.datagen.recipes.*;
+import rbasamoyai.createbigcannons.datagen.values.BlockHardnessProvider;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 import rbasamoyai.createbigcannons.ponder.CBCPonderTags;
 
@@ -27,6 +28,7 @@ public class CBCDatagen {
 			gen.addProvider(new CBCLootTableProvider(gen));
 			gen.addProvider(new CBCSequencedAssemblyRecipeProvider(gen));
 			gen.addProvider(new CBCCuttingRecipeProvider(gen));
+			gen.addProvider(new BlockHardnessProvider(CreateBigCannons.MOD_ID, gen));
 		}
 		if (event.includeClient()) {
 			CBCLangGen.prepare();

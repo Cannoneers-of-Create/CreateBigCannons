@@ -18,6 +18,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
@@ -27,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile {
 
@@ -152,7 +154,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 				this.setPos(hitLoc);
 				double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
 				this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity)));
-				this.setPenetrationPoints(Math.max(0, this.getPenetrationPoints() - oldState.getBlock().getExplosionResistance()));
+				this.setPenetrationPoints(result, oldState);
 			}
 		}
 	}
@@ -173,6 +175,13 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		return material == Material.METAL || material == Material.HEAVY_METAL;
 	}
 
+	public static double getHardness(BlockState state) {
+		Block block = state.getBlock();
+		if (BlockHardnessHandler.BLOCK_MAP.containsKey(block)) return BlockHardnessHandler.BLOCK_MAP.get(block);
+		if (BlockHardnessHandler.TAG_MAP.containsKey(block)) return BlockHardnessHandler.TAG_MAP.get(block);
+		return block.getExplosionResistance();
+	}
+
 	protected BounceType canBounce(BlockHitResult result) {
 		if (!CBCConfigs.SERVER.munitions.projectilesCanBounce.get() || this.getPenetrationPoints() <= 0) return BounceType.NO_BOUNCE;
 		Vec3 oldVel = this.getDeltaMovement();
@@ -183,7 +192,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	}
 
 	protected void setPenetrationPoints(BlockHitResult result, BlockState hitBlock) {
-		this.setPenetrationPoints(Math.max(0, this.getPenetrationPoints() - hitBlock.getBlock().getExplosionResistance()));
+		this.setPenetrationPoints(Math.max(0, this.getPenetrationPoints() - (float) getHardness(hitBlock)));
 	}
 
 	protected float getPenetratingExplosionPower() { return 2; }

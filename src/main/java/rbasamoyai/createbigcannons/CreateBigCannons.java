@@ -25,6 +25,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
+import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 
 @Mod(CreateBigCannons.MOD_ID)
@@ -84,6 +85,7 @@ public class CreateBigCannons {
 	private void onAddReloadListeners(AddReloadListenerEvent event) {
 		event.addListener(BlockRecipeFinder.LISTENER);
 		event.addListener(BlockRecipesManager.ReloadListener.INSTANCE);
+		event.addListener(BlockHardnessHandler.ReloadListener.INSTANCE);
 	}
 	
 	private void onDatapackSync(OnDatapackSyncEvent event) {
