@@ -36,7 +36,9 @@ public class CBCTags {
 			WEAK_CANNON_END = createAndGenerateBlockTag(CreateBigCannons.resource("weak_cannon_end")),
 			DRILL_CAN_PASS_THROUGH = createAndGenerateBlockTag(CreateBigCannons.resource("drill_can_pass_through")),
 			DEFLECTS_SHOTS = createAndGenerateBlockTag(CreateBigCannons.resource("deflects_shots")),
-			DOESNT_DEFLECT_SHOTS = createAndGenerateBlockTag(CreateBigCannons.resource("doesnt_deflect_shots"));
+			DOESNT_DEFLECT_SHOTS = createAndGenerateBlockTag(CreateBigCannons.resource("doesnt_deflect_shots")),
+			BOUNCES_SHOTS = createAndGenerateBlockTag(CreateBigCannons.resource("bounces_shots")),
+			DOESNT_BOUNCE_SHOTS = createAndGenerateBlockTag(CreateBigCannons.resource("doesnt_bounce_shots"));
 		
 		public static TagKey<Block> createAndGenerateBlockTag(ResourceLocation loc) {
 			TagKey<Block> tag = BlockTags.create(loc); 

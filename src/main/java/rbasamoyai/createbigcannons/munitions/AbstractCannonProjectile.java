@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -154,7 +155,8 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 				this.setPos(hitLoc);
 				double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
 				this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity)));
-				this.setPenetrationPoints(result, oldState);
+				this.setPenetrationPoints(this.getPenetrationPoints() * 0.8f);
+				if (this.getPenetrationPoints() < 1) this.setPenetrationPoints(0);
 			}
 		}
 	}
@@ -167,12 +169,20 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	}
 
 	protected boolean canDeflect(BlockHitResult result) { return false; }
+	protected boolean canBounceOffOf(BlockState state) { return isBounceableOffOf(state); }
 
 	public static boolean isDeflector(BlockState state) {
 		if (state.is(CBCTags.BlockCBC.DEFLECTS_SHOTS)) return true;
 		if (state.is(CBCTags.BlockCBC.DOESNT_DEFLECT_SHOTS)) return false;
 		Material material = state.getMaterial();
 		return material == Material.METAL || material == Material.HEAVY_METAL;
+	}
+
+	public static boolean isBounceableOffOf(BlockState state) {
+		if (state.is(CBCTags.BlockCBC.DOESNT_BOUNCE_SHOTS)) return false;
+		if (state.is(CBCTags.BlockCBC.BOUNCES_SHOTS)) return true;
+		Material material = state.getMaterial();
+		return material.isSolidBlocking() && material.getPushReaction() != PushReaction.DESTROY;
 	}
 
 	public static double getHardness(BlockState state) {
@@ -184,6 +194,10 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 
 	protected BounceType canBounce(BlockHitResult result) {
 		if (!CBCConfigs.SERVER.munitions.projectilesCanBounce.get() || this.getPenetrationPoints() <= 0) return BounceType.NO_BOUNCE;
+
+		BlockState state = this.level.getBlockState(result.getBlockPos());
+		if (!this.canBounceOffOf(state)) return BounceType.NO_BOUNCE;
+
 		Vec3 oldVel = this.getDeltaMovement();
 		Vec3 normal = new Vec3(result.getDirection().step());
 		double fc = normal.dot(oldVel) / oldVel.length();
