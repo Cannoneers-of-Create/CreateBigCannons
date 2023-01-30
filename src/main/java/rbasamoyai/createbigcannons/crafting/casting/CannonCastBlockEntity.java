@@ -136,7 +136,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	}
 	
 	private IFluidHandler createHandlerForCap() {
-		return this.isController() ? this.fluid : this.getControllerTE().createHandlerForCap();
+		return this.isController() ? this.fluid : this.getControllerTE() == null ? this.fluid : this.getControllerTE().createHandlerForCap();
 	}
 	
 	public FluidTank getTank() { return this.fluid; }
