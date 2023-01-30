@@ -19,8 +19,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.base.CBCGuiTextures;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
-import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe.LayerPredicate;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderState;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 
@@ -91,11 +91,11 @@ public class BuiltUpHeatingCategory extends CBCBlockRecipeCategory<BuiltUpHeatin
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, BuiltUpHeatingRecipe recipe, IFocusGroup focuses) {
 		int i = 0;
-		Set<LayerPredicate> layers = recipe.layers();
+		Set<BlockRecipeIngredient> layers = recipe.layers();
 		int base = this.getBackground().getWidth() / 2 - 11 * layers.size() + 1;
-		for (LayerPredicate layer : layers) {
+		for (BlockRecipeIngredient layer : layers) {
 			IRecipeSlotBuilder builder1 = builder.addSlot(RecipeIngredientRole.INPUT, base + i * 22, 5);
-			builder1.addItemStacks(layer.blocks().stream().map(ItemStack::new).filter(s -> !s.isEmpty()).toList());
+			builder1.addItemStacks(layer.getBlockItems());
 			builder1.setBackground(getRenderedSlot(), -1, -1);
 			++i;
 		}

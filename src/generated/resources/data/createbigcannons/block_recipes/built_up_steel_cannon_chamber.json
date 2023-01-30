@@ -1,26 +1,10 @@
 {
   "type": "createbigcannons:built_up_heating",
   "layers": [
-    {
-      "blocks": [
-        "createbigcannons:very_small_steel_cannon_layer"
-      ]
-    },
-    {
-      "blocks": [
-        "createbigcannons:small_steel_cannon_layer"
-      ]
-    },
-    {
-      "blocks": [
-        "createbigcannons:medium_steel_cannon_layer"
-      ]
-    },
-    {
-      "blocks": [
-        "createbigcannons:large_steel_cannon_layer"
-      ]
-    }
+    "createbigcannons:very_small_steel_cannon_layer",
+    "createbigcannons:small_steel_cannon_layer",
+    "createbigcannons:medium_steel_cannon_layer",
+    "createbigcannons:large_steel_cannon_layer"
   ],
   "result": "createbigcannons:built_up_steel_cannon_chamber"
 }

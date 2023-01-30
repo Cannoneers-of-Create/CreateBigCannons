@@ -42,6 +42,7 @@ public abstract class BlockRecipeProvider implements DataProvider {
 	public static void registerAll(DataGenerator gen) {
 		GENERATORS.add(new CannonCastRecipeProvider(gen));
 		GENERATORS.add(new BuiltUpHeatingRecipeProvider(gen));
+		GENERATORS.add(new DrillBoringRecipeProvider(gen));
 		
 		gen.addProvider(new DataProvider() {	
 			@Override
@@ -67,10 +68,10 @@ public abstract class BlockRecipeProvider implements DataProvider {
 		Path path = this.gen.getOutputFolder();
 		Set<ResourceLocation> set = new HashSet<>();
 		this.registerRecipes(recipe -> {
-			if (!set.add(recipe.getId())) {
-				throw new IllegalStateException("Duplicate block recipe " + recipe.getId());
+			if (!set.add(recipe.id())) {
+				throw new IllegalStateException("Duplicate block recipe " + recipe.id());
 			} else {
-				saveRecipe(cache, recipe.serializeRecipe(), path.resolve("data/" + recipe.getId().getNamespace() + "/block_recipes/" + recipe.getId().getPath() + ".json"));
+				saveRecipe(cache, recipe.serializeRecipe(), path.resolve("data/" + recipe.id().getNamespace() + "/block_recipes/" + recipe.id().getPath() + ".json"));
 			}
 		});
 	}

@@ -14,17 +14,19 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 
 public interface BlockRecipeSerializer<T extends BlockRecipe> extends IForgeRegistryEntry<BlockRecipeSerializer<?>> {
-	
+
 	T fromJson(ResourceLocation id, JsonObject obj);
 	T fromNetwork(ResourceLocation id, FriendlyByteBuf buf);
 	void toNetwork(FriendlyByteBuf buf, T recipe);
 	
 	Entry<CannonCastingRecipe> CANNON_CASTING = register("cannon_casting", CannonCastingRecipe.Serializer::new);
 	Entry<BuiltUpHeatingRecipe> BUILT_UP_HEATING = register("built_up_heating", BuiltUpHeatingRecipe.Serializer::new);
+	Entry<DrillBoringBlockRecipe> DRILL_BORING = register("drill_boring", DrillBoringBlockRecipe.Serializer::new);
 	
 	private static <T extends BlockRecipe> Entry<T> register(String id, NonNullSupplier<BlockRecipeSerializer<T>> fac) {
 		AbstractRegistrate<?> reg = CreateBigCannons.REGISTRATE;

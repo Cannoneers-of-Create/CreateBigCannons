@@ -12,6 +12,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 
@@ -19,6 +20,7 @@ public interface BlockRecipeType<T extends BlockRecipe> extends IForgeRegistryEn
 	
 	Entry<CannonCastingRecipe> CANNON_CASTING = register("cannon_casting");
 	Entry<BuiltUpHeatingRecipe> BUILT_UP_HEATING = register("built_up_heating");
+	Entry<DrillBoringBlockRecipe> DRILL_BORING = register("drill_boring");
 	
 	private static <T extends BlockRecipe> Entry<T> register(String id) {
 		AbstractRegistrate<?> reg = CreateBigCannons.REGISTRATE;

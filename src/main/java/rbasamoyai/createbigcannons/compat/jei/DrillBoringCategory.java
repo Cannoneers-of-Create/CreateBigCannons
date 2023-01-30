@@ -14,18 +14,24 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 
-public class CannonBoringCategory extends CBCBlockRecipeCategory<CannonBoringRecipe> {
+import java.util.List;
 
-	public CannonBoringCategory(Info<CannonBoringRecipe> info) {
+public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlockRecipe> {
+
+	public DrillBoringCategory(Info<DrillBoringBlockRecipe> info) {
 		super(info);
 	}
 	
 	@Override
-	public void draw(CannonBoringRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
+	public void draw(DrillBoringBlockRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
 		int scale = 23;
 		AllGuiTextures.JEI_SHADOW.render(stack, 35, 28);
 		AllGuiTextures.JEI_SHADOW.render(stack, 97, 36);
@@ -45,8 +51,10 @@ public class CannonBoringCategory extends CBCBlockRecipeCategory<CannonBoringRec
 		.atLocal(0, 0, 0)
 		.scale(scale)
 		.render(stack);
-		
-		AnimatedKinetics.defaultBlockElement(recipe.ingredientBlock().defaultBlockState())
+
+		List<ItemStack> ingredients = recipe.ingredients();
+		Block block = !ingredients.isEmpty() && ingredients.get(0).getItem() instanceof BlockItem item ? item.getBlock() : Blocks.BARRIER;
+		AnimatedKinetics.defaultBlockElement(block.defaultBlockState())
 		.rotateBlock(0, 0, AnimatedKinetics.getCurrentAngle())
 		.atLocal(0, 0, 2)
 		.scale(scale)
@@ -73,9 +81,9 @@ public class CannonBoringCategory extends CBCBlockRecipeCategory<CannonBoringRec
 	}
 	
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, CannonBoringRecipe recipe, IFocusGroup focuses) {
+	public void setRecipe(IRecipeLayoutBuilder builder, DrillBoringBlockRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 21, 51)
-		.addItemStack(recipe.ingredients().get(0))
+		.addItemStacks(recipe.ingredients())
 		.setBackground(getRenderedSlot(), -1, -1);
 		
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 141, 51)

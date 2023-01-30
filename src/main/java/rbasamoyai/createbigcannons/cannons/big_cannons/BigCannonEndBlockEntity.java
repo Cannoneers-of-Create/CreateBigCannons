@@ -11,7 +11,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
-import rbasamoyai.createbigcannons.crafting.boring.TransformableByBoring;
+import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
+import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
 
 import java.util.List;
 
@@ -34,11 +35,13 @@ public class BigCannonEndBlockEntity extends SmartTileEntity implements IBigCann
 	
 	@Override
 	public InteractionResult onWandUsed(UseOnContext context) {
-		if (!(this.getBlockState().getBlock() instanceof TransformableByBoring unbored)) return InteractionResult.PASS;
+		BlockState state = this.getBlockState();
+		DrillBoringBlockRecipe recipe = CannonDrillBlockEntity.getBlockRecipe(state);
+		if (recipe == null) return InteractionResult.PASS;
 		if (!this.level.isClientSide) {
 			CompoundTag loadTag = this.saveWithFullMetadata();
 			loadTag.putBoolean("JustBored", true);
-			BlockState boredState = unbored.getBoredBlockState(this.getBlockState());
+			BlockState boredState = recipe.getResultState(state);
 			this.setRemoved();
 			this.level.setBlock(this.worldPosition, boredState, 11);
 			BlockEntity newBE = this.level.getBlockEntity(this.worldPosition);

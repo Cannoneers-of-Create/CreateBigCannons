@@ -8,7 +8,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 
 public interface FinishedBlockRecipe {
 	void serializeRecipeData(JsonObject obj);
-	ResourceLocation getId();
+	ResourceLocation id();
 	BlockRecipeSerializer<?> getSerializer();
 	
 	default JsonObject serializeRecipe() {

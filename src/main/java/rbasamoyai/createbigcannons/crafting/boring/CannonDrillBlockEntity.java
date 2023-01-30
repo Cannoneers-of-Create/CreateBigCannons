@@ -67,10 +67,15 @@ import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.base.PoleMoverBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
+import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 
@@ -81,6 +86,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	protected FailureReason failureReason = FailureReason.NONE;
 	protected FluidTank lubricant;
 	private LazyOptional<IFluidHandler> fluidOptional;
+	private DrillBoringBlockRecipe currentRecipe;
 	
 	private static final int SYNC_RATE = 8;
 	protected boolean queuedSync;
@@ -90,9 +96,10 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		super(type, pos, state);
 		this.lubricant = new SmartFluidTank(1000, this::onFluidStackChanged).setValidator(fs -> fs.getFluid() == Fluids.WATER);
 	}
-	
+
+	@Nonnull
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			Direction facing = this.getBlockState().getValue(BlockStateProperties.FACING);
 			boolean alongFirst = this.getBlockState().getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
@@ -224,8 +231,12 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 				BlockPos boringOffset = globalPos.subtract(new BlockPos(otherPosition));
 				if (!lathe.getBlocks().containsKey(boringOffset)) continue;
 				StructureBlockInfo latheBlockInfo = lathe.getBlocks().get(boringOffset);
-				
-				if (!latheBlockInfo.state.is(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH) && !(latheBlockInfo.state.getBlock() instanceof TransformableByBoring)) {
+
+				DrillBoringBlockRecipe recipe = getBlockRecipe(latheBlockInfo.state);
+				if (recipe != null) {
+					this.currentRecipe = recipe;
+					return false;
+				} else if (!latheBlockInfo.state.is(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) {
 					return true;
 				}
 			}
@@ -234,11 +245,18 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		return false;
 	}
 
+	public static DrillBoringBlockRecipe getBlockRecipe(BlockState block) {
+		return BlockRecipesManager.getRecipesOfType(BlockRecipeType.DRILL_BORING.get()).stream()
+				.map(DrillBoringBlockRecipe.class::cast)
+				.filter(r -> r.matches(block))
+				.findAny().orElse(null);
+	}
+
 	@Override
 	public void disassemble() {
 		if (!this.running && this.movedContraption == null) return;
 		if (!this.remove) {
-			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonDrillBlock.STATE, PistonState.EXTENDED), 3 | 16);
+			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(CannonDrillBlock.STATE, PistonState.EXTENDED), 3 | 16);
 		}
 		super.disassemble();
 	}
@@ -344,15 +362,6 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 			if (!lathe.getBlocks().containsKey(boringOffset)) continue;
 			StructureBlockInfo latheBlockInfo = lathe.getBlocks().get(boringOffset);
 			
-			boolean isBoreable = latheBlockInfo.state.getBlock() instanceof TransformableByBoring;
-			
-			if (!latheBlockInfo.state.is(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH) && !isBoreable) {
-				this.tryFinishingBoring();
-				this.stopBoringState();
-				this.simulateStop();
-				return true;
-			}
-			
 			BlockPos currentPos = collide || this.offset + this.getMovementSpeed() >= this.getExtensionRange() ? globalPos.relative(movementDirection) : globalPos;
 			if (this.boringPos == null) {
 				this.boringPos = currentPos;
@@ -360,13 +369,15 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 				this.tryFinishingBoring();
 				this.boringPos = currentPos;
 			}
-			
-			if (!isBoreable) {
-				this.boringPos = null;
-				this.boreSpeed = 0;
-				this.addedStressImpact = 0;
-				continue;
+
+			DrillBoringBlockRecipe candidate = getBlockRecipe(latheBlockInfo.state);
+			if (candidate == null) {
+				if (latheBlockInfo.state.is(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) continue;
+				this.stopBoringState();
+				this.simulateStop();
+				return true;
 			}
+			this.currentRecipe = candidate;
 			
 			int drainSpeed = (int) Mth.abs(bearing.getSpeed() * 0.5f);
 			if (Math.abs(bearing.getSpeed()) > Math.abs(this.getSpeed())) {
@@ -424,19 +435,22 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		this.resetContraptionToOffset();
 		this.collided();
 	}
-	
+
 	protected void tryFinishingBoring() {
-		if (!(this.level instanceof ServerLevel slevel)  || this.latheEntity == null || this.movedContraption == null || this.boringPos == null) return;
-		
+		if (!(this.level instanceof ServerLevel slevel)
+			|| this.latheEntity == null
+			|| this.movedContraption == null
+			|| this.boringPos == null
+			|| this.currentRecipe == null) return;
 		if (!(this.latheEntity.getContraption() instanceof BearingContraption lathe) || lathe.stalled) return;
 		BlockPos boringOffset = this.boringPos.subtract(new BlockPos(this.latheEntity.position()));
 		if (!lathe.getBlocks().containsKey(boringOffset)) return;
 		
 		StructureBlockInfo latheBlockInfo = lathe.getBlocks().get(boringOffset);
-		if (!(latheBlockInfo.state.getBlock() instanceof TransformableByBoring unbored)) return;
 		Direction facing = ((CannonDrillingContraption) this.movedContraption.getContraption()).orientation();
 		
-		BlockState boredState = unbored.getBoredBlockState(latheBlockInfo.state);
+		BlockState boredState = this.currentRecipe.getResultState(latheBlockInfo.state);
+
 		if (latheBlockInfo.nbt != null && boredState.getBlock() instanceof ITE<?> boredBE) {
 			BlockEntity be = boredBE.newBlockEntity(BlockPos.ZERO, boredState);
 			latheBlockInfo.nbt.putBoolean("JustBored", true);

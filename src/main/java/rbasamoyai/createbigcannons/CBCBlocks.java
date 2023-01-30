@@ -137,7 +137,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_CAST_IRON_CANNON_BARREL = REGISTRATE
-			.block("unbored_cast_iron_cannon_barrel", p -> UnboredBigCannonBlock.verySmall(p, BigCannonMaterial.CAST_IRON, CAST_IRON_CANNON_BARREL))
+			.block("unbored_cast_iron_cannon_barrel", p -> UnboredBigCannonBlock.verySmall(p, BigCannonMaterial.CAST_IRON))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/cast_iron", "cannon_barrel/unbored_cast_iron"))
 			.loot(CBCBuilderTransformers.castIronScrapLoot(15))
@@ -145,7 +145,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_CAST_IRON_CANNON_CHAMBER = REGISTRATE
-			.block("unbored_cast_iron_cannon_chamber", p -> UnboredBigCannonBlock.medium(p, BigCannonMaterial.CAST_IRON, CAST_IRON_CANNON_CHAMBER))
+			.block("unbored_cast_iron_cannon_chamber", p -> UnboredBigCannonBlock.medium(p, BigCannonMaterial.CAST_IRON))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/cast_iron", "cannon_chamber/unbored_cast_iron"))
 			.loot(CBCBuilderTransformers.castIronScrapLoot(15))
@@ -161,7 +161,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredSlidingBreechBlock> UNBORED_CAST_IRON_SLIDING_BREECH = REGISTRATE
-			.block("unbored_cast_iron_sliding_breech", p -> new UnboredSlidingBreechBlock(p, BigCannonMaterial.CAST_IRON, INCOMPLETE_CAST_IRON_SLIDING_BREECH, Shapes.block()))
+			.block("unbored_cast_iron_sliding_breech", p -> new UnboredSlidingBreechBlock(p, BigCannonMaterial.CAST_IRON, Shapes.block()))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreechUnbored("sliding_breech/unbored_cast_iron"))
 			.loot(CBCBuilderTransformers.castIronScrapLoot(15))
@@ -203,7 +203,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_BRONZE_CANNON_BARREL = REGISTRATE
-			.block("unbored_bronze_cannon_barrel", p -> UnboredBigCannonBlock.verySmall(p, BigCannonMaterial.BRONZE, BRONZE_CANNON_BARREL))
+			.block("unbored_bronze_cannon_barrel", p -> UnboredBigCannonBlock.verySmall(p, BigCannonMaterial.BRONZE))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/bronze", "cannon_barrel/unbored_bronze"))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(15))
@@ -211,7 +211,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_BRONZE_CANNON_CHAMBER = REGISTRATE
-			.block("unbored_bronze_cannon_chamber", p -> UnboredBigCannonBlock.medium(p, BigCannonMaterial.BRONZE, BRONZE_CANNON_CHAMBER))
+			.block("unbored_bronze_cannon_chamber", p -> UnboredBigCannonBlock.medium(p, BigCannonMaterial.BRONZE))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/bronze", "cannon_chamber/unbored_bronze"))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(15))
@@ -227,7 +227,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredSlidingBreechBlock> UNBORED_BRONZE_SLIDING_BREECH = REGISTRATE
-			.block("unbored_bronze_sliding_breech", p -> new UnboredSlidingBreechBlock(p, BigCannonMaterial.BRONZE, INCOMPLETE_BRONZE_SLIDING_BREECH, Shapes.block()))
+			.block("unbored_bronze_sliding_breech", p -> new UnboredSlidingBreechBlock(p, BigCannonMaterial.BRONZE, Shapes.block()))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreechUnbored("sliding_breech/unbored_bronze"))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(15))
@@ -322,7 +322,7 @@ public class CBCBlocks {
 			.register();	
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_VERY_SMALL_STEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_very_small_steel_cannon_layer", p -> UnboredBigCannonBlock.verySmall(p, BigCannonMaterial.STEEL, VERY_SMALL_STEEL_CANNON_LAYER))
+			.block("unbored_very_small_steel_cannon_layer", p -> UnboredBigCannonBlock.verySmall(p, BigCannonMaterial.STEEL))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/steel", "cannon_barrel/unbored_steel"))
 			.loot(CBCBuilderTransformers.steelScrapLoot(15))
@@ -330,7 +330,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_SMALL_STEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_small_steel_cannon_layer", p -> UnboredBigCannonBlock.small(p, BigCannonMaterial.STEEL, SMALL_STEEL_CANNON_LAYER))
+			.block("unbored_small_steel_cannon_layer", p -> UnboredBigCannonBlock.small(p, BigCannonMaterial.STEEL))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.sizedCannon("built_up_cannon_barrel", "cannon_tubing/unbored_steel"))
 			.loot(CBCBuilderTransformers.steelScrapLoot(15))
@@ -338,7 +338,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_MEDIUM_STEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_medium_steel_cannon_layer", p -> UnboredBigCannonBlock.medium(p, BigCannonMaterial.STEEL, MEDIUM_STEEL_CANNON_LAYER))
+			.block("unbored_medium_steel_cannon_layer", p -> UnboredBigCannonBlock.medium(p, BigCannonMaterial.STEEL))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/steel", "cannon_chamber/unbored_steel"))
 			.loot(CBCBuilderTransformers.steelScrapLoot(15))
@@ -346,7 +346,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_LARGE_STEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_large_steel_cannon_layer", p -> UnboredBigCannonBlock.large(p, BigCannonMaterial.STEEL, LARGE_STEEL_CANNON_LAYER))
+			.block("unbored_large_steel_cannon_layer", p -> UnboredBigCannonBlock.large(p, BigCannonMaterial.STEEL))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.sizedCannon("built_up_cannon_chamber", "cannon_tubing/unbored_steel"))
 			.loot(CBCBuilderTransformers.steelScrapLoot(15))
@@ -354,7 +354,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_VERY_LARGE_STEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_very_large_steel_cannon_layer", p -> UnboredBigCannonBlock.veryLarge(p, BigCannonMaterial.STEEL, VERY_LARGE_STEEL_CANNON_LAYER))
+			.block("unbored_very_large_steel_cannon_layer", p -> UnboredBigCannonBlock.veryLarge(p, BigCannonMaterial.STEEL))
 			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.sizedCannon("thick_cannon_chamber", "cannon_tubing/unbored_steel"))
 			.loot(CBCBuilderTransformers.steelScrapLoot(15))
@@ -378,7 +378,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredSlidingBreechBlock> UNBORED_STEEL_SLIDING_BREECH = REGISTRATE
-			.block("unbored_steel_sliding_breech", p -> new UnboredSlidingBreechBlock(p, BigCannonMaterial.STEEL, INCOMPLETE_STEEL_SLIDING_BREECH, Shapes.block()))
+			.block("unbored_steel_sliding_breech", p -> new UnboredSlidingBreechBlock(p, BigCannonMaterial.STEEL, Shapes.block()))
 			.transform(cannonBlock())
 			.loot(CBCBuilderTransformers.steelScrapLoot(15))
 			.transform(CBCBuilderTransformers.slidingBreechUnbored("sliding_breech/unbored_steel"))
@@ -402,7 +402,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredScrewBreechBlock> UNBORED_STEEL_SCREW_BREECH = REGISTRATE
-			.block("unbored_steel_screw_breech", p -> new UnboredScrewBreechBlock(p, BigCannonMaterial.STEEL, INCOMPLETE_STEEL_SCREW_BREECH))
+			.block("unbored_steel_screw_breech", p -> new UnboredScrewBreechBlock(p, BigCannonMaterial.STEEL))
 			.transform(cannonBlock())
 			.loot(CBCBuilderTransformers.steelScrapLoot(15))
 			.transform(CBCBuilderTransformers.screwBreechUnbored("screw_breech/steel", "screw_breech/unbored_steel"))
@@ -497,7 +497,7 @@ public class CBCBlocks {
 			.register();	
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_very_small_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.verySmall(p, BigCannonMaterial.NETHERSTEEL, VERY_SMALL_NETHERSTEEL_CANNON_LAYER))
+			.block("unbored_very_small_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.verySmall(p, BigCannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.cannonBarrel("cannon_barrel/nethersteel", "cannon_barrel/unbored_nethersteel"))
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(15))
@@ -505,7 +505,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_small_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.small(p, BigCannonMaterial.NETHERSTEEL, SMALL_NETHERSTEEL_CANNON_LAYER))
+			.block("unbored_small_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.small(p, BigCannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.sizedCannon("built_up_cannon_barrel", "cannon_tubing/unbored_nethersteel"))
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(15))
@@ -513,7 +513,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_MEDIUM_NETHERSTEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_medium_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.medium(p, BigCannonMaterial.NETHERSTEEL, MEDIUM_NETHERSTEEL_CANNON_LAYER))
+			.block("unbored_medium_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.medium(p, BigCannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.cannonChamber("cannon_chamber/nethersteel", "cannon_chamber/unbored_nethersteel"))
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(15))
@@ -521,7 +521,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_LARGE_NETHERSTEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_large_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.large(p, BigCannonMaterial.NETHERSTEEL, LARGE_NETHERSTEEL_CANNON_LAYER))
+			.block("unbored_large_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.large(p, BigCannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.sizedCannon("built_up_cannon_chamber", "cannon_tubing/unbored_nethersteel"))
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(15))
@@ -529,7 +529,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_VERY_LARGE_NETHERSTEEL_CANNON_LAYER = REGISTRATE
-			.block("unbored_very_large_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.veryLarge(p, BigCannonMaterial.NETHERSTEEL, VERY_LARGE_NETHERSTEEL_CANNON_LAYER))
+			.block("unbored_very_large_nethersteel_cannon_layer", p -> UnboredBigCannonBlock.veryLarge(p, BigCannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
 			.transform(CBCBuilderTransformers.sizedCannon("thick_cannon_chamber", "cannon_tubing/unbored_nethersteel"))
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(15))
@@ -553,7 +553,7 @@ public class CBCBlocks {
 			.register();
 	
 	public static final BlockEntry<UnboredScrewBreechBlock> UNBORED_NETHERSTEEL_SCREW_BREECH = REGISTRATE
-			.block("unbored_nethersteel_screw_breech", p -> new UnboredScrewBreechBlock(p, BigCannonMaterial.NETHERSTEEL, INCOMPLETE_NETHERSTEEL_SCREW_BREECH))
+			.block("unbored_nethersteel_screw_breech", p -> new UnboredScrewBreechBlock(p, BigCannonMaterial.NETHERSTEEL))
 			.transform(strongCannonBlock())
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(15))
 			.transform(CBCBuilderTransformers.screwBreechUnbored("screw_breech/nethersteel", "screw_breech/unbored_nethersteel"))

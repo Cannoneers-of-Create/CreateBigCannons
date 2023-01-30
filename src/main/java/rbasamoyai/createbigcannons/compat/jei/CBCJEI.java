@@ -37,6 +37,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.CBCRecipeTypes;
+import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 import rbasamoyai.createbigcannons.crafting.foundry.MeltingRecipe;
@@ -85,14 +86,14 @@ public class CBCJEI implements IModPlugin {
 			.emptyBackground(177, 103)
 			.build("built_up_heating", BuiltUpHeatingCategory::new),
 			
-		cannon_boring_blocks = builder(CannonBoringRecipe.class)
-			.addRecipes(CannonBoringRecipe::makeAllBoringRecipes)
+		drill_boring_blocks = builder(DrillBoringBlockRecipe.class)
+			.addTypedRecipes(BlockRecipeType.DRILL_BORING.get())
 			.catalyst(CBCBlocks.CANNON_DRILL::asStack)
 			.catalyst(AllBlocks.MECHANICAL_BEARING::asStack)
 			.catalyst(AllBlocks.WINDMILL_BEARING::asStack)
 			.itemIcon(CBCBlocks.CANNON_DRILL.get())
 			.emptyBackground(177, 77)
-			.build("cannon_boring", CannonBoringCategory::new),
+			.build("drill_boring", DrillBoringCategory::new),
 			
 		incomplete_cannon_blocks = builder(IncompleteCannonBlockRecipe.class)
 			.addRecipes(IncompleteCannonBlockRecipe::makeAllIncompleteRecipes)

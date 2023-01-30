@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons.crafting.boring;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
-
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -20,20 +18,14 @@ public class UnboredSlidingBreechBlock extends UnboredBigCannonBlock implements 
 
 	public static final BooleanProperty ALONG_FIRST = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 	
-	public UnboredSlidingBreechBlock(Properties properties, BigCannonMaterial material, NonNullSupplier<? extends Block> boredBlockSup, VoxelShape baseShape) {
-		super(properties, material, CannonCastShape.SLIDING_BREECH, boredBlockSup, baseShape);
+	public UnboredSlidingBreechBlock(Properties properties, BigCannonMaterial material, VoxelShape baseShape) {
+		super(properties, material, CannonCastShape.SLIDING_BREECH, baseShape);
 	}
 	
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(ALONG_FIRST);
 		super.createBlockStateDefinition(builder);
-	}
-	
-	@Override
-	public BlockState getBoredBlockState(BlockState state) {
-		BlockState bored = super.getBoredBlockState(state);
-		return bored.hasProperty(ALONG_FIRST) ? bored.setValue(ALONG_FIRST, state.getValue(ALONG_FIRST)) : bored;
 	}
 	
 	@Override

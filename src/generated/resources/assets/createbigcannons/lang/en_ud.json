@@ -416,8 +416,8 @@
   "key.createbigcannons.pitch_mode": "\u01DDpoW \u01DDb\u0250\u0131\u0279\u0279\u0250\u0186 \u01DDbu\u0250\u0265\u0186",
   "recipe.createbigcannons.added_casting_time": "%ss :\u01DD\u026F\u0131\u0287 bu\u0131\u0287s\u0250\u0254 p\u01DDpp\u2C6F",
   "recipe.createbigcannons.built_up_heating": "bu\u0131p\u05DF\u0131n\u15FA uouu\u0250\u0186",
-  "recipe.createbigcannons.cannon_boring": "bu\u0131\u0279o\u15FA uouu\u0250\u0186",
   "recipe.createbigcannons.cannon_casting": "bu\u0131\u0287s\u0250\u0186 uouu\u0250\u0186",
+  "recipe.createbigcannons.drill_boring": "bu\u0131\u0279o\u15FA \u05DF\u05DF\u0131\u0279\u15E1",
   "recipe.createbigcannons.incomplete_cannon_blocks": "s\u029E\u0254o\u05DF\u15FA uouu\u0250\u0186 \u01DD\u0287\u01DD\u05DFd\u026Fo\u0254uI",
   "recipe.createbigcannons.melting": "bu\u0131\u0287\u05DF\u01DDW u\u0131s\u0250\u15FA"
 }

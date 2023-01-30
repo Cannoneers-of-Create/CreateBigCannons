@@ -54,7 +54,6 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
-import rbasamoyai.createbigcannons.crafting.boring.TransformableByBoring;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBigCannonBlockEntity, WandActionable {
@@ -347,7 +346,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
-		boolean justBored = TransformableByBoring.wasJustBored(tag);		
+		boolean justBored = tag.contains("JustBored");
 		
 		this.layersConnectedTowards.clear();
 		CompoundTag layerConnectionTag = tag.getCompound("LayerConnections");

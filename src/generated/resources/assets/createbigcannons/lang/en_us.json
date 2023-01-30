@@ -416,8 +416,8 @@
   "key.createbigcannons.pitch_mode": "Change Carriage Mode",
   "recipe.createbigcannons.added_casting_time": "Added casting time: %ss",
   "recipe.createbigcannons.built_up_heating": "Cannon Building",
-  "recipe.createbigcannons.cannon_boring": "Cannon Boring",
   "recipe.createbigcannons.cannon_casting": "Cannon Casting",
+  "recipe.createbigcannons.drill_boring": "Drill Boring",
   "recipe.createbigcannons.incomplete_cannon_blocks": "Incomplete Cannon Blocks",
   "recipe.createbigcannons.melting": "Basin Melting"
 }

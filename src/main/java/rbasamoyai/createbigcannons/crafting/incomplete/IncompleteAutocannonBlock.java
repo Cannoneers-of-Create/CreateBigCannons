@@ -38,13 +38,17 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 	private ItemLike item;
 	private List<ItemLike> requiredItems = null;
 
+	private final NonNullSupplier<? extends Block> resultBlockSup;
+	private Block resultBlock;
+
 	public IncompleteAutocannonBlock(Properties properties, AutocannonMaterial material, VoxelShape shape,
 									 Supplier<CannonCastShape> castShape, NonNullSupplier<? extends Block> completeBlockSup,
 									 NonNullSupplier<? extends ItemLike> item) {
-		super(properties, material, completeBlockSup);
+		super(properties, material);
 		this.shapes = new AllShapes.Builder(shape).forDirectional();
 		this.cannonShape = castShape;
 		this.itemSupplier = item;
+		this.resultBlockSup = completeBlockSup;
 	}
 
 	public static IncompleteAutocannonBlock breech(Properties properties, AutocannonMaterial material,
@@ -81,6 +85,11 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 	}
 
 	@Override public int progress(BlockState state) { return 0; }
+
+	protected Block getResultBlock() {
+		if (this.resultBlock == null) this.resultBlock = this.resultBlockSup.get();
+		return this.resultBlock.delegate.get();
+	}
 
 	@Override
 	public BlockState getCompleteBlockState(BlockState state) {

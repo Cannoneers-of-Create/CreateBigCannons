@@ -1,0 +1,5 @@
+{
+  "type": "createbigcannons:drill_boring",
+  "input": "createbigcannons:unbored_bronze_cannon_chamber",
+  "result": "createbigcannons:bronze_cannon_chamber"
+}

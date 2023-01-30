@@ -318,7 +318,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 			obj.addProperty("result", ForgeRegistries.BLOCKS.getKey(this.result).toString());
 		}
 
-		@Override public ResourceLocation getId() { return this.id; }
+		@Override public ResourceLocation id() { return this.id; }
 		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.CANNON_CASTING.get(); }
 	}
 
