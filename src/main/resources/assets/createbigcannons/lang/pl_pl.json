@@ -5,6 +5,8 @@
   "block.createbigcannons.ap_shell.tooltip.condition1": "Przy detonacji:",
   "block.createbigcannons.ap_shell.tooltip.summary": "Może efektywnie _przebijać się przez bloki_, eksplodując wewnątrz chronionych struktur.",
   "block.createbigcannons.ap_shot": "Lity pocisk przeciwpancerny",
+  "block.createbigcannons.ap_shot.tooltip": "LITY POCISK PRZECIWPANCERNY",
+  "block.createbigcannons.ap_shot.tooltip.summary": "Może efektywnie _przebijać się przez bloki_. Dobry przeciw _opancerzonym celom_. _Nie może zostać opatrzony zapalnikiem i zdetonowany._",
   "block.createbigcannons.autocannon.tooltip.materialProperties": "Właściwości armaty automatycznej",
   "block.createbigcannons.autocannon.tooltip.maxLength": "Maksymalna długość",
   "block.createbigcannons.autocannon.tooltip.maxLength.goggles": "_%s bloków_ (licząc komorę)",
