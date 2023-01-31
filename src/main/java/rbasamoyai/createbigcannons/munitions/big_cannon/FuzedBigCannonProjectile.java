@@ -21,7 +21,10 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	public void tick() {
 		super.tick();
 		
-		if (!this.level.isClientSide && this.fuze.getItem() instanceof FuzeItem fuzeItem && fuzeItem.onProjectileTick(this.fuze, this)) {
+		if (!this.level.isClientSide
+			&& this.level.hasChunkAt(this.blockPosition())
+			&& this.fuze.getItem() instanceof FuzeItem fuzeItem
+			&& fuzeItem.onProjectileTick(this.fuze, this)) {
 			this.detonate();
 		}
 	}
