@@ -164,10 +164,10 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 					this.playSound(sound.getBreakSound(), sound.getVolume(), sound.getPitch());
 				}
 				Vec3 normal = new Vec3(result.getDirection().step());
-				double elasticity = 2;// bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
+				double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
 				this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity)));
-				//this.setPenetrationPoints(this.getPenetrationPoints() * 0.8f);
-				//if (this.getPenetrationPoints() < 1) this.setPenetrationPoints(0);
+				this.setPenetrationPoints(this.getPenetrationPoints() * 0.8f);
+				if (this.getPenetrationPoints() < 1) this.setPenetrationPoints(0);
 			}
 		}
 	}
