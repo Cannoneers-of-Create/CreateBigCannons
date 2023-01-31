@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions;
 
 import com.mojang.math.Constants;
+import com.simibubi.create.content.contraptions.particle.AirParticleData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
@@ -44,31 +46,35 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	
 	@Override
 	public void tick() {
-		if (this.isInGround()) {
-			this.setDeltaMovement(Vec3.ZERO);
-			if (this.shouldFall()) {
-				this.setInGround(false);
-			} else if (!this.level.isClientSide) {
-				this.inGroundTime++;
-				
-				if (this.inGroundTime == 400) {
-					this.discard();
+		boolean canTick = this.level.isClientSide || this.level.hasChunkAt(this.blockPosition());
+		if (canTick) {
+			if (this.isInGround()) {
+				this.setDeltaMovement(Vec3.ZERO);
+				if (this.shouldFall()) {
+					this.setInGround(false);
+				} else if (!this.level.isClientSide) {
+					this.inGroundTime++;
+
+					if (this.inGroundTime == 400) {
+						this.discard();
+					}
+				}
+			} else {
+				this.inGroundTime = 0;
+				if (!this.isNoGravity()) {
+					this.level.addParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, this.getX(), this.getY() + 1, this.getZ(), 0, 0, 0);
+					this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
 				}
 			}
-		} else {
-			this.inGroundTime = 0;
-			if (!this.isNoGravity()) {
-				this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
+
+			if (this.xRotO == 0 && this.yRotO == 0) {
+				Vec3 vel = this.getDeltaMovement();
+				this.setYRot((float) (Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
+				this.setXRot((float) (Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
+
+				this.yRotO = this.getYRot();
+				this.xRotO = this.getXRot();
 			}
-		}
-		
-		if (this.xRotO == 0 && this.yRotO == 0) {
-			Vec3 vel = this.getDeltaMovement();
-			this.setYRot((float)(Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
-			this.setXRot((float)(Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
-			
-			this.yRotO = this.getYRot();
-			this.xRotO = this.getXRot();
 		}
 		
 		float oldXRot = this.xRotO;
@@ -78,23 +84,25 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		
 		this.xRotO = oldXRot;
 		this.yRotO = oldYRot;
-		
-		if (!this.isInGround()) {
-			Vec3 vel = this.getDeltaMovement();
-			this.setYRot((float)(Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
-			this.setXRot((float)(Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
-			
-			this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
-			this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
-		}
-		
-		if (!this.isInGround()) {
-			for (int i = 0; i < 10; ++i) {
-				double partial = i * 0.1f;
-				double dx = Mth.lerp(partial, this.xOld, this.getX());
-				double dy = Mth.lerp(partial, this.yOld, this.getY());
-				double dz = Mth.lerp(partial, this.zOld, this.getZ());
-				this.level.addParticle(this.getTrailParticle(), dx, dy, dz, 0.0d, 0.0d, 0.0d);
+
+		if (canTick) {
+			if (!this.isInGround()) {
+				Vec3 vel = this.getDeltaMovement();
+				this.setYRot((float) (Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
+				this.setXRot((float) (Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
+
+				this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+				this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+			}
+
+			if (!this.isInGround()) {
+				for (int i = 0; i < 10; ++i) {
+					double partial = i * 0.1f;
+					double dx = Mth.lerp(partial, this.xOld, this.getX());
+					double dy = Mth.lerp(partial, this.yOld, this.getY());
+					double dz = Mth.lerp(partial, this.zOld, this.getZ());
+					this.level.addParticle(this.getTrailParticle(), dx, dy, dz, 0.0d, 0.0d, 0.0d);
+				}
 			}
 		}
 	}
@@ -127,6 +135,8 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 		super.onHitBlock(result);
 		if (!this.level.isClientSide) {
 			Vec3 hitLoc = result.getLocation();
+			this.setPos(hitLoc);
+
 			BlockPos pos = result.getBlockPos();
 			Vec3 oldVel = this.getDeltaMovement();
 			BlockState oldState = this.level.getBlockState(pos);
@@ -136,27 +146,28 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 				if (this.canBreakBlock(result)) {
 					this.level.destroyBlock(pos, false);
 					this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, this.getPenetratingExplosionPower(), Explosion.BlockInteraction.DESTROY);
-					this.setDeltaMovement(oldVel);
+					this.setDeltaMovement(oldVel.scale(0.75));
 					this.setPenetrationPoints(result, oldState);
 				} else {
 					if (CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE) {
 						this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.NONE);
 					}
+					this.setPos(hitLoc.add(oldVel.normalize().scale(0.01)));
 					this.setInGround(true);
 					this.setDeltaMovement(Vec3.ZERO);
-					this.setPos(hitLoc);
-					this.setPenetrationPoints((byte) 0);
+					this.setPenetrationPoints(0);
 				}
 			} else {
 				if (bounce == BounceType.DEFLECT) {
 					// TODO: spall effect
+					SoundType sound = oldState.getSoundType();
+					this.playSound(sound.getBreakSound(), sound.getVolume(), sound.getPitch());
 				}
 				Vec3 normal = new Vec3(result.getDirection().step());
-				this.setPos(hitLoc);
-				double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
+				double elasticity = 2;// bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
 				this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity)));
-				this.setPenetrationPoints(this.getPenetrationPoints() * 0.8f);
-				if (this.getPenetrationPoints() < 1) this.setPenetrationPoints(0);
+				//this.setPenetrationPoints(this.getPenetrationPoints() * 0.8f);
+				//if (this.getPenetrationPoints() < 1) this.setPenetrationPoints(0);
 			}
 		}
 	}
@@ -275,8 +286,10 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	}
 	protected float getGravity() { return -0.05f; }
 	
-	@Override protected ParticleOptions getTrailParticle() {
-		return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
+	@Override
+	protected ParticleOptions getTrailParticle() {
+		return new AirParticleData(1, 10);
+		//return this.isInGround() ? new AirParticleData(1, 10) : ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
 	}
 
 	public void setChargePower(float power) {}

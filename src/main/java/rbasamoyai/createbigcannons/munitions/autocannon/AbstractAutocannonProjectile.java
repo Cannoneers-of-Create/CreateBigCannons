@@ -25,7 +25,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	public void tick() {
 		super.tick();
 
-		if (!this.level.isClientSide) {
+		if (!this.level.isClientSide && this.level.hasChunkAt(this.blockPosition())) {
 			this.ageRemaining--;
 			if (this.ageRemaining <= 0) this.expireProjectile();
 		}
