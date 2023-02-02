@@ -24,7 +24,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 
     public MortarStoneProjectile(EntityType<? extends MortarStoneProjectile> type, Level level) {
         super(type, level);
-        this.setPenetrationPoints(3);
+        this.setProjectileMass(3);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
         if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
 
-            if (this.getPenetrationPoints() <= 0) {
+            if (this.getProjectileMass() <= 0) {
                 this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z,
                         CBCConfigs.SERVER.munitions.mortarStonePower.getF(),
                         CBCConfigs.SERVER.munitions.damageRestriction.get() == CBCCfgMunitions.GriefState.NO_DAMAGE ? Explosion.BlockInteraction.NONE : Explosion.BlockInteraction.DESTROY);

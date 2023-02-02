@@ -1,10 +1,7 @@
 package rbasamoyai.createbigcannons.munitions;
 
 import com.mojang.math.Constants;
-import com.simibubi.create.content.contraptions.particle.AirParticleData;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,8 +12,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -28,15 +25,19 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
-public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class AbstractCannonProjectile extends Projectile {
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<Float> PENETRATION_POINTS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
 	protected int inGroundTime = 0;
 	protected float damage = 50;
 	
@@ -46,8 +47,25 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	
 	@Override
 	public void tick() {
-		boolean canTick = this.level.isClientSide || this.level.hasChunkAt(this.blockPosition());
-		if (canTick) {
+		if (this.level.isClientSide || this.level.hasChunkAt(this.blockPosition())) {
+			super.tick();
+
+			if (!this.isInGround()) this.clipAndDamage();
+
+			this.yRotO = this.getYRot();
+			this.xRotO = this.getXRot();
+
+			if (!this.isInGround()) {
+				Vec3 vel = this.getDeltaMovement();
+				if (vel.lengthSqr() > 0.005d) {
+					this.setYRot((float) (Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
+					this.setXRot((float) (Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
+				}
+
+				this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+				this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+			}
+
 			if (this.isInGround()) {
 				this.setDeltaMovement(Vec3.ZERO);
 				if (this.shouldFall()) {
@@ -61,50 +79,82 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 				}
 			} else {
 				this.inGroundTime = 0;
-				if (!this.isNoGravity()) {
-					this.level.addParticle(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, this.getX(), this.getY() + 1, this.getZ(), 0, 0, 0);
-					this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
-				}
+				Vec3 uel = this.getDeltaMovement();
+				Vec3 vel = uel;
+				Vec3 newPos = this.position().add(vel);
+				if (!this.isNoGravity()) vel = vel.add(0.0f, this.getGravity(), 0.0f);
+				vel = vel.scale(this.getDrag());
+				this.setDeltaMovement(vel);
+				this.setPos(newPos.add(vel.subtract(uel).scale(0.5)));
 			}
 
-			if (this.xRotO == 0 && this.yRotO == 0) {
-				Vec3 vel = this.getDeltaMovement();
-				this.setYRot((float) (Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
-				this.setXRot((float) (Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
-
-				this.yRotO = this.getYRot();
-				this.xRotO = this.getXRot();
-			}
+//			if (!this.isInGround()) {
+//				for (int i = 0; i < 10; ++i) {
+//					double partial = i * 0.1f;
+//					double dx = Mth.lerp(partial, this.xOld, this.getX());
+//					double dy = Mth.lerp(partial, this.yOld, this.getY());
+//					double dz = Mth.lerp(partial, this.zOld, this.getZ());
+//					this.level.addParticle(this.getTrailParticle(), dx, dy, dz, 0.0d, 0.0d, 0.0d);
+//				}
+//			}
 		}
-		
-		float oldXRot = this.xRotO;
-		float oldYRot = this.yRotO;
-		
-		super.tick();
-		
-		this.xRotO = oldXRot;
-		this.yRotO = oldYRot;
+	}
 
-		if (canTick) {
-			if (!this.isInGround()) {
-				Vec3 vel = this.getDeltaMovement();
-				this.setYRot((float) (Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
-				this.setXRot((float) (Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
+	protected void clipAndDamage() {
+		Vec3 start = this.position();
+		Vec3 end = start.add(this.getDeltaMovement());
+		ProjectileContext projCtx = new ProjectileContext(this);
+		GriefState flag = CBCConfigs.SERVER.munitions.damageRestriction.get();
+		List<BlockPos> explodedBlocks = new ArrayList<>();
 
-				this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
-				this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+		BlockGetter.traverseBlocks(start, end, projCtx, (ctx, pos) -> {
+			BlockPos ipos = pos.immutable();
+			BlockState bstate = this.level.getBlockState(ipos);
+			VoxelShape vshape = bstate.getCollisionShape(this.level, ipos, ctx.collisionContext());
+			BlockHitResult bResult = this.level.clipWithInteractionOverride(start, end, ipos, vshape, bstate);
+			if (bResult == null) return null;
+
+			if (ctx.getLastState().isAir() && this.tryBounceOffBlock(bResult)) return 1;
+
+			BlockState newState = this.level.getBlockState(pos);
+			ctx.setLastState(newState);
+			Vec3 curVel = this.getDeltaMovement();
+			double mag = curVel.length();
+			double hardness = getHardness(newState);
+			double curPom = ctx.mass() * mag;
+			if (flag == GriefState.NO_DAMAGE || newState.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
+				this.setPos(bResult.getLocation().add(curVel.scale(0.03 / mag)));
+				this.setInGround(true);
+				this.setDeltaMovement(Vec3.ZERO);
+				return 1;
 			}
-
-			if (!this.isInGround()) {
-				for (int i = 0; i < 10; ++i) {
-					double partial = i * 0.1f;
-					double dx = Mth.lerp(partial, this.xOld, this.getX());
-					double dy = Mth.lerp(partial, this.yOld, this.getY());
-					double dz = Mth.lerp(partial, this.zOld, this.getZ());
-					this.level.addParticle(this.getTrailParticle(), dx, dy, dz, 0.0d, 0.0d, 0.0d);
-				}
+			this.setProjectileMass((float) Math.max(this.getProjectileMass() - hardness * 0.5, 0));
+			this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness * 0.5, 0) / ctx.mass()));
+			if (!this.level.isClientSide) {
+				this.level.destroyBlock(pos, false);
 			}
+			return null;
+		}, fPos -> null);
+	}
+
+	protected boolean tryBounceOffBlock(BlockHitResult result) {
+		BounceType bounce = this.canBounce(result);
+		if (bounce == BounceType.NO_BOUNCE) return false;
+		BlockState oldState = this.level.getBlockState(result.getBlockPos());
+		Vec3 oldVel = this.getDeltaMovement();
+		double momentum = this.getProjectileMass() * oldVel.length();
+		if (bounce == BounceType.DEFLECT) {
+			if (momentum > getHardness(oldState) * 0.5) {
+				Vec3 spallLoc = this.position().add(oldVel.normalize().scale(2));
+				this.level.explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Explosion.BlockInteraction.NONE);
+			}
+			SoundType sound = oldState.getSoundType();
+			this.playSound(sound.getBreakSound(), sound.getVolume(), sound.getPitch());
 		}
+		Vec3 normal = new Vec3(result.getDirection().step());
+		double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
+		this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity)));
+		return true;
 	}
 	
 	@Override
@@ -120,8 +170,8 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
 			
 			if (result.getEntity().isAlive()) {
-				this.setPenetrationPoints((byte) Math.max(0, this.getPenetrationPoints() - 2));
-				if (this.getPenetrationPoints() == 0) {
+				this.setProjectileMass((byte) Math.max(0, this.getProjectileMass() - 2));
+				if (this.getProjectileMass() == 0) {
 					this.discard();
 				}
 			}
@@ -129,55 +179,6 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	}
 
 	protected float getKnockback(Entity target) { return 2.0f; }
-	
-	@Override
-	protected void onHitBlock(BlockHitResult result) {
-		super.onHitBlock(result);
-		if (!this.level.isClientSide) {
-			Vec3 hitLoc = result.getLocation();
-			this.setPos(hitLoc);
-
-			BlockPos pos = result.getBlockPos();
-			Vec3 oldVel = this.getDeltaMovement();
-			BlockState oldState = this.level.getBlockState(pos);
-
-			BounceType bounce = this.canBounce(result);
-			if (bounce == BounceType.NO_BOUNCE) {
-				if (this.canBreakBlock(result)) {
-					this.level.destroyBlock(pos, false);
-					this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, this.getPenetratingExplosionPower(), Explosion.BlockInteraction.DESTROY);
-					this.setDeltaMovement(oldVel.scale(0.75));
-					this.setPenetrationPoints(result, oldState);
-				} else {
-					if (CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE) {
-						this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z, 2, Explosion.BlockInteraction.NONE);
-					}
-					this.setPos(hitLoc.add(oldVel.normalize().scale(0.01)));
-					this.setInGround(true);
-					this.setDeltaMovement(Vec3.ZERO);
-					this.setPenetrationPoints(0);
-				}
-			} else {
-				if (bounce == BounceType.DEFLECT) {
-					// TODO: spall effect
-					SoundType sound = oldState.getSoundType();
-					this.playSound(sound.getBreakSound(), sound.getVolume(), sound.getPitch());
-				}
-				Vec3 normal = new Vec3(result.getDirection().step());
-				double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
-				this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity)));
-				this.setPenetrationPoints(this.getPenetrationPoints() * 0.8f);
-				if (this.getPenetrationPoints() < 1) this.setPenetrationPoints(0);
-			}
-		}
-	}
-
-	protected boolean canBreakBlock(BlockHitResult result) {
-		if (this.getPenetrationPoints() <= 0 || this.canDeflect(result)) return false;
-		BlockPos pos = result.getBlockPos();
-		BlockState remainingBlock = this.level.getBlockState(pos);
-		return remainingBlock.getDestroySpeed(this.level, pos) != -1.0;
-	}
 
 	protected boolean canDeflect(BlockHitResult result) { return false; }
 	protected boolean canBounceOffOf(BlockState state) { return isBounceableOffOf(state); }
@@ -204,30 +205,26 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	}
 
 	protected BounceType canBounce(BlockHitResult result) {
-		if (!CBCConfigs.SERVER.munitions.projectilesCanBounce.get() || this.getPenetrationPoints() <= 0) return BounceType.NO_BOUNCE;
+		if (!CBCConfigs.SERVER.munitions.projectilesCanBounce.get() || this.getProjectileMass() <= 0) return BounceType.NO_BOUNCE;
 
 		BlockState state = this.level.getBlockState(result.getBlockPos());
 		if (!this.canBounceOffOf(state)) return BounceType.NO_BOUNCE;
 
 		Vec3 oldVel = this.getDeltaMovement();
+		double mag = oldVel.length();
+		if (mag < 0.2) return BounceType.NO_BOUNCE;
 		Vec3 normal = new Vec3(result.getDirection().step());
-		double fc = normal.dot(oldVel) / oldVel.length();
+		double fc = normal.dot(oldVel) / mag;
 		if (this.canDeflect(result) && -1 <= fc && fc <= -0.5) return BounceType.DEFLECT; // cos 180 <= fc <= cos 120
 		return -0.5 <= fc && fc <= 0 ? BounceType.RICOCHET : BounceType.NO_BOUNCE; // cos 120 <= fc <= cos 90
 	}
-
-	protected void setPenetrationPoints(BlockHitResult result, BlockState hitBlock) {
-		this.setPenetrationPoints(Math.max(0, this.getPenetrationPoints() - (float) getHardness(hitBlock)));
-	}
-
-	protected float getPenetratingExplosionPower() { return 2; }
 
 	@Override public boolean hurt(DamageSource source, float damage) { return false; }
 
 	@Override
 	protected void defineSynchedData() {
 		this.entityData.define(ID_FLAGS, (byte) 0);
-		this.entityData.define(PENETRATION_POINTS, 0.0f);
+		this.entityData.define(PROJECTILE_MASS, 0.0f);
 	}
 	
 	public void setInGround(boolean inGround) {
@@ -249,7 +246,7 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.putFloat("Power", this.getPenetrationPoints());
+		tag.putFloat("ProjectileMass", this.getProjectileMass());
 		tag.putBoolean("InGround", this.isInGround());
 		tag.putFloat("Damage", this.damage);
 	}
@@ -257,17 +254,17 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.setPenetrationPoints(tag.getFloat("Power"));
+		this.setProjectileMass(tag.getFloat("ProjectileMass"));
 		this.setInGround(tag.getBoolean("InGround"));
 		this.damage = tag.getFloat("Damage");
 	}
 	
-	public void setPenetrationPoints(float power) {
-		this.entityData.set(PENETRATION_POINTS, power);
+	public void setProjectileMass(float power) {
+		this.entityData.set(PROJECTILE_MASS, power);
 	}
 	
-	public float getPenetrationPoints() {
-		return CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE ? 0 : this.entityData.get(PENETRATION_POINTS);
+	public float getProjectileMass() {
+		return CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE ? 0 : this.entityData.get(PROJECTILE_MASS);
 	}
 
 	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
@@ -278,19 +275,13 @@ public abstract class AbstractCannonProjectile extends AbstractHurtingProjectile
 				.sized(0.8f, 0.8f);
 	}
 	
-	@Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
+	@Override
+	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
 		return dimensions.height * 0.5f;
 	}
-	@Override protected float getInertia() {
-		return 0.99f;
-	}
+
 	protected float getGravity() { return -0.05f; }
-	
-	@Override
-	protected ParticleOptions getTrailParticle() {
-		return new AirParticleData(1, 10);
-		//return this.isInGround() ? new AirParticleData(1, 10) : ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
-	}
+	protected float getDrag() { return 0.99f; }
 
 	public void setChargePower(float power) {}
 

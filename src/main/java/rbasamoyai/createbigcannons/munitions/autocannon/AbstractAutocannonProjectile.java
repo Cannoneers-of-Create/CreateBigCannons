@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
-import com.simibubi.create.content.contraptions.particle.AirParticleData;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -46,15 +44,13 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (this.getPenetrationPoints() <= 0) this.discard();
+		if (this.getProjectileMass() <= 0) this.discard();
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
 
-	@Override protected ParticleOptions getTrailParticle() { return new AirParticleData(1, 10); }
-
 	@Override protected float getGravity() { return 0; }
-	@Override protected float getInertia() { return 1; }
+	@Override protected float getDrag() { return 1; }
 
     @Override
 	public void addAdditionalSaveData(CompoundTag tag) {
@@ -77,6 +73,5 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 				.fireImmune()
 				.sized(0.2f, 0.2f);
 	}
-
-	@Override protected float getPenetratingExplosionPower() { return 1; }
+	
 }

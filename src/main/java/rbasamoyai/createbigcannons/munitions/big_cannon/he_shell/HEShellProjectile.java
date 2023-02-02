@@ -13,7 +13,7 @@ public class HEShellProjectile extends FuzedBigCannonProjectile {
 
 	public HEShellProjectile(EntityType<? extends HEShellProjectile> type, Level level) {
 		super(type, level);
-		this.setPenetrationPoints(3);
+		this.setProjectileMass(3);
 	}
 	
 	@Override

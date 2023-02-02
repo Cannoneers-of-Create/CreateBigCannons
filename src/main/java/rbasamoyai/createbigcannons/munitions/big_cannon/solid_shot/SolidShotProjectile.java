@@ -13,7 +13,7 @@ public class SolidShotProjectile extends AbstractBigCannonProjectile {
 
 	public SolidShotProjectile(EntityType<? extends SolidShotProjectile> type, Level level) {
 		super(type, level);
-		this.setPenetrationPoints(6);
+		this.setProjectileMass(6);
 	}
 	
 	@Override

@@ -25,7 +25,7 @@ public class ImpactFuzeItem extends FuzeItem {
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result) {
 		float f = this.getDetonateChance();
-		return projectile.getPenetrationPoints() <= 0 && f > 0 && projectile.level.getRandom().nextFloat() < f;
+		return projectile.getProjectileMass() <= 0 && f > 0 && projectile.level.getRandom().nextFloat() < f;
 	}
 	
 	@Override
