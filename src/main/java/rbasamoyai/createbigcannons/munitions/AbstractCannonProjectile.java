@@ -142,7 +142,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			}
 
 			if (bResult != null) {
-				if (ctx.getLastState().isAir() && this.tryBounceOffBlock(bResult)) return 1;
+				boolean flag1 = ctx.getLastState().isAir();
+				if (flag1 && this.tryBounceOffBlock(bResult)) return 1;
 				BlockState newState = this.level.getBlockState(pos);
 				ctx.setLastState(newState);
 
@@ -160,12 +161,24 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				if (!this.level.isClientSide) {
 					this.level.destroyBlock(pos, false);
 				}
+				if (flag1 && hardness / curPom <= 0.15) {
+					explodedBlocks.add(pos.immutable());
+				}
+
 				this.setProjectileMass((float) Math.max(startMass - hardness, 0));
 				this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 			}
 
 			return null;
 		}, fPos -> null);
+
+		if (!this.level.isClientSide && flag != GriefState.NO_DAMAGE) {
+			Vec3 oldVel = this.getDeltaMovement();
+			for (BlockPos pos : explodedBlocks) {
+				this.level.explode(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, Explosion.BlockInteraction.DESTROY);
+			}
+			this.setDeltaMovement(oldVel);
+		}
 	}
 
 	protected boolean tryBounceOffBlock(BlockHitResult result) {
