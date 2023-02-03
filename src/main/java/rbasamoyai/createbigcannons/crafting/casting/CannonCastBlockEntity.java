@@ -236,7 +236,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 		
 		if (!clientPacket) return;
 		boolean changeOfController = controllerBefore == null ? this.controllerPos != null : !controllerBefore.equals(this.controllerPos);
-		if (changeOfController || prevHeight != this.getControllerTE().height) {
+		if (changeOfController || this.getController() != null && prevHeight != this.getControllerTE().height) {
 			if (this.hasLevel()) this.level.sendBlockUpdated(this.getBlockPos(), getBlockState(), getBlockState(), 16);
 			if (this.isController()) this.fluid.setCapacity(this.calculateCapacityFromStructure());
 			this.invalidateRenderBoundingBox();
