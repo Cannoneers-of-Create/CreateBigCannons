@@ -13,7 +13,7 @@ public class APShellProjectile extends FuzedBigCannonProjectile {
 
 	public APShellProjectile(EntityType<? extends APShellProjectile> type, Level level) {
 		super(type, level);
-		this.setProjectileMass(12);
+		this.setProjectileMass(24);
 	}
 	
 	@Override

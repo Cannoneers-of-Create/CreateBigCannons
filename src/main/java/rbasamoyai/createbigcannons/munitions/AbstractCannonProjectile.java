@@ -29,6 +29,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public abstract class AbstractCannonProjectile extends Projectile {
@@ -78,7 +79,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.inGroundTime = 0;
 				Vec3 uel = this.getDeltaMovement();
 				Vec3 vel = uel;
-				Vec3 newPos = this.position().add(vel);
+				Vec3 oldPos = this.position();
+				Vec3 newPos = oldPos.add(vel);
 				if (!this.isNoGravity()) vel = vel.add(0.0f, this.getGravity(), 0.0f);
 				vel = vel.scale(this.getDrag());
 				this.setDeltaMovement(vel);
@@ -94,33 +96,60 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		GriefState flag = CBCConfigs.SERVER.munitions.damageRestriction.get();
 		List<BlockPos> explodedBlocks = new ArrayList<>();
 
-		BlockGetter.traverseBlocks(start, end, projCtx, (ctx, pos) -> {
-			BlockPos ipos = pos.immutable();
-			BlockState bstate = this.level.getBlockState(ipos);
-			VoxelShape vshape = bstate.getCollisionShape(this.level, ipos, ctx.collisionContext());
-			BlockHitResult bResult = this.level.clipWithInteractionOverride(start, end, ipos, vshape, bstate);
-			if (bResult == null) return null;
+		double reach = Math.max(this.getBbWidth(), this.getBbHeight()) * 0.5;
 
-			if (ctx.getLastState().isAir() && this.tryBounceOffBlock(bResult)) return 1;
+		AABB generalMovementRegion = this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1);
+		List<Entity> hitEntities = new ArrayList<>();
+		for (Entity target : this.level.getEntities(this, generalMovementRegion, this::canHitEntity)) {
+			AABB targetBox = target.getBoundingBox().inflate(reach);
+			if (targetBox.clip(start, end).isPresent()) hitEntities.add(target);
+		}
+
+		BlockGetter.traverseBlocks(start, end, projCtx, (ctx, pos) -> {
+			BlockState bstate = this.level.getBlockState(pos);
+			VoxelShape vshape = bstate.getCollisionShape(this.level, pos, ctx.collisionContext());
+			BlockHitResult bResult = this.level.clipWithInteractionOverride(start, end, pos, vshape, bstate);
+			Vec3 hitLoc = bResult == null ? Vec3.atBottomCenterOf(pos) : bResult.getLocation();
 
 			BlockState newState = this.level.getBlockState(pos);
 			ctx.setLastState(newState);
 			Vec3 curVel = this.getDeltaMovement();
 			double mag = curVel.length();
 			double hardness = getHardness(newState);
-			double curPom = ctx.mass() * mag;
-			if (flag == GriefState.NO_DAMAGE || newState.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
-				this.setPos(bResult.getLocation().add(curVel.scale(0.03 / mag)));
-				this.setInGround(true);
-				this.setDeltaMovement(Vec3.ZERO);
-				this.onFinalImpact(bResult);
-				return 1;
+			double startMass = this.getProjectileMass();
+			double curPom = startMass * mag;
+
+			if (!hitEntities.isEmpty()) {
+				AABB currentMovementRegion = this.getBoundingBox()
+						.expandTowards(curVel.scale(1.75 / mag)) // 1.75 ~ sqrt 3
+						.inflate(1)
+						.move(hitLoc.subtract(this.position()));
+				for (Iterator<Entity> targetIter = hitEntities.iterator(); targetIter.hasNext(); ) {
+					Entity target = targetIter.next();
+					if (currentMovementRegion.intersects(target.getBoundingBox().inflate(reach))) {
+						this.onHitEntity(target);
+						targetIter.remove();
+					}
+				}
 			}
-			this.setProjectileMass((float) Math.max(this.getProjectileMass() - hardness * 0.5, 0));
-			this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness * 0.5, 0) / ctx.mass()));
-			if (!this.level.isClientSide) {
-				this.level.destroyBlock(pos, false);
+
+			if (bResult != null) {
+				if (ctx.getLastState().isAir() && this.tryBounceOffBlock(bResult)) return 1;
+				if (flag == GriefState.NO_DAMAGE || newState.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
+					this.setPos(hitLoc.add(curVel.scale(0.03 / mag)));
+					this.setInGround(true);
+					this.setDeltaMovement(Vec3.ZERO);
+					this.onFinalImpact(bResult);
+					return 1;
+				}
+				if (!this.level.isClientSide) {
+					this.level.destroyBlock(pos, false);
+				}
 			}
+
+			this.setProjectileMass((float) Math.max(startMass - hardness, 0));
+			this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
+
 			return null;
 		}, fPos -> null);
 	}
@@ -147,24 +176,19 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 	/** Use for fuzes and any other final effects */
 	protected void onFinalImpact(HitResult result) {}
-	
-	@Override
-	protected void onHitEntity(EntityHitResult result) {
-		super.onHitEntity(result);
+
+	protected void onHitEntity(Entity entity) {
+		if (this.getProjectileMass() <= 0) return;
 		if (!this.level.isClientSide) {
-			Entity entity = result.getEntity();
-			if (entity instanceof Projectile) return;
-			
 			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
 			DamageSource source = DamageSource.thrown(this, null).bypassArmor();
 			entity.hurt(source, this.damage);
-			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
-			
-			if (result.getEntity().isAlive()) {
-				this.setProjectileMass((byte) Math.max(0, this.getProjectileMass() - 2));
-				if (this.getProjectileMass() == 0) {
-					this.discard();
-				}
+			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) entity.invulnerableTime = 0;
+			double penalty = entity.isAlive() ? 2 : 0.2;
+			this.setProjectileMass((float) Math.max(this.getProjectileMass() - penalty, 0));
+			if (this.getProjectileMass() <= 0) {
+				this.onFinalImpact(new EntityHitResult(entity));
+				this.discard();
 			}
 		}
 	}
@@ -276,7 +300,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 	public void setChargePower(float power) {}
 
-	@Override public boolean canHitEntity(Entity entity) { return super.canHitEntity(entity); }
+	@Override public boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
 
 	public enum BounceType {
 		DEFLECT,

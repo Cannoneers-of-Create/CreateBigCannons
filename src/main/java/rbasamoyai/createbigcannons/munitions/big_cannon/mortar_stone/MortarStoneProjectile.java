@@ -6,15 +6,13 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 
@@ -24,7 +22,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 
     public MortarStoneProjectile(EntityType<? extends MortarStoneProjectile> type, Level level) {
         super(type, level);
-        this.setProjectileMass(3);
+        this.setProjectileMass(4);
     }
 
     @Override
@@ -42,17 +40,14 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
     }
 
     @Override
-    protected void onHitBlock(BlockHitResult result) {
-        super.onHitBlock(result);
+    protected void onFinalImpact(HitResult result) {
+        super.onFinalImpact(result);
         if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
-
-            if (this.getProjectileMass() <= 0) {
-                this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z,
-                        CBCConfigs.SERVER.munitions.mortarStonePower.getF(),
-                        CBCConfigs.SERVER.munitions.damageRestriction.get() == CBCCfgMunitions.GriefState.NO_DAMAGE ? Explosion.BlockInteraction.NONE : Explosion.BlockInteraction.DESTROY);
-                this.tooManyCharges = true;
-            }
+            this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z,
+                    CBCConfigs.SERVER.munitions.mortarStonePower.getF(),
+                    CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+            this.tooManyCharges = true;
         }
     }
 
