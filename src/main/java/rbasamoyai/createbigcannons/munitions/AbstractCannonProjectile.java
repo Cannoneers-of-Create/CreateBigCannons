@@ -33,6 +33,8 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
 
 public abstract class AbstractCannonProjectile extends Projectile {
 
@@ -105,9 +107,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	protected void clipAndDamage() {
 		Vec3 start = this.position();
 		Vec3 end = start.add(this.getDeltaMovement());
-		ProjectileContext projCtx = new ProjectileContext(this);
 		GriefState flag = CBCConfigs.SERVER.munitions.damageRestriction.get();
-		List<BlockPos> explodedBlocks = new ArrayList<>();
 
 		double reach = Math.max(this.getBbWidth(), this.getBbHeight()) * 0.5;
 
@@ -118,67 +118,79 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			if (targetBox.clip(start, end).isPresent()) hitEntities.add(target);
 		}
 
-		BlockGetter.traverseBlocks(start, end, projCtx, (ctx, pos) -> {
-			BlockState bstate = this.level.getBlockState(pos);
-			VoxelShape vshape = bstate.getCollisionShape(this.level, pos, ctx.collisionContext());
-			BlockHitResult bResult = this.level.clipWithInteractionOverride(start, end, pos, vshape, bstate);
-			Vec3 hitLoc = bResult == null ? Vec3.atBottomCenterOf(pos) : bResult.getLocation();
+		ProjectileContext projCtx = new ProjectileContext(this, start, end, hitEntities, flag);
 
-			Vec3 curVel = this.getDeltaMovement();
-			double mag = curVel.length();
-
-			if (!hitEntities.isEmpty()) {
-				AABB currentMovementRegion = this.getBoundingBox()
-						.expandTowards(curVel.scale(1.75 / mag)) // 1.75 ~ sqrt 3
-						.inflate(1)
-						.move(hitLoc.subtract(this.position()));
-				for (Iterator<Entity> targetIter = hitEntities.iterator(); targetIter.hasNext(); ) {
-					Entity target = targetIter.next();
-					if (currentMovementRegion.intersects(target.getBoundingBox().inflate(reach))) {
-						this.onHitEntity(target);
-						targetIter.remove();
-					}
-				}
-			}
-
-			if (bResult != null) {
-				boolean flag1 = ctx.getLastState().isAir();
-				if (flag1 && this.tryBounceOffBlock(bResult)) return 1;
-				BlockState newState = this.level.getBlockState(pos);
-				ctx.setLastState(newState);
-
-				double startMass = this.getProjectileMass();
-				double curPom = startMass * mag;
-				double hardness = getHardness(newState);
-
-				if (flag == GriefState.NO_DAMAGE || newState.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
-					this.setPos(hitLoc.add(curVel.scale(0.03 / mag)));
-					this.setInGround(true);
-					this.setDeltaMovement(Vec3.ZERO);
-					this.onFinalImpact(bResult);
-					return 1;
-				}
-				if (!this.level.isClientSide) {
-					this.level.destroyBlock(pos, false);
-				}
-				if (flag1 && hardness / curPom <= 0.15) {
-					explodedBlocks.add(pos.immutable());
-				}
-
-				this.setProjectileMass((float) Math.max(startMass - hardness, 0));
-				this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
-			}
-
-			return null;
-		}, fPos -> null);
+		BiFunction<ProjectileContext, BlockPos, Boolean> onClip = this::onClip;
+		BlockGetter.traverseBlocks(start, end, projCtx, onClip.andThen(b -> b ? 1 : null), fPos -> null);
 
 		if (!this.level.isClientSide && flag != GriefState.NO_DAMAGE) {
 			Vec3 oldVel = this.getDeltaMovement();
-			for (BlockPos pos : explodedBlocks) {
-				this.level.explode(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 1, Explosion.BlockInteraction.DESTROY);
+			for (Map.Entry<BlockPos, Float> explosion : projCtx.getQueuedExplosions().entrySet()) {
+				BlockPos pos = explosion.getKey();
+				this.level.explode(this, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, explosion.getValue(), Explosion.BlockInteraction.DESTROY);
 			}
 			this.setDeltaMovement(oldVel);
 		}
+	}
+
+	/**
+	 * @param ctx
+	 * @param pos
+	 * @return true to stop iterating, false otherwise
+	 */
+	protected boolean onClip(ProjectileContext ctx, BlockPos pos) {
+		BlockState bstate = this.level.getBlockState(pos);
+		VoxelShape vshape = bstate.getCollisionShape(this.level, pos, ctx.collisionContext());
+		BlockHitResult bResult = this.level.clipWithInteractionOverride(ctx.start(), ctx.end(), pos, vshape, bstate);
+		Vec3 hitLoc = bResult == null ? Vec3.atBottomCenterOf(pos) : bResult.getLocation();
+
+		Vec3 curVel = this.getDeltaMovement();
+		double mag = curVel.length();
+		double reach = Math.max(this.getBbWidth(), this.getBbHeight()) * 0.5;
+
+		if (!ctx.hitEntities().isEmpty()) {
+			AABB currentMovementRegion = this.getBoundingBox()
+					.expandTowards(curVel.scale(1.75 / mag)) // 1.75 ~ sqrt 3
+					.inflate(1)
+					.move(hitLoc.subtract(this.position()));
+			for (Iterator<Entity> targetIter = ctx.hitEntities().iterator(); targetIter.hasNext(); ) {
+				Entity target = targetIter.next();
+				if (currentMovementRegion.intersects(target.getBoundingBox().inflate(reach))) {
+					this.onHitEntity(target);
+					targetIter.remove();
+				}
+			}
+		}
+
+		if (bResult != null) {
+			boolean flag1 = ctx.getLastState().isAir();
+			if (flag1 && this.tryBounceOffBlock(bResult)) return true;
+			BlockState newState = this.level.getBlockState(pos);
+			ctx.setLastState(newState);
+
+			double startMass = this.getProjectileMass();
+			double curPom = startMass * mag;
+			double hardness = getHardness(newState);
+
+			if (ctx.griefState() == GriefState.NO_DAMAGE || newState.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
+				this.setPos(hitLoc.add(curVel.scale(0.03 / mag)));
+				this.setInGround(true);
+				this.setDeltaMovement(Vec3.ZERO);
+				this.onFinalImpact(bResult);
+				return true;
+			}
+			if (!this.level.isClientSide) {
+				this.level.destroyBlock(pos, false);
+			}
+			if (flag1 && hardness / curPom <= 0.15) {
+				ctx.queueExplosion(pos.immutable(), 2);
+			}
+
+			this.setProjectileMass((float) Math.max(startMass - hardness, 0));
+			this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
+		}
+
+		return false;
 	}
 
 	protected boolean tryBounceOffBlock(BlockHitResult result) {

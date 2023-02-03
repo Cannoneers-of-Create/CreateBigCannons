@@ -42,9 +42,9 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	}
 
 	@Override
-	protected void onHit(HitResult result) {
-		super.onHit(result);
-		if (this.getProjectileMass() <= 0) this.discard();
+	protected void onFinalImpact(HitResult result) {
+		super.onFinalImpact(result);
+		if (!this.isRemoved()) this.discard();
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }

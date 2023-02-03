@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.fuzes;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -10,13 +11,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -25,6 +28,7 @@ import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 
 import java.util.List;
 
@@ -42,19 +46,49 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		CompoundTag tag = stack.getOrCreateTag();
 		int airTime = tag.getInt("AirTime");
 		if (airTime > CBCConfigs.SERVER.munitions.proximityFuzeArmingTime.get()) tag.putBoolean("Armed", true);
-		boolean armed = tag.contains("Armed");
 		tag.putInt("AirTime", ++airTime);
-		if (!armed) return false;
-		
-		double l = Math.max(tag.getInt("DetonationDistance"), 1) * 1.5d;
-		Vec3 oldVel = projectile.getDeltaMovement();
-		projectile.setDeltaMovement(oldVel.normalize().scale(l));
-		HitResult scan = ProjectileUtil.getHitResult(projectile, projectile::canHitEntity);
-		projectile.setDeltaMovement(oldVel);
-
-		return scan.getType() != HitResult.Type.MISS;
+		return false;
 	}
-	
+
+	@Override
+	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile projectile, Vec3 location, ProjectileContext ctx) {
+		CompoundTag tag = stack.getOrCreateTag();
+		if (!tag.contains("Armed")) return false;
+
+		double l = Math.max(tag.getInt("DetonationDistance"), 1);
+		Vec3 dir = projectile.getDeltaMovement().normalize();
+		Vec3 right = dir.cross(new Vec3(Direction.UP.step()));
+		Vec3 up = dir.cross(right);
+		dir = dir.scale(l);
+		double reach = Math.max(projectile.getBbWidth(), projectile.getBbHeight()) * 0.5;
+
+		AABB currentMovementRegion = projectile.getBoundingBox()
+				.expandTowards(dir.scale(1.75))
+				.inflate(1)
+				.move(location.subtract(projectile.position()));
+		List<Entity> entities = projectile.level.getEntities(projectile, currentMovementRegion, projectile::canHitEntity);
+
+		int radius = 2;
+		double scale = 1.5;
+		for (int i = -radius; i <= radius; ++i) {
+			for (int j = -radius; j <= radius; ++j) {
+				Vec3 ray = dir.add(right.scale(i * scale)).add(up.scale(j * scale));
+				Vec3 rayEnd = location.add(ray);
+
+				if (projectile.level.clip(new ClipContext(location, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile)).getType() != HitResult.Type.MISS) {
+					return true;
+				}
+
+				for (Entity target : entities) {
+					AABB targetBox = target.getBoundingBox().inflate(reach);
+					if (targetBox.clip(location, rayEnd).isPresent()) return true;
+				}
+			}
+		}
+
+		return super.onProjectileClip(stack, projectile, location, ctx);
+	}
+
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (player instanceof ServerPlayer && player.mayBuild()) {
