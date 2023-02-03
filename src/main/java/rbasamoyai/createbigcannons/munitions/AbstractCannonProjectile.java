@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.munitions;
 
 import com.mojang.math.Constants;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -28,6 +29,7 @@ import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -85,6 +87,17 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				vel = vel.scale(this.getDrag());
 				this.setDeltaMovement(vel);
 				this.setPos(newPos.add(vel.subtract(uel).scale(0.5)));
+
+				ParticleOptions particle = this.getTrailParticles();
+				if (particle != null) {
+					for (int i = 0; i < 10; ++i) {
+						double partial = i * 0.1f;
+						double dx = Mth.lerp(partial, this.xOld, this.getX());
+						double dy = Mth.lerp(partial, this.yOld, this.getY());
+						double dz = Mth.lerp(partial, this.zOld, this.getZ());
+						this.level.addParticle(particle, dx, dy, dz, 0.0d, 0.0d, 0.0d);
+					}
+				}
 			}
 		}
 	}
@@ -257,6 +270,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	private boolean shouldFall() {
 		return this.isInGround() && this.level.noCollision(new AABB(this.position(), this.position()).inflate(0.06d));
 	}
+
+	@Nullable protected ParticleOptions getTrailParticles() { return null; }
 	
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
