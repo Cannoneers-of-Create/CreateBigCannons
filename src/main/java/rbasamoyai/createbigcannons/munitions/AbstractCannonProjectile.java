@@ -21,10 +21,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
@@ -87,16 +84,6 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.setDeltaMovement(vel);
 				this.setPos(newPos.add(vel.subtract(uel).scale(0.5)));
 			}
-
-//			if (!this.isInGround()) {
-//				for (int i = 0; i < 10; ++i) {
-//					double partial = i * 0.1f;
-//					double dx = Mth.lerp(partial, this.xOld, this.getX());
-//					double dy = Mth.lerp(partial, this.yOld, this.getY());
-//					double dz = Mth.lerp(partial, this.zOld, this.getZ());
-//					this.level.addParticle(this.getTrailParticle(), dx, dy, dz, 0.0d, 0.0d, 0.0d);
-//				}
-//			}
 		}
 	}
 
@@ -126,6 +113,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.setPos(bResult.getLocation().add(curVel.scale(0.03 / mag)));
 				this.setInGround(true);
 				this.setDeltaMovement(Vec3.ZERO);
+				this.onFinalImpact(bResult);
 				return 1;
 			}
 			this.setProjectileMass((float) Math.max(this.getProjectileMass() - hardness * 0.5, 0));
@@ -156,6 +144,9 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity)));
 		return true;
 	}
+
+	/** Use for fuzes and any other final effects */
+	protected void onFinalImpact(HitResult result) {}
 	
 	@Override
 	protected void onHitEntity(EntityHitResult result) {

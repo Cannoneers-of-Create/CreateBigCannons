@@ -42,6 +42,7 @@ public class BlockHardnessHandler {
 						double hardness = el1.getAsDouble();
 						if (s.charAt(0) == '#') {
 							s = s.substring(1);
+							// TODO: fix on first world load
 							TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(s));
 							for (Holder<Block> holder : Registry.BLOCK.getTagOrEmpty(tag)) {
 								TAG_MAP.put(holder.value(), hardness);

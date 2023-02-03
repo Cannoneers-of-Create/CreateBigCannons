@@ -30,7 +30,7 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	}
 	
 	@Override
-	protected void onHit(HitResult result) {
+	protected void onFinalImpact(HitResult result) {
 		super.onHit(result);
 		if (!this.level.isClientSide && this.fuze.getItem() instanceof FuzeItem fuzeItem && fuzeItem.onProjectileImpact(this.fuze, this, result)) {
 			this.detonate();
