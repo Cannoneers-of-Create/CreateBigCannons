@@ -124,13 +124,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			BlockHitResult bResult = this.level.clipWithInteractionOverride(start, end, pos, vshape, bstate);
 			Vec3 hitLoc = bResult == null ? Vec3.atBottomCenterOf(pos) : bResult.getLocation();
 
-			BlockState newState = this.level.getBlockState(pos);
-			ctx.setLastState(newState);
 			Vec3 curVel = this.getDeltaMovement();
 			double mag = curVel.length();
-			double hardness = getHardness(newState);
-			double startMass = this.getProjectileMass();
-			double curPom = startMass * mag;
 
 			if (!hitEntities.isEmpty()) {
 				AABB currentMovementRegion = this.getBoundingBox()
@@ -148,6 +143,13 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 			if (bResult != null) {
 				if (ctx.getLastState().isAir() && this.tryBounceOffBlock(bResult)) return 1;
+				BlockState newState = this.level.getBlockState(pos);
+				ctx.setLastState(newState);
+
+				double startMass = this.getProjectileMass();
+				double curPom = startMass * mag;
+				double hardness = getHardness(newState);
+
 				if (flag == GriefState.NO_DAMAGE || newState.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
 					this.setPos(hitLoc.add(curVel.scale(0.03 / mag)));
 					this.setInGround(true);
@@ -158,10 +160,9 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				if (!this.level.isClientSide) {
 					this.level.destroyBlock(pos, false);
 				}
+				this.setProjectileMass((float) Math.max(startMass - hardness, 0));
+				this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 			}
-
-			this.setProjectileMass((float) Math.max(startMass - hardness, 0));
-			this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 
 			return null;
 		}, fPos -> null);
