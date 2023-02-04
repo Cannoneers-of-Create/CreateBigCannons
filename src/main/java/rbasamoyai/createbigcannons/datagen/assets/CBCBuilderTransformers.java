@@ -214,7 +214,8 @@ public class CBCBuilderTransformers {
 
 	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonBarrel(String pathAndMaterial) {
 		ResourceLocation texLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon");
-		return b -> b.addLayer(() -> RenderType::cutoutMipped)
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
 				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> {
 					String name = c.getName() + "_" + (s.getValue(AutocannonBarrelBlock.ASSEMBLED) ? "assembled" : s.getValue(AutocannonBarrelBlock.BARREL_END).getSerializedName());
 					if (s.getValue(AutocannonBarrelBlock.ASSEMBLED)) return p.models().getBuilder(name).texture("particle", texLoc);
@@ -234,7 +235,8 @@ public class CBCBuilderTransformers {
 		ResourceLocation tex1Loc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon_1");
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/autocannon/breech");
 		ResourceLocation handleLoc = CreateBigCannons.resource("block/autocannon/breech_handle");
-		NonNullUnaryOperator<BlockBuilder<T, P>> result = b -> b.addLayer(() -> RenderType::cutoutMipped)
+		NonNullUnaryOperator<BlockBuilder<T, P>> result = b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
 				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p,
 						s -> {
 							boolean handle = s.hasProperty(AutocannonBreechBlock.HANDLE) && s.getValue(AutocannonBreechBlock.HANDLE);
@@ -248,7 +250,7 @@ public class CBCBuilderTransformers {
 					.build());
 		} else {
 			result = result.andThen(b -> b.item(AutocannonBlockItem::new)
-					.model((c, p) -> p.blockItem(c::get))
+					.model((c, p) -> p.blockItem(c))
 					.build());
 		}
 		return result;
@@ -256,7 +258,8 @@ public class CBCBuilderTransformers {
 
 	public static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonRecoilSpring(String pathAndMaterial, boolean complete) {
 		ResourceLocation texLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_autocannon");
-		NonNullUnaryOperator<BlockBuilder<T, P>> result = b -> b.addLayer(() -> RenderType::cutoutMipped)
+		NonNullUnaryOperator<BlockBuilder<T, P>> result = b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
 				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p,
 						$ -> p.models().withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring")).texture("material", texLoc)));
 		if (complete) {
@@ -265,7 +268,7 @@ public class CBCBuilderTransformers {
 					.build());
 		} else {
 			result = result.andThen(b -> b.item(AutocannonBlockItem::new)
-					.model((c, p) -> p.blockItem(c::get))
+					.model((c, p) -> p.blockItem(c))
 					.build());
 		}
 		return result;
@@ -290,13 +293,14 @@ public class CBCBuilderTransformers {
 	}
 
 	private static <T extends Block & AutocannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> unboredAutocannonBlock(ResourceLocation tex, ResourceLocation tex1, ResourceLocation model) {
-		return b -> b.addLayer(() -> RenderType::cutoutMipped)
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::cutoutMipped)
 				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p,
 						$ -> p.models().withExistingParent(c.getName(), model)
 								.texture("material", tex)
 								.texture("material1", tex1)))
 				.item(AutocannonBlockItem::new)
-				.model((c, p) -> p.blockItem(c::get))
+				.model((c, p) -> p.blockItem(c))
 				.build();
 	}
 
@@ -426,7 +430,8 @@ public class CBCBuilderTransformers {
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> invisibleWithParticle(String path) {
-		return b -> b.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getBuilder(c.getName())
+		return b -> b.properties(p -> p.noOcclusion())
+				.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getBuilder(c.getName())
 				.texture("particle", CreateBigCannons.resource(path))));
 	}
 	
