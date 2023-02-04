@@ -32,7 +32,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
                 slevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, this.getRenderedBlockState()), this.getX(), this.getY(), this.getZ(), 40, 0.1f, 0.1f, 0.1f, 0.01d);
             }
             SoundType soundType = this.getRenderedBlockState().getSoundType();
-            this.playSound(soundType.getBreakSound(), soundType.getPitch() * 0.5f, soundType.getVolume() * 0.75f);
+            this.playSound(soundType.getBreakSound(), soundType.getVolume() * 0.5f, soundType.getPitch() * 0.75f);
             this.discard();
             return;
         }
