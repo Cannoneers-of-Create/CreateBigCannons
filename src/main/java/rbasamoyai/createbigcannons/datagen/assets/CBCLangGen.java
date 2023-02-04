@@ -183,6 +183,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("key", CreateBigCannons.resource("category"), "Create Big Cannons");
 		REGISTRATE.addLang("key", CreateBigCannons.resource("pitch_mode"), "Change Carriage Mode");
 		REGISTRATE.addLang("key", CreateBigCannons.resource("fire_controlled_cannon"), "Fire Controlled Cannon");
+
+		REGISTRATE.addLang("debug", CreateBigCannons.resource("block_resistance"), "Block Resistance: %s");
 	}
 	
 	private static class TooltipBuilder {

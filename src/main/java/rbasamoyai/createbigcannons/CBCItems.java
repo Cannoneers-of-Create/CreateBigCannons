@@ -13,6 +13,7 @@ import rbasamoyai.createbigcannons.manualloading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonRoundItem;
+import rbasamoyai.createbigcannons.munitions.config.InspectResistanceToolItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
@@ -163,6 +164,12 @@ public class CBCItems {
 			.properties(p -> p.stacksTo(1))
 			.properties(p -> p.rarity(Rarity.EPIC))
 			.model((c, p) -> {})
+			.register();
+
+	public static final ItemEntry<InspectResistanceToolItem> RESISTANCE_INSPECTION_TOOL = REGISTRATE
+			.item("resistance_inspection_tool", InspectResistanceToolItem::new)
+			.properties(p -> p.stacksTo(1))
+			.properties(p -> p.rarity(Rarity.EPIC))
 			.register();
 	
 	public static void register() {}
