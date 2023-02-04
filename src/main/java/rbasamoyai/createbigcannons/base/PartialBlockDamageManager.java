@@ -64,7 +64,7 @@ public class PartialBlockDamageManager {
 					if (oldProgress > 0) level.destroyBlockProgress(-1, pos, -1);
 					iter.remove();
 				} else {
-					int newProgress = oldProgress - 5;
+					int newProgress = oldProgress - 3;
 					if (newProgress <= 0) {
 						level.destroyBlockProgress(-1, pos, -1);
 						iter.remove();
