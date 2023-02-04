@@ -1,9 +1,5 @@
 package rbasamoyai.createbigcannons.ponder;
 
-import java.util.Random;
-import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
-
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.contraptions.components.deployer.DeployerTileEntity;
@@ -11,18 +7,13 @@ import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.content.logistics.block.redstone.NixieTubeTileEntity;
-import com.simibubi.create.foundation.ponder.ElementLink;
-import com.simibubi.create.foundation.ponder.PonderPalette;
-import com.simibubi.create.foundation.ponder.SceneBuilder;
-import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
-import com.simibubi.create.foundation.ponder.Selection;
+import com.simibubi.create.foundation.ponder.*;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
 import com.simibubi.create.foundation.ponder.instruction.FadeOutOfSceneInstruction;
 import com.simibubi.create.foundation.utility.Pointing;
 import com.simibubi.create.foundation.utility.VecHelper;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -30,6 +21,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComparatorBlock;
@@ -51,6 +43,9 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteWithItemsCannonBlock;
+
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 public class CannonCraftingScenes {
 
@@ -642,7 +637,7 @@ public class CannonCraftingScenes {
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(1, 2, 2), Pointing.DOWN).withItem(CBCItems.CAST_IRON_INGOT.asStack()), 10);
 		scene.idle(10);
 		scene.world.modifyBlock(util.grid.at(1, 1, 2), setStateValue(BlazeBurnerBlock.HEAT_LEVEL, HeatLevel.KINDLED), false);
-		Random rand = new Random();
+		RandomSource rand = RandomSource.create();
 		for (int i = 0; i < 20; ++i) {
 			float angle = rand.nextFloat() * 360.0f;
 			Vec3 offset = new Vec3(0, 0, 0.25f);
@@ -694,7 +689,7 @@ public class CannonCraftingScenes {
 	}
 	
 	private static Consumer<CompoundTag> setUnfinishedCannonShape(CannonCastShape shape) {
-		return tag -> tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(shape).toString());
+		return tag -> tag.putString("Size", CBCRegistries.getRegistry(CBCRegistries.CANNON_CAST_SHAPES_KEY).getKey(shape).toString());
 	}
 	
 	private static Consumer<CompoundTag> setCentralBlock(BlockPos pos) {
@@ -702,7 +697,7 @@ public class CannonCraftingScenes {
 	}
 	
 	private static Consumer<CompoundTag> setFinishedCannonShape(CannonCastShape shape) {
-		return tag -> tag.putString("RenderedShape", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(shape).toString());
+		return tag -> tag.putString("RenderedShape", CBCRegistries.getRegistry(CBCRegistries.CANNON_CAST_SHAPES_KEY).getKey(shape).toString());
 	}
 	
 }

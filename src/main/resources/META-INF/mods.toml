@@ -14,21 +14,21 @@ description='''Artillery engineering comes to Create'''
 [[dependencies.createbigcannons]]
     modId="forge"
     mandatory=true
-    versionRange="[40.1.60,)"
+    versionRange="[43.0.0,)"
     ordering="NONE"
     side="BOTH"
 
 [[dependencies.createbigcannons]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18.2]"
+    versionRange="[1.19.2,1.20)"
     ordering="NONE"
     side="BOTH"
     
 [[dependencies.createbigcannons]]
 	modId="create"
 	mandatory=true
-	versionRange="[0.5.0.h,)"
+	versionRange="[0.5.0.i,)"
 	ordering="NONE"
 	side="BOTH"
 	
@@ -42,6 +42,6 @@ description='''Artillery engineering comes to Create'''
 [[dependencies.createbigcannons]]
 	modId="alloyed"
 	mandatory=false
-	versionRange="[1.18.2]"
+	versionRange="[1.19.2,1.20)"
 	ordering="NONE"
 	side="BOTH"

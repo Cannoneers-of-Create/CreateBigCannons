@@ -5,20 +5,24 @@ import com.simibubi.create.content.contraptions.components.structureMovement.pis
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.level.BlockEvent.BreakEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
+import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
@@ -35,17 +39,18 @@ public class CBCCommonEvents {
 		forgeEventBus.addListener(CBCCommonEvents::onLoadWorld);
 		forgeEventBus.addListener(CBCCommonEvents::onServerWorldTick);
 		forgeEventBus.addListener(CBCCommonEvents::onDatapackSync);
+		forgeEventBus.addListener(CBCCommonEvents::onAddReloadListeners);
 	}
 
-	public static void onServerWorldTick(TickEvent.WorldTickEvent evt) {
+	public static void onServerWorldTick(TickEvent.LevelTickEvent evt) {
 		if (evt.phase == TickEvent.Phase.START) return;
 		if (evt.side == LogicalSide.CLIENT) return;
-		CreateBigCannons.BLOCK_DAMAGE.tick(evt.world);
+		CreateBigCannons.BLOCK_DAMAGE.tick(evt.level);
 	}
 
 	public static void onPlayerBreakBlock(BreakEvent event) {
 		BlockState state = event.getState();
-		LevelAccessor level = event.getWorld();
+		LevelAccessor level = event.getLevel();
 		BlockPos pos = event.getPos();
 		if (AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
 			BlockPos drillPos = destroyPoleContraption(CBCBlocks.CANNON_DRILL_BIT.get(), CBCBlocks.CANNON_DRILL.get(), CannonDrillBlock.maxAllowedDrillLength(), event);
@@ -68,7 +73,7 @@ public class CBCCommonEvents {
 	}
 	
 	private static BlockPos destroyPoleContraption(Block head, Block base, int limit, BreakEvent event) {
-		LevelAccessor level = event.getWorld();
+		LevelAccessor level = event.getLevel();
 		BlockPos pos = event.getPos();
 		Direction.Axis axis = event.getState().getValue(BlockStateProperties.FACING).getAxis();
 		Direction positive = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE);
@@ -103,17 +108,17 @@ public class CBCCommonEvents {
 	}
 
 	public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent evt) {
-		Player player = evt.getPlayer();
+		Player player = evt.getEntity();
 		CreateBigCannons.BLOCK_DAMAGE.playerLogin(player);
 	}
 
 	public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent evt) {
-		Player player = evt.getPlayer();
+		Player player = evt.getEntity();
 		CreateBigCannons.BLOCK_DAMAGE.playerLogout(player);
 	}
 
-	public static void onLoadWorld(WorldEvent.Load evt) {
-		LevelAccessor level = evt.getWorld();
+	public static void onLoadWorld(LevelEvent.Load evt) {
+		LevelAccessor level = evt.getLevel();
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
 		if (level.getServer() != null && level.getServer().overworld() == level) {
 			BlockHardnessHandler.loadTags();
@@ -121,9 +126,19 @@ public class CBCCommonEvents {
 	}
 
 	public static void onDatapackSync(OnDatapackSyncEvent evt) {
-		if (evt.getPlayer() == null) { // Only do on server reload, not when a player joins
+		ServerPlayer player = evt.getPlayer();
+		if (evt.getPlayer() == null) {
+			BlockRecipesManager.syncToAll();
 			BlockHardnessHandler.loadTags();
+		} else {
+			BlockRecipesManager.syncTo(player);
 		}
+	}
+
+	public static void onAddReloadListeners(AddReloadListenerEvent event) {
+		event.addListener(BlockRecipeFinder.LISTENER);
+		event.addListener(BlockRecipesManager.ReloadListener.INSTANCE);
+		event.addListener(BlockHardnessHandler.ReloadListener.INSTANCE);
 	}
 	
 }

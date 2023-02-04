@@ -4,7 +4,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
+import net.minecraftforge.data.event.GatherDataEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBlockPartialsGen;
 import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
@@ -23,19 +23,19 @@ public class CBCDatagen {
 		ExistingFileHelper helper = event.getExistingFileHelper();
 		if (event.includeServer()) {
 			BlockRecipeProvider.registerAll(gen);
-			gen.addProvider(new CBCCraftingRecipeProvider(gen));
-			gen.addProvider(new CBCCompactingRecipeProvider(gen));
-			gen.addProvider(new MeltingRecipeProvider(gen));
-			gen.addProvider(new CBCMixingRecipeProvider(gen));
-			gen.addProvider(new CBCLootTableProvider(gen));
-			gen.addProvider(new CBCSequencedAssemblyRecipeProvider(gen));
-			gen.addProvider(new CBCCuttingRecipeProvider(gen));
-			gen.addProvider(new BlockHardnessProvider(CreateBigCannons.MOD_ID, gen));
+			gen.addProvider(true, new CBCCraftingRecipeProvider(gen));
+			gen.addProvider(true, new CBCCompactingRecipeProvider(gen));
+			gen.addProvider(true, new MeltingRecipeProvider(gen));
+			gen.addProvider(true, new CBCMixingRecipeProvider(gen));
+			gen.addProvider(true, new CBCLootTableProvider(gen));
+			gen.addProvider(true, new CBCSequencedAssemblyRecipeProvider(gen));
+			gen.addProvider(true, new CBCCuttingRecipeProvider(gen));
+			gen.addProvider(true, new BlockHardnessProvider(CreateBigCannons.MOD_ID, gen));
 		}
 		if (event.includeClient()) {
 			CBCLangGen.prepare();
 
-			gen.addProvider(new CBCBlockPartialsGen(gen, helper));
+			gen.addProvider(true, new CBCBlockPartialsGen(gen, helper));
 			
 			CBCPonderTags.register();
 			CBCPonderIndex.register();

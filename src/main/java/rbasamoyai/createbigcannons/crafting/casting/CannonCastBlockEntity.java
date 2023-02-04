@@ -17,6 +17,7 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -33,9 +34,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -92,7 +93,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	public void initialize() {
 		super.initialize();
 		this.sendData();
-		if (level.isClientSide) this.invalidateRenderBoundingBox();
+		if (this.level.isClientSide) this.invalidateRenderBoundingBox();
 	}
 	
 	@Override
@@ -108,7 +109,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && side == Direction.UP) {
+		if (cap == ForgeCapabilities.FLUID_HANDLER && side == Direction.UP) {
 			if (this.fluidOptional == null) {
 				this.fluidOptional = LazyOptional.of(this::createHandlerForCap);
 			}
@@ -143,8 +144,10 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
+		Registry<CannonCastShape> castReg = CBCRegistries.getRegistry(CBCRegistries.CANNON_CAST_SHAPES_KEY);
+
 		if (this.canRenderCastModel() && this.castShape != null) {
-			tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this.castShape).toString());
+			tag.putString("Size", castReg.getKey(this.castShape).toString());
 		}
 		if (this.lastKnownPos != null) tag.put("LastKnownPos", NbtUtils.writeBlockPos(this.lastKnownPos));
 		
@@ -152,7 +155,7 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 			if (!this.structure.isEmpty()) {
 				ListTag structureTag = new ListTag();
 				for (CannonCastShape sz : this.structure) {
-					structureTag.add(StringTag.valueOf(CBCRegistries.CANNON_CAST_SHAPES.get().getKey(sz).toString()));
+					structureTag.add(StringTag.valueOf(castReg.getKey(sz).toString()));
 				}
 				tag.put("Structure", structureTag);
 			}
@@ -194,18 +197,20 @@ public class CannonCastBlockEntity extends SmartTileEntity implements WandAction
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
+
+		Registry<CannonCastShape> castReg = CBCRegistries.getRegistry(CBCRegistries.CANNON_CAST_SHAPES_KEY);
 		
 		BlockPos controllerBefore = this.controllerPos;
 		int prevHeight = this.getControllerTE() == null ? 0 : this.getControllerTE().height;
 
-		this.castShape = tag.contains("Size") ? CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(tag.getString("Size"))) : null;
+		this.castShape = tag.contains("Size") ? castReg.get(new ResourceLocation(tag.getString("Size"))) : null;
 		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
 		
 		this.structure.clear();
 		if (tag.contains("Structure")) {
 			ListTag list = tag.getList("Structure", Tag.TAG_STRING);
 			for (int i = 0; i < list.size(); ++i) {
-				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(list.getString(i)));
+				CannonCastShape shape = castReg.get(new ResourceLocation(list.getString(i)));
 				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL.get() : shape);
 			}
 			this.height = tag.getInt("Height");

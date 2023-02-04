@@ -2,12 +2,12 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -126,7 +126,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 		Vec3 right = forward.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = forward.cross(right);
 		double length = initialVelocity.length();
-		Random random = level.getRandom();
+		RandomSource random = level.getRandom();
 		List<T> list = new ArrayList<>();
 		
 		for (int i = 0; i < count; ++i) {

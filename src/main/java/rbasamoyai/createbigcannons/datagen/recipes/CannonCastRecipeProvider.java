@@ -7,12 +7,12 @@ import com.google.gson.JsonObject;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCFluids;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -294,32 +294,20 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 			cons.accept(new Result(this.shape, this.ingredient, this.result, this.castingTime, this.id));
 		}
 	}
-	
-	private static class Result implements FinishedBlockRecipe {
-		private final ResourceLocation id;
-		private final CannonCastShape shape;
-		private final FluidIngredient ingredient;
-		private final int castingTime;
-		private final Block result;
-		
-		public Result(CannonCastShape shape, FluidIngredient ingredient, Block result, int castingTime, ResourceLocation id) {
-			this.shape = shape;
-			this.ingredient = ingredient;
-			this.result = result;
-			this.castingTime = castingTime;
-			this.id = id;
-		}
-		
+
+	private record Result(CannonCastShape shape, FluidIngredient ingredient, Block result, int castingTime, ResourceLocation id) implements FinishedBlockRecipe {
 		@Override
 		public void serializeRecipeData(JsonObject obj) {
-			obj.addProperty("cast_shape", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this.shape).toString());
+			obj.addProperty("cast_shape", CBCRegistries.getRegistry(CBCRegistries.CANNON_CAST_SHAPES_KEY).getKey(this.shape).toString());
 			obj.add("fluid", this.ingredient.serialize());
 			obj.addProperty("casting_time", this.castingTime);
-			obj.addProperty("result", ForgeRegistries.BLOCKS.getKey(this.result).toString());
+			obj.addProperty("result", Registry.BLOCK.getKey(this.result).toString());
 		}
 
-		@Override public ResourceLocation id() { return this.id; }
-		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.CANNON_CASTING.get(); }
+		@Override
+		public BlockRecipeSerializer<?> getSerializer() {
+			return BlockRecipeSerializer.CANNON_CASTING.get();
+		}
 	}
 
 }

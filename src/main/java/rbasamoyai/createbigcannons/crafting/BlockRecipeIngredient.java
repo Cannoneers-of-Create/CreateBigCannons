@@ -4,7 +4,7 @@ import com.google.gson.JsonElement;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -26,7 +26,7 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 		public List<ItemStack> getBlockItems() {
 			if (this.ingredient == null) {
 				this.ingredient = new ArrayList<>(1);
-				this.ingredient.add(new ItemStack(Blocks.BARRIER).setHoverName(new TextComponent("Invalid block")));
+				this.ingredient.add(new ItemStack(Blocks.BARRIER).setHoverName(Component.literal("Invalid block")));
 			}
 			return this.ingredient;
 		}
@@ -86,7 +86,7 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 					this.blocks.add(new ItemStack(holder.value()));
 				}
 				if (this.blocks.isEmpty()) {
-					this.blocks.add(new ItemStack(Blocks.BARRIER).setHoverName(new TextComponent("Empty Tag: " + this.tag.location())));
+					this.blocks.add(new ItemStack(Blocks.BARRIER).setHoverName(Component.literal("Empty Tag: " + this.tag.location())));
 				}
 			}
 			return this.blocks;

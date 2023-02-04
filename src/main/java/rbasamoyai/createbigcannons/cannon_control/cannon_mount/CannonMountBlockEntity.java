@@ -10,7 +10,7 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CBCBlocks;
@@ -65,7 +65,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	@NotNull
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.mountedContraption != null) {
+		if (cap == ForgeCapabilities.ITEM_HANDLER && this.mountedContraption != null) {
 			return ((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).getItemOptional().cast();
 		}
 		return super.getCapability(cap, side);
@@ -368,7 +368,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	@Override public AssemblyException getLastAssemblyException() { return this.lastException; }
 	
 	public static AssemblyException cannonBlockOutsideOfWorld(BlockPos pos) {
-		return new AssemblyException(new TranslatableComponent("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
+		return new AssemblyException(Component.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
 	}
 	
 }

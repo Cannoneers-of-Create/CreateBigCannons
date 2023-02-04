@@ -51,7 +51,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 				tag.putInt("FuzeTimer", 20);
 			}
 			int timer = tag.getInt("FuzeTimer");
-			NetworkHooks.openGui((ServerPlayer) player, this, buf -> {
+			NetworkHooks.openScreen((ServerPlayer) player, this, buf -> {
 				buf.writeVarInt(timer);
 				buf.writeItem(new ItemStack(this));
 			});

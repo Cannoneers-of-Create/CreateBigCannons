@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
+import com.jozufozu.flywheel.core.model.ModelUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.tileEntity.renderer.SmartTileEntityRenderer;
 
@@ -11,7 +12,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.model.data.EmptyModelData;
 
 public class LayeredCannonBlockEntityRenderer extends SmartTileEntityRenderer<LayeredBigCannonBlockEntity> {
 
@@ -34,7 +34,7 @@ public class LayeredCannonBlockEntityRenderer extends SmartTileEntityRenderer<La
 					state = state.setValue(BlockStateProperties.FACING, be.getBlockState().getValue(BlockStateProperties.FACING));
 				}
 				
-				this.dispatcher.renderSingleBlock(state, ms, buffer, light, overlay, EmptyModelData.INSTANCE);
+				this.dispatcher.renderSingleBlock(state, ms, buffer, light, overlay, ModelUtil.VIRTUAL_DATA, null);
 				
 				ms.popPose();
 			}

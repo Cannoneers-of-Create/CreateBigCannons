@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder.ProcessingRecipeFactory;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.utility.Lang;
@@ -51,7 +50,7 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 		String name = Lang.asId(this.name());
 		this.id = CreateBigCannons.resource(name);
 		this.serializer = Registries.SERIALIZERS.register(name, serializer);
-		this.typeObj = Registries.RECIPE_TYPES.register(name, () -> AllRecipeTypes.simpleType(this.id));
+		this.typeObj = Registries.RECIPE_TYPES.register(name, () -> RecipeType.simple(this.id));
 		this.type = this.typeObj;
 	}
 	

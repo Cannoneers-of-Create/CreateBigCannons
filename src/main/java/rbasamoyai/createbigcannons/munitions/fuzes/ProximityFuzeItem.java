@@ -98,7 +98,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 				tag.putInt("DetonationDistance", 1);
 			}
 			int dist = tag.getInt("DetonationDistance");
-			NetworkHooks.openGui((ServerPlayer) player, this, buf -> {
+			NetworkHooks.openScreen((ServerPlayer) player, this, buf -> {
 				buf.writeVarInt(dist);
 				buf.writeItem(new ItemStack(this));
 			});

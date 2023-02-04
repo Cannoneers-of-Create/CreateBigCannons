@@ -88,7 +88,7 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 
 	protected Block getResultBlock() {
 		if (this.resultBlock == null) this.resultBlock = this.resultBlockSup.get();
-		return this.resultBlock.delegate.get();
+		return this.resultBlock;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,29 +40,34 @@ public class BlockRecipesManager {
 	}
 	
 	public static void writeBuf(FriendlyByteBuf buf) {
+		Registry<BlockRecipeSerializer<?>> reg = CBCRegistries.getRegistry(CBCRegistries.BLOCK_RECIPE_SERIALIZERS_KEY);
 		buf.writeVarInt(BLOCK_RECIPES_BY_NAME.size());
 		for (Map.Entry<ResourceLocation, BlockRecipe> entry : BLOCK_RECIPES_BY_NAME.entrySet()) {
 			buf.writeResourceLocation(entry.getKey());
-			toNetworkCasted(buf, entry.getValue());
+			toNetworkCasted(buf, entry.getValue(), reg);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T extends BlockRecipe> void toNetworkCasted(FriendlyByteBuf buf, T recipe) {
+	public static <T extends BlockRecipe> void toNetworkCasted(FriendlyByteBuf buf, T recipe, Registry<BlockRecipeSerializer<?>> reg) {
 		BlockRecipeSerializer<T> ser = (BlockRecipeSerializer<T>) recipe.getSerializer();
-		buf.writeResourceLocation(CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getKey(ser));
+		buf.writeResourceLocation(reg.getKey(ser));
 		ser.toNetwork(buf, recipe);
 	}
 	
 	public static void readBuf(FriendlyByteBuf buf) {
 		clear();
 		int sz = buf.readVarInt();
+
+		Registry<BlockRecipeSerializer<?>> serReg = CBCRegistries.getRegistry(CBCRegistries.BLOCK_RECIPE_SERIALIZERS_KEY);
+		Registry<BlockRecipeType<?>> typeReg = CBCRegistries.getRegistry(CBCRegistries.BLOCK_RECIPE_TYPES_KEY);
+
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation id = buf.readResourceLocation();
 			ResourceLocation type = buf.readResourceLocation();
-			BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromNetwork(id, buf);
+			BlockRecipe recipe = serReg.get(type).fromNetwork(id, buf);
 			BLOCK_RECIPES_BY_NAME.put(id, recipe);
-			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().getValue(type);
+			BlockRecipeType<?> recipeType = typeReg.get(type);
 			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
 				BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
 			BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
@@ -87,6 +93,9 @@ public class BlockRecipesManager {
 		@Override
 		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resources, ProfilerFiller profiler) {
 			clear();
+
+			Registry<BlockRecipeSerializer<?>> serReg = CBCRegistries.getRegistry(CBCRegistries.BLOCK_RECIPE_SERIALIZERS_KEY);
+			Registry<BlockRecipeType<?>> typeReg = CBCRegistries.getRegistry(CBCRegistries.BLOCK_RECIPE_TYPES_KEY);
 			
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 				JsonElement el = entry.getValue();
@@ -94,9 +103,9 @@ public class BlockRecipesManager {
 					ResourceLocation id = entry.getKey();
 					JsonObject obj = el.getAsJsonObject();
 					ResourceLocation type = new ResourceLocation(obj.get("type").getAsString());
-					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromJson(id, obj);
+					BlockRecipe recipe = serReg.get(type).fromJson(id, obj);
 					BLOCK_RECIPES_BY_NAME.put(id, recipe);
-					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().getValue(type);
+					BlockRecipeType<?> recipeType = typeReg.get(type);
 					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
 						BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
 					BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);

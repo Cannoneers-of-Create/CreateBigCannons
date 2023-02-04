@@ -37,25 +37,15 @@ public class TimedFuzeContainer extends AbstractContainerMenu {
 	public int getTime() { return this.data.get(0); }
 	public ItemStack getStackToRender() { return this.stackToRender; }
 
+	@Override public ItemStack quickMoveStack(Player player, int index) { return ItemStack.EMPTY; }
+
 	@Override public boolean stillValid(Player player) { return true; }
 
-	private static class ServerData implements ContainerData {
-		private final ItemStack stack;
-		
-		public ServerData(ItemStack stack) {
-			this.stack = stack;
-		}
-
-		@Override
-		public int get(int index) {
-			return index == 0 ? this.stack.getOrCreateTag().getInt("FuzeTimer") : 0;
-		}
-
-		@Override
-		public void set(int index, int value) {
-			if (index == 0) this.stack.getOrCreateTag().putInt("FuzeTimer", value);
-		}
-
+	private record ServerData(ItemStack stack) implements ContainerData {
+		@Override public int get(int index) {
+				return index == 0 ? this.stack.getOrCreateTag().getInt("FuzeTimer") : 0;
+			}
+		@Override public void set(int index, int value) { if (index == 0) this.stack.getOrCreateTag().putInt("FuzeTimer", value); }
 		@Override public int getCount() { return 1; }
 	}
 	

@@ -7,7 +7,6 @@ import com.simibubi.create.foundation.utility.LangBuilder;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -25,7 +24,7 @@ public class IncompleteCannonBlockTooltip {
 		for (int i = 0; i < required.size(); ++i) {
 			LangBuilder lb = Lang.builder();
 			lb.text(i == currentState ? "> " : "")
-			.add(new TranslatableComponent(required.get(i).asItem().getDescriptionId()))
+			.add(Component.translatable(required.get(i).asItem().getDescriptionId()))
 			.style(i == currentState ? ChatFormatting.WHITE : ChatFormatting.DARK_GRAY);
 			if (i < currentState) lb.style(ChatFormatting.STRIKETHROUGH);
 			lb.forGoggles(tooltip, 1);

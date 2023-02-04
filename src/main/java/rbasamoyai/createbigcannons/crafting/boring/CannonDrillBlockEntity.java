@@ -23,13 +23,13 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -51,14 +51,13 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -100,7 +99,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+		if (cap == ForgeCapabilities.FLUID_HANDLER) {
 			Direction facing = this.getBlockState().getValue(BlockStateProperties.FACING);
 			boolean alongFirst = this.getBlockState().getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
 			Direction.Axis pipeAxis = switch (facing.getAxis()) {
@@ -452,6 +451,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		BlockState boredState = this.currentRecipe.getResultState(latheBlockInfo.state);
 
 		if (latheBlockInfo.nbt != null && boredState.getBlock() instanceof ITE<?> boredBE) {
+			Registry<CannonCastShape> castReg = CBCRegistries.getRegistry(CBCRegistries.CANNON_CAST_SHAPES_KEY);
 			BlockEntity be = boredBE.newBlockEntity(BlockPos.ZERO, boredState);
 			latheBlockInfo.nbt.putBoolean("JustBored", true);
 			
@@ -465,7 +465,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 					BlockEntity be1 = BlockEntity.loadStatic(BlockPos.ZERO, nextBlockInfo.state, nextBlockInfo.nbt);
 					if (be1 instanceof LayeredBigCannonBlockEntity layered1 && layered1.isLayerConnectedTo(opp, shape)
 						|| be1 instanceof ICannonBlockEntity<?> cbe1 && cbe1.cannonBehavior().isConnectedTo(opp)) {
-						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
+						ResourceLocation key = castReg.getKey(cBlock.getCannonShape());
 						ListTag list = new ListTag();
 						list.add(StringTag.valueOf(key.toString()));
 						layerConnectionsTag.put(facing.getSerializedName(), list);
@@ -476,7 +476,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 					BlockEntity be2 = BlockEntity.loadStatic(BlockPos.ZERO, prevBlockInfo.state, prevBlockInfo.nbt);
 					if (be2 instanceof LayeredBigCannonBlockEntity layered2 && layered2.isLayerConnectedTo(facing, shape)
 						|| be2 instanceof ICannonBlockEntity<?> cbe2 && cbe2.cannonBehavior().isConnectedTo(facing)) {
-						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
+						ResourceLocation key = castReg.getKey(cBlock.getCannonShape());
 						ListTag list = new ListTag();
 						list.add(StringTag.valueOf(key.toString()));
 						layerConnectionsTag.put(opp.getSerializedName(), list);
@@ -494,7 +494,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		lathe.getBlocks().put(boringOffset, newInfo);
 		bearing.notifyUpdate();
 		
-		ResourceLocation unboredId = ForgeRegistries.BLOCKS.getKey(latheBlockInfo.state.getBlock());
+		ResourceLocation unboredId = Registry.BLOCK.getKey(latheBlockInfo.state.getBlock());
 		LootTable table = slevel.getServer().getLootTables().get(new ResourceLocation(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
 		List<ItemStack> scrap = table.getRandomItems(new LootContext.Builder(slevel)
 				.withRandom(slevel.random)
@@ -531,10 +531,10 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(TextComponent.EMPTY);
+		tooltip.add(Component.empty());
 		this.containedFluidTooltip(tooltip, isPlayerSneaking, this.getFluidOptional());
 		if (this.failureReason != FailureReason.NONE) {
-			tooltip.add(TextComponent.EMPTY);
+			tooltip.add(Component.empty());
 			Lang.builder("exception")
 				.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip.encounteredProblem")
 				.style(ChatFormatting.GOLD)

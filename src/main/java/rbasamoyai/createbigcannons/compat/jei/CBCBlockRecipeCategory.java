@@ -9,7 +9,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 
@@ -34,8 +33,6 @@ public abstract class CBCBlockRecipeCategory<T extends BlockRecipe> implements I
 	@Override public Component getTitle() { return title; }
 	@Override public IDrawable getBackground() { return this.background; }
 	@Override public IDrawable getIcon() { return this.icon; }
-	@Override public ResourceLocation getUid() { return this.type.getUid(); }
-	@Override public Class<? extends T> getRecipeClass() { return this.type.getRecipeClass(); }
 	@Override public RecipeType<T> getRecipeType() { return this.type; }
 	
 	public void registerRecipes(IRecipeRegistration reg) {

@@ -10,7 +10,6 @@ import com.tterrag.registrate.util.nullness.NonnullType;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.minecraftforge.registries.RegistryObject;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
@@ -18,7 +17,7 @@ import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 
-public interface BlockRecipeSerializer<T extends BlockRecipe> extends IForgeRegistryEntry<BlockRecipeSerializer<?>> {
+public interface BlockRecipeSerializer<T extends BlockRecipe> {
 
 	T fromJson(ResourceLocation id, JsonObject obj);
 	T fromNetwork(ResourceLocation id, FriendlyByteBuf buf);
@@ -47,7 +46,7 @@ public interface BlockRecipeSerializer<T extends BlockRecipe> extends IForgeRegi
 		private final NonNullSupplier<BlockRecipeSerializer<T>> factory;
 		
 		public Builder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, NonNullSupplier<BlockRecipeSerializer<T>> factory) {
-			super(owner, parent, name, callback, CBCRegistries.Keys.BLOCK_RECIPE_SERIALIZERS);
+			super(owner, parent, name, callback, CBCRegistries.BLOCK_RECIPE_SERIALIZERS_KEY);
 			this.factory = factory;
 		}
 

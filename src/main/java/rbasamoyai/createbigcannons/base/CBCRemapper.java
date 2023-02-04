@@ -3,14 +3,15 @@ package rbasamoyai.createbigcannons.base;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.MissingMappingsEvent;
+import net.minecraftforge.registries.MissingMappingsEvent.Mapping;
 import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -29,9 +30,9 @@ public class CBCRemapper {
 	}
 	
 	@SubscribeEvent
-	public static void onRemapItem(RegistryEvent.MissingMappings<Item> event) {
-		for (Mapping<Item> mapping : event.getMappings(CreateBigCannons.MOD_ID)) {
-			ResourceLocation key = mapping.key;
+	public static void onRemapItem(MissingMappingsEvent event) {
+		for (Mapping<Item> mapping : event.getMappings(Registry.ITEM_REGISTRY, CreateBigCannons.MOD_ID)) {
+			ResourceLocation key = mapping.getKey();
 			String path = key.getPath();
 			ResourceLocation remapLoc = REMAP.get(path);
 			if (remapLoc == null) continue;
@@ -47,9 +48,9 @@ public class CBCRemapper {
 	}
 	
 	@SubscribeEvent
-	public static void onRemapBlock(RegistryEvent.MissingMappings<Block> event) {
-		for (Mapping<Block> mapping : event.getMappings(CreateBigCannons.MOD_ID)) {
-			ResourceLocation key = mapping.key;
+	public static void onRemapBlock(MissingMappingsEvent event) {
+		for (Mapping<Block> mapping : event.getMappings(Registry.BLOCK_REGISTRY, CreateBigCannons.MOD_ID)) {
+			ResourceLocation key = mapping.getKey();
 			String path = key.getPath();
 			ResourceLocation remapLoc = REMAP.get(path);
 			if (remapLoc == null) continue;

@@ -37,6 +37,8 @@ private final ContainerData data;
 	public int getDistance() { return this.data.get(0); }
 	public ItemStack getStackToRender() { return this.stackToRender; }
 
+	@Override public ItemStack quickMoveStack(Player player, int index) { return ItemStack.EMPTY; }
+
 	@Override public boolean stillValid(Player player) { return true; }
 
 	private static class ServerData implements ContainerData {

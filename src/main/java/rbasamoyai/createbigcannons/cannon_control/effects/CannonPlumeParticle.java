@@ -25,7 +25,7 @@ public class CannonPlumeParticle extends NoRenderParticle {
 		this.direction = direction;
 		this.scale = scale;
 		Minecraft mc = Minecraft.getInstance();
-		this.plumesSetting = mc.options.particles == ParticleStatus.ALL ? CBCConfigs.CLIENT.showCannonPlumes.get() : PlumeSetting.OFF;
+		this.plumesSetting = mc.options.particles().get() == ParticleStatus.ALL ? CBCConfigs.CLIENT.showCannonPlumes.get() : PlumeSetting.OFF;
 		
 		this.lifetime = 20;
 		

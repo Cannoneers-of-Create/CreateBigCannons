@@ -1,17 +1,15 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
-import java.util.Random;
-
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.ITE;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
@@ -101,7 +99,7 @@ public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements I
 	}
 	
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
 		boolean prevPowered = state.getValue(POWERED);
 		if (prevPowered != level.hasNeighborSignal(pos)) {
 			state = state.cycle(POWERED);
