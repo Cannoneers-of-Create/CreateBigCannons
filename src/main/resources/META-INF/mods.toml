@@ -28,7 +28,7 @@ description='''Artillery engineering comes to Create'''
 [[dependencies.createbigcannons]]
 	modId="create"
 	mandatory=true
-	versionRange="[0.5.0.h,)"
+	versionRange="[0.5.0.i,)"
 	ordering="NONE"
 	side="BOTH"
 	
