@@ -1,10 +1,16 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
@@ -38,6 +44,28 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) | 2));
 		} else {
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) & 0b11111101));
+		}
+	}
+
+	@Override
+	protected void onDestroyBlock(BlockHitResult result) {
+		if (this.level instanceof ServerLevel) {
+			BlockPos pos = result.getBlockPos();
+			BlockState state = this.level.getChunkAt(pos).getBlockState(pos);
+			if (state.getDestroySpeed(this.level, pos) == -1) return;
+
+			Vec3 curVel = this.getDeltaMovement();
+			double curPom = this.getProjectileMass() * curVel.length();
+			double hardness = getHardness(this.level.getBlockState(result.getBlockPos())) * 10;
+			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
+
+			if (curPom > hardness) {
+				double startMass = this.getProjectileMass();
+				this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
+			} else {
+				this.onFinalImpact(result);
+				this.discard();
+			}
 		}
 	}
 

@@ -18,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
@@ -35,6 +36,8 @@ public class CreateBigCannons {
 	public static final String MOD_ID = "createbigcannons";
 	
 	public static final CreateRegistrate REGISTRATE = CreateRegistrate.create(MOD_ID);
+
+	public static final PartialBlockDamageManager BLOCK_DAMAGE = new PartialBlockDamageManager();
 	
 	public CreateBigCannons() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();

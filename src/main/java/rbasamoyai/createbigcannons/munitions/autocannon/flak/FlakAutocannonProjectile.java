@@ -23,7 +23,7 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 
 	public FlakAutocannonProjectile(EntityType<? extends FlakAutocannonProjectile> type, Level level) {
 		super(type, level);
-		this.setProjectileMass((byte) 1);
+		this.setProjectileMass(2);
 	}
 
 	@Override

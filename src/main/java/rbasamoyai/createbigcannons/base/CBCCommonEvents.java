@@ -10,9 +10,14 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.LogicalSide;
 import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
@@ -20,6 +25,20 @@ import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderSt
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 
 public class CBCCommonEvents {
+
+	public static void register(IEventBus forgeEventBus) {
+		forgeEventBus.addListener(CBCCommonEvents::onPlayerBreakBlock);
+		forgeEventBus.addListener(CBCCommonEvents::onPlayerLogin);
+		forgeEventBus.addListener(CBCCommonEvents::onPlayerLogout);
+		forgeEventBus.addListener(CBCCommonEvents::onLoadWorld);
+		forgeEventBus.addListener(CBCCommonEvents::onServerWorldTick);
+	}
+
+	public static void onServerWorldTick(TickEvent.WorldTickEvent evt) {
+		if (evt.phase == TickEvent.Phase.START) return;
+		if (evt.side == LogicalSide.CLIENT) return;
+		CreateBigCannons.BLOCK_DAMAGE.tick(evt.world);
+	}
 
 	public static void onPlayerBreakBlock(BreakEvent event) {
 		BlockState state = event.getState();
@@ -79,9 +98,20 @@ public class CBCCommonEvents {
 		.forEach(p -> level.destroyBlock(p, !player.isCreative()));
 		return baseCopy;
 	}
-	
-	public static void register(IEventBus forgeEventBus) {
-		forgeEventBus.addListener(CBCCommonEvents::onPlayerBreakBlock);
+
+	public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent evt) {
+		Player player = evt.getPlayer();
+		CreateBigCannons.BLOCK_DAMAGE.playerLogin(player);
+	}
+
+	public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent evt) {
+		Player player = evt.getPlayer();
+		CreateBigCannons.BLOCK_DAMAGE.playerLogout(player);
+	}
+
+	public static void onLoadWorld(WorldEvent.Load evt) {
+		LevelAccessor level = evt.getWorld();
+		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
 	}
 	
 }

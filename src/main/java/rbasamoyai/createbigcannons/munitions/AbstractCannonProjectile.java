@@ -179,18 +179,14 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.onFinalImpact(bResult);
 				return true;
 			}
-			if (!this.level.isClientSide) {
-				this.level.destroyBlock(pos, false);
-			}
+			this.onDestroyBlock(bResult);
+
 			if (flag1 && hardness / curPom <= 0.15) {
 				ctx.queueExplosion(pos.immutable(), 2);
 			}
-
-			this.setProjectileMass((float) Math.max(startMass - hardness, 0));
-			this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 		}
 
-		return false;
+		return this.isRemoved();
 	}
 
 	protected boolean tryBounceOffBlock(BlockHitResult result) {
@@ -215,6 +211,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 	/** Use for fuzes and any other final effects */
 	protected void onFinalImpact(HitResult result) {}
+
+	protected abstract void onDestroyBlock(BlockHitResult result);
 
 	protected void onHitEntity(Entity entity) {
 		if (this.getProjectileMass() <= 0) return;
