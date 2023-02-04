@@ -9,7 +9,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.util.FakePlayer;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 public class InspectResistanceToolItem extends Item {
 
@@ -23,7 +22,7 @@ public class InspectResistanceToolItem extends Item {
 		Level level = ctx.getLevel();
 		if (!level.isClientSide && player != null && !(player instanceof FakePlayer)) {
 			String key = "debug." + CreateBigCannons.MOD_ID + ".block_resistance";
-			double hardness = AbstractCannonProjectile.getHardness(level.getBlockState(ctx.getClickedPos()));
+			double hardness = BlockHardnessHandler.getHardness(level.getBlockState(ctx.getClickedPos()));
 			player.displayClientMessage(new TranslatableComponent(key, String.format("%.2f", hardness)), true);
 		}
 		return super.useOn(ctx);

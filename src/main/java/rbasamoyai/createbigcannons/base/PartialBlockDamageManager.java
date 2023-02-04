@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -71,7 +71,7 @@ public class PartialBlockDamageManager {
 					} else {
 						newSet.put(entry.getKey(), newProgress);
 					}
-					double hardnessRec = 1 / AbstractCannonProjectile.getHardness(state);
+					double hardnessRec = 1 / BlockHardnessHandler.getHardness(state);
 					int oldPart = (int) Math.floor(oldProgress * hardnessRec);
 					int newPart = (int) Math.floor(newProgress * hardnessRec);
 					if (oldPart - newPart > 0) level.destroyBlockProgress(-1, pos, newPart);
@@ -91,7 +91,7 @@ public class PartialBlockDamageManager {
 			int oldProgress = this.blockDamage.getOrDefault(pos, 0);
 			this.blockDamage.merge(pos, added, Integer::sum);
 
-			double hardnessRec = 1 / AbstractCannonProjectile.getHardness(state);
+			double hardnessRec = 1 / BlockHardnessHandler.getHardness(state);
 			int oldPart = (int) Math.floor(oldProgress * hardnessRec);
 			int newPart = (int) Math.floor(this.blockDamage.get(pos) * hardnessRec);
 

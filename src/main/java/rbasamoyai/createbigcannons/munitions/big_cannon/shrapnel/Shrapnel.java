@@ -24,7 +24,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 public class Shrapnel extends AbstractHurtingProjectile {
 	
@@ -74,7 +74,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 		if (!this.level.isClientSide && state.getDestroySpeed(this.level, pos) != -1 && this.canDestroyBlock(state)) {
 			Vec3 curVel = this.getDeltaMovement();
 			double curPom = this.getProjectileMass() * curVel.length();
-			double hardness = AbstractCannonProjectile.getHardness(state) * 10;
+			double hardness = BlockHardnessHandler.getHardness(state) * 10;
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
 
 			SoundType type = state.getSoundType();

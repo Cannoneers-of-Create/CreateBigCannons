@@ -9,6 +9,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 public abstract class AbstractBigCannonProjectile extends AbstractCannonProjectile {
 
@@ -25,7 +26,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		double mag = curVel.length();
 		double curPom = startMass * mag;
 
-		double hardness = getHardness(state);
+		double hardness = BlockHardnessHandler.getHardness(state);
 		this.setProjectileMass((float) Math.max(startMass - hardness, 0));
 		this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 

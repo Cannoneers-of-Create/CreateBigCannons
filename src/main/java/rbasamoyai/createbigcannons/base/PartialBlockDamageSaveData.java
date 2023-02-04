@@ -8,7 +8,6 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.saveddata.SavedData;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +20,6 @@ public class PartialBlockDamageSaveData extends SavedData {
 
 	@Override
 	public CompoundTag save(CompoundTag tag) {
-		CreateBigCannons.LOGGER.info("Saving Create Big Cannons damage data...");
 		tag.put("BlockDamage", NBTHelper.writeCompoundList(this.blockDamage.entrySet(), e -> {
 			CompoundTag tag1 = new CompoundTag();
 			tag1.put("Pos", NbtUtils.writeBlockPos(e.getKey()));

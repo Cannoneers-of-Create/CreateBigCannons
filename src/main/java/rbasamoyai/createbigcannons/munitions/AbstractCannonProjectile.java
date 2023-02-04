@@ -17,7 +17,6 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -169,7 +168,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 			double startMass = this.getProjectileMass();
 			double curPom = startMass * mag;
-			double hardness = getHardness(state);
+			double hardness = BlockHardnessHandler.getHardness(state);
 
 			if (ctx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
 				this.setPos(hitLoc.add(curVel.scale(0.03 / mag)));
@@ -194,7 +193,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		Vec3 oldVel = this.getDeltaMovement();
 		double momentum = this.getProjectileMass() * oldVel.length();
 		if (bounce == BounceType.DEFLECT) {
-			if (momentum > getHardness(state) * 0.5) {
+			if (momentum > BlockHardnessHandler.getHardness(state) * 0.5) {
 				Vec3 spallLoc = this.position().add(oldVel.normalize().scale(2));
 				this.level.explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Explosion.BlockInteraction.NONE);
 			}
@@ -245,13 +244,6 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		if (state.is(CBCTags.BlockCBC.BOUNCES_SHOTS)) return true;
 		Material material = state.getMaterial();
 		return material.isSolidBlocking() && material.getPushReaction() != PushReaction.DESTROY;
-	}
-
-	public static double getHardness(BlockState state) {
-		Block block = state.getBlock();
-		if (BlockHardnessHandler.BLOCK_MAP.containsKey(block)) return BlockHardnessHandler.BLOCK_MAP.get(block);
-		if (BlockHardnessHandler.TAG_MAP.containsKey(block)) return BlockHardnessHandler.TAG_MAP.get(block);
-		return block.getExplosionResistance();
 	}
 
 	protected BounceType canBounce(BlockState state, BlockHitResult result) {

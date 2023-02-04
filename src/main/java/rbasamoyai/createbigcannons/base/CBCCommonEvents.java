@@ -10,6 +10,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
@@ -23,6 +24,7 @@ import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderState;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
+import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 public class CBCCommonEvents {
 
@@ -32,6 +34,7 @@ public class CBCCommonEvents {
 		forgeEventBus.addListener(CBCCommonEvents::onPlayerLogout);
 		forgeEventBus.addListener(CBCCommonEvents::onLoadWorld);
 		forgeEventBus.addListener(CBCCommonEvents::onServerWorldTick);
+		forgeEventBus.addListener(CBCCommonEvents::onDatapackSync);
 	}
 
 	public static void onServerWorldTick(TickEvent.WorldTickEvent evt) {
@@ -112,6 +115,15 @@ public class CBCCommonEvents {
 	public static void onLoadWorld(WorldEvent.Load evt) {
 		LevelAccessor level = evt.getWorld();
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
+		if (level.getServer() != null && level.getServer().overworld() == level) {
+			BlockHardnessHandler.loadTags();
+		}
+	}
+
+	public static void onDatapackSync(OnDatapackSyncEvent evt) {
+		if (evt.getPlayer() == null) { // Only do on server reload, not when a player joins
+			BlockHardnessHandler.loadTags();
+		}
 	}
 	
 }

@@ -12,6 +12,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
 
@@ -55,7 +56,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 			Vec3 curVel = this.getDeltaMovement();
 			double curPom = this.getProjectileMass() * curVel.length();
-			double hardness = getHardness(state) * 10;
+			double hardness = BlockHardnessHandler.getHardness(state) * 10;
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
 
 			if (curPom > hardness) {
