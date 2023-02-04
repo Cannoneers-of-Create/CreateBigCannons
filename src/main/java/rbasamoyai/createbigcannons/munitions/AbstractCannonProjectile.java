@@ -139,9 +139,9 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	 * @return true to stop iterating, false otherwise
 	 */
 	protected boolean onClip(ProjectileContext ctx, BlockPos pos) {
-		BlockState bstate = this.level.getBlockState(pos);
-		VoxelShape vshape = bstate.getCollisionShape(this.level, pos, ctx.collisionContext());
-		BlockHitResult bResult = this.level.clipWithInteractionOverride(ctx.start(), ctx.end(), pos, vshape, bstate);
+		BlockState state = this.level.getChunkAt(pos).getBlockState(pos);
+		VoxelShape vshape = state.getCollisionShape(this.level, pos, ctx.collisionContext());
+		BlockHitResult bResult = this.level.clipWithInteractionOverride(ctx.start(), ctx.end(), pos, vshape, state);
 		Vec3 hitLoc = bResult == null ? Vec3.atBottomCenterOf(pos) : bResult.getLocation();
 
 		Vec3 curVel = this.getDeltaMovement();
@@ -164,22 +164,21 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 		if (bResult != null) {
 			boolean flag1 = ctx.getLastState().isAir();
-			if (flag1 && this.tryBounceOffBlock(bResult)) return true;
-			BlockState newState = this.level.getBlockState(pos);
-			ctx.setLastState(newState);
+			if (flag1 && this.tryBounceOffBlock(state, bResult)) return true;
+			ctx.setLastState(state);
 
 			double startMass = this.getProjectileMass();
 			double curPom = startMass * mag;
-			double hardness = getHardness(newState);
+			double hardness = getHardness(state);
 
-			if (ctx.griefState() == GriefState.NO_DAMAGE || newState.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
+			if (ctx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
 				this.setPos(hitLoc.add(curVel.scale(0.03 / mag)));
 				this.setInGround(true);
 				this.setDeltaMovement(Vec3.ZERO);
 				this.onFinalImpact(bResult);
 				return true;
 			}
-			this.onDestroyBlock(bResult);
+			this.onDestroyBlock(state, bResult);
 
 			if (flag1 && hardness / curPom <= 0.15) {
 				ctx.queueExplosion(pos.immutable(), 2);
@@ -189,18 +188,17 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		return this.isRemoved();
 	}
 
-	protected boolean tryBounceOffBlock(BlockHitResult result) {
-		BounceType bounce = this.canBounce(result);
+	protected boolean tryBounceOffBlock(BlockState state, BlockHitResult result) {
+		BounceType bounce = this.canBounce(state, result);
 		if (bounce == BounceType.NO_BOUNCE) return false;
-		BlockState oldState = this.level.getBlockState(result.getBlockPos());
 		Vec3 oldVel = this.getDeltaMovement();
 		double momentum = this.getProjectileMass() * oldVel.length();
 		if (bounce == BounceType.DEFLECT) {
-			if (momentum > getHardness(oldState) * 0.5) {
+			if (momentum > getHardness(state) * 0.5) {
 				Vec3 spallLoc = this.position().add(oldVel.normalize().scale(2));
 				this.level.explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Explosion.BlockInteraction.NONE);
 			}
-			SoundType sound = oldState.getSoundType();
+			SoundType sound = state.getSoundType();
 			this.playSound(sound.getBreakSound(), sound.getVolume(), sound.getPitch());
 		}
 		Vec3 normal = new Vec3(result.getDirection().step());
@@ -212,7 +210,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	/** Use for fuzes and any other final effects */
 	protected void onFinalImpact(HitResult result) {}
 
-	protected abstract void onDestroyBlock(BlockHitResult result);
+	protected abstract void onDestroyBlock(BlockState state, BlockHitResult result);
 
 	protected void onHitEntity(Entity entity) {
 		if (this.getProjectileMass() <= 0) return;
@@ -256,10 +254,9 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		return block.getExplosionResistance();
 	}
 
-	protected BounceType canBounce(BlockHitResult result) {
+	protected BounceType canBounce(BlockState state, BlockHitResult result) {
 		if (!CBCConfigs.SERVER.munitions.projectilesCanBounce.get() || this.getProjectileMass() <= 0) return BounceType.NO_BOUNCE;
 
-		BlockState state = this.level.getBlockState(result.getBlockPos());
 		if (!this.canBounceOffOf(state)) return BounceType.NO_BOUNCE;
 
 		Vec3 oldVel = this.getDeltaMovement();

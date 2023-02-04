@@ -48,15 +48,14 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	}
 
 	@Override
-	protected void onDestroyBlock(BlockHitResult result) {
+	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
 		if (this.level instanceof ServerLevel) {
 			BlockPos pos = result.getBlockPos();
-			BlockState state = this.level.getChunkAt(pos).getBlockState(pos);
 			if (state.getDestroySpeed(this.level, pos) == -1) return;
 
 			Vec3 curVel = this.getDeltaMovement();
 			double curPom = this.getProjectileMass() * curVel.length();
-			double hardness = getHardness(this.level.getBlockState(result.getBlockPos())) * 10;
+			double hardness = getHardness(state) * 10;
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
 
 			if (curPom > hardness) {

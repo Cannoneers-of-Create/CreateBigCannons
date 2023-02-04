@@ -19,13 +19,13 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	@Nullable @Override protected ParticleOptions getTrailParticles() { return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE; }
 
 	@Override
-	protected void onDestroyBlock(BlockHitResult result) {
+	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
 		double startMass = this.getProjectileMass();
 		Vec3 curVel = this.getDeltaMovement();
 		double mag = curVel.length();
 		double curPom = startMass * mag;
 
-		double hardness = getHardness(this.level.getBlockState(result.getBlockPos()));
+		double hardness = getHardness(state);
 		this.setProjectileMass((float) Math.max(startMass - hardness, 0));
 		this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 
