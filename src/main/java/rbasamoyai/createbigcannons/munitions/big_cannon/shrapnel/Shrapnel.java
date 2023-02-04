@@ -9,19 +9,22 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 public class Shrapnel extends AbstractHurtingProjectile {
 	
@@ -67,20 +70,22 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		BlockPos pos = result.getBlockPos();
-		BlockState state = this.level.getBlockState(pos);
-		if (!this.level.isClientSide) {
-			if (this.canDestroyBlock(state)) {
-				this.level.destroyBlock(pos, false, this);
-			} else {
-				this.level.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.NEUTRAL, 1.0f, 2.0f);
-			}
+		BlockState state = this.level.getChunk(pos).getBlockState(pos);
+		if (!this.level.isClientSide && state.getDestroySpeed(this.level, pos) != -1 && this.canDestroyBlock(state)) {
+			Vec3 curVel = this.getDeltaMovement();
+			double curPom = this.getProjectileMass() * curVel.length();
+			double hardness = AbstractCannonProjectile.getHardness(state) * 10;
+			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
+
+			SoundType type = state.getSoundType();
+			this.level.playSound(null, pos, type.getBreakSound(), SoundSource.NEUTRAL, type.getVolume() * 0.25f, type.getPitch());
+			this.discard();
 		}
 	}
 	
-	protected boolean canDestroyBlock(BlockState state) {
-		return state.is(CBCTags.BlockCBC.SHRAPNEL_SHATTERABLE)
-			|| state.is(CBCTags.BlockCBC.SHRAPNEL_VULNERABLE) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.shrapnelVulnerableBreakChance.getF();
-	}
+	protected boolean canDestroyBlock(BlockState state) { return true; }
+
+	protected float getProjectileMass() { return 1; }
 	
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
@@ -113,7 +118,9 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	@Override protected float getInertia() { return 0.99f; }
 	
 	protected double getGravity() { return 0; }
-	
+
+	@Override protected boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
+
 	public static <T extends Shrapnel> List<T> spawnShrapnelBurst(Level level, EntityType<T> type, Vec3 position, Vec3 initialVelocity, int count, double spread, float damage) {
 		Vec3 forward = initialVelocity.normalize();
 		Vec3 right = forward.cross(new Vec3(Direction.UP.step()));

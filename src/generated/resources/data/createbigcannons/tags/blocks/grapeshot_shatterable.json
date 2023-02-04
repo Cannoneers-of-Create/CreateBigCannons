@@ -1,7 +1,0 @@
-{
-  "replace": false,
-  "values": [
-    "#createbigcannons:shrapnel_shatterable",
-    "#createbigcannons:shrapnel_vulnerable"
-  ]
-}
