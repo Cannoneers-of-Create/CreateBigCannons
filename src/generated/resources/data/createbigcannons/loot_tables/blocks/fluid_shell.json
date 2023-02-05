@@ -2,7 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -14,24 +13,25 @@
             },
             {
               "function": "minecraft:copy_nbt",
-              "source": "block_entity",
               "ops": [
                 {
+                  "op": "replace",
                   "source": "Fuze",
-                  "target": "BlockEntityTag.Fuze",
-                  "op": "replace"
+                  "target": "BlockEntityTag.Fuze"
                 },
                 {
+                  "op": "replace",
                   "source": "FluidContent",
-                  "target": "BlockEntityTag.FluidContent",
-                  "op": "replace"
+                  "target": "BlockEntityTag.FluidContent"
                 }
-              ]
+              ],
+              "source": "block_entity"
             }
           ],
           "name": "createbigcannons:fluid_shell"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

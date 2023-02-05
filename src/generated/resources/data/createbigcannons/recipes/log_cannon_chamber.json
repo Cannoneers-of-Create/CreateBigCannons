@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "tag": "forge:gunpowder"
+    },
+    "L": {
+      "tag": "minecraft:logs"
+    }
+  },
   "pattern": [
     " L ",
     "LGL",
     " L "
   ],
-  "key": {
-    "L": {
-      "tag": "minecraft:logs"
-    },
-    "G": {
-      "tag": "forge:gunpowder"
-    }
-  },
   "result": {
     "item": "createbigcannons:log_cannon_chamber"
   }

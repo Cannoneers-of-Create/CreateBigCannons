@@ -1,8 +1,9 @@
 {
   "parent": "minecraft:block/cube_column",
+  "render_type": "minecraft:cutout_mipped",
   "textures": {
-    "side": "createbigcannons:block/cannon_chamber/cast_iron_cannon_chamber_side",
     "end": "createbigcannons:block/cannon_chamber/cast_iron_cannon_chamber_end",
-    "particle": "createbigcannons:block/cannon_chamber/cast_iron_cannon_chamber_side"
+    "particle": "createbigcannons:block/cannon_chamber/cast_iron_cannon_chamber_side",
+    "side": "createbigcannons:block/cannon_chamber/cast_iron_cannon_chamber_side"
   }
 }

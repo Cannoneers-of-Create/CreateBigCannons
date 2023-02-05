@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " SP",
-    "PPP",
-    "W W"
-  ],
   "key": {
     "P": {
       "tag": "minecraft:planks"
@@ -16,6 +11,11 @@
       "item": "createbigcannons:pair_of_cannon_wheels"
     }
   },
+  "pattern": [
+    " SP",
+    "PPP",
+    "W W"
+  ],
   "result": {
     "item": "createbigcannons:cannon_carriage"
   }

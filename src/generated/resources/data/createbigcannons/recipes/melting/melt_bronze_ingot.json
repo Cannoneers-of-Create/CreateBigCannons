@@ -1,16 +1,16 @@
 {
   "type": "createbigcannons:melting",
+  "heatRequirement": "heated",
   "ingredients": [
     {
       "tag": "forge:ingots/bronze"
     }
   ],
+  "processingTime": 180,
   "results": [
     {
-      "fluid": "createbigcannons:molten_bronze",
-      "amount": 90
+      "amount": 90,
+      "fluid": "createbigcannons:molten_bronze"
     }
-  ],
-  "processingTime": 180,
-  "heatRequirement": "heated"
+  ]
 }

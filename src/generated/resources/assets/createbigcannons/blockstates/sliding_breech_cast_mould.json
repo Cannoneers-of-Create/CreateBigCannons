@@ -6,11 +6,11 @@
       }
     },
     {
-      "when": {
-        "sand": "true"
-      },
       "apply": {
         "model": "createbigcannons:block/casting_sand"
+      },
+      "when": {
+        "sand": "true"
       }
     }
   ]

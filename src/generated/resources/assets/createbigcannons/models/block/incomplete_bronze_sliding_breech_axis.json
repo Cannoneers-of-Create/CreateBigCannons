@@ -2,8 +2,8 @@
   "parent": "createbigcannons:block/sliding_breech_axis",
   "textures": {
     "hole": "createbigcannons:block/sliding_breech/bronze_sliding_breech_hole",
+    "inside": "createbigcannons:block/sliding_breech/bronze_sliding_breech_inside",
     "side": "createbigcannons:block/sliding_breech/bronze_sliding_breech_side",
-    "side_hole": "createbigcannons:block/sliding_breech/bronze_sliding_breech_side_hole",
-    "inside": "createbigcannons:block/sliding_breech/bronze_sliding_breech_inside"
+    "side_hole": "createbigcannons:block/sliding_breech/bronze_sliding_breech_side_hole"
   }
 }

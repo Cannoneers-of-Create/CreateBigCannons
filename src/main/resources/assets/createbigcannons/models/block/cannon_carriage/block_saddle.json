@@ -1,6 +1,7 @@
 {
   "parent": "createbigcannons:block/cannon_carriage/textures",
+  "render_type": "cutout_mipped",
   "loader": "forge:obj",
-  "flip-v": true,
+  "flip_v": true,
   "model": "createbigcannons:models/block/cannon_carriage/complete_saddled.obj"
 }

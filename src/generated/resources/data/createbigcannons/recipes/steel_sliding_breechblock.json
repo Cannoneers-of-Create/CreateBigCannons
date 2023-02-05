@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "create:cogwheel"
+    },
+    "I": {
+      "tag": "forge:ingots/steel"
+    }
+  },
   "pattern": [
     " I ",
     "CIC",
     " I "
   ],
-  "key": {
-    "I": {
-      "tag": "forge:ingots/steel"
-    },
-    "C": {
-      "item": "create:cogwheel"
-    }
-  },
   "result": {
     "item": "createbigcannons:steel_sliding_breechblock"
   }

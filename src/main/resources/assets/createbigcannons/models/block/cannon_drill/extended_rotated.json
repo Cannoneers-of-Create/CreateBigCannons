@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
+	"render_type": "cutout_mipped",
 	"textures": {
 		"0": "createbigcannons:block/pole_contraption_bottom",
 		"2": "createbigcannons:block/pole_contraption_side",

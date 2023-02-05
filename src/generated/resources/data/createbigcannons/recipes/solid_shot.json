@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "i": {
+      "tag": "forge:nuggets/iron"
+    }
+  },
   "pattern": [
     "iIi",
     "III",
     " S "
   ],
-  "key": {
-    "I": {
-      "tag": "forge:ingots/iron"
-    },
-    "i": {
-      "tag": "forge:nuggets/iron"
-    },
-    "S": {
-      "tag": "minecraft:wooden_slabs"
-    }
-  },
   "result": {
     "item": "createbigcannons:solid_shot"
   }

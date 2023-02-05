@@ -1,36 +1,31 @@
 {
   "parent": "minecraft:recipes/root",
-  "rewards": {
-    "recipes": [
-      "createbigcannons:shot_balls"
-    ]
-  },
   "criteria": {
-    "has_iron_nugget": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "tag": "forge:nuggets/iron"
-          }
-        ]
-      }
-    },
     "has_iron_ingot": {
-      "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
             "tag": "forge:ingots/iron"
           }
         ]
-      }
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_iron_nugget": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "forge:nuggets/iron"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
     },
     "has_the_recipe": {
-      "trigger": "minecraft:recipe_unlocked",
       "conditions": {
         "recipe": "createbigcannons:shot_balls"
-      }
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
@@ -39,5 +34,10 @@
       "has_iron_ingot",
       "has_the_recipe"
     ]
-  ]
+  ],
+  "rewards": {
+    "recipes": [
+      "createbigcannons:shot_balls"
+    ]
+  }
 }

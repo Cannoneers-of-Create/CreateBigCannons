@@ -4,11 +4,26 @@
       "model": "createbigcannons:block/cast_iron_autocannon_breech",
       "x": 180
     },
-    "facing=up,handle=false": {
-      "model": "createbigcannons:block/cast_iron_autocannon_breech"
+    "facing=down,handle=true": {
+      "model": "createbigcannons:block/cast_iron_autocannon_breech_handle",
+      "x": 180
+    },
+    "facing=east,handle=false": {
+      "model": "createbigcannons:block/cast_iron_autocannon_breech",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,handle=true": {
+      "model": "createbigcannons:block/cast_iron_autocannon_breech_handle",
+      "x": 90,
+      "y": 90
     },
     "facing=north,handle=false": {
       "model": "createbigcannons:block/cast_iron_autocannon_breech",
+      "x": 90
+    },
+    "facing=north,handle=true": {
+      "model": "createbigcannons:block/cast_iron_autocannon_breech_handle",
       "x": 90
     },
     "facing=south,handle=false": {
@@ -16,41 +31,26 @@
       "x": 90,
       "y": 180
     },
-    "facing=west,handle=false": {
-      "model": "createbigcannons:block/cast_iron_autocannon_breech",
-      "x": 90,
-      "y": 270
-    },
-    "facing=east,handle=false": {
-      "model": "createbigcannons:block/cast_iron_autocannon_breech",
-      "x": 90,
-      "y": 90
-    },
-    "facing=down,handle=true": {
-      "model": "createbigcannons:block/cast_iron_autocannon_breech_handle",
-      "x": 180
-    },
-    "facing=up,handle=true": {
-      "model": "createbigcannons:block/cast_iron_autocannon_breech_handle"
-    },
-    "facing=north,handle=true": {
-      "model": "createbigcannons:block/cast_iron_autocannon_breech_handle",
-      "x": 90
-    },
     "facing=south,handle=true": {
       "model": "createbigcannons:block/cast_iron_autocannon_breech_handle",
       "x": 90,
       "y": 180
     },
+    "facing=up,handle=false": {
+      "model": "createbigcannons:block/cast_iron_autocannon_breech"
+    },
+    "facing=up,handle=true": {
+      "model": "createbigcannons:block/cast_iron_autocannon_breech_handle"
+    },
+    "facing=west,handle=false": {
+      "model": "createbigcannons:block/cast_iron_autocannon_breech",
+      "x": 90,
+      "y": 270
+    },
     "facing=west,handle=true": {
       "model": "createbigcannons:block/cast_iron_autocannon_breech_handle",
       "x": 90,
       "y": 270
-    },
-    "facing=east,handle=true": {
-      "model": "createbigcannons:block/cast_iron_autocannon_breech_handle",
-      "x": 90,
-      "y": 90
     }
   }
 }

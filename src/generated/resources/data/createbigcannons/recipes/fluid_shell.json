@@ -1,11 +1,6 @@
 {
   "type": "create:mechanical_crafting",
-  "pattern": [
-    " I ",
-    "IPI",
-    "IPI",
-    " S "
-  ],
+  "acceptMirrored": true,
   "key": {
     "I": {
       "tag": "forge:ingots/iron"
@@ -17,8 +12,13 @@
       "tag": "minecraft:wooden_slabs"
     }
   },
+  "pattern": [
+    " I ",
+    "IPI",
+    "IPI",
+    " S "
+  ],
   "result": {
     "item": "createbigcannons:fluid_shell"
-  },
-  "acceptMirrored": true
+  }
 }

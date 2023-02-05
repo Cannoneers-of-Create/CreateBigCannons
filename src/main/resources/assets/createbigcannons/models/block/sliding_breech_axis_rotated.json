@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
+	"render_type": "cutout_mipped",
 	"textures": {
 		"0": "#hole",
 		"1": "#inside",

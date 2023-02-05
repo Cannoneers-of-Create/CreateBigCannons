@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "G",
-    "C",
-    "P"
-  ],
   "key": {
     "C": {
       "item": "create:andesite_casing"
@@ -16,6 +11,11 @@
       "item": "create:piston_extension_pole"
     }
   },
+  "pattern": [
+    "G",
+    "C",
+    "P"
+  ],
   "result": {
     "item": "createbigcannons:cannon_loader"
   }

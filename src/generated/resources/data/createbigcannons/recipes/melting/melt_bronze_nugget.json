@@ -1,16 +1,16 @@
 {
   "type": "createbigcannons:melting",
+  "heatRequirement": "heated",
   "ingredients": [
     {
       "tag": "forge:nuggets/bronze"
     }
   ],
+  "processingTime": 20,
   "results": [
     {
-      "fluid": "createbigcannons:molten_bronze",
-      "amount": 10
+      "amount": 10,
+      "fluid": "createbigcannons:molten_bronze"
     }
-  ],
-  "processingTime": 20,
-  "heatRequirement": "heated"
+  ]
 }

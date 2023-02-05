@@ -2,22 +2,22 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:tag",
+          "expand": true,
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": 15.0,
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
-          "name": "forge:nuggets/bronze",
-          "expand": true
+          "name": "forge:nuggets/bronze"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

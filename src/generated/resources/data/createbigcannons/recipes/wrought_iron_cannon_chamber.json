@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "tag": "forge:gunpowder"
+    },
+    "I": {
+      "tag": "forge:plates/iron"
+    }
+  },
   "pattern": [
     " I ",
     "IGI",
     " I "
   ],
-  "key": {
-    "I": {
-      "tag": "forge:plates/iron"
-    },
-    "G": {
-      "tag": "forge:gunpowder"
-    }
-  },
   "result": {
     "item": "createbigcannons:wrought_iron_cannon_chamber"
   }
