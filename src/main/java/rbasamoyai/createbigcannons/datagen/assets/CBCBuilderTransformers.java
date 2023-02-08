@@ -237,7 +237,7 @@ public class CBCBuilderTransformers {
 					.build());
 		} else {
 			result = result.andThen(b -> b.item(AutocannonBlockItem::new)
-					.model((c, p) -> p.blockItem(c::get))
+					.model((c, p) -> p.blockItem(c))
 					.build());
 		}
 		return result;
@@ -254,7 +254,7 @@ public class CBCBuilderTransformers {
 					.build());
 		} else {
 			result = result.andThen(b -> b.item(AutocannonBlockItem::new)
-					.model((c, p) -> p.blockItem(c::get))
+					.model((c, p) -> p.blockItem(c))
 					.build());
 		}
 		return result;
@@ -285,7 +285,7 @@ public class CBCBuilderTransformers {
 								.texture("material", tex)
 								.texture("material1", tex1)))
 				.item(AutocannonBlockItem::new)
-				.model((c, p) -> p.blockItem(c::get))
+				.model((c, p) -> p.blockItem(c))
 				.build();
 	}
 

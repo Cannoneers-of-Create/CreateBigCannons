@@ -58,7 +58,9 @@ public class CartridgeAssemblyRecipe extends CustomRecipe {
 		if (roundPosition == -1 || cartridgePosition == -1 || cartridgePosition - roundPosition != container.getWidth()) return ItemStack.EMPTY;
 		ItemStack result = CBCItems.AUTOCANNON_CARTRIDGE.asStack();
 		CompoundTag tag = result.getOrCreateTag();
-		tag.put("Projectile", container.getItem(roundPosition).serializeNBT());
+		ItemStack roundCopy = container.getItem(roundPosition).copy();
+		roundCopy.setCount(1);
+		tag.put("Projectile", roundCopy.serializeNBT());
 		return result;
 	}
 
