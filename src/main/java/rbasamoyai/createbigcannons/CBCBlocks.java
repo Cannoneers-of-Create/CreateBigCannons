@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons;
 
 import com.simibubi.create.content.AllSections;
-import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import rbasamoyai.createbigcannons.base.CBCDefaultStress;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
 import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
@@ -133,7 +133,7 @@ public class CBCBlocks {
 			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
 			.loot(CBCBuilderTransformers.castIronScrapLoot(10))
-			.transform(BlockStressDefaults.setImpact(16.0d))
+			.transform(CBCDefaultStress.setImpact(16.0d))
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_CAST_IRON_CANNON_BARREL = REGISTRATE
@@ -199,7 +199,7 @@ public class CBCBlocks {
 			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(10))
-			.transform(BlockStressDefaults.setImpact(12.0d))
+			.transform(CBCDefaultStress.setImpact(12.0d))
 			.register();
 	
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_BRONZE_CANNON_BARREL = REGISTRATE
@@ -366,7 +366,7 @@ public class CBCBlocks {
 			.transform(cannonBlock(false))
 			.loot(CBCBuilderTransformers.steelScrapLoot(10))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
-			.transform(BlockStressDefaults.setImpact(32.0d))
+			.transform(CBCDefaultStress.setImpact(32.0d))
 			.register();
 	
 	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_STEEL_SLIDING_BREECH = REGISTRATE
@@ -390,7 +390,7 @@ public class CBCBlocks {
 			.transform(cannonBlock(false))
 			.loot(CBCBuilderTransformers.steelScrapLoot(10))
 			.transform(CBCBuilderTransformers.screwBreech("screw_breech/steel"))
-			.transform(BlockStressDefaults.setImpact(16.0d))
+			.transform(CBCDefaultStress.setImpact(16.0d))
 			.register();
 	
 	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_STEEL_SCREW_BREECH = REGISTRATE
@@ -541,7 +541,7 @@ public class CBCBlocks {
 			.transform(strongCannonBlock(false))
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 			.transform(CBCBuilderTransformers.screwBreech("screw_breech/nethersteel"))
-			.transform(BlockStressDefaults.setImpact(40.0d))
+			.transform(CBCDefaultStress.setImpact(40.0d))
 			.register();
 	
 	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_NETHERSTEEL_SCREW_BREECH = REGISTRATE
@@ -747,7 +747,7 @@ public class CBCBlocks {
 			.properties(p -> p.color(MaterialColor.PODZOL))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.cannonLoader())
-			.transform(BlockStressDefaults.setImpact(8.0d))
+			.transform(CBCDefaultStress.setImpact(8.0d))
 			.register();
 	
 	public static final BlockEntry<RamHeadBlock> RAM_HEAD = REGISTRATE
@@ -799,7 +799,7 @@ public class CBCBlocks {
 			.properties(p -> p.color(MaterialColor.PODZOL))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.cannonDrill())
-			.transform(BlockStressDefaults.setImpact(8.0d))
+			.transform(CBCDefaultStress.setImpact(8.0d))
 			.register();
 	
 	public static final BlockEntry<DrillBitBlock> CANNON_DRILL_BIT = REGISTRATE
@@ -815,7 +815,7 @@ public class CBCBlocks {
 			.properties(p -> p.color(MaterialColor.PODZOL))
 			.transform(axeOrPickaxe())
 			.transform(CBCBuilderTransformers.cannonBuilder())
-			.transform(BlockStressDefaults.setImpact(8.0d))
+			.transform(CBCDefaultStress.setImpact(8.0d))
 			.register();
 	
 	public static final BlockEntry<CannonBuilderHeadBlock> CANNON_BUILDER_HEAD = REGISTRATE
