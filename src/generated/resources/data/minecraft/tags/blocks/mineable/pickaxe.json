@@ -91,6 +91,8 @@
     "createbigcannons:cannon_builder",
     "createbigcannons:cannon_builder_head",
     "createbigcannons:built_up_cannon",
+    "createbigcannons:cast_iron_block",
+    "createbigcannons:nethersteel_block",
     "createbigcannons:solid_shot",
     "createbigcannons:he_shell",
     "createbigcannons:shrapnel_shell",
