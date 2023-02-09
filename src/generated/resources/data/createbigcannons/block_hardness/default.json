@@ -1,4 +1,5 @@
 {
   "minecraft:crying_obsidian": 12.0,
+  "#minecraft:anvil": 6.0,
   "#forge:obsidian": 12.0
 }
