@@ -842,7 +842,12 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<Block> CAST_IRON_BLOCK = REGISTRATE
 			.block("cast_iron_block", Block::new)
-			.initialProperties(Material.METAL)
+			.initialProperties(Material.METAL, MaterialColor.METAL)
+			.properties(p -> p.requiresCorrectToolForDrops())
+			.properties(p -> p.strength(5.0F, 6.0F))
+			.properties(p -> p.sound(SoundType.METAL))
+			.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+			.tag(BlockTags.NEEDS_STONE_TOOL)
 			.lang("Block of Cast Iron")
 			.item()
 			.tag(CBCTags.ItemCBC.BLOCK_CAST_IRON)
@@ -852,6 +857,11 @@ public class CBCBlocks {
 	public static final BlockEntry<Block> NETHERSTEEL_BLOCK = REGISTRATE
 			.block("nethersteel_block", Block::new)
 			.initialProperties(() -> Blocks.NETHERITE_BLOCK)
+			.properties(p -> p.requiresCorrectToolForDrops())
+			.properties(p -> p.strength(50.0F, 1200.0F))
+			.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
+			.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+			.tag(BlockTags.NEEDS_DIAMOND_TOOL)
 			.lang("Block of Nethersteel")
 			.simpleItem()
 			.register();
