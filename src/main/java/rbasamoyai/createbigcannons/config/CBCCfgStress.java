@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCDefaultStress;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class CBCCfgStress extends CBCConfigBase implements IStressValueProvider 
 	protected void registerAll(Builder builder) {
 		builder.comment("", Comments.su, Comments.impact)
 			.push("impact");
-		BlockStressDefaults.DEFAULT_IMPACTS.forEach((r, i) -> {
+		CBCDefaultStress.DEFAULT_IMPACTS.forEach((r, i) -> {
 			if (r.getNamespace()
 				.equals(CreateBigCannons.MOD_ID))
 				getImpacts().put(r, builder.define(r.getPath(), i));
