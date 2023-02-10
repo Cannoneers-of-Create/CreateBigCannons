@@ -179,12 +179,18 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			}
 			this.onDestroyBlock(state, bResult);
 
-			if (flag1 && hardness / curPom <= 0.15) {
-				ctx.queueExplosion(pos.immutable(), 2);
+			double f = this.overPenetrationPower(hardness, curPom);
+			if (flag1 && f > 0) {
+				ctx.queueExplosion(pos.immutable(), (float) f);
 			}
 		}
 
 		return this.isRemoved();
+	}
+
+	protected double overPenetrationPower(double hardness, double curPom) {
+		double f = hardness / curPom;
+		return f <= 0.15 ? 2 - 2 * f : 0;
 	}
 
 	protected boolean tryBounceOffBlock(BlockState state, BlockHitResult result) {
