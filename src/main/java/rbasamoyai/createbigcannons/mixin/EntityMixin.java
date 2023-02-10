@@ -18,10 +18,9 @@ public abstract class EntityMixin {
 	public void createbigcannons$turn(double yaw, double pitch, CallbackInfo ci) {
 		Entity self = (Entity) (Object) this;
 		if (self.getVehicle() instanceof PitchOrientedContraptionEntity poce) {
-			float crot = poce.getRotationCoefficient() * 0.15f;
-			float clamp = PitchOrientedContraptionEntity.getRotationCap();
-			float dxr = Mth.clamp((float) pitch * crot, -clamp, clamp);
-			float dyr = Mth.clamp((float) yaw * crot, -clamp, clamp);
+			float crot = poce.getRotationCoefficient();
+			float dxr = (float) pitch * crot;
+			float dyr = (float) yaw * crot;
 			self.setXRot(self.getXRot() + dxr);
 			self.setYRot(self.getYRot() + dyr);
 

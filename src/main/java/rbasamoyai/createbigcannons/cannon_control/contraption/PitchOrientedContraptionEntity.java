@@ -188,7 +188,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	}
 
 	public float getRotationCoefficient() {
-		return 0.75f;
+		return this.contraption instanceof AbstractMountedCannonContraption cannon ? Math.max(1 / cannon.getWeightForStress(), 0.1f) : 0.1f;
 	}
 
 	@Override
