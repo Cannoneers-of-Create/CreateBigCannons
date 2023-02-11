@@ -25,6 +25,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	}
 
 	@Override protected float getKnockback(Entity target) { return 0.5f; }
+	@Override protected double overPenetrationPower(double hardness, double curPom) { return 0; }
 
 	@Override
 	public void tick() {

@@ -281,7 +281,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
 					level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2, Explosion.BlockInteraction.NONE);
 					for (int i = 0; i < 10; ++i) {
-						BlockPos pos = this.startPos.relative(this.initialOrientation, i);
+						BlockPos pos = currentPos.relative(this.initialOrientation, i);
 						this.blocks.remove(pos);
 					}
 					ControlPitchContraption controller = entity.getController();

@@ -51,7 +51,7 @@ public class PartialBlockDamageManager {
 	public void tick(Level level) {
 		if (level.dimension() != Level.OVERWORLD) return;
 
-		if (this.blockDamage != null && !this.blockDamage.isEmpty() && level.getGameTime() % 5 == 0) {
+		if (this.blockDamage != null && !this.blockDamage.isEmpty() && level.getGameTime() % 20 == 0) {
 			Map<BlockPos, Integer> newSet = new HashMap<>();
 			for (Iterator<Map.Entry<BlockPos, Integer>> iter = this.blockDamage.entrySet().iterator(); iter.hasNext(); ) {
 				Map.Entry<BlockPos, Integer> entry = iter.next();
