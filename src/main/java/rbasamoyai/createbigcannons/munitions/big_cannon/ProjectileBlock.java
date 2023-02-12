@@ -39,7 +39,7 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 		builder.add(FACING);
 	}
 	
-	private VoxelShaper makeShapes() {
+	protected VoxelShaper makeShapes() {
 		VoxelShape base = box(3, 0, 3, 13, 16, 13);
 		return new AllShapes.Builder(base).forDirectional();		
 	}

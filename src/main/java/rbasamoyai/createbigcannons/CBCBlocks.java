@@ -5,9 +5,12 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -55,6 +58,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStone
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlock;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
@@ -906,6 +910,19 @@ public class CBCBlocks {
 			.simpleItem()
 			.register();
 
+	public static final BlockEntry<TrafficConeBlock> TRAFFIC_CONE = REGISTRATE
+			.block("traffic_cone", TrafficConeBlock::new)
+			.addLayer(() -> RenderType::solid)
+			.initialProperties(Material.CLAY, MaterialColor.COLOR_ORANGE)
+			.properties(p -> p.instabreak())
+			.properties(p -> p.sound(SoundType.WOOD))
+			.properties(p -> p.noOcclusion())
+			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/traffic_cone"))))
+			.item()
+			.initialProperties(() -> new Item.Properties().rarity(Rarity.EPIC))
+			.build()
+			.register();
+
 	public static final BlockEntry<APShellBlock> AP_SHELL = REGISTRATE
 			.block("ap_shell", APShellBlock::new)
 			.transform(shell(MaterialColor.COLOR_BLUE))
@@ -1058,7 +1075,8 @@ public class CBCBlocks {
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> shell(MaterialColor color) {
-		return b -> b.initialProperties(Material.EXPLOSIVE, color)
+		return b -> b.addLayer(() -> RenderType::solid)
+				.initialProperties(Material.EXPLOSIVE, color)
 				.properties(p -> p.strength(2.0f, 3.0f))
 				.properties(p -> p.sound(SoundType.STONE));
 	}
