@@ -221,7 +221,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		if (this.getProjectileMass() <= 0) return;
 		if (!this.level.isClientSide) {
 			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
-			DamageSource source = DamageSource.thrown(this, null).bypassArmor();
+			DamageSource source = this.getEntityDamage();
 			entity.hurt(source, this.damage);
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) entity.invulnerableTime = 0;
 			double penalty = entity.isAlive() ? 2 : 0.2;
@@ -231,6 +231,10 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.discard();
 			}
 		}
+	}
+
+	protected DamageSource getEntityDamage() {
+		return DamageSource.thrown(this, null).bypassArmor();
 	}
 
 	protected float getKnockback(Entity target) { return 2.0f; }
