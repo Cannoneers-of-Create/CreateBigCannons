@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
+	"render_type": "solid",
 	"texture_size": [32, 32],
 	"textures": {
 		"0": "createbigcannons:block/traffic_cone",
