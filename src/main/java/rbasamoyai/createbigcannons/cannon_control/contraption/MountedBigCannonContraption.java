@@ -195,7 +195,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, BigCannonMaterial material) {
 		BigCannonBlock cBlock = (BigCannonBlock) state.getBlock();
 		if (cBlock.getCannonMaterialInLevel(level, state, pos) != material) return false;
-		return ((IBigCannonBlockEntity) level.getBlockEntity(pos)).cannonBehavior().isConnectedTo(connection.getOpposite());
+		return level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe
+			&& level.getBlockEntity(pos.relative(connection.getOpposite())) instanceof IBigCannonBlockEntity cbe1
+			&& cbe.cannonBehavior().isConnectedTo(connection.getOpposite())
+			&& cbe1.cannonBehavior().isConnectedTo(connection);
 	}
 	
 	public float getWeightForStress() {
