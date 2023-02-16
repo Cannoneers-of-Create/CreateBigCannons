@@ -5,7 +5,6 @@ import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -21,24 +20,22 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.base.CBCDefaultStress;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
-import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
-import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockItem;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonTubeBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.*;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEndBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.ScrewBreechBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.SlidingBreechBlock;
+import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
+import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonRecoilSpringBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.*;
 import rbasamoyai.createbigcannons.crafting.boring.*;
+import rbasamoyai.createbigcannons.crafting.builtup.BigCannonLayerBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpCannonBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
-import rbasamoyai.createbigcannons.crafting.builtup.BigCannonLayerBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
@@ -56,13 +53,13 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBlock
 import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneItem;
-import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlock;
 
-import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
-
 import java.util.function.Supplier;
+
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCBlocks {
 
@@ -912,7 +909,6 @@ public class CBCBlocks {
 
 	public static final BlockEntry<TrafficConeBlock> TRAFFIC_CONE = REGISTRATE
 			.block("traffic_cone", TrafficConeBlock::new)
-			.addLayer(() -> RenderType::solid)
 			.initialProperties(Material.CLAY, MaterialColor.COLOR_ORANGE)
 			.properties(p -> p.instabreak())
 			.properties(p -> p.sound(SoundType.WOOD))
@@ -1075,8 +1071,7 @@ public class CBCBlocks {
 	}
 	
 	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> shell(MaterialColor color) {
-		return b -> b.addLayer(() -> RenderType::solid)
-				.initialProperties(Material.EXPLOSIVE, color)
+		return b -> b.initialProperties(Material.EXPLOSIVE, color)
 				.properties(p -> p.strength(2.0f, 3.0f))
 				.properties(p -> p.sound(SoundType.STONE));
 	}
