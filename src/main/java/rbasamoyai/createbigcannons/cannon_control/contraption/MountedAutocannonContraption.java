@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -135,10 +136,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 		BlockPos negativeEndPos = negativeBreech ? start : start.relative(positive);
 
-		if (positiveBreech == negativeBreech) throw invalidCannon();
+		if (positiveBreech && negativeBreech) throw invalidCannon();
 
-		this.initialOrientation = negativeBreech ? positive : negative;
-		this.startPos = negativeBreech ? negativeEndPos : positiveEndPos;
+		this.startPos = !positiveBreech && !negativeBreech ? pos : negativeBreech ? negativeEndPos : positiveEndPos;
+		BlockState breechState = level.getBlockState(this.startPos);
+		if (!(breechState.getBlock() instanceof AutocannonBreechBlock)) throw invalidCannon();
+		this.initialOrientation = breechState.getValue(BlockStateProperties.FACING);
 
 		this.anchor = pos;
 
