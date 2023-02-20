@@ -10,12 +10,12 @@
       "item": "createbigcannons:autocannon_cartridge_sheet"
     },
     {
-      "item": "createbigcannons:autocannon_cartridge_sheet",
-      "chance": 0.125
+      "chance": 0.125,
+      "item": "createbigcannons:autocannon_cartridge_sheet"
     },
     {
-      "item": "createbigcannons:autocannon_cartridge_sheet",
-      "chance": 0.125
+      "chance": 0.125,
+      "item": "createbigcannons:autocannon_cartridge_sheet"
     }
   ]
 }

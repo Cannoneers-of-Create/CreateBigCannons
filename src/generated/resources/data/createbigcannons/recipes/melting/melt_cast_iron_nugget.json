@@ -1,16 +1,16 @@
 {
   "type": "createbigcannons:melting",
+  "heatRequirement": "heated",
   "ingredients": [
     {
       "tag": "forge:nuggets/cast_iron"
     }
   ],
+  "processingTime": 20,
   "results": [
     {
-      "fluid": "createbigcannons:molten_cast_iron",
-      "amount": 10
+      "amount": 10,
+      "fluid": "createbigcannons:molten_cast_iron"
     }
-  ],
-  "processingTime": 20,
-  "heatRequirement": "heated"
+  ]
 }

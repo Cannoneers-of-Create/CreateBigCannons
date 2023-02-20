@@ -1,16 +1,16 @@
 {
   "type": "createbigcannons:melting",
+  "heatRequirement": "heated",
   "ingredients": [
     {
       "tag": "forge:storage_blocks/bronze"
     }
   ],
+  "processingTime": 1620,
   "results": [
     {
-      "fluid": "createbigcannons:molten_bronze",
-      "amount": 810
+      "amount": 810,
+      "fluid": "createbigcannons:molten_bronze"
     }
-  ],
-  "processingTime": 1620,
-  "heatRequirement": "heated"
+  ]
 }

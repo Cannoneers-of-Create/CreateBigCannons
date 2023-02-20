@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "DDD",
-    "WLW",
-    " S "
-  ],
   "key": {
     "D": {
       "item": "minecraft:string"
-    },
-    "W": {
-      "tag": "minecraft:wool"
     },
     "L": {
       "item": "createbigcannons:shot_balls"
     },
     "S": {
       "tag": "minecraft:wooden_slabs"
+    },
+    "W": {
+      "tag": "minecraft:wool"
     }
   },
+  "pattern": [
+    "DDD",
+    "WLW",
+    " S "
+  ],
   "result": {
     "item": "createbigcannons:bag_of_grapeshot"
   }

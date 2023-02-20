@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "i": {
+      "tag": "forge:nuggets/iron"
+    }
+  },
   "pattern": [
     "iii",
     "iIi",
     "iii"
   ],
-  "key": {
-    "i": {
-      "tag": "forge:nuggets/iron"
-    },
-    "I": {
-      "tag": "forge:ingots/iron"
-    }
-  },
   "result": {
-    "item": "createbigcannons:shot_balls",
-    "count": 2
+    "count": 2,
+    "item": "createbigcannons:shot_balls"
   }
 }

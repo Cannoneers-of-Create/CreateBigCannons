@@ -3,9 +3,12 @@
   "ingredient": {
     "item": "createbigcannons:spring_wire"
   },
-  "transitionalItem": {
-    "item": "createbigcannons:partial_recoil_spring"
-  },
+  "loops": 3,
+  "results": [
+    {
+      "item": "createbigcannons:recoil_spring"
+    }
+  ],
   "sequence": [
     {
       "type": "create:pressing",
@@ -21,10 +24,7 @@
       ]
     }
   ],
-  "results": [
-    {
-      "item": "createbigcannons:recoil_spring"
-    }
-  ],
-  "loops": 3
+  "transitionalItem": {
+    "item": "createbigcannons:partial_recoil_spring"
+  }
 }

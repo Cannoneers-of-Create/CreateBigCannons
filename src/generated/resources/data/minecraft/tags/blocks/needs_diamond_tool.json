@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "createbigcannons:nethersteel_cannon_barrel",
     "createbigcannons:built_up_nethersteel_cannon_barrel",
@@ -19,6 +18,7 @@
     "createbigcannons:nethersteel_screw_breech",
     "createbigcannons:incomplete_nethersteel_screw_breech",
     "createbigcannons:unbored_nethersteel_screw_breech",
-    "createbigcannons:built_up_cannon"
+    "createbigcannons:built_up_cannon",
+    "createbigcannons:nethersteel_block"
   ]
 }

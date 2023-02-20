@@ -179,12 +179,18 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			}
 			this.onDestroyBlock(state, bResult);
 
-			if (flag1 && hardness / curPom <= 0.15) {
-				ctx.queueExplosion(pos.immutable(), 2);
+			double f = this.overPenetrationPower(hardness, curPom);
+			if (flag1 && f > 0) {
+				ctx.queueExplosion(pos.immutable(), (float) f);
 			}
 		}
 
 		return this.isRemoved();
+	}
+
+	protected double overPenetrationPower(double hardness, double curPom) {
+		double f = hardness / curPom;
+		return f <= 0.15 ? 2 - 2 * f : 0;
 	}
 
 	protected boolean tryBounceOffBlock(BlockState state, BlockHitResult result) {
@@ -215,7 +221,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		if (this.getProjectileMass() <= 0) return;
 		if (!this.level.isClientSide) {
 			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
-			DamageSource source = DamageSource.thrown(this, null).bypassArmor();
+			DamageSource source = this.getEntityDamage();
 			entity.hurt(source, this.damage);
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) entity.invulnerableTime = 0;
 			double penalty = entity.isAlive() ? 2 : 0.2;
@@ -225,6 +231,10 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.discard();
 			}
 		}
+	}
+
+	protected DamageSource getEntityDamage() {
+		return DamageSource.thrown(this, null).bypassArmor();
 	}
 
 	protected float getKnockback(Entity target) { return 2.0f; }

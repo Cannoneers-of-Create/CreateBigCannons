@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
+	"render_type": "solid",
 	"textures": {
 		"0": "createbigcannons:block/powder_charge",
 		"1": "createbigcannons:block/powder_charge_top",

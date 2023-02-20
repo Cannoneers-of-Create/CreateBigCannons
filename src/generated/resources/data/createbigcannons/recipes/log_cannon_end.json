@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "G": {
+      "tag": "forge:gunpowder"
+    },
+    "K": {
+      "tag": "minecraft:wooden_buttons"
+    },
+    "L": {
+      "tag": "minecraft:logs"
+    }
+  },
   "pattern": [
     " K ",
     "LLL",
     " G "
   ],
-  "key": {
-    "L": {
-      "tag": "minecraft:logs"
-    },
-    "K": {
-      "tag": "minecraft:wooden_buttons"
-    },
-    "G": {
-      "tag": "forge:gunpowder"
-    }
-  },
   "result": {
     "item": "createbigcannons:log_cannon_end"
   }

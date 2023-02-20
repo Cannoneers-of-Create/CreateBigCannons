@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " A ",
-    "RCR",
-    " I "
-  ],
   "key": {
     "A": {
       "item": "minecraft:iron_bars"
@@ -12,14 +7,20 @@
     "C": {
       "tag": "forge:gems/quartz"
     },
-    "R": {
-      "tag": "forge:dusts/redstone"
-    },
     "I": {
       "tag": "forge:ingots/iron"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
     }
   },
+  "pattern": [
+    " A ",
+    "RCR",
+    " I "
+  ],
   "result": {
+    "count": 4,
     "item": "createbigcannons:proximity_fuze"
   }
 }

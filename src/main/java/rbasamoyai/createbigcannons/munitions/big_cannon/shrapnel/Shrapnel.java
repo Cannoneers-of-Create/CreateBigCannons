@@ -89,9 +89,6 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
-		if (result.getEntity().getType() == this.getType()) {
-			return;
-		}
 		result.getEntity().hurt(this.getDamageSource(), this.damage);
 		if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
 	}
@@ -101,7 +98,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 		super.onHit(result);
 		if (!this.level.isClientSide && (!(result instanceof EntityHitResult eResult) || eResult.getEntity().getType() != this.getType())) this.discard();
 	}
-	
+
 	public static final DamageSource SHRAPNEL = new DamageSource(CreateBigCannons.MOD_ID + ".shrapnel");
 	protected DamageSource getDamageSource() { return SHRAPNEL; }
 	

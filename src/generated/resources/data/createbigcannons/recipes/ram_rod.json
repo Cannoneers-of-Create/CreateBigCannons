@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "H",
-    "S",
-    "S"
-  ],
   "key": {
     "H": {
       "item": "createbigcannons:ram_head"
@@ -13,6 +8,11 @@
       "item": "minecraft:stick"
     }
   },
+  "pattern": [
+    "H",
+    "S",
+    "S"
+  ],
   "result": {
     "item": "createbigcannons:ram_rod"
   }

@@ -1,19 +1,19 @@
 package rbasamoyai.createbigcannons.config;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
 import com.simibubi.create.foundation.block.BlockStressDefaults;
 import com.simibubi.create.foundation.block.BlockStressValues.IStressValueProvider;
 import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCDefaultStress;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 
 public class CBCCfgStress extends CBCConfigBase implements IStressValueProvider {
 
@@ -24,19 +24,10 @@ public class CBCCfgStress extends CBCConfigBase implements IStressValueProvider 
 	protected void registerAll(Builder builder) {
 		builder.comment("", Comments.su, Comments.impact)
 			.push("impact");
-		BlockStressDefaults.DEFAULT_IMPACTS.forEach((r, i) -> {
+		CBCDefaultStress.DEFAULT_IMPACTS.forEach((r, i) -> {
 			if (r.getNamespace()
 				.equals(CreateBigCannons.MOD_ID))
 				getImpacts().put(r, builder.define(r.getPath(), i));
-		});
-		builder.pop();
-
-		builder.comment("", Comments.su, Comments.capacity)
-			.push("capacity");
-		BlockStressDefaults.DEFAULT_CAPACITIES.forEach((r, i) -> {
-			if (r.getNamespace()
-				.equals(CreateBigCannons.MOD_ID))
-				getCapacities().put(r, builder.define(r.getPath(), i));
 		});
 		builder.pop();
 	}

@@ -13,7 +13,7 @@ import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 public abstract class AbstractBigCannonProjectile extends AbstractCannonProjectile {
 
-	protected AbstractBigCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) { super(type, level); }
+	protected AbstractBigCannonProjectile(EntityType<? extends AbstractBigCannonProjectile> type, Level level) { super(type, level); }
 
 	public abstract BlockState getRenderedBlockState();
 

@@ -7,8 +7,10 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.Tags;
 import org.slf4j.Logger;
 
@@ -64,6 +66,8 @@ public class BlockHardnessProvider implements DataProvider {
 
 	protected void registerHardnesses() {
 		setHardness(Tags.Blocks.OBSIDIAN, 12);
+		setHardness(Blocks.CRYING_OBSIDIAN, 12);
+		setHardness(BlockTags.ANVIL, 6);
 	}
 
 	protected final void setHardness(Block block, double hardness) { this.blocks.put(block, hardness); }

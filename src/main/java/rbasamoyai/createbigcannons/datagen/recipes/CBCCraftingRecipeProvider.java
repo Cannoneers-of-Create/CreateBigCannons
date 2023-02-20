@@ -25,14 +25,14 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 	protected void buildCraftingRecipes(Consumer<FinishedRecipe> cons) {
 		TagKey<Item> ironSheetTag = AllTags.forgeItemTag("plates/iron");
 
-		ShapedRecipeBuilder.shaped(CBCItems.IMPACT_FUZE.get())
+		ShapedRecipeBuilder.shaped(CBCItems.IMPACT_FUZE.get(), 4)
 		.define('T', CBCTags.ItemCBC.IMPACT_FUZE_HEAD).define('R', Tags.Items.DUSTS_REDSTONE)
 		.pattern("T")
 		.pattern("R")
 		.unlockedBy("has_impact_fuze_head", has(CBCTags.ItemCBC.IMPACT_FUZE_HEAD))
 		.save(cons);
 		
-		ShapedRecipeBuilder.shaped(CBCItems.TIMED_FUZE.get())
+		ShapedRecipeBuilder.shaped(CBCItems.TIMED_FUZE.get(), 4)
 		.define('I', Tags.Items.INGOTS_IRON).define('C', Items.CLOCK).define('R', Tags.Items.DUSTS_REDSTONE)
 		.pattern("I")
 		.pattern("C")
@@ -40,7 +40,7 @@ public class CBCCraftingRecipeProvider extends RecipeProvider {
 		.unlockedBy(getHasName(Items.CLOCK), has(Items.CLOCK))
 		.save(cons);
 		
-		ShapedRecipeBuilder.shaped(CBCItems.PROXIMITY_FUZE.get())
+		ShapedRecipeBuilder.shaped(CBCItems.PROXIMITY_FUZE.get(), 4)
 		.define('A', Items.IRON_BARS).define('C', Tags.Items.GEMS_QUARTZ).define('R', Tags.Items.DUSTS_REDSTONE).define('I', Tags.Items.INGOTS_IRON)
 		.pattern(" A ")
 		.pattern("RCR")

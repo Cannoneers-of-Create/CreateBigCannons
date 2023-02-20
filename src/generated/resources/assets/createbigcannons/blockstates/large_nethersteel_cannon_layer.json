@@ -4,8 +4,10 @@
       "model": "createbigcannons:block/large_nethersteel_cannon_layer",
       "x": 180
     },
-    "facing=up": {
-      "model": "createbigcannons:block/large_nethersteel_cannon_layer"
+    "facing=east": {
+      "model": "createbigcannons:block/large_nethersteel_cannon_layer",
+      "x": 90,
+      "y": 90
     },
     "facing=north": {
       "model": "createbigcannons:block/large_nethersteel_cannon_layer",
@@ -16,15 +18,13 @@
       "x": 90,
       "y": 180
     },
+    "facing=up": {
+      "model": "createbigcannons:block/large_nethersteel_cannon_layer"
+    },
     "facing=west": {
       "model": "createbigcannons:block/large_nethersteel_cannon_layer",
       "x": 90,
       "y": 270
-    },
-    "facing=east": {
-      "model": "createbigcannons:block/large_nethersteel_cannon_layer",
-      "x": 90,
-      "y": 90
     }
   }
 }

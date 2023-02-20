@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -135,10 +136,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 		BlockPos negativeEndPos = negativeBreech ? start : start.relative(positive);
 
-		if (positiveBreech == negativeBreech) throw invalidCannon();
+		if (positiveBreech && negativeBreech) throw invalidCannon();
 
-		this.initialOrientation = negativeBreech ? positive : negative;
-		this.startPos = negativeBreech ? negativeEndPos : positiveEndPos;
+		this.startPos = !positiveBreech && !negativeBreech ? pos : negativeBreech ? negativeEndPos : positiveEndPos;
+		BlockState breechState = level.getBlockState(this.startPos);
+		if (!(breechState.getBlock() instanceof AutocannonBreechBlock)) throw invalidCannon();
+		this.initialOrientation = breechState.getValue(BlockStateProperties.FACING);
 
 		this.anchor = pos;
 
@@ -192,7 +195,10 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, AutocannonMaterial material) {
 		AutocannonBlock cBlock = (AutocannonBlock) state.getBlock();
 		if (cBlock.getAutocannonMaterialInLevel(level, state, pos) != material) return false;
-		return level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe && cbe.cannonBehavior().isConnectedTo(connection.getOpposite());
+		return level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe
+				&& level.getBlockEntity(pos.relative(connection.getOpposite())) instanceof IAutocannonBlockEntity cbe1
+				&& cbe.cannonBehavior().isConnectedTo(connection.getOpposite())
+				&& cbe1.cannonBehavior().isConnectedTo(connection);
 	}
 
 	public static AssemblyException noAutocannonBreech() {
@@ -281,7 +287,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
 					level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2, Explosion.BlockInteraction.NONE);
 					for (int i = 0; i < 10; ++i) {
-						BlockPos pos = this.startPos.relative(this.initialOrientation, i);
+						BlockPos pos = currentPos.relative(this.initialOrientation, i);
 						this.blocks.remove(pos);
 					}
 					ControlPitchContraption controller = entity.getController();

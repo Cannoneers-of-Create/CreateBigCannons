@@ -1,6 +1,7 @@
 {
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
+	"render_type": "solid",
 	"elements": [
 		{
 			"from": [3, 0, 3],
