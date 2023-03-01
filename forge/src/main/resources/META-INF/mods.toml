@@ -1,33 +1,31 @@
 modLoader = "javafml"
 loaderVersion = "[${forge_version},)"
-#issueTrackerURL = ""
-license = "Insert License Here"
+#issueTrackerURL = "https://github.com/rbasamoyai/CreateBigCannons/issues"
+license = "MIT"
 
 [[mods]]
-modId = "examplemod"
+modId = "createbigcannons"
 version = "${version}"
-displayName = "Example Mod"
-authors = "Me!"
-description = '''
-This is an example description! Tell everyone what your mod is about!
-'''
+displayName = "Create Big Cannons"
+authors = "rbasamoyai"
+description = '''Artillery engineering comes to Create'''
 logoFile = "icon.png"
 
-[[dependencies.examplemod]]
+[[dependencies.createbigcannons]]
 modId = "forge"
 mandatory = true
 versionRange = "[${forge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.createbigcannons]]
 modId = "minecraft"
 mandatory = true
 versionRange = "${minecraft_version}"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.examplemod]]
+[[dependencies.createbigcannons]]
 modId="create"
 mandatory=true
 versionRange="${create_version}"

@@ -50,7 +50,7 @@ dependencies {
     modLocalRuntime("mezz.jei:jei-${minecraft_version}:${jei_forge_version}")
 
     // if you would like to add integration with JEI, uncomment this line.
-//    modCompileOnly("mezz.jei:jei-${minecraft_version}:${jei_forge_version}:api")
+    modCompileOnly("mezz.jei:jei-${minecraft_version}:${jei_forge_version}:api")
 }
 
 processResources {
@@ -71,8 +71,8 @@ processResources {
 loom {
     forge {
         mixinConfig(
-                "examplemod-common.mixins.json",
-                "examplemod.mixins.json"
+                "createbigcannons-common.mixins.json",
+                "createbigcannons.mixins.json"
         )
     }
 }
