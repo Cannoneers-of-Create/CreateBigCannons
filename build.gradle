@@ -30,6 +30,7 @@ subprojects {
                 includeGroup("com.jozufozu.flywheel")
             }
         }
+        maven { url = "https://cursemaven.com" } // Cursemaven
     }
 
     dependencies {

@@ -4,7 +4,6 @@
   "package": "rbasamoyai.createbigcannons.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "MixinTitleScreen"
   ],
   "mixins": [
   ],

@@ -9,7 +9,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannonsForge {
     public CreateBigCannonsForge() {
-        // registrate must be given the mod event bus on forge before registration
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         CBCBlocks.REGISTRATE.registerEventListeners(eventBus);
         CreateBigCannons.init();

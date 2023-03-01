@@ -13,7 +13,6 @@ public class CreateBigCannonsFabric implements ModInitializer {
                 () -> () -> "{} is accessing Porting Lib on a Fabric client!",
                 () -> () -> "{} is accessing Porting Lib on a Fabric server!"
                 ), CreateBigCannons.NAME);
-        // on fabric, Registrates must be explicitly finalized and registered.
         CBCBlocks.REGISTRATE.register();
     }
 }
