@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.fabric;
 
 import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
-import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import net.fabricmc.api.ModInitializer;
 
