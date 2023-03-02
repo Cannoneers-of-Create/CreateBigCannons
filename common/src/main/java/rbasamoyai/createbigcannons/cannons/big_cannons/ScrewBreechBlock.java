@@ -18,8 +18,8 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.CBCBlockEntities;
-import rbasamoyai.createbigcannons.CBCShapes;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCShapes;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<ScrewBreechBlockEntity>, BigCannonBlock {

@@ -18,7 +18,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 

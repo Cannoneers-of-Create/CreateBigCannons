@@ -9,13 +9,14 @@ import com.simibubi.create.foundation.utility.Pointing;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 
@@ -244,7 +245,7 @@ public class CannonLoadingScenes {
 				.rightClick()
 				.withItem(CBCItems.IMPACT_FUZE.asStack()), 60);
 		scene.idle(20);
-		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.IMPACT_FUZE.asStack().serializeNBT()));
+		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.IMPACT_FUZE.asStack().save(new CompoundTag())));
 		scene.idle(50);
 		
 		scene.overlay.showText(80)
@@ -263,7 +264,7 @@ public class CannonLoadingScenes {
 		scene.world.showSection(largeCog, Direction.WEST);
 		
 		BlockPos deployerPos = util.grid.at(2, 1, 1);
-		scene.world.modifyTileNBT(util.select.position(deployerPos), DeployerTileEntity.class, tag -> tag.put("HeldItem", CBCItems.TIMED_FUZE.asStack().serializeNBT()));
+		scene.world.modifyTileNBT(util.select.position(deployerPos), DeployerTileEntity.class, tag -> tag.put("HeldItem", CBCItems.TIMED_FUZE.asStack().save(new CompoundTag())));
 		
 		scene.world.setKineticSpeed(kineticSel, 32.0f);
 		scene.world.setKineticSpeed(largeCog, -16.0f);
@@ -275,8 +276,8 @@ public class CannonLoadingScenes {
 		scene.idle(90);
 		scene.world.moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
-		scene.world.modifyTileNBT(util.select.position(deployerPos), DeployerTileEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.serializeNBT()));
-		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.TIMED_FUZE.asStack().serializeNBT()));
+		scene.world.modifyTileNBT(util.select.position(deployerPos), DeployerTileEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(new CompoundTag())));
+		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.TIMED_FUZE.asStack().save(new CompoundTag())));
 		scene.world.moveDeployer(deployerPos, -1, 25);
 		scene.idle(46);
 		

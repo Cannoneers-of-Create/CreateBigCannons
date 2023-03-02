@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.ponder;
 
 import com.simibubi.create.foundation.ponder.PonderTag;
-import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CBCPonderTags {

@@ -4,8 +4,8 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
-import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CBCPonderIndex {

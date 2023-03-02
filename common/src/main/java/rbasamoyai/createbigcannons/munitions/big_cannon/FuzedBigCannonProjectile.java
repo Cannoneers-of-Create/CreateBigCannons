@@ -47,7 +47,7 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.put("Fuze", this.fuze.serializeNBT());
+		tag.put("Fuze", this.fuze.save(new CompoundTag()));
 	}
 	
 	@Override

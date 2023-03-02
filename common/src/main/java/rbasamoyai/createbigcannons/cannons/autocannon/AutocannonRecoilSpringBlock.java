@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class AutocannonRecoilSpringBlock extends AutocannonBaseBlock implements ITE<AutocannonRecoilSpringBlockEntity> {

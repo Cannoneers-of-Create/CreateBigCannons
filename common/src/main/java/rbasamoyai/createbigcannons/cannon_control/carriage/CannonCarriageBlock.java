@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
-import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 import java.util.List;
 

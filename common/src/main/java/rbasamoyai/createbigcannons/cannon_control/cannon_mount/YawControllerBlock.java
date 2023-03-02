@@ -7,7 +7,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 public class YawControllerBlock extends KineticBlock implements ITE<YawControllerBlockEntity> {
 

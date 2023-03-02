@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,7 @@ public class AutocannonCartridgeItem extends Item {
 
     public static void writeProjectile(ItemStack round, ItemStack cartridge) {
         if (round.getItem() instanceof AutocannonRoundItem && cartridge.getItem() instanceof AutocannonCartridgeItem) {
-            cartridge.getOrCreateTag().put("Projectile", round.serializeNBT());
+            cartridge.getOrCreateTag().put("Projectile", round.save(new CompoundTag()));
         }
     }
 

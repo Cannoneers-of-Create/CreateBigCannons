@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CBCBlockPartials;
-import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity> {
 

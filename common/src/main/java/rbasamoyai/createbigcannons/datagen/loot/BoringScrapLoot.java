@@ -12,8 +12,8 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.ForgeRegistries;
-import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCItems;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;

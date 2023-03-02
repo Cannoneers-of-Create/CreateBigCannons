@@ -16,8 +16,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.CBCBlockEntities;
-import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class CannonCastBlock extends Block implements ITE<CannonCastBlockEntity> {
 	
@@ -35,7 +35,7 @@ public class CannonCastBlock extends Block implements ITE<CannonCastBlockEntity>
 	}
 	
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return CBCBlocks.CASTING_SAND.asStack();
 	}
 	

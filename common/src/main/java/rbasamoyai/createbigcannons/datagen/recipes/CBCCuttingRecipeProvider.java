@@ -8,8 +8,8 @@ import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.ItemLike;
-import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {

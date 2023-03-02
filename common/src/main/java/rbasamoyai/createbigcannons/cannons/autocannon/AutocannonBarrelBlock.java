@@ -19,8 +19,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 public class AutocannonBarrelBlock extends AutocannonBaseBlock implements ITE<AutocannonBlockEntity>, IWrenchable {
 

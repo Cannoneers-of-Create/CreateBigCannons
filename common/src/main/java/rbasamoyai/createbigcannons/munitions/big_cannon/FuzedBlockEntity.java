@@ -63,7 +63,7 @@ public class FuzedBlockEntity extends SyncedTileEntity implements IHaveGoggleInf
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		if (!this.fuze.isEmpty()) {
-			tag.put("Fuze", this.fuze.serializeNBT());
+			tag.put("Fuze", this.fuze.save(new CompoundTag()));
 		}
 	}
 	

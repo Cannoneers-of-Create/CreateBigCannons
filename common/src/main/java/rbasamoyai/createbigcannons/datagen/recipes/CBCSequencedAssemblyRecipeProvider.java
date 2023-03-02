@@ -7,7 +7,7 @@ import com.simibubi.create.content.contraptions.itemAssembly.SequencedAssemblyRe
 import com.simibubi.create.foundation.data.recipe.CreateRecipeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.Tags;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 

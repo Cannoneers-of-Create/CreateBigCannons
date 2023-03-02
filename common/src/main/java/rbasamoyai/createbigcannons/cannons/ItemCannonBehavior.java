@@ -31,7 +31,7 @@ public class ItemCannonBehavior extends CannonBehavior {
 
     @Override
     public void write(CompoundTag nbt, boolean spawnPacket) {
-        nbt.put("ContainedStack", this.containedStack.serializeNBT());
+        nbt.put("ContainedStack", this.containedStack.save(new CompoundTag()));
         super.write(nbt, spawnPacket);
     }
 

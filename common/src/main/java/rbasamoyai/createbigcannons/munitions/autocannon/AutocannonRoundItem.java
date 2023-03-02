@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.munitions.autocannon;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCItems;
 
 public abstract class AutocannonRoundItem extends Item {
 

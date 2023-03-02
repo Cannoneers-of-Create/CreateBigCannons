@@ -5,7 +5,7 @@ import com.mojang.math.Vector3f;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import mezz.jei.api.gui.drawable.IDrawable;
-import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class BasinFoundryLidElement implements IDrawable {
 

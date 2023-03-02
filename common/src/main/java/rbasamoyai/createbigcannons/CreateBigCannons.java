@@ -31,19 +31,17 @@ public class CreateBigCannons {
 		CBCEntityTypes.register();
 		CBCMenuTypes.register();
 		CBCFluids.register();
-		CBCRecipeTypes.register(modEventBus);
+		CBCRecipeTypes.register();
 
-		CannonCastShape.CANNON_CAST_SHAPES.register(modEventBus);
+		CannonCastShape.CANNON_CAST_SHAPES.register();
 		CBCContraptionTypes.prepare();
 		CBCChecks.register();
 		BlockRecipeSerializer.register();
 		BlockRecipeType.register();
 		
-		CBCParticleTypes.PARTICLE_TYPES.register(modEventBus);
+		CBCParticleTypes.register();
 		
 		CBCTags.register();
-		
-
 		
 		CBCConfigs.registerConfigs(mlContext);
 	}

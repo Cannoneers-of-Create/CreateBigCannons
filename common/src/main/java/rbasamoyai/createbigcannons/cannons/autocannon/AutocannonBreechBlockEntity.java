@@ -156,7 +156,7 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implement
 		tag.putInt("FiringRate", this.fireRate);
 		tag.putInt("Cooldown", this.firingCooldown);
 		tag.putInt("AnimateTicks", this.animateTicks);
-		if (this.outputBuffer != null && !this.outputBuffer.isEmpty()) tag.put("Output", this.outputBuffer.serializeNBT());
+		if (this.outputBuffer != null && !this.outputBuffer.isEmpty()) tag.put("Output", this.outputBuffer.save(new CompoundTag()));
 		if (this.seat != null) tag.putString("Seat", this.seat.getSerializedName());
 
 		if (!this.inputBuffer.isEmpty()) {

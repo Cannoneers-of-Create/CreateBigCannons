@@ -14,12 +14,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.CBCBlockEntities;
-import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class FinishedCannonCastBlock extends Block implements ITE<FinishedCannonCastBlockEntity> {
 	
@@ -45,9 +44,9 @@ public class FinishedCannonCastBlock extends Block implements ITE<FinishedCannon
 		}
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
-	
+
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return CBCBlocks.CASTING_SAND.asStack();
 	}
 	

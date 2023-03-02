@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 
@@ -60,7 +60,7 @@ public class CartridgeAssemblyRecipe extends CustomRecipe {
 		CompoundTag tag = result.getOrCreateTag();
 		ItemStack roundCopy = container.getItem(roundPosition).copy();
 		roundCopy.setCount(1);
-		tag.put("Projectile", roundCopy.serializeNBT());
+		tag.put("Projectile", roundCopy.save(new CompoundTag()));
 		return result;
 	}
 

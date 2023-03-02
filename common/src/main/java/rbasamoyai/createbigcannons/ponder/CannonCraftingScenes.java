@@ -32,9 +32,9 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import rbasamoyai.createbigcannons.CBCBlocks;
-import rbasamoyai.createbigcannons.CBCFluids;
-import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCFluids;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
@@ -595,7 +595,7 @@ public class CannonCraftingScenes {
 		Selection deployer = util.select.position(deployerPos);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(deployerPos), Pointing.DOWN).withItem(breechblock), 40);
 		scene.idle(30);
-		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", breechblock.serializeNBT()));
+		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", breechblock.save(new CompoundTag())));
 		scene.idle(15);
 		
 		scene.world.setKineticSpeed(deployerGearDown, -16);
@@ -606,7 +606,7 @@ public class CannonCraftingScenes {
 		scene.world.modifyBlock(incompletePos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_SLIDING_BREECH.getDefaultState().setValue(ALONG_FIRST, true)), false);
 		
 		scene.idle(10);
-		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.serializeNBT()));
+		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(new CompoundTag())));
 		scene.world.setKineticSpeed(deployerGearDown, 16);
 		scene.world.setKineticSpeed(deployerGearUp, -32);
 		scene.world.moveDeployer(deployerPos, -1, 25);
@@ -685,7 +685,7 @@ public class CannonCraftingScenes {
 	}
 	
 	private static Consumer<CompoundTag> putItemInDeployer(ItemStack stack) {
-		return tag -> tag.put("HeldItem", stack.serializeNBT());
+		return tag -> tag.put("HeldItem", stack.save(new CompoundTag()));
 	}
 	
 	private static Consumer<CompoundTag> setUnfinishedCannonShape(CannonCastShape shape) {

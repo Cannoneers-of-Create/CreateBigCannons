@@ -3,8 +3,8 @@ package rbasamoyai.createbigcannons.cannons.autocannon;
 import com.simibubi.create.foundation.block.ITE;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlockEntity;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 public abstract class AbstractIncompleteAutocannonBlock extends AutocannonBaseBlock implements ITE<IncompleteAutocannonBlockEntity> {
 

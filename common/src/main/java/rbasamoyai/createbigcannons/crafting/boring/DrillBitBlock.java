@@ -26,7 +26,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class DrillBitBlock extends WrenchableDirectionalBlock implements SimpleWaterloggedBlock {
 
@@ -48,9 +48,9 @@ public class DrillBitBlock extends WrenchableDirectionalBlock implements SimpleW
 		super.createBlockStateDefinition(builder);
 		builder.add(BlockStateProperties.WATERLOGGED);
 	}
-	
+
 	@Override
-	public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return CBCBlocks.CANNON_DRILL.asStack();
 	}
 	

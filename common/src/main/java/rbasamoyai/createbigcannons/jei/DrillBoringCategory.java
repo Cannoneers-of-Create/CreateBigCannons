@@ -15,9 +15,9 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 import java.util.List;
 

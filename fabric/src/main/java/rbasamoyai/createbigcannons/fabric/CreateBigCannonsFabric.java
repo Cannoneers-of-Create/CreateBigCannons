@@ -1,10 +1,9 @@
 package rbasamoyai.createbigcannons.fabric;
 
-import io.github.fabricators_of_create.porting_lib.util.EnvExecutor;
+import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import net.fabricmc.api.ModInitializer;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBlockPartialsGen;
 import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
 import rbasamoyai.createbigcannons.datagen.loot.CBCLootTableProvider;

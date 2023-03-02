@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public record CannonPlumeParticleData(float scale) implements ParticleOptions {
 
