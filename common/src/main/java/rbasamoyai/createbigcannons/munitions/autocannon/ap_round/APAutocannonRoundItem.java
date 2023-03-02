@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.munitions.autocannon.ap_round;
 
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import rbasamoyai.createbigcannons.CBCEntityTypes;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 

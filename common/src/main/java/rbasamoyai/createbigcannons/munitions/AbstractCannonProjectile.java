@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -24,6 +25,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCTags;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
@@ -51,7 +53,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		if (this.level.isClientSide || this.level.hasChunkAt(this.blockPosition())) {
 			super.tick();
 
-			if (!this.isInGround()) this.clipAndDamage();
+			if (!this.isInGround()) this.clipAndDamage(this.position(), this.position().add(this.getDeltaMovement()));
 
 			this.yRotO = this.getYRot();
 			this.xRotO = this.getXRot();
@@ -103,9 +105,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		}
 	}
 
-	protected void clipAndDamage() {
-		Vec3 start = this.position();
-		Vec3 end = start.add(this.getDeltaMovement());
+	protected void clipAndDamage(Vec3 start, Vec3 end) {
 		GriefState flag = CBCConfigs.SERVER.munitions.damageRestriction.get();
 
 		double reach = Math.max(this.getBbWidth(), this.getBbHeight()) * 0.5;
@@ -234,7 +234,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	}
 
 	protected DamageSource getEntityDamage() {
-		return DamageSource.thrown(this, null).bypassArmor();
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile", this, null);
 	}
 
 	protected float getKnockback(Entity target) { return 2.0f; }
@@ -344,6 +344,13 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		DEFLECT,
 		RICOCHET,
 		NO_BOUNCE
+	}
+
+	protected static class CannonDamageSource extends IndirectEntityDamageSource {
+		public CannonDamageSource(String id, Entity entity, @Nullable Entity owner) {
+			super(id, entity, owner);
+			this.bypassArmor();
+		}
 	}
 
 }
