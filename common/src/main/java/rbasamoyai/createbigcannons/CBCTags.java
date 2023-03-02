@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons;
 
-import com.simibubi.create.AllTags;
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.core.Registry;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
@@ -11,7 +10,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -21,19 +20,27 @@ public class CBCTags {
 	
 	public static class BlockCBC {
 		public static final TagKey<Block>
-			THICK_TUBING = createAndGenerateBlockTag(CreateBigCannons.resource("thick_tubing")),
-			REDUCES_SPREAD = createAndGenerateBlockTag(CreateBigCannons.resource("reduces_spread")),
-			WEAK_CANNON_END = createAndGenerateBlockTag(CreateBigCannons.resource("weak_cannon_end")),
-			DRILL_CAN_PASS_THROUGH = createAndGenerateBlockTag(CreateBigCannons.resource("drill_can_pass_through")),
-			DEFLECTS_SHOTS = createAndGenerateBlockTag(CreateBigCannons.resource("deflects_shots")),
-			DOESNT_DEFLECT_SHOTS = createAndGenerateBlockTag(CreateBigCannons.resource("doesnt_deflect_shots")),
-			BOUNCES_SHOTS = createAndGenerateBlockTag(CreateBigCannons.resource("bounces_shots")),
-			DOESNT_BOUNCE_SHOTS = createAndGenerateBlockTag(CreateBigCannons.resource("doesnt_bounce_shots"));
+			THICK_TUBING = makeTag("thick_tubing"),
+			REDUCES_SPREAD = makeTag("reduces_spread"),
+			WEAK_CANNON_END = makeTag("weak_cannon_end"),
+			DRILL_CAN_PASS_THROUGH = makeTag("drill_can_pass_through"),
+			DEFLECTS_SHOTS = makeTag("deflects_shots"),
+			DOESNT_DEFLECT_SHOTS = makeTag("doesnt_deflect_shots"),
+			BOUNCES_SHOTS = makeTag("bounces_shots"),
+			DOESNT_BOUNCE_SHOTS = makeTag("doesnt_bounce_shots");
 		
-		public static TagKey<Block> createAndGenerateBlockTag(ResourceLocation loc) {
-			TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, loc);
+		public static TagKey<Block> makeTag(String path) {
+			TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, CreateBigCannons.resource(path));
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> prov.tag(tag));
 			return tag;
+		}
+
+		public static TagKey<Block> commonTag(String mainPath, String forgePath, String fabricPath) {
+			TagKey<Block> mainTag = makeTag(mainPath);
+			addTagsToBlockTag(mainTag, Arrays.asList(
+					TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", forgePath)),
+					TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", fabricPath))));
+			return mainTag;
 		}
 		
 		public static void addBlocksToBlockTag(TagKey<Block> tag, Block... blocks) {
@@ -51,10 +58,10 @@ public class CBCTags {
 			});
 		}
 		
-		public static void addTagsToBlockTag(TagKey<Block> tag, Supplier<List<TagKey<Block>>> tags) {
+		public static void addTagsToBlockTag(TagKey<Block> tag, List<TagKey<Block>> tags) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = prov.tag(tag);
-				tags.get().forEach(app::addTag);
+				tags.forEach(app::addTag);
 			});
 		}
 		
@@ -63,25 +70,29 @@ public class CBCTags {
 	
 	public static class ItemCBC {
 		public static final TagKey<Item>
-			IMPACT_FUZE_HEAD = createAndGenerateItemTag(CreateBigCannons.resource("impact_fuze_head")),
-			NUGGET_CAST_IRON = forgeTag("nuggets/cast_iron"),
-			INGOT_CAST_IRON = forgeTag("ingots/cast_iron"),
-			BLOCK_CAST_IRON = forgeTag("storage_blocks/cast_iron"),
-			NUGGET_BRONZE = forgeTag("nuggets/bronze"),
-			INGOT_BRONZE = forgeTag("ingots/bronze"),
-			BLOCK_BRONZE = forgeTag("storage_blocks/bronze"),
-			NUGGET_STEEL = forgeTag("nuggets/steel"),
-			INGOT_STEEL = forgeTag("ingots/steel"),
-			BLOCK_STEEL = forgeTag("storage_blocks/steel");
+			IMPACT_FUZE_HEAD = makeTag("impact_fuze_head"),
+			NUGGET_CAST_IRON = commonTag("nugget_cast_iron", "nuggets/cast_iron", "cast_iron_nuggets"),
+			INGOT_CAST_IRON = commonTag("ingot_cast_iron", "ingots/cast_iron", "cast_iron_ingots"),
+			BLOCK_CAST_IRON = commonTag("block_cast_iron", "storage_blocks/cast_iron", "cast_iron_blocks"),
+			NUGGET_BRONZE = commonTag("nugget_bronze", "nuggets/bronze", "bronze_nuggets"),
+			INGOT_BRONZE = commonTag("ingot_bronze", "ingots/bronze", "bronze_ingots"),
+			BLOCK_BRONZE = commonTag("block_bronze", "storage_blocks/bronze", "bronze_blocks"),
+			NUGGET_STEEL = commonTag("nugget_steel", "nuggets/steel", "steel_blocks"),
+			INGOT_STEEL = commonTag("ingot_steel", "ingots/steel", "steel_ingots"),
+			BLOCK_STEEL = commonTag("block_steel", "storage_blocks/steel", "steel_blocks");
 		
-		public static TagKey<Item> createAndGenerateItemTag(ResourceLocation loc) {
-			TagKey<Item> tag = TagKey.create(Registry.ITEM_REGISTRY, loc);
+		public static TagKey<Item> makeTag(String loc) {
+			TagKey<Item> tag = TagKey.create(Registry.ITEM_REGISTRY, CreateBigCannons.resource(loc));
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> prov.tag(tag));
 			return tag;
 		}
-		
-		public static TagKey<Item> forgeTag(String path) {
-			return createAndGenerateItemTag(new ResourceLocation("forge", path));
+
+		public static TagKey<Item> commonTag(String mainPath, String forgePath, String fabricPath) {
+			TagKey<Item> mainTag = makeTag(mainPath);
+			addTagsToItemTag(mainTag, Arrays.asList(
+					TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge", forgePath)),
+					TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", fabricPath))));
+			return mainTag;
 		}
 		
 		public static void addItemsToItemTag(TagKey<Item> tag, Item... items) {
