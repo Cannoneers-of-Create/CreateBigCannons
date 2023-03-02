@@ -4,6 +4,7 @@ package rbasamoyai.createbigcannons;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -17,21 +18,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
-import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
 import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticle;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticle;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticle;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
@@ -123,7 +122,7 @@ public class CBCClientCommon {
 		return -1;
 	}
 
-	public static void onClientGameTick(TickEvent.ClientTickEvent evt) {
+	public static void onClientGameTick(ClientTickEvents evt) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player == null) return;
 		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {

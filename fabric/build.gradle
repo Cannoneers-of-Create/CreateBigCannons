@@ -9,6 +9,18 @@ architectury {
 
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    runs {
+        data {
+            client()
+
+            name "Fabric Data Generation"
+            vmArg "-Dfabric-api.datagen"
+            vmArg "-Dfabric-api.datagen.output-dir=${project.rootProject.file("common/src/generated/resources")}"
+            vmArg "-Dfabric-api.datagen.modid=liftoff"
+            vmArg "-Dporting_lib.datagen.existing_resources=${project.rootProject.file("common/src/main/resources")}"
+        }
+    }
 }
 
 configurations {

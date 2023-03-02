@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.base;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.minecraftforge.registries.RegistryBuilder;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
@@ -15,7 +14,7 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCRegistries {
 
-	public static final Supplier<IForgeRegistry<BlockRecipeSerializer<?>>> BLOCK_RECIPE_SERIALIZERS =
+	public static final Supplier<Registry<BlockRecipeSerializer<?>>> BLOCK_RECIPE_SERIALIZERS =
 			REGISTRATE.makeRegistry("block_recipe_serializers", BlockRecipeSerializer.class, CBCRegistries::makeRegBlockRecipeSerializer);
 	
 	public static final Supplier<IForgeRegistry<BlockRecipeType<?>>> BLOCK_RECIPE_TYPES =

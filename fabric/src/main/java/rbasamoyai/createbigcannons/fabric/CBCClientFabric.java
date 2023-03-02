@@ -7,7 +7,6 @@ import net.minecraft.client.Camera;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 
 public class CBCClientFabric implements ClientModInitializer {
-
 	@Override
 	public void onInitializeClient() {
 		CBCClientCommon.onClientSetup();

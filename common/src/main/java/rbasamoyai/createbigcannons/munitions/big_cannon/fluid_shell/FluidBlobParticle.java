@@ -1,12 +1,12 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraftforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class FluidBlobParticle extends NoRenderParticle {

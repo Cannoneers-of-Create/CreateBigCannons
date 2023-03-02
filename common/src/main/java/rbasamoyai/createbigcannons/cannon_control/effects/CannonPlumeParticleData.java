@@ -7,15 +7,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
-import rbasamoyai.createbigcannons.CBCParticleTypes;
 
 public record CannonPlumeParticleData(float scale) implements ParticleOptions {
 
-	public static final Codec<CannonPlumeParticleData> CODEC = RecordCodecBuilder.create(instance -> {
-		return instance.group(
-						Codec.FLOAT.fieldOf("scale").forGetter(data -> data.scale))
-				.apply(instance, CannonPlumeParticleData::new);
-	});
+	public static final Codec<CannonPlumeParticleData> CODEC = RecordCodecBuilder.create(i -> i
+			.group(Codec.FLOAT.fieldOf("scale")
+					.forGetter(data -> data.scale))
+			.apply(i, CannonPlumeParticleData::new));
 
 	@SuppressWarnings("deprecation")
 	public static final Deserializer<CannonPlumeParticleData> DESERIALIZER = new Deserializer<CannonPlumeParticleData>() {
@@ -48,5 +46,4 @@ public record CannonPlumeParticleData(float scale) implements ParticleOptions {
 	public String writeToString() {
 		return String.format("%d", this.scale);
 	}
-
 }
