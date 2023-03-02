@@ -12,14 +12,16 @@ import rbasamoyai.createbigcannons.CBCParticleTypes;
 
 public class CannonSmokeParticleData implements ParticleOptions {
 
-	public static final Codec<CannonSmokeParticleData> CODEC = RecordCodecBuilder.create(instance -> {
-		return instance.group(
-				Codec.FLOAT.fieldOf("scale").forGetter(data -> data.scale),
-				Vector3f.CODEC.fieldOf("startColor").forGetter(data -> data.startColor),
-				Vector3f.CODEC.fieldOf("endColor").forGetter(data -> data.endColor),
-				Codec.INT.fieldOf("shiftTime").forGetter(data -> data.shiftTime))
-				.apply(instance, CannonSmokeParticleData::new);
-	});
+	public static final Codec<CannonSmokeParticleData> CODEC = RecordCodecBuilder.create(i -> i
+			.group(Codec.FLOAT.fieldOf("scale")
+					.forGetter(data -> data.scale),
+					Vector3f.CODEC.fieldOf("startColor")
+					.forGetter(data -> data.startColor),
+					Vector3f.CODEC.fieldOf("endColor")
+					.forGetter(data -> data.endColor),
+					Codec.INT.fieldOf("shiftTime")
+					.forGetter(data -> data.shiftTime))
+			.apply(i, CannonSmokeParticleData::new));
 	
 	@SuppressWarnings("deprecation")
 	public static final Deserializer<CannonSmokeParticleData> DESERIALIZER = new Deserializer<CannonSmokeParticleData>() {

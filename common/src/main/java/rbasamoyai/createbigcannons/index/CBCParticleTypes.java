@@ -1,41 +1,74 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.mojang.serialization.Codec;
+import com.simibubi.create.content.contraptions.particle.ICustomParticleData;
+import com.simibubi.create.foundation.utility.Lang;
+import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleData;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 
-public class CBCParticleTypes {
+import java.util.function.Supplier;
 
-	public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, CreateBigCannons.MOD_ID);
-	
-	public static final RegistryObject<ParticleType<CannonPlumeParticleData>> CANNON_PLUME = PARTICLE_TYPES.register("cannon_plume",
-			() -> new ParticleType<CannonPlumeParticleData>(false, CannonPlumeParticleData.DESERIALIZER) {
-				@Override
-				public Codec<CannonPlumeParticleData> codec() {
-					return CannonPlumeParticleData.CODEC;
-				}
-			});
+public enum CBCParticleTypes {
 
-	public static final RegistryObject<ParticleType<FluidBlobParticleData>> FLUID_BLOB = PARTICLE_TYPES.register("fluid_blob",
-			() -> new ParticleType<FluidBlobParticleData>(false, FluidBlobParticleData.DESERIALIZER) {
-				@Override
-				public Codec<FluidBlobParticleData> codec() {
-					return FluidBlobParticleData.CODEC;
-				}
-			});
-	
-	public static final RegistryObject<ParticleType<CannonSmokeParticleData>> CANNON_SMOKE = PARTICLE_TYPES.register("cannon_smoke",
-			() -> new ParticleType<CannonSmokeParticleData>(false, CannonSmokeParticleData.DESERIALIZER) {
-				@Override
-				public Codec<CannonSmokeParticleData> codec() {
-					return CannonSmokeParticleData.CODEC;
-				}
-			});
-	
+    CANNON_PLUME(CannonPlumeParticleData::new),
+    FLUID_BLOB(FluidBlobParticleData::new),
+    CANNON_SMOKE(CannonSmokeParticleData::new);
+
+    private final ParticleEntry<?> entry;
+
+    <D extends ParticleOptions> CBCParticleTypes(Supplier<ICustomParticleData<D>> typeFactory) {
+        String name = Lang.asId(name());
+        entry = new ParticleEntry<>(name, typeFactory);
+    }
+
+    public static void register() {
+        ParticleEntry.REGISTER.register();
+    }
+
+    @Environment(EnvType.CLIENT)
+    public static void registerFactories() {
+        ParticleEngine particles = Minecraft.getInstance().particleEngine;
+        for (CBCParticleTypes particle : values())
+            particle.entry.registerFactory(particles);
+    }
+
+    public ParticleType<?> get() {
+        return entry.object;
+    }
+
+    public String parameter() {
+        return entry.name;
+    }
+
+    private static class ParticleEntry<D extends ParticleOptions> {
+        private static final LazyRegistrar<ParticleType<?>> REGISTER = LazyRegistrar.create(Registry.PARTICLE_TYPE, CreateBigCannons.MOD_ID);
+
+        private final String name;
+        private final Supplier<? extends ICustomParticleData<D>> typeFactory;
+        private final ParticleType<D> object;
+
+        public ParticleEntry(String name, Supplier<? extends ICustomParticleData<D>> typeFactory) {
+            this.name = name;
+            this.typeFactory = typeFactory;
+
+            object = this.typeFactory.get().createType();
+            REGISTER.register(name, () -> object);
+        }
+
+        @Environment(EnvType.CLIENT)
+        public void registerFactory(ParticleEngine particles) {
+            typeFactory.get()
+                    .register(object, particles);
+        }
+
+    }
 }

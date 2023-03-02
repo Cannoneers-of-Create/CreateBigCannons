@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.contraptions.particle.AirParticleData;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -21,17 +22,17 @@ import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.*;
-import net.minecraftforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
 public class FluidBlob extends Shrapnel {
 	
 	public static final EntityDataSerializer<FluidStack> FLUID_STACK_SERIALIZER = new EntityDataSerializer<>() {
-		@Override public void write(FriendlyByteBuf buf, FluidStack fluid) { buf.writeFluidStack(fluid); }
-		@Override public FluidStack read(FriendlyByteBuf buf) { return buf.readFluidStack(); }
+		@Override public void write(FriendlyByteBuf buf, FluidStack fluid) { FluidStack.toBuffer(buf); }
+		@Override public FluidStack read(FriendlyByteBuf buf) { return FluidStack.fromBuffer(buf); }
 		@Override public FluidStack copy(FluidStack fluid) { return fluid.copy(); }
 	};
 	
@@ -151,7 +152,7 @@ public class FluidBlob extends Shrapnel {
 		if (!level.isClientSide) spawnFire(entity.blockPosition(), blob, level);
 	}
 
-	public static void potionHitEntity(FluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
+	public static void potionHitEntity(FluidState fstack, FluidBlob blob, Level level, EntityHitResult result) {
 		if (!level.isClientSide) spawnAreaEffectCloud(result.getEntity().blockPosition(), blob, level);
 	}
 

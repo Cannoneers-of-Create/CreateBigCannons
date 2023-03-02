@@ -1,11 +1,11 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.fluids.FluidStack;
 
 import java.util.HashMap;
 import java.util.Map;
