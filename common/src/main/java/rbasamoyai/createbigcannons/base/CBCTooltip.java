@@ -21,7 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.CreateBigCannonsClientHooks;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -207,11 +207,11 @@ public class CBCTooltip {
 		if (Screen.hasShiftDown()) {
 			String key = block.getDescriptionId() + ".tooltip";
 
-			String fire = I18n.get(CreateBigCannonsClientHooks.FIRE_CONTROLLED_CANNON.getTranslatedKeyMessage().getString());
+			String fire = I18n.get(CBCClientCommon.FIRE_CONTROLLED_CANNON.getTranslatedKeyMessage().getString());
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".keyPressed", fire), ChatFormatting.GRAY, ChatFormatting.WHITE));
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".fireCannon"), palette.color, palette.hColor, 1));
 
-			String pitchMode = I18n.get(CreateBigCannonsClientHooks.PITCH_MODE.getTranslatedKeyMessage().getString());
+			String pitchMode = I18n.get(CBCClientCommon.PITCH_MODE.getTranslatedKeyMessage().getString());
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".keyPressed", pitchMode), ChatFormatting.GRAY, ChatFormatting.WHITE));
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".pitchMode"), palette.color, palette.hColor, 1));
 		}

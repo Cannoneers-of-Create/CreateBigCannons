@@ -22,16 +22,16 @@ import net.minecraftforge.client.event.EntityViewRenderEvent.FogColors;
 import net.minecraftforge.client.event.EntityViewRenderEvent.RenderFogEvent;
 import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticle;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticle;
+import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticle;
 import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
@@ -40,50 +40,37 @@ import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class CreateBigCannonsClient {
+public class CBCClientCommon {
 
 	private static final String KEY_ROOT = "key." + CreateBigCannons.MOD_ID;
 	private static final String KEY_CATEGORY = KEY_ROOT + ".category";
 	public static final KeyMapping PITCH_MODE = new KeyMapping(KEY_ROOT + ".pitch_mode", GLFW.GLFW_KEY_C, KEY_CATEGORY);
 	public static final KeyMapping FIRE_CONTROLLED_CANNON = new KeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, KEY_CATEGORY);
 
-	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
-		CBCBlockPartials.init();
-		modEventBus.addListener(CreateBigCannonsClient::onClientSetup);
-		modEventBus.addListener(CreateBigCannonsClient::onRegisterParticleFactories);
-		
-		forgeEventBus.addListener(CreateBigCannonsClient::getFogColor);
-		forgeEventBus.addListener(CreateBigCannonsClient::getFogDensity);
-		forgeEventBus.addListener(CreateBigCannonsClient::onClientGameTick);
-		forgeEventBus.addListener(CreateBigCannonsClient::onScrollMouse);
-		forgeEventBus.addListener(CreateBigCannonsClient::onFovModify);
-		forgeEventBus.addListener(CreateBigCannonsClient::onPlayerRenderPre);
-	}
-	
-	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
-		Minecraft mc = Minecraft.getInstance();
-		ParticleEngine engine = mc.particleEngine;
-		
+	public static void onRegisterParticleFactories(Minecraft mc, ParticleEngine engine) {
 		engine.register(CBCParticleTypes.CANNON_PLUME.get(), new CannonPlumeParticle.Provider());
 		engine.register(CBCParticleTypes.FLUID_BLOB.get(), new FluidBlobParticle.Provider());
 		engine.register(CBCParticleTypes.CANNON_SMOKE.get(), CannonSmokeParticle.Provider::new);
 	}
-	
-	public static void onClientSetup(FMLClientSetupEvent event) {
+
+	public static void onClientSetup() {
 		CBCPonderIndex.register();
 		CBCPonderIndex.registerTags();
 		CBCBlockPartials.resolveDeferredModels();
-		ClientRegistry.registerKeyBinding(PITCH_MODE);
-		ClientRegistry.registerKeyBinding(FIRE_CONTROLLED_CANNON);
 
 		ItemProperties.register(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
 			return stack.getOrCreateTag().getCompound("SequencedAssembly").getInt("Step") - 1;
 		});
 	}
+
+	public static void registerKeyMappings(Consumer<KeyMapping> cons) {
+		cons.accept(PITCH_MODE);
+		cons.accept(FIRE_CONTROLLED_CANNON);
+	}
 	
-	public static void getFogColor(FogColors event) {
-		Camera info = event.getCamera();
+	public static void setFogColor(Camera info, SetColorWrapper wrapper) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
 		BlockPos blockPos = info.getBlockPosition();
@@ -93,40 +80,32 @@ public class CreateBigCannonsClient {
 		Fluid fluid = fluidState.getType();
 
 		if (CBCFluids.MOLTEN_CAST_IRON.get().isSame(fluid)) {
-			event.setRed(70 / 255f);
-			event.setGreen(10 / 255f);
-			event.setBlue(11 / 255f);
+			wrapper.setFogColor(70 / 255f, 10 / 255f, 11 / 255f);
 			return;
 		}
 		if (CBCFluids.MOLTEN_BRONZE.get().isSame(fluid)) {
-			event.setRed(99 / 255f);
-			event.setGreen(66 / 255f);
-			event.setBlue(22 / 255f);
-			return;
+			wrapper.setFogColor(99 / 255f, 66 / 255f, 22 / 255f);
 		}
 		if (CBCFluids.MOLTEN_STEEL.get().isSame(fluid)) {
-			event.setRed(111 / 255f);
-			event.setGreen(110 / 255f);
-			event.setBlue(106 / 255f);
+			wrapper.setFogColor(111 / 255f, 110 / 255f, 106 / 255f);
 			return;
 		}
 		if (CBCFluids.MOLTEN_NETHERSTEEL.get().isSame(fluid)) {
-			event.setRed(76 / 255f);
-			event.setGreen(50 / 255f);
-			event.setBlue(58 / 255f);
+			wrapper.setFogColor(76 / 255f, 50 / 255f, 58 / 255f);
 			return;
 		}
 	}
+
+	public interface SetColorWrapper {
+		void setFogColor(float r, float g, float b);
+	}
 	
-	public static void getFogDensity(RenderFogEvent event) {
-		if (!event.isCancelable()) return;
-		
-		Camera info = event.getCamera();
+	public static float getFogDensity(Camera info, float currentDensity) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
 		BlockPos blockPos = info.getBlockPosition();
 		FluidState fluidState = level.getFluidState(blockPos);
-		if (info.getPosition().y > blockPos.getY() + fluidState.getHeight(level, blockPos)) return;
+		if (info.getPosition().y > blockPos.getY() + fluidState.getHeight(level, blockPos)) return -1;
 
 		Fluid fluid = fluidState.getType();
 		
@@ -138,11 +117,10 @@ public class CreateBigCannonsClient {
 		
 		for (Fluid fluid1 : moltenMetals) {
 			if (fluid1.isSame(fluid)) {
-				event.scaleFarPlaneDistance(1f / 32f);
-				event.setCanceled(true);
-				return;
+				return 1f / 32f;
 			}
 		}
+		return -1;
 	}
 
 	public static void onClientGameTick(TickEvent.ClientTickEvent evt) {
@@ -150,12 +128,12 @@ public class CreateBigCannonsClient {
 		if (mc.player == null) return;
 		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
-			boolean isPitching = CreateBigCannonsClient.PITCH_MODE.isDown();
+			boolean isPitching = CBCClientCommon.PITCH_MODE.isDown();
 			carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
 			mc.player.handsBusy |= input.left | input.right | input.up | input.down;
 		}
 
-		if (CreateBigCannonsClient.FIRE_CONTROLLED_CANNON.isDown() && isControllingCannon(mc.player)) {
+		if (CBCClientCommon.FIRE_CONTROLLED_CANNON.isDown() && isControllingCannon(mc.player)) {
 			mc.player.handsBusy = true;
 			CBCNetwork.INSTANCE.sendToServer(new ServerboundFiringActionPacket());
 		}

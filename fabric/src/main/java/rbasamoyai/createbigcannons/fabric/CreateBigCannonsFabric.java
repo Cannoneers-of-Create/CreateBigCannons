@@ -8,10 +8,6 @@ public class CreateBigCannonsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         CreateBigCannons.init();
-        CreateBigCannons.LOGGER.info(EnvExecutor.unsafeRunForDist(
-                () -> () -> "{} is accessing Porting Lib on a Fabric client!",
-                () -> () -> "{} is accessing Porting Lib on a Fabric server!"
-                ), CreateBigCannons.NAME);
-        CBCBlocks.REGISTRATE.register();
+        CreateBigCannons.REGISTRATE.register();
     }
 }

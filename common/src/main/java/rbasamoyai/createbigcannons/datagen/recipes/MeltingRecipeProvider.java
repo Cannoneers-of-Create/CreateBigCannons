@@ -5,6 +5,8 @@ import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
 import net.minecraft.data.DataGenerator;
 import rbasamoyai.createbigcannons.*;
+import rbasamoyai.createbigcannons.index.CBCFluids;
+import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 
 public class MeltingRecipeProvider extends ProcessingRecipeGen {
 

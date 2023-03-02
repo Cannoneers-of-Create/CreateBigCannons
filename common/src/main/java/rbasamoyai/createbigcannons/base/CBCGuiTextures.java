@@ -5,8 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.element.ScreenElement;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public enum CBCGuiTextures implements ScreenElement {
@@ -43,13 +41,11 @@ public enum CBCGuiTextures implements ScreenElement {
 		this.texW = texW;
 		this.texH = texH;
 	}
-	
-	@OnlyIn(Dist.CLIENT)
+
 	public void bind() {
 		RenderSystem.setShaderTexture(0, this.texture);
 	}
 
-	@OnlyIn(Dist.CLIENT)
 	@Override
 	public void render(PoseStack ms, int x, int y) {
 		this.bind();

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.base;
+package rbasamoyai.createbigcannons.forge;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
@@ -25,15 +25,15 @@ import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderSt
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
-public class CBCCommonEvents {
+public class CBCCommonForgeEvents {
 
 	public static void register(IEventBus forgeEventBus) {
-		forgeEventBus.addListener(CBCCommonEvents::onPlayerBreakBlock);
-		forgeEventBus.addListener(CBCCommonEvents::onPlayerLogin);
-		forgeEventBus.addListener(CBCCommonEvents::onPlayerLogout);
-		forgeEventBus.addListener(CBCCommonEvents::onLoadWorld);
-		forgeEventBus.addListener(CBCCommonEvents::onServerWorldTick);
-		forgeEventBus.addListener(CBCCommonEvents::onDatapackSync);
+		forgeEventBus.addListener(CBCCommonForgeEvents::onPlayerBreakBlock);
+		forgeEventBus.addListener(CBCCommonForgeEvents::onPlayerLogin);
+		forgeEventBus.addListener(CBCCommonForgeEvents::onPlayerLogout);
+		forgeEventBus.addListener(CBCCommonForgeEvents::onLoadWorld);
+		forgeEventBus.addListener(CBCCommonForgeEvents::onServerWorldTick);
+		forgeEventBus.addListener(CBCCommonForgeEvents::onDatapackSync);
 	}
 
 	public static void onServerWorldTick(TickEvent.WorldTickEvent evt) {
