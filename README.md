@@ -1,92 +1,39 @@
-# Create Multi-Loader Addon Template
-A template based on Architectury for creating addons for Create on Forge, Fabric, and Quilt, simultaneously.
+# Create Big Cannons
 
-## How does it work?
-This template is powered by the [Architectury](https://github.com/architectury) toolchain.
-Architectury allows developers to create the majority of their mod in common, loader-agnostic code that
-only touches Minecraft itself. This can be found in the [common](common) subproject. Each loader target 
-also has its own subproject: those being [forge](forge) and [fabric](fabric). (Quilt support: you 
-shouldn't need anything special and the Fabric version should work fine, but it is possible to add a 
-`quilt` subproject if needed.) These loader-specific projects bridge between their respective loaders 
-and the common code.
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rbasamoyai/CreateBigCannons/gradle.yml)](../../actions/workflows/gradle.yml)
+[![Discord Invite](https://img.shields.io/discord/996633868692111381?label=Discord&color=5865f2)](https://discord.gg/vgfMMUUgvT)
+[![License](https://img.shields.io/github/license/rbasamoyai/CreateBigCannons?color=900c3f)](LICENSE)
+[![Curse Forge](https://cf.way2muchnoise.eu/full_646668_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/create-big-cannons)
+[![Curse Forge](https://cf.way2muchnoise.eu/versions/Avalilable%20for%20MC_646668_all.svg)](https://www.curseforge.com/minecraft/mc-mods/create-big-cannons)
 
-This system can be extended to work with Create as well as plain Minecraft. The common project gives
-access to most of Create, Registrate, and Flywheel.
+<h3> <a href="https://www.curseforge.com/minecraft/mc-mods/create-big-cannons"> <strong style="color: #f16436"> DOWNLOAD </strong> </a> </h3>
 
-## Limitations
-Minecraft has a lot of differences across loaders. You'll need to manage these differences using
-abstractions. Architectury does provide an [API](https://github.com/architectury/architectury-api)
-which you may use if desired, but it means you have another dependency to worry about.
-
-This also applies to Create, which underwent significant changes in porting to Fabric. This means a lot 
-of it will be different between loaders. The `common` project is only capable of referencing the code 
-on one loader (Fabric in this template), so you should be careful to not reference things that don't 
-exist on the other one. Test often, and check the code on both loaders. When you do need to use these 
-changed things, that leads us to...
-
-## Solutions
-There's a bunch of ways to work around the differences.
-
-First is Architectury API. It provides cross-loader abstractions that can be used in common code for
-a decent amount of Minecraft. However, it means you need to worry about another dependency. It also
-doesn't really help with Create.
-
-Next is the `@ExpectPlatform` annotation. It allows the implementation of a method to be replaced
-at compile time per-loader, letting you make your own abstractions. It is part of the Architectury
-plugin and does not cause an extra dependency. However, it can only be placed on static methods. See 
-[ExampleExpectPlatform](common/src/main/java/net/examplemod/ExampleExpectPlatform.java) in common 
-for an example.
-
-Finally, simply have a common interface with implementation based on the loader. You might have a
-`PlatformHelper` common interface, with a static instance somewhere. On Fabric, set it to a
-`FabricPlatformHelper`, and a `ForgePlatformHelper` on Forge. The implementation is kept as a detail
-so you can use your helper from common code.
-
-## Features
-- Access to Create and all of its dependencies on both loaders
-- Mojang Mappings base, with Quilt Mappings and Parchment providing Javadoc and parameters
-- QuiltFlower decompiler for high quality Minecraft sources: `gradlew genSourcesWithQuiltflower`
-- GitHub Actions automatic build workflow
-- Machete Gradle plugin to shrink jar file sizes
-- Developer QOL: Mod Menu, LazyDFU, JEI
-
-## Use
-Ready to get started? First you'll want to create a new repository using this template. You can do it
-through GitHub with the big green button near the top that says `Use this template`. 
-
-Once you've got your repository set up, you'll want to change all the branding to your mod instead 
-of the template. Every `examplemod`, every placeholder. 
-
-You're free to change your license: CC0 lets you do whatever you want. Base Create is MIT, for reference. 
-
-Replace this README with information about your addon. Give it an icon and change the metadata in the 
-[fabric.mod.json](fabric/src/main/resources/fabric.mod.json) and the
-[mods.toml](forge/src/main/resources/META-INF/mods.toml).
-
-Configure your dependencies. Each subproject `build.gradle` has optional dependencies commented.
-Either remove them or uncomment them. For Fabric, set your preferred recipe viewer with 
-`fabric_recipe_viewer` in the root [gradle.properties](gradle.properties).
-
-Remember to remove any example code you don't need anymore.
-
-Get modding!
-
-## Notes
-- Architectury does not merge jars; When you build, you get separate jars for each loader.
-  There is an independent project that can merge these into one if desired called
-  [Forgix](https://github.com/PacifistMC/Forgix).
-- The file names and versions of jars are configured in the root [build.gradle](build.gradle). Feel 
-free to change the format if desired, but make sure it follows SemVer to work well on Fabric.
-- When publishing, you should always let GitHub Actions build your release jars. These builds will
-have build number metadata, and will be compressed by the Machete plugin.
-
-## Other Templates
-- [Fabric-only template](https://github.com/Fabricators-of-Create/create-fabric-addon-template)
-- [Forge-only template](https://github.com/kotakotik22/CreateAddonTemplate)
-
-## Help
-Questions? Join us in the #devchat channel of the [Create Discord](https://discord.com/invite/hmaD7Se).
-
-## License
-
-This template is available under the CC0 license. Feel free to do as you wish with it.
+<p><strong>Create Big Cannons</strong> is an addon for Create about building big cannons that work with Create.</p>
+<br>
+<p><img src="https://i.imgur.com/9BbUMSK.png" width="472" height="250"></p>
+<h4><strong>What's there?</strong></h4>
+<p>Create Big Cannons (CBC) has:</p>
+<ul>
+<li>Multiblock cannons, built out of various cannon blocks with different materials of different tiers</li>
+<li>Various projectiles to wreak destruction with such as solid shot, high explosive (HE), shrapnel, and more</li>
+<li>Kinetic-powered cannon mechanisms to load and aim your cannons, with dynamic energy requirements</li>
+<li>Different fuze items to set off certain projectiles (mostly just shells) under certain conditions</li>
+<li>A crafting system to build multiblock cannons using Create's kinetic system</li>
+</ul>
+<br>
+<p><img src="https://i.imgur.com/XRI9PmW.png" width="469" height="153"></p>
+<h4><strong>What can I use big cannons for?</strong></h4>
+<p>CBC is mostly meant as a mod for multiplayer PvP servers. Use big cannons to blow up your foes' bases, valuables, and more!</p>
+<br>
+<p>An example of an autoloading cannon (not an autocannon!)</p>
+<p><img src="https://i.imgur.com/vzeKdza.png" width="472" height="250"></p>
+<h4><strong>What dependencies are required?</strong></h4>
+<p><a href="https://www.curseforge.com/minecraft/mc-mods/create" rel="nofollow">Create</a> and <a href="https://www.curseforge.com/minecraft/mc-mods/flywheel" rel="nofollow">Flywheel</a>&nbsp;are required. Additionally, <a href="https://www.curseforge.com/minecraft/mc-mods/create-alloyed" rel="nofollow">Create: Alloyed</a> is an optional dependency if you want to access higher tier cannon materials.</p>
+<br>
+<h4><strong>Other FAQ:</strong></h4>
+<p><strong>Will there be a Fabric port?</strong></p>
+<p>- No, although the mod is open source and MIT so feel free to port it yourself.</p>
+<p><strong>Will older versions be supported?</strong></p>
+<p>- No, see above if you want to make your own backport though.</p>
+<br>
+<p>An rbasamoyai mod.</p>
