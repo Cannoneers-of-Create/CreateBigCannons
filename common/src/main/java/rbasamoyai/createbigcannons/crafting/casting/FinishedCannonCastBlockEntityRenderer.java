@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class FinishedCannonCastBlockEntityRenderer extends SafeTileEntityRenderer<FinishedCannonCastBlockEntity> {
 

@@ -28,7 +28,6 @@ public class CannonLoaderCollider {
 		Vec3 position = contraptionEntity.position();
 		BlockPos gridPos = new BlockPos(position);
 		
-		if (contraption == null) return false;
 		if (bounds == null) return false;
 		if (motion.equals(Vec3.ZERO)) return false;
 		

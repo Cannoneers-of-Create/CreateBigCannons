@@ -15,7 +15,7 @@ import com.simibubi.create.content.contraptions.base.flwdata.RotatingData;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import rbasamoyai.createbigcannons.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEntity> implements DynamicInstance {
 

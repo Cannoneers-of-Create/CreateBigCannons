@@ -161,7 +161,7 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implement
 
 		if (!this.inputBuffer.isEmpty()) {
 			tag.put("Input", this.inputBuffer.stream()
-					.map(ItemStack::serializeNBT)
+					.map(s -> s.save(new CompoundTag()))
 					.collect(Collectors.toCollection(ListTag::new)));
 		}
 

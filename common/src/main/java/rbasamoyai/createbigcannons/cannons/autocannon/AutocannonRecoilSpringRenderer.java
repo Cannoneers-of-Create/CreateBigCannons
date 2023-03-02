@@ -19,7 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import rbasamoyai.createbigcannons.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 import java.util.Map;
 

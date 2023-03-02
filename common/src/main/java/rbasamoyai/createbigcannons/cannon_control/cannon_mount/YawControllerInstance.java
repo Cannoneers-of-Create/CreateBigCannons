@@ -10,7 +10,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class YawControllerInstance extends KineticTileInstance<YawControllerBlockEntity> implements DynamicInstance {
 	

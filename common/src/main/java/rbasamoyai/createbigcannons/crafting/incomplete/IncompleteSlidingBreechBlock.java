@@ -122,7 +122,7 @@ public class IncompleteSlidingBreechBlock extends SolidBigCannonBlock<Incomplete
 		if (this.resolvedSecondItem == null) {
 			this.resolvedSecondItem = this.secondItemSupplier.get();
 		}
-		return this.resolvedSecondItem.delegate.get();
+		return this.resolvedSecondItem;
 	}
 
 	@Override public int progress(BlockState state) { return state.getValue(STAGE_2); }
@@ -147,7 +147,7 @@ public class IncompleteSlidingBreechBlock extends SolidBigCannonBlock<Incomplete
 	@Override
 	public BlockState getCompleteBlockState(BlockState state) {
 		if (this.result == null) this.result = this.resultSupplier.get();
-		BlockState newState = this.result.delegate.get().defaultBlockState();
+		BlockState newState = this.result.defaultBlockState();
 		if (newState.hasProperty(FACING)) newState = newState.setValue(FACING, state.getValue(FACING));
 		return newState.hasProperty(ALONG_FIRST) ? newState = newState.setValue(ALONG_FIRST, state.getValue(ALONG_FIRST)) : newState;
 	}

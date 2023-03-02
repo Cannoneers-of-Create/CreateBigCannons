@@ -6,7 +6,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -46,7 +45,7 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 
 	public static BlockRecipeIngredient fromString(String s) {
 		return s.charAt(0) == '/' ? NONE :
-				s.charAt(0) == '#' ? of(BlockTags.create(new ResourceLocation(s.substring(1)))) :
+				s.charAt(0) == '#' ? of(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(s.substring(1)))) :
 				Registry.BLOCK.getOptional(new ResourceLocation(s)).map(BlockRecipeIngredient::of).orElse(NONE);
 	}
 

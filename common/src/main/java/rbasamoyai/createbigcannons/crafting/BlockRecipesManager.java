@@ -93,9 +93,9 @@ public class BlockRecipesManager {
 					ResourceLocation id = entry.getKey();
 					JsonObject obj = el.getAsJsonObject();
 					ResourceLocation type = new ResourceLocation(obj.get("type").getAsString());
-					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromJson(id, obj);
+					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().get(type).fromJson(id, obj);
 					BLOCK_RECIPES_BY_NAME.put(id, recipe);
-					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().getValue(type);
+					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get();
 					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
 						BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
 					BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);

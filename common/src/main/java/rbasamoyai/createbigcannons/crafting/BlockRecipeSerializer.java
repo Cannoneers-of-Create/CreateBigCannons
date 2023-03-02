@@ -4,20 +4,19 @@ import com.google.gson.JsonObject;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
+import com.tterrag.registrate.fabric.RegistryObject;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.tterrag.registrate.util.nullness.NonnullType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.minecraftforge.registries.RegistryObject;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 
-public interface BlockRecipeSerializer<T extends BlockRecipe> extends IForgeRegistryEntry<BlockRecipeSerializer<?>> {
+public interface BlockRecipeSerializer<T extends BlockRecipe> {
 
 	T fromJson(ResourceLocation id, JsonObject obj);
 	T fromNetwork(ResourceLocation id, FriendlyByteBuf buf);
@@ -53,6 +52,7 @@ public interface BlockRecipeSerializer<T extends BlockRecipe> extends IForgeRegi
 		@Override protected @NonnullType BlockRecipeSerializer<T> createEntry() { return this.factory.get(); }
 		
 		@Override public Entry<T> register() { return (Entry<T>) super.register(); }
+
 		@Override protected Entry<T> createEntryWrapper(RegistryObject<BlockRecipeSerializer<T>> delegate) { return new Entry<>(this.getOwner(), delegate); }
 	}
 	

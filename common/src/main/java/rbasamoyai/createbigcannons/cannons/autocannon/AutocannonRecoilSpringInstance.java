@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 import java.util.HashMap;
 import java.util.Map;

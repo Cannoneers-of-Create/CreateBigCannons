@@ -11,7 +11,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import rbasamoyai.createbigcannons.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class AutocannonBreechInstance extends BlockEntityInstance<AutocannonBreechBlockEntity> implements DynamicInstance {
 
