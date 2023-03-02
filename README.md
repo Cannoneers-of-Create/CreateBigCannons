@@ -32,7 +32,7 @@
 <br>
 <h4><strong>Other FAQ:</strong></h4>
 <p><strong>Will there be a Fabric port?</strong></p>
-<p>- No, although the mod is open source and MIT so feel free to port it yourself.</p>
+<p>- soon™</p>
 <p><strong>Will older versions be supported?</strong></p>
 <p>- No, see above if you want to make your own backport though.</p>
 <br>
