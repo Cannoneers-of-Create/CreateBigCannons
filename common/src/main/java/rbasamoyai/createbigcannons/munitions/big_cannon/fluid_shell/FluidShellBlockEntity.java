@@ -1,6 +1,10 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
+import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
+import com.simibubi.create.content.logistics.block.chute.ChuteBlock;
+import com.simibubi.create.content.logistics.block.chute.ChuteTileEntity;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
+import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +30,7 @@ public class FluidShellBlockEntity extends FuzedBlockEntity {
 	
 	public FluidShellBlockEntity(BlockEntityType<? extends FluidShellBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
+		FluidTankTileEntity
 		this.tank = new SmartFluidTank(getFluidShellCapacity(), this::onFluidStackChanged);
 	}
 	

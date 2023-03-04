@@ -31,7 +31,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 public class FluidBlob extends Shrapnel {
 	
 	public static final EntityDataSerializer<FluidStack> FLUID_STACK_SERIALIZER = new EntityDataSerializer<>() {
-		@Override public void write(FriendlyByteBuf buf, FluidStack fluid) { FluidStack.toBuffer(buf); }
+		@Override public void write(FriendlyByteBuf buf, FluidStack fluid) { fluid.toBuffer(buf); }
 		@Override public FluidStack read(FriendlyByteBuf buf) { return FluidStack.fromBuffer(buf); }
 		@Override public FluidStack copy(FluidStack fluid) { return fluid.copy(); }
 	};
@@ -152,7 +152,7 @@ public class FluidBlob extends Shrapnel {
 		if (!level.isClientSide) spawnFire(entity.blockPosition(), blob, level);
 	}
 
-	public static void potionHitEntity(FluidState fstack, FluidBlob blob, Level level, EntityHitResult result) {
+	public static void potionHitEntity(FluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
 		if (!level.isClientSide) spawnAreaEffectCloud(result.getEntity().blockPosition(), blob, level);
 	}
 

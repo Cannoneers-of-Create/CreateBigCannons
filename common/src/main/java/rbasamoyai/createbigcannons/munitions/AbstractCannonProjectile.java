@@ -321,9 +321,9 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	}
 
 	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
-		builder.setTrackingRange(16)
-				.setUpdateInterval(1)
-				.setShouldReceiveVelocityUpdates(true)
+		builder.clientTrackingRange(16)
+				.updateInterval(1)
+				//.setShouldReceiveVelocityUpdates(true)
 				.fireImmune()
 				.sized(0.8f, 0.8f);
 	}

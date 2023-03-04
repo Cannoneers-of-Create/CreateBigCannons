@@ -5,58 +5,25 @@ import com.simibubi.create.foundation.tileEntity.SyncedTileEntity;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.IItemHandlerModifiable;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.munitions.FuzeItemHandler;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 import java.util.List;
 
-public class FuzedBlockEntity extends SyncedTileEntity implements IHaveGoggleInformation {
+public class FuzedBlockEntity extends SyncedTileEntity implements IHaveGoggleInformation, Container {
 
 	protected ItemStack fuze = ItemStack.EMPTY;
-	private LazyOptional<IItemHandler> fuzeOptional;
 	
 	public FuzedBlockEntity(BlockEntityType<? extends FuzedBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-	}
-	
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && side == this.getBlockState().getValue(BlockStateProperties.FACING)) {
-			if (this.fuzeOptional == null) {
-				this.fuzeOptional = LazyOptional.of(this::createHandler);
-			}
-			return this.fuzeOptional.cast();
-		}
-		return super.getCapability(cap, side);
-	}
-	
-	public void setFuze(ItemStack stack) { this.fuze = stack; }
-	public ItemStack getFuze() { return this.fuze; }
-	
-	private IItemHandlerModifiable createHandler() {
-		return new FuzeItemHandler(this);
-	}
-	
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if (this.fuzeOptional != null) {
-			this.fuzeOptional.invalidate();
-		}
 	}
 	
 	@Override
@@ -93,5 +60,36 @@ public class FuzedBlockEntity extends SyncedTileEntity implements IHaveGoggleInf
 		}
 		return true;
 	}
-	
+
+	@Override public int getContainerSize() { return 1; }
+	@Override public boolean isEmpty() { return this.fuze.isEmpty(); }
+	@Override public ItemStack getItem(int slot) { return slot == 0 ? this.fuze : ItemStack.EMPTY; }
+
+	@Override
+	public ItemStack removeItem(int slot, int amount) {
+		if (this.isEmpty() || slot != 0 || amount < 1) return ItemStack.EMPTY;
+		return this.getItem(slot).split(amount);
+	}
+
+	@Override
+	public ItemStack removeItemNoUpdate(int slot) {
+		if (this.isEmpty() || slot != 0) return ItemStack.EMPTY;
+		ItemStack result = this.fuze;
+		this.fuze = ItemStack.EMPTY;
+		return result;
+	}
+
+	@Override
+	public void setItem(int slot, ItemStack stack) {
+		if (slot != 0) return;
+		this.fuze = stack;
+		if (stack.getCount() > this.getMaxStackSize()) stack.setCount(this.getMaxStackSize());
+		this.setChanged();
+	}
+
+	@Override public int getMaxStackSize() { return 1; }
+
+	@Override public boolean stillValid(Player player) { return false; }
+	@Override public void clearContent() { this.fuze = ItemStack.EMPTY; }
+
 }

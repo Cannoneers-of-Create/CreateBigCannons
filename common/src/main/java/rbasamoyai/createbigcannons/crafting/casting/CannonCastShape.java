@@ -11,11 +11,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class CannonCastShape extends ForgeRegistryEntry<CannonCastShape> {
+public class CannonCastShape {
 	
 	public static final LazyRegistrar<CannonCastShape> CANNON_CAST_SHAPES = LazyRegistrar.(CBCRegistries.Keys.CANNON_CAST_SHAPES, CreateBigCannons.MOD_ID);
 	

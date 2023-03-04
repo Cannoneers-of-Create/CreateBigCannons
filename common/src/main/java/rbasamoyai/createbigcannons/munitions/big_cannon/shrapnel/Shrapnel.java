@@ -20,6 +20,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.munitions.CBCDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 import java.util.ArrayList;
@@ -99,13 +100,13 @@ public class Shrapnel extends AbstractHurtingProjectile {
 		if (!this.level.isClientSide && (!(result instanceof EntityHitResult eResult) || eResult.getEntity().getType() != this.getType())) this.discard();
 	}
 
-	public static final DamageSource SHRAPNEL = new DamageSource(CreateBigCannons.MOD_ID + ".shrapnel");
+	public static final DamageSource SHRAPNEL = new CBCDamageSource(CreateBigCannons.MOD_ID + ".shrapnel");
 	protected DamageSource getDamageSource() { return SHRAPNEL; }
 	
 	public static void build(EntityType.Builder<? extends Shrapnel> builder) {
-		builder.setTrackingRange(3)
-				.setUpdateInterval(20)
-				.setShouldReceiveVelocityUpdates(true)
+		builder.clientTrackingRange(3)
+				.updateInterval(20)
+				//.setShouldReceiveVelocityUpdates(true)
 				.fireImmune()
 				.sized(0.25f, 0.25f);
 	}
