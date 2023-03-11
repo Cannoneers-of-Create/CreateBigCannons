@@ -4,20 +4,22 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.PacketDistributor;
+import org.jetbrains.annotations.Nullable;
+import rbasamoyai.createbigcannons.CBCExpectPlatform;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
-import rbasamoyai.createbigcannons.network.CBCNetwork;
+import rbasamoyai.createbigcannons.network.RootPacket;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
 public class BlockRecipesManager {
 
@@ -68,11 +70,11 @@ public class BlockRecipesManager {
 	}
 	
 	public static void syncTo(ServerPlayer player) {
-		CBCNetwork.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new ClientboundRecipesPacket());
+		CBCExpectPlatform.sendToClientPlayer(new ClientboundRecipesPacket(), player);
 	}
 	
-	public static void syncToAll() {
-		CBCNetwork.INSTANCE.send(PacketDistributor.ALL.noArg(), new ClientboundRecipesPacket());
+	public static void syncToAll(MinecraftServer server) {
+		CBCExpectPlatform.sendToClientAll(new ClientboundRecipesPacket(), server);
 	}
 	
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
@@ -95,7 +97,7 @@ public class BlockRecipesManager {
 					ResourceLocation type = new ResourceLocation(obj.get("type").getAsString());
 					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().get(type).fromJson(id, obj);
 					BLOCK_RECIPES_BY_NAME.put(id, recipe);
-					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get();
+					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().get(type);
 					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
 						BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
 					BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
@@ -104,7 +106,7 @@ public class BlockRecipesManager {
 		}
 	}
 	
-	public static class ClientboundRecipesPacket {
+	public static class ClientboundRecipesPacket implements RootPacket {
 		private FriendlyByteBuf buf;
 		
 		public ClientboundRecipesPacket() {}
@@ -113,16 +115,13 @@ public class BlockRecipesManager {
 			this.buf = buf;
 		}
 		
-		public void encode(FriendlyByteBuf buf) {
+		@Override public void rootEncode(FriendlyByteBuf buf) {
 			writeBuf(buf);
 		}
-		
-		public void handle(Supplier<NetworkEvent.Context> sup) {
-			NetworkEvent.Context ctx = sup.get();
-			ctx.enqueueWork(() -> {
-				readBuf(this.buf);
-			});
-			ctx.setPacketHandled(true);
+
+		@Override
+		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+			readBuf(this.buf);
 		}
 	}
 	

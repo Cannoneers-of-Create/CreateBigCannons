@@ -2,12 +2,14 @@ package rbasamoyai.createbigcannons.network;
 
 import com.mojang.math.Vector4f;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.PacketListener;
+import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 
-import java.util.function.Supplier;
+import javax.annotation.Nullable;
+import java.util.concurrent.Executor;
 
-public class ServerboundCarriageWheelPacket {
+public class ServerboundCarriageWheelPacket implements RootPacket {
 
     private final Vector4f state;
     private final int id;
@@ -22,7 +24,8 @@ public class ServerboundCarriageWheelPacket {
         this.state = new Vector4f(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
     }
 
-    public void encode(FriendlyByteBuf buf) {
+    @Override
+    public void rootEncode(FriendlyByteBuf buf) {
         buf.writeVarInt(this.id)
         .writeFloat(this.state.x())
         .writeFloat(this.state.y())
@@ -30,12 +33,9 @@ public class ServerboundCarriageWheelPacket {
         .writeFloat(this.state.w());
     }
 
-    public void handle(Supplier<NetworkEvent.Context> sup) {
-        NetworkEvent.Context ctx = sup.get();
-        ctx.enqueueWork(() -> {
-            if (ctx.getSender().level.getEntity(this.id) instanceof CannonCarriageEntity carriage) carriage.setWheelState(this.state);
-        });
-        ctx.setPacketHandled(true);
+    @Override
+    public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+        if (sender != null && sender.level.getEntity(this.id) instanceof CannonCarriageEntity carriage) carriage.setWheelState(this.state);
     }
 
 }

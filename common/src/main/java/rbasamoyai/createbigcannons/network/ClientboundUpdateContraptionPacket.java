@@ -4,16 +4,16 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Abs
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.PacketListener;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.network.NetworkEvent;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Supplier;
+import java.util.concurrent.Executor;
 
-public class ClientboundUpdateContraptionPacket {
+public class ClientboundUpdateContraptionPacket implements RootPacket {
 
 	private final int id;
 	private final BlockPos pos;
@@ -37,8 +37,9 @@ public class ClientboundUpdateContraptionPacket {
 	public int id() { return this.id; }
 	public BlockPos pos() { return this.pos; }
 	public StructureBlockInfo info() { return this.info; }
-	
-	public void encode(FriendlyByteBuf buf) {
+
+	@Override
+	public void rootEncode(FriendlyByteBuf buf) {
 		buf.writeVarInt(this.id)
 		.writeBlockPos(this.pos)
 		.writeBlockPos(this.info.pos)
@@ -48,13 +49,10 @@ public class ClientboundUpdateContraptionPacket {
 			buf.writeNbt(this.info.nbt);
 		}
 	}
-	
-	public void handle(Supplier<NetworkEvent.Context> sup) {
-		NetworkEvent.Context ctx = sup.get();
-		ctx.enqueueWork(() -> {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CBCClientHandlers.updateContraption(this));
-		});
-		ctx.setPacketHandled(true);
+
+	@Override
+	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender){
+		CBCClientHandlers.updateContraption(this);
 	}
 	
 }

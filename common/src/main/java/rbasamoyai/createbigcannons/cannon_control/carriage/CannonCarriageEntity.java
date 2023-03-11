@@ -38,9 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.index.CBCEntityTypes;
-import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.CBCExpectPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
@@ -48,7 +46,9 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonC
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.network.CBCNetwork;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
 
 import java.util.function.Predicate;
@@ -121,7 +121,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			this.moveCarriage();
 			if (this.level.isClientSide) {
 				this.controlCarriage();
-				CBCNetwork.INSTANCE.sendToServer(new ServerboundCarriageWheelPacket(this));
+				CBCExpectPlatform.sendToServer(new ServerboundCarriageWheelPacket(this));
 			}
 			this.move(MoverType.SELF, this.getDeltaMovement());
 		} else {

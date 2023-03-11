@@ -28,18 +28,17 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.network.PacketDistributor;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.CBCExpectPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.*;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
-import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
 
 import java.util.ArrayList;
@@ -314,7 +313,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		breech.handleFiring();
 		if (this.presentTileEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring) spring.handleFiring();
-		CBCNetwork.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity), new ClientboundAnimateCannonContraptionPacket(entity));
+		CBCExpectPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
 
 		for (ServerPlayer player : level.players()) {
 			if (entity.getControllingPassenger() == player) continue;

@@ -1,12 +1,14 @@
 package rbasamoyai.createbigcannons.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.PacketListener;
+import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 
-import java.util.function.Supplier;
+import javax.annotation.Nullable;
+import java.util.concurrent.Executor;
 
-public class ServerboundSetFireRatePacket {
+public class ServerboundSetFireRatePacket implements RootPacket {
 
     private final int fireRateAdjustment;
 
@@ -18,16 +20,16 @@ public class ServerboundSetFireRatePacket {
         this.fireRateAdjustment = buf.readVarInt();
     }
 
-    public void encode(FriendlyByteBuf buf) {
+    @Override public void rootEncode(FriendlyByteBuf buf) {
         buf.writeVarInt(this.fireRateAdjustment);
     }
 
-    public void handle(Supplier<NetworkEvent.Context> sup) {
-        NetworkEvent.Context ctx = sup.get();
-        ctx.enqueueWork(() -> {
-            if (this.fireRateAdjustment != 0 && ctx.getSender().getRootVehicle() instanceof CannonCarriageEntity carriage) carriage.trySettingFireRateCarriage(this.fireRateAdjustment);
-        });
-        ctx.setPacketHandled(true);
+    @Override
+    public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+        if (this.fireRateAdjustment != 0
+            && sender != null
+            && sender.getRootVehicle() instanceof CannonCarriageEntity carriage)
+            carriage.trySettingFireRateCarriage(this.fireRateAdjustment);
     }
 
 }

@@ -17,10 +17,10 @@ public class CBCRegistries {
 	public static final Supplier<Registry<BlockRecipeSerializer<?>>> BLOCK_RECIPE_SERIALIZERS =
 			REGISTRATE.makeRegistry("block_recipe_serializers", BlockRecipeSerializer.class, CBCRegistries::makeRegBlockRecipeSerializer);
 	
-	public static final Supplier<IForgeRegistry<BlockRecipeType<?>>> BLOCK_RECIPE_TYPES =
+	public static final Supplier<Registry<BlockRecipeType<?>>> BLOCK_RECIPE_TYPES =
 			REGISTRATE.makeRegistry("block_recipe_types", BlockRecipeType.class, CBCRegistries::makeRegBlockRecipeType);
 	
-	public static final Supplier<IForgeRegistry<CannonCastShape>> CANNON_CAST_SHAPES =
+	public static final Supplier<Registry<CannonCastShape>> CANNON_CAST_SHAPES =
 			REGISTRATE.makeRegistry("cannon_cast_shapes", CannonCastShape.class, CBCRegistries::makeRegCannonCastShape);
 	
 	private static RegistryBuilder<BlockRecipeSerializer<?>> makeRegBlockRecipeSerializer() {

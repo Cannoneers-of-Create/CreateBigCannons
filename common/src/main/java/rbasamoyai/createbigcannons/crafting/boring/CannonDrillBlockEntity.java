@@ -16,6 +16,7 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -52,6 +53,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.registries.ForgeRegistries;
+import rbasamoyai.createbigcannons.CBCExpectPlatform;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -64,7 +66,8 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-import rbasamoyai.createbigcannons.network.CBCNetwork;
+import rbasamoyai.createbigcannons.network.CBCNetworkForge;
+import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
 import javax.annotation.Nonnull;
@@ -492,7 +495,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		lathe.getBlocks().put(boringOffset, newInfo);
 		bearing.notifyUpdate();
 		
-		ResourceLocation unboredId = ForgeRegistries.BLOCKS.getKey(latheBlockInfo.state.getBlock());
+		ResourceLocation unboredId = Registry.BLOCK.getKey(latheBlockInfo.state.getBlock());
 		LootTable table = slevel.getServer().getLootTables().get(new ResourceLocation(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
 		List<ItemStack> scrap = table.getRandomItems(new LootContext.Builder(slevel)
 				.withRandom(slevel.random)
@@ -503,7 +506,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		scrap.forEach(s -> Block.popResource(this.level, this.boringPos, s));
 		
 		this.level.playSound(null, this.boringPos, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0f, 1.0f);
-		CBCNetwork.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> this.latheEntity), new ClientboundUpdateContraptionPacket(this.latheEntity, boringOffset, newInfo));
+		CBCExpectPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(this.latheEntity, boringOffset, newInfo), this.latheEntity);
 		this.boringPos = null;
 	}
 	

@@ -15,9 +15,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
+import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
-import rbasamoyai.createbigcannons.network.CBCNetwork;
 
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannonsForge {
@@ -41,7 +41,7 @@ public class CreateBigCannonsForge {
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
-        CBCNetwork.init();
+        CBCNetworkForge.init();
         FluidBlob.registerDefaultBlobEffects();
     }
 
@@ -54,7 +54,7 @@ public class CreateBigCannonsForge {
     private void onDatapackSync(OnDatapackSyncEvent event) {
         ServerPlayer player = event.getPlayer();
         if (player == null) {
-            BlockRecipesManager.syncToAll();
+            BlockRecipesManager.syncToAll(event.getPlayerList().getServer());
         } else {
             BlockRecipesManager.syncTo(player);
         }

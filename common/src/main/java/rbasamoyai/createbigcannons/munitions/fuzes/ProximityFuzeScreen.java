@@ -11,9 +11,9 @@ import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import rbasamoyai.createbigcannons.CBCExpectPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCGuiTextures;
-import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundProximityFuzePacket;
 
 public class ProximityFuzeScreen extends AbstractSimiContainerScreen<ProximityFuzeContainer> {
@@ -92,7 +92,7 @@ public class ProximityFuzeScreen extends AbstractSimiContainerScreen<ProximityFu
 	}
 	
 	private void updateServer() {
-		CBCNetwork.INSTANCE.sendToServer(new ServerboundProximityFuzePacket(this.setDistance.getState()));
+		CBCExpectPlatform.sendToServer(new ServerboundProximityFuzePacket(this.setDistance.getState()));
 	}
 
 }

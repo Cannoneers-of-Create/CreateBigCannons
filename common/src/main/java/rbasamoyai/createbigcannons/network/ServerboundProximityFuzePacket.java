@@ -1,12 +1,14 @@
 package rbasamoyai.createbigcannons.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.PacketListener;
+import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeContainer;
 
-import java.util.function.Supplier;
+import javax.annotation.Nullable;
+import java.util.concurrent.Executor;
 
-public class ServerboundProximityFuzePacket {
+public class ServerboundProximityFuzePacket implements RootPacket {
 
 	private final int distance;
 	
@@ -18,16 +20,13 @@ public class ServerboundProximityFuzePacket {
 		this.distance = buf.readVarInt();
 	}
 	
-	public void encode(FriendlyByteBuf buf) {
+	@Override public void rootEncode(FriendlyByteBuf buf) {
 		buf.writeVarInt(this.distance);
 	}
-	
-	public void handle(Supplier<NetworkEvent.Context> sup) {
-		NetworkEvent.Context ctx = sup.get();
-		ctx.enqueueWork(() -> {
-			if (ctx.getSender().containerMenu instanceof ProximityFuzeContainer ct) ct.setDistance(this.distance);
-		});
-		ctx.setPacketHandled(true);
+
+	@Override
+	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+		if (sender != null && sender.containerMenu instanceof ProximityFuzeContainer ct) ct.setDistance(this.distance);
 	}
 	
 }

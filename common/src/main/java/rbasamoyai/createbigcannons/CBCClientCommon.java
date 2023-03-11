@@ -4,7 +4,6 @@ package rbasamoyai.createbigcannons;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.simibubi.create.foundation.networking.AllPackets;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -28,7 +27,6 @@ import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticle;
-import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
@@ -129,9 +127,8 @@ public class CBCClientCommon {
 
 		if (CBCClientCommon.FIRE_CONTROLLED_CANNON.isDown() && isControllingCannon(mc.player)) {
 			mc.player.handsBusy = true;
-			CBCNetwork.INSTANCE.sendToServer(new ServerboundFiringActionPacket());
+			CBCExpectPlatform.sendToServer(new ServerboundFiringActionPacket());
 		}
-		AllPackets
 	}
 
 	public static boolean onScrollMouse(Minecraft mc, double delta) {
@@ -142,7 +139,7 @@ public class CBCClientCommon {
 			else if (delta < 0) fireRateAdjustment = -1;
 			if (fireRateAdjustment != 0) {
 				mc.player.handsBusy = true;
-				CBCNetwork.INSTANCE.sendToServer(new ServerboundSetFireRatePacket(fireRateAdjustment));
+				CBCExpectPlatform.sendToServer(new ServerboundSetFireRatePacket(fireRateAdjustment));
 				return true;
 			}
 		}

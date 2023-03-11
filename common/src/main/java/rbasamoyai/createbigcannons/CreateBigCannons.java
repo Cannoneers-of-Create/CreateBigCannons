@@ -11,6 +11,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.*;
+import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
 public class CreateBigCannons {
 
@@ -44,6 +45,8 @@ public class CreateBigCannons {
 		CBCTags.register();
 		
 		CBCConfigs.registerConfigs(mlContext);
+
+		CBCRootNetwork.init();
 	}
 	
 	public static ResourceLocation resource(String path) {
