@@ -51,7 +51,7 @@ public class CannonCastMouldBlock extends Block {
 			if (this.isSurroundingAreaCompleteForTransformation(state, level, pos)) {
 				level.setBlock(pos, CBCBlocks.CANNON_CAST.getDefaultState(), 11);
 				if (!level.isClientSide) {
-					if (level.getBlockEntity(pos) instanceof CannonCastBlockEntity cast) cast.initializeCastMultiblock(this.size.get());
+					if (level.getBlockEntity(pos) instanceof AbstractCannonCastBlockEntity cast) cast.initializeCastMultiblock(this.size.get());
 					if (!player.isCreative()) player.addItem(new ItemStack(this.asItem()));
 				}
 				level.playSound(player, pos, SoundEvents.SAND_PLACE, SoundSource.PLAYERS, 1.0f, 0.0f);

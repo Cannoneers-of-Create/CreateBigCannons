@@ -23,7 +23,7 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import java.util.List;
 import java.util.Random;
 
-public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<CannonCastBlockEntity> {
+public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<AbstractCannonCastBlockEntity> {
 
 	private final BlockRenderDispatcher dispatcher;
 	
@@ -32,7 +32,7 @@ public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<Cannon
 	}
 	
 	@Override
-	protected void renderSafe(CannonCastBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+	protected void renderSafe(AbstractCannonCastBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		if (!te.canRenderCastModel()) return;
 		BlockState state = te.getBlockState();
 		

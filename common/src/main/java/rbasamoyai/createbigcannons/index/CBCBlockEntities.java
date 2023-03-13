@@ -12,7 +12,7 @@ import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntit
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredCannonBlockEntityRenderer;
-import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
+import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntityRenderer;
@@ -104,8 +104,8 @@ public class CBCBlockEntities {
 			.validBlock(CBCBlocks.FLUID_SHELL)
 			.register();
 	
-	public static final BlockEntityEntry<CannonCastBlockEntity> CANNON_CAST = REGISTRATE
-			.tileEntity("cannon_cast", CannonCastBlockEntity::new)
+	public static final BlockEntityEntry<AbstractCannonCastBlockEntity> CANNON_CAST = REGISTRATE
+			.tileEntity("cannon_cast", IndexPlatform::makeCast)
 			.renderer(() -> CannonCastBlockEntityRenderer::new)
 			.validBlock(CBCBlocks.CANNON_CAST)
 			.register();

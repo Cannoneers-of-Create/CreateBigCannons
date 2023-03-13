@@ -37,7 +37,7 @@ import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
-import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
+import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
@@ -54,7 +54,7 @@ public class CannonCraftingScenes {
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 		
-		scene.world.modifyTileNBT(util.select.fromTo(2, 2, 2, 2, 3, 2), CannonCastBlockEntity.class, setUnfinishedCannonShape(CannonCastShape.MEDIUM.get()));
+		scene.world.modifyTileNBT(util.select.fromTo(2, 2, 2, 2, 3, 2), AbstractCannonCastBlockEntity.class, setUnfinishedCannonShape(CannonCastShape.MEDIUM.get()));
 		
 		scene.idle(15);
 		int placeDelay = 3;
@@ -200,7 +200,7 @@ public class CannonCraftingScenes {
 		for (int i = 0; i < 24; ++i) {
 			scene.world.modifyTileEntity(tankPos, FluidTankTileEntity.class, tank -> tank.getTankInventory()
 					.drain(144, FluidAction.EXECUTE));
-			scene.world.modifyTileEntity(castPos, CannonCastBlockEntity.class, cast1 -> cast1.getTank()
+			scene.world.modifyTileEntity(castPos, AbstractCannonCastBlockEntity.class, cast1 -> cast1.getTank()
 					.fill(content, FluidAction.EXECUTE));
 			scene.idle(5);
 		}
