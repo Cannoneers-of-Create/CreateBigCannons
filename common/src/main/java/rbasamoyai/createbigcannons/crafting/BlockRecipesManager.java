@@ -12,7 +12,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.CBCExpectPlatform;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
@@ -70,11 +70,11 @@ public class BlockRecipesManager {
 	}
 	
 	public static void syncTo(ServerPlayer player) {
-		CBCExpectPlatform.sendToClientPlayer(new ClientboundRecipesPacket(), player);
+		NetworkPlatform.sendToClientPlayer(new ClientboundRecipesPacket(), player);
 	}
 	
 	public static void syncToAll(MinecraftServer server) {
-		CBCExpectPlatform.sendToClientAll(new ClientboundRecipesPacket(), server);
+		NetworkPlatform.sendToClientAll(new ClientboundRecipesPacket(), server);
 	}
 	
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {

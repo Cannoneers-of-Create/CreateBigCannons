@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.crafting.boring;
 
-import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionCollider;
@@ -9,7 +8,6 @@ import com.simibubi.create.content.contraptions.components.structureMovement.bea
 import com.simibubi.create.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
 import com.simibubi.create.foundation.block.ITE;
-import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
@@ -35,26 +33,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.registries.ForgeRegistries;
-import rbasamoyai.createbigcannons.CBCExpectPlatform;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
@@ -66,73 +51,31 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-import rbasamoyai.createbigcannons.network.CBCNetworkForge;
-import rbasamoyai.createbigcannons.network.CBCRootNetwork;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
+public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntity {
 
 	protected AbstractContraptionEntity latheEntity;
 	protected BlockPos boringPos;
 	protected float boreSpeed;
 	protected float addedStressImpact;
 	protected FailureReason failureReason = FailureReason.NONE;
-	protected FluidTank lubricant;
-	private LazyOptional<IFluidHandler> fluidOptional;
 	private DrillBoringBlockRecipe currentRecipe;
 	
 	private static final int SYNC_RATE = 8;
 	protected boolean queuedSync;
 	protected int syncCooldown;
 	
-	public CannonDrillBlockEntity(BlockEntityType<? extends CannonDrillBlockEntity> type, BlockPos pos, BlockState state) {
+	public AbstractCannonDrillBlockEntity(BlockEntityType<? extends AbstractCannonDrillBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		this.lubricant = new SmartFluidTank(1000, this::onFluidStackChanged).setValidator(fs -> fs.getFluid() == Fluids.WATER);
-	}
-
-	@Nonnull
-	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			Direction facing = this.getBlockState().getValue(BlockStateProperties.FACING);
-			boolean alongFirst = this.getBlockState().getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
-			Direction.Axis pipeAxis = switch (facing.getAxis()) {
-				case X -> alongFirst ? Direction.Axis.Z : Direction.Axis.Y;
-				case Y -> alongFirst ? Direction.Axis.Z : Direction.Axis.X;
-				default -> alongFirst ? Direction.Axis.Y : Direction.Axis.X;
-			};
-			if (side != null && pipeAxis == side.getAxis()) {
-				return this.getFluidOptional().cast();
-			}
-		}
-		return super.getCapability(cap, side);
-	}
-	
-	private LazyOptional<IFluidHandler> getFluidOptional() {
-		if (this.fluidOptional == null) {
-			this.fluidOptional = LazyOptional.of(() -> this.lubricant);
-		}
-		return this.fluidOptional;
-	}
-	
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if (this.fluidOptional != null) this.fluidOptional.invalidate();
-	}
-	
-	protected void onFluidStackChanged(FluidStack newStack) {
-		if (this.hasLevel() && !this.level.isClientSide) {
-			this.notifyUpdate();
-		}
 	}
 	
 	@Override
@@ -150,7 +93,6 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	protected void read(CompoundTag compound, boolean clientPacket) {
 		super.read(compound, clientPacket);
 		this.boringPos = compound.contains("BoringPos") ? NbtUtils.readBlockPos(compound.getCompound("BoringPos")) : null;
-		this.lubricant.readFromNBT(compound.getCompound("FluidContent"));
 		
 		if (!clientPacket) return;
 		this.boreSpeed = compound.getFloat("BoreSpeed");
@@ -162,7 +104,6 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	protected void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
 		if (this.boringPos != null) compound.put("BoringPos", NbtUtils.writeBlockPos(this.boringPos));
-		compound.put("FluidContent", this.lubricant.writeToNBT(new CompoundTag()));
 		
 		if (!clientPacket) return;
 		if (this.addedStressImpact > 0.0f) compound.putFloat("AddedStress", this.addedStressImpact);
@@ -383,7 +324,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 			int drainSpeed = (int) Mth.abs(bearing.getSpeed() * 0.5f);
 			if (Math.abs(bearing.getSpeed()) > Math.abs(this.getSpeed())) {
 				this.failureReason = FailureReason.TOO_WEAK;
-			} else if (this.lubricant.drain(drainSpeed, FluidAction.EXECUTE).getAmount() < drainSpeed) {
+			} else if (this.drainLubricant(drainSpeed)) {
 				if (this.level instanceof ServerLevel slevel) {
 					Vec3 particlePos = Vec3.atCenterOf(globalPos);
 					slevel.sendParticles(ParticleTypes.SMOKE, particlePos.x, particlePos.y, particlePos.z, 10, 0.0d, 1.0d, 0.0d, 0.1d);
@@ -422,6 +363,8 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		
 		return true;
 	}
+
+	protected abstract boolean drainLubricant(int drainSpeed);
 	
 	protected void stopBoringState() {
 		this.boringPos = null;
@@ -506,7 +449,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		scrap.forEach(s -> Block.popResource(this.level, this.boringPos, s));
 		
 		this.level.playSound(null, this.boringPos, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0f, 1.0f);
-		CBCExpectPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(this.latheEntity, boringOffset, newInfo), this.latheEntity);
+		NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(this.latheEntity, boringOffset, newInfo), this.latheEntity);
 		this.boringPos = null;
 	}
 	
@@ -533,7 +476,7 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		tooltip.add(TextComponent.EMPTY);
-		this.containedFluidTooltip(tooltip, isPlayerSneaking, this.getFluidOptional());
+		this.addFluidInfoToTooltip(tooltip, isPlayerSneaking);
 		if (this.failureReason != FailureReason.NONE) {
 			tooltip.add(TextComponent.EMPTY);
 			Lang.builder("exception")
@@ -548,6 +491,8 @@ public class CannonDrillBlockEntity extends PoleMoverBlockEntity {
 		
 		return true;
 	}
+
+	protected abstract void addFluidInfoToTooltip(List<Component> tooltip, boolean isPlayerSneaking);
 	
 	public enum FailureReason implements StringRepresentable {
 		DRY_BORE("dryBore"),

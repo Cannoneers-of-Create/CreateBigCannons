@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
@@ -55,7 +54,7 @@ public class DrillBoringBlockRecipe implements BlockRecipe {
 		return dest.setValue(property, src.getValue(property));
 	}
 
-	public static class Serializer extends ForgeRegistryEntry<BlockRecipeSerializer<?>> implements BlockRecipeSerializer<DrillBoringBlockRecipe> {
+	public static class Serializer implements BlockRecipeSerializer<DrillBoringBlockRecipe> {
 		@Override
 		public DrillBoringBlockRecipe fromJson(ResourceLocation id, JsonObject obj) {
 			BlockRecipeIngredient input = BlockRecipeIngredient.fromJson(obj.get("input"));

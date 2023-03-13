@@ -26,6 +26,7 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticle;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
@@ -127,7 +128,7 @@ public class CBCClientCommon {
 
 		if (CBCClientCommon.FIRE_CONTROLLED_CANNON.isDown() && isControllingCannon(mc.player)) {
 			mc.player.handsBusy = true;
-			CBCExpectPlatform.sendToServer(new ServerboundFiringActionPacket());
+			NetworkPlatform.sendToServer(new ServerboundFiringActionPacket());
 		}
 	}
 
@@ -139,7 +140,7 @@ public class CBCClientCommon {
 			else if (delta < 0) fireRateAdjustment = -1;
 			if (fireRateAdjustment != 0) {
 				mc.player.handsBusy = true;
-				CBCExpectPlatform.sendToServer(new ServerboundSetFireRatePacket(fireRateAdjustment));
+				NetworkPlatform.sendToServer(new ServerboundSetFireRatePacket(fireRateAdjustment));
 				return true;
 			}
 		}

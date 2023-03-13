@@ -11,7 +11,7 @@ import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import rbasamoyai.createbigcannons.CBCExpectPlatform;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCGuiTextures;
 import rbasamoyai.createbigcannons.network.ServerboundTimedFuzePacket;
@@ -91,7 +91,7 @@ public class TimedFuzeScreen extends AbstractSimiContainerScreen<TimedFuzeContai
 	}
 	
 	private void updateServer() {
-		CBCExpectPlatform.sendToServer(new ServerboundTimedFuzePacket(20 + this.setTime.getState() * 5));
+		NetworkPlatform.sendToServer(new ServerboundTimedFuzePacket(20 + this.setTime.getState() * 5));
 	}
 
 }

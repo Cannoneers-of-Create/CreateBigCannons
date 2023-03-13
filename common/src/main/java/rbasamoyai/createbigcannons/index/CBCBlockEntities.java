@@ -8,7 +8,7 @@ import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEn
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.*;
 import rbasamoyai.createbigcannons.cannons.big_cannons.*;
-import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredCannonBlockEntityRenderer;
@@ -19,6 +19,7 @@ import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntit
 import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockInstance;
@@ -115,8 +116,8 @@ public class CBCBlockEntities {
 			.validBlock(CBCBlocks.FINISHED_CANNON_CAST)
 			.register();
 	
-	public static final BlockEntityEntry<CannonDrillBlockEntity> CANNON_DRILL = REGISTRATE
-			.tileEntity("cannon_drill", CannonDrillBlockEntity::new)
+	public static final BlockEntityEntry<AbstractCannonDrillBlockEntity> CANNON_DRILL = REGISTRATE
+			.tileEntity("cannon_drill", IndexPlatform::makeDrill)
 			.instance(() -> ShaftInstance::new)
 			.renderer(() -> MechanicalPistonRenderer::new)
 			.validBlock(CBCBlocks.CANNON_DRILL)

@@ -28,7 +28,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import rbasamoyai.createbigcannons.CBCExpectPlatform;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
@@ -313,7 +313,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		breech.handleFiring();
 		if (this.presentTileEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring) spring.handleFiring();
-		CBCExpectPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
+		NetworkPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
 
 		for (ServerPlayer player : level.players()) {
 			if (entity.getControllingPassenger() == player) continue;

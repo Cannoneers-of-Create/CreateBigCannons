@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillingContraption;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public abstract class BearingCannonDrillFinderMixin extends GeneratingKineticTil
 		for (ControlledContraptionEntity e : contraptions) {
 			if (!(e.getContraption() instanceof CannonDrillingContraption drill)) continue;
 			BlockPos drillBase = drill.anchor.relative(drill.orientation(), -1);
-			if (!(this.level.getBlockEntity(drillBase) instanceof CannonDrillBlockEntity drillBE)) continue;
+			if (!(this.level.getBlockEntity(drillBase) instanceof AbstractCannonDrillBlockEntity drillBE)) continue;
 			drillBE.collideWithContraptionToBore(this.movedContraption, false);
 		}
 	}

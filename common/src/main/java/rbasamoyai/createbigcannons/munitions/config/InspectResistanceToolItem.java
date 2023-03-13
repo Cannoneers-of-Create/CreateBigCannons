@@ -7,7 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import rbasamoyai.createbigcannons.CBCExpectPlatform;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class InspectResistanceToolItem extends Item {
@@ -20,7 +20,7 @@ public class InspectResistanceToolItem extends Item {
 	public InteractionResult useOn(UseOnContext ctx) {
 		Player player = ctx.getPlayer();
 		Level level = ctx.getLevel();
-		if (!level.isClientSide && player != null && !CBCExpectPlatform.isFakePlayer(player)) {
+		if (!level.isClientSide && player != null && !IndexPlatform.isFakePlayer(player)) {
 			String key = "debug." + CreateBigCannons.MOD_ID + ".block_resistance";
 			double hardness = BlockHardnessHandler.getHardness(level.getBlockState(ctx.getClickedPos()));
 			player.displayClientMessage(new TranslatableComponent(key, String.format("%.2f", hardness)), true);

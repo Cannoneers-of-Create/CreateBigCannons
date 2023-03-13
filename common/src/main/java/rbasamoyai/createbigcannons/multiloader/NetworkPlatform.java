@@ -1,17 +1,12 @@
-package rbasamoyai.createbigcannons;
+package rbasamoyai.createbigcannons.multiloader;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
-public class CBCExpectPlatform {
-
-    @ExpectPlatform public static String platformName() { throw new AssertionError(); }
-
-    @ExpectPlatform public static boolean isFakePlayer(Player player) { throw new AssertionError(); }
+public class NetworkPlatform {
 
     @ExpectPlatform public static void sendToServer(RootPacket pkt) { throw new AssertionError(); }
 

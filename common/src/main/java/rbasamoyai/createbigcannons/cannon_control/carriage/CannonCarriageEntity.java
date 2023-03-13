@@ -38,7 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.CBCExpectPlatform;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
@@ -121,7 +121,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			this.moveCarriage();
 			if (this.level.isClientSide) {
 				this.controlCarriage();
-				CBCExpectPlatform.sendToServer(new ServerboundCarriageWheelPacket(this));
+				NetworkPlatform.sendToServer(new ServerboundCarriageWheelPacket(this));
 			}
 			this.move(MoverType.SELF, this.getDeltaMovement());
 		} else {

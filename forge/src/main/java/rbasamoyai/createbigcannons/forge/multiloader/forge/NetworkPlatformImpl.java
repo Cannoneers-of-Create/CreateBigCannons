@@ -1,22 +1,15 @@
-package rbasamoyai.createbigcannons.forge;
+package rbasamoyai.createbigcannons.forge.multiloader.forge;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.network.PacketDistributor;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.forge.network.ForgeClientPacket;
 import rbasamoyai.createbigcannons.forge.network.ForgeServerPacket;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
-public class CBCExpectPlatformImpl {
-	public static String platformName() {
-		return "Forge";
-	}
-
-	public static boolean isFakePlayer(Player player) { return player instanceof FakePlayer; }
+public class NetworkPlatformImpl {
 
 	public static void sendToServer(RootPacket pkt) {
 		CBCNetworkForge.INSTANCE.sendToServer(new ForgeServerPacket(pkt));
