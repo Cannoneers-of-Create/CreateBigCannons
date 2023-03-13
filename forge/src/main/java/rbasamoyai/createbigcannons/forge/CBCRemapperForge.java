@@ -1,5 +1,6 @@
-package rbasamoyai.createbigcannons.base;
+package rbasamoyai.createbigcannons.forge;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
@@ -7,16 +8,15 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class CBCRemapper {
+public class CBCRemapperForge {
 	
 	private static final Map<String, ResourceLocation> REMAP = new HashMap<>();
 	
@@ -35,7 +35,7 @@ public class CBCRemapper {
 			String path = key.getPath();
 			ResourceLocation remapLoc = REMAP.get(path);
 			if (remapLoc == null) continue;
-			Item remapped = ForgeRegistries.ITEMS.getValue(remapLoc);
+			Item remapped = Registry.ITEM.get(remapLoc);
 			if (remapped == null) continue;
 			CreateBigCannons.LOGGER.warn("Remapping item '{}' to '{}'", key, remapLoc);
 			try {
@@ -53,7 +53,7 @@ public class CBCRemapper {
 			String path = key.getPath();
 			ResourceLocation remapLoc = REMAP.get(path);
 			if (remapLoc == null) continue;
-			Block remapped = ForgeRegistries.BLOCKS.getValue(remapLoc);
+			Block remapped = Registry.BLOCK.get(remapLoc);
 			if (remapped == null) continue;
 			CreateBigCannons.LOGGER.warn("Remapping block '{}' to '{}'", key, remapLoc);
 			try {
