@@ -60,9 +60,9 @@ public class BlockRecipesManager {
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation id = buf.readResourceLocation();
 			ResourceLocation type = buf.readResourceLocation();
-			BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getValue(type).fromNetwork(id, buf);
+			BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().get(type).fromNetwork(id, buf);
 			BLOCK_RECIPES_BY_NAME.put(id, recipe);
-			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().getValue(type);
+			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().get(type);
 			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
 				BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
 			BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);

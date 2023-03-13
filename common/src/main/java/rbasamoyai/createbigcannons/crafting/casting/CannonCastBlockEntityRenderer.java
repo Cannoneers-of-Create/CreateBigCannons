@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
-import com.jozufozu.flywheel.core.virtual.VirtualEmptyModelData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
@@ -77,11 +76,11 @@ public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<Abstra
 					
 					for (Direction dir : Direction.values()) {
 						rand.setSeed(42L);
-						renderQuadList(ms.last(), vCons, 1f, 1f, 1f, alpha, model.getQuads(state, dir, rand, VirtualEmptyModelData.INSTANCE), light, overlay);
+						renderQuadList(ms.last(), vCons, 1f, 1f, 1f, alpha, model.getQuads(state, dir, rand), light, overlay);
 					}
 					
 					rand.setSeed(42L);
-					renderQuadList(ms.last(), vCons, 1f, 1f, 1f, alpha, model.getQuads(state, null, rand, VirtualEmptyModelData.INSTANCE), light, overlay);
+					renderQuadList(ms.last(), vCons, 1f, 1f, 1f, alpha, model.getQuads(state, null, rand), light, overlay);
 					
 					ms.popPose();
 				}
@@ -107,7 +106,7 @@ public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<Abstra
 				f2 = 1.0F;
 			}
 
-			consumer.putBulkData(pose, quad, f, f1, f2, alpha, packedLight, packedOverlay);
+			consumer.putBulkData(pose, quad, f, f1, f2, packedLight, packedOverlay);
 		}
 
 	}

@@ -12,6 +12,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 import rbasamoyai.createbigcannons.CBCTags;
+import rbasamoyai.createbigcannons.index.CBCItems;
 
 import java.util.function.Consumer;
 

@@ -80,7 +80,7 @@ public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 		this.centralBlock = tag.contains("CentralBlock") ? NbtUtils.readBlockPos(tag.getCompound("CentralBlock")) : null;
 		this.rootBlock = tag.contains("RootBlock") ? NbtUtils.readBlockPos(tag.getCompound("RootBlock")) : this.worldPosition;
 		this.height = tag.getInt("Height");
-		this.renderedShape = tag.contains("RenderedShape") ? CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(tag.getString("RenderedShape"))) : CannonCastShape.VERY_SMALL.get();
+		this.renderedShape = tag.contains("RenderedShape") ? CBCRegistries.CANNON_CAST_SHAPES.get().get(new ResourceLocation(tag.getString("RenderedShape"))) : CannonCastShape.VERY_SMALL.get();
 	}
 
 }

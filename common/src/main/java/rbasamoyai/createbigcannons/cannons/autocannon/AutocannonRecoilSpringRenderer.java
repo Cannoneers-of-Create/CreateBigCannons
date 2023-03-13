@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.cannons.autocannon;
 
 import com.jozufozu.flywheel.backend.Backend;
 import com.jozufozu.flywheel.core.PartialModel;
-import com.jozufozu.flywheel.core.virtual.VirtualEmptyModelData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.simibubi.create.foundation.render.CachedBufferer;
@@ -65,7 +64,7 @@ public class AutocannonRecoilSpringRenderer extends SmartTileEntityRenderer<Auto
             ms.pushPose();
             BlockPos pos = entry.getKey();
             ms.translate(pos.getX() + normal.x(), pos.getY() + normal.y(), pos.getZ() + normal.z());
-            brd.renderSingleBlock(entry.getValue(), ms, buffer, light, OverlayTexture.NO_OVERLAY, VirtualEmptyModelData.INSTANCE);
+            brd.renderSingleBlock(entry.getValue(), ms, buffer, light, OverlayTexture.NO_OVERLAY);
             ms.popPose();
         }
 

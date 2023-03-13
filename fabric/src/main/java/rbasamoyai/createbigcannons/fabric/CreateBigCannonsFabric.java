@@ -10,6 +10,7 @@ import rbasamoyai.createbigcannons.datagen.loot.CBCLootTableProvider;
 import rbasamoyai.createbigcannons.datagen.recipes.*;
 import rbasamoyai.createbigcannons.datagen.values.BlockHardnessProvider;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 import rbasamoyai.createbigcannons.ponder.CBCPonderTags;
 
@@ -19,6 +20,7 @@ public class CreateBigCannonsFabric implements ModInitializer {
         CreateBigCannons.init();
         CreateBigCannons.REGISTRATE.register();
         CBCNetworkFabric.init();
+        FluidBlob.registerDefaultBlobEffects();
     }
     public static void gatherData(FabricDataGenerator gen, ExistingFileHelper helper) {
             BlockRecipeProvider.registerAll(gen);

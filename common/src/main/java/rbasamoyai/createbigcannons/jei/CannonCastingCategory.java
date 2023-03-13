@@ -12,8 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCGuiTextures;
-import rbasamoyai.createbigcannons.compat.jei.animated.CannonCastGuiElement;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
+import rbasamoyai.createbigcannons.jei.animated.CannonCastGuiElement;
 
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.addFluidTooltip;
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRenderedSlot;

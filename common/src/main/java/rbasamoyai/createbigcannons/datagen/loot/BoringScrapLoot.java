@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.datagen.loot;
 
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -11,7 +12,6 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
@@ -64,7 +64,7 @@ public class BoringScrapLoot implements Consumer<BiConsumer<ResourceLocation, Lo
 	}
 	
 	protected static ResourceLocation loc(Block block) {
-		ResourceLocation id = ForgeRegistries.BLOCKS.getKey(block);
+		ResourceLocation id = Registry.BLOCK.getKey(block);
 		return new ResourceLocation(id.getNamespace(), "boring_scrap/" + id.getPath());
 	}
 

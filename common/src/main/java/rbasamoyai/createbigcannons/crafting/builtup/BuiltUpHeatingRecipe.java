@@ -14,8 +14,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistryEntry;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
@@ -83,7 +81,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.BUILT_UP_HEATING.get(); }
 	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.BUILT_UP_HEATING.get(); }
 
-	public static class Serializer extends ForgeRegistryEntry<BlockRecipeSerializer<?>> implements BlockRecipeSerializer<BuiltUpHeatingRecipe> {
+	public static class Serializer implements BlockRecipeSerializer<BuiltUpHeatingRecipe> {
 		@Override
 		public BuiltUpHeatingRecipe fromJson(ResourceLocation id, JsonObject obj) {
 			JsonArray layerArr = obj.getAsJsonArray("layers");
@@ -91,7 +89,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 			if (layerArr != null) {
 				for (JsonElement el : layerArr) layers.add(BlockRecipeIngredient.fromJson(el));
 			}
-			Block result = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(obj.get("result").getAsString()));
+			Block result = Registry.BLOCK.get(new ResourceLocation(obj.get("result").getAsString()));
 			return new BuiltUpHeatingRecipe(layers, result, id);
 		}
 
@@ -100,7 +98,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 			int sz = buf.readVarInt();
 			Set<BlockRecipeIngredient> layers = sz == 0 ? null : new HashSet<>();
 			for (int i = 0; i < sz; ++i) layers.add(BlockRecipeIngredient.fromNetwork(buf));
-			Block result = ForgeRegistries.BLOCKS.getValue(buf.readResourceLocation());
+			Block result = Registry.BLOCK.get(buf.readResourceLocation());
 			return new BuiltUpHeatingRecipe(layers, result, id);
 		}
 

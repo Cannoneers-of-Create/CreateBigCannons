@@ -3,14 +3,12 @@ package rbasamoyai.createbigcannons.datagen.recipes;
 import com.google.gson.JsonObject;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
+import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.ForgeRegistries;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
@@ -316,7 +314,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 			obj.addProperty("cast_shape", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this.shape).toString());
 			obj.add("fluid", this.ingredient.serialize());
 			obj.addProperty("casting_time", this.castingTime);
-			obj.addProperty("result", ForgeRegistries.BLOCKS.getKey(this.result).toString());
+			obj.addProperty("result", Registry.BLOCK.getKey(this.result).toString());
 		}
 
 		@Override public ResourceLocation id() { return this.id; }

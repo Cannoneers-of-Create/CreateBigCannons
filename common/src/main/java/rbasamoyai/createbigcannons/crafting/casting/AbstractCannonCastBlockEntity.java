@@ -506,4 +506,10 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	@Override public int getMaxWidth() { return 3; }
 	@Override public void setWidth(int width) {}
 
+	public boolean matchesRecipe(CannonCastingRecipe recipe) {
+		return this.getControllerTE().structure.contains(recipe.shape()) && this.testWithFluid(recipe);
+	}
+
+	protected abstract boolean testWithFluid(CannonCastingRecipe recipe);
+
 }

@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity implements FluidTransferable {
@@ -190,5 +191,12 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	}
 
 	@Override protected void refreshCap() {}
+
+	@Override
+	protected boolean testWithFluid(CannonCastingRecipe recipe) {
+		CannonCastBlockEntity cController = ((CannonCastBlockEntity) this.getControllerTE());
+		if (cController.fluid.getFluid().isEmpty()) return false;
+		return recipe.ingredient().test(cController.fluid.getFluid());
+	}
 
 }

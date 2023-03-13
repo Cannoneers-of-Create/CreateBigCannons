@@ -18,6 +18,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
@@ -218,6 +219,13 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 	@Override
 	public float getFillState() {
 		return this.fluid.getCapacity() == 0 ? 0.0f : (float) this.fluid.getFluidAmount() / (float) this.fluid.getCapacity();
+	}
+
+	@Override
+	protected boolean testWithFluid(CannonCastingRecipe recipe) {
+		CannonCastBlockEntity cController = ((CannonCastBlockEntity) this.getControllerTE());
+		if (cController.fluid.getFluid().isEmpty()) return false;
+		return recipe.ingredient().test(cController.fluid.getFluid());
 	}
 
 }
