@@ -8,7 +8,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -98,7 +98,7 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public ParticleEngine.SpriteParticleRegistration<CannonSmokeParticleData> getMetaFactory() {
+	public SpriteParticleRegistration<CannonSmokeParticleData> getMetaFactory() {
 		return CannonSmokeParticle.Provider::new;
 	}
 

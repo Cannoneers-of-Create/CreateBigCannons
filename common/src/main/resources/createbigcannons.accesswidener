@@ -1,5 +1,6 @@
-accessWidener   v2  named
+accessWidener v2  named
 
+accessible class net/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration
 accessible method net/minecraft/client/particle/ParticleEngine register (Lnet/minecraft/core/particles/ParticleType;Lnet/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration;)V
 accessible method net/minecraft/world/entity/projectile/Projectile <init> (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;)V
 
