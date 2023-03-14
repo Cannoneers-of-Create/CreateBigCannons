@@ -5,12 +5,16 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.math.Vector3f;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
-public class CannonSmokeParticleData implements ParticleOptions {
+public class CannonSmokeParticleData implements ParticleOptions, ICustomParticleDataWithSprite<CannonSmokeParticleData> {
 
 	public static final Codec<CannonSmokeParticleData> CODEC = RecordCodecBuilder.create(i -> i
 			.group(Codec.FLOAT.fieldOf("scale")
@@ -59,6 +63,8 @@ public class CannonSmokeParticleData implements ParticleOptions {
 		this.endColor = endColor;
 		this.shiftTime = shiftTime;
 	}
+
+	public CannonSmokeParticleData() { this(0, Vector3f.ZERO, Vector3f.ZERO, 1); }
 	
 	public float scale() { return this.scale; }
 	public Vector3f startColor() { return this.startColor; }
@@ -85,6 +91,15 @@ public class CannonSmokeParticleData implements ParticleOptions {
 	@Override
 	public String writeToString() {
 		return String.format("%d %f %f %f %f %f %f %d", this.scale, this.startColor.x(), this.startColor.y(), this.startColor.z(), this.endColor.x(), this.endColor.y(), this.endColor.z(), this.shiftTime);
+	}
+
+	@Override public Deserializer<CannonSmokeParticleData> getDeserializer() { return DESERIALIZER; }
+	@Override public Codec<CannonSmokeParticleData> getCodec(ParticleType<CannonSmokeParticleData> type) { return CODEC; }
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public ParticleEngine.SpriteParticleRegistration<CannonSmokeParticleData> getMetaFactory() {
+		return CannonSmokeParticle.Provider::new;
 	}
 
 }

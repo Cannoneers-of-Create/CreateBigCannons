@@ -4,6 +4,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.core.particles.ParticleOptions;
@@ -12,7 +13,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
-public class FluidBlobParticleData implements ParticleOptions {
+public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDataWithSprite<FluidBlobParticleData> {
 
 	public static final Codec<FluidBlobParticleData> CODEC = RecordCodecBuilder.create(i -> i
 			.group(Codec.FLOAT.fieldOf("scale").forGetter(FluidBlobParticleData::scale),
@@ -32,9 +33,7 @@ public class FluidBlobParticleData implements ParticleOptions {
 			reader.expect(' ');
 			return new FluidBlobParticleData(reader.readFloat(), new FluidStack(Fluids.WATER, 1));
 		}
-	};
-
-	public static final float MAX_SCALE = 6.0f;
+	}
 
 	private final float scale;
 	private final FluidStack fluid;

@@ -4,12 +4,16 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
-public record CannonPlumeParticleData(float scale) implements ParticleOptions {
+public class CannonPlumeParticleData implements ParticleOptions, ICustomParticleDataWithSprite<CannonPlumeParticleData> {
 
 	public static final Codec<CannonPlumeParticleData> CODEC = RecordCodecBuilder.create(i -> i
 			.group(Codec.FLOAT.fieldOf("scale")
@@ -30,7 +34,13 @@ public record CannonPlumeParticleData(float scale) implements ParticleOptions {
 		}
 	};
 
-	public static final float MAX_SCALE = 6.0f;
+	private final float scale;
+
+	public CannonPlumeParticleData(float scale) {
+		this.scale = scale;
+	}
+
+	public CannonPlumeParticleData() { this(0); };
 
 
 	@Override
@@ -47,4 +57,15 @@ public record CannonPlumeParticleData(float scale) implements ParticleOptions {
 	public String writeToString() {
 		return String.format("%d", this.scale);
 	}
+
+	@Override public Deserializer<CannonPlumeParticleData> getDeserializer() { return DESERIALIZER; }
+
+	@Override public Codec<CannonPlumeParticleData> getCodec(ParticleType<CannonPlumeParticleData> type) { return CODEC; }
+
+	@Environment(EnvType.CLIENT)
+	@Override
+	public ParticleEngine.SpriteParticleRegistration<CannonPlumeParticleData> getMetaFactory() {
+		return CannonPlumeParticle.Provider::new;
+	}
+
 }
