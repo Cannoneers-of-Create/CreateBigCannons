@@ -4,6 +4,7 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -64,7 +65,7 @@ public class CannonPlumeParticleData implements ParticleOptions, ICustomParticle
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public ParticleEngine.SpriteParticleRegistration<CannonPlumeParticleData> getMetaFactory() {
+	public SpriteParticleRegistration<CannonPlumeParticleData> getMetaFactory() {
 		return CannonPlumeParticle.Provider::new;
 	}
 

@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -59,4 +60,18 @@ public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDa
 		return String.format("%f %s", this.scale, RegisteredObjects.getKeyOrThrow(this.fluid.getFluid()).toString());
 	}
 
+	@Override
+	public Deserializer<FluidBlobParticleData> getDeserializer() {
+		return null;
+	}
+
+	@Override
+	public Codec<FluidBlobParticleData> getCodec(ParticleType<FluidBlobParticleData> type) {
+		return null;
+	}
+
+	@Override
+	public ParticleEngine.SpriteParticleRegistration<FluidBlobParticleData> getMetaFactory() {
+		return FluidBlobParticle.Provider::new;
+	}
 }
