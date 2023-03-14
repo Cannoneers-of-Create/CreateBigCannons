@@ -18,29 +18,24 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import java.util.function.Supplier;
 
-public class CannonMountBlockEntity extends KineticTileEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block {
+public abstract class AbstractCannonMountBlockEntity extends KineticTileEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block {
 
 	private static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	
 	private AssemblyException lastException = null;
-	private PitchOrientedContraptionEntity mountedContraption;
+	protected AbstractPitchOrientedContraptionEntity mountedContraption;
 	private boolean running;
 	
 	private float cannonYaw;
@@ -52,7 +47,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	
 	float yawSpeed;
 	
-	public CannonMountBlockEntity(BlockEntityType<? extends CannonMountBlockEntity> typeIn, BlockPos pos, BlockState state) {
+	protected AbstractCannonMountBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
 		if (CBCBlocks.CANNON_MOUNT.has(state)) {
 			this.cannonYaw = state.getValue(HORIZONTAL_FACING).toYRot();
@@ -61,15 +56,6 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	}
 
 	@Override public BlockState getControllerState() { return this.getBlockState(); }
-
-	@NotNull
-	@Override
-	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.mountedContraption != null) {
-			return ((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).getItemOptional().cast();
-		}
-		return super.getCapability(cap, side);
-	}
 
 	@Override
 	public void tick() {
@@ -234,7 +220,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.running = true;
 		
 		mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
-		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing1, this);
+		AbstractPitchOrientedContraptionEntity contraptionEntity = AbstractPitchOrientedContraptionEntity.create(this.level, mountedCannon, facing1, this);
 		this.mountedContraption = contraptionEntity;
 		this.resetContraptionToOffset();
 		this.level.addFreshEntity(contraptionEntity);
@@ -247,7 +233,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
 		net.minecraft.world.level.block.Block block = this.level.getBlockState(pos).getBlock();
 		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
-		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
+		if (block instanceof AutocannonBlock) return IndexPlatform.makeAutocannon();
 		return null;
 	}
 	
@@ -348,7 +334,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	}
 
 	@Override
-	public void attach(PitchOrientedContraptionEntity contraption) {
+	public void attach(AbstractPitchOrientedContraptionEntity contraption) {
 		if (!(contraption.getContraption() instanceof AbstractMountedCannonContraption)) return;
 		this.mountedContraption = contraption;
 		if (!this.level.isClientSide) {
@@ -361,7 +347,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	@Override public BlockPos getControllerBlockPos() { return this.worldPosition; }
 
 	@Override
-	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+	public BlockPos getDismountPositionForContraption(AbstractPitchOrientedContraptionEntity poce) {
 		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).above();
 	}
 

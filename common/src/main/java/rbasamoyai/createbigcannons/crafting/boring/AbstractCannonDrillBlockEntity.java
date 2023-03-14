@@ -74,7 +74,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 	protected boolean queuedSync;
 	protected int syncCooldown;
 	
-	public AbstractCannonDrillBlockEntity(BlockEntityType<? extends AbstractCannonDrillBlockEntity> type, BlockPos pos, BlockState state) {
+	protected AbstractCannonDrillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 	

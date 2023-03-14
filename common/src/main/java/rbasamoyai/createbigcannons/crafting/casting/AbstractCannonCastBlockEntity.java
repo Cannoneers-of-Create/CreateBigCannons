@@ -51,7 +51,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	protected LerpedFloat fluidLevel;
 	protected LerpedFloat castLevel;
 	
-	public AbstractCannonCastBlockEntity(BlockEntityType<? extends AbstractCannonCastBlockEntity> type, BlockPos pos, BlockState state) {
+	public AbstractCannonCastBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		this.height = 1;
 		this.forceFluidLevelUpdate = true;

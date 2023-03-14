@@ -4,7 +4,7 @@ import com.mojang.math.Vector4f;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;
-import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.Executor;
@@ -14,7 +14,7 @@ public class ServerboundCarriageWheelPacket implements RootPacket {
     private final Vector4f state;
     private final int id;
 
-    public ServerboundCarriageWheelPacket(CannonCarriageEntity entity) {
+    public ServerboundCarriageWheelPacket(AbstractCannonCarriageEntity entity) {
         this.state = entity.getWheelState();
         this.id = entity.getId();
     }
@@ -35,7 +35,7 @@ public class ServerboundCarriageWheelPacket implements RootPacket {
 
     @Override
     public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-        if (sender != null && sender.level.getEntity(this.id) instanceof CannonCarriageEntity carriage) carriage.setWheelState(this.state);
+        if (sender != null && sender.level.getEntity(this.id) instanceof AbstractCannonCarriageEntity carriage) carriage.setWheelState(this.state);
     }
 
 }

@@ -18,44 +18,22 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 
-public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
+public abstract class AbstractPitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	private BlockPos controllerPos;
 	private boolean updatesOwnRotation;
-	private LazyOptional<IItemHandler> itemOptional;
 
-	public PitchOrientedContraptionEntity(EntityType<? extends PitchOrientedContraptionEntity> type, Level level) {
+	protected AbstractPitchOrientedContraptionEntity(EntityType<?> type, Level level) {
 		super(type, level);
 	}
 
-	@NotNull
-	@Override
-	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			if (this.itemOptional == null) this.itemOptional = this.contraption instanceof AbstractMountedCannonContraption cannon ? cannon.getItemOptional() : LazyOptional.empty();
-			return this.itemOptional.cast();
-		}
-		return super.getCapability(cap, side);
-	}
-
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if (this.itemOptional != null) this.itemOptional.invalidate();
-	}
-
-	public static PitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, boolean updatesOwnRotation) {
-		PitchOrientedContraptionEntity entity = new PitchOrientedContraptionEntity(CBCEntityTypes.PITCH_ORIENTED_CONTRAPTION.get(), level);
+	public static AbstractPitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, boolean updatesOwnRotation) {
+		AbstractPitchOrientedContraptionEntity entity = CBCEntityTypes.PITCH_ORIENTED_CONTRAPTION.create(level);
 
 		entity.setContraption(contraption);
 		entity.setInitialOrientation(initialOrientation);
@@ -64,8 +42,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		return entity;
 	}
 	
-	public static PitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, ControlPitchContraption.Block block) {
-		PitchOrientedContraptionEntity poce = create(level, contraption, initialOrientation, true);
+	public static AbstractPitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, ControlPitchContraption.Block block) {
+		AbstractPitchOrientedContraptionEntity poce = create(level, contraption, initialOrientation, true);
 		poce.controllerPos = block.getControllerBlockPos();
 		return poce;
 	}
@@ -204,7 +182,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			entity.setYBodyRot(entity.getYRot());
 			if (CBCEntityTypes.CANNON_CARRIAGE.is(this.getVehicle())) {
 				this.getVehicle().onPassengerTurned(this);
-			} else if (this.getController() instanceof CannonMountBlockEntity mount) {
+			} else if (this.getController() instanceof AbstractCannonMountBlockEntity mount) {
 				mount.applyHandRotation();
 				this.xRotO = this.prevPitch;
 				this.setXRot(this.pitch);

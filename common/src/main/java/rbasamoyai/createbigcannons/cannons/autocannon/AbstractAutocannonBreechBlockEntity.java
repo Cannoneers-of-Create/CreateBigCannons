@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.autocannon;
 
-import com.jozufozu.flywheel.backend.instancing.InstancedRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -11,20 +10,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implements AnimatedAutocannon {
+public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBlockEntity implements AnimatedAutocannon {
 
 	protected static final int[] FIRE_RATES = new int[] {
 			120, // 10 rpm
@@ -53,13 +46,15 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implement
 	private final Deque<ItemStack> inputBuffer = new LinkedList<>();
 	private ItemStack outputBuffer = ItemStack.EMPTY;
 
-	public AutocannonBreechBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+	protected AbstractAutocannonBreechBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
-	public IItemHandler createItemHandler() { return new BreechItemHandler(this); }
-
 	public int getQueueLimit() { return 5; }
+
+	public Deque<ItemStack> getInputBuffer() { return this.inputBuffer; }
+	public ItemStack getOutputBuffer() { return this.outputBuffer; }
+	public void setOutputBuffer(ItemStack stack) { this.outputBuffer = stack; }
 
 	@Override
 	public void tick() {
@@ -68,7 +63,7 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implement
 	}
 
 	@Override
-	public void tickFromContraption(Level level, PitchOrientedContraptionEntity poce, BlockPos localPos) {
+	public void tickFromContraption(Level level, AbstractPitchOrientedContraptionEntity poce, BlockPos localPos) {
 		super.tickFromContraption(level, poce, localPos);
 		this.allTick(level);
 	}
@@ -125,12 +120,6 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implement
 	}
 
 	@Override
-	public void requestModelDataUpdate() {
-		super.requestModelDataUpdate();
-		if (!this.remove) DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> InstancedRenderDispatcher.enqueueUpdate(this));
-	}
-
-	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
 		this.fireRate = tag.getInt("FiringRate");
@@ -147,7 +136,6 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implement
 
 		if (!clientPacket) return;
 		this.updateInstance = tag.contains("UpdateInstance");
-		if (!this.isVirtual()) this.requestModelDataUpdate();
 	}
 
 	@Override
@@ -191,41 +179,6 @@ public class AutocannonBreechBlockEntity extends AutocannonBlockEntity implement
 		}
 		if (!this.outputBuffer.isEmpty()) list.add(this.outputBuffer.copy());
 		return list;
-	}
-
-	public record BreechItemHandler(AutocannonBreechBlockEntity breech) implements IItemHandler {
-		@Override public int getSlots() { return 2; }
-
-		@NotNull
-		@Override
-		public ItemStack getStackInSlot(int slot) {
-			return switch (slot) {
-				case 0 -> this.breech.outputBuffer;
-				case 1 -> this.breech.isInputFull() ? this.breech.inputBuffer.peekLast() : ItemStack.EMPTY;
-				default -> ItemStack.EMPTY;
-			};
-		}
-
-		@NotNull
-		@Override
-		public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
-			if (slot != 1 || !this.isItemValid(slot, stack) || this.breech.isInputFull()) return stack;
-			if (!simulate) this.breech.inputBuffer.add(ItemHandlerHelper.copyStackWithSize(stack, 1));
-			return stack.getCount() == 1 ? ItemStack.EMPTY : ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - 1);
-		}
-
-		@NotNull
-		@Override
-		public ItemStack extractItem(int slot, int amount, boolean simulate) {
-			if (amount <= 0) return ItemStack.EMPTY;
-			return switch (slot) {
-				case 0 -> simulate ? ItemHandlerHelper.copyStackWithSize(this.breech.outputBuffer, 1) : this.breech.outputBuffer.split(1);
-				default -> ItemStack.EMPTY;
-			};
-		}
-
-		@Override public int getSlotLimit(int slot) { return 1; }
-		@Override public boolean isItemValid(int slot, @NotNull ItemStack stack) { return stack.getItem() instanceof AutocannonCartridgeItem; }
 	}
 
 }

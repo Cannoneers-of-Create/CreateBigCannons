@@ -204,13 +204,13 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {
+	public void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {
 		if (!togglePower || firePower <= 0) return;
 		this.fireShot(level, entity);
 	}
 
 	@Override
-	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity) {
+	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity) {
 		StructureBlockInfo foundProjectile = null;
 		float chargesUsed = 0;
 		float smokeScale = 0;
@@ -371,7 +371,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		return f != 0 && random.nextFloat() <= f;
 	}
 	
-	public void fail(BlockPos localPos, Level level, PitchOrientedContraptionEntity entity, BlockEntity failed, int charges) {
+	public void fail(BlockPos localPos, Level level, AbstractPitchOrientedContraptionEntity entity, BlockEntity failed, int charges) {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(failed.getBlockPos()), 1.0f);
 		float failScale = CBCConfigs.SERVER.failure.failureExplosionPower.getF();
 		if (this.cannonMaterial.failureMode() == FailureMode.RUPTURE) {

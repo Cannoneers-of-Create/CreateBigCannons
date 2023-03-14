@@ -18,8 +18,8 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.glfw.GLFW;
-import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticle;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticle;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
@@ -119,7 +119,7 @@ public class CBCClientCommon {
 
 	public static void onClientGameTick(Minecraft mc) {
 		if (mc.player == null || mc.level == null) return;
-		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
+		if (mc.player.getRootVehicle() instanceof AbstractCannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
 			boolean isPitching = CBCClientCommon.PITCH_MODE.isDown();
 			carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
@@ -134,7 +134,7 @@ public class CBCClientCommon {
 
 	public static boolean onScrollMouse(Minecraft mc, double delta) {
 		if (mc.player == null || mc.level == null) return false;
-		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity) {
+		if (mc.player.getRootVehicle() instanceof AbstractCannonCarriageEntity) {
 			int fireRateAdjustment = 0;
 			if (delta > 0) fireRateAdjustment = 1;
 			else if (delta < 0) fireRateAdjustment = -1;
@@ -153,7 +153,7 @@ public class CBCClientCommon {
 	}
 
 	public static void onPlayerRenderPre(PoseStack stack, Player player, float partialTicks) {
-		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
+		if (player.getVehicle() instanceof AbstractPitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
 			Vector3f pVec = new Vector3f(player.getPosition(partialTicks));
 			stack.translate(-pVec.x(), -pVec.y(), -pVec.z());
 
@@ -172,7 +172,7 @@ public class CBCClientCommon {
 
 	private static boolean isControllingCannon(Entity entity) {
 		Entity vehicle = entity.getVehicle();
-		return vehicle instanceof CannonCarriageEntity || vehicle instanceof PitchOrientedContraptionEntity;
+		return vehicle instanceof AbstractCannonCarriageEntity || vehicle instanceof AbstractPitchOrientedContraptionEntity;
 	}
 	
 }

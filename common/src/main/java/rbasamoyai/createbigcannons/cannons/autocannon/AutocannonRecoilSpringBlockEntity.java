@@ -9,7 +9,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class AutocannonRecoilSpringBlockEntity extends AutocannonBlockEntity imp
     }
 
     @Override
-    public void tickFromContraption(Level level, PitchOrientedContraptionEntity poce, BlockPos localPos) {
+    public void tickFromContraption(Level level, AbstractPitchOrientedContraptionEntity poce, BlockPos localPos) {
         super.tickFromContraption(level, poce, localPos);
         this.allTick();
     }

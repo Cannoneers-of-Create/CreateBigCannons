@@ -11,11 +11,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 
@@ -27,7 +27,7 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity {
 
 	public void tryAssemble() {
 		Direction facing = this.getBlockState().getValue(CannonCarriageBlock.FACING);
-		CannonCarriageEntity carriage = CBCEntityTypes.CANNON_CARRIAGE.create(this.level);
+		AbstractCannonCarriageEntity carriage = CBCEntityTypes.CANNON_CARRIAGE.create(this.level);
 		carriage.setPos(Vec3.atBottomCenterOf(this.getBlockPos()).add(0, 0.125, 0));
 		carriage.setYRot(facing.toYRot());
 		carriage.setCannonRider(this.getBlockState().getValue(CannonCarriageBlock.SADDLED));
@@ -45,11 +45,11 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity {
 		this.level.removeBlock(this.worldPosition, false);
 	}
 
-	protected void assemble(CannonCarriageEntity carriage) throws AssemblyException {
+	protected void assemble(AbstractCannonCarriageEntity carriage) throws AssemblyException {
 		if (!CBCBlocks.CANNON_CARRIAGE.has(this.getBlockState())) return;
 		BlockPos assemblyPos = this.worldPosition.above();
 		if (this.level.isOutsideBuildHeight(assemblyPos)) {
-			throw CannonMountBlockEntity.cannonBlockOutsideOfWorld(assemblyPos);
+			throw AbstractCannonMountBlockEntity.cannonBlockOutsideOfWorld(assemblyPos);
 		}
 
 		Direction facing = this.getBlockState().getValue(CannonCarriageBlock.FACING);
@@ -58,7 +58,7 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity {
 		if (mountedCannon != null && mountedCannon.assemble(this.level, assemblyPos)) {
 			if (mountedCannon.initialOrientation() == facing) {
 				mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
-				PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing, false);
+				AbstractPitchOrientedContraptionEntity contraptionEntity = AbstractPitchOrientedContraptionEntity.create(this.level, mountedCannon, facing, false);
 				carriage.attach(contraptionEntity);
 				carriage.applyRotation();
 				this.level.addFreshEntity(contraptionEntity);
@@ -69,7 +69,7 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity {
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
 		Block block = this.level.getBlockState(pos).getBlock();
 		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
-		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
+		if (block instanceof AutocannonBlock) return new AbstractMountedAutocannonContraption();
 		return null;
 	}
 

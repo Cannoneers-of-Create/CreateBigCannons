@@ -5,7 +5,7 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Con
 import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionRenderDispatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 
 public class CBCClientHandlers {
 
@@ -22,7 +22,7 @@ public class CBCClientHandlers {
 
 	public static void animateCannon(ClientboundAnimateCannonContraptionPacket pkt) {
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.level.getEntity(pkt.id()) instanceof PitchOrientedContraptionEntity poce) poce.handleAnimation();
+		if (mc.level.getEntity(pkt.id()) instanceof AbstractPitchOrientedContraptionEntity poce) poce.handleAnimation();
 	}
 	
 }

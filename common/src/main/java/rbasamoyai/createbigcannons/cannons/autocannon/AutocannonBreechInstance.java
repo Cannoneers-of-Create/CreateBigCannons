@@ -13,7 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
-public class AutocannonBreechInstance extends BlockEntityInstance<AutocannonBreechBlockEntity> implements DynamicInstance {
+public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutocannonBreechBlockEntity> implements DynamicInstance {
 
     private final OrientedData ejector;
     private final OrientedData seat;
@@ -21,7 +21,7 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AutocannonBree
 
     private final Direction facing;
 
-    public AutocannonBreechInstance(MaterialManager manager, AutocannonBreechBlockEntity blockEntity) {
+    public AutocannonBreechInstance(MaterialManager manager, AbstractAutocannonBreechBlockEntity blockEntity) {
         super(manager, blockEntity);
 
         this.facing = this.blockState.getValue(BlockStateProperties.FACING);

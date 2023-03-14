@@ -26,9 +26,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
@@ -37,6 +34,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.*;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
@@ -46,7 +44,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MountedAutocannonContraption extends AbstractMountedCannonContraption {
+public abstract class AbstractMountedAutocannonContraption extends AbstractMountedCannonContraption {
 
 	private AutocannonMaterial cannonMaterial;
 	private BlockPos recoilSpringPos;
@@ -66,11 +64,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		if (CBCBlocks.CANNON_MOUNT.has(state)) return 90;
 		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return this.isHandle ? 45 : 90;
 		return 0;
-	}
-
-	@Override
-	public LazyOptional<IItemHandler> getItemOptional() {
-		return this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech ? LazyOptional.of(breech::createItemHandler) : LazyOptional.empty();
 	}
 
 	@Override
@@ -235,10 +228,10 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	}
 
 	@Override
-	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity) {
+	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity) {
 		if (this.startPos == null
 			|| this.cannonMaterial == null
-			|| !(this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech)
+			|| !(this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
 			|| !breech.canFire()) return;
 
 		ItemStack foundProjectile = breech.extractNextInput();
@@ -325,12 +318,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override
 	public void animate() {
 		super.animate();
-		if (this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech) breech.handleFiring();
+		if (this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech) breech.handleFiring();
 		if (this.presentTileEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring) spring.handleFiring();
 	}
 
 	@Override
-	public void tick(Level level, PitchOrientedContraptionEntity entity) {
+	public void tick(Level level, AbstractPitchOrientedContraptionEntity entity) {
 		super.tick(level, entity);
 
 		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController())) this.fireShot(slevel, entity);
@@ -353,18 +346,18 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override public boolean canBeFiredOnController(ControlPitchContraption control) { return !this.isHandle && this.entity.getVehicle() != control; }
 
 	@Override
-	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {
-		if (this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech) breech.setFireRate(firePower);
+	public void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {
+		if (this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech) breech.setFireRate(firePower);
 	}
 
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
-		if (this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech
+		if (this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech
 			&& (fireRateAdjustment > 0 || breech.getFireRate() > 1)) // Can't turn off carriage autocannon
 			breech.setFireRate(breech.getFireRate() + fireRateAdjustment);
 	}
 
 	public int getReferencedFireRate() {
-		return this.presentTileEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech ? breech.getActualFireRate() : 0;
+		return this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech ? breech.getActualFireRate() : 0;
 	}
 
 	@Override public float getWeightForStress() { return this.cannonMaterial == null ? this.blocks.size() : this.blocks.size() * this.cannonMaterial.weight(); }

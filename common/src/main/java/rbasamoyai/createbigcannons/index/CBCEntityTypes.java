@@ -6,9 +6,10 @@ import com.tterrag.registrate.util.entry.EntityEntry;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.world.entity.EntityType.EntityFactory;
 import net.minecraft.world.entity.MobCategory;
-import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageRenderer;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileRenderer;
@@ -35,8 +36,8 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCEntityTypes {
 
-	public static final EntityEntry<PitchOrientedContraptionEntity> PITCH_ORIENTED_CONTRAPTION = REGISTRATE
-			.entity("pitch_contraption", PitchOrientedContraptionEntity::new, MobCategory.MISC)
+	public static final EntityEntry<AbstractPitchOrientedContraptionEntity> PITCH_ORIENTED_CONTRAPTION = REGISTRATE
+			.entity("pitch_contraption", IndexPlatform::makePitchContraption, MobCategory.MISC)
 			.properties(b -> b.setTrackingRange(16)
 					.setUpdateInterval(3)
 					.setShouldReceiveVelocityUpdates(true)
@@ -73,9 +74,9 @@ public class CBCEntityTypes {
 			.renderer(() -> NoopRenderer::new)
 			.register();
 
-	public static final EntityEntry<CannonCarriageEntity> CANNON_CARRIAGE = REGISTRATE
-			.entity("cannon_carriage", CannonCarriageEntity::new, MobCategory.MISC)
-			.properties(CannonCarriageEntity::build)
+	public static final EntityEntry<AbstractCannonCarriageEntity> CANNON_CARRIAGE = REGISTRATE
+			.entity("cannon_carriage", IndexPlatform::makeCannonCarriage, MobCategory.MISC)
+			.properties(AbstractCannonCarriageEntity::build)
 			.renderer(() -> CannonCarriageRenderer::new)
 			.register();
     public static final EntityEntry<APAutocannonProjectile> AP_AUTOCANNON = autocannonProjectile("ap_autocannon", APAutocannonProjectile::new, "Armor Piercing (AP) Autocannon Round");

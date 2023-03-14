@@ -24,7 +24,7 @@ public abstract class PoleMoverBlockEntity extends LinearActuatorTileEntity {
 
 	protected int extensionLength;
 	
-	public PoleMoverBlockEntity(BlockEntityType<? extends PoleMoverBlockEntity> typeIn, BlockPos pos, BlockState state) {
+	public PoleMoverBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
 	}
 	

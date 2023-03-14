@@ -25,7 +25,7 @@ public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity imple
 
 	protected FluidTank lubricant;
 
-	public CannonDrillBlockEntity(BlockEntityType<? extends AbstractCannonDrillBlockEntity> type, BlockPos pos, BlockState state) {
+	public CannonDrillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		this.lubricant = new SmartFluidTank(1000, this::onFluidStackChanged).setValidator(fs -> fs.getFluid() == Fluids.WATER);
 	}

@@ -71,8 +71,8 @@ public class CBCBlockEntities {
 			.validBlock(CBCBlocks.CANNON_LOADER)
 			.register();
 	
-	public static final BlockEntityEntry<CannonMountBlockEntity> CANNON_MOUNT = REGISTRATE
-			.tileEntity("cannon_mount", CannonMountBlockEntity::new)
+	public static final BlockEntityEntry<AbstractCannonMountBlockEntity> CANNON_MOUNT = REGISTRATE
+			.tileEntity("cannon_mount", IndexPlatform::makeCannonMount)
 			.instance(() -> CannonMountInstance::new)
 			.renderer(() -> CannonMountBlockEntityRenderer::new)
 			.validBlock(CBCBlocks.CANNON_MOUNT)
@@ -154,8 +154,8 @@ public class CBCBlockEntities {
 			.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_BARREL, CBCBlocks.BRONZE_AUTOCANNON_BARREL, CBCBlocks.STEEL_AUTOCANNON_BARREL)
 			.register();
 
-	public static final BlockEntityEntry<AutocannonBreechBlockEntity> AUTOCANNON_BREECH = REGISTRATE
-			.tileEntity("autocannon_breech", AutocannonBreechBlockEntity::new)
+	public static final BlockEntityEntry<AbstractAutocannonBreechBlockEntity> AUTOCANNON_BREECH = REGISTRATE
+			.tileEntity("autocannon_breech", IndexPlatform::makeAutocannonBreech)
 			.instance(() -> AutocannonBreechInstance::new)
 			.renderer(() -> AutocannonBreechRenderer::new)
 			.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_BREECH, CBCBlocks.BRONZE_AUTOCANNON_BREECH, CBCBlocks.STEEL_AUTOCANNON_BREECH)

@@ -4,6 +4,8 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Ass
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.NonStationaryLighter;
 import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionLighter;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,10 +16,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -32,16 +30,14 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 	public abstract float maximumDepression(ControlPitchContraption controller);
 	public abstract float maximumElevation(ControlPitchContraption controller);
 
-	public LazyOptional<IItemHandler> getItemOptional() { return LazyOptional.empty(); }
-
 	public Direction initialOrientation() { return this.initialOrientation; }
 
-	public abstract void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower);
-	public abstract void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity);
+	public abstract void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower);
+	public abstract void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity);
 
 	public abstract float getWeightForStress();
 
-	public void tick(Level level, PitchOrientedContraptionEntity entity) {}
+	public void tick(Level level, AbstractPitchOrientedContraptionEntity entity) {}
 
 	public void animate() {}
 
@@ -95,7 +91,7 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 
 	public BlockPos getSeatPos(Entity entity) { return null; }
 
-	@OnlyIn(Dist.CLIENT)
+	@Environment(EnvType.CLIENT)
 	@Override public ContraptionLighter<?> makeLighter() { return new NonStationaryLighter<>(this); }
 
 	public static int getMaxCannonLength() {

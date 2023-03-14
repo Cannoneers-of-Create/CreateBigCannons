@@ -27,7 +27,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	protected FluidTank fluid;
 	protected FluidStack leakage = FluidStack.EMPTY;
 
-	public CannonCastBlockEntity(BlockEntityType<? extends AbstractCannonCastBlockEntity> type, BlockPos pos, BlockState state) {
+	public CannonCastBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		this.fluid = new SmartFluidTank(1, this::onFluidStackChanged);
 	}

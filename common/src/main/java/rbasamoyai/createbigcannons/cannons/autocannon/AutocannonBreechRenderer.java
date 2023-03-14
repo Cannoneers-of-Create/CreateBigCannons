@@ -13,14 +13,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
-public class AutocannonBreechRenderer extends SmartTileEntityRenderer<AutocannonBreechBlockEntity> {
+public class AutocannonBreechRenderer extends SmartTileEntityRenderer<AbstractAutocannonBreechBlockEntity> {
 
     public AutocannonBreechRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    protected void renderSafe(AutocannonBreechBlockEntity breech, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+    protected void renderSafe(AbstractAutocannonBreechBlockEntity breech, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         super.renderSafe(breech, partialTicks, ms, buffer, light, overlay);
         if (Backend.canUseInstancing(breech.getLevel())) return;
 
@@ -49,7 +49,7 @@ public class AutocannonBreechRenderer extends SmartTileEntityRenderer<Autocannon
         ms.popPose();
     }
 
-    private static PartialModel getPartialModelForState(AutocannonBreechBlockEntity breech) {
+    private static PartialModel getPartialModelForState(AbstractAutocannonBreechBlockEntity breech) {
         return breech.getBlockState().getBlock() instanceof AutocannonBlock cBlock
                 ? CBCBlockPartials.autocannonEjectorFor(cBlock.getAutocannonMaterial())
                 : CBCBlockPartials.CAST_IRON_AUTOCANNON_EJECTOR;

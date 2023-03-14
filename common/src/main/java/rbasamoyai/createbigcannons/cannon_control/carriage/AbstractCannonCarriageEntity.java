@@ -42,8 +42,8 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -53,16 +53,16 @@ import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
 
 import java.util.function.Predicate;
 
-public class CannonCarriageEntity extends Entity implements ControlPitchContraption {
+public abstract class AbstractCannonCarriageEntity extends Entity implements ControlPitchContraption {
 
-	private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Boolean> DATA_ID_RIDER = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LF = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RF = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LB = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RB = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Boolean> DATA_ID_RIDER = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LF = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RF = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LB = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RB = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
 
 	private boolean inputForward;
 	private boolean inputBackward;
@@ -78,9 +78,9 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	private double lerpXRot;
 	public Vector4f previousWheelState = new Vector4f(0, 0, 0, 0);
 
-	private PitchOrientedContraptionEntity cannonContraption;
+	private AbstractPitchOrientedContraptionEntity cannonContraption;
 	
-	public CannonCarriageEntity(EntityType<? extends CannonCarriageEntity> type, Level level) {
+	protected AbstractCannonCarriageEntity(EntityType<?> type, Level level) {
 		super(type, level);
 	}
 
@@ -131,7 +131,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		if (!this.level.isClientSide
 			&& this.getControllingPassenger() instanceof Player player
 			&& this.cannonContraption != null
-			&& this.cannonContraption.getContraption() instanceof MountedAutocannonContraption) {
+			&& this.cannonContraption.getContraption() instanceof AbstractMountedAutocannonContraption) {
 			player.displayClientMessage(new TranslatableComponent("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate", this.getActualFireRate()), true);
 		}
 
@@ -143,15 +143,11 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 				&& this.cannonContraption != null
 				&& this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
 			if (this.getControllingPassenger() instanceof Player player) {
-				if (cannon instanceof MountedAutocannonContraption autocannon) {
-					autocannon.getItemOptional().ifPresent(h -> {
-						ItemStack stack = getValidStack(player, CBCItems.AUTOCANNON_CARTRIDGE::isIn);
-						ItemStack result = h.insertItem(1, stack, false);
-						if (!player.isCreative() && stack.getCount() != result.getCount()) {
-							stack.setCount(result.getCount());
-							if (stack.isEmpty()) player.getInventory().removeItem(stack);
-						}
-					});
+				ItemStack stack = getValidStack(player, CBCItems.AUTOCANNON_CARTRIDGE::isIn);
+				ItemStack result = this.insertItemIntoCannon(stack, cannon);
+				if (!player.isCreative() && stack.getCount() != result.getCount()) {
+					stack.setCount(result.getCount());
+					if (stack.isEmpty()) player.getInventory().removeItem(stack);
 				}
 			}
 			cannon.fireShot(slevel, this.cannonContraption);
@@ -168,6 +164,8 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		}
 		return ItemStack.EMPTY;
 	}
+
+	protected abstract ItemStack insertItemIntoCannon(ItemStack item, AbstractMountedCannonContraption cannon);
 
 	private void moveCarriage() {
 		double grav = this.isNoGravity() ? 0 : this.isUnderWater() ? -7e-4d : -0.04d;
@@ -329,12 +327,12 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
-		if (!this.level.isClientSide && this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon)
+		if (!this.level.isClientSide && this.cannonContraption != null && this.cannonContraption.getContraption() instanceof AbstractMountedAutocannonContraption autocannon)
 			autocannon.trySettingFireRateCarriage(fireRateAdjustment);
 	}
 
 	public int getActualFireRate() {
-		return this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon
+		return this.cannonContraption != null && this.cannonContraption.getContraption() instanceof AbstractMountedAutocannonContraption autocannon
 				? autocannon.getReferencedFireRate()
 				: 0;
 	}
@@ -477,17 +475,17 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	@Override public Packet<?> getAddEntityPacket() { return new ClientboundAddEntityPacket(this); }
 
-	public static void build(EntityType.Builder<? extends CannonCarriageEntity> builder) {
-		builder.setTrackingRange(8)
+	public static void build(EntityType.Builder<? extends AbstractCannonCarriageEntity> builder) {
+		builder.clientTrackingRange(8)
 				.fireImmune()
-				.setShouldReceiveVelocityUpdates(true)
+				//.setShouldReceiveVelocityUpdates(true)
 				.sized(1.5f, 1.5f);
 	}
 
 	@Override public boolean isAttachedTo(AbstractContraptionEntity entity) { return this.cannonContraption == entity; }
 
 	@Override
-	public void attach(PitchOrientedContraptionEntity poce) {
+	public void attach(AbstractPitchOrientedContraptionEntity poce) {
 		if (!(poce.getContraption() instanceof AbstractMountedCannonContraption)) return;
 		poce.startRiding(this);
 		this.cannonContraption = poce;
@@ -495,7 +493,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	@Override
-	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+	public BlockPos getDismountPositionForContraption(AbstractPitchOrientedContraptionEntity poce) {
 		return this.blockPosition().relative(this.getDirection().getOpposite()).above();
 	}
 
