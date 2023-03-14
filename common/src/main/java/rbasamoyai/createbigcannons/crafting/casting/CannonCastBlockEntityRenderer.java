@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
+import com.jozufozu.flywheel.core.virtual.VirtualEmptyModelData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
@@ -17,12 +18,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
-import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.CBCBlockPartials;
 
 import java.util.List;
 import java.util.Random;
 
-public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<AbstractCannonCastBlockEntity> {
+public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<CannonCastBlockEntity> {
 
 	private final BlockRenderDispatcher dispatcher;
 	
@@ -31,7 +32,7 @@ public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<Abstra
 	}
 	
 	@Override
-	protected void renderSafe(AbstractCannonCastBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+	protected void renderSafe(CannonCastBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		if (!te.canRenderCastModel()) return;
 		BlockState state = te.getBlockState();
 		
@@ -76,11 +77,11 @@ public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<Abstra
 					
 					for (Direction dir : Direction.values()) {
 						rand.setSeed(42L);
-						renderQuadList(ms.last(), vCons, 1f, 1f, 1f, alpha, model.getQuads(state, dir, rand), light, overlay);
+						renderQuadList(ms.last(), vCons, 1f, 1f, 1f, alpha, model.getQuads(state, dir, rand, VirtualEmptyModelData.INSTANCE), light, overlay);
 					}
 					
 					rand.setSeed(42L);
-					renderQuadList(ms.last(), vCons, 1f, 1f, 1f, alpha, model.getQuads(state, null, rand), light, overlay);
+					renderQuadList(ms.last(), vCons, 1f, 1f, 1f, alpha, model.getQuads(state, null, rand, VirtualEmptyModelData.INSTANCE), light, overlay);
 					
 					ms.popPose();
 				}
@@ -106,7 +107,7 @@ public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<Abstra
 				f2 = 1.0F;
 			}
 
-			consumer.putBulkData(pose, quad, f, f1, f2, packedLight, packedOverlay);
+			consumer.putBulkData(pose, quad, f, f1, f2, alpha, packedLight, packedOverlay);
 		}
 
 	}

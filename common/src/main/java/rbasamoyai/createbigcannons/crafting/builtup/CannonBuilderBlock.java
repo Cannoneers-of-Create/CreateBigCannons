@@ -23,8 +23,8 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.index.CBCBlockEntities;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 import java.util.Random;

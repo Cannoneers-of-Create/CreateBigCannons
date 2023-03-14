@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import rbasamoyai.createbigcannons.index.CBCEntityTypes;
-import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
+import rbasamoyai.createbigcannons.CBCEntityTypes;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 
 @Mixin(HumanoidModel.class)
 public abstract class HumanoidPoseMixin extends AgeableListModel {
@@ -22,7 +22,7 @@ public abstract class HumanoidPoseMixin extends AgeableListModel {
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("HEAD"))
     public <T extends LivingEntity> void createbigcannons$setupAnimHead(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
         Entity vehicle = livingEntity.getVehicle();
-        if (vehicle instanceof AbstractCannonCarriageEntity carriage && !carriage.isCannonRider())
+        if (vehicle instanceof CannonCarriageEntity carriage && !carriage.isCannonRider())
             this.riding = false;
     }
 

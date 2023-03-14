@@ -11,7 +11,6 @@ import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemS
 import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -29,6 +28,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import net.minecraftforge.registries.ForgeRegistries;
+import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
@@ -40,8 +42,6 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-import rbasamoyai.createbigcannons.index.CBCBlockEntities;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 import java.util.*;
 import java.util.function.Function;
@@ -313,7 +313,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		for (Map.Entry<CannonCastShape, Block> e : this.layeredBlocks.entrySet()) {
 			CompoundTag entryTag = new CompoundTag();
 			entryTag.putString("Shape", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(e.getKey()).toString());
-			entryTag.putString("Block", Registry.BLOCK.getKey(e.getValue()).toString());
+			entryTag.putString("Block", ForgeRegistries.BLOCKS.getKey(e.getValue()).toString());
 			layerTag.add(entryTag);
 		}
 		tag.put("Layers", layerTag);
@@ -345,7 +345,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 			if (!layerConnectionTag.contains(dir.getSerializedName())) continue;
 			ListTag connections = layerConnectionTag.getList(dir.getSerializedName(), Tag.TAG_STRING);
 			for (int i = 0; i < connections.size(); ++i) {
-				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get().get(new ResourceLocation(connections.getString(i)));
+				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(connections.getString(i)));
 				if (shape != null) this.layersConnectedTowards.put(dir, shape);
 			}
 		}		
@@ -360,8 +360,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		ListTag layers = tag.getList("Layers", Tag.TAG_COMPOUND);
 		for (int i = 0; i < layers.size(); ++i) {
 			CompoundTag entry = layers.getCompound(i);
-			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get().get(new ResourceLocation(entry.getString("Shape"))),
-					Registry.BLOCK.get(new ResourceLocation(entry.getString("Block"))));
+			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get().getValue(new ResourceLocation(entry.getString("Shape"))), ForgeRegistries.BLOCKS.getValue(new ResourceLocation(entry.getString("Block"))));
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;
 		this.completionProgress = tag.getInt("Progress");

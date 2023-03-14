@@ -4,6 +4,7 @@ package rbasamoyai.createbigcannons;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -17,17 +18,21 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.event.FOVModifierEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.event.TickEvent;
 import org.lwjgl.glfw.GLFW;
-import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticle;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticle;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
-import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticle;
+import rbasamoyai.createbigcannons.network.CBCNetwork;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
@@ -117,9 +122,10 @@ public class CBCClientCommon {
 		return -1;
 	}
 
-	public static void onClientGameTick(Minecraft mc) {
-		if (mc.player == null || mc.level == null) return;
-		if (mc.player.getRootVehicle() instanceof AbstractCannonCarriageEntity carriage) {
+	public static void onClientGameTick(ClientTickEvents evt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.player == null) return;
+		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
 			boolean isPitching = CBCClientCommon.PITCH_MODE.isDown();
 			carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
@@ -128,51 +134,57 @@ public class CBCClientCommon {
 
 		if (CBCClientCommon.FIRE_CONTROLLED_CANNON.isDown() && isControllingCannon(mc.player)) {
 			mc.player.handsBusy = true;
-			NetworkPlatform.sendToServer(new ServerboundFiringActionPacket());
+			CBCNetwork.INSTANCE.sendToServer(new ServerboundFiringActionPacket());
 		}
 	}
 
-	public static boolean onScrollMouse(Minecraft mc, double delta) {
-		if (mc.player == null || mc.level == null) return false;
-		if (mc.player.getRootVehicle() instanceof AbstractCannonCarriageEntity) {
+	public static void onScrollMouse(InputEvent.MouseScrollEvent evt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.player == null) return;
+		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity) {
+			double scrollDelta = evt.getScrollDelta();
 			int fireRateAdjustment = 0;
-			if (delta > 0) fireRateAdjustment = 1;
-			else if (delta < 0) fireRateAdjustment = -1;
+			if (scrollDelta > 0) fireRateAdjustment = 1;
+			else if (scrollDelta < 0) fireRateAdjustment = -1;
 			if (fireRateAdjustment != 0) {
 				mc.player.handsBusy = true;
-				NetworkPlatform.sendToServer(new ServerboundSetFireRatePacket(fireRateAdjustment));
-				return true;
+				CBCNetwork.INSTANCE.sendToServer(new ServerboundSetFireRatePacket(fireRateAdjustment));
+				if (evt.isCancelable()) evt.setCanceled(true);
 			}
 		}
-		return false;
 	}
 
-	public static float onFovModify(Minecraft mc, float oldFov) {
-		if (mc.player == null || !mc.options.getCameraType().isFirstPerson()) return oldFov;
-		return mc.options.keyUse.isDown() && isControllingCannon(mc.player) ? oldFov * 0.5f : oldFov;
+	public static void onFovModify(FOVModifierEvent evt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.player == null || !mc.options.getCameraType().isFirstPerson()) return;
+		if (mc.options.keyUse.isDown() && isControllingCannon(mc.player)) evt.setNewfov(evt.getFov() * 0.5f);
 	}
 
-	public static void onPlayerRenderPre(PoseStack stack, Player player, float partialTicks) {
-		if (player.getVehicle() instanceof AbstractPitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-			Vector3f pVec = new Vector3f(player.getPosition(partialTicks));
+	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
+		PoseStack stack = evt.getPoseStack();
+		Player player = evt.getPlayer();
+		float pt = evt.getPartialTick();
+
+		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
+			Vector3f pVec = new Vector3f(player.getPosition(pt));
 			stack.translate(-pVec.x(), -pVec.y(), -pVec.z());
 
 			BlockPos seatPos = poce.getSeatPos(player);
 			double offs = player.getEyeHeight() + player.getMyRidingOffset() - 0.15;
 			Vec3 vec = new Vec3(poce.getInitialOrientation().step()).scale(0.25);
-			Vector3f pVec1 = new Vector3f(poce.toGlobalVector(Vec3.atCenterOf(seatPos).subtract(vec).subtract(0, offs, 0), partialTicks));
+			Vector3f pVec1 = new Vector3f(poce.toGlobalVector(Vec3.atCenterOf(seatPos).subtract(vec).subtract(0, offs, 0), pt));
 			stack.translate(pVec1.x(), pVec1.y(), pVec1.z());
 
-			float yr = (-Mth.lerp(partialTicks, player.yRotO, player.getYRot()) + 90) * Mth.DEG_TO_RAD;
+			float yr = (-Mth.lerp(pt, player.yRotO, player.getYRot()) + 90) * Mth.DEG_TO_RAD;
 			Vector3f vec3 = new Vector3f(Mth.sin(yr), 0, Mth.cos(yr));
-			float xr = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+			float xr = Mth.lerp(pt, player.xRotO, player.getXRot());
 			stack.mulPose(vec3.rotationDegrees(xr));
 		}
 	}
 
 	private static boolean isControllingCannon(Entity entity) {
 		Entity vehicle = entity.getVehicle();
-		return vehicle instanceof AbstractCannonCarriageEntity || vehicle instanceof AbstractPitchOrientedContraptionEntity;
+		return vehicle instanceof CannonCarriageEntity || vehicle instanceof PitchOrientedContraptionEntity;
 	}
 	
 }

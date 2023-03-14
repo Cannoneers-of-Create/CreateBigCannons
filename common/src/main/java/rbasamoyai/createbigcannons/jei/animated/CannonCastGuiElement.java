@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import mezz.jei.api.gui.drawable.IDrawable;
-import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.CBCBlockPartials;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class CannonCastGuiElement implements IDrawable {

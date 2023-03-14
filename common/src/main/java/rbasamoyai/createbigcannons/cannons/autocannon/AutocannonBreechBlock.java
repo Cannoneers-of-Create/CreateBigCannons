@@ -31,10 +31,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<AbstractAutocannonBreechBlockEntity>, IWrenchable {
+public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<AutocannonBreechBlockEntity>, IWrenchable {
 
     public static final BooleanProperty HANDLE = BooleanProperty.create("handle");
 
@@ -49,8 +49,8 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Ab
         builder.add(HANDLE);
     }
 
-    @Override public Class<AbstractAutocannonBreechBlockEntity> getTileEntityClass() { return AbstractAutocannonBreechBlockEntity.class; }
-    @Override public BlockEntityType<? extends AbstractAutocannonBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.AUTOCANNON_BREECH.get(); }
+    @Override public Class<AutocannonBreechBlockEntity> getTileEntityClass() { return AutocannonBreechBlockEntity.class; }
+    @Override public BlockEntityType<? extends AutocannonBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.AUTOCANNON_BREECH.get(); }
 
     @Override public CannonCastShape getCannonShape() { return CannonCastShape.AUTOCANNON_BREECH.get(); }
 
@@ -82,7 +82,7 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Ab
 
         BlockState newState = state.cycle(HANDLE);
         level.setBlock(pos, newState, 3);
-        AbstractAutocannonBreechBlockEntity autocannon1 = this.getTileEntity(level, pos);
+        AutocannonBreechBlockEntity autocannon1 = this.getTileEntity(level, pos);
         if (autocannon1 != null) {
             boolean previouslyConnected = autocannon.cannonBehavior().isConnectedTo(facing);
             autocannon1.cannonBehavior().setConnectedFace(facing, previouslyConnected);
@@ -112,7 +112,7 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Ab
     @Override
     public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
         ItemStack stack = player.getItemInHand(hand);
-        if (level.getBlockEntity(pos) instanceof AbstractAutocannonBreechBlockEntity breech) {
+        if (level.getBlockEntity(pos) instanceof AutocannonBreechBlockEntity breech) {
             if (breech.getSeatColor() == null
                     && state.getValue(HANDLE)
                     && stack.getItem() instanceof BlockItem blockItem

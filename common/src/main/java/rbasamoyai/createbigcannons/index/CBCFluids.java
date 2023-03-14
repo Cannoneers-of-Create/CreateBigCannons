@@ -1,8 +1,18 @@
 package rbasamoyai.createbigcannons.index;
 
 import com.simibubi.create.AllTags;
-import com.tterrag.registrate.fabric.SimpleFlowableFluid;
+import com.tterrag.registrate.builders.Builder;
+import com.tterrag.registrate.builders.FluidBuilder;
 import com.tterrag.registrate.util.entry.FluidEntry;
+import com.tterrag.registrate.util.nullness.NonNullBiFunction;
+import io.github.fabricators_of_create.porting_lib.util.FluidAttributes;
+import com.tterrag.registrate.fabric.SimpleFlowableFluid;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariantAttributes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.material.Fluid;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
@@ -12,9 +22,9 @@ public class CBCFluids {
 			REGISTRATE.standardFluid("molten_cast_iron"/*, NoColorFluidAttributes::new*/)
 			.lang(f -> "fluid.createbigcannons.molten_cast_iron", "Molten Cast Iron")
 			.tag(AllTags.forgeFluidTag("molten_cast_iron"))
-//			.attributes(b -> b.viscosity(1250)
-//					.density(7100)
-//					.temperature(1200))
+			.attributes(b -> b.viscosity(1250)
+					.density(7100)
+					.temperature(1200))
 			.properties(p -> p.levelDecreasePerBlock(2)
 					.tickRate(25)
 					.flowSpeed(3)
@@ -65,16 +75,16 @@ public class CBCFluids {
 	
 	public static void register() {}
 	
-//	private static class NoColorFluidAttributes extends FluidVariantAttributes {
-//
-//		protected NoColorFluidAttributes(Builder builder, Fluid fluid) {
-//			super(builder, fluid);
-//		}
-//
-//		@Override
-//		public int getColor(BlockAndTintGetter level, BlockPos pos) {
-//			return 0x00ffffff;
-//		}
-//	}
+	private static class NoColorFluidAttributes extends FluidVariantAttributes {
+
+		protected NoColorFluidAttributes(Builder builder, Fluid fluid) {
+			super(builder, fluid);
+		}
+		
+		@Override
+		public int getColor(BlockAndTintGetter level, BlockPos pos) {
+			return 0x00ffffff;
+		}		
+	}
 	
 }

@@ -4,13 +4,13 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Ass
 import com.simibubi.create.content.contraptions.components.structureMovement.TranslatingContraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionLighter;
 import com.simibubi.create.foundation.utility.VecHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 public abstract class PoleContraption extends TranslatingContraption {
 
@@ -67,7 +67,7 @@ public abstract class PoleContraption extends TranslatingContraption {
 	public int initialExtensionProgress() { return this.initialExtensionProgress; }
 	public Direction orientation() { return this.orientation; }
 	
-	@Environment(EnvType.CLIENT)
+	@OnlyIn(Dist.CLIENT) // disgusting.
 	@Override
 	public ContraptionLighter<?> makeLighter() {
 		return new PoleContraptionLighter(this);

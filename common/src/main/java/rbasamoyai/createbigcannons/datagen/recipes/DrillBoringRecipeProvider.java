@@ -6,10 +6,11 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
+import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 import java.util.function.Consumer;
 
@@ -79,7 +80,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 		@Override
 		public void serializeRecipeData(JsonObject obj) {
 			obj.addProperty("input", this.input.stringForSerialization());
-			obj.addProperty("result", Registry.BLOCK.getKey(this.result).toString());
+			obj.addProperty("result", ForgeRegistries.BLOCKS.getKey(this.result).toString());
 		}
 
 		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.DRILL_BORING.get(); }

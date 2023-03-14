@@ -21,11 +21,11 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.index.CBCBlockEntities;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.CBCBlockEntities;
+import rbasamoyai.createbigcannons.CBCBlocks;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
-public class CannonDrillBlock extends DirectionalAxisKineticBlock implements ITE<AbstractCannonDrillBlockEntity> {
+public class CannonDrillBlock extends DirectionalAxisKineticBlock implements ITE<CannonDrillBlockEntity> {
 
 	public static final EnumProperty<PistonState> STATE = MechanicalPistonBlock.STATE;
 	
@@ -88,8 +88,8 @@ public class CannonDrillBlock extends DirectionalAxisKineticBlock implements ITE
 		return state.getValue(STATE) == PistonState.RETRACTED ? Shapes.or(base, this.shapesRetracted.get(state.getValue(FACING))) : base;
 	}
 
-	@Override public Class<AbstractCannonDrillBlockEntity> getTileEntityClass() { return AbstractCannonDrillBlockEntity.class; }
-	@Override public BlockEntityType<? extends AbstractCannonDrillBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_DRILL.get(); }
+	@Override public Class<CannonDrillBlockEntity> getTileEntityClass() { return CannonDrillBlockEntity.class; }
+	@Override public BlockEntityType<? extends CannonDrillBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_DRILL.get(); }
 	
 	public static int maxAllowedDrillLength() {
 		return CBCConfigs.SERVER.crafting.maxCannonDrillLength.get();

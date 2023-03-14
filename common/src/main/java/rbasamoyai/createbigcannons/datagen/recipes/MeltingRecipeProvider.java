@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.datagen.recipes;
 import com.simibubi.create.content.contraptions.processing.HeatCondition;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.DataGenerator;
 import rbasamoyai.createbigcannons.*;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -12,7 +13,7 @@ import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 
 public class MeltingRecipeProvider extends ProcessingRecipeGen {
 
-	public MeltingRecipeProvider(DataGenerator generator) {
+	public MeltingRecipeProvider(FabricDataGenerator generator) {
 		super(generator);
 	}
 

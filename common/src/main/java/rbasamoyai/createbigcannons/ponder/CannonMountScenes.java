@@ -14,12 +14,12 @@ import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
+import rbasamoyai.createbigcannons.CBCItems;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.AbstractAutocannonBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonRecoilSpringBlockEntity;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class CannonMountScenes {
 		
 		Vec3 down = util.vector.of(0, -1, 0);
 		
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("CannonYaw", Direction.WEST.toYRot());
 			tag.putFloat("CannonPitch", 0);
 		});
@@ -111,7 +111,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 2, 3), 16.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 3, 3), -8.0f);
 		scene.world.setKineticSpeed(cannonMount, -8.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("PitchSpeed", 8.0f);
 		});
 		scene.world.rotateSection(cannon, 0, 0, -30, 40);
@@ -126,7 +126,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 2, 3), 0.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 3, 3), 0.0f);
 		scene.world.setKineticSpeed(cannonMount, 0.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("PitchSpeed", 0.0f);
 		});
 		
@@ -137,7 +137,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 2, 1), 16.0f);
 		
 		scene.world.setKineticSpeed(util.select.position(2, 2, 2), -8.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("YawSpeed", -8.0f);
 		});
 		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountYaw(util.grid.at(2, 3, 2), -360, 200));
@@ -160,7 +160,7 @@ public class CannonMountScenes {
 		
 		scene.world.setKineticSpeed(util.select.layers(1, 2), 0.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 2, 2), 0.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("YawSpeed", 0.0f);
 		});
 		
@@ -187,7 +187,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 1, 3), 16.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 2, 3), -8.0f);
 		scene.world.setKineticSpeed(cannonMount, -8.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("PitchSpeed", 8.0f);
 			tag.putFloat("CannonYaw", Direction.WEST.toYRot());
 			tag.putFloat("CannonPitch", 0);
@@ -199,7 +199,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 1, 3), 0.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 2, 3), 0.0f);
 		scene.world.setKineticSpeed(cannonMount, 0.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("PitchSpeed", 0.0f);
 		});
 		
@@ -314,7 +314,7 @@ public class CannonMountScenes {
 		for (int i = 0; i < 5; ++i) {
 			scene.effects.emitParticles(emitPos, emitter, 1, 10);
 			scene.world.moveSection(autocannonBarrel, util.vector.of(0.5, 0, 0), 1);
-			scene.world.modifyTileNBT(breech, AbstractAutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
+			scene.world.modifyTileNBT(breech, AutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
 			scene.world.modifyTileNBT(spring, AutocannonRecoilSpringBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
 			scene.addInstruction(CBCAnimateBlockEntityInstruction.autocannon(util.grid.at(2, 5, 2), 5));
 			scene.addInstruction(CBCAnimateBlockEntityInstruction.autocannon(util.grid.at(3, 5, 2), 5));
@@ -339,7 +339,7 @@ public class CannonMountScenes {
 		for (int i = 0; i < 20; ++i) {
 			scene.effects.emitParticles(emitPos, emitter, 1, 10);
 			scene.world.moveSection(autocannonBarrel, util.vector.of(0.5, 0, 0), 1);
-			scene.world.modifyTileNBT(breech, AbstractAutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
+			scene.world.modifyTileNBT(breech, AutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
 			scene.world.modifyTileNBT(spring, AutocannonRecoilSpringBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
 			scene.addInstruction(CBCAnimateBlockEntityInstruction.autocannon(util.grid.at(2, 5, 2), 5));
 			scene.addInstruction(CBCAnimateBlockEntityInstruction.autocannon(util.grid.at(3, 5, 2), 5));
@@ -430,7 +430,7 @@ public class CannonMountScenes {
 		scene.idle(20);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(breechPos), Pointing.DOWN).rightClick(), 40);
 		scene.idle(30);
-		scene.world.modifyTileNBT(util.select.position(breechPos), AbstractAutocannonBreechBlockEntity.class, tag -> tag.putString("Seat", DyeColor.RED.getSerializedName()));
+		scene.world.modifyTileNBT(util.select.position(breechPos), AutocannonBreechBlockEntity.class, tag -> tag.putString("Seat", DyeColor.RED.getSerializedName()));
 		scene.idle(70);
 		scene.overlay.showText(60)
 			.text("Seats are purely cosmetic.")

@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.CBCBlockEntities;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class CannonLoaderBlock extends DirectionalAxisKineticBlock implements ITE<CannonLoaderBlockEntity> {
