@@ -65,6 +65,8 @@ public class FuzedBlockEntity extends SyncedTileEntity implements IHaveGoggleInf
 	@Override public boolean isEmpty() { return this.fuze.isEmpty(); }
 	@Override public ItemStack getItem(int slot) { return slot == 0 ? this.fuze : ItemStack.EMPTY; }
 
+	public boolean hasFuze() { return !this.fuze.isEmpty(); }
+
 	@Override
 	public ItemStack removeItem(int slot, int amount) {
 		if (this.isEmpty() || slot != 0 || amount < 1) return ItemStack.EMPTY;

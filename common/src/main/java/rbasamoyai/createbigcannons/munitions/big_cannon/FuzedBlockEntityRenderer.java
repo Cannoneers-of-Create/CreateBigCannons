@@ -23,7 +23,7 @@ public class FuzedBlockEntityRenderer extends SafeTileEntityRenderer<FuzedBlockE
 		if (Backend.canUseInstancing(blockEntity.getLevel())) return;
 		
 		Direction facing = blockEntity.getBlockState().getValue(BlockStateProperties.FACING);
-		if (!blockEntity.getFuze().isEmpty()) {
+		if (blockEntity.hasFuze()) {
 			SuperByteBuffer fuzeRender = CachedBufferer.partialFacing(CBCBlockPartials.FUZE, blockEntity.getBlockState(), facing);
 			fuzeRender.renderInto(posestack, buffers.getBuffer(RenderType.cutout()));
 		}
