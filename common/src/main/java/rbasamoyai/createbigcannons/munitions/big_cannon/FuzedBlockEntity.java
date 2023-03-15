@@ -22,7 +22,7 @@ public class FuzedBlockEntity extends SyncedTileEntity implements IHaveGoggleInf
 
 	protected ItemStack fuze = ItemStack.EMPTY;
 	
-	public FuzedBlockEntity(BlockEntityType<? extends FuzedBlockEntity> type, BlockPos pos, BlockState state) {
+	public FuzedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 	

@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.contraptions.particle.AirParticleData;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -27,18 +26,18 @@ import net.minecraft.world.phys.*;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
-public class FluidBlob extends Shrapnel {
-	
-	public static final EntityDataSerializer<FluidStack> FLUID_STACK_SERIALIZER = new EntityDataSerializer<>() {
-		@Override public void write(FriendlyByteBuf buf, FluidStack fluid) { fluid.toBuffer(buf); }
-		@Override public FluidStack read(FriendlyByteBuf buf) { return FluidStack.fromBuffer(buf); }
-		@Override public FluidStack copy(FluidStack fluid) { return fluid.copy(); }
+public abstract class FluidBlob extends Shrapnel {
+
+	public static final EntityDataSerializer<EndFluidStack> FLUID_STACK_SERIALIZER = new EntityDataSerializer<>() {
+		@Override public void write(FriendlyByteBuf buf, EndFluidStack fluid) { fluid.writeBuf(buf); }
+		@Override public EndFluidStack read(FriendlyByteBuf buf) { return EndFluidStack.readBuf(buf); }
+		@Override public EndFluidStack copy(EndFluidStack fluid) { return fluid.copy(); }
 	};
-	
+
 	private static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FluidBlob.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<FluidStack> FLUID = SynchedEntityData.defineId(FluidBlob.class, FLUID_STACK_SERIALIZER);
+	private static final EntityDataAccessor<EndFluidStack> FLUID_STACK = SynchedEntityData.defineId(FluidBlob.class, FLUID_STACK_SERIALIZER);
 	
-	public FluidBlob(EntityType<? extends FluidBlob> type, Level level) {
+	protected FluidBlob(EntityType<? extends FluidBlob> type, Level level) {
 		super(type, level);
 	}
 	
@@ -46,47 +45,41 @@ public class FluidBlob extends Shrapnel {
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(BLOB_SIZE, (byte) 0);
-		this.entityData.define(FLUID, FluidStack.EMPTY);
+		this.entityData.define(FLUID_STACK, EndFluidStack.EMPTY);
 	}
 	
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		if (!this.getFluidStack().isEmpty()) tag.put("Fluid", this.getFluidStack().writeToNBT(new CompoundTag()));
 		tag.putByte("Size", this.getBlobSize());
+		tag.put("Fluid", this.getFluidStack().writeTag(new CompoundTag()));
 	}
 	
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.setFluidBase(tag.contains("Fluid") ? FluidStack.loadFluidStackFromNBT(tag.getCompound("Fluid")) : FluidStack.EMPTY);
 		this.setBlobSize(tag.getByte("Size"));
-	}
-	
-	@Override
-	public void tick() {
-		super.tick();
-		
-		if (!this.getFluidStack().isEmpty()) {
-			Vec3 vel = this.getDeltaMovement();
-			this.level.addParticle(new FluidBlobParticleData(this.getBlobSize() / 4 + 1, this.getFluidStack().copy()), this.getX(), this.getY(), this.getZ(), vel.x, vel.y, vel.z);
-		}
-	}
-	
-	public FluidStack getFluidStack() { return this.entityData.get(FLUID); }
-	public void setFluidBase(FluidStack fluid) { this.entityData.set(FLUID, fluid); }
-	
-	public void setFluidStack(FluidStack fluid) {
-		this.setFluidBase(fluid);
-		this.setBlobSize((byte)(this.getFluidStack().getAmount() / mbPerAoeRadius()));
+		this.setFluidStack(EndFluidStack.readTag(tag.getCompound("Fluid")));
 	}
 	
 	protected void setBlobSize(byte size) {
 		this.entityData.set(BLOB_SIZE, size < 0 ? (byte) 0 : size);
 	}
-	
 	public byte getBlobSize() {
 		return this.entityData.get(BLOB_SIZE);
+	}
+
+	public void setFluidStack(EndFluidStack fstack) { this.entityData.set(FLUID_STACK, fstack); }
+	public EndFluidStack getFluidStack() { return this.entityData.get(FLUID_STACK); }
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		if (!this.getFluidStack().isEmpty()) {
+			Vec3 vel = this.getDeltaMovement();
+			this.level.addParticle(new FluidBlobParticleData(this.getBlobSize() * 0.25f + 1, this.getFluidStack().copy()), this.getX(), this.getY(), this.getZ(), vel.x, vel.y, vel.z);
+		}
 	}
 	
 	@Override
@@ -125,10 +118,6 @@ public class FluidBlob extends Shrapnel {
 	@Override public float getDamage() { return 0; }
 	@Override protected double getGravity() { return -0.3d; }
 
-	public static int mbPerAoeRadius() {
-		return CBCConfigs.SERVER.munitions.mbPerAoeRadius.get();
-	}
-
 	public static void registerDefaultBlobEffects() {
 		FluidBlobEffectRegistry.registerHitEntity(Fluids.WATER, FluidBlob::waterHitEntity);
 		FluidBlobEffectRegistry.registerHitEntity(Fluids.LAVA, FluidBlob::lavaHitEntity);
@@ -139,31 +128,31 @@ public class FluidBlob extends Shrapnel {
 		FluidBlobEffectRegistry.registerHitBlock(AllFluids.POTION.get(), FluidBlob::potionHitBlock);
 	}
 
-	public static void waterHitEntity(FluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
+	public static void waterHitEntity(EndFluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
 		Entity entity = result.getEntity();
 		entity.clearFire();
 		if (!level.isClientSide) douseFire(entity.blockPosition(), blob, level);
 	}
 
-	public static void lavaHitEntity(FluidStack ftack, FluidBlob blob, Level level, EntityHitResult result) {
+	public static void lavaHitEntity(EndFluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
 		Entity entity = result.getEntity();
 		entity.setSecondsOnFire(100);
 		if (!level.isClientSide) spawnFire(entity.blockPosition(), blob, level);
 	}
 
-	public static void potionHitEntity(FluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
+	public static void potionHitEntity(EndFluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
 		if (!level.isClientSide) spawnAreaEffectCloud(result.getEntity().blockPosition(), blob, level);
 	}
 
-	public static void waterHitBlock(FluidStack fstack, FluidBlob blob, Level level, BlockHitResult result) {
+	public static void waterHitBlock(EndFluidStack fstack, FluidBlob blob, Level level, BlockHitResult result) {
 		if (!level.isClientSide) douseFire(result.getBlockPos().relative(result.getDirection()), blob, level);
 	}
 
-	public static void lavaHitBlock(FluidStack ftack, FluidBlob blob, Level level, BlockHitResult result) {
+	public static void lavaHitBlock(EndFluidStack fstack, FluidBlob blob, Level level, BlockHitResult result) {
 		if (!level.isClientSide) spawnFire(result.getBlockPos().relative(result.getDirection()), blob, level);
 	}
 
-	public static void potionHitBlock(FluidStack fstack, FluidBlob blob, Level level, BlockHitResult result) {
+	public static void potionHitBlock(EndFluidStack fstack, FluidBlob blob, Level level, BlockHitResult result) {
 		if (!level.isClientSide) spawnAreaEffectCloud(result.getBlockPos().relative(result.getDirection()), blob, level);
 	}
 
@@ -200,7 +189,7 @@ public class FluidBlob extends Shrapnel {
 	}
 
 	public static void spawnAreaEffectCloud(BlockPos pos, FluidBlob blob, Level level) {
-		CompoundTag tag = blob.getFluidStack().getTag();
+		CompoundTag tag = blob.getFluidStack().data();
 
 		AreaEffectCloud aec = EntityType.AREA_EFFECT_CLOUD.create(level);
 		aec.setPos(Vec3.atCenterOf(pos));

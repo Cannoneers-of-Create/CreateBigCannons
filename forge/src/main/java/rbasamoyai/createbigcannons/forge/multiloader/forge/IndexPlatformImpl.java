@@ -1,12 +1,15 @@
 package rbasamoyai.createbigcannons.forge.multiloader.forge;
 
+import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
@@ -21,6 +24,11 @@ import rbasamoyai.createbigcannons.forge.cannon_control.PitchOrientedContraption
 import rbasamoyai.createbigcannons.forge.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.forge.munitions.fluid_shell.FluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 
 public class IndexPlatformImpl {
 
@@ -42,6 +50,10 @@ public class IndexPlatformImpl {
 		return new AutocannonBreechBlockEntity(type, pos, state);
 	}
 
+	public static AbstractFluidShellBlockEntity makeFluidShellBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		return new FluidShellBlockEntity(type, pos, state);
+	}
+
 	public static AbstractMountedAutocannonContraption makeAutocannon() {
 		return new MountedAutocannonContraption();
 	}
@@ -52,6 +64,10 @@ public class IndexPlatformImpl {
 
 	public static AbstractCannonCarriageEntity makeCannonCarriage(EntityType<?> type, Level level) {
 		return new CannonCarriageEntity(type, level);
+	}
+
+	public static ParticleOptions createFluidDripParticle(EndFluidStack stack) {
+		return FluidFX.getFluidParticle(new FluidStack(stack.fluid(), stack.amount(), stack.data()));
 	}
 
 }

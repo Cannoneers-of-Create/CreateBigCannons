@@ -23,7 +23,7 @@ import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockInstance;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
@@ -97,8 +97,8 @@ public class CBCBlockEntities {
 			.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL)
 			.register();
 	
-	public static final BlockEntityEntry<FluidShellBlockEntity> FLUID_SHELL = REGISTRATE
-			.tileEntity("fluid_shell", FluidShellBlockEntity::new)
+	public static final BlockEntityEntry<AbstractFluidShellBlockEntity> FLUID_SHELL = REGISTRATE
+			.tileEntity("fluid_shell", IndexPlatform::makeFluidShellBlockEntity)
 			.instance(() -> FuzedBlockInstance::new)
 			.renderer(() -> FuzedBlockEntityRenderer::new)
 			.validBlock(CBCBlocks.FLUID_SHELL)

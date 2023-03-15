@@ -1,10 +1,6 @@
-package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
+package rbasamoyai.createbigcannons.forge.munitions.fluid_shell;
 
-import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
-import com.simibubi.create.content.logistics.block.chute.ChuteBlock;
-import com.simibubi.create.content.logistics.block.chute.ChuteTileEntity;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,33 +15,42 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellProjectile;
 
 import java.util.List;
 
-public class FluidShellBlockEntity extends FuzedBlockEntity {
+public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 
 	protected FluidTank tank;
 	private LazyOptional<IFluidHandler> fluidOptional;
-	
-	public FluidShellBlockEntity(BlockEntityType<? extends FluidShellBlockEntity> type, BlockPos pos, BlockState state) {
+
+	public FluidShellBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		FluidTankTileEntity
 		this.tank = new SmartFluidTank(getFluidShellCapacity(), this::onFluidStackChanged);
 	}
-	
+
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		tag.put("FluidContent", this.tank.writeToNBT(new CompoundTag()));
 	}
-	
+
 	@Override
 	public void load(CompoundTag tag) {
 		super.load(tag);
 		this.tank.readFromNBT(tag.getCompound("FluidContent"));
 	}
-	
+
+	@Override
+	protected void setFluidShellStack(FluidShellProjectile shell) {
+		FluidStack fstack = this.tank.getFluid();
+		shell.setFluidStack(fstack.isEmpty()
+				? EndFluidStack.EMPTY
+				: new EndFluidStack(fstack.getFluid(), fstack.getAmount(), fstack.getOrCreateTag()));
+	}
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
 		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && side == this.getBlockState().getValue(BlockStateProperties.FACING) && this.fuze.isEmpty()) {
@@ -53,18 +58,18 @@ public class FluidShellBlockEntity extends FuzedBlockEntity {
 		}
 		return super.getCapability(cap, side);
 	}
-	
+
 	public static int getFluidShellCapacity() {
 		return CBCConfigs.SERVER.munitions.fluidShellCapacity.get();
 	}
-	
+
 	public LazyOptional<IFluidHandler> getFluidOptional() {
 		if (this.fluidOptional == null) {
 			this.fluidOptional = LazyOptional.of(() -> this.tank);
 		}
 		return this.fluidOptional;
 	}
-	
+
 	@Override
 	public void invalidateCaps() {
 		super.invalidateCaps();
@@ -72,19 +77,14 @@ public class FluidShellBlockEntity extends FuzedBlockEntity {
 			this.fluidOptional.invalidate();
 		}
 	}
-	
+
 	protected void onFluidStackChanged(FluidStack newStack) {
-		if (!this.hasLevel()) return;
-		if (!this.level.isClientSide) {
-			this.notifyUpdate();
-		}
+		if (this.level != null && !this.level.isClientSide) this.notifyUpdate();
 	}
-	
+
 	@Override
-	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+	protected void addFluidToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		this.containedFluidTooltip(tooltip, isPlayerSneaking, this.getFluidOptional());
-		return true;
 	}
 
 }

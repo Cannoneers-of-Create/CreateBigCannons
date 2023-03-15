@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
-import com.simibubi.create.content.contraptions.fluids.FluidFX;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
@@ -9,19 +7,20 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ParticleOptions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class FluidBlobParticle extends NoRenderParticle {
 
 	private final float scale;
-	private final FluidStack fluid;
 	private final int particleCount;
+	private final EndFluidStack fluid;
 	
-	FluidBlobParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float scale, FluidStack fluid) {
+	FluidBlobParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float scale, EndFluidStack fluid) {
 		super(level, x, y, z, dx, dy, dz);
 		this.scale = scale;
-		this.fluid = fluid;
 		this.particleCount = CBCConfigs.CLIENT.fluidBlobParticleCount.get();
 		this.lifetime = 0;
+		this.fluid = fluid;
 	}
 	
 	@Override
@@ -30,7 +29,7 @@ public class FluidBlobParticle extends NoRenderParticle {
 		
 		super.tick();
 		
-		ParticleOptions options = FluidFX.getFluidParticle(this.fluid);
+		ParticleOptions options = IndexPlatform.createFluidDripParticle(this.fluid);
 		for (int i = 0; i < this.particleCount; ++i) {
 			double rx = this.random.nextGaussian() * this.scale;
 			double ry = this.random.nextGaussian() * this.scale;
@@ -41,13 +40,14 @@ public class FluidBlobParticle extends NoRenderParticle {
 			this.level.addParticle(options, this.x + rx, this.y + ry, this.z + rz, this.xd + rdx, this.yd + rdy, this.zd + rdz);
 		}
 	}
-	
+
 	public static class Provider implements ParticleProvider<FluidBlobParticleData> {
 		private final SpriteSet sprites;
 
 		public Provider(SpriteSet sprites) {
 			this.sprites = sprites;
 		}
+
 		public Particle createParticle(FluidBlobParticleData data, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
 			return new FluidBlobParticle(level, x, y, z, dx, dy, dz, data.scale(), data.fluid());
 		}

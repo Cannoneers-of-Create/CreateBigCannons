@@ -69,7 +69,7 @@ public class CBCEntityTypes {
 			.register();
 	
 	public static final EntityEntry<FluidBlob> FLUID_BLOB = REGISTRATE
-			.entity("fluid_blob", FluidBlob::new, MobCategory.MISC)
+			.entity("fluid_blob", IndexPlatform::makeFluidBlob, MobCategory.MISC)
 			.properties(Shrapnel::build)
 			.renderer(() -> NoopRenderer::new)
 			.register();

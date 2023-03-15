@@ -1,48 +1,59 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
 import java.util.List;
 
 public class FluidShellProjectile extends FuzedBigCannonProjectile {
-	
-	protected FluidStack finalFluid = FluidStack.EMPTY;
-	
+
+	private EndFluidStack fluidStack;
+
 	public FluidShellProjectile(EntityType<? extends FluidShellProjectile> type, Level level) {
 		super(type, level);
 		this.setProjectileMass(8);
 	}
-	
-	public void setFluid(FluidStack stack) {
-		this.finalFluid = stack;
+
+	@Override
+	public void addAdditionalSaveData(CompoundTag tag) {
+		super.addAdditionalSaveData(tag);
+		tag.put("Fluid", this.fluidStack.writeTag(new CompoundTag()));
 	}
+
+	@Override
+	public void readAdditionalSaveData(CompoundTag tag) {
+		super.readAdditionalSaveData(tag);
+		this.fluidStack = EndFluidStack.readTag(tag.getCompound("Fluid"));
+	}
+
+	public void setFluidStack(EndFluidStack fstack) { this.fluidStack = fstack; }
 	
 	@Override
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
 		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
-		
-		if (!this.finalFluid.isEmpty()) {
-			int mbPerBlob = CBCConfigs.SERVER.munitions.mbPerFluidBlob.get(); 
-			int count = (int) Math.ceil((double) this.finalFluid.getAmount() / (double) mbPerBlob);
+
+		if (this.fluidStack.isEmpty()) {
+			int mbPerBlob = CBCConfigs.SERVER.munitions.mbPerFluidBlob.get();
+			byte blobSize = (byte)(mbPerBlob / (double) CBCConfigs.SERVER.munitions.mbPerAoeRadius.get());
+			int count = (int) Math.ceil(this.fluidStack.amount() / (double) mbPerBlob);
 			float spread = CBCConfigs.SERVER.munitions.fluidBlobSpread.getF();
 			List<FluidBlob> list = Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.FLUID_BLOB.get(), this.position(), this.getDeltaMovement(), count, spread, 0);
 			for (FluidBlob blob : list) {
-				FluidStack copy = this.finalFluid.copy();
-				copy.setAmount(mbPerBlob);
+				EndFluidStack copy = this.fluidStack.copy(mbPerBlob);
 				blob.setFluidStack(copy);
+				blob.setBlobSize(blobSize);
 			}
 		}
 		this.discard();

@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.index;
 
+import com.simibubi.create.content.contraptions.fluids.particle.FluidParticleData;
 import com.simibubi.create.content.contraptions.particle.ICustomParticleData;
 import com.simibubi.create.foundation.utility.Lang;
 import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
@@ -13,14 +14,13 @@ import net.minecraft.core.particles.ParticleType;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleData;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 
 import java.util.function.Supplier;
 
 public enum CBCParticleTypes {
 
     CANNON_PLUME(CannonPlumeParticleData::new),
-    FLUID_BLOB(FluidBlobParticleData::new),
+    FLUID_BLOB(FluidParticleData::new),
     CANNON_SMOKE(CannonSmokeParticleData::new);
 
     private final ParticleEntry<?> entry;

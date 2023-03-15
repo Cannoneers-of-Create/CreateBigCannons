@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.fabric.multiloader.fabric;
 
+import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
+import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -21,6 +24,11 @@ import rbasamoyai.createbigcannons.fabric.cannon_control.PitchOrientedContraptio
 import rbasamoyai.createbigcannons.fabric.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.fabric.munitions.fluid_shell.FluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 
 public class IndexPlatformImpl {
 
@@ -42,6 +50,10 @@ public class IndexPlatformImpl {
 		return new AutocannonBreechBlockEntity(type, pos, state);
 	}
 
+	public static AbstractFluidShellBlockEntity makeFluidShellBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		return new FluidShellBlockEntity(type, pos, state);
+	}
+
 	public static AbstractMountedAutocannonContraption makeAutocannon() {
 		return new MountedAutocannonContraption();
 	}
@@ -52,6 +64,10 @@ public class IndexPlatformImpl {
 
 	public static AbstractCannonCarriageEntity makeCannonCarriage(EntityType<?> type, Level level) {
 		return new CannonCarriageEntity(type, level);
+	}
+
+	public static ParticleOptions createFluidDripParticle(EndFluidStack stack) {
+		return FluidFX.getFluidParticle(new FluidStack(stack.fluid(), stack.amount(), stack.data()));
 	}
 
 }

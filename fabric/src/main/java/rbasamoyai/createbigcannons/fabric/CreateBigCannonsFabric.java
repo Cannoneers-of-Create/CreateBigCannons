@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.fabric;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
+import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBlockPartialsGen;
@@ -21,6 +22,8 @@ public class CreateBigCannonsFabric implements ModInitializer {
         CreateBigCannons.REGISTRATE.register();
         CBCNetworkFabric.init();
         FluidBlob.registerDefaultBlobEffects();
+
+        this.registerSerializers();
     }
     public static void gatherData(FabricDataGenerator gen, ExistingFileHelper helper) {
             BlockRecipeProvider.registerAll(gen);
@@ -38,4 +41,9 @@ public class CreateBigCannonsFabric implements ModInitializer {
             CBCPonderIndex.register();
             CBCPonderIndex.registerLang();
     }
+
+    private void registerSerializers() {
+        EntityDataSerializers.registerSerializer(FluidBlob.FLUID_STACK_SERIALIZER);
+    }
+
 }
