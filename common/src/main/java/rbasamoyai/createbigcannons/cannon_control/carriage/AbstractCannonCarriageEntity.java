@@ -475,13 +475,6 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 
 	@Override public Packet<?> getAddEntityPacket() { return new ClientboundAddEntityPacket(this); }
 
-	public static void build(EntityType.Builder<? extends AbstractCannonCarriageEntity> builder) {
-		builder.clientTrackingRange(8)
-				.fireImmune()
-				//.setShouldReceiveVelocityUpdates(true)
-				.sized(1.5f, 1.5f);
-	}
-
 	@Override public boolean isAttachedTo(AbstractContraptionEntity entity) { return this.cannonContraption == entity; }
 
 	@Override

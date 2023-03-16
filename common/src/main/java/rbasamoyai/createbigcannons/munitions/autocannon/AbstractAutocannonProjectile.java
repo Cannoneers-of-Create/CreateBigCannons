@@ -94,13 +94,5 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		this.setTracer(tag.getBoolean("Tracer"));
 		this.ageRemaining = tag.getInt("Age");
 	}
-
-	public static void buildAutocannon(EntityType.Builder<? extends AbstractAutocannonProjectile> builder) {
-		builder.setTrackingRange(16)
-				.setUpdateInterval(1)
-				.setShouldReceiveVelocityUpdates(true)
-				.fireImmune()
-				.sized(0.2f, 0.2f);
-	}
 	
 }

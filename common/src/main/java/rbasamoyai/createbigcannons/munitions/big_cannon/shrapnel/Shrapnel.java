@@ -103,14 +103,6 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	public static final DamageSource SHRAPNEL = new CBCDamageSource(CreateBigCannons.MOD_ID + ".shrapnel");
 	protected DamageSource getDamageSource() { return SHRAPNEL; }
 	
-	public static void build(EntityType.Builder<? extends Shrapnel> builder) {
-		builder.clientTrackingRange(3)
-				.updateInterval(20)
-				//.setShouldReceiveVelocityUpdates(true)
-				.fireImmune()
-				.sized(0.25f, 0.25f);
-	}
-	
 	@Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) { return 0.125f; }
 	
 	@Override protected float getInertia() { return 0.99f; }

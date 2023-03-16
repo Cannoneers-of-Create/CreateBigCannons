@@ -26,7 +26,7 @@ import net.minecraft.world.phys.*;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
-public abstract class FluidBlob extends Shrapnel {
+public class FluidBlob extends Shrapnel {
 
 	public static final EntityDataSerializer<EndFluidStack> FLUID_STACK_SERIALIZER = new EntityDataSerializer<>() {
 		@Override public void write(FriendlyByteBuf buf, EndFluidStack fluid) { fluid.writeBuf(buf); }
@@ -37,7 +37,7 @@ public abstract class FluidBlob extends Shrapnel {
 	private static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FluidBlob.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<EndFluidStack> FLUID_STACK = SynchedEntityData.defineId(FluidBlob.class, FLUID_STACK_SERIALIZER);
 	
-	protected FluidBlob(EntityType<? extends FluidBlob> type, Level level) {
+	public FluidBlob(EntityType<? extends FluidBlob> type, Level level) {
 		super(type, level);
 	}
 	
