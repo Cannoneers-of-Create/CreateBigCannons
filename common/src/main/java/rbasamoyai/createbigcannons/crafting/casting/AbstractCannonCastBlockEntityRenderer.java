@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.crafting.casting;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.foundation.fluid.FluidRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.tileEntity.renderer.SafeTileEntityRenderer;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
@@ -16,17 +15,16 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 import java.util.List;
 import java.util.Random;
 
-public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<AbstractCannonCastBlockEntity> {
+public abstract class AbstractCannonCastBlockEntityRenderer extends SafeTileEntityRenderer<AbstractCannonCastBlockEntity> {
 
 	private final BlockRenderDispatcher dispatcher;
 	
-	public CannonCastBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+	protected AbstractCannonCastBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 		this.dispatcher = context.getBlockRenderDispatcher();
 	}
 	
@@ -48,17 +46,16 @@ public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<Abstra
 			LerpedFloat levelLerped = te.getFluidLevel();
 			if (levelLerped != null && shape != null) {
 				float level = levelLerped.getValue(partialTicks);
-				FluidStack fstack = te.fluid.getFluid();
 
 				boolean flag = shape.isLarge();
-				float boxWidth = flag ? 2.875f : 0.875f;
+				float width = flag ? 2.875f : 0.875f;
 				float height = ((float) te.height - 0.125f) * level;
 				
-				if (height > 0.0625f && !fstack.isEmpty()) {
+				if (height > 0.0625f) {
 					ms.pushPose();
 					float f = flag ? -15 / 16f : 1 / 16f;
 					ms.translate(f, 0.0625f, f);
-					FluidRenderer.renderFluidBox(fstack, 0, 0, 0, boxWidth, height, boxWidth, buffer, ms, light, false);
+					this.renderFluidBox(te, width, height, buffer, ms, light);
 					ms.popPose();
 				}
 			}
@@ -89,6 +86,8 @@ public class CannonCastBlockEntityRenderer extends SafeTileEntityRenderer<Abstra
 		
 		ms.popPose();
 	}
+
+	protected abstract void renderFluidBox(AbstractCannonCastBlockEntity cast, float width, float height, MultiBufferSource buffers, PoseStack stack, int light);
 	
 	// Taken from GhostBlockRenderer.TransparentGhostBlockRenderer
 	private static void renderQuadList(PoseStack.Pose pose, VertexConsumer consumer, float red, float green, float blue, float alpha, List<BakedQuad> quads, int packedLight, int packedOverlay) {

@@ -1,8 +1,12 @@
 package rbasamoyai.createbigcannons.multiloader;
 
+import com.tterrag.registrate.util.nullness.NonNullFunction;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.EntityType;
@@ -65,6 +69,12 @@ public class IndexPlatform {
 
 	@ExpectPlatform
 	public static ParticleOptions createFluidDripParticle(EndFluidStack stack) {
+		throw new AssertionError();
+	}
+
+	@ExpectPlatform
+	public static NonNullSupplier<NonNullFunction<BlockEntityRendererProvider.Context,
+					BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
 		throw new AssertionError();
 	}
 

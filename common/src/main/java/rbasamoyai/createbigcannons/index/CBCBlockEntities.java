@@ -13,7 +13,6 @@ import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredCannonBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
-import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryBlockEntity;
@@ -106,7 +105,7 @@ public class CBCBlockEntities {
 	
 	public static final BlockEntityEntry<AbstractCannonCastBlockEntity> CANNON_CAST = REGISTRATE
 			.tileEntity("cannon_cast", IndexPlatform::makeCast)
-			.renderer(() -> CannonCastBlockEntityRenderer::new)
+			.renderer(IndexPlatform.getCastRenderer())
 			.validBlock(CBCBlocks.CANNON_CAST)
 			.register();
 	

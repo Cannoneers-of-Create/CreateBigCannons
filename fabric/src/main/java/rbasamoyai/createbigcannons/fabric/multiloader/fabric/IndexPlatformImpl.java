@@ -1,8 +1,12 @@
 package rbasamoyai.createbigcannons.fabric.multiloader.fabric;
 
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.EntityType;
@@ -23,12 +27,11 @@ import rbasamoyai.createbigcannons.fabric.cannon_control.MountedAutocannonContra
 import rbasamoyai.createbigcannons.fabric.cannon_control.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.fabric.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
+import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.fabric.munitions.fluid_shell.FluidShellBlockEntity;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
 public class IndexPlatformImpl {
 
@@ -68,6 +71,11 @@ public class IndexPlatformImpl {
 
 	public static ParticleOptions createFluidDripParticle(EndFluidStack stack) {
 		return FluidFX.getFluidParticle(new FluidStack(stack.fluid(), stack.amount(), stack.data()));
+	}
+
+	public static NonNullSupplier<NonNullFunction<BlockEntityRendererProvider.Context,
+			BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
+		return () -> CannonCastBlockEntityRenderer::new;
 	}
 
 }

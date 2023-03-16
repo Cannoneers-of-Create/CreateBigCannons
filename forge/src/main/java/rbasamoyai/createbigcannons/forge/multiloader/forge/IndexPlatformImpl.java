@@ -1,6 +1,10 @@
 package rbasamoyai.createbigcannons.forge.multiloader.forge;
 
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.entity.EntityType;
@@ -23,12 +27,11 @@ import rbasamoyai.createbigcannons.forge.cannon_control.MountedAutocannonContrap
 import rbasamoyai.createbigcannons.forge.cannon_control.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.forge.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntity;
+import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.forge.crafting.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.forge.munitions.fluid_shell.FluidShellBlockEntity;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
 public class IndexPlatformImpl {
 
@@ -68,6 +71,11 @@ public class IndexPlatformImpl {
 
 	public static ParticleOptions createFluidDripParticle(EndFluidStack stack) {
 		return FluidFX.getFluidParticle(new FluidStack(stack.fluid(), stack.amount(), stack.data()));
+	}
+
+	public static NonNullSupplier<NonNullFunction<BlockEntityRendererProvider.Context,
+			BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
+		return () -> CannonCastBlockEntityRenderer::new;
 	}
 
 }
