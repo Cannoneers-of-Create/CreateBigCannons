@@ -5,6 +5,8 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import mezz.jei.api.fabric.constants.FabricTypes;
+import mezz.jei.api.ingredients.IIngredientType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -77,5 +79,8 @@ public class IndexPlatformImpl {
 			BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
 		return () -> CannonCastBlockEntityRenderer::new;
 	}
+
+	@SuppressWarnings("rawtypes")
+	public static IIngredientType getFluidType() { return FabricTypes.FLUID_STACK; }
 
 }

@@ -3,8 +3,7 @@ package rbasamoyai.createbigcannons.multiloader;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import mezz.jei.api.ingredients.IIngredientType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -21,10 +20,8 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrien
 import rbasamoyai.createbigcannons.cannons.autocannon.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
 public class IndexPlatform {
 
@@ -77,5 +74,9 @@ public class IndexPlatform {
 					BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
 		throw new AssertionError();
 	}
+
+	@ExpectPlatform
+	@SuppressWarnings("rawtypes")
+	public static IIngredientType getFluidType() { throw new AssertionError(); }
 
 }

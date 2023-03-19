@@ -3,6 +3,8 @@ package rbasamoyai.createbigcannons.forge.multiloader.forge;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import mezz.jei.api.forge.ForgeTypes;
+import mezz.jei.api.ingredients.IIngredientType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -77,5 +79,8 @@ public class IndexPlatformImpl {
 			BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
 		return () -> CannonCastBlockEntityRenderer::new;
 	}
+
+	@SuppressWarnings("rawtypes")
+	public static IIngredientType getFluidType() { return ForgeTypes.FLUID_STACK; }
 
 }

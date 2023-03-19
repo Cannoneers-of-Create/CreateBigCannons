@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.utility.Components;
-import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -14,6 +13,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCGuiTextures;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 import rbasamoyai.createbigcannons.jei.animated.CannonCastGuiElement;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.addFluidTooltip;
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRenderedSlot;
@@ -40,7 +40,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 	public void setRecipe(IRecipeLayoutBuilder builder, CannonCastingRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 16, 27)
 			.setBackground(getRenderedSlot(), -1, -1)
-			.addIngredients(ForgeTypes.FLUID_STACK, recipe.ingredient().getMatchingFluidStacks().stream().map(fs -> {
+			.addIngredients(IndexPlatform.getFluidType(), recipe.ingredient().getMatchingFluidStacks().stream().map(fs -> {
 				fs.setAmount(recipe.shape().fluidSize());
 				return fs;
 			}).toList())

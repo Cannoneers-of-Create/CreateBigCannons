@@ -30,8 +30,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
@@ -41,7 +40,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteWithItemsCannon
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.multiloader.PonderPlatform;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -196,12 +195,11 @@ public class CannonCraftingScenes {
 		
 		BlockPos tankPos = util.grid.at(0, 1, 2);
 		BlockPos castPos = util.grid.at(2, 2, 2);
-		FluidStack content = new FluidStack(CBCFluids.MOLTEN_CAST_IRON.get(), 144);
 		for (int i = 0; i < 24; ++i) {
-			scene.world.modifyTileEntity(tankPos, FluidTankTileEntity.class, tank -> tank.getTankInventory()
-					.drain(144, FluidAction.EXECUTE));
-			scene.world.modifyTileEntity(castPos, AbstractCannonCastBlockEntity.class, cast1 -> cast1.getTank()
-					.fill(content, FluidAction.EXECUTE));
+			scene.world.modifyTileEntity(tankPos, FluidTankTileEntity.class, tank ->
+					PonderPlatform.drain(tank, 144, null));
+			scene.world.modifyTileEntity(castPos, AbstractCannonCastBlockEntity.class, cast1 ->
+					PonderPlatform.fillWith(cast1, CBCFluids.MOLTEN_CAST_IRON.get(), 144, Direction.UP));
 			scene.idle(5);
 		}
 		scene.idle(40);
@@ -664,8 +662,8 @@ public class CannonCraftingScenes {
 		scene.world.propagatePipeChange(util.grid.at(2, 2, 2));
 		scene.idle(20);
 		
-		scene.world.modifyTileEntity(util.grid.at(3, 1, 2), FluidTankTileEntity.class, tank -> tank.getTankInventory()
-				.fill(new FluidStack(CBCFluids.MOLTEN_CAST_IRON.get(), 8000), FluidAction.EXECUTE));
+		scene.world.modifyTileEntity(util.grid.at(3, 1, 2), FluidTankTileEntity.class, tank ->
+				PonderPlatform.fillWith(tank, CBCFluids.MOLTEN_CAST_IRON.get(), 8000, null));
 		scene.idle(20);
 		
 		scene.markAsFinished();

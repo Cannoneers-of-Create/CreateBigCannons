@@ -199,4 +199,6 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 		return recipe.ingredient().test(cController.fluid.getFluid());
 	}
 
+	public FluidTank getTank() { return this.fluid; }
+
 }
