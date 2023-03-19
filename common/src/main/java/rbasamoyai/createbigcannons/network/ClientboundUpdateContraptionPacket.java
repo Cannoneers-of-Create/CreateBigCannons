@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import org.jetbrains.annotations.Nullable;
+import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
 import java.util.concurrent.Executor;
 
@@ -52,7 +53,7 @@ public class ClientboundUpdateContraptionPacket implements RootPacket {
 
 	@Override
 	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender){
-		CBCClientHandlers.updateContraption(this);
+		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.updateContraption(this));
 	}
 	
 }

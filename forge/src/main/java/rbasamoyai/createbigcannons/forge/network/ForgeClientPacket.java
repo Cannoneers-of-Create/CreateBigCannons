@@ -1,9 +1,6 @@
 package rbasamoyai.createbigcannons.forge.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 import rbasamoyai.createbigcannons.network.RootPacket;
@@ -27,7 +24,7 @@ public class ForgeClientPacket {
 	public void handle(Supplier<NetworkEvent.Context> sup) {
 		NetworkEvent.Context ctx = sup.get();
 		ctx.enqueueWork(() -> {
-			DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> this.pkt.handle(null, ctx.getNetworkManager().getPacketListener(), null));
+			this.pkt.handle(null, ctx.getNetworkManager().getPacketListener(), null);
 		});
 		ctx.setPacketHandled(true);
 	}

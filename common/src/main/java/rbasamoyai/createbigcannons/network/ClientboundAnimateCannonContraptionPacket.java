@@ -5,6 +5,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
+import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
 import java.util.concurrent.Executor;
 
@@ -26,7 +27,7 @@ public class ClientboundAnimateCannonContraptionPacket implements RootPacket {
 
 	@Override
 	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-		CBCClientHandlers.animateCannon(this);
+		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.animateCannon(this));
 	}
 
 	public int id() { return this.id; }
