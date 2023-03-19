@@ -10,14 +10,16 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.NewRegistryEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
-import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
@@ -30,9 +32,12 @@ public class CreateBigCannonsForge {
 
         CreateBigCannons.REGISTRATE.registerEventListeners(modEventBus);
         CreateBigCannons.init();
+        CBCConfigs.registerConfigs(mlContext::registerConfig);
 
         modEventBus.addListener(this::onCommonSetup);
         modEventBus.addListener(this::onNewRegistry);
+        modEventBus.addListener(this::onLoadConfig);
+        modEventBus.addListener(this::onReloadConfig);
 
         forgeEventBus.addListener(this::onAddReloadListeners);
         forgeEventBus.addListener(this::onDatapackSync);
@@ -70,5 +75,8 @@ public class CreateBigCannonsForge {
     private void onNewRegistry(NewRegistryEvent evt) {
         CBCRegistries.init();
     }
+
+    private void onLoadConfig(ModConfigEvent.Loading evt) { CBCConfigs.onLoad(evt.getConfig()); }
+    private void onReloadConfig(ModConfigEvent.Reloading evt) { CBCConfigs.onReload(evt.getConfig()); }
 
 }

@@ -5,7 +5,6 @@ import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.*;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
@@ -34,8 +33,6 @@ public class CreateBigCannons {
 		CBCParticleTypes.register();
 		
 		CBCTags.register();
-		
-		CBCConfigs.registerConfigs(mlContext);
 
 		CBCRootNetwork.init();
 	}

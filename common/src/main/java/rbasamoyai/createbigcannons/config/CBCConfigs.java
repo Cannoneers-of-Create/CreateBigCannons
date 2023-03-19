@@ -3,20 +3,16 @@ package rbasamoyai.createbigcannons.config;
 import com.simibubi.create.foundation.block.BlockStressValues;
 import com.simibubi.create.foundation.config.ConfigBase;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
 import org.apache.commons.lang3.tuple.Pair;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CBCConfigs {
 
 	/*
@@ -44,29 +40,27 @@ public class CBCConfigs {
 		return config;
 	}
 	
-	public static void registerConfigs(ModLoadingContext context) {
+	public static void registerConfigs(BiConsumer<ModConfig.Type, ForgeConfigSpec> cons) {
 		CLIENT = register(CBCCfgClient::new, ModConfig.Type.CLIENT);
 		COMMON = register(CBCCfgCommon::new, ModConfig.Type.COMMON);
 		SERVER = register(CBCCfgServer::new, ModConfig.Type.SERVER);
 		
 		for (Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
-			context.registerConfig(pair.getKey(), pair.getValue().specification);
+			cons.accept(pair.getKey(), pair.getValue().specification);
 		
 		BlockStressValues.registerProvider(CreateBigCannons.MOD_ID, SERVER.kinetics.stress);
 	}
-	
-	@SubscribeEvent
-	public static void onLoad(ModConfigEvent.Loading event) {
+
+	public static void onLoad(ModConfig modConfig) {
 		for (ConfigBase config : CONFIGS.values())
-			if (config.specification == event.getConfig()
+			if (config.specification == modConfig
 				.getSpec())
 				config.onLoad();
 	}
 
-	@SubscribeEvent
-	public static void onReload(ModConfigEvent.Reloading event) {
+	public static void onReload(ModConfig modConfig) {
 		for (ConfigBase config : CONFIGS.values())
-			if (config.specification == event.getConfig()
+			if (config.specification == modConfig
 				.getSpec())
 				config.onReload();
 	}
