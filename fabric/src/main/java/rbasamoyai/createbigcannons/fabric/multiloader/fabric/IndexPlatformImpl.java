@@ -5,6 +5,7 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
 import mezz.jei.api.fabric.constants.FabricTypes;
 import mezz.jei.api.ingredients.IIngredientType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -82,5 +83,7 @@ public class IndexPlatformImpl {
 
 	@SuppressWarnings("rawtypes")
 	public static IIngredientType getFluidType() { return FabricTypes.FLUID_STACK; }
+
+	public static int getModGroupId() { return ItemGroupUtil.expandArrayAndGetId(); }
 
 }

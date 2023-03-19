@@ -83,4 +83,6 @@ public class IndexPlatformImpl {
 	@SuppressWarnings("rawtypes")
 	public static IIngredientType getFluidType() { return ForgeTypes.FLUID_STACK; }
 
+	public static int getModGroupId() { return -1; }
+
 }

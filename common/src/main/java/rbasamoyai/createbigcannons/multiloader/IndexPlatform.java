@@ -79,4 +79,6 @@ public class IndexPlatform {
 	@SuppressWarnings("rawtypes")
 	public static IIngredientType getFluidType() { throw new AssertionError(); }
 
+	@ExpectPlatform public static int getModGroupId() { throw new AssertionError(); }
+
 }

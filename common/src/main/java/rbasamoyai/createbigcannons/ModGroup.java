@@ -3,6 +3,10 @@ package rbasamoyai.createbigcannons;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCFluids;
+import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
@@ -10,7 +14,7 @@ import java.util.Arrays;
 
 public class ModGroup {
 	
-	public static final CreativeModeTab GROUP = new CreativeModeTab(CreateBigCannons.MOD_ID) {
+	public static final CreativeModeTab GROUP = new CreativeModeTab(IndexPlatform.getModGroupId(), CreateBigCannons.MOD_ID) {
 		@Override
 		public ItemStack makeIcon() {
 			return CBCBlocks.SOLID_SHOT.asStack();
