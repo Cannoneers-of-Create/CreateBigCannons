@@ -32,16 +32,16 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.index.CBCFluids;
-import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteWithItemsCannonBlock;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCFluids;
+import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -54,7 +54,7 @@ public class CannonCraftingScenes {
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 		
-		scene.world.modifyTileNBT(util.select.fromTo(2, 2, 2, 2, 3, 2), AbstractCannonCastBlockEntity.class, setUnfinishedCannonShape(CannonCastShape.MEDIUM.get()));
+		scene.world.modifyTileNBT(util.select.fromTo(2, 2, 2, 2, 3, 2), AbstractCannonCastBlockEntity.class, setUnfinishedCannonShape(CannonCastShape.MEDIUM));
 		
 		scene.idle(15);
 		int placeDelay = 3;
@@ -247,7 +247,7 @@ public class CannonCraftingScenes {
 		scene.world.setBlocks(util.select.fromTo(1, 2, 1, 3, 3, 3).substract(innerCast), CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), false);
 		scene.world.setBlocks(innerCast, CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.UP), false);
 		Selection centerBlocks = util.select.fromTo(1, 2, 1, 1, 3, 1);
-		scene.world.modifyTileNBT(centerBlocks, FinishedCannonCastBlockEntity.class, setFinishedCannonShape(CannonCastShape.MEDIUM.get()));
+		scene.world.modifyTileNBT(centerBlocks, FinishedCannonCastBlockEntity.class, setFinishedCannonShape(CannonCastShape.MEDIUM));
 		scene.world.modifyTileNBT(util.select.fromTo(1, 2, 1, 3, 2, 3).substract(centerBlocks), FinishedCannonCastBlockEntity.class, setCentralBlock(util.grid.at(1, 2, 1)));
 		scene.world.modifyTileNBT(util.select.fromTo(1, 3, 1, 3, 3, 3).substract(centerBlocks), FinishedCannonCastBlockEntity.class, setCentralBlock(util.grid.at(1, 3, 1)));
 		scene.idle(20);
@@ -689,7 +689,7 @@ public class CannonCraftingScenes {
 	}
 	
 	private static Consumer<CompoundTag> setUnfinishedCannonShape(CannonCastShape shape) {
-		return tag -> tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(shape).toString());
+		return tag -> tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.getKey(shape).toString());
 	}
 	
 	private static Consumer<CompoundTag> setCentralBlock(BlockPos pos) {
@@ -697,7 +697,7 @@ public class CannonCraftingScenes {
 	}
 	
 	private static Consumer<CompoundTag> setFinishedCannonShape(CannonCastShape shape) {
-		return tag -> tag.putString("RenderedShape", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(shape).toString());
+		return tag -> tag.putString("RenderedShape", CBCRegistries.CANNON_CAST_SHAPES.getKey(shape).toString());
 	}
 	
 }

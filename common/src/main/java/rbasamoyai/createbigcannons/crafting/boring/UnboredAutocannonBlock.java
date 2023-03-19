@@ -13,14 +13,12 @@ import rbasamoyai.createbigcannons.cannons.autocannon.AbstractIncompleteAutocann
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-import java.util.function.Supplier;
-
 public class UnboredAutocannonBlock extends AbstractIncompleteAutocannonBlock {
 
 	private final VoxelShaper shapes;
-	private final Supplier<CannonCastShape> cannonShape;
+	private final CannonCastShape cannonShape;
 
-	public UnboredAutocannonBlock(Properties properties, AutocannonMaterial material, VoxelShape shape, Supplier<CannonCastShape> castShape) {
+	public UnboredAutocannonBlock(Properties properties, AutocannonMaterial material, VoxelShape shape, CannonCastShape castShape) {
 		super(properties, material);
 		this.shapes = new AllShapes.Builder(shape).forDirectional();
 		this.cannonShape = castShape;
@@ -43,6 +41,6 @@ public class UnboredAutocannonBlock extends AbstractIncompleteAutocannonBlock {
 		return this.shapes.get(this.getFacing(state));
 	}
 
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape; }
 
 }

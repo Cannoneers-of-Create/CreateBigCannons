@@ -37,8 +37,8 @@ public class DrillBoringBlockRecipe implements BlockRecipe {
 
 	@Override public Block getResultBlock() { return this.result; }
 	@Override public ResourceLocation getId() { return this.id; }
-	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.DRILL_BORING.get(); }
-	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.DRILL_BORING.get(); }
+	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.DRILL_BORING; }
+	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.DRILL_BORING; }
 
 	public List<ItemStack> ingredients() { return this.input.getBlockItems(); }
 

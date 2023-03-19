@@ -188,7 +188,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 	}
 
 	public static DrillBoringBlockRecipe getBlockRecipe(BlockState block) {
-		return BlockRecipesManager.getRecipesOfType(BlockRecipeType.DRILL_BORING.get()).stream()
+		return BlockRecipesManager.getRecipesOfType(BlockRecipeType.DRILL_BORING).stream()
 				.map(DrillBoringBlockRecipe.class::cast)
 				.filter(r -> r.matches(block))
 				.findAny().orElse(null);
@@ -409,7 +409,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 					BlockEntity be1 = BlockEntity.loadStatic(BlockPos.ZERO, nextBlockInfo.state, nextBlockInfo.nbt);
 					if (be1 instanceof LayeredBigCannonBlockEntity layered1 && layered1.isLayerConnectedTo(opp, shape)
 						|| be1 instanceof ICannonBlockEntity<?> cbe1 && cbe1.cannonBehavior().isConnectedTo(opp)) {
-						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
+						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.getKey(cBlock.getCannonShape());
 						ListTag list = new ListTag();
 						list.add(StringTag.valueOf(key.toString()));
 						layerConnectionsTag.put(facing.getSerializedName(), list);
@@ -420,7 +420,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 					BlockEntity be2 = BlockEntity.loadStatic(BlockPos.ZERO, prevBlockInfo.state, prevBlockInfo.nbt);
 					if (be2 instanceof LayeredBigCannonBlockEntity layered2 && layered2.isLayerConnectedTo(facing, shape)
 						|| be2 instanceof ICannonBlockEntity<?> cbe2 && cbe2.cannonBehavior().isConnectedTo(facing)) {
-						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.get().getKey(cBlock.getCannonShape());
+						ResourceLocation key = CBCRegistries.CANNON_CAST_SHAPES.getKey(cBlock.getCannonShape());
 						ListTag list = new ListTag();
 						list.add(StringTag.valueOf(key.toString()));
 						layerConnectionsTag.put(opp.getSerializedName(), list);

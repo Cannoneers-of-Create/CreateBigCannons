@@ -78,8 +78,8 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 
 	@Override public Block getResultBlock() { return this.result; }
 	@Override public ResourceLocation getId() { return this.id; }
-	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.BUILT_UP_HEATING.get(); }
-	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.BUILT_UP_HEATING.get(); }
+	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.BUILT_UP_HEATING; }
+	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.BUILT_UP_HEATING; }
 
 	public static class Serializer implements BlockRecipeSerializer<BuiltUpHeatingRecipe> {
 		@Override

@@ -30,7 +30,10 @@ import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
 import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.*;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonRecoilSpringBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.*;
 import rbasamoyai.createbigcannons.crafting.boring.*;
 import rbasamoyai.createbigcannons.crafting.builtup.BigCannonLayerBlock;
@@ -57,8 +60,6 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStone
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlock;
-
-import java.util.function.Supplier;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
@@ -1089,7 +1090,7 @@ public class CBCBlocks {
 				.tag(BlockTags.MINEABLE_WITH_PICKAXE);
 	}
 	
-	private static BlockEntry<CannonCastMouldBlock> castMould(String name, VoxelShape blockShape, Supplier<CannonCastShape> castShape) {
+	private static BlockEntry<CannonCastMouldBlock> castMould(String name, VoxelShape blockShape, CannonCastShape castShape) {
 		return REGISTRATE.block(name + "_cast_mould", p -> new CannonCastMouldBlock(p, blockShape, castShape))
 				.transform(CBCBuilderTransformers.castMould(name))
 				.register();

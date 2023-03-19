@@ -12,17 +12,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-
-import java.util.function.Supplier;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 public class BigCannonTubeBlock extends BigCannonBaseBlock implements ITE<BigCannonBlockEntity> {
 	
 	private final VoxelShaper shapes;
-	private final Supplier<CannonCastShape> cannonShape;
+	private final CannonCastShape cannonShape;
 	
-	public BigCannonTubeBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape base) {
+	public BigCannonTubeBlock(Properties properties, BigCannonMaterial material, CannonCastShape cannonShape, VoxelShape base) {
 		super(properties, material);
 		this.shapes = new AllShapes.Builder(base).forDirectional();
 		this.cannonShape = cannonShape;
@@ -48,7 +46,7 @@ public class BigCannonTubeBlock extends BigCannonBaseBlock implements ITE<BigCan
 		return new BigCannonTubeBlock(properties, material, CannonCastShape.VERY_LARGE, Block.box(-2, 0, -2, 18, 16, 18));
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape; }
 	
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {

@@ -1,48 +1,45 @@
 package rbasamoyai.createbigcannons.base;
 
+import com.mojang.serialization.Lifecycle;
+import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
+import net.minecraft.core.WritableRegistry;
 import net.minecraft.resources.ResourceKey;
-import net.minecraftforge.registries.IForgeRegistry;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-import java.util.function.Supplier;
-
-import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
-
 public class CBCRegistries {
 
-	public static final Supplier<Registry<BlockRecipeSerializer<?>>> BLOCK_RECIPE_SERIALIZERS =
-			REGISTRATE.makeRegistry("block_recipe_serializers", BlockRecipeSerializer.class, CBCRegistries::makeRegBlockRecipeSerializer);
-	
-	public static final Supplier<Registry<BlockRecipeType<?>>> BLOCK_RECIPE_TYPES =
-			REGISTRATE.makeRegistry("block_recipe_types", BlockRecipeType.class, CBCRegistries::makeRegBlockRecipeType);
-	
-	public static final Supplier<Registry<CannonCastShape>> CANNON_CAST_SHAPES =
-			REGISTRATE.makeRegistry("cannon_cast_shapes", CannonCastShape.class, CBCRegistries::makeRegCannonCastShape);
-	
-	private static RegistryBuilder<BlockRecipeSerializer<?>> makeRegBlockRecipeSerializer() {
-		return new RegistryBuilder<BlockRecipeSerializer<?>>().allowModification();
-	}
-	
-	private static RegistryBuilder<BlockRecipeType<?>> makeRegBlockRecipeType() {
-		return new RegistryBuilder<BlockRecipeType<?>>().allowModification();
-	}
-	
-	private static RegistryBuilder<CannonCastShape> makeRegCannonCastShape() {
-		return new RegistryBuilder<CannonCastShape>().allowModification();
-	}
-	
 	public static class Keys {
 		public static final ResourceKey<Registry<BlockRecipeSerializer<?>>> BLOCK_RECIPE_SERIALIZERS = key("block_recipe_serializers");
 		public static final ResourceKey<Registry<BlockRecipeType<?>>> BLOCK_RECIPE_TYPES = key("block_recipe_types");
 		public static final ResourceKey<Registry<CannonCastShape>> CANNON_CAST_SHAPES = key("cannon_cast_shapes");
-		
+
 		private static <T> ResourceKey<Registry<T>> key(String id) { return ResourceKey.createRegistryKey(CreateBigCannons.resource(id)); }
 	}
+
+	public static MappedRegistry<BlockRecipeSerializer<?>> BLOCK_RECIPE_SERIALIZERS;
+	public static MappedRegistry<BlockRecipeType<?>> BLOCK_RECIPE_TYPES;
+	public static MappedRegistry<CannonCastShape> CANNON_CAST_SHAPES;
+
+	@SuppressWarnings("rawtypes")
+	private static <T> MappedRegistry<T> makeRegistrySimple(ResourceKey<? extends Registry<T>> key) {
+		MappedRegistry<T> registry = new MappedRegistry<>(key, Lifecycle.stable(), null);
+		WritableRegistry root = (WritableRegistry) Registry.REGISTRY;
+		root.register(key, registry, Lifecycle.stable());
+		return registry;
+	}
 	
-	public static void init() {}
+	public static void init() {
+		BLOCK_RECIPE_SERIALIZERS = makeRegistrySimple(Keys.BLOCK_RECIPE_SERIALIZERS);
+		BLOCK_RECIPE_TYPES = makeRegistrySimple(Keys.BLOCK_RECIPE_TYPES);
+		CANNON_CAST_SHAPES = makeRegistrySimple(Keys.CANNON_CAST_SHAPES);
+
+		CannonCastShape.register();
+		BlockRecipeSerializer.register();
+		BlockRecipeType.register();
+	}
 	
 }

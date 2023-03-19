@@ -312,7 +312,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		ListTag layerTag = new ListTag();
 		for (Map.Entry<CannonCastShape, Block> e : this.layeredBlocks.entrySet()) {
 			CompoundTag entryTag = new CompoundTag();
-			entryTag.putString("Shape", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(e.getKey()).toString());
+			entryTag.putString("Shape", CBCRegistries.CANNON_CAST_SHAPES.getKey(e.getKey()).toString());
 			entryTag.putString("Block", Registry.BLOCK.getKey(e.getValue()).toString());
 			layerTag.add(entryTag);
 		}
@@ -322,7 +322,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 			if (!this.layersConnectedTowards.containsKey(dir)) continue;
 			layerConnectionTag.put(dir.getSerializedName(),
 				this.layersConnectedTowards.get(dir).stream()
-				.map(CBCRegistries.CANNON_CAST_SHAPES.get()::getKey)
+				.map(CBCRegistries.CANNON_CAST_SHAPES::getKey)
 				.map(ResourceLocation::toString)
 				.map(StringTag::valueOf)
 				.collect(Collectors.toCollection(ListTag::new)));
@@ -345,7 +345,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 			if (!layerConnectionTag.contains(dir.getSerializedName())) continue;
 			ListTag connections = layerConnectionTag.getList(dir.getSerializedName(), Tag.TAG_STRING);
 			for (int i = 0; i < connections.size(); ++i) {
-				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get().get(new ResourceLocation(connections.getString(i)));
+				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(connections.getString(i)));
 				if (shape != null) this.layersConnectedTowards.put(dir, shape);
 			}
 		}		
@@ -360,7 +360,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		ListTag layers = tag.getList("Layers", Tag.TAG_COMPOUND);
 		for (int i = 0; i < layers.size(); ++i) {
 			CompoundTag entry = layers.getCompound(i);
-			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get().get(new ResourceLocation(entry.getString("Shape"))),
+			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(entry.getString("Shape"))),
 					Registry.BLOCK.get(new ResourceLocation(entry.getString("Block"))));
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;

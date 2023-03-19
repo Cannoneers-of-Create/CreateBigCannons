@@ -71,14 +71,14 @@ public class CBCJEI implements IModPlugin {
 		PackedCategory<?>
 		
 		cannon_casting = builder(CannonCastingRecipe.class)
-			.addTypedRecipes(BlockRecipeType.CANNON_CASTING.get())
+			.addTypedRecipes(BlockRecipeType.CANNON_CASTING)
 			.catalyst(CBCBlocks.CASTING_SAND::asStack)
 			.itemIcon(CBCBlocks.CASTING_SAND.get())
 			.emptyBackground(177, 103)
 			.build("cannon_casting", CannonCastingCategory::new),
 			
 		built_up_heating = builder(BuiltUpHeatingRecipe.class)
-			.addTypedRecipes(BlockRecipeType.BUILT_UP_HEATING.get())
+			.addTypedRecipes(BlockRecipeType.BUILT_UP_HEATING)
 			.catalyst(CBCBlocks.CANNON_BUILDER::asStack)
 			.catalyst(ProcessingViaFanCategory.getFan("fan_blasting"))
 			.itemIcon(CBCBlocks.CANNON_BUILDER.get())
@@ -86,7 +86,7 @@ public class CBCJEI implements IModPlugin {
 			.build("built_up_heating", BuiltUpHeatingCategory::new),
 			
 		drill_boring_blocks = builder(DrillBoringBlockRecipe.class)
-			.addTypedRecipes(BlockRecipeType.DRILL_BORING.get())
+			.addTypedRecipes(BlockRecipeType.DRILL_BORING)
 			.catalyst(CBCBlocks.CANNON_DRILL::asStack)
 			.catalyst(AllBlocks.MECHANICAL_BEARING::asStack)
 			.catalyst(AllBlocks.WINDMILL_BEARING::asStack)

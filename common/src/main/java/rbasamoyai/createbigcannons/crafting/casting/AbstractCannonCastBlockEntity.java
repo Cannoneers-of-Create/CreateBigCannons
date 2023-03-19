@@ -83,7 +83,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
 		if (this.canRenderCastModel() && this.castShape != null) {
-			tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this.castShape).toString());
+			tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.getKey(this.castShape).toString());
 		}
 		if (this.lastKnownPos != null) tag.put("LastKnownPos", NbtUtils.writeBlockPos(this.lastKnownPos));
 		
@@ -91,7 +91,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 			if (!this.structure.isEmpty()) {
 				ListTag structureTag = new ListTag();
 				for (CannonCastShape sz : this.structure) {
-					structureTag.add(StringTag.valueOf(CBCRegistries.CANNON_CAST_SHAPES.get().getKey(sz).toString()));
+					structureTag.add(StringTag.valueOf(CBCRegistries.CANNON_CAST_SHAPES.getKey(sz).toString()));
 				}
 				tag.put("Structure", structureTag);
 			}
@@ -138,15 +138,15 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		BlockPos controllerBefore = this.controllerPos;
 		int prevHeight = this.getControllerTE() == null ? 0 : this.getControllerTE().height;
 
-		this.castShape = tag.contains("Size") ? CBCRegistries.CANNON_CAST_SHAPES.get().get(new ResourceLocation(tag.getString("Size"))) : null;
+		this.castShape = tag.contains("Size") ? CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(tag.getString("Size"))) : null;
 		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
 		
 		this.structure.clear();
 		if (tag.contains("Structure")) {
 			ListTag list = tag.getList("Structure", Tag.TAG_STRING);
 			for (int i = 0; i < list.size(); ++i) {
-				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get().get(new ResourceLocation(list.getString(i)));
-				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL.get() : shape);
+				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(list.getString(i)));
+				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL : shape);
 			}
 			this.height = tag.getInt("Height");
 			this.updateFluids(tag);

@@ -148,7 +148,7 @@ public class BuiltUpHeatingRecipeProvider extends BlockRecipeProvider {
 			obj.addProperty("result", Registry.BLOCK.getKey(this.result).toString());
 		}
 
-		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.BUILT_UP_HEATING.get(); }
+		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.BUILT_UP_HEATING; }
 	}
 
 }

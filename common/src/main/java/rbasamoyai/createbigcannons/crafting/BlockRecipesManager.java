@@ -50,7 +50,7 @@ public class BlockRecipesManager {
 	@SuppressWarnings("unchecked")
 	public static <T extends BlockRecipe> void toNetworkCasted(FriendlyByteBuf buf, T recipe) {
 		BlockRecipeSerializer<T> ser = (BlockRecipeSerializer<T>) recipe.getSerializer();
-		buf.writeResourceLocation(CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().getKey(ser));
+		buf.writeResourceLocation(CBCRegistries.BLOCK_RECIPE_SERIALIZERS.getKey(ser));
 		ser.toNetwork(buf, recipe);
 	}
 	
@@ -60,9 +60,9 @@ public class BlockRecipesManager {
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation id = buf.readResourceLocation();
 			ResourceLocation type = buf.readResourceLocation();
-			BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().get(type).fromNetwork(id, buf);
+			BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get(type).fromNetwork(id, buf);
 			BLOCK_RECIPES_BY_NAME.put(id, recipe);
-			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().get(type);
+			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get(type);
 			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
 				BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
 			BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
@@ -95,9 +95,9 @@ public class BlockRecipesManager {
 					ResourceLocation id = entry.getKey();
 					JsonObject obj = el.getAsJsonObject();
 					ResourceLocation type = new ResourceLocation(obj.get("type").getAsString());
-					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get().get(type).fromJson(id, obj);
+					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get(type).fromJson(id, obj);
 					BLOCK_RECIPES_BY_NAME.put(id, recipe);
-					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get().get(type);
+					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get(type);
 					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
 						BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
 					BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);

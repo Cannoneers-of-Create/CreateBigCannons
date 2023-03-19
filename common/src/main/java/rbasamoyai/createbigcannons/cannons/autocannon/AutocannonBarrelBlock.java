@@ -41,14 +41,14 @@ public class AutocannonBarrelBlock extends AutocannonBaseBlock implements ITE<Au
     @Override public Class<AutocannonBlockEntity> getTileEntityClass() { return AutocannonBlockEntity.class; }
     @Override public BlockEntityType<? extends AutocannonBlockEntity> getTileEntityType() { return CBCBlockEntities.AUTOCANNON.get(); }
 
-    @Override public CannonCastShape getCannonShape() { return CannonCastShape.AUTOCANNON_BARREL.get(); }
+    @Override public CannonCastShape getCannonShape() { return CannonCastShape.AUTOCANNON_BARREL; }
     @Override public boolean isBreechMechanism(BlockState state) { return false; }
     @Override public boolean isComplete(BlockState state) { return true; }
 
     @Override
     public CannonCastShape getCannonShapeInLevel(LevelAccessor level, BlockState state, BlockPos pos) {
         return switch (state.getValue(BARREL_END)) {
-            case FLANGED -> CannonCastShape.AUTOCANNON_BARREL_FLANGED.get();
+            case FLANGED -> CannonCastShape.AUTOCANNON_BARREL_FLANGED;
             default -> super.getCannonShapeInLevel(level, state, pos);
         };
     }

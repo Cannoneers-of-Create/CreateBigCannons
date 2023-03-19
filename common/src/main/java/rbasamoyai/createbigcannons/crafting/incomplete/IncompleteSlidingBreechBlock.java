@@ -103,7 +103,7 @@ public class IncompleteSlidingBreechBlock extends SolidBigCannonBlock<Incomplete
 				.setValue(ALONG_FIRST, horizontal.getAxis() == Direction.Axis.Z);
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH.get(); }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH; }
 	
 	@Override public Class<IncompleteBigCannonBlockEntity> getTileEntityClass() { return IncompleteBigCannonBlockEntity.class; }
 	@Override public BlockEntityType<? extends IncompleteBigCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.INCOMPLETE_CANNON.get(); }

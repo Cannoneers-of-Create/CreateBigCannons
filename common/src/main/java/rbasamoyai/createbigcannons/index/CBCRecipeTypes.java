@@ -5,6 +5,7 @@ import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuild
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
@@ -26,18 +27,18 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	CARTRIDGE_ASSEMBLY(() -> new SimpleRecipeSerializer<>(CartridgeAssemblyRecipe::new), () -> RecipeType.CRAFTING, false);
 
 	private final ResourceLocation id;
-	private final RecipeSerializer<?> serializerObject;
+	private final Supplier<RecipeSerializer<?>> serializerObject;
 	@Nullable
 	private final RecipeType<?> typeObject;
 	private final Supplier<RecipeType<?>> type;
 
-	CBCRecipeTypes(Supplier<RecipeSerializer<?>> serializerSupplier, Supplier<RecipeType<?>> typeSupplier, boolean registerType) {
+	CBCRecipeTypes(NonNullSupplier<RecipeSerializer<?>> serializerSupplier, NonNullSupplier<RecipeType<?>> typeSupplier, boolean registerType) {
 		String name = Lang.asId(name());
 		id = Create.asResource(name);
-		serializerObject = Registry.register(Registry.RECIPE_SERIALIZER, id, serializerSupplier.get());
+		serializerObject = CreateBigCannons.REGISTRATE.simple(this.id, Registry.RECIPE_SERIALIZER_REGISTRY, serializerSupplier);
 		if (registerType) {
 			typeObject = typeSupplier.get();
-			Registry.register(Registry.RECIPE_TYPE, id, typeObject);
+			CreateBigCannons.REGISTRATE.simple(this.id, Registry.RECIPE_TYPE_REGISTRY, typeSupplier);
 			type = typeSupplier;
 		} else {
 			typeObject = null;
@@ -45,10 +46,10 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 		}
 	}
 
-	CBCRecipeTypes(Supplier<RecipeSerializer<?>> serializerSupplier) {
+	CBCRecipeTypes(NonNullSupplier<RecipeSerializer<?>> serializerSupplier) {
 		String name = Lang.asId(name());
 		id = CreateBigCannons.resource(name);
-		serializerObject = Registry.register(Registry.RECIPE_SERIALIZER, id, serializerSupplier.get());
+		serializerObject = CreateBigCannons.REGISTRATE.simple(this.id, Registry.RECIPE_SERIALIZER_REGISTRY, serializerSupplier);
 		typeObject = simpleType(id);
 		Registry.register(Registry.RECIPE_TYPE, id, typeObject);
 		type = () -> typeObject;
@@ -75,7 +76,7 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends RecipeSerializer<?>> T getSerializer() {
-		return (T) serializerObject;
+		return (T) serializerObject.get();
 	}
 	
 	@SuppressWarnings("unchecked")

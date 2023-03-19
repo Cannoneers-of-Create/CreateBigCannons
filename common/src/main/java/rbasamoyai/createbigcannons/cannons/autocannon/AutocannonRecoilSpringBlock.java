@@ -20,7 +20,7 @@ public class AutocannonRecoilSpringBlock extends AutocannonBaseBlock implements 
     @Override public Class<AutocannonRecoilSpringBlockEntity> getTileEntityClass() { return AutocannonRecoilSpringBlockEntity.class; }
     @Override public BlockEntityType<? extends AutocannonRecoilSpringBlockEntity> getTileEntityType() { return CBCBlockEntities.AUTOCANNON_RECOIL_SPRING.get(); }
 
-    @Override public CannonCastShape getCannonShape() { return CannonCastShape.AUTOCANNON_RECOIL_SPRING.get(); }
+    @Override public CannonCastShape getCannonShape() { return CannonCastShape.AUTOCANNON_RECOIL_SPRING; }
     @Override public boolean isBreechMechanism(BlockState state) { return false; }
     @Override public boolean isComplete(BlockState state) { return true; }
 

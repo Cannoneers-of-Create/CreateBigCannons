@@ -28,12 +28,11 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock implements IncompleteWithItemsCannonBlock {
 
 	private final VoxelShaper shapes;
-	private final Supplier<CannonCastShape> cannonShape;
+	private final CannonCastShape cannonShape;
 	private final NonNullSupplier<? extends ItemLike> itemSupplier;
 	private ItemLike item;
 	private List<ItemLike> requiredItems = null;
@@ -42,7 +41,7 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 	private Block resultBlock;
 
 	public IncompleteAutocannonBlock(Properties properties, AutocannonMaterial material, VoxelShape shape,
-									 Supplier<CannonCastShape> castShape, NonNullSupplier<? extends Block> completeBlockSup,
+									 CannonCastShape castShape, NonNullSupplier<? extends Block> completeBlockSup,
 									 NonNullSupplier<? extends ItemLike> item) {
 		super(properties, material);
 		this.shapes = new AllShapes.Builder(shape).forDirectional();
@@ -73,7 +72,7 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 		return this.shapes.get(this.getFacing(state));
 	}
 
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape; }
 
 	@Override
 	public List<ItemLike> requiredItems() {

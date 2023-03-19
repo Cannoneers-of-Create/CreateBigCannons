@@ -9,7 +9,6 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 import java.util.*;
-import java.util.function.Supplier;
 
 public class CBCBlockPartials {
 
@@ -113,10 +112,10 @@ public class CBCBlockPartials {
 		return SCREW_LOCK_BY_MATERIAL.getOrDefault(material, STEEL_SCREW_LOCK);
 	}
 	
-	private static PartialModel cannonCastPartial(Supplier<CannonCastShape> size, String path) {
+	private static PartialModel cannonCastPartial(CannonCastShape size, String path) {
 		PartialModel model = new PartialModel(CreateBigCannons.resource("block/" + path));
 		DEFERRED_MODEL_CALLBACKS.add(() -> {
-			CANNON_CAST_BY_SIZE.put(size.get(), model);
+			CANNON_CAST_BY_SIZE.put(size, model);
 		});
 		return model;
 	}

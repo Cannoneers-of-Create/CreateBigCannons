@@ -12,10 +12,12 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.NewRegistryEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
@@ -30,6 +32,7 @@ public class CreateBigCannonsForge {
         CreateBigCannons.init();
 
         modEventBus.addListener(this::onCommonSetup);
+        modEventBus.addListener(this::onNewRegistry);
 
         forgeEventBus.addListener(this::onAddReloadListeners);
         forgeEventBus.addListener(this::onDatapackSync);
@@ -62,6 +65,10 @@ public class CreateBigCannonsForge {
 
     private void registerSerializers() {
         EntityDataSerializers.registerSerializer(FluidBlob.FLUID_STACK_SERIALIZER);
+    }
+
+    private void onNewRegistry(NewRegistryEvent evt) {
+        CBCRegistries.init();
     }
 
 }

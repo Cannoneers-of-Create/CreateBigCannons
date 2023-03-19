@@ -82,7 +82,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 			obj.addProperty("result", Registry.BLOCK.getKey(this.result).toString());
 		}
 
-		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.DRILL_BORING.get(); }
+		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.DRILL_BORING; }
 	}
 
 }

@@ -34,7 +34,7 @@ public class BigCannonEndBlock extends SolidBigCannonBlock<BigCannonEndBlockEnti
 	
 	@Override public boolean isComplete(BlockState state) { return true; }
 	
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.CANNON_END.get(); }
+	@Override public CannonCastShape getCannonShape() { return CannonCastShape.CANNON_END; }
 
 	@Override public Class<BigCannonEndBlockEntity> getTileEntityClass() { return BigCannonEndBlockEntity.class; }
 	@Override public BlockEntityType<? extends BigCannonEndBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_END.get(); }

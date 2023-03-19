@@ -17,7 +17,7 @@ import java.util.List;
 
 public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 
-	private CannonCastShape renderedShape = CannonCastShape.VERY_SMALL.get();
+	private CannonCastShape renderedShape = CannonCastShape.VERY_SMALL;
 	private BlockPos centralBlock;
 	private BlockPos rootBlock;
 	private int height;
@@ -68,7 +68,7 @@ public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 		if (this.isCentralBlock()) {
 			tag.put("RootBlock", NbtUtils.writeBlockPos(this.getRootBlock()));
 			tag.putInt("Height", this.height);
-			tag.putString("RenderedShape", CBCRegistries.CANNON_CAST_SHAPES.get().getKey(this.renderedShape).toString());
+			tag.putString("RenderedShape", CBCRegistries.CANNON_CAST_SHAPES.getKey(this.renderedShape).toString());
 		} else {
 			tag.put("CentralBlock", NbtUtils.writeBlockPos(this.centralBlock));
 		}
@@ -80,7 +80,9 @@ public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 		this.centralBlock = tag.contains("CentralBlock") ? NbtUtils.readBlockPos(tag.getCompound("CentralBlock")) : null;
 		this.rootBlock = tag.contains("RootBlock") ? NbtUtils.readBlockPos(tag.getCompound("RootBlock")) : this.worldPosition;
 		this.height = tag.getInt("Height");
-		this.renderedShape = tag.contains("RenderedShape") ? CBCRegistries.CANNON_CAST_SHAPES.get().get(new ResourceLocation(tag.getString("RenderedShape"))) : CannonCastShape.VERY_SMALL.get();
+		this.renderedShape = tag.contains("RenderedShape")
+				? CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(tag.getString("RenderedShape")))
+				: CannonCastShape.VERY_SMALL;
 	}
 
 }

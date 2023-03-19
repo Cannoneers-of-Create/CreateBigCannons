@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.index;
 import com.simibubi.create.content.contraptions.fluids.particle.FluidParticleData;
 import com.simibubi.create.content.contraptions.particle.ICustomParticleData;
 import com.simibubi.create.foundation.utility.Lang;
-import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -30,9 +29,7 @@ public enum CBCParticleTypes {
         entry = new ParticleEntry<>(name, typeFactory);
     }
 
-    public static void register() {
-        ParticleEntry.REGISTER.register();
-    }
+    public static void register() {}
 
     @Environment(EnvType.CLIENT)
     public static void registerFactories() {
@@ -50,8 +47,6 @@ public enum CBCParticleTypes {
     }
 
     private static class ParticleEntry<D extends ParticleOptions> {
-        private static final LazyRegistrar<ParticleType<?>> REGISTER = LazyRegistrar.create(Registry.PARTICLE_TYPE, CreateBigCannons.MOD_ID);
-
         private final String name;
         private final Supplier<? extends ICustomParticleData<D>> typeFactory;
         private final ParticleType<D> object;
@@ -61,7 +56,7 @@ public enum CBCParticleTypes {
             this.typeFactory = typeFactory;
 
             object = this.typeFactory.get().createType();
-            REGISTER.register(name, () -> object);
+            CreateBigCannons.REGISTRATE.simple(name, Registry.PARTICLE_TYPE_REGISTRY, () -> this.object);
         }
 
         @Environment(EnvType.CLIENT)
@@ -69,6 +64,6 @@ public enum CBCParticleTypes {
             typeFactory.get()
                     .register(object, particles);
         }
-
     }
+
 }

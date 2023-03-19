@@ -9,20 +9,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEndBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.SolidBigCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-
-import java.util.function.Supplier;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 public class UnboredBigCannonBlock extends SolidBigCannonBlock<BigCannonEndBlockEntity> {
 
 	private final VoxelShaper shapes;
-	private final Supplier<CannonCastShape> cannonShape;
+	private final CannonCastShape cannonShape;
 	
-	public UnboredBigCannonBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape baseShape) {
+	public UnboredBigCannonBlock(Properties properties, BigCannonMaterial material, CannonCastShape cannonShape, VoxelShape baseShape) {
 		super(properties, material);
 		this.shapes = new AllShapes.Builder(baseShape).forDirectional();
 		this.cannonShape = cannonShape;
@@ -53,7 +51,7 @@ public class UnboredBigCannonBlock extends SolidBigCannonBlock<BigCannonEndBlock
 		return this.shapes.get(state.getValue(FACING));
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape; }
 	
 	@Override public boolean isComplete(BlockState state) { return false; }
 

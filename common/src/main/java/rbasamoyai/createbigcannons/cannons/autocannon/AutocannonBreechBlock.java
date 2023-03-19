@@ -52,7 +52,7 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Ab
     @Override public Class<AbstractAutocannonBreechBlockEntity> getTileEntityClass() { return AbstractAutocannonBreechBlockEntity.class; }
     @Override public BlockEntityType<? extends AbstractAutocannonBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.AUTOCANNON_BREECH.get(); }
 
-    @Override public CannonCastShape getCannonShape() { return CannonCastShape.AUTOCANNON_BREECH.get(); }
+    @Override public CannonCastShape getCannonShape() { return CannonCastShape.AUTOCANNON_BREECH; }
 
     @Override
     public boolean canConnectToSide(LevelAccessor level, BlockState state, BlockPos pos, Direction face) {

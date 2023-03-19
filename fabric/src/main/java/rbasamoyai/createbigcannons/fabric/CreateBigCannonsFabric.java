@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBlockPartialsGen;
 import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
 import rbasamoyai.createbigcannons.datagen.loot.CBCLootTableProvider;
@@ -19,6 +20,7 @@ public class CreateBigCannonsFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         CreateBigCannons.init();
+        CBCRegistries.init();
         CreateBigCannons.REGISTRATE.register();
         CBCNetworkFabric.init();
         FluidBlob.registerDefaultBlobEffects();

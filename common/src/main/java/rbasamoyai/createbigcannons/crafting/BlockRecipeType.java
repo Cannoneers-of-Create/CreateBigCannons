@@ -1,27 +1,19 @@
 package rbasamoyai.createbigcannons.crafting;
 
-import com.tterrag.registrate.AbstractRegistrate;
-import com.tterrag.registrate.builders.AbstractBuilder;
-import com.tterrag.registrate.builders.BuilderCallback;
-import com.tterrag.registrate.fabric.RegistryObject;
-import com.tterrag.registrate.util.entry.RegistryEntry;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import com.tterrag.registrate.util.nullness.NonnullType;
-import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.CBCRegistries;
+import net.minecraft.core.Registry;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 
 public interface BlockRecipeType<T extends BlockRecipe>  {
+
+	BlockRecipeType<CannonCastingRecipe> CANNON_CASTING = register("cannon_casting");
+	BlockRecipeType<BuiltUpHeatingRecipe> BUILT_UP_HEATING = register("built_up_heating");
+	BlockRecipeType<DrillBoringBlockRecipe> DRILL_BORING = register("drill_boring");
 	
-	Entry<CannonCastingRecipe> CANNON_CASTING = register("cannon_casting");
-	Entry<BuiltUpHeatingRecipe> BUILT_UP_HEATING = register("built_up_heating");
-	Entry<DrillBoringBlockRecipe> DRILL_BORING = register("drill_boring");
-	
-	private static <T extends BlockRecipe> Entry<T> register(String id) {
-		AbstractRegistrate<?> reg = CreateBigCannons.REGISTRATE;
-		return reg.entry(id, cb -> new Builder<>(reg, reg, id, cb, () -> new Simple<T>(id))).register();
+	private static <T extends BlockRecipe> BlockRecipeType<T> register(String id) {
+		return Registry.register(CBCRegistries.BLOCK_RECIPE_TYPES, id, new Simple<T>(id));
 	}
 	
 	class Simple<T extends BlockRecipe> implements BlockRecipeType<T> {
@@ -32,26 +24,6 @@ public interface BlockRecipeType<T extends BlockRecipe>  {
 		}
 		
 		@Override public String toString() { return this.id; }
-	}
-	
-	class Entry<T extends BlockRecipe> extends RegistryEntry<BlockRecipeType<T>> {
-		public Entry(AbstractRegistrate<?> owner, RegistryObject<BlockRecipeType<T>> delegate) {
-			super(owner, delegate);
-		}
-	}
-	
-	class Builder<T extends BlockRecipe, P> extends AbstractBuilder<BlockRecipeType<?>, BlockRecipeType<T>, P, Builder<T, P>> {
-		private final NonNullSupplier<BlockRecipeType<T>> factory;
-		
-		public Builder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, NonNullSupplier<BlockRecipeType<T>> factory) {
-			super(owner, parent, name, callback, CBCRegistries.Keys.BLOCK_RECIPE_TYPES);
-			this.factory = factory;
-		}
-
-		@Override protected @NonnullType BlockRecipeType<T> createEntry() { return this.factory.get(); }
-		
-		@Override public Entry<T> register() { return (Entry<T>) super.register(); }
-		@Override protected Entry<T> createEntryWrapper(RegistryObject<BlockRecipeType<T>> delegate) { return new Entry<>(this.getOwner(), delegate); }
 	}
 	
 	static void register() {}
