@@ -8,17 +8,16 @@ import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.fabric.FluidBlockHelper;
-import com.tterrag.registrate.fabric.FluidData;
-import com.tterrag.registrate.fabric.RegistryObject;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
-import com.tterrag.registrate.util.entry.RegistryEntry;
-import com.tterrag.registrate.util.nullness.*;
+import com.tterrag.registrate.util.nullness.NonNullBiFunction;
+import com.tterrag.registrate.util.nullness.NonNullConsumer;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
@@ -30,6 +29,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.base.LazySupplier;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,7 +38,7 @@ import java.util.List;
 /**
  * Copy of {@link com.tterrag.registrate.builders.FluidBuilder} to work with multiloader fluid impl
  */
-public class FluidBuilder<T extends CBCFlowingFluid, P> extends AbstractBuilder<Fluid, T, P, FluidBuilder<T, P>> {
+public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends AbstractBuilder<Fluid, T, P, FluidBuilder<T, P>> {
 	
 	public static <P> FluidBuilder<CBCFlowingFluid.Flowing, P> create(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture) {
 		return create(owner, parent, name, callback, stillTexture, flowingTexture, CBCFlowingFluid.Flowing::new);
@@ -46,24 +46,19 @@ public class FluidBuilder<T extends CBCFlowingFluid, P> extends AbstractBuilder<
 	
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> create(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
 			NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
-		FluidBuilder<T, P> ret = new FluidBuilder<>(owner, parent, name, callback, stillTexture, flowingTexture, factory)
-				.defaultLang().defaultSource().defaultBlock().defaultBucket()
-				.tag(FluidTags.WATER);
-
+		FluidBuilder<T, P> ret = IndexPlatform.createFluidBuilder(owner, parent, name, callback, stillTexture, flowingTexture, factory)
+				.defaultLang().defaultSource().defaultBlock().defaultBucket();
 		return ret;
 	}
 
-	private final ResourceLocation stillTexture;
-	private final ResourceLocation flowingTexture;
-	private final String sourceName;
-	private final String bucketName;
-	private final NonNullSupplier<FluidData.Builder> attributes;
-	private final NonNullFunction<CBCFlowingFluid.Properties, T> factory;
+	protected final ResourceLocation stillTexture;
+	protected final ResourceLocation flowingTexture;
+	protected final String sourceName;
+	protected final String bucketName;
+	protected final NonNullFunction<CBCFlowingFluid.Properties, T> factory;
 
 	@Nullable
 	private Boolean defaultSource, defaultBlock, defaultBucket;
-
-	private NonNullConsumer<FluidData.Builder> attributesCallback = $ -> {};
 	private NonNullConsumer<CBCFlowingFluid.Properties> properties;
 	@Nullable
 	private NonNullSupplier<? extends CBCFlowingFluid> source;
@@ -76,17 +71,11 @@ public class FluidBuilder<T extends CBCFlowingFluid, P> extends AbstractBuilder<
 		this.flowingTexture = flowingTexture;
 		this.sourceName = name;
 		this.bucketName = name + "_bucket";
-		this.attributes = FluidData.Builder::new;
 		this.factory = factory;
 
 		String bucketName = this.bucketName;
 		this.properties = p -> p.bucket(() -> owner.get(bucketName, Registry.ITEM_REGISTRY).get())
 				.block(() -> owner.<Block, LiquidBlock>get(name, Registry.BLOCK_REGISTRY).get());
-	}
-
-	public FluidBuilder<T, P> attributes(NonNullConsumer<FluidData.Builder> cons) {
-		attributesCallback = attributesCallback.andThen(cons);
-		return this;
 	}
 	
 	public FluidBuilder<T, P> properties(NonNullConsumer<CBCFlowingFluid.Properties> cons) {
@@ -212,24 +201,10 @@ public class FluidBuilder<T extends CBCFlowingFluid, P> extends AbstractBuilder<
 		return source.get();
 	}
 
-	private CBCFlowingFluid.Properties makeProperties() {
-		FluidData.Builder attributes = this.attributes.get();
-		RegistryEntry<Block> block = getOwner().getOptional(sourceName, Registry.BLOCK_REGISTRY);
-		attributesCallback.accept(attributes);
-		// Force the translation key after the user callback runs
-		// This is done because we need to remove the lang data generator if using the block key,
-		// and if it was possible to undo this change, it might result in the user translation getting
-		// silently lost, as there's no good way to check whether the translation key was changed.
-		// TODO improve this? // leaving in this TODO in case of changes in registrate's FluidBuilder -ritchie
-		if (block.isPresent()) {
-			attributes.translationKey(block.get().getDescriptionId());
-			setData(ProviderType.LANG, NonNullBiConsumer.noop());
-		} else {
-			attributes.translationKey(Util.makeDescriptionId("fluid", new ResourceLocation(getOwner().getModid(), sourceName)));
-		}
+	protected CBCFlowingFluid.Properties makeProperties() {
 		NonNullSupplier<? extends CBCFlowingFluid> source = this.source;
-		CBCFlowingFluid.Properties ret = new CBCFlowingFluid.Properties(source == null ? null : source::get, asSupplier(), attributes);
-		properties.accept(ret);
+		CBCFlowingFluid.Properties ret = new CBCFlowingFluid.Properties(source == null ? null : source::get, asSupplier());
+		this.properties.accept(ret);
 		return ret;
 	}
 
@@ -256,36 +231,8 @@ public class FluidBuilder<T extends CBCFlowingFluid, P> extends AbstractBuilder<
 		} else {
 			throw new IllegalStateException("Fluid must have a source version: " + getName());
 		}
-//		if (renderHandler == null) {
-//			this.setDefaultRenderHandler();
-//		}
-//		onRegister(this::registerRenderHandler);
 		return (FluidEntry<T>) super.register();
 	}
-
-	@Override
-	protected RegistryEntry<T> createEntryWrapper(RegistryObject<T> delegate) { // TODO: abstract and make impls
-		return new FluidEntry<>(getOwner(), delegate);
-	}
-
-	// Fabric stuffs, nothing called if platform is forge
-
-	public FluidBuilder<T, P> renderSprite() {
-		return this;
-	}
-
-//	@SuppressWarnings("deprecation")
-//	protected void registerRenderHandler(T entry) {
-//		EnvExecute.executeOnClient(() -> () -> {
-//			final FluidRenderHandler handler = this.renderHandler.get().create(this.stillTexture, this.flowingTexture);
-//			FluidRenderHandlerRegistry.INSTANCE.register(entry, handler);
-//			FluidRenderHandlerRegistry.INSTANCE.register(entry.getSource(), handler);
-//			ClientSpriteRegistryCallback.event(TextureAtlas.LOCATION_BLOCKS).register((atlasTexture, registry) -> {
-//				registry.register(stillTexture);
-//				registry.register(flowingTexture);
-//			});
-//		});
-//	}
 
 }
 

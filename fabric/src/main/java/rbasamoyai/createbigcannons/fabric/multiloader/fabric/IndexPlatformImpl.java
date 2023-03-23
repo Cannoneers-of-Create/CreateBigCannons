@@ -1,6 +1,8 @@
 package rbasamoyai.createbigcannons.fabric.multiloader.fabric;
 
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
+import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
@@ -8,10 +10,12 @@ import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
 import mezz.jei.api.fabric.constants.FabricTypes;
 import mezz.jei.api.ingredients.IIngredientType;
+import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -32,7 +36,10 @@ import rbasamoyai.createbigcannons.fabric.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.fabric.fluid_utils.FabricFluidBuilder;
 import rbasamoyai.createbigcannons.fabric.munitions.fluid_shell.FluidShellBlockEntity;
+import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
+import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
@@ -85,5 +92,16 @@ public class IndexPlatformImpl {
 	public static IIngredientType getFluidType() { return FabricTypes.FLUID_STACK; }
 
 	public static int getModGroupId() { return ItemGroupUtil.expandArrayAndGetId(); }
+
+	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluidBuilder(AbstractRegistrate<?> owner,
+			P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
+			NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
+		return new FabricFluidBuilder<>(owner, parent, name, callback, stillTexture, flowingTexture, factory);
+	}
+
+	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> doFluidBuilderTransforms(FluidBuilder<T, P> builder) {
+		FabricFluidBuilder<T, P> builderc = (FabricFluidBuilder<T, P>) builder;
+		return builderc.renderHandler(() -> SimpleFluidRenderHandler::new);
+	}
 
 }

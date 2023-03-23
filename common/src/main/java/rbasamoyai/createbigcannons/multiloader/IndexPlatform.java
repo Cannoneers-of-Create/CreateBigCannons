@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.multiloader;
 
+import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -9,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -21,6 +24,8 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrien
 import rbasamoyai.createbigcannons.cannons.autocannon.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
+import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
+import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
@@ -83,5 +88,17 @@ public class IndexPlatform {
 	@ExpectPlatform public static int getModGroupId() { throw new AssertionError(); }
 
 	@SuppressWarnings("unchecked") public static <T extends DataGenerator> T castGen(DataGenerator gen) { return (T) gen; }
+
+	@ExpectPlatform
+	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluidBuilder(AbstractRegistrate<?> owner,
+			P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
+			NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
+		throw new AssertionError();
+	}
+
+	@ExpectPlatform
+	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> doFluidBuilderTransforms(FluidBuilder<T, P> builder) {
+		throw new AssertionError();
+	}
 
 }

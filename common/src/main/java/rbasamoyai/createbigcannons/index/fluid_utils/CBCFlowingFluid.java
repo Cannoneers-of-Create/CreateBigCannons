@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.index.fluid_utils;
 
-import com.tterrag.registrate.fabric.FluidData;
 import com.tterrag.registrate.fabric.SimpleFlowableFluid;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -110,7 +109,7 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 		private float blastResistance = 1;
 		private int tickRate = 5;
 
-		public Properties(Supplier<? extends Fluid> still, Supplier<? extends Fluid> flowing, FluidData.Builder attributes) {
+		public Properties(Supplier<? extends Fluid> still, Supplier<? extends Fluid> flowing) {
 			this.still = still;
 			this.flowing = flowing;
 		}

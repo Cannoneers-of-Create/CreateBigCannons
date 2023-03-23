@@ -9,6 +9,7 @@ import rbasamoyai.createbigcannons.base.MoltenMetalLiquidBlock;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidEntry;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
@@ -27,6 +28,7 @@ public class CBCFluids {
 					.blastResistance(100f))
 			.source(CBCFlowingFluid.Flowing::new)
 			.block1(MoltenMetalLiquidBlock::new).build()
+			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
 	public static final FluidEntry<CBCFlowingFluid.Flowing> MOLTEN_BRONZE =
@@ -42,6 +44,7 @@ public class CBCFluids {
 					.blastResistance(100f))
 			.source(CBCFlowingFluid.Flowing::new)
 			.block1(MoltenMetalLiquidBlock::new).build()
+			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
 	public static final FluidEntry<CBCFlowingFluid.Flowing> MOLTEN_STEEL =
@@ -57,6 +60,7 @@ public class CBCFluids {
 					.blastResistance(100f))
 			.source(CBCFlowingFluid.Flowing::new)
 			.block1(MoltenMetalLiquidBlock::new).build()
+			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
 	public static final FluidEntry<CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
@@ -71,6 +75,7 @@ public class CBCFluids {
 					.blastResistance(100f))
 			.source(CBCFlowingFluid.Flowing::new)
 			.block1(MoltenMetalLiquidBlock::new).build()
+			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
 	public static void register() {}
