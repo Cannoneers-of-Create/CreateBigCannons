@@ -1,6 +1,8 @@
 package rbasamoyai.createbigcannons.datagen.loot;
 
 import com.mojang.datafixers.util.Pair;
+import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.providers.loot.RegistrateLootTableProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
@@ -17,10 +19,10 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class CBCLootTableProvider extends LootTableProvider {
+public class CBCLootTableProvider extends RegistrateLootTableProvider {
 	
-	public CBCLootTableProvider(DataGenerator gen) {
-		super(gen);
+	public CBCLootTableProvider(AbstractRegistrate<?> reg, DataGenerator gen) {
+		super(reg, gen);
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -80,5 +81,7 @@ public class IndexPlatform {
 	public static IIngredientType getFluidType() { throw new AssertionError(); }
 
 	@ExpectPlatform public static int getModGroupId() { throw new AssertionError(); }
+
+	@SuppressWarnings("unchecked") public static <T extends DataGenerator> T castGen(DataGenerator gen) { return (T) gen; }
 
 }

@@ -11,10 +11,11 @@ import net.minecraft.world.level.ItemLike;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 
-	public CBCCuttingRecipeProvider(DataGenerator gen) { super(gen); }
+	public CBCCuttingRecipeProvider(DataGenerator gen) { super(IndexPlatform.castGen(gen)); }
 
 	@Override protected IRecipeTypeInfo getRecipeType() { return AllRecipeTypes.CUTTING; }
 

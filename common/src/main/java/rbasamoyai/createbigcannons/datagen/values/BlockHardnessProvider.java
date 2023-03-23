@@ -13,8 +13,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.common.Tags;
 import org.slf4j.Logger;
+import rbasamoyai.createbigcannons.CBCTags;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -90,7 +90,7 @@ public class BlockHardnessProvider implements DataProvider {
 	}
 
 	protected void registerHardnesses() {
-		setHardness(Tags.Blocks.OBSIDIAN, 12);
+		setHardness(CBCTags.BlockCBC.OBSIDIAN, 12);
 		setHardness(Blocks.CRYING_OBSIDIAN, 12);
 		setHardness(BlockTags.ANVIL, 6);
 	}

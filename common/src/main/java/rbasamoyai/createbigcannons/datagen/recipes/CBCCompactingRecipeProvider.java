@@ -8,27 +8,29 @@ import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CBCCompactingRecipeProvider extends ProcessingRecipeGen {
 
 	public CBCCompactingRecipeProvider(DataGenerator generator) {
-		super(generator);
+		super(IndexPlatform.castGen(generator));
 	}
 	
 	@Override protected IRecipeTypeInfo getRecipeType() { return AllRecipeTypes.COMPACTING; }
 	
 	GeneratedRecipe
 	
-	PACKED_GUNPOWDER = create(CreateBigCannons.resource("packed_gunpowder"), b -> b.require(Items.GUNPOWDER)
-			.require(Items.GUNPOWDER)
-			.require(Items.GUNPOWDER)
-			.require(Items.GUNPOWDER)
-			.require(Items.GUNPOWDER)
-			.require(Items.GUNPOWDER)
+	PACKED_GUNPOWDER = create(CreateBigCannons.resource("packed_gunpowder"), b -> b.require(CBCTags.ItemCBC.GUNPOWDER)
+			.require(CBCTags.ItemCBC.GUNPOWDER)
+			.require(CBCTags.ItemCBC.GUNPOWDER)
+			.require(CBCTags.ItemCBC.GUNPOWDER)
+			.require(CBCTags.ItemCBC.GUNPOWDER)
+			.require(CBCTags.ItemCBC.GUNPOWDER)
 			.output(CBCItems.PACKED_GUNPOWDER.get())),
 	
 	FORGE_CAST_IRON_INGOT = create(CreateBigCannons.resource("forge_cast_iron_ingot"), b -> b.require(AllTags.forgeFluidTag("molten_cast_iron"), 90)
