@@ -9,11 +9,12 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class MeltingRecipeProvider extends ProcessingRecipeGen {
 
 	public MeltingRecipeProvider(DataGenerator generator) {
-		super(generator);
+		super(IndexPlatform.castGen(generator));
 	}
 
 	@Override protected IRecipeTypeInfo getRecipeType() { return CBCRecipeTypes.MELTING; }

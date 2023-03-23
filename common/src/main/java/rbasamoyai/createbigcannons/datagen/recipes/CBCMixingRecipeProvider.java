@@ -13,11 +13,12 @@ import net.minecraft.world.item.Items;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CBCMixingRecipeProvider extends ProcessingRecipeGen {
 
 	public CBCMixingRecipeProvider(DataGenerator gen) {
-		super(gen);
+		super(IndexPlatform.castGen(gen));
 	}
 	
 	@Override protected IRecipeTypeInfo getRecipeType() { return AllRecipeTypes.MIXING; }

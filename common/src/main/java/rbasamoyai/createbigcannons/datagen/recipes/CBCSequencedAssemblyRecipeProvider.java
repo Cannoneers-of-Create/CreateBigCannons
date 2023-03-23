@@ -6,16 +6,16 @@ import com.simibubi.create.content.contraptions.components.saw.CuttingRecipe;
 import com.simibubi.create.content.contraptions.itemAssembly.SequencedAssemblyRecipeBuilder;
 import com.simibubi.create.foundation.data.recipe.CreateRecipeProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.common.Tags;
-import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import java.util.function.UnaryOperator;
 
 public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 
-	public CBCSequencedAssemblyRecipeProvider(DataGenerator gen) { super(gen); }
+	public CBCSequencedAssemblyRecipeProvider(DataGenerator gen) { super(IndexPlatform.castGen(gen)); }
 
 	@Override public String getName() { return "Create Big Cannons - sequenced assembly recipes"; }
 
@@ -24,7 +24,7 @@ public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 	FILLING_AUTOCANNON_CARTRIDGE = create("filling_autocannon_cartridge", b -> b.require(CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.get())
 			.transitionTo(CBCItems.PARTIALLY_FILLED_AUTOCANNON_CARTRIDGE.get())
 			.loops(3)
-			.addStep(DeployerApplicationRecipe::new, rb -> rb.require(Tags.Items.GUNPOWDER))
+			.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCTags.ItemCBC.GUNPOWDER))
 			.addOutput(CBCItems.FILLED_AUTOCANNON_CARTRIDGE.get(), 1)),
 
 	PRESSING_AUTOCANNON_CARTRIDGE = create("pressing_autocannon_cartridge", b -> b.require(CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get())

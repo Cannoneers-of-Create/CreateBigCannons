@@ -27,7 +27,9 @@ public class CBCTags {
 			DEFLECTS_SHOTS = makeTag("deflects_shots"),
 			DOESNT_DEFLECT_SHOTS = makeTag("doesnt_deflect_shots"),
 			BOUNCES_SHOTS = makeTag("bounces_shots"),
-			DOESNT_BOUNCE_SHOTS = makeTag("doesnt_bounce_shots");
+			DOESNT_BOUNCE_SHOTS = makeTag("doesnt_bounce_shots"),
+			// Datagen tags
+			OBSIDIAN = commonTag("obsidian", "obsidian", "obsidian" /* No Fabric c: tag */);
 		
 		public static TagKey<Block> makeTag(String path) {
 			TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, CreateBigCannons.resource(path));
@@ -79,7 +81,17 @@ public class CBCTags {
 			BLOCK_BRONZE = commonTag("block_bronze", "storage_blocks/bronze", "bronze_blocks"),
 			NUGGET_STEEL = commonTag("nugget_steel", "nuggets/steel", "steel_blocks"),
 			INGOT_STEEL = commonTag("ingot_steel", "ingots/steel", "steel_ingots"),
-			BLOCK_STEEL = commonTag("block_steel", "storage_blocks/steel", "steel_blocks");
+			BLOCK_STEEL = commonTag("block_steel", "storage_blocks/steel", "steel_blocks"),
+
+			// Crafting tags
+			INGOT_IRON = commonTag("ingot_iron", "ingots/iron", "iron_ingots"),
+			NUGGET_IRON = commonTag("nugget_iron", "nuggets/iron", "iron_nuggets"),
+			SHEET_IRON = commonTag("sheet_iron", "plate/iron", "iron_plates"),
+			GUNPOWDER = commonTag("gunpowder", "gunpowder", "gunpowder" /* No fabric c: tag */),
+			GEMS_QUARTZ = commonTag("gems_quartz", "gems/quartz", "quartz"),
+			DUSTS_REDSTONE = commonTag("dusts_redstone", "dusts/redstone", "redstone_dusts"),
+			STONE = commonTag("stone", "stone", "stone");
+
 		
 		public static TagKey<Item> makeTag(String loc) {
 			TagKey<Item> tag = TagKey.create(Registry.ITEM_REGISTRY, CreateBigCannons.resource(loc));
