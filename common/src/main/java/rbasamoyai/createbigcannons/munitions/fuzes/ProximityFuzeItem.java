@@ -22,11 +22,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 
@@ -98,7 +98,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 				tag.putInt("DetonationDistance", 1);
 			}
 			int dist = tag.getInt("DetonationDistance");
-			NetworkHooks.openGui((ServerPlayer) player, this, buf -> {
+			CBCMenuTypes.SET_PROXIMITY_FUZE.open((ServerPlayer) player, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(dist);
 				buf.writeItem(new ItemStack(this));
 			});

@@ -9,7 +9,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public class CannonCastGuiElement implements IDrawable {
 
-	private CannonCastShape currentShape = CannonCastShape.VERY_SMALL.get();
+	private CannonCastShape currentShape = CannonCastShape.VERY_SMALL;
 	
 	@Override public int getWidth() { return 50; }
 	@Override public int getHeight() { return 50; }

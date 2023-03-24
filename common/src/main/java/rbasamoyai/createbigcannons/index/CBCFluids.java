@@ -103,6 +103,6 @@ public class CBCFluids {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <S extends AbstractRegistrate<S>> S regSelf(AbstractRegistrate<?> reg) { return (S) reg; }
+	private static <S> S regSelf(AbstractRegistrate<?> reg) { return (S) reg; }
 
 }

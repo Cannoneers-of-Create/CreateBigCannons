@@ -9,15 +9,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CannonCarriageBlockEntity extends SyncedTileEntity {
 
@@ -69,7 +69,7 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity {
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
 		Block block = this.level.getBlockState(pos).getBlock();
 		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
-		if (block instanceof AutocannonBlock) return new AbstractMountedAutocannonContraption();
+		if (block instanceof AutocannonBlock) return IndexPlatform.makeAutocannon();
 		return null;
 	}
 

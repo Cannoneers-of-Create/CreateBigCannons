@@ -8,7 +8,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
-import rbasamoyai.createbigcannons.CBCMenuTypes;
+import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 
 public class TimedFuzeContainer extends AbstractContainerMenu {
 

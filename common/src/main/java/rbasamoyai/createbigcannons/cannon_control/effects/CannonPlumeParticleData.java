@@ -4,11 +4,10 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
@@ -42,6 +41,8 @@ public class CannonPlumeParticleData implements ParticleOptions, ICustomParticle
 	}
 
 	public CannonPlumeParticleData() { this(0); };
+
+	public float scale() { return this.scale; }
 
 
 	@Override
