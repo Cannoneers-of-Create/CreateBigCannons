@@ -254,7 +254,7 @@
   "item.createbigcannons.timed_fuze.tooltip.condition1": "Clic derecho",
   "item.createbigcannons.timed_fuze.tooltip.condition2": "Detonacion",
   "item.createbigcannons.timed_fuze.tooltip.summary": "Detona después de un _tiempo establecido_ desde el lanzamiento.",
-  "itemGroup.createbigcannons": "Create Big Cannons"
+  "itemGroup.createbigcannons": "Create Big Cannons",
   "recipe.createbigcannons.added_casting_time": "Tiempo de enfriamiento: %ss",
   "recipe.createbigcannons.built_up_heating": "Construcción del cañon",
   "recipe.createbigcannons.cannon_casting": "Fundición",
