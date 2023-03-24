@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "createbigcannons:item/autocannon_cartridge",
+	"textures": {
+		"0": "createbigcannons:item/autocannon_cartridge",
+		"particle": "createbigcannons:item/autocannon_cartridge"
+	},
+	"elements": [
+		{
+			"from": [7, 7, 8],
+			"to": [9, 9, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [2, 4, 4, 6], "rotation": 180, "texture": "#0"},
+				"east": {"uv": [0, 10, 2, 16], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [2, 2, 4, 4], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [0, 10, 2, 16], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [0, 10, 2, 16], "texture": "#0"},
+				"down": {"uv": [0, 10, 2, 16], "rotation": 180, "texture": "#0"}
+			}
+		}
+	]
+}

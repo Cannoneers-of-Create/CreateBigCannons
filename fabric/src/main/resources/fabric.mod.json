@@ -12,7 +12,7 @@
     "sources": "https://github.com/rbasamoyai/CreateBigCannons"
   },
   "license": "MIT",
-  "icon": "assets/createbigcannons/icon.png",
+  "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [

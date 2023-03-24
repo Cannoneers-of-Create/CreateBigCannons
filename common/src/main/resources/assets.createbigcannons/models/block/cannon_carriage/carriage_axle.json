@@ -1,0 +1,37 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "createbigcannons:block/cannon_carriage/textures",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "#axis",
+		"1": "#axis_top"
+	},
+	"elements": [
+		{
+			"name": "cube026",
+			"from": [8, 6, 6],
+			"to": [20, 10, 10],
+			"faces": {
+				"north": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"east": {"uv": [6, 6, 10, 10], "texture": "#1"},
+				"south": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [0, 0, 0, 0], "texture": "#1"},
+				"up": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#0"}
+			}
+		},
+		{
+			"name": "cube027",
+			"from": [-4, 6, 6],
+			"to": [8, 10, 10],
+			"faces": {
+				"north": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"east": {"uv": [0, 0, 0, 0], "texture": "#1"},
+				"south": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"west": {"uv": [6, 6, 10, 10], "texture": "#1"},
+				"up": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#0"}
+			}
+		}
+	]
+}

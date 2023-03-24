@@ -35,10 +35,10 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	CBCRecipeTypes(NonNullSupplier<RecipeSerializer<?>> serializerSupplier, NonNullSupplier<RecipeType<?>> typeSupplier, boolean registerType) {
 		String name = Lang.asId(name());
 		id = Create.asResource(name);
-		serializerObject = CreateBigCannons.REGISTRATE.simple(this.id, Registry.RECIPE_SERIALIZER_REGISTRY, serializerSupplier);
+		serializerObject = CreateBigCannons.REGISTRATE.simple(name, Registry.RECIPE_SERIALIZER_REGISTRY, serializerSupplier);
 		if (registerType) {
 			typeObject = typeSupplier.get();
-			CreateBigCannons.REGISTRATE.simple(this.id, Registry.RECIPE_TYPE_REGISTRY, typeSupplier);
+			CreateBigCannons.REGISTRATE.simple(name, Registry.RECIPE_TYPE_REGISTRY, typeSupplier);
 			type = typeSupplier;
 		} else {
 			typeObject = null;
@@ -49,7 +49,7 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	CBCRecipeTypes(NonNullSupplier<RecipeSerializer<?>> serializerSupplier) {
 		String name = Lang.asId(name());
 		id = CreateBigCannons.resource(name);
-		serializerObject = CreateBigCannons.REGISTRATE.simple(this.id, Registry.RECIPE_SERIALIZER_REGISTRY, serializerSupplier);
+		serializerObject = CreateBigCannons.REGISTRATE.simple(name, Registry.RECIPE_SERIALIZER_REGISTRY, serializerSupplier);
 		typeObject = simpleType(id);
 		Registry.register(Registry.RECIPE_TYPE, id, typeObject);
 		type = () -> typeObject;

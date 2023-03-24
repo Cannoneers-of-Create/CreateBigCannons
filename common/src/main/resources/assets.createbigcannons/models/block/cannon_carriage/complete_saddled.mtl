@@ -1,0 +1,30 @@
+# Made in Blockbench 4.5.2
+newmtl Cannon_Carriage_Front
+map_Kd #front
+
+newmtl Cannon_Carriage_Side
+map_Kd #side
+
+newmtl Cannon_Carriage_Back
+map_Kd #back
+
+newmtl Cannon_Carriage_Top
+map_Kd #top
+
+newmtl Cannon_Carriage_Bottom
+map_Kd #bottom
+
+newmtl Cannon_Carriage_Block
+map_Kd #block
+
+newmtl Cannon_Carriage_Wheel
+map_Kd #wheel
+
+newmtl Cannon_Carriage_Axis
+map_Kd #axis
+
+newmtl Cannon_Carriage_Axis_Top
+map_Kd #axis_top
+
+newmtl Cannon_Carriage_Saddle
+map_Kd #saddle

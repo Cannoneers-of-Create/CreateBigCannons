@@ -1,0 +1,23 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "createbigcannons:block/cannon_mount/yaw_axis",
+		"1": "createbigcannons:block/cannon_mount/yaw_axis_top"
+	},
+	"elements": [
+		{
+			"from": [6, 6, 8],
+			"to": [10, 10, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [6, 6, 10, 10], "texture": "#1"},
+				"east": {"uv": [6, 0, 10, 8], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [6, 6, 10, 10], "texture": "#1"},
+				"west": {"uv": [6, 0, 10, 8], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [6, 0, 10, 8], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [6, 0, 10, 8], "texture": "#0"}
+			}
+		}
+	]
+}

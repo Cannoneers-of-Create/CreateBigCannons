@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "createbigcannons:block/fuze"
+	},
+	"elements": [
+		{
+			"from": [7, 7, 16],
+			"to": [9, 9, 17],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
+			"faces": {
+				"north": {"uv": [4, 0, 6, 2], "texture": "#0"},
+				"east": {"uv": [2, 0, 4, 1], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [0, 0, 2, 2], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [2, 0, 4, 1], "rotation": 90, "texture": "#0"},
+				"up": {"uv": [2, 0, 4, 1], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [2, 0, 4, 1], "texture": "#0"}
+			}
+		}
+	]
+}

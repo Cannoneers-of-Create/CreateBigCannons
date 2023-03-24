@@ -1,0 +1,77 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"1": "createbigcannons:block/cannon_mount/cannon_mount_side_shaft",
+		"3": "createbigcannons:block/cannon_mount/cannon_mount_top",
+		"4": "createbigcannons:block/pole_contraption_nook",
+		"5": "createbigcannons:block/cannon_mount/cannon_mount_firing",
+		"6": "createbigcannons:block/cannon_mount/cannon_mount_toggle",
+		"particle": "createbigcannons:block/cannon_mount/cannon_mount_top"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 14],
+			"to": [16, 14, 16],
+			"faces": {
+				"north": {"uv": [0, 2, 16, 16], "texture": "#4"},
+				"east": {"uv": [0, 2, 2, 16], "texture": "#1"},
+				"south": {"uv": [0, 2, 16, 16], "texture": "#5"},
+				"west": {"uv": [14, 2, 16, 16], "texture": "#1"},
+				"down": {"uv": [0, 0, 16, 2], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [16, 14, 2],
+			"faces": {
+				"north": {"uv": [0, 2, 16, 16], "texture": "#6"},
+				"east": {"uv": [14, 2, 16, 16], "texture": "#1"},
+				"south": {"uv": [0, 2, 16, 16], "texture": "#4"},
+				"west": {"uv": [0, 2, 2, 16], "texture": "#1"},
+				"down": {"uv": [0, 14, 16, 16], "texture": "#1"}
+			}
+		},
+		{
+			"from": [1, 1, 2],
+			"to": [15, 14, 14],
+			"faces": {
+				"east": {"uv": [2, 2, 14, 15], "texture": "#1"},
+				"west": {"uv": [2, 2, 14, 15], "texture": "#1"},
+				"down": {"uv": [1, 2, 15, 14], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 14, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 2], "texture": "#6"},
+				"east": {"uv": [0, 0, 16, 2], "texture": "#1"},
+				"south": {"uv": [0, 0, 16, 2], "texture": "#5"},
+				"west": {"uv": [0, 0, 16, 2], "texture": "#1"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#3"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#4"}
+			}
+		},
+		{
+			"from": [0, 0, 2],
+			"to": [2, 2, 14],
+			"faces": {
+				"east": {"uv": [2, 14, 14, 16], "texture": "#4"},
+				"west": {"uv": [2, 14, 14, 16], "texture": "#1"},
+				"up": {"uv": [0, 2, 2, 14], "texture": "#4"},
+				"down": {"uv": [0, 2, 2, 14], "texture": "#1"}
+			}
+		},
+		{
+			"from": [14, 0, 2],
+			"to": [16, 2, 14],
+			"faces": {
+				"east": {"uv": [2, 14, 14, 16], "texture": "#1"},
+				"west": {"uv": [2, 14, 14, 16], "texture": "#4"},
+				"up": {"uv": [14, 2, 16, 14], "texture": "#4"},
+				"down": {"uv": [14, 2, 16, 14], "texture": "#1"}
+			}
+		}
+	]
+}
