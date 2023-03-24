@@ -19,17 +19,19 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
+import java.util.function.Supplier;
+
 public class CannonCastMouldBlock extends Block {
 
 	public static final BooleanProperty SAND = BooleanProperty.create("sand");
 	private final VoxelShape noSandShape;
-	private final CannonCastShape size;
+	private final Supplier<CannonCastShape> cannonShape;
 	
-	public CannonCastMouldBlock(Properties properties, VoxelShape noSandShape, CannonCastShape size) {
+	public CannonCastMouldBlock(Properties properties, VoxelShape noSandShape, Supplier<CannonCastShape> cannonShape) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(SAND, false));
 		this.noSandShape = noSandShape;
-		this.size = size;
+		this.cannonShape = cannonShape;
 	}
 	
 	@Override
@@ -49,7 +51,7 @@ public class CannonCastMouldBlock extends Block {
 			if (this.isSurroundingAreaCompleteForTransformation(state, level, pos)) {
 				level.setBlock(pos, CBCBlocks.CANNON_CAST.getDefaultState(), 11);
 				if (!level.isClientSide) {
-					if (level.getBlockEntity(pos) instanceof AbstractCannonCastBlockEntity cast) cast.initializeCastMultiblock(this.size);
+					if (level.getBlockEntity(pos) instanceof AbstractCannonCastBlockEntity cast) cast.initializeCastMultiblock(this.cannonShape.get());
 					if (!player.isCreative()) player.addItem(new ItemStack(this.asItem()));
 				}
 				level.playSound(player, pos, SoundEvents.SAND_PLACE, SoundSource.PLAYERS, 1.0f, 0.0f);
@@ -73,7 +75,7 @@ public class CannonCastMouldBlock extends Block {
 	}
 	
 	protected boolean isSurroundingAreaCompleteForTransformation(BlockState state, Level level, BlockPos pos) {
-		return !this.size.isLarge() || BlockPos.betweenClosedStream(pos.offset(-1, 0, -1), pos.offset(1, 0, 1)).filter(p -> !pos.equals(p)).map(level::getBlockState).allMatch(CBCBlocks.CASTING_SAND::has);
+		return !this.cannonShape.get().isLarge() || BlockPos.betweenClosedStream(pos.offset(-1, 0, -1), pos.offset(1, 0, 1)).filter(p -> !pos.equals(p)).map(level::getBlockState).allMatch(CBCBlocks.CASTING_SAND::has);
 	}
 	
 }

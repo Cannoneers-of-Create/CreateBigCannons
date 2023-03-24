@@ -11,24 +11,26 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
+import java.util.function.Supplier;
+
 public class BigCannonLayerBlock extends BigCannonBaseBlock implements ITE<LayeredBigCannonBlockEntity> {
 
-	private final CannonCastShape shape;
+	private final Supplier<CannonCastShape> cannonShape;
 	
-	public BigCannonLayerBlock(Properties properties, BigCannonMaterial material, CannonCastShape shape) {
+	public BigCannonLayerBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> shape) {
 		super(properties, material);
-		this.shape = shape;
+		this.cannonShape = shape;
 	}
 	
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean dropItems) {
 		if (level.getBlockEntity(pos) instanceof LayeredBigCannonBlockEntity layered) {
 			layered.setBaseMaterial(this.getCannonMaterial());
-			layered.setLayer(this.shape, this);
+			layered.setLayer(this.cannonShape.get(), this);
 		}
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return this.shape; }
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
 	@Override public BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return BigCannonEnd.CLOSED; }
 	@Override public boolean isComplete(BlockState state) { return false; }
 	

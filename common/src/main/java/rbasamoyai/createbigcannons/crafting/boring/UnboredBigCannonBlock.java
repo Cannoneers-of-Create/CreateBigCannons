@@ -15,35 +15,37 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.SolidBigCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
+import java.util.function.Supplier;
+
 public class UnboredBigCannonBlock extends SolidBigCannonBlock<BigCannonEndBlockEntity> {
 
 	private final VoxelShaper shapes;
-	private final CannonCastShape cannonShape;
+	private final Supplier<CannonCastShape> cannonShape;
 	
-	public UnboredBigCannonBlock(Properties properties, BigCannonMaterial material, CannonCastShape cannonShape, VoxelShape baseShape) {
+	public UnboredBigCannonBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape baseShape) {
 		super(properties, material);
 		this.shapes = new AllShapes.Builder(baseShape).forDirectional();
 		this.cannonShape = cannonShape;
 	}
 	
 	public static UnboredBigCannonBlock verySmall(Properties properties, BigCannonMaterial material) {
-		return new UnboredBigCannonBlock(properties, material, CannonCastShape.VERY_SMALL, box(2, 0, 2, 14, 16, 14));
+		return new UnboredBigCannonBlock(properties, material, () -> CannonCastShape.VERY_SMALL, box(2, 0, 2, 14, 16, 14));
 	}
 
 	public static UnboredBigCannonBlock small(Properties properties, BigCannonMaterial material) {
-		return new UnboredBigCannonBlock(properties, material, CannonCastShape.SMALL, box(1, 0, 1, 15, 16, 15));
+		return new UnboredBigCannonBlock(properties, material, () -> CannonCastShape.SMALL, box(1, 0, 1, 15, 16, 15));
 	}
 	
 	public static UnboredBigCannonBlock medium(Properties properties, BigCannonMaterial material) {
-		return new UnboredBigCannonBlock(properties, material, CannonCastShape.MEDIUM, Shapes.block());
+		return new UnboredBigCannonBlock(properties, material, () -> CannonCastShape.MEDIUM, Shapes.block());
 	}
 
 	public static UnboredBigCannonBlock large(Properties properties, BigCannonMaterial material) {
-		return new UnboredBigCannonBlock(properties, material, CannonCastShape.LARGE, box(-1, 0, -1, 17, 16, 17));
+		return new UnboredBigCannonBlock(properties, material, () -> CannonCastShape.LARGE, box(-1, 0, -1, 17, 16, 17));
 	}
 
 	public static UnboredBigCannonBlock veryLarge(Properties properties, BigCannonMaterial material) {
-		return new UnboredBigCannonBlock(properties, material, CannonCastShape.VERY_LARGE, box(-2, 0, -2, 18, 16, 18));
+		return new UnboredBigCannonBlock(properties, material, () -> CannonCastShape.VERY_LARGE, box(-2, 0, -2, 18, 16, 18));
 	}
 		
 	@Override
@@ -51,7 +53,7 @@ public class UnboredBigCannonBlock extends SolidBigCannonBlock<BigCannonEndBlock
 		return this.shapes.get(state.getValue(FACING));
 	}
 	
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape; }
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
 	
 	@Override public boolean isComplete(BlockState state) { return false; }
 

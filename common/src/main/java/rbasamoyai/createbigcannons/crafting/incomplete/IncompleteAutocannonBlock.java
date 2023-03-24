@@ -28,11 +28,12 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock implements IncompleteWithItemsCannonBlock {
 
 	private final VoxelShaper shapes;
-	private final CannonCastShape cannonShape;
+	private final Supplier<CannonCastShape> cannonShape;
 	private final NonNullSupplier<? extends ItemLike> itemSupplier;
 	private ItemLike item;
 	private List<ItemLike> requiredItems = null;
@@ -41,11 +42,11 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 	private Block resultBlock;
 
 	public IncompleteAutocannonBlock(Properties properties, AutocannonMaterial material, VoxelShape shape,
-									 CannonCastShape castShape, NonNullSupplier<? extends Block> completeBlockSup,
+									 Supplier<CannonCastShape> cannonShape, NonNullSupplier<? extends Block> completeBlockSup,
 									 NonNullSupplier<? extends ItemLike> item) {
 		super(properties, material);
 		this.shapes = new AllShapes.Builder(shape).forDirectional();
-		this.cannonShape = castShape;
+		this.cannonShape = cannonShape;
 		this.itemSupplier = item;
 		this.resultBlockSup = completeBlockSup;
 	}
@@ -53,13 +54,13 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 	public static IncompleteAutocannonBlock breech(Properties properties, AutocannonMaterial material,
 												   NonNullSupplier<? extends Block> completeBlock, NonNullSupplier<? extends ItemLike> item) {
 		return new IncompleteAutocannonBlock(properties, material, box(4, 0, 4, 12, 16, 12),
-				CannonCastShape.AUTOCANNON_BREECH, completeBlock, item);
+				() -> CannonCastShape.AUTOCANNON_BREECH, completeBlock, item);
 	}
 
 	public static IncompleteAutocannonBlock recoilSpring(Properties properties, AutocannonMaterial material,
 														 NonNullSupplier<? extends Block> completeBlock, NonNullSupplier<? extends ItemLike> item) {
 		return new IncompleteAutocannonBlock(properties, material, box(5, 0, 5, 11, 16, 11),
-				CannonCastShape.AUTOCANNON_RECOIL_SPRING, completeBlock, item);
+				() -> CannonCastShape.AUTOCANNON_RECOIL_SPRING, completeBlock, item);
 	}
 
 	private ItemLike resolveItem() {
@@ -72,7 +73,7 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 		return this.shapes.get(this.getFacing(state));
 	}
 
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape; }
+	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
 
 	@Override
 	public List<ItemLike> requiredItems() {
