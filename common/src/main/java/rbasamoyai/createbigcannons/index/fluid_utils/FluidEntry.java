@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.index.fluid_utils;
 
 import com.tterrag.registrate.AbstractRegistrate;
-import com.tterrag.registrate.fabric.RegistryObject;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import net.minecraft.core.Registry;
@@ -16,8 +15,8 @@ public class FluidEntry<T extends CBCFlowingFluid> extends RegistryEntry<T> {
 
 	private final @Nullable BlockEntry<? extends Block> block;
 
-	public FluidEntry(AbstractRegistrate<?> owner, RegistryObject<T> delegate) {
-		super(owner, delegate);
+	public FluidEntry(AbstractRegistrate<?> owner, Object delegate) {
+		super(owner, cast(delegate));
 		BlockEntry<? extends Block> block = null;
 		try {
 			block = BlockEntry.cast(getSibling(Registry.BLOCK));
@@ -44,4 +43,7 @@ public class FluidEntry<T extends CBCFlowingFluid> extends RegistryEntry<T> {
 	<I extends Item> Optional<I> getBucket() {
 		return Optional.ofNullable((I) get().getBucket());
 	}
+
+	@SuppressWarnings("unchecked") private static <S> S cast(Object obj) { return (S) obj; }
+
 }

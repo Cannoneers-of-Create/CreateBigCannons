@@ -7,7 +7,6 @@ import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.builders.ItemBuilder;
-import com.tterrag.registrate.fabric.FluidBlockHelper;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
@@ -113,9 +112,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		return this;
 	}
 
-	public BlockBuilder<LiquidBlock, FluidBuilder<T, P>> block() {
-		return block1(FluidBlockHelper::createFluidBlock);
-	}
+	public abstract BlockBuilder<LiquidBlock, FluidBuilder<T, P>> block();
 
 	public <B extends LiquidBlock> BlockBuilder<B, FluidBuilder<T, P>> block(NonNullBiFunction<NonNullSupplier<? extends T>, BlockBehaviour.Properties, ? extends B> factory) {
 		if (this.defaultBlock == Boolean.FALSE) {

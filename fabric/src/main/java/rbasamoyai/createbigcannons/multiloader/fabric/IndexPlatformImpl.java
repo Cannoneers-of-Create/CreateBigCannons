@@ -36,7 +36,7 @@ import rbasamoyai.createbigcannons.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.crafting.CannonDrillBlockEntity;
-import rbasamoyai.createbigcannons.fluid_utils.FabricFluidBuilder;
+import rbasamoyai.createbigcannons.index.fluid_utils.FabricFluidBuilder;
 import rbasamoyai.createbigcannons.munitions.fluid_shell.FluidShellBlockEntity;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;

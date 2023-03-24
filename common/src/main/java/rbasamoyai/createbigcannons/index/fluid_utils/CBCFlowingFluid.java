@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.index.fluid_utils;
 
-import com.tterrag.registrate.fabric.SimpleFlowableFluid;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
@@ -96,7 +95,7 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 	}
 
 	/**
-	 * Taken from {@link SimpleFlowableFluid.Properties}
+	 * Taken from SimpleFlowableFluid.Properties
 	 */
 	public static class Properties {
 		private Supplier<? extends Fluid> still;

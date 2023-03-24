@@ -1,7 +1,9 @@
-package rbasamoyai.createbigcannons.fluid_utils;
+package rbasamoyai.createbigcannons.index.fluid_utils;
 
 import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
+import com.tterrag.registrate.fabric.FluidBlockHelper;
 import com.tterrag.registrate.fabric.FluidData;
 import com.tterrag.registrate.fabric.RegistryObject;
 import com.tterrag.registrate.providers.ProviderType;
@@ -21,9 +23,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
-import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
-import rbasamoyai.createbigcannons.index.fluid_utils.FluidEntry;
+import net.minecraft.world.level.block.LiquidBlock;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
 import java.util.function.Supplier;
@@ -42,6 +42,11 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 	public FabricFluidBuilder<T, P> attributes(NonNullConsumer<FluidData.Builder> cons) {
 		this.attributesCallback = this.attributesCallback.andThen(cons);
 		return this;
+	}
+
+	@Override
+	public BlockBuilder<LiquidBlock, FluidBuilder<T, P>> block() {
+		return block1(FluidBlockHelper::createFluidBlock);
 	}
 
 	@Override
