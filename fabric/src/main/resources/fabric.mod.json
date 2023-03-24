@@ -16,7 +16,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "rbasamoyai.createbigcannons.fabric.CreateBigCannonsFabric"
+      "rbasamoyai.createbigcannons.CreateBigCannonsFabric"
     ]
   },
   "mixins": [
