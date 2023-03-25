@@ -29,7 +29,8 @@ public class CBCClientFabric implements ClientModInitializer {
 	}
 
 	public static float getFogDensity(Camera info, float currentDensity) {
-		return CBCClientCommon.getFogDensity(info, currentDensity);
+		float density = CBCClientCommon.getFogDensity(info, currentDensity);
+		return density == -1 ? currentDensity : density;
 	}
 
 	public static void setFogColor(FogEvents.ColorData data, float partialTicks) {
