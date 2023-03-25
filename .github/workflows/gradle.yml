@@ -53,13 +53,13 @@ jobs:
         with:
           arguments: build
 
-      - name: Publish to GitHub Packages
-        if: github.event_name == 'push' && github.repository_id == '510859946'
-        uses: gradle/gradle-build-action@v2
-        with:
-          arguments: publishMavenJavaPublicationToGitHubPackagesRepository
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Publish to GitHub Packages
+#        if: github.event_name == 'push' && github.repository_id == '510859946'
+#        uses: gradle/gradle-build-action@v2
+#        with:
+#          arguments: publishMavenJavaPublicationToGitHubPackagesRepository
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Send building message to discord
         if: github.event_name == 'push'
