@@ -74,10 +74,10 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_TEST }}
         with:
-          args: ./forge|fabric/build/libs/[0-9a-fA-F]{7}.jar
+          args: $(find . -regextype posix-extended -regex '\.\/(fabric|forge).*[0-9a-fA-F]{7}.jar')
 
       - name: Archive Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: createbigcannons-${{ steps.get_mc_version.outputs.mc_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
-          path: ./forge|fabric/build/libs/[0-9a-fA-F]{7}.jar
+          path: $(find . -regextype posix-extended -regex '\.\/(fabric|forge).*[0-9a-fA-F]{7}.jar')
