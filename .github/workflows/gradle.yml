@@ -1,0 +1,91 @@
+name: Java CI with Gradle
+
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Get branch name
+        id: get_branch
+        run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+      - name: Get latest commit hash
+        id: get_hash
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Get MC version
+        uses: christian-draeger/read-properties@908f99d3334be3802ec7cb528395a69d19914e7b
+        id: get_mc_version
+        with:
+          path: gradle.properties
+          properties: minecraft_version
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - uses: actions/cache@v3.3.1
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/loom-cache
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@9aa31f26bc8e536d1faf4b332bb8365350743a18
+
+      - name: Build jar
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+
+#      - name: Publish to GitHub Packages
+#        if: github.event_name == 'push' && github.repository_id == '510859946'
+#        uses: gradle/gradle-build-action@v2
+#        with:
+#          arguments: publishMavenJavaPublicationToGitHubPackagesRepository
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send building message to discord
+        if: github.event_name == 'push'
+        uses: realRobotix/action-discord-notifier@release-master
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_TEST }}
+          message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
+
+      - name: Find jars
+        id: find_jars
+        run: |
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          echo "jars<<$EOF" >> $GITHUB_OUTPUT
+          find . -regextype posix-extended -regex '\.\/(fabric|forge)\/build\/libs\/createbigcannons-(fabric|forge)-([0-9]*\.){2}[0-9]*-nightly-[0-9a-fA-F]{7}.jar' >> $GITHUB_OUTPUT
+          echo "$EOF" >> $GITHUB_OUTPUT
+
+      - name: Send built file to discord
+        #if: github.event_name == 'push'
+        uses: sinshutu/upload-to-discord@master
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_TEST }}
+        with:
+          args: ${{ steps.find_jars.outputs.jars }}
+
+      - name: Archive Artifacts
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: createbigcannons-${{ steps.get_mc_version.outputs.minecraft_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
+          path: ${{ steps.find_jars.outputs.jars }}
