@@ -7,7 +7,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
@@ -94,11 +93,6 @@ public class CannonPlumeParticle extends NoRenderParticle {
 	}
 	
 	public static class Provider implements ParticleProvider<CannonPlumeParticleData> {
-		private final SpriteSet sprites;
-
-		public Provider(SpriteSet sprites) {
-			this.sprites = sprites;
-		}
 		public Particle createParticle(CannonPlumeParticleData data, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
 			return new CannonPlumeParticle(level, x, y, z, new Vec3(dx, dy, dz), data.scale());
 		}

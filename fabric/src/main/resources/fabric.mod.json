@@ -18,6 +18,9 @@
     "main": [
       "rbasamoyai.createbigcannons.CreateBigCannonsFabric"
     ],
+    "client": [
+      "rbasamoyai.createbigcannons.CBCClientFabric"
+    ],
     "fabric-datagen": [
       "rbasamoyai.createbigcannons.CBCDataFabric"
     ]

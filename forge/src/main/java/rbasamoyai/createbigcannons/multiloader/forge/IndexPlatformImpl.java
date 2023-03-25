@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -19,6 +20,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import rbasamoyai.createbigcannons.CreateBigCannonsForge;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
@@ -99,6 +102,14 @@ public class IndexPlatformImpl {
 
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> doFluidBuilderTransforms(FluidBuilder<T, P> builder) {
 		return builder;
+	}
+
+	public static void registerDeferredParticleType(String name, ParticleType<?> type) {
+		CreateBigCannonsForge.PARTICLE_REGISTER.register(name, () -> type);
+	}
+
+	public static void registerDeferredParticles() {
+		CreateBigCannonsForge.PARTICLE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
 	}
 
 }

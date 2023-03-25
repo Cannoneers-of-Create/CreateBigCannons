@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
@@ -100,5 +101,9 @@ public class IndexPlatform {
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> doFluidBuilderTransforms(FluidBuilder<T, P> builder) {
 		throw new AssertionError();
 	}
+
+	@ExpectPlatform public static void registerDeferredParticleType(String name, ParticleType<?> type) { throw new AssertionError(); }
+
+	@ExpectPlatform public static void registerDeferredParticles() { throw new AssertionError(); }
 
 }

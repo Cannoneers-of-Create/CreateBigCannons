@@ -7,12 +7,11 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleData;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import java.util.function.Supplier;
 
@@ -29,7 +28,7 @@ public enum CBCParticleTypes {
         entry = new ParticleEntry<>(name, typeFactory);
     }
 
-    public static void register() {}
+    public static void register() { IndexPlatform.registerDeferredParticles(); }
 
     @Environment(EnvType.CLIENT)
     public static void registerFactories() {
@@ -56,7 +55,7 @@ public enum CBCParticleTypes {
             this.typeFactory = typeFactory;
 
             object = this.typeFactory.get().createType();
-            CreateBigCannons.REGISTRATE.simple(name, Registry.PARTICLE_TYPE_REGISTRY, () -> this.object);
+            IndexPlatform.registerDeferredParticleType(this.name, this.object);
         }
 
         @Environment(EnvType.CLIENT)

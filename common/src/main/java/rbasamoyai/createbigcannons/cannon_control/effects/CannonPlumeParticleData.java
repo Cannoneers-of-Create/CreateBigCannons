@@ -4,16 +4,17 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
+import com.simibubi.create.content.contraptions.particle.ICustomParticleData;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
+import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
-public class CannonPlumeParticleData implements ParticleOptions, ICustomParticleDataWithSprite<CannonPlumeParticleData> {
+public class CannonPlumeParticleData implements ParticleOptions, ICustomParticleData<CannonPlumeParticleData> {
 
 	public static final Codec<CannonPlumeParticleData> CODEC = RecordCodecBuilder.create(i -> i
 			.group(Codec.FLOAT.fieldOf("scale")
@@ -66,8 +67,8 @@ public class CannonPlumeParticleData implements ParticleOptions, ICustomParticle
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public SpriteParticleRegistration<CannonPlumeParticleData> getMetaFactory() {
-		return CannonPlumeParticle.Provider::new;
+	public ParticleProvider<CannonPlumeParticleData> getFactory() {
+		return new CannonPlumeParticle.Provider();
 	}
 
 }

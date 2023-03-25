@@ -29,9 +29,6 @@ public class CreateBigCannons {
 
 		CBCContraptionTypes.prepare();
 		CBCChecks.register();
-		
-		CBCParticleTypes.register();
-		
 		CBCTags.register();
 
 		CBCRootNetwork.init();
