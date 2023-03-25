@@ -9,9 +9,21 @@ architectury {
     minecraft = rootProject.minecraft_version
 }
 
+def getGitHash = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
+
 subprojects {
     apply plugin: "dev.architectury.loom"
     apply plugin: "io.github.juuxel.loom-quiltflower"
+    apply plugin: "maven-publish"
 
     loom {
         silentMojangMappingsLicense()
@@ -44,28 +56,37 @@ subprojects {
 
         // see each subproject for dependencies.
     }
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                artifactId = rootProject.archives_base_name + "-" + project.name + "-" + minecraft_version
+                version = ci ? "nightly-" + getGitHash() : mod_version
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = "https://maven.pkg.github.com/rbasamoyai/createbigcannons"
+                credentials {
+                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                    password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+                }
+            }
+        }
+    }
 }
 
 allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
-    apply plugin: "maven-publish"
 
     archivesBaseName = rootProject.archives_base_name
     group = rootProject.group
 
     // Formats the mod version to include the loader, Minecraft version, and build number (if present)
     // example: 1.0.0+fabric-1.18.2-100
-    def getGitHash = { ->
-        def stdout = new ByteArrayOutputStream()
-        exec {
-            commandLine 'git', 'rev-parse', '--short', 'HEAD'
-            standardOutput = stdout
-        }
-        return stdout.toString().trim()
-    }
 
-    boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
     version = "${project.name}-${minecraft_version}-${ci ? "nightly-" + getGitHash() : mod_version}"
 
     repositories {

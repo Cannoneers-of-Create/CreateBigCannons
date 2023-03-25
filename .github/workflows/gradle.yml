@@ -49,17 +49,17 @@ jobs:
         uses: gradle/wrapper-validation-action@9aa31f26bc8e536d1faf4b332bb8365350743a18
 
       - name: Build jar
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v2.4.0
         with:
           arguments: build
 
-#      - name: Publish to GitHub Packages
-#        if: github.event_name == 'push' && github.repository_id == '510859946'
-#        uses: gradle/gradle-build-action@v2
-#        with:
-#          arguments: publishMavenJavaPublicationToGitHubPackagesRepository
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Publish to GitHub Packages
+        if: github.event_name == 'push' && github.repository_id == '510859946'
+        uses: gradle/gradle-build-action@v2.4.0
+        with:
+          arguments: publishMavenJavaPublicationToGitHubPackagesRepository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Send building message to discord
         if: github.event_name == 'push'
@@ -77,7 +77,7 @@ jobs:
           echo "$EOF" >> $GITHUB_OUTPUT
 
       - name: Send built file to discord
-        #if: github.event_name == 'push'
+        if: github.event_name == 'push'
         uses: sinshutu/upload-to-discord@master
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_TEST }}
