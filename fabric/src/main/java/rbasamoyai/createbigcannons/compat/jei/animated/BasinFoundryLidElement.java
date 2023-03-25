@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.jei.animated;
+package rbasamoyai.createbigcannons.compat.jei.animated;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;

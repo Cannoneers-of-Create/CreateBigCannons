@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.jei;
+package rbasamoyai.createbigcannons.compat.jei;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

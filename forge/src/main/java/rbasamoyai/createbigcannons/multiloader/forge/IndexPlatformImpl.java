@@ -5,8 +5,6 @@ import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import mezz.jei.api.forge.ForgeTypes;
-import mezz.jei.api.ingredients.IIngredientType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -21,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import rbasamoyai.createbigcannons.forge.CreateBigCannonsForge;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
@@ -29,6 +26,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrien
 import rbasamoyai.createbigcannons.cannons.autocannon.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
+import rbasamoyai.createbigcannons.forge.CreateBigCannonsForge;
 import rbasamoyai.createbigcannons.forge.cannon_control.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.forge.cannon_control.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.forge.cannon_control.MountedAutocannonContraption;
@@ -88,9 +86,6 @@ public class IndexPlatformImpl {
 			BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
 		return () -> CannonCastBlockEntityRenderer::new;
 	}
-
-	@SuppressWarnings("rawtypes")
-	public static IIngredientType getFluidType() { return ForgeTypes.FLUID_STACK; }
 
 	public static int getModGroupId() { return -1; }
 

@@ -8,8 +8,6 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
-import mezz.jei.api.fabric.constants.FabricTypes;
-import mezz.jei.api.ingredients.IIngredientType;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -22,7 +20,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.fabric.CreateBigCannonsFabric;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
@@ -30,6 +27,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrien
 import rbasamoyai.createbigcannons.cannons.autocannon.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
+import rbasamoyai.createbigcannons.fabric.CreateBigCannonsFabric;
 import rbasamoyai.createbigcannons.fabric.cannon_control.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.fabric.cannon_control.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.fabric.cannon_control.MountedAutocannonContraption;
@@ -89,9 +87,6 @@ public class IndexPlatformImpl {
 			BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
 		return () -> CannonCastBlockEntityRenderer::new;
 	}
-
-	@SuppressWarnings("rawtypes")
-	public static IIngredientType getFluidType() { return FabricTypes.FLUID_STACK; }
 
 	public static int getModGroupId() { return ItemGroupUtil.expandArrayAndGetId(); }
 

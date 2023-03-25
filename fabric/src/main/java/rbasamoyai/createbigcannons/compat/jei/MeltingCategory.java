@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.jei;
+package rbasamoyai.createbigcannons.compat.jei;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.compat.jei.category.BasinCategory;
@@ -6,7 +6,7 @@ import com.simibubi.create.compat.jei.category.animations.AnimatedBlazeBurner;
 import com.simibubi.create.content.contraptions.processing.BasinRecipe;
 import com.simibubi.create.content.contraptions.processing.HeatCondition;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
-import rbasamoyai.createbigcannons.jei.animated.BasinFoundryLidElement;
+import rbasamoyai.createbigcannons.compat.jei.animated.BasinFoundryLidElement;
 
 public class MeltingCategory extends BasinCategory {
 

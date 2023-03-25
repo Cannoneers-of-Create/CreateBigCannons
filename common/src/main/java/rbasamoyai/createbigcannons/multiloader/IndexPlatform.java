@@ -5,7 +5,6 @@ import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import mezz.jei.api.ingredients.IIngredientType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -81,10 +80,6 @@ public class IndexPlatform {
 					BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
 		throw new AssertionError();
 	}
-
-	@ExpectPlatform
-	@SuppressWarnings("rawtypes")
-	public static IIngredientType getFluidType() { throw new AssertionError(); }
 
 	@ExpectPlatform public static int getModGroupId() { throw new AssertionError(); }
 

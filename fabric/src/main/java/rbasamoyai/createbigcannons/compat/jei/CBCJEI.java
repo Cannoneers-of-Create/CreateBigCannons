@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.jei;
+package rbasamoyai.createbigcannons.compat.jei;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.compat.jei.CreateJEI;
