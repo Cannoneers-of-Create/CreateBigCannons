@@ -39,9 +39,9 @@ public class CBCTags {
 
 		public static TagKey<Block> commonTag(String mainPath, String forgePath, String fabricPath) {
 			TagKey<Block> mainTag = makeTag(mainPath);
-			addTagsToBlockTag(mainTag, Arrays.asList(
-					TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("forge", forgePath)),
-					TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation("c", fabricPath))));
+			addOptionalTagsToBlockTag(mainTag, Arrays.asList(
+					new ResourceLocation("forge", forgePath),
+					new ResourceLocation("c", fabricPath)));
 			return mainTag;
 		}
 		
@@ -64,6 +64,13 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = prov.tag(tag);
 				tags.forEach(app::addTag);
+			});
+		}
+
+		public static void addOptionalTagsToBlockTag(TagKey<Block> tag, List<ResourceLocation> ops) {
+			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
+				TagAppender<Block> app = prov.tag(tag);
+				ops.forEach(app::addOptionalTag);
 			});
 		}
 		
@@ -101,9 +108,9 @@ public class CBCTags {
 
 		public static TagKey<Item> commonTag(String mainPath, String forgePath, String fabricPath) {
 			TagKey<Item> mainTag = makeTag(mainPath);
-			addTagsToItemTag(mainTag, Arrays.asList(
-					TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("forge", forgePath)),
-					TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation("c", fabricPath))));
+			addOptionalTagsToItemTag(mainTag, Arrays.asList(
+					new ResourceLocation("forge", forgePath),
+					new ResourceLocation("c", fabricPath)));
 			return mainTag;
 		}
 		
@@ -135,6 +142,13 @@ public class CBCTags {
 				for (ResourceLocation id : ids) {
 					app.addOptional(id);
 				}
+			});
+		}
+
+		public static void addOptionalTagsToItemTag(TagKey<Item> tag, List<ResourceLocation> ops) {
+			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
+				TagAppender<Item> app = prov.tag(tag);
+				ops.forEach(app::addOptionalTag);
 			});
 		}
 		

@@ -1,0 +1,6 @@
+{
+  "parent": "createbigcannons:block/thick_cannon_chamber",
+  "textures": {
+    "tube": "createbigcannons:block/cannon_tubing/unbored_nethersteel_cannon_tube"
+  }
+}

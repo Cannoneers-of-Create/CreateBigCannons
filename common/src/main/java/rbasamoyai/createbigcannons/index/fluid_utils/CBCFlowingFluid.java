@@ -90,7 +90,7 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 
 	public static class Still extends CBCFlowingFluid {
 		public Still(Properties properties) { super(properties); }
-		@Override public boolean isSource(FluidState state) { return false; }
+		@Override public boolean isSource(FluidState state) { return true; }
 		@Override public int getAmount(FluidState state) { return 8; }
 	}
 

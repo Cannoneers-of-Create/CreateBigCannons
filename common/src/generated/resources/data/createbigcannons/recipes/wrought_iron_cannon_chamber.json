@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "IGI",
+    " I "
+  ],
+  "key": {
+    "I": {
+      "tag": "createbigcannons:sheet_iron"
+    },
+    "G": {
+      "tag": "createbigcannons:gunpowder"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:wrought_iron_cannon_chamber"
+  }
+}

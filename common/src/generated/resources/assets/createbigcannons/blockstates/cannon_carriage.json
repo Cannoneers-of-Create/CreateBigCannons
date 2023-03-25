@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,saddled=false": {
+      "model": "createbigcannons:block/cannon_carriage/block"
+    },
+    "facing=south,saddled=false": {
+      "model": "createbigcannons:block/cannon_carriage/block",
+      "y": 180
+    },
+    "facing=west,saddled=false": {
+      "model": "createbigcannons:block/cannon_carriage/block",
+      "y": 270
+    },
+    "facing=east,saddled=false": {
+      "model": "createbigcannons:block/cannon_carriage/block",
+      "y": 90
+    },
+    "facing=north,saddled=true": {
+      "model": "createbigcannons:block/cannon_carriage/block_saddle"
+    },
+    "facing=south,saddled=true": {
+      "model": "createbigcannons:block/cannon_carriage/block_saddle",
+      "y": 180
+    },
+    "facing=west,saddled=true": {
+      "model": "createbigcannons:block/cannon_carriage/block_saddle",
+      "y": 270
+    },
+    "facing=east,saddled=true": {
+      "model": "createbigcannons:block/cannon_carriage/block_saddle",
+      "y": 90
+    }
+  }
+}

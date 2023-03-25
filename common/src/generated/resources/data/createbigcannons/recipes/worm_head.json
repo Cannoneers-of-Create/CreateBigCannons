@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "HHH",
+    " P "
+  ],
+  "key": {
+    "H": {
+      "item": "minecraft:iron_bars"
+    },
+    "P": {
+      "item": "create:piston_extension_pole"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:worm_head"
+  }
+}

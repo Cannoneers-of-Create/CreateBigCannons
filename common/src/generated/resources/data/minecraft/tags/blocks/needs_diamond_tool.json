@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:nethersteel_cannon_barrel",
+    "createbigcannons:built_up_nethersteel_cannon_barrel",
+    "createbigcannons:nethersteel_cannon_chamber",
+    "createbigcannons:built_up_nethersteel_cannon_chamber",
+    "createbigcannons:thick_nethersteel_cannon_chamber",
+    "createbigcannons:very_small_nethersteel_cannon_layer",
+    "createbigcannons:small_nethersteel_cannon_layer",
+    "createbigcannons:medium_nethersteel_cannon_layer",
+    "createbigcannons:large_nethersteel_cannon_layer",
+    "createbigcannons:very_large_nethersteel_cannon_layer",
+    "createbigcannons:unbored_very_small_nethersteel_cannon_layer",
+    "createbigcannons:unbored_small_nethersteel_cannon_layer",
+    "createbigcannons:unbored_medium_nethersteel_cannon_layer",
+    "createbigcannons:unbored_large_nethersteel_cannon_layer",
+    "createbigcannons:unbored_very_large_nethersteel_cannon_layer",
+    "createbigcannons:nethersteel_screw_breech",
+    "createbigcannons:incomplete_nethersteel_screw_breech",
+    "createbigcannons:unbored_nethersteel_screw_breech",
+    "createbigcannons:built_up_cannon",
+    "createbigcannons:nethersteel_block"
+  ]
+}

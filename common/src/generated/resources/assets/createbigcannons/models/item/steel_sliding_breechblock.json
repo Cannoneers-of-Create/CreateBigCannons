@@ -1,0 +1,9 @@
+{
+  "parent": "createbigcannons:item/sliding_breechblock",
+  "textures": {
+    "top": "createbigcannons:block/sliding_breech/steel_sliding_breech_breechblock_top",
+    "end": "createbigcannons:block/sliding_breech/steel_sliding_breech_breechblock_end",
+    "side": "createbigcannons:block/sliding_breech/steel_sliding_breech_breechblock_side",
+    "bottom": "createbigcannons:block/sliding_breech/steel_sliding_breech_breechblock_bottom"
+  }
+}

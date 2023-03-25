@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:drill_boring",
+  "input": "createbigcannons:unbored_steel_sliding_breech",
+  "result": "createbigcannons:incomplete_steel_sliding_breech"
+}

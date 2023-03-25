@@ -17,6 +17,9 @@
   "entrypoints": {
     "main": [
       "rbasamoyai.createbigcannons.CreateBigCannonsFabric"
+    ],
+    "fabric-datagen": [
+      "rbasamoyai.createbigcannons.CBCDataFabric"
     ]
   },
   "mixins": [

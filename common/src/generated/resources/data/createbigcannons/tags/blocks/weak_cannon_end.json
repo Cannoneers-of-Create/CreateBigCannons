@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:cast_iron_sliding_breech",
+    "createbigcannons:bronze_sliding_breech",
+    "createbigcannons:steel_sliding_breech"
+  ]
+}

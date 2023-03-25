@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:nethersteel_screw_lock"
+    ]
+  },
+  "criteria": {
+    "has_nethersteel_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "createbigcannons:nethersteel_ingot"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:nethersteel_screw_lock"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_nethersteel_ingot",
+      "has_the_recipe"
+    ]
+  ]
+}

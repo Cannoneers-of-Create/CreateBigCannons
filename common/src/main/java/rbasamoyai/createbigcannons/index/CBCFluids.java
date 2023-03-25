@@ -26,7 +26,6 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
-			.source(CBCFlowingFluid.Flowing::new)
 			.block1(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
@@ -42,7 +41,6 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
-			.source(CBCFlowingFluid.Flowing::new)
 			.block1(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
@@ -58,7 +56,6 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
-			.source(CBCFlowingFluid.Flowing::new)
 			.block1(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
@@ -73,7 +70,6 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
-			.source(CBCFlowingFluid.Flowing::new)
 			.block1(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();

@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:cast_iron_cannon_barrel",
+    "createbigcannons:unbored_cast_iron_cannon_barrel",
+    "createbigcannons:bronze_cannon_barrel",
+    "createbigcannons:unbored_bronze_cannon_barrel",
+    "createbigcannons:steel_cannon_barrel",
+    "createbigcannons:built_up_steel_cannon_barrel",
+    "createbigcannons:unbored_very_small_steel_cannon_layer",
+    "createbigcannons:nethersteel_cannon_barrel",
+    "createbigcannons:built_up_nethersteel_cannon_barrel",
+    "createbigcannons:unbored_very_small_nethersteel_cannon_layer"
+  ]
+}

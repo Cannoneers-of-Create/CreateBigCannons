@@ -20,7 +20,7 @@ public class CBCBlockPartialsGen extends BlockModelProvider {
 		autocannonPartials("autocannon/bronze");
 		autocannonPartials("autocannon/steel");
 
-		autocannonSeat();
+		//autocannonSeat();
 	}
 
 	private void autocannonPartials(String pathAndMaterial) {

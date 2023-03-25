@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:nethersteel_ingot_from_nuggets"
+    ]
+  },
+  "criteria": {
+    "has_nethersteel_nugget": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "createbigcannons:nethersteel_nugget"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:nethersteel_ingot_from_nuggets"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_nethersteel_nugget",
+      "has_the_recipe"
+    ]
+  ]
+}

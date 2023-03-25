@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#forge:nuggets/steel",
+      "required": false
+    },
+    {
+      "id": "#c:steel_blocks",
+      "required": false
+    },
+    "createbigcannons:steel_scrap"
+  ]
+}

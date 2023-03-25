@@ -1,0 +1,5 @@
+{
+  "type": "minecraft:drill_boring",
+  "input": "createbigcannons:unbored_bronze_cannon_barrel",
+  "result": "createbigcannons:bronze_cannon_barrel"
+}

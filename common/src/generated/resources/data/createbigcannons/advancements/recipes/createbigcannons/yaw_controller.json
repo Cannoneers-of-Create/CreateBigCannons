@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:yaw_controller"
+    ]
+  },
+  "criteria": {
+    "has_cannon_mount": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "createbigcannons:cannon_mount"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:yaw_controller"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cannon_mount",
+      "has_the_recipe"
+    ]
+  ]
+}

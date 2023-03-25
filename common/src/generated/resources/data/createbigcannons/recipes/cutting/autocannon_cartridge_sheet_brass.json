@@ -1,0 +1,14 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "tag": "c:plates/brass"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:autocannon_cartridge_sheet",
+      "count": 4
+    }
+  ]
+}
