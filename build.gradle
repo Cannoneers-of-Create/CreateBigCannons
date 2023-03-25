@@ -66,7 +66,7 @@ allprojects {
     }
 
     boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
-    version = "${project.name}-${minecraft_version}-${ci ? "nightly-" + getGitHash() : mod_version}"
+    version = "${minecraft_version}-${ci ? "nightly-" + getGitHash() : mod_version}-${project.name}"
 
     repositories {
         // Add repositories to retrieve artifacts from in here.
