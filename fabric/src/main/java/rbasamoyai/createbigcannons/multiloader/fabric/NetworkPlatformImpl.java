@@ -3,8 +3,8 @@ package rbasamoyai.createbigcannons.multiloader.fabric;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import rbasamoyai.createbigcannons.network.CBCNetworkFabric;
-import rbasamoyai.createbigcannons.network.FabricPacket;
+import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
+import rbasamoyai.createbigcannons.fabric.network.FabricPacket;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class NetworkPlatformImpl {

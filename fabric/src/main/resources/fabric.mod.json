@@ -16,13 +16,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "rbasamoyai.createbigcannons.CreateBigCannonsFabric"
+      "rbasamoyai.createbigcannons.fabric.CreateBigCannonsFabric"
     ],
     "client": [
-      "rbasamoyai.createbigcannons.CBCClientFabric"
+      "rbasamoyai.createbigcannons.fabric.CBCClientFabric"
     ],
     "fabric-datagen": [
-      "rbasamoyai.createbigcannons.CBCDataFabric"
+      "rbasamoyai.createbigcannons.fabric.CBCDataFabric"
     ]
   },
   "mixins": [

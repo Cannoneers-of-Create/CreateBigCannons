@@ -4,9 +4,9 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.PacketDistributor;
-import rbasamoyai.createbigcannons.network.CBCNetworkForge;
-import rbasamoyai.createbigcannons.network.ForgeClientPacket;
-import rbasamoyai.createbigcannons.network.ForgeServerPacket;
+import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
+import rbasamoyai.createbigcannons.forge.network.ForgeClientPacket;
+import rbasamoyai.createbigcannons.forge.network.ForgeServerPacket;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class NetworkPlatformImpl {
