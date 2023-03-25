@@ -65,7 +65,7 @@ jobs:
         if: github.event_name == 'push'
         uses: realRobotix/action-discord-notifier@release-master
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_TEST }}
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
           message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
 
       - name: Find jars
@@ -80,7 +80,7 @@ jobs:
         if: github.event_name == 'push'
         uses: sinshutu/upload-to-discord@master
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_TEST }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         with:
           args: ${{ steps.find_jars.outputs.jars }}
 
