@@ -25,7 +25,7 @@ jobs:
         id: get_mc_version
         with:
           path: gradle.properties
-          properties: mc_version
+          properties: minecraft_version
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -87,5 +87,5 @@ jobs:
       - name: Archive Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: createbigcannons-${{ steps.get_mc_version.outputs.mc_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
+          name: createbigcannons-${{ steps.get_mc_version.outputs.minecraft_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
           path: ${{ steps.find_jars.outputs.jars }}
