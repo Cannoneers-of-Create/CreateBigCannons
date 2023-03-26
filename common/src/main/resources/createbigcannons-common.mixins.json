@@ -4,8 +4,12 @@
   "package": "rbasamoyai.createbigcannons.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "HumanoidPoseMixin"
   ],
   "mixins": [
+    "BearingCannonDrillFinderMixin",
+    "BeltTileEntityMixin",
+    "EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
