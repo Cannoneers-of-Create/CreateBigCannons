@@ -24,7 +24,7 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
-import rbasamoyai.createbigcannons.mixin.KeyMappingAccessor;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
@@ -37,22 +37,8 @@ import java.util.function.Consumer;
 public class CBCClientCommon {
 
 	private static final String KEY_ROOT = "key." + CreateBigCannons.MOD_ID;
-	private static final String KEY_CATEGORY = KEY_ROOT + ".category";
-	public static final KeyMapping PITCH_MODE = createSafeKeyMapping(KEY_ROOT + ".pitch_mode", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_C);
-	public static final KeyMapping FIRE_CONTROLLED_CANNON = createSafeKeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT);
-
-	// Do not remove. Do not ask why or how but if we remove this code and only rely on Fabric API's stuff, Jump key no longer works in modpacks.
-	// But with this here, both vanilla and our keybinds work just fine even when assigned the same key. How ours even still works? No damn clue.
-	// Do not question it. Keep this here and keep the Fabric API's keybind registration on together. And pray this duct tape solution continues to work.
-	// Provided by TelepathicGrunt - thanks! --ritchie
-	private static KeyMapping createSafeKeyMapping(String description, InputConstants.Type type, int keycode) {
-		InputConstants.Key key = InputConstants.Type.KEYSYM.getOrCreate(keycode);
-		KeyMapping oldMapping = KeyMappingAccessor.getMAP().get(key);
-		KeyMapping keyMapping = new KeyMapping(description, type, keycode, KEY_CATEGORY);
-		KeyMappingAccessor.getMAP().put(key, oldMapping);
-		KeyMappingAccessor.getALL().remove(description);
-		return keyMapping;
-	}
+	public static final KeyMapping PITCH_MODE = IndexPlatform.createSafeKeyMapping(KEY_ROOT + ".pitch_mode", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_C);
+	public static final KeyMapping FIRE_CONTROLLED_CANNON = IndexPlatform.createSafeKeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT);
 
 	public static void onRegisterParticleFactories(Minecraft mc, ParticleEngine engine) {
 		CBCParticleTypes.registerFactories();

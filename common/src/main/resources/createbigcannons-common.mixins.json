@@ -4,8 +4,7 @@
   "package": "rbasamoyai.createbigcannons.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "HumanoidPoseMixin",
-    "KeyMappingAccessor"
+    "HumanoidPoseMixin"
   ],
   "mixins": [
     "BearingCannonDrillFinderMixin",
