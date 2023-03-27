@@ -80,7 +80,7 @@ dependencies {
 processResources {
     // set up properties for filling into metadata
     Map<String, String> properties = Map.of(
-            "version", version,
+            "version", minecraft_version + "-" + mod_version + "-fabric",
             "fabric_loader_version", fabric_loader_version,
             "fabric_api_version", fabric_api_version,
             "minecraft_version", minecraft_version,

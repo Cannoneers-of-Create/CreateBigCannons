@@ -87,7 +87,7 @@ allprojects {
     // Formats the mod version to include the loader, Minecraft version, and build number (if present)
     // example: 1.0.0+fabric-1.18.2-100
 
-    version = "${minecraft_version}-${ci ? "nightly-" + getGitHash() : mod_version}-${project.name}-"
+    version = "${project.name}-${minecraft_version}-${ci ? "nightly-" + getGitHash() : mod_version}"
 
     repositories {
         // Add repositories to retrieve artifacts from in here.
