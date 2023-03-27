@@ -22,10 +22,10 @@ jobs:
 
       - name: Get MC version
         uses: christian-draeger/read-properties@908f99d3334be3802ec7cb528395a69d19914e7b
-        id: get_mc_version
+        id: read_properties
         with:
           path: gradle.properties
-          properties: minecraft_version
+          properties: minecraft_version enabled_platforms mod_version archives_base_name
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
@@ -73,7 +73,7 @@ jobs:
         run: |
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "jars<<$EOF" >> $GITHUB_OUTPUT
-          find . -regextype posix-extended -regex '\.\/(fabric|forge)\/build\/libs\/createbigcannons-(fabric|forge)-([0-9]*\.){2}[0-9]*-nightly-[0-9a-fA-F]{7}.jar' >> $GITHUB_OUTPUT
+          find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}.jar" >> $GITHUB_OUTPUT
           echo "$EOF" >> $GITHUB_OUTPUT
 
       - name: Send built file to discord
@@ -87,5 +87,5 @@ jobs:
       - name: Archive Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: createbigcannons-${{ steps.get_mc_version.outputs.minecraft_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
+          name: createbigcannons-${{ steps.read_properties.outputs.minecraft_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
           path: ${{ steps.find_jars.outputs.jars }}

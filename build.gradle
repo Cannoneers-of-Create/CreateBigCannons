@@ -81,13 +81,13 @@ allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
 
-    archivesBaseName = rootProject.archives_base_name
+    archivesBaseName = "${rootProject.archives_base_name}-${project.name}-${minecraft_version}"
     group = rootProject.group
 
     // Formats the mod version to include the loader, Minecraft version, and build number (if present)
     // example: 1.0.0+fabric-1.18.2-100
 
-    version = "${minecraft_version}-${ci ? "nightly-" + getGitHash() : mod_version}-${project.name}-"
+    version = ci ? mod_version + "-nightly-" + getGitHash() : mod_version
 
     repositories {
         // Add repositories to retrieve artifacts from in here.
