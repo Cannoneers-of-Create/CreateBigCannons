@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons;
 
 import com.tterrag.registrate.providers.ProviderType;
 import net.minecraft.core.Registry;
+import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -33,7 +34,7 @@ public class CBCTags {
 		
 		public static TagKey<Block> makeTag(String path) {
 			TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, CreateBigCannons.resource(path));
-			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> prov.tag(tag));
+			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> ((TagsProvider<Block>) prov).tag(tag));
 			return tag;
 		}
 
@@ -47,13 +48,13 @@ public class CBCTags {
 		
 		public static void addBlocksToBlockTag(TagKey<Block> tag, Block... blocks) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
-				prov.tag(tag).add(blocks);
+				((TagsProvider<Block>) prov).tag(tag).add(blocks);
 			});
 		}
 		
 		public static void addBlocksToBlockTag(TagKey<Block> tag, Supplier<List<? extends Block>> blocks) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
-				TagAppender<Block> app = prov.tag(tag);
+				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
 				for (Block b : blocks.get()) {
 					app.add(b);
 				}
@@ -62,14 +63,14 @@ public class CBCTags {
 		
 		public static void addTagsToBlockTag(TagKey<Block> tag, List<TagKey<Block>> tags) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
-				TagAppender<Block> app = prov.tag(tag);
+				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
 				tags.forEach(app::addTag);
 			});
 		}
 
 		public static void addOptionalTagsToBlockTag(TagKey<Block> tag, List<ResourceLocation> ops) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
-				TagAppender<Block> app = prov.tag(tag);
+				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
 				ops.forEach(app::addOptionalTag);
 			});
 		}
@@ -102,7 +103,7 @@ public class CBCTags {
 		
 		public static TagKey<Item> makeTag(String loc) {
 			TagKey<Item> tag = TagKey.create(Registry.ITEM_REGISTRY, CreateBigCannons.resource(loc));
-			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> prov.tag(tag));
+			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> ((TagsProvider<Item>) prov).tag(tag));
 			return tag;
 		}
 
@@ -116,13 +117,13 @@ public class CBCTags {
 		
 		public static void addItemsToItemTag(TagKey<Item> tag, Item... items) {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
-				prov.tag(tag).add(items);
+				((TagsProvider<Item>) prov).tag(tag).add(items);
 			});
 		}
 		
 		public static void addItemsToItemTag(TagKey<Item> tag, ItemLike... items) {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
-				TagAppender<Item> app = prov.tag(tag);
+				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				for (ItemLike bp : items) {
 					app.add(bp.asItem());
 				}
@@ -131,14 +132,14 @@ public class CBCTags {
 		
 		public static void addTagsToItemTag(TagKey<Item> tag, List<TagKey<Item>> tags) {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
-				TagAppender<Item> app = prov.tag(tag);
+				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				tags.forEach(app::addTag);
 			});
 		}
 		
 		public static void addIdsToItemTag(TagKey<Item> tag, ResourceLocation... ids) {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
-				TagAppender<Item> app = prov.tag(tag);
+				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				for (ResourceLocation id : ids) {
 					app.addOptional(id);
 				}
@@ -147,7 +148,7 @@ public class CBCTags {
 
 		public static void addOptionalTagsToItemTag(TagKey<Item> tag, List<ResourceLocation> ops) {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
-				TagAppender<Item> app = prov.tag(tag);
+				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				ops.forEach(app::addOptionalTag);
 			});
 		}

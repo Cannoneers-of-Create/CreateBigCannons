@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.mixin;
+package rbasamoyai.createbigcannons.fabric.mixin;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;

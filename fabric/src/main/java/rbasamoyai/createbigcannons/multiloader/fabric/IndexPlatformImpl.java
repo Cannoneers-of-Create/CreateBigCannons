@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.multiloader.fabric;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -8,7 +9,10 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -20,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
@@ -37,6 +42,7 @@ import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.fabric.index.fluid_utils.FabricFluidBuilder;
+import rbasamoyai.createbigcannons.fabric.mixin.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.munitions.fluid_shell.FluidShellBlockEntity;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
@@ -106,5 +112,16 @@ public class IndexPlatformImpl {
 	}
 
 	public static void registerDeferredParticles() { CreateBigCannonsFabric.PARTICLE_REGISTER.register(); }
+
+	// Provided by TelepathicGrunt - thanks! --ritchie
+	@Environment(EnvType.CLIENT)
+	public static KeyMapping createSafeKeyMapping(String description, InputConstants.Type type, int keycode) {
+		InputConstants.Key key = InputConstants.Type.KEYSYM.getOrCreate(keycode);
+		KeyMapping oldMapping = KeyMappingAccessor.getMAP().get(key);
+		KeyMapping keyMapping = new KeyMapping(description, type, keycode, "key." + CreateBigCannons.MOD_ID + ".category");
+		KeyMappingAccessor.getMAP().put(key, oldMapping);
+		KeyMappingAccessor.getALL().remove(description);
+		return keyMapping;
+	}
 
 }

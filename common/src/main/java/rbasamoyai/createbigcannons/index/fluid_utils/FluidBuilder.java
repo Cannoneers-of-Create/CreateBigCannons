@@ -8,13 +8,11 @@ import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.builders.ItemBuilder;
 import com.tterrag.registrate.providers.ProviderType;
-import com.tterrag.registrate.providers.RegistrateLangProvider;
-import com.tterrag.registrate.providers.RegistrateTagsProvider;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -52,7 +50,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 
 	protected final ResourceLocation stillTexture;
 	protected final ResourceLocation flowingTexture;
-	protected final String sourceName;
+	public final String sourceName;
 	protected final String bucketName;
 	protected final NonNullFunction<CBCFlowingFluid.Properties, T> factory;
 
@@ -61,7 +59,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 	private NonNullConsumer<CBCFlowingFluid.Properties> properties;
 	@Nullable
 	private NonNullSupplier<? extends CBCFlowingFluid> source;
-	private List<TagKey<Fluid>> tags = new ArrayList<>();
+	protected List<TagKey<Fluid>> tags = new ArrayList<>();
 
 	protected FluidBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
 						   NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
@@ -82,13 +80,9 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		return this;
 	}
 
-	public FluidBuilder<T, P> defaultLang() {
-		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), RegistrateLangProvider.toEnglishName(sourceName));
-	}
+	public abstract FluidBuilder<T, P> defaultLang();
 
-	public FluidBuilder<T, P> lang(String name) {
-		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), name);
-	}
+	public abstract FluidBuilder<T, P> lang(String name);
 
 	public FluidBuilder<T, P> defaultSource() {
 		if (this.defaultSource != null) {
@@ -175,16 +169,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		return this;
 	}
 
-	@SafeVarargs
-	public final FluidBuilder<T, P> tag(TagKey<Fluid>... tags) {
-		FluidBuilder<T, P> ret = this.tag(ProviderType.FLUID_TAGS, tags);
-		if (this.tags.isEmpty()) {
-			ret.getOwner().<RegistrateTagsProvider<Fluid>, Fluid>setDataGenerator(ret.sourceName, getRegistryKey(), ProviderType.FLUID_TAGS,
-					prov -> this.tags.stream().map(prov::tag).forEach(p -> p.add(this.getSource())));
-		}
-		this.tags.addAll(Arrays.asList(tags));
-		return ret;
-	}
+	public abstract FluidBuilder<T, P> tag(TagKey<Fluid>... tags);
 
 	@SafeVarargs
 	public final FluidBuilder<T, P> removeTag(TagKey<Fluid>... tags) {
@@ -192,7 +177,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		return this.removeTag(ProviderType.FLUID_TAGS, tags);
 	}
 
-	private CBCFlowingFluid getSource() {
+	protected CBCFlowingFluid getSource() {
 		NonNullSupplier<? extends CBCFlowingFluid> source = this.source;
 		Preconditions.checkNotNull(source, "Fluid has no source block: " + sourceName);
 		return source.get();
@@ -212,7 +197,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public FluidEntry<T> register() {
+	public RegistryEntry<T> register() {
 		if (defaultSource == Boolean.TRUE) {
 			source(CBCFlowingFluid.Still::new);
 		}
@@ -228,7 +213,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		} else {
 			throw new IllegalStateException("Fluid must have a source version: " + getName());
 		}
-		return (FluidEntry<T>) super.register();
+		return super.register();
 	}
 
 }

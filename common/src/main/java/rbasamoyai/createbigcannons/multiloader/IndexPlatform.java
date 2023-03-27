@@ -1,10 +1,14 @@
 package rbasamoyai.createbigcannons.multiloader;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -100,5 +104,11 @@ public class IndexPlatform {
 	@ExpectPlatform public static void registerDeferredParticleType(String name, ParticleType<?> type) { throw new AssertionError(); }
 
 	@ExpectPlatform public static void registerDeferredParticles() { throw new AssertionError(); }
+
+	@Environment(EnvType.CLIENT)
+	@ExpectPlatform
+	public static KeyMapping createSafeKeyMapping(String description, InputConstants.Type type, int keycode) {
+		throw new AssertionError();
+	}
 
 }

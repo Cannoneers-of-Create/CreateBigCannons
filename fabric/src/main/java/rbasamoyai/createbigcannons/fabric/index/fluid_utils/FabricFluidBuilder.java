@@ -7,6 +7,8 @@ import com.tterrag.registrate.fabric.FluidBlockHelper;
 import com.tterrag.registrate.fabric.FluidData;
 import com.tterrag.registrate.fabric.RegistryObject;
 import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateLangProvider;
+import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
@@ -22,13 +24,15 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
-import rbasamoyai.createbigcannons.index.fluid_utils.FluidEntry;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilder<T, P> {
@@ -42,6 +46,17 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 		this.attributes = FluidData.Builder::new;
 	}
 
+	@SafeVarargs
+	public final FluidBuilder<T, P> tag(TagKey<Fluid>... tags) {
+		FluidBuilder<T, P> ret = this.tag(ProviderType.FLUID_TAGS, tags);
+		if (this.tags.isEmpty()) {
+			ret.getOwner().<RegistrateTagsProvider<Fluid>, Fluid>setDataGenerator(ret.sourceName, getRegistryKey(), ProviderType.FLUID_TAGS,
+					prov -> this.tags.stream().map(prov::tag).forEach(p -> p.add(this.getSource())));
+		}
+		this.tags.addAll(Arrays.asList(tags));
+		return ret;
+	}
+
 	public FabricFluidBuilder<T, P> attributes(NonNullConsumer<FluidData.Builder> cons) {
 		this.attributesCallback = this.attributesCallback.andThen(cons);
 		return this;
@@ -50,6 +65,16 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 	@Override
 	public BlockBuilder<LiquidBlock, FluidBuilder<T, P>> block() {
 		return block1(FluidBlockHelper::createFluidBlock);
+	}
+
+	@Override
+	public FluidBuilder<T, P> defaultLang() {
+		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), RegistrateLangProvider.toEnglishName(sourceName));
+	}
+
+	@Override
+	public FluidBuilder<T, P> lang(String name) {
+		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), name);
 	}
 
 	@Override
@@ -74,8 +99,8 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 	}
 
 	@Override
-	public FluidEntry<T> register() {
-		FluidEntry<T> ret = super.register();
+	public RegistryEntry<T> register() {
+		RegistryEntry<T> ret = super.register();
 		if (this.renderHandler == null) {
 			this.setDefaultRenderHandler();
 		}
@@ -140,7 +165,7 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 
 	@Override
 	protected RegistryEntry<T> createEntryWrapper(RegistryObject<T> delegate) {
-		return new FluidEntry<>(getOwner(), delegate);
+		return new RegistryEntry<>(getOwner(), delegate);
 	}
 
 	public interface RenderHandlerFactory {

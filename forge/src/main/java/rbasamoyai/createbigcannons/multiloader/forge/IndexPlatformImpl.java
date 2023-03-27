@@ -1,10 +1,12 @@
 package rbasamoyai.createbigcannons.multiloader.forge;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -16,9 +18,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
@@ -105,6 +110,11 @@ public class IndexPlatformImpl {
 
 	public static void registerDeferredParticles() {
 		CreateBigCannonsForge.PARTICLE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static KeyMapping createSafeKeyMapping(String description, InputConstants.Type type, int keycode) {
+		return new KeyMapping(description, type, keycode, "key." + CreateBigCannons.MOD_ID + ".category");
 	}
 
 }

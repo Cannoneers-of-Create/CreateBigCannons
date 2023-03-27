@@ -27,7 +27,6 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
@@ -46,6 +45,7 @@ import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlockGen;
+import rbasamoyai.createbigcannons.index.CBCItems;
 
 public class CBCBuilderTransformers {
 
@@ -479,7 +479,7 @@ public class CBCBuilderTransformers {
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> bronzeScrapLoot(int count) {
 		return (t, u) -> t.add(u, LootTable.lootTable().withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_BRONZE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count))))));
 	}
-	
+
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> steelScrapLoot(int count) {
 		return (t, u) -> t.add(u, LootTable.lootTable().withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count))))));
 	}

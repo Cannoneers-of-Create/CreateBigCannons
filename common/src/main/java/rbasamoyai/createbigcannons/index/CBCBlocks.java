@@ -4,7 +4,7 @@ import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
+import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -1033,12 +1033,12 @@ public class CBCBlocks {
 			.simpleItem()
 			.register();
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock() {
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBlock() {
 		return cannonBlock(true);
 	}
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> cannonBlock(boolean canPassThrough) {
-		NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> transform = b -> b.initialProperties(Material.METAL)
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBlock(boolean canPassThrough) {
+		NonNullUnaryOperator<BlockBuilder<T, P>> transform = b -> b.initialProperties(Material.METAL)
 				.properties(p -> p.strength(5.0f, 6.0f))
 				.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 				.properties(p -> p.requiresCorrectToolForDrops())
@@ -1047,12 +1047,12 @@ public class CBCBlocks {
 		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> logCannonBlock() {
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> logCannonBlock() {
 		return logCannonBlock(true);
 	}
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> logCannonBlock(boolean canPassThrough) {
-		NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> transform = b -> b.initialProperties(Material.WOOD, MaterialColor.CRIMSON_STEM)
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> logCannonBlock(boolean canPassThrough) {
+		NonNullUnaryOperator<BlockBuilder<T, P>> transform = b -> b.initialProperties(Material.WOOD, MaterialColor.CRIMSON_STEM)
 				.properties(p -> p.strength(2.0f))
 				.properties(p -> p.sound(SoundType.WOOD))
 				.tag(BlockTags.MINEABLE_WITH_AXE)
@@ -1060,12 +1060,12 @@ public class CBCBlocks {
 		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> strongCannonBlock() {
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> strongCannonBlock() {
 		return strongCannonBlock(true);
 	}
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> strongCannonBlock(boolean canPassThrough) {
-		NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> transform = b -> b.initialProperties(Material.METAL)
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> strongCannonBlock(boolean canPassThrough) {
+		NonNullUnaryOperator<BlockBuilder<T, P>> transform = b -> b.initialProperties(Material.METAL)
 				.properties(p -> p.strength(50.0f, 1200.0f))
 				.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 				.properties(p -> p.requiresCorrectToolForDrops())
@@ -1075,19 +1075,19 @@ public class CBCBlocks {
 		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> shell(MaterialColor color) {
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> shell(MaterialColor color) {
 		return b -> b.addLayer(() -> RenderType::solid)
 				.initialProperties(Material.EXPLOSIVE, color)
 				.properties(p -> p.strength(2.0f, 3.0f))
 				.properties(p -> p.sound(SoundType.STONE));
 	}
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> castingSand() {
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> castingSand() {
 		return b -> b.initialProperties(() -> Blocks.SAND)
 				.tag(BlockTags.MINEABLE_WITH_SHOVEL);
 	}
 	
-	private static <T extends Block, P> NonNullFunction<BlockBuilder<T, P>, BlockBuilder<T, P>> axeOrPickaxe() {
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> axeOrPickaxe() {
 		return b -> b.tag(BlockTags.MINEABLE_WITH_AXE)
 				.tag(BlockTags.MINEABLE_WITH_PICKAXE);
 	}

@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.OrientedContraptionEntityRenderer;
 import com.tterrag.registrate.util.entry.EntityEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
@@ -44,8 +43,8 @@ public class CBCEntityTypes {
 			.properties(configure(c -> c.trackingRange(16)
 					.updateInterval(3)
 					.updateVelocity(true)
-					.fireImmune()))
-			.properties(AbstractContraptionEntity::build)
+					.fireImmune()
+					.size(1, 1)))
 			.renderer(() -> OrientedContraptionEntityRenderer::new)
 			.register();
 

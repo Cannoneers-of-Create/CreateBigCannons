@@ -2,22 +2,22 @@ package rbasamoyai.createbigcannons.index;
 
 import com.simibubi.create.AllTags;
 import com.tterrag.registrate.AbstractRegistrate;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.MoltenMetalLiquidBlock;
-import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
-import rbasamoyai.createbigcannons.index.fluid_utils.FluidEntry;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
+import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCFluids {
 
-	public static final FluidEntry<CBCFlowingFluid.Flowing> MOLTEN_CAST_IRON =
+	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_CAST_IRON =
 			standardFluid("molten_cast_iron")
-			.lang(f -> "fluid.createbigcannons.molten_cast_iron", "Molten Cast Iron")
+			.lang("Molten Cast Iron")
 			.tag(AllTags.forgeFluidTag("molten_cast_iron"))
 //			.attributes(b -> b.viscosity(1250)
 //					.density(7100)
@@ -30,9 +30,9 @@ public class CBCFluids {
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
-	public static final FluidEntry<CBCFlowingFluid.Flowing> MOLTEN_BRONZE =
+	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_BRONZE =
 			standardFluid("molten_bronze")
-			.lang(f -> "fluid.createbigcannons.molten_bronze", "Molten Bronze")
+			.lang("Molten Bronze")
 			.tag(AllTags.forgeFluidTag("molten_bronze"))
 //			.attributes(b -> b.viscosity(1250)
 //					.density(8770)
@@ -45,9 +45,9 @@ public class CBCFluids {
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
-	public static final FluidEntry<CBCFlowingFluid.Flowing> MOLTEN_STEEL =
+	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_STEEL =
 			standardFluid("molten_steel")
-			.lang(f -> "fluid.createbigcannons.molten_steel", "Molten Steel")
+			.lang("Molten Steel")
 			.tag(AllTags.forgeFluidTag("molten_steel"))
 //			.attributes(b -> b.viscosity(1250)
 //					.density(7040)
@@ -60,9 +60,9 @@ public class CBCFluids {
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
-	public static final FluidEntry<CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
+	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
 			standardFluid("molten_nethersteel")
-			.lang(f -> "fluid.createbigcannons.molten_nethersteel", "Molten Nethersteel")
+			.lang("Molten Nethersteel")
 //			.attributes(b -> b.viscosity(1250)
 //					.density(7040)
 //					.temperature(1430))
