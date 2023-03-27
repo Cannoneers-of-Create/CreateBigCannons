@@ -87,5 +87,5 @@ jobs:
       - name: Archive Artifacts
         uses: actions/upload-artifact@v3.1.2
         with:
-          name: createbigcannons-${{ steps.read_properties.outputs.minecraft_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
+          name: ${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
           path: ${{ steps.find_jars.outputs.jars }}
