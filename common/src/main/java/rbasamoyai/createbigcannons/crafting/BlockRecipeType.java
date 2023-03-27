@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.crafting;
 
 import net.minecraft.core.Registry;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
@@ -13,7 +14,7 @@ public interface BlockRecipeType<T extends BlockRecipe>  {
 	BlockRecipeType<DrillBoringBlockRecipe> DRILL_BORING = register("drill_boring");
 	
 	private static <T extends BlockRecipe> BlockRecipeType<T> register(String id) {
-		return Registry.register(CBCRegistries.BLOCK_RECIPE_TYPES, id, new Simple<T>(id));
+		return Registry.register(CBCRegistries.BLOCK_RECIPE_TYPES, CreateBigCannons.resource(id), new Simple<T>(id));
 	}
 	
 	class Simple<T extends BlockRecipe> implements BlockRecipeType<T> {

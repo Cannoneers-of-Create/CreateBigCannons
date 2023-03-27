@@ -22,7 +22,6 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientForge::onFovModify);
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
-
 	}
 
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {

@@ -9,6 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 
@@ -106,7 +107,7 @@ public class CannonCastShape {
 	public static void register() {}
 
 	private static CannonCastShape register(String id, CannonCastShape shape) {
-		return Registry.register(CBCRegistries.CANNON_CAST_SHAPES, id, shape);
+		return Registry.register(CBCRegistries.CANNON_CAST_SHAPES, CreateBigCannons.resource(id), shape);
 	}
 	
 }

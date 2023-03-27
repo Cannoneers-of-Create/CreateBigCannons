@@ -1,6 +1,6 @@
 {
-  "type": "minecraft:cannon_casting",
-  "cast_shape": "minecraft:screw_breech",
+  "type": "createbigcannons:cannon_casting",
+  "cast_shape": "createbigcannons:screw_breech",
   "fluid": {
     "fluid": "createbigcannons:molten_nethersteel",
     "nbt": {},

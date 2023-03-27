@@ -1,6 +1,6 @@
 {
-  "type": "minecraft:cannon_casting",
-  "cast_shape": "minecraft:small",
+  "type": "createbigcannons:cannon_casting",
+  "cast_shape": "createbigcannons:small",
   "fluid": {
     "fluid": "createbigcannons:molten_nethersteel",
     "nbt": {},

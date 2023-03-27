@@ -1,6 +1,6 @@
 {
-  "type": "minecraft:cannon_casting",
-  "cast_shape": "minecraft:large",
+  "type": "createbigcannons:cannon_casting",
+  "cast_shape": "createbigcannons:large",
   "fluid": {
     "fluidTag": "c:molten_steel",
     "amount": 1
