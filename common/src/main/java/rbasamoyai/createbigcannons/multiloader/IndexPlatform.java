@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.multiloader;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.simibubi.create.content.AllSections;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
@@ -118,5 +119,7 @@ public class IndexPlatform {
 	public static <T extends ItemPropertyFunction> void registerClampedItemProperty(Item item, ResourceLocation loc, T func) {
 		throw new AssertionError();
 	}
+
+	@ExpectPlatform public static AllSections getSection(Object obj) { throw new AssertionError(); }
 
 }

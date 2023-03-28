@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.multiloader.forge;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -26,6 +27,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
@@ -124,5 +126,7 @@ public class IndexPlatformImpl {
 	public static <T extends ItemPropertyFunction> void registerClampedItemProperty(Item item, ResourceLocation loc, T func) {
 		ItemProperties.register(item, loc, func);
 	}
+
+	public static AllSections getSection(Object obj) { return CreateBigCannons.REGISTRATE.getSection((IForgeRegistryEntry<?>) obj); }
 
 }

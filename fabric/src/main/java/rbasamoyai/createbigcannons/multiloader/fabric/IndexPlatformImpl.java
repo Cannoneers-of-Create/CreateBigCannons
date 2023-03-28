@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.multiloader.fabric;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -131,5 +132,7 @@ public class IndexPlatformImpl {
 	public static <T extends ItemPropertyFunction> void registerClampedItemProperty(Item item, ResourceLocation loc, T func) {
 		ItemProperties.register(item, loc, func::call);
 	}
+
+	public static AllSections getSection(Object obj) { return CreateBigCannons.REGISTRATE.getSection(obj); }
 
 }
