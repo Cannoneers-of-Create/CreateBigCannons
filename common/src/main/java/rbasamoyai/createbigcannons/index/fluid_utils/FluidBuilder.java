@@ -120,11 +120,6 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 						.texture("particle", stillTexture)));
 	}
 
-	@SuppressWarnings("unchecked")
-	public <B extends LiquidBlock> BlockBuilder<B, FluidBuilder<T, P>> block1(NonNullBiFunction<? extends T, BlockBehaviour.Properties, ? extends B> factory) {
-		return block((supplier, settings) -> ((NonNullBiFunction<T, BlockBehaviour.Properties, ? extends B>) factory).apply(supplier.get(), settings));
-	}
-
 	@Beta
 	public FluidBuilder<T, P> noBlock() {
 		if (this.defaultBlock == Boolean.FALSE) {
@@ -185,7 +180,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 
 	protected CBCFlowingFluid.Properties makeProperties() {
 		NonNullSupplier<? extends CBCFlowingFluid> source = this.source;
-		CBCFlowingFluid.Properties ret = new CBCFlowingFluid.Properties(source == null ? null : source::get, asSupplier());
+		CBCFlowingFluid.Properties ret = new CBCFlowingFluid.Properties(source, asSupplier(), this.stillTexture, this.flowingTexture);
 		this.properties.accept(ret);
 		return ret;
 	}
@@ -209,7 +204,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		}
 		NonNullSupplier<? extends CBCFlowingFluid> source = this.source;
 		if (source != null) {
-			getCallback().accept(sourceName, Fluid.class, (FluidBuilder) this, source::get);
+			getCallback().accept(sourceName, Fluid.class, (FluidBuilder) this, source);
 		} else {
 			throw new IllegalStateException("Fluid must have a source version: " + getName());
 		}

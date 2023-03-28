@@ -6,7 +6,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.MoltenMetalLiquidBlock;
+import rbasamoyai.createbigcannons.crafting.foundry.MoltenMetalLiquidBlock;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
@@ -26,7 +26,7 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
-			.block1(MoltenMetalLiquidBlock::new).build()
+			.block(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
@@ -41,7 +41,7 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
-			.block1(MoltenMetalLiquidBlock::new).build()
+			.block(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
@@ -56,7 +56,7 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
-			.block1(MoltenMetalLiquidBlock::new).build()
+			.block(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
@@ -70,23 +70,11 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
-			.block1(MoltenMetalLiquidBlock::new).build()
+			.block(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 	
 	public static void register() {}
-	
-//	private static class NoColorFluidAttributes extends FluidVariantAttributes {
-//
-//		protected NoColorFluidAttributes(Builder builder, Fluid fluid) {
-//			super(builder, fluid);
-//		}
-//
-//		@Override
-//		public int getColor(BlockAndTintGetter level, BlockPos pos) {
-//			return 0x00ffffff;
-//		}
-//	}
 
 	private static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluid(String name, NonNullFunction<CBCFlowingFluid.Properties, T> fac) {
 		ResourceLocation stillTex = CreateBigCannons.resource("fluid/" + name + "_still");

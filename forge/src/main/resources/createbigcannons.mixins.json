@@ -6,6 +6,8 @@
   "client": [
   ],
   "mixins": [
+    "CBCLiquidBlockMixin",
+    "CBCFlowingFluidMixin"
   ],
   "injectors": {
     "defaultRequire": 1

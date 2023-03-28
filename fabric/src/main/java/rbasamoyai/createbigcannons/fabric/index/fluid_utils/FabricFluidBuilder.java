@@ -5,15 +5,11 @@ import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.fabric.FluidBlockHelper;
 import com.tterrag.registrate.fabric.FluidData;
-import com.tterrag.registrate.fabric.RegistryObject;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.entry.RegistryEntry;
-import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
-import com.tterrag.registrate.util.nullness.NonNullConsumer;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import com.tterrag.registrate.util.nullness.*;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
@@ -27,6 +23,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
@@ -65,6 +62,11 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 	@Override
 	public BlockBuilder<LiquidBlock, FluidBuilder<T, P>> block() {
 		return block1(FluidBlockHelper::createFluidBlock);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <B extends LiquidBlock> BlockBuilder<B, FluidBuilder<T, P>> block1(NonNullBiFunction<? extends T, BlockBehaviour.Properties, ? extends B> factory) {
+		return block((supplier, settings) -> ((NonNullBiFunction<T, BlockBehaviour.Properties, ? extends B>) factory).apply(supplier.get(), settings));
 	}
 
 	@Override
@@ -161,11 +163,6 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 				registry.register(this.flowingTexture);
 			});
 		});
-	}
-
-	@Override
-	protected RegistryEntry<T> createEntryWrapper(RegistryObject<T> delegate) {
-		return new RegistryEntry<>(getOwner(), delegate);
 	}
 
 	public interface RenderHandlerFactory {

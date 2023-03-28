@@ -8,9 +8,9 @@ public class CBCDamageSource extends DamageSource {
 		super(id);
 	}
 
-	@Override
-	public DamageSource bypassArmor() {
+	@Override public DamageSource bypassArmor() {
 		return super.bypassArmor();
 	}
+	@Override public DamageSource setIsFire() { return super.setIsFire(); }
 
 }

@@ -25,6 +25,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "player", "%s was blown out by grapeshot");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("cannon_projectile"), "player", "%s was vaporized by %s");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("traffic_cone"), "player", "%s was struck from heaven above");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("molten_metal"), "player", "%s burned in molten metal");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %ss %s ticks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.distance", "Detonation Distance: %s blocks");
 		

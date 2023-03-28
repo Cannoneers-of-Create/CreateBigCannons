@@ -2,6 +2,9 @@ package rbasamoyai.createbigcannons.index.fluid_utils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -29,6 +32,15 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 	private final int dropoff;
 	private final int flowspeed;
 	private final int tickRate;
+	private final float blastResistance;
+	
+	// Forge fluid attributes
+	protected final ResourceLocation stillTex;
+	protected final ResourceLocation flowingTex;
+	protected final int color = 0x00ffffff;
+	protected final SoundEvent fillSound;
+	protected final SoundEvent emptySound;
+	protected final String translationKey;
 
 	public CBCFlowingFluid(Properties properties) {
 		this.infinite = properties.infinite;
@@ -39,6 +51,13 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 		this.dropoff = properties.levelDecreasePerBlock;
 		this.flowspeed = properties.flowSpeed;
 		this.tickRate = properties.tickRate;
+		this.blastResistance = properties.blastResistance;
+
+		this.stillTex = properties.stillTex;
+		this.flowingTex = properties.flowingTex;
+		this.fillSound = properties.fillSound;
+		this.emptySound = properties.emptySound;
+		this.translationKey = properties.translationKey;
 	}
 
 	@Override public Fluid getFlowing() { return this.flowing.get(); }
@@ -62,7 +81,7 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 
 	@Override public int getTickDelay(LevelReader level) { return this.tickRate; }
 
-	@Override protected float getExplosionResistance() { return 100; }
+	@Override protected float getExplosionResistance() { return this.blastResistance; }
 
 	@Override
 	protected BlockState createLegacyBlock(FluidState state) {
@@ -108,9 +127,21 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 		private float blastResistance = 1;
 		private int tickRate = 5;
 
-		public Properties(Supplier<? extends Fluid> still, Supplier<? extends Fluid> flowing) {
+		// Fluid attributes stuff deemed necessary
+		private final ResourceLocation stillTex;
+		private final ResourceLocation flowingTex;
+		private int color = 0x00ffffff;
+		private SoundEvent fillSound;
+		private SoundEvent emptySound;
+		private String translationKey;
+
+		public Properties(Supplier<? extends Fluid> still, Supplier<? extends Fluid> flowing, ResourceLocation stillTex,
+						  ResourceLocation flowingTex) {
 			this.still = still;
 			this.flowing = flowing;
+			this.stillTex = stillTex;
+			this.flowingTex = flowingTex;
+			this.sound(SoundEvents.BUCKET_FILL, SoundEvents.BUCKET_EMPTY);
 		}
 
 		public Properties canMultiply() {
@@ -145,6 +176,26 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 
 		public Properties tickRate(int tickRate) {
 			this.tickRate = tickRate;
+			return this;
+		}
+
+		public Properties color(int color) {
+			this.color = color;
+			return this;
+		}
+
+		public Properties sound(SoundEvent sound) {
+			return this.sound(sound, sound);
+		}
+
+		public Properties sound(SoundEvent fill, SoundEvent empty) {
+			this.fillSound = fill;
+			this.emptySound = empty;
+			return this;
+		}
+
+		public Properties translationKey(String key) {
+			this.translationKey = key;
 			return this;
 		}
 	}

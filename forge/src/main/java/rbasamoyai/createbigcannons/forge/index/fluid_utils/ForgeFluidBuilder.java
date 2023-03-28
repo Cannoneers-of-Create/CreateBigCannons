@@ -6,7 +6,6 @@ import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
-import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.Util;
 import net.minecraft.core.Registry;
@@ -14,7 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.RegistryObject;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 
@@ -39,12 +37,12 @@ public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilde
 
 	@Override
 	public FluidBuilder<T, P> defaultLang() {
-		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), RegistrateLangProvider.toEnglishName(sourceName));
+		return lang(this::makeDescriptionId, RegistrateLangProvider.toEnglishName(this.sourceName));
 	}
 
 	@Override
 	public FluidBuilder<T, P> lang(String name) {
-		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), name);
+		return lang(this::makeDescriptionId, name);
 	}
 
 	@Override
@@ -52,9 +50,10 @@ public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilde
 		return block(LiquidBlock::new);
 	}
 
-	@Override
-	protected RegistryEntry<T> createEntryWrapper(RegistryObject<T> delegate) {
-		return new RegistryEntry<>(getOwner(), delegate);
+	private String makeDescriptionId(T fluid) {
+		String ret = Util.makeDescriptionId("fluid", Registry.FLUID.getKey(fluid.getSource()));
+		this.properties(b -> b.translationKey(ret));
+		return ret;
 	}
 
 }
