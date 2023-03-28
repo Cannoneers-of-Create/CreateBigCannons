@@ -9,12 +9,15 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -115,6 +118,11 @@ public class IndexPlatformImpl {
 	@OnlyIn(Dist.CLIENT)
 	public static KeyMapping createSafeKeyMapping(String description, InputConstants.Type type, int keycode) {
 		return new KeyMapping(description, type, keycode, "key." + CreateBigCannons.MOD_ID + ".category");
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static <T extends ItemPropertyFunction> void registerClampedItemProperty(Item item, ResourceLocation loc, T func) {
+		ItemProperties.register(item, loc, func);
 	}
 
 }
