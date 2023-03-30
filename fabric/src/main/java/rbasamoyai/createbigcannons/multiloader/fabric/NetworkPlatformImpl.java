@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.multiloader.fabric;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -9,6 +11,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class NetworkPlatformImpl {
 
+	@Environment(EnvType.CLIENT)
 	public static void sendToServer(RootPacket pkt) {
 		CBCNetworkFabric.INSTANCE.sendToServer(new FabricPacket(pkt));
 	}

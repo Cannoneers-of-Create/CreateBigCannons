@@ -9,12 +9,15 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import rbasamoyai.createbigcannons.CBCClientCommon;
+import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
 
 public class CBCClientFabric implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		CBCClientCommon.onClientSetup();
 		CBCClientCommon.registerKeyMappings(KeyBindingHelper::registerKeyBinding);
+
+		CBCNetworkFabric.INSTANCE.initClientListener();
 
 		ParticleManagerRegistrationCallback.EVENT.register(CBCClientFabric::onParticleRegistry);
 		FogEvents.SET_COLOR.register(CBCClientFabric::setFogColor);

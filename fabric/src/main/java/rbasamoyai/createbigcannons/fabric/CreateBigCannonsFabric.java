@@ -27,7 +27,7 @@ public class CreateBigCannonsFabric implements ModInitializer {
         CBCRegistries.init();
         CBCConfigs.registerConfigs((t, c) -> ModLoadingContext.registerConfig(CreateBigCannons.MOD_ID, t, c));
 
-        CBCNetworkFabric.init();
+        CBCNetworkFabric.INSTANCE.initServerListener();
         FluidBlob.registerDefaultBlobEffects();
 
         ModConfigEvent.LOADING.register(CBCConfigs::onLoad);

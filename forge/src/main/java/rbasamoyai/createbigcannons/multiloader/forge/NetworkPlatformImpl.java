@@ -3,6 +3,8 @@ package rbasamoyai.createbigcannons.multiloader.forge;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PacketDistributor;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.forge.network.ForgeClientPacket;
@@ -11,6 +13,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class NetworkPlatformImpl {
 
+	@OnlyIn(Dist.CLIENT)
 	public static void sendToServer(RootPacket pkt) {
 		CBCNetworkForge.INSTANCE.sendToServer(new ForgeServerPacket(pkt));
 	}
