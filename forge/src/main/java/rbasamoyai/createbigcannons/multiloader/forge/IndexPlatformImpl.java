@@ -1,10 +1,10 @@
 package rbasamoyai.createbigcannons.multiloader.forge;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.client.KeyMapping;
@@ -19,6 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +29,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
@@ -51,6 +52,8 @@ import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
+
+import java.util.function.Supplier;
 
 public class IndexPlatformImpl {
 
@@ -127,6 +130,14 @@ public class IndexPlatformImpl {
 		ItemProperties.register(item, loc, func);
 	}
 
-	public static AllSections getSection(Object obj) { return CreateBigCannons.REGISTRATE.getSection((IForgeRegistryEntry<?>) obj); }
+	public static Object getUnchecked(RegistryEntry<?> ent) { return ent.getUnchecked(); }
+
+	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {
+		return CreateBigCannonsForge.RECIPE_SERIALIZER_REGISTER.register(id.getPath(), sup);
+	}
+
+	public static void registerRecipeType(ResourceLocation id, Supplier<RecipeType<?>> type) {
+		CreateBigCannonsForge.RECIPE_TYPE_REGISTER.register(id.getPath(), type);
+	}
 
 }

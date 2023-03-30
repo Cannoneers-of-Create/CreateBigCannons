@@ -15,14 +15,13 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -31,7 +30,6 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.Failure
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -108,8 +106,7 @@ public class CBCTooltip {
 
 	public static ItemDescription.Palette getPalette(Level level, ItemStack stack) {
 		if (level == null) return AllSections.UNASSIGNED.getTooltipPalette();
-		Item item = stack.getItem();
-		AllSections section = IndexPlatform.getSection(item instanceof BlockItem block ? block.getBlock() : item);
+		AllSections section = AllSections.of(stack);
 		return section == null ? AllSections.UNASSIGNED.getTooltipPalette() : section.getTooltipPalette();
 	}
 

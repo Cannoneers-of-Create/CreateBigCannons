@@ -1,10 +1,10 @@
 package rbasamoyai.createbigcannons.multiloader.fabric;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.simibubi.create.content.AllSections;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
@@ -19,12 +19,15 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,6 +55,8 @@ import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
+
+import java.util.function.Supplier;
 
 public class IndexPlatformImpl {
 
@@ -133,6 +138,15 @@ public class IndexPlatformImpl {
 		ItemProperties.register(item, loc, func::call);
 	}
 
-	public static AllSections getSection(Object obj) { return CreateBigCannons.REGISTRATE.getSection(obj); }
+	public static Object getUnchecked(RegistryEntry<?> ent) { return ent.getUnchecked(); }
+
+	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {
+		RecipeSerializer<?> ret = Registry.register(Registry.RECIPE_SERIALIZER, id, sup.get());
+		return () -> ret;
+	}
+
+	public static void registerRecipeType(ResourceLocation id, Supplier<RecipeType<?>> type) {
+		Registry.register(Registry.RECIPE_TYPE, id, type.get());
+	}
 
 }

@@ -1,12 +1,10 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.simibubi.create.Create;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder.ProcessingRecipeFactory;
 import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -16,6 +14,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.foundry.MeltingRecipe;
 import rbasamoyai.createbigcannons.crafting.item_munitions.CartridgeAssemblyRecipe;
 import rbasamoyai.createbigcannons.crafting.item_munitions.MunitionFuzingRecipe;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
@@ -34,11 +33,11 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
 	CBCRecipeTypes(NonNullSupplier<RecipeSerializer<?>> serializerSupplier, NonNullSupplier<RecipeType<?>> typeSupplier, boolean registerType) {
 		String name = Lang.asId(name());
-		id = Create.asResource(name);
-		serializerObject = CreateBigCannons.REGISTRATE.simple(name, Registry.RECIPE_SERIALIZER_REGISTRY, serializerSupplier);
+		id = CreateBigCannons.resource(name);
+		serializerObject = IndexPlatform.registerRecipeSerializer(this.id, serializerSupplier);
 		if (registerType) {
 			typeObject = typeSupplier.get();
-			CreateBigCannons.REGISTRATE.simple(name, Registry.RECIPE_TYPE_REGISTRY, typeSupplier);
+			IndexPlatform.registerRecipeType(this.id, typeSupplier);
 			type = typeSupplier;
 		} else {
 			typeObject = null;
@@ -49,10 +48,10 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	CBCRecipeTypes(NonNullSupplier<RecipeSerializer<?>> serializerSupplier) {
 		String name = Lang.asId(name());
 		id = CreateBigCannons.resource(name);
-		serializerObject = CreateBigCannons.REGISTRATE.simple(name, Registry.RECIPE_SERIALIZER_REGISTRY, serializerSupplier);
+		serializerObject = IndexPlatform.registerRecipeSerializer(this.id, serializerSupplier);
 		typeObject = simpleType(id);
 		type = () -> typeObject;
-		CreateBigCannons.REGISTRATE.simple(name, Registry.RECIPE_TYPE_REGISTRY, type);
+		IndexPlatform.registerRecipeType(this.id, this.type);
 	}
 
 	CBCRecipeTypes(ProcessingRecipeFactory<?> processingFactory) {
@@ -61,7 +60,7 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
 	public static <T extends Recipe<?>> RecipeType<T> simpleType(ResourceLocation id) {
 		String stringId = id.toString();
-		return new RecipeType<T>() {
+		return new RecipeType<>() {
 			@Override
 			public String toString() {
 				return stringId;

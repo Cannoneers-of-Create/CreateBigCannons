@@ -1,9 +1,9 @@
 package rbasamoyai.createbigcannons.multiloader;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.simibubi.create.content.AllSections;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
+import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -21,6 +21,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,6 +37,8 @@ import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
+
+import java.util.function.Supplier;
 
 public class IndexPlatform {
 
@@ -120,6 +124,16 @@ public class IndexPlatform {
 		throw new AssertionError();
 	}
 
-	@ExpectPlatform public static AllSections getSection(Object obj) { throw new AssertionError(); }
+	@ExpectPlatform public static Object getUnchecked(RegistryEntry<?> ent) { throw new AssertionError(); }
+
+	@ExpectPlatform
+	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {
+		throw new AssertionError();
+	}
+
+	@ExpectPlatform
+	public static void registerRecipeType(ResourceLocation id, Supplier<RecipeType<?>> type) {
+		throw new AssertionError();
+	}
 
 }
