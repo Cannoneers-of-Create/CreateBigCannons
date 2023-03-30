@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.cannon_control.contraption;
 
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.content.contraptions.components.actors.SeatEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.OrientedContraptionEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
@@ -210,6 +211,15 @@ public abstract class AbstractPitchOrientedContraptionEntity extends OrientedCon
 		entity.setYRot(this.yaw);
 		entity.xRotO = flag ? -this.prevPitch : this.prevPitch;
 		entity.yRotO = this.prevYaw;
+	}
+
+	@Override
+	public void positionRider(Entity passenger) {
+		if (!this.hasPassenger(passenger)) return;
+		Vec3 transformedVector = this.getPassengerPosition(passenger, 1);
+		if (transformedVector == null) return;
+		passenger.setPos(transformedVector.x,
+				transformedVector.y + SeatEntity.getCustomEntitySeatOffset(passenger) - 1 / 8f, transformedVector.z);
 	}
 
 	@Override
