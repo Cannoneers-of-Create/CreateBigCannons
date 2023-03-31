@@ -10,9 +10,9 @@ import net.minecraftforge.api.fml.event.config.ModConfigEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
-import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
 
 public class CreateBigCannonsFabric implements ModInitializer {
 
@@ -32,6 +32,7 @@ public class CreateBigCannonsFabric implements ModInitializer {
 
         ModConfigEvent.LOADING.register(CBCConfigs::onLoad);
         ModConfigEvent.RELOADING.register(CBCConfigs::onReload);
+        CBCCommonFabricEvents.register();
 
         this.registerSerializers();
     }
