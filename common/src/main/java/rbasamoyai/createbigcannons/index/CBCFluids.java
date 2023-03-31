@@ -5,6 +5,7 @@ import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.resources.ResourceLocation;
+import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.foundry.MoltenMetalLiquidBlock;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
@@ -19,6 +20,7 @@ public class CBCFluids {
 			standardFluid("molten_cast_iron")
 			.lang("Molten Cast Iron")
 			.tag(AllTags.forgeFluidTag("molten_cast_iron"))
+			.tag(CBCTags.FluidCBC.MOLTEN_METAL)
 //			.attributes(b -> b.viscosity(1250)
 //					.density(7100)
 //					.temperature(1200))
@@ -34,6 +36,7 @@ public class CBCFluids {
 			standardFluid("molten_bronze")
 			.lang("Molten Bronze")
 			.tag(AllTags.forgeFluidTag("molten_bronze"))
+			.tag(CBCTags.FluidCBC.MOLTEN_METAL)
 //			.attributes(b -> b.viscosity(1250)
 //					.density(8770)
 //					.temperature(920))
@@ -49,6 +52,7 @@ public class CBCFluids {
 			standardFluid("molten_steel")
 			.lang("Molten Steel")
 			.tag(AllTags.forgeFluidTag("molten_steel"))
+			.tag(CBCTags.FluidCBC.MOLTEN_METAL)
 //			.attributes(b -> b.viscosity(1250)
 //					.density(7040)
 //					.temperature(1430))
@@ -63,6 +67,7 @@ public class CBCFluids {
 	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
 			standardFluid("molten_nethersteel")
 			.lang("Molten Nethersteel")
+			.tag(CBCTags.FluidCBC.MOLTEN_METAL)
 //			.attributes(b -> b.viscosity(1250)
 //					.density(7040)
 //					.temperature(1430))

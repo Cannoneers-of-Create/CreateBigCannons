@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,8 +33,19 @@ public class CBCLiquidBlock extends LiquidBlock implements FluidGetter {
 
 	@Override
 	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
-		level.scheduleTick(pos, state.getFluidState().getType(), this.getFluid().getTickDelay(level));
+		if (this.shouldSpreadLiquid(level, pos, state)) {
+			level.scheduleTick(pos, state.getFluidState().getType(), this.getFluid().getTickDelay(level));
+		}
 	}
+
+	@Override
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos fromPos, boolean isMoving) {
+		if (this.shouldSpreadLiquid(level, pos, state)) {
+			level.scheduleTick(pos, state.getFluidState().getType(), this.getFluid().getTickDelay(level));
+		}
+	}
+
+	protected boolean shouldSpreadLiquid(Level level, BlockPos pos, BlockState state) { return true; }
 
 	@Override
 	public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos currentPos, BlockPos neighborPos) {

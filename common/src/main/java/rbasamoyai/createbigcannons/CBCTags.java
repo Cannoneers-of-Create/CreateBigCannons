@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.material.Fluid;
 
 import java.util.Arrays;
 import java.util.List;
@@ -158,6 +159,17 @@ public class CBCTags {
 			addIdsToItemTag(BLOCK_BRONZE, alloyed("bronze_block"));
 			addIdsToItemTag(BLOCK_STEEL, alloyed("steel_block"));
 			addIdsToItemTag(BLOCK_CAST_IRON, createdeco("cast_iron_block"));
+		}
+	}
+
+	public static class FluidCBC {
+		public static final TagKey<Fluid>
+			MOLTEN_METAL = makeTag("molten_metal");
+
+		public static TagKey<Fluid> makeTag(String loc) {
+			TagKey<Fluid> tag = TagKey.create(Registry.FLUID_REGISTRY, CreateBigCannons.resource(loc));
+			REGISTRATE.addDataGenerator(ProviderType.FLUID_TAGS, prov -> ((TagsProvider<Fluid>) prov).tag(tag));
+			return tag;
 		}
 	}
 		
