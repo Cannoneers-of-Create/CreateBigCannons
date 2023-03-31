@@ -11,7 +11,7 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
@@ -150,7 +150,7 @@ public class CBCClientCommon {
 		return mc.options.keyUse.isDown() && isControllingCannon(mc.player) ? oldFov * 0.5f : oldFov;
 	}
 
-	public static void onPlayerRenderPre(PoseStack stack, Player player, float partialTicks) {
+	public static void onPlayerRenderPre(PoseStack stack, LivingEntity player, float partialTicks) {
 		if (player.getVehicle() instanceof AbstractPitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
 			Vector3f pVec = new Vector3f(player.getPosition(partialTicks));
 			stack.translate(-pVec.x(), -pVec.y(), -pVec.z());

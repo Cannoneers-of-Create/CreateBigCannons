@@ -1,9 +1,7 @@
 package rbasamoyai.createbigcannons.fabric;
 
-import io.github.fabricators_of_create.porting_lib.event.client.FOVModifierCallback;
-import io.github.fabricators_of_create.porting_lib.event.client.FogEvents;
-import io.github.fabricators_of_create.porting_lib.event.client.MouseScrolledCallback;
-import io.github.fabricators_of_create.porting_lib.event.client.ParticleManagerRegistrationCallback;
+import com.mojang.blaze3d.vertex.PoseStack;
+import io.github.fabricators_of_create.porting_lib.event.client.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -12,6 +10,9 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.fabric.mixin.KeyMappingAccessor;
@@ -32,6 +33,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		MouseScrolledCallback.EVENT.register(CBCClientFabric::onScrolledMouse);
 		FOVModifierCallback.EVENT.register(CBCClientFabric::getFov);
 		ScreenEvents.BEFORE_INIT.register(CBCClientFabric::onOpenScreen);
+		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
 	}
 
 	public static void onParticleRegistry() {
@@ -86,6 +88,12 @@ public class CBCClientFabric implements ClientModInitializer {
 			KeyMappingAccessor acc = (KeyMappingAccessor) k;
 			acc.setClickCount(acc.getClickCount() + 1);
 		}
+	}
+
+	public static boolean onBeforeRender(LivingEntity entity, LivingEntityRenderer<?, ?> renderer, float partialRenderTick,
+									  PoseStack matrixStack, MultiBufferSource buffers, int light) {
+		CBCClientCommon.onPlayerRenderPre(matrixStack, entity, partialRenderTick);
+		return false;
 	}
 
 }
