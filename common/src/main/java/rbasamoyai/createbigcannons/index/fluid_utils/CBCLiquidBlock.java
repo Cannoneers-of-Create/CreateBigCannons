@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -27,6 +28,11 @@ public class CBCLiquidBlock extends LiquidBlock implements FluidGetter {
 	@Override
 	public boolean skipRendering(BlockState state, BlockState adjacentBlockState, Direction direction) {
 		return adjacentBlockState.getFluidState().getType().isSame(this.getFluid());
+	}
+
+	@Override
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+		level.scheduleTick(pos, state.getFluidState().getType(), this.getFluid().getTickDelay(level));
 	}
 
 	@Override

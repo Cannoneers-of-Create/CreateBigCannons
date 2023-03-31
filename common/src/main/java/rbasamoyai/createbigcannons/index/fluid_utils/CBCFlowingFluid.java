@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -72,12 +73,14 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 
 	@Override protected int getSlopeFindDistance(LevelReader level) { return this.flowspeed; }
 	@Override protected int getDropOff(LevelReader level) { return this.dropoff; }
-	@Override public Item getBucket() { return this.bucket.get(); }
+	@Override public Item getBucket() { return this.bucket == null ? Items.AIR : this.bucket.get(); }
 
 	@Override
 	protected boolean canBeReplacedWith(FluidState state, BlockGetter level, BlockPos pos, Fluid fluid, Direction direction) {
-		return false;
+		return direction == Direction.DOWN && !isSame(fluid);
 	}
+
+	@Override public boolean isSame(Fluid fluid) { return fluid == this.getSource() || fluid == this.getFlowing(); }
 
 	@Override public int getTickDelay(LevelReader level) { return this.tickRate; }
 
