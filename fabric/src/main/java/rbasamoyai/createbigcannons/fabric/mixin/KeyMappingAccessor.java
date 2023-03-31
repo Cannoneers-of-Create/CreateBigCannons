@@ -18,4 +18,8 @@ public interface KeyMappingAccessor {
 	static Map<String, KeyMapping> getALL() {
 		throw new UnsupportedOperationException();
 	}
+
+	@Accessor("clickCount") int getClickCount();
+	@Accessor("clickCount") void setClickCount(int c);
+
 }

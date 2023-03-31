@@ -29,6 +29,7 @@ import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
@@ -38,6 +39,7 @@ public class CBCClientCommon {
 	private static final String KEY_ROOT = "key." + CreateBigCannons.MOD_ID;
 	public static final KeyMapping PITCH_MODE = IndexPlatform.createSafeKeyMapping(KEY_ROOT + ".pitch_mode", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_C);
 	public static final KeyMapping FIRE_CONTROLLED_CANNON = IndexPlatform.createSafeKeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT);
+	public static final List<KeyMapping> KEYS = new ArrayList<>();
 
 	public static void onRegisterParticleFactories(Minecraft mc, ParticleEngine engine) {
 		CBCParticleTypes.registerFactories();
@@ -56,6 +58,8 @@ public class CBCClientCommon {
 	public static void registerKeyMappings(Consumer<KeyMapping> cons) {
 		cons.accept(PITCH_MODE);
 		cons.accept(FIRE_CONTROLLED_CANNON);
+		KEYS.add(PITCH_MODE);
+		KEYS.add(FIRE_CONTROLLED_CANNON);
 	}
 	
 	public static void setFogColor(Camera info, SetColorWrapper wrapper) {

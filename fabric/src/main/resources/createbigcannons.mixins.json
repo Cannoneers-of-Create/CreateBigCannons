@@ -4,7 +4,9 @@
   "package": "rbasamoyai.createbigcannons.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "KeyMappingAccessor"
+    "KeyboardHandlerMixin",
+    "KeyMappingAccessor",
+    "MouseHandlerMixin"
   ],
   "mixins": [
   ],
