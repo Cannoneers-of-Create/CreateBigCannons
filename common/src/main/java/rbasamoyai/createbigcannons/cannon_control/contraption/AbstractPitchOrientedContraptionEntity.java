@@ -6,6 +6,8 @@ import com.simibubi.create.content.contraptions.components.actors.SeatEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.OrientedContraptionEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -129,6 +131,7 @@ public abstract class AbstractPitchOrientedContraptionEntity extends OrientedCon
 		this.yaw = prevYaw;
 	}
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public void applyLocalTransforms(PoseStack stack, float partialTicks) {
 		float initialYaw = this.getInitialYaw();
