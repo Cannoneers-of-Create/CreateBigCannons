@@ -23,6 +23,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockInstance;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockEntity;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
@@ -172,6 +173,11 @@ public class CBCBlockEntities {
 			.validBlocks(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BARREL, CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_BREECH,
 					CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BARREL, CBCBlocks.UNBORED_BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_BREECH,
 					CBCBlocks.UNBORED_STEEL_AUTOCANNON_BARREL, CBCBlocks.UNBORED_STEEL_AUTOCANNON_RECOIL_SPRING, CBCBlocks.UNBORED_STEEL_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_BREECH)
+			.register();
+
+	public static final BlockEntityEntry<BigCartridgeBlockEntity> BIG_CARTRIDGE = REGISTRATE
+			.tileEntity("big_cartridge", BigCartridgeBlockEntity::new)
+			.validBlock(CBCBlocks.BIG_CARTRIDGE)
 			.register();
 
 	public static void register() {}

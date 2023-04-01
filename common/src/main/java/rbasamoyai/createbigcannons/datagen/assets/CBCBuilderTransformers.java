@@ -10,6 +10,7 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
@@ -46,6 +47,9 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlockGen;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 
 public class CBCBuilderTransformers {
 
@@ -394,6 +398,29 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 				.addLayer(() -> RenderType::solid)
 				.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().getExistingFile(baseLoc)));
+	}
+
+	public static <T extends Block & BigCannonPropellantBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> bigCartridge() {
+		ResourceLocation filledLoc = CreateBigCannons.resource("block/big_cartridge_filled");
+		ResourceLocation emptyLoc = CreateBigCannons.resource("block/big_cartridge_empty");
+		return b -> b.properties(p -> p.noOcclusion())
+				.addLayer(() -> RenderType::solid)
+				.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> {
+					return p.models().getExistingFile(s.getValue(BigCartridgeBlock.FILLED) ? filledLoc : emptyLoc);
+				}))
+				.loot((t, c) -> {
+					((BlockLoot) t).add(c, LootTable.lootTable()
+							.withPool(LootPool.lootPool()
+									.add(LootItem.lootTableItem(c))
+									.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
+									.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Power", "Power"))));
+				})
+				.item(BigCartridgeBlockItem::new)
+				.model((c, p) -> {
+					p.withExistingParent(c.getName(), emptyLoc)
+							.override().model(p.getExistingFile(filledLoc)).predicate(CreateBigCannons.resource("filled"), 1).end();
+				})
+				.build();
 	}
 	
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonMount() {

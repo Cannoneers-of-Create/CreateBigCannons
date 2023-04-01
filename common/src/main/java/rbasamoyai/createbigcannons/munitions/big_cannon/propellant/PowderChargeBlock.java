@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
@@ -44,13 +45,16 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	}
 
 	@Override
-	public float getStressOnCannon(StructureBlockInfo data) {
-		return getPowderChargeStress();
+	public float getChargePower(ItemStack stack) {
+		return CBCConfigs.SERVER.munitions.powderChargeStrength.getF();
 	}
+
+	@Override public float getStressOnCannon(StructureBlockInfo data) { return getPowderChargeStress(); }
+	@Override public float getStressOnCannon(ItemStack stack) { return getPowderChargeStress(); }
 
 	@Override
 	public float getSpread(StructureBlockInfo data) {
-		return CBCConfigs.SERVER.munitions.powderChargeSpread.getF();
+		return CBCConfigs.SERVER.munitions.addedSpread.getF();
 	}
 
 	@Override

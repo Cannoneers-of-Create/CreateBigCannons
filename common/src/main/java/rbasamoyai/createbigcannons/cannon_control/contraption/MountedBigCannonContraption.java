@@ -248,7 +248,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				emptyNoProjectile = true;
 				chargesUsed = Math.max(chargesUsed - 1, 0);
 			} else if (containedBlockInfo.state.getBlock() instanceof BigCannonPropellantBlock cpropel) {
-				if (propellant == null || propellant.isCompatibleWith(cpropel)) {
+				if (propellant == null) {
+					if (!cpropel.canBeIgnited(containedBlockInfo, this.initialOrientation)) return;
+					propellant = cpropel;
+				} else if (propellant.isCompatibleWith(cpropel, containedBlockInfo, this.initialOrientation)) {
 					propellant = cpropel;
 				} else if (canFail) {
 					failed = true;

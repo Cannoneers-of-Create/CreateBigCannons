@@ -7,6 +7,7 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
@@ -60,7 +61,11 @@ public class ModGroup {
 				CBCBlocks.CANNON_LOADER.asStack(),
 				CBCBlocks.RAM_HEAD.asStack(),
 				CBCBlocks.WORM_HEAD.asStack(),
+
 				CBCBlocks.POWDER_CHARGE.asStack(),
+				BigCartridgeBlockItem.getWithPower(0),
+				BigCartridgeBlockItem.getWithPower(4),
+
 				CBCBlocks.SOLID_SHOT.asStack(),
 				CBCBlocks.AP_SHOT.asStack(),
 				CBCBlocks.MORTAR_STONE.asStack(),

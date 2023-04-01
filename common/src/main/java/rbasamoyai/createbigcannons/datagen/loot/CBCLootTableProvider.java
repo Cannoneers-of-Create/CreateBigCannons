@@ -4,7 +4,6 @@ import com.mojang.datafixers.util.Pair;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.providers.loot.RegistrateLootTableProvider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTable.Builder;

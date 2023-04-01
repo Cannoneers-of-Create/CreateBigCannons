@@ -1,0 +1,6 @@
+{
+  "parent": "createbigcannons:block/big_cartridge_base",
+  "textures": {
+    "top": "createbigcannons:block/big_cartridge_filled"
+  }
+}

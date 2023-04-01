@@ -41,7 +41,10 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigGroup propellant = group(0, "propellant", "Propellant");
 	public final ConfigFloat powderChargeStrength = f(1, 0.5f, 4, "powderChargeStrength", Comments.powderChargeStrength);
 	public final ConfigFloat powderChargeStress = f(1, 0, "powderChargeStress", Comments.powderChargeStress);
-	public final ConfigFloat powderChargeSpread = f(2.0f, 0.0f, "powderChargeSpread", Comments.powderChargeSpread);
+	public final ConfigFloat addedSpread = f(2.0f, 0.0f, "addedSpread", Comments.addedSpread);
+	public final ConfigFloat bigCartridgeStrength = f(1.0f, 0.5f, 4, "bigCartridgeStrength", Comments.bigCartridgeStrength);
+	public final ConfigFloat bigCartridgeStress = f(0.5f, 0, "bigCartridgeStress", Comments.bigCartridgeStress);
+	public final ConfigInt maxBigCartridgePower = i(4, 1, 8, "maxBigCartridgePower", Comments.maxBigCartridgePower);
 	
 	@Override public String getName() { return "munitions"; }
 
@@ -81,7 +84,10 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String flakDamage = "How much damage a flak shrapnel bullet does.";
 		static String powderChargeStrength = "How much a single Powder Charge adds to the muzzle velocity of a projectile in meters per game tick. (1 m/gt = 20 m/s)";
 		static String powderChargeStress = "How much stress a single Powder Charge exerts on a cannon.";
-		static String powderChargeSpread = "How much each Powder Charges used affects the spread of a fired projectile.";
+		static String addedSpread = "How much each Powder Charge-equivalent propellant used affects the spread of a fired projectile.";
+		static String bigCartridgeStrength = "How much each power level of a Big Cartridge adds to the muzzle velocity of a projectile in meters per game tick. (1 m/gt = 20 m/s)";
+		static String bigCartridgeStress = "How much stress each power level of a Big Cartridge exerts on a cannon.";
+		static String maxBigCartridgePower = "The maximum amount of power a Big Cartridge can store.";
 	}
 	
 	public enum GriefState {

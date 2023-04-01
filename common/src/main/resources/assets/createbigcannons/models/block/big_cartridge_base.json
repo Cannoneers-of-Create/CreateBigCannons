@@ -1,0 +1,8 @@
+{
+  "parent": "createbigcannons:block/projectile_block",
+  "textures": {
+    "side": "createbigcannons:block/big_cartridge_side",
+    "bottom": "createbigcannons:block/big_cartridge_bottom",
+    "particle": "#side"
+  }
+}

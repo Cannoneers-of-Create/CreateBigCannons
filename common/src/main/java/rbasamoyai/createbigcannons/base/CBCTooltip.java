@@ -30,6 +30,8 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.Failure
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeBlock;
 
 import javax.annotation.Nullable;
@@ -208,13 +210,35 @@ public class CBCTooltip {
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".pitchMode"), palette.color, palette.hColor, 1));
 	}
 
-	public static void appendPowderChargeText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, BlockItem block) {
+	public static void appendMuzzleVelocityText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag,
+												BigCannonPropellantBlock propellant) {
 		if (!Screen.hasShiftDown()) return;
 		ItemDescription.Palette palette = getPalette(level, stack);
-		String key = block.getDescriptionId() + ".tooltip.added_muzzle_velocity";
+		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.added_muzzle_velocity";
 		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
-		String s = String.format("%+.2f", CBCConfigs.SERVER.munitions.powderChargeStrength.getF() * 20);
+		String s = String.format("%+.2f", propellant.getChargePower(stack) * 20);
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", s), palette.color, palette.hColor, 1));
+	}
+
+	public static void appendPropellantStressText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag,
+												  BigCannonPropellantBlock propellant) {
+		if (!Screen.hasShiftDown()) return;
+		ItemDescription.Palette palette = getPalette(level, stack);
+		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.added_stress";
+		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+		String s = String.format("%+.2f", propellant.getStressOnCannon(stack));
+		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", s), palette.color, palette.hColor, 1));
+	}
+
+	public static void appendPropellantPowerText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag,
+												 BigCannonPropellantBlock propellant) {
+		if (!Screen.hasShiftDown()) return;
+		ItemDescription.Palette palette = getPalette(level, stack);
+		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.power";
+		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+		int min = BigCartridgeBlockItem.getPower(stack);
+		int max = CBCConfigs.SERVER.munitions.maxBigCartridgePower.get();
+		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", min, max), palette.color, palette.hColor, 1));
 	}
 
 }

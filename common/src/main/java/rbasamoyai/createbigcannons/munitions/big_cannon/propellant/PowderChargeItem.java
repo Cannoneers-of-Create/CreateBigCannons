@@ -8,6 +8,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class PowderChargeItem extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-		CBCTooltip.appendPowderChargeText(stack, level, tooltipComponents, isAdvanced, this);
+		CBCTooltip.appendMuzzleVelocityText(stack, level, tooltipComponents, isAdvanced, CBCBlocks.POWDER_CHARGE.get());
 	}
 
 }

@@ -195,8 +195,16 @@ public class CBCLangGen {
 		.header("POWDER CHARGE")
 		.summary("Standard big cannon propellant.");
 
-		REGISTRATE.addLang("block", CBCBlocks.POWDER_CHARGE.getId(), "tooltip.added_muzzle_velocity", "Added Muzzle Velocity");
-		REGISTRATE.addLang("block", CBCBlocks.POWDER_CHARGE.getId(), "tooltip.added_muzzle_velocity.value", "_%s_ m/s");
+		tooltip(CBCBlocks.BIG_CARTRIDGE)
+		.header("BIG CARTRIDGE")
+		.summary("_Compact_ big cannon propellant that can be filled with _various levels_ of more _powerful propellant_. _Can only be used once_ in a shot, but can be _refilled_ afterwards.");
+
+		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.added_muzzle_velocity", "Added Muzzle Velocity");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.added_muzzle_velocity.value", "_%s_ m/s");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.added_stress", "Added Stress");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.added_stress.value", "_%s_");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power", "Power");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power.value", "_%s_ / _%s_");
 	}
 	
 	private static class TooltipBuilder {
