@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
@@ -101,7 +102,7 @@ public class WormItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-
+		CBCTooltip.appendWormText(stack, level, tooltip, flag);
 	}
 	
 	public static int getReach() { return CBCConfigs.SERVER.cannons.ramRodReach.get(); }
