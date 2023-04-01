@@ -131,7 +131,7 @@ public class CBCLangGen {
 		.header("WORM")
 		.summary("Used for _manually extracting munitions from a cannon_ instead of using the Cannon Loader Contraption. _Consumes saturation and hunger points._")
 		.controlAndAction("R-Click on Cannon Block", "Pulls munition blocks towards the end of the cannon. Can only pull one block at a time.");
-		
+
 		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.reach", "Reach");
 		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.reach.value", "Up to _%s blocks_ inside a cannon");
 		REGISTRATE.addLang("item", CBCItems.WORM.getId(), "tooltip.deployerCanUse", "Can Be Used by Deployers");
@@ -146,10 +146,11 @@ public class CBCLangGen {
 		.header("FLAK AUTOCANNON ROUND")
 		.summary("Can be used to shoot out _airborne targets._ Peppers targets with _shrapnel._")
 		.conditionAndBehavior("On Detonation", "Releases _shrapnel_ in its direction. The shrapnel _spreads out over a wide area._");
-		
+
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.materialProperties", "Cannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength", "Strength");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.goggles", "_%s Powder Charge(s)_");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.unlimited", "Unlimited");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.squibRatio", "Squib Ratio");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.squibRatio.goggles", "_%s barrel(s) travelled_ to _%s Powder Charge(s)_");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weightImpact", "Weight Impact");
@@ -189,6 +190,13 @@ public class CBCLangGen {
 		REGISTRATE.addLang("key", CreateBigCannons.resource("fire_controlled_cannon"), "Fire Controlled Cannon");
 
 		REGISTRATE.addLang("debug", CreateBigCannons.resource("block_resistance"), "Block Resistance: %s");
+
+		tooltip(CBCBlocks.POWDER_CHARGE)
+		.header("POWDER CHARGE")
+		.summary("Standard big cannon propellant.");
+
+		REGISTRATE.addLang("block", CBCBlocks.POWDER_CHARGE.getId(), "tooltip.added_muzzle_velocity", "Added Muzzle Velocity");
+		REGISTRATE.addLang("block", CBCBlocks.POWDER_CHARGE.getId(), "tooltip.added_muzzle_velocity.value", "_%s_ m/s");
 	}
 	
 	private static class TooltipBuilder {

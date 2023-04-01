@@ -49,7 +49,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
-import rbasamoyai.createbigcannons.munitions.big_cannon.PowderChargeBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlock;
@@ -57,6 +57,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBlock
 import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlock;
@@ -964,7 +965,7 @@ public class CBCBlocks {
 			.initialProperties(() -> Blocks.TNT)
 			.properties(p -> p.sound(SoundType.WOOL))
 			.transform(CBCBuilderTransformers.powderCharge())
-			.simpleItem()
+			.item(PowderChargeItem::new).build()
 			.register();
 
 	//////// Crafting blocks ////////

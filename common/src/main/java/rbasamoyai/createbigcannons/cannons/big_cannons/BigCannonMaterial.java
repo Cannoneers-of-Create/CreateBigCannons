@@ -6,7 +6,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import java.util.HashMap;
 import java.util.Map;
 
-public record BigCannonMaterial(ResourceLocation name, int squibRatioNum, int squibRatioDem, float weight, int maxSafeCharges, FailureMode failureMode) {
+public record BigCannonMaterial(ResourceLocation name, int squibRatioNum, int squibRatioDem, float weight, int maxSafeBaseCharges, FailureMode failureMode) {
 
 	public static final Map<ResourceLocation, BigCannonMaterial> CANNON_MATERIALS = new HashMap<>();
 	

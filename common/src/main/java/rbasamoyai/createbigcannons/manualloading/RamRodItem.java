@@ -26,13 +26,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,8 +145,8 @@ public class RamRodItem extends Item {
 	}
 	
 	public static boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos, Direction dir) {
-		if (CBCBlocks.POWDER_CHARGE.has(state))
-			return state.getValue(BlockStateProperties.AXIS) == dir.getAxis();
+		if (state.getBlock() instanceof BigCannonPropellantBlock propellant)
+			return propellant.canBeLoaded(state, dir.getAxis());
 		if (state.getBlock() instanceof ProjectileBlock)
 			return state.getValue(BlockStateProperties.FACING).getAxis() == dir.getAxis();
 		if (state.getBlock() instanceof BigCannonBlock cBlock)

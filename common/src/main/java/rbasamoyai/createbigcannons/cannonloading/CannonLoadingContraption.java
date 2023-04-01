@@ -10,22 +10,21 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import org.apache.commons.lang3.tuple.Pair;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,6 @@ public class CannonLoadingContraption extends PoleContraption {
 	
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final BooleanProperty MOVING = CannonLoaderBlock.MOVING;
-	private static final EnumProperty<Direction.Axis> AXIS = RotatedPillarBlock.AXIS; 
 	
 	public CannonLoadingContraption() {}
 	
@@ -244,9 +242,7 @@ public class CannonLoadingContraption extends PoleContraption {
 	
 	private boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos) {
 		Direction.Axis axis = this.orientation.getAxis();
-		if (CBCBlocks.POWDER_CHARGE.has(state)) {
-			return state.getValue(AXIS) == axis;
-		}
+		if (state.getBlock() instanceof BigCannonPropellantBlock propellant) return propellant.canBeLoaded(state, axis);
 		if (state.getBlock() instanceof ProjectileBlock) {
 			return state.getValue(FACING).getAxis() == axis;
 		}

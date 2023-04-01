@@ -37,6 +37,11 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigInt flakCount = i(20, 1, "flakCount", Comments.flakCount);
 	public final ConfigFloat flakSpread = f(0.25f, 0.01f, "flakSpread", Comments.flakSpread);
 	public final ConfigFloat flakDamage = f(10.0f, 0.0f, "flakDamage", Comments.flakDamage);
+
+	public final ConfigGroup propellant = group(0, "propellant", "Propellant");
+	public final ConfigFloat powderChargeStrength = f(1, 0.5f, 4, "powderChargeStrength", Comments.powderChargeStrength);
+	public final ConfigFloat powderChargeStress = f(1, 0, "powderChargeStress", Comments.powderChargeStress);
+	public final ConfigFloat powderChargeSpread = f(2.0f, 0.0f, "powderChargeSpread", Comments.powderChargeSpread);
 	
 	@Override public String getName() { return "munitions"; }
 
@@ -74,6 +79,9 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String flakCount = "Amount of shrapnel bullets that a Flak Autocannon Shell releases on detonation.";
 		static String flakSpread = "How much flak shrapnel bullets spread on release.";
 		static String flakDamage = "How much damage a flak shrapnel bullet does.";
+		static String powderChargeStrength = "How much a single Powder Charge adds to the muzzle velocity of a projectile in meters per game tick. (1 m/gt = 20 m/s)";
+		static String powderChargeStress = "How much stress a single Powder Charge exerts on a cannon.";
+		static String powderChargeSpread = "How much each Powder Charges used affects the spread of a fired projectile.";
 	}
 	
 	public enum GriefState {

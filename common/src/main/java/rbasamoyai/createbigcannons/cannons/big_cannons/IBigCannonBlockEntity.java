@@ -6,9 +6,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 
 public interface IBigCannonBlockEntity extends ICannonBlockEntity<BigCannonBehavior> {
 	
@@ -29,11 +31,15 @@ public interface IBigCannonBlockEntity extends ICannonBlockEntity<BigCannonBehav
 			
 			return blockInfo.state.getValue(BlockStateProperties.FACING).getAxis() == cannonAxis;
 		}
-		if (CBCBlocks.POWDER_CHARGE.has(blockInfo.state)) {
-			return blockInfo.state.getValue(BlockStateProperties.AXIS) == cannonAxis;
+		if (blockInfo.state.getBlock() instanceof BigCannonPropellantBlock propellant) {
+			return propellant.canBeLoaded(blockInfo.state, cannonAxis);
 		}
 		
 		return false;
+	}
+
+	default boolean blockCanHandle(StructureBlockInfo data) {
+		return data.state.is(CBCTags.BlockCBC.THICK_TUBING);
 	}
 	
 }

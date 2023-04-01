@@ -20,18 +20,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.big_cannons.*;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.FailureMode;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 public class MountedBigCannonContraption extends AbstractMountedCannonContraption {
 	
@@ -213,6 +215,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity) {
 		StructureBlockInfo foundProjectile = null;
 		float chargesUsed = 0;
+		float stress = 0;
 		float smokeScale = 0;
 		int barrelTravelled = 0;
 		Random rand = level.getRandom();
@@ -224,15 +227,16 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		BlockEntity failedEntity = null;
 
 		float spread = 0.0f;
-		float spreadAdd = CBCConfigs.SERVER.cannons.powderChargeSpread.getF();
 		float spreadSub = CBCConfigs.SERVER.cannons.barrelSpreadReduction.getF();
 
 		boolean emptyNoProjectile = false;
 
 		int weakBreechStrength = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
 		int maxSafeCharges = this.isWeakBreech && weakBreechStrength > -1
-				? Math.min(this.cannonMaterial.maxSafeCharges(), weakBreechStrength)
-				: this.cannonMaterial.maxSafeCharges();
+				? Math.min(this.cannonMaterial.maxSafeBaseCharges(), weakBreechStrength)
+				: this.cannonMaterial.maxSafeBaseCharges();
+
+		BigCannonPropellantBlock propellant = null;
 
 		while (this.presentTileEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
 			BigCannonBehavior behavior = cbe.cannonBehavior();
@@ -243,19 +247,29 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				if (count == 0) return;
 				emptyNoProjectile = true;
 				chargesUsed = Math.max(chargesUsed - 1, 0);
-			} else if (CBCBlocks.POWDER_CHARGE.has(containedBlockInfo.state) && foundProjectile == null) {
-				this.consumeBlock(behavior, currentPos);
-				++chargesUsed;
-				++smokeScale;
-				spread += spreadAdd;
-
-				if (canFail && (!cannonInfo.state.is(CBCTags.BlockCBC.THICK_TUBING) && rollBarrelBurst(rand)
-						|| chargesUsed > maxSafeCharges && rollOverloadBurst(rand))) {
+			} else if (containedBlockInfo.state.getBlock() instanceof BigCannonPropellantBlock cpropel) {
+				if (propellant == null || propellant.isCompatibleWith(cpropel)) {
+					propellant = cpropel;
+				} else if (canFail) {
 					failed = true;
 					failedEntity = behavior.tileEntity;
 					break;
 				}
-				if (emptyNoProjectile && rollFailToIgnite(rand) && canFail) {
+
+				this.consumeBlock(behavior, currentPos, propellant::consumePropellant);
+				float power = Math.max(0, propellant.getChargePower(containedBlockInfo));
+				chargesUsed += power;
+				smokeScale += power;
+				stress += propellant.getStressOnCannon(containedBlockInfo);
+				spread += propellant.getSpread(containedBlockInfo);
+
+				if (canFail && (!cbe.blockCanHandle(cannonInfo) && rollBarrelBurst(rand)
+						|| stress > maxSafeCharges && rollOverloadBurst(rand))) {
+					failed = true;
+					failedEntity = behavior.tileEntity;
+					break;
+				}
+				if (emptyNoProjectile && canFail && rollFailToIgnite(rand)) {
 					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cannonInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
 					return;
@@ -339,7 +353,11 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos) {
-		behavior.removeBlock();
+		this.consumeBlock(behavior, pos, BigCannonBehavior::removeBlock);
+	}
+
+	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos, Consumer<BigCannonBehavior> action) {
+		action.accept(behavior);
 		CompoundTag tag = behavior.tileEntity.saveWithFullMetadata();
 		tag.remove("x");
 		tag.remove("y");
