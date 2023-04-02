@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
@@ -31,6 +32,16 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 
 		if (!this.level.isClientSide) this.level.destroyBlock(result.getBlockPos(), false);
+	}
+
+	@Override
+	protected boolean canDeflect(BlockHitResult result) {
+		return super.canDeflect(result) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.bigCannonDeflectChance.getF();
+	}
+
+	@Override
+	protected boolean canBounceOffOf(BlockState state) {
+		return super.canBounceOffOf(state) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.bigCannonDeflectChance.getF();
 	}
 
 }

@@ -11,6 +11,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
@@ -94,5 +95,15 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		this.setTracer(tag.getBoolean("Tracer"));
 		this.ageRemaining = tag.getInt("Age");
 	}
-	
+
+	@Override
+	protected boolean canDeflect(BlockHitResult result) {
+		return super.canDeflect(result) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.autocannonDeflectChance.getF();
+	}
+
+	@Override
+	protected boolean canBounceOffOf(BlockState state) {
+		return super.canBounceOffOf(state) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.autocannonDeflectChance.getF();
+	}
+
 }

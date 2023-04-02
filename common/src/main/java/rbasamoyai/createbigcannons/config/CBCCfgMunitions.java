@@ -46,6 +46,10 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat bigCartridgeStress = f(0.5f, 0, "bigCartridgeStress", Comments.bigCartridgeStress);
 	public final ConfigInt maxBigCartridgePower = i(4, 1, 8, "maxBigCartridgePower", Comments.maxBigCartridgePower);
 	
+	public final ConfigGroup deflectChances = group(0, "deflectChances", "Deflection");
+	public final ConfigFloat bigCannonDeflectChance = f(0.9f, 0, 1, "bigCannonProjectileDeflectionChance", Comments.bigCannonDeflectChance);
+	public final ConfigFloat autocannonDeflectChance = f(0.2f, 0, 1, "autocannonProjectileDeflectionChance", Comments.autocannonDeflectChance);
+	
 	@Override public String getName() { return "munitions"; }
 
 	private static class Comments {
@@ -88,6 +92,8 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String bigCartridgeStrength = "How much each power level of a Big Cartridge adds to the muzzle velocity of a projectile in meters per game tick. (1 m/gt = 20 m/s)";
 		static String bigCartridgeStress = "How much stress each power level of a Big Cartridge exerts on a cannon.";
 		static String maxBigCartridgePower = "The maximum amount of power a Big Cartridge can store.";
+		static String bigCannonDeflectChance = "The chance that a big cannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
+		static String autocannonDeflectChance = "The chance that an autocannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
 	}
 	
 	public enum GriefState {

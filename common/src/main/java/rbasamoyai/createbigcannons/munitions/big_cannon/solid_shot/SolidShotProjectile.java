@@ -23,7 +23,7 @@ public class SolidShotProjectile extends AbstractBigCannonProjectile {
 
 	@Override
 	protected boolean canDeflect(BlockHitResult result) {
-		return isDeflector(this.level.getBlockState(result.getBlockPos()));
+		return super.canDeflect(result) && isDeflector(this.level.getBlockState(result.getBlockPos()));
 	}
 
 }
