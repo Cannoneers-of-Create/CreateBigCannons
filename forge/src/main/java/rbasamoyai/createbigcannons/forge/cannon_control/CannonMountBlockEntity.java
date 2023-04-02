@@ -20,8 +20,8 @@ public class CannonMountBlockEntity extends AbstractCannonMountBlockEntity {
 	@NotNull
 	@Override
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.mountedContraption instanceof ItemCannon itemCannon) {
-			return itemCannon.getItemOptional().cast();
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.mountedContraption != null) {
+			return this.mountedContraption.getCapability(cap, side).cast();
 		}
 		return super.getCapability(cap, side);
 	}
