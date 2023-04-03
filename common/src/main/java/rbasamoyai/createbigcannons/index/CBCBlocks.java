@@ -62,6 +62,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeI
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlockItem;
 
 import java.util.function.Supplier;
 
@@ -921,7 +922,7 @@ public class CBCBlocks {
 			.properties(p -> p.sound(SoundType.WOOD))
 			.properties(p -> p.noOcclusion())
 			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/traffic_cone"))))
-			.item()
+			.item(TrafficConeBlockItem::new)
 			.initialProperties(() -> new Item.Properties().rarity(Rarity.EPIC))
 			.build()
 			.register();
