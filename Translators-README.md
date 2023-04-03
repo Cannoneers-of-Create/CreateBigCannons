@@ -5,9 +5,9 @@ To start translating Create Big Cannons, fork the repository. On Github, you can
 
 After you have forked the repository, there are two ways you can translate the mod:
 
-If your language already has an associated lang file [here](/src/main/resources/assets/createbigcannons/lang), edit that one if you feel like additions or improvements should be made. Edit the lang file in-place.
+If your language already has an associated lang file [here](common/src/main/resources/assets/createbigcannons/lang), edit that one if you feel like additions or improvements should be made. Edit the lang file in-place.
 
-If your language does *not* have an associated lang file in the previously mentioned directory, obtain a template lang file from [`src/generated/resources/assets/createbigcannons/lang/en_us.json`](src/generated/resources/assets/createbigcannons/lang/en_us.json). However, *DO NOT* place your translated lang file in `src/generated/resources`! It will be overwritten by data generation. Instead, place your translated lang file in [`src/main/resources/assets/createbigcannons/lang`](/src/main/resources/assets/createbigcannons/lang).
+If your language does *not* have an associated lang file in the previously mentioned directory, obtain a template lang file from [`common/src/generated/resources/assets/createbigcannons/lang/en_us.json`](common/src/generated/resources/assets/createbigcannons/lang/en_us.json). However, *DO NOT* place your translated lang file in `common/src/generated/resources`! It will be overwritten by data generation. Instead, place your translated lang file in [`common/src/main/resources/assets/createbigcannons/lang`](common/src/main/resources/assets/createbigcannons/lang).
 
 Once you have finished translation, open up a pull request on the main repository (`rbasamoyai/CreateBigCannons`, *not* your repository!) and request a merge with the main repository. To open a pull request, click the button in the `Pull Requests` tab as shown below:
 ![New Pull Request](https://i.imgur.com/gzMY7bF.png)
