@@ -12,8 +12,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.foundry.MeltingRecipe;
-import rbasamoyai.createbigcannons.crafting.item_munitions.CartridgeAssemblyRecipe;
-import rbasamoyai.createbigcannons.crafting.item_munitions.MunitionFuzingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingRecipe;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import javax.annotation.Nullable;
@@ -23,7 +24,8 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
 	MELTING(MeltingRecipe::new),
 	MUNITION_FUZING(() -> new SimpleRecipeSerializer<>(MunitionFuzingRecipe::new), () -> RecipeType.CRAFTING, false),
-	CARTRIDGE_ASSEMBLY(() -> new SimpleRecipeSerializer<>(CartridgeAssemblyRecipe::new), () -> RecipeType.CRAFTING, false);
+	CARTRIDGE_ASSEMBLY(() -> new SimpleRecipeSerializer<>(CartridgeAssemblyRecipe::new), () -> RecipeType.CRAFTING, false),
+	BIG_CARTRIDGE_FILLING(() -> new SimpleRecipeSerializer<>(BigCartridgeFillingRecipe::new), () -> RecipeType.CRAFTING, false);
 
 	private final ResourceLocation id;
 	private final Supplier<RecipeSerializer<?>> serializerObject;

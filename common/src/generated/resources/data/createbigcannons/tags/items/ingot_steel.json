@@ -6,6 +6,10 @@
       "required": false
     },
     {
+      "id": "#c:ingots/steel",
+      "required": false
+    },
+    {
       "id": "#c:steel_ingots",
       "required": false
     }

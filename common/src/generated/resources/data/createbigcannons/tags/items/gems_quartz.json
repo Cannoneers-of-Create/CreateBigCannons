@@ -6,6 +6,10 @@
       "required": false
     },
     {
+      "id": "#c:gems/quartz",
+      "required": false
+    },
+    {
       "id": "#c:quartz",
       "required": false
     }

@@ -116,8 +116,9 @@ public class CBCJEI implements IModPlugin {
 		this.ingredientManager = registration.getIngredientManager();
 		this.allCategories.forEach(c -> c.registerRecipes(registration));
 
-		registration.addRecipes(RecipeTypes.CRAFTING, ItemMunitionRecipes.getFuzingRecipes());
-		registration.addRecipes(RecipeTypes.CRAFTING, ItemMunitionRecipes.getAutocannonRoundRecipes());
+		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getFuzingRecipes());
+		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getAutocannonRoundRecipes());
+		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getBigCartridgeFillingRecipe());
 	}
 	
 	@Override

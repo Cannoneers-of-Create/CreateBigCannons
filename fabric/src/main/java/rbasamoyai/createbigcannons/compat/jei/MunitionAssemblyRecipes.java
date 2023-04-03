@@ -9,16 +9,19 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
+import rbasamoyai.createbigcannons.CBCTags;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemMunitionRecipes {
+public class MunitionAssemblyRecipes {
 
 	public static List<CraftingRecipe> getFuzingRecipes() {
 		List<Item> fuzes = new ArrayList<>();
@@ -59,6 +62,14 @@ public class ItemMunitionRecipes {
 				.toList();
 	}
 
-	private ItemMunitionRecipes() {}
+	public static List<CraftingRecipe> getBigCartridgeFillingRecipe() {
+		String group = "createbigcannons.big_cartridge_filling";
+		ResourceLocation id = CreateBigCannons.resource(group + "." + CBCBlocks.BIG_CARTRIDGE.get().getDescriptionId());
+		NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(BigCartridgeBlockItem.getWithPower(0)),
+				Ingredient.of(CBCTags.ItemCBC.NITROPOWDER));
+		return List.of(new ShapelessRecipe(id, group, BigCartridgeBlockItem.getWithPower(1), inputs));
+	}
+
+	private MunitionAssemblyRecipes() {}
 
 }

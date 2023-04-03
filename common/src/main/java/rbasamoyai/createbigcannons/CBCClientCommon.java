@@ -52,6 +52,10 @@ public class CBCClientCommon {
 			return stack.getOrCreateTag().getCompound("SequencedAssembly").getInt("Step") - 1;
 		});
 
+		IndexPlatform.registerClampedItemProperty(CBCItems.PARTIALLY_FORMED_BIG_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
+			return stack.getOrCreateTag().getCompound("SequencedAssembly").getInt("Step") - 1;
+		});
+
 		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("filled"), (stack, level, player, a) -> {
 			return BigCartridgeBlockItem.getPower(stack);
 		});

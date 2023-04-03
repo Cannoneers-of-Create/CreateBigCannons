@@ -1,0 +1,29 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "createbigcannons:block/big_cartridge_empty",
+		"1": "createbigcannons:block/big_cartridge_side",
+		"2": "createbigcannons:block/big_cartridge_bottom",
+		"particle": "createbigcannons:block/big_cartridge_side"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 2, 13],
+			"faces": {
+				"north": {"uv": [3, 14, 13, 16], "texture": "#1"},
+				"east": {"uv": [3, 14, 13, 16], "texture": "#1"},
+				"south": {"uv": [3, 14, 13, 16], "texture": "#1"},
+				"west": {"uv": [3, 14, 13, 16], "texture": "#1"},
+				"up": {"uv": [3, 3, 13, 13], "texture": "#0"},
+				"down": {"uv": [3, 3, 13, 13], "rotation": 180, "texture": "#2"}
+			}
+		}
+	],
+	"overrides": [
+		{ "predicate": { "createbigcannons:formed":  1 }, "model": "createbigcannons:item/partially_formed_big_cartridge1" },
+		{ "predicate": { "createbigcannons:formed":  2 }, "model": "createbigcannons:item/partially_formed_big_cartridge2" },
+		{ "predicate": { "createbigcannons:formed":  3 }, "model": "createbigcannons:item/partially_formed_big_cartridge3" }
+	]
+}

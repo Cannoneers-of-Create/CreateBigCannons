@@ -10,6 +10,7 @@ import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 
 import java.util.function.UnaryOperator;
 
@@ -55,7 +56,13 @@ public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 			.transitionTo(CBCItems.PARTIAL_STEEL_AUTOCANNON_BREECH_EXTRACTOR.get())
 			.loops(3)
 			.addStep(CuttingRecipe::new, rb -> rb)
-			.addOutput(CBCItems.STEEL_AUTOCANNON_BREECH_EXTRACTOR.get(), 1));
+			.addOutput(CBCItems.STEEL_AUTOCANNON_BREECH_EXTRACTOR.get(), 1)),
+
+	PRESSING_BIG_CARTRIDGE = create("pressing_big_cartridge", b -> b.require(CBCItems.BIG_CANNON_SHEET.get())
+			.transitionTo(CBCItems.PARTIALLY_FORMED_BIG_CARTRIDGE.get())
+			.loops(5)
+			.addStep(PressingRecipe::new, rb -> rb)
+			.addOutput(BigCartridgeBlockItem.getWithPower(0), 1));
 
 	protected GeneratedRecipe create(String name, UnaryOperator<SequencedAssemblyRecipeBuilder> transform) {
 		GeneratedRecipe generatedRecipe =

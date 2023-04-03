@@ -4,12 +4,10 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.tterrag.registrate.providers.ProviderType;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
-import net.minecraft.data.recipes.ShapelessRecipeBuilder;
-import net.minecraft.data.recipes.SpecialRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -64,6 +62,20 @@ public class CBCCraftingRecipeProvider {
 		.requires(CBCItems.EMPTY_POWDER_CHARGE.get())
 		.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
 		.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCItems.BIG_CANNON_SHEET.get(), 2)
+		.define('S', CBCTags.ItemCBC.SHEET_BRASS)
+		.pattern("SS")
+		.pattern("SS")
+		.unlockedBy("has_brass_sheet", has(CBCTags.ItemCBC.SHEET_BRASS))
+		.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCItems.BIG_CANNON_SHEET.get(), 1)
+		.define('S', CBCTags.ItemCBC.INEXPENSIVE_BIG_CARTRIDGE_SHEET)
+		.pattern("SS")
+		.pattern("SS")
+		.unlockedBy("has_inexpensive_big_cartridge_sheet", has(CBCTags.ItemCBC.INEXPENSIVE_BIG_CARTRIDGE_SHEET))
+		.save(cons, "big_cannon_sheet_inexpensive");
 		
 		ShapelessRecipeBuilder.shapeless(CBCBlocks.CASTING_SAND.get())
 		.requires(Items.SAND, 2)
@@ -332,6 +344,11 @@ public class CBCCraftingRecipeProvider {
 
 		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING.getSerializer()).save(cons, "munition_fuzing");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY.getSerializer()).save(cons, "cartridge_assembly");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.BIG_CARTRIDGE_FILLING.getSerializer()).save(cons, "big_cartridge_filling");
+
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(CBCItems.CONGEALED_NITRO.get()), CBCItems.HARDENED_NITRO.get(), 5, 200)
+		.unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))
+		.save(cons);
 	}
 	
 }

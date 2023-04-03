@@ -1,0 +1,24 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "createbigcannons:block/big_cartridge_side",
+		"1": "createbigcannons:block/big_cartridge_bottom",
+		"2": "createbigcannons:block/big_cartridge_empty",
+		"particle": "createbigcannons:block/big_cartridge_side"
+	},
+	"elements": [
+		{
+			"from": [3, 0, 3],
+			"to": [13, 6, 13],
+			"faces": {
+				"north": {"uv": [3, 10, 13, 16], "texture": "#0"},
+				"east": {"uv": [3, 10, 13, 16], "texture": "#0"},
+				"south": {"uv": [3, 10, 13, 16], "texture": "#0"},
+				"west": {"uv": [3, 10, 13, 16], "texture": "#0"},
+				"up": {"uv": [3, 3, 13, 13], "texture": "#2"},
+				"down": {"uv": [3, 3, 13, 13], "rotation": 180, "texture": "#1"}
+			}
+		}
+	]
+}

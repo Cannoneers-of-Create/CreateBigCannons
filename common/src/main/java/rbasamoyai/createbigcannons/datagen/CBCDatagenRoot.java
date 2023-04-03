@@ -20,6 +20,7 @@ public class CBCDatagenRoot {
 			gen.addProvider(new CBCCompactingRecipeProvider(gen));
 			gen.addProvider(new MeltingRecipeProvider(gen));
 			gen.addProvider(new CBCMixingRecipeProvider(gen));
+			gen.addProvider(new CBCMillingRecipeProvider(gen));
 			gen.addProvider(new CBCLootTableProvider(CreateBigCannons.REGISTRATE, gen));
 			gen.addProvider(new CBCSequencedAssemblyRecipeProvider(gen));
 			gen.addProvider(new CBCCuttingRecipeProvider(gen));

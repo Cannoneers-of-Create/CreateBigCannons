@@ -6,6 +6,10 @@
       "required": false
     },
     {
+      "id": "#c:nuggets/iron",
+      "required": false
+    },
+    {
       "id": "#c:iron_nuggets",
       "required": false
     }

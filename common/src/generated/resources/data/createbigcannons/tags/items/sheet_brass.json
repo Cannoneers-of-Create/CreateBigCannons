@@ -2,15 +2,15 @@
   "replace": false,
   "values": [
     {
-      "id": "#forge:plates/iron",
+      "id": "#forge:plates/brass",
       "required": false
     },
     {
-      "id": "#c:plates/iron",
+      "id": "#c:plates/brass",
       "required": false
     },
     {
-      "id": "#c:iron_plates",
+      "id": "#c:brass_plates",
       "required": false
     }
   ]

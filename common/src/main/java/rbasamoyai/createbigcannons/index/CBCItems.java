@@ -157,6 +157,20 @@ public class CBCItems {
 			.item("pair_of_cannon_wheels", Item::new)
 			.lang("Pair of Cannon Wheels")
 			.register();
+
+	public static final ItemEntry<Item> BIG_CANNON_SHEET = REGISTRATE.item("big_cartridge_sheet", Item::new)
+			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/big_cartridge_sheet")))
+			.register();
+
+	public static final ItemEntry<SequencedAssemblyItem> PARTIALLY_FORMED_BIG_CARTRIDGE = REGISTRATE
+			.item("partially_formed_big_cartridge", SequencedAssemblyItem::new)
+			.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/partially_formed_big_cartridge")))
+			.register();
+
+	public static final ItemEntry<Item>
+			CONGEALED_NITRO = REGISTRATE.item("congealed_nitro", Item::new).register(),
+			HARDENED_NITRO = REGISTRATE.item("hardened_nitro", Item::new).register(),
+			NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.ItemCBC.NITROPOWDER).register();
 	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);

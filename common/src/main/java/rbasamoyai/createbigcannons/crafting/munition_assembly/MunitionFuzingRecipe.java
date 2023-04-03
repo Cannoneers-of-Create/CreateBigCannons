@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.crafting.item_munitions;
+package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;

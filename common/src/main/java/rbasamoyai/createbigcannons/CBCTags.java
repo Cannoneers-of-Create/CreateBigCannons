@@ -43,6 +43,7 @@ public class CBCTags {
 			TagKey<Block> mainTag = makeTag(mainPath);
 			addOptionalTagsToBlockTag(mainTag, Arrays.asList(
 					new ResourceLocation("forge", forgePath),
+					new ResourceLocation("c", forgePath), // For forge -> fabric ports, e.g. Create
 					new ResourceLocation("c", fabricPath)));
 			return mainTag;
 		}
@@ -62,10 +63,13 @@ public class CBCTags {
 			});
 		}
 		
-		public static void addTagsToBlockTag(TagKey<Block> tag, List<TagKey<Block>> tags) {
+		@SafeVarargs
+		public static void addTagsToBlockTag(TagKey<Block> tag, TagKey<Block>... tags) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
-				tags.forEach(app::addTag);
+				for (TagKey<Block> t : tags) {
+					app.addTag(t);
+				}
 			});
 		}
 
@@ -95,12 +99,16 @@ public class CBCTags {
 			// Crafting tags
 			INGOT_IRON = commonTag("ingot_iron", "ingots/iron", "iron_ingots"),
 			NUGGET_IRON = commonTag("nugget_iron", "nuggets/iron", "iron_nuggets"),
-			SHEET_IRON = commonTag("sheet_iron", "plate/iron", "iron_plates"),
+			SHEET_IRON = commonTag("sheet_iron", "plates/iron", "iron_plates"),
 			GUNPOWDER = commonTag("gunpowder", "gunpowder", "gunpowder" /* No fabric c: tag */),
 			GEMS_QUARTZ = commonTag("gems_quartz", "gems/quartz", "quartz"),
 			DUSTS_REDSTONE = commonTag("dusts_redstone", "dusts/redstone", "redstone_dusts"),
-			STONE = commonTag("stone", "stone", "stone");
-
+			STONE = commonTag("stone", "stone", "stone"),
+			SHEET_BRASS = commonTag("sheet_brass", "plates/brass", "brass_plates"),
+			SHEET_COPPER = commonTag("sheet_copper", "plates/copper", "copper_plates"),
+			SHEET_GOLD = commonTag("sheet_copper", "plates/gold", "gold_plates"),
+			INEXPENSIVE_BIG_CARTRIDGE_SHEET = makeTag("inexpensive_big_cartridge_sheet"),
+			NITROPOWDER = makeTag("nitropowder");
 		
 		public static TagKey<Item> makeTag(String loc) {
 			TagKey<Item> tag = TagKey.create(Registry.ITEM_REGISTRY, CreateBigCannons.resource(loc));
@@ -112,6 +120,7 @@ public class CBCTags {
 			TagKey<Item> mainTag = makeTag(mainPath);
 			addOptionalTagsToItemTag(mainTag, Arrays.asList(
 					new ResourceLocation("forge", forgePath),
+					new ResourceLocation("c", forgePath), // For forge -> fabric ports, e.g. Create
 					new ResourceLocation("c", fabricPath)));
 			return mainTag;
 		}
@@ -131,10 +140,13 @@ public class CBCTags {
 			});
 		}
 		
-		public static void addTagsToItemTag(TagKey<Item> tag, List<TagKey<Item>> tags) {
+		@SafeVarargs
+		public static void addTagsToItemTag(TagKey<Item> tag, TagKey<Item>... tags) {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
 				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
-				tags.forEach(app::addTag);
+				for(TagKey<Item> t : tags) {
+					app.addTag(t);
+				}
 			});
 		}
 		
@@ -159,6 +171,7 @@ public class CBCTags {
 			addIdsToItemTag(BLOCK_BRONZE, alloyed("bronze_block"));
 			addIdsToItemTag(BLOCK_STEEL, alloyed("steel_block"));
 			addIdsToItemTag(BLOCK_CAST_IRON, createdeco("cast_iron_block"));
+			addTagsToItemTag(INEXPENSIVE_BIG_CARTRIDGE_SHEET, SHEET_GOLD, SHEET_COPPER);
 		}
 	}
 

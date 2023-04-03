@@ -65,6 +65,10 @@ public class ModGroup {
 				CBCBlocks.POWDER_CHARGE.asStack(),
 				BigCartridgeBlockItem.getWithPower(0),
 				BigCartridgeBlockItem.getWithPower(4),
+				CBCItems.BIG_CANNON_SHEET.asStack(),
+				CBCItems.CONGEALED_NITRO.asStack(),
+				CBCItems.HARDENED_NITRO.asStack(),
+				CBCItems.NITROPOWDER.asStack(),
 
 				CBCBlocks.SOLID_SHOT.asStack(),
 				CBCBlocks.AP_SHOT.asStack(),
