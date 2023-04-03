@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends ProjectileBlock implements ITE<T> {
@@ -26,9 +27,11 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 	
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (result.getDirection() != state.getValue(FACING) || CBCItems.RAM_ROD.isIn(stack)) return InteractionResult.PASS;
+
 		return this.onTileEntityUse(level, pos, be -> {
-			if (!level.isClientSide && result.getDirection() == state.getValue(FACING)) {
-				ItemStack stack = player.getItemInHand(hand);
+			if (!level.isClientSide) {
 				ItemStack stack1 = be.getItem(0);
 				if (stack.isEmpty() && !stack1.isEmpty()) {
 					player.addItem(be.removeItem(0, 1));

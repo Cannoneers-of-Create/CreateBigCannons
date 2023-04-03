@@ -5,6 +5,7 @@ import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 import javax.annotation.Nullable;
@@ -45,7 +47,17 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(FACING, context.getClickedFace());
+		Player player = context.getPlayer();
+		Direction facing = context.getClickedFace();
+		boolean flag = player != null && player.isShiftKeyDown();
+		BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos().relative(facing.getOpposite()));
+
+		if (clickedState.getBlock() instanceof BigCannonBlock cblock
+				&& cblock.getFacing(clickedState).getAxis() == facing.getAxis()
+				&& !flag) {
+			facing = facing.getOpposite();
+		}
+		return this.defaultBlockState().setValue(FACING, facing);
 	}
 	
 	@Override

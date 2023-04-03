@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -23,6 +24,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 public class BigCartridgeBlock extends DirectionalBlock implements BigCannonPropellantBlock, ITE<BigCartridgeBlockEntity> {
 
@@ -57,8 +59,17 @@ public class BigCartridgeBlock extends DirectionalBlock implements BigCannonProp
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction facing = context.getClickedFace();
+		Player player = context.getPlayer();
+		boolean flag = player != null && player.isShiftKeyDown();
+
 		BlockState clickedState = context.getLevel().getBlockState(context.getClickedPos().relative(facing.getOpposite()));
-		if (clickedState.getBlock() instanceof BigCannonBlock cblock && cblock.getFacing(clickedState).getAxis() == facing.getAxis()) {
+		if (clickedState.getBlock() instanceof BigCannonBlock cblock
+			&& cblock.getFacing(clickedState).getAxis() == facing.getAxis()
+			&& !flag) {
+			facing = facing.getOpposite();
+		} else if (clickedState.getBlock() instanceof ProjectileBlock
+			&& clickedState.getValue(ProjectileBlock.FACING).getAxis() == facing.getAxis()
+			&& !flag) {
 			facing = facing.getOpposite();
 		}
 		return this.defaultBlockState().setValue(FILLED, BigCartridgeBlockItem.getPower(context.getItemInHand()) > 0).setValue(FACING, facing);

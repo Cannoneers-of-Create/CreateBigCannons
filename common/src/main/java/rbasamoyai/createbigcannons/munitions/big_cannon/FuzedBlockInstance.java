@@ -29,7 +29,7 @@ public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> im
 	
 	@Override
 	public void beginFrame() {
-		this.fuze.setColor((byte) 255, (byte) 255, (byte) 255, this.shell.hasFuze() ? (byte) 0 : (byte) 255);
+		this.fuze.setColor((byte) 255, (byte) 255, (byte) 255, this.shell.hasFuze() ? (byte) 255 : (byte) 0);
 	}
 
 	@Override
