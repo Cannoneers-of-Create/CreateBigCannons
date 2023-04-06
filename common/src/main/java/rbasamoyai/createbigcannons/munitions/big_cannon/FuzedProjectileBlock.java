@@ -12,7 +12,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends ProjectileBlock implements ITE<T> {
@@ -28,29 +27,33 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (result.getDirection() != state.getValue(FACING) || CBCItems.RAM_ROD.isIn(stack)) return InteractionResult.PASS;
+		if (result.getDirection() != state.getValue(FACING)) return InteractionResult.PASS;
 
 		return this.onTileEntityUse(level, pos, be -> {
-			if (!level.isClientSide) {
-				ItemStack stack1 = be.getItem(0);
-				if (stack.isEmpty() && !stack1.isEmpty()) {
+			ItemStack stack1 = be.getItem(0);
+			if (stack.isEmpty() && !stack1.isEmpty()) {
+				if (!level.isClientSide) {
 					player.addItem(be.removeItem(0, 1));
-					level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
-				} else if (stack1.isEmpty() && stack.getItem() instanceof FuzeItem) {
+					be.notifyUpdate();
+				}
+				level.playSound(player, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
+				return InteractionResult.sidedSuccess(level.isClientSide);
+			} else if (stack1.isEmpty() && stack.getItem() instanceof FuzeItem) {
+				if (!level.isClientSide) {
 					ItemStack copy = stack.copy();
 					copy.setCount(1);
 					be.setItem(0, copy);
 					if (!player.getAbilities().instabuild) {
 						ItemStack copy1 = stack.copy();
-						copy.shrink(1);
+						copy1.shrink(1);
 						player.setItemInHand(hand, copy1);
 					}
-					level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
+					be.sendData();
 				}
-				be.setChanged();
-				be.sendData();
+				level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
+				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
-			return InteractionResult.sidedSuccess(level.isClientSide);
+			return InteractionResult.PASS;
 		});
 	}
 	
