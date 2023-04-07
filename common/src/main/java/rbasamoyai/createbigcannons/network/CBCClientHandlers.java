@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.network;
 
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
-import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionRenderDispatcher;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
@@ -16,7 +15,7 @@ public class CBCClientHandlers {
 		Contraption contraption = ace.getContraption();
 		if (contraption != null) {
 			contraption.getBlocks().put(pkt.pos(), pkt.info());
-			ContraptionRenderDispatcher.invalidate(contraption);
+			contraption.deferInvalidate = true;
 		}
 	}
 
