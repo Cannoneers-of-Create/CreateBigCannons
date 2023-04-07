@@ -4,6 +4,10 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -11,12 +15,16 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
+import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+
+import java.util.function.BiConsumer;
 
 public class CBCCommonEvents {
 
@@ -95,10 +103,19 @@ public class CBCCommonEvents {
 		}
 	}
 
-	public static void onDatapackSync(Player player) {
-		if (player == null) { // Only do on server reload, not when a player joins
-			BlockHardnessHandler.loadTags();
-		}
+	public static void onDatapackReload(MinecraftServer server) {
+		BlockHardnessHandler.loadTags();
+		BlockRecipesManager.syncToAll(server);
+	}
+
+	public static void onDatapackSync(ServerPlayer player) {
+		BlockRecipesManager.syncTo(player);
+	}
+
+	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
+		cons.accept(BlockRecipeFinder.LISTENER, CreateBigCannons.resource("block_recipe_finder"));
+		cons.accept(BlockRecipesManager.ReloadListener.INSTANCE, CreateBigCannons.resource("block_recipe_manager"));
+		cons.accept(BlockHardnessHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
 	}
 
 }

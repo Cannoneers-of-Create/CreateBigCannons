@@ -6,13 +6,22 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.CloseableResourceManager;
-import rbasamoyai.createbigcannons.CreateBigCannons;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
-import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 public class CBCCommonFabricEvents {
 
@@ -21,8 +30,11 @@ public class CBCCommonFabricEvents {
 		ServerPlayConnectionEvents.JOIN.register(CBCCommonFabricEvents::onPlayerLogin);
 		ServerPlayConnectionEvents.DISCONNECT.register(CBCCommonFabricEvents::onPlayerLogout);
 		ServerWorldEvents.LOAD.register(CBCCommonFabricEvents::onLoadLevel);
-		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(CBCCommonFabricEvents::onDatapackSync);
+		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(CBCCommonFabricEvents::onDatapackReload);
+		ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register(CBCCommonFabricEvents::onDatapackSync);
 		BlockEvents.BLOCK_BREAK.register(CBCCommonFabricEvents::onPlayerBreakBlock);
+
+		CBCCommonEvents.onAddReloadListeners(CBCCommonFabricEvents::wrapAndRegisterReloadListener);
 	}
 
 	public static void onServerLevelTick(ServerLevel level) {
@@ -42,14 +54,28 @@ public class CBCCommonFabricEvents {
 	}
 
 	public static void onLoadLevel(MinecraftServer server, ServerLevel level) {
-		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
-		if (level.getServer() != null && level.getServer().overworld() == level) {
-			BlockHardnessHandler.loadTags();
-		}
+		CBCCommonEvents.onLoadLevel(level);
 	}
 
-	public static void onDatapackSync(MinecraftServer server, CloseableResourceManager resourceManager, boolean success) {
-		CBCCommonEvents.onDatapackSync(null);
+	public static void onDatapackReload(MinecraftServer server, CloseableResourceManager resourceManager, boolean success) {
+		CBCCommonEvents.onDatapackReload(server);
+	}
+
+	public static void onDatapackSync(ServerPlayer player, boolean joined) {
+		CBCCommonEvents.onDatapackSync(player);
+	}
+
+	public static void wrapAndRegisterReloadListener(PreparableReloadListener base, ResourceLocation location) {
+		IdentifiableResourceReloadListener listener = new IdentifiableResourceReloadListener() {
+			@Override public ResourceLocation getFabricId() { return location; }
+
+			@Override
+			public CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor) {
+				return base.reload(preparationBarrier, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor);
+			}
+		};
+
+		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(listener);
 	}
 
 }

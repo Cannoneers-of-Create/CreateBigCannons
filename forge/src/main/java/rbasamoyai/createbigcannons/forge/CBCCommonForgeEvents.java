@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.forge;
 
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -18,6 +19,7 @@ public class CBCCommonForgeEvents {
 		forgeEventBus.addListener(CBCCommonForgeEvents::onLoadWorld);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onServerWorldTick);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onDatapackSync);
+		forgeEventBus.addListener(CBCCommonForgeEvents::onAddReloadListeners);
 	}
 
 	public static void onServerWorldTick(TickEvent.WorldTickEvent evt) {
@@ -44,6 +46,10 @@ public class CBCCommonForgeEvents {
 
 	public static void onDatapackSync(OnDatapackSyncEvent evt) {
 		CBCCommonEvents.onDatapackSync(evt.getPlayer());
+	}
+
+	public static void onAddReloadListeners(AddReloadListenerEvent event) {
+		CBCCommonEvents.onAddReloadListeners((m, l) -> event.addListener(m));
 	}
 	
 }
