@@ -35,7 +35,9 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	@Nullable
 	@Override
 	public Storage<FluidVariant> getFluidStorage(@Nullable Direction face) {
-		return face == Direction.UP ? this.fluid : null;
+		if (face != Direction.UP) return null;
+		if (this.isController()) return this.fluid;
+		return this.getControllerTE() instanceof CannonCastBlockEntity ccast ? ccast.getFluidStorage(face) : null;
 	}
 
 	protected void onFluidStackChanged(FluidStack stack) {
@@ -120,7 +122,8 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	protected void mergeControllerAndOtherFluids(AbstractCannonCastBlockEntity controller, AbstractCannonCastBlockEntity other) {
 		if (controller instanceof CannonCastBlockEntity cController && other instanceof CannonCastBlockEntity cOther) {
 			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.castShape.fluidSize());
-			TransferUtil.insertFluid(cController.fluid, TransferUtil.extractAnyFluid(cOther.fluid, cOther.fluid.getCapacity()));
+			FluidStack extract = TransferUtil.extractAnyFluid(cOther.fluid, cOther.fluid.getCapacity());
+			if (!extract.isEmpty()) TransferUtil.insertFluid(cController.fluid, extract);
 			cOther.fluid = new FluidTank(1);
 		}
 	}
@@ -135,9 +138,9 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 				.stream()
 				.map(CannonCastShape::fluidSize)
 				.reduce(Integer::sum)
-				.orElseGet(() -> 0);
+				.orElse(0);
 		long leakAmount = Mth.clamp(controller.fluid.getFluidAmount() - capacityUpTo, 0, this.castShape.fluidSize());
-		FluidStack addLeak = TransferUtil.extractAnyFluid(controller.fluid, leakAmount);
+		FluidStack addLeak = leakAmount < 1 ? FluidStack.EMPTY : TransferUtil.extractAnyFluid(controller.fluid, leakAmount);
 		controller.fluid.setCapacity(Math.max(1, controller.fluid.getCapacity() - this.castShape.fluidSize()));
 		FluidStack remaining = controller.fluid.getFluid();
 
@@ -147,7 +150,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 				otherCast.height = this.height;
 				otherCast.structure = getStructureFromPoint(this.level, this.worldPosition.above(), this.height);
 				otherCast.fluid = new SmartFluidTank(otherCast.calculateCapacityFromStructure(), otherCast::onFluidStackChanged);
-				TransferUtil.insertFluid(otherCast.fluid, remaining);
+				if (!remaining.isEmpty()) TransferUtil.insertFluid(otherCast.fluid, remaining);
 				otherCast.updatePotentialCastsAbove();
 				otherCast.notifyUpdate();
 			}
@@ -156,8 +159,10 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 			controller.height = thisIndex;
 			controller.structure = controller.structure.subList(0, Mth.clamp(thisIndex, 0, controller.structure.size()));
 			controller.fluid = new SmartFluidTank(controller.calculateCapacityFromStructure(), controller::onFluidStackChanged);
-			long firstRemaining = remaining.getAmount() - TransferUtil.insertFluid(controller.fluid, remaining);
-			if (!remaining.isEmpty()) remaining.setAmount(firstRemaining);
+			if (!remaining.isEmpty()) {
+				long firstRemaining = remaining.getAmount() - TransferUtil.insertFluid(controller.fluid, remaining);
+				if (!remaining.isEmpty()) remaining.setAmount(firstRemaining);
+			}
 			controller.updateRecipes = true;
 			controller.notifyUpdate();
 
@@ -166,7 +171,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 				otherCast.height = oldHeight - controller.height;
 				otherCast.structure = getStructureFromPoint(this.level, this.worldPosition.above(), otherCast.height);
 				otherCast.fluid = new SmartFluidTank(otherCast.calculateCapacityFromStructure(), otherCast::onFluidStackChanged);
-				TransferUtil.insertFluid(otherCast.fluid, remaining);
+				if (!remaining.isEmpty()) TransferUtil.insertFluid(otherCast.fluid, remaining);
 				otherCast.updatePotentialCastsAbove();
 				otherCast.updateRecipes = true;
 				otherCast.notifyUpdate();
@@ -187,7 +192,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 
 	@Override
 	public float getFillState() {
-		return 0;
+		return this.fluid.getCapacity() == 0 ? 0.0f : (float) this.fluid.getFluidAmount() / (float) this.fluid.getCapacity();
 	}
 
 	@Override protected void refreshCap() {}
@@ -198,7 +203,5 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 		if (cController.fluid.getFluid().isEmpty()) return false;
 		return recipe.ingredient().test(cController.fluid.getFluid());
 	}
-
-	public FluidTank getTank() { return this.fluid; }
 
 }

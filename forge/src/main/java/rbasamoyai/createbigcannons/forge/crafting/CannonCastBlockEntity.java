@@ -166,7 +166,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 				.stream()
 				.map(CannonCastShape::fluidSize)
 				.reduce(Integer::sum)
-				.orElseGet(() -> 0);
+				.orElse(0);
 		int leakAmount = Mth.clamp(controller.fluid.getFluidAmount() - capacityUpTo, 0, this.castShape.fluidSize());
 		FluidStack addLeak = controller.fluid.drain(leakAmount, IFluidHandler.FluidAction.EXECUTE);
 		controller.fluid.setCapacity(Math.max(1, controller.fluid.getCapacity() - this.castShape.fluidSize()));
@@ -227,7 +227,5 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 		if (cController.fluid.getFluid().isEmpty()) return false;
 		return recipe.ingredient().test(cController.fluid.getFluid());
 	}
-
-	public FluidTank getTank() { return this.fluid; }
 
 }
