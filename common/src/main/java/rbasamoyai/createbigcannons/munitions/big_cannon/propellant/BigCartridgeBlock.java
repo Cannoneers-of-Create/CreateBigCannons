@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
 import com.simibubi.create.AllShapes;
+import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.core.BlockPos;
@@ -26,7 +27,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
-public class BigCartridgeBlock extends DirectionalBlock implements BigCannonPropellantBlock, ITE<BigCartridgeBlockEntity> {
+public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock, ITE<BigCartridgeBlockEntity> {
 
 	public static final BooleanProperty FILLED = BooleanProperty.create("filled");
 
