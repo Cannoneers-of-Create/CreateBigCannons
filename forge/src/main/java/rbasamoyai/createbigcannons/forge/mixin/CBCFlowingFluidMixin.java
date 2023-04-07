@@ -15,10 +15,9 @@ public abstract class CBCFlowingFluidMixin extends FlowingFluid {
 
 	@Shadow @Final protected ResourceLocation stillTex;
 	@Shadow @Final protected ResourceLocation flowingTex;
-	@Shadow @Final protected int color = 0x00ffffff;
+	@Shadow @Final protected int color;
 	@Shadow @Final protected SoundEvent fillSound;
 	@Shadow @Final protected SoundEvent emptySound;
-	@Shadow @Final protected String translationKey;
 
 	@NotNull
 	@Override
@@ -26,7 +25,6 @@ public abstract class CBCFlowingFluidMixin extends FlowingFluid {
 		return FluidAttributes.builder(this.stillTex, this.flowingTex)
 				.color(this.color)
 				.sound(this.fillSound, this.emptySound)
-				.translationKey(this.translationKey)
 				.build(this);
 	}
 

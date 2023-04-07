@@ -51,9 +51,7 @@ public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilde
 	}
 
 	private String makeDescriptionId(T fluid) {
-		String ret = Util.makeDescriptionId("fluid", Registry.FLUID.getKey(fluid.getSource()));
-		this.properties(b -> b.translationKey(ret));
-		return ret;
+		return Util.makeDescriptionId("fluid", Registry.FLUID.getKey(fluid.getSource()));
 	}
 
 }

@@ -38,10 +38,9 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 	// Forge fluid attributes
 	protected final ResourceLocation stillTex;
 	protected final ResourceLocation flowingTex;
-	protected final int color = 0x00ffffff;
+	protected final int color = 0xffffffff;
 	protected final SoundEvent fillSound;
 	protected final SoundEvent emptySound;
-	protected final String translationKey;
 
 	public CBCFlowingFluid(Properties properties) {
 		this.infinite = properties.infinite;
@@ -58,7 +57,6 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 		this.flowingTex = properties.flowingTex;
 		this.fillSound = properties.fillSound;
 		this.emptySound = properties.emptySound;
-		this.translationKey = properties.translationKey;
 	}
 
 	@Override public Fluid getFlowing() { return this.flowing.get(); }
@@ -136,7 +134,6 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 		private int color = 0x00ffffff;
 		private SoundEvent fillSound;
 		private SoundEvent emptySound;
-		private String translationKey;
 
 		public Properties(Supplier<? extends Fluid> still, Supplier<? extends Fluid> flowing, ResourceLocation stillTex,
 						  ResourceLocation flowingTex) {
@@ -194,11 +191,6 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 		public Properties sound(SoundEvent fill, SoundEvent empty) {
 			this.fillSound = fill;
 			this.emptySound = empty;
-			return this;
-		}
-
-		public Properties translationKey(String key) {
-			this.translationKey = key;
 			return this;
 		}
 	}

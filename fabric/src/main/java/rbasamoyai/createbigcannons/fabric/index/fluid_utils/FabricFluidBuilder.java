@@ -84,19 +84,7 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 		FluidData.Builder attributes = this.attributes.get();
 		RegistryEntry<Block> block = getOwner().getOptional(this.sourceName, Registry.BLOCK_REGISTRY);
 		this.attributesCallback.accept(attributes);
-
-		// Force the translation key after the user callback runs
-		// This is done because we need to remove the lang data generator if using the block key,
-		// and if it was possible to undo this change, it might result in the user translation getting
-		// silently lost, as there's no good way to check whether the translation key was changed.
-		// TODO improve this? // leaving in this TODO in case of changes in registrate's FluidBuilder -ritchie
-		if (block.isPresent()) {
-			attributes.translationKey(block.get().getDescriptionId());
-			setData(ProviderType.LANG, NonNullBiConsumer.noop());
-		} else {
-			attributes.translationKey(Util.makeDescriptionId("fluid", new ResourceLocation(getOwner().getModid(), this.sourceName)));
-		}
-
+		attributes.translationKey(Util.makeDescriptionId("fluid", new ResourceLocation(getOwner().getModid(), this.sourceName)));
 		return super.makeProperties();
 	}
 
