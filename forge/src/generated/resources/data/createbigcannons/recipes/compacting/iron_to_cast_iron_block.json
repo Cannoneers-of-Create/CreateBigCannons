@@ -1,0 +1,14 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "item": "minecraft:iron_block"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:cast_iron_block"
+    }
+  ],
+  "heatRequirement": "heated"
+}

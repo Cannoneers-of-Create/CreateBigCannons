@@ -1,0 +1,5 @@
+{
+  "type": "createbigcannons:drill_boring",
+  "input": "createbigcannons:unbored_medium_nethersteel_cannon_layer",
+  "result": "createbigcannons:medium_nethersteel_cannon_layer"
+}

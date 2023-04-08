@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:tag",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": 8.0,
+              "add": false
+            }
+          ],
+          "name": "createbigcannons:nugget_steel",
+          "expand": true
+        }
+      ]
+    }
+  ]
+}

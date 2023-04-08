@@ -1,0 +1,25 @@
+{
+  "type": "createbigcannons:melting",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:ingot_steel"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "createbigcannons:flowing_molten_steel",
+      "amount": 90
+    }
+  ],
+  "processingTime": 180,
+  "heatRequirement": "heated",
+  "conditions": [
+    {
+      "value": {
+        "tag": "createbigcannons:ingot_steel",
+        "type": "forge:tag_empty"
+      },
+      "type": "forge:not"
+    }
+  ]
+}

@@ -16,7 +16,7 @@ loom {
 
             name "Fabric Data Generation"
             vmArg "-Dfabric-api.datagen"
-            vmArg "-Dfabric-api.datagen.output-dir=${project.rootProject.file("common/src/generated/resources")}"
+            vmArg "-Dfabric-api.datagen.output-dir=${project.rootProject.file("fabric/src/generated/resources")}"
             vmArg "-Dfabric-api.datagen.modid=createbigcannons"
             vmArg "-Dporting_lib.datagen.existing_resources=${project.rootProject.file("common/src/main/resources")}"
         }
@@ -120,5 +120,12 @@ sourcesJar {
 components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
         skip()
+    }
+}
+
+sourceSets.main {
+    resources { // include generated resources in resources
+        srcDir("src/generated/resources")
+        exclude("src/generated/resources/.cache")
     }
 }

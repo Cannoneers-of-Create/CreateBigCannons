@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellProjectile;
@@ -64,10 +63,6 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 			return this.getFluidOptional().cast();
 		}
 		return super.getCapability(cap, side);
-	}
-
-	public static int getFluidShellCapacity() {
-		return CBCConfigs.SERVER.munitions.fluidShellCapacity.get();
 	}
 
 	@Override

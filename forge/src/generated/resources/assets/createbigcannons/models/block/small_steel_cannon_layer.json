@@ -1,0 +1,6 @@
+{
+  "parent": "createbigcannons:block/small_cannon_tube",
+  "textures": {
+    "tube": "createbigcannons:block/cannon_tubing/steel_cannon_tube"
+  }
+}

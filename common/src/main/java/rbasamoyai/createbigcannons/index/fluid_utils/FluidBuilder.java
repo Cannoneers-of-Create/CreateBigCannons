@@ -116,7 +116,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		NonNullSupplier<T> supplier = asSupplier();
 		return getOwner().<B, FluidBuilder<T, P>>block(this, sourceName, p -> factory.apply(supplier, p))
 				.properties(p -> BlockBehaviour.Properties.copy(Blocks.WATER).noDrops())
-				.blockstate((ctx, prov) -> prov.simpleBlock(ctx.getEntry(), prov.models().getBuilder(sourceName)
+				.blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getBuilder(sourceName)
 						.texture("particle", stillTexture)));
 	}
 
@@ -152,7 +152,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		}
 		return getOwner().<I, FluidBuilder<T, P>>item(this, bucketName, p -> ((NonNullBiFunction<CBCFlowingFluid, Item.Properties, ? extends I>) factory).apply(this.source.get(), p)) // Fabric TODO
 				.properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
-				.model((ctx, prov) -> prov.generated(ctx::getEntry, new ResourceLocation(getOwner().getModid(), "item/" + bucketName)));
+				.model((ctx, prov) -> prov.generated(ctx, new ResourceLocation(getOwner().getModid(), "item/" + bucketName)));
 	}
 
 	@Beta

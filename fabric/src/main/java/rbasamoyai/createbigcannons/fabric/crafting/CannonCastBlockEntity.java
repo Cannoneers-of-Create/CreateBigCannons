@@ -8,7 +8,6 @@ import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
-import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
@@ -36,10 +35,6 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	public CannonCastBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		this.fluid = new SmartFluidTank(1, this::onFluidStackChanged);
-	}
-
-	private int fluidSize() {
-		return Mth.ceil((float) this.castShape.fluidSize() * FluidConstants.BUCKET / 1000);
 	}
 
 	@Nullable
@@ -75,11 +70,6 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 			}
 			this.fluidLevel.chase(this.getFillState(), 0.5f, LerpedFloat.Chaser.EXP);
 		}
-	}
-
-	@Override
-	public int calculateCapacityFromStructure() {
-		return Mth.ceil((float) super.calculateCapacityFromStructure() * FluidConstants.BLOCK / 1000);
 	}
 
 	@Override
@@ -125,19 +115,19 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	@Override
 	protected void addStructureCapacityToController(AbstractCannonCastBlockEntity controller) {
 		if (controller instanceof CannonCastBlockEntity cController) {
-			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.fluidSize());
+			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.castShape.fluidSize());
 		}
 	}
 
 	@Override
 	protected void reInitTank() {
-		this.fluid = new SmartFluidTank(this.fluidSize(), this::onFluidStackChanged);
+		this.fluid = new SmartFluidTank(this.castShape.fluidSize(), this::onFluidStackChanged);
 	}
 
 	@Override
 	protected void mergeControllerAndOtherFluids(AbstractCannonCastBlockEntity controller, AbstractCannonCastBlockEntity other) {
 		if (controller instanceof CannonCastBlockEntity cController && other instanceof CannonCastBlockEntity cOther) {
-			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.fluidSize());
+			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.castShape.fluidSize());
 			FluidStack extract = TransferUtil.extractAnyFluid(cOther.fluid, cOther.fluid.getCapacity());
 			if (!extract.isEmpty()) TransferUtil.insertFluid(cController.fluid, extract);
 			cOther.fluid = new FluidTank(1);
@@ -155,10 +145,9 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 				.map(CannonCastShape::fluidSize)
 				.reduce(Integer::sum)
 				.orElse(0);
-		capacityUpTo = Mth.ceil((float) capacityUpTo * FluidConstants.BUCKET / 1000);
-		long leakAmount = Mth.clamp(controller.fluid.getFluidAmount() - capacityUpTo, 0, this.fluidSize());
+		long leakAmount = Mth.clamp(controller.fluid.getFluidAmount() - capacityUpTo, 0, this.castShape.fluidSize());
 		FluidStack addLeak = leakAmount < 1 ? FluidStack.EMPTY : TransferUtil.extractAnyFluid(controller.fluid, leakAmount);
-		controller.fluid.setCapacity(Math.max(1, controller.fluid.getCapacity() - this.fluidSize()));
+		controller.fluid.setCapacity(Math.max(1, controller.fluid.getCapacity() - this.castShape.fluidSize()));
 		FluidStack remaining = controller.fluid.getFluid();
 
 		if (controller == this && this.height > 0) {

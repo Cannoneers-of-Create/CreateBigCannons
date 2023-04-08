@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.multiloader;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -18,6 +19,8 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -26,6 +29,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
@@ -135,5 +139,13 @@ public class IndexPlatform {
 	public static void registerRecipeType(ResourceLocation id, Supplier<RecipeType<?>> type) {
 		throw new AssertionError();
 	}
+
+	@ExpectPlatform public static float getFluidConversionFactor() { throw new AssertionError(); }
+	public static int convertFluid(int forgeMb) { return Mth.ceil((float) forgeMb * getFluidConversionFactor()); }
+
+	@ExpectPlatform public static void addSidedDataGenerators(DataGenerator gen) { throw new AssertionError(); }
+
+	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { throw new AssertionError(); }
+	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { throw new AssertionError(); }
 
 }

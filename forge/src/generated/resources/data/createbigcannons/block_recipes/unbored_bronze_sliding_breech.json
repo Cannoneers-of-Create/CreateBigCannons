@@ -1,0 +1,10 @@
+{
+  "type": "createbigcannons:cannon_casting",
+  "cast_shape": "createbigcannons:sliding_breech",
+  "fluid": {
+    "fluidTag": "forge:molten_bronze",
+    "amount": 1
+  },
+  "casting_time": 1500,
+  "result": "createbigcannons:unbored_bronze_sliding_breech"
+}

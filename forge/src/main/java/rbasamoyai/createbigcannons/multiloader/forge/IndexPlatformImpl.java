@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.multiloader.forge;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -15,7 +16,9 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -24,6 +27,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
@@ -46,6 +50,7 @@ import rbasamoyai.createbigcannons.forge.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.forge.crafting.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.forge.datagen.*;
 import rbasamoyai.createbigcannons.forge.index.fluid_utils.ForgeFluidBuilder;
 import rbasamoyai.createbigcannons.forge.munitions.fluid_shell.FluidShellBlockEntity;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
@@ -139,5 +144,19 @@ public class IndexPlatformImpl {
 	public static void registerRecipeType(ResourceLocation id, Supplier<RecipeType<?>> type) {
 		CreateBigCannonsForge.RECIPE_TYPE_REGISTER.register(id.getPath(), type);
 	}
+
+	public static float getFluidConversionFactor() { return 1; }
+
+	public static void addSidedDataGenerators(DataGenerator gen) {
+		gen.addProvider(new CBCCompactingRecipeProvider(gen));
+		gen.addProvider(new MeltingRecipeProvider(gen));
+		gen.addProvider(new CBCMixingRecipeProvider(gen));
+		gen.addProvider(new CBCMillingRecipeProvider(gen));
+		gen.addProvider(new CBCSequencedAssemblyRecipeProvider(gen));
+		gen.addProvider(new CBCCuttingRecipeProvider(gen));
+	}
+
+	public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { return FluidIngredient.fromFluid(fluid, amount); }
+	public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { return FluidIngredient.fromTag(fluid, amount); }
 
 }

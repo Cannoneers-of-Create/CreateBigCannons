@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "T",
+    "R"
+  ],
+  "key": {
+    "T": {
+      "tag": "createbigcannons:impact_fuze_head"
+    },
+    "R": {
+      "tag": "createbigcannons:dusts_redstone"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:impact_fuze",
+    "count": 4
+  }
+}

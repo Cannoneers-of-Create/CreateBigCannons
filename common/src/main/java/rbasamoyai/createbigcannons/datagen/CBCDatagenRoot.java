@@ -8,6 +8,7 @@ import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
 import rbasamoyai.createbigcannons.datagen.loot.CBCLootTableProvider;
 import rbasamoyai.createbigcannons.datagen.recipes.*;
 import rbasamoyai.createbigcannons.datagen.values.BlockHardnessProvider;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 import rbasamoyai.createbigcannons.ponder.CBCPonderTags;
 
@@ -17,14 +18,9 @@ public class CBCDatagenRoot {
 		if (server) {
 			BlockRecipeProvider.registerAll(gen);
 			CBCCraftingRecipeProvider.register();
-			gen.addProvider(new CBCCompactingRecipeProvider(gen));
-			gen.addProvider(new MeltingRecipeProvider(gen));
-			gen.addProvider(new CBCMixingRecipeProvider(gen));
-			gen.addProvider(new CBCMillingRecipeProvider(gen));
 			gen.addProvider(new CBCLootTableProvider(CreateBigCannons.REGISTRATE, gen));
-			gen.addProvider(new CBCSequencedAssemblyRecipeProvider(gen));
-			gen.addProvider(new CBCCuttingRecipeProvider(gen));
 			gen.addProvider(new BlockHardnessProvider(CreateBigCannons.MOD_ID, gen));
+			IndexPlatform.addSidedDataGenerators(gen);
 		}
 		if (client) {
 			CBCLangGen.prepare();

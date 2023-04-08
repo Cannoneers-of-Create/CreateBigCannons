@@ -1,0 +1,24 @@
+{
+  "type": "createbigcannons:melting",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:block_cast_iron"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "createbigcannons:molten_cast_iron",
+      "amount": 65610
+    }
+  ],
+  "processingTime": 1620,
+  "heatRequirement": "heated",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:item_tags_populated",
+      "values": [
+        "createbigcannons:block_cast_iron"
+      ]
+    }
+  ]
+}

@@ -14,6 +14,21 @@ loom {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
     }
+
+    runs {
+        data {
+            data()
+
+            name "Forge Data Generation"
+            vmArg '-Dforge.logging.markers=REGISTRIES'
+            vmArg '-Dforge.logging.console.level=debug'
+            programArgs "--all", "--mod", "createbigcannons"
+            programArgs "--output", "${project.rootProject.file("forge/src/generated/resources")}"
+            programArgs "--existing", "${project.rootProject.file("common/src/main/resources")}"
+            programArgs "--existing-mod", "create"
+            programArgs "--flat"
+        }
+    }
 }
 
 configurations {
@@ -108,3 +123,11 @@ components.java {
         skip()
     }
 }
+
+sourceSets.main {
+    resources { // include generated resources in resources
+        srcDir("src/generated/resources")
+        exclude("src/generated/resources/.cache")
+    }
+}
+

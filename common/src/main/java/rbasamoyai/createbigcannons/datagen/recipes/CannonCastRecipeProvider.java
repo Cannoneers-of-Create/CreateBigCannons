@@ -15,6 +15,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -267,12 +268,12 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		}
 		
 		public Builder ingredient(Fluid ingredient) {
-			this.ingredient = FluidIngredient.fromFluid(ingredient, 1);
+			this.ingredient = IndexPlatform.fluidIngredientFrom(ingredient, 1);
 			return this;
 		}
 		
 		public Builder ingredient(TagKey<Fluid> ingredient) {
-			this.ingredient = FluidIngredient.fromTag(ingredient, 1);
+			this.ingredient = IndexPlatform.fluidIngredientFrom(ingredient, 1);
 			return this;
 		}
 		

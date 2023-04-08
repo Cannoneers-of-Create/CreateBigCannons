@@ -10,8 +10,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CannonCastShape {
 	
@@ -44,18 +45,18 @@ public class CannonCastShape {
 	/**
 	 * For old, big cannons. Is large (3x3) by default.
 	 *
-	 * @param fluidSize
+	 * @param fluidSizeForge
 	 * @param diameter
 	 * @param castMould
 	 * @param properties
 	 */
 
-	public CannonCastShape(int fluidSize, int diameter, NonNullSupplier<? extends Block> castMould, PropertySetter<?>... properties) {
-		this(fluidSize, diameter, castMould, true, properties);
+	public CannonCastShape(int fluidSizeForge, int diameter, NonNullSupplier<? extends Block> castMould, PropertySetter<?>... properties) {
+		this(fluidSizeForge, diameter, castMould, true, properties);
 	}
 	
-	public CannonCastShape(int fluidSize, int diameter, NonNullSupplier<? extends Block> castMould, boolean large, PropertySetter<?>... properties) {
-		this.fluidSize = fluidSize;
+	public CannonCastShape(int fluidSizeForge, int diameter, NonNullSupplier<? extends Block> castMould, boolean large, PropertySetter<?>... properties) {
+		this.fluidSize = IndexPlatform.convertFluid(fluidSizeForge);
 		this.diameter = diameter;
 		this.castMould = castMould;
 		this.isLarge = large;

@@ -9,6 +9,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 
 import java.util.List;
@@ -32,5 +34,9 @@ public abstract class AbstractFluidShellBlockEntity extends FuzedBlockEntity {
 
 	public abstract boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
 	public abstract boolean tryFillItemFromTE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
+
+	public static int getFluidShellCapacity() {
+		return IndexPlatform.convertFluid(CBCConfigs.SERVER.munitions.fluidShellCapacity.get());
+	}
 
 }

@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createbigcannons:block/built_up_nethersteel_cannon_barrel",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "createbigcannons:block/built_up_nethersteel_cannon_barrel"
+    },
+    "facing=north": {
+      "model": "createbigcannons:block/built_up_nethersteel_cannon_barrel",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "createbigcannons:block/built_up_nethersteel_cannon_barrel",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "createbigcannons:block/built_up_nethersteel_cannon_barrel",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "createbigcannons:block/built_up_nethersteel_cannon_barrel",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

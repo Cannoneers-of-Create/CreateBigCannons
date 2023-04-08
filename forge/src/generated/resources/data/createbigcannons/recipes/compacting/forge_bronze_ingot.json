@@ -1,0 +1,23 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "fluidTag": "forge:molten_bronze",
+      "amount": 90
+    }
+  ],
+  "results": [
+    {
+      "item": "alloyed:bronze_ingot"
+    }
+  ],
+  "conditions": [
+    {
+      "value": {
+        "tag": "createbigcannons:ingot_bronze",
+        "type": "forge:tag_empty"
+      },
+      "type": "forge:not"
+    }
+  ]
+}

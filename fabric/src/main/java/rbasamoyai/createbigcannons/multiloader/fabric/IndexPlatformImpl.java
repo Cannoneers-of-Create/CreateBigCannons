@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.multiloader.fabric;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
+import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -13,6 +14,7 @@ import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
+import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -22,7 +24,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -31,6 +35,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
@@ -48,6 +53,7 @@ import rbasamoyai.createbigcannons.fabric.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.fabric.datagen.*;
 import rbasamoyai.createbigcannons.fabric.index.fluid_utils.FabricFluidBuilder;
 import rbasamoyai.createbigcannons.fabric.mixin.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.munitions.fluid_shell.FluidShellBlockEntity;
@@ -148,5 +154,19 @@ public class IndexPlatformImpl {
 	public static void registerRecipeType(ResourceLocation id, Supplier<RecipeType<?>> type) {
 		Registry.register(Registry.RECIPE_TYPE, id, type.get());
 	}
+
+	public static float getFluidConversionFactor() { return (float) FluidConstants.BUCKET / 1000; }
+
+	public static void addSidedDataGenerators(DataGenerator gen) {
+		gen.addProvider(new CBCCompactingRecipeProvider(gen));
+		gen.addProvider(new MeltingRecipeProvider(gen));
+		gen.addProvider(new CBCMixingRecipeProvider(gen));
+		gen.addProvider(new CBCMillingRecipeProvider(gen));
+		gen.addProvider(new CBCSequencedAssemblyRecipeProvider(gen));
+		gen.addProvider(new CBCCuttingRecipeProvider(gen));
+	}
+
+	public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { return FluidIngredient.fromFluid(fluid, amount); }
+	public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { return FluidIngredient.fromTag(fluid, amount); }
 
 }

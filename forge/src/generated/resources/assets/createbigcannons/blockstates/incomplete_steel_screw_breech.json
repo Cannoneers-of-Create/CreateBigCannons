@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,stage=0": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech",
+      "x": 180
+    },
+    "facing=up,stage=0": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech"
+    },
+    "facing=north,stage=0": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech",
+      "x": 90
+    },
+    "facing=south,stage=0": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,stage=0": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,stage=0": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,stage=1": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech_axis",
+      "x": 180
+    },
+    "facing=up,stage=1": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech_axis"
+    },
+    "facing=north,stage=1": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech_axis",
+      "x": 90
+    },
+    "facing=south,stage=1": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech_axis",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,stage=1": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech_axis",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,stage=1": {
+      "model": "createbigcannons:block/incomplete_steel_screw_breech_axis",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

@@ -28,10 +28,3 @@ dependencies {
     // Flywheel and Registrate must also be used carefully due to differences.
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
 }
-
-sourceSets.main {
-    resources { // include generated resources in resources
-        srcDir("src/generated/resources")
-        exclude("src/generated/resources/.cache")
-    }
-}
