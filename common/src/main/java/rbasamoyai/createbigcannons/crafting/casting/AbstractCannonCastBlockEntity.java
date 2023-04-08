@@ -182,7 +182,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		boolean changeOfController = controllerBefore == null ? this.controllerPos != null : !controllerBefore.equals(this.controllerPos);
 		if (changeOfController || this.getController() != null && prevHeight != this.getControllerTE().height) {
 			if (this.hasLevel()) this.level.sendBlockUpdated(this.getBlockPos(), getBlockState(), getBlockState(), 16);
-			if (this.isController()) this.updateFluidClient(); //this.fluid.setCapacity(this.calculateCapacityFromStructure());
+			if (this.isController()) this.updateFluidClient();
 			this.invalidateRenderBoundingBox();
 		}
 		if (this.isController()) {
@@ -428,7 +428,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	}
 	
 	public int calculateCapacityFromStructure() {
-		return this.structure.stream().map(CannonCastShape::fluidSize).reduce(Integer::sum).orElseGet(() -> 0);
+		return this.structure.stream().map(CannonCastShape::fluidSize).reduce(Integer::sum).orElse(0);
 	}
 	
 	public BlockPos getCenterBlock() {
