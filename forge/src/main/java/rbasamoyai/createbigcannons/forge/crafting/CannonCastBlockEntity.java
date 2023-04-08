@@ -1,12 +1,19 @@
 package rbasamoyai.createbigcannons.forge.crafting;
 
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
+import com.simibubi.create.content.contraptions.fluids.actors.GenericItemFilling;
+import com.simibubi.create.content.contraptions.processing.EmptyingByBasin;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
+import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -226,6 +233,56 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 		CannonCastBlockEntity cController = ((CannonCastBlockEntity) this.getControllerTE());
 		if (cController.fluid.getFluid().isEmpty()) return false;
 		return recipe.ingredient().test(cController.fluid.getFluid());
+	}
+
+	// Following two methods copied from Forge FluidHelper because of getCapability not having side - allows for some
+	// code optimizations too
+
+	@Override
+	public boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+		if (!EmptyingByBasin.canItemBeEmptied(worldIn, heldItem)) return false;
+		if (worldIn.isClientSide) return true;
+
+		Pair<FluidStack, ItemStack> emptyingResult = EmptyingByBasin.emptyItem(worldIn, heldItem, true);
+		FluidStack fluidStack = emptyingResult.getFirst();
+
+		if (fluidStack.getAmount() != this.fluid.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE)) return false;
+
+		ItemStack copyOfHeld = heldItem.copy();
+		emptyingResult = EmptyingByBasin.emptyItem(worldIn, copyOfHeld, false);
+		this.fluid.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
+
+		if (!player.isCreative()) {
+			if (copyOfHeld.isEmpty())
+				player.setItemInHand(handIn, emptyingResult.getSecond());
+			else {
+				player.setItemInHand(handIn, copyOfHeld);
+				player.getInventory().placeItemBackInInventory(emptyingResult.getSecond());
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean tryFillItemFromTE(Level level, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+		if (!GenericItemFilling.canItemBeFilled(level, heldItem)) return false;
+		if (level.isClientSide) return true;
+
+		FluidStack fluid = this.fluid.getFluid();
+		if (fluid.isEmpty()) return false;
+		int requiredAmountForItem = GenericItemFilling.getRequiredAmountForItem(level, heldItem, fluid.copy());
+		if (requiredAmountForItem == -1 || requiredAmountForItem > fluid.getAmount()) return false;
+
+		if (player.isCreative()) heldItem = heldItem.copy();
+		ItemStack out = GenericItemFilling.fillItem(level, requiredAmountForItem, heldItem, fluid.copy());
+
+		FluidStack copy = fluid.copy();
+		copy.setAmount(requiredAmountForItem);
+		this.fluid.drain(copy, IFluidHandler.FluidAction.EXECUTE);
+
+		if (!player.isCreative()) player.getInventory().placeItemBackInInventory(out);
+		this.notifyUpdate();
+		return true;
 	}
 
 }

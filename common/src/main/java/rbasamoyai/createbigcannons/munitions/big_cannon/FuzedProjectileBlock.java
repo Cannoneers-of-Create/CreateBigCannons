@@ -48,7 +48,7 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 						copy1.shrink(1);
 						player.setItemInHand(hand, copy1);
 					}
-					be.sendData();
+					be.notifyUpdate();
 				}
 				level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
 				return InteractionResult.sidedSuccess(level.isClientSide);

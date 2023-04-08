@@ -1,6 +1,10 @@
 package rbasamoyai.createbigcannons.fabric.munitions.fluid_shell;
 
+import com.simibubi.create.content.contraptions.fluids.actors.GenericItemFilling;
+import com.simibubi.create.content.contraptions.processing.EmptyingByBasin;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
+import com.simibubi.create.foundation.utility.Pair;
+import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
@@ -10,6 +14,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -62,6 +70,51 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity impleme
 	@Override
 	protected void addFluidToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		this.containedFluidTooltip(tooltip, isPlayerSneaking, this.tank);
+	}
+
+	@Override
+	public boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+		if (this.hasFuze() || !EmptyingByBasin.canItemBeEmptied(worldIn, heldItem)) return false;
+		if (worldIn.isClientSide) return true;
+
+		Pair<FluidStack, ItemStack> emptyingResult = EmptyingByBasin.emptyItem(worldIn, heldItem, true);
+		FluidStack fluidStack = emptyingResult.getFirst();
+
+		if (fluidStack.getAmount() != this.tank.simulateInsert(fluidStack.getType(), fluidStack.getAmount(), null)) return false;
+
+		ItemStack copyOfHeld = heldItem.copy();
+		emptyingResult = EmptyingByBasin.emptyItem(worldIn, copyOfHeld, false);
+		TransferUtil.insertFluid(this.tank, fluidStack);
+
+		if (!player.isCreative()) {
+			if (copyOfHeld.isEmpty())
+				player.setItemInHand(handIn, emptyingResult.getSecond());
+			else {
+				player.setItemInHand(handIn, copyOfHeld);
+				player.getInventory().placeItemBackInInventory(emptyingResult.getSecond());
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public boolean tryFillItemFromTE(Level level, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+		if (this.hasFuze() || !GenericItemFilling.canItemBeFilled(level, heldItem)) return false;
+		if (level.isClientSide) return true;
+
+		FluidStack fluid = this.tank.getFluid();
+		if (fluid.isEmpty()) return false;
+		long requiredAmountForItem = GenericItemFilling.getRequiredAmountForItem(level, heldItem, fluid.copy());
+		if (requiredAmountForItem == -1 || requiredAmountForItem > fluid.getAmount()) return false;
+
+		if (player.isCreative()) heldItem = heldItem.copy();
+		ItemStack out = GenericItemFilling.fillItem(level, requiredAmountForItem, heldItem, fluid.copy());
+
+		TransferUtil.extract(this.tank, fluid.getType(), requiredAmountForItem);
+
+		if (!player.isCreative()) player.getInventory().placeItemBackInInventory(out);
+		this.notifyUpdate();
+		return true;
 	}
 
 }

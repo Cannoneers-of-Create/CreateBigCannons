@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
+import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.foundation.tileEntity.IMultiTileContainer;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
@@ -10,7 +11,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -320,6 +326,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 				cbe1.cannonBehavior().setConnectedFace(Direction.UP, true);
 			}
 		}
+		SoundEvent sound = AllSoundEvents.STEAM.getMainEvent();
+		this.level.playSound(null, this.getBlockPos(), sound, SoundSource.BLOCKS, 1.0f, 1.0f);
 	}
 	
 	@Override
@@ -511,5 +519,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	}
 
 	protected abstract boolean testWithFluid(CannonCastingRecipe recipe);
+
+	public abstract boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
+	public abstract boolean tryFillItemFromTE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
 
 }

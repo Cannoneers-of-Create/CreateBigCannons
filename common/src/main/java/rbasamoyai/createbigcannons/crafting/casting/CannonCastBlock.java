@@ -2,7 +2,11 @@ package rbasamoyai.createbigcannons.crafting.casting;
 
 import com.simibubi.create.foundation.block.ITE;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -11,6 +15,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -61,4 +66,19 @@ public class CannonCastBlock extends Block implements ITE<AbstractCannonCastBloc
 	public static int castFractionToRedstoneLevel(float frac) {
 		return Mth.floor(Mth.clamp(frac * 13 + (frac > 0 ? 1 : 0), 0, 14));
 	}
+
+	@Override
+	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (hit.getDirection() != Direction.UP) return InteractionResult.PASS;
+
+		return this.onTileEntityUse(level, pos, cast -> {
+			AbstractCannonCastBlockEntity controller = cast.getControllerTE();
+			if (controller == null || stack.isEmpty()) return InteractionResult.PASS;
+			if (controller.tryEmptyItemIntoTE(level, player, hand, stack, Direction.UP)) return InteractionResult.SUCCESS;
+			if (controller.tryFillItemFromTE(level, player, hand, stack, Direction.UP)) return InteractionResult.SUCCESS;
+			return InteractionResult.PASS;
+		});
+	}
+
 }

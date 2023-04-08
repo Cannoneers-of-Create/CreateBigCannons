@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.fabric.crafting;
 
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
+import com.simibubi.create.foundation.fluid.FluidHelper;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
@@ -13,6 +14,10 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -202,6 +207,16 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 		CannonCastBlockEntity cController = ((CannonCastBlockEntity) this.getControllerTE());
 		if (cController.fluid.getFluid().isEmpty()) return false;
 		return recipe.ingredient().test(cController.fluid.getFluid());
+	}
+
+	@Override
+	public boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+		return FluidHelper.tryEmptyItemIntoTE(worldIn, player, handIn, heldItem, this, side);
+	}
+
+	@Override
+	public boolean tryFillItemFromTE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+		return FluidHelper.tryFillItemFromTE(world, player, handIn, heldItem, this, side);
 	}
 
 }
