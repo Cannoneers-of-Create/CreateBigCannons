@@ -37,7 +37,7 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(hand);
 		Direction facing = hit.getDirection();
-		if (facing != Direction.UP) return InteractionResult.PASS;
+		if (facing != state.getValue(FACING)) return InteractionResult.PASS;
 
 		return this.onTileEntityUse(level, pos, shell -> {
 			if (!stack.isEmpty()) {
