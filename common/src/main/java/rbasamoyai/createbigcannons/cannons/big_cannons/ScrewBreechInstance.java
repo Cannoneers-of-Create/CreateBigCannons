@@ -64,7 +64,7 @@ public class ScrewBreechInstance extends HalfShaftInstance implements DynamicIns
 	@Override
 	public void updateLight() {
 		super.updateLight();
-		this.screwLock.updateLight(this.world, this.instancePos);
+		this.relight(this.pos, this.screwLock);
 	}
 	
 	private PartialModel getPartialModelForState(BlockState state) {

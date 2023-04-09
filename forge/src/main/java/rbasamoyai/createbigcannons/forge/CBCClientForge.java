@@ -47,6 +47,7 @@ public class CBCClientForge {
 		float density = CBCClientCommon.getFogDensity(event.getCamera(), event.getFarPlaneDistance());
 		if (density != -1) {
 			event.setFarPlaneDistance(density);
+			event.setNearPlaneDistance(density);
 			event.setCanceled(true);
 		}
 	}

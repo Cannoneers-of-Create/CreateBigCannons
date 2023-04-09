@@ -83,6 +83,7 @@ public class CBCClientCommon {
 		}
 		if (CBCFluids.MOLTEN_BRONZE.get().isSame(fluid)) {
 			wrapper.setFogColor(99 / 255f, 66 / 255f, 22 / 255f);
+			return;
 		}
 		if (CBCFluids.MOLTEN_STEEL.get().isSame(fluid)) {
 			wrapper.setFogColor(111 / 255f, 110 / 255f, 106 / 255f);
