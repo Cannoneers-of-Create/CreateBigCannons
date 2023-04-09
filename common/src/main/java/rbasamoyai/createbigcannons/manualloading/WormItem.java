@@ -96,7 +96,9 @@ public class WormItem extends Item {
 	}
 	
 	public static boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos, Direction dir) {
-		return state.getBlock() instanceof BigCannonBlock cBlock && cBlock.getOpeningType(level, state, pos) == BigCannonEnd.OPEN;
+		return state.getBlock() instanceof BigCannonBlock cBlock
+				&& cBlock.getOpeningType(level, state, pos) == BigCannonEnd.OPEN
+				&& cBlock.getFacing(state).getAxis() == dir.getAxis();
 	}
 	
 	@Override

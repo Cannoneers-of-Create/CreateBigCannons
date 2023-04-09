@@ -64,10 +64,13 @@ public class RamRodItem extends Item {
 		if (player instanceof DeployerFakePlayer && !deployersCanUse()) return InteractionResult.PASS;
 		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
-		Direction pushDirection = context.getClickedFace().getOpposite();
+		Direction face = context.getClickedFace();
+		Direction pushDirection = face.getOpposite();
 		
 		int k = 0;
 		if (level.getBlockEntity(pos) instanceof IBigCannonBlockEntity) {
+			BlockState state = level.getBlockState(pos.relative(face));
+			if (state.getMaterial().blocksMotion()) return InteractionResult.PASS;
 			k = -1;
 			for (int i = 0; i < getReach(); ++i) {
 				BlockPos pos1 = pos.relative(pushDirection, i);
