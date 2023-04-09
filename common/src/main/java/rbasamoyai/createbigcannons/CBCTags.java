@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
 
 import java.util.Arrays;
@@ -31,7 +32,10 @@ public class CBCTags {
 			BOUNCES_SHOTS = makeTag("bounces_shots"),
 			DOESNT_BOUNCE_SHOTS = makeTag("doesnt_bounce_shots"),
 			// Datagen tags
-			OBSIDIAN = commonTag("obsidian", "obsidian", "obsidian" /* No Fabric c: tag */);
+			OBSIDIAN = commonTag("obsidian", "obsidian", "obsidian" /* No Fabric c: tag */),
+			SANDSTONE = commonTag("sandstone", "sandstone", "sandstone"),
+			CONCRETE = commonTag("concrete", "concrete", "concrete"),
+			NETHERRACK = commonTag("netherrack", "netherrack", "netherrack");
 		
 		public static TagKey<Block> makeTag(String path) {
 			TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, CreateBigCannons.resource(path));
@@ -80,7 +84,9 @@ public class CBCTags {
 			});
 		}
 		
-		public static void sectionRegister() {}
+		public static void sectionRegister() {
+			addBlocksToBlockTag(CONCRETE, Blocks.WHITE_CONCRETE, Blocks.ORANGE_CONCRETE, Blocks.MAGENTA_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE, Blocks.YELLOW_CONCRETE, Blocks.LIME_CONCRETE, Blocks.PINK_CONCRETE, Blocks.GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE, Blocks.CYAN_CONCRETE, Blocks.PURPLE_CONCRETE, Blocks.BLUE_CONCRETE, Blocks.BROWN_CONCRETE, Blocks.GREEN_CONCRETE, Blocks.RED_CONCRETE, Blocks.BLACK_CONCRETE);
+		}
 	}
 	
 	public static class ItemCBC {

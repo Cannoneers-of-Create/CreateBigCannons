@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+import com.simibubi.create.AllBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -93,6 +94,11 @@ public class BlockHardnessProvider implements DataProvider {
 		setHardness(CBCTags.BlockCBC.OBSIDIAN, 12);
 		setHardness(Blocks.CRYING_OBSIDIAN, 12);
 		setHardness(BlockTags.ANVIL, 6);
+		setHardness(AllBlocks.ITEM_VAULT.get(), 6);
+		setHardness(CBCTags.BlockCBC.SANDSTONE, 4.5);
+		setHardness(CBCTags.BlockCBC.CONCRETE, 4.5);
+		setHardness(CBCTags.BlockCBC.NETHERRACK, 3);
+		setHardness(BlockTags.TERRACOTTA, 4.5);
 	}
 
 	protected final void setHardness(Block block, double hardness) { this.blocks.put(block, hardness); }
