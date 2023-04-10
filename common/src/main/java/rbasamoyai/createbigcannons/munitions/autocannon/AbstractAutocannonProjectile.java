@@ -65,16 +65,16 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 				double startMass = this.getProjectileMass();
 				this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 			} else {
-				this.onFinalImpact(result);
+				this.onImpact(result, false);
 				this.discard();
 			}
 		}
 	}
 
 	@Override
-	protected void onFinalImpact(HitResult result) {
-		super.onFinalImpact(result);
-		if (!this.isRemoved()) this.discard();
+	protected void onImpact(HitResult result, boolean stopped) {
+		super.onImpact(result, stopped);
+		if (stopped && !this.isRemoved()) this.discard();
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }

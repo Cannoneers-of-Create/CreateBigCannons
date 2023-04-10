@@ -174,10 +174,11 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.setPos(hitLoc.add(curVel.scale(0.03 / mag)));
 				this.setInGround(true);
 				this.setDeltaMovement(Vec3.ZERO);
-				this.onFinalImpact(bResult);
+				this.onImpact(bResult, true);
 				return true;
 			}
 			this.onDestroyBlock(state, bResult);
+			this.onImpact(bResult, false);
 
 			double f = this.overPenetrationPower(hardness, curPom);
 			if (flag1 && f > 0) {
@@ -212,8 +213,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		return true;
 	}
 
-	/** Use for fuzes and any other final effects */
-	protected void onFinalImpact(HitResult result) {}
+	/** Use for fuzes and any other effects */
+	protected void onImpact(HitResult result, boolean stopped) {}
 
 	protected abstract void onDestroyBlock(BlockState state, BlockHitResult result);
 
@@ -226,10 +227,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) entity.invulnerableTime = 0;
 			double penalty = entity.isAlive() ? 2 : 0.2;
 			this.setProjectileMass((float) Math.max(this.getProjectileMass() - penalty, 0));
-			if (this.getProjectileMass() <= 0) {
-				this.onFinalImpact(new EntityHitResult(entity));
-				this.discard();
-			}
+			this.onImpact(new EntityHitResult(entity), this.getProjectileMass() <= 0);
 		}
 	}
 

@@ -39,9 +39,9 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	}
 
 	@Override
-	protected void onFinalImpact(HitResult result) {
-		super.onFinalImpact(result);
-		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result))) this.detonate();
+	protected void onImpact(HitResult result, boolean stopped) {
+		super.onImpact(result, stopped);
+		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped))) this.detonate();
 	}
 
 	@Override
