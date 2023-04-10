@@ -33,22 +33,25 @@ public abstract class CannonBehavior extends TileEntityBehaviour {
 			Direction previousFacing = this.currentFacing;
 			this.currentFacing = state.getValue(BlockStateProperties.FACING);
 			if (previousFacing != null && previousFacing != this.currentFacing) {
-				Direction.Axis rotationAxis = getRotationAxis(previousFacing, currentFacing);
+				Direction.Axis rotationAxis = getRotationAxis(previousFacing, this.currentFacing);
 				Rotation rotation = getRotationBetween(previousFacing, this.currentFacing, rotationAxis);
-				
-				EnumSet<Direction> copyFrom = EnumSet.noneOf(Direction.class);
-				this.connectedTowards.forEach(d -> {
-					Direction dc = d;
-					for (int i = 0; i < rotation.ordinal(); ++i) {
-						dc = dc.getClockWise(rotationAxis);
-					}
-					copyFrom.add(dc);
-				});
-				this.connectedTowards.clear();
-				this.connectedTowards.addAll(copyFrom);
-				this.tileEntity.setChanged();
+				this.onRotate(rotationAxis, rotation);
 			}
 		}
+	}
+
+	protected void onRotate(Direction.Axis rotationAxis, Rotation rotation) {
+		EnumSet<Direction> copyFrom = EnumSet.noneOf(Direction.class);
+		this.connectedTowards.forEach(d -> {
+			Direction dc = d;
+			for (int i = 0; i < rotation.ordinal(); ++i) {
+				dc = dc.getClockWise(rotationAxis);
+			}
+			copyFrom.add(dc);
+		});
+		this.connectedTowards.clear();
+		this.connectedTowards.addAll(copyFrom);
+		this.tileEntity.setChanged();
 	}
 	
 	public boolean isConnectedTo(Direction face) {
@@ -63,14 +66,14 @@ public abstract class CannonBehavior extends TileEntityBehaviour {
 		}
 	}
 	
-	private static Direction.Axis getRotationAxis(Direction prev, Direction current) {
+	protected static Direction.Axis getRotationAxis(Direction prev, Direction current) {
 		Set<Direction.Axis> axes = EnumSet.allOf(Direction.Axis.class);
 		axes.remove(prev.getAxis());
 		axes.remove(current.getAxis());
 		return axes.stream().findFirst().orElseThrow(() -> new IllegalStateException("Failed to find the rotation axes of two different axes"));
 	}
 	
-	private static Rotation getRotationBetween(Direction prev, Direction current, Direction.Axis axis) {
+	protected static Rotation getRotationBetween(Direction prev, Direction current, Direction.Axis axis) {
 		if (prev == current) return Rotation.NONE;
 		if (prev == current.getOpposite()) return Rotation.CLOCKWISE_180;
 		return prev.getClockWise(axis) == current ? Rotation.CLOCKWISE_90 : Rotation.COUNTERCLOCKWISE_90;

@@ -24,7 +24,7 @@ import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 import javax.annotation.Nullable;
 
-public abstract class ProjectileBlock extends DirectionalBlock implements IWrenchable {
+public abstract class ProjectileBlock extends DirectionalBlock implements IWrenchable, BigCannonMunitionBlock {
 
 	private final VoxelShaper shapes;
 	

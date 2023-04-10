@@ -3,12 +3,15 @@ package rbasamoyai.createbigcannons.cannons.big_cannons;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.behaviour.BehaviourType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -33,6 +36,18 @@ public class BigCannonBehavior extends CannonBehavior {
 		if (!this.canLoadBlock(info)) return false;
 		this.loadBlock(info);
 		return true;
+	}
+
+	@Override
+	protected void onRotate(Direction.Axis rotationAxis, Rotation rotation) {
+		if (this.containedBlockInfo.isPresent()) {
+			StructureBlockInfo oldInfo = this.containedBlockInfo.get();
+			if (oldInfo.state.getBlock() instanceof BigCannonMunitionBlock mblock) {
+				this.loadBlock(new StructureBlockInfo(oldInfo.pos, mblock.onCannonRotate(oldInfo.state, rotationAxis, rotation), oldInfo.nbt));
+			}
+			this.tileEntity.setChanged();
+		}
+		super.onRotate(rotationAxis, rotation);
 	}
 
 	@Override

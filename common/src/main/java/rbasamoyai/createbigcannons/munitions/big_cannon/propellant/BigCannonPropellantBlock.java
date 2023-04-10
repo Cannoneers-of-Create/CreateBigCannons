@@ -5,8 +5,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
-public interface BigCannonPropellantBlock {
+public interface BigCannonPropellantBlock extends BigCannonMunitionBlock {
 
 	float getChargePower(StructureBlockInfo data);
 	float getChargePower(ItemStack stack);
