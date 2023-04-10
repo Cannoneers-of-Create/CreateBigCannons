@@ -87,8 +87,8 @@ public class CBCTooltip {
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".strength.goggles", strength), palette.color, palette.hColor, 2));
 		} else {
 			float nethersteelStrength = PowderChargeBlock.getPowderChargeEquivalent(BigCannonMaterial.NETHERSTEEL.maxSafeBaseCharges());
-			int strength = (int) Math.max(rawStrength / nethersteelStrength * 5, 5);
-			tooltip.add(getNoGogglesMeter(strength == 0 ? 0 : strength / 2 + 1, false, true));
+			int strength = Mth.ceil(Math.min(rawStrength / nethersteelStrength * 5, 5));
+			tooltip.add(getNoGogglesMeter(strength, false, true));
 		}
 
 		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".squibRatio")).withStyle(ChatFormatting.GRAY));
