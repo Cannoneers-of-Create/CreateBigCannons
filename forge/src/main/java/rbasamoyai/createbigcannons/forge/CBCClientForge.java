@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -15,6 +14,7 @@ public class CBCClientForge {
 		CBCBlockPartials.init();
 		modEventBus.addListener(CBCClientForge::onClientSetup);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
+		forgeEventBus.addListener(CBCClientForge::registerBindings);
 
 		forgeEventBus.addListener(CBCClientForge::getFogColor);
 		forgeEventBus.addListener(CBCClientForge::getFogDensity);
@@ -24,17 +24,20 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
 	}
 
-	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
+	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
 		Minecraft mc = Minecraft.getInstance();
 		CBCClientCommon.onRegisterParticleFactories(mc, mc.particleEngine);
 	}
 
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		CBCClientCommon.onClientSetup();
-		CBCClientCommon.registerKeyMappings(ClientRegistry::registerKeyBinding);
 	}
 
-	public static void getFogColor(EntityViewRenderEvent.FogColors event) {
+	public static void registerBindings(RegisterKeyMappingsEvent event) {
+		CBCClientCommon.registerKeyMappings(event::register);
+	}
+
+	public static void getFogColor(ViewportEvent.ComputeFogColor event) {
 		CBCClientCommon.setFogColor(event.getCamera(), (r, g, b) -> {
 			event.setRed(r);
 			event.setGreen(g);
@@ -42,7 +45,7 @@ public class CBCClientForge {
 		});
 	}
 
-	public static void getFogDensity(EntityViewRenderEvent.RenderFogEvent event) {
+	public static void getFogDensity(ViewportEvent.RenderFog event) {
 		if (!event.isCancelable()) return;
 		float density = CBCClientCommon.getFogDensity(event.getCamera(), event.getFarPlaneDistance());
 		if (density != -1) {
@@ -56,18 +59,18 @@ public class CBCClientForge {
 		CBCClientCommon.onClientGameTick(Minecraft.getInstance());
 	}
 
-	public static void onScrollMouse(InputEvent.MouseScrollEvent evt) {
+	public static void onScrollMouse(InputEvent.MouseScrollingEvent evt) {
 		if (CBCClientCommon.onScrollMouse(Minecraft.getInstance(), evt.getScrollDelta()) && evt.isCancelable()) {
 			evt.setCanceled(true);
 		}
 	}
 
-	public static void onFovModify(FOVModifierEvent evt) {
-		evt.setNewfov(CBCClientCommon.onFovModify(Minecraft.getInstance(), evt.getFov()));
+	public static void onFovModify(ComputeFovModifierEvent evt) {
+		evt.setNewFovModifier(CBCClientCommon.onFovModify(Minecraft.getInstance(), evt.getFovModifier()));
 	}
 
 	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
-		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getPlayer(), evt.getPartialTick());
+		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getEntity(), evt.getPartialTick());
 	}
 
 }

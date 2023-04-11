@@ -1,11 +1,14 @@
 package rbasamoyai.createbigcannons.datagen.values;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.Registry;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -49,7 +52,7 @@ public class BlockHardnessProvider implements DataProvider {
 	}
 
 	@Override
-	public final void run(HashCache cache) throws IOException {
+	public final void run(CachedOutput cache) throws IOException {
 		this.registerHardnesses();
 
 		JsonObject obj = new JsonObject();
@@ -65,29 +68,8 @@ public class BlockHardnessProvider implements DataProvider {
 
 		Path path = this.gen.getOutputFolder().resolve("data/" + this.modid + "/block_hardness/" + this.name + ".json");
 		String s = GSON.toJson(obj);
-		String s1 = SHA1.hashUnencodedChars(s).toString();
-		if (!Objects.equals(cache.getHash(path), s1) || !Files.exists(path)) {
-			Files.createDirectories(path.getParent());
-			BufferedWriter writer = Files.newBufferedWriter(path);
-
-			try {
-				writer.write(s);
-			} catch (Throwable throwable) {
-				if (writer != null) {
-					try {
-						writer.close();
-					} catch (Throwable throwable1) {
-						throwable.addSuppressed(throwable1);
-					}
-				}
-				throw throwable;
-			}
-
-			if (writer != null) {
-				writer.close();
-			}
-		}
-		cache.putNew(path, s1);
+		HashCode s1 = Hashing.sha1().hashUnencodedChars(s);
+		cache.writeIfNeeded(path, s.getBytes(), s1);
 	}
 
 	protected void registerHardnesses() {
