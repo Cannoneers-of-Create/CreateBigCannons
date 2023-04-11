@@ -9,6 +9,7 @@
     "MouseHandlerMixin"
   ],
   "mixins": [
+    "CreateInitMixin"
   ],
   "injectors": {
     "defaultRequire": 1

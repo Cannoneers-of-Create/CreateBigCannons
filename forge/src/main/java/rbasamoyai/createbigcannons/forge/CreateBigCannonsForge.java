@@ -22,6 +22,7 @@ import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 
 @Mod(CreateBigCannons.MOD_ID)
@@ -58,7 +59,8 @@ public class CreateBigCannonsForge {
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
         CBCNetworkForge.init();
-        FluidBlob.registerDefaultBlobEffects();
+        DefaultFluidCompat.registerMinecraftBlobEffects();
+        DefaultFluidCompat.registerCreateBlobEffects();
     }
 
     private void registerSerializers() {

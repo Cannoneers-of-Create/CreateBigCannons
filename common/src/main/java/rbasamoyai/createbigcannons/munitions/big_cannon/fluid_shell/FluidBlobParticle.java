@@ -4,7 +4,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
-import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.ParticleOptions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
@@ -42,12 +41,6 @@ public class FluidBlobParticle extends NoRenderParticle {
 	}
 
 	public static class Provider implements ParticleProvider<FluidBlobParticleData> {
-		private final SpriteSet sprites;
-
-		public Provider(SpriteSet sprites) {
-			this.sprites = sprites;
-		}
-
 		public Particle createParticle(FluidBlobParticleData data, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
 			return new FluidBlobParticle(level, x, y, z, dx, dy, dz, data.scale(), data.fluid());
 		}

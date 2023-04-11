@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.fuzes;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -24,6 +25,13 @@ public class ImpactFuzeItem extends FuzeItem {
 	
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result, boolean stopped) {
+		CompoundTag tag = stack.getOrCreateTag();
+		int damage = tag.contains("Damage") ? tag.getInt("Damage") : CBCConfigs.SERVER.munitions.impactFuzeDurability.get();
+		if (damage > 0) {
+			--damage;
+			tag.putInt("Damage", damage);
+		}
+		if (damage == 0) return false;
 		float f = this.getDetonateChance();
 		return f > 0 && projectile.level.getRandom().nextFloat() < f;
 	}
@@ -46,5 +54,5 @@ public class ImpactFuzeItem extends FuzeItem {
 				.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, ChatFormatting.GRAY, ChatFormatting.GREEN, 6));
 	}
-	
+
 }

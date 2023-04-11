@@ -4,11 +4,11 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
+import com.simibubi.create.content.contraptions.particle.ICustomParticleData;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +16,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
-public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDataWithSprite<FluidBlobParticleData> {
+public class FluidBlobParticleData implements ParticleOptions, ICustomParticleData<FluidBlobParticleData> {
 
 	public static final Codec<FluidBlobParticleData> CODEC = RecordCodecBuilder.create(i -> i
 			.group(Codec.FLOAT.fieldOf("scale").forGetter(FluidBlobParticleData::scale),
@@ -46,6 +46,8 @@ public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDa
 		this.fluid = fluid;
 	}
 
+	public FluidBlobParticleData() { this(0, EndFluidStack.EMPTY); }
+
 	public float scale() { return this.scale; }
 	public EndFluidStack fluid() { return this.fluid; }
 
@@ -67,8 +69,8 @@ public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDa
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public ParticleEngine.SpriteParticleRegistration<FluidBlobParticleData> getMetaFactory() {
-		return FluidBlobParticle.Provider::new;
+	public ParticleProvider<FluidBlobParticleData> getFactory() {
+		return new FluidBlobParticle.Provider();
 	}
 
 }

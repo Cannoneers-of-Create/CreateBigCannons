@@ -22,9 +22,16 @@ public class FluidBlobEffectRegistry {
 
 	public static void registerAllHit(Fluid fluid, OnHit cons) { ON_HIT.put(fluid, cons); }
 
+	private static OnHit getHitEffect(Fluid fluid) {
+		for (Map.Entry<Fluid, OnHit> entry : ON_HIT.entrySet()) {
+			if (entry.getKey().isSame(fluid)) return entry.getValue();
+		}
+		return null;
+	}
+
 	public static void effectOnAllHit(FluidBlob projectile, HitResult result) {
 		EndFluidStack fstack = projectile.getFluidStack();
-		OnHit cons = ON_HIT.get(fstack.fluid());
+		OnHit cons = getHitEffect(fstack.fluid());
 		if (cons != null) cons.hit(fstack, projectile, projectile.getLevel(), result);
 	}
 
@@ -41,9 +48,16 @@ public class FluidBlobEffectRegistry {
 		ON_HIT_BLOCK.put(fluid, cons);
 	}
 
+	private static OnHitBlock getHitBlockEffect(Fluid fluid) {
+		for (Map.Entry<Fluid, OnHitBlock> entry : ON_HIT_BLOCK.entrySet()) {
+			if (entry.getKey().isSame(fluid)) return entry.getValue();
+		}
+		return null;
+	}
+
 	public static void effectOnHitBlock(FluidBlob projectile, BlockHitResult result) {
 		EndFluidStack fstack = projectile.getFluidStack();
-		OnHitBlock cons = ON_HIT_BLOCK.get(fstack.fluid());
+		OnHitBlock cons = getHitBlockEffect(fstack.fluid());
 		if (cons != null) cons.hit(fstack, projectile, projectile.getLevel(), result);
 	}
 
@@ -60,9 +74,16 @@ public class FluidBlobEffectRegistry {
 		ON_HIT_ENTITY.put(fluid, cons);
 	}
 
+	private static OnHitEntity getHitEntityEffect(Fluid fluid) {
+		for (Map.Entry<Fluid, OnHitEntity> entry : ON_HIT_ENTITY.entrySet()) {
+			if (entry.getKey().isSame(fluid)) return entry.getValue();
+		}
+		return null;
+	}
+
 	public static void effectOnHitEntity(FluidBlob projectile, EntityHitResult result) {
 		EndFluidStack fstack = projectile.getFluidStack();
-		OnHitEntity cons = ON_HIT_ENTITY.get(fstack.fluid());
+		OnHitEntity cons = getHitEntityEffect(fstack.fluid());
 		if (cons != null) cons.hit(fstack, projectile, projectile.getLevel(), result);
 	}
 

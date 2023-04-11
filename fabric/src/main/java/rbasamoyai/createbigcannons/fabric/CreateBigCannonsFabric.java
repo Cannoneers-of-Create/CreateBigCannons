@@ -12,6 +12,7 @@ import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 
 public class CreateBigCannonsFabric implements ModInitializer {
@@ -28,10 +29,11 @@ public class CreateBigCannonsFabric implements ModInitializer {
         CBCConfigs.registerConfigs((t, c) -> ModLoadingContext.registerConfig(CreateBigCannons.MOD_ID, t, c));
 
         CBCNetworkFabric.INSTANCE.initServerListener();
-        FluidBlob.registerDefaultBlobEffects();
+        DefaultFluidCompat.registerMinecraftBlobEffects();
 
         ModConfigEvent.LOADING.register(CBCConfigs::onLoad);
         ModConfigEvent.RELOADING.register(CBCConfigs::onReload);
+
         CBCCommonFabricEvents.register();
 
         this.registerSerializers();

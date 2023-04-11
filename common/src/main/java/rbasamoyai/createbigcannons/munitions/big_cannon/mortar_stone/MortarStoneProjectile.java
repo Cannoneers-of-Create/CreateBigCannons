@@ -42,7 +42,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
     @Override
     protected void onImpact(HitResult result, boolean stopped) {
         super.onImpact(result, stopped);
-        if (!this.level.isClientSide && stopped) {
+        if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
             this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z,
                     CBCConfigs.SERVER.munitions.mortarStonePower.getF(),

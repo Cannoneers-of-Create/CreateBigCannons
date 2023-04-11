@@ -10,6 +10,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
@@ -44,14 +45,15 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
 
-		if (this.fluidStack.isEmpty()) {
+		if (!this.fluidStack.isEmpty()) {
 			int mbPerBlob = CBCConfigs.SERVER.munitions.mbPerFluidBlob.get();
-			byte blobSize = (byte)(mbPerBlob / (double) CBCConfigs.SERVER.munitions.mbPerAoeRadius.get());
-			int count = (int) Math.ceil(this.fluidStack.amount() / (double) mbPerBlob);
+			byte blobSize = (byte)(mbPerBlob / (double) CBCConfigs.SERVER.munitions.mbPerAoeRadius.get()); // No conversion because ratio would be same
+			int convertCount = IndexPlatform.convertFluid(mbPerBlob);
+			int count = (int) Math.ceil(this.fluidStack.amount() / (double) convertCount);
 			float spread = CBCConfigs.SERVER.munitions.fluidBlobSpread.getF();
 			List<FluidBlob> list = Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.FLUID_BLOB.get(), this.position(), this.getDeltaMovement(), count, spread, 0);
 			for (FluidBlob blob : list) {
-				EndFluidStack copy = this.fluidStack.copy(mbPerBlob);
+				EndFluidStack copy = this.fluidStack.copy(convertCount);
 				blob.setFluidStack(copy);
 				blob.setBlobSize(blobSize);
 			}

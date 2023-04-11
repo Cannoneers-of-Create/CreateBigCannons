@@ -27,7 +27,7 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (result.getDirection() != state.getValue(FACING)) return InteractionResult.PASS;
+		if (result.getDirection() != state.getValue(FACING) || hand == InteractionHand.OFF_HAND) return InteractionResult.PASS;
 
 		return this.onTileEntityUse(level, pos, be -> {
 			ItemStack stack1 = be.getItem(0);

@@ -6,8 +6,8 @@ import net.minecraft.world.level.Explosion.BlockInteraction;
 public class CBCCfgMunitions extends ConfigBase {
 
 	public final ConfigBool invulProjectileHurt = b(false, "invulnerableAfterProjectileHurt", Comments.invulnerableAfterProjectileHurt);
-	public final ConfigFloat heShellPower = f(10, 0, "heShellPower", Comments.heShellPower);
-	public final ConfigFloat apShellPower = f(7, 0, "apShellPower", Comments.apShellPower);
+	public final ConfigFloat heShellPower = f(8, 0, "heShellPower", Comments.heShellPower);
+	public final ConfigFloat apShellPower = f(5, 0, "apShellPower", Comments.apShellPower);
 	public final ConfigFloat mortarStonePower = f(4, 0, "mortarStonePower", Comments.mortarStonePower);
 	public final ConfigFloat maxMortarStoneCharges = f(2, -1, "maximumMortarStonePowderCharges", Comments.maxMortarStoneCharges);
 	public final ConfigBool projectilesCanBounce = b(true, "projectilesCanBounce", Comments.projectilesCanBounce);
@@ -15,6 +15,7 @@ public class CBCCfgMunitions extends ConfigBase {
 	
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes"); 
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
+	public final ConfigInt impactFuzeDurability = i(3, -1, "impactFuzeDurability", Comments.impactFuzeDurability);
 	public final ConfigInt proximityFuzeArmingTime = i(20, 0, "proximityFuzeArmingTime", Comments.proximityFuzeArmingTime);
 	
 	public final ConfigGroup groupedMunitions = group(0, "groupedMunitions", "Grouped Munitions");
@@ -29,9 +30,9 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat grapeshotVulnerableBreakChance = f(0.33f, 0, 1, "grapeshotVulernableBreakChance", Comments.grapeshotVulnerableBreakChance);
 	
 	public final ConfigInt fluidShellCapacity = i(2000, 1, "fluidShellCapacity", Comments.fluidShellCapacity);
-	public final ConfigInt mbPerFluidBlob = i(250, 125, "millibucketsPerFluidBlob", Comments.mbPerFluidBlob);
+	public final ConfigInt mbPerFluidBlob = i(250, 25, "millibucketsPerFluidBlob", Comments.mbPerFluidBlob);
 	public final ConfigFloat fluidBlobSpread = f(1f, 0.01f, "fluidBlobSpread", Comments.fluidBlobSpread);
-	public final ConfigInt mbPerAoeRadius = i(125, 125, "millibucketsPerAreaOfEffectRadius", Comments.mbPerAoeRadius);
+	public final ConfigInt mbPerAoeRadius = i(50, 25, "millibucketsPerAreaOfEffectRadius", Comments.mbPerAoeRadius);
 	public final ConfigFloat fluidBlobBlockAffectChance = f(0.5f, 0, 1, "fluidBlobBlockEffectChance", Comments.fluidBlobBlockAffectChance);
 
 	public final ConfigInt flakCount = i(20, 1, "flakCount", Comments.flakCount);
@@ -65,6 +66,7 @@ public class CBCCfgMunitions extends ConfigBase {
 				"No Damage - projectiles will not destroy anything they hit, and will only deal entity damage. Explosive projectiles will only harm entities on detonation."
 		};
 		static String impactFuzeDetonationChance = "Chance that the Impact Fuze will detonate on hitting something. 0 is 0% (never), 1 is 100% (always).";
+		static String impactFuzeDurability = "How many blocks the Impact Fuze can hit before breaking. Set to -1 to never break.";
 		static String[] proximityFuzeArmingTime = new String[] { "Time it takes for a proximity fuze to arm itself in ticks.",
 				"(For reference, there are 20 ticks in 1 second.)",
 				"After the fuze has been in the air for the specified arming time, it will detonate when it gets close enough to a block or entity." };
