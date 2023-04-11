@@ -8,6 +8,21 @@ pluginManagement {
     }
 }
 
+plugins {
+    id("com.gradle.enterprise") version("3.9")
+}
+
+boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
+
+gradleEnterprise {
+        buildScan {
+            publishAlwaysIf(ci)
+            termsOfServiceUrl = "https://gradle.com/terms-of-service"
+            termsOfServiceAgree = "yes"
+            uploadInBackground = false
+        }
+    }
+
 include("common")
 include("fabric")
 include("forge")
