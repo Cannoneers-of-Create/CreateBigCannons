@@ -21,7 +21,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -475,10 +474,10 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		tooltip.add(TextComponent.EMPTY);
+		tooltip.add(Component.empty());
 		this.addFluidInfoToTooltip(tooltip, isPlayerSneaking);
 		if (this.failureReason != FailureReason.NONE) {
-			tooltip.add(TextComponent.EMPTY);
+			tooltip.add(Component.empty());
 			Lang.builder("exception")
 				.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip.encounteredProblem")
 				.style(ChatFormatting.GOLD)
