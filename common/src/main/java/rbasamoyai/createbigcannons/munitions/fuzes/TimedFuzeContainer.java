@@ -36,6 +36,7 @@ public class TimedFuzeContainer extends AbstractContainerMenu {
 	public void setTime(int time) { this.data.set(0, time); }
 	public int getTime() { return this.data.get(0); }
 	public ItemStack getStackToRender() { return this.stackToRender; }
+	@Override public ItemStack quickMoveStack(Player player, int index) { return ItemStack.EMPTY; }
 
 	@Override public boolean stillValid(Player player) { return true; }
 

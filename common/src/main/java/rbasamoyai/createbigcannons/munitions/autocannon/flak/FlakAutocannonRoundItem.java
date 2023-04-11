@@ -5,7 +5,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -44,14 +43,14 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 		if (!fuze.isEmpty()) {
 			Lang.builder("block")
 					.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
-					.add(new TextComponent(" "))
+					.add(Component.literal(" "))
 					.add(fuze.getDisplayName().copy())
 					.addTo(tooltip);
             if (flag.isAdvanced() && fuze.getItem() instanceof FuzeItem) {
                 List<Component> subTooltip = new ArrayList<>();
                 fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
                 for (int i = 0; i < subTooltip.size(); ++i) {
-                    subTooltip.set(i, new TextComponent("  ").append(subTooltip.get(i)).withStyle(ChatFormatting.GRAY));
+                    subTooltip.set(i, Component.literal("  ").append(subTooltip.get(i)).withStyle(ChatFormatting.GRAY));
                 }
                 tooltip.addAll(subTooltip);
             }
