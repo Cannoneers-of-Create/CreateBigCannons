@@ -10,7 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -132,7 +132,7 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 			&& this.getControllingPassenger() instanceof Player player
 			&& this.cannonContraption != null
 			&& this.cannonContraption.getContraption() instanceof AbstractMountedAutocannonContraption) {
-			player.displayClientMessage(new TranslatableComponent("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate", this.getActualFireRate()), true);
+			player.displayClientMessage(Component.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate", this.getActualFireRate()), true);
 		}
 
 		this.applyRotation();
@@ -241,7 +241,7 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 	private void tickLerp() {
 		if (this.isControlledByLocalInstance()) {
 			this.lerpSteps = 0;
-			this.setPacketCoordinates(this.getX(), this.getY(), this.getZ());
+			this.syncPacketPositionCodec(this.getX(), this.getY(), this.getZ());
 		}
 
 		if (this.lerpSteps > 0) {
@@ -411,7 +411,7 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 		this.setHurtTime(10);
 		this.setDamage(this.getDamage() + damage * 10.0f);
 		this.markHurt();
-		this.gameEvent(GameEvent.ENTITY_DAMAGED, source.getEntity());
+		this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
 		boolean flag = source.getEntity() instanceof Player player && player.getAbilities().instabuild;
 		if (flag || this.getDamage() > 40.0F) {
 			if (!flag && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
