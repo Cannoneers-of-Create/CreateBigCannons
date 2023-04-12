@@ -22,12 +22,14 @@ public class TrafficConeBlockItem extends BlockItem implements Wearable {
 		ItemStack itemStack = player.getItemInHand(usedHand);
 		ItemStack itemStack2 = player.getItemBySlot(EquipmentSlot.HEAD);
 		if (itemStack2.isEmpty()) {
-			player.setItemSlot(EquipmentSlot.HEAD, itemStack.copy());
+			ItemStack copy = itemStack.copy();
+			copy.setCount(1);
+			player.setItemSlot(EquipmentSlot.HEAD, copy);
 			if (!level.isClientSide()) {
 				player.awardStat(Stats.ITEM_USED.get(this));
 			}
 
-			itemStack.setCount(0);
+			itemStack.shrink(1);
 			return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
 		} else {
 			return InteractionResultHolder.fail(itemStack);
