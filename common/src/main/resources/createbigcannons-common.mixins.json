@@ -9,7 +9,8 @@
   "mixins": [
     "BearingCannonDrillFinderMixin",
     "BeltTileEntityMixin",
-    "EntityMixin"
+    "EntityMixin",
+    "ServerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

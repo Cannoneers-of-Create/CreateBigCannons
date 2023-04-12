@@ -132,7 +132,7 @@ public class CBCEntityTypes {
 		return configure(c -> c.size(0.2f, 0.2f)
 				.fireImmune()
 				.updateInterval(1)
-				.updateVelocity(true)
+				.updateVelocity(false) // Mixin ServerEntity to not track motion
 				.trackingRange(16));
 	}
 
@@ -140,7 +140,7 @@ public class CBCEntityTypes {
 		return configure(c -> c.size(0.8f, 0.8f)
 				.fireImmune()
 				.updateInterval(1)
-				.updateVelocity(true)
+				.updateVelocity(false) // Ditto
 				.trackingRange(16));
 	}
 

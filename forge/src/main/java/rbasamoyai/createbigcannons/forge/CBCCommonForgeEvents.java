@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.forge;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
@@ -33,7 +34,7 @@ public class CBCCommonForgeEvents {
 	}
 
 	public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent evt) {
-		CBCCommonEvents.onPlayerLogin(evt.getPlayer());
+		if (evt.getPlayer() instanceof ServerPlayer player) CBCCommonEvents.onPlayerLogin(player);
 	}
 
 	public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent evt) {

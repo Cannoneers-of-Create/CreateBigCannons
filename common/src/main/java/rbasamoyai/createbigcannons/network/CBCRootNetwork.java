@@ -5,7 +5,9 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 
 import java.util.function.Function;
 
@@ -14,12 +16,16 @@ public class CBCRootNetwork {
 	private static final Int2ObjectMap<Function<FriendlyByteBuf, ? extends RootPacket>> ID_TO_CONSTRUCTOR = new Int2ObjectOpenHashMap<>();
 	private static final Object2IntMap<Class<? extends RootPacket>> TYPE_TO_ID = new Object2IntOpenHashMap<>();
 
+	public static final String VERSION = "1.0.0";
+
 	public static void init() {
 		int id = 0;
+		addMsg(id++, ClientboundCheckChannelVersionPacket.class, ClientboundCheckChannelVersionPacket::new);
 
 		addMsg(id++, BlockRecipesManager.ClientboundRecipesPacket.class, BlockRecipesManager.ClientboundRecipesPacket::new);
 		addMsg(id++, ClientboundAnimateCannonContraptionPacket.class, ClientboundAnimateCannonContraptionPacket::new);
 		addMsg(id++, ClientboundUpdateContraptionPacket.class, ClientboundUpdateContraptionPacket::new);
+		addMsg(id++, ClientboundPreciseMotionSyncPacket.class, ClientboundPreciseMotionSyncPacket::new);
 		addMsg(id++, ServerboundCarriageWheelPacket.class, ServerboundCarriageWheelPacket::new);
 		addMsg(id++, ServerboundFiringActionPacket.class, ServerboundFiringActionPacket::new);
 		addMsg(id++, ServerboundProximityFuzePacket.class, ServerboundProximityFuzePacket::new);
@@ -42,6 +48,10 @@ public class CBCRootNetwork {
 		if (id == -1) throw new IllegalStateException("Attempted to serialize packet with illegal id: " + id);
 		buf.writeVarInt(id);
 		pkt.rootEncode(buf);
+	}
+
+	public static void onPlayerJoin(ServerPlayer player) {
+		NetworkPlatform.sendToClientPlayer(new ClientboundCheckChannelVersionPacket(VERSION), player);
 	}
 
 }

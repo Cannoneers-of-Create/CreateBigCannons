@@ -9,6 +9,7 @@
     "MouseHandlerMixin"
   ],
   "mixins": [
+    "AbstractCannonProjectileMixin",
     "CreateInitMixin"
   ],
   "injectors": {

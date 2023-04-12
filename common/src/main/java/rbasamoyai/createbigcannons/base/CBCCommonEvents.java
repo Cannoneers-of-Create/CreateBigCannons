@@ -23,6 +23,7 @@ import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
 import java.util.function.BiConsumer;
 
@@ -32,7 +33,8 @@ public class CBCCommonEvents {
 		CreateBigCannons.BLOCK_DAMAGE.tick(level);
 	}
 
-	public static void onPlayerLogin(Player player) {
+	public static void onPlayerLogin(ServerPlayer player) {
+		CBCRootNetwork.onPlayerJoin(player);
 		CreateBigCannons.BLOCK_DAMAGE.playerLogin(player);
 	}
 

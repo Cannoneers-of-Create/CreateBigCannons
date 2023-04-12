@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.munitions;
 
-import com.mojang.math.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -26,6 +25,7 @@ import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.PreciseProjectile;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
-public abstract class AbstractCannonProjectile extends Projectile {
+public abstract class AbstractCannonProjectile extends Projectile implements PreciseProjectile {
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
@@ -47,7 +47,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
 	}
-	
+
 	@Override
 	public void tick() {
 		if (this.level.isClientSide || this.level.hasChunkAt(this.blockPosition())) {
@@ -55,19 +55,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 			if (!this.isInGround()) this.clipAndDamage(this.position(), this.position().add(this.getDeltaMovement()));
 
-			this.yRotO = this.getYRot();
-			this.xRotO = this.getXRot();
-
-			if (!this.isInGround()) {
-				Vec3 vel = this.getDeltaMovement();
-				if (vel.lengthSqr() > 0.005d) {
-					this.setYRot((float) (Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
-					this.setXRot((float) (Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
-				}
-
-				this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
-				this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
-			}
+			this.onTickRotate();
 
 			if (this.isInGround()) {
 				this.setDeltaMovement(Vec3.ZERO);
@@ -104,6 +92,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			}
 		}
 	}
+
+	protected void onTickRotate() {}
 
 	protected void clipAndDamage(Vec3 start, Vec3 end) {
 		GriefState flag = CBCConfigs.SERVER.munitions.damageRestriction.get();

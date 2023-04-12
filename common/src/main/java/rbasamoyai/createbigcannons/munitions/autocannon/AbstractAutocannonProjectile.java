@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
+import com.mojang.math.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -23,6 +25,23 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		super(type, level);
 		this.ageRemaining = 60;
 		this.damage = 15;
+	}
+
+	@Override
+	protected void onTickRotate() {
+		this.yRotO = this.getYRot();
+		this.xRotO = this.getXRot();
+
+		if (!this.isInGround()) {
+			Vec3 vel = this.getDeltaMovement();
+			if (vel.lengthSqr() > 0.005d) {
+				this.setYRot((float) (Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
+				this.setXRot((float) (Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
+			}
+
+			this.setYRot(this.getYRot());
+			this.setXRot(this.getXRot());
+		}
 	}
 
 	@Override protected float getKnockback(Entity target) { return 0.5f; }

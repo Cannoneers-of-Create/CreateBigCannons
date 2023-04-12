@@ -7,7 +7,8 @@
   ],
   "mixins": [
     "CBCLiquidBlockMixin",
-    "CBCFlowingFluidMixin"
+    "CBCFlowingFluidMixin",
+    "AbstractCannonProjectileMixin"
   ],
   "injectors": {
     "defaultRequire": 1

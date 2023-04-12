@@ -1,7 +1,9 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
+import com.mojang.math.Constants;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,6 +17,23 @@ import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 public abstract class AbstractBigCannonProjectile extends AbstractCannonProjectile {
 
 	protected AbstractBigCannonProjectile(EntityType<? extends AbstractBigCannonProjectile> type, Level level) { super(type, level); }
+
+	@Override
+	protected void onTickRotate() {
+		this.yRotO = this.getYRot();
+		this.xRotO = this.getXRot();
+
+		if (!this.isInGround()) {
+			Vec3 vel = this.getDeltaMovement();
+			if (vel.lengthSqr() > 0.005d) {
+				this.setYRot((float) (Mth.atan2(vel.x, vel.z) * (double) Constants.RAD_TO_DEG));
+				this.setXRot((float) (Mth.atan2(vel.y, vel.horizontalDistance()) * (double) Constants.RAD_TO_DEG));
+			}
+
+			this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+			this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+		}
+	}
 
 	public abstract BlockState getRenderedBlockState();
 
