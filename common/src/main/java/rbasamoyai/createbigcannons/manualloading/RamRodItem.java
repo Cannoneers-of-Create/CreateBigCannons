@@ -24,21 +24,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
-import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class RamRodItem extends Item {
+public class RamRodItem extends Item implements HandloadingTool {
 
 	public static final UUID BASE_ATTACK_KNOCKBACK_UUID = UUID.fromString("bfa4160d-4ef0-4069-9569-3dfd2765f1c6");
 	
@@ -100,7 +99,7 @@ public class RamRodItem extends Item {
 			if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) {
 				encounteredCannon = true;
 				StructureBlockInfo info = cbe.cannonBehavior().block();
-				if (info == null || info.state == null || info.state.isAir()) break;
+				if (info == null || info.state.isAir()) break;
 				toPush.add(info);
 			} else {
 				BlockEntity be = level.getBlockEntity(pos1);
@@ -146,14 +145,73 @@ public class RamRodItem extends Item {
 		player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
-	
+
+	@Override
+	public void onUseOnCannon(Player player, Level level, BlockPos startPos, Direction face, MountedBigCannonContraption contraption) {
+		if (player instanceof DeployerFakePlayer && !deployersCanUse()) return;
+		Direction pushDirection = face.getOpposite();
+
+		int k = 0;
+		if (contraption.presentTileEntities.get(startPos) instanceof IBigCannonBlockEntity) {
+			k = -1;
+			for (int i = 0; i < getReach(); ++i) {
+				BlockPos pos1 = startPos.relative(pushDirection, i);
+				StructureBlockInfo info = contraption.getBlocks().get(pos1);
+				if (info == null || !isValidLoadBlock(info.state, level, pos1, pushDirection)) return;
+
+				if (contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe) {
+					StructureBlockInfo info1 = cbe.cannonBehavior().block();
+					if (info1 == null || info1.state.isAir()) continue;
+				}
+				k = i;
+				break;
+			}
+			if (k == -1) return;
+		}
+
+		List<StructureBlockInfo> toPush = new ArrayList<>();
+		boolean encounteredCannon = false;
+		int maxCount = getPushStrength();
+		for (int i = 0; i < maxCount + 1; ++i) {
+			BlockPos pos1 = startPos.relative(pushDirection, i + k);
+			BlockState state1 = level.getBlockState(pos1);
+			if (state1.isAir()) break;
+			if (!isValidLoadBlock(state1, contraption, pos1, pushDirection)) return;
+			if (!(contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)) break;
+			encounteredCannon = true;
+			StructureBlockInfo info = cbe.cannonBehavior().block();
+			if (info == null || info.state == null || info.state.isAir()) break;
+			toPush.add(info);
+			if (toPush.size() > maxCount) return;
+		}
+		if (!encounteredCannon || toPush.isEmpty()) return;
+		for (int i = toPush.size() - 1; i >= 0; --i) {
+			BlockPos pos1 = startPos.relative(pushDirection, i + k);
+			BlockPos pos2 = pos1.relative(pushDirection);
+			StructureBlockInfo info = toPush.get(i);
+			if (!(contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)
+				|| !(contraption.presentTileEntities.get(pos2) instanceof IBigCannonBlockEntity cbe1)) break;
+			cbe.cannonBehavior().removeBlock();
+			cbe1.cannonBehavior().tryLoadingBlock(info);
+		}
+		level.playSound(null, player.blockPosition(), SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1, 1);
+		player.causeFoodExhaustion(toPush.size() * CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
+		player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());
+	}
+
 	public static boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos, Direction dir) {
-		if (state.getBlock() instanceof BigCannonPropellantBlock propellant)
-			return propellant.canBeLoaded(state, dir.getAxis());
-		if (state.getBlock() instanceof ProjectileBlock)
-			return state.getValue(BlockStateProperties.FACING).getAxis() == dir.getAxis();
+		if (state.getBlock() instanceof BigCannonMunitionBlock munition)
+			return munition.canBeLoaded(state, dir.getAxis());
 		if (state.getBlock() instanceof BigCannonBlock cBlock)
 			return cBlock.getOpeningType(level, state, pos) == BigCannonEnd.OPEN && cBlock.getFacing(state).getAxis() == dir.getAxis();
+		return false;
+	}
+
+	public static boolean isValidLoadBlock(BlockState state, MountedBigCannonContraption contraption, BlockPos pos, Direction dir) {
+		if (state.getBlock() instanceof BigCannonMunitionBlock munition)
+			return munition.canBeLoaded(state, dir.getAxis());
+		if (state.getBlock() instanceof BigCannonBlock cBlock)
+			return cBlock.getOpeningType(contraption, state, pos) == BigCannonEnd.OPEN && cBlock.getFacing(state).getAxis() == dir.getAxis();
 		return false;
 	}
 

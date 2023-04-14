@@ -13,9 +13,11 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -128,5 +130,24 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 
 	@Override public Class<BigCartridgeBlockEntity> getTileEntityClass() { return BigCartridgeBlockEntity.class; }
 	@Override public BlockEntityType<? extends BigCartridgeBlockEntity> getTileEntityType() { return CBCBlockEntities.BIG_CARTRIDGE.get(); }
+
+	@Override
+	public BlockState onCannonRotate(BlockState oldState, Direction.Axis rotationAxis, Rotation rotation) {
+		Direction facing = oldState.getValue(BlockStateProperties.FACING);
+		for (int i = 0; i < rotation.ordinal(); ++i) {
+			facing = facing.getClockWise(rotationAxis);
+		}
+		return oldState.setValue(BlockStateProperties.FACING, facing);
+	}
+
+	@Override
+	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
+		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
+		CompoundTag tag = stack.getOrCreateTag().getCompound("BlockEntityTag").copy();
+		tag.remove("x");
+		tag.remove("y");
+		tag.remove("z");
+		return new StructureBlockInfo(localPos, state, tag);
+	}
 
 }

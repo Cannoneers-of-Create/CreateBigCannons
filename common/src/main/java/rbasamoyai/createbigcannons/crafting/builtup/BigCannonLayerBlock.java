@@ -11,6 +11,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class BigCannonLayerBlock extends BigCannonBaseBlock implements ITE<LayeredBigCannonBlockEntity> {
@@ -31,7 +32,7 @@ public class BigCannonLayerBlock extends BigCannonBaseBlock implements ITE<Layer
 	}
 	
 	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
-	@Override public BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return BigCannonEnd.CLOSED; }
+	@Override public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) { return BigCannonEnd.CLOSED; }
 	@Override public boolean isComplete(BlockState state) { return false; }
 	
 	@Override public Class<LayeredBigCannonBlockEntity> getTileEntityClass() { return LayeredBigCannonBlockEntity.class; }

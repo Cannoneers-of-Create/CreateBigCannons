@@ -14,17 +14,26 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.manualloading.HandloadingTool;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
 public abstract class AbstractPitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
@@ -267,6 +276,33 @@ public abstract class AbstractPitchOrientedContraptionEntity extends OrientedCon
 		if (this.contraption instanceof AbstractMountedCannonContraption cannon && this.level instanceof ServerLevel slevel) cannon.fireShot(slevel, this);
 	}
 
-	public static float getRotationCap() { return 0.1f; }
+	@Override
+	public boolean handlePlayerInteraction(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand) {
+		if (this.contraption instanceof MountedBigCannonContraption cannon) {
+			BlockEntity be = this.contraption.presentTileEntities.get(localPos);
+			StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
+
+			if (info.state.getBlock() instanceof BigCannonBlock cBlock
+					&& cBlock.getFacing(info.state).getAxis() == side.getAxis()
+					&& be instanceof IBigCannonBlockEntity cbe
+					&& !cbe.cannonBehavior().isConnectedTo(side)) {
+				ItemStack stack = player.getItemInHand(interactionHand);
+				if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
+					if (!this.level.isClientSide
+							&& cbe.cannonBehavior().tryLoadingBlock(munition.getHandloadingInfo(stack, localPos, side))
+							&& !player.isCreative()) {
+						stack.shrink(1);
+					}
+					return true;
+				}
+				if (stack.getItem() instanceof HandloadingTool tool) {
+					if (!this.level.isClientSide) tool.onUseOnCannon(player, this.level, localPos, side, cannon);
+					return true;
+				}
+			}
+		}
+
+		return super.handlePlayerInteraction(player, localPos, side, interactionHand);
+	}
 
 }

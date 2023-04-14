@@ -17,6 +17,8 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
+import javax.annotation.Nullable;
+
 public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredBigCannonBlockEntity>, BigCannonBlock {
 	
 	public BuiltUpCannonBlock(Properties properties) {
@@ -45,7 +47,7 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements ITE<LayeredB
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 	
-	@Override public BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return BigCannonEnd.CLOSED; }
+	@Override public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) { return BigCannonEnd.CLOSED; }
 	@Override public boolean isComplete(BlockState state) { return false; }
 	
 	@Override public RenderShape getRenderShape(BlockState state) { return RenderShape.INVISIBLE; }

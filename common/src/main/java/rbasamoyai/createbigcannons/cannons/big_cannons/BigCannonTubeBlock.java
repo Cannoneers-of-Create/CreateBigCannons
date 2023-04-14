@@ -15,6 +15,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class BigCannonTubeBlock extends BigCannonBaseBlock implements ITE<BigCannonBlockEntity> {
@@ -55,7 +56,7 @@ public class BigCannonTubeBlock extends BigCannonBaseBlock implements ITE<BigCan
 		return this.shapes.get(this.getFacing(state));
 	}
 	
-	@Override public BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return BigCannonEnd.OPEN; }
+	@Override public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) { return BigCannonEnd.OPEN; }
 	@Override public boolean isComplete(BlockState state) { return true; }
 	
 	@Override public Class<BigCannonBlockEntity> getTileEntityClass() { return BigCannonBlockEntity.class; }

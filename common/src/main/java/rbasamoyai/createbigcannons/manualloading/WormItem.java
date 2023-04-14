@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
@@ -33,7 +34,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 import java.util.List;
 
-public class WormItem extends Item {
+public class WormItem extends Item implements HandloadingTool {
 	
 	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 	
@@ -94,6 +95,34 @@ public class WormItem extends Item {
 		}
 		return super.useOn(context);
 	}
+
+	@Override
+	public void onUseOnCannon(Player player, Level level, BlockPos startPos, Direction face, MountedBigCannonContraption contraption) {
+		if (player instanceof DeployerFakePlayer && !CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get()) return;
+		Direction reachDirection = face.getOpposite();
+
+		for (int i = 0; i < CBCConfigs.SERVER.cannons.wormReach.get(); ++i) {
+			BlockPos pos1 = startPos.relative(reachDirection, i);
+			StructureBlockInfo info = contraption.getBlocks().get(pos1);
+			if (!isValidLoadBlock(info.state, level, pos1, reachDirection)
+					|| !(contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)) return;
+			StructureBlockInfo info1 = cbe.cannonBehavior().block();
+			if (info1 == null || info1.state.isAir()) continue;
+			BlockPos pos2 = pos1.relative(face);
+			if (level.getBlockEntity(pos2) instanceof IBigCannonBlockEntity cbe1 && !cbe1.canLoadBlock(info)
+					|| !(contraption.presentTileEntities.get(pos2) instanceof IBigCannonBlockEntity))
+				return;
+
+			if (!(contraption.presentTileEntities.get(pos2) instanceof IBigCannonBlockEntity cbe2)) return;
+			cbe.cannonBehavior().removeBlock();
+			cbe2.cannonBehavior().loadBlock(info1);
+
+			level.playSound(null, player.blockPosition(), SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 1, 1);
+			player.causeFoodExhaustion(CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
+			player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());
+			return;
+		}
+	}
 	
 	public static boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos, Direction dir) {
 		return state.getBlock() instanceof BigCannonBlock cBlock
@@ -109,5 +138,5 @@ public class WormItem extends Item {
 	
 	public static int getReach() { return CBCConfigs.SERVER.cannons.ramRodReach.get(); }
 	public static boolean deployersCanUse() { return CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get(); }
-	
+
 }
