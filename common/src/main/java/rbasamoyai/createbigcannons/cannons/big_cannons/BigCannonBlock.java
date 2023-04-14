@@ -9,8 +9,11 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+
+import javax.annotation.Nullable;
 
 public interface BigCannonBlock {
 
@@ -18,7 +21,11 @@ public interface BigCannonBlock {
 	CannonCastShape getCannonShape();
 	
 	Direction getFacing(BlockState state);
-	BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos);
+	BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos);
+	default BigCannonEnd getOpeningType(MountedBigCannonContraption contraption, BlockState state, BlockPos pos) {
+		return this.getOpeningType((Level) null, state, pos);
+	}
+
 	boolean isComplete(BlockState state);
 	
 	default BigCannonMaterial getCannonMaterialInLevel(LevelAccessor level, BlockState state, BlockPos pos) { return this.getCannonMaterial(); }

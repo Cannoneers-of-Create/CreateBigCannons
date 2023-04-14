@@ -11,8 +11,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+
+import javax.annotation.Nullable;
 
 public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements ITE<SlidingBreechBlockEntity>, BigCannonBlock {
 
@@ -28,10 +31,15 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
 	
 	@Override
-	public BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) {
-		return level.getBlockEntity(pos) instanceof SlidingBreechBlockEntity breech ? breech.getOpeningType() : BigCannonEnd.OPEN;
+	public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) {
+		return level != null && level.getBlockEntity(pos) instanceof SlidingBreechBlockEntity breech ? breech.getOpeningType() : BigCannonEnd.OPEN;
 	}
-	
+
+	@Override
+	public BigCannonEnd getOpeningType(MountedBigCannonContraption contraption, BlockState state, BlockPos pos) {
+		return contraption.presentTileEntities.get(pos) instanceof SlidingBreechBlockEntity breech ? breech.getOpeningType() : BigCannonEnd.OPEN;
+	}
+
 	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 	
 	@Override

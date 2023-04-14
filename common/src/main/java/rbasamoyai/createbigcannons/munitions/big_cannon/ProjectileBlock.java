@@ -5,7 +5,9 @@ import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -16,6 +18,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -78,5 +82,29 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 	public abstract AbstractCannonProjectile getProjectile(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity blockEntity);
 	
 	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.NORMAL; }
-	
+
+	@Override
+	public boolean canBeLoaded(BlockState state, Direction.Axis facing) {
+		return state.getValue(FACING).getAxis() == facing;
+	}
+
+	@Override
+	public BlockState onCannonRotate(BlockState oldState, Direction.Axis rotationAxis, Rotation rotation) {
+		Direction facing = oldState.getValue(BlockStateProperties.FACING);
+		for (int i = 0; i < rotation.ordinal(); ++i) {
+			facing = facing.getClockWise(rotationAxis);
+		}
+		return oldState.setValue(BlockStateProperties.FACING, facing);
+	}
+
+	@Override
+	public StructureTemplate.StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
+		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
+		CompoundTag tag = stack.getOrCreateTag().getCompound("BlockEntityTag").copy();
+		tag.remove("x");
+		tag.remove("y");
+		tag.remove("z");
+		return new StructureTemplate.StructureBlockInfo(localPos, state, tag);
+	}
+
 }

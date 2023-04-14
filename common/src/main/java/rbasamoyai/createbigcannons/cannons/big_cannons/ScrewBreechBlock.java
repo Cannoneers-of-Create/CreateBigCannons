@@ -22,6 +22,8 @@ import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCShapes;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
+import javax.annotation.Nullable;
+
 public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<ScrewBreechBlockEntity>, BigCannonBlock {
 
 	public static final EnumProperty<BigCannonEnd> OPEN = EnumProperty.create("open", BigCannonEnd.class);
@@ -48,7 +50,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements ITE<Scr
 	@Override public BigCannonMaterial getCannonMaterial() { return this.material; }
 	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH; }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING).getOpposite(); }
-	@Override public BigCannonEnd getOpeningType(Level level, BlockState state, BlockPos pos) { return state.getValue(OPEN); }
+	@Override public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) { return state.getValue(OPEN); }
 	@Override public Axis getRotationAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
 	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 	@Override public boolean isDoubleSidedCannon(BlockState state) { return false; }
