@@ -148,4 +148,13 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		return new StructureBlockInfo(localPos, state, tag);
 	}
 
+	@Override
+	public ItemStack getExtractedItem(StructureBlockInfo info) {
+		ItemStack stack = new ItemStack(this);
+		if (info.nbt != null) {
+			stack.getOrCreateTag().putInt("Power", info.nbt.getInt("Power"));
+		}
+		return stack;
+	}
+
 }
