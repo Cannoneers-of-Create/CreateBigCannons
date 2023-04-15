@@ -100,4 +100,6 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 		return new StructureBlockInfo(localPos, state, null);
 	}
 
+	@Override public ItemStack getExtractedItem(StructureBlockInfo info) { return new ItemStack(this); }
+
 }

@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -98,7 +98,7 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 	}
 
 	@Override
-	public StructureTemplate.StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
+	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
 		CompoundTag baseTag = stack.getOrCreateTag();
 		if (baseTag.contains("BlockEntityTag")) {
@@ -106,9 +106,18 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 			tag.remove("x");
 			tag.remove("y");
 			tag.remove("z");
-			return new StructureTemplate.StructureBlockInfo(localPos, state, tag);
+			return new StructureBlockInfo(localPos, state, tag);
 		}
-		return new StructureTemplate.StructureBlockInfo(localPos, state, null);
+		return new StructureBlockInfo(localPos, state, null);
+	}
+
+	@Override
+	public ItemStack getExtractedItem(StructureBlockInfo info) {
+		ItemStack stack = new ItemStack(this);
+		if (info.nbt != null) {
+			stack.getOrCreateTag().put("BlockEntityTag", info.nbt);
+		}
+		return stack;
 	}
 
 }
