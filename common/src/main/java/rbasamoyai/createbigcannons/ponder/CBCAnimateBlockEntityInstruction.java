@@ -4,7 +4,7 @@ import com.simibubi.create.foundation.ponder.PonderWorld;
 import com.simibubi.create.foundation.ponder.instruction.AnimateTileEntityInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
 
 import java.util.Optional;
@@ -21,16 +21,16 @@ public class CBCAnimateBlockEntityInstruction extends AnimateTileEntityInstructi
 	
 	public static CBCAnimateBlockEntityInstruction cannonMountPitch(BlockPos location, float angle, int ticks) {
 		return new CBCAnimateBlockEntityInstruction(location, angle, ticks,
-			(level, t) -> castIfPresent(level, location, AbstractCannonMountBlockEntity.class)
+			(level, t) -> castIfPresent(level, location, CannonMountBlockEntity.class)
 				.ifPresent(mount -> mount.setPitch(t)),
-			level -> castIfPresent(level, location, AbstractCannonMountBlockEntity.class).map(mount -> mount.getPitchOffset(1.0f)).orElse(0.0f));
+			level -> castIfPresent(level, location, CannonMountBlockEntity.class).map(mount -> mount.getPitchOffset(1.0f)).orElse(0.0f));
 	}
 	
 	public static CBCAnimateBlockEntityInstruction cannonMountYaw(BlockPos location, float angle, int ticks) {
 		return new CBCAnimateBlockEntityInstruction(location, angle, ticks,
-			(level, t) -> castIfPresent(level, location, AbstractCannonMountBlockEntity.class)
+			(level, t) -> castIfPresent(level, location, CannonMountBlockEntity.class)
 				.ifPresent(mount -> mount.setYaw(t)),
-			level -> castIfPresent(level, location, AbstractCannonMountBlockEntity.class).map(mount -> mount.getYawOffset(1.0f)).orElse(0.0f));
+			level -> castIfPresent(level, location, CannonMountBlockEntity.class).map(mount -> mount.getYawOffset(1.0f)).orElse(0.0f));
 	}
 
 	public static CBCAnimateBlockEntityInstruction autocannon(BlockPos location, int ticks) {

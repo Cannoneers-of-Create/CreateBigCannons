@@ -10,6 +10,7 @@
   ],
   "mixins": [
     "AbstractCannonProjectileMixin",
+    "CannonMountMixin",
     "CreateInitMixin"
   ],
   "injectors": {

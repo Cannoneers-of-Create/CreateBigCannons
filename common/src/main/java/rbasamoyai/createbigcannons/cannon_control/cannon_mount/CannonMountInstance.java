@@ -17,14 +17,14 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
-public class CannonMountInstance extends KineticTileInstance<AbstractCannonMountBlockEntity> implements DynamicInstance {
+public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEntity> implements DynamicInstance {
 
 	private final OrientedData rotatingMount;
 	private final OrientedData rotatingMountShaft;
 	private final RotatingData pitchShaft;
 	private final RotatingData yawShaft;
 	
-	public CannonMountInstance(MaterialManager dispatcher, AbstractCannonMountBlockEntity tile) {
+	public CannonMountInstance(MaterialManager dispatcher, CannonMountBlockEntity tile) {
 		super(dispatcher, tile);
 		
 		int blockLight = this.world.getBrightness(LightLayer.BLOCK, this.pos);

@@ -71,8 +71,8 @@ public class CBCBlockEntities {
 			.validBlock(CBCBlocks.CANNON_LOADER)
 			.register();
 	
-	public static final BlockEntityEntry<AbstractCannonMountBlockEntity> CANNON_MOUNT = REGISTRATE
-			.tileEntity("cannon_mount", IndexPlatform::makeCannonMount)
+	public static final BlockEntityEntry<CannonMountBlockEntity> CANNON_MOUNT = REGISTRATE
+			.tileEntity("cannon_mount", CannonMountBlockEntity::new)
 			.instance(() -> CannonMountInstance::new)
 			.renderer(() -> CannonMountBlockEntityRenderer::new)
 			.validBlock(CBCBlocks.CANNON_MOUNT)

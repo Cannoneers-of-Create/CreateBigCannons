@@ -30,7 +30,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -199,7 +199,7 @@ public abstract class AbstractPitchOrientedContraptionEntity extends OrientedCon
 			entity.setYBodyRot(entity.getYRot());
 			if (CBCEntityTypes.CANNON_CARRIAGE.is(this.getVehicle())) {
 				this.getVehicle().onPassengerTurned(this);
-			} else if (this.getController() instanceof AbstractCannonMountBlockEntity mount) {
+			} else if (this.getController() instanceof CannonMountBlockEntity mount) {
 				mount.applyHandRotation();
 				this.xRotO = this.prevPitch;
 				this.setXRot(this.pitch);

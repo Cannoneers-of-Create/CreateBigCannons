@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
@@ -49,7 +49,7 @@ public class CannonCarriageBlockEntity extends SyncedTileEntity {
 		if (!CBCBlocks.CANNON_CARRIAGE.has(this.getBlockState())) return;
 		BlockPos assemblyPos = this.worldPosition.above();
 		if (this.level.isOutsideBuildHeight(assemblyPos)) {
-			throw AbstractCannonMountBlockEntity.cannonBlockOutsideOfWorld(assemblyPos);
+			throw CannonMountBlockEntity.cannonBlockOutsideOfWorld(assemblyPos);
 		}
 
 		Direction facing = this.getBlockState().getValue(CannonCarriageBlock.FACING);

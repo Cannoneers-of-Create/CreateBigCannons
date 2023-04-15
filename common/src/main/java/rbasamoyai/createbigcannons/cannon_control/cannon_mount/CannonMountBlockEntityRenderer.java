@@ -29,7 +29,7 @@ public class CannonMountBlockEntityRenderer extends KineticTileEntityRenderer {
 		if (Backend.canUseInstancing(te.getLevel())) return;
 		
 		BlockState state = te.getBlockState();
-		AbstractCannonMountBlockEntity cmbe = (AbstractCannonMountBlockEntity) te;
+		CannonMountBlockEntity cmbe = (CannonMountBlockEntity) te;
 		
 		VertexConsumer solidBuf = buffer.getBuffer(RenderType.solid());
 		
@@ -64,14 +64,14 @@ public class CannonMountBlockEntityRenderer extends KineticTileEntityRenderer {
 		ms.popPose();
 	}
 	
-	private static float getYawAngle(AbstractCannonMountBlockEntity cmbe) {
+	private static float getYawAngle(CannonMountBlockEntity cmbe) {
 		float time = AnimationTickHolder.getRenderTime(cmbe.getLevel());
 		float offset = getRotationOffsetForPosition(cmbe, cmbe.getBlockPos(), Direction.Axis.Y);
 		float angle = ((time * cmbe.getYawSpeed() * 3.0f / 10 + offset) % 360) / 180 * (float) Math.PI;
 		return angle + getRotationOffsetForPosition(cmbe, cmbe.getBlockPos(), Direction.Axis.Y);
 	}
 	
-	private static float getMountYaw(AbstractCannonMountBlockEntity cmbe) {
+	private static float getMountYaw(CannonMountBlockEntity cmbe) {
 		float time = AnimationTickHolder.getPartialTicks(cmbe.getLevel());
 		return cmbe.getYawOffset(time) * Constants.DEG_TO_RAD;
 	}

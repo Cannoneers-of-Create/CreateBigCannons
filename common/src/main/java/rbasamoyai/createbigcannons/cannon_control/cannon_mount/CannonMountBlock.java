@@ -23,7 +23,7 @@ import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 import java.util.Random;
 
-public class CannonMountBlock extends KineticBlock implements ITE<AbstractCannonMountBlockEntity> {
+public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlockEntity> {
 
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty ASSEMBLY_POWERED = BooleanProperty.create("assembly_powered");
@@ -68,8 +68,8 @@ public class CannonMountBlock extends KineticBlock implements ITE<AbstractCannon
 		return state.setValue(HORIZONTAL_FACING, mirror.mirror(state.getValue(HORIZONTAL_FACING)));
 	}
 
-	@Override public Class<AbstractCannonMountBlockEntity> getTileEntityClass() { return AbstractCannonMountBlockEntity.class; }
-	@Override public BlockEntityType<? extends AbstractCannonMountBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_MOUNT.get(); }
+	@Override public Class<CannonMountBlockEntity> getTileEntityClass() { return CannonMountBlockEntity.class; }
+	@Override public BlockEntityType<? extends CannonMountBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_MOUNT.get(); }
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean isMoving) {

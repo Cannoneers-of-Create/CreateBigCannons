@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
@@ -39,7 +39,7 @@ public class CannonMountScenes {
 		
 		Vec3 down = util.vector.of(0, -1, 0);
 		
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("CannonYaw", Direction.WEST.toYRot());
 			tag.putFloat("CannonPitch", 0);
 		});
@@ -111,7 +111,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 2, 3), 16.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 3, 3), -8.0f);
 		scene.world.setKineticSpeed(cannonMount, -8.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("PitchSpeed", 8.0f);
 		});
 		scene.world.rotateSection(cannon, 0, 0, -30, 40);
@@ -126,7 +126,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 2, 3), 0.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 3, 3), 0.0f);
 		scene.world.setKineticSpeed(cannonMount, 0.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("PitchSpeed", 0.0f);
 		});
 		
@@ -137,7 +137,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 2, 1), 16.0f);
 		
 		scene.world.setKineticSpeed(util.select.position(2, 2, 2), -8.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("YawSpeed", -8.0f);
 		});
 		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountYaw(util.grid.at(2, 3, 2), -360, 200));
@@ -160,7 +160,7 @@ public class CannonMountScenes {
 		
 		scene.world.setKineticSpeed(util.select.layers(1, 2), 0.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 2, 2), 0.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("YawSpeed", 0.0f);
 		});
 		
@@ -187,7 +187,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 1, 3), 16.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 2, 3), -8.0f);
 		scene.world.setKineticSpeed(cannonMount, -8.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("PitchSpeed", 8.0f);
 			tag.putFloat("CannonYaw", Direction.WEST.toYRot());
 			tag.putFloat("CannonPitch", 0);
@@ -199,7 +199,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(1, 1, 3), 0.0f);
 		scene.world.setKineticSpeed(util.select.position(2, 2, 3), 0.0f);
 		scene.world.setKineticSpeed(cannonMount, 0.0f);
-		scene.world.modifyTileNBT(cannonMount, AbstractCannonMountBlockEntity.class, tag -> {
+		scene.world.modifyTileNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("PitchSpeed", 0.0f);
 		});
 		
