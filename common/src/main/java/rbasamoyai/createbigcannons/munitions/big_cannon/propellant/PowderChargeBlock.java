@@ -6,7 +6,6 @@ import com.simibubi.create.foundation.utility.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -98,7 +97,7 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	@Override
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(AXIS, cannonOrientation.getAxis());
-		return new StructureBlockInfo(localPos, state, new CompoundTag());
+		return new StructureBlockInfo(localPos, state, null);
 	}
 
 }

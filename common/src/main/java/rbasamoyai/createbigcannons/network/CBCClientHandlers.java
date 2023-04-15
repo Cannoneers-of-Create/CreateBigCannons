@@ -15,7 +15,7 @@ public class CBCClientHandlers {
 		if (!(entity instanceof AbstractContraptionEntity ace)) return;
 		Contraption contraption = ace.getContraption();
 		if (contraption != null) {
-			contraption.getBlocks().put(pkt.pos(), pkt.info());
+			contraption.getBlocks().putAll(pkt.changes());
 			contraption.deferInvalidate = true;
 		}
 	}

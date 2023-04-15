@@ -100,11 +100,15 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 	@Override
 	public StructureTemplate.StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
-		CompoundTag tag = stack.getOrCreateTag().getCompound("BlockEntityTag").copy();
-		tag.remove("x");
-		tag.remove("y");
-		tag.remove("z");
-		return new StructureTemplate.StructureBlockInfo(localPos, state, tag);
+		CompoundTag baseTag = stack.getOrCreateTag();
+		if (baseTag.contains("BlockEntityTag")) {
+			CompoundTag tag = baseTag.getCompound("BlockEntityTag").copy();
+			tag.remove("x");
+			tag.remove("y");
+			tag.remove("z");
+			return new StructureTemplate.StructureBlockInfo(localPos, state, tag);
+		}
+		return new StructureTemplate.StructureBlockInfo(localPos, state, null);
 	}
 
 }
