@@ -143,10 +143,8 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	@Override
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
-		CompoundTag tag = stack.getOrCreateTag().getCompound("BlockEntityTag").copy();
-		tag.remove("x");
-		tag.remove("y");
-		tag.remove("z");
+		CompoundTag tag = new CompoundTag();
+		tag.putInt("Power", stack.getOrCreateTag().getInt("Power"));
 		return new StructureBlockInfo(localPos, state, tag);
 	}
 

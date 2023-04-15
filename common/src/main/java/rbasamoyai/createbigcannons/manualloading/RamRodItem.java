@@ -31,11 +31,11 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
+import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class RamRodItem extends Item implements HandloadingTool {
 
@@ -65,6 +65,8 @@ public class RamRodItem extends Item implements HandloadingTool {
 		BlockPos pos = context.getClickedPos();
 		Direction face = context.getClickedFace();
 		Direction pushDirection = face.getOpposite();
+
+		if (level.isClientSide) return InteractionResult.SUCCESS;
 		
 		int k = 0;
 		if (level.getBlockEntity(pos) instanceof IBigCannonBlockEntity) {
@@ -95,14 +97,14 @@ public class RamRodItem extends Item implements HandloadingTool {
 			BlockState state1 = level.getBlockState(pos1);
 			if (state1.isAir()) break;
 			if (!isValidLoadBlock(state1, level, pos1, pushDirection)) return InteractionResult.FAIL;
-			
-			if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) {
+
+			BlockEntity be = level.getBlockEntity(pos1);
+			if (be instanceof IBigCannonBlockEntity cbe) {
 				encounteredCannon = true;
 				StructureBlockInfo info = cbe.cannonBehavior().block();
 				if (info == null || info.state.isAir()) break;
 				toPush.add(info);
 			} else {
-				BlockEntity be = level.getBlockEntity(pos1);
 				CompoundTag tag = null;
 				if (be != null) {
 					tag = be.saveWithFullMetadata();
@@ -115,35 +117,38 @@ public class RamRodItem extends Item implements HandloadingTool {
 			if (toPush.size() > maxCount) return InteractionResult.FAIL;
 		}
 		if (!encounteredCannon || toPush.isEmpty()) return InteractionResult.FAIL;
-		if (!level.isClientSide) {
-			for (int i = toPush.size() - 1; i >= 0; --i) {
-				BlockPos pos1 = pos.relative(pushDirection, i + k);
-				
-				if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) cbe.cannonBehavior().removeBlock();
-				else level.removeBlock(pos1, false);
-				
-				StructureBlockInfo info = toPush.get(i);
-				BlockPos pos2 = pos1.relative(pushDirection);
-				if (level.getBlockEntity(pos2) instanceof IBigCannonBlockEntity cbe) {
-					cbe.cannonBehavior().tryLoadingBlock(info);
-				} else {
-					level.setBlock(pos2, info.state, Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);
-					BlockEntity be = level.getBlockEntity(pos2);
-					CompoundTag tag = info.nbt;
-					if (be != null) tag = NBTProcessors.process(be, tag, false);
-					if (be != null && tag != null) {
-						tag.putInt("x", pos2.getX());
-						tag.putInt("y", pos2.getY());
-						tag.putInt("z", pos2.getZ());
-						be.load(tag);
-					}
+		for (int i = toPush.size() - 1; i >= 0; --i) {
+			BlockPos pos1 = pos.relative(pushDirection, i + k);
+
+			BlockEntity be1 = level.getBlockEntity(pos1);
+			if (be1 instanceof IBigCannonBlockEntity cbe) {
+				cbe.cannonBehavior().removeBlock();
+				be1.setChanged();
+			} else {
+				level.removeBlock(pos1, false);
+			}
+
+			StructureBlockInfo info = toPush.get(i);
+			BlockPos pos2 = pos1.relative(pushDirection);
+			BlockEntity be2 = level.getBlockEntity(pos2);
+			if (be2 instanceof IBigCannonBlockEntity cbe) {
+				cbe.cannonBehavior().tryLoadingBlock(info);
+			} else {
+				level.setBlock(pos2, info.state, Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);
+				CompoundTag tag = info.nbt;
+				if (be2 != null) tag = NBTProcessors.process(be2, tag, false);
+				if (be2 != null && tag != null) {
+					tag.putInt("x", pos2.getX());
+					tag.putInt("y", pos2.getY());
+					tag.putInt("z", pos2.getZ());
+					be2.load(tag);
 				}
 			}
-			level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1, 1);
 		}
+		level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1, 1);
 		player.causeFoodExhaustion(toPush.size() * CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
 		player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return InteractionResult.CONSUME;
 	}
 
 	@Override
@@ -157,7 +162,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 			for (int i = 0; i < getReach(); ++i) {
 				BlockPos pos1 = startPos.relative(pushDirection, i);
 				StructureBlockInfo info = contraption.getBlocks().get(pos1);
-				if (info == null || !isValidLoadBlock(info.state, level, pos1, pushDirection)) return;
+				if (info == null || !isValidLoadBlock(info.state, contraption, pos1, pushDirection)) return;
 
 				if (contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info1 = cbe.cannonBehavior().block();
@@ -174,26 +179,54 @@ public class RamRodItem extends Item implements HandloadingTool {
 		int maxCount = getPushStrength();
 		for (int i = 0; i < maxCount + 1; ++i) {
 			BlockPos pos1 = startPos.relative(pushDirection, i + k);
-			BlockState state1 = level.getBlockState(pos1);
-			if (state1.isAir()) break;
-			if (!isValidLoadBlock(state1, contraption, pos1, pushDirection)) return;
+			StructureBlockInfo info = contraption.getBlocks().get(pos1);
+			if (!isValidLoadBlock(info.state, contraption, pos1, pushDirection)) return;
 			if (!(contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)) break;
 			encounteredCannon = true;
-			StructureBlockInfo info = cbe.cannonBehavior().block();
-			if (info == null || info.state == null || info.state.isAir()) break;
-			toPush.add(info);
+			StructureBlockInfo info1 = cbe.cannonBehavior().block();
+			if (info1 == null || info1.state == null || info1.state.isAir()) break;
+			toPush.add(info1);
 			if (toPush.size() > maxCount) return;
 		}
 		if (!encounteredCannon || toPush.isEmpty()) return;
-		for (int i = toPush.size() - 1; i >= 0; --i) {
-			BlockPos pos1 = startPos.relative(pushDirection, i + k);
-			BlockPos pos2 = pos1.relative(pushDirection);
-			StructureBlockInfo info = toPush.get(i);
-			if (!(contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)
-				|| !(contraption.presentTileEntities.get(pos2) instanceof IBigCannonBlockEntity cbe1)) break;
-			cbe.cannonBehavior().removeBlock();
-			cbe1.cannonBehavior().tryLoadingBlock(info);
+
+		if (!level.isClientSide) {
+			Map<BlockPos, StructureBlockInfo> changes = new HashMap<>(2);
+			for (int i = toPush.size() - 1; i >= 0; --i) {
+				BlockPos pos1 = startPos.relative(pushDirection, i + k);
+				BlockPos pos2 = pos1.relative(pushDirection);
+				StructureBlockInfo info = toPush.get(i);
+
+				BlockEntity be1 = contraption.presentTileEntities.get(pos1);
+				BlockEntity be2 = contraption.presentTileEntities.get(pos2);
+				if (!(be1 instanceof IBigCannonBlockEntity cbe)
+						|| !(be2 instanceof IBigCannonBlockEntity cbe1)) break;
+				cbe.cannonBehavior().removeBlock();
+				cbe1.cannonBehavior().tryLoadingBlock(info);
+
+				StructureBlockInfo oldInfo2 = contraption.getBlocks().get(pos2);
+				CompoundTag tag2 = be2.saveWithFullMetadata();
+				tag2.remove("x");
+				tag2.remove("y");
+				tag2.remove("z");
+				StructureBlockInfo newInfo2 = new StructureBlockInfo(oldInfo2.pos, oldInfo2.state, tag2);
+				contraption.getBlocks().put(oldInfo2.pos, newInfo2);
+				changes.put(oldInfo2.pos, newInfo2);
+
+				if (i == 0) {
+					StructureBlockInfo oldInfo1 = contraption.getBlocks().get(pos1);
+					CompoundTag tag1 = be1.saveWithFullMetadata();
+					tag1.remove("x");
+					tag1.remove("y");
+					tag1.remove("z");
+					StructureBlockInfo newInfo1 = new StructureBlockInfo(oldInfo1.pos, oldInfo1.state, tag1);
+					contraption.getBlocks().put(oldInfo1.pos, newInfo1);
+					changes.put(oldInfo1.pos, newInfo1);
+				}
+			}
+			NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(contraption.entity, changes), contraption.entity);
 		}
+
 		level.playSound(null, player.blockPosition(), SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1, 1);
 		player.causeFoodExhaustion(toPush.size() * CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
 		player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());

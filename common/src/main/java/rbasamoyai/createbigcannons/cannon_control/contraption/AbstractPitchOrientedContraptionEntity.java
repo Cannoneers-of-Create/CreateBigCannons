@@ -14,6 +14,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
@@ -33,7 +35,9 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.manualloading.HandloadingTool;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
+import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
 public abstract class AbstractPitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
@@ -288,15 +292,24 @@ public abstract class AbstractPitchOrientedContraptionEntity extends OrientedCon
 					&& !cbe.cannonBehavior().isConnectedTo(side)) {
 				ItemStack stack = player.getItemInHand(interactionHand);
 				if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
-					if (!this.level.isClientSide
-							&& cbe.cannonBehavior().tryLoadingBlock(munition.getHandloadingInfo(stack, localPos, side))
-							&& !player.isCreative()) {
-						stack.shrink(1);
+					StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
+					if (!this.level.isClientSide && cbe.cannonBehavior().tryLoadingBlock(loadInfo)) {
+						CompoundTag tag = be.saveWithFullMetadata();
+						tag.remove("x");
+						tag.remove("y");
+						tag.remove("z");
+						StructureBlockInfo newInfo = new StructureBlockInfo(info.pos, info.state, tag);
+						this.contraption.getBlocks().put(info.pos, newInfo);
+						NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(this, info.pos, newInfo), this);
+
+						SoundType sound = loadInfo.state.getSoundType();
+						this.level.playSound(null, player.blockPosition(), sound.getPlaceSound(), SoundSource.BLOCKS, sound.getVolume(), sound.getPitch());
+						if (!player.isCreative()) stack.shrink(1);
 					}
 					return true;
 				}
-				if (stack.getItem() instanceof HandloadingTool tool) {
-					if (!this.level.isClientSide) tool.onUseOnCannon(player, this.level, localPos, side, cannon);
+				if (stack.getItem() instanceof HandloadingTool tool && !player.getCooldowns().isOnCooldown(stack.getItem())) {
+					tool.onUseOnCannon(player, this.level, localPos, side, cannon);
 					return true;
 				}
 			}
