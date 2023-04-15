@@ -34,7 +34,6 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
@@ -43,7 +42,6 @@ import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntit
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.forge.CreateBigCannonsForge;
 import rbasamoyai.createbigcannons.forge.cannon_control.CannonCarriageEntity;
-import rbasamoyai.createbigcannons.forge.cannon_control.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.forge.cannon_control.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.forge.cannon_control.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.forge.cannons.AutocannonBreechBlockEntity;
@@ -70,10 +68,6 @@ public class IndexPlatformImpl {
 
 	public static AbstractCannonCastBlockEntity makeCast(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		return new CannonCastBlockEntity(type, pos, state);
-	}
-
-	public static AbstractCannonMountBlockEntity makeCannonMount(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-		return new CannonMountBlockEntity(type, pos, state);
 	}
 
 	public static AbstractAutocannonBreechBlockEntity makeAutocannonBreech(BlockEntityType<?> type, BlockPos pos, BlockState state) {

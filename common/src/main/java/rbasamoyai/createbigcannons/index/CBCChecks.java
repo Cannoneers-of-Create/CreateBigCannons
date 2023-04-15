@@ -8,7 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -59,7 +59,7 @@ public class CBCChecks {
 	}
 	
 	private static CheckResult unmovableCannonMount(BlockState state, Level level, BlockPos pos) {
-		return level.getBlockEntity(pos) instanceof AbstractCannonMountBlockEntity mount ? mount.isRunning() ? CheckResult.FAIL : CheckResult.PASS : CheckResult.PASS;
+		return level.getBlockEntity(pos) instanceof CannonMountBlockEntity mount ? mount.isRunning() ? CheckResult.FAIL : CheckResult.PASS : CheckResult.PASS;
 	}
 	
 	private static CheckResult attachedMountBlocks(BlockState state, Level level, BlockPos pos, Direction attached) {

@@ -30,7 +30,7 @@ import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import java.util.function.Supplier;
 
-public abstract class AbstractCannonMountBlockEntity extends KineticTileEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block {
+public class CannonMountBlockEntity extends KineticTileEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block {
 
 	private static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	
@@ -47,7 +47,7 @@ public abstract class AbstractCannonMountBlockEntity extends KineticTileEntity i
 	
 	float yawSpeed;
 	
-	protected AbstractCannonMountBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
+	public CannonMountBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
 		if (CBCBlocks.CANNON_MOUNT.has(state)) {
 			this.cannonYaw = state.getValue(HORIZONTAL_FACING).toYRot();

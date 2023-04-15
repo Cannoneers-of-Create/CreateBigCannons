@@ -1,5 +1,7 @@
-package rbasamoyai.createbigcannons.forge.cannon_control;
+package rbasamoyai.createbigcannons.forge.mixin;
 
+import com.simibubi.create.content.contraptions.base.KineticTileEntity;
+import dev.architectury.patchedmixin.staticmixin.spongepowered.asm.mixin.Shadow;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -9,13 +11,16 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.AbstractCannonMountBlockEntity;
+import org.spongepowered.asm.mixin.Mixin;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 
-public class CannonMountBlockEntity extends AbstractCannonMountBlockEntity {
+@Mixin(CannonMountBlockEntity.class)
+public abstract class CannonMountMixin extends KineticTileEntity {
 
-	public CannonMountBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
-		super(typeIn, pos, state);
-	}
+	CannonMountMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) { super(typeIn, pos, state); }
+
+	@Shadow protected AbstractPitchOrientedContraptionEntity mountedContraption;
 
 	@NotNull
 	@Override
