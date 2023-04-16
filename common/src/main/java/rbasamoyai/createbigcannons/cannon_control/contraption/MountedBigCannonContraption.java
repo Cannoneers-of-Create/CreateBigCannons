@@ -207,6 +207,14 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
+	public void tick(Level level, AbstractPitchOrientedContraptionEntity entity) {
+		super.tick(level, entity);
+
+		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
+		if (this.presentTileEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech) qfbreech.tickAnimation();
+	}
+
+	@Override
 	public void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {
 		if (!togglePower || firePower <= 0) return;
 		this.fireShot(level, entity);
@@ -214,6 +222,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	@Override
 	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity) {
+		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
+		if (this.presentTileEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech && qfbreech.getOpenProgress() > 0) return;
+
 		StructureBlockInfo foundProjectile = null;
 		float chargesUsed = 0;
 		float stress = 0;

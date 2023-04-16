@@ -31,9 +31,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
-import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
 import java.util.*;
 
@@ -180,18 +178,18 @@ public class RamRodItem extends Item implements HandloadingTool {
 		for (int i = 0; i < maxCount + 1; ++i) {
 			BlockPos pos1 = startPos.relative(pushDirection, i + k);
 			StructureBlockInfo info = contraption.getBlocks().get(pos1);
-			if (!isValidLoadBlock(info.state, contraption, pos1, pushDirection)) return;
+			if (info == null || !isValidLoadBlock(info.state, contraption, pos1, pushDirection)) return;
 			if (!(contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)) break;
 			encounteredCannon = true;
 			StructureBlockInfo info1 = cbe.cannonBehavior().block();
-			if (info1 == null || info1.state == null || info1.state.isAir()) break;
+			if (info1 == null || info1.state.isAir()) break;
 			toPush.add(info1);
 			if (toPush.size() > maxCount) return;
 		}
 		if (!encounteredCannon || toPush.isEmpty()) return;
 
 		if (!level.isClientSide) {
-			Map<BlockPos, StructureBlockInfo> changes = new HashMap<>(2);
+			Set<BlockPos> changes = new HashSet<>(2);
 			for (int i = toPush.size() - 1; i >= 0; --i) {
 				BlockPos pos1 = startPos.relative(pushDirection, i + k);
 				BlockPos pos2 = pos1.relative(pushDirection);
@@ -204,27 +202,10 @@ public class RamRodItem extends Item implements HandloadingTool {
 				cbe.cannonBehavior().removeBlock();
 				cbe1.cannonBehavior().tryLoadingBlock(info);
 
-				StructureBlockInfo oldInfo2 = contraption.getBlocks().get(pos2);
-				CompoundTag tag2 = be2.saveWithFullMetadata();
-				tag2.remove("x");
-				tag2.remove("y");
-				tag2.remove("z");
-				StructureBlockInfo newInfo2 = new StructureBlockInfo(oldInfo2.pos, oldInfo2.state, tag2);
-				contraption.getBlocks().put(oldInfo2.pos, newInfo2);
-				changes.put(oldInfo2.pos, newInfo2);
-
-				if (i == 0) {
-					StructureBlockInfo oldInfo1 = contraption.getBlocks().get(pos1);
-					CompoundTag tag1 = be1.saveWithFullMetadata();
-					tag1.remove("x");
-					tag1.remove("y");
-					tag1.remove("z");
-					StructureBlockInfo newInfo1 = new StructureBlockInfo(oldInfo1.pos, oldInfo1.state, tag1);
-					contraption.getBlocks().put(oldInfo1.pos, newInfo1);
-					changes.put(oldInfo1.pos, newInfo1);
-				}
+				changes.add(pos2);
+				if (i == 0) changes.add(pos1);
 			}
-			NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(contraption.entity, changes), contraption.entity);
+			BigCannonBlock.writeAndSyncMultipleBlockData(changes, contraption.entity, contraption);
 		}
 
 		level.playSound(null, player.blockPosition(), SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1, 1);

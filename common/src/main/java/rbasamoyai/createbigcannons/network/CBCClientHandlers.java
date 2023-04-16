@@ -4,8 +4,14 @@ import com.simibubi.create.content.contraptions.components.structureMovement.Abs
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+
+import java.util.Map;
 
 public class CBCClientHandlers {
 
@@ -16,6 +22,16 @@ public class CBCClientHandlers {
 		Contraption contraption = ace.getContraption();
 		if (contraption != null) {
 			contraption.getBlocks().putAll(pkt.changes());
+			for (Map.Entry<BlockPos, StructureBlockInfo> entry : pkt.changes().entrySet()) {
+				BlockEntity be = contraption.presentTileEntities.get(entry.getKey());
+				StructureBlockInfo info = entry.getValue();
+				if (be == null || info.nbt == null) continue;
+				CompoundTag copy = info.nbt.copy();
+				copy.putInt("x", info.pos.getX());
+				copy.putInt("y", info.pos.getY());
+				copy.putInt("z", info.pos.getZ());
+				be.load(copy);
+			}
 			contraption.deferInvalidate = true;
 		}
 	}

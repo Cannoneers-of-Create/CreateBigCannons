@@ -1,19 +1,36 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons;
 
+import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
+import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.manualloading.HandloadingTool;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
+import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public interface BigCannonBlock {
 
@@ -33,7 +50,7 @@ public interface BigCannonBlock {
 	
 	default boolean isDoubleSidedCannon(BlockState state) { return true; }
 	default boolean isImmovable(BlockState state) { return false; }
-	
+
 	default void onRemoveCannon(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (state.getBlock() instanceof BigCannonBlock cBlock) {
 			Direction facing = cBlock.getFacing(state);
@@ -80,7 +97,7 @@ public interface BigCannonBlock {
 		}
 	}
 	
-	public static void onPlace(Level level, BlockPos pos) {
+	static void onPlace(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 		if (!(level instanceof ServerLevel slevel)) return;
 		
@@ -178,6 +195,58 @@ public interface BigCannonBlock {
 				be.setChanged();
 			}
 		}
+	}
+
+	default <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
+			Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
+			StructureBlockInfo info, AbstractContraptionEntity entity) {
+		ItemStack stack = player.getItemInHand(interactionHand);
+		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
+			StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
+			if (!level.isClientSide && be.cannonBehavior().tryLoadingBlock(loadInfo)) {
+				writeAndSyncSingleBlockData(be, info, entity, cannon);
+
+				SoundType sound = loadInfo.state.getSoundType();
+				level.playSound(null, player.blockPosition(), sound.getPlaceSound(), SoundSource.BLOCKS, sound.getVolume(), sound.getPitch());
+				if (!player.isCreative()) stack.shrink(1);
+			}
+			return true;
+		}
+		if (stack.getItem() instanceof HandloadingTool tool && !player.getCooldowns().isOnCooldown(stack.getItem())) {
+			tool.onUseOnCannon(player, level, localPos, side, cannon);
+			return true;
+		}
+		return false;
+	}
+
+	static void writeAndSyncSingleBlockData(BlockEntity be, StructureBlockInfo oldInfo, AbstractContraptionEntity entity, Contraption contraption) {
+		CompoundTag tag = be.saveWithFullMetadata();
+		tag.remove("x");
+		tag.remove("y");
+		tag.remove("z");
+		StructureBlockInfo newInfo = new StructureBlockInfo(oldInfo.pos, oldInfo.state, tag);
+		contraption.getBlocks().put(oldInfo.pos, newInfo);
+		NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(entity, oldInfo.pos, newInfo), entity);
+	}
+
+	static void writeAndSyncMultipleBlockData(Set<BlockPos> changed, AbstractContraptionEntity entity, Contraption contraption) {
+		Map<BlockPos, StructureBlockInfo> changes = new HashMap<>(changed.size());
+		Map<BlockPos, StructureBlockInfo> blocks = contraption.getBlocks();
+		for (BlockPos pos : changed) {
+			StructureBlockInfo oldInfo = blocks.get(pos);
+			CompoundTag tag = null;
+			BlockEntity be = contraption.presentTileEntities.get(pos);
+			if (be != null) {
+				tag = be.saveWithFullMetadata();
+				tag.remove("x");
+				tag.remove("y");
+				tag.remove("z");
+			}
+			StructureBlockInfo newInfo = new StructureBlockInfo(oldInfo.pos, oldInfo.state, tag);
+			changes.put(pos, newInfo);
+		}
+		blocks.putAll(changes);
+		NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(entity, changes), entity);
 	}
 	
 }

@@ -35,15 +35,18 @@ public class ModGroup {
 				
 				CBCBlocks.CAST_IRON_CANNON_END.asStack(),
 				CBCBlocks.CAST_IRON_SLIDING_BREECH.asStack(),
+				CBCBlocks.CAST_IRON_QUICKFIRING_BREECH.asStack(),
 				CBCBlocks.CAST_IRON_CANNON_CHAMBER.asStack(),
 				CBCBlocks.CAST_IRON_CANNON_BARREL.asStack(),
 				
 				CBCBlocks.BRONZE_CANNON_END.asStack(),
 				CBCBlocks.BRONZE_SLIDING_BREECH.asStack(),
+				CBCBlocks.BRONZE_QUICKFIRING_BREECH.asStack(),
 				CBCBlocks.BRONZE_CANNON_CHAMBER.asStack(),
 				CBCBlocks.BRONZE_CANNON_BARREL.asStack(),
 				
 				CBCBlocks.STEEL_SLIDING_BREECH.asStack(),
+				CBCBlocks.STEEL_QUICKFIRING_BREECH.asStack(),
 				CBCBlocks.STEEL_SCREW_BREECH.asStack(),
 				CBCBlocks.THICK_STEEL_CANNON_CHAMBER.asStack(),
 				CBCBlocks.BUILT_UP_STEEL_CANNON_CHAMBER.asStack(),
