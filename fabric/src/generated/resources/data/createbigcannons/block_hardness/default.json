@@ -1,10 +1,10 @@
 {
-  "minecraft:crying_obsidian": 12.0,
   "create:item_vault": 6.0,
-  "#createbigcannons:netherrack": 3.0,
+  "minecraft:crying_obsidian": 12.0,
+  "#createbigcannons:sandstone": 4.5,
+  "#minecraft:terracotta": 4.5,
   "#minecraft:anvil": 6.0,
   "#createbigcannons:concrete": 4.5,
-  "#minecraft:terracotta": 4.5,
-  "#createbigcannons:sandstone": 4.5,
-  "#createbigcannons:obsidian": 12.0
+  "#createbigcannons:obsidian": 12.0,
+  "#createbigcannons:netherrack": 3.0
 }
