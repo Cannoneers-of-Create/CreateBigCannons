@@ -63,7 +63,14 @@ public class CBCBlockEntities {
 						CBCBlocks.UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER, CBCBlocks.UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER, CBCBlocks.UNBORED_MEDIUM_NETHERSTEEL_CANNON_LAYER,
 						CBCBlocks.UNBORED_LARGE_NETHERSTEEL_CANNON_LAYER, CBCBlocks.UNBORED_VERY_LARGE_NETHERSTEEL_CANNON_LAYER, CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH)
 			.register();
-	
+
+	public static final BlockEntityEntry<QuickfiringBreechBlockEntity> QUICKFIRING_BREECH = REGISTRATE
+			.tileEntity("quickfiring_breech", QuickfiringBreechBlockEntity::new)
+			.instance(() -> QuickfiringBreechInstance::new)
+			.renderer(() -> QuickfiringBreechBlockEntityRenderer::new)
+			.validBlocks(CBCBlocks.CAST_IRON_QUICKFIRING_BREECH, CBCBlocks.BRONZE_QUICKFIRING_BREECH, CBCBlocks.STEEL_QUICKFIRING_BREECH)
+			.register();
+
 	public static final BlockEntityEntry<CannonLoaderBlockEntity> CANNON_LOADER = REGISTRATE
 			.tileEntity("cannon_loader", CannonLoaderBlockEntity::new)
 			.instance(() -> ShaftInstance::new, false)

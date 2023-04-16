@@ -31,13 +31,11 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
-import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 public class WormItem extends Item implements HandloadingTool {
 	
@@ -115,7 +113,7 @@ public class WormItem extends Item implements HandloadingTool {
 		if (player instanceof DeployerFakePlayer && !CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get()) return;
 		Direction reachDirection = face.getOpposite();
 
-		Map<BlockPos, StructureBlockInfo> changes = new HashMap<>(2);
+		Set<BlockPos> changes = new HashSet<>(2);
 		for (int i = 0; i < CBCConfigs.SERVER.cannons.wormReach.get(); ++i) {
 			BlockPos pos1 = startPos.relative(reachDirection, i);
 			StructureBlockInfo info = contraption.getBlocks().get(pos1);
@@ -131,14 +129,7 @@ public class WormItem extends Item implements HandloadingTool {
 			if (be1 instanceof IBigCannonBlockEntity cbe1 && cbe1.cannonBehavior().canLoadBlock(info1)) {
 				if (!level.isClientSide) {
 					cbe1.cannonBehavior().loadBlock(info1);
-					StructureBlockInfo oldInfo = contraption.getBlocks().get(pos2);
-					CompoundTag tag = be1.saveWithFullMetadata();
-					tag.remove("x");
-					tag.remove("y");
-					tag.remove("z");
-					StructureBlockInfo newInfo = new StructureBlockInfo(oldInfo.pos, oldInfo.state, tag);
-					contraption.getBlocks().put(oldInfo.pos, newInfo);
-					changes.put(oldInfo.pos, newInfo);
+					changes.add(pos2);
 				}
 			} else if (i == 0) {
 				if (!level.isClientSide) {
@@ -150,14 +141,8 @@ public class WormItem extends Item implements HandloadingTool {
 			}
 			if (!level.isClientSide) {
 				cbe.cannonBehavior().removeBlock();
-				CompoundTag tag = be.saveWithFullMetadata();
-				tag.remove("x");
-				tag.remove("y");
-				tag.remove("z");
-				StructureBlockInfo newInfo = new StructureBlockInfo(info.pos, info.state, tag);
-				contraption.getBlocks().put(info.pos, newInfo);
-				changes.put(info.pos, newInfo);
-				NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(contraption.entity, changes), contraption.entity);
+				changes.add(pos1);
+				BigCannonBlock.writeAndSyncMultipleBlockData(changes, contraption.entity, contraption);
 			}
 
 			level.playSound(null, player.blockPosition(), SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 1, 1);

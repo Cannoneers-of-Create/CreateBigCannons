@@ -14,17 +14,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
@@ -34,10 +30,6 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockE
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
-import rbasamoyai.createbigcannons.manualloading.HandloadingTool;
-import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
-import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
-import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
 public abstract class AbstractPitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
@@ -282,39 +274,19 @@ public abstract class AbstractPitchOrientedContraptionEntity extends OrientedCon
 
 	@Override
 	public boolean handlePlayerInteraction(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand) {
-		if (this.contraption instanceof MountedBigCannonContraption cannon) {
+		if (this.contraption instanceof MountedBigCannonContraption cannon && interactionHand == InteractionHand.MAIN_HAND) {
 			BlockEntity be = this.contraption.presentTileEntities.get(localPos);
 			StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
 
 			if (info.state.getBlock() instanceof BigCannonBlock cBlock
 					&& cBlock.getFacing(info.state).getAxis() == side.getAxis()
 					&& be instanceof IBigCannonBlockEntity cbe
-					&& !cbe.cannonBehavior().isConnectedTo(side)) {
-				ItemStack stack = player.getItemInHand(interactionHand);
-				if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
-					StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
-					if (!this.level.isClientSide && cbe.cannonBehavior().tryLoadingBlock(loadInfo)) {
-						CompoundTag tag = be.saveWithFullMetadata();
-						tag.remove("x");
-						tag.remove("y");
-						tag.remove("z");
-						StructureBlockInfo newInfo = new StructureBlockInfo(info.pos, info.state, tag);
-						this.contraption.getBlocks().put(info.pos, newInfo);
-						NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(this, info.pos, newInfo), this);
-
-						SoundType sound = loadInfo.state.getSoundType();
-						this.level.playSound(null, player.blockPosition(), sound.getPlaceSound(), SoundSource.BLOCKS, sound.getVolume(), sound.getPitch());
-						if (!player.isCreative()) stack.shrink(1);
-					}
-					return true;
-				}
-				if (stack.getItem() instanceof HandloadingTool tool && !player.getCooldowns().isOnCooldown(stack.getItem())) {
-					tool.onUseOnCannon(player, this.level, localPos, side, cannon);
-					return true;
-				}
+					&& !cbe.cannonBehavior().isConnectedTo(side)
+					&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level, cannon,
+						(BlockEntity & IBigCannonBlockEntity) cbe, info, this)) {
+				return true;
 			}
 		}
-
 		return super.handlePlayerInteraction(player, localPos, side, interactionHand);
 	}
 
