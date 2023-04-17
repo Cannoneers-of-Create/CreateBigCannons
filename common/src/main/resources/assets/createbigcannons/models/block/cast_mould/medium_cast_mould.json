@@ -3,8 +3,8 @@
 	"parent": "minecraft:block/block",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "createbigcannons:/block/cast_mould",
-		"particle": "createbigcannons:/block/cast_mould"
+		"0": "createbigcannons:block/cast_mould",
+		"particle": "createbigcannons:block/cast_mould"
 	},
 	"elements": [
 		{
