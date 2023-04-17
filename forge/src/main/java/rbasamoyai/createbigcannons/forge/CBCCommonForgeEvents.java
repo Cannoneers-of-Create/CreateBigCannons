@@ -46,7 +46,11 @@ public class CBCCommonForgeEvents {
 	}
 
 	public static void onDatapackSync(OnDatapackSyncEvent evt) {
-		CBCCommonEvents.onDatapackSync(evt.getPlayer());
+		if (evt.getPlayer() == null) {
+			CBCCommonEvents.onDatapackReload(evt.getPlayerList().getServer());
+		} else {
+			CBCCommonEvents.onDatapackSync(evt.getPlayer());
+		}
 	}
 
 	public static void onAddReloadListeners(AddReloadListenerEvent event) {
