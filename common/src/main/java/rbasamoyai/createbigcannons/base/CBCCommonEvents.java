@@ -100,7 +100,7 @@ public class CBCCommonEvents {
 
 	public static void onLoadLevel(LevelAccessor level) {
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
-		if (level.getServer() != null && level.getServer().overworld() == level) {
+		if (level.getServer() != null && !level.isClientSide() && level.getServer().overworld() == level) {
 			BlockHardnessHandler.loadTags();
 		}
 	}
