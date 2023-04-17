@@ -3,7 +3,7 @@
 	"parent": "minecraft:block/block",
 	"textures": {
 		"0": "minecraft:block/piston_side",
-		"1": "create:/block/pole_end",
+		"1": "create:block/pole_end",
 		"2": "createbigcannons:block/pole_contraption_bottom",
 		"3": "createbigcannons:block/pole_contraption_nook",
 		"4": "createbigcannons:block/pole_contraption_side",
