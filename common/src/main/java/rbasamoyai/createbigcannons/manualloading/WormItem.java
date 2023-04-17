@@ -117,7 +117,7 @@ public class WormItem extends Item implements HandloadingTool {
 		for (int i = 0; i < CBCConfigs.SERVER.cannons.wormReach.get(); ++i) {
 			BlockPos pos1 = startPos.relative(reachDirection, i);
 			StructureBlockInfo info = contraption.getBlocks().get(pos1);
-			if (!isValidLoadBlock(info.state, contraption, pos1, reachDirection)) return;
+			if (info == null || !isValidLoadBlock(info.state, contraption, pos1, reachDirection)) return;
 			BlockEntity be = contraption.presentTileEntities.get(pos1);
 			if (!(be instanceof IBigCannonBlockEntity cbe)) return;
 
