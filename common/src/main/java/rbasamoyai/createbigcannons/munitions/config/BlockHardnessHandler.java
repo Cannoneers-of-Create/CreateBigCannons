@@ -14,13 +14,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class BlockHardnessHandler {
 
 	public static final Map<Block, Double> TAG_MAP = new HashMap<>();
 	public static final Map<Block, Double> BLOCK_MAP = new HashMap<>();
-	public static final Map<TagKey<Block>, Double> TAGS_TO_EVALUATE = new HashMap<>();
+	public static final Map<TagKey<Block>, Double> TAGS_TO_EVALUATE = new LinkedHashMap<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
