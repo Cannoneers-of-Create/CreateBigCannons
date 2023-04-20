@@ -32,6 +32,7 @@ import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
@@ -214,13 +215,13 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	public void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {
+	public void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
 		if (!togglePower || firePower <= 0) return;
-		this.fireShot(level, entity);
+		this.fireShot(level, entity, controller);
 	}
 
 	@Override
-	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity) {
+	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
 		if (this.presentTileEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech && qfbreech.getOpenProgress() > 0) return;
 
@@ -349,6 +350,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
 
+		float recoilMagnitude = chargesUsed;
+
 		if (foundProjectile != null && foundProjectile.state.getBlock() instanceof ProjectileBlock projectileBlock) {
 			BlockEntity projectileBE = foundProjectile.nbt == null ? null : BlockEntity.loadStatic(foundProjectile.pos, foundProjectile.state, foundProjectile.nbt);
 			AbstractCannonProjectile projectile = projectileBlock.getProjectile(level, foundProjectile.state, foundProjectile.pos, projectileBE);
@@ -358,6 +361,11 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			projectile.xRotO = projectile.getXRot();
 			projectile.yRotO = projectile.getYRot();
 			level.addFreshEntity(projectile);
+			recoilMagnitude += 1;
+		}
+
+		if (controller != null && controller.canCacheRecoilVector()) {
+			controller.cacheRecoilVector(vec.scale(-recoilMagnitude));
 		}
 
 		for (ServerPlayer player : level.players()) {
