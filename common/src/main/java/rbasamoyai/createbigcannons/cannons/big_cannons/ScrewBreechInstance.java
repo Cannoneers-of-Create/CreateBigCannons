@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.cannons.big_cannons;
 import com.jozufozu.flywheel.api.MaterialManager;
 import com.jozufozu.flywheel.api.instance.DynamicInstance;
 import com.jozufozu.flywheel.core.Materials;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -11,9 +10,8 @@ import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.AxisDirection;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 
 public class ScrewBreechInstance extends HalfShaftInstance implements DynamicInstance {
 
@@ -27,7 +25,7 @@ public class ScrewBreechInstance extends HalfShaftInstance implements DynamicIns
 		this.facing = this.blockState.getValue(BlockStateProperties.FACING);
 		this.screwLock = modelManager.defaultSolid()
 				.material(Materials.ORIENTED)
-				.getModel(this.getPartialModelForState(this.blockState))
+				.getModel(CBCClientCommon.getScrewBreechForState(this.blockState), this.blockState, this.facing)
 				.createInstance();
 		this.transformModels();
 	}
@@ -39,15 +37,10 @@ public class ScrewBreechInstance extends HalfShaftInstance implements DynamicIns
 		Vector3f normal = this.facing.step();
 		Vector3f height = normal.copy();
 		height.mul(heightOffset);
+
+		Quaternion q = normal.rotationDegrees(rotationOffset);
 		
-		boolean isY = this.facing.getAxis() == Direction.Axis.Y;
-		Quaternion q = Vector3f.XP.rotationDegrees(isY ? this.facing == Direction.DOWN ? 180.0f : 0.0f : 90.0f);
-		Quaternion q1 = Vector3f.YP.rotationDegrees(isY ? 0.0f : -this.facing.toYRot());
-		Quaternion q2 = normal.rotationDegrees(rotationOffset);
-		q1.mul(q);
-		q2.mul(q1);
-		
-		this.screwLock.setPosition(this.getInstancePosition()).nudge(height.x(), height.y(), height.z()).setRotation(q2);
+		this.screwLock.setPosition(this.getInstancePosition()).nudge(height.x(), height.y(), height.z()).setRotation(q);
 	}
 
 	@Override
@@ -65,10 +58,6 @@ public class ScrewBreechInstance extends HalfShaftInstance implements DynamicIns
 	public void updateLight() {
 		super.updateLight();
 		this.relight(this.pos, this.screwLock);
-	}
-	
-	private PartialModel getPartialModelForState(BlockState state) {
-		return state.getBlock() instanceof BigCannonBlock ? CBCBlockPartials.screwLockFor(((BigCannonBlock) state.getBlock()).getCannonMaterial()) : CBCBlockPartials.STEEL_SCREW_LOCK;
 	}
 	
 }

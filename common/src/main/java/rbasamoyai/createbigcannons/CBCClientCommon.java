@@ -1,6 +1,7 @@
 
 package rbasamoyai.createbigcannons;
 
+import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -9,16 +10,20 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.glfw.GLFW;
 import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.QuickfiringBreechBlock;
 import rbasamoyai.createbigcannons.index.*;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -178,6 +183,25 @@ public class CBCClientCommon {
 	private static boolean isControllingCannon(Entity entity) {
 		Entity vehicle = entity.getVehicle();
 		return vehicle instanceof AbstractCannonCarriageEntity || vehicle instanceof AbstractPitchOrientedContraptionEntity;
+	}
+
+	public static Direction.Axis getRotationAxis(BlockState state) {
+		boolean flag = state.getValue(QuickfiringBreechBlock.AXIS);
+		return switch (state.getValue(QuickfiringBreechBlock.FACING).getAxis()) {
+			case X -> flag ? Direction.Axis.Y : Direction.Axis.Z;
+			case Y -> flag ? Direction.Axis.X : Direction.Axis.Z;
+			case Z -> flag ? Direction.Axis.X : Direction.Axis.Y;
+		};
+	}
+
+	public static PartialModel getBreechblockForState(BlockState state) {
+		return state.getBlock() instanceof BigCannonBlock cBlock ? CBCBlockPartials.breechblockFor(cBlock.getCannonMaterial())
+				: CBCBlockPartials.CAST_IRON_SLIDING_BREECHBLOCK;
+	}
+
+	public static PartialModel getScrewBreechForState(BlockState state) {
+		return state.getBlock() instanceof BigCannonBlock cBlock ? CBCBlockPartials.screwLockFor(cBlock.getCannonMaterial())
+				: CBCBlockPartials.STEEL_SCREW_LOCK;
 	}
 	
 }
