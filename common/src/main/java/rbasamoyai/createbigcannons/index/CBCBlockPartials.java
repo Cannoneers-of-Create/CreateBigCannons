@@ -27,6 +27,8 @@ public class CBCBlockPartials {
 		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(BigCannonMaterial.CAST_IRON, "cast_iron_sliding_breechblock"),
 		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(BigCannonMaterial.BRONZE, "bronze_sliding_breechblock"),
 		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(BigCannonMaterial.STEEL, "steel_sliding_breechblock"),
+
+		QUICKFIRING_BREECH_LEVER = block("quickfiring_breech_lever"),
 		
 		STEEL_SCREW_LOCK = screwLockPartial(BigCannonMaterial.STEEL, "steel_screw_lock"),
 		NETHERSTEEL_SCREW_LOCK = screwLockPartial(BigCannonMaterial.NETHERSTEEL, "nethersteel_screw_lock"),

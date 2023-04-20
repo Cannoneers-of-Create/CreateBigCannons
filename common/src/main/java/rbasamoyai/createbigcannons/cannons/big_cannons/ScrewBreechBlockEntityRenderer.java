@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons;
 
 import com.jozufozu.flywheel.backend.Backend;
-import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
@@ -18,7 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 
 public class ScrewBreechBlockEntityRenderer extends KineticTileEntityRenderer {
 
@@ -40,20 +39,15 @@ public class ScrewBreechBlockEntityRenderer extends KineticTileEntityRenderer {
 		Vector3f normal = facing.step();
 		Vector3f height = normal.copy();
 		height.mul(heightOffset);
-		
-		boolean isY = facing.getAxis() == Direction.Axis.Y;
-		Quaternion q = Vector3f.XP.rotationDegrees(90.0f);
-		Quaternion q1 = Vector3f.YP.rotationDegrees(isY ? 0.0f : -facing.toYRot());
-		Quaternion q2 = normal.rotationDegrees(rotationOffset);
-		q1.mul(q);
-		q2.mul(q1);
+
+		Quaternion q = normal.rotationDegrees(rotationOffset);
 		
 		ms.pushPose();
 		
-		SuperByteBuffer screwLockRender = CachedBufferer.partialFacing(this.getPartialModelForState(blockState), blockState, facing);
+		SuperByteBuffer screwLockRender = CachedBufferer.partialFacing(CBCClientCommon.getScrewBreechForState(blockState), blockState, facing);
 		screwLockRender
 				.translate(height.x(), height.y(), height.z())
-				.rotateCentered(q2)
+				.rotateCentered(q)
 				.light(light)
 				.renderInto(ms, buffer.getBuffer(RenderType.solid()));
 		
@@ -63,10 +57,6 @@ public class ScrewBreechBlockEntityRenderer extends KineticTileEntityRenderer {
 	@Override
 	protected SuperByteBuffer getRotatedModel(KineticTileEntity te, BlockState state) {
 		return CachedBufferer.partialFacing(AllBlockPartials.SHAFT_HALF, state, state.getValue(BlockStateProperties.FACING));
-	}
-	
-	private PartialModel getPartialModelForState(BlockState state) {
-		return state.getBlock() instanceof BigCannonBlock ? CBCBlockPartials.screwLockFor(((BigCannonBlock) state.getBlock()).getCannonMaterial()) : CBCBlockPartials.STEEL_SCREW_LOCK;
 	}
 
 }

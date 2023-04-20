@@ -72,6 +72,6 @@ public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBi
 
 	public boolean onCooldown() { return 0 < this.openProgress && this.openProgress < getOpeningTime(); }
 
-	public static int getOpeningTime() { return 10; }
+	public static int getOpeningTime() { return 5; }
 
 }

@@ -2,15 +2,20 @@ package rbasamoyai.createbigcannons.cannons.big_cannons;
 
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
+import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
+import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
 import com.simibubi.create.foundation.block.ITE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -28,7 +33,7 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<QuickfiringBreechBlockEntity> {
+public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<QuickfiringBreechBlockEntity>, ITransformableBlock {
 
 	public static final BooleanProperty AXIS = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 
@@ -62,6 +67,10 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 
 		if (stack.isEmpty()) {
 			if (!level.isClientSide) {
+				if (!breech.onCooldown()) {
+					SoundEvent sound = breech.getOpenProgress() == 0 ? SoundEvents.IRON_TRAPDOOR_OPEN : SoundEvents.IRON_TRAPDOOR_CLOSE;
+					level.playSound(null, player.blockPosition(), sound, SoundSource.BLOCKS, 1.0f, 1.0f);
+				}
 				breech.toggleOpening();
 				Set<BlockPos> changed = new HashSet<>(2);
 				changed.add(localPos);
@@ -117,6 +126,29 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 		}
 
 		return false;
+	}
+
+	@Override
+	public BlockState rotate(BlockState state, Rotation rot) {
+		if (rot.ordinal() % 2 == 1) state = state.cycle(AXIS);
+		return super.rotate(state, rot);
+	}
+
+	@Override
+	public BlockState transform(BlockState state, StructureTransform transform) {
+		if (transform.mirror != null) {
+			state = mirror(state, transform.mirror);
+		}
+
+		if (transform.rotationAxis == Direction.Axis.Y) {
+			return rotate(state, transform.rotation);
+		}
+
+		Direction newFacing = transform.rotateFacing(state.getValue(FACING));
+		if (transform.rotationAxis == newFacing.getAxis() && transform.rotation.ordinal() % 2 == 1) {
+			state = state.cycle(AXIS);
+		}
+		return state.setValue(FACING, newFacing);
 	}
 
 }
