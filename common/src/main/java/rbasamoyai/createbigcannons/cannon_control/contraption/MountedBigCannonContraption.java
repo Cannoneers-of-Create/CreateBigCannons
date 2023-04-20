@@ -365,9 +365,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			recoilMagnitude += 1;
 		}
 
-		if (controller != null && controller.canCacheRecoilVector()) {
-			controller.cacheRecoilVector(vec.scale(-recoilMagnitude));
-		}
+		if (controller != null) controller.cacheRecoilVector(vec.scale(-recoilMagnitude));
 
 		for (ServerPlayer player : level.players()) {
 			level.sendParticles(player, new CannonPlumeParticleData(smokeScale * 0.5f), true, spawnPos.x, spawnPos.y, spawnPos.z, 0, vec.x, vec.y, vec.z, 1.0f);

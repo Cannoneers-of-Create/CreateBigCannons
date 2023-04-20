@@ -307,9 +307,7 @@ public abstract class AbstractMountedAutocannonContraption extends AbstractMount
 			recoilMagnitude += 0.5;
 		}
 
-		if (controller != null && controller.canCacheRecoilVector()) {
-			controller.cacheRecoilVector(vec1.scale(-recoilMagnitude));
-		}
+		if (controller != null) controller.cacheRecoilVector(vec1.scale(-recoilMagnitude));
 
 		breech.handleFiring();
 		if (this.presentTileEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring) spring.handleFiring();
