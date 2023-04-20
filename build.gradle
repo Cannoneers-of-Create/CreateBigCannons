@@ -67,7 +67,7 @@ subprojects {
         repositories {
             maven {
                 name = "GitHubPackages"
-                url = "https://maven.pkg.github.com/rbasamoyai/createbigcannons"
+                url = "https://maven.pkg.github.com/cannoneers-of-create/createbigcannons"
                 credentials {
                     username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
                     password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
