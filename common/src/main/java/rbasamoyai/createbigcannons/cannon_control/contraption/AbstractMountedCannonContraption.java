@@ -20,6 +20,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public abstract class AbstractMountedCannonContraption extends Contraption  {
@@ -32,8 +33,8 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 
 	public Direction initialOrientation() { return this.initialOrientation; }
 
-	public abstract void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower);
-	public abstract void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity);
+	public abstract void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller);
+	public abstract void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller);
 
 	public abstract float getWeightForStress();
 

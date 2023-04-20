@@ -39,6 +39,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjec
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -228,7 +229,7 @@ public abstract class AbstractMountedAutocannonContraption extends AbstractMount
 	}
 
 	@Override
-	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity) {
+	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
 		if (this.startPos == null
 			|| this.cannonMaterial == null
 			|| !(this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
@@ -282,7 +283,6 @@ public abstract class AbstractMountedAutocannonContraption extends AbstractMount
 						BlockPos pos = currentPos.relative(this.initialOrientation, i);
 						this.blocks.remove(pos);
 					}
-					ControlPitchContraption controller = entity.getController();
 					if (controller != null) controller.disassemble();
 				}
 				return;
@@ -293,6 +293,8 @@ public abstract class AbstractMountedAutocannonContraption extends AbstractMount
 		Vec3 vec1 = spawnPos.subtract(centerPos).normalize();
 		Vec3 particlePos = spawnPos.subtract(vec1.scale(1.5));
 
+		float recoilMagnitude = barrelTravelled;
+
 		AbstractAutocannonProjectile projectile = AutocannonCartridgeItem.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {
 			projectile.setPos(spawnPos);
@@ -302,6 +304,11 @@ public abstract class AbstractMountedAutocannonContraption extends AbstractMount
 			projectile.xRotO = projectile.getXRot();
 			projectile.yRotO = projectile.getYRot();
 			level.addFreshEntity(projectile);
+			recoilMagnitude += 0.5;
+		}
+
+		if (controller != null && controller.canCacheRecoilVector()) {
+			controller.cacheRecoilVector(vec1.scale(-recoilMagnitude));
 		}
 
 		breech.handleFiring();
@@ -326,7 +333,7 @@ public abstract class AbstractMountedAutocannonContraption extends AbstractMount
 	public void tick(Level level, AbstractPitchOrientedContraptionEntity entity) {
 		super.tick(level, entity);
 
-		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController())) this.fireShot(slevel, entity);
+		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController())) this.fireShot(slevel, entity, entity.getController());
 
 		for (Map.Entry<BlockPos, BlockEntity> entry : this.presentTileEntities.entrySet()) {
 			if (entry.getValue() instanceof IAutocannonBlockEntity autocannon) autocannon.tickFromContraption(level, entity, entry.getKey());
@@ -346,7 +353,7 @@ public abstract class AbstractMountedAutocannonContraption extends AbstractMount
 	@Override public boolean canBeFiredOnController(ControlPitchContraption control) { return !this.isHandle && this.entity.getVehicle() != control; }
 
 	@Override
-	public void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower) {
+	public void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
 		if (this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech) breech.setFireRate(firePower);
 	}
 

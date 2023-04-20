@@ -269,7 +269,9 @@ public abstract class AbstractPitchOrientedContraptionEntity extends OrientedCon
 	}
 
 	public void tryFiringShot() {
-		if (this.contraption instanceof AbstractMountedCannonContraption cannon && this.level instanceof ServerLevel slevel) cannon.fireShot(slevel, this);
+		if (this.contraption instanceof AbstractMountedCannonContraption cannon && this.level instanceof ServerLevel slevel) {
+			cannon.fireShot(slevel, this, this.getController());
+		}
 	}
 
 	@Override
