@@ -492,7 +492,4 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 
 	@Override public void onStall() {}
 
-	@Override public boolean canCacheRecoilVector() { return false; }
-	@Override public void cacheRecoilVector(Vec3 vector) { 	}
-
 }

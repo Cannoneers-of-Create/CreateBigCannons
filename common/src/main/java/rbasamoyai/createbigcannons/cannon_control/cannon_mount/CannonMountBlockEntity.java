@@ -47,9 +47,6 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	
 	float yawSpeed;
 
-	// Contraption mod (e.g. C:Sim, VS2 compat)
-	private Vec3 recoilVector;
-
 	
 	public CannonMountBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
@@ -360,8 +357,5 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	public static AssemblyException cannonBlockOutsideOfWorld(BlockPos pos) {
 		return new AssemblyException(new TranslatableComponent("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
 	}
-
-	public boolean canCacheRecoilVector() { return false; }
-	public void cacheRecoilVector(Vec3 vector) { this.recoilVector = vector; }
 	
 }
