@@ -74,12 +74,9 @@ subprojects {
                 }
             }
             maven {
-                name = "CreateBigCannons"
-                url = "maven.realrobotix.me/artifactory/createbigcannons"
-                credentials {
-                    username = "admin"
-                    password = "cmVmdGtuOjAxOjE3MTI3MDI3MzU6T09CUVhSbm5VMnRCM0I3bERPUERaYUF0cmNR"
-                }
+                name = "realRobotixMaven"
+                url = "https://maven.realrobotix.com/artifactory/createbigcannons"
+                credentials(PasswordCredentials)
             }
         }
     }

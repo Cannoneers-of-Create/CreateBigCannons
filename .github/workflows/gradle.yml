@@ -61,6 +61,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Publish to realRobotix Maven
+        if: github.event_name == 'push' && github.repository_id == '510859946'
+        uses: gradle/gradle-build-action@v2.4.0
+        with:
+          arguments: |
+            publishMavenJavaPublicationToRealRobotixMavenRepository
+            -PrealRobotixMavenUsername=${{ secrets.MAVEN_USER }}
+            -PrealRobotixMavenPassword=${{ secrets.MAVEN_ACCESS_TOKEN }}
+
       - name: Send building message to discord
         if: github.event_name == 'push'
         uses: realRobotix/action-discord-notifier@release-master
