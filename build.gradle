@@ -75,7 +75,7 @@ subprojects {
             }
             maven {
                 name = "realRobotixMaven"
-                url = "https://maven.realrobotix.com/artifactory/createbigcannons"
+                url = "https://maven.realrobotix.me/artifactory/createbigcannons"
                 credentials(PasswordCredentials)
             }
         }
