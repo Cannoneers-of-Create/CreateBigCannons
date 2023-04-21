@@ -60,7 +60,7 @@ subprojects {
         publications {
             mavenJava(MavenPublication) {
                 artifactId = rootProject.archives_base_name + "-" + project.name + "-" + minecraft_version
-                version = ci ? "nightly-" + getGitHash() : mod_version
+                version = ci ? mod_version + "-nightly-" + getGitHash() : mod_version
                 from components.java
             }
         }
