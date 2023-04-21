@@ -33,15 +33,6 @@ jobs:
           java-version: 17
           distribution: temurin
 
-      - uses: actions/cache@v3.3.1
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/loom-cache
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-gradle
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -52,6 +43,9 @@ jobs:
         uses: gradle/gradle-build-action@v2.4.0
         with:
           arguments: build
+          gradle-home-cache-includes: |
+            caches
+            loom-cache
 
       - name: Publish to GitHub Packages
         if: github.event_name == 'push' && github.repository_id == '510859946'
