@@ -73,6 +73,11 @@ subprojects {
                     password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
                 }
             }
+            maven {
+                name = "realRobotixMaven"
+                url = "https://maven.realrobotix.com/artifactory/createbigcannons"
+                credentials(PasswordCredentials)
+            }
         }
     }
 }
