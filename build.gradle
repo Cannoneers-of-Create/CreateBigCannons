@@ -60,7 +60,7 @@ subprojects {
         publications {
             mavenJava(MavenPublication) {
                 artifactId = rootProject.archives_base_name + "-" + project.name + "-" + minecraft_version
-                version = ci ? "nightly-" + getGitHash() : mod_version
+                version = ci ? mod_version + "-nightly-" + getGitHash() : mod_version
                 from components.java
             }
         }
@@ -72,6 +72,11 @@ subprojects {
                     username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
                     password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
                 }
+            }
+            maven {
+                name = "realRobotixMaven"
+                url = "https://maven.realrobotix.me/artifactory/createbigcannons"
+                credentials(PasswordCredentials)
             }
         }
     }

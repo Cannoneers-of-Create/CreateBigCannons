@@ -5,6 +5,9 @@ on:
   push:
   pull_request:
 
+permissions:
+  packages: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,15 +36,6 @@ jobs:
           java-version: 17
           distribution: temurin
 
-      - uses: actions/cache@v3.3.1
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/loom-cache
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/gradle-wrapper.properties') }}
-          restore-keys: ${{ runner.os }}-gradle
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -52,6 +46,9 @@ jobs:
         uses: gradle/gradle-build-action@v2.4.0
         with:
           arguments: build
+          gradle-home-cache-includes: |
+            caches
+            loom-cache
 
       - name: Publish to GitHub Packages
         if: github.event_name == 'push' && github.repository_id == '510859946'
@@ -60,6 +57,15 @@ jobs:
           arguments: publishMavenJavaPublicationToGitHubPackagesRepository
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to realRobotix Maven
+        if: github.event_name == 'push' && github.repository_id == '510859946'
+        uses: gradle/gradle-build-action@v2.4.0
+        with:
+          arguments: |
+            publishMavenJavaPublicationToRealRobotixMavenRepository
+            -PrealRobotixMavenUsername=${{ secrets.MAVEN_USER }}
+            -PrealRobotixMavenPassword=${{ secrets.MAVEN_ACCESS_TOKEN }}
 
       - name: Send building message to discord
         if: github.event_name == 'push'
