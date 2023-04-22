@@ -10,6 +10,8 @@ import com.simibubi.create.foundation.utility.Iterate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -28,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
@@ -75,7 +78,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 		BlockPos nextPos = localPos.relative(pushDirection);
 
 		if (stack.isEmpty()) {
-			if (!level.isClientSide) {
+			if (level instanceof ServerLevel slevel) {
 				if (!breech.onCooldown()) {
 					SoundEvent sound = breech.getOpenProgress() == 0 ? SoundEvents.IRON_TRAPDOOR_OPEN : SoundEvents.IRON_TRAPDOOR_CLOSE;
 					level.playSound(null, player.blockPosition(), sound, SoundSource.BLOCKS, 1.0f, 1.0f);
@@ -92,6 +95,15 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 						if (!extract.isEmpty()) player.addItem(extract);
 						cbe1.cannonBehavior().removeBlock();
 						changed.add(nextPos);
+						if (cannon.hasFired) {
+							Vec3 normal = new Vec3(side.step());
+							Vec3 smokePos = Vec3.atCenterOf(localPos).add(normal.scale(0.6));
+							Vec3 globalPos = entity.toGlobalVector(smokePos, 1);
+
+							slevel.sendParticles(ParticleTypes.POOF, globalPos.x, globalPos.y, globalPos.z, 10, 0.1, 0.1, 0.1, 0.01);
+
+							cannon.hasFired = false;
+						}
 					}
 				}
 				BigCannonBlock.writeAndSyncMultipleBlockData(changed, entity, cannon);
