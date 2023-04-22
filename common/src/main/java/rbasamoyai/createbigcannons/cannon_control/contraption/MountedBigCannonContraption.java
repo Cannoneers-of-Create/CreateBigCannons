@@ -41,6 +41,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	
 	private BigCannonMaterial cannonMaterial;
 	private boolean isWeakBreech = false;
+	public boolean hasFired = false;
 
 	@Override
 	public float maximumDepression(ControlPitchContraption controller) {
@@ -366,6 +367,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		}
 
 		if (controller != null) controller.cacheRecoilVector(vec.scale(-recoilMagnitude));
+
+		this.hasFired = true;
 
 		for (ServerPlayer player : level.players()) {
 			level.sendParticles(player, new CannonPlumeParticleData(smokeScale * 0.5f), true, spawnPos.x, spawnPos.y, spawnPos.z, 0, vec.x, vec.y, vec.z, 1.0f);
