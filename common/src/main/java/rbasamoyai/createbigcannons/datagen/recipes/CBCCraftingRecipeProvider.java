@@ -224,6 +224,13 @@ public class CBCCraftingRecipeProvider {
 		.unlockedBy(getHasName(AllBlocks.BASIN.get()), has(AllBlocks.BASIN.get()))
 		.save(cons);
 
+		ShapedRecipeBuilder.shaped(CBCItems.QUICKFIRING_MECHANISM.get())
+		.define('L', Items.LEVER).define('c', AllBlocks.COGWHEEL.get()).define('C', AllBlocks.LARGE_COGWHEEL.get())
+		.pattern(" L")
+		.pattern("cC")
+		.unlockedBy(getHasName(Items.LEVER), has(Items.LEVER))
+		.save(cons);
+
 		ShapedRecipeBuilder.shaped(CBCBlocks.LOG_CANNON_END.get())
 		.define('L', ItemTags.LOGS).define('K', ItemTags.WOODEN_BUTTONS).define('G', CBCTags.ItemCBC.GUNPOWDER)
 		.pattern(" K ")

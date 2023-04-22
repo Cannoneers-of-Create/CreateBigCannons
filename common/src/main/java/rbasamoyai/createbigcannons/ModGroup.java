@@ -166,6 +166,7 @@ public class ModGroup {
 				CBCItems.WORM.asStack(),
 				CBCBlocks.CANNON_CARRIAGE.asStack(),
 				CBCItems.PAIR_OF_CANNON_WHEELS.asStack(),
+				CBCItems.QUICKFIRING_MECHANISM.asStack(),
 
 				CBCBlocks.CAST_IRON_AUTOCANNON_BREECH.asStack(),
 				CBCBlocks.CAST_IRON_AUTOCANNON_RECOIL_SPRING.asStack(),
