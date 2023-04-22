@@ -9,7 +9,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEndBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEndBlockEntity;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 
 import java.util.List;

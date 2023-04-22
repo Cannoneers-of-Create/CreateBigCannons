@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.autocannon;
+package rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring;
 
 import com.jozufozu.flywheel.api.MaterialManager;
 import com.jozufozu.flywheel.api.instance.DynamicInstance;
@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 import java.util.HashMap;

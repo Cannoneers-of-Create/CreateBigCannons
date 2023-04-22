@@ -18,9 +18,9 @@ import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.AbstractAutocannonBreechBlockEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonRecoilSpringBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
 
 import java.util.ArrayList;
 import java.util.List;

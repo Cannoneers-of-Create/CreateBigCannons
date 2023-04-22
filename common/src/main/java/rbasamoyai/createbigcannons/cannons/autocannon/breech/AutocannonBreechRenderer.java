@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.autocannon;
+package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
 import com.jozufozu.flywheel.backend.Backend;
 import com.jozufozu.flywheel.core.PartialModel;
@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class AutocannonBreechRenderer extends SmartTileEntityRenderer<AbstractAutocannonBreechBlockEntity> {

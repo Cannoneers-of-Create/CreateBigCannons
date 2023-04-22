@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.big_cannons;
+package rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end;
 
 import net.minecraft.util.StringRepresentable;
 

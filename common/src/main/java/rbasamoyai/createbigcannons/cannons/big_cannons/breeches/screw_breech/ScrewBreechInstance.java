@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.big_cannons;
+package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech;
 
 import com.jozufozu.flywheel.api.MaterialManager;
 import com.jozufozu.flywheel.api.instance.DynamicInstance;

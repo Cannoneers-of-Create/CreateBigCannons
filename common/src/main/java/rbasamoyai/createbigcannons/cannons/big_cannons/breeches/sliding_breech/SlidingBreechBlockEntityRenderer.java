@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.big_cannons;
+package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech;
 
 import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,6 +15,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCClientCommon;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 
 public class SlidingBreechBlockEntityRenderer extends KineticTileEntityRenderer {
 

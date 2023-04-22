@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.big_cannons;
+package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech;
 
 import com.simibubi.create.content.contraptions.components.structureMovement.ControlledContraptionEntity;
 import net.minecraft.core.BlockPos;
@@ -7,6 +7,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.AbstractBigCannonBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 
 public class SlidingBreechBlockEntity extends AbstractBigCannonBreechBlockEntity {
 	

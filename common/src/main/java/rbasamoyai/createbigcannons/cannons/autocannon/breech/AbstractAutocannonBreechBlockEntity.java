@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.autocannon;
+package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +11,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 
 import java.util.Deque;
 import java.util.LinkedList;

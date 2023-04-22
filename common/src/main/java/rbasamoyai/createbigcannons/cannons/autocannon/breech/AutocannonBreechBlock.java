@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.autocannon;
+package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
@@ -31,6 +31,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBaseBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 

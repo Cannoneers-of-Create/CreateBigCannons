@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.big_cannons;
+package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech;
 
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
@@ -32,6 +32,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
+import rbasamoyai.createbigcannons.cannons.big_cannons.*;
+import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -69,8 +71,8 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 
 	@Override
 	public <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
-			Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
-			StructureBlockInfo info, AbstractContraptionEntity entity) {
+																							Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
+																							StructureBlockInfo info, AbstractContraptionEntity entity) {
 		if (!(be instanceof QuickfiringBreechBlockEntity breech)) return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
 

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.big_cannons;
+package rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -8,6 +8,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.SolidBigCannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCShapes;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
