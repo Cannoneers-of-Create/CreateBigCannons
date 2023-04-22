@@ -4,6 +4,7 @@ import com.simibubi.create.content.AllSections;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
@@ -135,9 +136,20 @@ public class CBCBlocks {
 			.loot(CBCBuilderTransformers.castIronScrapLoot(15))
 			.item(BigCannonBlockItem::new).build()
 			.register();
+
+	public static final BlockEntry<QuickfiringBreechBlock> CAST_IRON_QUICKFIRING_BREECH = REGISTRATE
+			.block("cast_iron_quickfiring_breech", p -> new QuickfiringBreechBlock(p, BigCannonMaterial.CAST_IRON, castIronSlidingBreech()))
+			.transform(cannonBlock(false))
+			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
+			.loot(CBCBuilderTransformers.castIronScrapLoot(10))
+			.register();
+
+	private static NonNullSupplier<? extends Block> castIronSlidingBreech() {
+		return CAST_IRON_SLIDING_BREECH;
+	}
 	
 	public static final BlockEntry<SlidingBreechBlock> CAST_IRON_SLIDING_BREECH = REGISTRATE
-			.block("cast_iron_sliding_breech", p -> new SlidingBreechBlock(p, BigCannonMaterial.CAST_IRON))
+			.block("cast_iron_sliding_breech", p -> new SlidingBreechBlock(p, BigCannonMaterial.CAST_IRON, CAST_IRON_QUICKFIRING_BREECH))
 			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
 			.loot(CBCBuilderTransformers.castIronScrapLoot(10))
@@ -175,13 +187,6 @@ public class CBCBlocks {
 			.loot(CBCBuilderTransformers.castIronScrapLoot(15))
 			.item(BigCannonBlockItem::new).build()
 			.register();
-
-	public static final BlockEntry<QuickfiringBreechBlock> CAST_IRON_QUICKFIRING_BREECH = REGISTRATE
-			.block("cast_iron_quickfiring_breech", p -> new QuickfiringBreechBlock(p, BigCannonMaterial.CAST_IRON))
-			.transform(cannonBlock(false))
-			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
-			.loot(CBCBuilderTransformers.castIronScrapLoot(10))
-			.register();
 	
 	//////// Bronze cannon blocks ////////
 	
@@ -208,9 +213,20 @@ public class CBCBlocks {
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(10))
 			.item(BigCannonBlockItem::new).build()
 			.register();
+
+	public static final BlockEntry<QuickfiringBreechBlock> BRONZE_QUICKFIRING_BREECH = REGISTRATE
+			.block("bronze_quickfiring_breech", p -> new QuickfiringBreechBlock(p, BigCannonMaterial.BRONZE, bronzeSlidingBreech()))
+			.transform(cannonBlock(false))
+			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
+			.loot(CBCBuilderTransformers.bronzeScrapLoot(10))
+			.register();
+
+	private static NonNullSupplier<? extends Block> bronzeSlidingBreech() {
+		return BRONZE_SLIDING_BREECH;
+	}
 	
 	public static final BlockEntry<SlidingBreechBlock> BRONZE_SLIDING_BREECH = REGISTRATE
-			.block("bronze_sliding_breech", p -> new SlidingBreechBlock(p, BigCannonMaterial.BRONZE))
+			.block("bronze_sliding_breech", p -> new SlidingBreechBlock(p, BigCannonMaterial.BRONZE, BRONZE_QUICKFIRING_BREECH))
 			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(10))
@@ -247,13 +263,6 @@ public class CBCBlocks {
 			.transform(CBCBuilderTransformers.slidingBreechUnbored("sliding_breech/unbored_bronze"))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(15))
 			.item(BigCannonBlockItem::new).build()
-			.register();
-
-	public static final BlockEntry<QuickfiringBreechBlock> BRONZE_QUICKFIRING_BREECH = REGISTRATE
-			.block("bronze_quickfiring_breech", p -> new QuickfiringBreechBlock(p, BigCannonMaterial.BRONZE))
-			.transform(cannonBlock(false))
-			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
-			.loot(CBCBuilderTransformers.bronzeScrapLoot(10))
 			.register();
 	
 	//////// Steel cannon blocks ////////
@@ -383,8 +392,19 @@ public class CBCBlocks {
 			.item(BigCannonBlockItem::new).build()
 			.register();
 
+	public static final BlockEntry<QuickfiringBreechBlock> STEEL_QUICKFIRING_BREECH = REGISTRATE
+			.block("steel_quickfiring_breech", p -> new QuickfiringBreechBlock(p, BigCannonMaterial.STEEL, steelSlidingBreech()))
+			.transform(strongCannonBlock(false))
+			.loot(CBCBuilderTransformers.steelScrapLoot(10))
+			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
+			.register();
+
+	private static NonNullSupplier<? extends Block> steelSlidingBreech() {
+		return STEEL_SLIDING_BREECH;
+	}
+
 	public static final BlockEntry<SlidingBreechBlock> STEEL_SLIDING_BREECH = REGISTRATE
-			.block("steel_sliding_breech", p -> new SlidingBreechBlock(p, BigCannonMaterial.STEEL))
+			.block("steel_sliding_breech", p -> new SlidingBreechBlock(p, BigCannonMaterial.STEEL, STEEL_QUICKFIRING_BREECH))
 			.transform(strongCannonBlock(false))
 			.loot(CBCBuilderTransformers.steelScrapLoot(10))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
@@ -429,13 +449,6 @@ public class CBCBlocks {
 			.loot(CBCBuilderTransformers.steelScrapLoot(15))
 			.transform(CBCBuilderTransformers.screwBreechUnbored("screw_breech/steel", "screw_breech/unbored_steel"))
 			.item(BigCannonBlockItem::new).build()
-			.register();
-
-	public static final BlockEntry<QuickfiringBreechBlock> STEEL_QUICKFIRING_BREECH = REGISTRATE
-			.block("steel_quickfiring_breech", p -> new QuickfiringBreechBlock(p, BigCannonMaterial.STEEL))
-			.transform(strongCannonBlock(false))
-			.loot(CBCBuilderTransformers.steelScrapLoot(10))
-			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
 			.register();
 
 	//////// Nethersteel cannon blocks ////////

@@ -1,11 +1,11 @@
 {
   "replace": false,
   "values": [
-    "createbigcannons:cast_iron_sliding_breech",
     "createbigcannons:cast_iron_quickfiring_breech",
-    "createbigcannons:bronze_sliding_breech",
+    "createbigcannons:cast_iron_sliding_breech",
     "createbigcannons:bronze_quickfiring_breech",
-    "createbigcannons:steel_sliding_breech",
-    "createbigcannons:steel_quickfiring_breech"
+    "createbigcannons:bronze_sliding_breech",
+    "createbigcannons:steel_quickfiring_breech",
+    "createbigcannons:steel_sliding_breech"
   ]
 }

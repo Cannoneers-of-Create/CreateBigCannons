@@ -4,15 +4,20 @@ import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock
 import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
 import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
+import com.simibubi.create.content.contraptions.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.utility.Iterate;
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Rotation;
@@ -26,6 +31,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.manualloading.HandloadingTool;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
@@ -33,12 +39,15 @@ import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<QuickfiringBreechBlockEntity>, ITransformableBlock {
+public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<QuickfiringBreechBlockEntity>, ITransformableBlock, IWrenchable {
 
 	public static final BooleanProperty AXIS = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 
-	public QuickfiringBreechBlock(Properties properties, BigCannonMaterial material) {
+	private final NonNullSupplier<? extends Block> slidingConversion;
+
+	public QuickfiringBreechBlock(Properties properties, BigCannonMaterial material, NonNullSupplier<? extends Block> slidingConversion) {
 		super(properties, material);
+		this.slidingConversion = slidingConversion;
 	}
 
 	@Override
@@ -150,5 +159,52 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 		}
 		return state.setValue(FACING, newFacing);
 	}
+
+	protected BlockState getConversion(BlockState old) {
+		return this.slidingConversion.get().defaultBlockState()
+				.setValue(FACING, old.getValue(FACING))
+				.setValue(AXIS, old.getValue(AXIS));
+	}
+
+	@Override
+	public InteractionResult onWrenched(BlockState state, UseOnContext context) {
+		Level level = context.getLevel();
+		BlockPos pos = context.getClickedPos();
+		if (state.getBlock() instanceof QuickfiringBreechBlock qfb) {
+			Player player = context.getPlayer();
+			BlockState newState = qfb.getConversion(state);
+			BlockEntity oldBe = level.getBlockEntity(pos);
+			if (!(oldBe instanceof IBigCannonBlockEntity cbe)) return InteractionResult.PASS;
+			if (!level.isClientSide) {
+				level.setBlock(pos, newState, 11);
+				BlockEntity newBe = level.getBlockEntity(pos);
+
+				StructureBlockInfo loaded = cbe.cannonBehavior().block();
+				if (player != null) {
+					if (loaded != null) {
+						Block block = loaded.state.getBlock();
+						player.addItem(block instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(loaded) : new ItemStack(block));
+					}
+					player.addItem(CBCItems.QUICKFIRING_MECHANISM.asStack());
+				}
+
+				if (newBe instanceof IBigCannonBlockEntity cbe1) {
+					for (Direction dir : Iterate.directions) {
+						boolean flag = cbe.cannonBehavior().isConnectedTo(dir);
+						cbe1.cannonBehavior().setConnectedFace(dir, flag);
+						if (level.getBlockEntity(pos.relative(dir)) instanceof IBigCannonBlockEntity cbe2) {
+							cbe2.cannonBehavior().setConnectedFace(dir.getOpposite(), flag);
+						}
+					}
+					newBe.setChanged();
+				}
+				this.playRemoveSound(level, pos);
+			}
+			return InteractionResult.sidedSuccess(level.isClientSide);
+		}
+		return InteractionResult.PASS;
+	}
+
+	@Override public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) { return InteractionResult.PASS; }
 
 }

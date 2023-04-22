@@ -8,6 +8,7 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
+import rbasamoyai.createbigcannons.cannons.big_cannons.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
@@ -171,6 +172,9 @@ public class CBCItems {
 			CONGEALED_NITRO = REGISTRATE.item("congealed_nitro", Item::new).register(),
 			HARDENED_NITRO = REGISTRATE.item("hardened_nitro", Item::new).register(),
 			NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.ItemCBC.NITROPOWDER).register();
+
+	public static final ItemEntry<QuickfiringMechanismItem> QUICKFIRING_MECHANISM = REGISTRATE
+			.item("quickfiring_mechanism", QuickfiringMechanismItem::new).register();
 	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);
