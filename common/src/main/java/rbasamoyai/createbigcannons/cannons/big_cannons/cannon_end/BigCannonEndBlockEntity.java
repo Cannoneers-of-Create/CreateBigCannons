@@ -3,12 +3,14 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end;
 import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
 import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
@@ -38,7 +40,8 @@ public class BigCannonEndBlockEntity extends SmartTileEntity implements IBigCann
 	@Override
 	public InteractionResult onWandUsed(UseOnContext context) {
 		BlockState state = this.getBlockState();
-		DrillBoringBlockRecipe recipe = AbstractCannonDrillBlockEntity.getBlockRecipe(state);
+		Direction dir = state.getValue(BlockStateProperties.FACING);
+		DrillBoringBlockRecipe recipe = AbstractCannonDrillBlockEntity.getBlockRecipe(state, dir);
 		if (recipe == null) return InteractionResult.PASS;
 		if (!this.level.isClientSide) {
 			CompoundTag loadTag = this.saveWithFullMetadata();
