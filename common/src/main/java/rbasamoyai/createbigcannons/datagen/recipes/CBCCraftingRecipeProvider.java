@@ -48,6 +48,12 @@ public class CBCCraftingRecipeProvider {
 		.unlockedBy(getHasName(Items.IRON_BARS), has(Items.IRON_BARS))
 		.unlockedBy("has_quartz", has(CBCTags.ItemCBC.GEMS_QUARTZ))
 		.save(cons);
+
+		ShapelessRecipeBuilder.shapeless(CBCItems.DELAYED_IMPACT_FUZE.get())
+		.requires(CBCItems.TIMED_FUZE.get()).requires(CBCItems.IMPACT_FUZE.get())
+		.unlockedBy(getHasName(CBCItems.TIMED_FUZE.get()), has(CBCItems.TIMED_FUZE.get()))
+		.unlockedBy(getHasName(CBCItems.IMPACT_FUZE.get()), has(CBCItems.IMPACT_FUZE.get()))
+		.save(cons);
 		
 		ShapedRecipeBuilder.shaped(CBCItems.EMPTY_POWDER_CHARGE.get())
 		.define('W', ItemTags.WOOL).define('S', Items.STRING)
