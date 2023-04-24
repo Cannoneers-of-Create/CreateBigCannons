@@ -38,12 +38,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import rbasamoyai.createbigcannons.cannon_control.contraption.ItemCannon;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -53,16 +54,16 @@ import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
 
 import java.util.function.Predicate;
 
-public abstract class AbstractCannonCarriageEntity extends Entity implements ControlPitchContraption {
+public class CannonCarriageEntity extends Entity implements ControlPitchContraption {
 
-	private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.INT);
-	private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Boolean> DATA_ID_RIDER = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LF = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RF = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LB = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
-	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RB = SynchedEntityData.defineId(AbstractCannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Float> DATA_ID_DAMAGE = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Boolean> DATA_ID_RIDER = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LF = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RF = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_LB = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> DATA_ID_WHEEL_RB = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.FLOAT);
 
 	private boolean inputForward;
 	private boolean inputBackward;
@@ -78,9 +79,9 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 	private double lerpXRot;
 	public Vector4f previousWheelState = new Vector4f(0, 0, 0, 0);
 
-	private AbstractPitchOrientedContraptionEntity cannonContraption;
+	private PitchOrientedContraptionEntity cannonContraption;
 	
-	protected AbstractCannonCarriageEntity(EntityType<?> type, Level level) {
+	public CannonCarriageEntity(EntityType<?> type, Level level) {
 		super(type, level);
 	}
 
@@ -131,7 +132,7 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 		if (!this.level.isClientSide
 			&& this.getControllingPassenger() instanceof Player player
 			&& this.cannonContraption != null
-			&& this.cannonContraption.getContraption() instanceof AbstractMountedAutocannonContraption) {
+			&& this.cannonContraption.getContraption() instanceof MountedAutocannonContraption) {
 			player.displayClientMessage(new TranslatableComponent("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate", this.getActualFireRate()), true);
 		}
 
@@ -142,9 +143,9 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 		if (this.level instanceof ServerLevel slevel
 				&& this.cannonContraption != null
 				&& this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
-			if (this.getControllingPassenger() instanceof Player player) {
+			if (this.getControllingPassenger() instanceof Player player && cannon instanceof ItemCannon itemCannon) {
 				ItemStack stack = getValidStack(player, CBCItems.AUTOCANNON_CARTRIDGE::isIn);
-				ItemStack result = this.insertItemIntoCannon(stack, cannon);
+				ItemStack result = itemCannon.insertItemIntoCannon(stack, false);
 				if (!player.isCreative() && stack.getCount() != result.getCount()) {
 					stack.setCount(result.getCount());
 					if (stack.isEmpty()) player.getInventory().removeItem(stack);
@@ -164,8 +165,6 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 		}
 		return ItemStack.EMPTY;
 	}
-
-	protected abstract ItemStack insertItemIntoCannon(ItemStack item, AbstractMountedCannonContraption cannon);
 
 	private void moveCarriage() {
 		double grav = this.isNoGravity() ? 0 : this.isUnderWater() ? -7e-4d : -0.04d;
@@ -327,12 +326,12 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 	}
 
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
-		if (!this.level.isClientSide && this.cannonContraption != null && this.cannonContraption.getContraption() instanceof AbstractMountedAutocannonContraption autocannon)
+		if (!this.level.isClientSide && this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon)
 			autocannon.trySettingFireRateCarriage(fireRateAdjustment);
 	}
 
 	public int getActualFireRate() {
-		return this.cannonContraption != null && this.cannonContraption.getContraption() instanceof AbstractMountedAutocannonContraption autocannon
+		return this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon
 				? autocannon.getReferencedFireRate()
 				: 0;
 	}
@@ -478,7 +477,7 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 	@Override public boolean isAttachedTo(AbstractContraptionEntity entity) { return this.cannonContraption == entity; }
 
 	@Override
-	public void attach(AbstractPitchOrientedContraptionEntity poce) {
+	public void attach(PitchOrientedContraptionEntity poce) {
 		if (!(poce.getContraption() instanceof AbstractMountedCannonContraption)) return;
 		poce.startRiding(this);
 		this.cannonContraption = poce;
@@ -486,7 +485,7 @@ public abstract class AbstractCannonCarriageEntity extends Entity implements Con
 	}
 
 	@Override
-	public BlockPos getDismountPositionForContraption(AbstractPitchOrientedContraptionEntity poce) {
+	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
 		return this.blockPosition().relative(this.getDirection().getOpposite()).above();
 	}
 

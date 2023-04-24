@@ -210,7 +210,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	public void tick(Level level, AbstractPitchOrientedContraptionEntity entity) {
+	public void tick(Level level, PitchOrientedContraptionEntity entity) {
 		super.tick(level, entity);
 
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
@@ -218,13 +218,13 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	public void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
+	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
 		if (!togglePower || firePower <= 0) return;
 		this.fireShot(level, entity, controller);
 	}
 
 	@Override
-	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
+	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
 		if (this.presentTileEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech && qfbreech.getOpenProgress() > 0) return;
 
@@ -414,7 +414,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		return f != 0 && random.nextFloat() <= f;
 	}
 	
-	public void fail(BlockPos localPos, Level level, AbstractPitchOrientedContraptionEntity entity, BlockEntity failed, int charges) {
+	public void fail(BlockPos localPos, Level level, PitchOrientedContraptionEntity entity, BlockEntity failed, int charges) {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(failed.getBlockPos()), 1.0f);
 		float failScale = CBCConfigs.SERVER.failure.failureExplosionPower.getF();
 		if (this.cannonMaterial.failureMode() == FailureMode.RUPTURE) {
@@ -441,7 +441,12 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			entity.discard();
 		}
 	}
-	
+
+	@Override
+	public Vec3 getInteractionVec(PitchOrientedContraptionEntity poce) {
+		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.initialOrientation.getOpposite())), 1);
+	}
+
 	@Override
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);

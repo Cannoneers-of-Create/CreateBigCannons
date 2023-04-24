@@ -70,7 +70,7 @@ public class WormItem extends Item implements HandloadingTool {
 				|| !(be instanceof IBigCannonBlockEntity cbe)) return InteractionResult.FAIL;
 
 			StructureBlockInfo info = cbe.cannonBehavior().block();
-			if (info == null || info.state.isAir()) continue;
+			if (info.state.isAir()) continue;
 
 			BlockPos pos2 = pos1.relative(context.getClickedFace());
 			BlockEntity be1 = level.getBlockEntity(pos2);
@@ -122,7 +122,7 @@ public class WormItem extends Item implements HandloadingTool {
 			if (!(be instanceof IBigCannonBlockEntity cbe)) return;
 
 			StructureBlockInfo info1 = cbe.cannonBehavior().block();
-			if (info1 == null || info1.state.isAir()) continue;
+			if (info1.state.isAir()) continue;
 
 			BlockPos pos2 = pos1.relative(face);
 			BlockEntity be1 = contraption.presentTileEntities.get(pos2);

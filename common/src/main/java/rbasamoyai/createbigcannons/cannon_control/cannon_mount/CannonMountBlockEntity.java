@@ -21,13 +21,14 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
+import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
 public class CannonMountBlockEntity extends KineticTileEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block {
@@ -35,7 +36,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	private static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	
 	private AssemblyException lastException = null;
-	protected AbstractPitchOrientedContraptionEntity mountedContraption;
+	protected PitchOrientedContraptionEntity mountedContraption;
 	private boolean running;
 	
 	private float cannonYaw;
@@ -221,7 +222,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 		this.running = true;
 		
 		mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
-		AbstractPitchOrientedContraptionEntity contraptionEntity = AbstractPitchOrientedContraptionEntity.create(this.level, mountedCannon, facing1, this);
+		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing1, this);
 		this.mountedContraption = contraptionEntity;
 		this.resetContraptionToOffset();
 		this.level.addFreshEntity(contraptionEntity);
@@ -234,7 +235,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
 		net.minecraft.world.level.block.Block block = this.level.getBlockState(pos).getBlock();
 		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
-		if (block instanceof AutocannonBlock) return IndexPlatform.makeAutocannon();
+		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
 		return null;
 	}
 	
@@ -335,7 +336,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	}
 
 	@Override
-	public void attach(AbstractPitchOrientedContraptionEntity contraption) {
+	public void attach(PitchOrientedContraptionEntity contraption) {
 		if (!(contraption.getContraption() instanceof AbstractMountedCannonContraption)) return;
 		this.mountedContraption = contraption;
 		if (!this.level.isClientSide) {
@@ -348,7 +349,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	@Override public BlockPos getControllerBlockPos() { return this.worldPosition; }
 
 	@Override
-	public BlockPos getDismountPositionForContraption(AbstractPitchOrientedContraptionEntity poce) {
+	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
 		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).above();
 	}
 
@@ -357,5 +358,13 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	public static AssemblyException cannonBlockOutsideOfWorld(BlockPos pos) {
 		return new AssemblyException(new TranslatableComponent("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
 	}
-	
+
+	public Vec3 getInteractionLocation() {
+		return this.mountedContraption != null && this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon
+				? cannon.getInteractionVec(this.mountedContraption) : Vec3.atCenterOf(this.worldPosition);
+	}
+
+	@Nullable
+	public PitchOrientedContraptionEntity getContraption() { return this.mountedContraption; }
+
 }

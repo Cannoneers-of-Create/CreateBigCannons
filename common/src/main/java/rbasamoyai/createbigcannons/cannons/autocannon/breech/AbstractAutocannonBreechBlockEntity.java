@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 
@@ -65,7 +65,7 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	}
 
 	@Override
-	public void tickFromContraption(Level level, AbstractPitchOrientedContraptionEntity poce, BlockPos localPos) {
+	public void tickFromContraption(Level level, PitchOrientedContraptionEntity poce, BlockPos localPos) {
 		super.tickFromContraption(level, poce, localPos);
 		this.allTick(level);
 	}

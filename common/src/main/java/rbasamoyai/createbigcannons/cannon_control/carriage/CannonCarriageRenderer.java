@@ -17,14 +17,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class CannonCarriageRenderer extends EntityRenderer<AbstractCannonCarriageEntity> {
+public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity> {
 
     public CannonCarriageRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public void render(AbstractCannonCarriageEntity carriage, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffers, int light) {
+    public void render(CannonCarriageEntity carriage, float entityYaw, float partialTicks, PoseStack stack, MultiBufferSource buffers, int light) {
         VertexConsumer vcons = buffers.getBuffer(RenderType.cutoutMipped());
 
         boolean cannonRider = carriage.isCannonRider();
@@ -85,6 +85,6 @@ public class CannonCarriageRenderer extends EntityRenderer<AbstractCannonCarriag
         super.render(carriage, entityYaw, partialTicks, stack, buffers, light);
     }
 
-    @Override public ResourceLocation getTextureLocation(AbstractCannonCarriageEntity entity) { return null; }
+    @Override public ResourceLocation getTextureLocation(CannonCarriageEntity entity) { return null; }
 
 }

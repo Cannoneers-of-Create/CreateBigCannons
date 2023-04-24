@@ -21,18 +21,13 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
@@ -64,18 +59,6 @@ public class IndexPlatform {
 
 	@ExpectPlatform
 	public static AbstractFluidShellBlockEntity makeFluidShellBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-		throw new AssertionError();
-	}
-
-	@ExpectPlatform public static AbstractMountedAutocannonContraption makeAutocannon() { throw new AssertionError(); }
-
-	@ExpectPlatform
-	public static AbstractPitchOrientedContraptionEntity makePitchContraption(EntityType<?> type, Level level) {
-		throw new AssertionError();
-	}
-
-	@ExpectPlatform
-	public static AbstractCannonCarriageEntity makeCannonCarriage(EntityType<?> type, Level level) {
 		throw new AssertionError();
 	}
 

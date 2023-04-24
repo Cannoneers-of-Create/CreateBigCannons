@@ -124,7 +124,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 			if (!level.isClientSide) {
 				Set<BlockPos> changes = new HashSet<>(2);
 
-				if (info1 != null && !info1.state.isAir()) {
+				if (!info1.state.isAir()) {
 					BlockPos posAfter = nextPos.relative(pushDirection);
 					BlockEntity be2 = cannon.presentTileEntities.get(posAfter);
 					if (!(be2 instanceof IBigCannonBlockEntity cbe2) || !cbe2.cannonBehavior().canLoadBlock(info1)) return false;

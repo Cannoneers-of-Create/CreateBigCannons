@@ -10,8 +10,12 @@
   ],
   "mixins": [
     "AbstractCannonProjectileMixin",
+    "ArmTileEntityMixin",
     "CannonMountMixin",
-    "CreateInitMixin"
+    "CreateInitMixin",
+    "MountedAutocannonContraptionMixin",
+    "PitchOrientedContraptionEntityMixin",
+    "QuickfiringBreechPointMixin"
   ],
   "injectors": {
     "defaultRequire": 1

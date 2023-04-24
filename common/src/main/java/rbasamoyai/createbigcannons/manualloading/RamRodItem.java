@@ -79,7 +79,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 				
 				if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info = cbe.cannonBehavior().block();
-					if (info == null || info.state == null || info.state.isAir()) continue;
+					if (info.state == null || info.state.isAir()) continue;
 				}
 				k = i;
 				break;
@@ -100,7 +100,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 			if (be instanceof IBigCannonBlockEntity cbe) {
 				encounteredCannon = true;
 				StructureBlockInfo info = cbe.cannonBehavior().block();
-				if (info == null || info.state.isAir()) break;
+				if (info.state.isAir()) break;
 				toPush.add(info);
 			} else {
 				CompoundTag tag = null;
@@ -164,7 +164,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 
 				if (contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info1 = cbe.cannonBehavior().block();
-					if (info1 == null || info1.state.isAir()) continue;
+					if (info1.state.isAir()) continue;
 				}
 				k = i;
 				break;
@@ -182,7 +182,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 			if (!(contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)) break;
 			encounteredCannon = true;
 			StructureBlockInfo info1 = cbe.cannonBehavior().block();
-			if (info1 == null || info1.state.isAir()) break;
+			if (info1.state.isAir()) break;
 			toPush.add(info1);
 			if (toPush.size() > maxCount) return;
 		}

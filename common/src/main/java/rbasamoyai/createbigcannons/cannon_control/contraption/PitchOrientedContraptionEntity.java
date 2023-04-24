@@ -31,17 +31,17 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 
-public abstract class AbstractPitchOrientedContraptionEntity extends OrientedContraptionEntity {
+public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	private BlockPos controllerPos;
 	private boolean updatesOwnRotation;
 
-	protected AbstractPitchOrientedContraptionEntity(EntityType<?> type, Level level) {
+	public PitchOrientedContraptionEntity(EntityType<?> type, Level level) {
 		super(type, level);
 	}
 
-	public static AbstractPitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, boolean updatesOwnRotation) {
-		AbstractPitchOrientedContraptionEntity entity = CBCEntityTypes.PITCH_ORIENTED_CONTRAPTION.create(level);
+	public static PitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, boolean updatesOwnRotation) {
+		PitchOrientedContraptionEntity entity = CBCEntityTypes.PITCH_ORIENTED_CONTRAPTION.create(level);
 
 		entity.setContraption(contraption);
 		entity.setInitialOrientation(initialOrientation);
@@ -50,8 +50,8 @@ public abstract class AbstractPitchOrientedContraptionEntity extends OrientedCon
 		return entity;
 	}
 	
-	public static AbstractPitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, ControlPitchContraption.Block block) {
-		AbstractPitchOrientedContraptionEntity poce = create(level, contraption, initialOrientation, true);
+	public static PitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, ControlPitchContraption.Block block) {
+		PitchOrientedContraptionEntity poce = create(level, contraption, initialOrientation, true);
 		poce.controllerPos = block.getControllerBlockPos();
 		return poce;
 	}

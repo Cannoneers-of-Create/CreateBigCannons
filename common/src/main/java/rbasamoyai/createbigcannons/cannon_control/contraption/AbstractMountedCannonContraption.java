@@ -16,6 +16,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -33,12 +34,12 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 
 	public Direction initialOrientation() { return this.initialOrientation; }
 
-	public abstract void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller);
-	public abstract void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller);
+	public abstract void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller);
+	public abstract void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller);
 
 	public abstract float getWeightForStress();
 
-	public void tick(Level level, AbstractPitchOrientedContraptionEntity entity) {}
+	public void tick(Level level, PitchOrientedContraptionEntity entity) {}
 
 	public void animate() {}
 
@@ -94,6 +95,10 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 
 	@Environment(EnvType.CLIENT)
 	@Override public ContraptionLighter<?> makeLighter() { return new NonStationaryLighter<>(this); }
+
+	public abstract Vec3 getInteractionVec(PitchOrientedContraptionEntity poce);
+
+	public BlockPos getStartPos() { return this.startPos; }
 
 	public static int getMaxCannonLength() {
 		return CBCConfigs.SERVER.cannons.maxCannonLength.get();

@@ -38,7 +38,7 @@ public class QuickfiringMechanismItem extends Item {
 				BlockEntity newBe = level.getBlockEntity(pos);
 
 				StructureBlockInfo loaded = cbe.cannonBehavior().block();
-				if (loaded != null && player != null) {
+				if (player != null) {
 					Block block = loaded.state.getBlock();
 					player.addItem(block instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(loaded) : new ItemStack(block));
 				}
