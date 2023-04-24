@@ -21,7 +21,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -34,9 +34,9 @@ public class BlockHardnessProvider implements DataProvider {
 	protected final String modid;
 	protected final String name;
 
-	private final Map<Block, Double> blocks = new HashMap<>();
-	private final Map<TagKey<Block>, Double> tags = new HashMap<>();
-	private final Map<ResourceLocation, Double> locs = new HashMap<>();
+	private final Map<Block, Double> blocks = new LinkedHashMap<>();
+	private final Map<TagKey<Block>, Double> tags = new LinkedHashMap<>();
+	private final Map<ResourceLocation, Double> locs = new LinkedHashMap<>();
 
 	public BlockHardnessProvider(String modid, String name, DataGenerator gen) {
 		this.modid = modid;
