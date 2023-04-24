@@ -16,7 +16,7 @@ public class CBCRootNetwork {
 	private static final Int2ObjectMap<Function<FriendlyByteBuf, ? extends RootPacket>> ID_TO_CONSTRUCTOR = new Int2ObjectOpenHashMap<>();
 	private static final Object2IntMap<Class<? extends RootPacket>> TYPE_TO_ID = new Object2IntOpenHashMap<>();
 
-	public static final String VERSION = "1.0.1";
+	public static final String VERSION = "1.0.2";
 
 	public static void init() {
 		int id = 0;
@@ -28,9 +28,8 @@ public class CBCRootNetwork {
 		addMsg(id++, ClientboundPreciseMotionSyncPacket.class, ClientboundPreciseMotionSyncPacket::new);
 		addMsg(id++, ServerboundCarriageWheelPacket.class, ServerboundCarriageWheelPacket::new);
 		addMsg(id++, ServerboundFiringActionPacket.class, ServerboundFiringActionPacket::new);
-		addMsg(id++, ServerboundProximityFuzePacket.class, ServerboundProximityFuzePacket::new);
 		addMsg(id++, ServerboundSetFireRatePacket.class, ServerboundSetFireRatePacket::new);
-		addMsg(id++, ServerboundTimedFuzePacket.class, ServerboundTimedFuzePacket::new);
+		addMsg(id++, ServerboundSetFuzePacket.class, ServerboundSetFuzePacket::new);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {

@@ -11,9 +11,9 @@ import net.minecraft.world.entity.player.Inventory;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCGuiTextures;
 
-public class TimedFuzeScreen extends AbstractFuzeScreen<TimedFuzeContainer> {
-	
-	public TimedFuzeScreen(TimedFuzeContainer menu, Inventory playerInv, Component title) {
+public class DelayedImpactFuzeScreen extends AbstractFuzeScreen<DelayedImpactFuzeContainer> {
+
+	public DelayedImpactFuzeScreen(DelayedImpactFuzeContainer menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
 	}
 
@@ -23,15 +23,15 @@ public class TimedFuzeScreen extends AbstractFuzeScreen<TimedFuzeContainer> {
 				.withRange(0, 100)
 				.calling(state -> {
 					this.lastUpdated = 0;
-					int time = 20 + state * 5;
+					int time = 20 + state;
 					int seconds = time / 20;
 					int ticks = time - seconds * 20;
 					this.setValue.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
 				})
-				.setState(Mth.clamp(this.menu.getValue() / 5 - 4, 0, 100));
+				.setState(Mth.clamp(this.menu.getValue() - 20, 0, 100));
 	}
 
-	@Override public int getUpdateState() { return 20 + this.setValue.getState() * 5; }
+	@Override public int getUpdateState() { return 20 + this.setValue.getState(); }
 
 	@Override
 	protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {

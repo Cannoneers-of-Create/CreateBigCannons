@@ -25,7 +25,8 @@ public class CBCPonderIndex {
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.POWDER_CHARGE)
 			.addStoryBoard("munitions/cannon_loads", CannonLoadingScenes::cannonLoads, CBCPonderTags.MUNITIONS);
 		
-		HELPER.forComponents(CBCItems.IMPACT_FUZE, CBCItems.TIMED_FUZE, CBCItems.PROXIMITY_FUZE, CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL)
+		HELPER.forComponents(CBCItems.IMPACT_FUZE, CBCItems.TIMED_FUZE, CBCItems.PROXIMITY_FUZE, CBCItems.DELAYED_IMPACT_FUZE,
+						CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL, CBCBlocks.FLUID_SHELL, CBCItems.FLAK_AUTOCANNON_ROUND)
 			.addStoryBoard("munitions/fuzing_munitions", CannonLoadingScenes::fuzingMunitions, CBCPonderTags.MUNITIONS);
 		
 		HELPER.forComponents(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
@@ -78,7 +79,8 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.AP_SHELL)
 			.add(CBCItems.IMPACT_FUZE)
 			.add(CBCItems.TIMED_FUZE)
-			.add(CBCItems.PROXIMITY_FUZE);
+			.add(CBCItems.PROXIMITY_FUZE)
+			.add(CBCItems.DELAYED_IMPACT_FUZE);
 		
 		PonderRegistry.TAGS.forTag(CBCPonderTags.CANNON_CRAFTING)
 			.add(CBCBlocks.CASTING_SAND)

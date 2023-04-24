@@ -4,19 +4,19 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeContainer;
+import rbasamoyai.createbigcannons.munitions.fuzes.AbstractFuzeContainer;
 
 import java.util.concurrent.Executor;
 
-public class ServerboundTimedFuzePacket implements RootPacket {
+public class ServerboundSetFuzePacket implements RootPacket {
 
 	private final int time;
 	
-	public ServerboundTimedFuzePacket(int time) {
+	public ServerboundSetFuzePacket(int time) {
 		this.time = time;
 	}
 	
-	public ServerboundTimedFuzePacket(FriendlyByteBuf buf) {
+	public ServerboundSetFuzePacket(FriendlyByteBuf buf) {
 		this.time = buf.readVarInt();
 	}
 	
@@ -26,7 +26,7 @@ public class ServerboundTimedFuzePacket implements RootPacket {
 
 	@Override
 	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-		if (sender != null && sender.containerMenu instanceof TimedFuzeContainer ct) ct.setTime(this.time);
+		if (sender != null && sender.containerMenu instanceof AbstractFuzeContainer ct) ct.setValue(this.time);
 	}
 	
 }

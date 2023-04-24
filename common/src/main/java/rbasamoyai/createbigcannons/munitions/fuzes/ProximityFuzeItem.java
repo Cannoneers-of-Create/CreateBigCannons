@@ -91,14 +91,14 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-		if (player instanceof ServerPlayer && player.mayBuild()) {
+		if (player instanceof ServerPlayer splayer && player.mayBuild()) {
 			ItemStack stack = player.getItemInHand(hand);
 			CompoundTag tag = stack.getOrCreateTag();
 			if (!tag.contains("DetonationDistance")) {
 				tag.putInt("DetonationDistance", 1);
 			}
 			int dist = tag.getInt("DetonationDistance");
-			CBCMenuTypes.SET_PROXIMITY_FUZE.open((ServerPlayer) player, this.getDisplayName(), this, buf -> {
+			CBCMenuTypes.SET_PROXIMITY_FUZE.open(splayer, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(dist);
 				buf.writeItem(new ItemStack(this));
 			});

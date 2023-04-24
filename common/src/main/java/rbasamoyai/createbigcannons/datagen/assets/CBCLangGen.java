@@ -88,6 +88,16 @@ public class CBCLangGen {
 		
 		REGISTRATE.addLang("item", CBCItems.TIMED_FUZE.getId(), "tooltip.shell_info", "Time to Detonate: _%ss %s ticks_");
 		REGISTRATE.addLang("item", CBCItems.TIMED_FUZE.getId(), "tooltip.shell_info.item", "Time to Detonate: %ss %s ticks");
+
+		tooltip(CBCItems.DELAYED_IMPACT_FUZE)
+		.header("DELAYED IMPACT FUZE")
+		.summary("Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer.")
+		.conditionAndBehavior("When R-Clicked", "Opens the _Set Delayed Impact Fuze_ menu, where the fuze duration can be set.")
+		.conditionAndBehavior("Detonation", "The fuze detonates after the set time from when the projectile impacts.");
+
+		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.chance", "Impact Chance");
+		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to start ticking.");
+		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.shell_info", "Impact Chance: _%s%%_");
 		
 		tooltip(CBCItems.PROXIMITY_FUZE)
 		.header("PROXIMITY FUZE")
