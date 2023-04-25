@@ -18,6 +18,8 @@ public class CreateBigCannons {
 	public static final PartialBlockDamageManager BLOCK_DAMAGE = new PartialBlockDamageManager();
 	
 	public static void init() {
+		CBCSoundEvents.prepare();
+
 		ModGroup.register();
 		CBCBlocks.register();
 		CBCItems.register();

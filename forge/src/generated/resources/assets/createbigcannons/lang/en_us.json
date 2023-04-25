@@ -302,6 +302,8 @@
   "createbigcannons.ponder.tag.munitions.description": "Blocks that make up cannon loads, and what they can do",
   "createbigcannons.ponder.tag.operating_cannons": "Operating Cannons",
   "createbigcannons.ponder.tag.operating_cannons.description": "How to use big cannons safely and effectively",
+  "createbigcannons.subtitle.fire_autocannon": "Autocannon fires",
+  "createbigcannons.subtitle.fire_big_cannon": "Big cannon fires",
   "death.attack.createbigcannons.cannon_projectile.player": "%s was vaporized by %s",
   "death.attack.createbigcannons.grapeshot": "%s was blown out by grapeshot",
   "death.attack.createbigcannons.grapeshot.player": "%s was blown out by grapeshot",

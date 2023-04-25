@@ -8,6 +8,7 @@ import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
 import rbasamoyai.createbigcannons.datagen.loot.CBCLootTableProvider;
 import rbasamoyai.createbigcannons.datagen.recipes.*;
 import rbasamoyai.createbigcannons.datagen.values.BlockHardnessProvider;
+import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 import rbasamoyai.createbigcannons.ponder.CBCPonderTags;
@@ -25,6 +26,8 @@ public class CBCDatagenRoot {
 		if (client) {
 			CBCLangGen.prepare();
 			gen.addProvider(new CBCBlockPartialsGen(gen, helper));
+			gen.addProvider(CBCSoundEvents.provider(gen));
+			CBCSoundEvents.registerLangEntries();
 			CBCPonderTags.register();
 			CBCPonderIndex.register();
 			CBCPonderIndex.registerLang();

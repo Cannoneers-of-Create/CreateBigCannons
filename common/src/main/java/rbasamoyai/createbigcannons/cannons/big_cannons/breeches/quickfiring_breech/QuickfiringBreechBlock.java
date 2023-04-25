@@ -83,7 +83,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 			if (level instanceof ServerLevel slevel) {
 				if (!breech.onCooldown()) {
 					SoundEvent sound = breech.getOpenProgress() == 0 ? SoundEvents.IRON_TRAPDOOR_OPEN : SoundEvents.IRON_TRAPDOOR_CLOSE;
-					level.playSound(null, player.blockPosition(), sound, SoundSource.BLOCKS, 1.0f, 1.0f);
+					level.playSound(null, player.blockPosition(), sound, SoundSource.BLOCKS, 1.0f, 1.5f);
 				}
 				breech.toggleOpening();
 				Set<BlockPos> changed = new HashSet<>(2);
