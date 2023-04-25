@@ -11,10 +11,13 @@ import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -44,8 +47,11 @@ public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlock
 		.atLocal(0, 0, 0)
 		.scale(scale)
 		.render(stack);
-		
-		AnimatedKinetics.defaultBlockElement(AllBlocks.SHAFT.getDefaultState())
+
+		BlockState shaft = AllBlocks.SHAFT.getDefaultState();
+		Direction.Axis axis = shaft.getValue(BlockStateProperties.AXIS);
+
+		AnimatedKinetics.defaultBlockElement(shaft)
 		.rotateBlock(0, AnimatedKinetics.getCurrentAngle(), -90)
 		.atLocal(0, 0, 0)
 		.scale(scale)
@@ -53,8 +59,17 @@ public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlock
 
 		List<ItemStack> ingredients = recipe.ingredients();
 		Block block = !ingredients.isEmpty() && ingredients.get(0).getItem() instanceof BlockItem item ? item.getBlock() : Blocks.BARRIER;
-		AnimatedKinetics.defaultBlockElement(block.defaultBlockState())
-		.rotateBlock(0, 0, AnimatedKinetics.getCurrentAngle())
+
+		BlockState state = block.defaultBlockState();
+		if (state.hasProperty(BlockStateProperties.FACING)) {
+			state = state.setValue(BlockStateProperties.FACING, Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE));
+		}
+		if (state.hasProperty(BlockStateProperties.AXIS)) {
+			state = state.setValue(BlockStateProperties.AXIS, axis);
+		}
+
+		AnimatedKinetics.defaultBlockElement(state)
+		.rotateBlock(90, 0, AnimatedKinetics.getCurrentAngle())
 		.atLocal(0, 0, 2)
 		.scale(scale)
 		.render(stack);
