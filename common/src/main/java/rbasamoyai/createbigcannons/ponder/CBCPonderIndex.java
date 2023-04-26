@@ -60,6 +60,9 @@ public class CBCPonderIndex {
 		
 		HELPER.forComponents(CBCBlocks.BASIN_FOUNDRY_LID)
 			.addStoryBoard("cannon_crafting/basin_foundry", CannonCraftingScenes::basinFoundry);
+
+		HELPER.forComponents(CBCItems.WORM, CBCItems.RAM_ROD)
+			.addStoryBoard("cannon_loader/handloading_tools", CannonLoadingScenes::handloadingTools);
 	}
 	
 	public static void registerTags() {
@@ -74,7 +77,9 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.BRONZE_SLIDING_BREECH)
 			.add(CBCBlocks.STEEL_SLIDING_BREECH)
 			.add(CBCBlocks.STEEL_SCREW_BREECH)
-			.add(CBCBlocks.NETHERSTEEL_SCREW_BREECH);
+			.add(CBCBlocks.NETHERSTEEL_SCREW_BREECH)
+			.add(CBCItems.RAM_ROD)
+			.add(CBCItems.WORM);
 		
 		PonderRegistry.TAGS.forTag(CBCPonderTags.MUNITIONS)
 			.add(CBCBlocks.POWDER_CHARGE)

@@ -283,5 +283,57 @@ public class CannonLoadingScenes {
 		
 		scene.markAsFinished();
 	}
+
+	public static void handloadingTools(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_loader/handloading_tools", "Handloading Tools");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		scene.world.showSection(util.select.fromTo(2, 1, 2, 2, 1, 4), Direction.UP);
+		scene.idle(30);
+
+		scene.overlay.showText(100)
+			.text("Handloading tools are convenient for loading big cannons.");
+		scene.idle(40);
+
+		scene.addKeyframe();
+
+		ElementLink<WorldSectionElement> munition = scene.world.showIndependentSection(util.select.position(2, 1, 1), Direction.SOUTH);
+		scene.idle(30);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 1), Direction.NORTH), Pointing.RIGHT)
+				.withItem(CBCItems.RAM_ROD.asStack()), 30);
+		scene.idle(40);
+		scene.world.moveSection(munition, util.vector.of(0, 0, 1.2), 20);
+		scene.idle(40);
+
+		scene.addKeyframe();
+
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.NORTH), Pointing.RIGHT)
+				.withItem(CBCItems.WORM.asStack()), 30);
+		scene.idle(40);
+		scene.world.moveSection(munition, util.vector.of(0, 0, -1.2), 20);
+		scene.idle(40);
+		scene.world.hideIndependentSection(munition, Direction.UP);
+
+		scene.overlay.showText(60)
+			.text("Munitions can also be inserted directly into assembled big cannons.")
+			.colored(PonderPalette.BLUE)
+			.attachKeyFrame();
+		scene.idle(30);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.NORTH), Pointing.RIGHT)
+				.withItem(CBCBlocks.POWDER_CHARGE.asStack()), 30);
+		scene.idle(40);
+
+		scene.overlay.showText(60)
+				.text("Handloading tools can also interact with assembled big cannons.")
+				.colored(PonderPalette.GREEN)
+				.attachKeyFrame();
+		scene.idle(30);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.NORTH), Pointing.RIGHT)
+				.withItem(CBCItems.RAM_ROD.asStack()), 30);
+		scene.idle(50);
+
+		scene.markAsFinished();
+	}
 	
 }
