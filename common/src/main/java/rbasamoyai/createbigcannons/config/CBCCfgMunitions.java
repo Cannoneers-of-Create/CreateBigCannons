@@ -6,9 +6,6 @@ import net.minecraft.world.level.Explosion.BlockInteraction;
 public class CBCCfgMunitions extends ConfigBase {
 
 	public final ConfigBool invulProjectileHurt = b(false, "invulnerableAfterProjectileHurt", Comments.invulnerableAfterProjectileHurt);
-	public final ConfigFloat heShellPower = f(8, 0, "heShellPower", Comments.heShellPower);
-	public final ConfigFloat apShellPower = f(5, 0, "apShellPower", Comments.apShellPower);
-	public final ConfigFloat mortarStonePower = f(4, 0, "mortarStonePower", Comments.mortarStonePower);
 	public final ConfigFloat maxMortarStoneCharges = f(2, -1, "maximumMortarStonePowderCharges", Comments.maxMortarStoneCharges);
 	public final ConfigBool projectilesCanBounce = b(true, "projectilesCanBounce", Comments.projectilesCanBounce);
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
@@ -19,15 +16,6 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigInt proximityFuzeArmingTime = i(20, 0, "proximityFuzeArmingTime", Comments.proximityFuzeArmingTime);
 	
 	public final ConfigGroup groupedMunitions = group(0, "groupedMunitions", "Grouped Munitions");
-	public final ConfigInt shrapnelCount = i(50, 1, "shrapnelCount", Comments.shrapnelCount);
-	public final ConfigFloat shrapnelSpread = f(0.25f, 0.01f, "shrapnelSpread", Comments.shrapnelSpread);
-	public final ConfigFloat shrapnelDamage = f(10.0f, 0.0f, "shrapnelDamage", Comments.shrapnelDamage);
-	public final ConfigFloat shrapnelVulnerableBreakChance = f(0.33f, 0, 1, "shrapnelVulernableBreakChance", Comments.shrapnelVulnerableBreakChance);
-	
-	public final ConfigInt grapeshotCount = i(25, 1, "grapeshotCount", Comments.grapeshotCount);
-	public final ConfigFloat grapeshotSpread = f(0.25f, 0.01f, "grapeshotSpread", Comments.grapeshotSpread);
-	public final ConfigFloat grapeshotDamage = f(19.0f, 0.0f, "grapeshotDamage", Comments.grapeshotDamage);
-	public final ConfigFloat grapeshotVulnerableBreakChance = f(0.33f, 0, 1, "grapeshotVulernableBreakChance", Comments.grapeshotVulnerableBreakChance);
 	
 	public final ConfigInt fluidShellCapacity = i(2000, 1, "fluidShellCapacity", Comments.fluidShellCapacity);
 	public final ConfigInt mbPerFluidBlob = i(250, 25, "millibucketsPerFluidBlob", Comments.mbPerFluidBlob);
@@ -35,9 +23,6 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigInt mbPerAoeRadius = i(50, 25, "millibucketsPerAreaOfEffectRadius", Comments.mbPerAoeRadius);
 	public final ConfigFloat fluidBlobBlockAffectChance = f(0.5f, 0, 1, "fluidBlobBlockEffectChance", Comments.fluidBlobBlockAffectChance);
 
-	public final ConfigInt flakCount = i(20, 1, "flakCount", Comments.flakCount);
-	public final ConfigFloat flakSpread = f(0.25f, 0.01f, "flakSpread", Comments.flakSpread);
-	public final ConfigFloat flakDamage = f(10.0f, 0.0f, "flakDamage", Comments.flakDamage);
 
 	public final ConfigGroup propellant = group(0, "propellant", "Propellant");
 	public final ConfigFloat powderChargeStrength = f(1, 0.5f, 4, "powderChargeStrength", Comments.powderChargeStrength);

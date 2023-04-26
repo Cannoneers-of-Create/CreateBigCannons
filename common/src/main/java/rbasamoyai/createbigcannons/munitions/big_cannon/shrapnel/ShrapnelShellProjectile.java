@@ -10,12 +10,12 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.config.ShrapnelProperties;
 
 public class ShrapnelShellProjectile extends FuzedBigCannonProjectile {
 
 	public ShrapnelShellProjectile(EntityType<? extends ShrapnelShellProjectile> type, Level level) {
 		super(type, level);
-		this.setProjectileMass(8);
 	}
 	
 	@Override
@@ -23,10 +23,9 @@ public class ShrapnelShellProjectile extends FuzedBigCannonProjectile {
 		Vec3 oldDelta = this.getDeltaMovement();
 		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
-		int count = CBCConfigs.SERVER.munitions.shrapnelCount.get();
-		float spread = CBCConfigs.SERVER.munitions.shrapnelSpread.getF();
-		float damage = CBCConfigs.SERVER.munitions.shrapnelDamage.getF();
-		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(), count, spread, damage);
+		ShrapnelProperties properties = this.getProperties().shrapnel();
+		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(),
+				properties.count(), properties.spread(), (float) properties.damage());
 		this.discard();
 	}
 

@@ -29,6 +29,8 @@ import rbasamoyai.createbigcannons.base.PreciseProjectile;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
+import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -42,10 +44,13 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
 	protected int inGroundTime = 0;
-	protected float damage = 50;
+	protected float damage;
 	
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
+		MunitionProperties properties = this.getProperties();
+		this.damage = (float) properties.entityDamage();
+		this.setProjectileMass((float) properties.durabilityMass());
 	}
 
 	@Override
@@ -328,6 +333,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 	@Override public boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
 
+	protected MunitionProperties getProperties() { return MunitionPropertiesHandler.getProperties(this); }
+
 	public enum BounceType {
 		DEFLECT,
 		RICOCHET,
@@ -337,7 +344,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	protected static class CannonDamageSource extends IndirectEntityDamageSource {
 		public CannonDamageSource(String id, Entity entity, @Nullable Entity owner) {
 			super(id, entity, owner);
-			this.bypassArmor();
+			if (MunitionPropertiesHandler.getProperties(entity).ignoresEntityArmor()) this.bypassArmor();
 		}
 	}
 

@@ -13,6 +13,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
+import rbasamoyai.createbigcannons.munitions.config.ShrapnelProperties;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 import java.util.function.Predicate;
@@ -23,7 +24,6 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 
 	public FlakAutocannonProjectile(EntityType<? extends FlakAutocannonProjectile> type, Level level) {
 		super(type, level);
-		this.setProjectileMass(2);
 	}
 
 	@Override
@@ -58,10 +58,9 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 		Vec3 oldDelta = this.getDeltaMovement();
 		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
-		int count = CBCConfigs.SERVER.munitions.flakCount.get();
-		float spread = CBCConfigs.SERVER.munitions.flakSpread.getF();
-		float damage = CBCConfigs.SERVER.munitions.flakDamage.getF();
-		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(), count, spread, damage);
+		ShrapnelProperties properties = this.getProperties().shrapnel();
+		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(),
+				properties.count(), properties.spread(), (float) properties.damage());
 		this.discard();
 	}
 
