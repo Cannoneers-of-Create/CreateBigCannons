@@ -80,7 +80,7 @@
     "shrapnel_properties": {
       "entity_damage": 5.0,
       "spread": 0.25,
-      "count": 25
+      "count": 15
     }
   },
   "createbigcannons:shrapnel": {
