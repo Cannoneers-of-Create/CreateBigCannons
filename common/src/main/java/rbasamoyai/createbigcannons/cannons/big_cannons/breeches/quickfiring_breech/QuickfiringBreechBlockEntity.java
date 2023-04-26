@@ -49,8 +49,10 @@ public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBi
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.openProgress != 0) this.openProgress = 0;
-		if (this.openDirection != 0) this.openDirection = 0;
+		if (this.level != null) { // Don't reset when ponder, just in case
+			if (this.openProgress != 0) this.openProgress = 0;
+			if (this.openDirection != 0) this.openDirection = 0;
+		}
 	}
 
 	public void tickAnimation() {
