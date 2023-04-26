@@ -21,8 +21,7 @@ public class ArmTileEntityMixin extends KineticTileEntity {
 
 	@Inject(method = "depositItem",
 			at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/logistics/block/mechanicalArm/ArmInteractionPoint;insert(Lnet/minecraft/world/item/ItemStack;Lnet/fabricmc/fabric/api/transfer/v1/transaction/TransactionContext;)Lnet/minecraft/world/item/ItemStack;"),
-			locals = LocalCapture.CAPTURE_FAILHARD,
-			remap = false)
+			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void createbigcannons$depositItem(CallbackInfo ci, ArmInteractionPoint point, ItemStack stack) {
 		if (point.getType() != CBCArmInteractionPointTypes.QUICKFIRING_BREECH) return;
 		stack.getOrCreateTag().putBoolean("DontSimulate", true);
