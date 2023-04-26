@@ -36,17 +36,21 @@ public class CBCPonderIndex {
 			.addStoryBoard("cannon_kinetics/screw_breech", CannonKineticsScenes::screwBreech);
 		
 		HELPER.forComponents(CBCBlocks.CASTING_SAND)
-			.addStoryBoard("cannon_crafting/cannon_casting", CannonCraftingScenes::cannonCasting);
+			.addStoryBoard("cannon_crafting/cannon_casting", CannonCraftingScenes::cannonCasting)
+			.addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
 		
 		HELPER.forComponents(CBCBlocks.CANNON_DRILL)
-			.addStoryBoard("cannon_crafting/cannon_boring", CannonCraftingScenes::cannonBoring);
+			.addStoryBoard("cannon_crafting/cannon_boring", CannonCraftingScenes::cannonBoring)
+			.addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
 		
 		HELPER.forComponents(CBCBlocks.CANNON_BUILDER)
 			.addStoryBoard("cannon_crafting/cannon_building", CannonCraftingScenes::cannonBuilding)
-			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons);
+			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons)
+			.addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
 
 		HELPER.forComponents(AllBlocks.ENCASED_FAN)
-			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons);
+			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons)
+			.addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
 		
 		HELPER.forComponents(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH,
 				CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH, CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH,

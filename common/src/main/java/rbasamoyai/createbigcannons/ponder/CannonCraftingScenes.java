@@ -285,6 +285,81 @@ public class CannonCraftingScenes {
 		
 		scene.markAsFinished();
 	}
+
+	public static void cannonMovement(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_crafting/moving_cannons", "Moving Cannons Around");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		ElementLink<WorldSectionElement> cannon = scene.world.showIndependentSection(util.select.fromTo(2, 1, 0, 2, 1, 2), Direction.DOWN);
+		scene.idle(20);
+
+		scene.overlay.showText(80)
+			.text("By default, cast cannons will turn into scrap when broken, even if broken with Silk Touch.")
+			.colored(PonderPalette.RED);
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 1, 0), Pointing.DOWN).withItem(CBCItems.CAST_IRON_NUGGET.asStack()), 40);
+		scene.idle(20);
+		scene.world.destroyBlock(util.grid.at(2, 1, 0));
+		scene.idle(40);
+		scene.world.setBlock(util.grid.at(2, 1, 0), CBCBlocks.CAST_IRON_CANNON_BARREL.getDefaultState().setValue(BlockStateProperties.FACING, Direction.SOUTH), false);
+		scene.idle(20);
+
+		scene.overlay.showText(100)
+			.text("Create's contraptions can be used in varying ways to move cannons.")
+			.colored(PonderPalette.GREEN)
+			.attachKeyFrame();
+
+		Selection bearing = util.select.fromTo(2, 2, 1, 2, 3, 1);
+		scene.world.showSection(bearing, Direction.DOWN);
+		scene.idle(30);
+		scene.world.rotateBearing(util.grid.at(2, 2, 1), 90, 40);
+		scene.world.setKineticSpeed(bearing, 16);
+		scene.world.rotateSection(cannon, 0, 90, 0, 40);
+		scene.idle(40);
+		scene.world.setKineticSpeed(bearing, 0);
+		scene.world.hideSection(util.select.fromTo(2, 2, 1, 2, 3, 1), Direction.UP);
+		scene.idle(20);
+
+		Selection pistonTe = util.select.fromTo(1, 1, 3, 2, 1, 3);
+		scene.world.showSection(pistonTe, Direction.NORTH);
+		ElementLink<WorldSectionElement> piston = scene.world.showIndependentSection(util.select.fromTo(2, 2, 3, 2, 2, 4), Direction.NORTH);
+		scene.world.moveSection(piston, util.vector.of(0, -1, 0), 0);
+		scene.idle(20);
+		scene.world.setKineticSpeed(pistonTe, -16);
+		scene.world.moveSection(piston, util.vector.of(0, 0, -1), 40);
+		scene.idle(40);
+		scene.world.setKineticSpeed(pistonTe, 0);
+		scene.idle(15);
+		scene.world.setKineticSpeed(pistonTe, 16);
+		scene.world.moveSection(piston, util.vector.of(0, 0, 1), 40);
+		scene.world.moveSection(cannon, util.vector.of(0, 0, 1), 40);
+		scene.idle(40);
+		scene.world.setKineticSpeed(pistonTe, 0);
+		scene.idle(15);
+		scene.world.hideSection(pistonTe, Direction.SOUTH);
+		scene.world.hideIndependentSection(piston, Direction.SOUTH);
+		scene.idle(20);
+
+		Selection pulleyTe = util.select.fromTo(1, 3, 2, 2, 3, 2);
+		scene.world.showSection(pulleyTe, Direction.DOWN);
+		scene.idle(30);
+		scene.world.setKineticSpeed(pulleyTe, 16);
+		scene.world.movePulley(util.grid.at(2, 3, 2), 1, 40);
+		scene.idle(40);
+		scene.world.setKineticSpeed(pulleyTe, 0);
+		scene.idle(15);
+		scene.world.setKineticSpeed(pulleyTe, -16);
+		scene.world.movePulley(util.grid.at(2, 3, 2), -1, 40);
+		scene.world.moveSection(cannon, util.vector.of(0, 1, 0), 40);
+		scene.idle(40);
+		scene.world.setKineticSpeed(pulleyTe, 0);
+		scene.idle(15);
+		scene.world.hideSection(pulleyTe, Direction.UP);
+
+		scene.idle(20);
+		scene.markAsFinished();
+	}
 	
 	public static void cannonBoring(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("cannon_crafting/cannon_boring", "Boring Holes in Cast Cannons");
