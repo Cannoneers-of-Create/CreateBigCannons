@@ -370,7 +370,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			recoilMagnitude += 1;
 		}
 
-		if (controller != null) controller.cacheRecoilVector(vec.scale(-recoilMagnitude));
+		if (controller != null) controller.cacheRecoilVector(vec.scale(-recoilMagnitude), entity);
 
 		this.hasFired = true;
 
