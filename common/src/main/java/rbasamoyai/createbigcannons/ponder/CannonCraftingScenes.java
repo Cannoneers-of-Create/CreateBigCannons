@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.ponder;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.contraptions.components.deployer.DeployerTileEntity;
 import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
@@ -741,6 +742,93 @@ public class CannonCraftingScenes {
 				PonderPlatform.fillWith(tank, CBCFluids.MOLTEN_CAST_IRON.get(), 8000, null));
 		scene.idle(20);
 		
+		scene.markAsFinished();
+	}
+
+	public static void quickFiringBreech(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_crafting/quick_firing_breech", "Creating a Quick Firing Breech");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		scene.idle(20);
+
+		BlockPos breechPos = util.grid.at(2, 1, 2);
+		scene.world.showSection(util.select.fromTo(breechPos, util.grid.at(2, 1, 4)), Direction.DOWN);
+		scene.idle(20);
+
+		scene.overlay.showText(60)
+				.attachKeyFrame()
+				.text("To convert a Sliding Breech into a Quick Firing Breech, you will need a Quick Firing Mechanism")
+				.pointAt(util.vector.centerOf(breechPos));
+
+		scene.idle(20);
+
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(breechPos), Pointing.DOWN).withItem(CBCBlocks.CAST_IRON_SLIDING_BREECH.asStack()), 60);
+
+		scene.idle(80);
+
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(breechPos), Pointing.DOWN).rightClick().withItem(CBCItems.QUICKFIRING_MECHANISM.asStack()), 60);
+
+		scene.idle(80);
+
+		scene.world.modifyBlock(breechPos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_QUICKFIRING_BREECH.getDefaultState()), true);
+
+		scene.idle(60);
+
+		scene.world.modifyBlock(breechPos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_SLIDING_BREECH.getDefaultState()), false);
+
+		Selection deployerGearDown = util.select.position(3, 0, 5);
+		Selection deployerGearUp = util.select.fromTo(4, 1, 2, 4, 1, 5);
+		scene.world.showSection(deployerGearDown, Direction.WEST);
+		scene.idle(5);
+		scene.world.showSection(deployerGearUp, Direction.WEST);
+		scene.idle(15);
+
+		BlockPos deployerPos = util.grid.at(4, 1, 2);
+		scene.overlay.showText(80)
+				.attachKeyFrame()
+				.text("Deployers can also be used to create Quick Fire Breeches.")
+				.pointAt(util.vector.centerOf(deployerPos))
+				.colored(PonderPalette.BLUE);
+		scene.idle(20);
+
+		ItemStack mechanism = CBCItems.QUICKFIRING_MECHANISM.asStack();
+		Selection deployer = util.select.position(deployerPos);
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(deployerPos), Pointing.DOWN).withItem(mechanism), 40);
+		scene.idle(30);
+		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", mechanism.save(new CompoundTag())));
+		scene.idle(15);
+
+		scene.world.setKineticSpeed(deployerGearDown, -16);
+		scene.world.setKineticSpeed(deployerGearUp, 32);
+		scene.world.moveDeployer(deployerPos, 1, 25);
+		scene.idle(25);
+
+		scene.world.modifyBlock(breechPos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_QUICKFIRING_BREECH.getDefaultState()), true);
+
+		scene.world.moveDeployer(deployerPos, 0, 25);
+		scene.idle(25);
+
+		scene.world.hideSection(deployerGearDown, Direction.EAST);
+		scene.idle(5);
+		scene.world.hideSection(deployerGearUp, Direction.EAST);
+		scene.idle(15);
+
+		scene.overlay.showText(80)
+				.attachKeyFrame()
+				.text("To re-convert a Quick Firing Breech back into a Sliding Breech, you will need a wrench.")
+				.pointAt(util.vector.centerOf(breechPos));
+
+		scene.idle(20);
+
+		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(breechPos), Pointing.DOWN).rightClick().withItem(AllItems.WRENCH.asStack()), 60);
+
+		scene.idle(80);
+
+		scene.world.modifyBlock(breechPos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_SLIDING_BREECH.getDefaultState()), true);
+
+		scene.idle(20);
+
 		scene.markAsFinished();
 	}
 	

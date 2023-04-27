@@ -17,6 +17,7 @@ public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBi
 
 	private BigCannonBehavior cannonBehavior;
 	private int openProgress;
+	private boolean inPonder;
 	private int openDirection;
 
 	public QuickfiringBreechBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -35,6 +36,7 @@ public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBi
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
 		super.write(tag, clientPacket);
+		tag.putBoolean("InPonder", this.inPonder);
 		tag.putInt("OpenProgress", this.openProgress);
 		tag.putInt("OpenDirection", this.openDirection);
 	}
@@ -42,6 +44,7 @@ public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBi
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
+		this.inPonder = tag.getBoolean("InPonder");
 		this.openProgress = tag.getInt("OpenProgress");
 		this.openDirection = Mth.clamp(tag.getInt("OpenDirection"), -1, 1);
 	}
@@ -49,7 +52,7 @@ public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBi
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.level != null) { // Don't reset when ponder, just in case
+		if (!this.inPonder) { // Don't reset when ponder, can't use level due to Ponder's having levels.
 			if (this.openProgress != 0) this.openProgress = 0;
 			if (this.openDirection != 0) this.openDirection = 0;
 		}
