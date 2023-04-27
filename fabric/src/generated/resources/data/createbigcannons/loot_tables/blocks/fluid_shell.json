@@ -22,6 +22,11 @@
                   "op": "replace"
                 },
                 {
+                  "source": "id",
+                  "target": "BlockEntityTag.id",
+                  "op": "replace"
+                },
+                {
                   "source": "FluidContent",
                   "target": "BlockEntityTag.FluidContent",
                   "op": "replace"
