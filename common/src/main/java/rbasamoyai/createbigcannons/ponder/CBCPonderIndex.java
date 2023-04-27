@@ -11,7 +11,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 public class CBCPonderIndex {
 
 	private static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(CreateBigCannons.MOD_ID);
-	
+
 	public static void register() {
 		HELPER.forComponents(CBCBlocks.CANNON_MOUNT, CBCBlocks.YAW_CONTROLLER)
 			.addStoryBoard("cannon_mount/assembly_and_use", CannonMountScenes::assemblyAndUse)
@@ -31,7 +31,11 @@ public class CBCPonderIndex {
 		
 		HELPER.forComponents(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
 			.addStoryBoard("cannon_kinetics/sliding_breech", CannonKineticsScenes::slidingBreech);
-		
+
+		HELPER.forComponents(CBCBlocks.CAST_IRON_QUICKFIRING_BREECH, CBCBlocks.BRONZE_QUICKFIRING_BREECH, CBCBlocks.STEEL_QUICKFIRING_BREECH)
+			.addStoryBoard("cannon_crafting/quick_firing_breech", CannonCraftingScenes::quickFiringBreech)
+			.addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::quickFiringBreech);
+
 		HELPER.forComponents(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
 			.addStoryBoard("cannon_kinetics/screw_breech", CannonKineticsScenes::screwBreech);
 		
@@ -42,7 +46,7 @@ public class CBCPonderIndex {
 		HELPER.forComponents(CBCBlocks.CANNON_DRILL)
 			.addStoryBoard("cannon_crafting/cannon_boring", CannonCraftingScenes::cannonBoring)
 			.addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
-		
+
 		HELPER.forComponents(CBCBlocks.CANNON_BUILDER)
 			.addStoryBoard("cannon_crafting/cannon_building", CannonCraftingScenes::cannonBuilding)
 			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons)
@@ -51,7 +55,7 @@ public class CBCPonderIndex {
 		HELPER.forComponents(AllBlocks.ENCASED_FAN)
 			.addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons)
 			.addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
-		
+
 		HELPER.forComponents(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH,
 				CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH, CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH,
 				CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_BREECH,
@@ -80,7 +84,7 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.NETHERSTEEL_SCREW_BREECH)
 			.add(CBCItems.RAM_ROD)
 			.add(CBCItems.WORM);
-		
+
 		PonderRegistry.TAGS.forTag(CBCPonderTags.MUNITIONS)
 			.add(CBCBlocks.POWDER_CHARGE)
 			.add(CBCBlocks.HE_SHELL)
@@ -90,7 +94,7 @@ public class CBCPonderIndex {
 			.add(CBCItems.TIMED_FUZE)
 			.add(CBCItems.PROXIMITY_FUZE)
 			.add(CBCItems.DELAYED_IMPACT_FUZE);
-		
+
 		PonderRegistry.TAGS.forTag(CBCPonderTags.CANNON_CRAFTING)
 			.add(CBCBlocks.CASTING_SAND)
 			.add(CBCBlocks.CANNON_DRILL)
@@ -108,9 +112,9 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_RECOIL_SPRING)
 			.add(CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_RECOIL_SPRING);
 	}
-	
+
 	public static void registerLang() {
 		PonderLocalization.provideRegistrateLang(CreateBigCannons.REGISTRATE);
 	}
-	
+
 }
