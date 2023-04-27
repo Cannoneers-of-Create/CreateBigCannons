@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.index;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.simibubi.create.AllSoundEvents;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.HashCache;
@@ -18,7 +17,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static com.simibubi.create.AllSoundEvents.*;
+import static com.simibubi.create.AllSoundEvents.SoundEntry;
+import static com.simibubi.create.AllSoundEvents.SoundEntryBuilder;
 
 public class CBCSoundEvents {
 
@@ -64,7 +64,6 @@ public class CBCSoundEvents {
 		@Override
 		public SoundEntry build() {
 			SoundEntry entry = super.build();
-			AllSoundEvents.ALL.remove(entry.getId());
 			ALL.put(entry.getId(), entry);
 			return entry;
 		}
