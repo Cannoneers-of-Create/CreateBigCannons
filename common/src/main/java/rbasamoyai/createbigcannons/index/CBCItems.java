@@ -159,7 +159,9 @@ public class CBCItems {
 			.register();
 
 	public static final ItemEntry<QuickfiringMechanismItem> QUICKFIRING_MECHANISM = REGISTRATE
-			.item("quickfiring_mechanism", QuickfiringMechanismItem::new).register();
+			.item("quickfiring_mechanism", QuickfiringMechanismItem::new)
+			.lang("Quick-Firing Mechanism")
+			.register();
 	
 	static {
 		REGISTRATE.startSection(AllSections.CURIOSITIES);

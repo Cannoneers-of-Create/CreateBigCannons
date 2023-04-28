@@ -22,6 +22,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 
 public class CannonLoadingScenes {
 
@@ -340,29 +341,23 @@ public class CannonLoadingScenes {
 	}
 
 	public static void quickFiringBreech(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_kinetics/quick_firing_breech", "Loading a Quick Firing Breech");
+		scene.title("cannon_kinetics/quick_firing_breech", "Loading a Quick-Firing Breech");
 		scene.configureBasePlate(1, 0, 7);
 		scene.showBasePlate();
+		scene.idle(20);
+
 		BlockPos breechPos = util.grid.at(4, 3, 2);
 		Selection breechSel = util.select.position(breechPos);
 		scene.world.modifyTileNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
 			compoundTag.putBoolean("InPonder", true);
 		});
 
-		scene.idle(20);
-
-		Selection cannonMount = util.select.position(4, 1, 3);
-		BlockPos cannonMountPos = util.grid.at(4, 1, 3);
-
-
 		scene.world.showSection(util.select.fromTo(breechPos, util.grid.at(4, 1, 4)), Direction.DOWN);
 		scene.idle(20);
 
 		scene.overlay.showText(60)
-			.text("The cannon can only be loaded, when it's a cannon contraption.")
-			.attachKeyFrame()
+			.text("The Quick-Firing Breech allows fast reloading of assembled big cannons.")
 			.pointAt(util.vector.centerOf(breechPos));
-
 		scene.idle(80);
 
 		BlockPos assembleLeverPos = util.grid.at(4, 1, 2);
@@ -377,22 +372,17 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 
 		scene.overlay.showText(60)
-			.text("The breech can be closed by right clicking the side of the breech.")
+			.text("The Quick-Firing Breech can be opened and closed by right clicking the side of the breech.")
 			.pointAt(util.vector.centerOf(breechPos));
-
-		scene.idle(80);
-
+		scene.idle(30);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos.east(), Direction.WEST), Pointing.RIGHT)
 			.rightClick(), 40);
-
-		scene.idle(20);
-
+		scene.idle(40);
 		animateQFBHack(scene, breechSel, false);
-
 		scene.idle(35);
 
 		scene.overlay.showText(60)
-			.text("First load the shell/shot by right clicking the open side of the breech.")
+			.text("First, load the projectile by right clicking the open side of the breech.")
 			.pointAt(util.vector.centerOf(breechPos));
 		scene.idle(80);
 
@@ -402,27 +392,28 @@ public class CannonLoadingScenes {
 		scene.idle(60);
 
 		scene.overlay.showText(60)
-			.text("Then load up to 4 powder charges or a cartridge, and close the breech.")
+			.text("Then load the propellant and close the breech.")
 			.pointAt(util.vector.centerOf(breechPos));
 		scene.idle(80);
 
+		scene.overlay.showText(60)
+			.text("Big Cartridges are recommended for faster reloading.")
+			.colored(PonderPalette.BLUE)
+			.pointAt(util.vector.centerOf(breechPos));
+		scene.idle(30);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos.west(), Direction.EAST), Pointing.LEFT)
-			.rightClick()
-			.withItem(CBCBlocks.POWDER_CHARGE.asStack()).withItem(CBCBlocks.BIG_CARTRIDGE.asStack()), 40);
-		scene.idle(60);
+				.rightClick()
+				.withItem(BigCartridgeBlockItem.getWithPower(4)), 30);
+		scene.idle(40);
 
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos.east(), Direction.WEST), Pointing.RIGHT)
 			.rightClick(), 20);
-
 		animateQFBHack(scene, breechSel, true);
-
 		scene.idle(35);
 
 		scene.overlay.showText(40)
 			.attachKeyFrame()
-			.text("The cannon is ready to fire.")
-			.pointAt(null);
-
+			.text("The big cannon can then be fired.");
 		scene.idle(60);
 
 		scene.rotateCameraY(180.0f);
@@ -434,9 +425,6 @@ public class CannonLoadingScenes {
 
 		scene.world.modifyBlock(fireLeverPos, state -> state.setValue(LeverBlock.POWERED, true), false);
 		scene.effects.createRedstoneParticles(fireLeverPos, 0xFF0000, 10);
-
-		scene.idle(20);
-
 		scene.effects.emitParticles(util.vector.of(4, 2.5, 5.1), Emitter.withinBlockSpace(new CannonPlumeParticleData(1), util.vector.of(0d, 0d, 1d)), 1, 10);
 		scene.idle(60);
 
@@ -444,19 +432,39 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 
 		scene.overlay.showText(60)
-			.text("If a cartridge was used, the breech must be opened and the cartridge unloaded.")
-			.pointAt(util.vector.centerOf(breechPos));
+			.text("Remaining munitions such as spent Big Cartridge cases will be automatically ejected.")
+			.colored(PonderPalette.GREEN)
+			.pointAt(util.vector.centerOf(breechPos))
+			.attachKeyFrame();
 
 		animateQFBHack(scene, breechSel, false);
 
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos.east(), Direction.EAST), Pointing.RIGHT)
 			.rightClick(), 40);
-
 		scene.idle(60);
-
-		scene.addKeyframe();
-
 		animateQFBHack(scene, breechSel, true);
+		scene.idle(40);
+
+		scene.markAsFinished();
+	}
+
+	public static void automatingQuickFiringBreeches(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_kinetics/automating_quick_firing_breeches", "Automating Quick-Firing Breeches");
+		scene.configureBasePlate(1, 0, 7);
+		scene.showBasePlate();
+		scene.idle(20);
+
+		BlockPos breechPos = util.grid.at(4, 3, 2);
+		Selection breechSel = util.select.position(breechPos);
+		scene.world.modifyTileNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
+			compoundTag.putBoolean("InPonder", true);
+		});
+
+		scene.world.showSection(util.select.fromTo(breechPos, util.grid.at(4, 1, 4)), Direction.DOWN);
+		scene.idle(20);
+
+		Selection cannonMount = util.select.position(4, 1, 3);
+		BlockPos cannonMountPos = util.grid.at(4, 1, 3);
 
 		Selection largeGear = util.select.position(0, 1, 4);
 		Selection smallGear = util.select.fromTo(1, 1, 3, 2, 1, 3);
@@ -478,18 +486,16 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 
 		scene.overlay.showSelectionWithText(mechanicalArm, 80)
-			.attachKeyFrame()
-			.colored(PonderPalette.RED)
-			.text("Mechanical Arms can be used to reload the Quick Fire Breech.")
-			.placeNearTarget();
-
+				.attachKeyFrame()
+				.colored(PonderPalette.RED)
+				.text("Mechanical Arms can be used to reload the Quick-Firing Breech.")
+				.placeNearTarget();
 		scene.idle(100);
 
 		scene.overlay.showSelectionWithText(cannonMount, 60)
 				.colored(PonderPalette.OUTPUT)
-				.text("Set the output to the cannon mount.")
+				.text("Right-click the Cannon Mount to set the arm's output.")
 				.placeNearTarget();
-
 		scene.idle(80);
 
 		Selection shotDepot = util.select.position(1, 1, 6);
@@ -498,11 +504,9 @@ public class CannonLoadingScenes {
 		scene.world.createItemOnBeltLike(shotDepotPos, Direction.SOUTH, shot);
 		scene.overlay.showOutline(PonderPalette.INPUT, null, shotDepot, 40);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(1, 1, 6), Direction.UP), Pointing.DOWN)
-			.withItem(CBCBlocks.SOLID_SHOT.asStack()), 40);
+				.withItem(CBCBlocks.SOLID_SHOT.asStack()), 40);
 
 		scene.idle(60);
-
-		scene.addKeyframe();
 
 		Selection cartridgeDepot = util.select.position(2, 1, 6);
 		BlockPos cartridgeDepotPos = util.grid.at(2, 1, 6);

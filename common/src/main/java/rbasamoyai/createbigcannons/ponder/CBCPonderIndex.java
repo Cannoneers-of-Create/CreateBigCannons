@@ -32,9 +32,11 @@ public class CBCPonderIndex {
 		HELPER.forComponents(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
 			.addStoryBoard("cannon_kinetics/sliding_breech", CannonKineticsScenes::slidingBreech);
 
-		HELPER.forComponents(CBCBlocks.CAST_IRON_QUICKFIRING_BREECH, CBCBlocks.BRONZE_QUICKFIRING_BREECH, CBCBlocks.STEEL_QUICKFIRING_BREECH)
-			.addStoryBoard("cannon_crafting/quick_firing_breech", CannonCraftingScenes::quickFiringBreech)
-			.addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::quickFiringBreech);
+		HELPER.forComponents(CBCBlocks.CAST_IRON_QUICKFIRING_BREECH, CBCBlocks.BRONZE_QUICKFIRING_BREECH, CBCBlocks.STEEL_QUICKFIRING_BREECH,
+						CBCItems.QUICKFIRING_MECHANISM)
+			.addStoryBoard("cannon_crafting/making_quick_firing_breeches", CannonCraftingScenes::makingQuickFiringBreeches)
+			.addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::quickFiringBreech)
+			.addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::automatingQuickFiringBreeches);
 
 		HELPER.forComponents(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
 			.addStoryBoard("cannon_kinetics/screw_breech", CannonKineticsScenes::screwBreech);

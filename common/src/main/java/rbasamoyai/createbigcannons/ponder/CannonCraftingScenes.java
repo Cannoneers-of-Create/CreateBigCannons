@@ -745,8 +745,8 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void quickFiringBreech(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/quick_firing_breech", "Creating a Quick Firing Breech");
+	public static void makingQuickFiringBreeches(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_crafting/making_quick_firing_breeches", "Creating a Quick-Firing Breech");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -758,21 +758,16 @@ public class CannonCraftingScenes {
 
 		scene.overlay.showText(60)
 				.attachKeyFrame()
-				.text("To convert a Sliding Breech into a Quick Firing Breech, you will need a Quick Firing Mechanism")
+				.text("Use a Quick-Firing Mechanism to convert a Sliding Breech into a Quick-Firing Breech.")
 				.pointAt(util.vector.centerOf(breechPos));
 
 		scene.idle(20);
 
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(breechPos), Pointing.DOWN).withItem(CBCBlocks.CAST_IRON_SLIDING_BREECH.asStack()), 60);
-
 		scene.idle(80);
-
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(breechPos), Pointing.DOWN).rightClick().withItem(CBCItems.QUICKFIRING_MECHANISM.asStack()), 60);
-
 		scene.idle(80);
-
 		scene.world.modifyBlock(breechPos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_QUICKFIRING_BREECH.getDefaultState()), true);
-
 		scene.idle(60);
 
 		scene.world.modifyBlock(breechPos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_SLIDING_BREECH.getDefaultState()), false);
@@ -787,7 +782,7 @@ public class CannonCraftingScenes {
 		BlockPos deployerPos = util.grid.at(4, 1, 2);
 		scene.overlay.showText(80)
 				.attachKeyFrame()
-				.text("Deployers can also be used to create Quick Fire Breeches.")
+				.text("Deployers can also be used to create Quick-Firing Breeches.")
 				.pointAt(util.vector.centerOf(deployerPos))
 				.colored(PonderPalette.BLUE);
 		scene.idle(20);
@@ -816,7 +811,7 @@ public class CannonCraftingScenes {
 
 		scene.overlay.showText(80)
 				.attachKeyFrame()
-				.text("To re-convert a Quick Firing Breech back into a Sliding Breech, you will need a wrench.")
+				.text("Wrench a Quick-Firing Breech to revert it back to a Sliding Breech.")
 				.pointAt(util.vector.centerOf(breechPos));
 
 		scene.idle(20);

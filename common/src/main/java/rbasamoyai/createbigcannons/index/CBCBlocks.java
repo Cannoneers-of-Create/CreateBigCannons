@@ -143,6 +143,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<QuickfiringBreechBlock> CAST_IRON_QUICKFIRING_BREECH = REGISTRATE
 			.block("cast_iron_quickfiring_breech", p -> new QuickfiringBreechBlock(p, BigCannonMaterial.CAST_IRON, castIronSlidingBreech()))
+			.lang("Cast Iron Quick-Firing Breech")
 			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
 			.loot(CBCBuilderTransformers.castIronScrapLoot(10))
@@ -220,6 +221,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<QuickfiringBreechBlock> BRONZE_QUICKFIRING_BREECH = REGISTRATE
 			.block("bronze_quickfiring_breech", p -> new QuickfiringBreechBlock(p, BigCannonMaterial.BRONZE, bronzeSlidingBreech()))
+			.lang("Bronze Quick-Firing Breech")
 			.transform(cannonBlock(false))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(10))
@@ -398,6 +400,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<QuickfiringBreechBlock> STEEL_QUICKFIRING_BREECH = REGISTRATE
 			.block("steel_quickfiring_breech", p -> new QuickfiringBreechBlock(p, BigCannonMaterial.STEEL, steelSlidingBreech()))
+			.lang("Steel Quick-Firing Breech")
 			.transform(strongCannonBlock(false))
 			.loot(CBCBuilderTransformers.steelScrapLoot(10))
 			.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
