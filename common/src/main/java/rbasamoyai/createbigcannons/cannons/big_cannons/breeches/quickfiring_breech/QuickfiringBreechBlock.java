@@ -19,6 +19,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -32,7 +33,10 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
-import rbasamoyai.createbigcannons.cannons.big_cannons.*;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBaseBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
@@ -61,6 +65,11 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 		builder.add(AXIS);
 	}
 
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return super.getStateForPlacement(context).setValue(AXIS, context.getNearestLookingDirection().getAxis() == Direction.Axis.Z);
+	}
+
 	@Override public Class<QuickfiringBreechBlockEntity> getTileEntityClass() { return QuickfiringBreechBlockEntity.class; }
 	@Override public BlockEntityType<? extends QuickfiringBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.QUICKFIRING_BREECH.get(); }
 
@@ -81,7 +90,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 
 		if (stack.isEmpty()) {
 			if (level instanceof ServerLevel slevel) {
-				if (!breech.onCooldown()) {
+				if (!breech.onInteractionCooldown()) {
 					SoundEvent sound = breech.getOpenProgress() == 0 ? SoundEvents.IRON_TRAPDOOR_OPEN : SoundEvents.IRON_TRAPDOOR_CLOSE;
 					level.playSound(null, player.blockPosition(), sound, SoundSource.BLOCKS, 1.0f, 1.5f);
 				}
@@ -112,7 +121,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 			}
 			return true;
 		}
-		if (!breech.isOpen() || breech.onCooldown()) return false;
+		if (!breech.isOpen() || breech.onInteractionCooldown()) return false;
 
 		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
 			BlockEntity be1 = cannon.presentTileEntities.get(nextPos);
