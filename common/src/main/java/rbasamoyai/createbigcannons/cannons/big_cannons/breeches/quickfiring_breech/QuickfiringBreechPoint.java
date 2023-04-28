@@ -16,13 +16,14 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockE
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.BiConsumer;
+import java.util.function.BiPredicate;
 
 public class QuickfiringBreechPoint extends AllArmInteractionPointTypes.DepositOnlyArmInteractionPoint {
 
@@ -44,7 +45,7 @@ public class QuickfiringBreechPoint extends AllArmInteractionPointTypes.DepositO
 		Direction extractDirection = pushDirection.getOpposite();
 		BlockPos startPos = cannon.getStartPos();
 		BlockPos breechPos = startPos.relative(extractDirection);
-		if (!(cannon.presentTileEntities.get(breechPos) instanceof QuickfiringBreechBlockEntity breech) || breech.isOpen()) return stack;
+		if (!(cannon.presentTileEntities.get(breechPos) instanceof QuickfiringBreechBlockEntity breech) || !breech.canBeAutomaticallyLoaded()) return stack;
 
 		BlockPos nextPos = startPos.relative(pushDirection);
 		int barrelLength = 0;
@@ -62,18 +63,18 @@ public class QuickfiringBreechPoint extends AllArmInteractionPointTypes.DepositO
 		if (munition instanceof ProjectileBlock) {
 			if (barrelLength == 0) return stack;
 			if (firstInfo.state.getBlock() instanceof BigCartridgeBlock cartridge) {
-				loadProjectile.accept(stack, munition);
+				if (loadProjectile.test(stack, munition)) breech.setLoadingCooldown(getLoadingCooldown());
 				return BigCartridgeBlock.getPowerFromData(firstInfo) == 0 ? cartridge.getExtractedItem(firstInfo) : stack;
 			}
 			if (!firstInfo.state.isAir()) return stack;
-			loadProjectile.accept(stack, munition);
+			if (loadProjectile.test(stack, munition)) breech.setLoadingCooldown(getLoadingCooldown());
 			ItemStack copy = stack.copy();
 			copy.shrink(1);
 			return copy;
 		}
 		if (munition instanceof BigCartridgeBlock) {
 			if (!(firstInfo.state.getBlock() instanceof ProjectileBlock)) return stack;
-			loadCartridge.accept(stack, munition);
+			if (loadCartridge.test(stack, munition)) breech.setLoadingCooldown(getLoadingCooldown());
 			ItemStack copy = stack.copy();
 			copy.shrink(1);
 			return copy;
@@ -81,12 +82,12 @@ public class QuickfiringBreechPoint extends AllArmInteractionPointTypes.DepositO
 		return stack;
 	}
 
-	public interface MunitionConsumer extends BiConsumer<ItemStack, BigCannonMunitionBlock> {
+	public interface MunitionConsumer extends BiPredicate<ItemStack, BigCannonMunitionBlock> {
 	}
 
-	public static void loadProjectile(ItemStack stack, BigCannonMunitionBlock munition, boolean simulate, AbstractContraptionEntity entity,
+	public static boolean loadProjectile(ItemStack stack, BigCannonMunitionBlock munition, boolean simulate, AbstractContraptionEntity entity,
 									   MountedBigCannonContraption cannon) {
-		if (simulate) return;
+		if (simulate) return false;
 		BlockPos startPos = cannon.getStartPos();
 		Direction dir = cannon.initialOrientation();
 		BlockEntity be = cannon.presentTileEntities.get(startPos);
@@ -94,11 +95,12 @@ public class QuickfiringBreechPoint extends AllArmInteractionPointTypes.DepositO
 		cbe.cannonBehavior().removeBlock();
 		cbe.cannonBehavior().tryLoadingBlock(munition.getHandloadingInfo(stack, startPos, dir));
 		BigCannonBlock.writeAndSyncSingleBlockData(be, cannon.getBlocks().get(startPos), entity, cannon);
+		return true;
 	}
 
-	public static void loadCartridge(ItemStack stack, BigCannonMunitionBlock munition, boolean simulate, AbstractContraptionEntity entity,
+	public static boolean loadCartridge(ItemStack stack, BigCannonMunitionBlock munition, boolean simulate, AbstractContraptionEntity entity,
 									  MountedBigCannonContraption cannon) {
-		if (simulate) return;
+		if (simulate) return false;
 		Direction dir = cannon.initialOrientation();
 		BlockPos startPos = cannon.getStartPos();
 
@@ -120,7 +122,9 @@ public class QuickfiringBreechPoint extends AllArmInteractionPointTypes.DepositO
 		cbe.cannonBehavior().tryLoadingBlock(munition.getHandloadingInfo(stack, startPos, dir));
 
 		BigCannonBlock.writeAndSyncMultipleBlockData(changes, entity, cannon);
+		return true;
 	}
 
+	private static int getLoadingCooldown() { return CBCConfigs.SERVER.cannons.quickfiringBreechLoadingCooldown.get(); }
 
 }

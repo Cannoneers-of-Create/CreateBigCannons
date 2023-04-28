@@ -90,7 +90,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 
 		if (stack.isEmpty()) {
 			if (level instanceof ServerLevel slevel) {
-				if (!breech.onCooldown()) {
+				if (!breech.onInteractionCooldown()) {
 					SoundEvent sound = breech.getOpenProgress() == 0 ? SoundEvents.IRON_TRAPDOOR_OPEN : SoundEvents.IRON_TRAPDOOR_CLOSE;
 					level.playSound(null, player.blockPosition(), sound, SoundSource.BLOCKS, 1.0f, 1.5f);
 				}
@@ -121,7 +121,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 			}
 			return true;
 		}
-		if (!breech.isOpen() || breech.onCooldown()) return false;
+		if (!breech.isOpen() || breech.onInteractionCooldown()) return false;
 
 		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
 			BlockEntity be1 = cannon.presentTileEntities.get(nextPos);
