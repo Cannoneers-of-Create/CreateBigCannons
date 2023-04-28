@@ -61,6 +61,11 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 		builder.add(AXIS);
 	}
 
+	@Override
+	public BlockState getStateForPlacement(BlockPlaceContext context) {
+		return super.getStateForPlacement(context).setValue(AXIS, horizontal.getAxis() == Direction.Axis.Z);
+	}
+
 	@Override public Class<QuickfiringBreechBlockEntity> getTileEntityClass() { return QuickfiringBreechBlockEntity.class; }
 	@Override public BlockEntityType<? extends QuickfiringBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.QUICKFIRING_BREECH.get(); }
 
