@@ -10,6 +10,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
+import rbasamoyai.createbigcannons.forge.events.OnCannonBreakBlockImpl;
 
 public class CBCCommonForgeEvents {
 
@@ -21,6 +22,7 @@ public class CBCCommonForgeEvents {
 		forgeEventBus.addListener(CBCCommonForgeEvents::onServerWorldTick);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onDatapackSync);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onAddReloadListeners);
+		forgeEventBus.register(OnCannonBreakBlockImpl.class);
 	}
 
 	public static void onServerWorldTick(TickEvent.WorldTickEvent evt) {

@@ -22,6 +22,7 @@ import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.multiloader.EventsPlatform;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
@@ -64,6 +65,11 @@ public class CBCCommonEvents {
 				return;
 			}
 		}
+	}
+
+	public static void onCannonBreakBlock(LevelAccessor level, BlockPos blockPos) {
+		EventsPlatform.postOnCannonBreakBlockEvent(EventsPlatform.createOnCannonBreakBlockEvent(blockPos, level.getBlockState(blockPos)));
+		if (!level.isClientSide()) level.destroyBlock(blockPos, false);
 	}
 
 	private static BlockPos destroyPoleContraption(Block head, Block base, int limit, BlockState state, LevelAccessor level,
