@@ -12,8 +12,8 @@ public record ShrapnelProperties(double damage, double spread, int count) {
 
 	public static ShrapnelProperties fromJson(JsonObject obj, String id) {
 		double entityDmg = Math.max(0, getOrWarn(obj, "entity_damage", id, 1d, JsonElement::getAsDouble));
-		double spread = Math.max(0, getOrWarn(obj, "entity_damage", id, 1d, JsonElement::getAsDouble));
-		int count = Math.max(0, getOrWarn(obj, "entity_damage", id, 1, JsonElement::getAsInt));
+		double spread = Math.max(0, getOrWarn(obj, "spread", id, 1d, JsonElement::getAsDouble));
+		int count = Math.max(0, getOrWarn(obj, "count", id, 1, JsonElement::getAsInt));
 
 		return new ShrapnelProperties(entityDmg, spread, count);
 	}
