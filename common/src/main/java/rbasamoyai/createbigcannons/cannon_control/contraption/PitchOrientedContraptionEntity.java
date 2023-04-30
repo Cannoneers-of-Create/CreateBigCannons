@@ -225,13 +225,23 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	public void positionRider(Entity passenger) {
 		if (!this.hasPassenger(passenger)) return;
 		Vec3 transformedVector = this.getPassengerPosition(passenger, 1);
+		transformedVector = this.processRiderPositionHook(passenger, transformedVector);
 		if (transformedVector == null) return;
-		transformedVector = this.transformVector(transformedVector);
 		passenger.setPos(transformedVector.x,
 				transformedVector.y + SeatEntity.getCustomEntitySeatOffset(passenger) - 1 / 8f, transformedVector.z);
 	}
 
-	protected Vec3 transformVector(Vec3 original) { return original; }
+	/**
+	 * Mixin to process rider (e.g. autocannon rider).
+	 *
+	 * @param passenger
+	 * @param original
+	 * @return null to override vanilla CBC positioning
+	 */
+	@Nullable
+	protected Vec3 processRiderPositionHook(Entity passenger, @Nullable Vec3 original) {
+		return original;
+	}
 
 	@Override
 	public Vec3 getPassengerPosition(Entity passenger, float partialTicks) {
