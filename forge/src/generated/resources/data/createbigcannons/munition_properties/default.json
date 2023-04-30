@@ -68,7 +68,7 @@
   },
   "createbigcannons:ap_autocannon": {
     "entity_damage": 5.0,
-    "durability_mass": 12.0,
+    "durability_mass": 6.0,
     "renders_invulnerable": false,
     "ignores_entity_armor": false
   },
