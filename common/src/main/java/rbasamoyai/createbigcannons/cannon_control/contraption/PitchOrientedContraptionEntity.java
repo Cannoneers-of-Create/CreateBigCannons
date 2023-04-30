@@ -226,9 +226,12 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		if (!this.hasPassenger(passenger)) return;
 		Vec3 transformedVector = this.getPassengerPosition(passenger, 1);
 		if (transformedVector == null) return;
+		transformedVector = this.transformVector(transformedVector);
 		passenger.setPos(transformedVector.x,
 				transformedVector.y + SeatEntity.getCustomEntitySeatOffset(passenger) - 1 / 8f, transformedVector.z);
 	}
+
+	protected Vec3 transformVector(Vec3 original) { return original; }
 
 	@Override
 	public Vec3 getPassengerPosition(Entity passenger, float partialTicks) {

@@ -136,7 +136,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 		BlockPos negativeEndPos = negativeBreech ? start : start.relative(positive);
 
-		if (positiveBreech && negativeBreech) throw invalidCannon();
+		if (cannonLength < 2 || positiveBreech && negativeBreech) throw invalidCannon();
 
 		this.startPos = !positiveBreech && !negativeBreech ? pos : negativeBreech ? negativeEndPos : positiveEndPos;
 		BlockState breechState = level.getBlockState(this.startPos);
