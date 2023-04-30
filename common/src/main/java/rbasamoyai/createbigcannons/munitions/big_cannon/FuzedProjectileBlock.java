@@ -6,6 +6,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -33,7 +34,14 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 			ItemStack stack1 = be.getItem(0);
 			if (stack.isEmpty() && !stack1.isEmpty()) {
 				if (!level.isClientSide) {
-					player.addItem(be.removeItem(0, 1));
+					ItemStack resultStack = be.removeItem(0, 1);
+					if (!player.addItem(resultStack) && !player.isCreative()) {
+						ItemEntity item = player.drop(resultStack, false);
+						if (item != null) {
+							item.setNoPickUpDelay();
+							item.setOwner(player.getUUID());
+						}
+					}
 					be.notifyUpdate();
 				}
 				level.playSound(player, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);

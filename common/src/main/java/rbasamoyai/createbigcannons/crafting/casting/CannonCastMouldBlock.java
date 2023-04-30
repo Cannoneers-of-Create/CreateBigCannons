@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -52,13 +53,27 @@ public class CannonCastMouldBlock extends Block {
 				level.setBlock(pos, CBCBlocks.CANNON_CAST.getDefaultState(), 11);
 				if (!level.isClientSide) {
 					if (level.getBlockEntity(pos) instanceof AbstractCannonCastBlockEntity cast) cast.initializeCastMultiblock(this.cannonShape.get());
-					if (!player.isCreative()) player.addItem(new ItemStack(this.asItem()));
+					ItemStack resultStack = new ItemStack(this.asItem());
+					if (!player.addItem(resultStack) && !player.isCreative()) {
+						ItemEntity item = player.drop(resultStack, false);
+						if (item != null) {
+							item.setNoPickUpDelay();
+							item.setOwner(player.getUUID());
+						}
+					}
 				}
 				level.playSound(player, pos, SoundEvents.SAND_PLACE, SoundSource.PLAYERS, 1.0f, 0.0f);
 			} else {
 				level.setBlock(pos, state.setValue(SAND, false), 3);
-				if (!level.isClientSide && !player.isCreative()) {
-					player.addItem(CBCBlocks.CASTING_SAND.asStack());
+				if (!level.isClientSide) {
+					ItemStack resultStack = CBCBlocks.CASTING_SAND.asStack();
+					if (!player.addItem(resultStack) && !player.isCreative()) {
+						ItemEntity item = player.drop(resultStack, false);
+						if (item != null) {
+							item.setNoPickUpDelay();
+							item.setOwner(player.getUUID());
+						}
+					}
 				}
 				level.playSound(player, pos, SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 1.0f, 1.0f);
 			}

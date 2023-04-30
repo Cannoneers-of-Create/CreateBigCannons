@@ -27,6 +27,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -274,7 +275,14 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			if (stack.isEmpty() && this.isCannonRider()) {
 				if (!this.level.isClientSide) {
 					this.setCannonRider(false);
-					player.addItem(Items.SADDLE.getDefaultInstance());
+					ItemStack resultStack = Items.SADDLE.getDefaultInstance();
+					if (!player.addItem(resultStack) && !player.isCreative()) {
+						ItemEntity item = player.drop(resultStack, false);
+						if (item != null) {
+							item.setNoPickUpDelay();
+							item.setOwner(player.getUUID());
+						}
+					}
 				}
 				return InteractionResult.sidedSuccess(this.level.isClientSide);
 			}

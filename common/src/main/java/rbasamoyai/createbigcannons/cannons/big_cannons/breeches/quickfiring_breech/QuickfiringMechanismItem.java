@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,7 +41,14 @@ public class QuickfiringMechanismItem extends Item {
 				StructureBlockInfo loaded = cbe.cannonBehavior().block();
 				if (player != null) {
 					Block block = loaded.state.getBlock();
-					player.addItem(block instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(loaded) : new ItemStack(block));
+					ItemStack resultStack = block instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(loaded) : new ItemStack(block);
+					if (!player.addItem(resultStack) && !player.isCreative()) {
+						ItemEntity item = player.drop(resultStack, false);
+						if (item != null) {
+							item.setNoPickUpDelay();
+							item.setOwner(player.getUUID());
+						}
+					}
 				}
 
 				if (newBe instanceof IBigCannonBlockEntity cbe1) {
@@ -53,6 +61,7 @@ public class QuickfiringMechanismItem extends Item {
 					}
 					newBe.setChanged();
 				}
+				if (!player.isCreative()) context.getItemInHand().shrink(1);
 			}
 			SoundType type = newState.getSoundType();
 			level.playSound(player, pos, type.getPlaceSound(), SoundSource.BLOCKS, type.getVolume(), type.getPitch());

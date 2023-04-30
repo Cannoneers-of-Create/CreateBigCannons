@@ -17,6 +17,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -103,7 +104,13 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 					if (be1 instanceof IBigCannonBlockEntity cbe1) {
 						StructureBlockInfo info1 = cbe1.cannonBehavior().block();
 						ItemStack extract = info1.state.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
-						if (!extract.isEmpty()) player.addItem(extract);
+						if (!player.addItem(extract) && !player.isCreative()) {
+							ItemEntity item = player.drop(extract, false);
+							if (item != null) {
+								item.setNoPickUpDelay();
+								item.setOwner(player.getUUID());
+							}
+						}
 						cbe1.cannonBehavior().removeBlock();
 						changed.add(nextPos);
 						if (cannon.hasFired) {
@@ -206,9 +213,23 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 				if (player != null) {
 					if (loaded != null) {
 						Block block = loaded.state.getBlock();
-						player.addItem(block instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(loaded) : new ItemStack(block));
+						ItemStack resultStack = block instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(loaded) : new ItemStack(block);
+						if (!player.addItem(resultStack) && !player.isCreative()) {
+							ItemEntity item = player.drop(resultStack, false);
+							if (item != null) {
+								item.setNoPickUpDelay();
+								item.setOwner(player.getUUID());
+							}
+						}
 					}
-					player.addItem(CBCItems.QUICKFIRING_MECHANISM.asStack());
+					ItemStack resultStack = CBCItems.QUICKFIRING_MECHANISM.asStack();
+					if (!player.addItem(resultStack) && !player.isCreative()) {
+						ItemEntity item = player.drop(resultStack, false);
+						if (item != null) {
+							item.setNoPickUpDelay();
+							item.setOwner(player.getUUID());
+						}
+					}
 				}
 
 				if (newBe instanceof IBigCannonBlockEntity cbe1) {

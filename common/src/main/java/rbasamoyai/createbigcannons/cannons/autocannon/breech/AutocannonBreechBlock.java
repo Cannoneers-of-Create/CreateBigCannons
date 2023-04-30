@@ -34,9 +34,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBaseBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
-import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
-import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<AbstractAutocannonBreechBlockEntity>, IWrenchable {
 
@@ -103,6 +102,8 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements ITE<Ab
                         Vec3 spawnLoc = Vec3.atCenterOf(pos);
                         ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, drop);
                         level.addFreshEntity(dropEntity);
+                        dropEntity.setNoPickUpDelay();
+                        dropEntity.setOwner(player.getUUID());
                     }
                 }
                 autocannon1.setSeatColor(null);
