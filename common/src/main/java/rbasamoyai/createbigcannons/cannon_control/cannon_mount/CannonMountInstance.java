@@ -19,54 +19,59 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class CannonMountInstance extends KineticTileInstance<CannonMountBlockEntity> implements DynamicInstance {
 
-	private final OrientedData rotatingMount;
-	private final OrientedData rotatingMountShaft;
-	private final RotatingData pitchShaft;
-	private final RotatingData yawShaft;
+	private OrientedData rotatingMount;
+	private OrientedData rotatingMountShaft;
+	private RotatingData pitchShaft;
+	private RotatingData yawShaft;
 	
 	public CannonMountInstance(MaterialManager dispatcher, CannonMountBlockEntity tile) {
 		super(dispatcher, tile);
-		
+	}
+
+	@Override
+	public void init() {
+		super.init();
+
 		int blockLight = this.world.getBrightness(LightLayer.BLOCK, this.pos);
 		int skyLight = this.world.getBrightness(LightLayer.SKY, this.pos);
 
 		Direction facing = this.blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 		Direction.Axis pitchAxis = facing.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
-		
+
 		Material<RotatingData> rotatingMaterial = this.getRotatingMaterial();
 		Instancer<RotatingData> shaftInstance = rotatingMaterial.getModel(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, pitchAxis));
-		
-		this.rotatingMount = dispatcher.defaultCutout()
+
+		this.rotatingMount = this.materialManager.defaultCutout()
 				.material(Materials.ORIENTED)
 				.getModel(CBCBlockPartials.ROTATING_MOUNT, this.blockState)
 				.createInstance();
 		this.rotatingMount.setPosition(this.getInstancePosition().above());
-		
-		this.rotatingMountShaft = dispatcher.defaultCutout()
+
+		this.rotatingMountShaft = this.materialManager.defaultCutout()
 				.material(Materials.ORIENTED)
 				.getModel(CBCBlockPartials.CANNON_CARRIAGE_AXLE, this.blockState, Direction.NORTH)
 				.createInstance();
-		
+
 		this.rotatingMountShaft.setPosition(this.getInstancePosition().above(2));
-		
+
 		this.pitchShaft = shaftInstance.createInstance();
 		this.pitchShaft
-		.setRotationAxis(pitchAxis)
-		.setRotationOffset(this.getRotationOffset(pitchAxis))
-		.setColor(tile)
-		.setPosition(this.getInstancePosition())
-		.setBlockLight(blockLight)
-		.setSkyLight(skyLight);
-		
+				.setRotationAxis(pitchAxis)
+				.setRotationOffset(this.getRotationOffset(pitchAxis))
+				.setColor(this.blockEntity)
+				.setPosition(this.getInstancePosition())
+				.setBlockLight(blockLight)
+				.setSkyLight(skyLight);
+
 		this.yawShaft = rotatingMaterial.getModel(CBCBlockPartials.YAW_SHAFT, blockState, Direction.DOWN).createInstance();
 		this.yawShaft
-		.setRotationAxis(Direction.Axis.Y)
-		.setRotationOffset(this.getRotationOffset(Direction.Axis.Y))
-		.setColor(tile)
-		.setPosition(this.getInstancePosition())
-		.setBlockLight(blockLight)
-		.setSkyLight(skyLight);
-		
+				.setRotationAxis(Direction.Axis.Y)
+				.setRotationOffset(this.getRotationOffset(Direction.Axis.Y))
+				.setColor(this.blockEntity)
+				.setPosition(this.getInstancePosition())
+				.setBlockLight(blockLight)
+				.setSkyLight(skyLight);
+
 		this.transformModels();
 	}
 

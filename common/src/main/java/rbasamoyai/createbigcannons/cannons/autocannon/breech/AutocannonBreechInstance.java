@@ -16,27 +16,32 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutocannonBreechBlockEntity> implements DynamicInstance {
 
-    private final OrientedData ejector;
-    private final OrientedData seat;
+    private OrientedData ejector;
+    private OrientedData seat;
     //private final OrientedData shell;
 
-    private final Direction facing;
+    private Direction facing;
 
     public AutocannonBreechInstance(MaterialManager manager, AbstractAutocannonBreechBlockEntity blockEntity) {
         super(manager, blockEntity);
+    }
+
+    @Override
+    public void init() {
+        super.init();
 
         this.facing = this.blockState.getValue(BlockStateProperties.FACING);
         Quaternion q = Vector3f.YP.rotationDegrees(this.facing.getAxis().isVertical() ? 180 : 0);
 
-        this.ejector = manager.defaultCutout()
+        this.ejector = this.materialManager.defaultCutout()
                 .material(Materials.ORIENTED)
                 .getModel(this.getPartialModelForState(), this.blockState, this.facing)
                 .createInstance();
         this.ejector.setRotation(q);
 
-        this.seat = manager.defaultCutout()
+        this.seat = this.materialManager.defaultCutout()
                 .material(Materials.ORIENTED)
-                .getModel(CBCBlockPartials.autocannonSeatFor(blockEntity.getSeatColor()), this.blockState, this.facing)
+                .getModel(CBCBlockPartials.autocannonSeatFor(this.blockEntity.getSeatColor()), this.blockState, this.facing)
                 .createInstance();
         this.seat.setRotation(q);
 

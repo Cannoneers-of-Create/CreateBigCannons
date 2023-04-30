@@ -16,20 +16,26 @@ import rbasamoyai.createbigcannons.CBCClientCommon;
 public class ScrewBreechInstance extends HalfShaftInstance implements DynamicInstance {
 
 	private final ScrewBreechBlockEntity breech;
-	private final OrientedData screwLock;
-	private final Direction facing;
+	private OrientedData screwLock;
+	private Direction facing;
 	
 	public ScrewBreechInstance(MaterialManager modelManager, ScrewBreechBlockEntity tile) {
 		super(modelManager, tile);
 		this.breech = tile;
+	}
+
+	@Override
+	public void init() {
+		super.init();
+
 		this.facing = this.blockState.getValue(BlockStateProperties.FACING);
-		this.screwLock = modelManager.defaultSolid()
+		this.screwLock = this.materialManager.defaultSolid()
 				.material(Materials.ORIENTED)
 				.getModel(CBCClientCommon.getScrewBreechForState(this.blockState), this.blockState, this.facing)
 				.createInstance();
 		this.transformModels();
 	}
-	
+
 	private void transformModels() {
 		float renderedScrewLockOffset = this.breech.getRenderedBlockOffset(AnimationTickHolder.getPartialTicks());
 		float heightOffset = renderedScrewLockOffset * 0.25f;

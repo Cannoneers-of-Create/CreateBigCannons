@@ -11,13 +11,15 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> implements DynamicInstance {
 
-	private final OrientedData fuze;
-	private final FuzedBlockEntity shell;
+	private OrientedData fuze;
 	
 	public FuzedBlockInstance(MaterialManager materialManager, FuzedBlockEntity blockEntity) {
 		super(materialManager, blockEntity);
-		
-		this.shell = blockEntity;
+	}
+
+	@Override
+	public void init() {
+		super.init();
 		this.fuze = materialManager.defaultCutout()
 				.material(Materials.ORIENTED)
 				.getModel(CBCBlockPartials.FUZE, this.blockState, this.blockState.getValue(BlockStateProperties.FACING))
@@ -25,11 +27,11 @@ public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> im
 		this.fuze.setPosition(this.instancePos);
 	}
 
-	@Override public BlockPos getWorldPosition() { return this.shell.getBlockPos(); }
+	@Override public BlockPos getWorldPosition() { return this.blockEntity.getBlockPos(); }
 	
 	@Override
 	public void beginFrame() {
-		this.fuze.setColor((byte) 255, (byte) 255, (byte) 255, this.shell.hasFuze() ? (byte) 255 : (byte) 0);
+		this.fuze.setColor((byte) 255, (byte) 255, (byte) 255, this.blockEntity.hasFuze() ? (byte) 255 : (byte) 0);
 	}
 
 	@Override
