@@ -20,6 +20,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -73,7 +74,7 @@ public class QuickfiringBreechPoint extends AllArmInteractionPointTypes.DepositO
 			return copy;
 		}
 		if (munition instanceof BigCartridgeBlock) {
-			if (!(firstInfo.state.getBlock() instanceof ProjectileBlock)) return stack;
+			if (BigCartridgeBlockItem.getPower(stack) == 0 || !(firstInfo.state.getBlock() instanceof ProjectileBlock)) return stack;
 			if (loadCartridge.test(stack, munition)) breech.setLoadingCooldown(getLoadingCooldown());
 			ItemStack copy = stack.copy();
 			copy.shrink(1);
