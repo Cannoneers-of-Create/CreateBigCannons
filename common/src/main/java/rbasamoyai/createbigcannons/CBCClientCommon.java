@@ -203,5 +203,4 @@ public class CBCClientCommon {
 		return state.getBlock() instanceof BigCannonBlock cBlock ? CBCBlockPartials.screwLockFor(cBlock.getCannonMaterial())
 				: CBCBlockPartials.STEEL_SCREW_LOCK;
 	}
-	
 }

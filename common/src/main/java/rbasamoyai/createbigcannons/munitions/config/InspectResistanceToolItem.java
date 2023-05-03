@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.munitions.config;
 
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -23,7 +23,7 @@ public class InspectResistanceToolItem extends Item {
 		if (!level.isClientSide && player != null && !IndexPlatform.isFakePlayer(player)) {
 			String key = "debug." + CreateBigCannons.MOD_ID + ".block_resistance";
 			double hardness = BlockHardnessHandler.getHardness(level.getBlockState(ctx.getClickedPos()));
-			player.displayClientMessage(new TranslatableComponent(key, String.format("%.2f", hardness)), true);
+			player.displayClientMessage(Component.translatable(key, String.format("%.2f", hardness)), true);
 		}
 		return super.useOn(ctx);
 	}

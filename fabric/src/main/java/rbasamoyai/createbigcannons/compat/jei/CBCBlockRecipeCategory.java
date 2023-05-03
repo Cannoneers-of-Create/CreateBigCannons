@@ -34,8 +34,6 @@ public abstract class CBCBlockRecipeCategory<T extends BlockRecipe> implements I
 	@Override public Component getTitle() { return title; }
 	@Override public IDrawable getBackground() { return this.background; }
 	@Override public IDrawable getIcon() { return this.icon; }
-	@Override public ResourceLocation getUid() { return this.type.getUid(); }
-	@Override public Class<? extends T> getRecipeClass() { return this.type.getRecipeClass(); }
 	@Override public RecipeType<T> getRecipeType() { return this.type; }
 	
 	public void registerRecipes(IRecipeRegistration reg) {

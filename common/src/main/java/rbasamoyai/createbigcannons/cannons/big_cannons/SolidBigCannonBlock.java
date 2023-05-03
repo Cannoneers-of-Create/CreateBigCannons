@@ -9,6 +9,8 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEndBl
 
 import javax.annotation.Nullable;
 
+import javax.annotation.Nullable;
+
 public abstract class SolidBigCannonBlock<TE extends BigCannonEndBlockEntity> extends BigCannonBaseBlock implements ITE<TE> {
 	
 	public SolidBigCannonBlock(Properties properties, BigCannonMaterial material) {

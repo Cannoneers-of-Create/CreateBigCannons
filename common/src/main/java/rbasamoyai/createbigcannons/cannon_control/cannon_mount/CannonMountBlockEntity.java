@@ -10,7 +10,7 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -356,7 +356,7 @@ public class CannonMountBlockEntity extends KineticTileEntity implements IDispla
 	@Override public AssemblyException getLastAssemblyException() { return this.lastException; }
 	
 	public static AssemblyException cannonBlockOutsideOfWorld(BlockPos pos) {
-		return new AssemblyException(new TranslatableComponent("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
+		return new AssemblyException(Component.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
 	}
 
 	public Vec3 getInteractionLocation() {

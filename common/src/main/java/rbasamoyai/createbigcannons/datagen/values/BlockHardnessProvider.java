@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.datagen.values;
 import com.google.gson.JsonObject;
 import com.simibubi.create.AllBlocks;
 import net.minecraft.core.Registry;
+import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -11,6 +12,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import rbasamoyai.createbigcannons.CBCTags;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -56,6 +58,11 @@ public class BlockHardnessProvider extends CBCDataProvider {
 	protected final void setHardness(Block block, double hardness) { this.blocks.put(block, hardness); }
 	protected final void setHardness(TagKey<Block> tag, double hardness) { this.tags.put(tag, hardness); }
 	protected final void setHardness(ResourceLocation loc, double hardness) { this.locs.put(loc, hardness); }
+
+	@Override
+	public void run(CachedOutput output) throws IOException {
+
+	}
 
 	@Override public String getName() { return "Custom block hardness: " + this.modid; }
 
