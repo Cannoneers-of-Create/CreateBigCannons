@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech;
 
 import com.simibubi.create.content.contraptions.components.structureMovement.ControlledContraptionEntity;
+import com.simibubi.create.content.contraptions.components.structureMovement.TranslatingContraption;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -33,7 +34,8 @@ public class SlidingBreechBlockEntity extends AbstractBigCannonBreechBlockEntity
 	}
 	
 	public boolean canClose() {
-		return this.cannonBehavior.block().state.isAir() && this.level.getEntitiesOfClass(ControlledContraptionEntity.class, new AABB(this.worldPosition)).isEmpty();
+		return this.cannonBehavior.block().state.isAir() && this.level.getEntitiesOfClass(ControlledContraptionEntity.class, new AABB(this.worldPosition))
+				.stream().noneMatch(cce -> cce.getContraption() instanceof TranslatingContraption);
 	}
 	
 	public float getOpeningSpeed() {
