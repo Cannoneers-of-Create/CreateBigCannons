@@ -14,7 +14,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 public class FilterItemMixin {
 
 	@Inject(method = "test(Lnet/minecraft/world/level/Level;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/world/item/ItemStack;Z)Z",
-			at = @At("HEAD"), cancellable = true, remap = false)
+			at = @At("HEAD"), cancellable = true)
 	private static void createbigcannons$test(Level level, ItemStack stack, ItemStack filter, boolean matchNbt, CallbackInfoReturnable<Boolean> cir) {
 		if (filter.isEmpty() || matchNbt || !CBCBlocks.BIG_CARTRIDGE.is(filter.getItem()) || BigCartridgeBlockItem.getPower(filter) != 0) return;
 		cir.setReturnValue(CBCBlocks.BIG_CARTRIDGE.is(stack.getItem()) && BigCartridgeBlockItem.getPower(stack) == 0);
