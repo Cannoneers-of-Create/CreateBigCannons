@@ -38,7 +38,7 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 		setPropertyWithSecondary(CBCEntityTypes.BAG_OF_GRAPESHOT.get(),0, 0,1, true, false,
 				5, 0.05, 25);
 
-		standardAutocannonProjectile(CBCEntityTypes.AP_AUTOCANNON.get(), 5, 12);
+		standardAutocannonProjectile(CBCEntityTypes.AP_AUTOCANNON.get(), 5, 6);
 		setPropertyWithSecondary(CBCEntityTypes.FLAK_AUTOCANNON.get(),2, 0,1, false, false,
 				5, 0.25, 15);
 

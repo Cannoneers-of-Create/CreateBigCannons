@@ -15,6 +15,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -134,7 +135,13 @@ public class WormItem extends Item implements HandloadingTool {
 			} else if (i == 0) {
 				if (!level.isClientSide) {
 					ItemStack stack = info1.state.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
-					if (!stack.isEmpty()) player.addItem(stack);
+					if (!player.addItem(stack) && !player.isCreative()) {
+						ItemEntity item = player.drop(stack, false);
+						if (item != null) {
+							item.setNoPickUpDelay();
+							item.setOwner(player.getUUID());
+						}
+					}
 				}
 			} else {
 				return;

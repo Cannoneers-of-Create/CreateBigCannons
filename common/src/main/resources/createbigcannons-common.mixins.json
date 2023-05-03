@@ -11,6 +11,7 @@
     "BearingCannonDrillFinderMixin",
     "BeltTileEntityMixin",
     "EntityMixin",
+    "FilterItemMixin",
     "ServerEntityMixin"
   ],
   "injectors": {

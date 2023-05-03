@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -64,7 +65,16 @@ public class CannonCarriageBlock extends Block implements IWrenchable, ITE<Canno
 		if (state.getValue(SADDLED)) {
 			if (stack.isEmpty()) {
 				level.setBlock(pos, state.setValue(SADDLED, false), 11);
-				if (!level.isClientSide) player.addItem(Items.SADDLE.getDefaultInstance());
+				if (!level.isClientSide) {
+					ItemStack resultStack = Items.SADDLE.getDefaultInstance();
+					if (!player.addItem(resultStack) && !player.isCreative()) {
+						ItemEntity item = player.drop(resultStack, false);
+						if (item != null) {
+							item.setNoPickUpDelay();
+							item.setOwner(player.getUUID());
+						}
+					}
+				}
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
 		} else {

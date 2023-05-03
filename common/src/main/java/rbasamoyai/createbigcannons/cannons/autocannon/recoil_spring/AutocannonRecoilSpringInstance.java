@@ -23,24 +23,30 @@ import java.util.Map;
 
 public class AutocannonRecoilSpringInstance extends BlockEntityInstance<AutocannonRecoilSpringBlockEntity> implements DynamicInstance {
 
-    private final ModelData spring;
+    private ModelData spring;
     private final Map<BlockPos, OrientedData> blocks = new HashMap<>();
 
-    private final Direction facing;
+    private Direction facing;
 
     public AutocannonRecoilSpringInstance(MaterialManager manager, AutocannonRecoilSpringBlockEntity blockEntity) {
         super(manager, blockEntity);
+    }
+
+    @Override
+    public void init() {
+        super.init();
 
         this.facing = this.blockState.getValue(BlockStateProperties.FACING);
 
-        this.spring = manager.defaultSolid()
+        this.spring = this.materialManager.defaultSolid()
                 .material(Materials.TRANSFORMED)
                 .getModel(this.getPartialModelForState(), this.blockState, this.facing)
                 .createInstance();
 
+        this.blocks.clear();
         for (Map.Entry<BlockPos, BlockState> entry : this.blockEntity.toAnimate.entrySet()) {
             if (entry.getValue() == null) continue;
-            this.blocks.put(entry.getKey(), manager.defaultCutout()
+            this.blocks.put(entry.getKey(), this.materialManager.defaultCutout()
                     .material(Materials.ORIENTED)
                     .getModel(entry.getValue())
                     .createInstance());
@@ -94,6 +100,7 @@ public class AutocannonRecoilSpringInstance extends BlockEntityInstance<Autocann
     @Override
     protected void remove() {
         this.spring.delete();
+        for (OrientedData block : this.blocks.values()) block.delete();
     }
 
     private PartialModel getPartialModelForState() {
