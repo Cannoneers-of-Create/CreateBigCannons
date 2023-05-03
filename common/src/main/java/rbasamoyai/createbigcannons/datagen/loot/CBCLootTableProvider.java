@@ -22,8 +22,8 @@ import java.util.function.Supplier;
 
 public class CBCLootTableProvider extends RegistrateLootTableProvider {
 	
-	public CBCLootTableProvider(AbstractRegistrate<?> reg, FabricDataGenerator gen) {
-		super(reg, gen);
+	public CBCLootTableProvider(AbstractRegistrate<?> reg, DataGenerator gen) {
+		super(reg, (FabricDataGenerator) gen);
 	}
 	
 	@Override

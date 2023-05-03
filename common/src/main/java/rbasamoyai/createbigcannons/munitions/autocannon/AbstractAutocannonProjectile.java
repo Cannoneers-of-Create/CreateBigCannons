@@ -24,7 +24,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	protected AbstractAutocannonProjectile(EntityType<? extends AbstractAutocannonProjectile> type, Level level) {
 		super(type, level);
 		this.ageRemaining = 60;
-		this.damage = 15;
 	}
 
 	@Override

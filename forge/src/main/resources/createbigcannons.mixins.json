@@ -9,7 +9,10 @@
     "CBCLiquidBlockMixin",
     "CBCFlowingFluidMixin",
     "AbstractCannonProjectileMixin",
-    "CannonMountMixin"
+    "CannonMountMixin",
+    "QuickfiringBreechPointMixin",
+    "MountedAutocannonContraptionMixin",
+    "PitchOrientedContraptionEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

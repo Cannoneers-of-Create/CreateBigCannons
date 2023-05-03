@@ -15,6 +15,7 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCClientCommon;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechBlockEntity;
 
 public class SlidingBreechBlockEntityRenderer extends KineticTileEntityRenderer {
 

@@ -28,7 +28,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
@@ -79,7 +79,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 				
 				if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info = cbe.cannonBehavior().block();
-					if (info == null || info.state == null || info.state.isAir()) continue;
+					if (info.state == null || info.state.isAir()) continue;
 				}
 				k = i;
 				break;
@@ -100,7 +100,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 			if (be instanceof IBigCannonBlockEntity cbe) {
 				encounteredCannon = true;
 				StructureBlockInfo info = cbe.cannonBehavior().block();
-				if (info == null || info.state.isAir()) break;
+				if (info.state.isAir()) break;
 				toPush.add(info);
 			} else {
 				CompoundTag tag = null;
@@ -128,11 +128,11 @@ public class RamRodItem extends Item implements HandloadingTool {
 
 			StructureBlockInfo info = toPush.get(i);
 			BlockPos pos2 = pos1.relative(pushDirection);
-			BlockEntity be2 = level.getBlockEntity(pos2);
-			if (be2 instanceof IBigCannonBlockEntity cbe) {
+			if (level.getBlockEntity(pos2) instanceof IBigCannonBlockEntity cbe) {
 				cbe.cannonBehavior().tryLoadingBlock(info);
 			} else {
 				level.setBlock(pos2, info.state, Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);
+				BlockEntity be2 = level.getBlockEntity(pos2);
 				CompoundTag tag = info.nbt;
 				if (be2 != null) tag = NBTProcessors.process(be2, tag, false);
 				if (be2 != null && tag != null) {
@@ -164,7 +164,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 
 				if (contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info1 = cbe.cannonBehavior().block();
-					if (info1 == null || info1.state.isAir()) continue;
+					if (info1.state.isAir()) continue;
 				}
 				k = i;
 				break;
@@ -182,7 +182,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 			if (!(contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)) break;
 			encounteredCannon = true;
 			StructureBlockInfo info1 = cbe.cannonBehavior().block();
-			if (info1 == null || info1.state.isAir()) break;
+			if (info1.state.isAir()) break;
 			toPush.add(info1);
 			if (toPush.size() > maxCount) return;
 		}

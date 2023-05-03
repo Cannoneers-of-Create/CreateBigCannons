@@ -124,7 +124,7 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		return data.state.getValue(FACING) == dir && getPowerFromData(data) > 0;
 	}
 
-	private static float getPowerFromData(StructureBlockInfo data) {
+	public static float getPowerFromData(StructureBlockInfo data) {
 		return data.nbt == null ? 0 : data.nbt.getInt("Power");
 	}
 

@@ -7,12 +7,12 @@ import net.minecraft.core.Direction;
 
 public class CBCContraptionRotationState extends ContraptionRotationState {
 
-	private final AbstractPitchOrientedContraptionEntity entity;
+	private final PitchOrientedContraptionEntity entity;
 	private Matrix3d matrix;
 	private float yaw;
 	private float yawOffset;
 	
-	public CBCContraptionRotationState(AbstractPitchOrientedContraptionEntity entity) {
+	public CBCContraptionRotationState(PitchOrientedContraptionEntity entity) {
 		this.entity = entity;
 		if (entity.pitch != 0 & entity.yaw != 0) {
 			this.yawOffset = this.entity.yaw;

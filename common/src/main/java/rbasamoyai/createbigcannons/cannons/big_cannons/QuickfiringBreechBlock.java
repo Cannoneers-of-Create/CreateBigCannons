@@ -32,6 +32,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
+import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -79,7 +81,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 
 		if (stack.isEmpty()) {
 			if (level instanceof ServerLevel slevel) {
-				if (!breech.onCooldown()) {
+				if (!breech.onInteractionCooldown()) {
 					SoundEvent sound = breech.getOpenProgress() == 0 ? SoundEvents.IRON_TRAPDOOR_OPEN : SoundEvents.IRON_TRAPDOOR_CLOSE;
 					level.playSound(null, player.blockPosition(), sound, SoundSource.BLOCKS, 1.0f, 1.0f);
 				}
@@ -110,7 +112,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 			}
 			return true;
 		}
-		if (!breech.isOpen() || breech.onCooldown()) return false;
+		if (!breech.isOpen() || breech.onInteractionCooldown()) return false;
 
 		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
 			BlockEntity be1 = cannon.presentTileEntities.get(nextPos);

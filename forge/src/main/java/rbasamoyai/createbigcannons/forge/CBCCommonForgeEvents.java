@@ -5,11 +5,12 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.BlockEvent.BreakEvent;
-import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
+import rbasamoyai.createbigcannons.forge.events.OnCannonBreakBlockImpl;
 
 public class CBCCommonForgeEvents {
 
@@ -21,28 +22,29 @@ public class CBCCommonForgeEvents {
 		forgeEventBus.addListener(CBCCommonForgeEvents::onServerWorldTick);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onDatapackSync);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onAddReloadListeners);
+		forgeEventBus.register(OnCannonBreakBlockImpl.class);
 	}
 
-	public static void onServerWorldTick(TickEvent.WorldTickEvent evt) {
+	public static void onServerWorldTick(TickEvent.LevelTickEvent evt) {
 		if (evt.phase == TickEvent.Phase.START) return;
 		if (evt.side == LogicalSide.CLIENT) return;
-		CBCCommonEvents.serverLevelTickEnd(evt.world);
+		CBCCommonEvents.serverLevelTickEnd(evt.level);
 	}
 
-	public static void onPlayerBreakBlock(BreakEvent event) {
-		CBCCommonEvents.onPlayerBreakBlock(event.getState(), event.getWorld(), event.getPos(), event.getPlayer());
+	public static void onPlayerBreakBlock(BlockEvent.BreakEvent event) {
+		CBCCommonEvents.onPlayerBreakBlock(event.getState(), event.getLevel(), event.getPos(), event.getPlayer());
 	}
 
 	public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent evt) {
-		if (evt.getPlayer() instanceof ServerPlayer player) CBCCommonEvents.onPlayerLogin(player);
+		if (evt.getEntity() instanceof ServerPlayer player) CBCCommonEvents.onPlayerLogin(player);
 	}
 
 	public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent evt) {
-		CBCCommonEvents.onPlayerLogout(evt.getPlayer());
+		CBCCommonEvents.onPlayerLogout(evt.getEntity());
 	}
 
-	public static void onLoadWorld(WorldEvent.Load evt) {
-		CBCCommonEvents.onLoadLevel(evt.getWorld());
+	public static void onLoadWorld(LevelEvent.Load evt) {
+		CBCCommonEvents.onLoadLevel(evt.getLevel());
 	}
 
 	public static void onDatapackSync(OnDatapackSyncEvent evt) {

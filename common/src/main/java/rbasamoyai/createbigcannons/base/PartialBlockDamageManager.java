@@ -96,7 +96,7 @@ public class PartialBlockDamageManager {
 			int newPart = (int) Math.floor(this.blockDamage.get(pos) * hardnessRec);
 
 			if (newPart >= 10) {
-				level.destroyBlock(pos, false);
+				CBCCommonEvents.onCannonBreakBlock(level, pos);
 				this.blockDamage.remove(pos);
 			} else if (newPart - oldPart > 0) {
 				level.destroyBlockProgress(-1, pos, newPart);

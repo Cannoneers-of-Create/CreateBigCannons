@@ -8,7 +8,6 @@ public class APAutocannonProjectile extends AbstractAutocannonProjectile {
 
     public APAutocannonProjectile(EntityType<? extends APAutocannonProjectile> type, Level level) {
         super(type, level);
-        this.setProjectileMass(12);
     }
 
 }

@@ -36,10 +36,10 @@ import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockItem;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBreechBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockItem;
-import rbasamoyai.createbigcannons.cannons.big_cannons.SlidingBreechBlockGen;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillGen;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderGen;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
@@ -522,7 +522,8 @@ public class CBCBuilderTransformers {
 				.add(LootItem.lootTableItem(u)
 					.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
 					.apply(additionalCopyData.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-						.copy("Fuze", "BlockEntityTag.Fuze"))))));
+						.copy("Fuze", "BlockEntityTag.Fuze")
+						.copy("id", "BlockEntityTag.id"))))));
 	}
 	
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot() {

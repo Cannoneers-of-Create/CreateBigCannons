@@ -1,13 +1,13 @@
 package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.event.RegistryEvent.MissingMappings.Mapping;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.MissingMappingsEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -15,7 +15,9 @@ import rbasamoyai.createbigcannons.index.CBCItems;
 import java.util.HashMap;
 import java.util.Map;
 
-@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+import static rbasamoyai.createbigcannons.CreateBigCannons.MOD_ID;
+
+@Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CBCRemapperForge {
 	
 	private static final Map<String, ResourceLocation> REMAP = new HashMap<>();
@@ -29,9 +31,9 @@ public class CBCRemapperForge {
 	}
 	
 	@SubscribeEvent
-	public static void onRemapItem(RegistryEvent.MissingMappings<Item> event) {
-		for (Mapping<Item> mapping : event.getMappings(CreateBigCannons.MOD_ID)) {
-			ResourceLocation key = mapping.key;
+	public static void onRemapItem(MissingMappingsEvent event) {
+		for (MissingMappingsEvent.Mapping<Item> mapping : event.getMappings((ResourceKey<? extends Registry<Item>>) event.getKey(), MOD_ID)) {
+			ResourceLocation key = mapping.getKey();
 			String path = key.getPath();
 			ResourceLocation remapLoc = REMAP.get(path);
 			if (remapLoc == null) continue;
@@ -47,9 +49,9 @@ public class CBCRemapperForge {
 	}
 	
 	@SubscribeEvent
-	public static void onRemapBlock(RegistryEvent.MissingMappings<Block> event) {
-		for (Mapping<Block> mapping : event.getMappings(CreateBigCannons.MOD_ID)) {
-			ResourceLocation key = mapping.key;
+	public static void onRemapBlock(MissingMappingsEvent event) {
+		for (MissingMappingsEvent.Mapping<Block> mapping : event.getMappings((ResourceKey<? extends Registry<Block>>) event.getKey(), MOD_ID)) {
+			ResourceLocation key = mapping.getKey();
 			String path = key.getPath();
 			ResourceLocation remapLoc = REMAP.get(path);
 			if (remapLoc == null) continue;

@@ -6,11 +6,10 @@ import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.world.entity.EntityType.EntityFactory;
 import net.minecraft.world.entity.MobCategory;
-import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageRenderer;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.multiloader.EntityTypeConfigurator;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonProjectile;
@@ -38,8 +37,8 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCEntityTypes {
 
-	public static final EntityEntry<AbstractPitchOrientedContraptionEntity> PITCH_ORIENTED_CONTRAPTION = REGISTRATE
-			.entity("pitch_contraption", IndexPlatform::makePitchContraption, MobCategory.MISC)
+	public static final EntityEntry<PitchOrientedContraptionEntity> PITCH_ORIENTED_CONTRAPTION = REGISTRATE
+			.entity("pitch_contraption", PitchOrientedContraptionEntity::new, MobCategory.MISC)
 			.properties(configure(c -> c.trackingRange(16)
 					.updateInterval(3)
 					.updateVelocity(true)
@@ -76,8 +75,8 @@ public class CBCEntityTypes {
 			.renderer(() -> NoopRenderer::new)
 			.register();
 
-	public static final EntityEntry<AbstractCannonCarriageEntity> CANNON_CARRIAGE = REGISTRATE
-			.entity("cannon_carriage", IndexPlatform::makeCannonCarriage, MobCategory.MISC)
+	public static final EntityEntry<CannonCarriageEntity> CANNON_CARRIAGE = REGISTRATE
+			.entity("cannon_carriage", CannonCarriageEntity::new, MobCategory.MISC)
 			.properties(configure(c -> c.trackingRange(8)
 					.fireImmune()
 					.updateVelocity(true)

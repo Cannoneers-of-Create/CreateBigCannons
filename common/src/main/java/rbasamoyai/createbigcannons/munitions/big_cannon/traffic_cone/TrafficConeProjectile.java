@@ -10,13 +10,12 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.CBCDamageSource;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 public class TrafficConeProjectile extends AbstractBigCannonProjectile {
 
 	public TrafficConeProjectile(EntityType<? extends TrafficConeProjectile> type, Level level) {
 		super(type, level);
-		this.setProjectileMass(36);
-		this.damage = 100;
 	}
 
 	@Override
@@ -24,7 +23,11 @@ public class TrafficConeProjectile extends AbstractBigCannonProjectile {
 		return CBCBlocks.TRAFFIC_CONE.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);
 	}
 
-	private static final DamageSource TRAFFIC_CONE = new CBCDamageSource(CreateBigCannons.MOD_ID + ".traffic_cone").bypassArmor();
-	@Override protected DamageSource getEntityDamage() { return TRAFFIC_CONE; }
+	@Override
+	protected DamageSource getEntityDamage() {
+		CBCDamageSource src = new CBCDamageSource(CreateBigCannons.MOD_ID + ".traffic_cone");
+		if (this.getProperties().ignoresEntityArmor()) src.bypassArmor();
+		return src;
+	}
 
 }

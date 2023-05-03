@@ -22,7 +22,6 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 
 	public FluidShellProjectile(EntityType<? extends FluidShellProjectile> type, Level level) {
 		super(type, level);
-		this.setProjectileMass(8);
 	}
 
 	@Override

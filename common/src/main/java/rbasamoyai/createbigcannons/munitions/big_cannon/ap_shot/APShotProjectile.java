@@ -12,7 +12,6 @@ public class APShotProjectile extends AbstractBigCannonProjectile {
 
 	public APShotProjectile(EntityType<? extends APShotProjectile> type, Level level) {
 		super(type, level);
-		this.setProjectileMass(36);
 	}
 
 	@Override

@@ -5,11 +5,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DisintegratingBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
+import rbasamoyai.createbigcannons.munitions.config.ShrapnelProperties;
 
 public class GrapeshotCannonProjectile extends DisintegratingBigCannonProjectile {
 
@@ -19,10 +19,9 @@ public class GrapeshotCannonProjectile extends DisintegratingBigCannonProjectile
 	
 	@Override
 	protected void disintegrate() {
-		int count = CBCConfigs.SERVER.munitions.grapeshotCount.get();
-		float spread = CBCConfigs.SERVER.munitions.grapeshotSpread.getF();
-		float damage = CBCConfigs.SERVER.munitions.grapeshotDamage.getF();
-		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.GRAPESHOT.get(), this.position(), this.getDeltaMovement(), count, spread, damage);
+		ShrapnelProperties properties = this.getProperties().shrapnel();
+		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.GRAPESHOT.get(), this.position(), this.getDeltaMovement(),
+				properties.count(), properties.spread(), (float) properties.damage());
 	}
 
 	@Override
