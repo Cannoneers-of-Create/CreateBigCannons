@@ -25,10 +25,9 @@ public abstract class QuickfiringBreechPointMixin extends ArmInteractionPoint {
 		QuickfiringBreechPoint self = (QuickfiringBreechPoint) (Object) this;
 		if (!(this.level.getBlockEntity(this.pos) instanceof CannonMountBlockEntity mount)) return stack;
 		PitchOrientedContraptionEntity poce = mount.getContraption();
-		if (poce == null) return stack;
-		MountedBigCannonContraption cannon = (MountedBigCannonContraption) poce.getContraption();
-		return self.getInsertedResultAndDoSomething(stack, cannon,
-				(s, m) -> loadProjectile(s, m, simulate, poce, cannon), (s, m) -> loadCartridge(s, m, simulate, poce, cannon));
+		if (poce == null || !(poce.getContraption() instanceof MountedBigCannonContraption bigCannon)) return stack;
+		return self.getInsertedResultAndDoSomething(stack, bigCannon,
+				(s, m) -> loadProjectile(s, m, simulate, poce, bigCannon), (s, m) -> loadCartridge(s, m, simulate, poce, bigCannon));
 	}
 
 }
