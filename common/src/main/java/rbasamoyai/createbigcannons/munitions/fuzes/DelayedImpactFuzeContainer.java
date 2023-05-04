@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.munitions.fuzes;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
@@ -24,10 +23,5 @@ public class DelayedImpactFuzeContainer extends AbstractFuzeContainer {
 	protected DelayedImpactFuzeContainer(MenuType<? extends AbstractFuzeContainer> type, int windowId, ContainerData data, ItemStack stackToRender) {
 		super(type, windowId, data, stackToRender);
 	}
-
-	// TODO: Implement this
-	@Override
-	public ItemStack quickMoveStack(Player player, int index) {
-		return null;
-	}
+	
 }

@@ -4,6 +4,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,12 +27,12 @@ public class AutocannonCartridgeItem extends Item {
         super.appendHoverText(stack, level, tooltip, flag);
         ItemStack round = getProjectileStack(stack);
         if (!round.isEmpty()) {
-            tooltip.add(Component.translatable("item.minecraft.crossbow.projectile").append(" ").append(round.getDisplayName()));
+            tooltip.add(new TranslatableComponent("item.minecraft.crossbow.projectile").append(" ").append(round.getDisplayName()));
             if (flag.isAdvanced() && round.getItem() instanceof AutocannonRoundItem) {
                 List<Component> subTooltip = new ArrayList<>();
                 round.getItem().appendHoverText(round, level, subTooltip, flag);
                 for (int i = 0; i < subTooltip.size(); ++i) {
-                    subTooltip.set(i, Component.literal("  ").append(subTooltip.get(i)).withStyle(ChatFormatting.GRAY));
+                    subTooltip.set(i, new TextComponent("  ").append(subTooltip.get(i)).withStyle(ChatFormatting.GRAY));
                 }
                 tooltip.addAll(subTooltip);
             }

@@ -4,7 +4,7 @@ import dev.architectury.patchedmixin.staticmixin.spongepowered.asm.mixin.Shadow;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraftforge.fluids.FluidType;
+import net.minecraftforge.fluids.FluidAttributes;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,14 +19,13 @@ public abstract class CBCFlowingFluidMixin extends FlowingFluid {
 	@Shadow @Final protected SoundEvent fillSound;
 	@Shadow @Final protected SoundEvent emptySound;
 
-	// TODO: Fix this mixin
-//	@NotNull
-//	@Override
-//	protected FluidType createAttributes() {
-//		return FluidType.builder(this.stillTex, this.flowingTex)
-//				.color(this.color)
-//				.sound(this.fillSound, this.emptySound)
-//				.build(this);
-//	}
+	@NotNull
+	@Override
+	protected FluidAttributes createAttributes() {
+		return FluidAttributes.builder(this.stillTex, this.flowingTex)
+				.color(this.color)
+				.sound(this.fillSound, this.emptySound)
+				.build(this);
+	}
 
 }

@@ -11,7 +11,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
@@ -33,7 +32,7 @@ public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntity
 
 	@Override
 	protected void renderPreview(PoseStack ms, float alpha, VertexConsumer vCons, BlockState state, int light, BlockPos pos) {
-		RandomSource rand = RandomSource.create();
+		Random rand = new Random();
 		BakedModel model = this.dispatcher.getBlockModel(state);
 
 		for (Direction dir : Direction.values()) {
@@ -61,8 +60,7 @@ public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntity
 				f2 = 1.0F;
 			}
 
-			// TODO: Figure out if this is true or false for the new putBulkData method
-			consumer.putBulkData(pose, quad, f, f1, f2, alpha, packedLight, OverlayTexture.NO_OVERLAY, false);
+			consumer.putBulkData(pose, quad, f, f1, f2, alpha, packedLight, OverlayTexture.NO_OVERLAY);
 		}
 	}
 

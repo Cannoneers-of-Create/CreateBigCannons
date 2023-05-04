@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -21,15 +20,15 @@ public class CBCDatagenRoot {
 		if (server) {
 			BlockRecipeProvider.registerAll(gen);
 			CBCCraftingRecipeProvider.register();
-			gen.addProvider(true, new CBCLootTableProvider(CreateBigCannons.REGISTRATE, gen));
-			gen.addProvider(true, new BlockHardnessProvider(CreateBigCannons.MOD_ID, gen));
-			gen.addProvider(true, new MunitionPropertiesProvider(CreateBigCannons.MOD_ID, gen));
+			gen.addProvider(new CBCLootTableProvider(CreateBigCannons.REGISTRATE, gen));
+			gen.addProvider(new BlockHardnessProvider(CreateBigCannons.MOD_ID, gen));
+			gen.addProvider(new MunitionPropertiesProvider(CreateBigCannons.MOD_ID, gen));
 			IndexPlatform.addSidedDataGenerators(gen);
 		}
 		if (client) {
 			CBCLangGen.prepare();
-			gen.addProvider(true, new CBCBlockPartialsGen(gen, helper));
-			gen.addProvider(true, CBCSoundEvents.provider(gen));
+			gen.addProvider(new CBCBlockPartialsGen(gen, helper));
+			gen.addProvider(CBCSoundEvents.provider(gen));
 			CBCSoundEvents.registerLangEntries();
 			CBCPonderTags.register();
 			CBCPonderIndex.register();
