@@ -1,14 +1,12 @@
 package rbasamoyai.createbigcannons.datagen.values;
 
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
-import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
 import org.slf4j.Logger;
 
 import java.io.BufferedWriter;
@@ -21,7 +19,7 @@ public abstract class CBCDataProvider implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-	private static final HashFunction SHA1 = Hashing.sha1();
+
 	private final DataGenerator gen;
 	protected final String modid;
 	protected final String name;
@@ -39,37 +37,37 @@ public abstract class CBCDataProvider implements DataProvider {
 	}
 
 	@Override
-	public void run(CachedOutput cache) throws IOException {
+	public final void run(HashCache cache) throws IOException {
 		this.generateData();
 
 		JsonObject obj = new JsonObject();
 		this.write(obj);
 
-		// TODO: Rewrite this uses old Hashing Functions that are deprecated usage has changed.
 		Path path = this.gen.getOutputFolder().resolve("data/" + this.modid + "/" + this.folder + "/" + this.name + ".json");
-//		String s1 = SHA1.hashUnencodedChars(s);
-//		if (!Objects.equals(SHA1.hashUnencodedChars(path), s1) || !Files.exists(path)) {
-//			Files.createDirectories(path.getParent());
-//			BufferedWriter writer = Files.newBufferedWriter(path);
-//
-//			try {
-//				writer.write(s);
-//			} catch (Throwable throwable) {
-//				if (writer != null) {
-//					try {
-//						writer.close();
-//					} catch (Throwable throwable1) {
-//						throwable.addSuppressed(throwable1);
-//					}
-//				}
-//				throw throwable;
-//			}
-//
-//			if (writer != null) {
-//				writer.close();
-//			}
-//		}
-//		cache.writeIfNeeded(path, s1);
+		String s = GSON.toJson(obj);
+		String s1 = SHA1.hashUnencodedChars(s).toString();
+		if (!Objects.equals(cache.getHash(path), s1) || !Files.exists(path)) {
+			Files.createDirectories(path.getParent());
+			BufferedWriter writer = Files.newBufferedWriter(path);
+
+			try {
+				writer.write(s);
+			} catch (Throwable throwable) {
+				if (writer != null) {
+					try {
+						writer.close();
+					} catch (Throwable throwable1) {
+						throwable.addSuppressed(throwable1);
+					}
+				}
+				throw throwable;
+			}
+
+			if (writer != null) {
+				writer.close();
+			}
+		}
+		cache.putNew(path, s1);
 	}
 
 	protected abstract void generateData();

@@ -6,7 +6,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -81,7 +80,7 @@ public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlo
 	}
 	
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
 		boolean prevAssemblyPowered = state.getValue(ASSEMBLY_POWERED);
 		boolean prevFirePowered = state.getValue(FIRE_POWERED);
 		boolean assemblyPowered = this.hasNeighborSignal(level, state, pos, ASSEMBLY_POWERED);

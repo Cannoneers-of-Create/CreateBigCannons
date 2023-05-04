@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -237,7 +236,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		float stress = 0;
 		float smokeScale = 0;
 		int barrelTravelled = 0;
-		RandomSource rand = level.getRandom();
+		Random rand = level.getRandom();
 
 		boolean failed = false;
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
@@ -398,22 +397,22 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		this.blocks.put(oldInfo.pos, consumedInfo);
 	}
 	
-	private static boolean rollSquib(RandomSource random) {
+	private static boolean rollSquib(Random random) {
 		float f = CBCConfigs.SERVER.failure.squibChance.getF();
 		return f != 0 && random.nextFloat() <= f;
 	}
 	
-	private static boolean rollBarrelBurst(RandomSource random) {
+	private static boolean rollBarrelBurst(Random random) {
 		float f = CBCConfigs.SERVER.failure.barrelChargeBurstChance.getF();
 		return f != 0 && random.nextFloat() <= f;
 	}
 	
-	private static boolean rollOverloadBurst(RandomSource random) {
+	private static boolean rollOverloadBurst(Random random) {
 		float f = CBCConfigs.SERVER.failure.overloadBurstChance.getF();
 		return f != 0 && random.nextFloat() <= f;
 	}
 	
-	private static boolean rollFailToIgnite(RandomSource random) {
+	private static boolean rollFailToIgnite(Random random) {
 		float f = CBCConfigs.SERVER.failure.interruptedIgnitionChance.getF();
 		return f != 0 && random.nextFloat() <= f;
 	}

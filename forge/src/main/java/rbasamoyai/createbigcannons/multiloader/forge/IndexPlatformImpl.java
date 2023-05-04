@@ -122,12 +122,12 @@ public class IndexPlatformImpl {
 	public static float getFluidConversionFactor() { return 1; }
 
 	public static void addSidedDataGenerators(DataGenerator gen) {
-		gen.addProvider(true, new CBCCompactingRecipeProvider(gen));
-		gen.addProvider(true, new MeltingRecipeProvider(gen));
-		gen.addProvider(true, new CBCMixingRecipeProvider(gen));
-		gen.addProvider(true, new CBCMillingRecipeProvider(gen));
-		gen.addProvider(true, new CBCSequencedAssemblyRecipeProvider(gen));
-		gen.addProvider(true, new CBCCuttingRecipeProvider(gen));
+		gen.addProvider(new CBCCompactingRecipeProvider(gen));
+		gen.addProvider(new MeltingRecipeProvider(gen));
+		gen.addProvider(new CBCMixingRecipeProvider(gen));
+		gen.addProvider(new CBCMillingRecipeProvider(gen));
+		gen.addProvider(new CBCSequencedAssemblyRecipeProvider(gen));
+		gen.addProvider(new CBCCuttingRecipeProvider(gen));
 	}
 
 	public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { return FluidIngredient.fromFluid(fluid, amount); }

@@ -11,8 +11,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -43,10 +43,10 @@ public class CBCTooltip {
 		String[] holdDesc = Lang.translateDirect("tooltip.holdForDescription", "$").getString().split("\\$");
 		if (holdDesc.length < 2) return;
 		Component keyShift = Lang.translateDirect("tooltip.keyShift");
-		MutableComponent tabBuilder = Component.empty();
-		tabBuilder.append(Component.literal(holdDesc[0]).withStyle(ChatFormatting.DARK_GRAY));
+		MutableComponent tabBuilder = new TextComponent("");
+		tabBuilder.append(new TextComponent(holdDesc[0]).withStyle(ChatFormatting.DARK_GRAY));
 		tabBuilder.append(keyShift.plainCopy().withStyle(desc ? ChatFormatting.WHITE : ChatFormatting.GRAY));
-		tabBuilder.append(Component.literal(holdDesc[1]).withStyle(ChatFormatting.DARK_GRAY));
+		tabBuilder.append(new TextComponent(holdDesc[1]).withStyle(ChatFormatting.DARK_GRAY));
 		tooltip.add(tabBuilder);
 	}
 
@@ -58,7 +58,7 @@ public class CBCTooltip {
 			case 4, 5 -> ChatFormatting.YELLOW;
 			default -> canBeInvalid ? ChatFormatting.DARK_GRAY : value < 0 ? ChatFormatting.RED : ChatFormatting.YELLOW;
 		};
-		return Component.literal(" " + ItemDescription.makeProgressBar(5, outOfFive)).withStyle(color);
+		return new TextComponent(" " + ItemDescription.makeProgressBar(5, outOfFive)).withStyle(color);
 	}
 
 	public static ItemDescription.Palette getPalette(Level level, ItemStack stack) {
@@ -77,9 +77,9 @@ public class CBCTooltip {
 		Minecraft mc = Minecraft.getInstance();
 		boolean hasGoggles = GogglesItem.isWearingGoggles(mc.player);
 		String rootKey = "block." + CreateBigCannons.MOD_ID + ".cannon.tooltip";
-		tooltip.add(Component.literal(I18n.get(rootKey + ".materialProperties")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(rootKey + ".materialProperties")).withStyle(ChatFormatting.GRAY));
 
-		tooltip.add(Component.literal(" " + I18n.get(rootKey + ".strength")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".strength")).withStyle(ChatFormatting.GRAY));
 		float rawStrength = PowderChargeBlock.getPowderChargeEquivalent(material.maxSafeBaseCharges());
 
 		if (hasGoggles) {
@@ -91,7 +91,7 @@ public class CBCTooltip {
 			tooltip.add(getNoGogglesMeter(strength, false, true));
 		}
 
-		tooltip.add(Component.literal(" " + I18n.get(rootKey + ".squibRatio")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".squibRatio")).withStyle(ChatFormatting.GRAY));
 		if (hasGoggles) {
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".squibRatio.goggles", material.squibRatioNum(), material.squibRatioDem()), palette.color, palette.hColor, 2));
 		} else {
@@ -99,7 +99,7 @@ public class CBCTooltip {
 			tooltip.add(getNoGogglesMeter(squibRatio < 1d ? 0 : Mth.ceil(material.squibRatio() * 5d / 3d), false, true));
 		}
 
-		tooltip.add(Component.literal(" " + I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
 		float weightImpact = material.weight();
 		if (hasGoggles) {
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weightImpact.goggles", String.format("%.2f", weightImpact)), palette.color, palette.hColor, 2));
@@ -107,13 +107,13 @@ public class CBCTooltip {
 			tooltip.add(getNoGogglesMeter(weightImpact < 1d ? 0 : (int)(weightImpact * 0.5f), true, true));
 		}
 
-		tooltip.add(Component.literal(" " + I18n.get(rootKey + ".onFailure")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".onFailure")).withStyle(ChatFormatting.GRAY));
 		String failKey = material.failureMode() == FailureMode.RUPTURE ? ".onFailure.rupture" : ".onFailure.fragment";
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + failKey), palette.color, palette.hColor, 1));
 
 		if (block.defaultBlockState().is(CBCTags.BlockCBC.WEAK_CANNON_END) && CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1) {
 			int weakCharges = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
-			tooltip.add(Component.literal(" " + I18n.get(rootKey + ".weakCannonEnd")).withStyle(ChatFormatting.GRAY));
+			tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weakCannonEnd")).withStyle(ChatFormatting.GRAY));
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weakCannonEnd.desc", weakCharges), palette.color, palette.hColor, 2));
 		}
 	}
@@ -128,17 +128,17 @@ public class CBCTooltip {
 		Minecraft mc = Minecraft.getInstance();
 		boolean hasGoggles = GogglesItem.isWearingGoggles(mc.player);
 		String rootKey = "block." + CreateBigCannons.MOD_ID + ".autocannon.tooltip";
-		tooltip.add(Component.literal(I18n.get(rootKey + ".materialProperties")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(rootKey + ".materialProperties")).withStyle(ChatFormatting.GRAY));
 
 		int maxLength = material.maxLength();
-		tooltip.add(Component.literal(" " + I18n.get(rootKey + ".maxLength")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".maxLength")).withStyle(ChatFormatting.GRAY));
 		if (hasGoggles) {
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".maxLength.goggles", maxLength + 1), palette.color, palette.hColor, 2));
 		} else {
 			tooltip.add(getNoGogglesMeter(maxLength == 0 ? 0 : (maxLength - 1) / 2 + 1, false, true));
 		}
 
-		tooltip.add(Component.literal(" " + I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
 		float weightImpact = material.weight();
 		if (hasGoggles) {
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weightImpact.goggles", String.format("%.2f", weightImpact)), palette.color, palette.hColor, 2));
@@ -151,7 +151,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) return;
 		ItemDescription.Palette palette = getPalette(level, stack);
 		String key = stack.getDescriptionId() + ".tooltip.maximumCharges";
-		tooltip.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TranslatableComponent(key).withStyle(ChatFormatting.GRAY));
 		String value = String.format("%.2f", CBCConfigs.SERVER.munitions.maxMortarStoneCharges.get());
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", value), palette.color, palette.hColor, 1));
 	}
@@ -162,15 +162,15 @@ public class CBCTooltip {
 		String keyBase = stack.getDescriptionId() + ".tooltip.";
 
 		String key = keyBase + "pushStrength";
-		tooltip.add(Component.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", RamRodItem.getPushStrength()), palette.color, palette.hColor, 1));
 
 		String key1 = keyBase + "reach";
-		tooltip.add(Component.literal(I18n.get(key1)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(key1)).withStyle(ChatFormatting.GRAY));
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key1 + ".value", RamRodItem.getReach()), palette.color, palette.hColor, 1));
 
 		String key2 = keyBase + "deployerCanUse";
-		tooltip.add(Component.literal(I18n.get(key2)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(key2)).withStyle(ChatFormatting.GRAY));
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key2 + (RamRodItem.deployersCanUse() ? ".yes" : ".no")), palette.color, palette.hColor, 1));
 	}
 
@@ -180,11 +180,11 @@ public class CBCTooltip {
 		String keyBase = stack.getDescriptionId() + ".tooltip.";
 
 		String key = keyBase + "reach";
-		tooltip.add(Component.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", WormItem.getReach()), palette.color, palette.hColor, 1));
 
 		String key1 = keyBase + "deployerCanUse";
-		tooltip.add(Component.literal(I18n.get(key1)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(key1)).withStyle(ChatFormatting.GRAY));
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key1 + (WormItem.deployersCanUse() ? ".yes" : ".no")), palette.color, palette.hColor, 1));
 	}
 
@@ -192,7 +192,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) return;
 		ItemDescription.Palette palette = getPalette(level, stack);
 		String key = stack.getDescriptionId() + ".tooltip.chance";
-		tooltip.add(Component.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", (int)(detChance * 100.0f)), palette.color, palette.hColor, 1));
 	}
 
@@ -215,7 +215,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) return;
 		ItemDescription.Palette palette = getPalette(level, stack);
 		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.added_muzzle_velocity";
-		tooltip.add(Component.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		String s = String.format("%+.2f", propellant.getChargePower(stack) * 20);
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", s), palette.color, palette.hColor, 1));
 	}
@@ -225,7 +225,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) return;
 		ItemDescription.Palette palette = getPalette(level, stack);
 		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.added_stress";
-		tooltip.add(Component.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		String s = String.format("%+.2f", propellant.getStressOnCannon(stack));
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", s), palette.color, palette.hColor, 1));
 	}
@@ -235,7 +235,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) return;
 		ItemDescription.Palette palette = getPalette(level, stack);
 		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.power";
-		tooltip.add(Component.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		int min = BigCartridgeBlockItem.getPower(stack);
 		int max = CBCConfigs.SERVER.munitions.maxBigCartridgePower.get();
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", min, max), palette.color, palette.hColor, 1));

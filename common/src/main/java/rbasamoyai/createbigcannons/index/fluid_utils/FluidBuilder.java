@@ -14,7 +14,6 @@ import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BucketItem;
@@ -116,7 +115,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		this.defaultBlock = false;
 		NonNullSupplier<T> supplier = asSupplier();
 		return getOwner().<B, FluidBuilder<T, P>>block(this, sourceName, p -> factory.apply(supplier, p))
-				.properties(p -> BlockBehaviour.Properties.copy(Blocks.WATER).noLootTable())
+				.properties(p -> BlockBehaviour.Properties.copy(Blocks.WATER).noDrops())
 				.blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getBuilder(sourceName)
 						.texture("particle", stillTexture)));
 	}
@@ -205,7 +204,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		}
 		NonNullSupplier<? extends CBCFlowingFluid> source = this.source;
 		if (source != null) {
-			getCallback().accept(sourceName, Registry.FLUID_REGISTRY, (FluidBuilder) this, source);
+			getCallback().accept(sourceName, Fluid.class, (FluidBuilder) this, source);
 		} else {
 			throw new IllegalStateException("Fluid must have a source version: " + getName());
 		}
