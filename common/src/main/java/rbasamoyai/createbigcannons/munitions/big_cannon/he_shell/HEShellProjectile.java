@@ -13,12 +13,12 @@ public class HEShellProjectile extends FuzedBigCannonProjectile {
 
 	public HEShellProjectile(EntityType<? extends HEShellProjectile> type, Level level) {
 		super(type, level);
-		this.setProjectileMass(8);
 	}
 	
 	@Override
 	protected void detonate() {
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), CBCConfigs.SERVER.munitions.heShellPower.getF(), CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		this.level.explode(null, this.getX(), this.getY(), this.getZ(), (float) this.getProperties().explosivePower(),
+				CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.discard();
 	}
 

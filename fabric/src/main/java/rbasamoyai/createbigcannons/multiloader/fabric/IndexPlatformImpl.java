@@ -27,26 +27,18 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.AbstractAutocannonBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.fabric.CreateBigCannonsFabric;
-import rbasamoyai.createbigcannons.fabric.cannon_control.CannonCarriageEntity;
-import rbasamoyai.createbigcannons.fabric.cannon_control.MountedAutocannonContraption;
-import rbasamoyai.createbigcannons.fabric.cannon_control.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.fabric.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntityRenderer;
@@ -80,18 +72,6 @@ public class IndexPlatformImpl {
 
 	public static AbstractFluidShellBlockEntity makeFluidShellBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		return new FluidShellBlockEntity(type, pos, state);
-	}
-
-	public static AbstractMountedAutocannonContraption makeAutocannon() {
-		return new MountedAutocannonContraption();
-	}
-
-	public static AbstractPitchOrientedContraptionEntity makePitchContraption(EntityType<?> type, Level level) {
-		return new PitchOrientedContraptionEntity(type, level);
-	}
-
-	public static AbstractCannonCarriageEntity makeCannonCarriage(EntityType<?> type, Level level) {
-		return new CannonCarriageEntity(type, level);
 	}
 
 	public static ParticleOptions createFluidDripParticle(EndFluidStack stack) {

@@ -7,6 +7,8 @@ public class CBCCfgCannons extends ConfigBase {
 	public final ConfigInt maxCannonLength = i(64, 3, "maxCannonLength", Comments.maxCannonLength);
 	public final ConfigFloat barrelSpreadReduction = f(1.0f, 0.0f, "barrelSpreadReduction", Comments.barrelSpreadReduction);
 	public final ConfigInt weakBreechStrength = i(4, -1, "slidingBreechStrength", Comments.weakBreechStrength);
+	public final ConfigInt quickfiringBreechLoadingCooldown = i(40, 0, "quickfiringBreechLoadingCooldown", Comments.quickfiringBreechLoadingCooldown);
+	public final ConfigInt quickfiringBreechOpeningCooldown = i(5, 0, "quickfiringBreechOpeningCooldown", Comments.quickfiringBreechOpeningCooldown);
 
 	public final ConfigGroup loadingTools = group(0, "loadingTools", "Loading Tools");
 	public final ConfigBool deployersCanUseLoadingTools = b(false, "deployersCanUseLoadingTools", Comments.deployersCanUseLoadingTools);
@@ -39,6 +41,8 @@ public class CBCCfgCannons extends ConfigBase {
 		static String loadingToolCooldown = "How many ticks before a player can use a manual loading tool again. There are 20 ticks in 1 second.";
 		static String carriageSpeed = "How fast the carriage is, in blocks per tick.";
 		static String carriageTurnRate = "How fast the carriage turns, in degrees per tick.";
+		static String quickfiringBreechLoadingCooldown = "Time when the Quickfiring Breech cannot be loaded by Mechanical Arms.";
+		static String quickfiringBreechOpeningCooldown = "Time it takes for the Quickfiring Breech to fully open/close, during which it cannot be loaded.";
 	}
 
 }

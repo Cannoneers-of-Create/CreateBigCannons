@@ -64,7 +64,11 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 	}
 
 	protected Result recipe(String path, Block input, Block result) {
-		return new Result(BlockRecipeIngredient.of(input), result, new ResourceLocation(this.modid, path));
+		return recipe(path, input, result, true);
+	}
+
+	protected Result recipe(String path, Block input, Block result, boolean obeyFacing) {
+		return new Result(BlockRecipeIngredient.of(input), result, new ResourceLocation(this.modid, path), obeyFacing);
 	}
 
 	protected Result recipe(TagKey<Block> input, Block result) {
@@ -72,14 +76,19 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 	}
 
 	protected Result recipe(String path, TagKey<Block> input, Block result) {
-		return new Result(BlockRecipeIngredient.of(input), result, new ResourceLocation(this.modid, path));
+		return recipe(path, input, result, true);
 	}
 
-	private record Result(BlockRecipeIngredient input, Block result, ResourceLocation id) implements FinishedBlockRecipe {
+	protected Result recipe(String path, TagKey<Block> input, Block result, boolean obeyFacing) {
+		return new Result(BlockRecipeIngredient.of(input), result, new ResourceLocation(this.modid, path), obeyFacing);
+	}
+
+	private record Result(BlockRecipeIngredient input, Block result, ResourceLocation id, boolean obeyFacing) implements FinishedBlockRecipe {
 		@Override
 		public void serializeRecipeData(JsonObject obj) {
 			obj.addProperty("input", this.input.stringForSerialization());
 			obj.addProperty("result", Registry.BLOCK.getKey(this.result).toString());
+			obj.addProperty("obey_facing_or_axis", this.obeyFacing);
 		}
 
 		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.DRILL_BORING; }

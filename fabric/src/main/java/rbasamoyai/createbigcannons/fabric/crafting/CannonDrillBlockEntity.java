@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity imple
 
 	public CannonDrillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		this.lubricant = new SmartFluidTank(1000, this::onFluidStackChanged).setValidator(fs -> fs.getFluid() == Fluids.WATER);
+		this.lubricant = new SmartFluidTank(IndexPlatform.convertFluid(1000), this::onFluidStackChanged).setValidator(fs -> fs.getFluid() == Fluids.WATER);
 	}
 
 	protected void onFluidStackChanged(FluidStack newStack) {

@@ -7,9 +7,11 @@
     "HumanoidPoseMixin"
   ],
   "mixins": [
+    "AllSoundEventsMixin",
     "BearingCannonDrillFinderMixin",
     "BeltTileEntityMixin",
     "EntityMixin",
+    "FilterItemMixin",
     "ServerEntityMixin"
   ],
   "injectors": {

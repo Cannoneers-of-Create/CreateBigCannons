@@ -166,14 +166,13 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 				StructureBlockInfo drillBlockInfo = contraption.getBlocks().get(colliderPos);
 				BlockPos globalPos = colliderPos.offset(gridPos);
 				BlockPos otherColliderPos = globalPos.subtract(new BlockPos(otherPosition));
+				if (facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE) otherColliderPos = otherColliderPos.relative(facing);
 				if (!lathe.getBlocks().containsKey(otherColliderPos)) continue;
 				if (!CBCBlocks.CANNON_DRILL_BIT.has(drillBlockInfo.state)) continue;
-				
-				BlockPos boringOffset = globalPos.subtract(new BlockPos(otherPosition));
-				if (!lathe.getBlocks().containsKey(boringOffset)) continue;
-				StructureBlockInfo latheBlockInfo = lathe.getBlocks().get(boringOffset);
 
-				DrillBoringBlockRecipe recipe = getBlockRecipe(latheBlockInfo.state);
+				StructureBlockInfo latheBlockInfo = lathe.getBlocks().get(otherColliderPos);
+
+				DrillBoringBlockRecipe recipe = getBlockRecipe(latheBlockInfo.state, facing);
 				if (recipe != null) {
 					this.currentRecipe = recipe;
 					return false;
@@ -186,10 +185,10 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		return false;
 	}
 
-	public static DrillBoringBlockRecipe getBlockRecipe(BlockState block) {
+	public static DrillBoringBlockRecipe getBlockRecipe(BlockState block, Direction dir) {
 		return BlockRecipesManager.getRecipesOfType(BlockRecipeType.DRILL_BORING).stream()
 				.map(DrillBoringBlockRecipe.class::cast)
-				.filter(r -> r.matches(block))
+				.filter(r -> r.matches(block, dir))
 				.findAny().orElse(null);
 	}
 
@@ -298,10 +297,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			BlockPos otherColliderPos = globalPos.subtract(new BlockPos(otherPosition));
 			if (!lathe.getBlocks().containsKey(otherColliderPos)) continue;
 			if (!CBCBlocks.CANNON_DRILL_BIT.has(drillBlockInfo.state)) continue;
-			
-			BlockPos boringOffset = globalPos.subtract(new BlockPos(otherPosition));
-			if (!lathe.getBlocks().containsKey(boringOffset)) continue;
-			StructureBlockInfo latheBlockInfo = lathe.getBlocks().get(boringOffset);
+
+			StructureBlockInfo latheBlockInfo = lathe.getBlocks().get(otherColliderPos);
 			
 			BlockPos currentPos = collide || this.offset + this.getMovementSpeed() >= this.getExtensionRange() ? globalPos.relative(movementDirection) : globalPos;
 			if (this.boringPos == null) {
@@ -311,7 +308,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 				this.boringPos = currentPos;
 			}
 
-			DrillBoringBlockRecipe candidate = getBlockRecipe(latheBlockInfo.state);
+			DrillBoringBlockRecipe candidate = getBlockRecipe(latheBlockInfo.state, facing);
 			if (candidate == null) {
 				if (latheBlockInfo.state.is(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) continue;
 				this.stopBoringState();

@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,7 +30,7 @@ public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity {
 
 	public CannonDrillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-		this.lubricant = new SmartFluidTank(1000, this::onFluidStackChanged).setValidator(fs -> fs.getFluid() == Fluids.WATER);
+		this.lubricant = new SmartFluidTank(IndexPlatform.convertFluid(1000), this::onFluidStackChanged).setValidator(fs -> fs.getFluid() == Fluids.WATER);
 	}
 
 	@Nonnull

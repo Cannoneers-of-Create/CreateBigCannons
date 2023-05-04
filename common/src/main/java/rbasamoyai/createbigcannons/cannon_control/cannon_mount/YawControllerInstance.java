@@ -14,39 +14,44 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class YawControllerInstance extends KineticTileInstance<YawControllerBlockEntity> implements DynamicInstance {
 	
-	private final RotatingData inputShaft;
-	private final RotatingData outputShaft;
+	private RotatingData inputShaft;
+	private RotatingData outputShaft;
 	
 	public YawControllerInstance(MaterialManager dispatcher, YawControllerBlockEntity tile) {
 		super(dispatcher, tile);
-		
+	}
+
+	@Override
+	public void init() {
+		super.init();
+
 		int blockLight = this.world.getBrightness(LightLayer.BLOCK, this.pos);
 		int skyLight = this.world.getBrightness(LightLayer.SKY, this.pos);
-		
+
 		Material<RotatingData> rotatingMaterial = this.getRotatingMaterial();
-		BlockState blockState = tile.getBlockState();
-		
+		BlockState blockState = this.blockEntity.getBlockState();
+
 		this.inputShaft = rotatingMaterial.getModel(AllBlockPartials.SHAFT_HALF, blockState, Direction.DOWN).createInstance();
 		this.inputShaft
-		.setRotationAxis(Axis.Y)
-		.setRotationOffset(this.getRotationOffset(Axis.Y))
-		.setColor(tile)
-		.setPosition(this.getInstancePosition())
-		.setBlockLight(blockLight)
-		.setSkyLight(skyLight);
-		
+				.setRotationAxis(Axis.Y)
+				.setRotationOffset(this.getRotationOffset(Axis.Y))
+				.setColor(this.blockEntity)
+				.setPosition(this.getInstancePosition())
+				.setBlockLight(blockLight)
+				.setSkyLight(skyLight);
+
 		this.outputShaft = rotatingMaterial.getModel(CBCBlockPartials.YAW_SHAFT, blockState, Direction.UP).createInstance();
 		this.outputShaft
-		.setRotationAxis(Axis.Y)
-		.setRotationOffset(this.getRotationOffset(Axis.Y))
-		.setColor(tile)
-		.setPosition(this.getInstancePosition())
-		.setBlockLight(blockLight)
-		.setSkyLight(skyLight);
-		
+				.setRotationAxis(Axis.Y)
+				.setRotationOffset(this.getRotationOffset(Axis.Y))
+				.setColor(this.blockEntity)
+				.setPosition(this.getInstancePosition())
+				.setBlockLight(blockLight)
+				.setSkyLight(skyLight);
+
 		this.transformModels();
 	}
-	
+
 	private void transformModels() {
 		this.updateRotation(this.inputShaft, Axis.Y, this.getTileSpeed());
 		this.updateRotation(this.outputShaft, Axis.Y, this.getTileSpeed());

@@ -22,7 +22,9 @@ import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.multiloader.EventsPlatform;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
 import java.util.function.BiConsumer;
@@ -63,6 +65,11 @@ public class CBCCommonEvents {
 				return;
 			}
 		}
+	}
+
+	public static void onCannonBreakBlock(LevelAccessor level, BlockPos blockPos) {
+		EventsPlatform.postOnCannonBreakBlockEvent(EventsPlatform.createOnCannonBreakBlockEvent(blockPos, level.getBlockState(blockPos), level.dimensionType().effectsLocation()));
+		if (!level.isClientSide()) level.destroyBlock(blockPos, false);
 	}
 
 	private static BlockPos destroyPoleContraption(Block head, Block base, int limit, BlockState state, LevelAccessor level,
@@ -118,6 +125,7 @@ public class CBCCommonEvents {
 		cons.accept(BlockRecipeFinder.LISTENER, CreateBigCannons.resource("block_recipe_finder"));
 		cons.accept(BlockRecipesManager.ReloadListener.INSTANCE, CreateBigCannons.resource("block_recipe_manager"));
 		cons.accept(BlockHardnessHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
+		cons.accept(MunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("munition_properties_handler"));
 	}
 
 }

@@ -12,14 +12,14 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 
 @Mixin(CannonMountBlockEntity.class)
 public abstract class CannonMountMixin extends KineticTileEntity implements ItemTransferable {
 
 	CannonMountMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) { super(typeIn, pos, state); }
 
-	@Shadow protected AbstractPitchOrientedContraptionEntity mountedContraption;
+	@Shadow protected PitchOrientedContraptionEntity mountedContraption;
 
 	@Nullable
 	@Override

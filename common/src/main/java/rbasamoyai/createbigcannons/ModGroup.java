@@ -8,6 +8,7 @@ import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
+import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
@@ -84,6 +85,7 @@ public class ModGroup {
 				CBCItems.IMPACT_FUZE.asStack(),
 				TimedFuzeItem.getCreativeTabItem(20),
 				ProximityFuzeItem.getCreativeTabItem(1),
+				DelayedImpactFuzeItem.getCreativeTabItem(20),
 				
 				CBCItems.CANNON_CRAFTING_WAND.asStack(),
 				CBCBlocks.CASTING_SAND.asStack(),

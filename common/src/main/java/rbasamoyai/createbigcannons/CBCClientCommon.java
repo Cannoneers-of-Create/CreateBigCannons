@@ -20,10 +20,10 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import org.lwjgl.glfw.GLFW;
-import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.QuickfiringBreechBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 import rbasamoyai.createbigcannons.index.*;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -129,7 +129,7 @@ public class CBCClientCommon {
 
 	public static void onClientGameTick(Minecraft mc) {
 		if (mc.player == null || mc.level == null) return;
-		if (mc.player.getRootVehicle() instanceof AbstractCannonCarriageEntity carriage) {
+		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
 			boolean isPitching = CBCClientCommon.PITCH_MODE.isDown();
 			carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
@@ -144,7 +144,7 @@ public class CBCClientCommon {
 
 	public static boolean onScrollMouse(Minecraft mc, double delta) {
 		if (mc.player == null || mc.level == null) return false;
-		if (mc.player.getRootVehicle() instanceof AbstractCannonCarriageEntity) {
+		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity) {
 			int fireRateAdjustment = 0;
 			if (delta > 0) fireRateAdjustment = 1;
 			else if (delta < 0) fireRateAdjustment = -1;
@@ -163,7 +163,7 @@ public class CBCClientCommon {
 	}
 
 	public static void onPlayerRenderPre(PoseStack stack, LivingEntity player, float partialTicks) {
-		if (player.getVehicle() instanceof AbstractPitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
+		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
 			Vector3f pVec = new Vector3f(player.getPosition(partialTicks));
 			stack.translate(-pVec.x(), -pVec.y(), -pVec.z());
 
@@ -182,7 +182,7 @@ public class CBCClientCommon {
 
 	private static boolean isControllingCannon(Entity entity) {
 		Entity vehicle = entity.getVehicle();
-		return vehicle instanceof AbstractCannonCarriageEntity || vehicle instanceof AbstractPitchOrientedContraptionEntity;
+		return vehicle instanceof CannonCarriageEntity || vehicle instanceof PitchOrientedContraptionEntity;
 	}
 
 	public static Direction.Axis getRotationAxis(BlockState state) {
@@ -203,5 +203,4 @@ public class CBCClientCommon {
 		return state.getBlock() instanceof BigCannonBlock cBlock ? CBCBlockPartials.screwLockFor(cBlock.getCannonMaterial())
 				: CBCBlockPartials.STEEL_SCREW_LOCK;
 	}
-	
 }

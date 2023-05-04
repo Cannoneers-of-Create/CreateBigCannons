@@ -19,12 +19,10 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -34,16 +32,10 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannon_control.carriage.AbstractCannonCarriageEntity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.AbstractAutocannonBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.forge.CreateBigCannonsForge;
-import rbasamoyai.createbigcannons.forge.cannon_control.CannonCarriageEntity;
-import rbasamoyai.createbigcannons.forge.cannon_control.MountedAutocannonContraption;
-import rbasamoyai.createbigcannons.forge.cannon_control.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.forge.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntityRenderer;
@@ -76,18 +68,6 @@ public class IndexPlatformImpl {
 
 	public static AbstractFluidShellBlockEntity makeFluidShellBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		return new FluidShellBlockEntity(type, pos, state);
-	}
-
-	public static AbstractMountedAutocannonContraption makeAutocannon() {
-		return new MountedAutocannonContraption();
-	}
-
-	public static AbstractPitchOrientedContraptionEntity makePitchContraption(EntityType<?> type, Level level) {
-		return new PitchOrientedContraptionEntity(type, level);
-	}
-
-	public static AbstractCannonCarriageEntity makeCannonCarriage(EntityType<?> type, Level level) {
-		return new CannonCarriageEntity(type, level);
 	}
 
 	public static ParticleOptions createFluidDripParticle(EndFluidStack stack) {
@@ -142,12 +122,12 @@ public class IndexPlatformImpl {
 	public static float getFluidConversionFactor() { return 1; }
 
 	public static void addSidedDataGenerators(DataGenerator gen) {
-		gen.addProvider(new CBCCompactingRecipeProvider(gen));
-		gen.addProvider(new MeltingRecipeProvider(gen));
-		gen.addProvider(new CBCMixingRecipeProvider(gen));
-		gen.addProvider(new CBCMillingRecipeProvider(gen));
-		gen.addProvider(new CBCSequencedAssemblyRecipeProvider(gen));
-		gen.addProvider(new CBCCuttingRecipeProvider(gen));
+		gen.addProvider(true, new CBCCompactingRecipeProvider(gen));
+		gen.addProvider(true, new MeltingRecipeProvider(gen));
+		gen.addProvider(true, new CBCMixingRecipeProvider(gen));
+		gen.addProvider(true, new CBCMillingRecipeProvider(gen));
+		gen.addProvider(true, new CBCSequencedAssemblyRecipeProvider(gen));
+		gen.addProvider(true, new CBCCuttingRecipeProvider(gen));
 	}
 
 	public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { return FluidIngredient.fromFluid(fluid, amount); }

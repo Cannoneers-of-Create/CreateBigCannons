@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
+import javax.annotation.Nonnull;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -30,7 +31,7 @@ public class BigCannonBehavior extends CannonBehavior {
 		this.predicate = predicate;
 	}
 
-	public StructureBlockInfo block() { return this.containedBlockInfo.orElse(EMPTY); }
+	@Nonnull public StructureBlockInfo block() { return this.containedBlockInfo.orElse(EMPTY); }
 
 	public boolean tryLoadingBlock(StructureBlockInfo info) {
 		if (!this.canLoadBlock(info)) return false;

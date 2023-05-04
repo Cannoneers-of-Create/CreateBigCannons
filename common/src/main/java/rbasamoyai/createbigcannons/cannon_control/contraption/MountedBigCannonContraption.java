@@ -9,7 +9,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -24,11 +23,17 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
-import rbasamoyai.createbigcannons.cannons.big_cannons.*;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.FailureMode;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
@@ -209,7 +214,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	public void tick(Level level, AbstractPitchOrientedContraptionEntity entity) {
+	public void tick(Level level, PitchOrientedContraptionEntity entity) {
 		super.tick(level, entity);
 
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
@@ -217,13 +222,13 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	public void onRedstoneUpdate(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
+	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
 		if (!togglePower || firePower <= 0) return;
 		this.fireShot(level, entity, controller);
 	}
 
 	@Override
-	public void fireShot(ServerLevel level, AbstractPitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
+	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
 		if (this.presentTileEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech && qfbreech.getOpenProgress() > 0) return;
 
@@ -366,14 +371,14 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			recoilMagnitude += 1;
 		}
 
-		if (controller != null) controller.cacheRecoilVector(vec.scale(-recoilMagnitude));
+		if (controller != null) controller.cacheRecoilVector(vec.scale(-recoilMagnitude), entity);
 
 		this.hasFired = true;
 
 		for (ServerPlayer player : level.players()) {
 			level.sendParticles(player, new CannonPlumeParticleData(smokeScale * 0.5f), true, spawnPos.x, spawnPos.y, spawnPos.z, 0, vec.x, vec.y, vec.z, 1.0f);
 		}
-		level.playSound(null, spawnPos.x, spawnPos.y, spawnPos.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 20.0f, 0.0f);
+		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(level, new BlockPos(spawnPos));
 	}
 
 	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos) {
@@ -413,7 +418,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		return f != 0 && random.nextFloat() <= f;
 	}
 	
-	public void fail(BlockPos localPos, Level level, AbstractPitchOrientedContraptionEntity entity, BlockEntity failed, int charges) {
+	public void fail(BlockPos localPos, Level level, PitchOrientedContraptionEntity entity, BlockEntity failed, int charges) {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(failed.getBlockPos()), 1.0f);
 		float failScale = CBCConfigs.SERVER.failure.failureExplosionPower.getF();
 		if (this.cannonMaterial.failureMode() == FailureMode.RUPTURE) {
@@ -440,7 +445,12 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			entity.discard();
 		}
 	}
-	
+
+	@Override
+	public Vec3 getInteractionVec(PitchOrientedContraptionEntity poce) {
+		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.initialOrientation.getOpposite())), 1);
+	}
+
 	@Override
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);

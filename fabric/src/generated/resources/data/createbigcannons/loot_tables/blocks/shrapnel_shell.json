@@ -20,6 +20,11 @@
                   "source": "Fuze",
                   "target": "BlockEntityTag.Fuze",
                   "op": "replace"
+                },
+                {
+                  "source": "id",
+                  "target": "BlockEntityTag.id",
+                  "op": "replace"
                 }
               ]
             }

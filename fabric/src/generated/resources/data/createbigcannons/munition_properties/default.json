@@ -1,0 +1,98 @@
+{
+  "createbigcannons:shot": {
+    "entity_damage": 30.0,
+    "durability_mass": 10.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": true
+  },
+  "createbigcannons:he_shell": {
+    "entity_damage": 30.0,
+    "durability_mass": 8.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": true,
+    "explosive_power": 8.0
+  },
+  "createbigcannons:ap_shot": {
+    "entity_damage": 50.0,
+    "durability_mass": 36.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": true
+  },
+  "createbigcannons:traffic_cone": {
+    "entity_damage": 100.0,
+    "durability_mass": 36.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": true
+  },
+  "createbigcannons:ap_shell": {
+    "entity_damage": 50.0,
+    "durability_mass": 24.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": true,
+    "explosive_power": 5.0
+  },
+  "createbigcannons:mortar_stone": {
+    "entity_damage": 50.0,
+    "durability_mass": 4.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": true,
+    "explosive_power": 4.0
+  },
+  "createbigcannons:fluid_shell": {
+    "entity_damage": 30.0,
+    "durability_mass": 8.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": true
+  },
+  "createbigcannons:shrapnel_shell": {
+    "entity_damage": 30.0,
+    "durability_mass": 8.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": true,
+    "shrapnel_properties": {
+      "entity_damage": 2.0,
+      "spread": 0.25,
+      "count": 50
+    }
+  },
+  "createbigcannons:bag_of_grapeshot": {
+    "entity_damage": 0.0,
+    "durability_mass": 1.0,
+    "renders_invulnerable": true,
+    "ignores_entity_armor": false,
+    "shrapnel_properties": {
+      "entity_damage": 5.0,
+      "spread": 0.05,
+      "count": 25
+    }
+  },
+  "createbigcannons:ap_autocannon": {
+    "entity_damage": 5.0,
+    "durability_mass": 6.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": false
+  },
+  "createbigcannons:flak_autocannon": {
+    "entity_damage": 2.0,
+    "durability_mass": 1.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": false,
+    "shrapnel_properties": {
+      "entity_damage": 5.0,
+      "spread": 0.25,
+      "count": 15
+    }
+  },
+  "createbigcannons:shrapnel": {
+    "entity_damage": 0.0,
+    "durability_mass": 1.0,
+    "renders_invulnerable": true,
+    "ignores_entity_armor": false
+  },
+  "createbigcannons:grapeshot": {
+    "entity_damage": 0.0,
+    "durability_mass": 3.0,
+    "renders_invulnerable": true,
+    "ignores_entity_armor": false
+  }
+}

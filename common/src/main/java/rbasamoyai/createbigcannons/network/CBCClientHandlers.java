@@ -9,7 +9,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractPitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+
+import java.util.Map;
 
 import java.util.Map;
 
@@ -38,7 +40,7 @@ public class CBCClientHandlers {
 
 	public static void animateCannon(ClientboundAnimateCannonContraptionPacket pkt) {
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.level.getEntity(pkt.id()) instanceof AbstractPitchOrientedContraptionEntity poce) poce.handleAnimation();
+		if (mc.level.getEntity(pkt.id()) instanceof PitchOrientedContraptionEntity poce) poce.handleAnimation();
 	}
 
 	public static void checkVersion(ClientboundCheckChannelVersionPacket pkt) {
