@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.index;
 
 import com.google.gson.JsonObject;
-import com.simibubi.create.Create;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
