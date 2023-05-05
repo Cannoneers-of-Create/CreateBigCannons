@@ -137,6 +137,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	@Override
 	protected void onDestroyCenterCast() {
 		CannonCastBlockEntity controller = (CannonCastBlockEntity) this.getControllerTE();
+		if (controller == null) return;
 		int thisIndex = this.worldPosition.getY() - controller.worldPosition.getY();
 
 		controller.height -= 1;
@@ -205,8 +206,8 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 
 	@Override
 	protected boolean testWithFluid(CannonCastingRecipe recipe) {
-		CannonCastBlockEntity cController = ((CannonCastBlockEntity) this.getControllerTE());
-		if (cController.fluid.getFluid().isEmpty()) return false;
+		CannonCastBlockEntity cController = (CannonCastBlockEntity) this.getControllerTE();
+		if (cController == null || cController.fluid.getFluid().isEmpty()) return false;
 		return recipe.ingredient().test(cController.fluid.getFluid());
 	}
 
