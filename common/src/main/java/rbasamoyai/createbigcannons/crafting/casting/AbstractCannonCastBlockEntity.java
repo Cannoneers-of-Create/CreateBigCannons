@@ -31,6 +31,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
+import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity implements WandActionable, IMultiTileContainer {
@@ -179,8 +180,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		}
 		
 		if (!clientPacket) return;
-		boolean changeOfController = controllerBefore == null ? this.controllerPos != null : !controllerBefore.equals(this.controllerPos);
-		if (changeOfController || this.getController() != null && prevHeight != this.getControllerTE().height) {
+		boolean changeOfController = !Objects.equals(controllerBefore, this.controllerPos);
+		if (changeOfController || this.getControllerTE() != null && prevHeight != this.getControllerTE().height) {
 			if (this.hasLevel()) this.level.sendBlockUpdated(this.getBlockPos(), getBlockState(), getBlockState(), 16);
 			if (this.isController()) this.updateFluidClient();
 			this.invalidateRenderBoundingBox();
@@ -332,7 +333,10 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	
 	@Override
 	public InteractionResult onWandUsed(UseOnContext context) {
-		if (!this.level.isClientSide) this.getControllerTE().castingTime = 0;
+		if (!this.level.isClientSide) {
+			AbstractCannonCastBlockEntity controller = this.getControllerTE();
+			if (controller != null) controller.castingTime = 0;
+		}
 		return InteractionResult.sidedSuccess(this.level.isClientSide);
 	}
 	
@@ -344,17 +348,19 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 			&& otherCast.getHeight() < getMaxHeight()) {
 			this.controllerPos = otherCast.getController();
 			AbstractCannonCastBlockEntity controller = otherCast.getControllerTE();
-			this.addStructureCapacityToController(controller);
-			controller.height += 1;
-			controller.structure.add(this.castShape);
-			controller.notifyUpdate();
+			if (controller != null) {
+				this.addStructureCapacityToController(controller);
+				controller.height += 1;
+				controller.structure.add(this.castShape);
+				controller.notifyUpdate();
+			}
 		} else {
 			this.reInitTank();
 			this.structure.add(this.castShape);
 		}
 		if (this.level.getBlockEntity(this.worldPosition.above()) instanceof AbstractCannonCastBlockEntity otherCast && otherCast.isController()) {
 			AbstractCannonCastBlockEntity controller = this.getControllerTE();
-			if (controller.height + otherCast.height <= getMaxHeight()) {
+			if (controller != null && controller.height + otherCast.height <= getMaxHeight()) {
 				controller.height += otherCast.height;
 				controller.structure.addAll(otherCast.structure);
 				otherCast.height = 1;
@@ -377,10 +383,12 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 			}
 		}
 		AbstractCannonCastBlockEntity controller = this.getControllerTE();
-		controller.updateRecipes = true;
-		controller.forceFluidLevelUpdate = true;
-		controller.forceCastLevelUpdate = true;
-		controller.notifyUpdate();
+		if (controller != null) {
+			controller.updateRecipes = true;
+			controller.forceFluidLevelUpdate = true;
+			controller.forceCastLevelUpdate = true;
+			controller.notifyUpdate();
+		}
 		this.notifyUpdate();
 	}
 
@@ -436,7 +444,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	}
 	
 	public boolean canRenderCastModel() {
-		return this.isController() ? true : this.controllerPos.getX() == this.worldPosition.getX() && this.controllerPos.getZ() == this.worldPosition.getZ();
+		return this.isController() || this.controllerPos.getX() == this.worldPosition.getX() && this.controllerPos.getZ() == this.worldPosition.getZ();
 	}
 
 	public abstract float getFillState();
@@ -452,6 +460,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	}
 
 	@SuppressWarnings("unchecked")
+	@Nullable
 	@Override
 	public AbstractCannonCastBlockEntity getControllerTE() {
 		return this.isController() ? this : this.level.getBlockEntity(this.controllerPos) instanceof AbstractCannonCastBlockEntity cast ? cast : null;
@@ -515,7 +524,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	@Override public void setWidth(int width) {}
 
 	public boolean matchesRecipe(CannonCastingRecipe recipe) {
-		return this.getControllerTE().structure.contains(recipe.shape()) && this.testWithFluid(recipe);
+		return this.getControllerTE() != null && this.getControllerTE().structure.contains(recipe.shape()) && this.testWithFluid(recipe);
 	}
 
 	protected abstract boolean testWithFluid(CannonCastingRecipe recipe);
