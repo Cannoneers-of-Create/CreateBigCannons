@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntityRenderer;
@@ -39,7 +40,7 @@ public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntity
 		model = FixedLightBakedModel.wrap(model, light);
 		model = TranslucentBakedModel.wrap(model, () -> alpha);
 		this.dispatcher.getModelRenderer()
-				.tesselateBlock(VirtualEmptyBlockGetter.INSTANCE, model, state, pos, ms, vCons, false, new Random(), 42L, OverlayTexture.NO_OVERLAY);
+				.tesselateBlock(VirtualEmptyBlockGetter.INSTANCE, model, state, pos, ms, vCons, false, RandomSource.create(), 42L, OverlayTexture.NO_OVERLAY);
 	}
 
 

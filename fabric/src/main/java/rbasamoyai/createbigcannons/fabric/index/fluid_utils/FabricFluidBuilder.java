@@ -3,8 +3,7 @@ package rbasamoyai.createbigcannons.fabric.index.fluid_utils;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
-import com.tterrag.registrate.fabric.FluidBlockHelper;
-import com.tterrag.registrate.fabric.FluidData;
+import com.tterrag.registrate.mixin.accessor.FluidBlockAccessor;
 import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
@@ -34,13 +33,13 @@ import java.util.function.Supplier;
 
 public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilder<T, P> {
 
-	protected final NonNullSupplier<FluidData.Builder> attributes;
-	private NonNullConsumer<FluidData.Builder> attributesCallback = $ -> {};
+	protected final NonNullSupplier<CBCFluidData.Builder> attributes;
+	private NonNullConsumer<CBCFluidData.Builder> attributesCallback = $ -> {};
 
 	public FabricFluidBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback,
 							  ResourceLocation stillTexture, ResourceLocation flowingTexture, NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
 		super(owner, parent, name, callback, stillTexture, flowingTexture, factory);
-		this.attributes = FluidData.Builder::new;
+		this.attributes = CBCFluidData.Builder::new;
 	}
 
 	@SafeVarargs
@@ -54,14 +53,14 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 		return ret;
 	}
 
-	public FabricFluidBuilder<T, P> attributes(NonNullConsumer<FluidData.Builder> cons) {
+	public FabricFluidBuilder<T, P> attributes(NonNullConsumer<CBCFluidData.Builder> cons) {
 		this.attributesCallback = this.attributesCallback.andThen(cons);
 		return this;
 	}
 
 	@Override
 	public BlockBuilder<LiquidBlock, FluidBuilder<T, P>> block() {
-		return block1(FluidBlockHelper::createFluidBlock);
+		return block1(FluidBlockAccessor::callInit);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -81,7 +80,7 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 
 	@Override
 	protected CBCFlowingFluid.Properties makeProperties() {
-		FluidData.Builder attributes = this.attributes.get();
+		CBCFluidData.Builder attributes = this.attributes.get();
 		RegistryEntry<Block> block = getOwner().getOptional(this.sourceName, Registry.BLOCK_REGISTRY);
 		this.attributesCallback.accept(attributes);
 		attributes.translationKey(Util.makeDescriptionId("fluid", new ResourceLocation(getOwner().getModid(), this.sourceName)));

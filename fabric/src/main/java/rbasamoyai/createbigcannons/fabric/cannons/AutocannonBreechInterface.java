@@ -56,7 +56,7 @@ public class AutocannonBreechInterface extends SnapshotParticipant<AutocannonBre
 	}
 
 	@Override
-	public Iterator<StorageView<ItemVariant>> iterator(TransactionContext transaction) {
+	public Iterator<StorageView<ItemVariant>> iterator() {
 		return new StorageViewArrayIterator<>(this.views);
 	}
 
