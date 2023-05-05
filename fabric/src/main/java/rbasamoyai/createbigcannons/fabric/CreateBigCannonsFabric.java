@@ -26,7 +26,7 @@ public class CreateBigCannonsFabric implements ModInitializer {
         CreateBigCannons.init();
         CreateBigCannons.REGISTRATE.register();
         CBCParticleTypes.register();
-        CBCSoundEvents.register(AllSoundEvents.SoundEntry::register);
+        CBCSoundEvents.register();
 
         CBCRegistries.init();
         CBCConfigs.registerConfigs((t, c) -> ModLoadingContext.registerConfig(CreateBigCannons.MOD_ID, t, c));
