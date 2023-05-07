@@ -44,13 +44,13 @@ public class CreateBigCannonsForge {
         CreateBigCannons.REGISTRATE.registerEventListeners(modEventBus);
         CreateBigCannons.init();
         CBCParticleTypes.register();
-        CBCSoundEvents.register();
         CBCConfigs.registerConfigs(mlContext::registerConfig);
 
         modEventBus.addListener(this::onCommonSetup);
         modEventBus.addListener(this::onNewRegistry);
         modEventBus.addListener(this::onLoadConfig);
         modEventBus.addListener(this::onReloadConfig);
+        modEventBus.addListener(this::onRegisterSounds);
 
         CBCCommonForgeEvents.register(forgeEventBus);
 
@@ -71,6 +71,10 @@ public class CreateBigCannonsForge {
 
     private void onNewRegistry(NewRegistryEvent evt) {
         CBCRegistries.init();
+    }
+
+    private void onRegisterSounds(RegisterEvent event) {
+        event.register(Registry.SOUND_EVENT_REGISTRY, helper -> CBCSoundEvents.register(soundEntry -> soundEntry.register(helper)));
     }
 
     private void onLoadConfig(ModConfigEvent.Loading evt) { CBCConfigs.onLoad(evt.getConfig()); }

@@ -5,6 +5,7 @@ import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static com.simibubi.create.AllSoundEvents.SoundEntry;
 import static com.simibubi.create.AllSoundEvents.SoundEntryBuilder;
@@ -43,9 +45,9 @@ public class CBCSoundEvents {
 			entry.prepare();
 	}
 
-	public static void register() {
+	public static void register(Consumer<SoundEntry> consumer) {
 		for (SoundEntry entry : ALL.values())
-			entry.register();
+			consumer.accept(entry);
 	}
 
 	public static void registerLangEntries() {
