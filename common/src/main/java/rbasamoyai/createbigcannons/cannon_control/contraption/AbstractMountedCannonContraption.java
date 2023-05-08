@@ -21,6 +21,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 
@@ -29,8 +30,8 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 	protected Direction initialOrientation = Direction.NORTH;
 	protected BlockPos startPos = BlockPos.ZERO;
 
-	public abstract float maximumDepression(ControlPitchContraption controller);
-	public abstract float maximumElevation(ControlPitchContraption controller);
+	public abstract float maximumDepression(@Nonnull ControlPitchContraption controller);
+	public abstract float maximumElevation(@Nonnull ControlPitchContraption controller);
 
 	public Direction initialOrientation() { return this.initialOrientation; }
 

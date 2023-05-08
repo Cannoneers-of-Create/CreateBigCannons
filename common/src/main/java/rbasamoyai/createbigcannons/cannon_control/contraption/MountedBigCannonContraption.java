@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
@@ -48,7 +49,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public boolean hasFired = false;
 
 	@Override
-	public float maximumDepression(ControlPitchContraption controller) {
+	public float maximumDepression(@NotNull ControlPitchContraption controller) {
 		BlockState state = controller.getControllerState();
 		if (CBCBlocks.CANNON_MOUNT.has(state)) return 30;
 		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
@@ -56,7 +57,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	public float maximumElevation(ControlPitchContraption controller) {
+	public float maximumElevation(@NotNull ControlPitchContraption controller) {
 		BlockState state = controller.getControllerState();
 		if (CBCBlocks.CANNON_MOUNT.has(state)) return 60;
 		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 30;
