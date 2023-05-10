@@ -32,6 +32,7 @@ public class CBCMixingRecipeProvider extends ProcessingRecipeGen {
 	CONGEALED_NITRO = create(CreateBigCannons.resource("congealed_nitro"), b -> b.require(Items.BLAZE_POWDER)
 			.require(Items.MAGMA_CREAM)
 			.require(CBCTags.ItemCBC.GUNPOWDER)
+			.require(CBCTags.ItemCBC.GUNPOWDER)
 			.output(CBCItems.CONGEALED_NITRO.get(), 2));
 	
 	public static ProcessingRecipeBuilder<ProcessingRecipe<?>> nethersteelAlloy(ProcessingRecipeBuilder<ProcessingRecipe<?>> builder, TagKey<Item> mixWith, int count, int yield) {
