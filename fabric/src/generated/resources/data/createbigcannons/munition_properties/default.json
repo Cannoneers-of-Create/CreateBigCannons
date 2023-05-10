@@ -14,7 +14,7 @@
   },
   "createbigcannons:ap_shot": {
     "entity_damage": 50.0,
-    "durability_mass": 26.0,
+    "durability_mass": 30.0,
     "renders_invulnerable": false,
     "ignores_entity_armor": true
   },
@@ -26,7 +26,7 @@
   },
   "createbigcannons:ap_shell": {
     "entity_damage": 50.0,
-    "durability_mass": 18.0,
+    "durability_mass": 20.0,
     "renders_invulnerable": false,
     "ignores_entity_armor": true,
     "explosive_power": 5.0
