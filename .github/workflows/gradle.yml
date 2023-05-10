@@ -52,6 +52,7 @@ jobs:
 
       - name: Publish to GitHub Packages
         if: github.event_name == 'push' && github.repository_id == '510859946'
+        continue-on-error: true
         uses: gradle/gradle-build-action@v2.4.0
         with:
           arguments: publishMavenJavaPublicationToGitHubPackagesRepository
