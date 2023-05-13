@@ -55,23 +55,23 @@ public abstract class EntityMixin {
 		}
 	}
 
-	@Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInLava()Z", ordinal = 1))
-	private void createbigcannons$baseTick(CallbackInfo ci) {
-		Entity self = (Entity) (Object) this;
-		self.updateFluidHeightAndDoFluidPushing(CBCTags.FluidCBC.MOLTEN_METAL, 0.0023333333333333335);
-		if (this.inMoltenMetal() && !self.fireImmune()) {
-			self.setSecondsOnFire(15);
-			if (self.hurt(MOLTEN_METAL, 4.0F)) {
-				self.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + self.getLevel().random.nextFloat() * 0.4F);
-			}
-			this.fallDistance *= 0.5;
-		}
-	}
-
-	@Unique
-	private boolean inMoltenMetal() {
-		Entity self = (Entity) (Object) this;
-		return !this.firstTick && self.getFluidHeight(CBCTags.FluidCBC.MOLTEN_METAL) > 0.0;
-	}
+//	@Inject(method = "baseTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;isInLava()Z", ordinal = 1))
+//	private void createbigcannons$baseTick(CallbackInfo ci) {
+//		Entity self = (Entity) (Object) this;
+//		self.updateFluidHeightAndDoFluidPushing(CBCTags.FluidCBC.MOLTEN_METAL, 0.0023333333333333335);
+//		if (this.inMoltenMetal() && !self.fireImmune()) {
+//			self.setSecondsOnFire(15);
+//			if (self.hurt(MOLTEN_METAL, 4.0F)) {
+//				self.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + self.getLevel().random.nextFloat() * 0.4F);
+//			}
+//			this.fallDistance *= 0.5;
+//		}
+//	}
+//
+//	@Unique
+//	private boolean inMoltenMetal() {
+//		Entity self = (Entity) (Object) this;
+//		return !this.firstTick && self.getFluidHeight(CBCTags.FluidCBC.MOLTEN_METAL) > 0.0;
+//	}
 
 }
