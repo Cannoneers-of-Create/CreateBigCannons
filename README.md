@@ -31,8 +31,6 @@
 <p><a href="https://www.curseforge.com/minecraft/mc-mods/create" rel="nofollow">Create</a> and <a href="https://www.curseforge.com/minecraft/mc-mods/flywheel" rel="nofollow">Flywheel</a>&nbsp;are required. Additionally, <a href="https://www.curseforge.com/minecraft/mc-mods/create-alloyed" rel="nofollow">Create: Alloyed</a> is an optional dependency if you want to access higher tier cannon materials.</p>
 <br>
 <h4><strong>Other FAQ:</strong></h4>
-<p><strong>Will there be a Fabric port?</strong></p>
-<p>- No, although the mod is open source and MIT so feel free to port it yourself.</p>
 <p><strong>Will older versions be supported?</strong></p>
 <p>- No, see above if you want to make your own backport though.</p>
 <br>
