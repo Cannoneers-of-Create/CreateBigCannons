@@ -58,6 +58,7 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 		if (cartridge.isEmpty() || powderCount == 0) return ItemStack.EMPTY;
 
 		ItemStack result = cartridge.copy();
+		result.setCount(1);
 		CompoundTag tag = result.getOrCreateTag();
 		int oldPower = tag.getInt("Power");
 		int newPower = Math.min(CBCConfigs.SERVER.munitions.maxBigCartridgePower.get(), oldPower + powderCount);
