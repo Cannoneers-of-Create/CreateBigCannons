@@ -66,11 +66,5 @@ public abstract class PoleContraption extends TranslatingContraption {
 	public int extensionLength() { return this.extensionLength; }
 	public int initialExtensionProgress() { return this.initialExtensionProgress; }
 	public Direction orientation() { return this.orientation; }
-	
-	@Environment(EnvType.CLIENT)
-	@Override
-	public ContraptionLighter<?> makeLighter() {
-		return new PoleContraptionLighter(this);
-	}
 
 }
