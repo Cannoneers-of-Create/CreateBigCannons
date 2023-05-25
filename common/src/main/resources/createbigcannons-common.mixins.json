@@ -4,7 +4,10 @@
   "package": "rbasamoyai.createbigcannons.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "HumanoidPoseMixin"
+    "client.AbstractMountedCannonContraptionMixin",
+    "client.HumanoidPoseMixin",
+    "client.PitchOrientedContraptionEntityMixin",
+    "client.PoleContraptionMixin"
   ],
   "mixins": [
     "AllSoundEventsMixin",
