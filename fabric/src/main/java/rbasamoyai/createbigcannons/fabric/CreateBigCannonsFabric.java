@@ -19,31 +19,31 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 
 public class CreateBigCannonsFabric implements ModInitializer {
 
-    public static final LazyRegistrar<ParticleType<?>> PARTICLE_REGISTER = LazyRegistrar.create(Registry.PARTICLE_TYPE, CreateBigCannons.MOD_ID);
+	public static final LazyRegistrar<ParticleType<?>> PARTICLE_REGISTER = LazyRegistrar.create(Registry.PARTICLE_TYPE, CreateBigCannons.MOD_ID);
 
-    @Override
-    public void onInitialize() {
-        CreateBigCannons.init();
-        CreateBigCannons.REGISTRATE.register();
-        CBCParticleTypes.register();
-        CBCSoundEvents.register();
+	@Override
+	public void onInitialize() {
+		CreateBigCannons.init();
+		CreateBigCannons.REGISTRATE.register();
+		CBCParticleTypes.register();
+		CBCSoundEvents.register(AllSoundEvents.SoundEntry::register);
 
-        CBCRegistries.init();
-        CBCConfigs.registerConfigs((t, c) -> ModLoadingContext.registerConfig(CreateBigCannons.MOD_ID, t, c));
+		CBCRegistries.init();
+		CBCConfigs.registerConfigs((t, c) -> ModLoadingContext.registerConfig(CreateBigCannons.MOD_ID, t, c));
 
-        CBCNetworkFabric.INSTANCE.initServerListener();
-        DefaultFluidCompat.registerMinecraftBlobEffects();
+		CBCNetworkFabric.INSTANCE.initServerListener();
+		DefaultFluidCompat.registerMinecraftBlobEffects();
 
-        ModConfigEvent.LOADING.register(CBCConfigs::onLoad);
-        ModConfigEvent.RELOADING.register(CBCConfigs::onReload);
+		ModConfigEvent.LOADING.register(CBCConfigs::onLoad);
+		ModConfigEvent.RELOADING.register(CBCConfigs::onReload);
 
-        CBCCommonFabricEvents.register();
+		CBCCommonFabricEvents.register();
 
-        this.registerSerializers();
-    }
+		this.registerSerializers();
+	}
 
-    private void registerSerializers() {
-        EntityDataSerializers.registerSerializer(FluidBlob.FLUID_STACK_SERIALIZER);
-    }
+	private void registerSerializers() {
+		EntityDataSerializers.registerSerializer(FluidBlob.FLUID_STACK_SERIALIZER);
+	}
 
 }

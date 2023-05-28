@@ -29,9 +29,6 @@ public class CBCCompactingRecipeProvider extends ProcessingRecipeGen {
 	PACKED_GUNPOWDER = create(CreateBigCannons.resource("packed_gunpowder"), b -> b.require(CBCTags.ItemCBC.GUNPOWDER)
 			.require(CBCTags.ItemCBC.GUNPOWDER)
 			.require(CBCTags.ItemCBC.GUNPOWDER)
-			.require(CBCTags.ItemCBC.GUNPOWDER)
-			.require(CBCTags.ItemCBC.GUNPOWDER)
-			.require(CBCTags.ItemCBC.GUNPOWDER)
 			.output(CBCItems.PACKED_GUNPOWDER.get())),
 	
 	FORGE_CAST_IRON_INGOT = create(CreateBigCannons.resource("forge_cast_iron_ingot"), b -> b.require(AllTags.forgeFluidTag("molten_cast_iron"), IndexPlatform.convertFluid(90))

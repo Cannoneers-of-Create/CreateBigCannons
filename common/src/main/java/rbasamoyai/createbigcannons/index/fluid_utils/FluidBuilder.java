@@ -14,7 +14,6 @@ import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BucketItem;
@@ -37,15 +36,15 @@ import java.util.List;
  * Copy of {@link com.tterrag.registrate.builders.FluidBuilder} to work with multiloader fluid impl
  */
 public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends AbstractBuilder<Fluid, T, P, FluidBuilder<T, P>> {
-	
+
 	public static <P> FluidBuilder<CBCFlowingFluid.Flowing, P> create(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture) {
 		return create(owner, parent, name, callback, stillTexture, flowingTexture, CBCFlowingFluid.Flowing::new);
 	}
-	
+
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> create(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
-			NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
+	                                                                       NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
 		FluidBuilder<T, P> ret = IndexPlatform.createFluidBuilder(owner, parent, name, callback, stillTexture, flowingTexture, factory)
-				.defaultLang().defaultSource().defaultBlock().defaultBucket();
+			.defaultLang().defaultSource().defaultBlock().defaultBucket();
 		return ret;
 	}
 
@@ -63,7 +62,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 	protected List<TagKey<Fluid>> tags = new ArrayList<>();
 
 	protected FluidBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
-						   NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
+	                       NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
 		super(owner, parent, "flowing_" + name, callback, Registry.FLUID_REGISTRY);
 		this.stillTexture = stillTexture;
 		this.flowingTexture = flowingTexture;
@@ -73,9 +72,9 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 
 		String bucketName = this.bucketName;
 		this.properties = p -> p.bucket(() -> owner.get(bucketName, Registry.ITEM_REGISTRY).get())
-				.block(() -> owner.<Block, LiquidBlock>get(name, Registry.BLOCK_REGISTRY).get());
+			.block(() -> owner.<Block, LiquidBlock>get(name, Registry.BLOCK_REGISTRY).get());
 	}
-	
+
 	public FluidBuilder<T, P> properties(NonNullConsumer<CBCFlowingFluid.Properties> cons) {
 		properties = properties.andThen(cons);
 		return this;
@@ -116,9 +115,9 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		this.defaultBlock = false;
 		NonNullSupplier<T> supplier = asSupplier();
 		return getOwner().<B, FluidBuilder<T, P>>block(this, sourceName, p -> factory.apply(supplier, p))
-				.properties(p -> BlockBehaviour.Properties.copy(Blocks.WATER).noLootTable())
-				.blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getBuilder(sourceName)
-						.texture("particle", stillTexture)));
+			.properties(p -> BlockBehaviour.Properties.copy(Blocks.WATER).noLootTable())
+			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getBuilder(sourceName)
+				.texture("particle", stillTexture)));
 	}
 
 	@Beta
@@ -152,8 +151,8 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 			throw new IllegalStateException("Cannot create a bucket before creating a source block");
 		}
 		return getOwner().<I, FluidBuilder<T, P>>item(this, bucketName, p -> ((NonNullBiFunction<CBCFlowingFluid, Item.Properties, ? extends I>) factory).apply(this.source.get(), p)) // Fabric TODO
-				.properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
-				.model((ctx, prov) -> prov.generated(ctx, new ResourceLocation(getOwner().getModid(), "item/" + bucketName)));
+			.properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
+			.model((ctx, prov) -> prov.generated(ctx, new ResourceLocation(getOwner().getModid(), "item/" + bucketName)));
 	}
 
 	@Beta
@@ -191,7 +190,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		return factory.apply(makeProperties());
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
 	public RegistryEntry<T> register() {
 		if (defaultSource == Boolean.TRUE) {

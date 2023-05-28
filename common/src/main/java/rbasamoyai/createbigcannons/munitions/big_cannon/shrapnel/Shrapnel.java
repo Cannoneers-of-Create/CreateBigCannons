@@ -27,50 +27,54 @@ import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Shrapnel extends AbstractHurtingProjectile {
-	
+
 	private int age;
 	protected float damage;
 	protected float mass;
-	
+
 	public Shrapnel(EntityType<? extends Shrapnel> type, Level level) {
 		super(type, level);
 		this.mass = (float) MunitionPropertiesHandler.getProperties(this).durabilityMass();
 	}
-	
+
 	@Override
 	public void tick() {
 		super.tick();
 		++this.age;
-		
+
 		if (!this.isNoGravity() && this.getGravity() < 0) {
 			this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
 		}
-		
+
 		if (!this.level.isClientSide && this.age > 20) {
 			this.discard();
 		}
 	}
-	
+
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putInt("Age", this.age);
 		tag.putFloat("Damage", this.damage);
 	}
-	
+
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		this.age = tag.getInt("Age");
 		this.damage = tag.getFloat("Damage");
 	}
-	
-	public void setDamage(float damage) { this.damage = damage; }
-	public float getDamage() { return this.damage; }
-	
+
+	public void setDamage(float damage) {
+		this.damage = damage;
+	}
+
+	public float getDamage() {
+		return this.damage;
+	}
+
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
@@ -87,49 +91,68 @@ public class Shrapnel extends AbstractHurtingProjectile {
 			this.discard();
 		}
 	}
-	
-	protected boolean canDestroyBlock(BlockState state) { return true; }
 
-	protected float getProjectileMass() { return this.mass; }
-	
+	protected boolean canDestroyBlock(BlockState state) {
+		return true;
+	}
+
+	protected float getProjectileMass() {
+		return this.mass;
+	}
+
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		result.getEntity().hurt(this.getDamageSource(), this.damage);
 		if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
 	}
-	
+
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (!this.level.isClientSide && (!(result instanceof EntityHitResult eResult) || eResult.getEntity().getType() != this.getType())) this.discard();
+		if (!this.level.isClientSide && (!(result instanceof EntityHitResult eResult) || eResult.getEntity().getType() != this.getType()))
+			this.discard();
 	}
 
 	public static final DamageSource SHRAPNEL = new CBCDamageSource(CreateBigCannons.MOD_ID + ".shrapnel");
-	protected DamageSource getDamageSource() { return SHRAPNEL; }
-	
-	@Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) { return 0.125f; }
-	
-	@Override protected float getInertia() { return 0.99f; }
-	
-	protected double getGravity() { return 0; }
 
-	@Override protected boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
+	protected DamageSource getDamageSource() {
+		return SHRAPNEL;
+	}
+
+	@Override
+	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
+		return 0.125f;
+	}
+
+	@Override
+	protected float getInertia() {
+		return 0.99f;
+	}
+
+	protected double getGravity() {
+		return 0;
+	}
+
+	@Override
+	protected boolean canHitEntity(Entity entity) {
+		return super.canHitEntity(entity) && !(entity instanceof Projectile);
+	}
 
 	public static <T extends Shrapnel> List<T> spawnShrapnelBurst(Level level, EntityType<T> type, Vec3 position, Vec3 initialVelocity,
-																  int count, double spread, float damage) {
+	                                                              int count, double spread, float damage) {
 		Vec3 forward = initialVelocity.normalize();
 		Vec3 right = forward.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = forward.cross(right);
 		double length = initialVelocity.length();
 		RandomSource random = level.getRandom();
 		List<T> list = new ArrayList<>();
-		
+
 		for (int i = 0; i < count; ++i) {
 			double velScale = length * (1.4d + 0.2d * random.nextDouble());
 			Vec3 vel = forward.scale(velScale)
-					.add(right.scale((random.nextDouble() - random.nextDouble()) * velScale * spread))
-					.add(up.scale((random.nextDouble() - random.nextDouble()) * velScale * spread));
-			
+				.add(right.scale((random.nextDouble() - random.nextDouble()) * velScale * spread))
+				.add(up.scale((random.nextDouble() - random.nextDouble()) * velScale * spread));
+
 			T shrapnel = type.create(level);
 			double rx = position.x + (random.nextDouble() - random.nextDouble()) * 0.0625d;
 			double ry = position.y + (random.nextDouble() - random.nextDouble()) * 0.0625d;
@@ -137,10 +160,10 @@ public class Shrapnel extends AbstractHurtingProjectile {
 			shrapnel.setPos(rx, ry, rz);
 			shrapnel.setDeltaMovement(vel);
 			shrapnel.setDamage(damage);
-			
+
 			if (level.addFreshEntity(shrapnel)) list.add(shrapnel);
 		}
-		
+
 		if (list.size() != count) {
 			CreateBigCannons.LOGGER.info("Shrapnel burst failed to spawn {} out of {} shrapnel bullets", count - list.size(), count);
 		}

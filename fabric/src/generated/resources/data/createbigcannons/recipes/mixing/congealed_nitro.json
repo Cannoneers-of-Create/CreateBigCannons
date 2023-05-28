@@ -9,12 +9,15 @@
     },
     {
       "tag": "createbigcannons:gunpowder"
+    },
+    {
+      "tag": "createbigcannons:gunpowder"
     }
   ],
   "results": [
     {
-      "item": "createbigcannons:congealed_nitro",
-      "count": 2
+      "count": 2,
+      "item": "createbigcannons:congealed_nitro"
     }
   ]
 }

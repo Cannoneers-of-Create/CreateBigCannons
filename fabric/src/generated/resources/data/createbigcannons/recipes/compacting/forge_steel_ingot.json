@@ -1,22 +1,22 @@
 {
   "type": "create:compacting",
-  "ingredients": [
-    {
-      "fluidTag": "c:molten_steel",
-      "amount": 7290
-    }
-  ],
-  "results": [
-    {
-      "item": "alloyed:steel_ingot"
-    }
-  ],
   "fabric:load_conditions": [
     {
       "condition": "fabric:item_tags_populated",
       "values": [
         "createbigcannons:ingot_steel"
       ]
+    }
+  ],
+  "ingredients": [
+    {
+      "amount": 7290,
+      "fluidTag": "c:molten_steel"
+    }
+  ],
+  "results": [
+    {
+      "item": "alloyed:steel_ingot"
     }
   ]
 }

@@ -3,9 +3,12 @@
   "ingredient": {
     "tag": "createbigcannons:ingot_cast_iron"
   },
-  "transitionalItem": {
-    "item": "createbigcannons:partial_cast_iron_autocannon_breech_extractor"
-  },
+  "loops": 3,
+  "results": [
+    {
+      "item": "createbigcannons:cast_iron_autocannon_breech_extractor"
+    }
+  ],
   "sequence": [
     {
       "type": "create:cutting",
@@ -21,10 +24,7 @@
       ]
     }
   ],
-  "results": [
-    {
-      "item": "createbigcannons:cast_iron_autocannon_breech_extractor"
-    }
-  ],
-  "loops": 3
+  "transitionalItem": {
+    "item": "createbigcannons:partial_cast_iron_autocannon_breech_extractor"
+  }
 }

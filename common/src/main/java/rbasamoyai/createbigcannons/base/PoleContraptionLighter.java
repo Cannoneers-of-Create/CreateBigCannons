@@ -6,7 +6,7 @@ import net.minecraft.core.Vec3i;
 
 public class PoleContraptionLighter extends ContraptionLighter<PoleContraption> {
 
-	protected PoleContraptionLighter(PoleContraption contraption) {
+	public PoleContraptionLighter(PoleContraption contraption) {
 		super(contraption);
 	}
 

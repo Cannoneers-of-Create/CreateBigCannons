@@ -62,7 +62,9 @@ dependencies {
     modImplementation("com.jozufozu.flywheel:flywheel-forge-${flywheel_forge_minecraft_version}:${flywheel_forge_version}")
 
     // Development QOL
-    modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_forge_version}")
+    modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_forge_version}") {
+        transitive = false
+    }
 
     // if you would like to add integration with JEI, uncomment this line.
     modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_forge_version}")
@@ -130,4 +132,3 @@ sourceSets.main {
         exclude("src/generated/resources/.cache")
     }
 }
-

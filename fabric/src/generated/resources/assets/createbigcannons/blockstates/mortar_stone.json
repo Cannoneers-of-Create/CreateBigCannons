@@ -4,8 +4,10 @@
       "model": "createbigcannons:block/mortar_stone",
       "x": 180
     },
-    "facing=up": {
-      "model": "createbigcannons:block/mortar_stone"
+    "facing=east": {
+      "model": "createbigcannons:block/mortar_stone",
+      "x": 90,
+      "y": 90
     },
     "facing=north": {
       "model": "createbigcannons:block/mortar_stone",
@@ -16,15 +18,13 @@
       "x": 90,
       "y": 180
     },
+    "facing=up": {
+      "model": "createbigcannons:block/mortar_stone"
+    },
     "facing=west": {
       "model": "createbigcannons:block/mortar_stone",
       "x": 90,
       "y": 270
-    },
-    "facing=east": {
-      "model": "createbigcannons:block/mortar_stone",
-      "x": 90,
-      "y": 90
     }
   }
 }

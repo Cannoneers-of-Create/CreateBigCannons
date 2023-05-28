@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.datagen.values;
 
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -11,17 +9,14 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import org.slf4j.Logger;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 
 public abstract class CBCDataProvider implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-	private static final HashFunction SHA1 = Hashing.sha1();
+
 	private final DataGenerator gen;
 	protected final String modid;
 	protected final String name;
@@ -45,7 +40,6 @@ public abstract class CBCDataProvider implements DataProvider {
 		JsonObject obj = new JsonObject();
 		this.write(obj);
 
-		// TODO: Rewrite this uses old Hashing Functions that are deprecated usage has changed.
 		Path path = this.gen.getOutputFolder().resolve("data/" + this.modid + "/" + this.folder + "/" + this.name + ".json");
 //		String s1 = SHA1.hashUnencodedChars(s);
 //		if (!Objects.equals(SHA1.hashUnencodedChars(path), s1) || !Files.exists(path)) {

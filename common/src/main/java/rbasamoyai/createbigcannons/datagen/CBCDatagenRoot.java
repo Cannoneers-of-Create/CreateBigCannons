@@ -1,13 +1,13 @@
 package rbasamoyai.createbigcannons.datagen;
 
-import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBlockPartialsGen;
 import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
 import rbasamoyai.createbigcannons.datagen.loot.CBCLootTableProvider;
-import rbasamoyai.createbigcannons.datagen.recipes.*;
+import rbasamoyai.createbigcannons.datagen.recipes.BlockRecipeProvider;
+import rbasamoyai.createbigcannons.datagen.recipes.CBCCraftingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.values.BlockHardnessProvider;
 import rbasamoyai.createbigcannons.datagen.values.MunitionPropertiesProvider;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;

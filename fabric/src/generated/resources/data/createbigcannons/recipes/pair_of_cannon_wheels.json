@@ -1,20 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": {
+      "tag": "minecraft:logs"
+    },
+    "S": {
+      "tag": "createbigcannons:sheet_iron"
+    }
+  },
   "pattern": [
     " S ",
     "SLS",
     " S "
   ],
-  "key": {
-    "S": {
-      "tag": "createbigcannons:sheet_iron"
-    },
-    "L": {
-      "tag": "minecraft:logs"
-    }
-  },
   "result": {
-    "item": "createbigcannons:pair_of_cannon_wheels",
-    "count": 2
+    "count": 2,
+    "item": "createbigcannons:pair_of_cannon_wheels"
   }
 }

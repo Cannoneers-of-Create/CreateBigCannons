@@ -7,14 +7,19 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class InspectResistanceToolItem extends Item {
 
-	public InspectResistanceToolItem(Properties properties) { super(properties); }
+	public InspectResistanceToolItem(Properties properties) {
+		super(properties);
+	}
 
-	@Override public boolean isFoil(ItemStack stack) { return true; }
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return true;
+	}
 
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {

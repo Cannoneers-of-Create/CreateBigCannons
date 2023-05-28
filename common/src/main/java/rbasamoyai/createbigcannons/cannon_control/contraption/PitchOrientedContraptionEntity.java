@@ -1,13 +1,9 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
-import com.jozufozu.flywheel.util.transform.TransformStack;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.contraptions.components.actors.SeatEntity;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
 import com.simibubi.create.content.contraptions.components.structureMovement.OrientedContraptionEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -109,8 +105,14 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		if (this.contraption instanceof AbstractMountedCannonContraption mounted) mounted.animate();
 	}
 
-	public float maximumDepression() { return this.contraption instanceof AbstractMountedCannonContraption cannon ? cannon.maximumDepression(this.getController()) : 90f; }
-	public float maximumElevation() { return this.contraption instanceof AbstractMountedCannonContraption cannon ? cannon.maximumElevation(this.getController()) : 90f; }
+	public float maximumDepression() {
+		return this.contraption instanceof AbstractMountedCannonContraption cannon && this.getController() != null
+				? cannon.maximumDepression(this.getController()) : 90f;
+	}
+	public float maximumElevation() {
+		return this.contraption instanceof AbstractMountedCannonContraption cannon && this.getController() != null
+				? cannon.maximumElevation(this.getController()) : 90f;
+	}
 
 	@Override
 	protected void onContraptionStalled() {
@@ -134,28 +136,6 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		float prevYaw = this.yaw;
 		super.onSyncedDataUpdated(key);
 		this.yaw = prevYaw;
-	}
-
-	@Environment(EnvType.CLIENT)
-	@Override
-	public void applyLocalTransforms(PoseStack stack, float partialTicks) {
-		float initialYaw = this.getInitialYaw();
-		float pitch = this.getViewXRot(partialTicks);
-		float yaw = this.getViewYRot(partialTicks) + initialYaw;
-		
-		stack.translate(-0.5f, 0.0f, -0.5f);
-		
-		TransformStack tstack = TransformStack.cast(stack)
-				.nudge(this.getId())
-				.centre()
-				.rotateY(yaw);
-		
-		if (this.getInitialOrientation().getAxis() == Direction.Axis.X) {
-			tstack.rotateZ(pitch);
-		} else {
-			tstack.rotateX(pitch);
-		}
-		tstack.unCentre();
 	}
 	
 	@Override

@@ -8,44 +8,63 @@ import net.minecraft.world.item.ItemStack;
 
 public abstract class AbstractFuzeContainer extends AbstractContainerMenu {
 
-	protected final ContainerData data;
+    protected final ContainerData data;
 
-	private final ItemStack stackToRender;
+    private final ItemStack stackToRender;
 
-	protected AbstractFuzeContainer(MenuType<? extends AbstractFuzeContainer> type, int windowId, ContainerData data, ItemStack stackToRender) {
-		super(type, windowId);
-		this.data = data;
-		this.stackToRender = stackToRender;
-		this.addDataSlots(this.data);
-	}
+    protected AbstractFuzeContainer(MenuType<? extends AbstractFuzeContainer> type, int windowId, ContainerData data, ItemStack stackToRender) {
+        super(type, windowId);
+        this.data = data;
+        this.stackToRender = stackToRender;
+        this.addDataSlots(this.data);
+    }
 
-	public void setValue(int distance) { this.data.set(0, distance); }
-	public int getValue() { return this.data.get(0); }
-	public ItemStack getStackToRender() { return this.stackToRender; }
+    public void setValue(int distance) {
+        this.data.set(0, distance);
+    }
 
-	@Override public boolean stillValid(Player player) { return true; }
+    public int getValue() {
+        return this.data.get(0);
+    }
 
-	protected static class ServerData implements ContainerData {
-		private final ItemStack stack;
-		private final String tag;
+    public ItemStack getStackToRender() {
+        return this.stackToRender;
+    }
 
-		public ServerData(ItemStack stack, String tag) {
-			this.stack = stack;
-			this.tag = tag;
-		}
+    @Override
+    public boolean stillValid(Player player) {
+        return true;
+    }
 
-		@Override
-		public int get(int index) {
-			return index == 0 ? this.stack.getOrCreateTag().getInt(this.tag) : 1;
-		}
+    @Override
+    public ItemStack quickMoveStack(Player player, int index) {
+        return ItemStack.EMPTY;
+    }
 
-		@Override
-		public void set(int index, int value) {
-			if (index == 0) this.stack.getOrCreateTag().putInt(this.tag, value);
-		}
+    protected static class ServerData implements ContainerData {
+        private final ItemStack stack;
+        private final String tag;
 
-		@Override public int getCount() { return 1; }
-	}
+        public ServerData(ItemStack stack, String tag) {
+            this.stack = stack;
+            this.tag = tag;
+        }
+
+        @Override
+        public int get(int index) {
+            return index == 0 ? this.stack.getOrCreateTag().getInt(this.tag) : 1;
+        }
+
+        @Override
+        public void set(int index, int value) {
+            if (index == 0) this.stack.getOrCreateTag().putInt(this.tag, value);
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+    }
 
 
 }
