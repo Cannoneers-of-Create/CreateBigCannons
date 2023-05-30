@@ -19,11 +19,8 @@ public abstract class CBCFlowingFluidMixin extends FlowingFluid {
 	@Final
 	protected SoundEvent emptySound;
 
-	@NotNull
-	protected FluidType createAttributes() {
-		return new FluidType(
-			FluidType.Properties.create().sound(SoundActions.BUCKET_FILL, this.fillSound).sound(SoundActions.BUCKET_EMPTY, this.emptySound)
-		);
+	@Override
+	public FluidType getFluidType() {
+		return new FluidType(FluidType.Properties.create().sound(SoundActions.BUCKET_FILL, this.fillSound).sound(SoundActions.BUCKET_EMPTY, this.emptySound));
 	}
-
 }

@@ -43,9 +43,8 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> create(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
 	                                                                       NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
-		FluidBuilder<T, P> ret = IndexPlatform.createFluidBuilder(owner, parent, name, callback, stillTexture, flowingTexture, factory)
+		return IndexPlatform.createFluidBuilder(owner, parent, name, callback, stillTexture, flowingTexture, factory)
 			.defaultLang().defaultSource().defaultBlock().defaultBucket();
-		return ret;
 	}
 
 	protected final ResourceLocation stillTexture;
