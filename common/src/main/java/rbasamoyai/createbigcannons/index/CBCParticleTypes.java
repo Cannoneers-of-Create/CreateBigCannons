@@ -11,6 +11,7 @@ import net.minecraft.core.particles.ParticleType;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleData;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.multiloader.ParticlesPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 
 import java.util.function.Supplier;
@@ -28,7 +29,9 @@ public enum CBCParticleTypes {
         entry = new ParticleEntry<>(name, typeFactory);
     }
 
-    public static void register() { IndexPlatform.registerDeferredParticles(); }
+    public static void register() {
+        IndexPlatform.registerDeferredParticles();
+    }
 
     @Environment(EnvType.CLIENT)
     public static void registerFactories() {
@@ -60,8 +63,7 @@ public enum CBCParticleTypes {
 
         @Environment(EnvType.CLIENT)
         public void registerFactory(ParticleEngine particles) {
-            typeFactory.get()
-                    .register(object, particles);
+            ParticlesPlatform.register(typeFactory.get(), object, particles);
         }
     }
 
