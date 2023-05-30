@@ -172,8 +172,11 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				this.onImpact(bResult, true);
 				return true;
 			}
+			state.onProjectileHit(this.level, state, bResult, this);
 			this.onDestroyBlock(state, bResult);
+			if (this.isRemoved()) return true;
 			this.onImpact(bResult, false);
+			if (this.isRemoved()) return true;
 
 			double f = this.overPenetrationPower(hardness, curPom);
 			if (flag1 && f > 0) {

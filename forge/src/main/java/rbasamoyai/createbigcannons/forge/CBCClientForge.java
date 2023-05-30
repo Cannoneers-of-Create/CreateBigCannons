@@ -14,7 +14,6 @@ public class CBCClientForge {
 		CBCBlockPartials.init();
 		modEventBus.addListener(CBCClientForge::onClientSetup);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
-		forgeEventBus.addListener(CBCClientForge::registerBindings);
 
 		forgeEventBus.addListener(CBCClientForge::getFogColor);
 		forgeEventBus.addListener(CBCClientForge::getFogDensity);

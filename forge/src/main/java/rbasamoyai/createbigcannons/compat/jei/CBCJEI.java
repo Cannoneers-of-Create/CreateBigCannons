@@ -218,7 +218,7 @@ public class CBCJEI implements IModPlugin {
 		void registerRecipes(IRecipeRegistration reg);
 		void registerCatalysts(IRecipeCatalystRegistration reg);
 		
-		public static <T extends Recipe<?>> PackedCategory<T> packCreateCategory(CreateRecipeCategory<T> cat) {
+		static <T extends Recipe<?>> PackedCategory<T> packCreateCategory(CreateRecipeCategory<T> cat) {
 			return new PackedCategory<>() {
 				@Override public IRecipeCategory<T> asCategory() { return cat; }
 				@Override public RecipeType<T> getType() { return cat.getRecipeType(); }

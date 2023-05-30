@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.forge;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -15,7 +14,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.*;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.NewRegistryEvent;
+import net.minecraftforge.registries.RegisterEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -31,7 +33,6 @@ public class CreateBigCannonsForge {
     public static final DeferredRegister<ParticleType<?>> PARTICLE_REGISTER = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, CreateBigCannons.MOD_ID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER_REGISTER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, CreateBigCannons.MOD_ID);
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_REGISTER = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, CreateBigCannons.MOD_ID);
-    public static final DeferredRegister<SoundEvent> SOUND_EVENT_REGISTER = DeferredRegister.create(Registry.SOUND_EVENT_REGISTRY, CreateBigCannons.MOD_ID);
 
     public CreateBigCannonsForge() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -77,7 +78,12 @@ public class CreateBigCannonsForge {
         event.register(Registry.SOUND_EVENT_REGISTRY, helper -> CBCSoundEvents.register(soundEntry -> soundEntry.register(helper)));
     }
 
-    private void onLoadConfig(ModConfigEvent.Loading evt) { CBCConfigs.onLoad(evt.getConfig()); }
-    private void onReloadConfig(ModConfigEvent.Reloading evt) { CBCConfigs.onReload(evt.getConfig()); }
+    private void onLoadConfig(ModConfigEvent.Loading evt) {
+        CBCConfigs.onLoad(evt.getConfig());
+    }
+
+    private void onReloadConfig(ModConfigEvent.Reloading evt) {
+        CBCConfigs.onReload(evt.getConfig());
+    }
 
 }

@@ -2,10 +2,6 @@ package rbasamoyai.createbigcannons.cannon_control.contraption;
 
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
-import com.simibubi.create.content.contraptions.components.structureMovement.NonStationaryLighter;
-import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionLighter;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -21,6 +17,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Map;
 
@@ -29,8 +26,8 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 	protected Direction initialOrientation = Direction.NORTH;
 	protected BlockPos startPos = BlockPos.ZERO;
 
-	public abstract float maximumDepression(ControlPitchContraption controller);
-	public abstract float maximumElevation(ControlPitchContraption controller);
+	public abstract float maximumDepression(@Nonnull ControlPitchContraption controller);
+	public abstract float maximumElevation(@Nonnull ControlPitchContraption controller);
 
 	public Direction initialOrientation() { return this.initialOrientation; }
 
@@ -92,9 +89,6 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 	public boolean canBeFiredOnController(ControlPitchContraption control) { return true; }
 
 	public BlockPos getSeatPos(Entity entity) { return null; }
-
-	@Environment(EnvType.CLIENT)
-	@Override public ContraptionLighter<?> makeLighter() { return new NonStationaryLighter<>(this); }
 
 	public abstract Vec3 getInteractionVec(PitchOrientedContraptionEntity poce);
 

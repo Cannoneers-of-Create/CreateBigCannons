@@ -1,4 +1,3 @@
-
 package rbasamoyai.createbigcannons;
 
 import com.jozufozu.flywheel.core.PartialModel;
@@ -72,7 +71,7 @@ public class CBCClientCommon {
 		KEYS.add(PITCH_MODE);
 		KEYS.add(FIRE_CONTROLLED_CANNON);
 	}
-	
+
 	public static void setFogColor(Camera info, SetColorWrapper wrapper) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
@@ -103,7 +102,7 @@ public class CBCClientCommon {
 	public interface SetColorWrapper {
 		void setFogColor(float r, float g, float b);
 	}
-	
+
 	public static float getFogDensity(Camera info, float currentDensity) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
@@ -112,13 +111,13 @@ public class CBCClientCommon {
 		if (info.getPosition().y > blockPos.getY() + fluidState.getHeight(level, blockPos)) return -1;
 
 		Fluid fluid = fluidState.getType();
-		
+
 		List<Fluid> moltenMetals = Arrays.asList(
-				CBCFluids.MOLTEN_CAST_IRON.get(),
-				CBCFluids.MOLTEN_BRONZE.get(),
-				CBCFluids.MOLTEN_STEEL.get(),
-				CBCFluids.MOLTEN_NETHERSTEEL.get());
-		
+			CBCFluids.MOLTEN_CAST_IRON.get(),
+			CBCFluids.MOLTEN_BRONZE.get(),
+			CBCFluids.MOLTEN_STEEL.get(),
+			CBCFluids.MOLTEN_NETHERSTEEL.get());
+
 		for (Fluid fluid1 : moltenMetals) {
 			if (fluid1.isSame(fluid)) {
 				return 1f / 32f;
@@ -196,11 +195,12 @@ public class CBCClientCommon {
 
 	public static PartialModel getBreechblockForState(BlockState state) {
 		return state.getBlock() instanceof BigCannonBlock cBlock ? CBCBlockPartials.breechblockFor(cBlock.getCannonMaterial())
-				: CBCBlockPartials.CAST_IRON_SLIDING_BREECHBLOCK;
+			: CBCBlockPartials.CAST_IRON_SLIDING_BREECHBLOCK;
 	}
 
 	public static PartialModel getScrewBreechForState(BlockState state) {
 		return state.getBlock() instanceof BigCannonBlock cBlock ? CBCBlockPartials.screwLockFor(cBlock.getCannonMaterial())
-				: CBCBlockPartials.STEEL_SCREW_LOCK;
+			: CBCBlockPartials.STEEL_SCREW_LOCK;
 	}
+
 }

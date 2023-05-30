@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.munitions.fuzes;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
@@ -11,23 +10,17 @@ import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 
 public class ProximityFuzeContainer extends AbstractFuzeContainer {
 
-	public static ProximityFuzeContainer getServerMenu(int id, Inventory playerInv, ItemStack stack) {
-		return new ProximityFuzeContainer(CBCMenuTypes.SET_PROXIMITY_FUZE.get(), id, new ServerData(stack, "DetonationDistance"), ItemStack.EMPTY);
-	}
-	
-	public static ProximityFuzeContainer getClientMenu(MenuType<ProximityFuzeContainer> type, int id, Inventory playerInv, FriendlyByteBuf buf) {
-		ContainerData data = new SimpleContainerData(1);
-		data.set(0, buf.readVarInt());
-		return new ProximityFuzeContainer(type, id, data, buf.readItem());
-	}
+    public static ProximityFuzeContainer getServerMenu(int id, Inventory playerInv, ItemStack stack) {
+        return new ProximityFuzeContainer(CBCMenuTypes.SET_PROXIMITY_FUZE.get(), id, new ServerData(stack, "DetonationDistance"), ItemStack.EMPTY);
+    }
 
-	protected ProximityFuzeContainer(MenuType<? extends ProximityFuzeContainer> type, int windowId, ContainerData data, ItemStack stackToRender) {
-		super(type, windowId, data, stackToRender);
-	}
+    public static ProximityFuzeContainer getClientMenu(MenuType<ProximityFuzeContainer> type, int id, Inventory playerInv, FriendlyByteBuf buf) {
+        ContainerData data = new SimpleContainerData(1);
+        data.set(0, buf.readVarInt());
+        return new ProximityFuzeContainer(type, id, data, buf.readItem());
+    }
 
-	// TODO: Implement this
-	@Override
-	public ItemStack quickMoveStack(Player player, int index) {
-		return null;
-	}
+    protected ProximityFuzeContainer(MenuType<? extends ProximityFuzeContainer> type, int windowId, ContainerData data, ItemStack stackToRender) {
+        super(type, windowId, data, stackToRender);
+    }
 }

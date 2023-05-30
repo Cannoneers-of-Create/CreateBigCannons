@@ -6,7 +6,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 
@@ -34,8 +33,6 @@ public abstract class CBCBlockRecipeCategory<T extends BlockRecipe> implements I
 	@Override public Component getTitle() { return title; }
 	@Override public IDrawable getBackground() { return this.background; }
 	@Override public IDrawable getIcon() { return this.icon; }
-	public ResourceLocation getUid() { return this.type.getUid(); }
-	public Class<? extends T> getRecipeClass() { return this.type.getRecipeClass(); }
 	@Override public RecipeType<T> getRecipeType() { return this.type; }
 	
 	public void registerRecipes(IRecipeRegistration reg) {
@@ -46,7 +43,7 @@ public abstract class CBCBlockRecipeCategory<T extends BlockRecipe> implements I
 		this.catalysts.forEach(s -> reg.addRecipeCatalyst(s.get(), this.type));
 	}
 	
-	public static record Info<T extends BlockRecipe>(RecipeType<T> type, Component title, IDrawable background, IDrawable icon, Supplier<List<T>> recipes, List<Supplier<? extends ItemStack>> catalysts) {
+	public record Info<T extends BlockRecipe>(RecipeType<T> type, Component title, IDrawable background, IDrawable icon, Supplier<List<T>> recipes, List<Supplier<? extends ItemStack>> catalysts) {
 	}
 
 	public interface Factory<T extends BlockRecipe> {

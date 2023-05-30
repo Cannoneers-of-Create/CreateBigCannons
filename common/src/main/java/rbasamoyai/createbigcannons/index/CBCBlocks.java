@@ -179,7 +179,7 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_CAST_IRON_SLIDING_BREECH = REGISTRATE
 			.block("incomplete_cast_iron_sliding_breech", p -> new IncompleteSlidingBreechBlock(p, BigCannonMaterial.CAST_IRON, CBCItems.CAST_IRON_SLIDING_BREECHBLOCK, CAST_IRON_SLIDING_BREECH))
-			.transform(cannonBlock(false))
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreechIncomplete("sliding_breech/cast_iron"))
 			.loot(CBCBuilderTransformers.castIronScrapLoot(10))
 			.item(BigCannonBlockItem::new).build()
@@ -257,7 +257,7 @@ public class CBCBlocks {
 	
 	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_BRONZE_SLIDING_BREECH = REGISTRATE
 			.block("incomplete_bronze_sliding_breech", p -> new IncompleteSlidingBreechBlock(p, BigCannonMaterial.BRONZE, CBCItems.BRONZE_SLIDING_BREECHBLOCK, BRONZE_SLIDING_BREECH))
-			.transform(cannonBlock(false))
+			.transform(cannonBlock())
 			.transform(CBCBuilderTransformers.slidingBreechIncomplete("sliding_breech/bronze"))
 			.loot(CBCBuilderTransformers.bronzeScrapLoot(10))
 			.item(BigCannonBlockItem::new).build()
@@ -420,7 +420,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_STEEL_SLIDING_BREECH = REGISTRATE
 			.block("incomplete_steel_sliding_breech", p -> new IncompleteSlidingBreechBlock(p, BigCannonMaterial.STEEL, CBCItems.STEEL_SLIDING_BREECHBLOCK, STEEL_SLIDING_BREECH))
-			.transform(strongCannonBlock(false))
+			.transform(strongCannonBlock())
 			.loot(CBCBuilderTransformers.steelScrapLoot(10))
 			.transform(CBCBuilderTransformers.slidingBreechIncomplete("sliding_breech/steel"))
 			.item(BigCannonBlockItem::new).build()
@@ -444,7 +444,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_STEEL_SCREW_BREECH = REGISTRATE
 			.block("incomplete_steel_screw_breech", p -> new IncompleteScrewBreechBlock(p, BigCannonMaterial.STEEL, CBCItems.STEEL_SCREW_LOCK, STEEL_SCREW_BREECH))
-			.transform(strongCannonBlock(false))
+			.transform(strongCannonBlock())
 			.loot(CBCBuilderTransformers.steelScrapLoot(10))
 			.transform(CBCBuilderTransformers.screwBreechIncomplete("screw_breech/steel"))
 			.item(BigCannonBlockItem::new).build()
@@ -595,7 +595,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_NETHERSTEEL_SCREW_BREECH = REGISTRATE
 			.block("incomplete_nethersteel_screw_breech", p -> new IncompleteScrewBreechBlock(p, BigCannonMaterial.NETHERSTEEL, CBCItems.NETHERSTEEL_SCREW_LOCK, NETHERSTEEL_SCREW_BREECH))
-			.transform(strongCannonBlock(false))
+			.transform(strongCannonBlock())
 			.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 			.transform(CBCBuilderTransformers.screwBreechIncomplete("screw_breech/nethersteel"))
 			.item(BigCannonBlockItem::new).build()

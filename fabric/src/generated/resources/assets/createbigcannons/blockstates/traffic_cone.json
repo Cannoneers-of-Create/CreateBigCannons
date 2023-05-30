@@ -4,8 +4,10 @@
       "model": "createbigcannons:block/traffic_cone",
       "x": 180
     },
-    "facing=up": {
-      "model": "createbigcannons:block/traffic_cone"
+    "facing=east": {
+      "model": "createbigcannons:block/traffic_cone",
+      "x": 90,
+      "y": 90
     },
     "facing=north": {
       "model": "createbigcannons:block/traffic_cone",
@@ -16,15 +18,13 @@
       "x": 90,
       "y": 180
     },
+    "facing=up": {
+      "model": "createbigcannons:block/traffic_cone"
+    },
     "facing=west": {
       "model": "createbigcannons:block/traffic_cone",
       "x": 90,
       "y": 270
-    },
-    "facing=east": {
-      "model": "createbigcannons:block/traffic_cone",
-      "x": 90,
-      "y": 90
     }
   }
 }

@@ -18,7 +18,6 @@ import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntit
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntityRenderer;
 
 import java.util.List;
-import java.util.Random;
 
 public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntityRenderer {
 

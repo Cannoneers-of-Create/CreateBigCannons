@@ -4,11 +4,26 @@
       "model": "createbigcannons:block/big_cartridge_empty",
       "x": 180
     },
-    "facing=up,filled=false": {
-      "model": "createbigcannons:block/big_cartridge_empty"
+    "facing=down,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled",
+      "x": 180
+    },
+    "facing=east,filled=false": {
+      "model": "createbigcannons:block/big_cartridge_empty",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled",
+      "x": 90,
+      "y": 90
     },
     "facing=north,filled=false": {
       "model": "createbigcannons:block/big_cartridge_empty",
+      "x": 90
+    },
+    "facing=north,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled",
       "x": 90
     },
     "facing=south,filled=false": {
@@ -16,41 +31,26 @@
       "x": 90,
       "y": 180
     },
-    "facing=west,filled=false": {
-      "model": "createbigcannons:block/big_cartridge_empty",
-      "x": 90,
-      "y": 270
-    },
-    "facing=east,filled=false": {
-      "model": "createbigcannons:block/big_cartridge_empty",
-      "x": 90,
-      "y": 90
-    },
-    "facing=down,filled=true": {
-      "model": "createbigcannons:block/big_cartridge_filled",
-      "x": 180
-    },
-    "facing=up,filled=true": {
-      "model": "createbigcannons:block/big_cartridge_filled"
-    },
-    "facing=north,filled=true": {
-      "model": "createbigcannons:block/big_cartridge_filled",
-      "x": 90
-    },
     "facing=south,filled=true": {
       "model": "createbigcannons:block/big_cartridge_filled",
       "x": 90,
       "y": 180
     },
+    "facing=up,filled=false": {
+      "model": "createbigcannons:block/big_cartridge_empty"
+    },
+    "facing=up,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled"
+    },
+    "facing=west,filled=false": {
+      "model": "createbigcannons:block/big_cartridge_empty",
+      "x": 90,
+      "y": 270
+    },
     "facing=west,filled=true": {
       "model": "createbigcannons:block/big_cartridge_filled",
       "x": 90,
       "y": 270
-    },
-    "facing=east,filled=true": {
-      "model": "createbigcannons:block/big_cartridge_filled",
-      "x": 90,
-      "y": 90
     }
   }
 }

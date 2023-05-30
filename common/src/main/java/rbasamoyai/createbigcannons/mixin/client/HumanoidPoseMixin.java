@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.mixin;
+package rbasamoyai.createbigcannons.mixin.client;
 
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.HumanoidModel;

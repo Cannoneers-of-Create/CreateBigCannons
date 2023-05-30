@@ -2,10 +2,7 @@ package rbasamoyai.createbigcannons.base;
 
 import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
 import com.simibubi.create.content.contraptions.components.structureMovement.TranslatingContraption;
-import com.simibubi.create.content.contraptions.components.structureMovement.render.ContraptionLighter;
 import com.simibubi.create.foundation.utility.VecHelper;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -66,11 +63,5 @@ public abstract class PoleContraption extends TranslatingContraption {
 	public int extensionLength() { return this.extensionLength; }
 	public int initialExtensionProgress() { return this.initialExtensionProgress; }
 	public Direction orientation() { return this.orientation; }
-	
-	@Environment(EnvType.CLIENT)
-	@Override
-	public ContraptionLighter<?> makeLighter() {
-		return new PoleContraptionLighter(this);
-	}
 
 }

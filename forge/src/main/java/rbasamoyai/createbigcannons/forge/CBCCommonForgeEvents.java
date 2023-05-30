@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.forge;
 
-import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
@@ -10,10 +9,8 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.registries.RegisterEvent;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
 import rbasamoyai.createbigcannons.forge.events.OnCannonBreakBlockImpl;
-import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 
 public class CBCCommonForgeEvents {
 
@@ -61,5 +58,5 @@ public class CBCCommonForgeEvents {
 	public static void onAddReloadListeners(AddReloadListenerEvent event) {
 		CBCCommonEvents.onAddReloadListeners((m, l) -> event.addListener(m));
 	}
-	
+
 }

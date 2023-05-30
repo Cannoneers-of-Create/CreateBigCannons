@@ -2,21 +2,21 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
           "type": "minecraft:item",
           "functions": [
             {
-              "function": "minecraft:set_count",
+              "add": false,
               "count": 15.0,
-              "add": false
+              "function": "minecraft:set_count"
             }
           ],
           "name": "createbigcannons:cast_iron_nugget"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }
