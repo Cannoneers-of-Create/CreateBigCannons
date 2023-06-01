@@ -104,9 +104,9 @@ public class CannonCastBlock extends Block implements IBE<AbstractCannonCastBloc
 		return this.onBlockEntityUse(level, pos, cast -> {
 			AbstractCannonCastBlockEntity controller = cast.getControllerBE();
 			if (controller == null || stack.isEmpty()) return InteractionResult.PASS;
-			if (controller.tryEmptyItemIntoTE(level, player, hand, stack, Direction.UP))
+			if (controller.tryEmptyItemIntoBE(level, player, hand, stack, Direction.UP))
 				return InteractionResult.SUCCESS;
-			if (controller.tryFillItemFromTE(level, player, hand, stack, Direction.UP))
+			if (controller.tryFillItemFromBE(level, player, hand, stack, Direction.UP))
 				return InteractionResult.SUCCESS;
 			return InteractionResult.PASS;
 		});
