@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.simibubi.create.content.contraptions.particle.ICustomParticleData;
+import java.util.function.Supplier;
+
+import com.simibubi.create.foundation.particle.ICustomParticleData;
 import com.simibubi.create.foundation.utility.Lang;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
@@ -13,56 +16,56 @@ import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleDat
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 
-import java.util.function.Supplier;
-
 public enum CBCParticleTypes {
 
-    CANNON_PLUME(CannonPlumeParticleData::new),
-    FLUID_BLOB(FluidBlobParticleData::new),
-    CANNON_SMOKE(CannonSmokeParticleData::new);
+	CANNON_PLUME(CannonPlumeParticleData::new),
+	FLUID_BLOB(FluidBlobParticleData::new),
+	CANNON_SMOKE(CannonSmokeParticleData::new);
 
-    private final ParticleEntry<?> entry;
+	private final ParticleEntry<?> entry;
 
-    <D extends ParticleOptions> CBCParticleTypes(Supplier<ICustomParticleData<D>> typeFactory) {
-        String name = Lang.asId(name());
-        entry = new ParticleEntry<>(name, typeFactory);
-    }
+	<D extends ParticleOptions> CBCParticleTypes(Supplier<ICustomParticleData<D>> typeFactory) {
+		String name = Lang.asId(name());
+		entry = new ParticleEntry<>(name, typeFactory);
+	}
 
-    public static void register() { IndexPlatform.registerDeferredParticles(); }
+	public static void register() {
+		IndexPlatform.registerDeferredParticles();
+	}
 
-    @Environment(EnvType.CLIENT)
-    public static void registerFactories() {
-        ParticleEngine particles = Minecraft.getInstance().particleEngine;
-        for (CBCParticleTypes particle : values())
-            particle.entry.registerFactory(particles);
-    }
+	@Environment(EnvType.CLIENT)
+	public static void registerFactories() {
+		ParticleEngine particles = Minecraft.getInstance().particleEngine;
+		for (CBCParticleTypes particle : values())
+			particle.entry.registerFactory(particles);
+	}
 
-    public ParticleType<?> get() {
-        return entry.object;
-    }
+	public ParticleType<?> get() {
+		return entry.object;
+	}
 
-    public String parameter() {
-        return entry.name;
-    }
+	public String parameter() {
+		return entry.name;
+	}
 
-    private static class ParticleEntry<D extends ParticleOptions> {
-        private final String name;
-        private final Supplier<? extends ICustomParticleData<D>> typeFactory;
-        private final ParticleType<D> object;
+	private static class ParticleEntry<D extends ParticleOptions> {
+		private final String name;
+		private final Supplier<? extends ICustomParticleData<D>> typeFactory;
+		private final ParticleType<D> object;
 
-        public ParticleEntry(String name, Supplier<? extends ICustomParticleData<D>> typeFactory) {
-            this.name = name;
-            this.typeFactory = typeFactory;
+		public ParticleEntry(String name, Supplier<? extends ICustomParticleData<D>> typeFactory) {
+			this.name = name;
+			this.typeFactory = typeFactory;
 
-            object = this.typeFactory.get().createType();
-            IndexPlatform.registerDeferredParticleType(this.name, this.object);
-        }
+			object = this.typeFactory.get().createType();
+			IndexPlatform.registerDeferredParticleType(this.name, this.object);
+		}
 
-        @Environment(EnvType.CLIENT)
-        public void registerFactory(ParticleEngine particles) {
-            typeFactory.get()
-                    .register(object, particles);
-        }
-    }
+		@Environment(EnvType.CLIENT)
+		public void registerFactory(ParticleEngine particles) {
+			typeFactory.get()
+				.register(object, particles);
+		}
+	}
 
 }

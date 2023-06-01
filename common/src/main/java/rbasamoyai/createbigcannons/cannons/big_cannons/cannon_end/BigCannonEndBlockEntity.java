@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end;
 
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import java.util.List;
+
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,25 +21,29 @@ import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 
-import java.util.List;
-
-public class BigCannonEndBlockEntity extends SmartTileEntity implements IBigCannonBlockEntity, WandActionable {
+public class BigCannonEndBlockEntity extends SmartBlockEntity implements IBigCannonBlockEntity, WandActionable {
 
 	private BigCannonBehavior cannonBehavior;
-	
+
 	public BigCannonEndBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 		behaviours.add(this.cannonBehavior = new BigCannonBehavior(this, this::canLoadBlock));
 	}
-	
-	@Override public boolean canLoadBlock(StructureBlockInfo blockInfo) { return false; }
 
-	@Override public BigCannonBehavior cannonBehavior() { return this.cannonBehavior; }
-	
+	@Override
+	public boolean canLoadBlock(StructureBlockInfo blockInfo) {
+		return false;
+	}
+
+	@Override
+	public BigCannonBehavior cannonBehavior() {
+		return this.cannonBehavior;
+	}
+
 	@Override
 	public InteractionResult onWandUsed(UseOnContext context) {
 		BlockState state = this.getBlockState();

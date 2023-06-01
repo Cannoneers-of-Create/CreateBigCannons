@@ -1,15 +1,29 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import javax.annotation.Nullable;
+
 import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.foundation.tileEntity.IMultiTileContainer;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -31,10 +45,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-import javax.annotation.Nullable;
-import java.util.*;
-
-public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity implements WandActionable, IMultiTileContainer {
+public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity implements WandActionable, IMultiBlockEntityContainer {
 
 	private static final Object CASTING_RECIPES_KEY = new Object();
 
@@ -50,14 +61,14 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	protected Map<CannonCastShape, CannonCastingRecipe> recipes = new HashMap<>();
 	protected List<BlockState> resultPreview = new ArrayList<>();
 	protected boolean updateRecipes;
-	
+
 	private static final int SYNC_RATE = 8;
 	protected boolean queuedSync;
 	protected int syncCooldown;
-	
+
 	protected LerpedFloat fluidLevel;
 	protected LerpedFloat castLevel;
-	
+
 	public AbstractCannonCastBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		this.height = 1;
@@ -66,16 +77,18 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		this.updateRecipes = true;
 		this.startCastingTime = 1;
 	}
-	
-	@Override public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
-	
+
+	@Override
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+	}
+
 	@Override
 	public void initialize() {
 		super.initialize();
 		this.sendData();
 		if (level.isClientSide) this.invalidateRenderBoundingBox();
 	}
-	
+
 	@Override
 	public void sendData() {
 		if (this.syncCooldown > 0) {
@@ -86,14 +99,14 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		this.queuedSync = false;
 		this.syncCooldown = SYNC_RATE;
 	}
-	
+
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
 		if (this.canRenderCastModel() && this.castShape != null) {
 			tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.getKey(this.castShape).toString());
 		}
 		if (this.lastKnownPos != null) tag.put("LastKnownPos", NbtUtils.writeBlockPos(this.lastKnownPos));
-		
+
 		if (this.isController()) {
 			if (!this.structure.isEmpty()) {
 				ListTag structureTag = new ListTag();
@@ -107,13 +120,14 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 			this.writeFluidToTag(tag);
 			if (this.startCastingTime > 1) tag.putInt("StartCastingTime", this.startCastingTime);
 			if (this.updateRecipes) tag.putBoolean("UpdateRecipes", true);
-			
+
 			if (!this.recipes.isEmpty() && !this.structure.isEmpty()) {
 				ListTag previewList = new ListTag();
 				for (CannonCastShape shape : this.structure) {
 					if (this.recipes.containsKey(shape)) {
 						BlockState state = this.recipes.get(shape).getResultBlock().defaultBlockState();
-						if (state.hasProperty(BlockStateProperties.FACING)) state = state.setValue(BlockStateProperties.FACING, Direction.DOWN);
+						if (state.hasProperty(BlockStateProperties.FACING))
+							state = state.setValue(BlockStateProperties.FACING, Direction.DOWN);
 						previewList.add(NbtUtils.writeBlockState(shape.applyTo(state)));
 					} else {
 						previewList.add(new CompoundTag());
@@ -124,30 +138,30 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		} else {
 			tag.put("Controller", NbtUtils.writeBlockPos(this.controllerPos));
 		}
-		
+
 		super.write(tag, clientPacket);
-		
+
 		if (!clientPacket) return;
 		if (this.forceFluidLevelUpdate) tag.putBoolean("ForceFluidLevel", true);
 		if (this.forceCastLevelUpdate) tag.putBoolean("ForceCastLevel", true);
 		if (this.queuedSync) tag.putBoolean("LazySync", true);
-		
+
 		this.forceFluidLevelUpdate = false;
 		this.forceCastLevelUpdate = false;
 	}
 
 	protected abstract void writeFluidToTag(CompoundTag tag);
-	
+
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
-		
+
 		BlockPos controllerBefore = this.controllerPos;
-		int prevHeight = this.getControllerTE() == null ? 0 : this.getControllerTE().height;
+		int prevHeight = this.getControllerBE() == null ? 0 : this.getControllerBE().height;
 
 		this.castShape = tag.contains("Size") ? CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(tag.getString("Size"))) : null;
 		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
-		
+
 		this.structure.clear();
 		if (tag.contains("Structure")) {
 			ListTag list = tag.getList("Structure", Tag.TAG_STRING);
@@ -160,28 +174,28 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 			this.castingTime = Math.max(tag.getInt("CastingTime"), 0);
 			this.startCastingTime = Math.max(tag.getInt("StartCastingTime"), 1);
 			this.updateRecipes = tag.contains("UpdateRecipes");
-			
+
 			this.resultPreview.clear();
 			ListTag preview = tag.getList("Preview", Tag.TAG_COMPOUND);
 			for (int i = 0; i < preview.size(); ++i) {
 				this.resultPreview.add(NbtUtils.readBlockState(preview.getCompound(i)));
 			}
-			
+
 			this.controllerPos = null;
 		} else if (tag.contains("Controller")) {
 			this.controllerPos = NbtUtils.readBlockPos(tag.getCompound("Controller"));
 		}
-		
+
 		if (tag.contains("ForceFluidLevel") || this.fluidLevel == null) {
 			this.fluidLevel = LerpedFloat.linear().startWithValue(this.getFillState());
 		}
 		if (tag.contains("ForceCastLevel") || this.castLevel == null) {
 			this.castLevel = LerpedFloat.linear().startWithValue(this.getCastingState());
 		}
-		
+
 		if (!clientPacket) return;
 		boolean changeOfController = !Objects.equals(controllerBefore, this.controllerPos);
-		if (changeOfController || this.getControllerTE() != null && prevHeight != this.getControllerTE().height) {
+		if (changeOfController || this.getControllerBE() != null && prevHeight != this.getControllerBE().height) {
 			if (this.hasLevel()) this.level.sendBlockUpdated(this.getBlockPos(), getBlockState(), getBlockState(), 16);
 			if (this.isController()) this.updateFluidClient();
 			this.invalidateRenderBoundingBox();
@@ -192,13 +206,13 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 				this.fluidLevel = LerpedFloat.linear().startWithValue(fillState);
 			}
 			this.fluidLevel.chase(fillState, 0.5f, Chaser.EXP);
-			
+
 			float castState = this.getCastingState();
 			if (tag.contains("ForceCastLevel") || this.castLevel == null) {
 				this.castLevel = LerpedFloat.linear().startWithValue(castState);
 			}
 			this.castLevel.chase(castState, 0.5f, Chaser.EXP);
-		}		
+		}
 		if (tag.contains("LazySync")) {
 			this.fluidLevel.chase(this.fluidLevel.getChaseTarget(), 0.125f, Chaser.EXP);
 			this.castLevel.chase(this.castLevel.getChaseTarget(), 0.125f, Chaser.EXP);
@@ -206,8 +220,9 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	}
 
 	protected abstract void updateFluids(CompoundTag tag);
+
 	protected abstract void updateFluidClient();
-	
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -218,26 +233,26 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 				this.sendData();
 			}
 		}
-		
+
 		if (this.lastKnownPos == null) {
 			this.lastKnownPos = this.worldPosition;
 		} else if (!this.lastKnownPos.equals(this.worldPosition) && this.worldPosition != null) {
 			this.onPositionChanged();
 			return;
 		}
-		
+
 		if (this.fluidLevel != null) this.fluidLevel.tickChaser();
 		if (this.castLevel != null) this.castLevel.tickChaser();
 		if (this.isController()) {
 			this.tickCastingBehavior();
 		}
 	}
-	
+
 	private void onPositionChanged() {
 		this.removeController(true);
 		this.lastKnownPos = this.worldPosition;
 	}
-	
+
 	protected void tickCastingBehavior() {
 		if (this.level.isClientSide) return;
 		if (this.level.getBlockState(this.worldPosition.below()).getMaterial().isReplaceable()) {
@@ -268,33 +283,34 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	}
 
 	protected abstract void leakContents();
+
 	protected abstract boolean canStartCasting();
-	
+
 	protected void updateRecipes() {
 		this.recipes.clear();
 		List<BlockRecipe> list = BlockRecipeFinder.get(CASTING_RECIPES_KEY, this.level, this::matchingRecipeCache);
 		list.stream()
-		.map(CannonCastingRecipe.class::cast)
-		.filter(r -> r.matches(this.level, this.worldPosition))
-		.forEach(r -> this.recipes.put(r.shape(), r));
+			.map(CannonCastingRecipe.class::cast)
+			.filter(r -> r.matches(this.level, this.worldPosition))
+			.forEach(r -> this.recipes.put(r.shape(), r));
 	}
-	
+
 	protected boolean matchingRecipeCache(BlockRecipe recipe) {
 		return recipe instanceof CannonCastingRecipe;
 	}
-	
+
 	protected boolean shapeMatches(CannonCastingRecipe recipe) {
 		return this.structure.contains(recipe.shape());
 	}
-	
+
 	protected int calculateCastingTime() {
 		return this.structure.stream()
-				.map(this.recipes::get)
-				.map(r -> r == null ? 1200 : r.castingTime())
-				.reduce(Integer::sum)
-				.orElse(0);
+			.map(this.recipes::get)
+			.map(r -> r == null ? 1200 : r.castingTime())
+			.reduce(Integer::sum)
+			.orElse(0);
 	}
-	
+
 	protected void finishCasting() {
 		if (!this.isController() || this.structure.isEmpty()) return;
 		for (int y = 0; y < this.height; ++y) {
@@ -307,7 +323,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 			BlockPos corner = pos.offset(-1, 0, -1);
 			if (cast.getRenderedSize().isLarge()) {
 				BlockPos.betweenClosedStream(corner, pos.offset(1, 0, 1)).forEach(pos1 -> {
-					if (pos.equals(pos1) || !(this.level.getBlockEntity(pos1) instanceof AbstractCannonCastBlockEntity cast1)) return;
+					if (pos.equals(pos1) || !(this.level.getBlockEntity(pos1) instanceof AbstractCannonCastBlockEntity cast1))
+						return;
 					cast1.setRemoved();
 					this.level.setBlock(pos1, CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), 11);
 					if (!(this.level.getBlockEntity(pos1) instanceof FinishedCannonCastBlockEntity fCast)) return;
@@ -321,7 +338,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 				});
 			}
 			recipe.assembleInWorld(this.level, pos);
-			
+
 			if (y > 0 && this.level.getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe && this.level.getBlockEntity(pos.below()) instanceof ICannonBlockEntity<?> cbe1) {
 				cbe.cannonBehavior().setConnectedFace(Direction.DOWN, true);
 				cbe1.cannonBehavior().setConnectedFace(Direction.UP, true);
@@ -330,16 +347,16 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		SoundEvent sound = AllSoundEvents.STEAM.getMainEvent();
 		this.level.playSound(null, this.getBlockPos(), sound, SoundSource.BLOCKS, 1.0f, 1.0f);
 	}
-	
+
 	@Override
 	public InteractionResult onWandUsed(UseOnContext context) {
 		if (!this.level.isClientSide) {
-			AbstractCannonCastBlockEntity controller = this.getControllerTE();
+			AbstractCannonCastBlockEntity controller = this.getControllerBE();
 			if (controller != null) controller.castingTime = 0;
 		}
 		return InteractionResult.sidedSuccess(this.level.isClientSide);
 	}
-	
+
 	public void initializeCastMultiblock(CannonCastShape size) {
 		this.castShape = size;
 		if (this.castShape == null) return;
@@ -347,7 +364,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 			&& otherCast.getType() == this.getType()
 			&& otherCast.getHeight() < getMaxHeight()) {
 			this.controllerPos = otherCast.getController();
-			AbstractCannonCastBlockEntity controller = otherCast.getControllerTE();
+			AbstractCannonCastBlockEntity controller = otherCast.getControllerBE();
 			if (controller != null) {
 				this.addStructureCapacityToController(controller);
 				controller.height += 1;
@@ -359,7 +376,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 			this.structure.add(this.castShape);
 		}
 		if (this.level.getBlockEntity(this.worldPosition.above()) instanceof AbstractCannonCastBlockEntity otherCast && otherCast.isController()) {
-			AbstractCannonCastBlockEntity controller = this.getControllerTE();
+			AbstractCannonCastBlockEntity controller = this.getControllerBE();
 			if (controller != null && controller.height + otherCast.height <= getMaxHeight()) {
 				controller.height += otherCast.height;
 				controller.structure.addAll(otherCast.structure);
@@ -382,7 +399,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 				}
 			}
 		}
-		AbstractCannonCastBlockEntity controller = this.getControllerTE();
+		AbstractCannonCastBlockEntity controller = this.getControllerBE();
 		if (controller != null) {
 			controller.updateRecipes = true;
 			controller.forceFluidLevelUpdate = true;
@@ -393,9 +410,11 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	}
 
 	protected abstract void addStructureCapacityToController(AbstractCannonCastBlockEntity controller);
+
 	protected abstract void reInitTank();
+
 	protected abstract void mergeControllerAndOtherFluids(AbstractCannonCastBlockEntity controller, AbstractCannonCastBlockEntity other);
-	
+
 	public void destroyCastMultiblockAtLayer() {
 		if (this.canRenderCastModel() && this.castShape != null) {
 			this.onDestroyCenterCast();
@@ -405,7 +424,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	}
 
 	protected abstract void onDestroyCenterCast();
-	
+
 	public static List<CannonCastShape> getStructureFromPoint(Level level, BlockPos pos, int height) {
 		List<CannonCastShape> structure = new ArrayList<>();
 		if (!(level.getBlockEntity(pos) instanceof AbstractCannonCastBlockEntity start)) return structure;
@@ -416,11 +435,12 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		}
 		return structure;
 	}
-	
+
 	protected void updatePotentialCastsAbove() {
 		if (!this.isController()) return;
 		for (int y = 0; y < this.height; ++y) {
-			if (!(this.level.getBlockEntity(this.worldPosition.above(y)) instanceof AbstractCannonCastBlockEntity cast)) break;
+			if (!(this.level.getBlockEntity(this.worldPosition.above(y)) instanceof AbstractCannonCastBlockEntity cast))
+				break;
 			if (y != 0) cast.setController(this.worldPosition);
 			if (cast.getRenderedSize().isLarge()) {
 				for (int x = -1; x < 2; ++x) {
@@ -434,25 +454,36 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 			}
 		}
 	}
-	
+
 	public int calculateCapacityFromStructure() {
 		return this.structure.stream().map(CannonCastShape::fluidSize).reduce(Integer::sum).orElse(0);
 	}
-	
+
 	public BlockPos getCenterBlock() {
 		return this.isController() ? this.worldPosition : new BlockPos(this.controllerPos.getX(), this.worldPosition.getY(), this.controllerPos.getZ());
 	}
-	
+
 	public boolean canRenderCastModel() {
 		return this.isController() || this.controllerPos.getX() == this.worldPosition.getX() && this.controllerPos.getZ() == this.worldPosition.getZ();
 	}
 
 	public abstract float getFillState();
-	public LerpedFloat getFluidLevel() { return this.fluidLevel; }
-	public void setFluidLevel(LerpedFloat level) { this.fluidLevel = level; }
-	
-	public float getCastingState() { return this.startCastingTime <= 1 ? 0.0f : 1.0f - (float) this.castingTime / (float) this.startCastingTime; }
-	public LerpedFloat getCastingLevel() { return this.castLevel; }
+
+	public LerpedFloat getFluidLevel() {
+		return this.fluidLevel;
+	}
+
+	public void setFluidLevel(LerpedFloat level) {
+		this.fluidLevel = level;
+	}
+
+	public float getCastingState() {
+		return this.startCastingTime <= 1 ? 0.0f : 1.0f - (float) this.castingTime / (float) this.startCastingTime;
+	}
+
+	public LerpedFloat getCastingLevel() {
+		return this.castLevel;
+	}
 
 	@Override
 	public BlockPos getController() {
@@ -462,7 +493,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 	@SuppressWarnings("unchecked")
 	@Nullable
 	@Override
-	public AbstractCannonCastBlockEntity getControllerTE() {
+	public AbstractCannonCastBlockEntity getControllerBE() {
 		return this.isController() ? this : this.level.getBlockEntity(this.controllerPos) instanceof AbstractCannonCastBlockEntity cast ? cast : null;
 	}
 
@@ -481,27 +512,37 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		this.refreshCap();
 		this.notifyUpdate();
 	}
-	
+
 	public static int getMaxHeight() {
 		return CBCConfigs.SERVER.crafting.maxCannonCastHeight.get();
 	}
-	public int getHeight() { return this.height; }
-	public void setHeight(int height) { this.height = height; }
 
-	public int getWidth() { return 3; }
-	
+	public int getHeight() {
+		return this.height;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public int getWidth() {
+		return 3;
+	}
+
 	@Override
 	protected AABB createRenderBoundingBox() {
 		if (this.isController()) {
 			return super.createRenderBoundingBox().move(-1, 0, -1).expandTowards(2, this.height - 1, 2);
 		}
-		if (this.canRenderCastModel() && this.getControllerTE() != null) {
-			return this.getControllerTE().createRenderBoundingBox();
+		if (this.canRenderCastModel() && this.getControllerBE() != null) {
+			return this.getControllerBE().createRenderBoundingBox();
 		}
 		return super.createRenderBoundingBox();
 	}
-	
-	public CannonCastShape getRenderedSize() { return this.castShape; }
+
+	public CannonCastShape getRenderedSize() {
+		return this.castShape;
+	}
 
 	@Override
 	public void removeController(boolean keepContents) {
@@ -509,27 +550,47 @@ public abstract class AbstractCannonCastBlockEntity extends SmartTileEntity impl
 		this.notifyUpdate();
 	}
 
-	@Override public BlockPos getLastKnownPos() { return this.lastKnownPos; }
+	@Override
+	public BlockPos getLastKnownPos() {
+		return this.lastKnownPos;
+	}
 
-	@Override public void preventConnectivityUpdate() {}
+	@Override
+	public void preventConnectivityUpdate() {
+	}
 
 	@Override
 	public void notifyMultiUpdated() {
-		
+
 	}
 
-	@Override public Axis getMainConnectionAxis() { return Axis.Y; }
-	@Override public int getMaxLength(Axis longAxis, int width) { return longAxis == Axis.Y ? CBCConfigs.SERVER.crafting.maxCannonCastHeight.get() : 3; }
-	@Override public int getMaxWidth() { return 3; }
-	@Override public void setWidth(int width) {}
+	@Override
+	public Axis getMainConnectionAxis() {
+		return Axis.Y;
+	}
+
+	@Override
+	public int getMaxLength(Axis longAxis, int width) {
+		return longAxis == Axis.Y ? CBCConfigs.SERVER.crafting.maxCannonCastHeight.get() : 3;
+	}
+
+	@Override
+	public int getMaxWidth() {
+		return 3;
+	}
+
+	@Override
+	public void setWidth(int width) {
+	}
 
 	public boolean matchesRecipe(CannonCastingRecipe recipe) {
-		return this.getControllerTE() != null && this.getControllerTE().structure.contains(recipe.shape()) && this.testWithFluid(recipe);
+		return this.getControllerBE() != null && this.getControllerBE().structure.contains(recipe.shape()) && this.testWithFluid(recipe);
 	}
 
 	protected abstract boolean testWithFluid(CannonCastingRecipe recipe);
 
 	public abstract boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
+
 	public abstract boolean tryFillItemFromTE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
 
 }

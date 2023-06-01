@@ -1,10 +1,15 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder.ProcessingRecipeFactory;
-import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
+import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
+
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
+import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -16,9 +21,6 @@ import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillin
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingRecipe;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
-
-import javax.annotation.Nullable;
-import java.util.function.Supplier;
 
 public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
@@ -56,7 +58,7 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 		IndexPlatform.registerRecipeType(this.id, this.type);
 	}
 
-	CBCRecipeTypes(ProcessingRecipeFactory<?> processingFactory) {
+	CBCRecipeTypes(ProcessingRecipeBuilder.ProcessingRecipeFactory<?> processingFactory) {
 		this(() -> new ProcessingRecipeSerializer<>(processingFactory));
 	}
 
@@ -69,22 +71,24 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 			}
 		};
 	}
-	
-	@Override public ResourceLocation getId() {
+
+	@Override
+	public ResourceLocation getId() {
 		return id;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends RecipeSerializer<?>> T getSerializer() {
 		return (T) serializerObject.get();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends RecipeType<?>> T getType() {
 		return (T) type.get();
 	}
-	
-	public static void register() {}
+
+	public static void register() {
+	}
 }

@@ -1,12 +1,17 @@
 package rbasamoyai.createbigcannons.ponder;
 
-import com.simibubi.create.content.contraptions.components.deployer.DeployerTileEntity;
-import com.simibubi.create.content.logistics.block.mechanicalArm.ArmTileEntity;
-import com.simibubi.create.foundation.ponder.*;
+import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
+import com.simibubi.create.foundation.ponder.ElementLink;
+import com.simibubi.create.foundation.ponder.PonderPalette;
+import com.simibubi.create.foundation.ponder.SceneBuilder;
+import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
+import com.simibubi.create.foundation.ponder.Selection;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
 import com.simibubi.create.foundation.utility.Pointing;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,7 +36,7 @@ public class CannonLoadingScenes {
 		scene.configureBasePlate(0, 0, 9);
 		scene.scaleSceneView(0.8f);
 		scene.showBasePlate();
-		
+
 		BlockPos loaderPos = util.grid.at(4, 1, 2);
 		BlockPos crankPos = util.grid.at(3, 1, 2);
 		scene.world.modifyBlocks(util.select.position(loaderPos), state -> state.setValue(CannonLoaderBlock.MOVING, true), false);
@@ -39,11 +44,11 @@ public class CannonLoadingScenes {
 		ElementLink<WorldSectionElement> ramrod = scene.world.showIndependentSection(util.select.fromTo(4, 2, 0, 4, 2, 3), Direction.DOWN);
 		scene.world.moveSection(ramrod, util.vector.of(0, -1, 0), 0);
 		scene.idle(20);
-		
+
 		ElementLink<WorldSectionElement> cannon = scene.world.showIndependentSection(util.select.fromTo(4, 3, 6, 4, 3, 8), Direction.DOWN);
 		scene.world.moveSection(cannon, util.vector.of(0, -2, 0), 0);
 		scene.idle(10);
-		
+
 		scene.overlay.showText(80)
 			.attachKeyFrame()
 			.text("Cannon Loaders work like Mechanical Pistons, using Piston Extension Poles to extend their range.")
@@ -246,10 +251,10 @@ public class CannonLoadingScenes {
 		scene.idle(40);
 
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN)
-				.rightClick()
-				.withItem(CBCItems.IMPACT_FUZE.asStack()), 60);
+			.rightClick()
+			.withItem(CBCItems.IMPACT_FUZE.asStack()), 60);
 		scene.idle(20);
-		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.IMPACT_FUZE.asStack().save(new CompoundTag())));
+		scene.world.modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.IMPACT_FUZE.asStack().save(new CompoundTag())));
 		scene.idle(50);
 
 		scene.overlay.showText(80)
@@ -259,7 +264,7 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN).rightClick(), 60);
 		scene.idle(20);
-		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.remove("Fuze"));
+		scene.world.modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.remove("Fuze"));
 		scene.idle(60);
 
 		Selection kineticSel = util.select.fromTo(2, 1, 1, 5, 1, 1);
@@ -268,7 +273,7 @@ public class CannonLoadingScenes {
 		scene.world.showSection(largeCog, Direction.WEST);
 
 		BlockPos deployerPos = util.grid.at(2, 1, 1);
-		scene.world.modifyTileNBT(util.select.position(deployerPos), DeployerTileEntity.class, tag -> tag.put("HeldItem", CBCItems.TIMED_FUZE.asStack().save(new CompoundTag())));
+		scene.world.modifyBlockEntityNBT(util.select.position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", CBCItems.TIMED_FUZE.asStack().save(new CompoundTag())));
 
 		scene.world.setKineticSpeed(kineticSel, 32.0f);
 		scene.world.setKineticSpeed(largeCog, -16.0f);
@@ -280,8 +285,8 @@ public class CannonLoadingScenes {
 		scene.idle(90);
 		scene.world.moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
-		scene.world.modifyTileNBT(util.select.position(deployerPos), DeployerTileEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(new CompoundTag())));
-		scene.world.modifyTileNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.TIMED_FUZE.asStack().save(new CompoundTag())));
+		scene.world.modifyBlockEntityNBT(util.select.position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(new CompoundTag())));
+		scene.world.modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.TIMED_FUZE.asStack().save(new CompoundTag())));
 		scene.world.moveDeployer(deployerPos, -1, 25);
 		scene.idle(46);
 
@@ -305,7 +310,7 @@ public class CannonLoadingScenes {
 		ElementLink<WorldSectionElement> munition = scene.world.showIndependentSection(util.select.position(2, 1, 1), Direction.SOUTH);
 		scene.idle(30);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 1), Direction.NORTH), Pointing.RIGHT)
-				.withItem(CBCItems.RAM_ROD.asStack()), 30);
+			.withItem(CBCItems.RAM_ROD.asStack()), 30);
 		scene.idle(40);
 		scene.world.moveSection(munition, util.vector.of(0, 0, 1.2), 20);
 		scene.idle(40);
@@ -313,7 +318,7 @@ public class CannonLoadingScenes {
 		scene.addKeyframe();
 
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.NORTH), Pointing.RIGHT)
-				.withItem(CBCItems.WORM.asStack()), 30);
+			.withItem(CBCItems.WORM.asStack()), 30);
 		scene.idle(40);
 		scene.world.moveSection(munition, util.vector.of(0, 0, -1.2), 20);
 		scene.idle(40);
@@ -325,16 +330,16 @@ public class CannonLoadingScenes {
 			.attachKeyFrame();
 		scene.idle(30);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.NORTH), Pointing.RIGHT)
-				.withItem(CBCBlocks.POWDER_CHARGE.asStack()), 30);
+			.withItem(CBCBlocks.POWDER_CHARGE.asStack()), 30);
 		scene.idle(40);
 
 		scene.overlay.showText(60)
-				.text("Handloading tools can also interact with assembled big cannons.")
-				.colored(PonderPalette.GREEN)
-				.attachKeyFrame();
+			.text("Handloading tools can also interact with assembled big cannons.")
+			.colored(PonderPalette.GREEN)
+			.attachKeyFrame();
 		scene.idle(30);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.NORTH), Pointing.RIGHT)
-				.withItem(CBCItems.RAM_ROD.asStack()), 30);
+			.withItem(CBCItems.RAM_ROD.asStack()), 30);
 		scene.idle(50);
 
 		scene.markAsFinished();
@@ -348,7 +353,7 @@ public class CannonLoadingScenes {
 
 		BlockPos breechPos = util.grid.at(4, 3, 2);
 		Selection breechSel = util.select.position(breechPos);
-		scene.world.modifyTileNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
+		scene.world.modifyBlockEntityNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
 			compoundTag.putBoolean("InPonder", true);
 		});
 
@@ -402,8 +407,8 @@ public class CannonLoadingScenes {
 			.pointAt(util.vector.centerOf(breechPos));
 		scene.idle(30);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos.west(), Direction.EAST), Pointing.LEFT)
-				.rightClick()
-				.withItem(BigCartridgeBlockItem.getWithPower(4)), 30);
+			.rightClick()
+			.withItem(BigCartridgeBlockItem.getWithPower(4)), 30);
 		scene.idle(40);
 
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos.east(), Direction.WEST), Pointing.RIGHT)
@@ -420,7 +425,7 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(fireLeverPos, Direction.WEST), Pointing.RIGHT)
-				.rightClick(), 40);
+			.rightClick(), 40);
 		scene.idle(60);
 
 		scene.world.modifyBlock(fireLeverPos, state -> state.setValue(LeverBlock.POWERED, true), false);
@@ -456,7 +461,7 @@ public class CannonLoadingScenes {
 
 		BlockPos breechPos = util.grid.at(4, 3, 2);
 		Selection breechSel = util.select.position(breechPos);
-		scene.world.modifyTileNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
+		scene.world.modifyBlockEntityNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
 			compoundTag.putBoolean("InPonder", true);
 		});
 
@@ -486,16 +491,16 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 
 		scene.overlay.showSelectionWithText(mechanicalArm, 80)
-				.attachKeyFrame()
-				.colored(PonderPalette.RED)
-				.text("Mechanical Arms can be used to reload the Quick-Firing Breech.")
-				.placeNearTarget();
+			.attachKeyFrame()
+			.colored(PonderPalette.RED)
+			.text("Mechanical Arms can be used to reload the Quick-Firing Breech.")
+			.placeNearTarget();
 		scene.idle(100);
 
 		scene.overlay.showSelectionWithText(cannonMount, 60)
-				.colored(PonderPalette.OUTPUT)
-				.text("Right-click the Cannon Mount to set the arm's output.")
-				.placeNearTarget();
+			.colored(PonderPalette.OUTPUT)
+			.text("Right-click the Cannon Mount to set the arm's output.")
+			.placeNearTarget();
 		scene.idle(80);
 
 		Selection shotDepot = util.select.position(1, 1, 6);
@@ -504,7 +509,7 @@ public class CannonLoadingScenes {
 		scene.world.createItemOnBeltLike(shotDepotPos, Direction.SOUTH, shot);
 		scene.overlay.showOutline(PonderPalette.INPUT, null, shotDepot, 40);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(1, 1, 6), Direction.UP), Pointing.DOWN)
-				.withItem(CBCBlocks.SOLID_SHOT.asStack()), 40);
+			.withItem(CBCBlocks.SOLID_SHOT.asStack()), 40);
 
 		scene.idle(60);
 
@@ -514,34 +519,34 @@ public class CannonLoadingScenes {
 		scene.world.createItemOnBeltLike(cartridgeDepotPos, Direction.SOUTH, cartridge);
 		scene.overlay.showOutline(PonderPalette.INPUT, null, cartridgeDepot, 40);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 6), Direction.UP), Pointing.DOWN)
-				.withItem(CBCBlocks.BIG_CARTRIDGE.asStack()), 40);
+			.withItem(CBCBlocks.BIG_CARTRIDGE.asStack()), 40);
 
 		scene.idle(60);
 
 		scene.world.setKineticSpeed(mechanicalArm, -48);
 		scene.idle(20);
-		scene.world.instructArm(mechanicalArmPos, ArmTileEntity.Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
+		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
 		scene.idle(24);
 		scene.world.removeItemsFromBelt(shotDepotPos);
-		scene.world.instructArm(mechanicalArmPos, ArmTileEntity.Phase.SEARCH_OUTPUTS, shot, -1);
+		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.SEARCH_OUTPUTS, shot, -1);
 		scene.idle(20);
-		scene.world.instructArm(mechanicalArmPos, ArmTileEntity.Phase.MOVE_TO_OUTPUT, shot, 0);
+		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.MOVE_TO_OUTPUT, shot, 0);
 		scene.idle(24);
 		scene.world.createItemOnBeltLike(cannonMountPos, Direction.UP, shot);
-		scene.world.instructArm(mechanicalArmPos, ArmTileEntity.Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
+		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
 		scene.idle(44);
 
 		scene.world.setKineticSpeed(mechanicalArm, -48);
 		scene.idle(20);
-		scene.world.instructArm(mechanicalArmPos, ArmTileEntity.Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
+		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
 		scene.idle(24);
 		scene.world.removeItemsFromBelt(cartridgeDepotPos);
-		scene.world.instructArm(mechanicalArmPos, ArmTileEntity.Phase.SEARCH_OUTPUTS, cartridge, -1);
+		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.SEARCH_OUTPUTS, cartridge, -1);
 		scene.idle(20);
-		scene.world.instructArm(mechanicalArmPos, ArmTileEntity.Phase.MOVE_TO_OUTPUT, cartridge, 0);
+		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.MOVE_TO_OUTPUT, cartridge, 0);
 		scene.idle(24);
 		scene.world.createItemOnBeltLike(cannonMountPos, Direction.UP, cartridge);
-		scene.world.instructArm(mechanicalArmPos, ArmTileEntity.Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
+		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
 		scene.idle(44);
 
 		scene.markAsFinished();
@@ -551,14 +556,14 @@ public class CannonLoadingScenes {
 	private static void animateQFBHack(SceneBuilder scene, Selection breechSel, boolean close) {
 		for (int i = 0; i < 5; i++) {
 			int finalI = i;
-			scene.world.modifyTileNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
+			scene.world.modifyBlockEntityNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
 				compoundTag.putInt("OpenDirection", close ? -1 : 1);
 				compoundTag.putInt("OpenProgress", close ? 5 - finalI : finalI);
 			});
 
 			scene.idle(1);
 		}
-		scene.world.modifyTileNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
+		scene.world.modifyBlockEntityNBT(breechSel, QuickfiringBreechBlockEntity.class, compoundTag -> {
 			compoundTag.putInt("OpenDirection", 0);
 			compoundTag.putInt("OpenProgress", close ? 0 : 5);
 		});

@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.base;
 
+import java.util.function.BiConsumer;
+
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock;
+import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlock;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -27,8 +30,6 @@ import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
-import java.util.function.BiConsumer;
-
 public class CBCCommonEvents {
 
 	public static void serverLevelTickEnd(Level level) {
@@ -47,7 +48,7 @@ public class CBCCommonEvents {
 	public static void onPlayerBreakBlock(BlockState state, LevelAccessor level, BlockPos pos, Player player) {
 		if (AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
 			BlockPos drillPos = destroyPoleContraption(CBCBlocks.CANNON_DRILL_BIT.get(), CBCBlocks.CANNON_DRILL.get(),
-					CannonDrillBlock.maxAllowedDrillLength(), state, level, pos, player);
+				CannonDrillBlock.maxAllowedDrillLength(), state, level, pos, player);
 			if (drillPos != null) {
 				level.setBlock(drillPos, level.getBlockState(drillPos).setValue(CannonDrillBlock.STATE, MechanicalPistonBlock.PistonState.RETRACTED), 3);
 				if (level.getBlockEntity(pos) instanceof AbstractCannonDrillBlockEntity drill) {
@@ -56,7 +57,7 @@ public class CBCCommonEvents {
 				return;
 			}
 			BlockPos builderPos = destroyPoleContraption(CBCBlocks.CANNON_BUILDER_HEAD.get(), CBCBlocks.CANNON_BUILDER.get(),
-					CannonBuilderBlock.maxAllowedBuilderLength(), state, level, pos, player);
+				CannonBuilderBlock.maxAllowedBuilderLength(), state, level, pos, player);
 			if (builderPos != null) {
 				level.setBlock(builderPos, level.getBlockState(builderPos).setValue(CannonBuilderBlock.STATE, CannonBuilderBlock.BuilderState.UNACTIVATED), 3);
 				if (level.getBlockEntity(pos) instanceof CannonBuilderBlockEntity builder) {
@@ -100,8 +101,8 @@ public class CBCCommonEvents {
 		if (headPos == null || basePos == null) return null;
 		BlockPos baseCopy = basePos.immutable();
 		BlockPos.betweenClosedStream(headPos, basePos)
-				.filter(p -> !p.equals(pos) && !p.equals(baseCopy))
-				.forEach(p -> level.destroyBlock(p, !player.isCreative()));
+			.filter(p -> !p.equals(pos) && !p.equals(baseCopy))
+			.forEach(p -> level.destroyBlock(p, !player.isCreative()));
 		return baseCopy;
 	}
 

@@ -1,7 +1,13 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons;
 
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.behaviour.BehaviourType;
+import java.util.Optional;
+import java.util.function.Predicate;
+
+import javax.annotation.Nonnull;
+
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -13,25 +19,24 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
-import javax.annotation.Nonnull;
-import java.util.Optional;
-import java.util.function.Predicate;
-
 public class BigCannonBehavior extends CannonBehavior {
 
-	public static final BehaviourType<CannonBehavior> TYPE = new BehaviourType<>();
+	public static final BehaviourType<?> TYPE = new BehaviourType<>();
 
 	public static final StructureBlockInfo EMPTY = new StructureBlockInfo(BlockPos.ZERO, Blocks.AIR.defaultBlockState(), null);
 
 	protected Optional<StructureBlockInfo> containedBlockInfo = Optional.empty();
 	protected Predicate<StructureBlockInfo> predicate;
 
-	public BigCannonBehavior(SmartTileEntity te, Predicate<StructureBlockInfo> predicate) {
+	public BigCannonBehavior(SmartBlockEntity te, Predicate<StructureBlockInfo> predicate) {
 		super(te);
 		this.predicate = predicate;
 	}
 
-	@Nonnull public StructureBlockInfo block() { return this.containedBlockInfo.orElse(EMPTY); }
+	@Nonnull
+	public StructureBlockInfo block() {
+		return this.containedBlockInfo.orElse(EMPTY);
+	}
 
 	public boolean tryLoadingBlock(StructureBlockInfo info) {
 		if (!this.canLoadBlock(info)) return false;
@@ -46,7 +51,7 @@ public class BigCannonBehavior extends CannonBehavior {
 			if (oldInfo.state.getBlock() instanceof BigCannonMunitionBlock mblock) {
 				this.loadBlock(new StructureBlockInfo(oldInfo.pos, mblock.onCannonRotate(oldInfo.state, rotationAxis, rotation), oldInfo.nbt));
 			}
-			this.tileEntity.setChanged();
+			this.blockEntity.setChanged();
 		}
 		super.onRotate(rotationAxis, rotation);
 	}
@@ -87,6 +92,9 @@ public class BigCannonBehavior extends CannonBehavior {
 		this.loadBlock(null);
 	}
 
-	@Override public BehaviourType<?> getType() { return TYPE; }
+	@Override
+	public BehaviourType<?> getType() {
+		return TYPE;
+	}
 
 }

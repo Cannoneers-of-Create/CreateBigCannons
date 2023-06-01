@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.cannon_control.carriage;
 
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import java.util.List;
+
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -26,22 +29,20 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
-import java.util.List;
-
-public class CannonCarriageBlock extends Block implements IWrenchable, ITE<CannonCarriageBlockEntity> {
+public class CannonCarriageBlock extends Block implements IWrenchable, IBE<CannonCarriageBlockEntity> {
 
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty SADDLED = BooleanProperty.create("saddled");
-	
+
 	public CannonCarriageBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any().setValue(SADDLED, false));
 	}
-	
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(FACING)
-				.add(SADDLED);
+			.add(SADDLED);
 	}
 
 	@Override
@@ -96,7 +97,14 @@ public class CannonCarriageBlock extends Block implements IWrenchable, ITE<Canno
 		return loot;
 	}
 
-	@Override public Class<CannonCarriageBlockEntity> getTileEntityClass() { return CannonCarriageBlockEntity.class; }
-	@Override public BlockEntityType<? extends CannonCarriageBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_CARRIAGE.get(); }
+	@Override
+	public Class<CannonCarriageBlockEntity> getBlockEntityClass() {
+		return CannonCarriageBlockEntity.class;
+	}
 
+	@Override
+	public BlockEntityType<? extends CannonCarriageBlockEntity> getBlockEntityType() {
+		return CBCBlockEntities.CANNON_CARRIAGE.get();
+
+	}
 }

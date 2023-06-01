@@ -6,12 +6,12 @@ import com.jozufozu.flywheel.core.Materials;
 import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.simibubi.create.content.contraptions.relays.encased.ShaftInstance;
+import com.simibubi.create.content.kinetics.base.ShaftInstance;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
+
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 
@@ -36,9 +36,9 @@ public class SlidingBreechInstance extends ShaftInstance implements DynamicInsta
 		if (this.blockRotation == Direction.DOWN) this.blockRotation = Direction.UP;
 
 		this.breechblock = this.materialManager.defaultSolid()
-				.material(Materials.ORIENTED)
-				.getModel(CBCClientCommon.getBreechblockForState(this.blockState), this.blockState, this.blockRotation)
-				.createInstance();
+			.material(Materials.ORIENTED)
+			.getModel(CBCClientCommon.getBreechblockForState(this.blockState), this.blockState, this.blockRotation)
+			.createInstance();
 
 		boolean alongFirst = this.blockState.getValue(QuickfiringBreechBlock.AXIS);
 		if (facing.getAxis().isHorizontal() && !alongFirst) {
@@ -57,7 +57,7 @@ public class SlidingBreechInstance extends ShaftInstance implements DynamicInsta
 	public void beginFrame() {
 		this.transformModels();
 	}
-	
+
 	private void transformModels() {
 		float renderedBreechblockOffset = this.breech.getRenderedBlockOffset(AnimationTickHolder.getPartialTicks());
 		renderedBreechblockOffset = renderedBreechblockOffset / 16.0f * 13.0f;
@@ -65,13 +65,13 @@ public class SlidingBreechInstance extends ShaftInstance implements DynamicInsta
 		normal.mul(renderedBreechblockOffset);
 		this.breechblock.setPosition(this.getInstancePosition()).nudge(normal.x(), normal.y(), normal.z());
 	}
-	
+
 	@Override
 	public void updateLight() {
 		super.updateLight();
 		this.relight(this.pos, this.breechblock);
 	}
-	
+
 	@Override
 	public void remove() {
 		super.remove();

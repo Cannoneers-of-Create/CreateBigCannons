@@ -1,29 +1,35 @@
 package rbasamoyai.createbigcannons.cannons.autocannon;
 
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import java.util.List;
+
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 
-import java.util.List;
+public class AutocannonBlockEntity extends SmartBlockEntity implements IAutocannonBlockEntity {
 
-public class AutocannonBlockEntity extends SmartTileEntity implements IAutocannonBlockEntity {
+	private ItemCannonBehavior behavior;
 
-    private ItemCannonBehavior behavior;
+	public AutocannonBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+		super(type, pos, state);
+	}
 
-    public AutocannonBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
-        super(type, pos, state);
-    }
+	@Override
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+		behaviours.add(this.behavior = this.makeBehavior());
+	}
 
-    @Override
-    public void addBehaviours(List<TileEntityBehaviour> behaviours) {
-        behaviours.add(this.behavior = this.makeBehavior());
-    }
+	protected ItemCannonBehavior makeBehavior() {
+		return new ItemCannonBehavior(this);
+	}
 
-    protected ItemCannonBehavior makeBehavior() { return new ItemCannonBehavior(this); }
-
-    @Override public ItemCannonBehavior cannonBehavior() { return this.behavior; }
+	@Override
+	public ItemCannonBehavior cannonBehavior() {
+		return this.behavior;
+	}
 
 }

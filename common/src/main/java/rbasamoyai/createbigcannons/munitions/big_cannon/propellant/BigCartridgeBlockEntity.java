@@ -1,12 +1,13 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
-import com.simibubi.create.foundation.tileEntity.SyncedTileEntity;
+import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BigCartridgeBlockEntity extends SyncedTileEntity {
+public class BigCartridgeBlockEntity extends SyncedBlockEntity {
 
 	private int storedPower;
 
@@ -26,6 +27,8 @@ public class BigCartridgeBlockEntity extends SyncedTileEntity {
 		this.storedPower = tag.getInt("Power");
 	}
 
-	public void setPower(int power) { this.storedPower = power; }
+	public void setPower(int power) {
+		this.storedPower = power;
+	}
 
 }

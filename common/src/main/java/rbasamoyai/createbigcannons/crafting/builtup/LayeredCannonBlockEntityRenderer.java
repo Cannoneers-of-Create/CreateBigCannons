@@ -1,7 +1,8 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.tileEntity.renderer.SmartTileEntityRenderer;
+import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -11,15 +12,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
 
-public class LayeredCannonBlockEntityRenderer extends SmartTileEntityRenderer<LayeredBigCannonBlockEntity> {
+public class LayeredCannonBlockEntityRenderer extends SmartBlockEntityRenderer<LayeredBigCannonBlockEntity> {
 
 	private final BlockRenderDispatcher dispatcher;
-	
+
 	public LayeredCannonBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
 		this.dispatcher = context.getBlockRenderDispatcher();
 	}
-	
+
 	@Override
 	protected void renderSafe(LayeredBigCannonBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		if (be.getLayers().size() < 2) return;
@@ -27,18 +28,18 @@ public class LayeredCannonBlockEntityRenderer extends SmartTileEntityRenderer<La
 			BlockState state = block.defaultBlockState();
 			if (state.getRenderShape() == RenderShape.MODEL) {
 				ms.pushPose();
-				
+
 				if (state.hasProperty(BlockStateProperties.FACING) && be.getBlockState().hasProperty(BlockStateProperties.FACING)) {
 					state = state.setValue(BlockStateProperties.FACING, be.getBlockState().getValue(BlockStateProperties.FACING));
 				}
-				
+
 				this.dispatcher.renderSingleBlock(state, ms, buffer, light, overlay);
-				
+
 				ms.popPose();
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean shouldRender(LayeredBigCannonBlockEntity be, Vec3 vec) {
 		return be.getLayers().size() > 1 && super.shouldRender(be, vec);

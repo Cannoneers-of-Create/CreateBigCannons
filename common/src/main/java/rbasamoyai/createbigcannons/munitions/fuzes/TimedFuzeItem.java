@@ -1,11 +1,16 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
-import net.minecraft.ChatFormatting;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -16,20 +21,17 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
-
-import java.util.List;
 
 public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 
 	public TimedFuzeItem(Properties properties) {
 		super(properties);
 	}
-	
+
 	@Override
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
 		CompoundTag tag = stack.getOrCreateTag();
@@ -40,7 +42,10 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 		return timer <= 0;
 	}
 
-	@Override public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) { return true; }
+	@Override
+	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) {
+		return true;
+	}
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -70,13 +75,13 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	public Component getDisplayName() {
 		return this.getDescription();
 	}
-	
+
 	public static ItemStack getCreativeTabItem(int defaultFuze) {
 		ItemStack stack = CBCItems.TIMED_FUZE.asStack();
 		stack.getOrCreateTag().putInt("FuzeTimer", defaultFuze);
 		return stack;
 	}
-	
+
 	@Override
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
@@ -84,9 +89,9 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		MutableComponent info = Lang.builder("item")
-				.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info", seconds, ticks)
-				.component();
-		tooltip.addAll(TooltipHelper.cutTextComponent(info, ChatFormatting.GRAY, ChatFormatting.GREEN, 6));
+			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info", seconds, ticks)
+			.component();
+		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 	}
 
 	@Override
@@ -96,8 +101,8 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		tooltip.add(Lang.builder("item")
-				.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info.item", seconds, ticks)
-				.component());
+			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info.item", seconds, ticks)
+			.component());
 	}
 
 }

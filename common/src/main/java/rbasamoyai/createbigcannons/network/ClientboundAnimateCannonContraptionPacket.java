@@ -1,13 +1,15 @@
 package rbasamoyai.createbigcannons.network;
 
-import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
+import java.util.concurrent.Executor;
+
+import org.jetbrains.annotations.Nullable;
+
+import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;
-import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
-
-import java.util.concurrent.Executor;
 
 public class ClientboundAnimateCannonContraptionPacket implements RootPacket {
 
@@ -21,7 +23,8 @@ public class ClientboundAnimateCannonContraptionPacket implements RootPacket {
 		this.id = buf.readVarInt();
 	}
 
-	@Override public void rootEncode(FriendlyByteBuf buf) {
+	@Override
+	public void rootEncode(FriendlyByteBuf buf) {
 		buf.writeVarInt(this.id);
 	}
 
@@ -30,6 +33,8 @@ public class ClientboundAnimateCannonContraptionPacket implements RootPacket {
 		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.animateCannon(this));
 	}
 
-	public int id() { return this.id; }
+	public int id() {
+		return this.id;
+	}
 
 }
