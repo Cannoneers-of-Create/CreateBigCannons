@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.multiloader.fabric;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.fabric.events.OnCannonBreakBlockEvent;
 import rbasamoyai.createbigcannons.fabric.events.OnCannonBreakBlockImpl;
@@ -12,7 +13,7 @@ public class EventsPlatformImpl {
 		OnCannonBreakBlockEvent.EVENT.invoker().OnCannonBreakBlockImpl(event);
 	}
 
-	public static OnCannonBreakBlock createOnCannonBreakBlockEvent(BlockPos blockPos, BlockState blockState, ResourceLocation resourceLocation) {
-		return new OnCannonBreakBlockImpl(blockPos, blockState, resourceLocation);
+	public static OnCannonBreakBlock createOnCannonBreakBlockEvent(BlockPos blockPos, BlockState blockState, ResourceLocation resourceLocation, BlockEntity blockEntity) {
+		return new OnCannonBreakBlockImpl(blockPos, blockState, resourceLocation, blockEntity);
 	}
 }

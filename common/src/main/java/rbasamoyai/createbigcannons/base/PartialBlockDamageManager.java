@@ -20,7 +20,9 @@ public class PartialBlockDamageManager {
 
 	private PartialBlockDamageSaveData savedata;
 
-	public PartialBlockDamageManager() { cleanUp(); }
+	public PartialBlockDamageManager() {
+		cleanUp();
+	}
 
 	public void playerLogin(Player player) {
 		if (player instanceof ServerPlayer splayer) {
@@ -28,7 +30,8 @@ public class PartialBlockDamageManager {
 		}
 	}
 
-	public void playerLogout(Player player) {}
+	public void playerLogout(Player player) {
+	}
 
 	public void levelLoaded(LevelAccessor level) {
 		MinecraftServer server = level.getServer();
@@ -96,7 +99,7 @@ public class PartialBlockDamageManager {
 			int newPart = (int) Math.floor(this.blockDamage.get(pos) * hardnessRec);
 
 			if (newPart >= 10) {
-				CBCCommonEvents.onCannonBreakBlock(level, pos);
+				CBCCommonEvents.onCannonBreakBlock(level, pos.immutable());
 				this.blockDamage.remove(pos);
 			} else if (newPart - oldPart > 0) {
 				level.destroyBlockProgress(-1, pos, newPart);
