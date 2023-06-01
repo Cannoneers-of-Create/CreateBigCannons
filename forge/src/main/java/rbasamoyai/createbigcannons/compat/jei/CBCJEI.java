@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.compat.jei;
 
-import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.jei.CreateJEI;
 import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.EmptyBackground;
@@ -58,12 +58,12 @@ public class CBCJEI implements IModPlugin {
 		};
 		List<Supplier<? extends ItemStack>> meltingCatalysts = new ArrayList<>();
 		meltingCatalysts.add(CBCBlocks.BASIN_FOUNDRY_LID::asStack);
-		meltingCatalysts.add(AllBlocks.BASIN::asStack);
+		meltingCatalysts.add(AllPartialModels.BASIN::asStack);
 		CreateRecipeCategory.Info<BasinRecipe> meltingInfo = new CreateRecipeCategory.Info<BasinRecipe>(
 				new RecipeType<>(CreateBigCannons.resource("melting"), BasinRecipe.class),
 				Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
 				new EmptyBackground(177, 103),
-				new DoubleItemIcon(AllBlocks.BASIN::asStack, CBCBlocks.BASIN_FOUNDRY_LID::asStack),
+				new DoubleItemIcon(AllPartialModels.BASIN::asStack, CBCBlocks.BASIN_FOUNDRY_LID::asStack),
 				meltingSupplier,
 				meltingCatalysts);
 		this.allCategories.add(PackedCategory.packCreateCategory(new MeltingCategory(meltingInfo)));
@@ -88,8 +88,8 @@ public class CBCJEI implements IModPlugin {
 		drill_boring_blocks = builder(DrillBoringBlockRecipe.class)
 			.addTypedRecipes(BlockRecipeType.DRILL_BORING)
 			.catalyst(CBCBlocks.CANNON_DRILL::asStack)
-			.catalyst(AllBlocks.MECHANICAL_BEARING::asStack)
-			.catalyst(AllBlocks.WINDMILL_BEARING::asStack)
+			.catalyst(AllPartialModels.MECHANICAL_BEARING::asStack)
+			.catalyst(AllPartialModels.WINDMILL_BEARING::asStack)
 			.itemIcon(CBCBlocks.CANNON_DRILL.get())
 			.emptyBackground(177, 77)
 			.build("drill_boring", DrillBoringCategory::new),

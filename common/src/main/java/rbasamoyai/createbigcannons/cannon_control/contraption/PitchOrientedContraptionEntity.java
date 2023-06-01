@@ -1,9 +1,12 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
-import com.simibubi.create.content.contraptions.components.actors.SeatEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
-import com.simibubi.create.content.contraptions.components.structureMovement.OrientedContraptionEntity;
+import org.jetbrains.annotations.Nullable;
+
+import com.simibubi.create.content.contraptions.Contraption;
+import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
+import com.simibubi.create.content.contraptions.actors.seat.SeatEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +23,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -45,7 +47,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		entity.updatesOwnRotation = updatesOwnRotation;
 		return entity;
 	}
-	
+
 	public static PitchOrientedContraptionEntity create(Level level, Contraption contraption, Direction initialOrientation, ControlPitchContraption.Block block) {
 		PitchOrientedContraptionEntity poce = create(level, contraption, initialOrientation, true);
 		poce.controllerPos = block.getControllerBlockPos();
@@ -55,7 +57,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	@Override
 	protected void readAdditional(CompoundTag compound, boolean spawnPacket) {
 		super.readAdditional(compound, spawnPacket);
-		if (compound.contains("ControllerRelative")) this.controllerPos = NbtUtils.readBlockPos(compound.getCompound("ControllerRelative")).offset(this.blockPosition());
+		if (compound.contains("ControllerRelative"))
+			this.controllerPos = NbtUtils.readBlockPos(compound.getCompound("ControllerRelative")).offset(this.blockPosition());
 		else if (this.level.getBlockEntity(this.blockPosition().below(2)) instanceof ControlPitchContraption.Block controller && !this.isPassenger()) {
 			// Legacy, cannon mount
 			this.controllerPos = controller.getControllerBlockPos();
@@ -66,7 +69,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	@Override
 	protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
 		super.writeAdditional(compound, spawnPacket);
-		if (this.controllerPos != null) compound.put("ControllerRelative", NbtUtils.writeBlockPos(controllerPos.subtract(blockPosition())));
+		if (this.controllerPos != null)
+			compound.put("ControllerRelative", NbtUtils.writeBlockPos(controllerPos.subtract(blockPosition())));
 		compound.putBoolean("UpdatesOwnRotation", this.updatesOwnRotation);
 	}
 
@@ -107,11 +111,12 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	public float maximumDepression() {
 		return this.contraption instanceof AbstractMountedCannonContraption cannon && this.getController() != null
-				? cannon.maximumDepression(this.getController()) : 90f;
+			? cannon.maximumDepression(this.getController()) : 90f;
 	}
+
 	public float maximumElevation() {
 		return this.contraption instanceof AbstractMountedCannonContraption cannon && this.getController() != null
-				? cannon.maximumElevation(this.getController()) : 90f;
+			? cannon.maximumElevation(this.getController()) : 90f;
 	}
 
 	@Override
@@ -137,7 +142,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		super.onSyncedDataUpdated(key);
 		this.yaw = prevYaw;
 	}
-	
+
 	@Override
 	public Vec3 applyRotation(Vec3 localPos, float partialTicks) {
 		localPos = VecHelper.rotate(localPos, this.getViewXRot(partialTicks), this.getInitialOrientation().getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X);
@@ -145,7 +150,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		localPos = VecHelper.rotate(localPos, this.getInitialYaw(), Direction.Axis.Y);
 		return localPos;
 	}
-	
+
 	@Override
 	public Vec3 reverseRotation(Vec3 localPos, float partialTicks) {
 		localPos = VecHelper.rotate(localPos, -this.getInitialYaw(), Direction.Axis.Y);
@@ -208,7 +213,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		transformedVector = this.processRiderPositionHook(passenger, transformedVector);
 		if (transformedVector == null) return;
 		passenger.setPos(transformedVector.x,
-				transformedVector.y + SeatEntity.getCustomEntitySeatOffset(passenger) - 1 / 8f, transformedVector.z);
+			transformedVector.y + SeatEntity.getCustomEntitySeatOffset(passenger) - 1 / 8f, transformedVector.z);
 	}
 
 	/**
@@ -232,7 +237,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		if (seat == null) return null;
 		return this.toGlobalVector(Vec3.atLowerCornerOf(seat)
 				.add(.5, 1, .5), partialTicks)
-				.subtract(0, passenger.getEyeHeight(), 0);
+			.subtract(0, passenger.getEyeHeight(), 0);
 	}
 
 	@Override
@@ -270,15 +275,15 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	@Override
 	public boolean handlePlayerInteraction(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand) {
 		if (this.contraption instanceof MountedBigCannonContraption cannon && interactionHand == InteractionHand.MAIN_HAND) {
-			BlockEntity be = this.contraption.presentTileEntities.get(localPos);
+			BlockEntity be = this.contraption.presentBlockEntities.get(localPos);
 			StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
 
 			if (info.state.getBlock() instanceof BigCannonBlock cBlock
-					&& cBlock.getFacing(info.state).getAxis() == side.getAxis()
-					&& be instanceof IBigCannonBlockEntity cbe
-					&& !cbe.cannonBehavior().isConnectedTo(side)
-					&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level, cannon,
-						(BlockEntity & IBigCannonBlockEntity) cbe, info, this)) {
+				&& cBlock.getFacing(info.state).getAxis() == side.getAxis()
+				&& be instanceof IBigCannonBlockEntity cbe
+				&& !cbe.cannonBehavior().isConnectedTo(side)
+				&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level, cannon,
+				(BlockEntity & IBigCannonBlockEntity) cbe, info, this)) {
 				return true;
 			}
 		}

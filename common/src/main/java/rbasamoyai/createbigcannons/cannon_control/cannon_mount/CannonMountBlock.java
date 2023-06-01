@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
-import com.simibubi.create.content.contraptions.base.KineticBlock;
-import com.simibubi.create.foundation.block.ITE;
+import java.util.Random;
+
+import com.simibubi.create.content.kinetics.base.KineticBlock;
+import com.simibubi.create.foundation.block.IBE;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -20,28 +23,26 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
-import java.util.Random;
-
-public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlockEntity> {
+public class CannonMountBlock extends KineticBlock implements IBE<CannonMountBlockEntity> {
 
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty ASSEMBLY_POWERED = BooleanProperty.create("assembly_powered");
 	public static final BooleanProperty FIRE_POWERED = BooleanProperty.create("fire_powered");
-	
+
 	public CannonMountBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any()
-				.setValue(HORIZONTAL_FACING, Direction.NORTH)
-				.setValue(ASSEMBLY_POWERED, false)
-				.setValue(FIRE_POWERED, false));
+			.setValue(HORIZONTAL_FACING, Direction.NORTH)
+			.setValue(ASSEMBLY_POWERED, false)
+			.setValue(FIRE_POWERED, false));
 	}
-	
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(HORIZONTAL_FACING, ASSEMBLY_POWERED, FIRE_POWERED);
 	}
-	
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return this.defaultBlockState().setValue(HORIZONTAL_FACING, context.getHorizontalDirection());
@@ -51,24 +52,31 @@ public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlo
 	public Axis getRotationAxis(BlockState state) {
 		return state.getValue(HORIZONTAL_FACING).getAxis() == Axis.X ? Axis.Z : Axis.X;
 	}
-	
+
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
 		return face.getAxis() == this.getRotationAxis(state);
 	}
-	
+
 	@Override
 	public BlockState rotate(BlockState state, Rotation rotation) {
 		return state.setValue(HORIZONTAL_FACING, rotation.rotate(state.getValue(HORIZONTAL_FACING)));
 	}
-	
+
 	@Override
 	public BlockState mirror(BlockState state, Mirror mirror) {
 		return state.setValue(HORIZONTAL_FACING, mirror.mirror(state.getValue(HORIZONTAL_FACING)));
 	}
 
-	@Override public Class<CannonMountBlockEntity> getTileEntityClass() { return CannonMountBlockEntity.class; }
-	@Override public BlockEntityType<? extends CannonMountBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_MOUNT.get(); }
+	@Override
+	public Class<CannonMountBlockEntity> getBlockEntityClass() {
+		return CannonMountBlockEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends CannonMountBlockEntity> getBlockEntityType() {
+		return CBCBlockEntities.CANNON_MOUNT.get();
+	}
 
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean isMoving) {
@@ -78,7 +86,7 @@ public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlo
 			}
 		}
 	}
-	
+
 	@Override
 	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random rand) {
 		boolean prevAssemblyPowered = state.getValue(ASSEMBLY_POWERED);
@@ -87,9 +95,9 @@ public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlo
 		boolean firePowered = this.hasNeighborSignal(level, state, pos, FIRE_POWERED);
 		Direction fireDirection = state.getValue(HORIZONTAL_FACING);
 		int firePower = level.getSignal(pos.relative(fireDirection), fireDirection);
-		this.withTileEntityDo(level, pos, cmbe -> cmbe.onRedstoneUpdate(assemblyPowered, prevAssemblyPowered, firePowered, prevFirePowered, firePower));
+		this.withBlockEntityDo(level, pos, cmbe -> cmbe.onRedstoneUpdate(assemblyPowered, prevAssemblyPowered, firePowered, prevFirePowered, firePower));
 	}
-	
+
 	private boolean hasNeighborSignal(Level level, BlockState state, BlockPos pos, BooleanProperty property) {
 		if (property == FIRE_POWERED) {
 			Direction fireDirection = state.getValue(HORIZONTAL_FACING);
@@ -101,5 +109,5 @@ public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlo
 		}
 		return false;
 	}
-	
+
 }

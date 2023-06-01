@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.block.IBE;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -22,47 +23,75 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class CannonCastBlock extends Block implements ITE<AbstractCannonCastBlockEntity> {
-	
+public class CannonCastBlock extends Block implements IBE<AbstractCannonCastBlockEntity> {
+
 	public CannonCastBlock(Properties properties) {
 		super(properties);
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean dropContents) {
 		if (state.hasBlockEntity() && (state.getBlock() != newState.getBlock() || !newState.hasBlockEntity())) {
-			this.withTileEntityDo(level, pos, AbstractCannonCastBlockEntity::destroyCastMultiblockAtLayer);
+			this.withBlockEntityDo(level, pos, AbstractCannonCastBlockEntity::destroyCastMultiblockAtLayer);
 		}
 		super.onRemove(state, level, pos, newState, dropContents);
 	}
-	
+
 	@Override
 	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
 		return CBCBlocks.CASTING_SAND.asStack();
 	}
-	
-	@Override public VoxelShape getVisualShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) { return Shapes.empty(); }
-	@Override public boolean propagatesSkylightDown(BlockState state, BlockGetter blockGetter, BlockPos pos) { return false; }
-	@Override public float getShadeBrightness(BlockState state, BlockGetter blockGetter, BlockPos pos) { return 0.8f; }
-	
-	@Override public RenderShape getRenderShape(BlockState state) { return RenderShape.ENTITYBLOCK_ANIMATED; }
-	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 
-	@Override public Class<AbstractCannonCastBlockEntity> getTileEntityClass() { return AbstractCannonCastBlockEntity.class; }
-	@Override public BlockEntityType<? extends AbstractCannonCastBlockEntity> getTileEntityType() { return CBCBlockEntities.CANNON_CAST.get(); }
+	@Override
+	public VoxelShape getVisualShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
+		return Shapes.empty();
+	}
 
-	@Override public boolean hasAnalogOutputSignal(BlockState state) { return true; }
-	
+	@Override
+	public boolean propagatesSkylightDown(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+		return false;
+	}
+
+	@Override
+	public float getShadeBrightness(BlockState state, BlockGetter blockGetter, BlockPos pos) {
+		return 0.8f;
+	}
+
+	@Override
+	public RenderShape getRenderShape(BlockState state) {
+		return RenderShape.ENTITYBLOCK_ANIMATED;
+	}
+
+	@Override
+	public PushReaction getPistonPushReaction(BlockState state) {
+		return PushReaction.BLOCK;
+	}
+
+	@Override
+	public Class<AbstractCannonCastBlockEntity> getBlockEntityClass() {
+		return AbstractCannonCastBlockEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends AbstractCannonCastBlockEntity> getBlockEntityType() {
+		return CBCBlockEntities.CANNON_CAST.get();
+	}
+
+	@Override
+	public boolean hasAnalogOutputSignal(BlockState state) {
+		return true;
+	}
+
 	@Override
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
-		return this.getTileEntityOptional(level, pos)
-				.map(AbstractCannonCastBlockEntity::getControllerTE)
-				.map(AbstractCannonCastBlockEntity::getFillState)
-				.map(CannonCastBlock::castFractionToRedstoneLevel)
-				.orElse(0);
+		return this.getBlockEntityOptional(level, pos)
+			.map(AbstractCannonCastBlockEntity::getControllerBE)
+			.map(AbstractCannonCastBlockEntity::getFillState)
+			.map(CannonCastBlock::castFractionToRedstoneLevel)
+			.orElse(0);
 	}
-	
+
 	public static int castFractionToRedstoneLevel(float frac) {
 		return Mth.floor(Mth.clamp(frac * 13 + (frac > 0 ? 1 : 0), 0, 14));
 	}
@@ -72,11 +101,13 @@ public class CannonCastBlock extends Block implements ITE<AbstractCannonCastBloc
 		ItemStack stack = player.getItemInHand(hand);
 		if (hit.getDirection() != Direction.UP) return InteractionResult.PASS;
 
-		return this.onTileEntityUse(level, pos, cast -> {
-			AbstractCannonCastBlockEntity controller = cast.getControllerTE();
+		return this.onBlockEntityUse(level, pos, cast -> {
+			AbstractCannonCastBlockEntity controller = cast.getControllerBE();
 			if (controller == null || stack.isEmpty()) return InteractionResult.PASS;
-			if (controller.tryEmptyItemIntoTE(level, player, hand, stack, Direction.UP)) return InteractionResult.SUCCESS;
-			if (controller.tryFillItemFromTE(level, player, hand, stack, Direction.UP)) return InteractionResult.SUCCESS;
+			if (controller.tryEmptyItemIntoTE(level, player, hand, stack, Direction.UP))
+				return InteractionResult.SUCCESS;
+			if (controller.tryFillItemFromTE(level, player, hand, stack, Direction.UP))
+				return InteractionResult.SUCCESS;
 			return InteractionResult.PASS;
 		});
 	}

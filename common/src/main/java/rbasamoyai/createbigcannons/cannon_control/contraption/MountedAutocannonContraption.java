@@ -1,8 +1,18 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
-import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
-import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionType;
-import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+
+import com.simibubi.create.content.contraptions.AssemblyException;
+import com.simibubi.create.content.contraptions.ContraptionType;
+import com.simibubi.create.content.contraptions.StructureTransform;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +35,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
@@ -46,12 +55,6 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon {
 
@@ -96,7 +99,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		AutocannonMaterial material = startCannon.getAutocannonMaterial();
 
 		List<StructureBlockInfo> cannonBlocks = new ArrayList<>();
-		cannonBlocks.add(new StructureBlockInfo(pos, startState, this.getTileEntityNBT(level, pos)));
+		cannonBlocks.add(new StructureBlockInfo(pos, startState, this.getBlockEntityNBT(level, pos)));
 
 		int cannonLength = 1;
 
@@ -112,7 +115,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		while (nextState.getBlock() instanceof AutocannonBlock cBlock && this.isConnectedToCannon(level, nextState, start.relative(positive), positive, material)) {
 			start = start.relative(positive);
 			if (!cBlock.isComplete(nextState)) throw hasIncompleteCannonBlocks(start);
-			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getTileEntityNBT(level, start)));
+			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
 			cannonLength++;
 			positiveBreech = cBlock.isBreechMechanism(nextState);
 			nextState = level.getBlockState(start.relative(positive));
@@ -128,7 +131,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		while (nextState.getBlock() instanceof AutocannonBlock cBlock && this.isConnectedToCannon(level, nextState, start.relative(negative), negative, material)) {
 			start = start.relative(negative);
 			if (!cBlock.isComplete(nextState)) throw hasIncompleteCannonBlocks(start);
-			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getTileEntityNBT(level, start)));
+			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
 			cannonLength++;
 			negativeBreech = cBlock.isBreechMechanism(nextState);
 			nextState = level.getBlockState(start.relative(negative));
@@ -155,11 +158,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 			if (blockInfo.nbt == null) continue;
 			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state, blockInfo.nbt);
-			this.presentTileEntities.put(localPos, be);
+			this.presentBlockEntities.put(localPos, be);
 		}
 
 		StructureBlockInfo startInfo = this.blocks.get(this.startPos);
-		if (startInfo == null || !(startInfo.state.getBlock() instanceof AutocannonBreechBlock)) throw noAutocannonBreech();
+		if (startInfo == null || !(startInfo.state.getBlock() instanceof AutocannonBreechBlock))
+			throw noAutocannonBreech();
 		this.isHandle = startInfo.state.hasProperty(AutocannonBreechBlock.HANDLE) && startInfo.state.getValue(AutocannonBreechBlock.HANDLE);
 		if (this.isHandle) {
 			this.getSeats().add(this.startPos.immutable());
@@ -167,10 +171,10 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		StructureBlockInfo possibleSpring = this.blocks.get(this.startPos.relative(this.initialOrientation));
 		if (possibleSpring != null
-				&& possibleSpring.state.getBlock() instanceof AutocannonRecoilSpringBlock springBlock
-				&& springBlock.getFacing(possibleSpring.state) == this.initialOrientation) {
+			&& possibleSpring.state.getBlock() instanceof AutocannonRecoilSpringBlock springBlock
+			&& springBlock.getFacing(possibleSpring.state) == this.initialOrientation) {
 			this.recoilSpringPos = this.startPos.relative(this.initialOrientation).immutable();
-			if (this.presentTileEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity springBE) {
+			if (this.presentBlockEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity springBE) {
 				for (int i = 2; i < cannonLength; ++i) {
 					BlockPos pos1 = this.startPos.relative(this.initialOrientation, i);
 					StructureBlockInfo blockInfo = this.blocks.get(pos1);
@@ -197,9 +201,9 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		AutocannonBlock cBlock = (AutocannonBlock) state.getBlock();
 		if (cBlock.getAutocannonMaterialInLevel(level, state, pos) != material) return false;
 		return level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe
-				&& level.getBlockEntity(pos.relative(connection.getOpposite())) instanceof IAutocannonBlockEntity cbe1
-				&& cbe.cannonBehavior().isConnectedTo(connection.getOpposite())
-				&& cbe1.cannonBehavior().isConnectedTo(connection);
+			&& level.getBlockEntity(pos.relative(connection.getOpposite())) instanceof IAutocannonBlockEntity cbe1
+			&& cbe.cannonBehavior().isConnectedTo(connection.getOpposite())
+			&& cbe1.cannonBehavior().isConnectedTo(connection);
 	}
 
 	public static AssemblyException noAutocannonBreech() {
@@ -240,7 +244,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
 		if (this.startPos == null
 			|| this.cannonMaterial == null
-			|| !(this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
+			|| !(this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
 			|| !breech.canFire()) return;
 
 		ItemStack foundProjectile = breech.extractNextInput();
@@ -263,7 +267,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		BlockPos currentPos = this.startPos.relative(this.initialOrientation);
 		int barrelTravelled = 0;
 
-		while (this.presentTileEntities.get(currentPos) instanceof IAutocannonBlockEntity autocannon) {
+		while (this.presentBlockEntities.get(currentPos) instanceof IAutocannonBlockEntity autocannon) {
 			ItemCannonBehavior behavior = autocannon.cannonBehavior();
 
 			if (behavior.canLoadItem(foundProjectile)) {
@@ -271,7 +275,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				if (barrelTravelled > this.cannonMaterial.maxLength()) {
 					StructureBlockInfo oldInfo = this.blocks.get(currentPos);
 					behavior.tryLoadingItem(foundProjectile);
-					CompoundTag tag = this.presentTileEntities.get(currentPos).saveWithFullMetadata();
+					CompoundTag tag = this.presentBlockEntities.get(currentPos).saveWithFullMetadata();
 					tag.remove("x");
 					tag.remove("y");
 					tag.remove("z");
@@ -318,7 +322,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		if (controller != null) controller.cacheRecoilVector(vec1.scale(-recoilMagnitude), entity);
 
 		breech.handleFiring();
-		if (this.presentTileEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring) spring.handleFiring();
+		if (this.presentBlockEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring)
+			spring.handleFiring();
 		NetworkPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
 
 		for (ServerPlayer player : level.players()) {
@@ -331,18 +336,22 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override
 	public void animate() {
 		super.animate();
-		if (this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech) breech.handleFiring();
-		if (this.presentTileEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring) spring.handleFiring();
+		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
+			breech.handleFiring();
+		if (this.presentBlockEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring)
+			spring.handleFiring();
 	}
 
 	@Override
 	public void tick(Level level, PitchOrientedContraptionEntity entity) {
 		super.tick(level, entity);
 
-		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController())) this.fireShot(slevel, entity, entity.getController());
+		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController()))
+			this.fireShot(slevel, entity, entity.getController());
 
-		for (Map.Entry<BlockPos, BlockEntity> entry : this.presentTileEntities.entrySet()) {
-			if (entry.getValue() instanceof IAutocannonBlockEntity autocannon) autocannon.tickFromContraption(level, entity, entry.getKey());
+		for (Map.Entry<BlockPos, BlockEntity> entry : this.presentBlockEntities.entrySet()) {
+			if (entry.getValue() instanceof IAutocannonBlockEntity autocannon)
+				autocannon.tickFromContraption(level, entity, entry.getKey());
 		}
 	}
 
@@ -351,29 +360,41 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		return entity == this.entity.getControllingPassenger() ? this.startPos.relative(this.initialOrientation.getOpposite()) : super.getSeatPos(entity);
 	}
 
-	@Override public boolean canBeTurnedByController(ControlPitchContraption control) { return !this.isHandle; }
+	@Override
+	public boolean canBeTurnedByController(ControlPitchContraption control) {
+		return !this.isHandle;
+	}
 
-	@Override public boolean canBeTurnedByPassenger(Entity entity) {
+	@Override
+	public boolean canBeTurnedByPassenger(Entity entity) {
 		return this.isHandle && entity instanceof Player;
 	}
-	@Override public boolean canBeFiredOnController(ControlPitchContraption control) { return !this.isHandle && this.entity.getVehicle() != control; }
+
+	@Override
+	public boolean canBeFiredOnController(ControlPitchContraption control) {
+		return !this.isHandle && this.entity.getVehicle() != control;
+	}
 
 	@Override
 	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
-		if (this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech) breech.setFireRate(firePower);
+		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
+			breech.setFireRate(firePower);
 	}
 
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
-		if (this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech
+		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech
 			&& (fireRateAdjustment > 0 || breech.getFireRate() > 1)) // Can't turn off carriage autocannon
 			breech.setFireRate(breech.getFireRate() + fireRateAdjustment);
 	}
 
 	public int getReferencedFireRate() {
-		return this.presentTileEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech ? breech.getActualFireRate() : 0;
+		return this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech ? breech.getActualFireRate() : 0;
 	}
 
-	@Override public float getWeightForStress() { return this.cannonMaterial == null ? this.blocks.size() : this.blocks.size() * this.cannonMaterial.weight(); }
+	@Override
+	public float getWeightForStress() {
+		return this.cannonMaterial == null ? this.blocks.size() : this.blocks.size() * this.cannonMaterial.weight();
+	}
 
 	@Override
 	public Vec3 getInteractionVec(PitchOrientedContraptionEntity poce) {
@@ -399,9 +420,19 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		this.isHandle = tag.getBoolean("IsHandle");
 	}
 
-	@Override protected ContraptionType getType() { return CBCContraptionTypes.MOUNTED_AUTOCANNON; }
+	@Override
+	public ContraptionType getType() {
+		return CBCContraptionTypes.MOUNTED_AUTOCANNON;
+	}
 
-	@Override public ItemStack insertItemIntoCannon(ItemStack stack, boolean simulate) { return stack; }
-	@Override public ItemStack extractItemFromCannon(boolean simulate) { return ItemStack.EMPTY; }
+	@Override
+	public ItemStack insertItemIntoCannon(ItemStack stack, boolean simulate) {
+		return stack;
+	}
+
+	@Override
+	public ItemStack extractItemFromCannon(boolean simulate) {
+		return ItemStack.EMPTY;
+	}
 
 }

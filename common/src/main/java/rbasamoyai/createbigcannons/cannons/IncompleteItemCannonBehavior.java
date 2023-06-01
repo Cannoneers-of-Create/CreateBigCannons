@@ -1,12 +1,18 @@
 package rbasamoyai.createbigcannons.cannons;
 
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+
 import net.minecraft.world.item.ItemStack;
 
 public class IncompleteItemCannonBehavior extends ItemCannonBehavior {
 
-	public IncompleteItemCannonBehavior(SmartTileEntity te) { super(te); }
+	public IncompleteItemCannonBehavior(SmartBlockEntity te) {
+		super(te);
+	}
 
-	@Override public boolean canLoadItem(ItemStack stack) { return false; }
+	@Override
+	public boolean canLoadItem(ItemStack stack) {
+		return false;
+	}
 
 }
