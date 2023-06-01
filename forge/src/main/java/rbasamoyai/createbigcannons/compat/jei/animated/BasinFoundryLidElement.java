@@ -2,8 +2,9 @@ package rbasamoyai.createbigcannons.compat.jei.animated;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
+
 import mezz.jei.api.gui.drawable.IDrawable;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
@@ -21,16 +22,23 @@ public class BasinFoundryLidElement implements IDrawable {
 			.atLocal(0, 0.65, 0)
 			.scale(scale)
 			.render(poseStack);
-		
-		GuiGameElement.of(AllPartialModels.BASIN.getDefaultState())
+
+		GuiGameElement.of(AllBlocks.BASIN.getDefaultState())
 			.atLocal(0, 1.65, 0)
 			.scale(scale)
 			.render(poseStack);
-		
+
 		poseStack.popPose();
 	}
-	
-	@Override public int getHeight() { return 50; }
-	@Override public int getWidth() { return 50; }
+
+	@Override
+	public int getHeight() {
+		return 50;
+	}
+
+	@Override
+	public int getWidth() {
+		return 50;
+	}
 
 }

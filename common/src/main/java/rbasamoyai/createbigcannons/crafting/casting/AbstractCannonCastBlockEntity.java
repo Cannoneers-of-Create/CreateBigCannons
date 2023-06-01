@@ -589,8 +589,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 
 	protected abstract boolean testWithFluid(CannonCastingRecipe recipe);
 
-	public abstract boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
+	public abstract boolean tryEmptyItemIntoBE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
 
-	public abstract boolean tryFillItemFromTE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
+	public abstract boolean tryFillItemFromBE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
 
 }
