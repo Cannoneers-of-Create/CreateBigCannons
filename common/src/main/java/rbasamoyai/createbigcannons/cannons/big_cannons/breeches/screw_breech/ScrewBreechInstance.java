@@ -14,7 +14,7 @@ import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 
-public class ScrewBreechInstance extends HalfShaftInstance implements DynamicInstance {
+public class ScrewBreechInstance extends HalfShaftInstance<ScrewBreechBlockEntity> implements DynamicInstance {
 
 	private final ScrewBreechBlockEntity breech;
 	private OrientedData screwLock;
