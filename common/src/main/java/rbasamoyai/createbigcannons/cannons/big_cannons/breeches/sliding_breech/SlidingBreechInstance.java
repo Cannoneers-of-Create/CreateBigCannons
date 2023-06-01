@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 
-public class SlidingBreechInstance extends ShaftInstance implements DynamicInstance {
+public class SlidingBreechInstance extends ShaftInstance<SlidingBreechBlockEntity> implements DynamicInstance {
 
 	private final SlidingBreechBlockEntity breech;
 	private OrientedData breechblock;
