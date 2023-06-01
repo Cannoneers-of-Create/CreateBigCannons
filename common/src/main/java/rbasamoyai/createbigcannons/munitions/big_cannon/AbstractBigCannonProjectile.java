@@ -17,7 +17,9 @@ import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 public abstract class AbstractBigCannonProjectile extends AbstractCannonProjectile {
 
-	protected AbstractBigCannonProjectile(EntityType<? extends AbstractBigCannonProjectile> type, Level level) { super(type, level); }
+	protected AbstractBigCannonProjectile(EntityType<? extends AbstractBigCannonProjectile> type, Level level) {
+		super(type, level);
+	}
 
 	@Override
 	protected void onTickRotate() {
@@ -38,7 +40,11 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 
 	public abstract BlockState getRenderedBlockState();
 
-	@Nullable @Override protected ParticleOptions getTrailParticles() { return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE; }
+	@Nullable
+	@Override
+	protected ParticleOptions getTrailParticles() {
+		return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
+	}
 
 	@Override
 	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
@@ -51,7 +57,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		this.setProjectileMass((float) Math.max(startMass - hardness, 0));
 		this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 
-		CBCCommonEvents.onCannonBreakBlock(this.level, result.getBlockPos());
+		CBCCommonEvents.onCannonBreakBlock(this.level, result.getBlockPos().immutable());
 	}
 
 	@Override
