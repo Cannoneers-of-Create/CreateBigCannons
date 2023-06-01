@@ -180,7 +180,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	private void moveCarriage() {
 		double grav = this.isNoGravity() ? 0 : this.isUnderWater() ? -7e-4d : -0.04d;
-		double friction = this.isInWater() ? 0.9f : 0.05f;
+		double friction = this.isInWater() ? 0.01f : 0.05f;
 		Vec3 oldVel = this.getDeltaMovement();
 		this.setDeltaMovement(oldVel.x * friction, oldVel.y + grav, oldVel.z * friction);
 	}
