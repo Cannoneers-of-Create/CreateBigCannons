@@ -1,9 +1,16 @@
 package rbasamoyai.createbigcannons.manualloading;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.simibubi.create.content.contraptions.components.deployer.DeployerFakePlayer;
+import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
 import com.simibubi.create.foundation.utility.NBTProcessors;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -28,19 +35,17 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
-
-import java.util.*;
 
 public class RamRodItem extends Item implements HandloadingTool {
 
 	public static final UUID BASE_ATTACK_KNOCKBACK_UUID = UUID.fromString("bfa4160d-4ef0-4069-9569-3dfd2765f1c6");
-	
+
 	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
-	
+
 	public RamRodItem(Properties properties) {
 		super(properties);
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
@@ -49,12 +54,12 @@ public class RamRodItem extends Item implements HandloadingTool {
 		builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(BASE_ATTACK_KNOCKBACK_UUID, "Tool modifier", 2.5d, AttributeModifier.Operation.ADDITION));
 		this.defaultModifiers = builder.build();
 	}
-	
+
 	@Override
 	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
 		return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
 	}
-	
+
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Player player = context.getPlayer();
@@ -65,7 +70,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 		Direction pushDirection = face.getOpposite();
 
 		if (level.isClientSide) return InteractionResult.SUCCESS;
-		
+
 		int k = 0;
 		if (level.getBlockEntity(pos) instanceof IBigCannonBlockEntity) {
 			BlockState state = level.getBlockState(pos.relative(face));
@@ -76,7 +81,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 				BlockState state1 = level.getBlockState(pos1);
 				if (state1.isAir()) continue;
 				if (!isValidLoadBlock(state1, level, pos1, pushDirection)) return InteractionResult.FAIL;
-				
+
 				if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info = cbe.cannonBehavior().block();
 					if (info.state == null || info.state.isAir()) continue;
@@ -86,7 +91,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 			}
 			if (k == -1) return InteractionResult.PASS;
 		}
-		
+
 		List<StructureBlockInfo> toPush = new ArrayList<>();
 		boolean encounteredCannon = false;
 		int maxCount = getPushStrength();
@@ -155,14 +160,14 @@ public class RamRodItem extends Item implements HandloadingTool {
 		Direction pushDirection = face.getOpposite();
 
 		int k = 0;
-		if (contraption.presentTileEntities.get(startPos) instanceof IBigCannonBlockEntity) {
+		if (contraption.presentBlockEntities.get(startPos) instanceof IBigCannonBlockEntity) {
 			k = -1;
 			for (int i = 0; i < getReach(); ++i) {
 				BlockPos pos1 = startPos.relative(pushDirection, i);
 				StructureBlockInfo info = contraption.getBlocks().get(pos1);
 				if (info == null || !isValidLoadBlock(info.state, contraption, pos1, pushDirection)) return;
 
-				if (contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe) {
+				if (contraption.presentBlockEntities.get(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info1 = cbe.cannonBehavior().block();
 					if (info1.state.isAir()) continue;
 				}
@@ -179,7 +184,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 			BlockPos pos1 = startPos.relative(pushDirection, i + k);
 			StructureBlockInfo info = contraption.getBlocks().get(pos1);
 			if (info == null || !isValidLoadBlock(info.state, contraption, pos1, pushDirection)) return;
-			if (!(contraption.presentTileEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)) break;
+			if (!(contraption.presentBlockEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)) break;
 			encounteredCannon = true;
 			StructureBlockInfo info1 = cbe.cannonBehavior().block();
 			if (info1.state.isAir()) break;
@@ -195,10 +200,10 @@ public class RamRodItem extends Item implements HandloadingTool {
 				BlockPos pos2 = pos1.relative(pushDirection);
 				StructureBlockInfo info = toPush.get(i);
 
-				BlockEntity be1 = contraption.presentTileEntities.get(pos1);
-				BlockEntity be2 = contraption.presentTileEntities.get(pos2);
+				BlockEntity be1 = contraption.presentBlockEntities.get(pos1);
+				BlockEntity be2 = contraption.presentBlockEntities.get(pos2);
 				if (!(be1 instanceof IBigCannonBlockEntity cbe)
-						|| !(be2 instanceof IBigCannonBlockEntity cbe1)) break;
+					|| !(be2 instanceof IBigCannonBlockEntity cbe1)) break;
 				cbe.cannonBehavior().removeBlock();
 				cbe1.cannonBehavior().tryLoadingBlock(info);
 
@@ -234,9 +239,17 @@ public class RamRodItem extends Item implements HandloadingTool {
 		super.appendHoverText(stack, level, tooltip, flag);
 		CBCTooltip.appendRamRodText(stack, level, tooltip, flag);
 	}
-	
-	public static int getPushStrength() { return CBCConfigs.SERVER.cannons.ramRodStrength.get(); }
-	public static int getReach() { return CBCConfigs.SERVER.cannons.ramRodReach.get(); }
-	public static boolean deployersCanUse() { return CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get(); }
-	
+
+	public static int getPushStrength() {
+		return CBCConfigs.SERVER.cannons.ramRodStrength.get();
+	}
+
+	public static int getReach() {
+		return CBCConfigs.SERVER.cannons.ramRodReach.get();
+	}
+
+	public static boolean deployersCanUse() {
+		return CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get();
+	}
+
 }

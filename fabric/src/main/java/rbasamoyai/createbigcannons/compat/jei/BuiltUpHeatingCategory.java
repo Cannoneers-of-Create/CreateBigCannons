@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.compat.jei;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.simibubi.create.AllBlockPartials;
-import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
@@ -50,7 +50,7 @@ public class BuiltUpHeatingCategory extends CBCBlockRecipeCategory<BuiltUpHeatin
 		.scale(scale)
 		.render(stack);
 		
-		AnimatedKinetics.defaultBlockElement(AllBlocks.SHAFT.getDefaultState())
+		AnimatedKinetics.defaultBlockElement(AllPartialModels.SHAFT.getDefaultState())
 		.rotateBlock(0, AnimatedKinetics.getCurrentAngle(), -90)
 		.atLocal(0, 0, 0)
 		.scale(scale)
@@ -67,7 +67,7 @@ public class BuiltUpHeatingCategory extends CBCBlockRecipeCategory<BuiltUpHeatin
 			.scale(scale)
 			.render(stack);
 
-		AnimatedKinetics.defaultBlockElement(AllBlocks.ENCASED_FAN.getDefaultState())
+		AnimatedKinetics.defaultBlockElement(AllPartialModels.ENCASED_FAN.getDefaultState())
 			.rotateBlock(0, 180, 0)
 			.atLocal(0, 0, 0)
 			.scale(scale)

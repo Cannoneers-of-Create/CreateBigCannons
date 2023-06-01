@@ -4,10 +4,10 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.simibubi.create.content.contraptions.particle.ICustomParticleData;
+import com.simibubi.create.foundation.particle.ICustomParticleData;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -17,9 +17,9 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 public class CannonPlumeParticleData implements ParticleOptions, ICustomParticleData<CannonPlumeParticleData> {
 
 	public static final Codec<CannonPlumeParticleData> CODEC = RecordCodecBuilder.create(i -> i
-			.group(Codec.FLOAT.fieldOf("scale")
-					.forGetter(data -> data.scale))
-			.apply(i, CannonPlumeParticleData::new));
+		.group(Codec.FLOAT.fieldOf("scale")
+			.forGetter(data -> data.scale))
+		.apply(i, CannonPlumeParticleData::new));
 
 	@SuppressWarnings("deprecation")
 	public static final Deserializer<CannonPlumeParticleData> DESERIALIZER = new Deserializer<CannonPlumeParticleData>() {
@@ -41,9 +41,15 @@ public class CannonPlumeParticleData implements ParticleOptions, ICustomParticle
 		this.scale = scale;
 	}
 
-	public CannonPlumeParticleData() { this(0); };
+	public CannonPlumeParticleData() {
+		this(0);
+	}
 
-	public float scale() { return this.scale; }
+	;
+
+	public float scale() {
+		return this.scale;
+	}
 
 
 	@Override
@@ -61,9 +67,15 @@ public class CannonPlumeParticleData implements ParticleOptions, ICustomParticle
 		return String.format("%d", this.scale);
 	}
 
-	@Override public Deserializer<CannonPlumeParticleData> getDeserializer() { return DESERIALIZER; }
+	@Override
+	public Deserializer<CannonPlumeParticleData> getDeserializer() {
+		return DESERIALIZER;
+	}
 
-	@Override public Codec<CannonPlumeParticleData> getCodec(ParticleType<CannonPlumeParticleData> type) { return CODEC; }
+	@Override
+	public Codec<CannonPlumeParticleData> getCodec(ParticleType<CannonPlumeParticleData> type) {
+		return CODEC;
+	}
 
 	@Environment(EnvType.CLIENT)
 	@Override

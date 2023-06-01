@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import java.util.List;
+
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -13,41 +16,61 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 
-import java.util.List;
-
-public class FinishedCannonCastBlockEntity extends SmartTileEntity {
+public class FinishedCannonCastBlockEntity extends SmartBlockEntity {
 
 	private CannonCastShape renderedShape = CannonCastShape.VERY_SMALL;
 	private BlockPos centralBlock;
 	private BlockPos rootBlock;
 	private int height;
-	
+
 	public FinishedCannonCastBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
-	
-	@Override public void addBehaviours(List<TileEntityBehaviour> behaviours) {}
-	
-	public void setCentralBlock(BlockPos pos) { this.centralBlock = pos; }
-	public boolean isCentralBlock() { return this.centralBlock == null; }
-	public void setRootBlock(BlockPos pos) { this.rootBlock = pos; }
-	public BlockPos getRootBlock() { return this.rootBlock == null ? this.worldPosition : this.rootBlock; }
-	public void setHeight(int height) { this.height = height; }
-	public void setRenderedShape(CannonCastShape shape) { this.renderedShape = shape; }
-	public CannonCastShape getRenderedShape() { return this.renderedShape; }
-	
+
+	@Override
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+	}
+
+	public void setCentralBlock(BlockPos pos) {
+		this.centralBlock = pos;
+	}
+
+	public boolean isCentralBlock() {
+		return this.centralBlock == null;
+	}
+
+	public void setRootBlock(BlockPos pos) {
+		this.rootBlock = pos;
+	}
+
+	public BlockPos getRootBlock() {
+		return this.rootBlock == null ? this.worldPosition : this.rootBlock;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public void setRenderedShape(CannonCastShape shape) {
+		this.renderedShape = shape;
+	}
+
+	public CannonCastShape getRenderedShape() {
+		return this.renderedShape;
+	}
+
 	@Override
 	public void initialize() {
 		super.initialize();
 		this.sendData();
 		if (this.level.isClientSide) this.invalidateRenderBoundingBox();
 	}
-	
+
 	@Override
 	protected AABB createRenderBoundingBox() {
 		return this.isCentralBlock() ? new AABB(this.getRootBlock()).expandTowards(2, this.height - 1, 2) : super.createRenderBoundingBox();
 	}
-	
+
 	public void removeCast() {
 		this.setRemoved();
 		if (this.isCentralBlock()) {
@@ -61,7 +84,7 @@ public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 			cast.removeCast();
 		}
 	}
-	
+
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
 		super.write(tag, clientPacket);
@@ -73,7 +96,7 @@ public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 			tag.put("CentralBlock", NbtUtils.writeBlockPos(this.centralBlock));
 		}
 	}
-	
+
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
@@ -81,8 +104,8 @@ public class FinishedCannonCastBlockEntity extends SmartTileEntity {
 		this.rootBlock = tag.contains("RootBlock") ? NbtUtils.readBlockPos(tag.getCompound("RootBlock")) : this.worldPosition;
 		this.height = tag.getInt("Height");
 		this.renderedShape = tag.contains("RenderedShape")
-				? CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(tag.getString("RenderedShape")))
-				: CannonCastShape.VERY_SMALL;
+			? CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(tag.getString("RenderedShape")))
+			: CannonCastShape.VERY_SMALL;
 	}
 
 }

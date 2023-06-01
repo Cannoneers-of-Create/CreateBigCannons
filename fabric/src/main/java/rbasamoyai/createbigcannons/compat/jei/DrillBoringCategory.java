@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.compat.jei;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 import com.simibubi.create.AllBlockPartials;
-import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.jei.category.animations.AnimatedKinetics;
 import com.simibubi.create.content.contraptions.components.structureMovement.piston.MechanicalPistonBlock.PistonState;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
@@ -48,7 +48,7 @@ public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlock
 		.scale(scale)
 		.render(stack);
 
-		BlockState shaft = AllBlocks.SHAFT.getDefaultState();
+		BlockState shaft = AllPartialModels.SHAFT.getDefaultState();
 		Direction.Axis axis = shaft.getValue(BlockStateProperties.AXIS);
 
 		AnimatedKinetics.defaultBlockElement(shaft)
@@ -74,7 +74,7 @@ public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlock
 		.scale(scale)
 		.render(stack);
 		
-		AnimatedKinetics.defaultBlockElement(AllBlocks.MECHANICAL_BEARING.getDefaultState())
+		AnimatedKinetics.defaultBlockElement(AllPartialModels.MECHANICAL_BEARING.getDefaultState())
 		.rotateBlock(0, 0, 0)
 		.atLocal(0, 0, 3)
 		.scale(scale)

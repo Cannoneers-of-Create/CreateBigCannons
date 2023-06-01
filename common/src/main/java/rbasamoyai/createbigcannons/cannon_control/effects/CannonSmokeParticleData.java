@@ -5,7 +5,8 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.math.Vector3f;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.simibubi.create.content.contraptions.particle.ICustomParticleDataWithSprite;
+import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
@@ -17,16 +18,16 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 public class CannonSmokeParticleData implements ParticleOptions, ICustomParticleDataWithSprite<CannonSmokeParticleData> {
 
 	public static final Codec<CannonSmokeParticleData> CODEC = RecordCodecBuilder.create(i -> i
-			.group(Codec.FLOAT.fieldOf("scale")
-					.forGetter(data -> data.scale),
-					Vector3f.CODEC.fieldOf("startColor")
-					.forGetter(data -> data.startColor),
-					Vector3f.CODEC.fieldOf("endColor")
-					.forGetter(data -> data.endColor),
-					Codec.INT.fieldOf("shiftTime")
-					.forGetter(data -> data.shiftTime))
-			.apply(i, CannonSmokeParticleData::new));
-	
+		.group(Codec.FLOAT.fieldOf("scale")
+				.forGetter(data -> data.scale),
+			Vector3f.CODEC.fieldOf("startColor")
+				.forGetter(data -> data.startColor),
+			Vector3f.CODEC.fieldOf("endColor")
+				.forGetter(data -> data.endColor),
+			Codec.INT.fieldOf("shiftTime")
+				.forGetter(data -> data.shiftTime))
+		.apply(i, CannonSmokeParticleData::new));
+
 	@SuppressWarnings("deprecation")
 	public static final Deserializer<CannonSmokeParticleData> DESERIALIZER = new Deserializer<CannonSmokeParticleData>() {
 		@Override
@@ -37,26 +38,34 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
 			int shiftTime = buf.readVarInt();
 			return new CannonSmokeParticleData(scale, startColor, endColor, shiftTime);
 		}
-		
+
 		@Override
 		public CannonSmokeParticleData fromCommand(ParticleType<CannonSmokeParticleData> type, StringReader reader) throws CommandSyntaxException {
-			reader.expect(' '); float scale = reader.readFloat();
-			reader.expect(' '); float rs = reader.readFloat();
-			reader.expect(' '); float gs = reader.readFloat();
-			reader.expect(' '); float bs = reader.readFloat();
-			reader.expect(' '); float rf = reader.readFloat();
-			reader.expect(' '); float gf = reader.readFloat();
-			reader.expect(' '); float bf = reader.readFloat();
-			reader.expect(' '); int shiftTime = reader.readInt();
+			reader.expect(' ');
+			float scale = reader.readFloat();
+			reader.expect(' ');
+			float rs = reader.readFloat();
+			reader.expect(' ');
+			float gs = reader.readFloat();
+			reader.expect(' ');
+			float bs = reader.readFloat();
+			reader.expect(' ');
+			float rf = reader.readFloat();
+			reader.expect(' ');
+			float gf = reader.readFloat();
+			reader.expect(' ');
+			float bf = reader.readFloat();
+			reader.expect(' ');
+			int shiftTime = reader.readInt();
 			return new CannonSmokeParticleData(scale, new Vector3f(rs, gs, bs), new Vector3f(rf, gf, bf), shiftTime);
 		}
 	};
-	
+
 	private final float scale;
 	private final Vector3f startColor;
 	private final Vector3f endColor;
 	private final int shiftTime;
-	
+
 	public CannonSmokeParticleData(float scale, Vector3f startColor, Vector3f endColor, int shiftTime) {
 		this.scale = scale;
 		this.startColor = startColor;
@@ -64,27 +73,43 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
 		this.shiftTime = shiftTime;
 	}
 
-	public CannonSmokeParticleData() { this(0, Vector3f.ZERO, Vector3f.ZERO, 1); }
-	
-	public float scale() { return this.scale; }
-	public Vector3f startColor() { return this.startColor; }
-	public Vector3f endColor() { return this.endColor; }
-	public int shiftTime() { return this.shiftTime; }
-	
-	@Override public ParticleType<?> getType() { return CBCParticleTypes.CANNON_SMOKE.get(); }
+	public CannonSmokeParticleData() {
+		this(0, Vector3f.ZERO, Vector3f.ZERO, 1);
+	}
+
+	public float scale() {
+		return this.scale;
+	}
+
+	public Vector3f startColor() {
+		return this.startColor;
+	}
+
+	public Vector3f endColor() {
+		return this.endColor;
+	}
+
+	public int shiftTime() {
+		return this.shiftTime;
+	}
+
+	@Override
+	public ParticleType<?> getType() {
+		return CBCParticleTypes.CANNON_SMOKE.get();
+	}
 
 	@Override
 	public void writeToNetwork(FriendlyByteBuf buf) {
 		buf.writeFloat(this.scale);
-		
+
 		buf.writeFloat(this.startColor.x());
 		buf.writeFloat(this.startColor.y());
 		buf.writeFloat(this.startColor.z());
-		
+
 		buf.writeFloat(this.endColor.x());
 		buf.writeFloat(this.endColor.y());
 		buf.writeFloat(this.endColor.z());
-		
+
 		buf.writeVarInt(this.shiftTime);
 	}
 
@@ -93,8 +118,15 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
 		return String.format("%d %f %f %f %f %f %f %d", this.scale, this.startColor.x(), this.startColor.y(), this.startColor.z(), this.endColor.x(), this.endColor.y(), this.endColor.z(), this.shiftTime);
 	}
 
-	@Override public Deserializer<CannonSmokeParticleData> getDeserializer() { return DESERIALIZER; }
-	@Override public Codec<CannonSmokeParticleData> getCodec(ParticleType<CannonSmokeParticleData> type) { return CODEC; }
+	@Override
+	public Deserializer<CannonSmokeParticleData> getDeserializer() {
+		return DESERIALIZER;
+	}
+
+	@Override
+	public Codec<CannonSmokeParticleData> getCodec(ParticleType<CannonSmokeParticleData> type) {
+		return CODEC;
+	}
 
 	@Environment(EnvType.CLIENT)
 	@Override
