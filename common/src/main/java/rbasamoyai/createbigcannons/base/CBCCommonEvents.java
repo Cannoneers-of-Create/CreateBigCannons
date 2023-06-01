@@ -68,7 +68,7 @@ public class CBCCommonEvents {
 	}
 
 	public static void onCannonBreakBlock(LevelAccessor level, BlockPos blockPos) {
-		EventsPlatform.postOnCannonBreakBlockEvent(EventsPlatform.createOnCannonBreakBlockEvent(blockPos, level.getBlockState(blockPos), level.dimensionType().effectsLocation()));
+		EventsPlatform.postOnCannonBreakBlockEvent(EventsPlatform.createOnCannonBreakBlockEvent(blockPos, level.getBlockState(blockPos), level.dimensionType().effectsLocation(), level.getBlockEntity(blockPos)));
 		if (!level.isClientSide()) level.destroyBlock(blockPos, false);
 	}
 
@@ -80,7 +80,7 @@ public class CBCCommonEvents {
 		BlockPos headPos = null;
 		BlockPos basePos = null;
 
-		for (int mod : new int[] { 1, -1 }) {
+		for (int mod : new int[]{1, -1}) {
 			for (int offs = mod; mod * offs < limit; offs += mod) {
 				BlockPos pos1 = pos.relative(positive, offs);
 				BlockState state1 = level.getBlockState(pos1);
