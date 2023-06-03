@@ -1,23 +1,23 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "createbigcannons:sheet_iron"
+    },
+    "G": {
+      "tag": "createbigcannons:gunpowder"
+    },
+    "S": {
+      "item": "createbigcannons:shot_balls"
+    }
+  },
   "pattern": [
     "S",
     "G",
     "C"
   ],
-  "key": {
-    "S": {
-      "item": "createbigcannons:shot_balls"
-    },
-    "G": {
-      "tag": "createbigcannons:gunpowder"
-    },
-    "C": {
-      "tag": "createbigcannons:sheet_iron"
-    }
-  },
   "result": {
-    "item": "createbigcannons:flak_autocannon_round",
-    "count": 2
+    "count": 2,
+    "item": "createbigcannons:flak_autocannon_round"
   }
 }

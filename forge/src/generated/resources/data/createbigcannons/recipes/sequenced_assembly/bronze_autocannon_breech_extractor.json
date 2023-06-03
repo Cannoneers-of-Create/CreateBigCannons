@@ -3,9 +3,12 @@
   "ingredient": {
     "tag": "createbigcannons:ingot_bronze"
   },
-  "transitionalItem": {
-    "item": "createbigcannons:partial_bronze_autocannon_breech_extractor"
-  },
+  "loops": 3,
+  "results": [
+    {
+      "item": "createbigcannons:bronze_autocannon_breech_extractor"
+    }
+  ],
   "sequence": [
     {
       "type": "create:cutting",
@@ -21,10 +24,7 @@
       ]
     }
   ],
-  "results": [
-    {
-      "item": "createbigcannons:bronze_autocannon_breech_extractor"
-    }
-  ],
-  "loops": 3
+  "transitionalItem": {
+    "item": "createbigcannons:partial_bronze_autocannon_breech_extractor"
+  }
 }

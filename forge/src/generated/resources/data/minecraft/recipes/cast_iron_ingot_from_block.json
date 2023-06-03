@@ -7,7 +7,7 @@
     }
   ],
   "result": {
-    "item": "createbigcannons:cast_iron_ingot",
-    "count": 9
+    "count": 9,
+    "item": "createbigcannons:cast_iron_ingot"
   }
 }

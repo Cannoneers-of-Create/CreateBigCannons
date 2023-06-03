@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.multiloader.fabric;
 
+import java.util.function.Supplier;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.contraptions.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
@@ -8,6 +10,7 @@ import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
@@ -43,7 +46,13 @@ import rbasamoyai.createbigcannons.fabric.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonDrillBlockEntity;
-import rbasamoyai.createbigcannons.fabric.datagen.*;
+import rbasamoyai.createbigcannons.fabric.datagen.CBCCompactingRecipeProvider;
+import rbasamoyai.createbigcannons.fabric.datagen.CBCCuttingRecipeProvider;
+import rbasamoyai.createbigcannons.fabric.datagen.CBCLootTableProvider;
+import rbasamoyai.createbigcannons.fabric.datagen.CBCMillingRecipeProvider;
+import rbasamoyai.createbigcannons.fabric.datagen.CBCMixingRecipeProvider;
+import rbasamoyai.createbigcannons.fabric.datagen.CBCSequencedAssemblyRecipeProvider;
+import rbasamoyai.createbigcannons.fabric.datagen.MeltingRecipeProvider;
 import rbasamoyai.createbigcannons.fabric.index.fluid_utils.FabricFluidBuilder;
 import rbasamoyai.createbigcannons.fabric.mixin.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.munitions.fluid_shell.FluidShellBlockEntity;
@@ -52,11 +61,11 @@ import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
-import java.util.function.Supplier;
-
 public class IndexPlatformImpl {
 
-	public static boolean isFakePlayer(Player player) { return player instanceof FakePlayer; }
+	public static boolean isFakePlayer(Player player) {
+		return player instanceof FakePlayer;
+	}
 
 	public static AbstractCannonDrillBlockEntity makeDrill(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		return new CannonDrillBlockEntity(type, pos, state);
@@ -79,15 +88,17 @@ public class IndexPlatformImpl {
 	}
 
 	public static NonNullSupplier<NonNullFunction<BlockEntityRendererProvider.Context,
-			BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
+		BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
 		return () -> CannonCastBlockEntityRenderer::new;
 	}
 
-	public static int getModGroupId() { return ItemGroupUtil.expandArrayAndGetId(); }
+	public static int getModGroupId() {
+		return ItemGroupUtil.expandArrayAndGetId();
+	}
 
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluidBuilder(AbstractRegistrate<?> owner,
-			P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
-			NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
+																					   P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
+																					   NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
 		return new FabricFluidBuilder<>(owner, parent, name, callback, stillTexture, flowingTexture, factory);
 	}
 
@@ -100,7 +111,9 @@ public class IndexPlatformImpl {
 		CreateBigCannonsFabric.PARTICLE_REGISTER.register(name, () -> type);
 	}
 
-	public static void registerDeferredParticles() { CreateBigCannonsFabric.PARTICLE_REGISTER.register(); }
+	public static void registerDeferredParticles() {
+		CreateBigCannonsFabric.PARTICLE_REGISTER.register();
+	}
 
 	// Provided by TelepathicGrunt - thanks! --ritchie
 	@Environment(EnvType.CLIENT)
@@ -118,7 +131,9 @@ public class IndexPlatformImpl {
 		ItemProperties.register(item, loc, func::call);
 	}
 
-	public static Object getUnchecked(RegistryEntry<?> ent) { return ent.getUnchecked(); }
+	public static Object getUnchecked(RegistryEntry<?> ent) {
+		return ent.getUnchecked();
+	}
 
 	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {
 		RecipeSerializer<?> ret = Registry.register(Registry.RECIPE_SERIALIZER, id, sup.get());
@@ -129,7 +144,9 @@ public class IndexPlatformImpl {
 		Registry.register(Registry.RECIPE_TYPE, id, type.get());
 	}
 
-	public static float getFluidConversionFactor() { return (float) FluidConstants.BUCKET / 1000; }
+	public static float getFluidConversionFactor() {
+		return (float) FluidConstants.BUCKET / 1000;
+	}
 
 	public static void addSidedDataGenerators(DataGenerator gen) {
 		gen.addProvider(true, new CBCCompactingRecipeProvider(gen));
@@ -138,9 +155,15 @@ public class IndexPlatformImpl {
 		gen.addProvider(true, new CBCMillingRecipeProvider(gen));
 		gen.addProvider(true, new CBCSequencedAssemblyRecipeProvider(gen));
 		gen.addProvider(true, new CBCCuttingRecipeProvider(gen));
+		gen.addProvider(true, new CBCLootTableProvider(CreateBigCannons.REGISTRATE, gen));
 	}
 
-	public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { return FluidIngredient.fromFluid(fluid, amount); }
-	public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { return FluidIngredient.fromTag(fluid, amount); }
+	public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) {
+		return FluidIngredient.fromFluid(fluid, amount);
+	}
+
+	public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) {
+		return FluidIngredient.fromTag(fluid, amount);
+	}
 
 }

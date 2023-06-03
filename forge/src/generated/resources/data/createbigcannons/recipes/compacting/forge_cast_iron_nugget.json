@@ -2,8 +2,8 @@
   "type": "create:compacting",
   "ingredients": [
     {
-      "fluidTag": "forge:molten_cast_iron",
-      "amount": 10
+      "amount": 10,
+      "fluidTag": "forge:molten_cast_iron"
     }
   ],
   "results": [

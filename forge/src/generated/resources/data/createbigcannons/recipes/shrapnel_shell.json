@@ -1,11 +1,6 @@
 {
   "type": "create:mechanical_crafting",
-  "pattern": [
-    " I ",
-    "ILI",
-    "IPI",
-    " S "
-  ],
+  "acceptMirrored": true,
   "key": {
     "I": {
       "tag": "createbigcannons:ingot_iron"
@@ -13,15 +8,20 @@
     "L": {
       "item": "createbigcannons:shot_balls"
     },
-    "S": {
-      "tag": "minecraft:wooden_slabs"
-    },
     "P": {
       "tag": "createbigcannons:gunpowder"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
     }
   },
+  "pattern": [
+    " I ",
+    "ILI",
+    "IPI",
+    " S "
+  ],
   "result": {
     "item": "createbigcannons:shrapnel_shell"
-  },
-  "acceptMirrored": true
+  }
 }

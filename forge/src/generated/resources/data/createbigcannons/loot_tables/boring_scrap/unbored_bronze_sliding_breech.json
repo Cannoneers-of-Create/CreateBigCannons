@@ -2,7 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -12,14 +11,14 @@
       ],
       "functions": [
         {
-          "function": "minecraft:set_count",
+          "add": false,
           "count": 58.0,
-          "add": false
+          "function": "minecraft:set_count"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -29,15 +28,16 @@
       ],
       "functions": [
         {
-          "function": "minecraft:set_count",
+          "add": false,
           "count": {
             "type": "minecraft:uniform",
-            "min": 0.0,
-            "max": 10.0
+            "max": 10.0,
+            "min": 0.0
           },
-          "add": false
+          "function": "minecraft:set_count"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

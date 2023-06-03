@@ -1,14 +1,14 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " A ",
-    "AAA"
-  ],
   "key": {
     "A": {
       "item": "create:andesite_alloy"
     }
   },
+  "pattern": [
+    " A ",
+    "AAA"
+  ],
   "result": {
     "item": "createbigcannons:basin_foundry_lid"
   }

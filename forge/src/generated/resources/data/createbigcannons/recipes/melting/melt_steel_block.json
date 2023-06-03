@@ -1,25 +1,25 @@
 {
   "type": "createbigcannons:melting",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "createbigcannons:block_steel"
+      }
+    }
+  ],
+  "heatRequirement": "heated",
   "ingredients": [
     {
       "tag": "createbigcannons:block_steel"
     }
   ],
+  "processingTime": 1620,
   "results": [
     {
-      "fluid": "createbigcannons:molten_steel",
-      "amount": 810
-    }
-  ],
-  "processingTime": 1620,
-  "heatRequirement": "heated",
-  "conditions": [
-    {
-      "value": {
-        "tag": "createbigcannons:block_steel",
-        "type": "forge:tag_empty"
-      },
-      "type": "forge:not"
+      "amount": 810,
+      "fluid": "createbigcannons:molten_steel"
     }
   ]
 }

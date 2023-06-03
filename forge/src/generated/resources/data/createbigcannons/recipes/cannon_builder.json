@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "hHh",
-    " C ",
-    " P "
-  ],
   "key": {
     "C": {
       "item": "create:andesite_casing"
@@ -12,13 +7,18 @@
     "H": {
       "tag": "createbigcannons:sheet_iron"
     },
-    "h": {
-      "tag": "createbigcannons:nugget_iron"
-    },
     "P": {
       "item": "create:piston_extension_pole"
+    },
+    "h": {
+      "tag": "createbigcannons:nugget_iron"
     }
   },
+  "pattern": [
+    "hHh",
+    " C ",
+    " P "
+  ],
   "result": {
     "item": "createbigcannons:cannon_builder"
   }

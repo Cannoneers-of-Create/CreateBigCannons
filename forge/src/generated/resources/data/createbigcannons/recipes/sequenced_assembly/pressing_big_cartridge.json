@@ -3,9 +3,15 @@
   "ingredient": {
     "item": "createbigcannons:big_cartridge_sheet"
   },
-  "transitionalItem": {
-    "item": "createbigcannons:partially_formed_big_cartridge"
-  },
+  "loops": 5,
+  "results": [
+    {
+      "item": "createbigcannons:big_cartridge",
+      "nbt": {
+        "Power": 0
+      }
+    }
+  ],
   "sequence": [
     {
       "type": "create:pressing",
@@ -21,13 +27,7 @@
       ]
     }
   ],
-  "results": [
-    {
-      "item": "createbigcannons:big_cartridge",
-      "nbt": {
-        "Power": 0
-      }
-    }
-  ],
-  "loops": 5
+  "transitionalItem": {
+    "item": "createbigcannons:partially_formed_big_cartridge"
+  }
 }
