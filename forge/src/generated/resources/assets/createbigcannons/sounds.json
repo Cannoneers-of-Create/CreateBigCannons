@@ -2,8 +2,8 @@
   "fire_autocannon": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.explode",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:entity.generic.explode"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_autocannon"
@@ -11,8 +11,8 @@
   "fire_big_cannon": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.explode",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:entity.generic.explode"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_big_cannon"
@@ -20,16 +20,16 @@
   "fire_big_cannon_compounded_1": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.explode",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:entity.generic.explode"
       }
     ]
   },
   "fire_big_cannon_compounded_2": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.explode",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:entity.generic.explode"
       }
     ]
   }

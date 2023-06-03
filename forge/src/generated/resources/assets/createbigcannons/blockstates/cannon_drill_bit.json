@@ -4,10 +4,25 @@
       "model": "createbigcannons:block/cannon_drill_bit",
       "x": 180
     },
-    "facing=up,waterlogged=false": {
-      "model": "createbigcannons:block/cannon_drill_bit"
+    "facing=down,waterlogged=true": {
+      "model": "createbigcannons:block/cannon_drill_bit",
+      "x": 180
+    },
+    "facing=east,waterlogged=false": {
+      "model": "createbigcannons:block/cannon_drill_bit",
+      "x": 90,
+      "y": 90
+    },
+    "facing=east,waterlogged=true": {
+      "model": "createbigcannons:block/cannon_drill_bit",
+      "x": 90,
+      "y": 90
     },
     "facing=north,waterlogged=false": {
+      "model": "createbigcannons:block/cannon_drill_bit",
+      "x": 90
+    },
+    "facing=north,waterlogged=true": {
       "model": "createbigcannons:block/cannon_drill_bit",
       "x": 90
     },
@@ -16,41 +31,26 @@
       "x": 90,
       "y": 180
     },
-    "facing=west,waterlogged=false": {
-      "model": "createbigcannons:block/cannon_drill_bit",
-      "x": 90,
-      "y": 270
-    },
-    "facing=east,waterlogged=false": {
-      "model": "createbigcannons:block/cannon_drill_bit",
-      "x": 90,
-      "y": 90
-    },
-    "facing=down,waterlogged=true": {
-      "model": "createbigcannons:block/cannon_drill_bit",
-      "x": 180
-    },
-    "facing=up,waterlogged=true": {
-      "model": "createbigcannons:block/cannon_drill_bit"
-    },
-    "facing=north,waterlogged=true": {
-      "model": "createbigcannons:block/cannon_drill_bit",
-      "x": 90
-    },
     "facing=south,waterlogged=true": {
       "model": "createbigcannons:block/cannon_drill_bit",
       "x": 90,
       "y": 180
     },
-    "facing=west,waterlogged=true": {
+    "facing=up,waterlogged=false": {
+      "model": "createbigcannons:block/cannon_drill_bit"
+    },
+    "facing=up,waterlogged=true": {
+      "model": "createbigcannons:block/cannon_drill_bit"
+    },
+    "facing=west,waterlogged=false": {
       "model": "createbigcannons:block/cannon_drill_bit",
       "x": 90,
       "y": 270
     },
-    "facing=east,waterlogged=true": {
+    "facing=west,waterlogged=true": {
       "model": "createbigcannons:block/cannon_drill_bit",
       "x": 90,
-      "y": 90
+      "y": 270
     }
   }
 }

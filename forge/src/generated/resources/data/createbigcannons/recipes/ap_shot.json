@@ -1,10 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " C ",
-    "III",
-    " S "
-  ],
   "key": {
     "C": {
       "tag": "createbigcannons:ingot_cast_iron"
@@ -16,6 +11,11 @@
       "tag": "minecraft:wooden_slabs"
     }
   },
+  "pattern": [
+    " C ",
+    "III",
+    " S "
+  ],
   "result": {
     "item": "createbigcannons:ap_shot"
   }

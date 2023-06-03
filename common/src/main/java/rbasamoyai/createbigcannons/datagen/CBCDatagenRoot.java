@@ -5,7 +5,6 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBlockPartialsGen;
 import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
-import rbasamoyai.createbigcannons.datagen.loot.CBCLootTableProvider;
 import rbasamoyai.createbigcannons.datagen.recipes.BlockRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.recipes.CBCCraftingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.values.BlockHardnessProvider;
@@ -16,12 +15,10 @@ import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 import rbasamoyai.createbigcannons.ponder.CBCPonderTags;
 
 public class CBCDatagenRoot {
-
 	public static void register(DataGenerator gen, ExistingFileHelper helper, boolean client, boolean server) {
 		if (server) {
 			BlockRecipeProvider.registerAll(gen);
 			CBCCraftingRecipeProvider.register();
-			gen.addProvider(true, new CBCLootTableProvider(CreateBigCannons.REGISTRATE, gen));
 			gen.addProvider(true, new BlockHardnessProvider(CreateBigCannons.MOD_ID, gen));
 			gen.addProvider(true, new MunitionPropertiesProvider(CreateBigCannons.MOD_ID, gen));
 			IndexPlatform.addSidedDataGenerators(gen);
@@ -36,5 +33,4 @@ public class CBCDatagenRoot {
 			CBCPonderIndex.registerLang();
 		}
 	}
-
 }

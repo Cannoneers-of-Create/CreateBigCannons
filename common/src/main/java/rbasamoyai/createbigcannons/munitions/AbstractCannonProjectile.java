@@ -45,7 +45,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
 	protected int inGroundTime = 0;
 	protected float damage;
-	
+
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
 		MunitionProperties properties = this.getProperties();
@@ -273,7 +273,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		this.entityData.define(ID_FLAGS, (byte) 0);
 		this.entityData.define(PROJECTILE_MASS, 0.0f);
 	}
-	
+
 	public void setInGround(boolean inGround) {
 		if (inGround) {
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) | 1));
@@ -281,17 +281,17 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) & 0b11111110));
 		}
 	}
-	
+
 	public boolean isInGround() {
 		return (this.entityData.get(ID_FLAGS) & 1) != 0;
 	}
-	
+
 	private boolean shouldFall() {
 		return this.isInGround() && this.level.noCollision(new AABB(this.position(), this.position()).inflate(0.06d));
 	}
 
 	@Nullable protected ParticleOptions getTrailParticles() { return null; }
-	
+
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
@@ -299,7 +299,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		tag.putBoolean("InGround", this.isInGround());
 		tag.putFloat("Damage", this.damage);
 	}
-	
+
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
@@ -307,13 +307,13 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		this.setInGround(tag.getBoolean("InGround"));
 		this.damage = tag.getFloat("Damage");
 	}
-	
+
 	public void setProjectileMass(float power) {
 		this.entityData.set(PROJECTILE_MASS, power);
 	}
-	
+
 	public float getProjectileMass() {
-		return CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE ? 0 : this.entityData.get(PROJECTILE_MASS);
+ 		return CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE ? 0 : this.entityData.get(PROJECTILE_MASS);
 	}
 
 	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
@@ -323,7 +323,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				.fireImmune()
 				.sized(0.8f, 0.8f);
 	}
-	
+
 	@Override
 	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
 		return dimensions.height * 0.5f;
