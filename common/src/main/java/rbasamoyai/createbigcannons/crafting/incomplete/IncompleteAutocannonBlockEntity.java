@@ -1,6 +1,9 @@
 package rbasamoyai.createbigcannons.crafting.incomplete;
 
-import com.simibubi.create.content.contraptions.goggles.IHaveHoveringInformation;
+import java.util.List;
+
+import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -14,15 +17,16 @@ import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 
-import java.util.List;
-
 public class IncompleteAutocannonBlockEntity extends AutocannonBlockEntity implements IHaveHoveringInformation, WandActionable {
 
 	public IncompleteAutocannonBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
-	@Override protected ItemCannonBehavior makeBehavior() { return new IncompleteItemCannonBehavior(this); }
+	@Override
+	protected ItemCannonBehavior makeBehavior() {
+		return new IncompleteItemCannonBehavior(this);
+	}
 
 	@Override
 	public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
@@ -33,7 +37,8 @@ public class IncompleteAutocannonBlockEntity extends AutocannonBlockEntity imple
 
 	@Override
 	public InteractionResult onWandUsed(UseOnContext context) {
-		if (!(this.getBlockState().getBlock() instanceof IncompleteWithItemsCannonBlock incomplete)) return InteractionResult.PASS;
+		if (!(this.getBlockState().getBlock() instanceof IncompleteWithItemsCannonBlock incomplete))
+			return InteractionResult.PASS;
 		if (!this.level.isClientSide) {
 			CompoundTag loadTag = this.saveWithFullMetadata();
 			loadTag.putBoolean("JustBored", true);

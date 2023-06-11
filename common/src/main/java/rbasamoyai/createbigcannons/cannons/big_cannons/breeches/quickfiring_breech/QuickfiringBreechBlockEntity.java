@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech;
 
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
+import java.util.List;
+
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
@@ -12,9 +15,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
-import java.util.List;
-
-public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBigCannonBlockEntity {
+public class QuickfiringBreechBlockEntity extends SmartBlockEntity implements IBigCannonBlockEntity {
 
 	private BigCannonBehavior cannonBehavior;
 	private int openProgress;
@@ -27,13 +28,19 @@ public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBi
 	}
 
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 		behaviours.add(this.cannonBehavior = new BigCannonBehavior(this, this::canLoadBlock));
 	}
 
-	@Override public boolean canLoadBlock(StructureBlockInfo blockInfo) { return false; }
+	@Override
+	public boolean canLoadBlock(StructureBlockInfo blockInfo) {
+		return false;
+	}
 
-	@Override public BigCannonBehavior cannonBehavior() { return this.cannonBehavior; }
+	@Override
+	public BigCannonBehavior cannonBehavior() {
+		return this.cannonBehavior;
+	}
 
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
@@ -71,8 +78,13 @@ public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBi
 		if (this.loadingCooldown > 0) --this.loadingCooldown;
 	}
 
-	public boolean isOpen() { return this.openProgress >= getOpeningTime(); }
-	public int getOpenDirection() { return this.openDirection; }
+	public boolean isOpen() {
+		return this.openProgress >= getOpeningTime();
+	}
+
+	public int getOpenDirection() {
+		return this.openDirection;
+	}
 
 	public void toggleOpening() {
 		if (!this.onInteractionCooldown()) this.openDirection = this.isOpen() ? -1 : 1;
@@ -82,15 +94,24 @@ public class QuickfiringBreechBlockEntity extends SmartTileEntity implements IBi
 		return Mth.clamp((this.openProgress + this.openDirection * partialTicks) / getOpeningTime(), 0.0f, 1.0f);
 	}
 
-	public int getOpenProgress() { return this.openProgress; }
+	public int getOpenProgress() {
+		return this.openProgress;
+	}
 
 	public boolean onInteractionCooldown() {
 		return 0 < this.openProgress && this.openProgress < getOpeningTime();
 	}
 
-	public boolean canBeAutomaticallyLoaded() { return this.loadingCooldown <= 0 && this.openProgress == 0; }
-	public void setLoadingCooldown(int value) { this.loadingCooldown = value; }
+	public boolean canBeAutomaticallyLoaded() {
+		return this.loadingCooldown <= 0 && this.openProgress == 0;
+	}
 
-	public static int getOpeningTime() { return CBCConfigs.SERVER.cannons.quickfiringBreechOpeningCooldown.get(); }
+	public void setLoadingCooldown(int value) {
+		this.loadingCooldown = value;
+	}
+
+	public static int getOpeningTime() {
+		return CBCConfigs.SERVER.cannons.quickfiringBreechOpeningCooldown.get();
+	}
 
 }

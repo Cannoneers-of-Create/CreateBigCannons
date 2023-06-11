@@ -1,12 +1,17 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
+import java.util.List;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
-import net.minecraft.ChatFormatting;
+
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -22,7 +27,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -30,16 +34,21 @@ import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 
-import java.util.List;
-
 public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 	public ProximityFuzeItem(Properties properties) {
 		super(properties);
 	}
-	
-	@Override public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result, boolean stopped) { return true; }
-	@Override public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) { return true; }
+
+	@Override
+	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result, boolean stopped) {
+		return true;
+	}
+
+	@Override
+	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) {
+		return true;
+	}
 
 	@Override
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
@@ -63,9 +72,9 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		double reach = Math.max(projectile.getBbWidth(), projectile.getBbHeight()) * 0.5;
 
 		AABB currentMovementRegion = projectile.getBoundingBox()
-				.expandTowards(dir.scale(1.75))
-				.inflate(1)
-				.move(location.subtract(projectile.position()));
+			.expandTowards(dir.scale(1.75))
+			.inflate(1)
+			.move(location.subtract(projectile.position()));
 		List<Entity> entities = projectile.level.getEntities(projectile, currentMovementRegion, projectile::canHitEntity);
 
 		int radius = 2;
@@ -111,29 +120,32 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		return ProximityFuzeContainer.getServerMenu(windowId, playerInv, player.getMainHandItem());
 	}
 
-	@Override public Component getDisplayName() { return this.getDescription(); }
-	
+	@Override
+	public Component getDisplayName() {
+		return this.getDescription();
+	}
+
 	public static ItemStack getCreativeTabItem(int defaultFuze) {
 		ItemStack stack = CBCItems.PROXIMITY_FUZE.asStack();
 		stack.getOrCreateTag().putInt("DetonationDistance", 1);
 		return stack;
 	}
-	
+
 	@Override
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
 		MutableComponent info = Lang.builder("item")
-				.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", stack.getOrCreateTag().getInt("DetonationDistance"))
-				.component();
-		tooltip.addAll(TooltipHelper.cutTextComponent(info, ChatFormatting.GRAY, ChatFormatting.GREEN, 6));
+			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", stack.getOrCreateTag().getInt("DetonationDistance"))
+			.component();
+		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
 		tooltip.add(Lang.builder("item")
-				.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info.item", stack.getOrCreateTag().getInt("DetonationDistance"))
-				.component());
+			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info.item", stack.getOrCreateTag().getInt("DetonationDistance"))
+			.component());
 	}
 
 }

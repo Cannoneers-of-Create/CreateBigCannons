@@ -1,9 +1,13 @@
 package rbasamoyai.createbigcannons.crafting.foundry;
 
-import com.simibubi.create.content.contraptions.processing.BasinOperatingTileEntity;
-import com.simibubi.create.content.contraptions.processing.BasinTileEntity;
-import com.simibubi.create.content.contraptions.processing.ProcessingRecipe;
+import java.util.List;
+import java.util.Optional;
+
+import com.simibubi.create.content.processing.basin.BasinBlockEntity;
+import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.utility.VecHelper;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -17,26 +21,23 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 
-import java.util.List;
-import java.util.Optional;
-
-public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
+public class BasinFoundryBlockEntity extends BasinOperatingBlockEntity {
 
 	public int meltingTime;
 	public int recipeCooldown;
-	public boolean running; 
-	
+	public boolean running;
+
 	public BasinFoundryBlockEntity(BlockEntityType<? extends BasinFoundryBlockEntity> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
 	}
-	
+
 	@Override
 	protected void write(CompoundTag compound, boolean clientPacket) {
 		super.write(compound, clientPacket);
 		compound.putInt("MeltingTime", this.meltingTime);
 		compound.putBoolean("Running", this.running);
 	}
-	
+
 	@Override
 	protected void read(CompoundTag compound, boolean clientPacket) {
 		super.read(compound, clientPacket);
@@ -44,7 +45,10 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 		this.running = compound.getBoolean("Running");
 	}
 
-	@Override protected boolean isRunning() { return this.running; }
+	@Override
+	protected boolean isRunning() {
+		return this.running;
+	}
 
 	@Override
 	protected void onBasinRemoved() {
@@ -53,7 +57,7 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 		this.currentRecipe = null;
 		this.running = false;
 	}
-	
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -68,7 +72,7 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 		} else {
 			this.recipeCooldown = 0;
 		}
-		
+
 		if (this.running && this.level != null) {
 			if (this.level.isClientSide && this.meltingTime > 0) {
 				this.renderParticles();
@@ -78,11 +82,11 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 				this.applyBasinRecipe();
 				this.sendData();
 			}
-			
+
 			if (this.meltingTime > 0) --this.meltingTime;
 		}
 	}
-	
+
 	private void renderParticles() {
 		// Code sheepishly stolen from MechanicalMixerTileEntity#spillParticle with modifications
 		float angle = this.level.random.nextFloat() * 360.0f;
@@ -93,13 +97,13 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 		target = VecHelper.offsetRandomly(target.subtract(offset), this.level.random, 1 / 128f);
 		this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.LAVA.defaultBlockState()), center.x, center.y + 0.3, center.z, target.x, target.y, target.z);
 	}
-	
+
 	@Override
 	protected boolean updateBasin() {
 		if (this.running) return true;
 		if (this.level == null || this.level.isClientSide) return true;
-		if (!this.getBasin().filter(BasinTileEntity::canContinueProcessing).isPresent()) return true;
-		
+		if (!this.getBasin().filter(BasinBlockEntity::canContinueProcessing).isPresent()) return true;
+
 		List<Recipe<?>> recipes = this.getMatchingRecipes();
 		if (recipes.isEmpty()) return true;
 		this.currentRecipe = recipes.get(0);
@@ -107,7 +111,7 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 		this.sendData();
 		return true;
 	}
-	
+
 	@Override
 	public void startProcessingBasin() {
 		if (this.running && this.meltingTime > 0) return;
@@ -122,11 +126,15 @@ public class BasinFoundryBlockEntity extends BasinOperatingTileEntity {
 	}
 
 	private static final Object BASIN_MELTING_RECIPE_KEY = new Object();
-	@Override protected Object getRecipeCacheKey() { return BASIN_MELTING_RECIPE_KEY; }
-	
+
 	@Override
-	protected Optional<BasinTileEntity> getBasin() {
-		return this.level != null && this.level.getBlockEntity(this.worldPosition.below()) instanceof BasinTileEntity basin ? Optional.of(basin) : Optional.empty();
+	protected Object getRecipeCacheKey() {
+		return BASIN_MELTING_RECIPE_KEY;
 	}
-	
+
+	@Override
+	protected Optional<BasinBlockEntity> getBasin() {
+		return this.level != null && this.level.getBlockEntity(this.worldPosition.below()) instanceof BasinBlockEntity basin ? Optional.of(basin) : Optional.empty();
+	}
+
 }

@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.multiloader;
 
-import com.simibubi.create.content.contraptions.particle.ICustomParticleData;
+import com.simibubi.create.foundation.particle.ICustomParticleData;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;

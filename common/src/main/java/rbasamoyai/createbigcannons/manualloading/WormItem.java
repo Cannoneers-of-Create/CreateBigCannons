@@ -1,9 +1,14 @@
 package rbasamoyai.createbigcannons.manualloading;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.simibubi.create.content.contraptions.components.deployer.DeployerFakePlayer;
+import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
 import com.simibubi.create.foundation.utility.NBTProcessors;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,19 +34,15 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 public class WormItem extends Item implements HandloadingTool {
-	
+
 	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
-	
+
 	public WormItem(Properties properties) {
 		super(properties);
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
@@ -49,20 +50,21 @@ public class WormItem extends Item implements HandloadingTool {
 		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -3.0d, AttributeModifier.Operation.ADDITION));
 		this.defaultModifiers = builder.build();
 	}
-	
+
 	@Override
 	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
 		return slot == EquipmentSlot.MAINHAND ? this.defaultModifiers : super.getDefaultAttributeModifiers(slot);
 	}
-	
+
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Player player = context.getPlayer();
-		if (player instanceof DeployerFakePlayer && !CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get()) return InteractionResult.PASS;
+		if (player instanceof DeployerFakePlayer && !CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get())
+			return InteractionResult.PASS;
 		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 		Direction reachDirection = context.getClickedFace().getOpposite();
-		
+
 		for (int i = 0; i < CBCConfigs.SERVER.cannons.wormReach.get(); ++i) {
 			BlockPos pos1 = pos.relative(reachDirection, i);
 			BlockState state1 = level.getBlockState(pos1);
@@ -111,7 +113,8 @@ public class WormItem extends Item implements HandloadingTool {
 
 	@Override
 	public void onUseOnCannon(Player player, Level level, BlockPos startPos, Direction face, MountedBigCannonContraption contraption) {
-		if (player instanceof DeployerFakePlayer && !CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get()) return;
+		if (player instanceof DeployerFakePlayer && !CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get())
+			return;
 		Direction reachDirection = face.getOpposite();
 
 		Set<BlockPos> changes = new HashSet<>(2);
@@ -119,14 +122,14 @@ public class WormItem extends Item implements HandloadingTool {
 			BlockPos pos1 = startPos.relative(reachDirection, i);
 			StructureBlockInfo info = contraption.getBlocks().get(pos1);
 			if (info == null || !isValidLoadBlock(info.state, contraption, pos1, reachDirection)) return;
-			BlockEntity be = contraption.presentTileEntities.get(pos1);
+			BlockEntity be = contraption.presentBlockEntities.get(pos1);
 			if (!(be instanceof IBigCannonBlockEntity cbe)) return;
 
 			StructureBlockInfo info1 = cbe.cannonBehavior().block();
 			if (info1.state.isAir()) continue;
 
 			BlockPos pos2 = pos1.relative(face);
-			BlockEntity be1 = contraption.presentTileEntities.get(pos2);
+			BlockEntity be1 = contraption.presentBlockEntities.get(pos2);
 			if (be1 instanceof IBigCannonBlockEntity cbe1 && cbe1.cannonBehavior().canLoadBlock(info1)) {
 				if (!level.isClientSide) {
 					cbe1.cannonBehavior().loadBlock(info1);
@@ -158,11 +161,11 @@ public class WormItem extends Item implements HandloadingTool {
 			return;
 		}
 	}
-	
+
 	public static boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos, Direction dir) {
 		return state.getBlock() instanceof BigCannonBlock cBlock
-				&& cBlock.getOpeningType(level, state, pos) == BigCannonEnd.OPEN
-				&& cBlock.getFacing(state).getAxis() == dir.getAxis();
+			&& cBlock.getOpeningType(level, state, pos) == BigCannonEnd.OPEN
+			&& cBlock.getFacing(state).getAxis() == dir.getAxis();
 	}
 
 	public static boolean isValidLoadBlock(BlockState state, MountedBigCannonContraption contraption, BlockPos pos, Direction dir) {
@@ -172,14 +175,19 @@ public class WormItem extends Item implements HandloadingTool {
 			return cBlock.getOpeningType(contraption, state, pos) == BigCannonEnd.OPEN && cBlock.getFacing(state).getAxis() == dir.getAxis();
 		return false;
 	}
-	
+
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
 		CBCTooltip.appendWormText(stack, level, tooltip, flag);
 	}
-	
-	public static int getReach() { return CBCConfigs.SERVER.cannons.ramRodReach.get(); }
-	public static boolean deployersCanUse() { return CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get(); }
+
+	public static int getReach() {
+		return CBCConfigs.SERVER.cannons.ramRodReach.get();
+	}
+
+	public static boolean deployersCanUse() {
+		return CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get();
+	}
 
 }

@@ -1,8 +1,19 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+
+import javax.annotation.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
-import com.simibubi.create.content.contraptions.components.structureMovement.ContraptionType;
+import com.simibubi.create.content.contraptions.AssemblyException;
+import com.simibubi.create.content.contraptions.ContraptionType;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +31,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
@@ -38,13 +48,6 @@ import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Consumer;
 
 public class MountedBigCannonContraption extends AbstractMountedCannonContraption {
 
@@ -92,7 +95,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		BigCannonEnd startEnd = startCannon.getOpeningType(level, startState, pos);
 
 		List<StructureBlockInfo> cannonBlocks = new ArrayList<>();
-		cannonBlocks.add(new StructureBlockInfo(pos, startState, this.getTileEntityNBT(level, pos)));
+		cannonBlocks.add(new StructureBlockInfo(pos, startState, this.getBlockEntityNBT(level, pos)));
 
 		int cannonLength = 1;
 
@@ -112,7 +115,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				throw hasIncompleteCannonBlocks(start);
 			}
 
-			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getTileEntityNBT(level, start)));
+			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
 			cannonLength++;
 
 			positiveEnd = ((BigCannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);
@@ -142,7 +145,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				throw hasIncompleteCannonBlocks(start);
 			}
 
-			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getTileEntityNBT(level, start)));
+			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
 			cannonLength++;
 
 			negativeEnd = ((BigCannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);
@@ -183,7 +186,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 			if (blockInfo.nbt == null) continue;
 			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state, blockInfo.nbt);
-			this.presentTileEntities.put(localPos, be);
+			this.presentBlockEntities.put(localPos, be);
 		}
 		this.cannonMaterial = material;
 
@@ -222,7 +225,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		super.tick(level, entity);
 
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
-		if (this.presentTileEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech)
+		if (this.presentBlockEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech)
 			qfbreech.tickAnimation();
 	}
 
@@ -235,7 +238,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	@Override
 	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
-		if (this.presentTileEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech && qfbreech.getOpenProgress() > 0)
+		if (this.presentBlockEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech && qfbreech.getOpenProgress() > 0)
 			return;
 
 		StructureBlockInfo foundProjectile = null;
@@ -263,7 +266,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		BigCannonPropellantBlock propellant = null;
 
-		while (this.presentTileEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
+		while (this.presentBlockEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
 			BigCannonBehavior behavior = cbe.cannonBehavior();
 			StructureBlockInfo containedBlockInfo = behavior.block();
 			StructureBlockInfo cannonInfo = this.blocks.get(currentPos);
@@ -280,7 +283,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					propellant = cpropel;
 				} else if (canFail) {
 					failed = true;
-					failedEntity = behavior.tileEntity;
+					failedEntity = behavior.blockEntity;
 					break;
 				}
 
@@ -294,7 +297,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				if (canFail && (!cbe.blockCanHandle(cannonInfo) && rollBarrelBurst(rand)
 					|| stress > maxSafeCharges && rollOverloadBurst(rand))) {
 					failed = true;
-					failedEntity = behavior.tileEntity;
+					failedEntity = behavior.blockEntity;
 					break;
 				}
 				if (emptyNoProjectile && canFail && rollFailToIgnite(rand)) {
@@ -316,7 +319,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			} else if (!containedBlockInfo.state.isAir() && foundProjectile != null) {
 				if (canFail) {
 					failed = true;
-					failedEntity = behavior.tileEntity;
+					failedEntity = behavior.blockEntity;
 					break;
 				} else {
 					this.consumeBlock(behavior, currentPos);
@@ -338,7 +341,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 				if (chargesUsed > 0 && (double) barrelTravelled / (double) chargesUsed > this.cannonMaterial.squibRatio() && rollSquib(rand)) {
 					behavior.loadBlock(foundProjectile);
-					CompoundTag tag = behavior.tileEntity.saveWithFullMetadata();
+					CompoundTag tag = behavior.blockEntity.saveWithFullMetadata();
 					tag.remove("x");
 					tag.remove("y");
 					tag.remove("z");
@@ -393,7 +396,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos, Consumer<BigCannonBehavior> action) {
 		action.accept(behavior);
-		CompoundTag tag = behavior.tileEntity.saveWithFullMetadata();
+		CompoundTag tag = behavior.blockEntity.saveWithFullMetadata();
 		tag.remove("x");
 		tag.remove("y");
 		tag.remove("z");
@@ -434,7 +437,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			for (int i = 0; i < failInt * 2 + 1; ++i) {
 				BlockPos pos = startPos.relative(this.initialOrientation, i);
 				this.blocks.remove(pos);
-				this.presentTileEntities.remove(pos);
+				this.presentBlockEntities.remove(pos);
 			}
 
 			ControlPitchContraption controller = entity.getController();
@@ -442,7 +445,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		} else {
 			for (Iterator<Map.Entry<BlockPos, StructureBlockInfo>> iter = this.blocks.entrySet().iterator(); iter.hasNext(); ) {
 				Map.Entry<BlockPos, StructureBlockInfo> entry = iter.next();
-				this.presentTileEntities.remove(entry.getKey());
+				this.presentBlockEntities.remove(entry.getKey());
 				iter.remove();
 			}
 
@@ -473,7 +476,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	protected ContraptionType getType() {
+	public ContraptionType getType() {
 		return CBCContraptionTypes.MOUNTED_CANNON;
 	}
 

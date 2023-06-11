@@ -1,11 +1,14 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
+import java.util.List;
+
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
-import net.minecraft.ChatFormatting;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -24,11 +27,11 @@ import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
-import java.util.List;
-
 public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 
-	public DelayedImpactFuzeItem(Properties properties) { super(properties); }
+	public DelayedImpactFuzeItem(Properties properties) {
+		super(properties);
+	}
 
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
@@ -85,7 +88,10 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 		return timer <= 0;
 	}
 
-	@Override public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) { return true; }
+	@Override
+	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) {
+		return true;
+	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
@@ -96,8 +102,8 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		tooltip.add(Lang.builder("item")
-				.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info.item", seconds, ticks)
-				.component());
+			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info.item", seconds, ticks)
+			.component());
 	}
 
 	protected float getDetonateChance() {
@@ -108,17 +114,17 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
 		MutableComponent info = Lang.builder("item")
-				.translate(CreateBigCannons.MOD_ID + ".impact_fuze.tooltip.shell_info", (int)(this.getDetonateChance() * 100.0f))
-				.component();
-		tooltip.addAll(TooltipHelper.cutTextComponent(info, ChatFormatting.GRAY, ChatFormatting.GREEN, 6));
+			.translate(CreateBigCannons.MOD_ID + ".impact_fuze.tooltip.shell_info", (int) (this.getDetonateChance() * 100.0f))
+			.component();
+		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		MutableComponent info1 = Lang.builder("item")
-				.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info", seconds, ticks)
-				.component();
-		tooltip.addAll(TooltipHelper.cutTextComponent(info1, ChatFormatting.GRAY, ChatFormatting.GREEN, 6));
+			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info", seconds, ticks)
+			.component();
+		tooltip.addAll(TooltipHelper.cutTextComponent(info1, Style.EMPTY, Style.EMPTY, 6));
 	}
 
 	public static ItemStack getCreativeTabItem(int defaultFuze) {

@@ -1,8 +1,11 @@
 package rbasamoyai.createbigcannons.network;
 
-import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
+import java.util.Map;
+
+import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.foundation.utility.Components;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -10,8 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-
-import java.util.Map;
 
 public class CBCClientHandlers {
 
@@ -23,7 +24,7 @@ public class CBCClientHandlers {
 		if (contraption != null) {
 			contraption.getBlocks().putAll(pkt.changes());
 			for (Map.Entry<BlockPos, StructureBlockInfo> entry : pkt.changes().entrySet()) {
-				BlockEntity be = contraption.presentTileEntities.get(entry.getKey());
+				BlockEntity be = contraption.presentBlockEntities.get(entry.getKey());
 				StructureBlockInfo info = entry.getValue();
 				if (be == null || info.nbt == null) continue;
 				CompoundTag copy = info.nbt.copy();
@@ -44,7 +45,8 @@ public class CBCClientHandlers {
 	public static void checkVersion(ClientboundCheckChannelVersionPacket pkt) {
 		if (CBCRootNetwork.VERSION.equals(pkt.serverVersion())) return;
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.getConnection() != null) mc.getConnection().onDisconnect(Components.literal("Create Big Cannons on the client uses a different network format than the server.")
+		if (mc.getConnection() != null)
+			mc.getConnection().onDisconnect(Components.literal("Create Big Cannons on the client uses a different network format than the server.")
 				.append(" Please use a matching format."));
 	}
 
@@ -58,5 +60,5 @@ public class CBCClientHandlers {
 		entity.setDeltaMovement(pkt.dx(), pkt.dy(), pkt.dz());
 		entity.setOnGround(pkt.onGround());
 	}
-	
+
 }
