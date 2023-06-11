@@ -1,8 +1,9 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.utility.VoxelShaper;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -23,19 +24,19 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock {
 
 	private static final EnumProperty<Axis> AXIS = RotatedPillarBlock.AXIS;
-	
+
 	private final VoxelShaper shapes;
-	
+
 	public PowderChargeBlock(Properties properties) {
 		super(properties);
 		this.shapes = this.makeShapes();
 	}
-	
+
 	private VoxelShaper makeShapes() {
 		VoxelShape base = Block.box(3, 0, 3, 13, 16, 13);
 		return new AllShapes.Builder(base).forAxis();
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
 		return this.shapes.get(state.getValue(AXIS));
@@ -51,8 +52,15 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 		return CBCConfigs.SERVER.munitions.powderChargeStrength.getF();
 	}
 
-	@Override public float getStressOnCannon(StructureBlockInfo data) { return getPowderChargeStress(); }
-	@Override public float getStressOnCannon(ItemStack stack) { return getPowderChargeStress(); }
+	@Override
+	public float getStressOnCannon(StructureBlockInfo data) {
+		return getPowderChargeStress();
+	}
+
+	@Override
+	public float getStressOnCannon(ItemStack stack) {
+		return getPowderChargeStress();
+	}
 
 	@Override
 	public float getSpread(StructureBlockInfo data) {
@@ -100,6 +108,9 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 		return new StructureBlockInfo(localPos, state, null);
 	}
 
-	@Override public ItemStack getExtractedItem(StructureBlockInfo info) { return new ItemStack(this); }
+	@Override
+	public ItemStack getExtractedItem(StructureBlockInfo info) {
+		return new ItemStack(this);
+	}
 
 }

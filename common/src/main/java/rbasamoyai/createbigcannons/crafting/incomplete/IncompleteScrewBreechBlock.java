@@ -1,7 +1,11 @@
 package rbasamoyai.createbigcannons.crafting.incomplete;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.simibubi.create.AllBlocks;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -23,25 +27,22 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.index.CBCBlockEntities;
-import rbasamoyai.createbigcannons.index.CBCShapes;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.SolidBigCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-
-import java.util.ArrayList;
-import java.util.List;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCShapes;
 
 public class IncompleteScrewBreechBlock extends SolidBigCannonBlock<IncompleteBigCannonBlockEntity> implements IncompleteWithItemsCannonBlock {
-	
+
 	private final NonNullSupplier<? extends Item> secondItemSupplier;
 	private Item resolvedSecondItem;
 	private final NonNullSupplier<? extends Block> resultSupplier;
 	private Block result;
 	private List<ItemLike> resolvedRequiredItems;
-	
+
 	public IncompleteScrewBreechBlock(Properties properties, BigCannonMaterial material, NonNullSupplier<? extends Item> secondItemSupplier, NonNullSupplier<? extends Block> resultSupplier) {
 		super(properties, material);
 		this.secondItemSupplier = secondItemSupplier;
@@ -54,12 +55,12 @@ public class IncompleteScrewBreechBlock extends SolidBigCannonBlock<IncompleteBi
 		super.createBlockStateDefinition(builder);
 		builder.add(STAGE_2);
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return state.getValue(STAGE_2) == 0 ? CBCShapes.INCOMPLETE_SCREW_BREECH.get(state.getValue(FACING)) : CBCShapes.SCREW_BREECH.get(state.getValue(FACING));
 	}
-	
+
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
@@ -69,16 +70,16 @@ public class IncompleteScrewBreechBlock extends SolidBigCannonBlock<IncompleteBi
 		level.playSound(player, pos, SoundEvents.NETHERITE_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
 		if (!level.isClientSide) {
 			if (!player.isCreative()) stack.shrink(1);
-			this.withTileEntityDo(level, pos, cbe -> {
+			this.withBlockEntityDo(level, pos, cbe -> {
 				CannonBehavior behavior = cbe.cannonBehavior();
 				cbe.setRemoved();
-				
+
 				if (stage == 0) {
 					level.setBlock(pos, state.setValue(STAGE_2, 1), 3 | 16);
 				} else {
 					level.setBlock(pos, this.getCompleteBlockState(state), 3 | 16);
 				}
-				
+
 				BlockEntity be = level.getBlockEntity(pos);
 				if (!(be instanceof ICannonBlockEntity<?> cbe1)) return;
 				CannonBehavior behavior1 = cbe1.cannonBehavior();
@@ -93,11 +94,21 @@ public class IncompleteScrewBreechBlock extends SolidBigCannonBlock<IncompleteBi
 		}
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
-	
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SCREW_BREECH; }
-	
-	@Override public Class<IncompleteBigCannonBlockEntity> getTileEntityClass() { return IncompleteBigCannonBlockEntity.class; }
-	@Override public BlockEntityType<? extends IncompleteBigCannonBlockEntity> getTileEntityType() { return CBCBlockEntities.INCOMPLETE_CANNON.get(); }
+
+	@Override
+	public CannonCastShape getCannonShape() {
+		return CannonCastShape.SCREW_BREECH;
+	}
+
+	@Override
+	public Class<IncompleteBigCannonBlockEntity> getBlockEntityClass() {
+		return IncompleteBigCannonBlockEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends IncompleteBigCannonBlockEntity> getBlockEntityType() {
+		return CBCBlockEntities.INCOMPLETE_CANNON.get();
+	}
 
 	@Override
 	public List<ItemLike> requiredItems() {
@@ -108,7 +119,7 @@ public class IncompleteScrewBreechBlock extends SolidBigCannonBlock<IncompleteBi
 		}
 		return this.resolvedRequiredItems;
 	}
-	
+
 	protected Item resolveSecondItem() {
 		if (this.resolvedSecondItem == null) {
 			this.resolvedSecondItem = this.secondItemSupplier.get();
@@ -122,15 +133,21 @@ public class IncompleteScrewBreechBlock extends SolidBigCannonBlock<IncompleteBi
 		return defaultBlockState().setValue(FACING, context.getPlayer() != null && context.getPlayer().isShiftKeyDown() ? nearestLookingDirection : nearestLookingDirection.getOpposite());
 	}
 
-	@Override public int progress(BlockState state) { return state.getValue(STAGE_2); }
-	
-	@Override public boolean isComplete(BlockState state) { return false; }
-	
+	@Override
+	public int progress(BlockState state) {
+		return state.getValue(STAGE_2);
+	}
+
+	@Override
+	public boolean isComplete(BlockState state) {
+		return false;
+	}
+
 	@Override
 	public BlockState getCompleteBlockState(BlockState state) {
 		if (this.result == null) this.result = this.resultSupplier.get();
 		BlockState newState = this.result.defaultBlockState();
 		return newState.hasProperty(FACING) ? newState = newState.setValue(FACING, state.getValue(FACING)) : newState;
 	}
-	
+
 }

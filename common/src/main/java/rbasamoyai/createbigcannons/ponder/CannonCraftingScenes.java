@@ -1,20 +1,28 @@
 package rbasamoyai.createbigcannons.ponder;
 
+import java.util.Random;
+import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
+
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
-import com.simibubi.create.content.contraptions.components.deployer.DeployerTileEntity;
-import com.simibubi.create.content.contraptions.fluids.tank.FluidTankTileEntity;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock;
-import com.simibubi.create.content.contraptions.processing.burner.BlazeBurnerBlock.HeatLevel;
-import com.simibubi.create.content.logistics.block.redstone.NixieTubeTileEntity;
-import com.simibubi.create.foundation.ponder.*;
+import com.simibubi.create.content.fluids.tank.FluidTankBlockEntity;
+import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
+import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
+import com.simibubi.create.content.redstone.nixieTube.NixieTubeBlockEntity;
+import com.simibubi.create.foundation.ponder.ElementLink;
+import com.simibubi.create.foundation.ponder.PonderPalette;
+import com.simibubi.create.foundation.ponder.SceneBuilder;
+import com.simibubi.create.foundation.ponder.SceneBuildingUtil;
+import com.simibubi.create.foundation.ponder.Selection;
 import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
 import com.simibubi.create.foundation.ponder.instruction.FadeOutOfSceneInstruction;
 import com.simibubi.create.foundation.utility.Pointing;
 import com.simibubi.create.foundation.utility.VecHelper;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -44,9 +52,6 @@ import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.multiloader.PonderPlatform;
 
-import java.util.function.Consumer;
-import java.util.function.UnaryOperator;
-
 public class CannonCraftingScenes {
 
 	public static void cannonCasting(SceneBuilder scene, SceneBuildingUtil util) {
@@ -54,7 +59,7 @@ public class CannonCraftingScenes {
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
-		scene.world.modifyTileNBT(util.select.fromTo(2, 2, 2, 2, 3, 2), AbstractCannonCastBlockEntity.class, setUnfinishedCannonShape(CannonCastShape.MEDIUM));
+		scene.world.modifyBlockEntityNBT(util.select.fromTo(2, 2, 2, 2, 3, 2), AbstractCannonCastBlockEntity.class, setUnfinishedCannonShape(CannonCastShape.MEDIUM));
 
 		scene.idle(15);
 		int placeDelay = 3;
@@ -130,7 +135,7 @@ public class CannonCraftingScenes {
 		Selection deployer = util.select.position(deployerPos);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 2, 0), Pointing.DOWN).withItem(CBCBlocks.MEDIUM_CAST_MOULD.asStack()), 10);
 		scene.idle(15);
-		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, putItemInDeployer(CBCBlocks.MEDIUM_CAST_MOULD.asStack()));
+		scene.world.modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(CBCBlocks.MEDIUM_CAST_MOULD.asStack()));
 		scene.idle(10);
 
 		scene.world.setKineticSpeed(deployerGearDown, 16);
@@ -139,7 +144,7 @@ public class CannonCraftingScenes {
 		scene.world.moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
 		scene.world.modifyBlock(util.grid.at(2, 1, 2), setStateValue(CannonCastMouldBlock.SAND, false), false);
-		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, putItemInDeployer(ItemStack.EMPTY));
+		scene.world.modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(ItemStack.EMPTY));
 		ElementLink<WorldSectionElement> reusedFirstLayerCore = scene.world.showIndependentSectionImmediately(util.select.position(2, 1, 2));
 		scene.world.moveSection(reusedFirstLayerCore, util.vector.of(0, 1, 0), 0);
 		scene.world.moveDeployer(deployerPos, -1, 25);
@@ -147,13 +152,13 @@ public class CannonCraftingScenes {
 
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 2, 0), Pointing.DOWN).withItem(CBCBlocks.CASTING_SAND.asStack()), 10);
 		scene.idle(15);
-		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, putItemInDeployer(CBCBlocks.CASTING_SAND.asStack()));
+		scene.world.modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(CBCBlocks.CASTING_SAND.asStack()));
 		scene.idle(10);
 		scene.world.moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
 		scene.world.modifyBlock(util.grid.at(2, 1, 2), setStateValue(CannonCastMouldBlock.SAND, true), false);
 		scene.effects.emitParticles(castCenter.add(0, 2, 0), mouldSandEmitter, 10, 1);
-		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, putItemInDeployer(ItemStack.EMPTY));
+		scene.world.modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(ItemStack.EMPTY));
 		scene.world.moveDeployer(deployerPos, -1, 25);
 		scene.idle(36);
 
@@ -197,9 +202,9 @@ public class CannonCraftingScenes {
 		BlockPos tankPos = util.grid.at(0, 1, 2);
 		BlockPos castPos = util.grid.at(2, 2, 2);
 		for (int i = 0; i < 24; ++i) {
-			scene.world.modifyTileEntity(tankPos, FluidTankTileEntity.class, tank ->
+			scene.world.modifyBlockEntity(tankPos, FluidTankBlockEntity.class, tank ->
 				PonderPlatform.drain(tank, 144, null));
-			scene.world.modifyTileEntity(castPos, AbstractCannonCastBlockEntity.class, cast1 ->
+			scene.world.modifyBlockEntity(castPos, AbstractCannonCastBlockEntity.class, cast1 ->
 				PonderPlatform.fillWith(cast1, CBCFluids.MOLTEN_CAST_IRON.get(), 144, Direction.UP));
 			scene.idle(5);
 		}
@@ -215,7 +220,7 @@ public class CannonCraftingScenes {
 		Selection comparatorSel = util.select.fromTo(4, 1, 2, 5, 1, 2).add(util.select.position(5, 0, 2));
 		scene.world.showSection(comparatorSel, Direction.DOWN);
 		scene.world.modifyBlock(util.grid.at(4, 1, 2), setStateValue(ComparatorBlock.POWERED, true), false);
-		scene.world.modifyTileNBT(util.select.position(5, 1, 2), NixieTubeTileEntity.class, tag -> tag.putInt("RedstoneStrength", 14));
+		scene.world.modifyBlockEntityNBT(util.select.position(5, 1, 2), NixieTubeBlockEntity.class, tag -> tag.putInt("RedstoneStrength", 14));
 		scene.idle(20);
 		Vec3 comparator = util.vector.centerOf(4, 1, 2);
 		scene.overlay.showText(60)
@@ -246,9 +251,9 @@ public class CannonCraftingScenes {
 		scene.world.setBlocks(util.select.fromTo(1, 2, 1, 3, 3, 3).substract(innerCast), CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), false);
 		scene.world.setBlocks(innerCast, CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.UP), false);
 		Selection centerBlocks = util.select.fromTo(1, 2, 1, 1, 3, 1);
-		scene.world.modifyTileNBT(centerBlocks, FinishedCannonCastBlockEntity.class, setFinishedCannonShape(CannonCastShape.MEDIUM));
-		scene.world.modifyTileNBT(util.select.fromTo(1, 2, 1, 3, 2, 3).substract(centerBlocks), FinishedCannonCastBlockEntity.class, setCentralBlock(util.grid.at(1, 2, 1)));
-		scene.world.modifyTileNBT(util.select.fromTo(1, 3, 1, 3, 3, 3).substract(centerBlocks), FinishedCannonCastBlockEntity.class, setCentralBlock(util.grid.at(1, 3, 1)));
+		scene.world.modifyBlockEntityNBT(centerBlocks, FinishedCannonCastBlockEntity.class, setFinishedCannonShape(CannonCastShape.MEDIUM));
+		scene.world.modifyBlockEntityNBT(util.select.fromTo(1, 2, 1, 3, 2, 3).substract(centerBlocks), FinishedCannonCastBlockEntity.class, setCentralBlock(util.grid.at(1, 2, 1)));
+		scene.world.modifyBlockEntityNBT(util.select.fromTo(1, 3, 1, 3, 3, 3).substract(centerBlocks), FinishedCannonCastBlockEntity.class, setCentralBlock(util.grid.at(1, 3, 1)));
 		scene.idle(20);
 
 		scene.overlay.showText(80)
@@ -669,7 +674,7 @@ public class CannonCraftingScenes {
 		Selection deployer = util.select.position(deployerPos);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(deployerPos), Pointing.DOWN).withItem(breechblock), 40);
 		scene.idle(30);
-		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", breechblock.save(new CompoundTag())));
+		scene.world.modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", breechblock.save(new CompoundTag())));
 		scene.idle(15);
 
 		scene.world.setKineticSpeed(deployerGearDown, -16);
@@ -680,7 +685,7 @@ public class CannonCraftingScenes {
 		scene.world.modifyBlock(incompletePos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_SLIDING_BREECH.getDefaultState().setValue(ALONG_FIRST, true)), false);
 
 		scene.idle(10);
-		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(new CompoundTag())));
+		scene.world.modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(new CompoundTag())));
 		scene.world.setKineticSpeed(deployerGearDown, 16);
 		scene.world.setKineticSpeed(deployerGearUp, -32);
 		scene.world.moveDeployer(deployerPos, -1, 25);
@@ -710,7 +715,7 @@ public class CannonCraftingScenes {
 
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(1, 2, 2), Pointing.DOWN).withItem(CBCItems.CAST_IRON_INGOT.asStack()), 10);
 		scene.idle(10);
-		scene.world.modifyBlock(util.grid.at(1, 1, 2), setStateValue(BlazeBurnerBlock.HEAT_LEVEL, HeatLevel.KINDLED), false);
+		scene.world.modifyBlock(util.grid.at(1, 1, 2), setStateValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.KINDLED), false);
 		RandomSource rand = RandomSource.create();
 		for (int i = 0; i < 20; ++i) {
 			float angle = rand.nextFloat() * 360.0f;
@@ -738,7 +743,7 @@ public class CannonCraftingScenes {
 		scene.world.propagatePipeChange(util.grid.at(2, 2, 2));
 		scene.idle(20);
 
-		scene.world.modifyTileEntity(util.grid.at(3, 1, 2), FluidTankTileEntity.class, tank ->
+		scene.world.modifyBlockEntity(util.grid.at(3, 1, 2), FluidTankBlockEntity.class, tank ->
 			PonderPlatform.fillWith(tank, CBCFluids.MOLTEN_CAST_IRON.get(), 8000, null));
 		scene.idle(20);
 
@@ -791,7 +796,7 @@ public class CannonCraftingScenes {
 		Selection deployer = util.select.position(deployerPos);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(deployerPos), Pointing.DOWN).withItem(mechanism), 40);
 		scene.idle(30);
-		scene.world.modifyTileNBT(deployer, DeployerTileEntity.class, tag -> tag.put("HeldItem", mechanism.save(new CompoundTag())));
+		scene.world.modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", mechanism.save(new CompoundTag())));
 		scene.idle(15);
 
 		scene.world.setKineticSpeed(deployerGearDown, -16);

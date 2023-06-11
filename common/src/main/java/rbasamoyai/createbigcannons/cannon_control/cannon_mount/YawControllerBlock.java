@@ -1,7 +1,8 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
-import com.simibubi.create.content.contraptions.base.KineticBlock;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.kinetics.base.KineticBlock;
+import com.simibubi.create.foundation.block.IBE;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelReader;
@@ -9,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
-public class YawControllerBlock extends KineticBlock implements ITE<YawControllerBlockEntity> {
+public class YawControllerBlock extends KineticBlock implements IBE<YawControllerBlockEntity> {
 
 	public YawControllerBlock(Properties properties) {
 		super(properties);
@@ -25,7 +26,14 @@ public class YawControllerBlock extends KineticBlock implements ITE<YawControlle
 		return face == Direction.DOWN;
 	}
 
-	@Override public Class<YawControllerBlockEntity> getTileEntityClass() { return YawControllerBlockEntity.class; }
-	@Override public BlockEntityType<? extends YawControllerBlockEntity> getTileEntityType() { return CBCBlockEntities.YAW_CONTROLLER.get(); }
+	@Override
+	public Class<YawControllerBlockEntity> getBlockEntityClass() {
+		return YawControllerBlockEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends YawControllerBlockEntity> getBlockEntityType() {
+		return CBCBlockEntities.YAW_CONTROLLER.get();
+	}
 
 }

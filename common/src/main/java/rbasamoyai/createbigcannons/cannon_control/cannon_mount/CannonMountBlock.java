@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
-import com.simibubi.create.content.contraptions.base.KineticBlock;
-import com.simibubi.create.foundation.block.ITE;
+import java.util.Random;
+
+import com.simibubi.create.content.kinetics.base.KineticBlock;
+import com.simibubi.create.foundation.block.IBE;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -21,7 +24,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
-public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlockEntity> {
+public class CannonMountBlock extends KineticBlock implements IBE<CannonMountBlockEntity> {
 
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty ASSEMBLY_POWERED = BooleanProperty.create("assembly_powered");
@@ -67,12 +70,12 @@ public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlo
 	}
 
 	@Override
-	public Class<CannonMountBlockEntity> getTileEntityClass() {
+	public Class<CannonMountBlockEntity> getBlockEntityClass() {
 		return CannonMountBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends CannonMountBlockEntity> getTileEntityType() {
+	public BlockEntityType<? extends CannonMountBlockEntity> getBlockEntityType() {
 		return CBCBlockEntities.CANNON_MOUNT.get();
 	}
 
@@ -93,7 +96,7 @@ public class CannonMountBlock extends KineticBlock implements ITE<CannonMountBlo
 		boolean firePowered = this.hasNeighborSignal(level, state, pos, FIRE_POWERED);
 		Direction fireDirection = state.getValue(HORIZONTAL_FACING);
 		int firePower = level.getSignal(pos.relative(fireDirection), fireDirection);
-		this.withTileEntityDo(level, pos, cmbe -> cmbe.onRedstoneUpdate(assemblyPowered, prevAssemblyPowered, firePowered, prevFirePowered, firePower));
+		this.withBlockEntityDo(level, pos, cmbe -> cmbe.onRedstoneUpdate(assemblyPowered, prevAssemblyPowered, firePowered, prevFirePowered, firePower));
 	}
 
 	private boolean hasNeighborSignal(Level level, BlockState state, BlockPos pos, BooleanProperty property) {

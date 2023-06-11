@@ -1,7 +1,13 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
-import com.simibubi.create.content.contraptions.components.structureMovement.AssemblyException;
-import com.simibubi.create.content.contraptions.components.structureMovement.Contraption;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import com.simibubi.create.content.contraptions.AssemblyException;
+import com.simibubi.create.content.contraptions.Contraption;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -17,32 +23,34 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.Map;
-
-public abstract class AbstractMountedCannonContraption extends Contraption  {
+public abstract class AbstractMountedCannonContraption extends Contraption {
 
 	protected Direction initialOrientation = Direction.NORTH;
 	protected BlockPos startPos = BlockPos.ZERO;
 
 	public abstract float maximumDepression(@Nonnull ControlPitchContraption controller);
+
 	public abstract float maximumElevation(@Nonnull ControlPitchContraption controller);
 
-	public Direction initialOrientation() { return this.initialOrientation; }
+	public Direction initialOrientation() {
+		return this.initialOrientation;
+	}
 
 	public abstract void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller);
+
 	public abstract void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller);
 
 	public abstract float getWeightForStress();
 
-	public void tick(Level level, PitchOrientedContraptionEntity entity) {}
+	public void tick(Level level, PitchOrientedContraptionEntity entity) {
+	}
 
-	public void animate() {}
+	public void animate() {
+	}
 
 	@Override
 	public CompoundTag writeNBT(boolean spawnPacket) {
-		for (Map.Entry<BlockPos, BlockEntity> entry : this.presentTileEntities.entrySet()) {
+		for (Map.Entry<BlockPos, BlockEntity> entry : this.presentBlockEntities.entrySet()) {
 			StructureBlockInfo info = this.blocks.get(entry.getKey());
 			if (info == null) continue;
 			CompoundTag nbt = entry.getValue().saveWithFullMetadata();
@@ -78,21 +86,36 @@ public abstract class AbstractMountedCannonContraption extends Contraption  {
 			BlockEntity be = BlockEntity.loadStatic(info.pos, info.state, info.nbt);
 			if (be == null) continue;
 			be.setLevel(world);
-			this.presentTileEntities.put(info.pos, be);
+			this.presentBlockEntities.put(info.pos, be);
 		}
 	}
 
-	@Override public boolean canBeStabilized(Direction direction, BlockPos pos) { return true; }
+	@Override
+	public boolean canBeStabilized(Direction direction, BlockPos pos) {
+		return true;
+	}
 
-	public boolean canBeTurnedByPassenger(Entity entity) { return false; }
-	public boolean canBeTurnedByController(ControlPitchContraption control) { return true; }
-	public boolean canBeFiredOnController(ControlPitchContraption control) { return true; }
+	public boolean canBeTurnedByPassenger(Entity entity) {
+		return false;
+	}
 
-	public BlockPos getSeatPos(Entity entity) { return null; }
+	public boolean canBeTurnedByController(ControlPitchContraption control) {
+		return true;
+	}
+
+	public boolean canBeFiredOnController(ControlPitchContraption control) {
+		return true;
+	}
+
+	public BlockPos getSeatPos(Entity entity) {
+		return null;
+	}
 
 	public abstract Vec3 getInteractionVec(PitchOrientedContraptionEntity poce);
 
-	public BlockPos getStartPos() { return this.startPos; }
+	public BlockPos getStartPos() {
+		return this.startPos;
+	}
 
 	public static int getMaxCannonLength() {
 		return CBCConfigs.SERVER.cannons.maxCannonLength.get();

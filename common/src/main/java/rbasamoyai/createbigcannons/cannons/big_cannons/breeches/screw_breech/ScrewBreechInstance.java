@@ -6,19 +6,20 @@ import com.jozufozu.flywheel.core.Materials;
 import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.simibubi.create.content.contraptions.base.HalfShaftInstance;
+import com.simibubi.create.content.kinetics.base.HalfShaftInstance;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
+
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 
-public class ScrewBreechInstance extends HalfShaftInstance implements DynamicInstance {
+public class ScrewBreechInstance extends HalfShaftInstance<ScrewBreechBlockEntity> implements DynamicInstance {
 
 	private final ScrewBreechBlockEntity breech;
 	private OrientedData screwLock;
 	private Direction facing;
-	
+
 	public ScrewBreechInstance(MaterialManager modelManager, ScrewBreechBlockEntity tile) {
 		super(modelManager, tile);
 		this.breech = tile;
@@ -30,9 +31,9 @@ public class ScrewBreechInstance extends HalfShaftInstance implements DynamicIns
 
 		this.facing = this.blockState.getValue(BlockStateProperties.FACING);
 		this.screwLock = this.materialManager.defaultSolid()
-				.material(Materials.ORIENTED)
-				.getModel(CBCClientCommon.getScrewBreechForState(this.blockState), this.blockState, this.facing)
-				.createInstance();
+			.material(Materials.ORIENTED)
+			.getModel(CBCClientCommon.getScrewBreechForState(this.blockState), this.blockState, this.facing)
+			.createInstance();
 		this.transformModels();
 	}
 
@@ -45,7 +46,7 @@ public class ScrewBreechInstance extends HalfShaftInstance implements DynamicIns
 		height.mul(heightOffset);
 
 		Quaternion q = normal.rotationDegrees(rotationOffset);
-		
+
 		this.screwLock.setPosition(this.getInstancePosition()).nudge(height.x(), height.y(), height.z()).setRotation(q);
 	}
 
@@ -53,17 +54,17 @@ public class ScrewBreechInstance extends HalfShaftInstance implements DynamicIns
 	public void beginFrame() {
 		this.transformModels();
 	}
-	
+
 	@Override
 	public void remove() {
 		super.remove();
 		this.screwLock.delete();
 	}
-	
+
 	@Override
 	public void updateLight() {
 		super.updateLight();
 		this.relight(this.pos, this.screwLock);
 	}
-	
+
 }

@@ -1,17 +1,19 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.simibubi.create.content.logistics.block.mechanicalArm.ArmInteractionPoint;
-import com.simibubi.create.content.logistics.block.mechanicalArm.ArmInteractionPointType;
+import java.util.function.Function;
+
+import org.jetbrains.annotations.Nullable;
+
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechPoint;
-
-import java.util.function.Function;
 
 public class CBCArmInteractionPointTypes {
 
@@ -40,6 +42,7 @@ public class CBCArmInteractionPointTypes {
 		}
 	}
 
-	public static void register() {}
+	public static void register() {
+	}
 
 }
