@@ -8,8 +8,15 @@ public abstract class SimpleShellBlock extends FuzedProjectileBlock<FuzedBlockEn
 	protected SimpleShellBlock(Properties properties) {
 		super(properties);
 	}
-	
-	@Override public Class<FuzedBlockEntity> getTileEntityClass() { return FuzedBlockEntity.class; }
-	@Override public BlockEntityType<? extends FuzedBlockEntity> getTileEntityType() { return CBCBlockEntities.FUZED_BLOCK.get(); }
+
+	@Override
+	public Class<FuzedBlockEntity> getBlockEntityClass() {
+		return FuzedBlockEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends FuzedBlockEntity> getBlockEntityType() {
+		return CBCBlockEntities.FUZED_BLOCK.get();
+	}
 
 }

@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.multiloader.fabric;
 import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.simibubi.create.content.contraptions.fluids.FluidFX;
+import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;

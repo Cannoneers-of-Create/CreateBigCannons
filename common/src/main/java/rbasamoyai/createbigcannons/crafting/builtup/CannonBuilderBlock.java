@@ -1,10 +1,13 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
+import java.util.Random;
+
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
+import com.simibubi.create.foundation.block.IBE;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -28,7 +31,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements ITE<CannonBuilderBlockEntity> {
+public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements IBE<CannonBuilderBlockEntity> {
 
 	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final EnumProperty<BuilderState> STATE = EnumProperty.create("state", BuilderState.class);
@@ -105,7 +108,7 @@ public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements I
 			state = state.cycle(POWERED);
 			if (state.getValue(POWERED)) {
 				level.playSound(null, pos, AllSoundEvents.CONTRAPTION_ASSEMBLE.getMainEvent(), SoundSource.BLOCKS, 1.0f, 0.0f);
-				CannonBuilderBlockEntity builder = this.getTileEntity(level, pos);
+				CannonBuilderBlockEntity builder = this.getBlockEntity(level, pos);
 				if (builder != null) state = builder.updateBlockstatesOnPowered(state);
 			}
 			level.setBlock(pos, state, 2);
@@ -113,12 +116,12 @@ public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements I
 	}
 
 	@Override
-	public Class<CannonBuilderBlockEntity> getTileEntityClass() {
+	public Class<CannonBuilderBlockEntity> getBlockEntityClass() {
 		return CannonBuilderBlockEntity.class;
 	}
 
 	@Override
-	public BlockEntityType<? extends CannonBuilderBlockEntity> getTileEntityType() {
+	public BlockEntityType<? extends CannonBuilderBlockEntity> getBlockEntityType() {
 		return CBCBlockEntities.CANNON_BUILDER.get();
 	}
 

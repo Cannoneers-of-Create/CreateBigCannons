@@ -4,8 +4,9 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.simibubi.create.content.contraptions.particle.ICustomParticleData;
+import com.simibubi.create.foundation.particle.ICustomParticleData;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
@@ -19,9 +20,9 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 public class FluidBlobParticleData implements ParticleOptions, ICustomParticleData<FluidBlobParticleData> {
 
 	public static final Codec<FluidBlobParticleData> CODEC = RecordCodecBuilder.create(i -> i
-			.group(Codec.FLOAT.fieldOf("scale").forGetter(FluidBlobParticleData::scale),
-					EndFluidStack.CODEC.fieldOf("fluid").forGetter(FluidBlobParticleData::fluid))
-			.apply(i, FluidBlobParticleData::new));
+		.group(Codec.FLOAT.fieldOf("scale").forGetter(FluidBlobParticleData::scale),
+			EndFluidStack.CODEC.fieldOf("fluid").forGetter(FluidBlobParticleData::fluid))
+		.apply(i, FluidBlobParticleData::new));
 
 	@SuppressWarnings("deprecation")
 	public static final Deserializer<FluidBlobParticleData> DESERIALIZER = new Deserializer<>() {
@@ -46,12 +47,22 @@ public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDa
 		this.fluid = fluid;
 	}
 
-	public FluidBlobParticleData() { this(0, EndFluidStack.EMPTY); }
+	public FluidBlobParticleData() {
+		this(0, EndFluidStack.EMPTY);
+	}
 
-	public float scale() { return this.scale; }
-	public EndFluidStack fluid() { return this.fluid; }
+	public float scale() {
+		return this.scale;
+	}
 
-	@Override public ParticleType<?> getType() { return CBCParticleTypes.FLUID_BLOB.get(); }
+	public EndFluidStack fluid() {
+		return this.fluid;
+	}
+
+	@Override
+	public ParticleType<?> getType() {
+		return CBCParticleTypes.FLUID_BLOB.get();
+	}
 
 	@Override
 	public void writeToNetwork(FriendlyByteBuf buf) {
@@ -64,8 +75,15 @@ public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDa
 		return String.format("%f %s", this.scale, RegisteredObjects.getKeyOrThrow(this.fluid.fluid()));
 	}
 
-	@Override public Deserializer<FluidBlobParticleData> getDeserializer() { return DESERIALIZER; }
-	@Override public Codec<FluidBlobParticleData> getCodec(ParticleType<FluidBlobParticleData> type) { return CODEC; }
+	@Override
+	public Deserializer<FluidBlobParticleData> getDeserializer() {
+		return DESERIALIZER;
+	}
+
+	@Override
+	public Codec<FluidBlobParticleData> getCodec(ParticleType<FluidBlobParticleData> type) {
+		return CODEC;
+	}
 
 	@Environment(EnvType.CLIENT)
 	@Override

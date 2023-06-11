@@ -1,7 +1,8 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
-import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
+import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.Block;
@@ -15,9 +16,9 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CannonCastShape {
-	
+
 	private static final int INGOT_SIZE_MB = 90;
-	
+
 	public static final CannonCastShape
 		VERY_SMALL = register("very_small", new CannonCastShape(7 * INGOT_SIZE_MB, 12, CBCBlocks.VERY_SMALL_CAST_MOULD)),
 		SMALL = register("small", new CannonCastShape(9 * INGOT_SIZE_MB, 14, CBCBlocks.SMALL_CAST_MOULD)),
@@ -28,17 +29,17 @@ public class CannonCastShape {
 		SLIDING_BREECH = register("sliding_breech", new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SLIDING_BREECH_CAST_MOULD, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false))),
 		SCREW_BREECH = register("screw_breech", new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD)),
 
-		AUTOCANNON_BARREL = register("autocannon_barrel", new CannonCastShape(3 * INGOT_SIZE_MB, 4, CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
+	AUTOCANNON_BARREL = register("autocannon_barrel", new CannonCastShape(3 * INGOT_SIZE_MB, 4, CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
 		AUTOCANNON_BARREL_FLANGED = register("autocannon_barrel_flanged", new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR, false)),
 		AUTOCANNON_BREECH = register("autocannon_breech", new CannonCastShape(4 * INGOT_SIZE_MB, 8, CBCBlocks.AUTOCANNON_BREECH_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
 		AUTOCANNON_RECOIL_SPRING = register("autocannon_recoil_spring", new CannonCastShape(4 * INGOT_SIZE_MB, 6, CBCBlocks.AUTOCANNON_RECOIL_SPRING_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP)));
-	
+
 	private final int fluidSize;
 	private final int diameter;
 	private final NonNullSupplier<? extends Block> castMould;
 	private final boolean isLarge;
 	private final PropertySetter<?>[] properties;
-	
+
 	private Block resolvedCastMould;
 
 
@@ -54,7 +55,7 @@ public class CannonCastShape {
 	public CannonCastShape(int fluidSizeForge, int diameter, NonNullSupplier<? extends Block> castMould, PropertySetter<?>... properties) {
 		this(fluidSizeForge, diameter, castMould, true, properties);
 	}
-	
+
 	public CannonCastShape(int fluidSizeForge, int diameter, NonNullSupplier<? extends Block> castMould, boolean large, PropertySetter<?>... properties) {
 		this.fluidSize = IndexPlatform.convertFluid(fluidSizeForge);
 		this.diameter = diameter;
@@ -62,11 +63,19 @@ public class CannonCastShape {
 		this.isLarge = large;
 		this.properties = properties;
 	}
-	
-	public int fluidSize() { return this.fluidSize; }
-	public int diameter() { return this.diameter; }
-	public boolean isLarge() { return this.isLarge; }
-	
+
+	public int fluidSize() {
+		return this.fluidSize;
+	}
+
+	public int diameter() {
+		return this.diameter;
+	}
+
+	public boolean isLarge() {
+		return this.isLarge;
+	}
+
 	public Block castMould() {
 		if (this.resolvedCastMould == null) {
 			this.resolvedCastMould = this.castMould.get();
@@ -74,41 +83,42 @@ public class CannonCastShape {
 		}
 		return this.resolvedCastMould;
 	}
-	
+
 	public BlockState applyTo(BlockState state) {
 		for (PropertySetter<?> setter : this.properties) {
 			state = setter.applyTo(state);
 		}
 		return state;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "CannonCastShape[" + CBCRegistries.CANNON_CAST_SHAPES.getKey(this) + ",fluidSize=" + this.fluidSize + ",diameter=" + this.diameter + "]";
 	}
-	
+
 	public static class PropertySetter<T extends Comparable<T>> {
 		private final Property<T> property;
 		private final T value;
-		
+
 		public PropertySetter(Property<T> property, T value) {
 			this.property = property;
 			this.value = value;
 		}
-		
+
 		public BlockState applyTo(BlockState state) {
 			return state.hasProperty(this.property) ? state.setValue(this.property, this.value) : state;
 		}
-		
+
 		public static <T extends Comparable<T>> PropertySetter<T> of(Property<T> property, T value) {
 			return new PropertySetter<>(property, value);
 		}
 	}
 
-	public static void register() {}
+	public static void register() {
+	}
 
 	private static CannonCastShape register(String id, CannonCastShape shape) {
 		return Registry.register(CBCRegistries.CANNON_CAST_SHAPES, CreateBigCannons.resource(id), shape);
 	}
-	
+
 }
