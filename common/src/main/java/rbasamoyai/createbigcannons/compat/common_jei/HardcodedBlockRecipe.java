@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.compat.jei;
+package rbasamoyai.createbigcannons.compat.common_jei;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -15,21 +15,21 @@ public abstract class HardcodedBlockRecipe implements BlockRecipe {
 
 	private final ResourceLocation id;
 	private final Block result;
-	
+
 	public HardcodedBlockRecipe(ResourceLocation id, Block result) {
 		this.id = id;
 		this.result = result;
 	}
-	
+
 	@Override public boolean matches(Level level, BlockPos pos) { return false; }
 	@Override public void assembleInWorld(Level level, BlockPos pos) {}
-	
+
 	@Override public Block getResultBlock() { return this.result; }
 	@Override public ResourceLocation getId() { return this.id; }
-	
+
 	@Override public BlockRecipeSerializer<?> getSerializer() { return null; }
 	@Override public BlockRecipeType<?> getType() { return null; }
-	
+
 	public abstract List<ItemStack> ingredients();
-	
+
 }

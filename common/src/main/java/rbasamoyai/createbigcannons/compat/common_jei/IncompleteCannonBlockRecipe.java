@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.compat.jei;
+package rbasamoyai.createbigcannons.compat.common_jei;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -13,7 +13,7 @@ import java.util.List;
 public class IncompleteCannonBlockRecipe extends HardcodedBlockRecipe {
 
 	private final List<ItemStack> ingredients = new ArrayList<>();
-	
+
 	public IncompleteCannonBlockRecipe(ResourceLocation id, Block result, Block start) {
 		super(id, result);
 		this.ingredients.add(new ItemStack(start));
@@ -21,9 +21,9 @@ public class IncompleteCannonBlockRecipe extends HardcodedBlockRecipe {
 			incomplete.requiredItems().stream().map(ItemStack::new).forEach(this.ingredients::add);
 		}
 	}
-	
+
 	@Override public List<ItemStack> ingredients() { return this.ingredients; }
-	
+
 	public static Collection<IncompleteCannonBlockRecipe> makeAllIncompleteRecipes() {
 		return Registry.BLOCK
 		.stream()

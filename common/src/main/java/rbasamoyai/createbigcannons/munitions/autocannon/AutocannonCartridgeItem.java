@@ -28,7 +28,7 @@ public class AutocannonCartridgeItem extends Item {
         ItemStack round = getProjectileStack(stack);
         if (!round.isEmpty()) {
             tooltip.add(new TranslatableComponent("item.minecraft.crossbow.projectile").append(" ").append(round.getDisplayName()));
-            if (flag.isAdvanced() && round.getItem() instanceof AutocannonRoundItem) {
+            if (round.getItem() instanceof AutocannonRoundItem) {
                 List<Component> subTooltip = new ArrayList<>();
                 round.getItem().appendHoverText(round, level, subTooltip, flag);
                 for (int i = 0; i < subTooltip.size(); ++i) {

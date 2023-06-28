@@ -1,9 +1,13 @@
 package rbasamoyai.createbigcannons.base;
 
+import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.function.Supplier;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlock;
+
+import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,21 +15,32 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingDeployerRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingDeployerRecipe;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.multiloader.EventsPlatform;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
@@ -127,6 +142,25 @@ public class CBCCommonEvents {
 		cons.accept(BlockRecipesManager.ReloadListener.INSTANCE, CreateBigCannons.resource("block_recipe_manager"));
 		cons.accept(BlockHardnessHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("munition_properties_handler"));
+	}
+
+	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
+											BiConsumer<Supplier<Optional<? extends Recipe<? extends Container>>>, Integer> cons) {
+		ItemStack containerItem = container.getItem(0);
+		ItemStack deployerItem = container.getItem(1);
+
+		if (CBCBlocks.BIG_CARTRIDGE.isIn(containerItem) && deployerItem.is(CBCTags.ItemCBC.NITROPOWDER)) {
+			int power = BigCartridgeBlockItem.getPower(containerItem);
+			if (power < CBCConfigs.SERVER.munitions.maxBigCartridgePower.get())
+				cons.accept(() -> Optional.of(new BigCartridgeFillingDeployerRecipe(power, power + 1)), 25);
+		}
+		if (CBCItems.FILLED_AUTOCANNON_CARTRIDGE.isIn(containerItem) && deployerItem.getItem() instanceof AutocannonRoundItem) {
+			cons.accept(() -> Optional.of(new CartridgeAssemblyDeployerRecipe(deployerItem)), 25);
+		}
+		MunitionFuzingDeployerRecipe fuzingRecipe = new MunitionFuzingDeployerRecipe(containerItem, deployerItem);
+		if (fuzingRecipe.matches(container, deployer.getLevel())) { // self check really
+			cons.accept(() -> Optional.of(fuzingRecipe), 25);
+		}
 	}
 
 }

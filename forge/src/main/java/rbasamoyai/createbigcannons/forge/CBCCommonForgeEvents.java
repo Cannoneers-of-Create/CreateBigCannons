@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.forge;
 
+import com.simibubi.create.content.kinetics.deployer.DeployerRecipeSearchEvent;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
@@ -22,6 +24,8 @@ public class CBCCommonForgeEvents {
 		forgeEventBus.addListener(CBCCommonForgeEvents::onServerWorldTick);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onDatapackSync);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onAddReloadListeners);
+		forgeEventBus.addListener(CBCCommonForgeEvents::onDeployerRecipeSearch);
+
 		forgeEventBus.register(OnCannonBreakBlockImpl.class);
 	}
 
@@ -58,5 +62,9 @@ public class CBCCommonForgeEvents {
 	public static void onAddReloadListeners(AddReloadListenerEvent event) {
 		CBCCommonEvents.onAddReloadListeners((m, l) -> event.addListener(m));
 	}
-	
+
+	public static void onDeployerRecipeSearch(DeployerRecipeSearchEvent evt) {
+		CBCCommonEvents.onAddDeployerRecipes(evt.getBlockEntity(), evt.getInventory(), evt::addRecipe);
+	}
+
 }

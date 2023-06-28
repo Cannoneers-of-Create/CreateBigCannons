@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
@@ -17,8 +18,11 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.foundry.MeltingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingRecipe;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
@@ -27,7 +31,10 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	MELTING(MeltingRecipe::new),
 	MUNITION_FUZING(() -> new SimpleRecipeSerializer<>(MunitionFuzingRecipe::new), () -> RecipeType.CRAFTING, false),
 	CARTRIDGE_ASSEMBLY(() -> new SimpleRecipeSerializer<>(CartridgeAssemblyRecipe::new), () -> RecipeType.CRAFTING, false),
-	BIG_CARTRIDGE_FILLING(() -> new SimpleRecipeSerializer<>(BigCartridgeFillingRecipe::new), () -> RecipeType.CRAFTING, false);
+	BIG_CARTRIDGE_FILLING(() -> new SimpleRecipeSerializer<>(BigCartridgeFillingRecipe::new), () -> RecipeType.CRAFTING, false),
+	BIG_CARTRIDGE_FILLING_DEPLOYER(() -> new SimpleRecipeSerializer<>(r -> new BigCartridgeFillingDeployerRecipe()), AllRecipeTypes.DEPLOYING::getType, false),
+	MUNITION_FUZING_DEPLOYER(() -> new SimpleRecipeSerializer<>(r -> new MunitionFuzingDeployerRecipe()), AllRecipeTypes.DEPLOYING::getType, false),
+	CARTRIDGE_ASSEMBLY_DEPLOYER(() -> new SimpleRecipeSerializer<>(r -> new CartridgeAssemblyDeployerRecipe()), AllRecipeTypes.DEPLOYING::getType, false);
 
 	private final ResourceLocation id;
 	private final Supplier<RecipeSerializer<?>> serializerObject;

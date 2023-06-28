@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class MunitionFuzingRecipe extends CustomRecipe {
@@ -26,6 +27,12 @@ public class MunitionFuzingRecipe extends CustomRecipe {
 			if (stack.isEmpty()) continue;
 			if (stack.getItem() instanceof FuzedItemMunition) {
 				if (!round.isEmpty() || stack.getOrCreateTag().contains("Fuze", Tag.TAG_COMPOUND)) return false;
+				round = stack;
+			} else if (stack.getItem() instanceof AutocannonCartridgeItem) {
+				if (!round.isEmpty()) return false;
+				ItemStack cartridgeRound = AutocannonCartridgeItem.getProjectileStack(stack);
+				if (!(cartridgeRound.getItem() instanceof FuzedItemMunition) || cartridgeRound.getOrCreateTag().contains("Fuze", Tag.TAG_COMPOUND))
+					return false;
 				round = stack;
 			} else if (stack.getItem() instanceof FuzeItem) {
 				if (!fuze.isEmpty()) return false;
@@ -46,7 +53,7 @@ public class MunitionFuzingRecipe extends CustomRecipe {
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack = container.getItem(i);
 			if (stack.isEmpty()) continue;
-			if (stack.getItem() instanceof FuzedItemMunition) {
+			if (stack.getItem() instanceof FuzedItemMunition || stack.getItem() instanceof AutocannonCartridgeItem) {
 				if (!round.isEmpty()) return ItemStack.EMPTY;
 				round = stack;
 			} else if (stack.getItem() instanceof FuzeItem) {
@@ -62,7 +69,14 @@ public class MunitionFuzingRecipe extends CustomRecipe {
 		result.setCount(1);
 		ItemStack fuzeCopy = fuze.copy();
 		fuzeCopy.setCount(1);
-		result.getOrCreateTag().put("Fuze", fuzeCopy.save(new CompoundTag()));
+		CompoundTag tag = result.getOrCreateTag();
+		if (result.getItem() instanceof FuzedItemMunition) {
+			tag.put("Fuze", fuzeCopy.save(new CompoundTag()));
+		} else if (result.getItem() instanceof AutocannonCartridgeItem) {
+			CompoundTag projectileTag = tag.getCompound("Projectile").getCompound("tag");
+			projectileTag.put("Fuze", fuzeCopy.save(new CompoundTag()));
+			tag.getCompound("Projectile").put("tag", projectileTag);
+		}
 		return result;
 	}
 
