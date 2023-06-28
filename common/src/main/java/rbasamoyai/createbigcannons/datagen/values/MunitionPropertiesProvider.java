@@ -32,6 +32,7 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 		standardBigCannonProjectile(CBCEntityTypes.AP_SHELL.get(), 50, 5, 20);
 		standardBigCannonProjectile(CBCEntityTypes.MORTAR_STONE.get(), 50 , 4, 4);
 		standardBigCannonProjectile(CBCEntityTypes.FLUID_SHELL.get(), 30, 0, 8);
+		standardBigCannonProjectile(CBCEntityTypes.SMOKE_SHELL.get(), 30, 0, 8);
 
 		setPropertyWithSecondary(CBCEntityTypes.SHRAPNEL_SHELL.get(), 30, 0,8, false, true,
 				2, 0.25, 50);

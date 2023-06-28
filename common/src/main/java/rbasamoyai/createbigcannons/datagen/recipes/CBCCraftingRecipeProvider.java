@@ -178,6 +178,14 @@ public class CBCCraftingRecipeProvider {
 			.patternLine(" S ")
 			.build(cons);
 
+		ShapedRecipeBuilder.shaped(CBCBlocks.SMOKE_SHELL.get())
+			.define('I', CBCTags.ItemCBC.INGOT_IRON).define('P', CBCTags.ItemCBC.SHEET_IRON).define('H', Items.HAY_BLOCK)
+			.pattern("PHP")
+			.pattern("PHP")
+			.pattern("PIP")
+			.unlockedBy(getHasName(Items.HAY_BLOCK), has(Items.HAY_BLOCK))
+			.save(cons);
+
 		ShapedRecipeBuilder.shaped(CBCItems.AP_AUTOCANNON_ROUND.get(), 4)
 			.define('C', CBCTags.ItemCBC.INGOT_CAST_IRON).define('I', CBCTags.ItemCBC.INGOT_IRON)
 			.pattern("C")

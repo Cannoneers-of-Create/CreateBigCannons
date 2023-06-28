@@ -33,6 +33,8 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStone
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell.SmokeEmitterEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell.SmokeShellProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeProjectile;
 
@@ -56,6 +58,7 @@ public class CBCEntityTypes {
 	public static final EntityEntry<TrafficConeProjectile> TRAFFIC_CONE = cannonProjectile("traffic_cone", TrafficConeProjectile::new);
 	public static final EntityEntry<APShellProjectile> AP_SHELL = cannonProjectile("ap_shell", APShellProjectile::new, "Armor Piercing (AP) Shell");
 	public static final EntityEntry<FluidShellProjectile> FLUID_SHELL = cannonProjectile("fluid_shell", FluidShellProjectile::new);
+	public static final EntityEntry<SmokeShellProjectile> SMOKE_SHELL = cannonProjectile("smoke_shell", SmokeShellProjectile::new);
 	public static final EntityEntry<MortarStoneProjectile> MORTAR_STONE = cannonProjectile("mortar_stone", MortarStoneProjectile::new);
 
 	public static final EntityEntry<Shrapnel> SHRAPNEL = REGISTRATE
@@ -73,6 +76,14 @@ public class CBCEntityTypes {
 	public static final EntityEntry<FluidBlob> FLUID_BLOB = REGISTRATE
 		.entity("fluid_blob", FluidBlob::new, MobCategory.MISC)
 		.properties(shrapnel())
+		.renderer(() -> NoopRenderer::new)
+		.register();
+
+	public static final EntityEntry<SmokeEmitterEntity> SMOKE_EMITTER = REGISTRATE
+		.entity("smoke_emitter", SmokeEmitterEntity::new, MobCategory.MISC)
+		.properties(configure(c -> c.trackingRange(4)
+			.fireImmune()
+			.size(0, 0)))
 		.renderer(() -> NoopRenderer::new)
 		.register();
 
