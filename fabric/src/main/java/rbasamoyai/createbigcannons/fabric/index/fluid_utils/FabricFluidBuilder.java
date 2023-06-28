@@ -153,8 +153,4 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 		});
 	}
 
-	public interface RenderHandlerFactory {
-		FluidRenderHandler create(ResourceLocation stillTexture, ResourceLocation flowingTexture);
-	}
-
 }
