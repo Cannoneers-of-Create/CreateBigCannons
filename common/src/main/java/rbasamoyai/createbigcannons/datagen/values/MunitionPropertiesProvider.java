@@ -1,15 +1,16 @@
 package rbasamoyai.createbigcannons.datagen.values;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.google.gson.JsonObject;
+
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.entity.EntityType;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
 import rbasamoyai.createbigcannons.munitions.config.ShrapnelProperties;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class MunitionPropertiesProvider extends CBCDataProvider {
 
@@ -25,51 +26,32 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 
 	@Override
 	protected void generateData() {
-		standardBigCannonProjectile(CBCEntityTypes.SHOT.get(), 30, 0, 10);
-		standardBigCannonProjectile(CBCEntityTypes.HE_SHELL.get(), 30, 8,8);
-		standardBigCannonProjectile(CBCEntityTypes.AP_SHOT.get(), 50, 0,30);
-		standardBigCannonProjectile(CBCEntityTypes.TRAFFIC_CONE.get(), 100, 0, 36);
-		standardBigCannonProjectile(CBCEntityTypes.AP_SHELL.get(), 50, 5, 20);
-		standardBigCannonProjectile(CBCEntityTypes.MORTAR_STONE.get(), 50 , 4, 4);
-		standardBigCannonProjectile(CBCEntityTypes.FLUID_SHELL.get(), 30, 0, 8);
-		standardBigCannonProjectile(CBCEntityTypes.SMOKE_SHELL.get(), 30, 0, 8);
+		builder(CBCEntityTypes.SHOT.get()).entityDamage(30).durabilityMass(10).build(this);
+		builder(CBCEntityTypes.HE_SHELL.get()).entityDamage(30).explosivePower(8).explosivePower(8).build(this);
+		builder(CBCEntityTypes.AP_SHOT.get()).entityDamage(50).durabilityMass(30).build(this);
+		builder(CBCEntityTypes.TRAFFIC_CONE.get()).entityDamage(100).durabilityMass(36).build(this);
+		builder(CBCEntityTypes.AP_SHELL.get()).entityDamage(50).explosivePower(5).durabilityMass(20).baseFuze().build(this);
+		builder(CBCEntityTypes.MORTAR_STONE.get()).entityDamage(50).explosivePower(4).durabilityMass(4).build(this);
+		builder(CBCEntityTypes.FLUID_SHELL.get()).entityDamage(30).durabilityMass(8).build(this);
+		builder(CBCEntityTypes.SMOKE_SHELL.get()).entityDamage(30).durabilityMass(8).build(this);
 
-		setPropertyWithSecondary(CBCEntityTypes.SHRAPNEL_SHELL.get(), 30, 0,8, false, true,
-				2, 0.25, 50);
-		setPropertyWithSecondary(CBCEntityTypes.BAG_OF_GRAPESHOT.get(),0, 0,1, true, false,
-				5, 0.05, 25);
+		builder(CBCEntityTypes.SHRAPNEL_SHELL.get()).entityDamage(30).durabilityMass(8)
+			.shrapnel(2, 0.25, 50).build(this);
+		builder(CBCEntityTypes.BAG_OF_GRAPESHOT.get()).entityDamage(0).durabilityMass(1).renderInvulnerable()
+			.accountForEntityArmor().shrapnel(5, 0.05, 25).build(this);
 
-		standardAutocannonProjectile(CBCEntityTypes.AP_AUTOCANNON.get(), 5, 6);
-		setPropertyWithSecondary(CBCEntityTypes.FLAK_AUTOCANNON.get(),2, 0,1, false, false,
-				5, 0.25, 15);
+		builder(CBCEntityTypes.AP_AUTOCANNON.get()).entityDamage(5).durabilityMass(6).accountForEntityArmor().build(this);
+		builder(CBCEntityTypes.FLAK_AUTOCANNON.get()).entityDamage(2).durabilityMass(1).accountForEntityArmor()
+			.shrapnel(5, 0.25, 15).build(this);
 
 		shrapnel(CBCEntityTypes.SHRAPNEL.get(), 1);
 		shrapnel(CBCEntityTypes.GRAPESHOT.get(), 3);
 	}
 
-	protected void standardBigCannonProjectile(EntityType<?> type, double entityDamage, double explosivePower, double durabilityMass) {
-		setProperty(type, entityDamage, explosivePower, durabilityMass, false, true);
-	}
-
-	protected void standardAutocannonProjectile(EntityType<?> type, double entityDamage, double durabilityMass) {
-		setProperty(type, entityDamage, 0, durabilityMass, false, false);
-	}
+	protected Builder builder(EntityType<?> type) { return new Builder(type); }
 
 	protected void shrapnel(EntityType<?> type, double durabilityMass) {
-		setProperty(type, 0, 0, durabilityMass, true, false);
-	}
-
-	protected void setProperty(EntityType<?> type, double entityDamage, double explosivePower, double durabilityMass,
-							   boolean renderInvulnerable, boolean ignoresEntityArmor) {
-		this.projectiles.put(type, new MunitionProperties(entityDamage, explosivePower, durabilityMass, renderInvulnerable,
-				ignoresEntityArmor, null));
-	}
-
-	protected void setPropertyWithSecondary(EntityType<?> type, double entityDamage, double explosivePower, double durabilityMass,
-											boolean renderInvulnerable, boolean ignoresEntityArmor, double secondaryEntityDamage,
-											double secondarySpread, int secondaryCount) {
-		this.projectiles.put(type, new MunitionProperties(entityDamage, explosivePower, durabilityMass, renderInvulnerable,
-				ignoresEntityArmor, new ShrapnelProperties(secondaryEntityDamage, secondarySpread, secondaryCount)));
+		builder(type).durabilityMass(durabilityMass).renderInvulnerable().accountForEntityArmor().build(this);
 	}
 
 	@Override
@@ -80,5 +62,43 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 	}
 
 	@Override public String getName() { return "Munition properties: " + this.modid; }
+
+	public static class Builder {
+		private final EntityType<?> type;
+		private double entityDamage;
+		private double explosivePower = 0;
+		private double durabilityMass;
+		private boolean renderInvulnerable = false;
+		private boolean ignoresEntityArmor = true;
+		private boolean baseFuze = false;
+		private double shrapnelDamage;
+		private double shrapnelSpread;
+		private int shrapnelCount;
+		private boolean buildShrapnel = false;
+
+		public Builder(EntityType<?> type) {
+			this.type = type;
+		}
+
+		public Builder entityDamage(double value) { this.entityDamage = value; return this; }
+		public Builder explosivePower(double value) { this.explosivePower = value; return this; }
+		public Builder durabilityMass(double value) { this.durabilityMass = value; return this; }
+		public Builder renderInvulnerable() { this.renderInvulnerable = true; return this; }
+		public Builder accountForEntityArmor() { this.ignoresEntityArmor = false; return this; }
+		public Builder baseFuze() { this.baseFuze = true; return this; }
+		public Builder shrapnel(double damage, double spread, int count) {
+			this.shrapnelDamage = damage;
+			this.shrapnelSpread = spread;
+			this.shrapnelCount = count;
+			this.buildShrapnel = true;
+			return this;
+		}
+
+		public void build(MunitionPropertiesProvider cons) {
+			cons.projectiles.put(this.type, new MunitionProperties(this.entityDamage, this.explosivePower, this.durabilityMass,
+				this.renderInvulnerable, this.ignoresEntityArmor, this.baseFuze, this.buildShrapnel ?
+				new ShrapnelProperties(this.shrapnelDamage, this.shrapnelSpread, this.shrapnelCount) : null));
+		}
+	}
 
 }
