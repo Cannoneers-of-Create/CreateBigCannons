@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,5 +20,7 @@ public class MortarStoneBlock extends ProjectileBlock {
     public AbstractCannonProjectile getProjectile(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity blockEntity) {
         return CBCEntityTypes.MORTAR_STONE.create(level);
     }
+
+	@Override public EntityType<?> getAssociatedEntityType() { return CBCEntityTypes.MORTAR_STONE.get(); }
 
 }

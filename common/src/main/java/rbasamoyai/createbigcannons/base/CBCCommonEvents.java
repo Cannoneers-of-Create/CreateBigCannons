@@ -135,6 +135,7 @@ public class CBCCommonEvents {
 
 	public static void onDatapackSync(ServerPlayer player) {
 		BlockRecipesManager.syncTo(player);
+		MunitionPropertiesHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {

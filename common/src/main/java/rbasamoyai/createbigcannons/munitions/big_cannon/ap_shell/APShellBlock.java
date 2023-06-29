@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,5 +21,7 @@ public class APShellBlock extends SimpleShellBlock {
 		projectile.setFuze(getFuze(blockEntity));
 		return projectile;
 	}
-	
+
+	@Override public EntityType<?> getAssociatedEntityType() { return CBCEntityTypes.AP_SHELL.get(); }
+
 }

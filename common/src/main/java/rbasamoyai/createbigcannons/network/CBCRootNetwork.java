@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.network;
 
+import java.util.function.Function;
+
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
@@ -8,8 +10,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
-
-import java.util.function.Function;
+import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler.ClientboundMunitionPropertiesPacket;
 
 public class CBCRootNetwork {
 
@@ -30,6 +31,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ServerboundFiringActionPacket.class, ServerboundFiringActionPacket::new);
 		addMsg(id++, ServerboundSetFireRatePacket.class, ServerboundSetFireRatePacket::new);
 		addMsg(id++, ServerboundSetFuzePacket.class, ServerboundSetFuzePacket::new);
+		addMsg(id++, ClientboundMunitionPropertiesPacket.class, ClientboundMunitionPropertiesPacket::copyOf);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {
