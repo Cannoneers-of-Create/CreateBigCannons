@@ -414,6 +414,8 @@
   "item.createbigcannons.impact_fuze.tooltip.shell_info": "Impact Chance: _%s%%_",
   "item.createbigcannons.impact_fuze.tooltip.summary": "Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact.",
   "item.createbigcannons.machine_gun_round": "Machine Gun Round",
+  "item.createbigcannons.machine_gun_round.tooltip": "MACHINE GUN ROUND",
+  "item.createbigcannons.machine_gun_round.tooltip.summary": "_Cheaper_ autocannon ammunition that is more effective against _entities._",
   "item.createbigcannons.molten_bronze_bucket": "Molten Bronze Bucket",
   "item.createbigcannons.molten_cast_iron_bucket": "Molten Cast Iron Bucket",
   "item.createbigcannons.molten_nethersteel_bucket": "Molten Nethersteel Bucket",
@@ -428,6 +430,7 @@
   "item.createbigcannons.partial_cast_iron_autocannon_breech_extractor": "Partial Cast Iron Autocannon Breech Extractor",
   "item.createbigcannons.partial_recoil_spring": "Partial Recoil Spring",
   "item.createbigcannons.partial_steel_autocannon_breech_extractor": "Partial Steel Autocannon Breech Extractor",
+  "item.createbigcannons.partially_assembled_machine_gun_round": "Partially Assembled Machine Gun Round",
   "item.createbigcannons.partially_filled_autocannon_cartridge": "Partially Filled Autocannon Cartridge",
   "item.createbigcannons.partially_formed_autocannon_cartridge": "Partially Formed Autocannon Cartridge",
   "item.createbigcannons.partially_formed_big_cartridge": "Partially Formed Big Cartridge",
@@ -472,6 +475,9 @@
   "item.createbigcannons.timed_fuze.tooltip.shell_info": "Time to Detonate: _%ss %s ticks_",
   "item.createbigcannons.timed_fuze.tooltip.shell_info.item": "Time to Detonate: %ss %s ticks",
   "item.createbigcannons.timed_fuze.tooltip.summary": "Detonates after a _set time_ from launch.",
+  "item.createbigcannons.tracer_tip": "Tracer Tip",
+  "item.createbigcannons.tracer_tip.tooltip": "TRACER TIP",
+  "item.createbigcannons.tracer_tip.tooltip.summary": "_Illuminates_ autocannon rounds, making them visible.",
   "item.createbigcannons.worm": "Worm",
   "item.createbigcannons.worm.tooltip": "WORM",
   "item.createbigcannons.worm.tooltip.action1": "Pulls munition blocks towards the end of the cannon. Can only pull one block at a time.",
@@ -491,5 +497,8 @@
   "recipe.createbigcannons.cannon_casting": "Cannon Casting",
   "recipe.createbigcannons.drill_boring": "Drill Boring",
   "recipe.createbigcannons.incomplete_cannon_blocks": "Incomplete Cannon Blocks",
-  "recipe.createbigcannons.melting": "Basin Melting"
+  "recipe.createbigcannons.melting": "Basin Melting",
+  "tooltip.createbigcannons.jei_info.added_fuze": "+ Fuze",
+  "tooltip.createbigcannons.jei_info.added_power": "+ Power",
+  "tooltip.createbigcannons.tracer": "+ Tracer"
 }

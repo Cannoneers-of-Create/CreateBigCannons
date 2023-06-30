@@ -1,0 +1,45 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:tracer_tip"
+    ]
+  },
+  "criteria": {
+    "has_glowstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "createbigcannons:dust_glowstone"
+          }
+        ]
+      }
+    },
+    "has_blaze_powder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:blaze_powder"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:tracer_tip"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_glowstone",
+      "has_blaze_powder",
+      "has_the_recipe"
+    ]
+  ]
+}

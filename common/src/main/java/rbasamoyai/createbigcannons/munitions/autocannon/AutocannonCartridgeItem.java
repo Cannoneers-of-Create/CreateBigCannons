@@ -66,4 +66,12 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 		return hasProjectile(stack) && getProjectileStack(stack).getOrCreateTag().getBoolean("Tracer");
 	}
 
+	@Override
+	public void setTracer(ItemStack stack, boolean value) {
+		if (!hasProjectile(stack)) return;
+		CompoundTag tag = stack.getOrCreateTag().getCompound("Projectile");
+		if (!tag.contains("tag", Tag.TAG_COMPOUND)) tag.put("tag", new CompoundTag());
+		tag.getCompound("tag").putBoolean("Tracer", true);
+	}
+
 }

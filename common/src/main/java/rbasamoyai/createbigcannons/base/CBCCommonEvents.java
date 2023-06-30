@@ -36,6 +36,7 @@ import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingDeployerRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationDeployerRecipe;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.multiloader.EventsPlatform;
@@ -159,8 +160,12 @@ public class CBCCommonEvents {
 			cons.accept(() -> Optional.of(new CartridgeAssemblyDeployerRecipe(deployerItem)), 25);
 		}
 		MunitionFuzingDeployerRecipe fuzingRecipe = new MunitionFuzingDeployerRecipe(containerItem, deployerItem);
-		if (fuzingRecipe.matches(container, deployer.getLevel())) { // self check really
+		if (fuzingRecipe.matches(container, deployer.getLevel())) {
 			cons.accept(() -> Optional.of(fuzingRecipe), 25);
+		}
+		TracerApplicationDeployerRecipe tracerRecipe = new TracerApplicationDeployerRecipe(containerItem, deployerItem);
+		if (tracerRecipe.matches(container, deployer.getLevel())) {
+			cons.accept(() -> Optional.of(tracerRecipe), 25);
 		}
 	}
 
