@@ -61,7 +61,6 @@ public class MunitionPropertiesHandler {
                     }
                 }
             }
-			int x = 0;
         }
     }
 
@@ -99,7 +98,7 @@ public class MunitionPropertiesHandler {
 		@Override public void rootEncode(FriendlyByteBuf buf) { writeBuf(buf); }
 
 		@Override
-		public void handle(Executor exec, PacketListener listener, @org.jetbrains.annotations.Nullable ServerPlayer sender) {
+		public void handle(Executor exec, PacketListener listener, @javax.annotation.Nullable ServerPlayer sender) {
 			if (this.buf != null) readBuf(this.buf);
 		}
 	}

@@ -83,7 +83,7 @@
     }
   },
   "createbigcannons:ap_autocannon": {
-    "entity_damage": 5.0,
+    "entity_damage": 6.0,
     "durability_mass": 6.0,
     "renders_invulnerable": false,
     "ignores_entity_armor": false,
@@ -100,6 +100,13 @@
       "spread": 0.25,
       "count": 15
     }
+  },
+  "createbigcannons:machine_gun_bullet": {
+    "entity_damage": 4.0,
+    "durability_mass": 0.1,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": false,
+    "base_fuze": false
   },
   "createbigcannons:shrapnel": {
     "entity_damage": 0.0,

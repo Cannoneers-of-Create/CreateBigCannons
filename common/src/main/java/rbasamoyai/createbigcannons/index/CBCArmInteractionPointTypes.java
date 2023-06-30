@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.index;
 
 import java.util.function.Function;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;

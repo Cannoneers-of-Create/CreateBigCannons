@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;

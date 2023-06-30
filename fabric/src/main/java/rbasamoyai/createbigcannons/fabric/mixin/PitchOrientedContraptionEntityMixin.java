@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.fabric.mixin;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;

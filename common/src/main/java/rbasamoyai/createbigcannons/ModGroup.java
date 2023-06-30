@@ -190,6 +190,8 @@ public class ModGroup {
 				CBCItems.AP_AUTOCANNON_ROUND.asStack(),
 				CBCItems.FLAK_AUTOCANNON_ROUND.get().getCreativeTabCartridgeItem(),
 				CBCItems.FLAK_AUTOCANNON_ROUND.asStack(),
+				CBCItems.MACHINE_GUN_ROUND.asStack(),
+				CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack(),
 
 				CBCItems.RECOIL_SPRING.asStack(),
 
