@@ -25,13 +25,12 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 
     @Override
     public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
-		Vec3 previous = new Vec3(entity.xo, entity.yo, entity.zo);
 		Vec3 secondPrevious = entity.getSecondPreviousPos();
 		Vec3 dir = entity.position().subtract(secondPrevious);
 		boolean flag = dir.lengthSqr() < 1e-4d;
 
 		float yaw = flag ? entity.getViewYRot(partialTicks) : (float) Math.atan2(dir.x, dir.z) * Mth.RAD_TO_DEG;
-		float pitch = flag ? entity.getViewXRot(partialTicks) : (float) Math.atan2(dir.y, dir.x) * Mth.RAD_TO_DEG;
+		float pitch = flag ? entity.getViewXRot(partialTicks) : (float) Math.atan2(dir.y, dir.horizontalDistance()) * Mth.RAD_TO_DEG;
         Quaternion q = Vector3f.YP.rotationDegrees(yaw + 180.0f);
         Quaternion q1 = Vector3f.XP.rotationDegrees(pitch);
         q.mul(q1);
