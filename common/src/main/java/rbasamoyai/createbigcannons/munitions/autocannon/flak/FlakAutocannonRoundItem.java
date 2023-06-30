@@ -47,7 +47,7 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 					.add(new TextComponent(" "))
 					.add(fuze.getDisplayName().copy())
 					.addTo(tooltip);
-            if (flag.isAdvanced() && fuze.getItem() instanceof FuzeItem) {
+            if (fuze.getItem() instanceof FuzeItem) {
                 List<Component> subTooltip = new ArrayList<>();
                 fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
 				subTooltip.replaceAll(sibling -> new TextComponent("  ").append(sibling).withStyle(ChatFormatting.GRAY));

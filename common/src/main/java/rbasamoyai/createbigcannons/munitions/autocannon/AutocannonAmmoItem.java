@@ -10,6 +10,7 @@ public interface AutocannonAmmoItem {
 	@Nullable AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level);
 
 	boolean isTracer(ItemStack stack);
+	void setTracer(ItemStack stack, boolean value);
 
 	ItemStack getSpentItem(ItemStack stack);
 

@@ -53,8 +53,8 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
-import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
 
 public class CannonCarriageEntity extends Entity implements ControlPitchContraption {
@@ -156,7 +156,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			&& this.cannonContraption != null
 			&& this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
 			if (this.getControllingPassenger() instanceof Player player && cannon instanceof ItemCannon itemCannon) {
-				ItemStack stack = getValidStack(player, CBCItems.AUTOCANNON_CARTRIDGE::isIn);
+				ItemStack stack = getValidStack(player, s -> s.getItem() instanceof AutocannonAmmoItem);
 				ItemStack result = itemCannon.insertItemIntoCannon(stack, false);
 				if (!player.isCreative() && stack.getCount() != result.getCount()) {
 					stack.setCount(result.getCount());

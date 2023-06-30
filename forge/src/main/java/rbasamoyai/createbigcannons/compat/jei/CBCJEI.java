@@ -128,11 +128,13 @@ public class CBCJEI implements IModPlugin {
 		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getFuzingRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getAutocannonRoundRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getBigCartridgeFillingRecipe());
+		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getTracerRecipes());
 
 		RecipeType<DeployerApplicationRecipe> deployingType = new RecipeType<>(Create.asResource("deploying"), DeployerApplicationRecipe.class);
 		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getFuzingDeployerRecipes());
 		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getAutocannonRoundDeployerRecipes());
 		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getBigCartridgeDeployerRecipe());
+		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getTracerDeployerRecipes());
 	}
 
 	@Override

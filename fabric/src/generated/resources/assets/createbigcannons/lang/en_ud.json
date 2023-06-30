@@ -414,6 +414,8 @@
   "item.createbigcannons.impact_fuze.tooltip.shell_info": "\u203E%s%%\u203E :\u01DD\u0254u\u0250\u0265\u0186 \u0287\u0254\u0250d\u026FI",
   "item.createbigcannons.impact_fuze.tooltip.summary": "\u02D9\u0287\u0254\u0250d\u026F\u0131 uo \u01DD\u0287\u0250uo\u0287\u01DDp s\u028E\u0250\u028D\u05DF\u0250 \u0287ou s\u01DDop \u0287\u0131 '\u203E\u028E\u0287\u0131\u0254\u0131\u05DFd\u026F\u0131s\u203E s\u0287\u0131 o\u0287 \u01DDn\u15E1 \u02D9\u203Ebu\u0131\u0265\u0287\u01DD\u026Fos s\u0287\u0131\u0265\u203E \u01DD\u05DF\u0131\u0287\u0254\u01DD\u0638o\u0279d \u01DD\u0265\u0287 u\u01DD\u0265\u028D s\u01DD\u0287\u0250uo\u0287\u01DD\u15E1",
   "item.createbigcannons.machine_gun_round": "puno\u1D1A un\u2141 \u01DDu\u0131\u0265\u0254\u0250W",
+  "item.createbigcannons.machine_gun_round.tooltip": "\u15E1N\u2229O\u1D1A N\u2229\u2141 \u018ENIH\u0186\u2C6FW",
+  "item.createbigcannons.machine_gun_round.tooltip.summary": "\u203E\u02D9s\u01DD\u0131\u0287\u0131\u0287u\u01DD\u203E \u0287su\u0131\u0250b\u0250 \u01DD\u028C\u0131\u0287\u0254\u01DD\u025F\u025F\u01DD \u01DD\u0279o\u026F s\u0131 \u0287\u0250\u0265\u0287 uo\u0131\u0287\u0131un\u026F\u026F\u0250 uouu\u0250\u0254o\u0287n\u0250 \u203E\u0279\u01DDd\u0250\u01DD\u0265\u0186\u203E",
   "item.createbigcannons.molten_bronze_bucket": "\u0287\u01DD\u029E\u0254n\u15FA \u01DDzuo\u0279\u15FA u\u01DD\u0287\u05DFoW",
   "item.createbigcannons.molten_cast_iron_bucket": "\u0287\u01DD\u029E\u0254n\u15FA uo\u0279I \u0287s\u0250\u0186 u\u01DD\u0287\u05DFoW",
   "item.createbigcannons.molten_nethersteel_bucket": "\u0287\u01DD\u029E\u0254n\u15FA \u05DF\u01DD\u01DD\u0287s\u0279\u01DD\u0265\u0287\u01DDN u\u01DD\u0287\u05DFoW",
@@ -428,6 +430,7 @@
   "item.createbigcannons.partial_cast_iron_autocannon_breech_extractor": "\u0279o\u0287\u0254\u0250\u0279\u0287x\u018E \u0265\u0254\u01DD\u01DD\u0279\u15FA uouu\u0250\u0254o\u0287n\u2C6F uo\u0279I \u0287s\u0250\u0186 \u05DF\u0250\u0131\u0287\u0279\u0250\u0500",
   "item.createbigcannons.partial_recoil_spring": "bu\u0131\u0279dS \u05DF\u0131o\u0254\u01DD\u1D1A \u05DF\u0250\u0131\u0287\u0279\u0250\u0500",
   "item.createbigcannons.partial_steel_autocannon_breech_extractor": "\u0279o\u0287\u0254\u0250\u0279\u0287x\u018E \u0265\u0254\u01DD\u01DD\u0279\u15FA uouu\u0250\u0254o\u0287n\u2C6F \u05DF\u01DD\u01DD\u0287S \u05DF\u0250\u0131\u0287\u0279\u0250\u0500",
+  "item.createbigcannons.partially_assembled_machine_gun_round": "puno\u1D1A un\u2141 \u01DDu\u0131\u0265\u0254\u0250W p\u01DD\u05DFq\u026F\u01DDss\u2C6F \u028E\u05DF\u05DF\u0250\u0131\u0287\u0279\u0250\u0500",
   "item.createbigcannons.partially_filled_autocannon_cartridge": "\u01DDbp\u0131\u0279\u0287\u0279\u0250\u0186 uouu\u0250\u0254o\u0287n\u2C6F p\u01DD\u05DF\u05DF\u0131\u2132 \u028E\u05DF\u05DF\u0250\u0131\u0287\u0279\u0250\u0500",
   "item.createbigcannons.partially_formed_autocannon_cartridge": "\u01DDbp\u0131\u0279\u0287\u0279\u0250\u0186 uouu\u0250\u0254o\u0287n\u2C6F p\u01DD\u026F\u0279o\u2132 \u028E\u05DF\u05DF\u0250\u0131\u0287\u0279\u0250\u0500",
   "item.createbigcannons.partially_formed_big_cartridge": "\u01DDbp\u0131\u0279\u0287\u0279\u0250\u0186 b\u0131\u15FA p\u01DD\u026F\u0279o\u2132 \u028E\u05DF\u05DF\u0250\u0131\u0287\u0279\u0250\u0500",
@@ -472,6 +475,9 @@
   "item.createbigcannons.timed_fuze.tooltip.shell_info": "\u203Es\u029E\u0254\u0131\u0287 %s %ss\u203E :\u01DD\u0287\u0250uo\u0287\u01DD\u15E1 o\u0287 \u01DD\u026F\u0131\u27D8",
   "item.createbigcannons.timed_fuze.tooltip.shell_info.item": "s\u029E\u0254\u0131\u0287 %s %ss :\u01DD\u0287\u0250uo\u0287\u01DD\u15E1 o\u0287 \u01DD\u026F\u0131\u27D8",
   "item.createbigcannons.timed_fuze.tooltip.summary": "\u02D9\u0265\u0254un\u0250\u05DF \u026Fo\u0279\u025F \u203E\u01DD\u026F\u0131\u0287 \u0287\u01DDs\u203E \u0250 \u0279\u01DD\u0287\u025F\u0250 s\u01DD\u0287\u0250uo\u0287\u01DD\u15E1",
+  "item.createbigcannons.tracer_tip": "d\u0131\u27D8 \u0279\u01DD\u0254\u0250\u0279\u27D8",
+  "item.createbigcannons.tracer_tip.tooltip": "\u0500I\u27D8 \u1D1A\u018E\u0186\u2C6F\u1D1A\u27D8",
+  "item.createbigcannons.tracer_tip.tooltip.summary": "\u02D9\u01DD\u05DFq\u0131s\u0131\u028C \u026F\u01DD\u0265\u0287 bu\u0131\u029E\u0250\u026F 'spuno\u0279 uouu\u0250\u0254o\u0287n\u0250 \u203Es\u01DD\u0287\u0250u\u0131\u026Fn\u05DF\u05DFI\u203E",
   "item.createbigcannons.worm": "\u026F\u0279oM",
   "item.createbigcannons.worm.tooltip": "W\u1D1AOM",
   "item.createbigcannons.worm.tooltip.action1": "\u02D9\u01DD\u026F\u0131\u0287 \u0250 \u0287\u0250 \u029E\u0254o\u05DFq \u01DDuo \u05DF\u05DFnd \u028E\u05DFuo u\u0250\u0186 \u02D9uouu\u0250\u0254 \u01DD\u0265\u0287 \u025Fo pu\u01DD \u01DD\u0265\u0287 sp\u0279\u0250\u028Do\u0287 s\u029E\u0254o\u05DFq uo\u0131\u0287\u0131un\u026F s\u05DF\u05DFn\u0500",
@@ -491,5 +497,8 @@
   "recipe.createbigcannons.cannon_casting": "bu\u0131\u0287s\u0250\u0186 uouu\u0250\u0186",
   "recipe.createbigcannons.drill_boring": "bu\u0131\u0279o\u15FA \u05DF\u05DF\u0131\u0279\u15E1",
   "recipe.createbigcannons.incomplete_cannon_blocks": "s\u029E\u0254o\u05DF\u15FA uouu\u0250\u0186 \u01DD\u0287\u01DD\u05DFd\u026Fo\u0254uI",
-  "recipe.createbigcannons.melting": "bu\u0131\u0287\u05DF\u01DDW u\u0131s\u0250\u15FA"
+  "recipe.createbigcannons.melting": "bu\u0131\u0287\u05DF\u01DDW u\u0131s\u0250\u15FA",
+  "tooltip.createbigcannons.jei_info.added_fuze": "\u01DDzn\u2132 +",
+  "tooltip.createbigcannons.jei_info.added_power": "\u0279\u01DD\u028Do\u0500 +",
+  "tooltip.createbigcannons.tracer": "\u0279\u01DD\u0254\u0250\u0279\u27D8 +"
 }

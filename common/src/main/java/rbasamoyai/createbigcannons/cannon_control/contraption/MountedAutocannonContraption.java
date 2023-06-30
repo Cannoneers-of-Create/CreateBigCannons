@@ -308,9 +308,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		float recoilMagnitude = barrelTravelled;
 
-		boolean isTracer = this.count == 0;
-		this.count = ++this.count % 3;
-//		boolean isTracer = round.isTracer(foundProjectile);
+		boolean isTracer = round.isTracer(foundProjectile);
 
 		AbstractAutocannonProjectile projectile = round.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {
