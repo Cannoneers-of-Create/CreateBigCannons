@@ -17,9 +17,12 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
+import javax.annotation.Nullable;
+
 public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
 
 	protected int ageRemaining;
+	@Nullable protected Vec3 secondPreviousPos;
 
 	protected AbstractAutocannonProjectile(EntityType<? extends AbstractAutocannonProjectile> type, Level level) {
 		super(type, level);
@@ -48,12 +51,18 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	@Override
 	public void tick() {
+		this.secondPreviousPos = this.firstTick ? this.position() : new Vec3(this.xo, this.yo, this.zo);
+
 		super.tick();
 
 		if (!this.level.isClientSide && this.level.hasChunkAt(this.blockPosition())) {
 			this.ageRemaining--;
 			if (this.ageRemaining <= 0) this.expireProjectile();
 		}
+	}
+
+	public Vec3 getSecondPreviousPos() {
+		return this.secondPreviousPos == null ? new Vec3(this.xo, this.yo, this.zo) : this.secondPreviousPos;
 	}
 
 	protected void expireProjectile() {

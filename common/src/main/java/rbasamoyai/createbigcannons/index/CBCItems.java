@@ -17,6 +17,7 @@ import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRoundItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.config.InspectResistanceToolItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
@@ -140,6 +141,14 @@ public class CBCItems {
 
 	public static final ItemEntry<FlakAutocannonRoundItem> FLAK_AUTOCANNON_ROUND = REGISTRATE
 		.item("flak_autocannon_round", FlakAutocannonRoundItem::new)
+		.register();
+
+	public static final ItemEntry<MachineGunRoundItem> MACHINE_GUN_ROUND = REGISTRATE
+		.item("machine_gun_round", MachineGunRoundItem::new)
+		.register();
+
+	public static final ItemEntry<Item> EMPTY_MACHINE_GUN_ROUND = REGISTRATE
+		.item("empty_machine_gun_round", Item::new)
 		.register();
 
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE

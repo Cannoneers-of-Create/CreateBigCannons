@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.fabric.crafting;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.foundation.fluid.FluidHelper;

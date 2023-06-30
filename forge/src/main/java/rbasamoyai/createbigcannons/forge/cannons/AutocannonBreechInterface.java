@@ -3,9 +3,9 @@ package rbasamoyai.createbigcannons.forge.cannons;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 
 public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity breech) implements IItemHandler {
 	@Override
@@ -13,7 +13,7 @@ public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity bree
 		return 2;
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 		return switch (slot) {
@@ -23,9 +23,9 @@ public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity bree
 		};
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
-	public ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate) {
+	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
 		if (slot != 1 || !this.isItemValid(slot, stack) || this.breech.isInputFull()) return stack;
 		int maxCount = Math.min(this.breech.getQueueLimit() - this.breech.getInputBuffer().size(), stack.getCount());
 		if (!simulate) {
@@ -36,7 +36,7 @@ public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity bree
 		return stack.getCount() == maxCount ? ItemStack.EMPTY : ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - maxCount);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
 		if (amount <= 0) return ItemStack.EMPTY;
@@ -53,7 +53,7 @@ public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity bree
 	}
 
 	@Override
-	public boolean isItemValid(int slot, @NotNull ItemStack stack) {
-		return stack.getItem() instanceof AutocannonCartridgeItem;
+	public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+		return stack.getItem() instanceof AutocannonAmmoItem;
 	}
 }

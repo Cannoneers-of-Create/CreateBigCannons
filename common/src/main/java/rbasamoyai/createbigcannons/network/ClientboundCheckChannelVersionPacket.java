@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.network;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
 import java.util.concurrent.Executor;

@@ -9,7 +9,7 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
@@ -50,9 +50,7 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
             if (flag.isAdvanced() && fuze.getItem() instanceof FuzeItem) {
                 List<Component> subTooltip = new ArrayList<>();
                 fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
-                for (int i = 0; i < subTooltip.size(); ++i) {
-                    subTooltip.set(i, new TextComponent("  ").append(subTooltip.get(i)).withStyle(ChatFormatting.GRAY));
-                }
+				subTooltip.replaceAll(sibling -> new TextComponent("  ").append(sibling).withStyle(ChatFormatting.GRAY));
                 tooltip.addAll(subTooltip);
             }
 		}

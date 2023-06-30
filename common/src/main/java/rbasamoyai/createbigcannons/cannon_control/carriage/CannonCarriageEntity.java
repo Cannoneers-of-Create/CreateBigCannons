@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.cannon_control.carriage;
 
 import java.util.function.Predicate;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.mojang.math.Vector4f;
 import com.simibubi.create.AllItems;

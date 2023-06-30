@@ -40,9 +40,10 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 		builder(CBCEntityTypes.BAG_OF_GRAPESHOT.get()).entityDamage(0).durabilityMass(1).renderInvulnerable()
 			.accountForEntityArmor().shrapnel(5, 0.05, 25).build(this);
 
-		builder(CBCEntityTypes.AP_AUTOCANNON.get()).entityDamage(5).durabilityMass(6).accountForEntityArmor().build(this);
+		builder(CBCEntityTypes.AP_AUTOCANNON.get()).entityDamage(6).durabilityMass(6).accountForEntityArmor().build(this);
 		builder(CBCEntityTypes.FLAK_AUTOCANNON.get()).entityDamage(2).durabilityMass(1).accountForEntityArmor()
 			.shrapnel(5, 0.25, 15).build(this);
+		builder(CBCEntityTypes.MACHINE_GUN_BULLET.get()).entityDamage(4).durabilityMass(0.1).accountForEntityArmor().build(this);
 
 		shrapnel(CBCEntityTypes.SHRAPNEL.get(), 1);
 		shrapnel(CBCEntityTypes.GRAPESHOT.get(), 3);

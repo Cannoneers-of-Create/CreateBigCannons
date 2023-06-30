@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import rbasamoyai.createbigcannons.base.LazySupplier;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
@@ -36,11 +36,11 @@ import java.util.List;
  * Copy of {@link com.tterrag.registrate.builders.FluidBuilder} to work with multiloader fluid impl
  */
 public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends AbstractBuilder<Fluid, T, P, FluidBuilder<T, P>> {
-	
+
 	public static <P> FluidBuilder<CBCFlowingFluid.Flowing, P> create(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture) {
 		return create(owner, parent, name, callback, stillTexture, flowingTexture, CBCFlowingFluid.Flowing::new);
 	}
-	
+
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> create(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
 			NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
 		FluidBuilder<T, P> ret = IndexPlatform.createFluidBuilder(owner, parent, name, callback, stillTexture, flowingTexture, factory)
@@ -74,7 +74,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		this.properties = p -> p.bucket(() -> owner.get(bucketName, Registry.ITEM_REGISTRY).get())
 				.block(() -> owner.<Block, LiquidBlock>get(name, Registry.BLOCK_REGISTRY).get());
 	}
-	
+
 	public FluidBuilder<T, P> properties(NonNullConsumer<CBCFlowingFluid.Properties> cons) {
 		properties = properties.andThen(cons);
 		return this;

@@ -10,13 +10,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutocannonCartridgeItem extends Item {
+public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem {
 
     public AutocannonCartridgeItem(Properties properties) {
         super(properties);
@@ -39,12 +39,10 @@ public class AutocannonCartridgeItem extends Item {
         }
     }
 
-    public ItemStack getEmptyCartridge(ItemStack stack) {
-        return CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack();
-    }
+	@Override public ItemStack getSpentItem(ItemStack stack) { return CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(); }
 
-    @Nullable
-    public static AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
+	@Nullable
+    public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
         ItemStack projectileStack = getProjectileStack(stack);
         return projectileStack.getItem() instanceof AutocannonRoundItem projectileItem ? projectileItem.getAutocannonProjectile(projectileStack, level) : null;
     }
@@ -62,5 +60,10 @@ public class AutocannonCartridgeItem extends Item {
             cartridge.getOrCreateTag().put("Projectile", round.save(new CompoundTag()));
         }
     }
+
+	@Override
+	public boolean isTracer(ItemStack stack) {
+		return hasProjectile(stack) && getProjectileStack(stack).getOrCreateTag().getBoolean("Tracer");
+	}
 
 }

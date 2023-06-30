@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;

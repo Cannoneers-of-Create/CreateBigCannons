@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.forge.mixin;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -27,9 +27,9 @@ public abstract class CannonMountMixin extends KineticBlockEntity {
 	@Shadow
 	protected PitchOrientedContraptionEntity mountedContraption;
 
-	@NotNull
+	@Nonnull
 	@Override
-	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && this.mountedContraption != null) {
 			return this.mountedContraption.getCapability(cap, side).cast();
 		}
