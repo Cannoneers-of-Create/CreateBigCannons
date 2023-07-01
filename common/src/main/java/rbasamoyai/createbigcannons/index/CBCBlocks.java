@@ -923,7 +923,7 @@ public class CBCBlocks {
 		.properties(p -> p.strength(2.0f, 3.0f))
 		.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 		.transform(axeOrPickaxe())
-		.transform(CBCBuilderTransformers.projectileLegacy("projectile/solid_shot"))
+		.transform(CBCBuilderTransformers.projectile("projectile/solid_shot"))
 		.simpleItem()
 		.register();
 
@@ -931,7 +931,7 @@ public class CBCBlocks {
 		.block("he_shell", HEShellBlock::new)
 		.transform(shell(MaterialColor.COLOR_RED))
 		.transform(axeOrPickaxe())
-		.transform(CBCBuilderTransformers.projectileLegacy("projectile/he_shell"))
+		.transform(CBCBuilderTransformers.projectile("projectile/he_shell"))
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("High Explosive (HE) Shell")
 		.simpleItem()
@@ -941,7 +941,7 @@ public class CBCBlocks {
 		.block("shrapnel_shell", ShrapnelShellBlock::new)
 		.transform(shell(MaterialColor.COLOR_GREEN))
 		.transform(axeOrPickaxe())
-		.transform(CBCBuilderTransformers.projectileLegacy("projectile/shrapnel_shell"))
+		.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
 		.loot(CBCBuilderTransformers.shellLoot())
 		.simpleItem()
 		.register();
@@ -950,7 +950,7 @@ public class CBCBlocks {
 		.block("ap_shot", APShotBlock::new)
 		.transform(shell(MaterialColor.COLOR_LIGHT_GRAY))
 		.transform(axeOrPickaxe())
-		.transform(CBCBuilderTransformers.projectileLegacy("projectile/ap_shot"))
+		.transform(CBCBuilderTransformers.projectile("projectile/ap_shot"))
 		.lang("Armor Piercing (AP) Shot")
 		.simpleItem()
 		.register();
@@ -972,7 +972,7 @@ public class CBCBlocks {
 		.block("ap_shell", APShellBlock::new)
 		.transform(shell(MaterialColor.COLOR_BLUE))
 		.transform(axeOrPickaxe())
-		.transform(CBCBuilderTransformers.projectileLegacy("projectile/ap_shell"))
+		.transform(CBCBuilderTransformers.projectile("projectile/ap_shell"))
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("Armor Piercing (AP) Shell")
 		.simpleItem()
@@ -982,7 +982,7 @@ public class CBCBlocks {
 		.block("fluid_shell", FluidShellBlock::new)
 		.transform(shell(MaterialColor.COLOR_ORANGE))
 		.transform(axeOrPickaxe())
-		.transform(CBCBuilderTransformers.projectileLegacy("projectile/fluid_shell"))
+		.transform(CBCBuilderTransformers.projectile("projectile/fluid_shell"))
 		.loot(CBCBuilderTransformers.shellLoot(f -> f.copy("FluidContent", "BlockEntityTag.FluidContent")))
 		.simpleItem()
 		.register();
@@ -1010,6 +1010,14 @@ public class CBCBlocks {
 		.initialProperties(SharedProperties::stone)
 		.transform(CBCBuilderTransformers.projectileLegacy("projectile/mortar_stone"))
 		.item(MortarStoneItem::new).build()
+		.register();
+
+	public static final BlockEntry<Block> MORTAR_STONE_PROJECTILE = REGISTRATE
+		.block("mortar_stone_projectile", Block::new)
+		.initialProperties(SharedProperties::stone)
+		.properties(p -> p.noOcclusion())
+		.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/mortar_stone_projectile"))))
+		.simpleItem()
 		.register();
 
 	public static final BlockEntry<PowderChargeBlock> POWDER_CHARGE = REGISTRATE

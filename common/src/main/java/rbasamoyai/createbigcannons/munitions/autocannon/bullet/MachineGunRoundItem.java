@@ -39,7 +39,7 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 	@Override public ItemStack getSpentItem(ItemStack stack) { return CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack(); }
 
 	@Override
-	public void appendHoverText(ItemStack stack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
 		if (stack.getOrCreateTag().getBoolean("Tracer")) {
 			Lang.builder("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);

@@ -1,8 +1,9 @@
 {
-  "parent": "createbigcannons:block/standard_projectile_block",
+  "parent": "createbigcannons:block/projectile_block",
   "textures": {
     "side": "createbigcannons:block/projectile/solid_shot",
     "top": "createbigcannons:block/projectile/solid_shot_top",
-    "particle": "createbigcannons:block/projectile/solid_shot_top"
+    "particle": "createbigcannons:block/projectile/solid_shot_top",
+    "bottom": "createbigcannons:block/projectile/solid_shot_bottom"
   }
 }

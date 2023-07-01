@@ -123,6 +123,7 @@
   "block.createbigcannons.mortar_stone.tooltip.maximumCharges": "Maximum Powder Charges",
   "block.createbigcannons.mortar_stone.tooltip.maximumCharges.value": "This mortar stone can handle up to _%s Powder Charges_ (or equivalent) before breaking.",
   "block.createbigcannons.mortar_stone.tooltip.summary": "Powerful stone that _explodes on impact._ _Flies further_ than other projectiles. Good for attacking _walls and fortifications._ _Cannot be fuzed and detonated._ Will _break_ if too many Powder Charges are used.",
+  "block.createbigcannons.mortar_stone_projectile": "Mortar Stone Projectile",
   "block.createbigcannons.nethersteel_block": "Block of Nethersteel",
   "block.createbigcannons.nethersteel_cannon_barrel": "Nethersteel Cannon Barrel",
   "block.createbigcannons.nethersteel_cannon_chamber": "Nethersteel Cannon Chamber",
