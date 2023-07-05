@@ -20,11 +20,13 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "hasIncompleteCannonBlocks", "Cannon block at [%s, %s, %s] has not finished the crafting process");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "noAutocannonBreech", "This cannon requires an autocannon breech to fire");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
-		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "player", "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
-		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "player", "%s was blown out by grapeshot");
-		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("cannon_projectile"), "player", "%s was vaporized by %s");
-		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("traffic_cone"), "player", "%s was struck from heaven above");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("cannon_projectile"), "%s was hit with artillery fire");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("big_cannon_projectile"), "%s was directly killed by a large caliber round");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("machine_gun_fire"), "%s was punctured by machine gun fire");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("machine_gun_fire"), "in_water", "%s was filled with holes by machine gun fire and the sea round them turned pink");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("traffic_cone"), "%s was struck from heaven above");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("molten_metal"), "%s burned in molten metal");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("molten_metal"), "player", "%s burned in molten metal");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %ss %s ticks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.distance", "Detonation Distance: %s blocks");

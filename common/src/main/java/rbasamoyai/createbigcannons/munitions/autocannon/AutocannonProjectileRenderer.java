@@ -46,8 +46,8 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 
 		// TODO: config tracer color per projectile?
 		VertexConsumer vcons = buffers.getBuffer(RenderType.entityCutout(CreateBigCannons.resource("textures/entity/tracer.png")));
-		renderBox(vcons, pose, normal, 255, 216, 0, len, 1 / 16f);
-		renderBoxInverted(vcons, pose, normal, 255, 80, 0, len, 1.5f / 16f);
+		renderBox(vcons, pose, normal, 255, 216, 0, len, 1 / 32f);
+		renderBoxInverted(vcons, pose, normal, 255, 80, 0, len, 1.5f / 32f);
 
         poseStack.popPose();
         super.render(entity, entityYaw, partialTicks, poseStack, buffers, packedLight);

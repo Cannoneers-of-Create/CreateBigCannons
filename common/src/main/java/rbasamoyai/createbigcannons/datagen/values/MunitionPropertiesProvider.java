@@ -27,7 +27,7 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 	@Override
 	protected void generateData() {
 		builder(CBCEntityTypes.SHOT.get()).entityDamage(30).durabilityMass(10).build(this);
-		builder(CBCEntityTypes.HE_SHELL.get()).entityDamage(30).explosivePower(8).explosivePower(8).build(this);
+		builder(CBCEntityTypes.HE_SHELL.get()).entityDamage(30).explosivePower(8).durabilityMass(8).build(this);
 		builder(CBCEntityTypes.AP_SHOT.get()).entityDamage(50).durabilityMass(30).build(this);
 		builder(CBCEntityTypes.TRAFFIC_CONE.get()).entityDamage(100).durabilityMass(36).build(this);
 		builder(CBCEntityTypes.AP_SHELL.get()).entityDamage(50).explosivePower(5).durabilityMass(20).baseFuze().build(this);
