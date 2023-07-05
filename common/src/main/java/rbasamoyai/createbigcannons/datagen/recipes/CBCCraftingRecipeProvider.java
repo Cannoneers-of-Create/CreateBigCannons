@@ -63,7 +63,7 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy(getHasName(CBCItems.IMPACT_FUZE.get()), has(CBCItems.IMPACT_FUZE.get()))
 			.save(cons);
 
-		ShapelessRecipeBuilder.shapeless(CBCItems.TRACER_TIP.get())
+		ShapelessRecipeBuilder.shapeless(CBCItems.TRACER_TIP.get(), 4)
 			.requires(CBCTags.ItemCBC.DUST_GLOWSTONE).requires(Items.BLAZE_POWDER)
 			.unlockedBy("has_glowstone", has(CBCTags.ItemCBC.DUST_GLOWSTONE))
 			.unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))
