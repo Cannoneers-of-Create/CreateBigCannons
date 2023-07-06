@@ -17,8 +17,8 @@ public class CannonLoaderGen extends SpecialBlockStateGen {
 	public <T extends Block> ModelFile getModel(DataGenContext<Block, T> context, RegistrateBlockstateProvider provider, BlockState state) {
 		boolean axisAlongFirst = state.getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
 		boolean rotated = state.getValue(CannonLoaderBlock.FACING).getAxis() == Direction.Axis.X ^ axisAlongFirst;
-		int suf = (state.getValue(CannonLoaderBlock.MOVING) ? 0 : 1) | (rotated ? 0 : 2);
-		return provider.models().getExistingFile(CreateBigCannons.resource("block/cannon_loader" + suf));
+		String suf = (state.getValue(CannonLoaderBlock.MOVING) ? "moving" : "stopped") + (rotated ? "_rotated" : "");
+		return provider.models().getExistingFile(CreateBigCannons.resource("block/cannon_loader/" + suf));
 	}
 
 	@Override
