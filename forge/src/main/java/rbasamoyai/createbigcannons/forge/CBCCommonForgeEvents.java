@@ -12,7 +12,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
-import rbasamoyai.createbigcannons.forge.events.OnCannonBreakBlockImpl;
 
 public class CBCCommonForgeEvents {
 
@@ -25,13 +24,15 @@ public class CBCCommonForgeEvents {
 		forgeEventBus.addListener(CBCCommonForgeEvents::onDatapackSync);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onAddReloadListeners);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onDeployerRecipeSearch);
-
-		forgeEventBus.register(OnCannonBreakBlockImpl.class);
 	}
 
 	public static void onServerWorldTick(TickEvent.WorldTickEvent evt) {
-		if (evt.phase == TickEvent.Phase.START) return;
-		if (evt.side == LogicalSide.CLIENT) return;
+		if (evt.phase == TickEvent.Phase.START) {
+			return;
+		}
+		if (evt.side == LogicalSide.CLIENT) {
+			return;
+		}
 		CBCCommonEvents.serverLevelTickEnd(evt.world);
 	}
 
@@ -40,7 +41,9 @@ public class CBCCommonForgeEvents {
 	}
 
 	public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent evt) {
-		if (evt.getPlayer() instanceof ServerPlayer player) CBCCommonEvents.onPlayerLogin(player);
+		if (evt.getPlayer() instanceof ServerPlayer player) {
+			CBCCommonEvents.onPlayerLogin(player);
+		}
 	}
 
 	public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent evt) {

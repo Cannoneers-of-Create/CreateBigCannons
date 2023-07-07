@@ -1,6 +1,9 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
+import javax.annotation.Nullable;
+
 import com.mojang.math.Constants;
+
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
@@ -10,10 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import javax.annotation.Nullable;
-
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.CBCCommonEvents;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
@@ -60,7 +60,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		this.setProjectileMass((float) Math.max(startMass - hardness, 0));
 		this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
 
-		CBCCommonEvents.onCannonBreakBlock(this.level, result.getBlockPos().immutable());
+		if (!level.isClientSide()) level.destroyBlock(result.getBlockPos(), false);
 	}
 
 	@Override
