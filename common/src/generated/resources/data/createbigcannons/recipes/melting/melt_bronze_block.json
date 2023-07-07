@@ -1,0 +1,24 @@
+{
+  "type": "createbigcannons:melting",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:block_bronze"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "createbigcannons:molten_bronze",
+      "amount": 65610
+    }
+  ],
+  "processingTime": 1620,
+  "heatRequirement": "heated",
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:item_tags_populated",
+      "values": [
+        "createbigcannons:block_bronze"
+      ]
+    }
+  ]
+}

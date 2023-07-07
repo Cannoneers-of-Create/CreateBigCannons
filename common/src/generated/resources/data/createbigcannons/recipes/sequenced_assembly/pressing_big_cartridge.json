@@ -1,0 +1,33 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "createbigcannons:big_cartridge_sheet"
+  },
+  "transitionalItem": {
+    "item": "createbigcannons:partially_formed_big_cartridge"
+  },
+  "sequence": [
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "createbigcannons:partially_formed_big_cartridge"
+        }
+      ],
+      "results": [
+        {
+          "item": "createbigcannons:partially_formed_big_cartridge"
+        }
+      ]
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:big_cartridge",
+      "nbt": {
+        "Power": 0
+      }
+    }
+  ],
+  "loops": 5
+}

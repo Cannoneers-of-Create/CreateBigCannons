@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "cast_iron_ingot",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "createbigcannons:cast_iron_nugget"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:cast_iron_ingot"
+  }
+}

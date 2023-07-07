@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:basin_foundry_lid"
+    ]
+  },
+  "criteria": {
+    "has_basin": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "create:basin"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:basin_foundry_lid"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_basin",
+      "has_the_recipe"
+    ]
+  ]
+}

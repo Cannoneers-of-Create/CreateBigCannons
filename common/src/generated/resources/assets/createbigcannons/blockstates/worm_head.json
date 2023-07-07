@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "facing=down,waterlogged=false": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 180
+    },
+    "facing=up,waterlogged=false": {
+      "model": "createbigcannons:block/worm_head"
+    },
+    "facing=north,waterlogged=false": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 90
+    },
+    "facing=south,waterlogged=false": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,waterlogged=false": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,waterlogged=false": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,waterlogged=true": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 180
+    },
+    "facing=up,waterlogged=true": {
+      "model": "createbigcannons:block/worm_head"
+    },
+    "facing=north,waterlogged=true": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 90
+    },
+    "facing=south,waterlogged=true": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,waterlogged=true": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,waterlogged=true": {
+      "model": "createbigcannons:block/worm_head",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

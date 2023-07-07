@@ -76,6 +76,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell.SmokeShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlockItem;
@@ -986,11 +987,20 @@ public class CBCBlocks {
 		.simpleItem()
 		.register();
 
+	public static final BlockEntry<SmokeShellBlock> SMOKE_SHELL = REGISTRATE
+		.block("smoke_shell", SmokeShellBlock::new)
+		.transform(shell(MaterialColor.COLOR_LIGHT_BLUE))
+		.transform(axeOrPickaxe())
+		.transform(CBCBuilderTransformers.projectile("projectile/smoke_shell"))
+		.loot(CBCBuilderTransformers.shellLoot())
+		.simpleItem()
+		.register();
+
 	public static final BlockEntry<GrapeshotBlock> BAG_OF_GRAPESHOT = REGISTRATE
 		.block("bag_of_grapeshot", GrapeshotBlock::new)
 		.initialProperties(Material.METAL, MaterialColor.WOOL)
 		.properties(p -> p.sound(SoundType.WOOL))
-		.transform(CBCBuilderTransformers.projectile("projectile/grapeshot"))
+		.transform(CBCBuilderTransformers.projectileLegacy("projectile/grapeshot"))
 		.lang("Bag of Grapeshot")
 		.simpleItem()
 		.register();
@@ -998,8 +1008,16 @@ public class CBCBlocks {
 	public static final BlockEntry<MortarStoneBlock> MORTAR_STONE = REGISTRATE
 		.block("mortar_stone", MortarStoneBlock::new)
 		.initialProperties(SharedProperties::stone)
-		.transform(CBCBuilderTransformers.projectile("projectile/mortar_stone"))
+		.transform(CBCBuilderTransformers.projectileLegacy("projectile/mortar_stone"))
 		.item(MortarStoneItem::new).build()
+		.register();
+
+	public static final BlockEntry<Block> MORTAR_STONE_PROJECTILE = REGISTRATE
+		.block("mortar_stone_projectile", Block::new)
+		.initialProperties(SharedProperties::stone)
+		.properties(p -> p.noOcclusion())
+		.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/mortar_stone_projectile"))))
+		.simpleItem()
 		.register();
 
 	public static final BlockEntry<PowderChargeBlock> POWDER_CHARGE = REGISTRATE

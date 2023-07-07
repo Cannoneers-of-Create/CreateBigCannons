@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -65,8 +65,9 @@ public class BlockRecipesManager {
 			BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get(type).fromNetwork(id, buf);
 			BLOCK_RECIPES_BY_NAME.put(id, recipe);
 			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get(type);
-			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
+			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType)) {
 				BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
+			}
 			BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
 		}
 	}
@@ -88,7 +89,8 @@ public class BlockRecipesManager {
 		}
 
 		@Override
-		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resources, ProfilerFiller profiler) {
+		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resources,
+			ProfilerFiller profiler) {
 			clear();
 
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
@@ -100,8 +102,9 @@ public class BlockRecipesManager {
 					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get(type).fromJson(id, obj);
 					BLOCK_RECIPES_BY_NAME.put(id, recipe);
 					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get(type);
-					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
+					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType)) {
 						BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
+					}
 					BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
 				}
 			}

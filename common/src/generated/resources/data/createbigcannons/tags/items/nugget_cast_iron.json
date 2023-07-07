@@ -1,0 +1,18 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#forge:nuggets/cast_iron",
+      "required": false
+    },
+    {
+      "id": "#c:nuggets/cast_iron",
+      "required": false
+    },
+    {
+      "id": "#c:cast_iron_nuggets",
+      "required": false
+    },
+    "createbigcannons:cast_iron_nugget"
+  ]
+}

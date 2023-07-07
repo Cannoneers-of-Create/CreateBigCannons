@@ -3,32 +3,37 @@
     "entity_damage": 30.0,
     "durability_mass": 10.0,
     "renders_invulnerable": false,
-    "ignores_entity_armor": true
+    "ignores_entity_armor": true,
+    "base_fuze": false
   },
   "createbigcannons:he_shell": {
     "entity_damage": 30.0,
     "durability_mass": 8.0,
     "renders_invulnerable": false,
     "ignores_entity_armor": true,
+    "base_fuze": false,
     "explosive_power": 8.0
   },
   "createbigcannons:ap_shot": {
     "entity_damage": 50.0,
     "durability_mass": 30.0,
     "renders_invulnerable": false,
-    "ignores_entity_armor": true
+    "ignores_entity_armor": true,
+    "base_fuze": false
   },
   "createbigcannons:traffic_cone": {
     "entity_damage": 100.0,
     "durability_mass": 36.0,
     "renders_invulnerable": false,
-    "ignores_entity_armor": true
+    "ignores_entity_armor": true,
+    "base_fuze": false
   },
   "createbigcannons:ap_shell": {
     "entity_damage": 50.0,
     "durability_mass": 20.0,
     "renders_invulnerable": false,
     "ignores_entity_armor": true,
+    "base_fuze": true,
     "explosive_power": 5.0
   },
   "createbigcannons:mortar_stone": {
@@ -36,19 +41,29 @@
     "durability_mass": 4.0,
     "renders_invulnerable": false,
     "ignores_entity_armor": true,
+    "base_fuze": false,
     "explosive_power": 4.0
   },
   "createbigcannons:fluid_shell": {
     "entity_damage": 30.0,
     "durability_mass": 8.0,
     "renders_invulnerable": false,
-    "ignores_entity_armor": true
+    "ignores_entity_armor": true,
+    "base_fuze": false
+  },
+  "createbigcannons:smoke_shell": {
+    "entity_damage": 30.0,
+    "durability_mass": 8.0,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": true,
+    "base_fuze": false
   },
   "createbigcannons:shrapnel_shell": {
     "entity_damage": 30.0,
     "durability_mass": 8.0,
     "renders_invulnerable": false,
     "ignores_entity_armor": true,
+    "base_fuze": false,
     "shrapnel_properties": {
       "entity_damage": 2.0,
       "spread": 0.25,
@@ -60,6 +75,7 @@
     "durability_mass": 1.0,
     "renders_invulnerable": true,
     "ignores_entity_armor": false,
+    "base_fuze": false,
     "shrapnel_properties": {
       "entity_damage": 5.0,
       "spread": 0.05,
@@ -67,32 +83,43 @@
     }
   },
   "createbigcannons:ap_autocannon": {
-    "entity_damage": 5.0,
+    "entity_damage": 6.0,
     "durability_mass": 6.0,
     "renders_invulnerable": false,
-    "ignores_entity_armor": false
+    "ignores_entity_armor": false,
+    "base_fuze": false
   },
   "createbigcannons:flak_autocannon": {
     "entity_damage": 2.0,
     "durability_mass": 1.0,
     "renders_invulnerable": false,
     "ignores_entity_armor": false,
+    "base_fuze": false,
     "shrapnel_properties": {
       "entity_damage": 5.0,
       "spread": 0.25,
       "count": 15
     }
   },
+  "createbigcannons:machine_gun_bullet": {
+    "entity_damage": 4.0,
+    "durability_mass": 0.1,
+    "renders_invulnerable": false,
+    "ignores_entity_armor": false,
+    "base_fuze": false
+  },
   "createbigcannons:shrapnel": {
     "entity_damage": 0.0,
     "durability_mass": 1.0,
     "renders_invulnerable": true,
-    "ignores_entity_armor": false
+    "ignores_entity_armor": false,
+    "base_fuze": false
   },
   "createbigcannons:grapeshot": {
     "entity_damage": 0.0,
     "durability_mass": 3.0,
     "renders_invulnerable": true,
-    "ignores_entity_armor": false
+    "ignores_entity_armor": false,
+    "base_fuze": false
   }
 }

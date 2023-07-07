@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone;
 
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -9,11 +8,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 
 public class MortarStoneProjectile extends AbstractBigCannonProjectile {
@@ -43,8 +41,8 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
         super.onImpact(result, stopped);
         if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
-            this.level.explode(null, hitLoc.x, hitLoc.y, hitLoc.z,
-                    (float) this.getProperties().explosivePower(),
+            this.level.explode(null, indirectArtilleryFire(), null, hitLoc.x, hitLoc.y, hitLoc.z,
+                    (float) this.getProperties().explosivePower(), false,
                     CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
             this.tooManyCharges = true;
         }
@@ -64,7 +62,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 
     @Override
     public BlockState getRenderedBlockState() {
-        return CBCBlocks.MORTAR_STONE.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);
+        return CBCBlocks.MORTAR_STONE_PROJECTILE.getDefaultState();
     }
 
     @Override

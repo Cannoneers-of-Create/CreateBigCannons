@@ -17,6 +17,7 @@ import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRoundItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.config.InspectResistanceToolItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
@@ -101,8 +102,12 @@ public class CBCItems {
 		.register(),
 
 	CONGEALED_NITRO = REGISTRATE.item("congealed_nitro", Item::new).register(),
-		HARDENED_NITRO = REGISTRATE.item("hardened_nitro", Item::new).register(),
-		NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.ItemCBC.NITROPOWDER).register();
+	HARDENED_NITRO = REGISTRATE.item("hardened_nitro", Item::new).register(),
+	NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.ItemCBC.NITROPOWDER).register(),
+
+	EMPTY_MACHINE_GUN_ROUND = REGISTRATE.item("empty_machine_gun_round", Item::new).register(),
+
+	TRACER_TIP = REGISTRATE.item("tracer_tip", Item::new).register();
 
 	public static final ItemEntry<SequencedAssemblyItem>
 		PARTIAL_RECOIL_SPRING = REGISTRATE.item("partial_recoil_spring", SequencedAssemblyItem::new).register(),
@@ -126,6 +131,10 @@ public class CBCItems {
 
 	PARTIALLY_FORMED_BIG_CARTRIDGE = REGISTRATE.item("partially_formed_big_cartridge", SequencedAssemblyItem::new)
 		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/partially_formed_big_cartridge")))
+		.register(),
+
+	PARTIALLY_ASSEMBLED_MACHINE_GUN_ROUND = REGISTRATE.item("partially_assembled_machine_gun_round", SequencedAssemblyItem::new)
+		.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("item/empty_machine_gun_round")))
 		.register();
 
 	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE
@@ -140,6 +149,10 @@ public class CBCItems {
 
 	public static final ItemEntry<FlakAutocannonRoundItem> FLAK_AUTOCANNON_ROUND = REGISTRATE
 		.item("flak_autocannon_round", FlakAutocannonRoundItem::new)
+		.register();
+
+	public static final ItemEntry<MachineGunRoundItem> MACHINE_GUN_ROUND = REGISTRATE
+		.item("machine_gun_round", MachineGunRoundItem::new)
 		.register();
 
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE

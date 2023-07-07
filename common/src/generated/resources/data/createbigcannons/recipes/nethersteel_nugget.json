@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "createbigcannons:nethersteel_ingot"
+    }
+  ],
+  "result": {
+    "item": "createbigcannons:nethersteel_nugget",
+    "count": 9
+  }
+}

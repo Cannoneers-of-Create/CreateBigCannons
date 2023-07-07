@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import org.jetbrains.annotations.NotNull;
 
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
@@ -53,7 +52,7 @@ import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
 
 public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon {
@@ -62,8 +61,10 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	private BlockPos recoilSpringPos;
 	private boolean isHandle = false;
 
+	private int count = 0;
+
 	@Override
-	public float maximumDepression(@NotNull ControlPitchContraption controller) {
+	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
 		BlockState state = controller.getControllerState();
 		if (CBCBlocks.CANNON_MOUNT.has(state)) return 45;
 		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
@@ -71,7 +72,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	}
 
 	@Override
-	public float maximumElevation(@NotNull ControlPitchContraption controller) {
+	public float maximumElevation(@Nonnull ControlPitchContraption controller) {
 		BlockState state = controller.getControllerState();
 		if (CBCBlocks.CANNON_MOUNT.has(state)) return 90;
 		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return this.isHandle ? 45 : 90;
@@ -248,11 +249,11 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			|| !breech.canFire()) return;
 
 		ItemStack foundProjectile = breech.extractNextInput();
-		if (!(foundProjectile.getItem() instanceof AutocannonCartridgeItem round)) return;
+		if (!(foundProjectile.getItem() instanceof AutocannonAmmoItem round)) return;
 
 		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? Direction.DOWN : this.initialOrientation.getOpposite())), 1.0f);
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
-		ItemStack ejectStack = round.getEmptyCartridge(foundProjectile);
+		ItemStack ejectStack = round.getSpentItem(foundProjectile);
 		if (!ejectStack.isEmpty()) {
 			ItemStack output = breech.insertOutput(ejectStack);
 			if (!output.isEmpty()) {
@@ -307,11 +308,13 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		float recoilMagnitude = barrelTravelled;
 
-		AbstractAutocannonProjectile projectile = AutocannonCartridgeItem.getAutocannonProjectile(foundProjectile, level);
+		boolean isTracer = round.isTracer(foundProjectile);
+
+		AbstractAutocannonProjectile projectile = round.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {
 			projectile.setPos(spawnPos);
 			projectile.setChargePower(barrelTravelled);
-			projectile.setTracer(true);
+			projectile.setTracer(isTracer);
 			projectile.shoot(vec1.x, vec1.y, vec1.z, barrelTravelled, 0.05f);
 			projectile.xRotO = projectile.getXRot();
 			projectile.yRotO = projectile.getYRot();

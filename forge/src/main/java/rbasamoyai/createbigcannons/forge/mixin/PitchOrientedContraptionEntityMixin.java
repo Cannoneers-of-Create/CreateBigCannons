@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.forge.mixin;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
@@ -25,9 +25,9 @@ public class PitchOrientedContraptionEntityMixin extends OrientedContraptionEnti
 		super(type, level);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
-	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
 		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			if (this.itemOptional == null)
 				this.itemOptional = this.contraption instanceof GetItemStorage storage ? storage.getItemStorage() : LazyOptional.empty();

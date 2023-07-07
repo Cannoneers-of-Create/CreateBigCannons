@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createbigcannons:block/unbored_very_small_nethersteel_cannon_layer",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "createbigcannons:block/unbored_very_small_nethersteel_cannon_layer"
+    },
+    "facing=north": {
+      "model": "createbigcannons:block/unbored_very_small_nethersteel_cannon_layer",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "createbigcannons:block/unbored_very_small_nethersteel_cannon_layer",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "createbigcannons:block/unbored_very_small_nethersteel_cannon_layer",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "createbigcannons:block/unbored_very_small_nethersteel_cannon_layer",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.index;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -17,17 +18,27 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.foundry.MeltingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationDeployerRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationRecipe;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
 	MELTING(MeltingRecipe::new),
-	MUNITION_FUZING(() -> new SimpleRecipeSerializer<>(MunitionFuzingRecipe::new), () -> RecipeType.CRAFTING, false),
-	CARTRIDGE_ASSEMBLY(() -> new SimpleRecipeSerializer<>(CartridgeAssemblyRecipe::new), () -> RecipeType.CRAFTING, false),
-	BIG_CARTRIDGE_FILLING(() -> new SimpleRecipeSerializer<>(BigCartridgeFillingRecipe::new), () -> RecipeType.CRAFTING, false);
+	MUNITION_FUZING(noSerializer(MunitionFuzingRecipe::new)),
+	CARTRIDGE_ASSEMBLY(noSerializer(CartridgeAssemblyRecipe::new)),
+	BIG_CARTRIDGE_FILLING(noSerializer(BigCartridgeFillingRecipe::new)),
+	BIG_CARTRIDGE_FILLING_DEPLOYER(noSerializer(r -> new BigCartridgeFillingDeployerRecipe())),
+	MUNITION_FUZING_DEPLOYER(noSerializer(r -> new MunitionFuzingDeployerRecipe())),
+	CARTRIDGE_ASSEMBLY_DEPLOYER(noSerializer(r -> new CartridgeAssemblyDeployerRecipe())),
+	TRACER_APPLICATION(noSerializer(TracerApplicationRecipe::new)),
+	TRACER_APPLICATION_DEPLOYER(noSerializer(r -> new TracerApplicationDeployerRecipe()));
 
 	private final ResourceLocation id;
 	private final Supplier<RecipeSerializer<?>> serializerObject;
@@ -91,4 +102,9 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
 	public static void register() {
 	}
+
+	private static <T extends Recipe<?>> NonNullSupplier<RecipeSerializer<?>> noSerializer(Function<ResourceLocation, T> prov) {
+		return () -> new SimpleRecipeSerializer<>(prov);
+	}
+
 }

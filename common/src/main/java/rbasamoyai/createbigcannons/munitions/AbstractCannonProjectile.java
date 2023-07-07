@@ -82,7 +82,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				if (!this.isNoGravity()) vel = vel.add(0.0f, this.getGravity(), 0.0f);
 				vel = vel.scale(this.getDrag());
 				this.setDeltaMovement(vel);
-				this.setPos(newPos.add(vel.subtract(uel).scale(0.5)));
+				Vec3 position = newPos.add(vel.subtract(uel).scale(0.5));
+				if (this.level.hasChunkAt(new BlockPos(position))) this.setPos(position);
 
 				ParticleOptions particle = this.getTrailParticles();
 				if (particle != null) {
@@ -313,7 +314,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	}
 
 	public float getProjectileMass() {
- 		return CBCConfigs.SERVER.munitions.damageRestriction.get() == GriefState.NO_DAMAGE ? 0 : this.entityData.get(PROJECTILE_MASS);
+		return this.entityData.get(PROJECTILE_MASS);
 	}
 
 	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
@@ -336,7 +337,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 	@Override public boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
 
-	protected MunitionProperties getProperties() { return MunitionPropertiesHandler.getProperties(this); }
+	public MunitionProperties getProperties() { return MunitionPropertiesHandler.getProperties(this); }
 
 	public enum BounceType {
 		DEFLECT,
@@ -349,6 +350,10 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 			super(id, entity, owner);
 			if (MunitionPropertiesHandler.getProperties(entity).ignoresEntityArmor()) this.bypassArmor();
 		}
+	}
+
+	public static DamageSource indirectArtilleryFire() {
+		return new CBCDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile").setScalesWithDifficulty().setExplosion();
 	}
 
 }

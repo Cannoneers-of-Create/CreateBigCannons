@@ -7,7 +7,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.spongepowered.asm.mixin.Mixin;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
@@ -18,7 +18,7 @@ public abstract class AbstractCannonProjectileMixin extends Projectile implement
 		super(entityType, level);
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public Packet<?> getAddEntityPacket() {
 		return ExtraSpawnDataEntity.createExtraDataSpawnPacket(this);

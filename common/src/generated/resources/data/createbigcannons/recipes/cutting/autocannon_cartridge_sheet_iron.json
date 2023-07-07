@@ -1,0 +1,13 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "tag": "c:plates/iron"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:autocannon_cartridge_sheet"
+    }
+  ]
+}

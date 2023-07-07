@@ -1,0 +1,108 @@
+{
+  "variants": {
+    "assembled=false,end=nothing,facing=down": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_nothing",
+      "x": 180
+    },
+    "assembled=true,end=nothing,facing=down": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 180
+    },
+    "assembled=false,end=flanged,facing=down": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_flanged",
+      "x": 180
+    },
+    "assembled=true,end=flanged,facing=down": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 180
+    },
+    "assembled=false,end=nothing,facing=up": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_nothing"
+    },
+    "assembled=true,end=nothing,facing=up": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled"
+    },
+    "assembled=false,end=flanged,facing=up": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_flanged"
+    },
+    "assembled=true,end=flanged,facing=up": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled"
+    },
+    "assembled=false,end=nothing,facing=north": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_nothing",
+      "x": 90
+    },
+    "assembled=true,end=nothing,facing=north": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 90
+    },
+    "assembled=false,end=flanged,facing=north": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_flanged",
+      "x": 90
+    },
+    "assembled=true,end=flanged,facing=north": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 90
+    },
+    "assembled=false,end=nothing,facing=south": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_nothing",
+      "x": 90,
+      "y": 180
+    },
+    "assembled=true,end=nothing,facing=south": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 90,
+      "y": 180
+    },
+    "assembled=false,end=flanged,facing=south": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_flanged",
+      "x": 90,
+      "y": 180
+    },
+    "assembled=true,end=flanged,facing=south": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 90,
+      "y": 180
+    },
+    "assembled=false,end=nothing,facing=west": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_nothing",
+      "x": 90,
+      "y": 270
+    },
+    "assembled=true,end=nothing,facing=west": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 90,
+      "y": 270
+    },
+    "assembled=false,end=flanged,facing=west": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_flanged",
+      "x": 90,
+      "y": 270
+    },
+    "assembled=true,end=flanged,facing=west": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 90,
+      "y": 270
+    },
+    "assembled=false,end=nothing,facing=east": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_nothing",
+      "x": 90,
+      "y": 90
+    },
+    "assembled=true,end=nothing,facing=east": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 90,
+      "y": 90
+    },
+    "assembled=false,end=flanged,facing=east": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_flanged",
+      "x": 90,
+      "y": 90
+    },
+    "assembled=true,end=flanged,facing=east": {
+      "model": "createbigcannons:block/bronze_autocannon_barrel_assembled",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

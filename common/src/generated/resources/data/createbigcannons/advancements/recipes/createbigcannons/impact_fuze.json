@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:impact_fuze"
+    ]
+  },
+  "criteria": {
+    "has_impact_fuze_head": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "createbigcannons:impact_fuze_head"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:impact_fuze"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_impact_fuze_head",
+      "has_the_recipe"
+    ]
+  ]
+}

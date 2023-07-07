@@ -1,0 +1,9 @@
+{
+  "parent": "createbigcannons:block/screw_breech_axis",
+  "textures": {
+    "side": "createbigcannons:block/screw_breech/steel_screw_breech_side",
+    "top": "createbigcannons:block/screw_breech/steel_screw_breech_top",
+    "bottom": "createbigcannons:block/screw_breech/steel_screw_breech_bottom",
+    "particle": "createbigcannons:block/screw_breech/steel_screw_breech_top"
+  }
+}

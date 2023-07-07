@@ -1,0 +1,108 @@
+{
+  "variants": {
+    "axis_along_first=false,facing=down,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_rotated",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_rotated"
+    },
+    "axis_along_first=true,facing=up,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech"
+    },
+    "axis_along_first=false,facing=north,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_rotated",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,stage=0": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=down,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis_rotated",
+      "x": 180
+    },
+    "axis_along_first=true,facing=down,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis",
+      "x": 180
+    },
+    "axis_along_first=false,facing=up,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis_rotated"
+    },
+    "axis_along_first=true,facing=up,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis"
+    },
+    "axis_along_first=false,facing=north,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis_rotated",
+      "x": 90
+    },
+    "axis_along_first=true,facing=north,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=south,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=west,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=west,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis_rotated",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=false,facing=east,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=east,stage=1": {
+      "model": "createbigcannons:block/incomplete_cast_iron_sliding_breech_axis_rotated",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "fire_autocannon": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.explode",
+        "type": "event"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.fire_autocannon"
+  },
+  "fire_big_cannon": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.explode",
+        "type": "event"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.fire_big_cannon"
+  },
+  "fire_big_cannon_compounded_1": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.explode",
+        "type": "event"
+      }
+    ]
+  },
+  "fire_big_cannon_compounded_2": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.explode",
+        "type": "event"
+      }
+    ]
+  }
+}
