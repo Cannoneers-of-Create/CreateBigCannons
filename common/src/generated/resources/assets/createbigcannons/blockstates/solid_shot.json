@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createbigcannons:block/solid_shot",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "createbigcannons:block/solid_shot"
+    },
+    "facing=north": {
+      "model": "createbigcannons:block/solid_shot",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "createbigcannons:block/solid_shot",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "createbigcannons:block/solid_shot",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "createbigcannons:block/solid_shot",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

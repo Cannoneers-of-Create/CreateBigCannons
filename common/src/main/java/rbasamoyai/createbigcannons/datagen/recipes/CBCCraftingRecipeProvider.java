@@ -63,6 +63,12 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy(getHasName(CBCItems.IMPACT_FUZE.get()), has(CBCItems.IMPACT_FUZE.get()))
 			.save(cons);
 
+		ShapelessRecipeBuilder.shapeless(CBCItems.TRACER_TIP.get(), 4)
+			.requires(CBCTags.ItemCBC.DUST_GLOWSTONE).requires(Items.BLAZE_POWDER)
+			.unlockedBy("has_glowstone", has(CBCTags.ItemCBC.DUST_GLOWSTONE))
+			.unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))
+			.save(cons);
+
 		ShapedRecipeBuilder.shaped(CBCItems.EMPTY_POWDER_CHARGE.get())
 			.define('W', ItemTags.WOOL).define('S', Items.STRING)
 			.pattern("S")
@@ -84,7 +90,7 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy("has_brass_sheet", has(CBCTags.ItemCBC.SHEET_BRASS))
 			.save(cons);
 
-		ShapedRecipeBuilder.shaped(CBCItems.BIG_CANNON_SHEET.get(), 1)
+		ShapedRecipeBuilder.shaped(CBCItems.BIG_CANNON_SHEET.get())
 			.define('S', CBCTags.ItemCBC.INEXPENSIVE_BIG_CARTRIDGE_SHEET)
 			.pattern("SS")
 			.pattern("SS")
@@ -96,6 +102,15 @@ public class CBCCraftingRecipeProvider {
 			.requires(Items.DIRT)
 			.requires(Items.CLAY_BALL)
 			.unlockedBy(getHasName(Items.SAND), has(Items.SAND))
+			.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCItems.MACHINE_GUN_ROUND.get())
+			.define('C', CBCItems.EMPTY_MACHINE_GUN_ROUND.get()).define('P', CBCTags.ItemCBC.GUNPOWDER)
+			.define('B', CBCTags.ItemCBC.NUGGET_COPPER)
+			.pattern("B")
+			.pattern("P")
+			.pattern("C")
+			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
 			.save(cons);
 
 		nineBlockStorageRecipesRecipesWithCustomUnpacking(cons, CBCItems.CAST_IRON_INGOT.get(), CBCBlocks.CAST_IRON_BLOCK.get(), "cast_iron_ingot_from_block", "cast_iron_ingot");
@@ -177,6 +192,14 @@ public class CBCCraftingRecipeProvider {
 			.patternLine("IPI")
 			.patternLine(" S ")
 			.build(cons);
+
+		ShapedRecipeBuilder.shaped(CBCBlocks.SMOKE_SHELL.get())
+			.define('I', CBCTags.ItemCBC.INGOT_IRON).define('P', CBCTags.ItemCBC.SHEET_IRON).define('H', Items.HAY_BLOCK)
+			.pattern("PHP")
+			.pattern("PHP")
+			.pattern("PIP")
+			.unlockedBy(getHasName(Items.HAY_BLOCK), has(Items.HAY_BLOCK))
+			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.AP_AUTOCANNON_ROUND.get(), 4)
 			.define('C', CBCTags.ItemCBC.INGOT_CAST_IRON).define('I', CBCTags.ItemCBC.INGOT_IRON)
@@ -366,6 +389,10 @@ public class CBCCraftingRecipeProvider {
 		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING.getSerializer()).save(cons, "munition_fuzing");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY.getSerializer()).save(cons, "cartridge_assembly");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.BIG_CARTRIDGE_FILLING.getSerializer()).save(cons, "big_cartridge_filling");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.BIG_CARTRIDGE_FILLING_DEPLOYER.getSerializer()).save(cons, "big_cartridge_filling_deployer");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING_DEPLOYER.getSerializer()).save(cons, "munition_fuzing_deployer");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY_DEPLOYER.getSerializer()).save(cons, "cartridge_assembly_deployer");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.TRACER_APPLICATION.getSerializer()).save(cons, "tracer_application");
 
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(CBCItems.CONGEALED_NITRO.get()), CBCItems.HARDENED_NITRO.get(), 5, 200)
 			.unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))

@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.munitions.fuzes;
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.Lang;
@@ -42,7 +42,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result, boolean stopped) {
-		return true;
+		return !projectile.getProperties().baseFuze();
 	}
 
 	@Override
@@ -61,6 +61,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile projectile, Vec3 location, ProjectileContext ctx) {
+		if (projectile.getProperties().baseFuze()) return false;
 		CompoundTag tag = stack.getOrCreateTag();
 		if (!tag.contains("Armed")) return false;
 

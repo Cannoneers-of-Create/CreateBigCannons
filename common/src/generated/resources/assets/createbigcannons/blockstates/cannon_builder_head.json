@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "attached=false,facing=down": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head",
+      "x": 180
+    },
+    "attached=true,facing=down": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head_attached",
+      "x": 180
+    },
+    "attached=false,facing=up": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head"
+    },
+    "attached=true,facing=up": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head_attached"
+    },
+    "attached=false,facing=north": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head",
+      "x": 90
+    },
+    "attached=true,facing=north": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head_attached",
+      "x": 90
+    },
+    "attached=false,facing=south": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head",
+      "x": 90,
+      "y": 180
+    },
+    "attached=true,facing=south": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head_attached",
+      "x": 90,
+      "y": 180
+    },
+    "attached=false,facing=west": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head",
+      "x": 90,
+      "y": 270
+    },
+    "attached=true,facing=west": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head_attached",
+      "x": 90,
+      "y": 270
+    },
+    "attached=false,facing=east": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head",
+      "x": 90,
+      "y": 90
+    },
+    "attached=true,facing=east": {
+      "model": "createbigcannons:block/cannon_builder/cannon_builder_head_attached",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

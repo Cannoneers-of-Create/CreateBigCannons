@@ -1,6 +1,7 @@
 {
-  "parent": "createbigcannons:block/standard_projectile_block",
+  "parent": "createbigcannons:block/projectile_block",
   "textures": {
+    "bottom": "createbigcannons:block/projectile/shrapnel_shell_bottom",
     "particle": "createbigcannons:block/projectile/shrapnel_shell_top",
     "side": "createbigcannons:block/projectile/shrapnel_shell",
     "top": "createbigcannons:block/projectile/shrapnel_shell_top"

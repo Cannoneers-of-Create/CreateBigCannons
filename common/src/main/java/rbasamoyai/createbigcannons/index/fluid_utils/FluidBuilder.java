@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 import rbasamoyai.createbigcannons.base.LazySupplier;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 

@@ -1,0 +1,11 @@
+{
+  "type": "createbigcannons:cannon_casting",
+  "cast_shape": "createbigcannons:autocannon_recoil_spring",
+  "fluid": {
+    "fluid": "createbigcannons:molten_bronze",
+    "nbt": {},
+    "amount": 1
+  },
+  "casting_time": 750,
+  "result": "createbigcannons:unbored_bronze_autocannon_recoil_spring"
+}

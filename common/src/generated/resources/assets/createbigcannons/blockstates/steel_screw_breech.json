@@ -1,0 +1,82 @@
+{
+  "variants": {
+    "facing=down,open=closed": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 180
+    },
+    "facing=up,open=closed": {
+      "model": "createbigcannons:block/steel_screw_breech"
+    },
+    "facing=north,open=closed": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90
+    },
+    "facing=south,open=closed": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,open=closed": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,open=closed": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,open=open": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 180
+    },
+    "facing=up,open=open": {
+      "model": "createbigcannons:block/steel_screw_breech"
+    },
+    "facing=north,open=open": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90
+    },
+    "facing=south,open=open": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,open=open": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,open=open": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90,
+      "y": 90
+    },
+    "facing=down,open=partial": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 180
+    },
+    "facing=up,open=partial": {
+      "model": "createbigcannons:block/steel_screw_breech"
+    },
+    "facing=north,open=partial": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90
+    },
+    "facing=south,open=partial": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west,open=partial": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east,open=partial": {
+      "model": "createbigcannons:block/steel_screw_breech",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

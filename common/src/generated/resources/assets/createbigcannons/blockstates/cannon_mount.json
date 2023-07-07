@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "assembly_powered=false,facing=north,fire_powered=false": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 180
+    },
+    "assembly_powered=true,facing=north,fire_powered=false": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 180
+    },
+    "assembly_powered=false,facing=south,fire_powered=false": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount"
+    },
+    "assembly_powered=true,facing=south,fire_powered=false": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount"
+    },
+    "assembly_powered=false,facing=west,fire_powered=false": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 90
+    },
+    "assembly_powered=true,facing=west,fire_powered=false": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 90
+    },
+    "assembly_powered=false,facing=east,fire_powered=false": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 270
+    },
+    "assembly_powered=true,facing=east,fire_powered=false": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 270
+    },
+    "assembly_powered=false,facing=north,fire_powered=true": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 180
+    },
+    "assembly_powered=true,facing=north,fire_powered=true": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 180
+    },
+    "assembly_powered=false,facing=south,fire_powered=true": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount"
+    },
+    "assembly_powered=true,facing=south,fire_powered=true": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount"
+    },
+    "assembly_powered=false,facing=west,fire_powered=true": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 90
+    },
+    "assembly_powered=true,facing=west,fire_powered=true": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 90
+    },
+    "assembly_powered=false,facing=east,fire_powered=true": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 270
+    },
+    "assembly_powered=true,facing=east,fire_powered=true": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 270
+    }
+  }
+}

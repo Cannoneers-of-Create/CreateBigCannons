@@ -8,9 +8,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.munitions.CBCDamageSource;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 public class TrafficConeProjectile extends AbstractBigCannonProjectile {
 
@@ -25,9 +23,7 @@ public class TrafficConeProjectile extends AbstractBigCannonProjectile {
 
 	@Override
 	protected DamageSource getEntityDamage() {
-		CBCDamageSource src = new CBCDamageSource(CreateBigCannons.MOD_ID + ".traffic_cone");
-		if (this.getProperties().ignoresEntityArmor()) src.bypassArmor();
-		return src;
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".traffic_cone", this, null);
 	}
 
 }

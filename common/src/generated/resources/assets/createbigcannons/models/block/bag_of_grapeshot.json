@@ -1,0 +1,8 @@
+{
+  "parent": "createbigcannons:block/standard_projectile_block",
+  "textures": {
+    "side": "createbigcannons:block/projectile/grapeshot",
+    "top": "createbigcannons:block/projectile/grapeshot_top",
+    "particle": "createbigcannons:block/projectile/grapeshot_top"
+  }
+}

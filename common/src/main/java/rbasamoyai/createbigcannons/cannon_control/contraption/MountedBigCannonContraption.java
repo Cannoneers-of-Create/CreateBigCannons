@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.AssemblyException;
@@ -56,7 +57,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public boolean hasFired = false;
 
 	@Override
-	public float maximumDepression(@NotNull ControlPitchContraption controller) {
+	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
 		BlockState state = controller.getControllerState();
 		if (CBCBlocks.CANNON_MOUNT.has(state)) return 30;
 		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
@@ -64,7 +65,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	public float maximumElevation(@NotNull ControlPitchContraption controller) {
+	public float maximumElevation(@Nonnull ControlPitchContraption controller) {
 		BlockState state = controller.getControllerState();
 		if (CBCBlocks.CANNON_MOUNT.has(state)) return 60;
 		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 30;

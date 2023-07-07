@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createbigcannons:block/wrought_iron_cannon_end",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "createbigcannons:block/wrought_iron_cannon_end"
+    },
+    "facing=north": {
+      "model": "createbigcannons:block/wrought_iron_cannon_end",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "createbigcannons:block/wrought_iron_cannon_end",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "createbigcannons:block/wrought_iron_cannon_end",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "createbigcannons:block/wrought_iron_cannon_end",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

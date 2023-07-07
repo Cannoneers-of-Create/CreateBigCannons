@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "Fuze",
+                  "target": "BlockEntityTag.Fuze"
+                },
+                {
+                  "op": "replace",
+                  "source": "id",
+                  "target": "BlockEntityTag.id"
+                }
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "createbigcannons:smoke_shell"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ]
+}

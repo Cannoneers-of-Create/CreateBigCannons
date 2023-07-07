@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:flowing_molten_cast_iron",
+    "createbigcannons:molten_cast_iron",
+    "createbigcannons:flowing_molten_bronze",
+    "createbigcannons:molten_bronze",
+    "createbigcannons:flowing_molten_steel",
+    "createbigcannons:molten_steel",
+    "createbigcannons:flowing_molten_nethersteel",
+    "createbigcannons:molten_nethersteel"
+  ]
+}

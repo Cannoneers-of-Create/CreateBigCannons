@@ -7,12 +7,14 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.Create;
 import com.simibubi.create.compat.jei.CreateJEI;
 import com.simibubi.create.compat.jei.DoubleItemIcon;
 import com.simibubi.create.compat.jei.EmptyBackground;
 import com.simibubi.create.compat.jei.ItemIcon;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.ProcessingViaFanCategory;
+import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
 import com.simibubi.create.foundation.utility.Components;
 
@@ -31,6 +33,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.ItemLike;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.compat.common_jei.IncompleteCannonBlockRecipe;
+import rbasamoyai.createbigcannons.compat.common_jei.MunitionAssemblyRecipes;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
@@ -122,6 +126,13 @@ public class CBCJEI implements IModPlugin {
 		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getFuzingRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getAutocannonRoundRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getBigCartridgeFillingRecipe());
+		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getTracerRecipes());
+
+		RecipeType<DeployerApplicationRecipe> deployingType = new RecipeType<>(Create.asResource("deploying"), DeployerApplicationRecipe.class);
+		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getFuzingDeployerRecipes());
+		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getAutocannonRoundDeployerRecipes());
+		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getBigCartridgeDeployerRecipe());
+		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getTracerDeployerRecipes());
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.fabric.crafting;
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;

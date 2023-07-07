@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.forge.mixin;
 
+import javax.annotation.Nonnull;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -15,9 +17,16 @@ import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 
 @Mixin(CBCFlowingFluid.class)
 public abstract class CBCFlowingFluidMixin extends FlowingFluid {
-	@Shadow @Final protected ResourceLocation stillTex;
-	@Shadow @Final protected ResourceLocation flowingTex;
-	@Shadow @Final protected int color;
+
+	@Shadow
+	@Final
+	protected ResourceLocation stillTex;
+	@Shadow
+	@Final
+	protected ResourceLocation flowingTex;
+	@Shadow
+	@Final
+	protected int color;
 	@Shadow
 	@Final
 	protected SoundEvent fillSound;
@@ -25,8 +34,11 @@ public abstract class CBCFlowingFluidMixin extends FlowingFluid {
 	@Final
 	protected SoundEvent emptySound;
 
+	@Nonnull
 	@Override
 	public FluidType getFluidType() {
-		return CreateRegistrate.defaultFluidType(FluidType.Properties.create().sound(SoundActions.BUCKET_FILL, this.fillSound).sound(SoundActions.BUCKET_EMPTY, this.emptySound), stillTex, flowingTex);
+		return CreateRegistrate.defaultFluidType(
+			FluidType.Properties.create().sound(SoundActions.BUCKET_FILL, this.fillSound)
+				.sound(SoundActions.BUCKET_EMPTY, this.emptySound), stillTex, flowingTex);
 	}
 }

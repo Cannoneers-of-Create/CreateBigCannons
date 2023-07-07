@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:ram_head"
+    ]
+  },
+  "criteria": {
+    "has_cannon_loader": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "createbigcannons:cannon_loader"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:ram_head"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_cannon_loader",
+      "has_the_recipe"
+    ]
+  ]
+}

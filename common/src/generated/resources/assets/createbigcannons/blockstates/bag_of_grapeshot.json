@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createbigcannons:block/bag_of_grapeshot",
+      "x": 180
+    },
+    "facing=up": {
+      "model": "createbigcannons:block/bag_of_grapeshot"
+    },
+    "facing=north": {
+      "model": "createbigcannons:block/bag_of_grapeshot",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "createbigcannons:block/bag_of_grapeshot",
+      "x": 90,
+      "y": 180
+    },
+    "facing=west": {
+      "model": "createbigcannons:block/bag_of_grapeshot",
+      "x": 90,
+      "y": 270
+    },
+    "facing=east": {
+      "model": "createbigcannons:block/bag_of_grapeshot",
+      "x": 90,
+      "y": 90
+    }
+  }
+}
