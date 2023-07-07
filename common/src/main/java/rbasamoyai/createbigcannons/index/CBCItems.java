@@ -84,12 +84,12 @@ public class CBCItems {
 		AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
 
 	EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/empty_autocannon_cartridge")))
+		.model((c, p) -> {})
 		.register(),
 
 	FILLED_AUTOCANNON_CARTRIDGE = REGISTRATE
 		.item("filled_autocannon_cartridge", Item::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/filled_autocannon_cartridge")))
+		.model((c, p) -> {})
 		.register(),
 
 	PAIR_OF_CANNON_WHEELS = REGISTRATE
@@ -98,7 +98,7 @@ public class CBCItems {
 		.register(),
 
 	BIG_CANNON_SHEET = REGISTRATE.item("big_cartridge_sheet", Item::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/big_cartridge_sheet")))
+		.model((c, p) -> {})
 		.register(),
 
 	CONGEALED_NITRO = REGISTRATE.item("congealed_nitro", Item::new).register(),
@@ -122,7 +122,7 @@ public class CBCItems {
 			.register(),
 
 	PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE = REGISTRATE.item("partially_formed_autocannon_cartridge", SequencedAssemblyItem::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/partially_formed_autocannon_cartridge")))
+		.model((c, p) -> {})
 		.register(),
 
 	PARTIALLY_FILLED_AUTOCANNON_CARTRIDGE = REGISTRATE.item("partially_filled_autocannon_cartridge", SequencedAssemblyItem::new)
@@ -130,7 +130,7 @@ public class CBCItems {
 		.register(),
 
 	PARTIALLY_FORMED_BIG_CARTRIDGE = REGISTRATE.item("partially_formed_big_cartridge", SequencedAssemblyItem::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/partially_formed_big_cartridge")))
+		.model((c, p) -> {})
 		.register(),
 
 	PARTIALLY_ASSEMBLED_MACHINE_GUN_ROUND = REGISTRATE.item("partially_assembled_machine_gun_round", SequencedAssemblyItem::new)
@@ -139,7 +139,7 @@ public class CBCItems {
 
 	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE
 		.item("autocannon_cartridge", AutocannonCartridgeItem::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/autocannon_cartridge")))
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<APAutocannonRoundItem> AP_AUTOCANNON_ROUND = REGISTRATE
@@ -158,13 +158,13 @@ public class CBCItems {
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE
 		.item("ram_rod", RamRodItem::new)
 		.properties(p -> p.stacksTo(1))
-		.model((c, p) -> p.getExistingFile(c.getId()))
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<WormItem> WORM = REGISTRATE
 		.item("worm", WormItem::new)
 		.properties(p -> p.stacksTo(1))
-		.model((c, p) -> p.getExistingFile(c.getId()))
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<QuickfiringMechanismItem> QUICKFIRING_MECHANISM = REGISTRATE
@@ -176,8 +176,7 @@ public class CBCItems {
 		.item("cannon_crafting_wand", CannonCraftingWandItem::new)
 		.properties(p -> p.stacksTo(1))
 		.properties(p -> p.rarity(Rarity.EPIC))
-		.model((c, p) -> {
-		})
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<InspectResistanceToolItem> RESISTANCE_INSPECTION_TOOL = REGISTRATE
