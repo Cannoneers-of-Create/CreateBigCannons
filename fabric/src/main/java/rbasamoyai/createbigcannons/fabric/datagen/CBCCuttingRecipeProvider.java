@@ -39,7 +39,7 @@ public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 			.output(0.125f, CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get(), 1)),
 
 	EMPTY_MACHINE_GUN_ROUND = create(CreateBigCannons.resource("empty_machine_gun_round"), b -> b.require(CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get())
-		.output(CBCItems.EMPTY_MACHINE_GUN_ROUND.get())),
+		.output(CBCItems.EMPTY_MACHINE_GUN_ROUND.get(), 4)),
 
 	VERY_SMALL_CAST_MOULD = castMould(CBCBlocks.VERY_SMALL_CAST_MOULD.get()),
 		SMALL_CAST_MOULD = castMould(CBCBlocks.SMALL_CAST_MOULD.get()),
