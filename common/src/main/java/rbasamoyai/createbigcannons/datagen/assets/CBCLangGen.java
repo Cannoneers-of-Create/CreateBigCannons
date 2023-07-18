@@ -187,7 +187,7 @@ public class CBCLangGen {
 
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.materialProperties", "Autocannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxLength", "Maximum Length");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxLength.goggles", "_%s blocks_ (including chamber)");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxLength.goggles", "_%s blocks_ (including breech)");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.weightImpact", "Weight Impact");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.weightImpact.goggles", "_%sx RPM_");
 

@@ -9,7 +9,7 @@
   "block.createbigcannons.ap_shot.tooltip.summary": "Can effectively _pierce through blocks_. Good against _armored targets_. _Cannot be fuzed and detonated._",
   "block.createbigcannons.autocannon.tooltip.materialProperties": "Autocannon Properties",
   "block.createbigcannons.autocannon.tooltip.maxLength": "Maximum Length",
-  "block.createbigcannons.autocannon.tooltip.maxLength.goggles": "_%s blocks_ (including chamber)",
+  "block.createbigcannons.autocannon.tooltip.maxLength.goggles": "_%s blocks_ (including breech)",
   "block.createbigcannons.autocannon.tooltip.weightImpact": "Weight Impact",
   "block.createbigcannons.autocannon.tooltip.weightImpact.goggles": "_%sx RPM_",
   "block.createbigcannons.autocannon_barrel_cast_mould": "Autocannon Barrel Cast Mould",

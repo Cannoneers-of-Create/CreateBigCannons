@@ -9,7 +9,7 @@
   "block.createbigcannons.ap_shot.tooltip.summary": "\u203E\u02D9p\u01DD\u0287\u0250uo\u0287\u01DDp pu\u0250 p\u01DDzn\u025F \u01DDq \u0287ouu\u0250\u0186\u203E \u02D9\u203Es\u0287\u01DDb\u0279\u0250\u0287 p\u01DD\u0279o\u026F\u0279\u0250\u203E \u0287su\u0131\u0250b\u0250 poo\u2141 \u02D9\u203Es\u029E\u0254o\u05DFq \u0265bno\u0279\u0265\u0287 \u01DD\u0254\u0279\u01DD\u0131d\u203E \u028E\u05DF\u01DD\u028C\u0131\u0287\u0254\u01DD\u025F\u025F\u01DD u\u0250\u0186",
   "block.createbigcannons.autocannon.tooltip.materialProperties": "s\u01DD\u0131\u0287\u0279\u01DDdo\u0279\u0500 uouu\u0250\u0254o\u0287n\u2C6F",
   "block.createbigcannons.autocannon.tooltip.maxLength": "\u0265\u0287bu\u01DD\uA780 \u026Fn\u026F\u0131x\u0250W",
-  "block.createbigcannons.autocannon.tooltip.maxLength.goggles": ")\u0279\u01DDq\u026F\u0250\u0265\u0254 bu\u0131pn\u05DF\u0254u\u0131( \u203Es\u029E\u0254o\u05DFq %s\u203E",
+  "block.createbigcannons.autocannon.tooltip.maxLength.goggles": ")\u0265\u0254\u01DD\u01DD\u0279q bu\u0131pn\u05DF\u0254u\u0131( \u203Es\u029E\u0254o\u05DFq %s\u203E",
   "block.createbigcannons.autocannon.tooltip.weightImpact": "\u0287\u0254\u0250d\u026FI \u0287\u0265b\u0131\u01DDM",
   "block.createbigcannons.autocannon.tooltip.weightImpact.goggles": "\u203EW\u0500\u1D1A x%s\u203E",
   "block.createbigcannons.autocannon_barrel_cast_mould": "p\u05DFnoW \u0287s\u0250\u0186 \u05DF\u01DD\u0279\u0279\u0250\u15FA uouu\u0250\u0254o\u0287n\u2C6F",
