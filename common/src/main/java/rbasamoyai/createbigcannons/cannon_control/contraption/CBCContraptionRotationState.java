@@ -29,17 +29,17 @@ public class CBCContraptionRotationState extends AbstractContraptionEntity.Contr
 
 		this.matrix = new Matrix3d().asIdentity();
 		boolean flag = ((AbstractMountedCannonContraption) this.entity.getContraption()).initialOrientation().getAxis() == Direction.Axis.X;
-		float yawAdjust = this.yaw + (flag ? 180.0f : 0.0f);
+		float yawAdjust = this.yaw;
 		if (this.hasVerticalRotation()) {
 			if (flag) {
 				this.matrix.multiply(new Matrix3d().asZRotation(AngleHelper.rad(-this.entity.pitch)));
 			} else {
 				this.matrix.multiply(new Matrix3d().asXRotation(AngleHelper.rad(-this.entity.pitch)));
 			}
-			this.matrix.multiply(new Matrix3d().asYRotation(AngleHelper.rad(yawAdjust)));
 		} else {
-			this.matrix.multiply(new Matrix3d().asYRotation(AngleHelper.rad(-yawAdjust)));
+			yawAdjust += flag ? 180 : 0;
 		}
+		this.matrix.multiply(new Matrix3d().asYRotation(AngleHelper.rad(yawAdjust)));
 		return this.matrix;
 	}
 
