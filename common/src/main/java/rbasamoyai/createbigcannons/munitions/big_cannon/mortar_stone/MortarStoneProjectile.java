@@ -41,7 +41,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
         super.onImpact(result, stopped);
         if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
-            this.level.explode(null, indirectArtilleryFire(), null, hitLoc.x, hitLoc.y, hitLoc.z,
+            this.level.explode(null, this.indirectArtilleryFire(), null, hitLoc.x, hitLoc.y, hitLoc.z,
                     (float) this.getProperties().explosivePower(), false,
                     CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
             this.tooManyCharges = true;
