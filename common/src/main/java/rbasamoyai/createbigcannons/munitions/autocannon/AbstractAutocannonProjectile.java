@@ -106,9 +106,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
 
-	@Override protected float getGravity() { return 0; }
-	@Override protected float getDrag() { return 1; }
-
     @Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);

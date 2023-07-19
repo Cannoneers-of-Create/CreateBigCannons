@@ -3,5 +3,7 @@
   "durability_mass": 3.0,
   "renders_invulnerable": true,
   "ignores_entity_armor": false,
-  "base_fuze": false
+  "base_fuze": false,
+  "gravity": -0.025,
+  "drag": 1.0
 }

@@ -71,6 +71,4 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
         this.tooManyCharges = maxCharges >= 0 && power > maxCharges;
     }
 
-    @Override protected float getGravity() { return -0.025f; }
-
 }

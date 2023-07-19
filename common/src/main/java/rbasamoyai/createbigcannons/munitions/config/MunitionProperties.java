@@ -5,13 +5,15 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.util.Mth;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 import javax.annotation.Nullable;
 import java.util.function.Function;
 
 public record MunitionProperties(double entityDamage, double explosivePower, double durabilityMass, boolean rendersInvulnerable,
-								 boolean ignoresEntityArmor, boolean baseFuze, @Nullable ShrapnelProperties shrapnel) {
+								 boolean ignoresEntityArmor, boolean baseFuze, double gravity, double drag,
+								 @Nullable ShrapnelProperties shrapnel) {
 
 	public static MunitionProperties fromJson(JsonObject obj, String id) {
 		double entityDmg = Math.max(0, getOrWarn(obj, "entity_damage", id, 1d, JsonElement::getAsDouble));
@@ -22,10 +24,14 @@ public record MunitionProperties(double entityDamage, double explosivePower, dou
 		boolean ignoresEntityArmor = obj.has("ignores_entity_armor") && obj.get("ignores_entity_armor").getAsBoolean();
 		boolean baseFuze = GsonHelper.getAsBoolean(obj, "base_fuze", false);
 
+		double gravity = Math.min(0, GsonHelper.getAsDouble(obj, "gravity", -0.05));
+		double drag = Mth.clamp(GsonHelper.getAsDouble(obj, "drag", 0.99), 0.9, 1);
+
 		ShrapnelProperties shrapnel = obj.has("shrapnel_properties")
 				? ShrapnelProperties.fromJson(obj.getAsJsonObject("shrapnel_properties"), id) : null;
 
-		return new MunitionProperties(entityDmg, explosivePower, durabilityMass, rendersInvulnerable, ignoresEntityArmor, baseFuze, shrapnel);
+		return new MunitionProperties(entityDmg, explosivePower, durabilityMass, rendersInvulnerable, ignoresEntityArmor,
+			baseFuze, gravity, drag, shrapnel);
 	}
 
 	private static <T> T getOrWarn(JsonObject obj, String key, String id, T defValue, Function<JsonElement, T> func) {
@@ -43,6 +49,8 @@ public record MunitionProperties(double entityDamage, double explosivePower, dou
 		obj.addProperty("renders_invulnerable", this.rendersInvulnerable);
 		obj.addProperty("ignores_entity_armor", this.ignoresEntityArmor);
 		obj.addProperty("base_fuze", this.baseFuze);
+		obj.addProperty("gravity", this.gravity);
+		obj.addProperty("drag", this.drag);
 
 		if (this.explosivePower > 0) obj.addProperty("explosive_power", this.explosivePower);
 		if (this.shrapnel != null) {
@@ -60,7 +68,7 @@ public record MunitionProperties(double entityDamage, double explosivePower, dou
 	public void writeBuf(FriendlyByteBuf buf) {
 		buf.writeDouble(this.entityDamage).writeDouble(this.explosivePower).writeDouble(this.durabilityMass)
 			.writeBoolean(this.rendersInvulnerable).writeBoolean(this.ignoresEntityArmor).writeBoolean(this.baseFuze)
-			.writeBoolean(this.shrapnel != null);
+			.writeDouble(this.gravity).writeDouble(this.drag).writeBoolean(this.shrapnel != null);
 		if (this.shrapnel != null) this.shrapnel.writeBuf(buf);
 	}
 
@@ -71,8 +79,10 @@ public record MunitionProperties(double entityDamage, double explosivePower, dou
 		boolean invulnerable = buf.readBoolean();
 		boolean ignoresArmor = buf.readBoolean();
 		boolean baseFuze = buf.readBoolean();
+		double gravity = buf.readDouble();
+		double drag = buf.readDouble();
 		ShrapnelProperties shrapnel = buf.readBoolean() ? ShrapnelProperties.readBuf(buf) : null;
-		return new MunitionProperties(damage, power, mass, invulnerable, ignoresArmor, baseFuze, shrapnel);
+		return new MunitionProperties(damage, power, mass, invulnerable, ignoresArmor, baseFuze, gravity, drag, shrapnel);
 	}
 
 }

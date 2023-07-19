@@ -22,6 +22,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 
 	public Shrapnel(EntityType<? extends Shrapnel> type, Level level) {
 		super(type, level);
-		this.mass = (float) MunitionPropertiesHandler.getProperties(this).durabilityMass();
+		this.mass = (float) this.getProperties().durabilityMass();
 	}
 
 	@Override
@@ -107,11 +108,13 @@ public class Shrapnel extends AbstractHurtingProjectile {
 
 	@Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) { return 0.125f; }
 
-	@Override protected float getInertia() { return 0.99f; }
+	@Override protected float getInertia() { return (float) this.getProperties().drag(); }
 
-	protected double getGravity() { return 0; }
+	protected double getGravity() { return this.getProperties().gravity(); }
 
 	@Override protected boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
+
+	public MunitionProperties getProperties() { return MunitionPropertiesHandler.getProperties(this); }
 
 	public static <T extends Shrapnel> List<T> spawnShrapnelBurst(Level level, EntityType<T> type, Vec3 position, Vec3 initialVelocity,
 																  int count, double spread, float damage) {
