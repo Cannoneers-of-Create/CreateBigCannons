@@ -1,0 +1,12 @@
+{
+  "entity_damage": 2.0,
+  "durability_mass": 1.0,
+  "renders_invulnerable": false,
+  "ignores_entity_armor": false,
+  "base_fuze": false,
+  "shrapnel_properties": {
+    "entity_damage": 5.0,
+    "spread": 0.25,
+    "count": 15
+  }
+}

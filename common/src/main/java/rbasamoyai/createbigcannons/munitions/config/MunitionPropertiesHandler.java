@@ -44,22 +44,17 @@ public class MunitionPropertiesHandler {
 
             for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
                 JsonElement element = entry.getValue();
-                if (element.isJsonObject()) {
-                    try {
-                        for (Map.Entry<String, JsonElement> jsonEntry : element.getAsJsonObject().entrySet()) {
-                            if (jsonEntry.getValue().isJsonObject()) {
-                                String s = jsonEntry.getKey();
-								EntityType<?> type = Registry.ENTITY_TYPE.getOptional(new ResourceLocation(s)).orElseThrow(() -> {
-									return new JsonSyntaxException("Unknown entity type '" + jsonEntry.getKey() + "'");
-								});
-                                MunitionProperties properties = MunitionProperties.fromJson(jsonEntry.getValue().getAsJsonObject(), s);
-                                PROJECTILES.put(type, properties);
-                            }
-                        }
-                    } catch (Exception e) {
+                if (!element.isJsonObject()) continue;
+				try {
+					ResourceLocation entityLoc = entry.getKey();
+					EntityType<?> type = Registry.ENTITY_TYPE.getOptional(entityLoc).orElseThrow(() -> {
+						return new JsonSyntaxException("Unknown entity type '" + entityLoc + "'");
+					});
+					MunitionProperties properties = MunitionProperties.fromJson(element.getAsJsonObject(), entityLoc.toString());
+					PROJECTILES.put(type, properties);
+				} catch (Exception e) {
 
-                    }
-                }
+				}
             }
         }
     }
