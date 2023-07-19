@@ -8,7 +8,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -345,15 +344,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		NO_BOUNCE
 	}
 
-	protected static class CannonDamageSource extends IndirectEntityDamageSource {
-		public CannonDamageSource(String id, Entity entity, @Nullable Entity owner) {
-			super(id, entity, owner);
-			if (MunitionPropertiesHandler.getProperties(entity).ignoresEntityArmor()) this.bypassArmor();
-		}
-	}
-
-	public static DamageSource indirectArtilleryFire() {
-		return new CBCDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile").setScalesWithDifficulty().setExplosion();
+	public DamageSource indirectArtilleryFire() {
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile", this, null).setScalesWithDifficulty().setExplosion();
 	}
 
 }

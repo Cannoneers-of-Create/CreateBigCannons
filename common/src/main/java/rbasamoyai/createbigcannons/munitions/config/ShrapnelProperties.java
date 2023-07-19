@@ -38,7 +38,7 @@ public record ShrapnelProperties(double damage, double spread, int count) {
 	}
 
 	public void writeBuf(FriendlyByteBuf buf) {
-		buf.writeDouble(this.damage).writeDouble(this.damage);
+		buf.writeDouble(this.damage).writeDouble(this.spread);
 		buf.writeVarInt(this.count);
 	}
 
