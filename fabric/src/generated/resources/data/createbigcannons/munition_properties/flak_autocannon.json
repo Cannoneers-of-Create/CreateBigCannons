@@ -4,6 +4,8 @@
   "renders_invulnerable": false,
   "ignores_entity_armor": false,
   "base_fuze": false,
+  "gravity": -0.025,
+  "drag": 0.99,
   "shrapnel_properties": {
     "entity_damage": 5.0,
     "spread": 0.25,

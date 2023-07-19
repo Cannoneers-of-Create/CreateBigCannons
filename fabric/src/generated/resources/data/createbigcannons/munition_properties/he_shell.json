@@ -4,5 +4,7 @@
   "renders_invulnerable": false,
   "ignores_entity_armor": true,
   "base_fuze": false,
+  "gravity": -0.05,
+  "drag": 0.99,
   "explosive_power": 8.0
 }

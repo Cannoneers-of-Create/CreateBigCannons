@@ -212,7 +212,12 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	}
 
 	/** Use for fuzes and any other effects */
-	protected void onImpact(HitResult result, boolean stopped) {}
+	protected void onImpact(HitResult result, boolean stopped) {
+		if (result.getType() == HitResult.Type.BLOCK) {
+			BlockState state = this.level.getBlockState(((BlockHitResult) result).getBlockPos());
+			state.onProjectileHit(this.level, state, (BlockHitResult) result, this);
+		}
+	}
 
 	protected abstract void onDestroyBlock(BlockState state, BlockHitResult result);
 
@@ -319,7 +324,6 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
 		builder.clientTrackingRange(16)
 				.updateInterval(1)
-				//.setShouldReceiveVelocityUpdates(true)
 				.fireImmune()
 				.sized(0.8f, 0.8f);
 	}
@@ -329,8 +333,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		return dimensions.height * 0.5f;
 	}
 
-	protected float getGravity() { return -0.05f; }
-	protected float getDrag() { return 0.99f; }
+	protected float getGravity() { return (float) this.getProperties().gravity(); }
+	protected float getDrag() { return (float) this.getProperties().drag(); }
 
 	public void setChargePower(float power) {}
 
