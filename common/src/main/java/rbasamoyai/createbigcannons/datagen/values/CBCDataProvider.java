@@ -1,19 +1,25 @@
 package rbasamoyai.createbigcannons.datagen.values;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.mojang.logging.LogUtils;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
-import org.slf4j.Logger;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.BiConsumer;
+
+import org.slf4j.Logger;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
+
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class CBCDataProvider implements DataProvider {
 
@@ -22,56 +28,49 @@ public abstract class CBCDataProvider implements DataProvider {
 
 	private final DataGenerator gen;
 	protected final String modid;
-	protected final String name;
 	protected final String folder;
 
-	protected CBCDataProvider(String modid, String name, DataGenerator gen, String folder) {
+	protected CBCDataProvider(String modid, DataGenerator gen, String folder) {
 		this.modid = modid;
-		this.name = name;
 		this.gen = gen;
 		this.folder = folder;
 	}
 
-	protected CBCDataProvider(String modid, DataGenerator gen, String folder) {
-		this(modid, "default", gen, folder);
-	}
-
 	@Override
 	public final void run(HashCache cache) throws IOException {
-		this.generateData();
+		Map<ResourceLocation, JsonObject> dataToWrite = new LinkedHashMap<>();
+		this.generateData(dataToWrite::put);
 
-		JsonObject obj = new JsonObject();
-		this.write(obj);
+		for (Map.Entry<ResourceLocation, JsonObject> entry : dataToWrite.entrySet()) {
+			ResourceLocation loc = entry.getKey();
+			Path path = this.gen.getOutputFolder().resolve("data/" + loc.getNamespace() + "/" + this.folder + "/" + loc.getPath() + ".json");
+			String s = GSON.toJson(entry.getValue());
+			String s1 = SHA1.hashUnencodedChars(s).toString();
+			if (!Objects.equals(cache.getHash(path), s1) || !Files.exists(path)) {
+				Files.createDirectories(path.getParent());
+				BufferedWriter writer = Files.newBufferedWriter(path);
 
-		Path path = this.gen.getOutputFolder().resolve("data/" + this.modid + "/" + this.folder + "/" + this.name + ".json");
-		String s = GSON.toJson(obj);
-		String s1 = SHA1.hashUnencodedChars(s).toString();
-		if (!Objects.equals(cache.getHash(path), s1) || !Files.exists(path)) {
-			Files.createDirectories(path.getParent());
-			BufferedWriter writer = Files.newBufferedWriter(path);
-
-			try {
-				writer.write(s);
-			} catch (Throwable throwable) {
-				if (writer != null) {
-					try {
-						writer.close();
-					} catch (Throwable throwable1) {
-						throwable.addSuppressed(throwable1);
+				try {
+					writer.write(s);
+				} catch (Throwable throwable) {
+					if (writer != null) {
+						try {
+							writer.close();
+						} catch (Throwable throwable1) {
+							throwable.addSuppressed(throwable1);
+						}
 					}
+					throw throwable;
 				}
-				throw throwable;
-			}
 
-			if (writer != null) {
-				writer.close();
+				if (writer != null) {
+					writer.close();
+				}
 			}
+			cache.putNew(path, s1);
 		}
-		cache.putNew(path, s1);
 	}
 
-	protected abstract void generateData();
-
-	protected abstract void write(JsonObject obj);
+	protected abstract void generateData(BiConsumer<ResourceLocation, JsonObject> cons);
 
 }

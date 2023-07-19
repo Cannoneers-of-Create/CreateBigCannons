@@ -1,0 +1,7 @@
+{
+  "entity_damage": 30.0,
+  "durability_mass": 10.0,
+  "renders_invulnerable": false,
+  "ignores_entity_armor": true,
+  "base_fuze": false
+}

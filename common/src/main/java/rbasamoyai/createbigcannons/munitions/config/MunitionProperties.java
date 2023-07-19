@@ -36,7 +36,7 @@ public record MunitionProperties(double entityDamage, double explosivePower, dou
 		return func.apply(obj.getAsJsonPrimitive(key));
 	}
 
-	public JsonElement serialize() {
+	public JsonObject serialize() {
 		JsonObject obj = new JsonObject();
 		obj.addProperty("entity_damage", this.entityDamage);
 		obj.addProperty("durability_mass", this.durabilityMass);

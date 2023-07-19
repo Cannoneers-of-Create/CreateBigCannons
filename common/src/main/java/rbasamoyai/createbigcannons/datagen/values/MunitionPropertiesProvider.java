@@ -2,11 +2,13 @@ package rbasamoyai.createbigcannons.datagen.values;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import com.google.gson.JsonObject;
 
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
@@ -16,16 +18,19 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 
 	private final Map<EntityType<?>, MunitionProperties> projectiles = new LinkedHashMap<>();
 
-	public MunitionPropertiesProvider(String modid, String name, DataGenerator gen) {
-		super(modid, name, gen, "munition_properties");
-	}
-
 	public MunitionPropertiesProvider(String modid, DataGenerator gen) {
-		this(modid, "default", gen);
+		super(modid, gen, "munition_properties");
 	}
 
 	@Override
-	protected void generateData() {
+	protected final void generateData(BiConsumer<ResourceLocation, JsonObject> cons) {
+		this.addEntries();
+		for (Map.Entry<EntityType<?>, MunitionProperties> entry : this.projectiles.entrySet()) {
+			cons.accept(Registry.ENTITY_TYPE.getKey(entry.getKey()), entry.getValue().serialize());
+		}
+	}
+
+	protected void addEntries() {
 		builder(CBCEntityTypes.SHOT.get()).entityDamage(30).durabilityMass(10).build(this);
 		builder(CBCEntityTypes.HE_SHELL.get()).entityDamage(30).explosivePower(8).durabilityMass(8).build(this);
 		builder(CBCEntityTypes.AP_SHOT.get()).entityDamage(50).durabilityMass(30).build(this);
@@ -53,13 +58,6 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 
 	protected void shrapnel(EntityType<?> type, double durabilityMass) {
 		builder(type).durabilityMass(durabilityMass).renderInvulnerable().accountForEntityArmor().build(this);
-	}
-
-	@Override
-	protected void write(JsonObject obj) {
-		for (Map.Entry<EntityType<?>, MunitionProperties> entry : this.projectiles.entrySet()) {
-			obj.add(Registry.ENTITY_TYPE.getKey(entry.getKey()).toString(), entry.getValue().serialize());
-		}
 	}
 
 	@Override public String getName() { return "Munition properties: " + this.modid; }

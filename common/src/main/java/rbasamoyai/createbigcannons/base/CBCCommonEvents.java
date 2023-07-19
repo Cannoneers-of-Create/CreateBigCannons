@@ -141,9 +141,8 @@ public class CBCCommonEvents {
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
 		cons.accept(BlockRecipeFinder.LISTENER, CreateBigCannons.resource("block_recipe_finder"));
 		cons.accept(BlockRecipesManager.ReloadListener.INSTANCE, CreateBigCannons.resource("block_recipe_manager"));
-		cons.accept(BlockHardnessHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
-		cons.accept(MunitionPropertiesHandler.ReloadListener.INSTANCE,
-			CreateBigCannons.resource("munition_properties_handler"));
+		cons.accept(BlockHardnessHandler.BlockReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
+		cons.accept(MunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("munition_properties_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
