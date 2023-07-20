@@ -28,6 +28,7 @@ import rbasamoyai.createbigcannons.base.PreciseProjectile;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
@@ -333,8 +334,17 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		return dimensions.height * 0.5f;
 	}
 
-	protected float getGravity() { return (float) this.getProperties().gravity(); }
-	protected float getDrag() { return (float) this.getProperties().drag(); }
+	protected float getGravity() {
+		float multiplier = (float) DimensionMunitionPropertiesHandler.getProperties(this.level).gravityMultiplier();
+		return (float) this.getProperties().gravity() * multiplier;
+	}
+	protected float getDrag() {
+		float scalar = (float) DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier();
+		float baseDrag = (float) this.getProperties().drag();
+		if (scalar <= 1) return Mth.lerp(scalar, 1, baseDrag);
+		float diff = baseDrag - 1;
+		return (float) Mth.clamp(baseDrag + diff * (scalar - 1), 0.9, baseDrag);
+	}
 
 	public void setChargePower(float power) {}
 

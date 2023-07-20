@@ -8,7 +8,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
