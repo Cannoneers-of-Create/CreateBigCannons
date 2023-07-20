@@ -164,4 +164,10 @@ public class IndexPlatformImpl {
 		return FluidIngredient.fromTag(fluid, amount);
 	}
 
+	public static float modifyRotationStateYaw(boolean flag, boolean vertRotation, float yaw) {
+		if (flag) yaw += 180;
+		if (!vertRotation) yaw *= -1;
+		return yaw;
+	}
+
 }

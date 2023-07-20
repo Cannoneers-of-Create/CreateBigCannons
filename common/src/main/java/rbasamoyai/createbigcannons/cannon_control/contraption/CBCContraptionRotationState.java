@@ -5,6 +5,7 @@ import com.simibubi.create.foundation.collision.Matrix3d;
 import com.simibubi.create.foundation.utility.AngleHelper;
 
 import net.minecraft.core.Direction;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CBCContraptionRotationState extends AbstractContraptionEntity.ContraptionRotationState {
 
@@ -27,18 +28,19 @@ public class CBCContraptionRotationState extends AbstractContraptionEntity.Contr
 	public Matrix3d asMatrix() {
 		if (this.matrix != null) return this.matrix;
 
+		// TODO: remove stuff once Fabric rotation catches up with Forge
 		this.matrix = new Matrix3d().asIdentity();
 		boolean flag = ((AbstractMountedCannonContraption) this.entity.getContraption()).initialOrientation().getAxis() == Direction.Axis.X;
-		float yawAdjust = this.yaw;
+		float yawAdjust = IndexPlatform.modifyRotationStateYaw(flag, this.hasVerticalRotation(), this.yaw); //this.yaw;
 		if (this.hasVerticalRotation()) {
 			if (flag) {
 				this.matrix.multiply(new Matrix3d().asZRotation(AngleHelper.rad(-this.entity.pitch)));
 			} else {
 				this.matrix.multiply(new Matrix3d().asXRotation(AngleHelper.rad(-this.entity.pitch)));
 			}
-		} else {
+		}/* else {
 			yawAdjust += flag ? 180 : 0;
-		}
+		}*/
 		this.matrix.multiply(new Matrix3d().asYRotation(AngleHelper.rad(yawAdjust)));
 		return this.matrix;
 	}
