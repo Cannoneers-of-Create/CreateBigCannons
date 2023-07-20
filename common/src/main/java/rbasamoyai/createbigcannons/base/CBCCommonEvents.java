@@ -41,6 +41,7 @@ import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
@@ -143,6 +144,7 @@ public class CBCCommonEvents {
 		cons.accept(BlockRecipesManager.ReloadListener.INSTANCE, CreateBigCannons.resource("block_recipe_manager"));
 		cons.accept(BlockHardnessHandler.BlockReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("munition_properties_handler"));
+		cons.accept(DimensionMunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("dimension_munition_properties_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
