@@ -16,6 +16,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,6 +59,16 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		super.createBlockStateDefinition(builder);
 		builder.add(FACING);
 		builder.add(FILLED);
+	}
+
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 
 	@Nullable
