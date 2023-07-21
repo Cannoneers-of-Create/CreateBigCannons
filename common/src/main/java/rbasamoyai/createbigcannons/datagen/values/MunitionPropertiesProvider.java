@@ -43,9 +43,9 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 			.gravity(-0.025f).build(this);
 
 		builder(CBCEntityTypes.SHRAPNEL_SHELL.get()).entityDamage(30).durabilityMass(8)
-			.shrapnel(2, 0.25, 50).build(this);
+			.shrapnel(5, 0.25, 50).build(this);
 		builder(CBCEntityTypes.BAG_OF_GRAPESHOT.get()).entityDamage(0).durabilityMass(1).renderInvulnerable()
-			.accountForEntityArmor().shrapnel(5, 0.05, 25).build(this);
+			.accountForEntityArmor().shrapnel(8, 0.05, 25).build(this);
 
 		builder(CBCEntityTypes.AP_AUTOCANNON.get()).entityDamage(6).durabilityMass(6).accountForEntityArmor()
 			.gravity(-0.025).build(this);
@@ -54,8 +54,8 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 		builder(CBCEntityTypes.MACHINE_GUN_BULLET.get()).entityDamage(4).durabilityMass(0.1).accountForEntityArmor()
 			.gravity(-0.025).build(this);
 
-		shrapnel(CBCEntityTypes.SHRAPNEL.get()).durabilityMass(1).gravity(-0.025).drag(1).build(this);
-		shrapnel(CBCEntityTypes.GRAPESHOT.get()).durabilityMass(3).gravity(-0.025).drag(1).build(this);
+		shrapnel(CBCEntityTypes.SHRAPNEL.get()).durabilityMass(2).gravity(-0.025).drag(1).build(this);
+		shrapnel(CBCEntityTypes.GRAPESHOT.get()).durabilityMass(5).gravity(-0.025).drag(1).build(this);
 	}
 
 	protected Builder builder(EntityType<?> type) { return new Builder(type); }
