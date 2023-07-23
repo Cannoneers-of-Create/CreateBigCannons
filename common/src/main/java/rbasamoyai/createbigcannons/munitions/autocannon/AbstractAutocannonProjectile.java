@@ -26,7 +26,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	protected AbstractAutocannonProjectile(EntityType<? extends AbstractAutocannonProjectile> type, Level level) {
 		super(type, level);
-		this.ageRemaining = 60;
 	}
 
 	@Override
@@ -76,6 +75,8 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) & 0b11111101));
 		}
 	}
+
+	public void setLifetime(int lifetime) { this.ageRemaining = lifetime; }
 
 	@Override
 	protected void onDestroyBlock(BlockState state, BlockHitResult result) {

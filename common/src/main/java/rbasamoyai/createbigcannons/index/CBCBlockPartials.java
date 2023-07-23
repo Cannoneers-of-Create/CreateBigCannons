@@ -4,7 +4,7 @@ import com.jozufozu.flywheel.core.PartialModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
@@ -54,13 +54,13 @@ public class CBCBlockPartials {
 		CANNON_CARRIAGE_WHEEL = block("cannon_carriage/carriage_wheel"),
 		CANNON_CARRIAGE_SADDLE = block("cannon_carriage/carriage_saddle"),
 
-		CAST_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(AutocannonMaterial.CAST_IRON, "autocannon/cast_iron_autocannon_spring"),
-		BRONZE_AUTOCANNON_SPRING = autocannonSpringPartial(AutocannonMaterial.BRONZE, "autocannon/bronze_autocannon_spring"),
-		STEEL_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(AutocannonMaterial.STEEL, "autocannon/steel_autocannon_spring"),
+		CAST_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.CAST_IRON, "autocannon/cast_iron_autocannon_spring"),
+		BRONZE_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.BRONZE, "autocannon/bronze_autocannon_spring"),
+		STEEL_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.STEEL, "autocannon/steel_autocannon_spring"),
 
-		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.CAST_IRON, "cast_iron"),
-		BRONZE_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.BRONZE, "bronze"),
-		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.STEEL, "steel"),
+		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.CAST_IRON, "cast_iron"),
+		BRONZE_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.BRONZE, "bronze"),
+		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.STEEL, "steel"),
 
 		AUTOCANNON_SEAT_WHITE = autocannonSeatPartial(DyeColor.WHITE, "autocannon/seat_white"),
 		AUTOCANNON_SEAT_ORANGE = autocannonSeatPartial(DyeColor.ORANGE, "autocannon/seat_orange"),

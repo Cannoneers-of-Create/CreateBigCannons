@@ -27,7 +27,7 @@ import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.FailureMode;
@@ -131,16 +131,16 @@ public class CBCTooltip {
 		String rootKey = "block." + CreateBigCannons.MOD_ID + ".autocannon.tooltip";
 		tooltip.add(new TextComponent(I18n.get(rootKey + ".materialProperties")).withStyle(ChatFormatting.GRAY));
 
-		int maxLength = material.maxLength();
-		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".maxLength")).withStyle(ChatFormatting.GRAY));
+		int maxLength = material.properties().maxBarrelLength();
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".maxBarrelLength")).withStyle(ChatFormatting.GRAY));
 		if (hasGoggles) {
-			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".maxLength.goggles", maxLength + 1), palette.primary(), palette.highlight(), 2));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".maxBarrelLength.goggles", maxLength + 1), palette.primary(), palette.highlight(), 2));
 		} else {
 			tooltip.add(getNoGogglesMeter(maxLength == 0 ? 0 : (maxLength - 1) / 2 + 1, false, true));
 		}
 
 		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
-		float weightImpact = material.weight();
+		float weightImpact = material.properties().weight();
 		if (hasGoggles) {
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weightImpact.goggles", String.format("%.2f", weightImpact)), palette.primary(), palette.highlight(), 2));
 		} else {

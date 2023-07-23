@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler.ClientboundAutocannonMaterialPropertiesPacket;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler.ClientboundMunitionPropertiesPacket;
@@ -32,6 +33,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ServerboundSetFireRatePacket.class, ServerboundSetFireRatePacket::new);
 		addMsg(id++, ServerboundSetFuzePacket.class, ServerboundSetFuzePacket::new);
 		addMsg(id++, ClientboundMunitionPropertiesPacket.class, ClientboundMunitionPropertiesPacket::copyOf);
+		addMsg(id++, ClientboundAutocannonMaterialPropertiesPacket.class, ClientboundAutocannonMaterialPropertiesPacket::new);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {

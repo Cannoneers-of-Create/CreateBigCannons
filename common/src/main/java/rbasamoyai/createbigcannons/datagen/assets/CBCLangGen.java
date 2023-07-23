@@ -186,8 +186,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd.desc", "Cannons built with this as the closing can only safely handle up to _%s Powder Charge(s)_.");
 
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.materialProperties", "Autocannon Properties");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxLength", "Maximum Length");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxLength.goggles", "_%s blocks_ (including breech)");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxBarrelLength", "Maximum Length");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxBarrelLength.goggles", "_%s blocks_ (including breech)");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.weightImpact", "Weight Impact");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.weightImpact.goggles", "_%sx RPM_");
 
