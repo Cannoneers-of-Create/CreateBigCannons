@@ -20,12 +20,18 @@ import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 public class UnboredBigCannonBlock extends SolidBigCannonBlock<BigCannonEndBlockEntity> {
 
-	private final VoxelShaper shapes;
+	private final VoxelShaper visualShapes;
+	private final VoxelShaper collisionShapes;
 	private final Supplier<CannonCastShape> cannonShape;
 
-	public UnboredBigCannonBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape baseShape) {
+	public UnboredBigCannonBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape base) {
+		this(properties, material, cannonShape, base, base);
+	}
+
+	public UnboredBigCannonBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape visualShape, VoxelShape collisionShape) {
 		super(properties, material);
-		this.shapes = new AllShapes.Builder(baseShape).forDirectional();
+		this.visualShapes = new AllShapes.Builder(visualShape).forDirectional();
+		this.collisionShapes = new AllShapes.Builder(collisionShape).forDirectional();
 		this.cannonShape = cannonShape;
 	}
 
@@ -42,16 +48,21 @@ public class UnboredBigCannonBlock extends SolidBigCannonBlock<BigCannonEndBlock
 	}
 
 	public static UnboredBigCannonBlock large(Properties properties, BigCannonMaterial material) {
-		return new UnboredBigCannonBlock(properties, material, () -> CannonCastShape.LARGE, box(-1, 0, -1, 17, 16, 17));
+		return new UnboredBigCannonBlock(properties, material, () -> CannonCastShape.LARGE, box(-1, 0, -1, 17, 16, 17), Shapes.block());
 	}
 
 	public static UnboredBigCannonBlock veryLarge(Properties properties, BigCannonMaterial material) {
-		return new UnboredBigCannonBlock(properties, material, () -> CannonCastShape.VERY_LARGE, box(-2, 0, -2, 18, 16, 18));
+		return new UnboredBigCannonBlock(properties, material, () -> CannonCastShape.VERY_LARGE, box(-2, 0, -2, 18, 16, 18), Shapes.block());
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
-		return this.shapes.get(state.getValue(FACING));
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return this.collisionShapes.get(this.getFacing(state));
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return this.visualShapes.get(this.getFacing(state));
 	}
 
 	@Override
