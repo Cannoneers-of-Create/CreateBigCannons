@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
@@ -137,6 +138,7 @@ public class CBCCommonEvents {
 	public static void onDatapackSync(ServerPlayer player) {
 		BlockRecipesManager.syncTo(player);
 		MunitionPropertiesHandler.syncTo(player);
+		AutocannonMaterialPropertiesHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
@@ -145,6 +147,7 @@ public class CBCCommonEvents {
 		cons.accept(BlockHardnessHandler.BlockReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("munition_properties_handler"));
 		cons.accept(DimensionMunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("dimension_munition_properties_handler"));
+		cons.accept(AutocannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("autocannon_material_properties_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,

@@ -40,13 +40,15 @@ import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleDat
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialProperties;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -60,8 +62,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	private AutocannonMaterial cannonMaterial;
 	private BlockPos recoilSpringPos;
 	private boolean isHandle = false;
-
-	private int count = 0;
 
 	@Override
 	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
@@ -264,6 +264,11 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			}
 		}
 
+		AutocannonMaterialProperties properties = this.cannonMaterial.properties();
+
+		float speed = properties.baseSpeed();
+		float spread = properties.baseSpread();
+
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		BlockPos currentPos = this.startPos.relative(this.initialOrientation);
 		int barrelTravelled = 0;
@@ -273,7 +278,11 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 			if (behavior.canLoadItem(foundProjectile)) {
 				++barrelTravelled;
-				if (barrelTravelled > this.cannonMaterial.maxLength()) {
+				if (barrelTravelled < properties.maxSpeedIncreases())
+					speed += properties.speedIncreasePerBarrel();
+				spread -= properties.spreadReductionPerBarrel();
+				spread = Math.max(spread, 0);
+				if (barrelTravelled > properties.maxBarrelLength()) {
 					StructureBlockInfo oldInfo = this.blocks.get(currentPos);
 					behavior.tryLoadingItem(foundProjectile);
 					CompoundTag tag = this.presentBlockEntities.get(currentPos).saveWithFullMetadata();
@@ -306,7 +315,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		Vec3 vec1 = spawnPos.subtract(centerPos).normalize();
 		Vec3 particlePos = spawnPos.subtract(vec1.scale(1.5));
 
-		float recoilMagnitude = barrelTravelled;
+		float recoilMagnitude = speed;
 
 		boolean isTracer = round.isTracer(foundProjectile);
 
@@ -315,7 +324,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			projectile.setPos(spawnPos);
 			projectile.setChargePower(barrelTravelled);
 			projectile.setTracer(isTracer);
-			projectile.shoot(vec1.x, vec1.y, vec1.z, barrelTravelled, 0.05f);
+			projectile.setLifetime(properties.projectileLifetime());
+			projectile.shoot(vec1.x, vec1.y, vec1.z, speed, spread);
 			projectile.xRotO = projectile.getXRot();
 			projectile.yRotO = projectile.getYRot();
 			level.addFreshEntity(projectile);
@@ -396,7 +406,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 	@Override
 	public float getWeightForStress() {
-		return this.cannonMaterial == null ? this.blocks.size() : this.blocks.size() * this.cannonMaterial.weight();
+		return this.cannonMaterial == null ? this.blocks.size() : this.blocks.size() * this.cannonMaterial.properties().weight();
 	}
 
 	@Override
@@ -407,7 +417,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);
-		tag.putString("AutocannonMaterial", this.cannonMaterial == null ? AutocannonMaterial.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
+		tag.putString("AutocannonMaterial", this.cannonMaterial == null ? CBCAutocannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
 		if (this.startPos != null) tag.put("StartPos", NbtUtils.writeBlockPos(this.startPos));
 		if (this.recoilSpringPos != null) tag.put("RecoilSpringPos", NbtUtils.writeBlockPos(this.recoilSpringPos));
 		tag.putBoolean("IsHandle", this.isHandle);
@@ -417,7 +427,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override
 	public void readNBT(Level level, CompoundTag tag, boolean clientData) {
 		super.readNBT(level, tag, clientData);
-		this.cannonMaterial = AutocannonMaterial.fromName(new ResourceLocation(tag.getString("AutocannonMaterial")));
+		this.cannonMaterial = AutocannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("AutocannonMaterial")));
+		if (this.cannonMaterial == null) this.cannonMaterial = CBCAutocannonMaterials.CAST_IRON;
 		this.startPos = tag.contains("StartPos") ? NbtUtils.readBlockPos(tag.getCompound("StartPos")) : null;
 		this.recoilSpringPos = tag.contains("RecoilSpringPos") ? NbtUtils.readBlockPos(tag.getCompound("RecoilSpringPos")) : null;
 		this.isHandle = tag.getBoolean("IsHandle");
