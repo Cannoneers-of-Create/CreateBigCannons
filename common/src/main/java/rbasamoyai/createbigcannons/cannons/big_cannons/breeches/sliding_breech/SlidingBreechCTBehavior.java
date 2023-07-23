@@ -1,8 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.big_cannons;
-
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
-
-import javax.annotation.Nullable;
+package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech;
 
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour;
@@ -13,20 +9,37 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class BuiltUpCannonCTBehavior extends ConnectedTextureBehaviour.Base {
+import javax.annotation.Nullable;
 
-	private final CTSpriteShiftEntry shift;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
-	public BuiltUpCannonCTBehavior(CTSpriteShiftEntry shift) {
-		this.shift = shift;
+public class SlidingBreechCTBehavior extends ConnectedTextureBehaviour.Base {
+
+	private final CTSpriteShiftEntry side;
+	private final CTSpriteShiftEntry sideHole;
+
+	public SlidingBreechCTBehavior(CTSpriteShiftEntry side, CTSpriteShiftEntry sideHole) {
+		this.side = side;
+		this.sideHole = sideHole;
 	}
 
 	@Override
 	@Nullable
 	public CTSpriteShiftEntry getShift(BlockState state, Direction direction, @Nullable TextureAtlasSprite sprite) {
-		return state.getValue(FACING).getAxis() == direction.getAxis() ? null : this.shift;
+		Direction.Axis orientationAxis = state.getValue(FACING).getAxis();
+		Direction.Axis faceAxis = direction.getAxis();
+		if (orientationAxis == faceAxis) return null;
+		boolean firstAxis = state.getValue(SlidingBreechBlock.AXIS_ALONG_FIRST_COORDINATE);
+		Direction.Axis shaftAxis = switch (orientationAxis) {
+			case X -> firstAxis ? Direction.Axis.Y : Direction.Axis.Z;
+			case Y -> firstAxis ? Direction.Axis.X : Direction.Axis.Z;
+			case Z -> firstAxis ? Direction.Axis.X : Direction.Axis.Y;
+		};
+		return faceAxis == shaftAxis ? this.side : this.sideHole;
 	}
 
 	@Override
@@ -62,11 +75,12 @@ public class BuiltUpCannonCTBehavior extends ConnectedTextureBehaviour.Base {
 	@Override
 	public CTContext buildContext(BlockAndTintGetter reader, BlockPos pos, BlockState state, Direction face, ContextRequirement requirement) {
 		CTContext ctx = super.buildContext(reader, pos, state, face, requirement);
-		if (state.getBlock() instanceof BigCannonBlock cBlock && cBlock.getFacing(state).getAxisDirection() == Direction.AxisDirection.POSITIVE) {
+		if (state.getBlock() instanceof BigCannonBlock cBlock && cBlock.getFacing(state).getAxisDirection() == Direction.AxisDirection.NEGATIVE) {
 			boolean tmp = ctx.up;
 			ctx.up = ctx.down;
 			ctx.down = tmp;
 		}
 		return ctx;
 	}
+
 }
