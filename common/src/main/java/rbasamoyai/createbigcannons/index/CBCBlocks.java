@@ -47,6 +47,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BuiltUpCannonCTBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech.ScrewBreechBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechCTBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEndBlock;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBitBlock;
@@ -415,6 +416,8 @@ public class CBCBlocks {
 		.transform(strongCannonBlock(false))
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
+		.onRegister(CreateRegistrate.connectedTextures(() ->
+			new SlidingBreechCTBehavior(CBCSpriteShifts.STEEL_SLIDING_BREECH_SIDE, CBCSpriteShifts.STEEL_SLIDING_BREECH_SIDE_HOLE)))
 		.register();
 
 	private static NonNullSupplier<? extends Block> steelSlidingBreech() {
@@ -427,6 +430,8 @@ public class CBCBlocks {
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
 		.transform(CBCDefaultStress.setImpact(32.0d))
+		.onRegister(CreateRegistrate.connectedTextures(() ->
+			new SlidingBreechCTBehavior(CBCSpriteShifts.STEEL_SLIDING_BREECH_SIDE, CBCSpriteShifts.STEEL_SLIDING_BREECH_SIDE_HOLE)))
 		.register();
 
 	public static final BlockEntry<IncompleteSlidingBreechBlock> INCOMPLETE_STEEL_SLIDING_BREECH = REGISTRATE

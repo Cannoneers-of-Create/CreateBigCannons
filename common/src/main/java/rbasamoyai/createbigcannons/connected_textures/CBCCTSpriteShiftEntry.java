@@ -14,14 +14,14 @@ public class CBCCTSpriteShiftEntry extends CTSpriteShiftEntry {
 
 	@Override
 	public float getTargetU(float localU, int index) {
-		float uOffset = (index % this.type.getSheetSize());
+		float uOffset = index % this.type.getSheetSize();
 		return getTarget().getU(
 			(getUnInterpolatedU(getOriginal(), localU) * this.scale + (uOffset * 16)) / ((float) type.getSheetSize()));
 	}
 
 	@Override
 	public float getTargetV(float localV, int index) {
-		float vOffset = (index / (float) this.type.getSheetSize());
+		float vOffset = index / this.type.getSheetSize();
 		return getTarget().getV(
 			(getUnInterpolatedV(getOriginal(), localV) * this.scale + (vOffset * 16)) / ((float) type.getSheetSize()));
 	}
