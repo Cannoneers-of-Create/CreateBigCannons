@@ -115,7 +115,6 @@ public interface BigCannonBlock {
 
 	static void onPlace(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
-		if (!(level instanceof ServerLevel slevel)) return;
 
 		if (state.getBlock() instanceof BigCannonBlock cBlock) {
 			Direction facing = cBlock.getFacing(state);
@@ -141,7 +140,6 @@ public interface BigCannonBlock {
 					Direction facing1 = cBlock1.getFacing(state1);
 					if (facing == facing1.getOpposite() || cBlock1.isDoubleSidedCannon(state1) && facing.getAxis() == facing1.getAxis()) {
 						cbe.cannonBehavior().setConnectedFace(facing, true);
-						cbe1.cannonBehavior().setConnectedFace(facing.getOpposite(), true);
 
 						if (cbe instanceof LayeredBigCannonBlockEntity layered && cbe1 instanceof LayeredBigCannonBlockEntity layered1) {
 							for (CannonCastShape layer : layered.getLayers().keySet()) {
@@ -164,8 +162,10 @@ public interface BigCannonBlock {
 
 						be1.setChanged();
 
-						Vec3 particlePos = center.add(offset);
-						slevel.sendParticles(ParticleTypes.CRIT, particlePos.x, particlePos.y, particlePos.z, 10, 0.5d, 0.5d, 0.5d, 0.1d);
+						if (level instanceof ServerLevel slevel) {
+							Vec3 particlePos = center.add(offset);
+							slevel.sendParticles(ParticleTypes.CRIT, particlePos.x, particlePos.y, particlePos.z, 10, 0.5d, 0.5d, 0.5d, 0.1d);
+						}
 					}
 				}
 
@@ -203,8 +203,10 @@ public interface BigCannonBlock {
 
 						be2.setChanged();
 
-						Vec3 particlePos = center.add(offset.reverse());
-						slevel.sendParticles(ParticleTypes.CRIT, particlePos.x, particlePos.y, particlePos.z, 10, 0.5d, 0.5d, 0.5d, 0.1d);
+						if (level instanceof ServerLevel slevel) {
+							Vec3 particlePos = center.add(offset.reverse());
+							slevel.sendParticles(ParticleTypes.CRIT, particlePos.x, particlePos.y, particlePos.z, 10, 0.5d, 0.5d, 0.5d, 0.1d);
+						}
 					}
 				}
 
