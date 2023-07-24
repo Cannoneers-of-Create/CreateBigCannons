@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
@@ -141,6 +142,7 @@ public class CBCCommonEvents {
 		MunitionPropertiesHandler.syncTo(player);
 		AutocannonMaterialPropertiesHandler.syncTo(player);
 		BigCannonMaterialPropertiesHandler.syncTo(player);
+		BigCannonBreechStrengthHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
@@ -151,6 +153,7 @@ public class CBCCommonEvents {
 		cons.accept(DimensionMunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("dimension_munition_properties_handler"));
 		cons.accept(AutocannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("autocannon_material_properties_handler"));
 		cons.accept(BigCannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_material_properties_handler"));
+		cons.accept(BigCannonBreechStrengthHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_breech_strength_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,

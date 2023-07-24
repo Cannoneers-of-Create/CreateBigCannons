@@ -25,7 +25,6 @@ public class CBCTags {
 		public static final TagKey<Block>
 			THICK_TUBING = makeTag("thick_tubing"),
 			REDUCES_SPREAD = makeTag("reduces_spread"),
-			WEAK_CANNON_END = makeTag("weak_cannon_end"),
 			DRILL_CAN_PASS_THROUGH = makeTag("drill_can_pass_through"),
 			DEFLECTS_SHOTS = makeTag("deflects_shots"),
 			DOESNT_DEFLECT_SHOTS = makeTag("doesnt_deflect_shots"),

@@ -24,11 +24,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CBCClientCommon;
-import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
@@ -112,11 +112,9 @@ public class CBCTooltip {
 		String failKey = material.failureMode() == BigCannonMaterialProperties.FailureMode.RUPTURE ? ".onFailure.rupture" : ".onFailure.fragment";
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + failKey), TooltipHelper.Palette.GRAY_AND_WHITE.primary(), TooltipHelper.Palette.GRAY_AND_WHITE.highlight(), 1));
 
-		if (block.defaultBlockState().is(CBCTags.BlockCBC.WEAK_CANNON_END) && CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1) {
-			int weakCharges = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
-			tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weakCannonEnd")).withStyle(ChatFormatting.GRAY));
-			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weakCannonEnd.desc", weakCharges), palette.primary(), palette.highlight(), 2));
-		}
+		float breechStrength = BigCannonBreechStrengthHandler.getStrength(block, material.maxSafeBaseCharges());
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".breechStrength")).withStyle(ChatFormatting.GRAY));
+		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".breechStrength.desc", breechStrength), palette.primary(), palette.highlight(), 2));
 	}
 
 	public static <T extends Block & AutocannonBlock> void appendTextAutocannon(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {

@@ -36,6 +36,7 @@ import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
@@ -53,7 +54,6 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonProp
 public class MountedBigCannonContraption extends AbstractMountedCannonContraption {
 
 	private BigCannonMaterial cannonMaterial;
-	private boolean isWeakBreech = false;
 	public boolean hasFired = false;
 
 	@Override
@@ -133,7 +133,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			if (positiveEnd != BigCannonEnd.OPEN) break;
 		}
 		BlockPos positiveEndPos = positiveEnd == BigCannonEnd.OPEN ? start : start.relative(negative);
-		BlockState positiveEndState = level.getBlockState(start);
 
 		start = pos;
 		nextState = level.getBlockState(pos.relative(negative));
@@ -163,7 +162,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			if (negativeEnd != BigCannonEnd.OPEN) break;
 		}
 		BlockPos negativeEndPos = negativeEnd == BigCannonEnd.OPEN ? start : start.relative(positive);
-		BlockState negativeEndState = level.getBlockState(start);
 
 		if (positiveEnd == negativeEnd) {
 			throw invalidCannon();
@@ -172,11 +170,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		boolean openEndFlag = positiveEnd == BigCannonEnd.OPEN;
 		this.initialOrientation = openEndFlag ? positive : negative;
 		this.startPos = openEndFlag ? negativeEndPos : positiveEndPos;
-
-		this.isWeakBreech = openEndFlag ? negativeEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END) : positiveEndState.is(CBCTags.BlockCBC.WEAK_CANNON_END);
-
-		this.isWeakBreech &= CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1;
-
 		this.anchor = pos;
 
 		this.startPos = this.startPos.subtract(pos);
@@ -262,10 +255,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		BigCannonMaterialProperties properties = this.cannonMaterial.properties();
 
-		int weakBreechStrength = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
-		int maxSafeCharges = this.isWeakBreech && weakBreechStrength > -1
-			? Math.min(properties.maxSafeBaseCharges(), weakBreechStrength)
-			: properties.maxSafeBaseCharges();
+		StructureBlockInfo breech = this.blocks.get(this.startPos.relative(this.initialOrientation.getOpposite()));
+		int materialStrength = properties.maxSafeBaseCharges();
+		int maxSafeCharges = Math.min(materialStrength, BigCannonBreechStrengthHandler.getStrength(breech.state.getBlock(), materialStrength));
 
 		BigCannonPropellantBlock propellant = null;
 
@@ -467,7 +459,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);
 		tag.putString("CannonMaterial", this.cannonMaterial == null ? CBCBigCannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
-		tag.putBoolean("WeakBreech", this.isWeakBreech);
 		return tag;
 	}
 
@@ -476,7 +467,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		super.readNBT(level, tag, clientData);
 		this.cannonMaterial = BigCannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("CannonMaterial")));
 		if (this.cannonMaterial == null) this.cannonMaterial = CBCBigCannonMaterials.CAST_IRON;
-		this.isWeakBreech = tag.getBoolean("WeakBreech");
 	}
 
 	@Override

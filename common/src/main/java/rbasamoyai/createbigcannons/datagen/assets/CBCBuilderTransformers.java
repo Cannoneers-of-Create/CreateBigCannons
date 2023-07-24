@@ -147,7 +147,6 @@ public class CBCBuilderTransformers {
 		ResourceLocation breechblockBottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_breechblock_bottom");
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.tag(CBCTags.BlockCBC.WEAK_CANNON_END)
 			.blockstate(new SlidingBreechBlockGen(pathAndMaterial)::generate)
 			.item(BigCannonBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
