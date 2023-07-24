@@ -25,8 +25,6 @@ public record AutocannonMaterial(ResourceLocation name, AutocannonMaterialProper
         return CANNON_MATERIALS.get(loc);
     }
 
-	public static AutocannonMaterial fromNameOrNull(ResourceLocation loc) {
-		return CANNON_MATERIALS.getOrDefault(loc, null);
-	}
+	public static AutocannonMaterial fromNameOrNull(ResourceLocation loc) { return CANNON_MATERIALS.get(loc); }
 
 }

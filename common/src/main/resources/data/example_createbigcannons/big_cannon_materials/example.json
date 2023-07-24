@@ -1,0 +1,7 @@
+{
+  "squib_ratio_barrels": 3,
+  "squib_ratio_propellant": 7,
+  "weight": 4,
+  "max_safe_charges": 9,
+  "failure_mode": "fragment"
+}

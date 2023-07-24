@@ -29,9 +29,9 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.FailureMode;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
@@ -74,7 +74,7 @@ public class CBCTooltip {
 		if (!desc) return;
 
 		TooltipHelper.Palette palette = getPalette(level, stack);
-		BigCannonMaterial material = block.getCannonMaterial();
+		BigCannonMaterialProperties material = block.getCannonMaterial().properties();
 		Minecraft mc = Minecraft.getInstance();
 		boolean hasGoggles = GogglesItem.isWearingGoggles(mc.player);
 		String rootKey = "block." + CreateBigCannons.MOD_ID + ".cannon.tooltip";
@@ -87,7 +87,7 @@ public class CBCTooltip {
 			String strength = rawStrength > 1000 ? I18n.get(rootKey + ".strength.unlimited") : String.format("%.2f", rawStrength);
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".strength.goggles", strength), palette.primary(), palette.highlight(), 2));
 		} else {
-			float nethersteelStrength = PowderChargeBlock.getPowderChargeEquivalent(BigCannonMaterial.NETHERSTEEL.maxSafeBaseCharges());
+			float nethersteelStrength = PowderChargeBlock.getPowderChargeEquivalent(CBCBigCannonMaterials.NETHERSTEEL.properties().maxSafeBaseCharges());
 			int strength = Mth.ceil(Math.min(rawStrength / nethersteelStrength * 5, 5));
 			tooltip.add(getNoGogglesMeter(strength, false, true));
 		}
@@ -109,7 +109,7 @@ public class CBCTooltip {
 		}
 
 		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".onFailure")).withStyle(ChatFormatting.GRAY));
-		String failKey = material.failureMode() == FailureMode.RUPTURE ? ".onFailure.rupture" : ".onFailure.fragment";
+		String failKey = material.failureMode() == BigCannonMaterialProperties.FailureMode.RUPTURE ? ".onFailure.rupture" : ".onFailure.fragment";
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + failKey), TooltipHelper.Palette.GRAY_AND_WHITE.primary(), TooltipHelper.Palette.GRAY_AND_WHITE.highlight(), 1));
 
 		if (block.defaultBlockState().is(CBCTags.BlockCBC.WEAK_CANNON_END) && CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1) {

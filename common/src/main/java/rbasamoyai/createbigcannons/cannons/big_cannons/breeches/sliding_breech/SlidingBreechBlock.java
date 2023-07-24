@@ -18,7 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;

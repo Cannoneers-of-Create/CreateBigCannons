@@ -34,10 +34,11 @@ import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderState;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 
@@ -411,8 +412,8 @@ public class CannonBuildingContraption extends PoleContraption {
 		super.readNBT(level, tag, spawnData);
 		this.isActivated = tag.getBoolean("Activated");
 
-		this.material = BigCannonMaterial.fromName(new ResourceLocation(tag.getString("Material")));
-		if (this.material == null) this.material = BigCannonMaterial.STEEL;
+		this.material = BigCannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("Material")));
+		if (this.material == null) this.material = CBCBigCannonMaterials.STEEL;
 	}
 
 	@Override
