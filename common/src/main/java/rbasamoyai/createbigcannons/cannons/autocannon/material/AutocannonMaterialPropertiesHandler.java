@@ -17,7 +17,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
-import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class AutocannonMaterialPropertiesHandler {
@@ -73,8 +72,8 @@ public class AutocannonMaterialPropertiesHandler {
 	public record ClientboundAutocannonMaterialPropertiesPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {
 		public ClientboundAutocannonMaterialPropertiesPacket() { this(null); }
 
-		public static MunitionPropertiesHandler.ClientboundMunitionPropertiesPacket copyOf(FriendlyByteBuf buf) {
-			return new MunitionPropertiesHandler.ClientboundMunitionPropertiesPacket(new FriendlyByteBuf(buf.copy()));
+		public static ClientboundAutocannonMaterialPropertiesPacket copyOf(FriendlyByteBuf buf) {
+			return new ClientboundAutocannonMaterialPropertiesPacket(new FriendlyByteBuf(buf.copy()));
 		}
 
 		@Override public void rootEncode(FriendlyByteBuf buf) { writeBuf(buf); }
