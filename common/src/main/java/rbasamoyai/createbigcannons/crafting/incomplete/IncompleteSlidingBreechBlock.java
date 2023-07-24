@@ -31,7 +31,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.SolidBigCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
@@ -167,7 +167,7 @@ public class IncompleteSlidingBreechBlock extends SolidBigCannonBlock<Incomplete
 		if (this.result == null) this.result = this.resultSupplier.get();
 		BlockState newState = this.result.defaultBlockState();
 		if (newState.hasProperty(FACING)) newState = newState.setValue(FACING, state.getValue(FACING));
-		return newState.hasProperty(ALONG_FIRST) ? newState = newState.setValue(ALONG_FIRST, state.getValue(ALONG_FIRST)) : newState;
+		return newState.hasProperty(ALONG_FIRST) ? newState.setValue(ALONG_FIRST, state.getValue(ALONG_FIRST)) : newState;
 	}
 
 }

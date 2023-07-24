@@ -36,12 +36,13 @@ import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.FailureMode;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -217,7 +218,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		if (this.cannonMaterial == null) {
 			return this.blocks.size();
 		}
-		return this.blocks.size() * this.cannonMaterial.weight();
+		return this.blocks.size() * this.cannonMaterial.properties().weight();
 	}
 
 	@Override
@@ -259,10 +260,12 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		boolean emptyNoProjectile = false;
 
+		BigCannonMaterialProperties properties = this.cannonMaterial.properties();
+
 		int weakBreechStrength = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
 		int maxSafeCharges = this.isWeakBreech && weakBreechStrength > -1
-			? Math.min(this.cannonMaterial.maxSafeBaseCharges(), weakBreechStrength)
-			: this.cannonMaterial.maxSafeBaseCharges();
+			? Math.min(properties.maxSafeBaseCharges(), weakBreechStrength)
+			: properties.maxSafeBaseCharges();
 
 		BigCannonPropellantBlock propellant = null;
 
@@ -339,7 +342,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					spread = Math.max(spread - spreadSub, 0.0f);
 				}
 
-				if (chargesUsed > 0 && (double) barrelTravelled / (double) chargesUsed > this.cannonMaterial.squibRatio() && rollSquib(rand)) {
+				if (chargesUsed > 0 && (double) barrelTravelled / (double) chargesUsed > this.cannonMaterial.properties().squibRatio() && rollSquib(rand)) {
 					behavior.loadBlock(foundProjectile);
 					CompoundTag tag = behavior.blockEntity.saveWithFullMetadata();
 					tag.remove("x");
@@ -430,7 +433,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public void fail(BlockPos localPos, Level level, PitchOrientedContraptionEntity entity, BlockEntity failed, int charges) {
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(failed.getBlockPos()), 1.0f);
 		float failScale = CBCConfigs.SERVER.failure.failureExplosionPower.getF();
-		if (this.cannonMaterial.failureMode() == FailureMode.RUPTURE) {
+		if (this.cannonMaterial.properties().failureMode() == BigCannonMaterialProperties.FailureMode.RUPTURE) {
 			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2 * failScale + 1, Explosion.BlockInteraction.NONE);
 			int failInt = Mth.ceil(failScale);
 			BlockPos startPos = localPos.relative(this.initialOrientation.getOpposite(), failInt);
@@ -463,7 +466,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	@Override
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);
-		tag.putString("CannonMaterial", this.cannonMaterial == null ? BigCannonMaterial.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
+		tag.putString("CannonMaterial", this.cannonMaterial == null ? CBCBigCannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
 		tag.putBoolean("WeakBreech", this.isWeakBreech);
 		return tag;
 	}
@@ -471,7 +474,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	@Override
 	public void readNBT(Level level, CompoundTag tag, boolean clientData) {
 		super.readNBT(level, tag, clientData);
-		this.cannonMaterial = BigCannonMaterial.fromName(new ResourceLocation(tag.getString("CannonMaterial")));
+		this.cannonMaterial = BigCannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("CannonMaterial")));
+		if (this.cannonMaterial == null) this.cannonMaterial = CBCBigCannonMaterials.CAST_IRON;
 		this.isWeakBreech = tag.getBoolean("WeakBreech");
 	}
 

@@ -19,9 +19,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 public class BuiltUpCannonBlock extends DirectionalBlock implements IBE<LayeredBigCannonBlockEntity>, BigCannonBlock {
@@ -38,7 +39,7 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements IBE<LayeredB
 
 	@Override
 	public BigCannonMaterial getCannonMaterial() {
-		return BigCannonMaterial.INCOMPLETE_LAYERED;
+		return CBCBigCannonMaterials.INCOMPLETE_LAYERED;
 	}
 
 	@Override

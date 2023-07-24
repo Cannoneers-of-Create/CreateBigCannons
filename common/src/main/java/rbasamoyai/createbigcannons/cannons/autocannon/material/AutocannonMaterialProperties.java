@@ -11,7 +11,7 @@ public record AutocannonMaterialProperties(int maxBarrelLength, float weight, fl
 
 	public static AutocannonMaterialProperties fromJson(JsonObject obj) {
 		int maxBarrelLength = Math.max(1, GsonHelper.getAsInt(obj, "maximum_barrel_length"));
-		float weight = Math.max(0.01f, GsonHelper.getAsFloat(obj, "weight", 2));
+		float weight = Math.max(0, GsonHelper.getAsFloat(obj, "weight", 2));
 		float baseSpread = Math.max(0.01f, GsonHelper.getAsFloat(obj, "base_spread", 3));
 		float spreadReductionPerBarrel = Math.max(0, GsonHelper.getAsFloat(obj, "spread_reduction_per_barrel", 0.5f));
 		float baseSpeed = Math.max(0.1f, GsonHelper.getAsFloat(obj, "base_speed", 1));
