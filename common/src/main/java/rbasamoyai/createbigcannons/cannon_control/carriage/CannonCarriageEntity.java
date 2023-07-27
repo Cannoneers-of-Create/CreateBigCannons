@@ -49,8 +49,8 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCan
 import rbasamoyai.createbigcannons.cannon_control.contraption.ItemCannon;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -237,7 +237,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		if (this.cannonContraption == null || !(this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon))
 			return 1;
 		float weight = cannon.getWeightForStress();
-		return weight <= 0.0f ? 1 : BigCannonMaterial.CAST_IRON.weight() * 5 / weight; // Base weight is a 5 long cast iron cannon.
+		return weight <= 0.0f ? 1 : CBCBigCannonMaterials.CAST_IRON.properties().weight() * 5 / weight; // Base weight is a 5 long cast iron cannon.
 	}
 
 	@Override

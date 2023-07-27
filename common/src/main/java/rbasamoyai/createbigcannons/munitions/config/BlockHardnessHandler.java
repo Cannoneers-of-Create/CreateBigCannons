@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -23,11 +24,11 @@ public class BlockHardnessHandler {
 	public static final Map<Block, Double> BLOCK_MAP = new HashMap<>();
 	public static final Map<TagKey<Block>, Double> TAGS_TO_EVALUATE = new LinkedHashMap<>();
 
-	public static class ReloadListener extends SimpleJsonResourceReloadListener {
+	public static class BlockReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
-		public static final ReloadListener INSTANCE = new ReloadListener();
+		public static final BlockReloadListener INSTANCE = new BlockReloadListener();
 
-		public ReloadListener() { super(GSON, "block_hardness"); }
+		public BlockReloadListener() { super(GSON, "block_hardness"); }
 
 		@Override
 		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
@@ -37,21 +38,17 @@ public class BlockHardnessHandler {
 				JsonElement el = entry.getValue();
 				if (!el.isJsonObject()) continue;
 				try {
-					for (Map.Entry<String, JsonElement> objEntry : el.getAsJsonObject().entrySet()) {
-						JsonElement el1 = objEntry.getValue();
-						if (!el1.isJsonPrimitive() || !el1.getAsJsonPrimitive().isNumber()) continue;
-						String s = objEntry.getKey();
-						double hardness = el1.getAsDouble();
-						if (s.charAt(0) == '#') {
-							s = s.substring(1);
-							TAGS_TO_EVALUATE.put(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(s)), hardness);
-						} else {
-							String copy = s;
-							Block block = Registry.BLOCK.getOptional(new ResourceLocation(s)).orElseThrow(() -> {
-								return new JsonSyntaxException("Unknown block '" + copy + "'");
-							});
-							BLOCK_MAP.put(block, hardness);
-						}
+					double hardness = GsonHelper.getAsDouble(el.getAsJsonObject(), "block_hardness");
+					ResourceLocation loc = entry.getKey();
+					if (loc.getPath().startsWith("tags/")) {
+						ResourceLocation pruned = new ResourceLocation(loc.getNamespace(), loc.getPath().substring(5));
+						TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, pruned);
+						TAGS_TO_EVALUATE.put(tag, hardness);
+					} else {
+						Block block = Registry.BLOCK.getOptional(loc).orElseThrow(() -> {
+							return new JsonSyntaxException("Unknown block '" + loc + "'");
+						});
+						BLOCK_MAP.put(block, hardness);
 					}
 				} catch (Exception e) {
 

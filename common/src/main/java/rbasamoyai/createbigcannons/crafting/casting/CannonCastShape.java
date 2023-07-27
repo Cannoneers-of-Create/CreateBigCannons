@@ -27,18 +27,19 @@ public class CannonCastShape {
 		VERY_LARGE = register("very_large", new CannonCastShape(20 * INGOT_SIZE_MB, 20, CBCBlocks.VERY_LARGE_CAST_MOULD)),
 		CANNON_END = register("cannon_end", new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.CANNON_END_CAST_MOULD)),
 		SLIDING_BREECH = register("sliding_breech", new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SLIDING_BREECH_CAST_MOULD, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false))),
-		SCREW_BREECH = register("screw_breech", new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD)),
+		SCREW_BREECH = register("screw_breech", new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD, true, false)),
 
-	AUTOCANNON_BARREL = register("autocannon_barrel", new CannonCastShape(3 * INGOT_SIZE_MB, 4, CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
-		AUTOCANNON_BARREL_FLANGED = register("autocannon_barrel_flanged", new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR, false)),
-		AUTOCANNON_BREECH = register("autocannon_breech", new CannonCastShape(4 * INGOT_SIZE_MB, 8, CBCBlocks.AUTOCANNON_BREECH_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
-		AUTOCANNON_RECOIL_SPRING = register("autocannon_recoil_spring", new CannonCastShape(4 * INGOT_SIZE_MB, 6, CBCBlocks.AUTOCANNON_RECOIL_SPRING_CAST_MOULD, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP)));
+	AUTOCANNON_BARREL = register("autocannon_barrel", new CannonCastShape(3 * INGOT_SIZE_MB, 4, CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD, false, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
+		AUTOCANNON_BARREL_FLANGED = register("autocannon_barrel_flanged", new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR, false, false)),
+		AUTOCANNON_BREECH = register("autocannon_breech", new CannonCastShape(4 * INGOT_SIZE_MB, 8, CBCBlocks.AUTOCANNON_BREECH_CAST_MOULD, false, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
+		AUTOCANNON_RECOIL_SPRING = register("autocannon_recoil_spring", new CannonCastShape(4 * INGOT_SIZE_MB, 6, CBCBlocks.AUTOCANNON_RECOIL_SPRING_CAST_MOULD, false, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP)));
 
 	private final int fluidSize;
 	private final int diameter;
 	private final NonNullSupplier<? extends Block> castMould;
 	private final boolean isLarge;
 	private final PropertySetter<?>[] properties;
+	private final boolean texturesCanConnect;
 
 	private Block resolvedCastMould;
 
@@ -53,15 +54,17 @@ public class CannonCastShape {
 	 */
 
 	public CannonCastShape(int fluidSizeForge, int diameter, NonNullSupplier<? extends Block> castMould, PropertySetter<?>... properties) {
-		this(fluidSizeForge, diameter, castMould, true, properties);
+		this(fluidSizeForge, diameter, castMould, true, true, properties);
 	}
 
-	public CannonCastShape(int fluidSizeForge, int diameter, NonNullSupplier<? extends Block> castMould, boolean large, PropertySetter<?>... properties) {
+	public CannonCastShape(int fluidSizeForge, int diameter, NonNullSupplier<? extends Block> castMould, boolean large, boolean texturesCanConnect,
+						   PropertySetter<?>... properties) {
 		this.fluidSize = IndexPlatform.convertFluid(fluidSizeForge);
 		this.diameter = diameter;
 		this.castMould = castMould;
 		this.isLarge = large;
 		this.properties = properties;
+		this.texturesCanConnect = true;
 	}
 
 	public int fluidSize() {
@@ -75,6 +78,7 @@ public class CannonCastShape {
 	public boolean isLarge() {
 		return this.isLarge;
 	}
+	public boolean texturesCanConnect() { return this.texturesCanConnect; }
 
 	public Block castMould() {
 		if (this.resolvedCastMould == null) {

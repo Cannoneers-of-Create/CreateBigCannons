@@ -8,7 +8,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.IndirectEntityDamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -29,6 +28,7 @@ import rbasamoyai.createbigcannons.base.PreciseProjectile;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
@@ -213,7 +213,12 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	}
 
 	/** Use for fuzes and any other effects */
-	protected void onImpact(HitResult result, boolean stopped) {}
+	protected void onImpact(HitResult result, boolean stopped) {
+		if (result.getType() == HitResult.Type.BLOCK) {
+			BlockState state = this.level.getBlockState(((BlockHitResult) result).getBlockPos());
+			state.onProjectileHit(this.level, state, (BlockHitResult) result, this);
+		}
+	}
 
 	protected abstract void onDestroyBlock(BlockState state, BlockHitResult result);
 
@@ -320,7 +325,6 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
 		builder.clientTrackingRange(16)
 				.updateInterval(1)
-				//.setShouldReceiveVelocityUpdates(true)
 				.fireImmune()
 				.sized(0.8f, 0.8f);
 	}
@@ -330,8 +334,17 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		return dimensions.height * 0.5f;
 	}
 
-	protected float getGravity() { return -0.05f; }
-	protected float getDrag() { return 0.99f; }
+	protected float getGravity() {
+		float multiplier = (float) DimensionMunitionPropertiesHandler.getProperties(this.level).gravityMultiplier();
+		return (float) this.getProperties().gravity() * multiplier;
+	}
+	protected float getDrag() {
+		float scalar = (float) DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier();
+		float baseDrag = (float) this.getProperties().drag();
+		if (scalar <= 1) return Mth.lerp(scalar, 1, baseDrag);
+		float diff = baseDrag - 1;
+		return (float) Mth.clamp(baseDrag + diff * (scalar - 1), 0.9, baseDrag);
+	}
 
 	public void setChargePower(float power) {}
 
@@ -345,15 +358,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		NO_BOUNCE
 	}
 
-	protected static class CannonDamageSource extends IndirectEntityDamageSource {
-		public CannonDamageSource(String id, Entity entity, @Nullable Entity owner) {
-			super(id, entity, owner);
-			if (MunitionPropertiesHandler.getProperties(entity).ignoresEntityArmor()) this.bypassArmor();
-		}
-	}
-
-	public static DamageSource indirectArtilleryFire() {
-		return new CBCDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile").setScalesWithDifficulty().setExplosion();
+	public DamageSource indirectArtilleryFire() {
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile", this, null).setScalesWithDifficulty().setExplosion();
 	}
 
 }

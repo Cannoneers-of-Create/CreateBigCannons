@@ -25,7 +25,6 @@ public class CBCTags {
 		public static final TagKey<Block>
 			THICK_TUBING = makeTag("thick_tubing"),
 			REDUCES_SPREAD = makeTag("reduces_spread"),
-			WEAK_CANNON_END = makeTag("weak_cannon_end"),
 			DRILL_CAN_PASS_THROUGH = makeTag("drill_can_pass_through"),
 			DEFLECTS_SHOTS = makeTag("deflects_shots"),
 			DOESNT_DEFLECT_SHOTS = makeTag("doesnt_deflect_shots"),
@@ -98,7 +97,7 @@ public class CBCTags {
 			NUGGET_BRONZE = commonTag("nugget_bronze", "nuggets/bronze", "bronze_nuggets"),
 			INGOT_BRONZE = commonTag("ingot_bronze", "ingots/bronze", "bronze_ingots"),
 			BLOCK_BRONZE = commonTag("block_bronze", "storage_blocks/bronze", "bronze_blocks"),
-			NUGGET_STEEL = commonTag("nugget_steel", "nuggets/steel", "steel_blocks"),
+			NUGGET_STEEL = commonTag("nugget_steel", "nuggets/steel", "steel_nuggets"),
 			INGOT_STEEL = commonTag("ingot_steel", "ingots/steel", "steel_ingots"),
 			BLOCK_STEEL = commonTag("block_steel", "storage_blocks/steel", "steel_blocks"),
 

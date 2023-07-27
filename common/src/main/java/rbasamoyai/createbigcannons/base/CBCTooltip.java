@@ -24,14 +24,14 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CBCClientCommon;
-import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial.FailureMode;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
@@ -74,7 +74,7 @@ public class CBCTooltip {
 		if (!desc) return;
 
 		TooltipHelper.Palette palette = getPalette(level, stack);
-		BigCannonMaterial material = block.getCannonMaterial();
+		BigCannonMaterialProperties material = block.getCannonMaterial().properties();
 		Minecraft mc = Minecraft.getInstance();
 		boolean hasGoggles = GogglesItem.isWearingGoggles(mc.player);
 		String rootKey = "block." + CreateBigCannons.MOD_ID + ".cannon.tooltip";
@@ -87,7 +87,7 @@ public class CBCTooltip {
 			String strength = rawStrength > 1000 ? I18n.get(rootKey + ".strength.unlimited") : String.format("%.2f", rawStrength);
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".strength.goggles", strength), palette.primary(), palette.highlight(), 2));
 		} else {
-			float nethersteelStrength = PowderChargeBlock.getPowderChargeEquivalent(BigCannonMaterial.NETHERSTEEL.maxSafeBaseCharges());
+			float nethersteelStrength = PowderChargeBlock.getPowderChargeEquivalent(CBCBigCannonMaterials.NETHERSTEEL.properties().maxSafeBaseCharges());
 			int strength = Mth.ceil(Math.min(rawStrength / nethersteelStrength * 5, 5));
 			tooltip.add(getNoGogglesMeter(strength, false, true));
 		}
@@ -109,14 +109,12 @@ public class CBCTooltip {
 		}
 
 		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".onFailure")).withStyle(ChatFormatting.GRAY));
-		String failKey = material.failureMode() == FailureMode.RUPTURE ? ".onFailure.rupture" : ".onFailure.fragment";
+		String failKey = material.failureMode() == BigCannonMaterialProperties.FailureMode.RUPTURE ? ".onFailure.rupture" : ".onFailure.fragment";
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + failKey), TooltipHelper.Palette.GRAY_AND_WHITE.primary(), TooltipHelper.Palette.GRAY_AND_WHITE.highlight(), 1));
 
-		if (block.defaultBlockState().is(CBCTags.BlockCBC.WEAK_CANNON_END) && CBCConfigs.SERVER.cannons.weakBreechStrength.get() != -1) {
-			int weakCharges = CBCConfigs.SERVER.cannons.weakBreechStrength.get();
-			tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weakCannonEnd")).withStyle(ChatFormatting.GRAY));
-			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weakCannonEnd.desc", weakCharges), palette.primary(), palette.highlight(), 2));
-		}
+		float breechStrength = BigCannonBreechStrengthHandler.getStrength(block, material.maxSafeBaseCharges());
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".breechStrength")).withStyle(ChatFormatting.GRAY));
+		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".breechStrength.desc", breechStrength), palette.primary(), palette.highlight(), 2));
 	}
 
 	public static <T extends Block & AutocannonBlock> void appendTextAutocannon(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, T block) {
@@ -131,16 +129,16 @@ public class CBCTooltip {
 		String rootKey = "block." + CreateBigCannons.MOD_ID + ".autocannon.tooltip";
 		tooltip.add(new TextComponent(I18n.get(rootKey + ".materialProperties")).withStyle(ChatFormatting.GRAY));
 
-		int maxLength = material.maxLength();
-		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".maxLength")).withStyle(ChatFormatting.GRAY));
+		int maxLength = material.properties().maxBarrelLength();
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".maxBarrelLength")).withStyle(ChatFormatting.GRAY));
 		if (hasGoggles) {
-			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".maxLength.goggles", maxLength + 1), palette.primary(), palette.highlight(), 2));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".maxBarrelLength.goggles", maxLength + 1), palette.primary(), palette.highlight(), 2));
 		} else {
 			tooltip.add(getNoGogglesMeter(maxLength == 0 ? 0 : (maxLength - 1) / 2 + 1, false, true));
 		}
 
 		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
-		float weightImpact = material.weight();
+		float weightImpact = material.properties().weight();
 		if (hasGoggles) {
 			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".weightImpact.goggles", String.format("%.2f", weightImpact)), palette.primary(), palette.highlight(), 2));
 		} else {

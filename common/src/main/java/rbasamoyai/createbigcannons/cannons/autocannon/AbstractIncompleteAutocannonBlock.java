@@ -4,6 +4,7 @@ import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 

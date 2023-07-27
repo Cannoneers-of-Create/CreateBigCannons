@@ -18,17 +18,24 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
 public class BigCannonTubeBlock extends BigCannonBaseBlock implements IBE<BigCannonBlockEntity> {
 
-	private final VoxelShaper shapes;
+	private final VoxelShaper visualShapes;
+	private final VoxelShaper collisionShapes;
 	private final Supplier<CannonCastShape> cannonShape;
 
 	public BigCannonTubeBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape base) {
+		this(properties, material, cannonShape, base, base);
+	}
+
+	public BigCannonTubeBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape visualShape, VoxelShape collisionShape) {
 		super(properties, material);
-		this.shapes = new AllShapes.Builder(base).forDirectional();
+		this.visualShapes = new AllShapes.Builder(visualShape).forDirectional();
+		this.collisionShapes = new AllShapes.Builder(collisionShape).forDirectional();
 		this.cannonShape = cannonShape;
 	}
 
@@ -45,11 +52,11 @@ public class BigCannonTubeBlock extends BigCannonBaseBlock implements IBE<BigCan
 	}
 
 	public static BigCannonTubeBlock large(Properties properties, BigCannonMaterial material) {
-		return new BigCannonTubeBlock(properties, material, () -> CannonCastShape.LARGE, Block.box(-1, 0, -1, 17, 16, 17));
+		return new BigCannonTubeBlock(properties, material, () -> CannonCastShape.LARGE, Block.box(-1, 0, -1, 17, 16, 17), Shapes.block());
 	}
 
 	public static BigCannonTubeBlock veryLarge(Properties properties, BigCannonMaterial material) {
-		return new BigCannonTubeBlock(properties, material, () -> CannonCastShape.VERY_LARGE, Block.box(-2, 0, -2, 18, 16, 18));
+		return new BigCannonTubeBlock(properties, material, () -> CannonCastShape.VERY_LARGE, Block.box(-2, 0, -2, 18, 16, 18), Shapes.block());
 	}
 
 	@Override
@@ -58,8 +65,13 @@ public class BigCannonTubeBlock extends BigCannonBaseBlock implements IBE<BigCan
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
-		return this.shapes.get(this.getFacing(state));
+	public VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return this.collisionShapes.get(this.getFacing(state));
+	}
+
+	@Override
+	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+		return this.visualShapes.get(this.getFacing(state));
 	}
 
 	@Override

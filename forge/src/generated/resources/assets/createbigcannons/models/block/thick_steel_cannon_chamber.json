@@ -1,6 +1,8 @@
 {
   "parent": "createbigcannons:block/thick_cannon_chamber",
   "textures": {
-    "tube": "createbigcannons:block/cannon_tubing/steel_cannon_tube"
+    "side": "createbigcannons:block/cannon_chamber/thick_steel_cannon_chamber_side",
+    "end": "createbigcannons:block/cannon_chamber/thick_steel_cannon_chamber_end",
+    "particle": "createbigcannons:block/cannon_chamber/thick_steel_cannon_chamber_side"
   }
 }

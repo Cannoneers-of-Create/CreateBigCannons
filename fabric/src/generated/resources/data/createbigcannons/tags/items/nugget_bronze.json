@@ -12,7 +12,6 @@
     {
       "id": "#c:bronze_nuggets",
       "required": false
-    },
-    "createbigcannons:bronze_scrap"
+    }
   ]
 }
