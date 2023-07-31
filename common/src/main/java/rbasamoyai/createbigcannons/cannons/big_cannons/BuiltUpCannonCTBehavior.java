@@ -31,6 +31,8 @@ public class BuiltUpCannonCTBehavior extends ConnectedTextureBehaviour.Base {
 
 	@Override
 	protected Direction getUpDirection(BlockAndTintGetter reader, BlockPos pos, BlockState state, Direction face) {
+		if (face == Direction.DOWN)
+			return Direction.fromAxisAndDirection(state.getValue(FACING).getAxis(), Direction.AxisDirection.NEGATIVE);
 		return Direction.fromAxisAndDirection(state.getValue(FACING).getAxis(), Direction.AxisDirection.POSITIVE);
 	}
 
@@ -42,7 +44,8 @@ public class BuiltUpCannonCTBehavior extends ConnectedTextureBehaviour.Base {
 
 	@Override
 	public boolean connectsTo(BlockState state, BlockState other, BlockAndTintGetter reader, BlockPos pos, BlockPos otherPos, Direction face) {
-		if (!(state.getBlock() instanceof BigCannonBlock cBlock) || !(other.getBlock() instanceof BigCannonBlock cBlock1)) return false;
+		if (!(state.getBlock() instanceof BigCannonBlock cBlock) || !(other.getBlock() instanceof BigCannonBlock cBlock1))
+			return false;
 		Direction dir = cBlock.getFacing(state);
 		Direction.Axis axis = dir.getAxis();
 		if (axis != cBlock1.getFacing(other).getAxis()) return false;
@@ -52,7 +55,8 @@ public class BuiltUpCannonCTBehavior extends ConnectedTextureBehaviour.Base {
 		if (dir1.getAxis() != axis) return false;
 		CannonCastShape shape = cBlock.getCannonShape();
 		CannonCastShape shape1 = cBlock1.getCannonShape();
-		if (shape.diameter() > shape1.diameter() || !shape.texturesCanConnect() || !shape1.texturesCanConnect()) return false;
+		if (shape.diameter() > shape1.diameter() || !shape.texturesCanConnect() || !shape1.texturesCanConnect())
+			return false;
 		BlockEntity be = reader.getBlockEntity(pos);
 		BlockEntity be1 = reader.getBlockEntity(otherPos);
 		if (!(be instanceof IBigCannonBlockEntity cbe) || !(be1 instanceof IBigCannonBlockEntity cbe1)) return false;
