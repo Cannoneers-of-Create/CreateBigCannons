@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,7 +24,6 @@ import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannonsForge {
@@ -55,8 +53,6 @@ public class CreateBigCannonsForge {
 
         CBCCommonForgeEvents.register(forgeEventBus);
 
-        this.registerSerializers();
-
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CBCClientForge.prepareClient(modEventBus, forgeEventBus));
     }
 
@@ -64,10 +60,6 @@ public class CreateBigCannonsForge {
         CBCNetworkForge.init();
         DefaultFluidCompat.registerMinecraftBlobEffects();
         DefaultFluidCompat.registerCreateBlobEffects();
-    }
-
-    private void registerSerializers() {
-        EntityDataSerializers.registerSerializer(FluidBlob.FLUID_STACK_SERIALIZER);
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {
