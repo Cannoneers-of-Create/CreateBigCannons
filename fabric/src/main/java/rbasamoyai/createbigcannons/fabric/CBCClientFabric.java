@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
-import rbasamoyai.createbigcannons.fabric.mixin.KeyMappingAccessor;
+import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
 
 public class CBCClientFabric implements ClientModInitializer {

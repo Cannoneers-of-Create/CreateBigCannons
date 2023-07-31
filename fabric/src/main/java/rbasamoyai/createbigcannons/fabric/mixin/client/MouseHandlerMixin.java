@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.fabric.mixin;
+package rbasamoyai.createbigcannons.fabric.mixin.client;
 
 import net.minecraft.client.MouseHandler;
 import org.spongepowered.asm.mixin.Mixin;
