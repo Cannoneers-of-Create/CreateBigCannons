@@ -5,7 +5,6 @@ import io.github.fabricators_of_create.porting_lib.util.LazyRegistrar;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.api.fml.event.config.ModConfigEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -15,7 +14,6 @@ import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 
 public class CreateBigCannonsFabric implements ModInitializer {
 
@@ -38,12 +36,5 @@ public class CreateBigCannonsFabric implements ModInitializer {
         ModConfigEvent.RELOADING.register(CBCConfigs::onReload);
 
         CBCCommonFabricEvents.register();
-
-        this.registerSerializers();
     }
-
-    private void registerSerializers() {
-        EntityDataSerializers.registerSerializer(FluidBlob.FLUID_STACK_SERIALIZER);
-    }
-
 }
