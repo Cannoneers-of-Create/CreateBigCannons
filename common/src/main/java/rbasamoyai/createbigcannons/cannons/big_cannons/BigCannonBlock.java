@@ -141,6 +141,7 @@ public interface BigCannonBlock {
 					Direction facing1 = cBlock1.getFacing(state1);
 					if (facing == facing1.getOpposite() || cBlock1.isDoubleSidedCannon(state1) && facing.getAxis() == facing1.getAxis()) {
 						cbe.cannonBehavior().setConnectedFace(facing, true);
+						cbe1.cannonBehavior().setConnectedFace(facing.getOpposite(), true);
 
 						if (cbe instanceof LayeredBigCannonBlockEntity layered && cbe1 instanceof LayeredBigCannonBlockEntity layered1) {
 							for (CannonCastShape layer : layered.getLayers().keySet()) {
