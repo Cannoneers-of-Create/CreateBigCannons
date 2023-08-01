@@ -371,6 +371,7 @@
   "fluid.createbigcannons.molten_cast_iron": "Molten Cast Iron",
   "fluid.createbigcannons.molten_nethersteel": "Molten Nethersteel",
   "fluid.createbigcannons.molten_steel": "Molten Steel",
+  "item.createbigcannons.ammo_container": "Ammo Container",
   "item.createbigcannons.ap_autocannon_round": "Armor Piercing (AP) Autocannon Round",
   "item.createbigcannons.ap_autocannon_round.tooltip": "ARMOR PIERCING (AP) AUTOCANNON ROUND",
   "item.createbigcannons.ap_autocannon_round.tooltip.summary": "_Strong penetrating force._ Best suited for _soft targets_ such as _wooden structures and thin armor._ _Cannot be fuzed and detonated._",

@@ -70,4 +70,8 @@ public class CBCClientForge {
 		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getPlayer(), evt.getPartialTick());
 	}
 
+	public static void onTextureStitchAtlasPre(TextureStitchEvent.Pre evt) {
+		CBCClientCommon.onTextureAtlasStitchPre(evt::addSprite);
+	}
+
 }

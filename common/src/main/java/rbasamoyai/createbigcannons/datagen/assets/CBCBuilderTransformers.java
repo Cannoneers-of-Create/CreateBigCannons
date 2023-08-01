@@ -435,7 +435,7 @@ public class CBCBuilderTransformers {
 			.item(BigCartridgeBlockItem::new)
 			.model((c, p) -> {
 				p.withExistingParent(c.getName(), emptyLoc)
-					.override().model(p.getExistingFile(filledLoc)).predicate(CreateBigCannons.resource("filled"), 1).end();
+					.override().model(p.getExistingFile(filledLoc)).predicate(CreateBigCannons.resource("big_cartridge_filled"), 1).end();
 			})
 			.build();
 	}

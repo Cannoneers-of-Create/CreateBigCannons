@@ -1,16 +1,25 @@
 
 package rbasamoyai.createbigcannons;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Consumer;
+
+import org.lwjgl.glfw.GLFW;
+
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,23 +28,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import org.lwjgl.glfw.GLFW;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
-import rbasamoyai.createbigcannons.index.*;
+import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCFluids;
+import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Consumer;
 
 public class CBCClientCommon {
 
@@ -61,9 +68,10 @@ public class CBCClientCommon {
 			return stack.getOrCreateTag().getCompound("SequencedAssembly").getInt("Step") - 1;
 		});
 
-		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("filled"), (stack, level, player, a) -> {
-			return BigCartridgeBlockItem.getPower(stack);
-		});
+		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("big_cartridge_filled"),
+			(stack, level, player, a) -> {
+				return BigCartridgeBlockItem.getPower(stack);
+			});
 	}
 
 	public static void registerKeyMappings(Consumer<KeyMapping> cons) {
@@ -72,7 +80,7 @@ public class CBCClientCommon {
 		KEYS.add(PITCH_MODE);
 		KEYS.add(FIRE_CONTROLLED_CANNON);
 	}
-	
+
 	public static void setFogColor(Camera info, SetColorWrapper wrapper) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
@@ -103,7 +111,7 @@ public class CBCClientCommon {
 	public interface SetColorWrapper {
 		void setFogColor(float r, float g, float b);
 	}
-	
+
 	public static float getFogDensity(Camera info, float currentDensity) {
 		Minecraft mc = Minecraft.getInstance();
 		Level level = mc.level;
@@ -112,13 +120,13 @@ public class CBCClientCommon {
 		if (info.getPosition().y > blockPos.getY() + fluidState.getHeight(level, blockPos)) return -1;
 
 		Fluid fluid = fluidState.getType();
-		
+
 		List<Fluid> moltenMetals = Arrays.asList(
 				CBCFluids.MOLTEN_CAST_IRON.get(),
 				CBCFluids.MOLTEN_BRONZE.get(),
 				CBCFluids.MOLTEN_STEEL.get(),
 				CBCFluids.MOLTEN_NETHERSTEEL.get());
-		
+
 		for (Fluid fluid1 : moltenMetals) {
 			if (fluid1.isSame(fluid)) {
 				return 1f / 32f;
@@ -203,5 +211,9 @@ public class CBCClientCommon {
 		return state.getBlock() instanceof BigCannonBlock cBlock ? CBCBlockPartials.screwLockFor(cBlock.getCannonMaterial())
 				: CBCBlockPartials.STEEL_SCREW_LOCK;
 	}
-	
+
+	public static void onTextureAtlasStitchPre(Consumer<ResourceLocation> cons) {
+		cons.accept(CreateBigCannons.resource("item/tracer_slot"));
+	}
+
 }
