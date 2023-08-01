@@ -11,7 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.CBCGuiTextures;
+import rbasamoyai.createbigcannons.index.CBCGuiTextures;
 import rbasamoyai.createbigcannons.compat.jei.animated.CannonCastGuiElement;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 
@@ -20,11 +20,11 @@ import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.*;
 public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingRecipe> {
 
 	private final CannonCastGuiElement cannonCast = new CannonCastGuiElement();
-	
+
 	public CannonCastingCategory(Info<CannonCastingRecipe> info) {
 		super(info);
 	}
-	
+
 	@Override
 	public void draw(CannonCastingRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {CBCGuiTextures.CANNON_CAST_SHADOW.render(stack, 40, 45);
 		this.cannonCast.withShape(recipe.shape()).draw(stack, this.getBackground().getWidth() / 2 - 15, 55);
@@ -34,7 +34,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 		Minecraft mc = Minecraft.getInstance();
 		mc.font.draw(stack, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
 	}
-	
+
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, CannonCastingRecipe recipe, IFocusGroup focuses) {
 		builder.addSlot(RecipeIngredientRole.INPUT, 16, 27)
@@ -44,14 +44,14 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 				return fs;
 			}).toList()))
 			.addTooltipCallback(addFluidTooltip());
-		
+
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 142, 62)
 			.setBackground(getRenderedSlot(), -1, -1)
 			.addItemStack(new ItemStack(recipe.getResultBlock()));
-		
+
 		builder.addSlot(RecipeIngredientRole.CATALYST, 80, 5)
 			.setBackground(getRenderedSlot(), -1, -1)
 			.addItemStack(new ItemStack(recipe.shape().castMould()));
 	}
-	
+
 }

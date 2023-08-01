@@ -193,6 +193,7 @@ public class ModGroup {
 				CBCItems.FLAK_AUTOCANNON_ROUND.asStack(),
 				CBCItems.MACHINE_GUN_ROUND.asStack(),
 				CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack(),
+				CBCItems.AMMO_CONTAINER.asStack(),
 
 				CBCItems.RECOIL_SPRING.asStack(),
 

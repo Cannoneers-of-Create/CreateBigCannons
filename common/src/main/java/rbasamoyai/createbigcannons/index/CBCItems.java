@@ -13,6 +13,7 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AmmoContainerItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
@@ -172,6 +173,11 @@ public class CBCItems {
 
 	public static final ItemEntry<MachineGunRoundItem> MACHINE_GUN_ROUND = REGISTRATE
 		.item("machine_gun_round", MachineGunRoundItem::new)
+		.register();
+
+	public static final ItemEntry<AmmoContainerItem> AMMO_CONTAINER = REGISTRATE
+		.item("ammo_container", AmmoContainerItem::new)
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE

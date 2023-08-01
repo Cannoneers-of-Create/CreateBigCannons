@@ -9,10 +9,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.CBCGuiTextures;
+import rbasamoyai.createbigcannons.index.CBCGuiTextures;
 
 public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContainer> {
-	
+
 	public ProximityFuzeScreen(ProximityFuzeContainer menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
 	}
@@ -33,7 +33,7 @@ public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContain
 	@Override
 	protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		
+
 		CBCGuiTextures.PROXIMITY_FUZE_BG.render(poseStack, this.leftPos, this.topPos);
 		drawCenteredString(poseStack, this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
 		int top = 32;
@@ -41,7 +41,7 @@ public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContain
 		int offsX = this.setValue.getState();
 		offsX = offsX == top ? 100 : (int) Math.ceil((double) offsX * s - s);
 		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(poseStack, this.leftPos + 32 + offsX, this.topPos + 21);
-		
+
 		GuiGameElement.of(this.menu.getStackToRender())
 			.<GuiGameElement.GuiItemRenderBuilder>at(this.leftPos + 185, this.topPos + 26, -200)
 			.scale(5)

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.base;
+package rbasamoyai.createbigcannons.index;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -13,33 +13,33 @@ public enum CBCGuiTextures implements ScreenElement {
 	CASTING_ARROW_1("jei_icons", 32, 0, 32, 32),
 	CANNON_CAST_SHADOW("jei_icons", 64, 0, 96, 32),
 	CANNON_BUILDING_ARROW("jei_icons", 160, 0, 8, 32),
-	
-	// Fuze GUI
-	// Timed Fuze
+
 	TIMED_FUZE_BG("backgrounds1", 0, 0, 179, 83),
 	TIMED_FUZE_SELECTOR("backgrounds1", 179, 0, 7, 26),
-	// Proximity Fuze
-	PROXIMITY_FUZE_BG("backgrounds1", 0, 91, 179, 83),
-	PROXIMITY_FUZE_SELECTOR("backgrounds1", 179, 91, 9, 26),
-	
+
+	PROXIMITY_FUZE_BG("backgrounds1", 0, 84, 179, 83),
+	PROXIMITY_FUZE_SELECTOR("backgrounds1", 179, 84, 9, 26),
+
+	AMMO_CONTAINER_BG("backgrounds1", 0, 168, 179, 83),
+	AMMO_CONTAINER_SELECTOR("backgrounds1", 179, 168, 9, 14)
 	;
-	
+
 	private final ResourceLocation texture;
-	private final int texX;
-	private final int texY;
-	private final int texW;
-	private final int texH;
-	
-	private CBCGuiTextures(String path, int texX, int texY, int texW, int texH) {
-		this(CreateBigCannons.MOD_ID, path, texX, texY, texW, texH);
+	public final int texX;
+	public final int texY;
+	public final int width;
+	public final int height;
+
+	CBCGuiTextures(String path, int texX, int texY, int width, int height) {
+		this(CreateBigCannons.MOD_ID, path, texX, texY, width, height);
 	}
-	
-	private CBCGuiTextures(String namespace, String path, int texX, int texY, int texW, int texH) {
+
+	CBCGuiTextures(String namespace, String path, int texX, int texY, int width, int height) {
 		this.texture = new ResourceLocation(namespace, "textures/gui/" + path + ".png");
 		this.texX = texX;
 		this.texY = texY;
-		this.texW = texW;
-		this.texH = texH;
+		this.width = width;
+		this.height = height;
 	}
 
 	public void bind() {
@@ -49,7 +49,7 @@ public enum CBCGuiTextures implements ScreenElement {
 	@Override
 	public void render(PoseStack ms, int x, int y) {
 		this.bind();
-		GuiComponent.blit(ms, x, y, 0, this.texX, this.texY, this.texW, this.texH, 256, 256);
+		GuiComponent.blit(ms, x, y, 0, this.texX, this.texY, this.width, this.height, 256, 256);
 	}
-	
+
 }
