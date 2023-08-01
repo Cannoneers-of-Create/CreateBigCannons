@@ -4,8 +4,8 @@ import com.jozufozu.flywheel.core.PartialModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 import java.util.*;
@@ -24,14 +24,14 @@ public class CBCBlockPartials {
 	private static final Collection<Runnable> DEFERRED_MODEL_CALLBACKS = new ArrayList<>();
 
 	public static final PartialModel
-		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(BigCannonMaterial.CAST_IRON, "cast_iron_sliding_breechblock"),
-		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(BigCannonMaterial.BRONZE, "bronze_sliding_breechblock"),
-		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(BigCannonMaterial.STEEL, "steel_sliding_breechblock"),
+		CAST_IRON_SLIDING_BREECHBLOCK = breechblockPartial(CBCBigCannonMaterials.CAST_IRON, "cast_iron_sliding_breechblock"),
+		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(CBCBigCannonMaterials.BRONZE, "bronze_sliding_breechblock"),
+		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(CBCBigCannonMaterials.STEEL, "steel_sliding_breechblock"),
 
 		QUICKFIRING_BREECH_LEVER = block("quickfiring_breech_lever"),
 
-		STEEL_SCREW_LOCK = screwLockPartial(BigCannonMaterial.STEEL, "steel_screw_lock"),
-		NETHERSTEEL_SCREW_LOCK = screwLockPartial(BigCannonMaterial.NETHERSTEEL, "nethersteel_screw_lock"),
+		STEEL_SCREW_LOCK = screwLockPartial(CBCBigCannonMaterials.STEEL, "steel_screw_lock"),
+		NETHERSTEEL_SCREW_LOCK = screwLockPartial(CBCBigCannonMaterials.NETHERSTEEL, "nethersteel_screw_lock"),
 
 		VERY_SMALL_CANNON_CAST = cannonCastPartial(() -> CannonCastShape.VERY_SMALL, "cannon_cast/very_small_cannon_cast"),
 		SMALL_CANNON_CAST = cannonCastPartial(() -> CannonCastShape.SMALL, "cannon_cast/small_cannon_cast"),
@@ -54,13 +54,13 @@ public class CBCBlockPartials {
 		CANNON_CARRIAGE_WHEEL = block("cannon_carriage/carriage_wheel"),
 		CANNON_CARRIAGE_SADDLE = block("cannon_carriage/carriage_saddle"),
 
-		CAST_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(AutocannonMaterial.CAST_IRON, "autocannon/cast_iron_autocannon_spring"),
-		BRONZE_AUTOCANNON_SPRING = autocannonSpringPartial(AutocannonMaterial.BRONZE, "autocannon/bronze_autocannon_spring"),
-		STEEL_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(AutocannonMaterial.STEEL, "autocannon/steel_autocannon_spring"),
+		CAST_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.CAST_IRON, "autocannon/cast_iron_autocannon_spring"),
+		BRONZE_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.BRONZE, "autocannon/bronze_autocannon_spring"),
+		STEEL_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.STEEL, "autocannon/steel_autocannon_spring"),
 
-		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.CAST_IRON, "cast_iron"),
-		BRONZE_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.BRONZE, "bronze"),
-		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(AutocannonMaterial.STEEL, "steel"),
+		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.CAST_IRON, "cast_iron"),
+		BRONZE_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.BRONZE, "bronze"),
+		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.STEEL, "steel"),
 
 		AUTOCANNON_SEAT_WHITE = autocannonSeatPartial(DyeColor.WHITE, "autocannon/seat_white"),
 		AUTOCANNON_SEAT_ORANGE = autocannonSeatPartial(DyeColor.ORANGE, "autocannon/seat_orange"),

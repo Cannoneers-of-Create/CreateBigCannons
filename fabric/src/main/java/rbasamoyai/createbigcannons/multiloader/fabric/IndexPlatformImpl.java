@@ -16,7 +16,6 @@ import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -54,7 +53,7 @@ import rbasamoyai.createbigcannons.fabric.datagen.CBCMixingRecipeProvider;
 import rbasamoyai.createbigcannons.fabric.datagen.CBCSequencedAssemblyRecipeProvider;
 import rbasamoyai.createbigcannons.fabric.datagen.MeltingRecipeProvider;
 import rbasamoyai.createbigcannons.fabric.index.fluid_utils.FabricFluidBuilder;
-import rbasamoyai.createbigcannons.fabric.mixin.KeyMappingAccessor;
+import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.munitions.fluid_shell.FluidShellBlockEntity;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
@@ -104,7 +103,8 @@ public class IndexPlatformImpl {
 
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> doFluidBuilderTransforms(FluidBuilder<T, P> builder) {
 		FabricFluidBuilder<T, P> builderc = (FabricFluidBuilder<T, P>) builder;
-		return builderc.renderHandler(() -> SimpleFluidRenderHandler::new);
+		builderc.handleClientStuff();
+		return builderc;
 	}
 
 	public static void registerDeferredParticleType(String name, ParticleType<?> type) {
@@ -164,6 +164,12 @@ public class IndexPlatformImpl {
 
 	public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) {
 		return FluidIngredient.fromTag(fluid, amount);
+	}
+
+	public static float modifyRotationStateYaw(boolean flag, boolean vertRotation, float yaw) {
+		if (flag) yaw += 180;
+		if (!vertRotation) yaw *= -1;
+		return yaw;
 	}
 
 }

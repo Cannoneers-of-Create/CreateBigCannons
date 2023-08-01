@@ -347,7 +347,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 
 			isBoringBlock = true;
 
-			float weight = latheBlockInfo.state.getBlock() instanceof BigCannonBlock cBlock ? cBlock.getCannonMaterial().weight() : 1;
+			float weight = latheBlockInfo.state.getBlock() instanceof BigCannonBlock cBlock ? cBlock.getCannonMaterial().properties().weight() : 1;
 			this.boreSpeed = bearing.getAngularSpeed() / 512f / (weight == 0 ? 1f : weight);
 			float fSpeed = Math.abs(this.boreSpeed);
 			this.boreSpeed = fSpeed * Math.signum(this.getSpeed());

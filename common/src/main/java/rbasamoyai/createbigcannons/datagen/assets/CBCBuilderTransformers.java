@@ -54,34 +54,48 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 
 public class CBCBuilderTransformers {
 
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBarrel(String pathAndMaterial) {
-		return cannonBarrel(pathAndMaterial, pathAndMaterial);
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBarrel(String material, boolean bored) {
+		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(CreateBigCannons.resource("block/cannon_barrel"),
+			"cannon_barrel/" + material + "_cannon_barrel_side",
+			"cannon_barrel/" + (bored ? "" : "unbored_") + material + "_cannon_barrel_end");
+		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.REDUCES_SPREAD));
 	}
 
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBarrel(String sidePathAndMaterial, String endPathAndMaterial) {
-		ResourceLocation baseLoc = CreateBigCannons.resource("block/cannon_barrel");
-		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + sidePathAndMaterial + "_cannon_barrel_side");
-		ResourceLocation endLoc = CreateBigCannons.resource("block/" + endPathAndMaterial + "_cannon_barrel_end");
-		return b -> b.properties(p -> p.noOcclusion())
-			.addLayer(() -> RenderType::cutoutMipped)
-			.tag(CBCTags.BlockCBC.REDUCES_SPREAD)
-			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
-				.texture("side", sideLoc)
-				.texture("end", endLoc)
-				.texture("particle", sideLoc)));
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> builtUpCannonBarrel(String material, boolean bored) {
+		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(CreateBigCannons.resource("block/built_up_cannon_barrel"),
+			"cannon_barrel/built_up_" + material + "_cannon_barrel_side",
+			"cannon_barrel/" + (bored ? "" : "unbored_") + "built_up_" + material + "_cannon_barrel_end");
+		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.REDUCES_SPREAD));
 	}
 
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonChamber(String pathAndMaterial) {
-		return cannonChamber(pathAndMaterial, pathAndMaterial);
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonChamber(String material, boolean bored) {
+		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(new ResourceLocation("block/cube_column"),
+			"cannon_chamber/" + material + "_cannon_chamber_side",
+			"cannon_chamber/" + (bored ? "" : "unbored_") + material + "_cannon_chamber_end");
+		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.THICK_TUBING));
 	}
 
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonChamber(String sidePathAndMaterial, String endPathAndMaterial) {
-		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + sidePathAndMaterial + "_cannon_chamber_side");
-		ResourceLocation endLoc = CreateBigCannons.resource("block/" + endPathAndMaterial + "_cannon_chamber_end");
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> builtUpCannonChamber(String material, boolean bored) {
+		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(CreateBigCannons.resource("block/built_up_cannon_chamber"),
+			"cannon_chamber/built_up_" + material + "_cannon_chamber_side",
+			"cannon_chamber/" + (bored ? "" : "unbored_") + "built_up_" + material + "_cannon_chamber_end");
+		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.THICK_TUBING));
+	}
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> thickCannonChamber(String material, boolean bored) {
+		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(CreateBigCannons.resource("block/thick_cannon_chamber"),
+			"cannon_chamber/thick_" + material + "_cannon_chamber_side",
+			"cannon_chamber/" + (bored ? "" : "unbored_") + "thick_" + material + "_cannon_chamber_end");
+		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.THICK_TUBING));
+	}
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonPart(ResourceLocation model, String side, String end) {
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + side);
+		ResourceLocation endLoc = CreateBigCannons.resource("block/" + end);
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.tag(CBCTags.BlockCBC.THICK_TUBING)
-			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), "block/cube_column")
+			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), model)
 				.texture("side", sideLoc)
 				.texture("end", endLoc)
 				.texture("particle", sideLoc)));
@@ -133,7 +147,6 @@ public class CBCBuilderTransformers {
 		ResourceLocation breechblockBottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_breechblock_bottom");
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.tag(CBCTags.BlockCBC.WEAK_CANNON_END)
 			.blockstate(new SlidingBreechBlockGen(pathAndMaterial)::generate)
 			.item(BigCannonBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))

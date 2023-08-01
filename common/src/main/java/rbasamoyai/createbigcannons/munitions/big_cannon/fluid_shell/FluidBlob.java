@@ -5,9 +5,7 @@ import com.simibubi.create.foundation.particle.AirParticleData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
@@ -19,29 +17,12 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCDataSerializers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
 public class FluidBlob extends Shrapnel {
-
-	public static final EntityDataSerializer<EndFluidStack> FLUID_STACK_SERIALIZER = new EntityDataSerializer<>() {
-		@Override
-		public void write(FriendlyByteBuf buf, EndFluidStack fluid) {
-			fluid.writeBuf(buf);
-		}
-
-		@Override
-		public EndFluidStack read(FriendlyByteBuf buf) {
-			return EndFluidStack.readBuf(buf);
-		}
-
-		@Override
-		public EndFluidStack copy(EndFluidStack fluid) {
-			return fluid.copy();
-		}
-	};
-
 	private static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FluidBlob.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<EndFluidStack> FLUID_STACK = SynchedEntityData.defineId(FluidBlob.class, FLUID_STACK_SERIALIZER);
+	private static final EntityDataAccessor<EndFluidStack> FLUID_STACK = SynchedEntityData.defineId(FluidBlob.class, CBCDataSerializers.FLUID_STACK_SERIALIZER);
 
 	public FluidBlob(EntityType<? extends FluidBlob> type, Level level) {
 		super(type, level);

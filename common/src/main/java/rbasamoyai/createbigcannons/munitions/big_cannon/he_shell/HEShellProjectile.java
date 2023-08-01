@@ -17,7 +17,7 @@ public class HEShellProjectile extends FuzedBigCannonProjectile {
 
 	@Override
 	protected void detonate() {
-		this.level.explode(null, indirectArtilleryFire(), null, this.getX(), this.getY(), this.getZ(),
+		this.level.explode(null, this.indirectArtilleryFire(), null, this.getX(), this.getY(), this.getZ(),
 			(float) this.getProperties().explosivePower(), false,
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.discard();

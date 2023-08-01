@@ -5,6 +5,9 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
@@ -74,22 +77,38 @@ public class CBCItems {
 
 	PACKED_GUNPOWDER = REGISTRATE.item("packed_gunpowder", Item::new).register(),
 		EMPTY_POWDER_CHARGE = REGISTRATE.item("empty_powder_charge", Item::new).register(),
-		CAST_IRON_INGOT = REGISTRATE.item("cast_iron_ingot", Item::new).tag(CBCTags.ItemCBC.INGOT_CAST_IRON).register(),
-		CAST_IRON_NUGGET = REGISTRATE.item("cast_iron_nugget", Item::new).tag(CBCTags.ItemCBC.NUGGET_CAST_IRON).register(),
+		CAST_IRON_INGOT = REGISTRATE.item("cast_iron_ingot", Item::new)
+			.tag(forgeTag("ingots/cast_iron"))
+			.tag(fabricTag("ingots/cast_iron"))
+			.tag(fabricTag("cast_iron_ingots"))
+			.register(),
+		CAST_IRON_NUGGET = REGISTRATE.item("cast_iron_nugget", Item::new)
+			.tag(forgeTag("nuggets/cast_iron"))
+			.tag(fabricTag("nuggets/cast_iron"))
+			.tag(fabricTag("cast_iron_nuggets"))
+			.register(),
 		NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new).register(),
 		NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new).register(),
-		BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new).tag(CBCTags.ItemCBC.NUGGET_BRONZE).register(),
-		STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new).tag(CBCTags.ItemCBC.NUGGET_STEEL).register(),
+		BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
+			.tag(forgeTag("nuggets/bronze"))
+			.tag(fabricTag("nuggets/bronze"))
+			.tag(fabricTag("bronze_nuggets"))
+			.register(),
+		STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new)
+			.tag(forgeTag("nuggets/steel"))
+			.tag(fabricTag("nuggets/steel"))
+			.tag(fabricTag("steel_nuggets"))
+			.register(),
 		SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register(),
 		AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
 
 	EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/empty_autocannon_cartridge")))
+		.model((c, p) -> {})
 		.register(),
 
 	FILLED_AUTOCANNON_CARTRIDGE = REGISTRATE
 		.item("filled_autocannon_cartridge", Item::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/filled_autocannon_cartridge")))
+		.model((c, p) -> {})
 		.register(),
 
 	PAIR_OF_CANNON_WHEELS = REGISTRATE
@@ -98,7 +117,7 @@ public class CBCItems {
 		.register(),
 
 	BIG_CANNON_SHEET = REGISTRATE.item("big_cartridge_sheet", Item::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/big_cartridge_sheet")))
+		.model((c, p) -> {})
 		.register(),
 
 	CONGEALED_NITRO = REGISTRATE.item("congealed_nitro", Item::new).register(),
@@ -122,7 +141,7 @@ public class CBCItems {
 			.register(),
 
 	PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE = REGISTRATE.item("partially_formed_autocannon_cartridge", SequencedAssemblyItem::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/partially_formed_autocannon_cartridge")))
+		.model((c, p) -> {})
 		.register(),
 
 	PARTIALLY_FILLED_AUTOCANNON_CARTRIDGE = REGISTRATE.item("partially_filled_autocannon_cartridge", SequencedAssemblyItem::new)
@@ -130,7 +149,7 @@ public class CBCItems {
 		.register(),
 
 	PARTIALLY_FORMED_BIG_CARTRIDGE = REGISTRATE.item("partially_formed_big_cartridge", SequencedAssemblyItem::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/partially_formed_big_cartridge")))
+		.model((c, p) -> {})
 		.register(),
 
 	PARTIALLY_ASSEMBLED_MACHINE_GUN_ROUND = REGISTRATE.item("partially_assembled_machine_gun_round", SequencedAssemblyItem::new)
@@ -139,7 +158,7 @@ public class CBCItems {
 
 	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE
 		.item("autocannon_cartridge", AutocannonCartridgeItem::new)
-		.model((c, p) -> p.getExistingFile(CreateBigCannons.resource("item/autocannon_cartridge")))
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<APAutocannonRoundItem> AP_AUTOCANNON_ROUND = REGISTRATE
@@ -158,13 +177,13 @@ public class CBCItems {
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE
 		.item("ram_rod", RamRodItem::new)
 		.properties(p -> p.stacksTo(1))
-		.model((c, p) -> p.getExistingFile(c.getId()))
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<WormItem> WORM = REGISTRATE
 		.item("worm", WormItem::new)
 		.properties(p -> p.stacksTo(1))
-		.model((c, p) -> p.getExistingFile(c.getId()))
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<QuickfiringMechanismItem> QUICKFIRING_MECHANISM = REGISTRATE
@@ -176,8 +195,7 @@ public class CBCItems {
 		.item("cannon_crafting_wand", CannonCraftingWandItem::new)
 		.properties(p -> p.stacksTo(1))
 		.properties(p -> p.rarity(Rarity.EPIC))
-		.model((c, p) -> {
-		})
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<InspectResistanceToolItem> RESISTANCE_INSPECTION_TOOL = REGISTRATE
@@ -188,5 +206,9 @@ public class CBCItems {
 
 	public static void register() {
 	}
+
+	private static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registry.ITEM_REGISTRY, loc); }
+	private static TagKey<Item> forgeTag(String loc) { return tag(new ResourceLocation("forge", loc)); }
+	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
 
 }

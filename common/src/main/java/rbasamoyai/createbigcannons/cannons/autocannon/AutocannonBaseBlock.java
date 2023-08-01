@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 
 public abstract class AutocannonBaseBlock extends DirectionalBlock implements AutocannonBlock, SimpleWaterloggedBlock {
 

@@ -11,6 +11,7 @@
   ],
   "mixins": [
     "AllSoundEventsMixin",
+    "ArmorStandMixin",
     "BearingCannonDrillFinderMixin",
     "BeltTileEntityMixin",
     "EntityMixin",

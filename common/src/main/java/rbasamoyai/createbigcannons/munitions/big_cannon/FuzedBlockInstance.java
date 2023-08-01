@@ -13,6 +13,7 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> implements DynamicInstance {
 
 	private OrientedData fuze;
+	private boolean oldBaseFuze;
 
 	public FuzedBlockInstance(MaterialManager materialManager, FuzedBlockEntity blockEntity) {
 		super(materialManager, blockEntity);
@@ -23,8 +24,9 @@ public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> im
 		super.init();
 
 		Direction facing = this.blockState.getValue(BlockStateProperties.FACING);
-		if (this.blockState.getBlock() instanceof FuzedProjectileBlock<?> fuzed && fuzed.isBaseFuze()) facing = facing.getOpposite();
-		this.fuze = materialManager.defaultCutout()
+		this.oldBaseFuze = this.isBaseFuze();
+		if (this.oldBaseFuze) facing = facing.getOpposite();
+		this.fuze = this.materialManager.defaultCutout()
 				.material(Materials.ORIENTED)
 				.getModel(CBCBlockPartials.FUZE, this.blockState, facing)
 				.createInstance();
@@ -35,6 +37,11 @@ public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> im
 
 	@Override
 	public void beginFrame() {
+		if (this.oldBaseFuze != this.isBaseFuze()) {
+			this.remove();
+			this.init();
+			this.updateLight();
+		}
 		this.fuze.setColor((byte) 255, (byte) 255, (byte) 255, this.blockEntity.hasFuze() ? (byte) 255 : (byte) 0);
 	}
 
@@ -47,6 +54,10 @@ public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> im
 	public void updateLight() {
 		super.updateLight();
 		this.fuze.updateLight(this.world, this.pos);
+	}
+
+	private boolean isBaseFuze() {
+		return this.blockState.getBlock() instanceof FuzedProjectileBlock<?> fuzed && fuzed.isBaseFuze();
 	}
 
 }
