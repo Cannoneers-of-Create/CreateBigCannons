@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.BiConsumer;
 
 import org.slf4j.Logger;
 
@@ -18,40 +20,36 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class CBCDataProvider implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-
-	private final DataGenerator gen;
 	protected final String modid;
-	protected final String name;
 	protected final String folder;
+	private final DataGenerator gen;
 
-	protected CBCDataProvider(String modid, String name, DataGenerator gen, String folder) {
+	protected CBCDataProvider(String modid, DataGenerator gen, String folder) {
 		this.modid = modid;
-		this.name = name;
 		this.gen = gen;
 		this.folder = folder;
 	}
 
-	protected CBCDataProvider(String modid, DataGenerator gen, String folder) {
-		this(modid, "default", gen, folder);
-	}
-
 	@Override
 	public final void run(CachedOutput cache) throws IOException {
-		this.generateData();
+		Map<ResourceLocation, JsonObject> dataToWrite = new LinkedHashMap<>();
+		this.generateData(dataToWrite::put);
 
-		JsonObject obj = new JsonObject();
-		this.write(obj);
-
-		Path path = this.gen.getOutputFolder().resolve("data/" + this.modid + "/" + this.folder + "/" + this.name + ".json");
-		String s = GSON.toJson(obj);
-		if (!Objects.equals(cache.hashCode(), Hashing.sha1().hashBytes(s.getBytes(StandardCharsets.UTF_8))) || !Files.exists(path)) {
+		for (Map.Entry<ResourceLocation, JsonObject> entry : dataToWrite.entrySet()) {
+			ResourceLocation loc = entry.getKey();
+			Path path = this.gen.getOutputFolder()
+				.resolve("data/" + loc.getNamespace() + "/" + this.folder + "/" + loc.getPath() + ".json");
+			String s = GSON.toJson(entry.getValue());
+			if (!Files.exists(path.toAbsolutePath())) {
+				Files.createFile(path.toAbsolutePath());
+			}
 			Files.createDirectories(path.getParent());
-			if (!Files.exists(path.toAbsolutePath())) Files.createFile(path.toAbsolutePath());
 			BufferedWriter writer = Files.newBufferedWriter(path);
 
 			try {
@@ -70,13 +68,11 @@ public abstract class CBCDataProvider implements DataProvider {
 			if (writer != null) {
 				writer.close();
 			}
+			cache.writeIfNeeded(path, s.getBytes(StandardCharsets.UTF_8), Hashing.sha1().hashBytes(s.getBytes(
+				StandardCharsets.UTF_8)));
 		}
-		cache.writeIfNeeded(path, s.getBytes(StandardCharsets.UTF_8), Hashing.sha1().hashBytes(s.getBytes(StandardCharsets.UTF_8)));
-
 	}
 
-	protected abstract void generateData();
-
-	protected abstract void write(JsonObject obj);
+	protected abstract void generateData(BiConsumer<ResourceLocation, JsonObject> cons);
 
 }

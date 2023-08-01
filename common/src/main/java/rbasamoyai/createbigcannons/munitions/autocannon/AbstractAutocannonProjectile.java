@@ -26,7 +26,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	protected AbstractAutocannonProjectile(EntityType<? extends AbstractAutocannonProjectile> type, Level level) {
 		super(type, level);
-		this.ageRemaining = 60;
 	}
 
 	@Override
@@ -77,6 +76,8 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		}
 	}
 
+	public void setLifetime(int lifetime) { this.ageRemaining = lifetime; }
+
 	@Override
 	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
 		if (this.level instanceof ServerLevel) {
@@ -105,9 +106,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
-
-	@Override protected float getGravity() { return 0; }
-	@Override protected float getDrag() { return 1; }
 
     @Override
 	public void addAdditionalSaveData(CompoundTag tag) {

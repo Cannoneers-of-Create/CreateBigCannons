@@ -45,13 +45,14 @@ import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
@@ -384,7 +385,8 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 			return;
 		}
 
-		this.baseMaterial = tag.contains("Material") ? BigCannonMaterial.fromName(new ResourceLocation(tag.getString("Material"))) : null;
+		this.baseMaterial = tag.contains("Material") ? BigCannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("Material"))) : null;
+		if (this.baseMaterial == null) this.baseMaterial = CBCBigCannonMaterials.STEEL;
 		this.layeredBlocks.clear();
 		ListTag layers = tag.getList("Layers", Tag.TAG_COMPOUND);
 		for (int i = 0; i < layers.size(); ++i) {
