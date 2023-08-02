@@ -20,6 +20,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.ItemStackServerData;
 import rbasamoyai.createbigcannons.base.SimpleValueContainer;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
 public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implements SimpleValueContainer {
@@ -77,7 +78,38 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 
 	@Override
 	public ItemStack quickMoveStack(Player player, int index) {
-		return super.quickMoveStack(player, index);
+		ItemStack itemStack = ItemStack.EMPTY;
+		Slot slot = this.slots.get(index);
+		if (slot != null && slot.hasItem()) {
+			ItemStack itemStack2 = slot.getItem();
+			itemStack = itemStack2.copy();
+			if (index < 2) {
+				if (!this.moveItemStackTo(itemStack2, 2, 38, true)) {
+					return ItemStack.EMPTY;
+				}
+			} else {
+				if (!(itemStack2.getItem() instanceof AutocannonAmmoItem ammoItem)) return ItemStack.EMPTY;
+				AutocannonAmmoType ammoType = ammoItem.getType();
+				if (ammoType == AutocannonAmmoType.NONE) return ItemStack.EMPTY;
+
+				AutocannonAmmoType ctType = this.container.getType();
+				int buf = ctType == AutocannonAmmoType.NONE
+					? ammoType.getCapacity()
+					: Math.max(ctType.getCapacity() - this.container.getTotalCount(), 0);
+				if (buf < 1) return ItemStack.EMPTY;
+
+				int insertIndex = ammoItem.isTracer(itemStack2) ? 1 : 0;
+				Slot insertSlot = this.slots.get(insertIndex);
+				if (insertSlot != null) insertSlot.safeInsert(itemStack2);
+			}
+
+			if (itemStack2.isEmpty()) slot.set(ItemStack.EMPTY);
+			else slot.setChanged();
+
+			if (itemStack2.getCount() == itemStack.getCount()) return ItemStack.EMPTY;
+			slot.onTake(player, itemStack2);
+		}
+		return itemStack;
 	}
 
 	public boolean isFilled() { return this.container.getType() != AutocannonAmmoType.NONE; }
