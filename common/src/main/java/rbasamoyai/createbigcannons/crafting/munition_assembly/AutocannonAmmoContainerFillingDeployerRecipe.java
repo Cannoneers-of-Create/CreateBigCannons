@@ -10,34 +10,34 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
-import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AmmoContainerItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
-public class AmmoContainerFillingDeployerRecipe implements Recipe<Container> {
+public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Container> {
 
 	private final ItemStack ammoContainer;
 	private final ItemStack insertedAmmo;
 
-	public AmmoContainerFillingDeployerRecipe(ItemStack ammoContainer, ItemStack insertedAmmo) {
+	public AutocannonAmmoContainerFillingDeployerRecipe(ItemStack ammoContainer, ItemStack insertedAmmo) {
 		this.ammoContainer = ammoContainer;
 		this.insertedAmmo = insertedAmmo;
 	}
 
-	public AmmoContainerFillingDeployerRecipe() {
+	public AutocannonAmmoContainerFillingDeployerRecipe() {
 		this(ItemStack.EMPTY, ItemStack.EMPTY);
 	}
 
 	@Override
 	public boolean matches(Container container, Level level) {
-		if (!(this.ammoContainer.getItem() instanceof AmmoContainerItem)
+		if (!(this.ammoContainer.getItem() instanceof AutocannonAmmoContainerItem)
 			|| !(this.insertedAmmo.getItem() instanceof AutocannonAmmoItem ammoItem)) return false;
 		AutocannonAmmoType ammoType = AutocannonAmmoType.of(this.insertedAmmo);
-		AutocannonAmmoType ctType = AmmoContainerItem.getTypeOfContainer(this.ammoContainer);
-		ItemStack existing = ammoItem.isTracer(this.insertedAmmo) ? AmmoContainerItem.getTracerAmmoStack(this.ammoContainer)
-			: AmmoContainerItem.getMainAmmoStack(this.ammoContainer);
+		AutocannonAmmoType ctType = AutocannonAmmoContainerItem.getTypeOfContainer(this.ammoContainer);
+		ItemStack existing = ammoItem.isTracer(this.insertedAmmo) ? AutocannonAmmoContainerItem.getTracerAmmoStack(this.ammoContainer)
+			: AutocannonAmmoContainerItem.getMainAmmoStack(this.ammoContainer);
 		if (existing.isEmpty() && (ammoType == AutocannonAmmoType.NONE || ammoType != ctType && ctType != AutocannonAmmoType.NONE)
 			|| !existing.isEmpty() && !ItemStack.isSameItemSameTags(existing, this.insertedAmmo)) return false;
-		return (ctType == AutocannonAmmoType.NONE || AmmoContainerItem.getTotalAmmoCount(this.ammoContainer) < ctType.getCapacity())
+		return (ctType == AutocannonAmmoType.NONE || AutocannonAmmoContainerItem.getTotalAmmoCount(this.ammoContainer) < ctType.getCapacity())
 			&& existing.getCount() < existing.getMaxStackSize();
 	}
 
@@ -49,7 +49,7 @@ public class AmmoContainerFillingDeployerRecipe implements Recipe<Container> {
 	public ItemStack getResultItem() {
 		ItemStack result = this.ammoContainer.copy();
 		boolean tracer = ((AutocannonAmmoItem) this.insertedAmmo.getItem()).isTracer(this.insertedAmmo);
-		ItemStack existing = tracer ? AmmoContainerItem.getTracerAmmoStack(result) : AmmoContainerItem.getMainAmmoStack(result);
+		ItemStack existing = tracer ? AutocannonAmmoContainerItem.getTracerAmmoStack(result) : AutocannonAmmoContainerItem.getMainAmmoStack(result);
 		ItemStack insert = existing.isEmpty() ? this.insertedAmmo.copy() : existing;
 		if (existing.isEmpty()) {
 			insert.setCount(1);
@@ -60,8 +60,8 @@ public class AmmoContainerFillingDeployerRecipe implements Recipe<Container> {
 		return result;
 	}
 
-	@Override public ResourceLocation getId() { return CBCRecipeTypes.AMMO_CONTAINER_FILLING_DEPLOYER.getId(); }
-	@Override public RecipeSerializer<?> getSerializer() { return CBCRecipeTypes.AMMO_CONTAINER_FILLING_DEPLOYER.getSerializer(); }
-	@Override public RecipeType<?> getType() { return CBCRecipeTypes.AMMO_CONTAINER_FILLING_DEPLOYER.getType(); }
+	@Override public ResourceLocation getId() { return CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getId(); }
+	@Override public RecipeSerializer<?> getSerializer() { return CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getSerializer(); }
+	@Override public RecipeType<?> getType() { return CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getType(); }
 
 }

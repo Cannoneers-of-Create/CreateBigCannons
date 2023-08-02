@@ -6,14 +6,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
-public class AmmoContainerContainer implements Container {
+public class AutocannonAmmoContainerContainer implements Container {
 
 	public static final int AMMO_SLOT = 0;
 	public static final int TRACER_SLOT = 1;
 
 	private final ItemStack stack;
 
-	public AmmoContainerContainer(ItemStack stack) {
+	public AutocannonAmmoContainerContainer(ItemStack stack) {
 		this.stack = stack;
 	}
 
@@ -27,8 +27,8 @@ public class AmmoContainerContainer implements Container {
 	@Override
 	public ItemStack getItem(int slot) {
 		return switch (slot) {
-			case 0 -> AmmoContainerItem.getMainAmmoStack(this.stack);
-			case 1 -> AmmoContainerItem.getTracerAmmoStack(this.stack);
+			case 0 -> AutocannonAmmoContainerItem.getMainAmmoStack(this.stack);
+			case 1 -> AutocannonAmmoContainerItem.getTracerAmmoStack(this.stack);
 			default -> ItemStack.EMPTY;
 		};
 	}
@@ -73,10 +73,10 @@ public class AmmoContainerContainer implements Container {
 		tag.put("Tracers", ItemStack.EMPTY.save(new CompoundTag()));
 	}
 
-	public int getTotalCount() { return AmmoContainerItem.getTotalAmmoCount(this.stack); }
+	public int getTotalCount() { return AutocannonAmmoContainerItem.getTotalAmmoCount(this.stack); }
 
 	public AutocannonAmmoType getType() {
-		return AmmoContainerItem.getTypeOfContainer(this.stack);
+		return AutocannonAmmoContainerItem.getTypeOfContainer(this.stack);
 	}
 
 }

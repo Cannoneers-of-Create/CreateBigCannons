@@ -4,11 +4,11 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
-public class AmmoContainerMenuSlot extends Slot {
+public class AutocannonAmmoContainerMenuSlot extends Slot {
 
-	private final AmmoContainerContainer ammoContainer;
+	private final AutocannonAmmoContainerContainer ammoContainer;
 
-	public AmmoContainerMenuSlot(AmmoContainerContainer container, int slot, int x, int y) {
+	public AutocannonAmmoContainerMenuSlot(AutocannonAmmoContainerContainer container, int slot, int x, int y) {
 		super(container, slot, x, y);
 		this.ammoContainer = container;
 	}

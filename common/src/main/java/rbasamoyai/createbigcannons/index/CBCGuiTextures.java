@@ -20,8 +20,8 @@ public enum CBCGuiTextures implements ScreenElement {
 	PROXIMITY_FUZE_BG("backgrounds1", 0, 84, 179, 83),
 	PROXIMITY_FUZE_SELECTOR("backgrounds1", 179, 84, 9, 26),
 
-	AMMO_CONTAINER_BG("backgrounds1", 0, 168, 179, 83),
-	AMMO_CONTAINER_SELECTOR("backgrounds1", 179, 168, 9, 14)
+	AUTOCANNON_AMMO_CONTAINER_BG("backgrounds1", 0, 168, 179, 83),
+	AUTOCANNON_AMMO_CONTAINER_SELECTOR("backgrounds1", 179, 168, 9, 14)
 	;
 
 	private final ResourceLocation texture;

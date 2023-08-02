@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
@@ -20,22 +19,23 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ServerboundSetContainerValuePacket;
 
 import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
-import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AMMO_CONTAINER_BG;
-import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AMMO_CONTAINER_SELECTOR;
+import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_BG;
+import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_SELECTOR;
 
-public class AmmoContainerScreen extends AbstractSimiContainerScreen<AmmoContainerMenu> {
+public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<AutocannonAmmoContainerMenu> {
 
 	protected ScrollInput setValue;
 	protected int lastUpdated = -1;
 	protected IconButton confirmButton;
 
-	public AmmoContainerScreen(AmmoContainerMenu container, Inventory inv, Component title) {
+	public AutocannonAmmoContainerScreen(AutocannonAmmoContainerMenu container, Inventory inv, Component title) {
 		super(container, inv, title);
 	}
 
 	@Override
 	protected void init() {
-		this.setWindowSize(AMMO_CONTAINER_BG.width, AMMO_CONTAINER_BG.height + 4 + PLAYER_INVENTORY.height);
+		// TODO: figure out why the hell classloading causes lag here
+		this.setWindowSize(AUTOCANNON_AMMO_CONTAINER_BG.width, AUTOCANNON_AMMO_CONTAINER_BG.height + 4 + PLAYER_INVENTORY.height);
 		this.setWindowOffset(1, 0);
 		super.init();
 
@@ -51,21 +51,19 @@ public class AmmoContainerScreen extends AbstractSimiContainerScreen<AmmoContain
 
 	@Override
 	protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
-		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-
 		int invX = this.getLeftOfCentered(PLAYER_INVENTORY.width);
-		int invY = this.topPos + AMMO_CONTAINER_BG.height + 4;
+		int invY = this.topPos + AUTOCANNON_AMMO_CONTAINER_BG.height + 4;
 		this.renderPlayerInventory(poseStack, invX, invY);
 
-		AMMO_CONTAINER_BG.render(poseStack, this.leftPos, this.topPos);
+		AUTOCANNON_AMMO_CONTAINER_BG.render(poseStack, this.leftPos, this.topPos);
 		drawCenteredString(poseStack, this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
 		int offsX = this.setValue.getState() * 8 - 8;
-		AMMO_CONTAINER_SELECTOR.render(poseStack, this.leftPos + 86 + offsX, this.topPos + 23);
+		AUTOCANNON_AMMO_CONTAINER_SELECTOR.render(poseStack, this.leftPos + 86 + offsX, this.topPos + 23);
 
 		GuiGameElement.of(this.menu.isFilled() ? CBCBlockPartials.FILLED_AMMO_CONTAINER : CBCBlockPartials.EMPTY_AMMO_CONTAINER)
 			.scale(50)
 			.rotate(30, 45, 0)
-			.at(this.leftPos + AMMO_CONTAINER_BG.width + 5, this.topPos + AMMO_CONTAINER_BG.height, 200)
+			.at(this.leftPos + AUTOCANNON_AMMO_CONTAINER_BG.width + 5, this.topPos + AUTOCANNON_AMMO_CONTAINER_BG.height, 200)
 			.render(poseStack);
 	}
 
@@ -103,7 +101,7 @@ public class AmmoContainerScreen extends AbstractSimiContainerScreen<AmmoContain
 			.withRange(1, 7)
 			.calling(state -> {
 				this.lastUpdated = 0;
-				this.setValue.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.ammo_container.tracer_spacing", state).component());
+				this.setValue.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_spacing", state).component());
 			})
 			.setState(Mth.clamp(this.menu.getValue(), 1, 6));
 	}
