@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -47,6 +48,7 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 
 	private final Deque<ItemStack> inputBuffer = new LinkedList<>();
 	private ItemStack outputBuffer = ItemStack.EMPTY;
+	private ItemStack magazine = ItemStack.EMPTY;
 
 	protected AbstractAutocannonBreechBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -57,6 +59,14 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	public Deque<ItemStack> getInputBuffer() { return this.inputBuffer; }
 	public ItemStack getOutputBuffer() { return this.outputBuffer; }
 	public void setOutputBuffer(ItemStack stack) { this.outputBuffer = stack; }
+
+	public void setMagazine(ItemStack stack) {
+		this.magazine = stack;
+		this.updateInstance = true;
+		this.notifyUpdate();
+	}
+
+	public ItemStack getMagazine() { return this.magazine; }
 
 	@Override
 	public void tick() {
@@ -135,6 +145,7 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 		for (int i = 0; i < inputTag.size(); ++i) {
 			this.inputBuffer.add(ItemStack.of(inputTag.getCompound(i)));
 		}
+		this.magazine = tag.contains("Magazine") ? ItemStack.of(tag.getCompound("Magazine")) : ItemStack.EMPTY;
 
 		if (!clientPacket) return;
 		this.updateInstance = tag.contains("UpdateInstance");
@@ -154,12 +165,13 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 					.map(s -> s.save(new CompoundTag()))
 					.collect(Collectors.toCollection(ListTag::new)));
 		}
+		if (this.magazine != null && !this.magazine.isEmpty()) tag.put("Magazine", this.magazine.save(new CompoundTag()));
 
 		if (!clientPacket) return;
 		if (this.updateInstance) tag.putBoolean("UpdateInstance", true);
 	}
 
-	public boolean isInputFull() { return this.inputBuffer.size() >= this.getQueueLimit(); }
+	public boolean isInputFull() { return this.inputBuffer.size() >= this.getQueueLimit() || !this.magazine.isEmpty(); }
 	public boolean isOutputFull() { return !this.outputBuffer.isEmpty(); }
 
 	public ItemStack insertOutput(ItemStack stack) {
@@ -170,7 +182,8 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	}
 
 	public ItemStack extractNextInput() {
-		return this.inputBuffer.isEmpty() ? ItemStack.EMPTY : this.inputBuffer.poll();
+		if (!this.inputBuffer.isEmpty()) return this.inputBuffer.poll();
+		return this.magazine.isEmpty() ? ItemStack.EMPTY : AutocannonAmmoContainerItem.pollItemFromContainer(this.magazine);
 	}
 
 	@Override

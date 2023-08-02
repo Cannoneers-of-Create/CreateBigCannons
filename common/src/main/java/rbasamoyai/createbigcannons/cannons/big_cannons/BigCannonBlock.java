@@ -218,10 +218,13 @@ public interface BigCannonBlock {
 	}
 
 	default <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
-																							 Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
-																							 StructureBlockInfo info, AbstractContraptionEntity entity) {
+			Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
+			StructureBlockInfo info, AbstractContraptionEntity entity) {
+		boolean flag = ((BigCannonBlock) info.state.getBlock()).getFacing(info.state).getAxis() == side.getAxis()
+			&& !be.cannonBehavior().isConnectedTo(side);
+
 		ItemStack stack = player.getItemInHand(interactionHand);
-		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
+		if (flag && Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
 			StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
 			if (!level.isClientSide && be.cannonBehavior().tryLoadingBlock(loadInfo)) {
 				writeAndSyncSingleBlockData(be, info, entity, cannon);
@@ -232,7 +235,7 @@ public interface BigCannonBlock {
 			}
 			return true;
 		}
-		if (stack.getItem() instanceof HandloadingTool tool && !player.getCooldowns().isOnCooldown(stack.getItem())) {
+		if (flag && stack.getItem() instanceof HandloadingTool tool && !player.getCooldowns().isOnCooldown(stack.getItem())) {
 			tool.onUseOnCannon(player, level, localPos, side, cannon);
 			return true;
 		}

@@ -71,4 +71,29 @@ public class AutocannonAmmoContainerItem extends Item implements MenuProvider {
 		return getMainAmmoStack(container).getCount() + getTracerAmmoStack(container).getCount();
 	}
 
+	public static ItemStack pollItemFromContainer(ItemStack container) {
+		if (!(container.getItem() instanceof AutocannonAmmoContainerItem)) return ItemStack.EMPTY;
+		ItemStack mainAmmo = getMainAmmoStack(container);
+		ItemStack tracerAmmo = getTracerAmmoStack(container);
+		ItemStack ret = ItemStack.EMPTY;
+		if (getTotalAmmoCount(container) % getTracerSpacing(container) == 0) {
+			if (!tracerAmmo.isEmpty()) {
+				ret = tracerAmmo.split(1);
+				container.getOrCreateTag().put("Tracers", tracerAmmo.isEmpty() ? new CompoundTag() : tracerAmmo.save(new CompoundTag()));
+			} else if (!mainAmmo.isEmpty()) {
+				ret = mainAmmo.split(1);
+				container.getOrCreateTag().put("Ammo", mainAmmo.isEmpty() ? new CompoundTag() : mainAmmo.save(new CompoundTag()));
+			}
+		} else {
+			if (!mainAmmo.isEmpty()) {
+				ret = mainAmmo.split(1);
+				container.getOrCreateTag().put("Ammo", mainAmmo.isEmpty() ? new CompoundTag() : mainAmmo.save(new CompoundTag()));
+			} else if (!tracerAmmo.isEmpty()) {
+				ret = tracerAmmo.split(1);
+				container.getOrCreateTag().put("Tracers", tracerAmmo.isEmpty() ? new CompoundTag() : tracerAmmo.save(new CompoundTag()));
+			}
+		}
+		return ret;
+	}
+
 }
