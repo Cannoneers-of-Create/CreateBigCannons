@@ -200,7 +200,10 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 				ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, container);
 				level.addFreshEntity(dropEntity);
 			}
-			if (changed) return InteractionResult.sidedSuccess(level.isClientSide);
+			if (changed) {
+				breech.notifyUpdate();
+				return InteractionResult.sidedSuccess(level.isClientSide);
+			}
 		}
 		return super.use(state, level, pos, player, hand, result);
 	}

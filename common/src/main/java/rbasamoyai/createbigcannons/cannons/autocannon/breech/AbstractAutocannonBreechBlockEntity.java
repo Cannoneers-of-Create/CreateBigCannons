@@ -1,5 +1,16 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
+import static rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock.writeAndSyncSingleBlockData;
+
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
+
+import com.simibubi.create.content.contraptions.Contraption;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -14,11 +25,6 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
-
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBlockEntity implements AnimatedAutocannon {
 
@@ -43,7 +49,7 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	private int fireRate = 7;
 	private int firingCooldown;
 	private int animateTicks = 5;
-	private DyeColor seat = null;
+	@Nullable DyeColor seat = null;
 	private boolean updateInstance = true;
 
 	private final Deque<ItemStack> inputBuffer = new LinkedList<>();
@@ -63,7 +69,6 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	public void setMagazine(ItemStack stack) {
 		this.magazine = stack;
 		this.updateInstance = true;
-		this.notifyUpdate();
 	}
 
 	public ItemStack getMagazine() { return this.magazine; }
@@ -78,6 +83,11 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	public void tickFromContraption(Level level, PitchOrientedContraptionEntity poce, BlockPos localPos) {
 		super.tickFromContraption(level, poce, localPos);
 		this.allTick(level);
+		if (!level.isClientSide && this.updateInstance) {
+			this.updateInstance = false;
+			Contraption contraption = poce.getContraption();
+			writeAndSyncSingleBlockData(this, contraption.getBlocks().get(localPos), poce, contraption);
+		}
 	}
 
 	private void allTick(Level level) {
@@ -115,21 +125,13 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	@Override public void incrementAnimationTicks() { ++this.animateTicks; }
 	@Override public int getAnimationTicks() { return this.animateTicks; }
 
-	public void setSeatColor(DyeColor color) {
+	public void setSeatColor(@Nullable DyeColor color) {
 		this.seat = color;
 		this.updateInstance = true;
 		this.notifyUpdate();
 	}
 
-	public DyeColor getSeatColor() { return this.seat; }
-
-	public boolean shouldUpdateInstance() {
-		if (this.updateInstance) {
-			this.updateInstance = false;
-			return true;
-		}
-		return false;
-	}
+	@Nullable DyeColor getSeatColor() { return this.seat; }
 
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
@@ -183,7 +185,11 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 
 	public ItemStack extractNextInput() {
 		if (!this.inputBuffer.isEmpty()) return this.inputBuffer.poll();
-		return this.magazine.isEmpty() ? ItemStack.EMPTY : AutocannonAmmoContainerItem.pollItemFromContainer(this.magazine);
+		if (this.magazine.isEmpty()) return ItemStack.EMPTY;
+		int totalCount = AutocannonAmmoContainerItem.getTotalAmmoCount(this.magazine);
+		if (totalCount == 0) return ItemStack.EMPTY;
+		if (totalCount == 1) this.updateInstance = true;
+		return AutocannonAmmoContainerItem.pollItemFromContainer(this.magazine);
 	}
 
 	@Override
@@ -193,6 +199,7 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 			if (!s.isEmpty()) list.add(s.copy());
 		}
 		if (!this.outputBuffer.isEmpty()) list.add(this.outputBuffer.copy());
+		if (!this.magazine.isEmpty()) list.add(this.magazine.copy());
 		return list;
 	}
 

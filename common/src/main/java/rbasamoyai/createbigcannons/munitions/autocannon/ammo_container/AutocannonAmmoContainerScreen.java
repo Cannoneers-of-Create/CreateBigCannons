@@ -60,7 +60,7 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 		int offsX = this.setValue.getState() * 8 - 8;
 		AUTOCANNON_AMMO_CONTAINER_SELECTOR.render(poseStack, this.leftPos + 86 + offsX, this.topPos + 23);
 
-		GuiGameElement.of(this.menu.isFilled() ? CBCBlockPartials.FILLED_AMMO_CONTAINER : CBCBlockPartials.EMPTY_AMMO_CONTAINER)
+		GuiGameElement.of(this.menu.isFilled() ? CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_FILLED : CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_EMPTY)
 			.scale(50)
 			.rotate(30, 45, 0)
 			.at(this.leftPos + AUTOCANNON_AMMO_CONTAINER_BG.width + 5, this.topPos + AUTOCANNON_AMMO_CONTAINER_BG.height, 200)
