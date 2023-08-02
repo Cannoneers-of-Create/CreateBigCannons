@@ -25,6 +25,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -279,11 +281,19 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
 
 			if (info.state.getBlock() instanceof BigCannonBlock cBlock
-				&& cBlock.getFacing(info.state).getAxis() == side.getAxis()
 				&& be instanceof IBigCannonBlockEntity cbe
-				&& !cbe.cannonBehavior().isConnectedTo(side)
 				&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level, cannon,
 				(BlockEntity & IBigCannonBlockEntity) cbe, info, this)) {
+				return true;
+			}
+		} else if (this.contraption instanceof MountedAutocannonContraption autocannon && interactionHand == InteractionHand.MAIN_HAND) {
+			BlockEntity be = this.contraption.presentBlockEntities.get(localPos);
+			StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
+
+			if (info.state.getBlock() instanceof AutocannonBlock cBlock
+				&& be instanceof IAutocannonBlockEntity cbe
+				&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level, autocannon,
+				(BlockEntity & IAutocannonBlockEntity) cbe, info, this)) {
 				return true;
 			}
 		}

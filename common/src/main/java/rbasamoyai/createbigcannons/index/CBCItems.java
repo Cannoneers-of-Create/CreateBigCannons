@@ -177,6 +177,7 @@ public class CBCItems {
 
 	public static final ItemEntry<AutocannonAmmoContainerItem> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
 		.item("autocannon_ammo_container", AutocannonAmmoContainerItem::new)
+		.properties(p -> p.stacksTo(1))
 		.model((c, p) -> {})
 		.register();
 

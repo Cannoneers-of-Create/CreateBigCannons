@@ -102,7 +102,9 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 	public <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
 																							Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
 																							StructureBlockInfo info, AbstractContraptionEntity entity) {
-		if (!(be instanceof QuickfiringBreechBlockEntity breech)) return false;
+		if (((BigCannonBlock) info.state.getBlock()).getFacing(info.state).getAxis() != side.getAxis()
+			|| be.cannonBehavior().isConnectedTo(side)
+			|| !(be instanceof QuickfiringBreechBlockEntity breech)) return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
 
 		Direction pushDirection = side.getOpposite();

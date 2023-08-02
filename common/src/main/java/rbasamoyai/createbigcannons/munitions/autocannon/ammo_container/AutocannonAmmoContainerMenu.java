@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -41,6 +42,7 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 
 	private final AutocannonAmmoContainerContainer container;
 	private final ContainerData data;
+	private final Inventory playerInv;
 
 	protected AutocannonAmmoContainerMenu(MenuType<? extends AutocannonAmmoContainerMenu> type, int id, Inventory playerInv,
 										  AutocannonAmmoContainerContainer ct, ContainerData data) {
@@ -68,6 +70,7 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 		this.addDataSlots(data);
 		this.data = data;
 		this.container = ct;
+		this.playerInv = playerInv;
 	}
 
 	@Override public boolean stillValid(Player player) { return true; }
@@ -113,5 +116,11 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 	}
 
 	public boolean isFilled() { return this.container.getType() != AutocannonAmmoType.NONE; }
+
+	@Override
+	public void clicked(int slotId, int button, ClickType clickType, Player player) {
+		if (slotId == this.playerInv.selected + 29 && clickType != ClickType.THROW) return;
+		super.clicked(slotId, button, clickType, player);
+	}
 
 }
