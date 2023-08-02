@@ -317,7 +317,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		float recoilMagnitude = speed;
 
-		boolean isTracer = round.isTracer(foundProjectile);
+		boolean isTracer = CBCConfigs.SERVER.munitions.allProjectilesAreTracers.get() || round.isTracer(foundProjectile);
 
 		AbstractAutocannonProjectile projectile = round.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {

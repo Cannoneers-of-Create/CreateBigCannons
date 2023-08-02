@@ -38,6 +38,11 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat bigCannonDeflectChance = f(0.9f, 0, 1, "bigCannonProjectileDeflectionChance", Comments.bigCannonDeflectChance);
 	public final ConfigFloat autocannonDeflectChance = f(0.2f, 0, 1, "autocannonProjectileDeflectionChance", Comments.autocannonDeflectChance);
 
+	public final ConfigGroup autocannonMunitions = group(0, "autocannonMunitions", "Autocannon Munitions");
+	public final ConfigBool allProjectilesAreTracers = b(false, "allAutocannonProjectilesAreTracers", Comments.allProjectilesAreTracers);
+	public final ConfigInt ammoContainerAutocannonRoundCapacity = i(16, 1, 128, "autocannonAmmoContainerAutocannonRoundCapacity", Comments.ammoContainerAutocannonRoundCapacity);
+	public final ConfigInt ammoContainerMachineGunRoundCapacity = i(64, 1, 128, "autocannonAmmoContainerMachineGunRoundCapacity", Comments.ammoContainerMachineGunRoundCapacity);
+
 	@Override public String getName() { return "munitions"; }
 
 	private static class Comments {
@@ -85,6 +90,9 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String autocannonDeflectChance = "The chance that an autocannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
 		static String smokeShellCloudDuration = "How long the smoke cloud spawned by a Smoke Shell lasts for, in ticks. 1 second = 20 ticks.";
 		static String smokeShellCloudSize = "How large the smoke cloud spawned by a Smoke Shell is.";
+		static String allProjectilesAreTracers = "Makes all shot autocannon projectiles tracers regardless if the item had a tracer tip applied. Emulates legacy behavior.";
+		static String ammoContainerAutocannonRoundCapacity = "How many autocannon rounds the Autocannon Ammo Container can store.";
+		static String ammoContainerMachineGunRoundCapacity = "How many machine gun rounds the Autocannon Ammo Container can store.";
 	}
 
 	public enum GriefState {
