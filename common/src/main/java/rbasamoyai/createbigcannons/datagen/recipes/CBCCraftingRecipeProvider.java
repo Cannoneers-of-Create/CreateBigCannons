@@ -393,6 +393,8 @@ public class CBCCraftingRecipeProvider {
 		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING_DEPLOYER.getSerializer()).save(cons, "munition_fuzing_deployer");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY_DEPLOYER.getSerializer()).save(cons, "cartridge_assembly_deployer");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.TRACER_APPLICATION.getSerializer()).save(cons, "tracer_application");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.TRACER_APPLICATION_DEPLOYER.getSerializer()).save(cons, "tracer_application_deployer");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.AMMO_CONTAINER_FILLING_DEPLOYER.getSerializer()).save(cons, "ammo_container_filling_deployer");
 
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(CBCItems.CONGEALED_NITRO.get()), CBCItems.HARDENED_NITRO.get(), 5, 200)
 			.unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))

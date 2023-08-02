@@ -18,6 +18,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.foundry.MeltingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.AmmoContainerFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
@@ -38,7 +39,8 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	MUNITION_FUZING_DEPLOYER(noSerializer(r -> new MunitionFuzingDeployerRecipe())),
 	CARTRIDGE_ASSEMBLY_DEPLOYER(noSerializer(r -> new CartridgeAssemblyDeployerRecipe())),
 	TRACER_APPLICATION(noSerializer(TracerApplicationRecipe::new)),
-	TRACER_APPLICATION_DEPLOYER(noSerializer(r -> new TracerApplicationDeployerRecipe()));
+	TRACER_APPLICATION_DEPLOYER(noSerializer(r -> new TracerApplicationDeployerRecipe())),
+	AMMO_CONTAINER_FILLING_DEPLOYER(noSerializer(r -> new AmmoContainerFillingDeployerRecipe()));
 
 	private final ResourceLocation id;
 	private final Supplier<RecipeSerializer<?>> serializerObject;

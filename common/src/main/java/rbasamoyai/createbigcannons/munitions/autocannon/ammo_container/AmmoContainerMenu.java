@@ -20,6 +20,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.ItemStackServerData;
 import rbasamoyai.createbigcannons.base.SimpleValueContainer;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
 public class AmmoContainerMenu extends AbstractContainerMenu implements SimpleValueContainer {
 

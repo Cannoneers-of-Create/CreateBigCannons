@@ -1,8 +1,6 @@
-package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
+package rbasamoyai.createbigcannons.munitions.autocannon;
 
 import net.minecraft.world.item.ItemStack;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
-import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunRoundItem;
 
 public enum AutocannonAmmoType {
 	AUTOCANNON {
@@ -21,9 +19,7 @@ public enum AutocannonAmmoType {
 	public abstract int getCapacity();
 
 	public static AutocannonAmmoType of(ItemStack stack) {
-		if (stack.getItem() instanceof AutocannonCartridgeItem) return AUTOCANNON;
-		if (stack.getItem() instanceof MachineGunRoundItem) return MACHINE_GUN;
-		return NONE;
+		return stack.getItem() instanceof AutocannonAmmoItem item ? item.getType() : NONE;
 	}
 
 }
