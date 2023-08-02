@@ -41,6 +41,8 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 
 	@Override public ItemStack getSpentItem(ItemStack stack) { return CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(); }
 
+	@Override public AutocannonAmmoType getType() { return AutocannonAmmoType.AUTOCANNON; }
+
 	@Nullable
     public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
         ItemStack projectileStack = getProjectileStack(stack);

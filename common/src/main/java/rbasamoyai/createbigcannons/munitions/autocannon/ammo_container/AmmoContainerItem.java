@@ -14,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
 import javax.annotation.Nullable;
 
@@ -58,6 +59,16 @@ public class AmmoContainerItem extends Item implements MenuProvider {
 	public static int getTracerSpacing(ItemStack container) {
 		CompoundTag tag = container.getOrCreateTag();
 		return tag.contains("TracerSpacing") ? Mth.clamp(tag.getInt("TracerSpacing"), 1, 6) : 1;
+	}
+
+	public static AutocannonAmmoType getTypeOfContainer(ItemStack container) {
+		AutocannonAmmoType type = AutocannonAmmoType.of(getMainAmmoStack(container));
+		if (type != AutocannonAmmoType.NONE) return type;
+		return AutocannonAmmoType.of(getTracerAmmoStack(container));
+	}
+
+	public static int getTotalAmmoCount(ItemStack container) {
+		return getMainAmmoStack(container).getCount() + getTracerAmmoStack(container).getCount();
 	}
 
 }

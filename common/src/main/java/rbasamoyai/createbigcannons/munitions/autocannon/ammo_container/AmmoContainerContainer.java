@@ -4,6 +4,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
 public class AmmoContainerContainer implements Container {
 
@@ -72,12 +73,10 @@ public class AmmoContainerContainer implements Container {
 		tag.put("Tracers", ItemStack.EMPTY.save(new CompoundTag()));
 	}
 
-	public int getTotalCount() { return this.getItem(AMMO_SLOT).getCount() + this.getItem(TRACER_SLOT).getCount(); }
+	public int getTotalCount() { return AmmoContainerItem.getTotalAmmoCount(this.stack); }
 
 	public AutocannonAmmoType getType() {
-		AutocannonAmmoType type = AutocannonAmmoType.of(this.getItem(AMMO_SLOT));
-		if (type != AutocannonAmmoType.NONE) return type;
-		return AutocannonAmmoType.of(this.getItem(TRACER_SLOT));
+		return AmmoContainerItem.getTypeOfContainer(this.stack);
 	}
 
 }
