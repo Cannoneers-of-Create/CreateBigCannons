@@ -18,9 +18,9 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
 import javax.annotation.Nullable;
 
-public class AmmoContainerItem extends Item implements MenuProvider {
+public class AutocannonAmmoContainerItem extends Item implements MenuProvider {
 
-	public AmmoContainerItem(Properties properties) {
+	public AutocannonAmmoContainerItem(Properties properties) {
 		super(properties);
 	}
 
@@ -29,7 +29,7 @@ public class AmmoContainerItem extends Item implements MenuProvider {
 	@Nullable
 	@Override
 	public AbstractContainerMenu createMenu(int i, Inventory inventory, Player player) {
-		return AmmoContainerMenu.getServerMenu(i, inventory, player.getMainHandItem());
+		return AutocannonAmmoContainerMenu.getServerMenu(i, inventory, player.getMainHandItem());
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class AmmoContainerItem extends Item implements MenuProvider {
 			ItemStack stack = player.getItemInHand(hand);
 			int spacing = getTracerSpacing(stack);
 
-			CBCMenuTypes.AMMO_CONTAINER.open(splayer, this.getDisplayName(), this, buf -> {
+			CBCMenuTypes.AUTOCANNON_AMMO_CONTAINER.open(splayer, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(spacing);
 				buf.writeItem(new ItemStack(this));
 			});

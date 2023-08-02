@@ -71,7 +71,7 @@ public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 		.addStep(CuttingRecipe::new, rb -> rb)
 		.addOutput(CBCItems.STEEL_AUTOCANNON_BREECH_EXTRACTOR.get(), 1)),
 
-	PRESSING_BIG_CARTRIDGE = create("pressing_big_cartridge", b -> b.require(CBCItems.BIG_CANNON_SHEET.get())
+	PRESSING_BIG_CARTRIDGE = create("pressing_big_cartridge", b -> b.require(CBCItems.BIG_CARTRIDGE_SHEET.get())
 		.transitionTo(CBCItems.PARTIALLY_FORMED_BIG_CARTRIDGE.get())
 		.loops(5)
 		.addStep(PressingRecipe::new, rb -> rb)

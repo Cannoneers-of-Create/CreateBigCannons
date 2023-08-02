@@ -22,31 +22,31 @@ import rbasamoyai.createbigcannons.base.SimpleValueContainer;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
-public class AmmoContainerMenu extends AbstractContainerMenu implements SimpleValueContainer {
+public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implements SimpleValueContainer {
 
 	private static final ResourceLocation TRACER_SLOT = CreateBigCannons.resource("item/tracer_slot");
 
-	public static AmmoContainerMenu getServerMenu(int id, Inventory playerInv, ItemStack stack) {
-		AmmoContainerContainer ct = new AmmoContainerContainer(stack);
-		return new AmmoContainerMenu(CBCMenuTypes.AMMO_CONTAINER.get(), id, playerInv, ct, new ItemStackServerData(stack, "TracerSpacing"));
+	public static AutocannonAmmoContainerMenu getServerMenu(int id, Inventory playerInv, ItemStack stack) {
+		AutocannonAmmoContainerContainer ct = new AutocannonAmmoContainerContainer(stack);
+		return new AutocannonAmmoContainerMenu(CBCMenuTypes.AUTOCANNON_AMMO_CONTAINER.get(), id, playerInv, ct, new ItemStackServerData(stack, "TracerSpacing"));
 	}
 
-	public static AmmoContainerMenu getClientMenu(MenuType<AmmoContainerMenu> type, int id, Inventory playerInv, FriendlyByteBuf buf) {
+	public static AutocannonAmmoContainerMenu getClientMenu(MenuType<AutocannonAmmoContainerMenu> type, int id, Inventory playerInv, FriendlyByteBuf buf) {
 		ContainerData data = new SimpleContainerData(1);
 		data.set(0, buf.readVarInt());
 		ItemStack item = buf.readItem();
-		return new AmmoContainerMenu(type, id, playerInv, new AmmoContainerContainer(item), data);
+		return new AutocannonAmmoContainerMenu(type, id, playerInv, new AutocannonAmmoContainerContainer(item), data);
 	}
 
-	private final AmmoContainerContainer container;
+	private final AutocannonAmmoContainerContainer container;
 	private final ContainerData data;
 
-	protected AmmoContainerMenu(MenuType<? extends AmmoContainerMenu> type, int id, Inventory playerInv,
-								AmmoContainerContainer ct, ContainerData data) {
+	protected AutocannonAmmoContainerMenu(MenuType<? extends AutocannonAmmoContainerMenu> type, int id, Inventory playerInv,
+										  AutocannonAmmoContainerContainer ct, ContainerData data) {
 		super(type, id);
 
-		this.addSlot(new AmmoContainerMenuSlot(ct, AmmoContainerContainer.AMMO_SLOT, 32, 26));
-		this.addSlot(new AmmoContainerMenuSlot(ct, AmmoContainerContainer.TRACER_SLOT, 59, 26) {
+		this.addSlot(new AutocannonAmmoContainerMenuSlot(ct, AutocannonAmmoContainerContainer.AMMO_SLOT, 32, 26));
+		this.addSlot(new AutocannonAmmoContainerMenuSlot(ct, AutocannonAmmoContainerContainer.TRACER_SLOT, 59, 26) {
 			@Nullable
 			@Override
 			public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {

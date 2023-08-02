@@ -30,6 +30,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("molten_metal"), "player", "%s burned in molten metal");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %ss %s ticks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.distance", "Detonation Distance: %s blocks");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.autocannon_ammo_container.tracer_spacing", "Tracer Spacing: Every %s round(s)");
 
 		tooltip(CBCBlocks.SOLID_SHOT)
 		.header("SOLID SHOT")
@@ -166,6 +167,11 @@ public class CBCLangGen {
 		tooltip(CBCItems.TRACER_TIP)
 		.header("TRACER TIP")
 		.summary("_Illuminates_ autocannon rounds, making them visible.");
+
+		tooltip(CBCItems.AUTOCANNON_AMMO_CONTAINER)
+		.header("AUTOCANNON AMMO CONTAINER")
+		.summary("Stores autocannon ammo for convenient use. Can specify _tracer spacing._")
+		.controlAndAction("When R-Clicked", "Opens the ammo container menu.");
 
 		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("jei_info"), "added_fuze", "+ Fuze");
 		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("jei_info"), "added_power", "+ Power");
