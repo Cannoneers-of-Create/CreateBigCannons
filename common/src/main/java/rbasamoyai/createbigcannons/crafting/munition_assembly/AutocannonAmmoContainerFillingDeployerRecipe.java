@@ -47,8 +47,9 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Cont
 
 	@Override
 	public ItemStack getResultItem() {
+		if (!(this.insertedAmmo.getItem() instanceof AutocannonAmmoItem ammoItem)) return ItemStack.EMPTY;
 		ItemStack result = this.ammoContainer.copy();
-		boolean tracer = ((AutocannonAmmoItem) this.insertedAmmo.getItem()).isTracer(this.insertedAmmo);
+		boolean tracer = ammoItem.isTracer(this.insertedAmmo);
 		ItemStack existing = tracer ? AutocannonAmmoContainerItem.getTracerAmmoStack(result) : AutocannonAmmoContainerItem.getMainAmmoStack(result);
 		ItemStack insert = existing.isEmpty() ? this.insertedAmmo.copy() : existing;
 		if (existing.isEmpty()) {
