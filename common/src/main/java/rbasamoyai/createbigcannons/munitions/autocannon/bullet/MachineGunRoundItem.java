@@ -26,7 +26,8 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 	}
 
 	@Override
-	public @Nullable AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
+	@Nullable
+	public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
 		return CBCEntityTypes.MACHINE_GUN_BULLET.create(level);
 	}
 

@@ -278,7 +278,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 			if (behavior.canLoadItem(foundProjectile)) {
 				++barrelTravelled;
-				if (barrelTravelled < properties.maxSpeedIncreases())
+				if (barrelTravelled <= properties.maxSpeedIncreases())
 					speed += properties.speedIncreasePerBarrel();
 				spread -= properties.spreadReductionPerBarrel();
 				spread = Math.max(spread, 0);

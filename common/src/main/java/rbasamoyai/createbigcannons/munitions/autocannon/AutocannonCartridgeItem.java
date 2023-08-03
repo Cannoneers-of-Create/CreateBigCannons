@@ -43,6 +43,7 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 
 	@Override public AutocannonAmmoType getType() { return AutocannonAmmoType.AUTOCANNON; }
 
+	@Override
 	@Nullable
     public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
         ItemStack projectileStack = getProjectileStack(stack);

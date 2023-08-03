@@ -22,7 +22,8 @@ import javax.annotation.Nullable;
 public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
 
 	protected int ageRemaining;
-	@Nullable protected Vec3 secondPreviousPos;
+	@Nullable private Vec3 prevPos = null;
+	private boolean fullyReady = false;
 
 	protected AbstractAutocannonProjectile(EntityType<? extends AbstractAutocannonProjectile> type, Level level) {
 		super(type, level);
@@ -45,12 +46,18 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		}
 	}
 
-	@Override protected float getKnockback(Entity target) { return 0.5f; }
+	@Override
+	protected float getKnockback(Entity target) {
+		float length = this.getDeltaMovement().lengthSqr() > 1e-4d ? 1 : (float) this.getDeltaMovement().lengthSqr();
+		return 0.5f / length;
+	}
+
 	@Override protected double overPenetrationPower(double hardness, double curPom) { return 0; }
 
 	@Override
 	public void tick() {
-		this.secondPreviousPos = this.firstTick ? this.position() : new Vec3(this.xo, this.yo, this.zo);
+		this.fullyReady = this.prevPos != null;
+		this.prevPos = this.position();
 
 		super.tick();
 
@@ -60,9 +67,9 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		}
 	}
 
-	public Vec3 getSecondPreviousPos() {
-		return this.secondPreviousPos == null ? new Vec3(this.xo, this.yo, this.zo) : this.secondPreviousPos;
-	}
+	@Nullable public Vec3 getPreviousPos() { return this.prevPos; }
+
+	public boolean isFullyReady() { return this.fullyReady; }
 
 	protected void expireProjectile() {
 		this.discard();
