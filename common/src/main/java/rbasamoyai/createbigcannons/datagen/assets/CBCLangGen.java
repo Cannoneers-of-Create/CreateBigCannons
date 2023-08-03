@@ -168,11 +168,6 @@ public class CBCLangGen {
 		.header("TRACER TIP")
 		.summary("_Illuminates_ autocannon rounds, making them visible.");
 
-		tooltip(CBCItems.AUTOCANNON_AMMO_CONTAINER)
-		.header("AUTOCANNON AMMO CONTAINER")
-		.summary("Stores autocannon ammo for convenient use. Can specify _tracer spacing._")
-		.controlAndAction("When R-Clicked", "Opens the ammo container menu.");
-
 		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("jei_info"), "added_fuze", "+ Fuze");
 		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("jei_info"), "added_power", "+ Power");
 		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("tracer"), "+ Tracer");
