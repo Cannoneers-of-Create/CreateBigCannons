@@ -70,7 +70,7 @@ jobs:
 
       - name: Send building message to discord
         if: github.event_name == 'push' && github.repository_id == '510859946'
-        uses: realRobotix/action-discord-notifier@master
+        uses: realRobotix/action-discord-notifier@release-master
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
