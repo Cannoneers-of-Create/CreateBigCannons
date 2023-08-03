@@ -7,6 +7,8 @@ import javax.annotation.Nonnull;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 
+import java.util.Deque;
+
 public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity breech) implements IItemHandler {
 	@Override
 	public int getSlots() {
@@ -16,9 +18,10 @@ public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity bree
 	@Nonnull
 	@Override
 	public ItemStack getStackInSlot(int slot) {
+		Deque<ItemStack> inputBuffer = this.breech.getInputBuffer();
 		return switch (slot) {
 			case 0 -> this.breech.getOutputBuffer();
-			case 1 -> this.breech.isInputFull() ? this.breech.getInputBuffer().peekLast() : ItemStack.EMPTY;
+			case 1 -> this.breech.isInputFull() && !inputBuffer.isEmpty() ? inputBuffer.peekLast() : ItemStack.EMPTY;
 			default -> ItemStack.EMPTY;
 		};
 	}

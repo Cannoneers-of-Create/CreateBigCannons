@@ -65,9 +65,11 @@ public class AutocannonBreechInterface extends SnapshotParticipant<AutocannonBre
 
 	@Override protected void readSnapshot(BreechSnapshot snapshot) { snapshot.apply(this); }
 
+	@Nonnull
 	public ItemStack getStack(boolean isInput) {
 		if (isInput) {
-			return !this.breech.isInputFull() ? ItemStack.EMPTY : this.breech.getInputBuffer().peekLast();
+			Deque<ItemStack> inputBuffer = this.breech.getInputBuffer();
+			return this.breech.isInputFull() && !inputBuffer.isEmpty() ? inputBuffer.peekLast() : ItemStack.EMPTY;
 		}
 		return this.breech.getOutputBuffer();
 	}
