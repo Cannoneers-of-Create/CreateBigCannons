@@ -68,7 +68,7 @@ public class CannonBuilderBlockEntity extends PoleMoverBlockEntity {
 		if (this.running || this.movedContraption != null) return state;
 
 		Direction facing = this.getBlockState().getValue(BlockStateProperties.FACING);
-		for (int offs = 1; offs < CannonBuilderBlock.maxAllowedBuilderLength(); ++offs) {
+		for (int offs = 1; offs <= CannonBuilderBlock.maxAllowedBuilderLength(); ++offs) {
 			BlockPos currentPos = this.worldPosition.relative(facing, offs);
 			BlockState currentState = this.level.getBlockState(currentPos);
 			if (AllBlocks.PISTON_EXTENSION_POLE.has(currentState)) {
