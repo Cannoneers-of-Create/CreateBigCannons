@@ -84,7 +84,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 			this.clientPitchDiff = flag ? this.clientPitchDiff * 0.5f : 0;
 		}
 
-		if (!this.running) {
+		if (!this.running && !this.isVirtual()) {
 			if (CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) {
 				this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
 				this.prevYaw = this.cannonYaw;
@@ -178,10 +178,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	public float getPitchOffset(float partialTicks) {
-		if (!this.running) {
-			return this.cannonPitch;
-		}
-		return this.cannonPitch + convertToAngular(this.getSpeed()) * 0.125f * partialTicks;
+		if (this.isVirtual())
+			return Mth.lerp(partialTicks + 0.5f, this.prevPitch, this.cannonPitch);
+		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
+			partialTicks = 0;
+		float aSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
+		return Mth.lerp(partialTicks, this.cannonPitch, this.cannonPitch + aSpeed);
 	}
 
 	public void setPitch(float pitch) {
@@ -197,10 +199,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	public float getYawOffset(float partialTicks) {
-		if (!this.running) {
-			return this.cannonYaw;
-		}
-		return this.cannonYaw + convertToAngular(this.getYawSpeed()) * 0.125f * partialTicks;
+		if (this.isVirtual())
+			return Mth.lerp(partialTicks + 0.5f, this.prevYaw, this.cannonYaw);
+		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
+			partialTicks = 0;
+		float aSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);
+		return Mth.lerp(partialTicks, this.cannonYaw, this.cannonYaw + aSpeed);
 	}
 
 	public void setYaw(float yaw) {
