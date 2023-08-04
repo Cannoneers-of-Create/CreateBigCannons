@@ -80,9 +80,7 @@ public class CannonBuildingContraption extends PoleContraption {
 
 				nextBlock = level.getBlockState(start.relative(direction));
 
-				if (extensionsInFront > CannonBuilderBlock.maxAllowedBuilderLength()) {
-					throw AssemblyException.tooManyPistonPoles();
-				}
+				if (extensionsInFront > CannonBuilderBlock.maxAllowedBuilderLength()) throw tooManyPistonPoles();
 			}
 		}
 
@@ -106,9 +104,8 @@ public class CannonBuildingContraption extends PoleContraption {
 			extensionsInBack++;
 			nextBlock = level.getBlockState(end.relative(opposite));
 
-			if (extensionsInFront + extensionsInBack > CannonBuilderBlock.maxAllowedBuilderLength()) {
-				throw AssemblyException.tooManyPistonPoles();
-			}
+			if (extensionsInFront + extensionsInBack > CannonBuilderBlock.maxAllowedBuilderLength())
+				throw tooManyPistonPoles();
 		}
 
 		this.extensionLength = extensionsInFront + extensionsInBack;
@@ -419,6 +416,10 @@ public class CannonBuildingContraption extends PoleContraption {
 	@Override
 	public ContraptionType getType() {
 		return CBCContraptionTypes.CANNON_BUILDER;
+	}
+
+	public static AssemblyException tooManyPistonPoles() {
+		return new AssemblyException("tooManyPistonPoles", CannonBuilderBlock.maxAllowedBuilderLength());
 	}
 
 }
