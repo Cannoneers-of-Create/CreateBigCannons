@@ -165,8 +165,12 @@ public class CBCClientCommon {
 	}
 
 	public static float onFovModify(Minecraft mc, float oldFov) {
-		if (mc.player == null || !mc.options.getCameraType().isFirstPerson()) return oldFov;
-		return mc.options.keyUse.isDown() && isControllingCannon(mc.player) ? oldFov * 0.5f : oldFov;
+		if (mc.player == null || !mc.options.getCameraType().isFirstPerson()) return lerpFov(mc, oldFov);
+		return lerpFov(mc, mc.options.keyUse.isDown() && isControllingCannon(mc.player) ? oldFov * 0.5f : oldFov);
+	}
+
+	private static float lerpFov(Minecraft mc, float fov) {
+		return Mth.lerp(mc.options.fovEffectScale, 1.0F, fov);
 	}
 
 	public static void onPlayerRenderPre(PoseStack stack, LivingEntity player, float partialTicks) {
