@@ -10,7 +10,7 @@ import org.lwjgl.glfw.GLFW;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;

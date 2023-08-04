@@ -3,8 +3,8 @@ package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 import com.jozufozu.flywheel.backend.Backend;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
 
@@ -54,7 +54,7 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 		ItemStack container = breech.getMagazine();
 		if (container.getItem() instanceof AutocannonAmmoContainerItem) {
 			boolean flag = facing.getAxis().isVertical();
-			Quaternion q1;
+			Quaternionf q1;
 			if (flag) {
 				q1 = Vector3f.ZP.rotationDegrees(180);
 				q1.mul(Vector3f.YP.rotationDegrees(180));

@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 import java.util.HashMap;
@@ -68,9 +67,8 @@ public class PartialBlockDamageManager {
 			BlockPos pos = entry.getKey();
 
 			BlockState state = level.getChunkAt(pos).getBlockState(pos);
-			Material mat = state.getMaterial();
 			int oldProgress = entry.getValue();
-			if (mat.isReplaceable() || !mat.isSolid() || state.getDestroySpeed(level, pos) == -1) {
+			if (state.canBeReplaced() || !state.isSolid() || state.getDestroySpeed(level, pos) == -1) {
 				if (oldProgress > 0) level.destroyBlockProgress(-1, pos, -1);
 				iter.remove();
 			} else {

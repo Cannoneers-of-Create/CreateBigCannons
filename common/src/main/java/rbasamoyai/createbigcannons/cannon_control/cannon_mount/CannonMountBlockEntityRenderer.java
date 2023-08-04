@@ -4,8 +4,8 @@ import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Constants;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
@@ -42,7 +42,7 @@ public class CannonMountBlockEntityRenderer extends KineticBlockEntityRenderer {
 			.renderInto(ms, solidBuf);
 
 		float yaw = getMountYaw(cmbe);
-		Quaternion qyaw = Vector3f.YN.rotation(yaw);
+		Quaternionf qyaw = Vector3f.YN.rotation(yaw);
 		CachedBufferer.partial(CBCBlockPartials.ROTATING_MOUNT, state)
 			.translate(0.0d, 1.0d, 0.0d)
 			.light(light)
@@ -52,8 +52,8 @@ public class CannonMountBlockEntityRenderer extends KineticBlockEntityRenderer {
 		float pitch = cmbe.getPitchOffset(partialTicks);
 		Direction facing = cmbe.getContraptionDirection();
 		boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
-		Quaternion qpitch = Vector3f.XP.rotationDegrees(flag ? -pitch : pitch);
-		Quaternion qyaw1 = qyaw.copy();
+		Quaternionf qpitch = Vector3f.XP.rotationDegrees(flag ? -pitch : pitch);
+		Quaternionf qyaw1 = qyaw.copy();
 		qyaw1.mul(qpitch);
 
 		CachedBufferer.partialFacing(CBCBlockPartials.CANNON_CARRIAGE_AXLE, state, Direction.NORTH)

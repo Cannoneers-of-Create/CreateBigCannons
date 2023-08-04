@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.network;
 
-import com.mojang.math.Vector4f;
+import org.joml.Vector4f;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;

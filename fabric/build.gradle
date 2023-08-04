@@ -1,5 +1,5 @@
 plugins {
-	id "com.github.johnrengelman.shadow" version "7.1.2"
+	id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 architectury {
@@ -62,7 +62,7 @@ dependencies {
 	// Recipe Viewers - Create Fabric supports JEI, REI, and EMI.
 	// See root gradle.properties to choose which to use at runtime.
 	switch (fabric_recipe_viewer.toLowerCase(Locale.ROOT)) {
-		case "jei": modLocalRuntime("mezz.jei:jei-${minecraft_version}-fabric:${jei_fabric_version}"); break
+		case "jei": modLocalRuntime("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}"); break
 		case "rei": modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"); break
 		case "emi": modLocalRuntime("dev.emi:emi:${emi_version}"); break
 		case "disabled": break
@@ -70,8 +70,8 @@ dependencies {
 	}
 	// if you would like to add integration with them, uncomment them here.
 	//modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_fabric_version}")
-	modCompileOnlyApi "curse.maven:jei-238222:${jei_fabric_file}"
-	modCompileOnly("mezz.jei:jei-${minecraft_version}-common:${jei_fabric_version}")
+	modCompileOnlyApi "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+	modCompileOnly("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
 //    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}")
 //    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}")
 //    modCompileOnly("dev.emi:emi:${emi_version}")
@@ -99,18 +99,18 @@ shadowJar {
 	exclude "architectury.common.json"
 
 	configurations = [project.configurations.shadowCommon]
-	classifier "dev-shadow"
+	setArchiveClassifier "dev-shadow"
 }
 
 remapJar {
 	injectAccessWidener = true
 	inputFile = shadowJar.archiveFile
 	dependsOn shadowJar
-	classifier null
+	setArchiveClassifier null
 }
 
 jar {
-	classifier "dev"
+	setArchiveClassifier "dev"
 }
 
 sourcesJar {

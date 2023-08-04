@@ -6,8 +6,8 @@ import com.jozufozu.flywheel.backend.instancing.blockentity.BlockEntityInstance;
 import com.jozufozu.flywheel.core.Materials;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 
@@ -59,7 +59,7 @@ public class QuickfiringBreechInstance extends BlockEntityInstance<QuickfiringBr
 		boolean alongFirst = this.blockState.getValue(QuickfiringBreechBlock.AXIS);
 		if (facing.getAxis().isHorizontal() && !alongFirst) {
 			Direction rotDir = facing.getAxis() == Direction.Axis.X ? Direction.UP : Direction.EAST;
-			Quaternion q = rotDir.step().rotationDegrees(90f);
+			Quaternionf q = rotDir.step().rotationDegrees(90f);
 			this.breechblock.setRotation(q);
 		}
 		if (facing.getAxis() == Direction.Axis.X && alongFirst) {
@@ -84,7 +84,7 @@ public class QuickfiringBreechInstance extends BlockEntityInstance<QuickfiringBr
 		this.breechblock.setPosition(instancePos).nudge(normal.x(), normal.y(), normal.z());
 
 		float angle = progress * 90;
-		Quaternion qrot = this.direction.step().rotationDegrees(angle);
+		Quaternionf qrot = this.direction.step().rotationDegrees(angle);
 		this.shaft.setPosition(instancePos).setRotation(qrot);
 		this.lever.setPosition(instancePos.relative(this.direction)).setRotation(qrot);
 	}

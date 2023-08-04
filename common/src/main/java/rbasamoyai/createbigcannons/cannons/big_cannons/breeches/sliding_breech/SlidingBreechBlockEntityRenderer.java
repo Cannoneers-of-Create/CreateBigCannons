@@ -2,8 +2,8 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech;
 
 import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
 
@@ -36,7 +36,7 @@ public class SlidingBreechBlockEntityRenderer extends KineticBlockEntityRenderer
 		Direction blockRotation = facing.getCounterClockWise(axis);
 		if (blockRotation == Direction.DOWN) blockRotation = Direction.UP;
 
-		Quaternion qrot;
+		Quaternionf qrot;
 
 		boolean alongFirst = blockState.getValue(QuickfiringBreechBlock.AXIS);
 		if (facing.getAxis().isHorizontal() && !alongFirst) {

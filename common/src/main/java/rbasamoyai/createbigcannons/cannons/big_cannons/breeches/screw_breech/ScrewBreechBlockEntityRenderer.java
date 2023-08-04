@@ -2,8 +2,8 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech;
 
 import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
@@ -41,7 +41,7 @@ public class ScrewBreechBlockEntityRenderer extends KineticBlockEntityRenderer {
 		Vector3f height = normal.copy();
 		height.mul(heightOffset);
 
-		Quaternion q = normal.rotationDegrees(rotationOffset);
+		Quaternionf q = normal.rotationDegrees(rotationOffset);
 
 		ms.pushPose();
 

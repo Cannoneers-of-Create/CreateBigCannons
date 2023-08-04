@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.compat.jei.animated;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 

@@ -3,8 +3,8 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bre
 import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
@@ -39,7 +39,7 @@ public class QuickfiringBreechBlockEntityRenderer extends SafeBlockEntityRendere
 		Direction blockRotation = facing.getCounterClockWise(axis);
 		if (blockRotation == Direction.DOWN) blockRotation = Direction.UP;
 
-		Quaternion qrot;
+		Quaternionf qrot;
 
 		boolean alongFirst = blockState.getValue(QuickfiringBreechBlock.AXIS);
 		if (facing.getAxis().isHorizontal() && !alongFirst) {

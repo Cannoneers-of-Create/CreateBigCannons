@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;

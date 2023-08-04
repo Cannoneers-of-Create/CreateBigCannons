@@ -4,8 +4,8 @@ import com.jozufozu.flywheel.api.MaterialManager;
 import com.jozufozu.flywheel.api.instance.DynamicInstance;
 import com.jozufozu.flywheel.core.Materials;
 import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import com.simibubi.create.content.kinetics.base.HalfShaftInstance;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
 
@@ -45,7 +45,7 @@ public class ScrewBreechInstance extends HalfShaftInstance<ScrewBreechBlockEntit
 		Vector3f height = normal.copy();
 		height.mul(heightOffset);
 
-		Quaternion q = normal.rotationDegrees(rotationOffset);
+		Quaternionf q = normal.rotationDegrees(rotationOffset);
 
 		this.screwLock.setPosition(this.getInstancePosition()).nudge(height.x(), height.y(), height.z()).setRotation(q);
 	}

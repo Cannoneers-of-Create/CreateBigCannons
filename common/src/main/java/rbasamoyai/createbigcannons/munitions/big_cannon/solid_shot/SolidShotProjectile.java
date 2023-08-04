@@ -14,7 +14,7 @@ public class SolidShotProjectile extends AbstractBigCannonProjectile {
 	public SolidShotProjectile(EntityType<? extends SolidShotProjectile> type, Level level) {
 		super(type, level);
 	}
-	
+
 	@Override
 	public BlockState getRenderedBlockState() {
 		return CBCBlocks.SOLID_SHOT.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);
@@ -22,7 +22,7 @@ public class SolidShotProjectile extends AbstractBigCannonProjectile {
 
 	@Override
 	protected boolean canDeflect(BlockHitResult result) {
-		return super.canDeflect(result) && isDeflector(this.level.getBlockState(result.getBlockPos()));
+		return super.canDeflect(result) && isDeflector(this.level().getBlockState(result.getBlockPos()));
 	}
 
 }
