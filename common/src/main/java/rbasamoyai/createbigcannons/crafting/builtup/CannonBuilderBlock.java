@@ -54,7 +54,7 @@ public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements I
 		boolean dropBlocks = player == null || !player.isCreative();
 
 		int max = maxAllowedBuilderLength();
-		for (int i = 1; i < max; ++i) {
+		for (int i = 1; i <= max; ++i) {
 			BlockPos cPos = pos.relative(dir, i);
 			BlockState cState = level.getBlockState(cPos);
 
@@ -73,7 +73,7 @@ public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements I
 				.forEach(p -> level.destroyBlock(p, dropBlocks));
 		}
 
-		for (int i = 1; i < max; ++i) {
+		for (int i = 1; i <= max; ++i) {
 			BlockPos cPos = pos.relative(dir, -i);
 			BlockState cState = level.getBlockState(cPos);
 			if (AllBlocks.PISTON_EXTENSION_POLE.has(cState) && dir.getAxis() == cState.getValue(BlockStateProperties.FACING).getAxis()) {
