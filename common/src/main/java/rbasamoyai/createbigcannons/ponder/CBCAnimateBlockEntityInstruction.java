@@ -24,7 +24,7 @@ public class CBCAnimateBlockEntityInstruction extends AnimateBlockEntityInstruct
 		return new CBCAnimateBlockEntityInstruction(location, angle, ticks,
 			(level, t) -> castIfPresent(level, location, CannonMountBlockEntity.class)
 				.ifPresent(mount -> mount.setPitch(t)),
-			level -> castIfPresent(level, location, CannonMountBlockEntity.class).map(mount -> mount.getPitchOffset(1.0f)).orElse(0.0f));
+			level -> castIfPresent(level, location, CannonMountBlockEntity.class).map(mount -> mount.getPitchOffset(0f)).orElse(0.0f));
 	}
 
 	public static CBCAnimateBlockEntityInstruction cannonMountYaw(BlockPos location, float angle, int ticks) {
