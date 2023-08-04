@@ -4,6 +4,8 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import com.tterrag.registrate.util.entry.MenuEntry;
 
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerMenu;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerScreen;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeContainer;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeScreen;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeContainer;
@@ -23,6 +25,10 @@ public class CBCMenuTypes {
 
 	public static final MenuEntry<DelayedImpactFuzeContainer> SET_DELAYED_IMPACT_FUZE = REGISTRATE
 		.menu("set_delayed_fuze", DelayedImpactFuzeContainer::getClientMenu, () -> DelayedImpactFuzeScreen::new)
+		.register();
+
+	public static final MenuEntry<AutocannonAmmoContainerMenu> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
+		.menu("autocannon_ammo_container", AutocannonAmmoContainerMenu::getClientMenu, () -> AutocannonAmmoContainerScreen::new)
 		.register();
 
 	public static void register() {

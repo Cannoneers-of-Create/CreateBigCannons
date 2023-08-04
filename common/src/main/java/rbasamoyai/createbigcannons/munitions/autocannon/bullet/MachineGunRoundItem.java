@@ -12,6 +12,7 @@ import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
 import javax.annotation.Nullable;
 
@@ -25,7 +26,8 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 	}
 
 	@Override
-	public @Nullable AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
+	@Nullable
+	public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
 		return CBCEntityTypes.MACHINE_GUN_BULLET.create(level);
 	}
 
@@ -37,6 +39,8 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 	}
 
 	@Override public ItemStack getSpentItem(ItemStack stack) { return CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack(); }
+
+	@Override public AutocannonAmmoType getType() { return AutocannonAmmoType.MACHINE_GUN; }
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {

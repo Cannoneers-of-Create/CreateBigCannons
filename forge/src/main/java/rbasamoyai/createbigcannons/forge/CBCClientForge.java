@@ -14,6 +14,7 @@ public class CBCClientForge {
 		CBCBlockPartials.init();
 		modEventBus.addListener(CBCClientForge::onClientSetup);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
+		modEventBus.addListener(CBCClientForge::onTextureStitchAtlasPre);
 
 		forgeEventBus.addListener(CBCClientForge::getFogColor);
 		forgeEventBus.addListener(CBCClientForge::getFogDensity);
@@ -70,6 +71,10 @@ public class CBCClientForge {
 
 	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
 		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getEntity(), evt.getPartialTick());
+	}
+
+	public static void onTextureStitchAtlasPre(TextureStitchEvent.Pre evt) {
+		CBCClientCommon.onTextureAtlasStitchPre(evt::addSprite);
 	}
 
 }

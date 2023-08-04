@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.fabric.mixin;
 
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -27,7 +29,8 @@ public class ArmTileEntityMixin extends KineticBlockEntity {
 		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/kinetics/mechanicalArm/ArmInteractionPoint;insert(Lnet/minecraft/world/item/ItemStack;Lnet/fabricmc/fabric/api/transfer/v1/transaction/TransactionContext;)Lnet/minecraft/world/item/ItemStack;"),
 		locals = LocalCapture.CAPTURE_FAILHARD)
 	private void createbigcannons$depositItem(CallbackInfo ci, ArmInteractionPoint point, ItemStack stack) {
-		if (point.getType() != CBCArmInteractionPointTypes.QUICKFIRING_BREECH) return;
+		ArmInteractionPointType type = point.getType();
+		if (type != CBCArmInteractionPointTypes.CANNON_MOUNT) return;
 		stack.getOrCreateTag().putBoolean("DontSimulate", true);
 	}
 

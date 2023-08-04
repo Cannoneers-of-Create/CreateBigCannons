@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.ponder;
 
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
-import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity.Phase;
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
 import com.simibubi.create.foundation.ponder.SceneBuilder;
@@ -23,6 +23,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -472,21 +473,22 @@ public class CannonLoadingScenes {
 		BlockPos cannonMountPos = util.grid.at(4, 1, 3);
 
 		Selection largeGear = util.select.position(0, 1, 4);
-		Selection smallGear = util.select.fromTo(1, 1, 3, 2, 1, 3);
+		Selection smallGear = util.select.position(1, 1, 3);
+		BlockPos mechanicalArmPos = util.grid.at(2, 1, 3);
+		Selection mechanicalArm = util.select.position(mechanicalArmPos);
 		Selection depots = util.select.fromTo(1, 1, 6, 2, 2, 6);
 
 		scene.world.showSection(largeGear, Direction.DOWN);
 		scene.idle(5);
 		scene.world.showSection(smallGear, Direction.DOWN);
+		scene.world.showSection(mechanicalArm, Direction.DOWN);
 		scene.idle(5);
 		scene.world.showSection(depots, Direction.DOWN);
 		scene.idle(15);
 		scene.world.setKineticSpeed(largeGear, -16);
 		scene.world.setKineticSpeed(smallGear, 32);
+		scene.world.setKineticSpeed(mechanicalArm, -32);
 		scene.idle(25);
-
-		Selection mechanicalArm = util.select.position(2, 1, 3);
-		BlockPos mechanicalArmPos = util.grid.at(2, 1, 3);
 
 		scene.idle(20);
 
@@ -515,39 +517,36 @@ public class CannonLoadingScenes {
 
 		Selection cartridgeDepot = util.select.position(2, 1, 6);
 		BlockPos cartridgeDepotPos = util.grid.at(2, 1, 6);
-		ItemStack cartridge = new ItemStack(CBCBlocks.BIG_CARTRIDGE.get());
+		ItemStack cartridge = BigCartridgeBlockItem.getWithPower(4);
 		scene.world.createItemOnBeltLike(cartridgeDepotPos, Direction.SOUTH, cartridge);
 		scene.overlay.showOutline(PonderPalette.INPUT, null, cartridgeDepot, 40);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 1, 6), Direction.UP), Pointing.DOWN)
-			.withItem(CBCBlocks.BIG_CARTRIDGE.asStack()), 40);
+			.withItem(cartridge), 40);
 
 		scene.idle(60);
 
-		scene.world.setKineticSpeed(mechanicalArm, -48);
 		scene.idle(20);
-		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
-		scene.idle(24);
+		scene.world.instructArm(mechanicalArmPos, Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
+		scene.idle(30);
 		scene.world.removeItemsFromBelt(shotDepotPos);
-		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.SEARCH_OUTPUTS, shot, -1);
+		scene.world.instructArm(mechanicalArmPos, Phase.SEARCH_OUTPUTS, shot, -1);
 		scene.idle(20);
-		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.MOVE_TO_OUTPUT, shot, 0);
-		scene.idle(24);
+		scene.world.instructArm(mechanicalArmPos, Phase.MOVE_TO_OUTPUT, shot, 0);
+		scene.idle(30);
 		scene.world.createItemOnBeltLike(cannonMountPos, Direction.UP, shot);
-		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
-		scene.idle(44);
+		scene.world.instructArm(mechanicalArmPos, Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
+		scene.idle(70);
 
-		scene.world.setKineticSpeed(mechanicalArm, -48);
-		scene.idle(20);
-		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
-		scene.idle(24);
+		scene.world.instructArm(mechanicalArmPos, Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 1);
+		scene.idle(30);
 		scene.world.removeItemsFromBelt(cartridgeDepotPos);
-		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.SEARCH_OUTPUTS, cartridge, -1);
+		scene.world.instructArm(mechanicalArmPos, Phase.SEARCH_OUTPUTS, cartridge, -1);
 		scene.idle(20);
-		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.MOVE_TO_OUTPUT, cartridge, 0);
-		scene.idle(24);
+		scene.world.instructArm(mechanicalArmPos, Phase.MOVE_TO_OUTPUT, cartridge, 0);
+		scene.idle(30);
 		scene.world.createItemOnBeltLike(cannonMountPos, Direction.UP, cartridge);
-		scene.world.instructArm(mechanicalArmPos, ArmBlockEntity.Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
-		scene.idle(44);
+		scene.world.instructArm(mechanicalArmPos, Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
+		scene.idle(50);
 
 		scene.markAsFinished();
 	}
@@ -567,6 +566,323 @@ public class CannonLoadingScenes {
 			compoundTag.putInt("OpenDirection", 0);
 			compoundTag.putInt("OpenProgress", close ? 0 : 5);
 		});
-
 	}
+
+	public static void usingAutocannonAmmoContainer(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("munitions/using_autocannon_ammo_container", "Using the Autocannon Ammo Container");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		Selection autocannon = util.select.fromTo(2, 1, 1, 2, 3, 4);
+		Selection lever = util.select.position(2, 1, 1);
+		BlockPos breechPos = util.grid.at(2, 3, 1);
+		Selection breechSel = util.select.position(breechPos);
+
+		ItemStack filledContainer = CBCItems.AUTOCANNON_AMMO_CONTAINER.asStack();
+		filledContainer.getOrCreateTag().put("Ammo", CBCItems.MACHINE_GUN_ROUND.asStack(64).save(new CompoundTag()));
+		ItemStack emptyContainer = CBCItems.AUTOCANNON_AMMO_CONTAINER.asStack();
+
+		scene.world.showSection(autocannon, Direction.DOWN);
+		scene.idle(30);
+
+		scene.overlay.showText(60)
+			.text("Autocannon Ammo Containers are a convenient way to store autocannon ammo and to load autocannons.");
+		scene.idle(75);
+
+		scene.overlay.showText(80)
+			.text("Right-click a container on an Autocannon Breech to load it.");
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos, Direction.UP), Pointing.DOWN)
+			.rightClick().withItem(filledContainer), 30);
+		scene.idle(20);
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", filledContainer.save(new CompoundTag()));
+		});
+		scene.idle(55);
+
+		scene.overlay.showText(80)
+			.text("To remove a container, right-click the breech with an empty hand.");
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos, Direction.UP), Pointing.DOWN)
+			.rightClick(), 30);
+		scene.idle(20);
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.remove("Magazine");
+		});
+		scene.idle(55);
+
+		scene.addKeyframe();
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", emptyContainer.save(new CompoundTag()));
+		});
+		scene.idle(15);
+		scene.overlay.showText(80)
+			.text("You can also swap out the container by right-clicking the breech with another container.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos, Direction.UP), Pointing.DOWN)
+			.rightClick().withItem(filledContainer), 30);
+		scene.idle(20);
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", filledContainer.save(new CompoundTag()));
+		});
+		scene.idle(55);
+
+		scene.addKeyframe();
+		scene.world.toggleRedstonePower(lever);
+		scene.effects.createRedstoneParticles(util.grid.at(2, 1, 1), 0xFF0000, 10);
+		scene.idle(15);
+		scene.overlay.showText(60)
+			.text("You can also load an assembled autocannon with a container.");
+		scene.idle(75);
+		scene.overlay.showText(190)
+			.text("However, you can only remove a present container on an assembled autocannon if it is empty, or by swapping or shift right-clicking it.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(15);
+
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", emptyContainer.save(new CompoundTag()));
+		});
+		scene.idle(15);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos, Direction.UP), Pointing.DOWN)
+			.rightClick(), 30);
+		scene.idle(45);
+
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", filledContainer.save(new CompoundTag()));
+		});
+		scene.idle(15);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos, Direction.UP), Pointing.DOWN)
+			.rightClick().withItem(filledContainer), 30);
+		scene.idle(45);
+
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", filledContainer.save(new CompoundTag()));
+		});
+		scene.idle(15);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(breechPos, Direction.UP), Pointing.DOWN)
+			.rightClick().whileSneaking(), 30);
+		scene.idle(55);
+
+		scene.markAsFinished();
+	}
+
+	public static void fillingAutocannonAmmoContainer(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("munitions/filling_autocannon_ammo_container", "Filling the Autocannon Ammo Container");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		BlockPos depot = util.grid.at(2, 1, 2);
+		scene.world.showSection(util.select.position(depot), Direction.UP);
+		scene.idle(30);
+
+		scene.overlay.showText(60)
+			.text("Autocannon Ammo Containers can be filled in-menu.");
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(depot, Direction.UP), Pointing.DOWN)
+			.rightClick(), 30);
+		scene.idle(25);
+		scene.overlay.showText(60)
+			.text("You can also configure tracer spacing in the menu.");
+		scene.idle(75);
+		scene.overlay.showText(60)
+			.text("Different ammo types have different capacities.");
+		scene.idle(75);
+
+		Selection largePowerCog = util.select.position(5, 0, 3);
+		Selection smallCog = util.select.position(5, 1, 2);
+		Selection oppositeSmallCog = util.select.position(5, 2, 2);
+		Selection deployerKinetics = util.select.fromTo(5, 3, 2, 3, 3, 2);
+		BlockPos deployer = util.grid.at(2, 3, 2);
+		Selection deployerSel = util.select.position(deployer);
+		Selection deployerGroup = smallCog.add(deployerKinetics).add(deployerSel);
+
+		scene.world.setKineticSpeed(largePowerCog, 16);
+		scene.world.setKineticSpeed(deployerGroup, -32);
+		scene.world.setKineticSpeed(oppositeSmallCog, 32);
+
+		ItemStack ammo = CBCItems.AP_AUTOCANNON_ROUND.get().getCreativeTabCartridgeItem();
+
+		scene.world.modifyBlockEntityNBT(deployerSel, DeployerBlockEntity.class, tag -> {
+			tag.put("HeldItem", ammo.save(new CompoundTag()));
+		});
+
+		scene.world.showSection(largePowerCog, Direction.WEST);
+		scene.idle(10);
+		scene.world.showSection(smallCog, Direction.WEST);
+		scene.idle(10);
+		scene.world.showSection(oppositeSmallCog, Direction.WEST);
+		scene.idle(10);
+		scene.world.showSection(deployerKinetics, Direction.EAST);
+		scene.idle(10);
+		scene.world.showSection(deployerSel, Direction.EAST);
+
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("The container can also be filled with deployers.");
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(deployer, Direction.WEST), Pointing.LEFT)
+			.withItem(ammo), 30);
+
+		scene.world.moveDeployer(deployer, 1, 25);
+		scene.idle(30);
+		scene.world.moveDeployer(deployer, -1, 25);
+		scene.idle(30);
+
+		scene.world.moveDeployer(deployer, 1, 25);
+		scene.idle(10);
+		scene.overlay.showText(60)
+			.text("Ammo with tracers will go in the tracer slot, otherwise it will go in the main slot.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(15);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(deployer.below(), Direction.WEST), Pointing.LEFT)
+			.withItem(CBCItems.TRACER_TIP.asStack()), 30);
+		scene.idle(5);
+		scene.world.moveDeployer(deployer, -1, 25);
+		scene.idle(30);
+
+		scene.world.moveDeployer(deployer, 1, 25);
+		scene.idle(30);
+		scene.world.moveDeployer(deployer, -1, 25);
+		scene.idle(30);
+
+		scene.markAsFinished();
+
+		for (int i = 0; i < 4; ++i) {
+			scene.world.moveDeployer(deployer, 1, 25);
+			scene.idle(30);
+			scene.world.moveDeployer(deployer, -1, 25);
+			scene.idle(30);
+		}
+	}
+
+	public static void automatingAutocannonAmmoContainer(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("munitions/automating_autocannon_ammo_container", "Automating loading the Autocannon Ammo Container");
+		scene.configureBasePlate(0, 0, 7);
+		scene.showBasePlate();
+
+		Selection autocannon = util.select.fromTo(3, 1, 3, 3, 3, 6);
+		BlockPos breech = util.grid.at(3, 3, 3);
+		Selection breechSel = util.select.position(breech);
+		scene.world.toggleRedstonePower(util.select.position(3, 1, 3));
+		scene.world.showSection(autocannon, Direction.DOWN);
+		scene.idle(30);
+
+		Selection powerLargeCog = util.select.position(7, 0, 3);
+		Selection oppositeLargeCog = util.select.position(6, 1, 3);
+		Selection smallCog = util.select.position(5, 1, 2);
+		BlockPos arm = util.grid.at(4, 1, 2);
+		Selection armSel = util.select.position(arm);
+		Selection depots = util.select.fromTo(6, 1, 0, 7, 2, 1);
+		BlockPos takeDepot = util.grid.at(6, 1, 0);
+		BlockPos takeFunnel = util.grid.at(6, 2, 0);
+		BlockPos depositFunnel = util.grid.at(6, 2, 1);
+
+		ItemStack emptyContainer = CBCItems.AUTOCANNON_AMMO_CONTAINER.asStack();
+		ItemStack filledContainer = emptyContainer.copy();
+		filledContainer.getOrCreateTag().put("Ammo", CBCItems.MACHINE_GUN_ROUND.asStack(64).save(new CompoundTag()));
+
+		scene.world.showSection(powerLargeCog, Direction.WEST);
+		scene.world.setKineticSpeed(powerLargeCog, 16);
+		scene.idle(10);
+		scene.world.setKineticSpeed(oppositeLargeCog, -16);
+		scene.world.showSection(oppositeLargeCog, Direction.DOWN);
+		scene.idle(10);
+		scene.world.setKineticSpeed(smallCog, 32);
+		scene.world.showSection(smallCog, Direction.DOWN);
+		scene.idle(10);
+		scene.world.setKineticSpeed(armSel, -32);
+		scene.world.showSection(armSel, Direction.DOWN);
+		scene.idle(10);
+		scene.world.createItemOnBeltLike(takeDepot, Direction.EAST, filledContainer);
+		scene.world.showSection(depots, Direction.WEST);
+		scene.idle(30);
+
+		scene.world.instructArm(arm, Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
+		scene.idle(35);
+		scene.world.removeItemsFromBelt(takeDepot);
+		scene.world.instructArm(arm, Phase.SEARCH_OUTPUTS, filledContainer, -1);
+		scene.idle(5);
+		scene.world.flapFunnel(takeFunnel, true);
+		scene.world.createItemOnBeltLike(takeDepot, Direction.EAST, filledContainer);
+		scene.idle(30);
+		scene.world.instructArm(arm, Phase.MOVE_TO_OUTPUT, filledContainer, 0);
+		scene.overlay.showText(120)
+			.text("Mechanical Arms can load assembled autocannons with Autocannon Ammo Containers.");
+		scene.idle(35);
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", filledContainer.save(new CompoundTag()));
+		});
+		scene.world.instructArm(arm, Phase.SEARCH_OUTPUTS, emptyContainer, -1);
+		scene.idle(35);
+		scene.world.instructArm(arm, Phase.MOVE_TO_OUTPUT, emptyContainer, 1);
+		scene.idle(35);
+		scene.world.instructArm(arm, Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
+		scene.idle(35);
+
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", emptyContainer.save(new CompoundTag()));
+		});
+		scene.world.instructArm(arm, Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
+		scene.idle(35);
+		scene.world.removeItemsFromBelt(takeDepot);
+		scene.world.instructArm(arm, Phase.SEARCH_OUTPUTS, filledContainer, -1);
+		scene.idle(5);
+		scene.world.flapFunnel(takeFunnel, true);
+		scene.world.createItemOnBeltLike(takeDepot, Direction.EAST, filledContainer);
+		scene.idle(30);
+		scene.world.instructArm(arm, Phase.MOVE_TO_OUTPUT, filledContainer, 0);
+		scene.overlay.showSelectionWithText(util.select.position(3, 1, 4), 80)
+			.text("Set a Cannon Mount with an autocannon as one of the Mechanical Arm's deposits.")
+			.colored(PonderPalette.OUTPUT);
+		scene.idle(35);
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", filledContainer.save(new CompoundTag()));
+		});
+		scene.world.instructArm(arm, Phase.SEARCH_OUTPUTS, emptyContainer, -1);
+		scene.idle(35);
+		scene.world.instructArm(arm, Phase.MOVE_TO_OUTPUT, emptyContainer, 1);
+		scene.idle(35);
+		scene.world.instructArm(arm, Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
+		scene.idle(35);
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", emptyContainer.save(new CompoundTag()));
+		});
+
+		scene.world.instructArm(arm, Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
+		scene.idle(35);
+		scene.world.removeItemsFromBelt(takeDepot);
+		scene.world.instructArm(arm, Phase.SEARCH_OUTPUTS, filledContainer, -1);
+		scene.idle(5);
+		scene.world.flapFunnel(takeFunnel, true);
+		scene.world.createItemOnBeltLike(takeDepot, Direction.EAST, filledContainer);
+		scene.idle(30);
+		scene.world.instructArm(arm, Phase.MOVE_TO_OUTPUT, filledContainer, 0);
+
+		Vec3 filter = util.vector.blockSurface(depositFunnel, Direction.WEST);
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.pointAt(filter)
+			.text("You can dispose of empty containers by setting a deposit filter slot to an empty container.");
+		scene.idle(5);
+		filter = filter.add(0, -5 / 16f, 0);
+		scene.overlay.showControls(new InputWindowElement(filter, Pointing.LEFT).rightClick().withItem(emptyContainer), 30);
+		scene.idle(30);
+
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", filledContainer.save(new CompoundTag()));
+		});
+		scene.world.instructArm(arm, Phase.SEARCH_OUTPUTS, emptyContainer, -1);
+		scene.idle(35);
+		scene.world.instructArm(arm, Phase.MOVE_TO_OUTPUT, emptyContainer, 1);
+		scene.idle(35);
+		scene.world.instructArm(arm, Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
+		scene.idle(30);
+		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
+			tag.put("Magazine", emptyContainer.save(new CompoundTag()));
+		});
+
+		scene.markAsFinished();
+	}
+
 }

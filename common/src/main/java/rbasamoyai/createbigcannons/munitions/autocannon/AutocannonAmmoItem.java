@@ -14,4 +14,6 @@ public interface AutocannonAmmoItem {
 
 	ItemStack getSpentItem(ItemStack stack);
 
+	AutocannonAmmoType getType();
+
 }

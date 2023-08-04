@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
+import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.actors.seat.SeatBlock;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
@@ -24,19 +25,27 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBaseBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCSoundEvents;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
+
+import static rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock.writeAndSyncSingleBlockData;
 
 public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<AbstractAutocannonBreechBlockEntity>, IWrenchable {
 
@@ -166,7 +175,76 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 				}
 				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
+
+			ItemStack container = breech.getMagazine();
+			boolean changed = false;
+			boolean tryAdd = false;
+			if (!container.isEmpty()) {
+				if (!level.isClientSide) {
+					tryAdd = true;
+					breech.setMagazine(ItemStack.EMPTY);
+				}
+				changed = true;
+			}
+			if (stack.getItem() instanceof AutocannonAmmoContainerItem) {
+				if (!level.isClientSide) {
+					breech.setMagazine(stack);
+					player.setItemInHand(hand, ItemStack.EMPTY);
+					CBCSoundEvents.PLACE_AUTOCANNON_AMMO_CONTAINER.playOnServer(level, pos);
+				}
+				changed = true;
+			}
+
+			if (tryAdd && !player.addItem(container)) {
+				Vec3 spawnLoc = Vec3.atCenterOf(pos);
+				ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, container);
+				level.addFreshEntity(dropEntity);
+			}
+			if (changed) {
+				breech.notifyUpdate();
+				return InteractionResult.sidedSuccess(level.isClientSide);
+			}
 		}
 		return super.use(state, level, pos, player, hand, result);
 	}
+
+	@Override
+	public <T extends BlockEntity & IAutocannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
+			Direction side, InteractionHand interactionHand, Level level, MountedAutocannonContraption cannon, T be,
+			StructureBlockInfo info, AbstractContraptionEntity entity) {
+		if (!(be instanceof AbstractAutocannonBreechBlockEntity breech)) return false;
+
+		ItemStack stack = player.getItemInHand(interactionHand);
+		ItemStack container = breech.getMagazine();
+		Vec3 globalPos = entity.toGlobalVector(Vec3.atCenterOf(localPos), 1);
+
+		boolean insertingContainer = stack.getItem() instanceof AutocannonAmmoContainerItem;
+		boolean canRemove = insertingContainer || stack.isEmpty() && (AutocannonAmmoContainerItem.getTotalAmmoCount(container) == 0 || player.isShiftKeyDown());
+
+		boolean changed = false;
+		boolean tryAdd = false;
+		if (!container.isEmpty() && canRemove) {
+			if (!level.isClientSide) {
+				tryAdd = true;
+				breech.setMagazine(ItemStack.EMPTY);
+			}
+			changed = true;
+		}
+		if (breech.getMagazine().isEmpty() && insertingContainer) {
+			if (!level.isClientSide) {
+				breech.setMagazine(stack);
+				player.setItemInHand(interactionHand, ItemStack.EMPTY);
+				CBCSoundEvents.PLACE_AUTOCANNON_AMMO_CONTAINER.playOnServer(level, new BlockPos(globalPos));
+			}
+			changed = true;
+		}
+
+		if (tryAdd && !player.addItem(container)) {
+			ItemEntity dropEntity = new ItemEntity(level, globalPos.x, globalPos.y, globalPos.z, container);
+			level.addFreshEntity(dropEntity);
+		}
+		if (changed && !level.isClientSide) writeAndSyncSingleBlockData(be, info, entity, cannon);
+		return changed;
+	}
+
 }

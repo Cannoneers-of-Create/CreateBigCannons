@@ -4,8 +4,9 @@
     {
       "model": "createbigcannons:block/big_cartridge_filled",
       "predicate": {
-        "createbigcannons:filled": 1.0
-      }
+        "createbigcannons:big_cartridge_filled": 1.0
+      },
+      "model": "createbigcannons:block/big_cartridge_filled"
     }
   ]
 }

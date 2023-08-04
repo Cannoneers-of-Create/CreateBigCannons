@@ -21,20 +21,6 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 		super(properties);
 	}
 
-	public static ItemStack getProjectileStack(ItemStack stack) {
-		return hasProjectile(stack) ? ItemStack.of(stack.getOrCreateTag().getCompound("Projectile")) : ItemStack.EMPTY;
-	}
-
-	public static boolean hasProjectile(ItemStack stack) {
-		return stack.getOrCreateTag().contains("Projectile", Tag.TAG_COMPOUND);
-	}
-
-	public static void writeProjectile(ItemStack round, ItemStack cartridge) {
-		if (round.getItem() instanceof AutocannonRoundItem && cartridge.getItem() instanceof AutocannonCartridgeItem) {
-			cartridge.getOrCreateTag().put("Projectile", round.save(new CompoundTag()));
-		}
-	}
-
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
@@ -53,16 +39,29 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 		}
 	}
 
-	@Override
-	public ItemStack getSpentItem(ItemStack stack) {
-		return CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack();
-	}
+	@Override public ItemStack getSpentItem(ItemStack stack) { return CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack(); }
 
+	@Override public AutocannonAmmoType getType() { return AutocannonAmmoType.AUTOCANNON; }
+
+	@Override
 	@Nullable
 	public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
 		ItemStack projectileStack = getProjectileStack(stack);
-		return projectileStack.getItem() instanceof AutocannonRoundItem projectileItem
-			? projectileItem.getAutocannonProjectile(projectileStack, level) : null;
+		return projectileStack.getItem() instanceof AutocannonRoundItem projectileItem ? projectileItem.getAutocannonProjectile(projectileStack, level) : null;
+	}
+
+	public static ItemStack getProjectileStack(ItemStack stack) {
+		return hasProjectile(stack) ? ItemStack.of(stack.getOrCreateTag().getCompound("Projectile")) : ItemStack.EMPTY;
+	}
+
+	public static boolean hasProjectile(ItemStack stack) {
+		return stack.getOrCreateTag().contains("Projectile", Tag.TAG_COMPOUND);
+	}
+
+	public static void writeProjectile(ItemStack round, ItemStack cartridge) {
+		if (round.getItem() instanceof AutocannonRoundItem && cartridge.getItem() instanceof AutocannonCartridgeItem) {
+			cartridge.getOrCreateTag().put("Projectile", round.save(new CompoundTag()));
+		}
 	}
 
 	@Override
@@ -72,13 +71,9 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 
 	@Override
 	public void setTracer(ItemStack stack, boolean value) {
-		if (!hasProjectile(stack)) {
-			return;
-		}
+		if (!hasProjectile(stack)) return;
 		CompoundTag tag = stack.getOrCreateTag().getCompound("Projectile");
-		if (!tag.contains("tag", Tag.TAG_COMPOUND)) {
-			tag.put("tag", new CompoundTag());
-		}
+		if (!tag.contains("tag", Tag.TAG_COMPOUND)) tag.put("tag", new CompoundTag());
 		tag.getCompound("tag").putBoolean("Tracer", true);
 	}
 
