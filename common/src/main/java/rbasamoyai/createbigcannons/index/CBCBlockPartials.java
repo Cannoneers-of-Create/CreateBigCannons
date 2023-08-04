@@ -77,7 +77,10 @@ public class CBCBlockPartials {
 		AUTOCANNON_SEAT_BROWN = autocannonSeatPartial(DyeColor.BROWN, "autocannon/seat_brown"),
 		AUTOCANNON_SEAT_GREEN = autocannonSeatPartial(DyeColor.GREEN, "autocannon/seat_green"),
 		AUTOCANNON_SEAT_RED = autocannonSeatPartial(DyeColor.RED, "autocannon/seat_red"),
-		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_black");
+		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_black"),
+
+		AUTOCANNON_AMMO_CONTAINER_EMPTY = new PartialModel(CreateBigCannons.resource("item/autocannon_ammo_container_empty")),
+		AUTOCANNON_AMMO_CONTAINER_FILLED = new PartialModel(CreateBigCannons.resource("item/autocannon_ammo_container_filled"));
 
 
 	private static PartialModel block(String path) {

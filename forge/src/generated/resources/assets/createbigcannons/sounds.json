@@ -32,5 +32,13 @@
         "name": "minecraft:entity.generic.explode"
       }
     ]
+  },
+  "place_autocannon_ammo_container": {
+    "sounds": [
+      {
+        "name": "minecraft:item.armor.equip_iron",
+        "type": "event"
+      }
+    ]
   }
 }

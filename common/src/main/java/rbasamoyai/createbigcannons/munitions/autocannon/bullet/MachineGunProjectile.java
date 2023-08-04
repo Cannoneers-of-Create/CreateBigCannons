@@ -23,6 +23,12 @@ public class MachineGunProjectile extends AbstractAutocannonProjectile {
 		return new MachineGunDamageSource(CreateBigCannons.MOD_ID + ".machine_gun_fire", this, null);
 	}
 
+	@Override
+	protected float getKnockback(Entity target) {
+		float length = this.getDeltaMovement().lengthSqr() > 1e-4d ? 1 : (float) this.getDeltaMovement().lengthSqr();
+		return 0.1f / length;
+	}
+
 	public static class MachineGunDamageSource extends CannonDamageSource {
 
 		public MachineGunDamageSource(String id, Entity entity, @Nullable Entity owner) {

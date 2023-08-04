@@ -69,7 +69,7 @@ public class ModGroup {
 				CBCBlocks.POWDER_CHARGE.asStack(),
 				BigCartridgeBlockItem.getWithPower(0),
 				BigCartridgeBlockItem.getWithPower(4),
-				CBCItems.BIG_CANNON_SHEET.asStack(),
+				CBCItems.BIG_CARTRIDGE_SHEET.asStack(),
 				CBCItems.CONGEALED_NITRO.asStack(),
 				CBCItems.HARDENED_NITRO.asStack(),
 				CBCItems.NITROPOWDER.asStack(),
@@ -193,6 +193,7 @@ public class ModGroup {
 				CBCItems.FLAK_AUTOCANNON_ROUND.asStack(),
 				CBCItems.MACHINE_GUN_ROUND.asStack(),
 				CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack(),
+				CBCItems.AUTOCANNON_AMMO_CONTAINER.asStack(),
 
 				CBCItems.RECOIL_SPRING.asStack(),
 

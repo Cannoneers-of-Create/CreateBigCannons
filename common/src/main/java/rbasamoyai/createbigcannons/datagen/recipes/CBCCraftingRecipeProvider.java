@@ -83,19 +83,28 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
 			.save(cons);
 
-		ShapedRecipeBuilder.shaped(CBCItems.BIG_CANNON_SHEET.get(), 2)
+		ShapedRecipeBuilder.shaped(CBCItems.BIG_CARTRIDGE_SHEET.get(), 2)
 			.define('S', CBCTags.ItemCBC.SHEET_BRASS)
 			.pattern("SS")
 			.pattern("SS")
 			.unlockedBy("has_brass_sheet", has(CBCTags.ItemCBC.SHEET_BRASS))
 			.save(cons);
 
-		ShapedRecipeBuilder.shaped(CBCItems.BIG_CANNON_SHEET.get())
+		ShapedRecipeBuilder.shaped(CBCItems.BIG_CARTRIDGE_SHEET.get())
 			.define('S', CBCTags.ItemCBC.INEXPENSIVE_BIG_CARTRIDGE_SHEET)
 			.pattern("SS")
 			.pattern("SS")
 			.unlockedBy("has_inexpensive_big_cartridge_sheet", has(CBCTags.ItemCBC.INEXPENSIVE_BIG_CARTRIDGE_SHEET))
 			.save(cons, "big_cannon_sheet_inexpensive");
+
+		ShapedRecipeBuilder.shaped(CBCItems.AUTOCANNON_AMMO_CONTAINER.get())
+			.define('I', CBCTags.ItemCBC.SHEET_IRON).define('B', CBCTags.ItemCBC.INGOT_BRASS)
+			.pattern(" B ")
+			.pattern("I I")
+			.pattern("III")
+			.unlockedBy(getHasName(CBCItems.AUTOCANNON_CARTRIDGE.get()), has(CBCItems.AUTOCANNON_CARTRIDGE.get()))
+			.unlockedBy(getHasName(CBCItems.MACHINE_GUN_ROUND.get()), has(CBCItems.MACHINE_GUN_ROUND.get()))
+			.save(cons);
 
 		ShapelessRecipeBuilder.shapeless(CBCBlocks.CASTING_SAND.get())
 			.requires(Items.SAND, 2)
@@ -393,6 +402,8 @@ public class CBCCraftingRecipeProvider {
 		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING_DEPLOYER.getSerializer()).save(cons, "munition_fuzing_deployer");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY_DEPLOYER.getSerializer()).save(cons, "cartridge_assembly_deployer");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.TRACER_APPLICATION.getSerializer()).save(cons, "tracer_application");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.TRACER_APPLICATION_DEPLOYER.getSerializer()).save(cons, "tracer_application_deployer");
+		SpecialRecipeBuilder.special(CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getSerializer()).save(cons, "autocannon_ammo_container_filling_deployer");
 
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(CBCItems.CONGEALED_NITRO.get()), CBCItems.HARDENED_NITRO.get(), 5, 200)
 			.unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))

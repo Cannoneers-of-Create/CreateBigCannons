@@ -30,6 +30,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("molten_metal"), "player", "%s burned in molten metal");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %ss %s ticks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.distance", "Detonation Distance: %s blocks");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.autocannon_ammo_container.tracer_spacing", "Tracer Spacing: Every %s round(s)");
 
 		tooltip(CBCBlocks.SOLID_SHOT)
 		.header("SOLID SHOT")

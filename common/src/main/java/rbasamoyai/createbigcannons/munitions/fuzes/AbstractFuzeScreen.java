@@ -8,7 +8,7 @@ import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
-import rbasamoyai.createbigcannons.network.ServerboundSetFuzePacket;
+import rbasamoyai.createbigcannons.network.ServerboundSetContainerValuePacket;
 
 public abstract class AbstractFuzeScreen<T extends AbstractFuzeContainer> extends AbstractSimiContainerScreen<T> {
 
@@ -65,7 +65,7 @@ public abstract class AbstractFuzeScreen<T extends AbstractFuzeContainer> extend
 	}
 
 	private void updateServer() {
-		NetworkPlatform.sendToServer(new ServerboundSetFuzePacket(this.getUpdateState()));
+		NetworkPlatform.sendToServer(new ServerboundSetContainerValuePacket(this.getUpdateState()));
 	}
 
 	public abstract int getUpdateState();

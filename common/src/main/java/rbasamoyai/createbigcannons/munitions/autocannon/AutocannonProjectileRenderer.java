@@ -25,8 +25,9 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 
     @Override
     public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
-		Vec3 secondPrevious = entity.getSecondPreviousPos();
-		Vec3 dir = entity.position().subtract(secondPrevious);
+		Vec3 previous = entity.getPreviousPos();
+		Vec3 current = entity.position();
+		Vec3 dir = previous == null ? Vec3.ZERO : current.subtract(previous);
 		boolean flag = dir.lengthSqr() < 1e-4d;
 
 		float yaw = flag ? entity.getViewYRot(partialTicks) : (float) Math.atan2(dir.x, dir.z) * Mth.RAD_TO_DEG;
@@ -160,6 +161,10 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
                 .normal(normal, 0, 1, 0)
                 .endVertex();
     }
+
+	private static Vec3 lerpVec(float t, Vec3 start, Vec3 end) {
+		return start.add(end.subtract(start).scale(t));
+	}
 
     @Override public ResourceLocation getTextureLocation(T entity) { return null; }
 

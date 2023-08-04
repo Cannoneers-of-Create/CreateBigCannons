@@ -12,11 +12,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
+
+import java.util.function.Consumer;
 
 public class CBCClientFabric implements ClientModInitializer {
 	@Override
@@ -34,6 +38,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		FOVModifierCallback.EVENT.register(CBCClientFabric::getFov);
 		ScreenEvents.BEFORE_INIT.register(CBCClientFabric::onOpenScreen);
 		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
+		TextureStitchCallback.PRE.register(CBCClientFabric::onTextureAtlasStitchPre);
 	}
 
 	public static void onParticleRegistry() {
@@ -94,6 +99,10 @@ public class CBCClientFabric implements ClientModInitializer {
 									  PoseStack matrixStack, MultiBufferSource buffers, int light) {
 		CBCClientCommon.onPlayerRenderPre(matrixStack, entity, partialRenderTick);
 		return false;
+	}
+
+	public static void onTextureAtlasStitchPre(TextureAtlas atlas, Consumer<ResourceLocation> cons) {
+		CBCClientCommon.onTextureAtlasStitchPre(cons);
 	}
 
 }
