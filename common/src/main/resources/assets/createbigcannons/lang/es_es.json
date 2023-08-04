@@ -349,7 +349,7 @@
   "death.attack.createbigcannons.big_cannon_projectile": "%s fue asesinado directamente por un proyectil de gran calibre",
   "death.attack.createbigcannons.cannon_projectile": "%s fue alcanzado por fuego de artillería",
   "death.attack.createbigcannons.grapeshot": "%s fue pulverizado por perdigones",
-  "death.attack.createbigcannons.machine_gun_fire": "%s Fue perforado por fuego de ametralladora",
+  "death.attack.createbigcannons.machine_gun_fire": "%s fue perforado por fuego de ametralladora",
   "death.attack.createbigcannons.machine_gun_fire.in_water": "%s se llenó de agujeros por el fuego de las ametralladoras y el mar a su alrededor se volvió rosa",
   "death.attack.createbigcannons.molten_metal": "%s se quemo en metal fundido",
   "death.attack.createbigcannons.molten_metal.player": "%s se quemo en metal fundido",
