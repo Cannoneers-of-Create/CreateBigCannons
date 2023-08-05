@@ -1,5 +1,9 @@
 package rbasamoyai.createbigcannons.munitions;
 
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
@@ -13,15 +17,18 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.*;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.PreciseProjectile;
@@ -31,13 +38,6 @@ import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.function.BiFunction;
 
 public abstract class AbstractCannonProjectile extends Projectile implements PreciseProjectile {
 
@@ -58,7 +58,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		if (this.level.isClientSide || this.level.hasChunkAt(this.blockPosition())) {
 			super.tick();
 
-			if (!this.isInGround()) this.clipAndDamage(this.position(), this.position().add(this.getDeltaMovement()));
+			if (!this.isInGround()) this.clipAndDamage();
 
 			this.onTickRotate();
 
@@ -101,28 +101,86 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 	protected void onTickRotate() {}
 
-	protected void clipAndDamage(Vec3 start, Vec3 end) {
-		GriefState flag = CBCConfigs.SERVER.munitions.damageRestriction.get();
+	protected void clipAndDamage() {
+		ProjectileContext projCtx = new ProjectileContext(this, CBCConfigs.SERVER.munitions.damageRestriction.get());
 
+		Vec3 pos = this.position();
+		Vec3 start = pos;
 		double reach = Math.max(this.getBbWidth(), this.getBbHeight()) * 0.5;
 
-		AABB generalMovementRegion = this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1);
-		List<Entity> hitEntities = new ArrayList<>();
-		for (Entity target : this.level.getEntities(this, generalMovementRegion, this::canHitEntity)) {
-			AABB targetBox = target.getBoundingBox().inflate(reach);
-			if (targetBox.clip(start, end).isPresent()) hitEntities.add(target);
+		double t = 1;
+		int MAX_ITER = 100;
+		for (int p = 0; p < MAX_ITER; ++p) {
+			boolean breakEarly = false;
+			Vec3 vel = this.getDeltaMovement().scale(t);
+			if (vel.lengthSqr() < 1e-4d) break;
+
+			Vec3 end = start.add(vel);
+			BlockHitResult bResult = this.level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+			if (bResult.getType() != HitResult.Type.MISS) end = bResult.getLocation();
+
+			AABB currentMovementRegion = this.getBoundingBox().expandTowards(vel).inflate(1).move(start.subtract(pos));
+
+			Vec3 finalStart = start;
+			Vec3 finalEnd = end;
+			for (Entity target : this.level.getEntities(this, currentMovementRegion, e ->
+				!projCtx.hasHitEntity(e) && this.canHitEntity(e) && e.getBoundingBox().inflate(reach).clip(finalStart, finalEnd).isPresent())) {
+				this.onHitEntity(target);
+			}
+
+			Vec3 hitLoc = end;
+			BlockPos bpos = bResult.getBlockPos().immutable();
+			BlockState state = this.level.getChunkAt(bpos).getBlockState(bpos);
+
+			Vec3 curVel = this.getDeltaMovement();
+			double mag = curVel.length();
+			boolean flag1 = projCtx.getLastState().isAir();
+			if (!flag1 || !this.tryBounceOffBlock(state, bResult)) {
+				projCtx.setLastState(state);
+
+				double startMass = this.getProjectileMass();
+				double curPom = startMass * mag;
+				double hardness = BlockHardnessHandler.getHardness(state);
+
+				if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, bpos) == -1 || curPom < hardness) {
+					this.setInGround(true);
+					this.setDeltaMovement(Vec3.ZERO);
+					this.onImpact(bResult, true);
+					breakEarly = true;
+				} else {
+					state.onProjectileHit(this.level, state, bResult, this);
+					this.onDestroyBlock(state, bResult);
+					if (this.isRemoved()) {
+						breakEarly = true;
+					} else {
+						this.onImpact(bResult, false);
+						if (this.isRemoved()) {
+							breakEarly = true;
+						} else {
+							double f = this.overPenetrationPower(hardness, curPom);
+							if (flag1 && f > 0) {
+								projCtx.queueExplosion(bpos, (float) f);
+							}
+						}
+					}
+				}
+			}
+			Vec3 disp = hitLoc.subtract(start);
+			start = hitLoc;
+			if (this.onClip(projCtx, start)) break;
+			if (breakEarly) break;
+			t -= disp.length() / vel.length();
+			if (t < 0) break;
 		}
+		this.setPos(start);
 
-		ProjectileContext projCtx = new ProjectileContext(this, start, end, hitEntities, flag);
+		for (Entity e : projCtx.hitEntities()) this.onHitEntity(e);
 
-		BiFunction<ProjectileContext, BlockPos, Boolean> onClip = this::onClip;
-		BlockGetter.traverseBlocks(start, end, projCtx, onClip.andThen(b -> b ? 1 : null), fPos -> null);
-
-		if (!this.level.isClientSide && flag != GriefState.NO_DAMAGE) {
+		if (!this.level.isClientSide && projCtx.griefState() != GriefState.NO_DAMAGE) {
 			Vec3 oldVel = this.getDeltaMovement();
 			for (Map.Entry<BlockPos, Float> explosion : projCtx.getQueuedExplosions().entrySet()) {
-				BlockPos pos = explosion.getKey();
-				this.level.explode(this, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, explosion.getValue(), Explosion.BlockInteraction.DESTROY);
+				BlockPos bpos = explosion.getKey();
+				this.level.explode(this, bpos.getX() + 0.5, bpos.getY() + 0.5, bpos.getZ() + 0.5, explosion.getValue(), Explosion.BlockInteraction.DESTROY);
 			}
 			this.setDeltaMovement(oldVel);
 		}
@@ -133,59 +191,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	 * @param pos
 	 * @return true to stop iterating, false otherwise
 	 */
-	protected boolean onClip(ProjectileContext ctx, BlockPos pos) {
-		BlockState state = this.level.getChunkAt(pos).getBlockState(pos);
-		VoxelShape vshape = state.getCollisionShape(this.level, pos, ctx.collisionContext());
-		BlockHitResult bResult = this.level.clipWithInteractionOverride(ctx.start(), ctx.end(), pos, vshape, state);
-		Vec3 hitLoc = bResult == null ? Vec3.atBottomCenterOf(pos) : bResult.getLocation();
-
-		Vec3 curVel = this.getDeltaMovement();
-		double mag = curVel.length();
-		double reach = Math.max(this.getBbWidth(), this.getBbHeight()) * 0.5;
-
-		if (!ctx.hitEntities().isEmpty()) {
-			AABB currentMovementRegion = this.getBoundingBox()
-					.expandTowards(curVel.scale(1.75 / mag)) // 1.75 ~ sqrt 3
-					.inflate(1)
-					.move(hitLoc.subtract(this.position()));
-			for (Iterator<Entity> targetIter = ctx.hitEntities().iterator(); targetIter.hasNext(); ) {
-				Entity target = targetIter.next();
-				if (currentMovementRegion.intersects(target.getBoundingBox().inflate(reach))) {
-					this.onHitEntity(target);
-					targetIter.remove();
-				}
-			}
-		}
-
-		if (bResult != null) {
-			boolean flag1 = ctx.getLastState().isAir();
-			if (flag1 && this.tryBounceOffBlock(state, bResult)) return true;
-			ctx.setLastState(state);
-
-			double startMass = this.getProjectileMass();
-			double curPom = startMass * mag;
-			double hardness = BlockHardnessHandler.getHardness(state);
-
-			if (ctx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, pos) == -1 || curPom < hardness) {
-				this.setPos(hitLoc.add(curVel.scale(0.03 / mag)));
-				this.setInGround(true);
-				this.setDeltaMovement(Vec3.ZERO);
-				this.onImpact(bResult, true);
-				return true;
-			}
-			state.onProjectileHit(this.level, state, bResult, this);
-			this.onDestroyBlock(state, bResult);
-			if (this.isRemoved()) return true;
-			this.onImpact(bResult, false);
-			if (this.isRemoved()) return true;
-
-			double f = this.overPenetrationPower(hardness, curPom);
-			if (flag1 && f > 0) {
-				ctx.queueExplosion(pos.immutable(), (float) f);
-			}
-		}
-
-		return this.isRemoved();
+	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
+		return false;
 	}
 
 	protected double overPenetrationPower(double hardness, double curPom) {
