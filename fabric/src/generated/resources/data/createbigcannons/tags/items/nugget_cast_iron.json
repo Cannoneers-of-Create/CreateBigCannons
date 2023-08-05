@@ -12,7 +12,6 @@
     {
       "id": "#c:cast_iron_nuggets",
       "required": false
-    },
-    "createbigcannons:cast_iron_nugget"
+    }
   ]
 }

@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.fabric;
 
+import com.simibubi.create.content.kinetics.deployer.DeployerRecipeSearchEvent;
+
 import io.github.fabricators_of_create.porting_lib.event.common.BlockEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -33,6 +35,7 @@ public class CBCCommonFabricEvents {
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(CBCCommonFabricEvents::onDatapackReload);
 		ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register(CBCCommonFabricEvents::onDatapackSync);
 		BlockEvents.BLOCK_BREAK.register(CBCCommonFabricEvents::onPlayerBreakBlock);
+		DeployerRecipeSearchEvent.EVENT.register(CBCCommonFabricEvents::onDeployerRecipeSearch);
 
 		CBCCommonEvents.onAddReloadListeners(CBCCommonFabricEvents::wrapAndRegisterReloadListener);
 	}
@@ -76,6 +79,10 @@ public class CBCCommonFabricEvents {
 		};
 
 		ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(listener);
+	}
+
+	public static void onDeployerRecipeSearch(DeployerRecipeSearchEvent evt) {
+		CBCCommonEvents.onAddDeployerRecipes(evt.getBlockEntity(), evt.getInventory(), evt::addRecipe);
 	}
 
 }

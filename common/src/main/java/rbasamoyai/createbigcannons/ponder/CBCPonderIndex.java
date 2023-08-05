@@ -4,9 +4,10 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.ponder.PonderLocalization;
 import com.simibubi.create.foundation.ponder.PonderRegistrationHelper;
 import com.simibubi.create.foundation.ponder.PonderRegistry;
+
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CBCPonderIndex {
 
@@ -18,33 +19,33 @@ public class CBCPonderIndex {
 			.addStoryBoard("cannon_mount/firing_big_cannons", CannonMountScenes::firingBigCannons)
 			.addStoryBoard("cannon_mount/using_autocannons", CannonMountScenes::usingAutocannons)
 			.addStoryBoard("cannon_mount/customizing_autocannons", CannonMountScenes::customizingAutocannons);
-		
+
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.RAM_HEAD, CBCBlocks.WORM_HEAD, AllBlocks.PISTON_EXTENSION_POLE)
 			.addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons);
-		
+
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.POWDER_CHARGE)
 			.addStoryBoard("munitions/cannon_loads", CannonLoadingScenes::cannonLoads, CBCPonderTags.MUNITIONS);
-		
+
 		HELPER.forComponents(CBCItems.IMPACT_FUZE, CBCItems.TIMED_FUZE, CBCItems.PROXIMITY_FUZE, CBCItems.DELAYED_IMPACT_FUZE,
-						CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL, CBCBlocks.FLUID_SHELL, CBCItems.FLAK_AUTOCANNON_ROUND)
+				CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL, CBCBlocks.FLUID_SHELL, CBCItems.FLAK_AUTOCANNON_ROUND)
 			.addStoryBoard("munitions/fuzing_munitions", CannonLoadingScenes::fuzingMunitions, CBCPonderTags.MUNITIONS);
-		
+
 		HELPER.forComponents(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
 			.addStoryBoard("cannon_kinetics/sliding_breech", CannonKineticsScenes::slidingBreech);
 
 		HELPER.forComponents(CBCBlocks.CAST_IRON_QUICKFIRING_BREECH, CBCBlocks.BRONZE_QUICKFIRING_BREECH, CBCBlocks.STEEL_QUICKFIRING_BREECH,
-						CBCItems.QUICKFIRING_MECHANISM)
+				CBCItems.QUICKFIRING_MECHANISM)
 			.addStoryBoard("cannon_crafting/making_quick_firing_breeches", CannonCraftingScenes::makingQuickFiringBreeches)
 			.addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::quickFiringBreech)
 			.addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::automatingQuickFiringBreeches);
 
 		HELPER.forComponents(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
 			.addStoryBoard("cannon_kinetics/screw_breech", CannonKineticsScenes::screwBreech);
-		
+
 		HELPER.forComponents(CBCBlocks.CASTING_SAND)
 			.addStoryBoard("cannon_crafting/cannon_casting", CannonCraftingScenes::cannonCasting)
 			.addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
-		
+
 		HELPER.forComponents(CBCBlocks.CANNON_DRILL)
 			.addStoryBoard("cannon_crafting/cannon_boring", CannonCraftingScenes::cannonBoring)
 			.addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
@@ -63,14 +64,19 @@ public class CBCPonderIndex {
 				CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_BREECH, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_BREECH,
 				CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.INCOMPLETE_STEEL_AUTOCANNON_RECOIL_SPRING)
 			.addStoryBoard("cannon_crafting/incomplete_cannon_blocks", CannonCraftingScenes::incompleteCannonBlocks);
-		
+
 		HELPER.forComponents(CBCBlocks.BASIN_FOUNDRY_LID)
 			.addStoryBoard("cannon_crafting/basin_foundry", CannonCraftingScenes::basinFoundry);
 
 		HELPER.forComponents(CBCItems.WORM, CBCItems.RAM_ROD)
 			.addStoryBoard("cannon_loader/handloading_tools", CannonLoadingScenes::handloadingTools);
+
+		HELPER.forComponents(CBCItems.AUTOCANNON_AMMO_CONTAINER)
+			.addStoryBoard("munitions/using_autocannon_ammo_container", CannonLoadingScenes::usingAutocannonAmmoContainer)
+			.addStoryBoard("munitions/filling_autocannon_ammo_container", CannonLoadingScenes::fillingAutocannonAmmoContainer)
+			.addStoryBoard("munitions/automating_autocannon_ammo_container", CannonLoadingScenes::automatingAutocannonAmmoContainer);
 	}
-	
+
 	public static void registerTags() {
 		PonderRegistry.TAGS.forTag(CBCPonderTags.OPERATING_CANNONS)
 			.add(CBCBlocks.CANNON_MOUNT)
@@ -95,7 +101,8 @@ public class CBCPonderIndex {
 			.add(CBCItems.IMPACT_FUZE)
 			.add(CBCItems.TIMED_FUZE)
 			.add(CBCItems.PROXIMITY_FUZE)
-			.add(CBCItems.DELAYED_IMPACT_FUZE);
+			.add(CBCItems.DELAYED_IMPACT_FUZE)
+			.add(CBCItems.AUTOCANNON_AMMO_CONTAINER);
 
 		PonderRegistry.TAGS.forTag(CBCPonderTags.CANNON_CRAFTING)
 			.add(CBCBlocks.CASTING_SAND)

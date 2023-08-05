@@ -8,15 +8,17 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigBool invulProjectileHurt = b(false, "invulnerableAfterProjectileHurt", Comments.invulnerableAfterProjectileHurt);
 	public final ConfigFloat maxMortarStoneCharges = f(2, -1, "maximumMortarStonePowderCharges", Comments.maxMortarStoneCharges);
 	public final ConfigBool projectilesCanBounce = b(true, "projectilesCanBounce", Comments.projectilesCanBounce);
+	public final ConfigInt smokeShellCloudDuration = i(300, 1, "smokeShellCloudDuration", Comments.smokeShellCloudDuration);
+	public final ConfigFloat smokeShellCloudSize = f(10, 1, 20, "smokeShellCloudSize", Comments.smokeShellCloudSize);
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
-	
-	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes"); 
+
+	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes");
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
 	public final ConfigInt impactFuzeDurability = i(3, -1, "impactFuzeDurability", Comments.impactFuzeDurability);
 	public final ConfigInt proximityFuzeArmingTime = i(20, 0, "proximityFuzeArmingTime", Comments.proximityFuzeArmingTime);
-	
+
 	public final ConfigGroup groupedMunitions = group(0, "groupedMunitions", "Grouped Munitions");
-	
+
 	public final ConfigInt fluidShellCapacity = i(2000, 1, "fluidShellCapacity", Comments.fluidShellCapacity);
 	public final ConfigInt mbPerFluidBlob = i(250, 25, "millibucketsPerFluidBlob", Comments.mbPerFluidBlob);
 	public final ConfigFloat fluidBlobSpread = f(1f, 0.01f, "fluidBlobSpread", Comments.fluidBlobSpread);
@@ -31,11 +33,16 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat bigCartridgeStrength = f(1.0f, 0.5f, 4, "bigCartridgeStrength", Comments.bigCartridgeStrength);
 	public final ConfigFloat bigCartridgeStress = f(0.5f, 0, "bigCartridgeStress", Comments.bigCartridgeStress);
 	public final ConfigInt maxBigCartridgePower = i(4, 1, 8, "maxBigCartridgePower", Comments.maxBigCartridgePower);
-	
+
 	public final ConfigGroup deflectChances = group(0, "deflectChances", "Deflection");
 	public final ConfigFloat bigCannonDeflectChance = f(0.9f, 0, 1, "bigCannonProjectileDeflectionChance", Comments.bigCannonDeflectChance);
 	public final ConfigFloat autocannonDeflectChance = f(0.2f, 0, 1, "autocannonProjectileDeflectionChance", Comments.autocannonDeflectChance);
-	
+
+	public final ConfigGroup autocannonMunitions = group(0, "autocannonMunitions", "Autocannon Munitions");
+	public final ConfigBool allProjectilesAreTracers = b(false, "allAutocannonProjectilesAreTracers", Comments.allProjectilesAreTracers);
+	public final ConfigInt ammoContainerAutocannonRoundCapacity = i(16, 1, 128, "autocannonAmmoContainerAutocannonRoundCapacity", Comments.ammoContainerAutocannonRoundCapacity);
+	public final ConfigInt ammoContainerMachineGunRoundCapacity = i(64, 1, 128, "autocannonAmmoContainerMachineGunRoundCapacity", Comments.ammoContainerMachineGunRoundCapacity);
+
 	@Override public String getName() { return "munitions"; }
 
 	private static class Comments {
@@ -81,20 +88,25 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String maxBigCartridgePower = "The maximum amount of power a Big Cartridge can store.";
 		static String bigCannonDeflectChance = "The chance that a big cannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
 		static String autocannonDeflectChance = "The chance that an autocannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
+		static String smokeShellCloudDuration = "How long the smoke cloud spawned by a Smoke Shell lasts for, in ticks. 1 second = 20 ticks.";
+		static String smokeShellCloudSize = "How large the smoke cloud spawned by a Smoke Shell is.";
+		static String allProjectilesAreTracers = "Makes all shot autocannon projectiles tracers regardless if the item had a tracer tip applied. Emulates legacy behavior.";
+		static String ammoContainerAutocannonRoundCapacity = "How many autocannon rounds the Autocannon Ammo Container can store.";
+		static String ammoContainerMachineGunRoundCapacity = "How many machine gun rounds the Autocannon Ammo Container can store.";
 	}
-	
+
 	public enum GriefState {
 		ALL_DAMAGE(BlockInteraction.DESTROY),
 		NO_EXPLOSIVE_DAMAGE(BlockInteraction.NONE),
 		NO_DAMAGE(BlockInteraction.NONE);
-		
+
 		private final BlockInteraction explosiveInteraction;
-		
+
 		private GriefState(BlockInteraction explosiveInteraction) {
 			this.explosiveInteraction = explosiveInteraction;
 		}
-		
+
 		public BlockInteraction explosiveInteraction() { return this.explosiveInteraction; }
 	}
-	
+
 }

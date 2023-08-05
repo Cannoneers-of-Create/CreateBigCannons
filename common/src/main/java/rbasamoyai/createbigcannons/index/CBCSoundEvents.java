@@ -35,6 +35,11 @@ public class CBCSoundEvents {
 		FIRE_AUTOCANNON = create("fire_autocannon").subtitle("Autocannon fires")
 				.playExisting(SoundEvents.GENERIC_EXPLODE, 4.0f, 2.0f)
 				.category(SoundSource.BLOCKS)
+				.build(),
+
+		PLACE_AUTOCANNON_AMMO_CONTAINER = create("place_autocannon_ammo_container").noSubtitle()
+				.playExisting(SoundEvents.ARMOR_EQUIP_IRON, 0.25f, 1.0f)
+				.category(SoundSource.BLOCKS)
 				.build();
 
 	private static SoundEntryBuilder create(String id) {
@@ -52,8 +57,10 @@ public class CBCSoundEvents {
 	}
 
 	public static void registerLangEntries() {
-		for (SoundEntry entry : ALL.values())
-			CreateBigCannons.REGISTRATE.addRawLang(entry.getSubtitleKey(), entry.getSubtitle());
+		for (SoundEntry entry : ALL.values()) {
+			if (entry.hasSubtitle())
+				CreateBigCannons.REGISTRATE.addRawLang(entry.getSubtitleKey(), entry.getSubtitle());
+		}
 	}
 
 	public static class CBCSoundEntryBuilder extends SoundEntryBuilder {

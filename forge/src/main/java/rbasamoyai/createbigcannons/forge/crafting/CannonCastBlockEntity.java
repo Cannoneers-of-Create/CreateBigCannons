@@ -1,11 +1,12 @@
 package rbasamoyai.createbigcannons.forge.crafting;
 
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
-import com.simibubi.create.content.contraptions.fluids.actors.GenericItemFilling;
-import com.simibubi.create.content.contraptions.processing.EmptyingByBasin;
+import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
+import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.utility.Pair;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -73,7 +74,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 
 	private IFluidHandler createHandlerForCap() {
 		return this.isController() ? this.fluid :
-				this.getControllerTE() == null ? this.fluid : ((CannonCastBlockEntity) this.getControllerTE()).createHandlerForCap();
+			this.getController() == null ? this.fluid : ((CannonCastBlockEntity) this.getControllerBE()).createHandlerForCap();
 	}
 
 	@Override
@@ -165,15 +166,16 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 
 	@Override
 	protected void onDestroyCenterCast() {
-		CannonCastBlockEntity controller = (CannonCastBlockEntity) this.getControllerTE();
+		CannonCastBlockEntity controller = (CannonCastBlockEntity) this.getControllerBE();
+		if (controller == null) return;
 		int thisIndex = this.worldPosition.getY() - controller.worldPosition.getY();
 
 		controller.height -= 1;
 		int capacityUpTo = controller.structure.subList(0, Mth.clamp(thisIndex, 0, controller.structure.size()))
-				.stream()
-				.map(CannonCastShape::fluidSize)
-				.reduce(Integer::sum)
-				.orElse(0);
+			.stream()
+			.map(CannonCastShape::fluidSize)
+			.reduce(Integer::sum)
+			.orElse(0);
 		int leakAmount = Mth.clamp(controller.fluid.getFluidAmount() - capacityUpTo, 0, this.castShape.fluidSize());
 		FluidStack addLeak = controller.fluid.drain(leakAmount, IFluidHandler.FluidAction.EXECUTE);
 		controller.fluid.setCapacity(Math.max(1, controller.fluid.getCapacity() - this.castShape.fluidSize()));
@@ -230,8 +232,8 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 
 	@Override
 	protected boolean testWithFluid(CannonCastingRecipe recipe) {
-		CannonCastBlockEntity cController = ((CannonCastBlockEntity) this.getControllerTE());
-		if (cController.fluid.getFluid().isEmpty()) return false;
+		CannonCastBlockEntity cController = (CannonCastBlockEntity) this.getControllerBE();
+		if (cController == null || cController.fluid.getFluid().isEmpty()) return false;
 		return recipe.ingredient().test(cController.fluid.getFluid());
 	}
 
@@ -239,17 +241,17 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 	// code optimizations too
 
 	@Override
-	public boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
-		if (!EmptyingByBasin.canItemBeEmptied(worldIn, heldItem)) return false;
+	public boolean tryEmptyItemIntoBE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+		if (!GenericItemEmptying.canItemBeEmptied(worldIn, heldItem)) return false;
 		if (worldIn.isClientSide) return true;
 
-		Pair<FluidStack, ItemStack> emptyingResult = EmptyingByBasin.emptyItem(worldIn, heldItem, true);
+		Pair<FluidStack, ItemStack> emptyingResult = GenericItemEmptying.emptyItem(worldIn, heldItem, true);
 		FluidStack fluidStack = emptyingResult.getFirst();
 
 		if (fluidStack.getAmount() != this.fluid.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE)) return false;
 
 		ItemStack copyOfHeld = heldItem.copy();
-		emptyingResult = EmptyingByBasin.emptyItem(worldIn, copyOfHeld, false);
+		emptyingResult = GenericItemEmptying.emptyItem(worldIn, copyOfHeld, false);
 		this.fluid.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
 
 		if (!player.isCreative()) {
@@ -264,7 +266,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 	}
 
 	@Override
-	public boolean tryFillItemFromTE(Level level, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+	public boolean tryFillItemFromBE(Level level, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
 		if (!GenericItemFilling.canItemBeFilled(level, heldItem)) return false;
 		if (level.isClientSide) return true;
 

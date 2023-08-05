@@ -1,0 +1,10 @@
+{
+  "maximum_barrel_length": 6,
+  "weight": 1.5,
+  "base_spread": 4,
+  "spread_reduction_per_barrel": 0.5,
+  "base_speed": 5,
+  "speed_increase_per_barrel": 1,
+  "max_speed_increases": 2,
+  "projectile_lifetime": 30
+}

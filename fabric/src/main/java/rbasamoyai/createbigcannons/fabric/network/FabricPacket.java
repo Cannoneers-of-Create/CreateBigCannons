@@ -1,17 +1,18 @@
 package rbasamoyai.createbigcannons.fabric.network;
 
 import com.simibubi.create.foundation.networking.SimplePacketBase;
+
 import net.minecraft.network.FriendlyByteBuf;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 import rbasamoyai.createbigcannons.network.RootPacket;
-
-import java.util.function.Supplier;
 
 public class FabricPacket extends SimplePacketBase {
 
 	private final RootPacket pkt;
 
-	public FabricPacket(RootPacket pkt) { this.pkt = pkt; }
+	public FabricPacket(RootPacket pkt) {
+		this.pkt = pkt;
+	}
 
 	public FabricPacket(FriendlyByteBuf buf) {
 		this.pkt = CBCRootNetwork.constructPacket(buf, buf.readVarInt());
@@ -23,8 +24,8 @@ public class FabricPacket extends SimplePacketBase {
 	}
 
 	@Override
-	public void handle(Supplier<Context> context) {
-		Context ctx = context.get();
-		this.pkt.handle(ctx.exec(), ctx.listener(), ctx.sender());
+	public boolean handle(Context context) {
+		this.pkt.handle(context.exec(), context.listener(), context.sender());
+		return true;
 	}
 }

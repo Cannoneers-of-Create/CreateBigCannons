@@ -103,6 +103,7 @@
     "createbigcannons:ap_shot",
     "createbigcannons:ap_shell",
     "createbigcannons:fluid_shell",
+    "createbigcannons:smoke_shell",
     "createbigcannons:basin_foundry_lid"
   ]
 }

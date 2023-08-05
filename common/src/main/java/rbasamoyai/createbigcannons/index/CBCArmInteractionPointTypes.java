@@ -1,21 +1,23 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.simibubi.create.content.logistics.block.mechanicalArm.ArmInteractionPoint;
-import com.simibubi.create.content.logistics.block.mechanicalArm.ArmInteractionPointType;
+import java.util.function.Function;
+
+import javax.annotation.Nullable;
+
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
-import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechPoint;
-
-import java.util.function.Function;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.CannonMountPoint;
 
 public class CBCArmInteractionPointTypes {
 
-	public static final QuickfiringBreechType QUICKFIRING_BREECH = register("quickfiring_breech", QuickfiringBreechType::new);
+	public static final CannonMountType CANNON_MOUNT = register("cannon_mount", CannonMountType::new);
 
 	private static <T extends ArmInteractionPointType> T register(String id, Function<ResourceLocation, T> factory) {
 		T type = factory.apply(CreateBigCannons.resource(id));
@@ -23,8 +25,8 @@ public class CBCArmInteractionPointTypes {
 		return type;
 	}
 
-	public static class QuickfiringBreechType extends ArmInteractionPointType {
-		public QuickfiringBreechType(ResourceLocation id) {
+	public static class CannonMountType extends ArmInteractionPointType {
+		public CannonMountType(ResourceLocation id) {
 			super(id);
 		}
 
@@ -36,10 +38,11 @@ public class CBCArmInteractionPointTypes {
 		@Nullable
 		@Override
 		public ArmInteractionPoint createPoint(Level level, BlockPos pos, BlockState state) {
-			return new QuickfiringBreechPoint(this, level, pos, state);
+			return new CannonMountPoint(this, level, pos, state);
 		}
 	}
 
-	public static void register() {}
+	public static void register() {
+	}
 
 }

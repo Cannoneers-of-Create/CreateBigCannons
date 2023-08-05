@@ -1,9 +1,12 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
+import javax.annotation.Nullable;
+
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +16,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,14 +26,13 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
-public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock, ITE<BigCartridgeBlockEntity> {
+public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock, IBE<BigCartridgeBlockEntity> {
 
 	public static final BooleanProperty FILLED = BooleanProperty.create("filled");
 
@@ -56,6 +59,16 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		super.createBlockStateDefinition(builder);
 		builder.add(FACING);
 		builder.add(FILLED);
+	}
+
+	@Override
+	public BlockState rotate(BlockState state, Rotation rotation) {
+		return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+	}
+
+	@Override
+	public BlockState mirror(BlockState state, Mirror mirror) {
+		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 
 	@Nullable
@@ -128,8 +141,15 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		return data.nbt == null ? 0 : data.nbt.getInt("Power");
 	}
 
-	@Override public Class<BigCartridgeBlockEntity> getTileEntityClass() { return BigCartridgeBlockEntity.class; }
-	@Override public BlockEntityType<? extends BigCartridgeBlockEntity> getTileEntityType() { return CBCBlockEntities.BIG_CARTRIDGE.get(); }
+	@Override
+	public Class<BigCartridgeBlockEntity> getBlockEntityClass() {
+		return BigCartridgeBlockEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends BigCartridgeBlockEntity> getBlockEntityType() {
+		return CBCBlockEntities.BIG_CARTRIDGE.get();
+	}
 
 	@Override
 	public BlockState onCannonRotate(BlockState oldState, Direction.Axis rotationAxis, Rotation rotation) {

@@ -9,10 +9,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.CBCGuiTextures;
+import rbasamoyai.createbigcannons.index.CBCGuiTextures;
 
 public class TimedFuzeScreen extends AbstractFuzeScreen<TimedFuzeContainer> {
-	
+
 	public TimedFuzeScreen(TimedFuzeContainer menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
 	}
@@ -36,11 +36,11 @@ public class TimedFuzeScreen extends AbstractFuzeScreen<TimedFuzeContainer> {
 	@Override
 	protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-		
+
 		CBCGuiTextures.TIMED_FUZE_BG.render(poseStack, this.leftPos, this.topPos);
 		drawCenteredString(poseStack, this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
 		CBCGuiTextures.TIMED_FUZE_SELECTOR.render(poseStack, this.leftPos + 34 + this.setValue.getState(), this.topPos + 21);
-		
+
 		GuiGameElement.of(this.menu.getStackToRender())
 			.<GuiGameElement.GuiItemRenderBuilder>at(this.leftPos + 185, this.topPos + 26, -200)
 			.scale(5)

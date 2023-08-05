@@ -10,9 +10,8 @@
       "required": false
     },
     {
-      "id": "#c:steel_blocks",
+      "id": "#c:steel_nuggets",
       "required": false
-    },
-    "createbigcannons:steel_scrap"
+    }
   ]
 }

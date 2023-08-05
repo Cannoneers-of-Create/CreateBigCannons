@@ -1,9 +1,12 @@
 package rbasamoyai.createbigcannons.fabric.crafting;
 
+import javax.annotation.Nullable;
+
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.foundation.fluid.FluidHelper;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
@@ -21,7 +24,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
@@ -42,7 +44,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	public Storage<FluidVariant> getFluidStorage(@Nullable Direction face) {
 		if (face != Direction.UP) return null;
 		if (this.isController()) return this.fluid;
-		return this.getControllerTE() instanceof CannonCastBlockEntity ccast ? ccast.getFluidStorage(face) : null;
+		return this.getControllerBE() instanceof CannonCastBlockEntity ccast ? ccast.getFluidStorage(face) : null;
 	}
 
 
@@ -136,15 +138,16 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 
 	@Override
 	protected void onDestroyCenterCast() {
-		CannonCastBlockEntity controller = (CannonCastBlockEntity) this.getControllerTE();
+		CannonCastBlockEntity controller = (CannonCastBlockEntity) this.getControllerBE();
+		if (controller == null) return;
 		int thisIndex = this.worldPosition.getY() - controller.worldPosition.getY();
 
 		controller.height -= 1;
 		int capacityUpTo = controller.structure.subList(0, Mth.clamp(thisIndex, 0, controller.structure.size()))
-				.stream()
-				.map(CannonCastShape::fluidSize)
-				.reduce(Integer::sum)
-				.orElse(0);
+			.stream()
+			.map(CannonCastShape::fluidSize)
+			.reduce(Integer::sum)
+			.orElse(0);
 		long leakAmount = Mth.clamp(controller.fluid.getFluidAmount() - capacityUpTo, 0, this.castShape.fluidSize());
 		FluidStack addLeak = leakAmount < 1 ? FluidStack.EMPTY : TransferUtil.extractAnyFluid(controller.fluid, leakAmount);
 		controller.fluid.setCapacity(Math.max(1, controller.fluid.getCapacity() - this.castShape.fluidSize()));
@@ -201,23 +204,25 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 		return this.fluid.getCapacity() == 0 ? 0.0f : (float) this.fluid.getFluidAmount() / (float) this.fluid.getCapacity();
 	}
 
-	@Override protected void refreshCap() {}
+	@Override
+	protected void refreshCap() {
+	}
 
 	@Override
 	protected boolean testWithFluid(CannonCastingRecipe recipe) {
-		CannonCastBlockEntity cController = ((CannonCastBlockEntity) this.getControllerTE());
-		if (cController.fluid.getFluid().isEmpty()) return false;
+		CannonCastBlockEntity cController = (CannonCastBlockEntity) this.getControllerBE();
+		if (cController == null || cController.fluid.getFluid().isEmpty()) return false;
 		return recipe.ingredient().test(cController.fluid.getFluid());
 	}
 
 	@Override
-	public boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
-		return FluidHelper.tryEmptyItemIntoTE(worldIn, player, handIn, heldItem, this, side);
+	public boolean tryEmptyItemIntoBE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+		return FluidHelper.tryEmptyItemIntoBE(worldIn, player, handIn, heldItem, this, side);
 	}
 
 	@Override
-	public boolean tryFillItemFromTE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
-		return FluidHelper.tryFillItemFromTE(world, player, handIn, heldItem, this, side);
+	public boolean tryFillItemFromBE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
+		return FluidHelper.tryFillItemFromBE(world, player, handIn, heldItem, this, side);
 	}
 
 }

@@ -17,13 +17,16 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
+import javax.annotation.Nullable;
+
 public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
 
 	protected int ageRemaining;
+	@Nullable private Vec3 prevPos = null;
+	private boolean fullyReady = false;
 
 	protected AbstractAutocannonProjectile(EntityType<? extends AbstractAutocannonProjectile> type, Level level) {
 		super(type, level);
-		this.ageRemaining = 60;
 	}
 
 	@Override
@@ -43,11 +46,19 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		}
 	}
 
-	@Override protected float getKnockback(Entity target) { return 0.5f; }
+	@Override
+	protected float getKnockback(Entity target) {
+		float length = this.getDeltaMovement().lengthSqr() > 1e-4d ? 1 : (float) this.getDeltaMovement().lengthSqr();
+		return 0.5f / length;
+	}
+
 	@Override protected double overPenetrationPower(double hardness, double curPom) { return 0; }
 
 	@Override
 	public void tick() {
+		this.fullyReady = this.prevPos != null;
+		this.prevPos = this.position();
+
 		super.tick();
 
 		if (!this.level.isClientSide && this.level.hasChunkAt(this.blockPosition())) {
@@ -55,6 +66,10 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			if (this.ageRemaining <= 0) this.expireProjectile();
 		}
 	}
+
+	@Nullable public Vec3 getPreviousPos() { return this.prevPos; }
+
+	public boolean isFullyReady() { return this.fullyReady; }
 
 	protected void expireProjectile() {
 		this.discard();
@@ -67,6 +82,8 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) & 0b11111101));
 		}
 	}
+
+	public void setLifetime(int lifetime) { this.ageRemaining = lifetime; }
 
 	@Override
 	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
@@ -96,9 +113,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
-
-	@Override protected float getGravity() { return 0; }
-	@Override protected float getDrag() { return 1; }
 
     @Override
 	public void addAdditionalSaveData(CompoundTag tag) {

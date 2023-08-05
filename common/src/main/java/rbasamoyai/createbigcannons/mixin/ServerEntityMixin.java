@@ -23,13 +23,13 @@ public class ServerEntityMixin {
 
 	@Shadow @Final private Entity entity;
 
-	@Inject(method = "sendChanges", at = @At(value = "JUMP", opcode = Opcodes.IFNULL, ordinal = 2), locals = LocalCapture.CAPTURE_FAILHARD)
-	private void createbigcannons$sendChanges1(CallbackInfo ci, List list, int l, int k1, Vec3 vec3, boolean flag2, Packet packet) {
+	@Inject(method = "sendChanges", at = @At("HEAD"))
+	private void createbigcannons$sendChanges1(CallbackInfo ci) {
 		if (this.entity instanceof PreciseProjectile) {
 			Vec3 pos = this.entity.position();
 			Vec3 vel = this.entity.getDeltaMovement();
 			NetworkPlatform.sendToClientTracking(new ClientboundPreciseMotionSyncPacket(this.entity.getId(), pos.x, pos.y, pos.z, vel.x, vel.y, vel.z, this.entity.getYRot(), this.entity.getXRot(), this.entity.isOnGround()), this.entity);
-			packet = null;
+			this.entity.hasImpulse = false;
 		}
 	}
 

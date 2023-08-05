@@ -6,8 +6,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.tileEntity.renderer.SafeTileEntityRenderer;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -17,12 +18,15 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
-public class QuickfiringBreechBlockEntityRenderer extends SafeTileEntityRenderer<QuickfiringBreechBlockEntity> {
+public class QuickfiringBreechBlockEntityRenderer extends SafeBlockEntityRenderer<QuickfiringBreechBlockEntity> {
 
 	public QuickfiringBreechBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 	}
 
-	@Override public boolean shouldRenderOffScreen(QuickfiringBreechBlockEntity blockEntity) { return true; }
+	@Override
+	public boolean shouldRenderOffScreen(QuickfiringBreechBlockEntity blockEntity) {
+		return true;
+	}
 
 	@Override
 	protected void renderSafe(QuickfiringBreechBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
@@ -57,10 +61,10 @@ public class QuickfiringBreechBlockEntityRenderer extends SafeTileEntityRenderer
 		normal.mul(renderedBreechblockOffset);
 
 		CachedBufferer.partialFacing(CBCClientCommon.getBreechblockForState(blockState), blockState, blockRotation)
-				.translate(normal.x(), normal.y(), normal.z())
-				.rotateCentered(qrot)
-				.light(light)
-				.renderInto(ms, vcons);
+			.translate(normal.x(), normal.y(), normal.z())
+			.rotateCentered(qrot)
+			.light(light)
+			.renderInto(ms, vcons);
 
 		ms.popPose();
 		ms.pushPose();
@@ -70,18 +74,18 @@ public class QuickfiringBreechBlockEntityRenderer extends SafeTileEntityRenderer
 		Vector3f normal1 = dir.step();
 
 		CachedBufferer.block(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, axis))
-				.rotateCentered(normal1.rotationDegrees(angle))
-				.light(light)
-				.renderInto(ms, vcons);
+			.rotateCentered(normal1.rotationDegrees(angle))
+			.light(light)
+			.renderInto(ms, vcons);
 
 		ms.popPose();
 		ms.pushPose();
 
 		CachedBufferer.partialFacing(CBCBlockPartials.QUICKFIRING_BREECH_LEVER, blockState, dir)
-				.rotateCentered(normal1.rotationDegrees(angle))
-				.translate(normal1)
-				.light(light)
-				.renderInto(ms, vcons);
+			.rotateCentered(normal1.rotationDegrees(angle))
+			.translate(normal1)
+			.light(light)
+			.renderInto(ms, vcons);
 
 		ms.popPose();
 	}

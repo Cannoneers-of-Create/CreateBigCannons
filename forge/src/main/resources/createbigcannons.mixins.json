@@ -10,7 +10,7 @@
     "CBCFlowingFluidMixin",
     "AbstractCannonProjectileMixin",
     "CannonMountMixin",
-    "QuickfiringBreechPointMixin",
+    "CannonMountPointMixin",
     "MountedAutocannonContraptionMixin",
     "PitchOrientedContraptionEntityMixin"
   ],
