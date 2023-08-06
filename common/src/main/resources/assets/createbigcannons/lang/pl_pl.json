@@ -371,7 +371,7 @@
   "entity.createbigcannons.pitch_contraption": "Pitch contraption",
   "entity.createbigcannons.shot": "Lity pocisk",
   "entity.createbigcannons.shrapnel": "Odłamek",
-  "entity.createbigcannons.shrapnel_shell": "Pocisk odłamkowy"
+  "entity.createbigcannons.shrapnel_shell": "Pocisk odłamkowy",
   "entity.createbigcannons.smoke_emitter": "Emiter dymu",
   "entity.createbigcannons.smoke_shell": "Pocisk dymny",
   "entity.createbigcannons.traffic_cone": "Pachołek", 
@@ -519,7 +519,7 @@
   "recipe.createbigcannons.drill_boring": "Drążenie",
   "recipe.createbigcannons.cannon_casting": "Odlewanie armat",
   "recipe.createbigcannons.incomplete_cannon_blocks": "Nieukończone bloki armat",
-  "recipe.createbigcannons.melting": "Topienie w tyglu"
+  "recipe.createbigcannons.melting": "Topienie w tyglu",
   "tooltip.createbigcannons.jei_info.added_fuze": "+ Zapalnik",
   "tooltip.createbigcannons.jei_info.added_power": "+ Moc",
   "tooltip.createbigcannons.tracer": "+ Smuga"
