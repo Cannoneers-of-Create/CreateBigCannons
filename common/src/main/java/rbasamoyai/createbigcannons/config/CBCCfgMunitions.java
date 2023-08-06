@@ -10,6 +10,8 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigBool projectilesCanBounce = b(true, "projectilesCanBounce", Comments.projectilesCanBounce);
 	public final ConfigInt smokeShellCloudDuration = i(300, 1, "smokeShellCloudDuration", Comments.smokeShellCloudDuration);
 	public final ConfigFloat smokeShellCloudSize = f(10, 1, 20, "smokeShellCloudSize", Comments.smokeShellCloudSize);
+	public final ConfigFloat minVelocityForPenetrationBonus = f(1, 0, "minimumVelocityForPenetrationBonus", Comments.minVelocityForPenetrationBonus);
+	public final ConfigFloat penetrationBonusScale = f(0.1f, 0, "penetrationBonusScale");
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
 
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes");
@@ -93,6 +95,7 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String allProjectilesAreTracers = "Makes all shot autocannon projectiles tracers regardless if the item had a tracer tip applied. Emulates legacy behavior.";
 		static String ammoContainerAutocannonRoundCapacity = "How many autocannon rounds the Autocannon Ammo Container can store.";
 		static String ammoContainerMachineGunRoundCapacity = "How many machine gun rounds the Autocannon Ammo Container can store.";
+		static String minVelocityForPenetrationBonus = "The minimum velocity necessary to activate the penetration bonus, in meters per game tick. (1 m/gt = 20 m/s)";
 	}
 
 	public enum GriefState {

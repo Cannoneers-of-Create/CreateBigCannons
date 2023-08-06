@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.flak;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
@@ -45,9 +44,9 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	}
 
 	@Override
-	protected boolean onClip(ProjectileContext ctx, BlockPos pos) {
+	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
 		if (super.onClip(ctx, pos)) return true;
-		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, Vec3.atCenterOf(pos), ctx))) {
+		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, pos, ctx))) {
 			this.detonate();
 			return true;
 		}
