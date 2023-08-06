@@ -519,7 +519,7 @@
   "recipe.createbigcannons.drill_boring": "Drążenie",
   "recipe.createbigcannons.cannon_casting": "Odlewanie armat",
   "recipe.createbigcannons.incomplete_cannon_blocks": "Nieukończone bloki armat",
-  "recipe.createbigcannons.melting": "Topienie w tyglu"
+  "recipe.createbigcannons.melting": "Topienie w tyglu",
   "tooltip.createbigcannons.jei_info.added_fuze": "+ Zapalnik",
   "tooltip.createbigcannons.jei_info.added_power": "+ Moc",
   "tooltip.createbigcannons.tracer": "+ Smuga"
