@@ -21,7 +21,7 @@ public interface ControlPitchContraption {
 
 	BlockState getControllerState();
 
-	default void cacheRecoilVector(Vec3 vector, AbstractContraptionEntity cannon) {
+	default void onRecoil(Vec3 vector, AbstractContraptionEntity cannon) {
 	}
 
 	interface Block extends ControlPitchContraption {
