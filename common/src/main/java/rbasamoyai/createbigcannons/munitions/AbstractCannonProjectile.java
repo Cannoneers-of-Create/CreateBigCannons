@@ -119,47 +119,53 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 			BlockHitResult bResult = this.level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 			if (bResult.getType() != HitResult.Type.MISS) end = bResult.getLocation();
 
-			AABB currentMovementRegion = this.getBoundingBox().expandTowards(vel).inflate(1).move(start.subtract(pos));
+			AABB currentMovementRegion = this.getBoundingBox().expandTowards(end.subtract(start)).inflate(1).move(start.subtract(pos));
 
 			Vec3 finalStart = start;
 			Vec3 finalEnd = end;
-			for (Entity target : this.level.getEntities(this, currentMovementRegion, e ->
-				!projCtx.hasHitEntity(e) && this.canHitEntity(e) && e.getBoundingBox().inflate(reach).clip(finalStart, finalEnd).isPresent())) {
-				this.onHitEntity(target);
+			AABB thisBB = this.getBoundingBox();
+			for (Entity target : this.level.getEntities(this, currentMovementRegion, e -> {
+				if (projCtx.hasHitEntity(e) || !this.canHitEntity(e)) return false;
+				AABB bb = e.getBoundingBox();
+				return bb.intersects(thisBB) || bb.inflate(reach).clip(finalStart, finalEnd).isPresent();
+			})) {
+				projCtx.addEntity(target);
 			}
 
 			Vec3 hitLoc = end;
-			BlockPos bpos = bResult.getBlockPos().immutable();
-			BlockState state = this.level.getChunkAt(bpos).getBlockState(bpos);
+			if (bResult.getType() != HitResult.Type.MISS) {
+				BlockPos bpos = bResult.getBlockPos().immutable();
+				BlockState state = this.level.getChunkAt(bpos).getBlockState(bpos);
 
-			Vec3 curVel = this.getDeltaMovement();
-			double mag = curVel.length();
-			boolean flag1 = projCtx.getLastState().isAir();
-			if (!flag1 || !this.tryBounceOffBlock(state, bResult)) {
-				projCtx.setLastState(state);
+				Vec3 curVel = this.getDeltaMovement();
+				double mag = curVel.length();
+				boolean flag1 = projCtx.getLastState().isAir();
+				if (!flag1 || !this.tryBounceOffBlock(state, bResult)) {
+					projCtx.setLastState(state);
 
-				double startMass = this.getProjectileMass();
-				double curPom = startMass * mag;
-				double hardness = BlockHardnessHandler.getHardness(state);
+					double startMass = this.getProjectileMass();
+					double curPom = startMass * mag;
+					double hardness = BlockHardnessHandler.getHardness(state);
 
-				if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, bpos) == -1 || curPom < hardness) {
-					this.setInGround(true);
-					this.setDeltaMovement(Vec3.ZERO);
-					this.onImpact(bResult, true);
-					breakEarly = true;
-				} else {
-					state.onProjectileHit(this.level, state, bResult, this);
-					this.onDestroyBlock(state, bResult);
-					if (this.isRemoved()) {
+					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, bpos) == -1 || curPom < hardness) {
+						this.setInGround(true);
+						this.setDeltaMovement(Vec3.ZERO);
+						this.onImpact(bResult, true);
 						breakEarly = true;
 					} else {
-						this.onImpact(bResult, false);
+						state.onProjectileHit(this.level, state, bResult, this);
+						this.onDestroyBlock(state, bResult);
 						if (this.isRemoved()) {
 							breakEarly = true;
 						} else {
-							double f = this.overPenetrationPower(hardness, curPom);
-							if (flag1 && f > 0) {
-								projCtx.queueExplosion(bpos, (float) f);
+							this.onImpact(bResult, false);
+							if (this.isRemoved()) {
+								breakEarly = true;
+							} else {
+								double f = this.overPenetrationPower(hardness, curPom);
+								if (flag1 && f > 0) {
+									projCtx.queueExplosion(bpos, (float) f);
+								}
 							}
 						}
 					}
@@ -172,7 +178,6 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 			t -= disp.length() / vel.length();
 			if (t < 0) break;
 		}
-		this.setPos(start);
 
 		for (Entity e : projCtx.hitEntities()) this.onHitEntity(e);
 
