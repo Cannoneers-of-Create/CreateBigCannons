@@ -52,16 +52,16 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 
 	@Override
 	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
-		double startMass = this.getProjectileMass();
+		double mass = this.getProjectileMass();
 		Vec3 curVel = this.getDeltaMovement();
 		double mag = curVel.length();
-		double curPom = startMass * mag;
+		double bonus = 1 + Math.max(0, (mag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
+			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
 
-		double hardness = BlockHardnessHandler.getHardness(state);
-		this.setProjectileMass((float) Math.max(startMass - hardness, 0));
-		this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
+		double hardness = BlockHardnessHandler.getHardness(state) / bonus;
+		this.setProjectileMass((float) Math.max(mass - hardness, 0));
 
-		if (!level.isClientSide()) level.destroyBlock(result.getBlockPos(), false);
+		if (!level.isClientSide()) this.level.destroyBlock(result.getBlockPos(), false);
 	}
 
 	@Override
