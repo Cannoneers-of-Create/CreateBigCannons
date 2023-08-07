@@ -20,8 +20,9 @@ import java.util.List;
 @Mixin(PonderRegistry.class)
 public class PonderRegistryMixin {
 
-	@Inject(method = "compile(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/List;", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD)
-	private static void compile(ResourceLocation id, CallbackInfoReturnable<List<PonderScene>> cir, List<PonderStoryBoardEntry> list) {
+	@Inject(method = "compile(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/List;",
+		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/foundation/ponder/PonderRegistry;compile(Ljava/util/List;)Ljava/util/List;"), locals = LocalCapture.CAPTURE_FAILHARD)
+	private static void createbigcannons$compile(ResourceLocation id, CallbackInfoReturnable<List<PonderScene>> cir, List<PonderStoryBoardEntry> list) {
 		if (id.getNamespace().equals(CreateBigCannons.MOD_ID)) return;
 		List<PonderStoryBoardEntry> modified = new ArrayList<>();
 		for (PonderStoryBoardEntry ponder : list) {
