@@ -1,14 +1,26 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.simibubi.create.content.contraptions.processing.InWorldProcessing.Type;
-import com.simibubi.create.content.contraptions.relays.belt.transport.TransportedItemStack;
-import com.simibubi.create.foundation.tileEntity.SmartTileEntity;
-import com.simibubi.create.foundation.tileEntity.TileEntityBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour;
-import com.simibubi.create.foundation.tileEntity.behaviour.belt.TransportedItemStackHandlerBehaviour.TransportedResult;
+import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.kinetics.fan.FanProcessing;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -33,65 +45,70 @@ import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBigCannonBlockEntity, WandActionable {
+public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBigCannonBlockEntity, WandActionable {
 
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final Object BUILT_UP_HEATING_RECIPES_KEY = new Object();
-	
+
 	private BigCannonBehavior cannonBehavior;
 	private BigCannonMaterial baseMaterial;
 	private Map<CannonCastShape, Block> layeredBlocks = new HashMap<>();
 	private Multimap<Direction, CannonCastShape> layersConnectedTowards = HashMultimap.create();
 	private Direction currentFacing;
-	
+
 	private TransportedItemStack clockStack = new TransportedItemStack(ItemStack.EMPTY);
 	private int completionProgress;
-	
+
 	public LayeredBigCannonBlockEntity(BlockEntityType<? extends LayeredBigCannonBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		if (state.hasProperty(FACING)) {
 			this.currentFacing = state.getValue(FACING);
 		}
 	}
-	
-	@Override public BigCannonBehavior cannonBehavior() { return this.cannonBehavior; }
-	
-	public void setBaseMaterial(BigCannonMaterial material) { this.baseMaterial = material; }
-	public BigCannonMaterial getBaseMaterial() { return this.baseMaterial; }
+
+	@Override
+	public BigCannonBehavior cannonBehavior() {
+		return this.cannonBehavior;
+	}
+
+	public void setBaseMaterial(BigCannonMaterial material) {
+		this.baseMaterial = material;
+	}
+
+	public BigCannonMaterial getBaseMaterial() {
+		return this.baseMaterial;
+	}
 
 	@Override
 	public void tick() {
 		super.tick();
-		
+
 		BlockState state = this.getBlockState();
-		
+
 		if (!this.level.isClientSide && this.isEmpty()) {
 			this.setRemoved();
 			this.level.setBlock(this.worldPosition, Blocks.AIR.defaultBlockState(), 3 | 16);
 			return;
 		}
-		
+
 		if (state.hasProperty(FACING)) {
 			Direction previousFacing = this.currentFacing;
 			this.currentFacing = state.getValue(FACING);
 			if (previousFacing != null && previousFacing != this.currentFacing) {
 				Direction.Axis rotationAxis = getRotationAxis(previousFacing, this.currentFacing);
 				Rotation rotation = getRotationBetween(previousFacing, this.currentFacing, rotationAxis);
-				
+
 				Multimap<Direction, CannonCastShape> newLayersConnected = HashMultimap.create();
 				for (Direction dir : this.layersConnectedTowards.keySet()) {
 					Direction dc = dir;
@@ -104,9 +121,9 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 				this.setChanged();
 			}
 		}
-		
-		if (this.clockStack.processedBy == Type.BLASTING) {
-			this.clockStack.processedBy = Type.NONE;
+
+		if (this.clockStack.processedBy == FanProcessing.Type.BLASTING) {
+			this.clockStack.processedBy = FanProcessing.Type.NONE;
 			++this.completionProgress;
 			this.sendData();
 			int cap = CBCConfigs.SERVER.crafting.builtUpCannonHeatingTime.get();
@@ -119,52 +136,62 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 			this.sendData();
 		}
 	}
-	
+
 	private boolean tryFinishHeating() {
 		List<BlockRecipe> recipes = BlockRecipeFinder.get(BUILT_UP_HEATING_RECIPES_KEY, this.level, this::matchingRecipeCache);
 		if (recipes.isEmpty()) return false;
 		Optional<BlockRecipe> recipe = recipes.stream()
-				.filter(r -> r.matches(this.level, this.worldPosition))
-				.findFirst();
+			.filter(r -> r.matches(this.level, this.worldPosition))
+			.findFirst();
 		if (!recipe.isPresent()) return false;
 		recipe.get().assembleInWorld(this.level, this.worldPosition);
 		return true;
 	}
-	
+
 	@Override
 	public InteractionResult onWandUsed(UseOnContext context) {
 		if (!this.level.isClientSide) this.tryFinishHeating();
 		return InteractionResult.sidedSuccess(this.level.isClientSide);
 	}
-	
+
 	private boolean matchingRecipeCache(BlockRecipe recipe) {
 		return recipe instanceof BuiltUpHeatingRecipe;
 	}
-	
+
 	private static Direction.Axis getRotationAxis(Direction prev, Direction current) {
 		Set<Direction.Axis> axes = EnumSet.allOf(Direction.Axis.class);
 		axes.remove(prev.getAxis());
 		axes.remove(current.getAxis());
 		return axes.stream().findFirst().orElseThrow(() -> new IllegalStateException("Failed to find the rotation axes of two different axes"));
 	}
-	
+
 	private static Rotation getRotationBetween(Direction prev, Direction current, Direction.Axis axis) {
 		if (prev == current) return Rotation.NONE;
 		if (prev == current.getOpposite()) return Rotation.CLOCKWISE_180;
 		return prev.getClockWise(axis) == current ? Rotation.CLOCKWISE_90 : Rotation.COUNTERCLOCKWISE_90;
 	}
-	
+
 	public void setLayer(CannonCastShape layer, Block block) {
 		this.layeredBlocks.put(layer, block);
 	}
-	public Block getLayer(CannonCastShape layer) { return this.layeredBlocks.get(layer); }
+
+	public Block getLayer(CannonCastShape layer) {
+		return this.layeredBlocks.get(layer);
+	}
+
 	public void removeLayer(CannonCastShape layer) {
 		this.layeredBlocks.remove(layer);
 		for (Direction dir : Iterate.directions) this.setLayerConnectedTo(dir, layer, false);
 	}
-	public boolean hasLayer(CannonCastShape layer) { return this.layeredBlocks.containsKey(layer); }
-	public Map<CannonCastShape, Block> getLayers() { return this.layeredBlocks; }
-	
+
+	public boolean hasLayer(CannonCastShape layer) {
+		return this.layeredBlocks.containsKey(layer);
+	}
+
+	public Map<CannonCastShape, Block> getLayers() {
+		return this.layeredBlocks;
+	}
+
 	public CannonCastShape getTopCannonShape() {
 		if (this.layeredBlocks.isEmpty()) return null;
 		CannonCastShape result = null;
@@ -173,7 +200,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		}
 		return result;
 	}
-	
+
 	public CannonCastShape getTopConnectedLayer(Direction direction) {
 		if (!this.layersConnectedTowards.containsKey(direction)) return null;
 		CannonCastShape result = null;
@@ -182,13 +209,14 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		}
 		return result;
 	}
-	
+
 	public LayeredBigCannonBlockEntity getSplitBlockEntity(Collection<CannonCastShape> layers, Direction from) {
 		LayeredBigCannonBlockEntity newLayer = new LayeredBigCannonBlockEntity(CBCBlockEntities.LAYERED_CANNON.get(), this.worldPosition, this.getBlockState());
 		newLayer.baseMaterial = this.baseMaterial;
 		newLayer.currentFacing = this.currentFacing;
 		for (CannonCastShape layer : layers) {
-			if (!this.layeredBlocks.containsKey(layer) || from != null && !this.isLayerConnectedTo(from, layer)) continue;
+			if (!this.layeredBlocks.containsKey(layer) || from != null && !this.isLayerConnectedTo(from, layer))
+				continue;
 			newLayer.setLayer(layer, this.getLayer(layer));
 			for (Direction dir : Iterate.directions) {
 				newLayer.setLayerConnectedTo(dir, layer, this.isLayerConnectedTo(dir, layer));
@@ -196,24 +224,24 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		}
 		for (Direction dir : Iterate.directions) {
 			boolean connect = this.cannonBehavior.isConnectedTo(dir);
-			newLayer.cannonBehavior.setConnectedFace(dir, connect);		
+			newLayer.cannonBehavior.setConnectedFace(dir, connect);
 		}
 		return newLayer;
 	}
-	
+
 	public LayeredBigCannonBlockEntity getSplitBlockEntity(CannonCastShape fullShape, Direction from) {
 		return this.getSplitBlockEntity(Arrays.asList(fullShape), from);
 	}
-	
+
 	public void removeLayersOfOther(LayeredBigCannonBlockEntity other) {
 		for (CannonCastShape layer : other.layeredBlocks.keySet()) {
 			this.removeLayer(layer);
 		}
 	}
-	
+
 	public void addLayersOfOther(LayeredBigCannonBlockEntity other) {
 		for (Map.Entry<CannonCastShape, Block> layer : other.layeredBlocks.entrySet()) {
-			CannonCastShape shape = layer.getKey(); 
+			CannonCastShape shape = layer.getKey();
 			this.setLayer(shape, layer.getValue());
 			for (Direction dir : Iterate.directions) {
 				this.setLayerConnectedTo(dir, shape, other.isLayerConnectedTo(dir, shape));
@@ -221,13 +249,13 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		}
 		this.setChanged();
 	}
-	
+
 	public Block getSimplifiedBlock() {
 		return this.isEmpty() ? Blocks.AIR
 			: this.layeredBlocks.size() == 1 ? this.layeredBlocks.values().stream().findAny().get()
 			: CBCBlocks.BUILT_UP_CANNON.get();
 	}
-	
+
 	public void updateBlockstate() {
 		Block block = this.getSimplifiedBlock();
 		if (this.getBlockState().getBlock() != block) {
@@ -245,7 +273,7 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 			newLayered.baseMaterial = this.baseMaterial;
 			newLayered.currentFacing = newState.getValue(FACING);
 			newLayered.setChanged();
-			
+
 			for (Direction dir : Iterate.directions) {
 				BlockPos pos1 = newLayered.worldPosition.relative(dir);
 				BlockEntity be1 = newLayered.level.getBlockEntity(pos1);
@@ -264,23 +292,25 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 			}
 		}
 	}
-	
+
 	public void setLayerConnectedTo(Direction direction, CannonCastShape shape, boolean connected) {
 		if (!this.layeredBlocks.containsKey(shape)) return;
-		if (connected) this.layersConnectedTowards.put(direction, shape); 
+		if (connected) this.layersConnectedTowards.put(direction, shape);
 		else this.layersConnectedTowards.remove(direction, shape);
 	}
-	
+
 	public boolean isLayerConnectedTo(Direction direction, CannonCastShape shape) {
 		return this.layersConnectedTowards.get(direction).contains(shape);
 	}
-	
-	public boolean isEmpty() { return this.layeredBlocks.isEmpty(); }
-	
+
+	public boolean isEmpty() {
+		return this.layeredBlocks.isEmpty();
+	}
+
 	public Collection<CannonCastShape> getConnectedTo(Direction direction) {
 		return this.layersConnectedTowards.get(direction);
 	}
-	
+
 	public boolean isCollidingWith(StructureBlockInfo info, LayeredBigCannonBlockEntity other, Direction dir) {
 		if (this.currentFacing == null || dir.getAxis() != this.currentFacing.getAxis()) return true;
 		if (info.nbt == null || !info.nbt.contains("id")) return true;
@@ -290,19 +320,19 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		set.retainAll(set1);
 		return !set.isEmpty();
 	}
-	
+
 	@Override
-	public void addBehaviours(List<TileEntityBehaviour> behaviours) {
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
 		behaviours.add(this.cannonBehavior = new BigCannonBehavior(this, this::canLoadBlock));
 		behaviours.add(new TransportedItemStackHandlerBehaviour(this, this::clockCallback));
 	}
-	
-	private void clockCallback(float maxDistanceFromCenter, Function<TransportedItemStack, TransportedResult> func) {
-		this.clockStack.processedBy = Type.NONE;
+
+	private void clockCallback(float maxDistanceFromCenter, Function<TransportedItemStack, TransportedItemStackHandlerBehaviour.TransportedResult> func) {
+		this.clockStack.processedBy = FanProcessing.Type.NONE;
 		func.apply(this.clockStack);
 		this.clockStack.processingTime = -1;
 	}
-	
+
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
 		super.write(tag, clientPacket);
@@ -322,10 +352,10 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 			if (!this.layersConnectedTowards.containsKey(dir)) continue;
 			layerConnectionTag.put(dir.getSerializedName(),
 				this.layersConnectedTowards.get(dir).stream()
-				.map(CBCRegistries.CANNON_CAST_SHAPES::getKey)
-				.map(ResourceLocation::toString)
-				.map(StringTag::valueOf)
-				.collect(Collectors.toCollection(ListTag::new)));
+					.map(CBCRegistries.CANNON_CAST_SHAPES::getKey)
+					.map(ResourceLocation::toString)
+					.map(StringTag::valueOf)
+					.collect(Collectors.toCollection(ListTag::new)));
 		}
 		tag.put("LayerConnections", layerConnectionTag);
 		if (this.currentFacing != null) {
@@ -333,12 +363,12 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 		}
 		if (this.completionProgress > 0) tag.putInt("Progress", this.completionProgress);
 	}
-	
+
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
 		boolean justBored = tag.contains("JustBored");
-		
+
 		this.layersConnectedTowards.clear();
 		CompoundTag layerConnectionTag = tag.getCompound("LayerConnections");
 		for (Direction dir : Iterate.directions) {
@@ -348,25 +378,29 @@ public class LayeredBigCannonBlockEntity extends SmartTileEntity implements IBig
 				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(connections.getString(i)));
 				if (shape != null) this.layersConnectedTowards.put(dir, shape);
 			}
-		}		
-		
+		}
+
 		if (justBored) {
 			tag.remove("JustBored");
 			return;
 		}
-		
-		this.baseMaterial = tag.contains("Material") ? BigCannonMaterial.fromName(new ResourceLocation(tag.getString("Material"))) : null;
+
+		this.baseMaterial = tag.contains("Material") ? BigCannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("Material"))) : null;
+		if (this.baseMaterial == null) this.baseMaterial = CBCBigCannonMaterials.STEEL;
 		this.layeredBlocks.clear();
 		ListTag layers = tag.getList("Layers", Tag.TAG_COMPOUND);
 		for (int i = 0; i < layers.size(); ++i) {
 			CompoundTag entry = layers.getCompound(i);
 			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(entry.getString("Shape"))),
-					Registry.BLOCK.get(new ResourceLocation(entry.getString("Block"))));
+				Registry.BLOCK.get(new ResourceLocation(entry.getString("Block"))));
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;
 		this.completionProgress = tag.getInt("Progress");
 	}
-	
-	@Override public boolean canLoadBlock(StructureBlockInfo blockInfo) { return false; }
+
+	@Override
+	public boolean canLoadBlock(StructureBlockInfo blockInfo) {
+		return false;
+	}
 
 }

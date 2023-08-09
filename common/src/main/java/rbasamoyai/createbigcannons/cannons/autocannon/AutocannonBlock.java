@@ -1,16 +1,23 @@
 package rbasamoyai.createbigcannons.cannons.autocannon;
 
+import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
 public interface AutocannonBlock {
@@ -71,7 +78,7 @@ public interface AutocannonBlock {
         }
     }
 
-    public static void onPlace(Level level, BlockPos pos) {
+    static void onPlace(Level level, BlockPos pos) {
         if (!(level instanceof ServerLevel slevel)) return;
         BlockState state = level.getBlockState(pos);
         if (!(state.getBlock() instanceof AutocannonBlock cBlock)) return;
@@ -126,5 +133,11 @@ public interface AutocannonBlock {
 
         be.setChanged();
     }
+
+	default <T extends BlockEntity & IAutocannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
+			Direction side, InteractionHand interactionHand, Level level, MountedAutocannonContraption cannon, T be,
+			StructureBlockInfo info, AbstractContraptionEntity entity) {
+		return false;
+	}
 
 }

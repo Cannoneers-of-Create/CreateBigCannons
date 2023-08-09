@@ -4,9 +4,10 @@
   "package": "rbasamoyai.createbigcannons.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "KeyboardHandlerMixin",
-    "KeyMappingAccessor",
-    "MouseHandlerMixin"
+    "client.FabricFluidBuilderClientMixin",
+    "client.KeyboardHandlerMixin",
+    "client.KeyMappingAccessor",
+    "client.MouseHandlerMixin"
   ],
   "mixins": [
     "AbstractCannonProjectileMixin",
@@ -15,7 +16,7 @@
     "CreateInitMixin",
     "MountedAutocannonContraptionMixin",
     "PitchOrientedContraptionEntityMixin",
-    "QuickfiringBreechPointMixin"
+    "CannonMountPointMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -7,10 +7,12 @@
     "client.AbstractMountedCannonContraptionMixin",
     "client.HumanoidPoseMixin",
     "client.PitchOrientedContraptionEntityMixin",
-    "client.PoleContraptionMixin"
+    "client.PoleContraptionMixin",
+    "client.PonderRegistryMixin"
   ],
   "mixins": [
     "AllSoundEventsMixin",
+    "ArmorStandMixin",
     "BearingCannonDrillFinderMixin",
     "BeltTileEntityMixin",
     "EntityMixin",

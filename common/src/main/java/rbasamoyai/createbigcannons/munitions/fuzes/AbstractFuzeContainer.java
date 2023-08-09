@@ -5,8 +5,9 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.ItemStack;
+import rbasamoyai.createbigcannons.base.SimpleValueContainer;
 
-public abstract class AbstractFuzeContainer extends AbstractContainerMenu {
+public abstract class AbstractFuzeContainer extends AbstractContainerMenu implements SimpleValueContainer {
 
 	protected final ContainerData data;
 
@@ -24,28 +25,6 @@ public abstract class AbstractFuzeContainer extends AbstractContainerMenu {
 	public ItemStack getStackToRender() { return this.stackToRender; }
 
 	@Override public boolean stillValid(Player player) { return true; }
-
-	protected static class ServerData implements ContainerData {
-		private final ItemStack stack;
-		private final String tag;
-
-		public ServerData(ItemStack stack, String tag) {
-			this.stack = stack;
-			this.tag = tag;
-		}
-
-		@Override
-		public int get(int index) {
-			return index == 0 ? this.stack.getOrCreateTag().getInt(this.tag) : 1;
-		}
-
-		@Override
-		public void set(int index, int value) {
-			if (index == 0) this.stack.getOrCreateTag().putInt(this.tag, value);
-		}
-
-		@Override public int getCount() { return 1; }
-	}
 
 
 }

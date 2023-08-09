@@ -1,7 +1,9 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
-import com.simibubi.create.foundation.block.ITE;
+import com.simibubi.create.foundation.block.IBE;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -13,9 +15,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends ProjectileBlock implements ITE<T> {
+public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends ProjectileBlock implements IBE<T> {
 
 	protected FuzedProjectileBlock(Properties properties) {
 		super(properties);
@@ -24,13 +27,16 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 	protected static ItemStack getFuze(BlockEntity blockEntity) {
 		return blockEntity instanceof FuzedBlockEntity fuzed ? fuzed.getItem(0) : ItemStack.EMPTY;
 	}
-	
+
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
-		if (result.getDirection() != state.getValue(FACING) || hand == InteractionHand.OFF_HAND) return InteractionResult.PASS;
+		Direction fuzeFace = state.getValue(FACING);
+		if (this.isBaseFuze()) fuzeFace = fuzeFace.getOpposite();
+		if (result.getDirection() != fuzeFace || hand == InteractionHand.OFF_HAND)
+			return InteractionResult.PASS;
 
-		return this.onTileEntityUse(level, pos, be -> {
+		return this.onBlockEntityUse(level, pos, be -> {
 			ItemStack stack1 = be.getItem(0);
 			if (stack.isEmpty() && !stack1.isEmpty()) {
 				if (!level.isClientSide) {
@@ -64,5 +70,7 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 			return InteractionResult.PASS;
 		});
 	}
-	
+
+	public boolean isBaseFuze() { return MunitionPropertiesHandler.getProperties(this.getAssociatedEntityType()).baseFuze(); }
+
 }

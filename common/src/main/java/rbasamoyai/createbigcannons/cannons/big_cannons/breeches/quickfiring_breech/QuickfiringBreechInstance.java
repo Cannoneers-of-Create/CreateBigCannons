@@ -10,6 +10,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,21 +40,21 @@ public class QuickfiringBreechInstance extends BlockEntityInstance<QuickfiringBr
 		if (this.blockRotation == Direction.DOWN) this.blockRotation = Direction.UP;
 
 		this.breechblock = this.materialManager.defaultSolid()
-				.material(Materials.ORIENTED)
-				.getModel(getPartialModelForState(this.blockState), this.blockState, this.blockRotation)
-				.createInstance();
+			.material(Materials.ORIENTED)
+			.getModel(getPartialModelForState(this.blockState), this.blockState, this.blockRotation)
+			.createInstance();
 
 		this.shaft = this.materialManager.defaultSolid()
-				.material(Materials.ORIENTED)
-				.getModel(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, axis))
-				.createInstance();
+			.material(Materials.ORIENTED)
+			.getModel(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, axis))
+			.createInstance();
 
 		this.direction = facing.getCounterClockWise(this.blockRotation.getAxis());
 
 		this.lever = this.materialManager.defaultSolid()
-				.material(Materials.ORIENTED)
-				.getModel(CBCBlockPartials.QUICKFIRING_BREECH_LEVER, this.blockState, this.direction)
-				.createInstance();
+			.material(Materials.ORIENTED)
+			.getModel(CBCBlockPartials.QUICKFIRING_BREECH_LEVER, this.blockState, this.direction)
+			.createInstance();
 
 		boolean alongFirst = this.blockState.getValue(QuickfiringBreechBlock.AXIS);
 		if (facing.getAxis().isHorizontal() && !alongFirst) {
@@ -105,7 +106,7 @@ public class QuickfiringBreechInstance extends BlockEntityInstance<QuickfiringBr
 
 	private static PartialModel getPartialModelForState(BlockState state) {
 		return state.getBlock() instanceof BigCannonBlock cBlock ? CBCBlockPartials.breechblockFor(cBlock.getCannonMaterial())
-				: CBCBlockPartials.CAST_IRON_SLIDING_BREECHBLOCK;
+			: CBCBlockPartials.CAST_IRON_SLIDING_BREECHBLOCK;
 	}
 
 	private static Direction.Axis getRotationAxis(BlockState state) {

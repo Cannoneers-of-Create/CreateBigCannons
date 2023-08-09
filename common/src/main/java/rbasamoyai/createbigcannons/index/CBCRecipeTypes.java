@@ -1,10 +1,16 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.simibubi.create.content.contraptions.processing.ProcessingRecipeBuilder.ProcessingRecipeFactory;
-import com.simibubi.create.content.contraptions.processing.ProcessingRecipeSerializer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import javax.annotation.Nullable;
+
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
+import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.recipe.IRecipeTypeInfo;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -12,20 +18,29 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.foundry.MeltingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.AutocannonAmmoContainerFillingDeployerRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationDeployerRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationRecipe;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
-
-import javax.annotation.Nullable;
-import java.util.function.Supplier;
 
 public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
 	MELTING(MeltingRecipe::new),
-	MUNITION_FUZING(() -> new SimpleRecipeSerializer<>(MunitionFuzingRecipe::new), () -> RecipeType.CRAFTING, false),
-	CARTRIDGE_ASSEMBLY(() -> new SimpleRecipeSerializer<>(CartridgeAssemblyRecipe::new), () -> RecipeType.CRAFTING, false),
-	BIG_CARTRIDGE_FILLING(() -> new SimpleRecipeSerializer<>(BigCartridgeFillingRecipe::new), () -> RecipeType.CRAFTING, false);
+	MUNITION_FUZING(noSerializer(MunitionFuzingRecipe::new)),
+	CARTRIDGE_ASSEMBLY(noSerializer(CartridgeAssemblyRecipe::new)),
+	BIG_CARTRIDGE_FILLING(noSerializer(BigCartridgeFillingRecipe::new)),
+	BIG_CARTRIDGE_FILLING_DEPLOYER(noSerializer(r -> new BigCartridgeFillingDeployerRecipe())),
+	MUNITION_FUZING_DEPLOYER(noSerializer(r -> new MunitionFuzingDeployerRecipe())),
+	CARTRIDGE_ASSEMBLY_DEPLOYER(noSerializer(r -> new CartridgeAssemblyDeployerRecipe())),
+	TRACER_APPLICATION(noSerializer(TracerApplicationRecipe::new)),
+	TRACER_APPLICATION_DEPLOYER(noSerializer(r -> new TracerApplicationDeployerRecipe())),
+	AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER(noSerializer(r -> new AutocannonAmmoContainerFillingDeployerRecipe()));
 
 	private final ResourceLocation id;
 	private final Supplier<RecipeSerializer<?>> serializerObject;
@@ -56,7 +71,7 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 		IndexPlatform.registerRecipeType(this.id, this.type);
 	}
 
-	CBCRecipeTypes(ProcessingRecipeFactory<?> processingFactory) {
+	CBCRecipeTypes(ProcessingRecipeBuilder.ProcessingRecipeFactory<?> processingFactory) {
 		this(() -> new ProcessingRecipeSerializer<>(processingFactory));
 	}
 
@@ -69,22 +84,29 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 			}
 		};
 	}
-	
-	@Override public ResourceLocation getId() {
+
+	@Override
+	public ResourceLocation getId() {
 		return id;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends RecipeSerializer<?>> T getSerializer() {
 		return (T) serializerObject.get();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends RecipeType<?>> T getType() {
 		return (T) type.get();
 	}
-	
-	public static void register() {}
+
+	public static void register() {
+	}
+
+	private static <T extends Recipe<?>> NonNullSupplier<RecipeSerializer<?>> noSerializer(Function<ResourceLocation, T> prov) {
+		return () -> new SimpleRecipeSerializer<>(prov);
+	}
+
 }

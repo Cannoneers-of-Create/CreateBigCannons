@@ -8,8 +8,9 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
+import javax.annotation.Nonnull;
+
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 
 import java.util.Deque;
 import java.util.Iterator;
@@ -27,7 +28,7 @@ public class AutocannonBreechInterface extends SnapshotParticipant<AutocannonBre
 		this.views[1] = new AutocannonBreechSlotView(this, false);
 	}
 
-	public boolean isItemValid(@NotNull ItemStack stack) { return stack.getItem() instanceof AutocannonCartridgeItem; }
+	public boolean isItemValid(@Nonnull ItemStack stack) { return stack.getItem() instanceof AutocannonAmmoItem; }
 
 	@Override
 	public long insert(ItemVariant resource, long maxAmount, TransactionContext transaction) {
@@ -64,9 +65,11 @@ public class AutocannonBreechInterface extends SnapshotParticipant<AutocannonBre
 
 	@Override protected void readSnapshot(BreechSnapshot snapshot) { snapshot.apply(this); }
 
+	@Nonnull
 	public ItemStack getStack(boolean isInput) {
 		if (isInput) {
-			return !this.breech.isInputFull() ? ItemStack.EMPTY : this.breech.getInputBuffer().peekLast();
+			Deque<ItemStack> inputBuffer = this.breech.getInputBuffer();
+			return this.breech.isInputFull() && !inputBuffer.isEmpty() ? inputBuffer.peekLast() : ItemStack.EMPTY;
 		}
 		return this.breech.getOutputBuffer();
 	}

@@ -5,7 +5,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CBCBlockPartialsGen extends BlockModelProvider {
@@ -39,7 +39,7 @@ public class CBCBlockPartialsGen extends BlockModelProvider {
 		}
 	}
 
-	@NotNull
+	@Nonnull
 	@Override
 	public String getName() {
 		return "CBC Block Partials";

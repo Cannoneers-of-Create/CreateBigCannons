@@ -49,7 +49,7 @@
   "block.createbigcannons.cannon.tooltip.strength.goggles": "_%s 个发射药_",
   "block.createbigcannons.cannon.tooltip.strength.unlimited": "无限",
   "block.createbigcannons.cannon.tooltip.weightImpact": "重量影响",
-  "block.createbigcannons.cannon.tooltip.weightImpact.goggles": "_%sx RPM_",
+  "block.createbigcannons.cannon.tooltip.weightImpact.goggles": "%sx 转速",
   "block.createbigcannons.cannon_builder": "火炮构建器",
   "block.createbigcannons.cannon_builder_head": "火炮构建器头",
   "block.createbigcannons.cannon_carriage": "火炮炮架",

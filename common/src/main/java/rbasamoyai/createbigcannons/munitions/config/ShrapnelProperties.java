@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.munitions.config;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import net.minecraft.network.FriendlyByteBuf;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 import java.util.function.Function;
@@ -33,6 +35,15 @@ public record ShrapnelProperties(double damage, double spread, int count) {
 		obj.addProperty("count", this.count);
 
 		return obj;
+	}
+
+	public void writeBuf(FriendlyByteBuf buf) {
+		buf.writeDouble(this.damage).writeDouble(this.spread);
+		buf.writeVarInt(this.count);
+	}
+
+	public static ShrapnelProperties readBuf(FriendlyByteBuf buf) {
+		return new ShrapnelProperties(buf.readDouble(), buf.readDouble(), buf.readVarInt());
 	}
 
 }

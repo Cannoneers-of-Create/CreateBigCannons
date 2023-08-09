@@ -5,7 +5,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraftforge.fluids.FluidAttributes;
-import org.jetbrains.annotations.NotNull;
+import javax.annotation.Nonnull;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
@@ -19,7 +19,7 @@ public abstract class CBCFlowingFluidMixin extends FlowingFluid {
 	@Shadow @Final protected SoundEvent fillSound;
 	@Shadow @Final protected SoundEvent emptySound;
 
-	@NotNull
+	@Nonnull
 	@Override
 	protected FluidAttributes createAttributes() {
 		return FluidAttributes.builder(this.stillTex, this.flowingTex)

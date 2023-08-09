@@ -1,9 +1,12 @@
 package rbasamoyai.createbigcannons.forge.munitions.fluid_shell;
 
-import com.simibubi.create.content.contraptions.fluids.actors.GenericItemFilling;
-import com.simibubi.create.content.contraptions.processing.EmptyingByBasin;
+import java.util.List;
+
+import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
+import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.utility.Pair;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,8 +27,6 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellProjectile;
-
-import java.util.List;
 
 public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 
@@ -53,8 +54,8 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 	protected void setFluidShellStack(FluidShellProjectile shell) {
 		FluidStack fstack = this.tank.getFluid();
 		shell.setFluidStack(fstack.isEmpty()
-				? EndFluidStack.EMPTY
-				: new EndFluidStack(fstack.getFluid(), fstack.getAmount(), fstack.getOrCreateTag()));
+			? EndFluidStack.EMPTY
+			: new EndFluidStack(fstack.getFluid(), fstack.getAmount(), fstack.getOrCreateTag()));
 	}
 
 	@Override
@@ -67,16 +68,16 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 
 	@Override
 	public boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
-		if (this.hasFuze() || !EmptyingByBasin.canItemBeEmptied(worldIn, heldItem)) return false;
+		if (this.hasFuze() || !GenericItemEmptying.canItemBeEmptied(worldIn, heldItem)) return false;
 		if (worldIn.isClientSide) return true;
 
-		Pair<FluidStack, ItemStack> emptyingResult = EmptyingByBasin.emptyItem(worldIn, heldItem, true);
+		Pair<FluidStack, ItemStack> emptyingResult = GenericItemEmptying.emptyItem(worldIn, heldItem, true);
 		FluidStack fluidStack = emptyingResult.getFirst();
 
 		if (fluidStack.getAmount() != this.tank.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE)) return false;
 
 		ItemStack copyOfHeld = heldItem.copy();
-		emptyingResult = EmptyingByBasin.emptyItem(worldIn, copyOfHeld, false);
+		emptyingResult = GenericItemEmptying.emptyItem(worldIn, copyOfHeld, false);
 		this.tank.fill(fluidStack, IFluidHandler.FluidAction.EXECUTE);
 
 		if (!player.isCreative()) {

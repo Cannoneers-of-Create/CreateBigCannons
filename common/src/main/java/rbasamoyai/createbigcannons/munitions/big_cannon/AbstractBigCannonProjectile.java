@@ -1,23 +1,29 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
+import javax.annotation.Nullable;
+
 import com.mojang.math.Constants;
+
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
-import rbasamoyai.createbigcannons.base.CBCCommonEvents;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 public abstract class AbstractBigCannonProjectile extends AbstractCannonProjectile {
 
-	protected AbstractBigCannonProjectile(EntityType<? extends AbstractBigCannonProjectile> type, Level level) { super(type, level); }
+	protected AbstractBigCannonProjectile(EntityType<? extends AbstractBigCannonProjectile> type, Level level) {
+		super(type, level);
+	}
 
 	@Override
 	protected void onTickRotate() {
@@ -38,20 +44,24 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 
 	public abstract BlockState getRenderedBlockState();
 
-	@Nullable @Override protected ParticleOptions getTrailParticles() { return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE; }
+	@Nullable
+	@Override
+	protected ParticleOptions getTrailParticles() {
+		return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
+	}
 
 	@Override
 	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
-		double startMass = this.getProjectileMass();
+		double mass = this.getProjectileMass();
 		Vec3 curVel = this.getDeltaMovement();
 		double mag = curVel.length();
-		double curPom = startMass * mag;
+		double bonus = 1 + Math.max(0, (mag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
+			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
 
-		double hardness = BlockHardnessHandler.getHardness(state);
-		this.setProjectileMass((float) Math.max(startMass - hardness, 0));
-		this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
+		double hardness = BlockHardnessHandler.getHardness(state) / bonus;
+		this.setProjectileMass((float) Math.max(mass - hardness, 0));
 
-		CBCCommonEvents.onCannonBreakBlock(this.level, result.getBlockPos());
+		if (!level.isClientSide()) this.level.destroyBlock(result.getBlockPos(), false);
 	}
 
 	@Override
@@ -62,6 +72,11 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	@Override
 	protected boolean canBounceOffOf(BlockState state) {
 		return super.canBounceOffOf(state) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.bigCannonDeflectChance.getF();
+	}
+
+	@Override
+	protected DamageSource getEntityDamage() {
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".big_cannon_projectile", this, null);
 	}
 
 }

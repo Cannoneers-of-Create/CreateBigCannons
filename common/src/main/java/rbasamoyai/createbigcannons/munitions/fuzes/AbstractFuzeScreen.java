@@ -1,13 +1,14 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
 import com.simibubi.create.foundation.gui.AllIcons;
-import com.simibubi.create.foundation.gui.container.AbstractSimiContainerScreen;
+import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
-import rbasamoyai.createbigcannons.network.ServerboundSetFuzePacket;
+import rbasamoyai.createbigcannons.network.ServerboundSetContainerValuePacket;
 
 public abstract class AbstractFuzeScreen<T extends AbstractFuzeContainer> extends AbstractSimiContainerScreen<T> {
 
@@ -15,7 +16,9 @@ public abstract class AbstractFuzeScreen<T extends AbstractFuzeContainer> extend
 	protected int lastUpdated = -1;
 	protected IconButton confirmButton;
 
-	protected AbstractFuzeScreen(T container, Inventory inv, Component title) { super(container, inv, title); }
+	protected AbstractFuzeScreen(T container, Inventory inv, Component title) {
+		super(container, inv, title);
+	}
 
 	protected abstract ScrollInput getScrollInput();
 
@@ -62,7 +65,7 @@ public abstract class AbstractFuzeScreen<T extends AbstractFuzeContainer> extend
 	}
 
 	private void updateServer() {
-		NetworkPlatform.sendToServer(new ServerboundSetFuzePacket(this.getUpdateState()));
+		NetworkPlatform.sendToServer(new ServerboundSetContainerValuePacket(this.getUpdateState()));
 	}
 
 	public abstract int getUpdateState();

@@ -11,7 +11,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCLangGen {
-	
+
 	public static void prepare() {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonBlockOutsideOfWorld", "Cannon assembly area at [%s, %s, %s] is out of bounds");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonTooLarge", "Cannon is longer than the maximum length of %s");
@@ -20,15 +20,18 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "hasIncompleteCannonBlocks", "Cannon block at [%s, %s, %s] has not finished the crafting process");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "noAutocannonBreech", "This cannon requires an autocannon breech to fire");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
-		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "player", "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
-		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "player", "%s was blown out by grapeshot");
-		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("cannon_projectile"), "player", "%s was vaporized by %s");
-		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("traffic_cone"), "player", "%s was struck from heaven above");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("cannon_projectile"), "%s was hit with artillery fire");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("big_cannon_projectile"), "%s was directly killed by a large caliber round");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("machine_gun_fire"), "%s was punctured by machine gun fire");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("machine_gun_fire"), "in_water", "%s was filled with holes by machine gun fire and the sea round them turned pink");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("traffic_cone"), "%s was struck from heaven above");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("molten_metal"), "%s burned in molten metal");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("molten_metal"), "player", "%s burned in molten metal");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %ss %s ticks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.distance", "Detonation Distance: %s blocks");
-		
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.autocannon_ammo_container.tracer_spacing", "Tracer Spacing: Every %s round(s)");
+
 		tooltip(CBCBlocks.SOLID_SHOT)
 		.header("SOLID SHOT")
 		.summary("_High penetrating force._ Best suited for _soft targets_ such as _wooden structures and thin walls_. _Cannot be fuzed and detonated._");
@@ -39,17 +42,17 @@ public class CBCLangGen {
 
 		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges", "Maximum Powder Charges");
 		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges.value", "This mortar stone can handle up to _%s Powder Charges_ (or equivalent) before breaking.");
-		
+
 		tooltip(CBCBlocks.BAG_OF_GRAPESHOT)
 		.header("BAG OF GRAPESHOT")
 		.summary("Contains _grapeshot_, which can damage soft blocks such as _wood_.")
 		.conditionAndBehavior("On Firing", "Releases grapeshot. _Disintegrates upon firing._");
-		
+
 		tooltip(CBCBlocks.HE_SHELL)
 		.header("HIGH EXPLOSIVE (HE) SHELL")
 		.summary("Delivers _explosive_ force to the battlefield.")
 		.conditionAndBehavior("On Detonation", "Explodes with a bit more power than _TNT_.");
-		
+
 		tooltip(CBCBlocks.SHRAPNEL_SHELL)
 		.header("SHRAPNEL SHELL")
 		.summary("Peppers the battlefield with _shrapnel bullets_ when detonated.")
@@ -63,29 +66,29 @@ public class CBCLangGen {
 		.header("ARMOR PIERCING (AP) SHELL")
 		.summary("Can effectively _pierce through blocks_, detonating inside protected structures.")
 		.conditionAndBehavior("On Detonation", "Explodes.");
-		
+
 		tooltip(CBCBlocks.FLUID_SHELL)
 		.header("FLUID SHELL")
 		.summary("Spreads the contained fluid all over the targeted area, with _different effects depending on the fluid_.")
 		.conditionAndBehavior("On Detonation", "Releases its contents.")
 		.conditionAndBehavior("Filling", "The shell can only be filled through _the same face that the fuze is placed on._ If a fuze is present, the shell _cannot be filled._")
 		.conditionAndBehavior("Note", "Some fluids may not have any effect on release. Supported fluids include, but may not be limited to, _water, lava, and liquid potions._");
-		
+
 		tooltip(CBCItems.IMPACT_FUZE)
 		.header("IMPACT FUZE")
 		.summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact.")
 		.conditionAndBehavior("Detonation", "The fuze _may_ detonate on _projectile impact_.");
-		
+
 		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.chance", "Impact Chance");
 		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to detonate.");
 		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.shell_info", "Impact Chance: _%s%%_");
-		
+
 		tooltip(CBCItems.TIMED_FUZE)
 		.header("TIMED FUZE")
 		.summary("Detonates after a _set time_ from launch.")
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Timed Fuze_ menu, where the fuze duration can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile has been in the world for the set time.");
-		
+
 		REGISTRATE.addLang("item", CBCItems.TIMED_FUZE.getId(), "tooltip.shell_info", "Time to Detonate: _%ss %s ticks_");
 		REGISTRATE.addLang("item", CBCItems.TIMED_FUZE.getId(), "tooltip.shell_info.item", "Time to Detonate: %ss %s ticks");
 
@@ -98,20 +101,20 @@ public class CBCLangGen {
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.chance", "Impact Chance");
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to start ticking.");
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.shell_info", "Impact Chance: _%s%%_");
-		
+
 		tooltip(CBCItems.PROXIMITY_FUZE)
 		.header("PROXIMITY FUZE")
 		.summary("Detonates when it _gets close_ to a block.")
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Proximity Fuze_ menu, where the detonation distance can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile gets is within the set range of a block.");
-		
+
 		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info", "Detonation Distance: _%s blocks_");
 		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info.item", "Detonation Distance: %s blocks");
-		
+
 		tooltip(CBCItems.CANNON_CRAFTING_WAND)
 		.header("CANNON CRAFTING WAND")
 		.summary("Use on various cannon crafting processes such as _casting, boring, assembly,_ and _heating_ to _instantly finish_ the process.");
-		
+
 		tooltip(CBCItems.RAM_ROD)
 		.header("RAM ROD")
 		.summary("Used for _manually loading a cannon_ instead of using the Cannon Loader contraption. _Consumes saturation and hunger points_, with more for every block pushed.")
@@ -136,7 +139,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.deployerCanUse", "Can Be Used by Deployers");
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.deployerCanUse.yes", "_Yes_");
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.deployerCanUse.no", "_No_");
-		
+
 		tooltip(CBCItems.WORM)
 		.header("WORM")
 		.summary("Used for _manually extracting munitions from a cannon_ instead of using the Cannon Loader Contraption. _Consumes saturation and hunger points._")
@@ -157,6 +160,18 @@ public class CBCLangGen {
 		.summary("Can be used to shoot out _airborne targets._ Peppers targets with _shrapnel._")
 		.conditionAndBehavior("On Detonation", "Releases _shrapnel_ in its direction. The shrapnel _spreads out over a wide area._");
 
+		tooltip(CBCItems.MACHINE_GUN_ROUND)
+		.header("MACHINE GUN ROUND")
+		.summary("_Cheaper_ autocannon ammunition that is more effective against _entities._");
+
+		tooltip(CBCItems.TRACER_TIP)
+		.header("TRACER TIP")
+		.summary("_Illuminates_ autocannon rounds, making them visible.");
+
+		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("jei_info"), "added_fuze", "+ Fuze");
+		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("jei_info"), "added_power", "+ Power");
+		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("tracer"), "+ Tracer");
+
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.materialProperties", "Cannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength", "Strength");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.goggles", "_%s Powder Charge(s)_");
@@ -168,12 +183,12 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure", "On Failure");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.rupture", "The cannon _ruptures_ on failure.");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.fragment", "The cannon _fragments_ on failure.");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd", "Weak Cannon End");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weakCannonEnd.desc", "Cannons built with this as the closing can only safely handle up to _%s Powder Charge(s)_.");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.breechStrength", "Breech Strength");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.breechStrength.desc", "Cannons built with this as the closing can safely handle up to _%s Powder Charge(s)_ or equivalent.");
 
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.materialProperties", "Autocannon Properties");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxLength", "Maximum Length");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxLength.goggles", "_%s blocks_ (including chamber)");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxBarrelLength", "Maximum Length");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxBarrelLength.goggles", "_%s blocks_ (including breech)");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.weightImpact", "Weight Impact");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.weightImpact.goggles", "_%sx RPM_");
 
@@ -181,17 +196,17 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.dryBore", "The cannon drill requires water to operate");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.tooWeak", "The cannon drill must be operating at the same RPM or faster as the target lathe");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_drill"), "tooltip.none", "The cannon drill did not fail, this should not be displaying");
-		
+
 		REGISTRATE.addLang("block", CreateBigCannons.resource("incomplete_block"), "tooltip.requiredParts", "This block requires the following parts:");
-		
+
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("melting"), "Basin Melting");
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("cannon_casting"), "Cannon Casting");
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("built_up_heating"), "Cannon Building");
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("drill_boring"), "Drill Boring");
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("incomplete_cannon_blocks"), "Incomplete Cannon Blocks");
-		
+
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("added_casting_time"), "Added casting time: %ss");
-		
+
 		REGISTRATE.addLang("block", CreateBigCannons.resource("shell"), "tooltip.fuze", "Fuze:");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("shell"), "tooltip.fuze.none", "(none)");
 
@@ -216,7 +231,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power", "Power");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power.value", "_%s_ / _%s_");
 	}
-	
+
 	private static class TooltipBuilder {
 		private final ResourceLocation loc;
 		private final String type;
@@ -226,24 +241,24 @@ public class CBCLangGen {
 			this.loc = provider.getId();
 			this.type = item ? "item" : "block";
 		}
-		
+
 		public TooltipBuilder header(String enUS) {
 			REGISTRATE.addLang(this.type, this.loc, "tooltip", enUS);
 			return this;
 		}
-		
+
 		public TooltipBuilder summary(String enUS) {
 			REGISTRATE.addLang(this.type, this.loc, "tooltip.summary", enUS);
 			return this;
 		}
-		
+
 		public TooltipBuilder conditionAndBehavior(String enUSCondition, String enUSBehaviour) {
 			REGISTRATE.addLang(this.type, this.loc, String.format("tooltip.condition%d", this.cbCount), enUSCondition);
 			REGISTRATE.addLang(this.type, this.loc, String.format("tooltip.behaviour%d", this.cbCount), enUSBehaviour);
 			this.cbCount++;
 			return this;
 		}
-		
+
 		public TooltipBuilder controlAndAction(String enUSControl, String enUSAction) {
 			REGISTRATE.addLang(this.type, this.loc, String.format("tooltip.control%d", this.caCount), enUSControl);
 			REGISTRATE.addLang(this.type, this.loc, String.format("tooltip.action%d", this.caCount), enUSAction);
@@ -251,13 +266,13 @@ public class CBCLangGen {
 			return this;
 		}
 	}
-	
+
 	private static TooltipBuilder tooltip(BlockEntry<?> provider) {
 		return new TooltipBuilder(provider, false);
 	}
-	
+
 	private static TooltipBuilder tooltip(ItemEntry<?> provider) {
 		return new TooltipBuilder(provider, true);
 	}
-	
+
 }

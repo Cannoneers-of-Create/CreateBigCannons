@@ -1,0 +1,14 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "item": "createbigcannons:autocannon_cartridge_sheet"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:empty_machine_gun_round",
+      "count": 4
+    }
+  ]
+}

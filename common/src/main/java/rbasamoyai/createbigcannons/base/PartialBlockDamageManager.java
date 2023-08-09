@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.base;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -16,11 +17,13 @@ import java.util.Map;
 
 public class PartialBlockDamageManager {
 
-	private Map<BlockPos, Integer> blockDamage;
+	private Map<ResourceKey<Level>, Map<BlockPos, Integer>> blockDamage;
 
 	private PartialBlockDamageSaveData savedata;
 
-	public PartialBlockDamageManager() { cleanUp(); }
+	public PartialBlockDamageManager() {
+		this.cleanUp();
+	}
 
 	public void playerLogin(Player player) {
 		if (player instanceof ServerPlayer splayer) {
@@ -28,12 +31,13 @@ public class PartialBlockDamageManager {
 		}
 	}
 
-	public void playerLogout(Player player) {}
+	public void playerLogout(Player player) {
+	}
 
 	public void levelLoaded(LevelAccessor level) {
 		MinecraftServer server = level.getServer();
-		if (server == null || server.overworld() != level) return;
-		cleanUp();
+		if (server == null) return;
+		this.cleanUp();
 		this.savedata = null;
 		this.loadDamageData(server);
 	}
@@ -49,37 +53,43 @@ public class PartialBlockDamageManager {
 	}
 
 	public void tick(Level level) {
-		if (level.dimension() != Level.OVERWORLD) return;
+		ResourceKey<Level> dimension = level.dimension();
+		if (!this.blockDamage.containsKey(dimension)) return;
+		Map<BlockPos, Integer> levelSet = this.blockDamage.get(dimension);
+		if (levelSet.isEmpty()) {
+			this.blockDamage.remove(dimension);
+			return;
+		}
+		if (level.getGameTime() % 20 != 0) return;
 
-		if (this.blockDamage != null && !this.blockDamage.isEmpty() && level.getGameTime() % 20 == 0) {
-			Map<BlockPos, Integer> newSet = new HashMap<>();
-			for (Iterator<Map.Entry<BlockPos, Integer>> iter = this.blockDamage.entrySet().iterator(); iter.hasNext(); ) {
-				Map.Entry<BlockPos, Integer> entry = iter.next();
-				BlockPos pos = entry.getKey();
+		Map<BlockPos, Integer> newSet = new HashMap<>();
+		for (Iterator<Map.Entry<BlockPos, Integer>> iter = levelSet.entrySet().iterator(); iter.hasNext(); ) {
+			Map.Entry<BlockPos, Integer> entry = iter.next();
+			BlockPos pos = entry.getKey();
 
-				BlockState state = level.getChunkAt(pos).getBlockState(pos);
-				Material mat = state.getMaterial();
-				int oldProgress = entry.getValue();
-				if (mat.isReplaceable() || !mat.isSolid() || state.getDestroySpeed(level, pos) == -1) {
-					if (oldProgress > 0) level.destroyBlockProgress(-1, pos, -1);
+			BlockState state = level.getChunkAt(pos).getBlockState(pos);
+			Material mat = state.getMaterial();
+			int oldProgress = entry.getValue();
+			if (mat.isReplaceable() || !mat.isSolid() || state.getDestroySpeed(level, pos) == -1) {
+				if (oldProgress > 0) level.destroyBlockProgress(-1, pos, -1);
+				iter.remove();
+			} else {
+				int newProgress = oldProgress - 3;
+				if (newProgress <= 0) {
+					level.destroyBlockProgress(-1, pos, -1);
 					iter.remove();
 				} else {
-					int newProgress = oldProgress - 3;
-					if (newProgress <= 0) {
-						level.destroyBlockProgress(-1, pos, -1);
-						iter.remove();
-					} else {
-						newSet.put(entry.getKey(), newProgress);
-					}
-					double hardnessRec = 1 / BlockHardnessHandler.getHardness(state);
-					int oldPart = (int) Math.floor(oldProgress * hardnessRec);
-					int newPart = (int) Math.floor(newProgress * hardnessRec);
-					if (oldPart - newPart > 0) level.destroyBlockProgress(-1, pos, newPart);
+					newSet.put(entry.getKey(), newProgress);
 				}
+				double hardnessRec = 1 / BlockHardnessHandler.getHardness(state);
+				int oldPart = (int) Math.floor(oldProgress * hardnessRec);
+				int newPart = (int) Math.floor(newProgress * hardnessRec);
+				if (oldPart - newPart > 0) level.destroyBlockProgress(-1, pos, newPart);
 			}
-			this.blockDamage.putAll(newSet);
-			this.markDirty();
 		}
+
+		levelSet.putAll(newSet);
+		this.markDirty();
 	}
 
 	public void markDirty() {
@@ -87,22 +97,22 @@ public class PartialBlockDamageManager {
 	}
 
 	public void damageBlock(BlockPos pos, int added, BlockState state, Level level) {
-		if (this.blockDamage != null) {
-			int oldProgress = this.blockDamage.getOrDefault(pos, 0);
-			this.blockDamage.merge(pos, added, Integer::sum);
+		Map<BlockPos, Integer> levelSet = this.blockDamage.computeIfAbsent(level.dimension(), k -> new HashMap<>());
 
-			double hardnessRec = 1 / BlockHardnessHandler.getHardness(state);
-			int oldPart = (int) Math.floor(oldProgress * hardnessRec);
-			int newPart = (int) Math.floor(this.blockDamage.get(pos) * hardnessRec);
+		int oldProgress = levelSet.getOrDefault(pos, 0);
+		levelSet.merge(pos, added, Integer::sum);
 
-			if (newPart >= 10) {
-				CBCCommonEvents.onCannonBreakBlock(level, pos);
-				this.blockDamage.remove(pos);
-			} else if (newPart - oldPart > 0) {
-				level.destroyBlockProgress(-1, pos, newPart);
-			}
-			this.markDirty();
+		double hardnessRec = 1 / BlockHardnessHandler.getHardness(state);
+		int oldPart = (int) Math.floor(oldProgress * hardnessRec);
+		int newPart = (int) Math.floor(levelSet.get(pos) * hardnessRec);
+
+		if (newPart >= 10) {
+			if (!level.isClientSide()) level.destroyBlock(pos, false);
+			levelSet.remove(pos);
+		} else if (newPart - oldPart > 0) {
+			level.destroyBlockProgress(-1, pos, newPart);
 		}
+		this.markDirty();
 	}
 
 }

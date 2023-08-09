@@ -14,21 +14,25 @@
 <h4><strong>What's there?</strong></h4>
 <p>Create Big Cannons (CBC) has:</p>
 <ul>
-<li>Multiblock cannons, built out of various cannon blocks with different materials of different tiers</li>
-<li>Various projectiles to wreak destruction with such as solid shot, high explosive (HE), shrapnel, and more</li>
-<li>Kinetic-powered cannon mechanisms to load and aim your cannons, with dynamic energy requirements</li>
-<li>Different fuze items to set off certain projectiles (mostly just shells) under certain conditions</li>
-<li>A crafting system to build multiblock cannons using Create's kinetic system</li>
+<li>Multiblock big cannons, built out of various cannon blocks with different materials of different tiers</li>
+<li>Multiblock autocannons, for faster fire rate and anti-air capabilties, coming in a variety of materials of different tiers</li>
+<li>A menagerie projectiles to wreak destruction with</li>
+<li>Kinetic-powered cannon mechanisms to load and aim your cannons</li>
+<li>Different fuze items to set off certain projectiles in various ways</li>
+<li>A crafting system to build multiblock cannons using Create's kinetic system and a multiblock casting system</li>
+<li>Loads of configuration, with many configuration options and datapack configurations</li>
 </ul>
 <br>
 <p><img src="https://i.imgur.com/XRI9PmW.png" width="469" height="153"></p>
 <h4><strong>What can I use big cannons for?</strong></h4>
 <p>CBC is mostly meant as a mod for multiplayer PvP servers. Use big cannons to blow up your foes' bases, valuables, and more!</p>
+<p>Compatibility with airship mods such as Valkyrien Skies is supported to varying degrees.</p>
 <br>
 <p>An example of an autoloading cannon (not an autocannon!)</p>
 <p><img src="https://i.imgur.com/vzeKdza.png" width="472" height="250"></p>
 <h4><strong>What dependencies are required?</strong></h4>
-<p><a href="https://www.curseforge.com/minecraft/mc-mods/create" rel="nofollow">Create</a> and <a href="https://www.curseforge.com/minecraft/mc-mods/flywheel" rel="nofollow">Flywheel</a>&nbsp;are required. Additionally, <a href="https://www.curseforge.com/minecraft/mc-mods/create-alloyed" rel="nofollow">Create: Alloyed</a> is an optional dependency if you want to access higher tier cannon materials.</p>
+<p><a href="https://www.curseforge.com/minecraft/mc-mods/create" rel="nofollow">Create</a> is required.</p>
+<p>A mod that adds bronze and steel is needed to access the </p><a href="https://www.curseforge.com/minecraft/mc-mods/create-alloyed" rel="nofollow">Create: Alloyed</a> is an optional dependency if you want to access higher tier cannon materials.</p>
 <p><strong>Will older versions be supported?</strong></p>
 <p>No, although the mod is open source and MIT licensed so feel free to port it yourself.</p>
 <br>

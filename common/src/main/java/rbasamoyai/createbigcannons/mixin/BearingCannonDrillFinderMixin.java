@@ -1,31 +1,35 @@
 package rbasamoyai.createbigcannons.mixin;
 
-import com.simibubi.create.content.contraptions.base.GeneratingKineticTileEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.ControlledContraptionEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.bearing.MechanicalBearingTileEntity;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
+import java.util.List;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.simibubi.create.content.contraptions.ControlledContraptionEntity;
+import com.simibubi.create.content.contraptions.bearing.MechanicalBearingBlockEntity;
+import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillingContraption;
 
-import java.util.List;
+@Mixin(MechanicalBearingBlockEntity.class)
+public abstract class BearingCannonDrillFinderMixin extends GeneratingKineticBlockEntity {
 
-@Mixin(MechanicalBearingTileEntity.class)
-public abstract class BearingCannonDrillFinderMixin extends GeneratingKineticTileEntity {
-	
-	@Shadow protected ControlledContraptionEntity movedContraption;
-	@Shadow protected boolean running;
-	
-	public BearingCannonDrillFinderMixin(BlockEntityType<? extends MechanicalBearingTileEntity> type, BlockPos pos, BlockState state) {
+	@Shadow
+	protected ControlledContraptionEntity movedContraption;
+	@Shadow
+	protected boolean running;
+
+	public BearingCannonDrillFinderMixin(BlockEntityType<? extends MechanicalBearingBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
-	
+
 	@Inject(at = @At("HEAD"), method = "tick", remap = false)
 	public void createbigcannons$tick(CallbackInfo ci) {
 		if (this.level.isClientSide || !this.running || this.movedContraption == null) return;
@@ -37,5 +41,5 @@ public abstract class BearingCannonDrillFinderMixin extends GeneratingKineticTil
 			drillBE.collideWithContraptionToBore(this.movedContraption, false);
 		}
 	}
-	
+
 }

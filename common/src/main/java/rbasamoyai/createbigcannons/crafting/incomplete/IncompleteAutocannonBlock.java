@@ -1,8 +1,13 @@
 package rbasamoyai.createbigcannons.crafting.incomplete;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
@@ -23,12 +28,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AbstractIncompleteAutocannonBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock implements IncompleteWithItemsCannonBlock {
 
@@ -54,13 +55,13 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 	public static IncompleteAutocannonBlock breech(Properties properties, AutocannonMaterial material,
 												   NonNullSupplier<? extends Block> completeBlock, NonNullSupplier<? extends ItemLike> item) {
 		return new IncompleteAutocannonBlock(properties, material, box(4, 0, 4, 12, 16, 12),
-				() -> CannonCastShape.AUTOCANNON_BREECH, completeBlock, item);
+			() -> CannonCastShape.AUTOCANNON_BREECH, completeBlock, item);
 	}
 
 	public static IncompleteAutocannonBlock recoilSpring(Properties properties, AutocannonMaterial material,
 														 NonNullSupplier<? extends Block> completeBlock, NonNullSupplier<? extends ItemLike> item) {
 		return new IncompleteAutocannonBlock(properties, material, box(5, 0, 5, 11, 16, 11),
-				() -> CannonCastShape.AUTOCANNON_RECOIL_SPRING, completeBlock, item);
+			() -> CannonCastShape.AUTOCANNON_RECOIL_SPRING, completeBlock, item);
 	}
 
 	private ItemLike resolveItem() {
@@ -73,7 +74,10 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 		return this.shapes.get(this.getFacing(state));
 	}
 
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
+	@Override
+	public CannonCastShape getCannonShape() {
+		return this.cannonShape.get();
+	}
 
 	@Override
 	public List<ItemLike> requiredItems() {
@@ -84,7 +88,10 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 		return this.requiredItems;
 	}
 
-	@Override public int progress(BlockState state) { return 0; }
+	@Override
+	public int progress(BlockState state) {
+		return 0;
+	}
 
 	protected Block getResultBlock() {
 		if (this.resultBlock == null) this.resultBlock = this.resultBlockSup.get();
@@ -104,7 +111,7 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 		level.playSound(player, pos, SoundEvents.NETHERITE_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
 		if (!level.isClientSide) {
 			if (!player.isCreative()) stack.shrink(1);
-			this.withTileEntityDo(level, pos, cbe -> {
+			this.withBlockEntityDo(level, pos, cbe -> {
 				CannonBehavior behavior = cbe.cannonBehavior();
 				cbe.setRemoved();
 

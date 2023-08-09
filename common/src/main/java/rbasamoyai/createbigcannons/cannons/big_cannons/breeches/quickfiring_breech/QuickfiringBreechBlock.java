@@ -1,13 +1,19 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech;
 
-import com.simibubi.create.content.contraptions.base.DirectionalAxisKineticBlock;
-import com.simibubi.create.content.contraptions.components.structureMovement.AbstractContraptionEntity;
-import com.simibubi.create.content.contraptions.components.structureMovement.ITransformableBlock;
-import com.simibubi.create.content.contraptions.components.structureMovement.StructureTransform;
-import com.simibubi.create.content.contraptions.wrench.IWrenchable;
-import com.simibubi.create.foundation.block.ITE;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+
+import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
+import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.Iterate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -36,7 +42,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBaseBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
@@ -45,11 +51,7 @@ import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.manualloading.HandloadingTool;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
-import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Set;
-
-public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<QuickfiringBreechBlockEntity>, ITransformableBlock, IWrenchable {
+public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<QuickfiringBreechBlockEntity>, ITransformableBlock, IWrenchable {
 
 	public static final BooleanProperty AXIS = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 
@@ -71,19 +73,38 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 		return super.getStateForPlacement(context).setValue(AXIS, context.getNearestLookingDirection().getAxis() == Direction.Axis.Z);
 	}
 
-	@Override public Class<QuickfiringBreechBlockEntity> getTileEntityClass() { return QuickfiringBreechBlockEntity.class; }
-	@Override public BlockEntityType<? extends QuickfiringBreechBlockEntity> getTileEntityType() { return CBCBlockEntities.QUICKFIRING_BREECH.get(); }
+	@Override
+	public Class<QuickfiringBreechBlockEntity> getBlockEntityClass() {
+		return QuickfiringBreechBlockEntity.class;
+	}
 
-	@Override public CannonCastShape getCannonShape() { return CannonCastShape.SLIDING_BREECH; }
+	@Override
+	public BlockEntityType<? extends QuickfiringBreechBlockEntity> getBlockEntityType() {
+		return CBCBlockEntities.QUICKFIRING_BREECH.get();
+	}
 
-	@Override public boolean isComplete(BlockState state) { return true; }
-	@Override public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) { return BigCannonEnd.CLOSED; }
+	@Override
+	public CannonCastShape getCannonShape() {
+		return CannonCastShape.SLIDING_BREECH;
+	}
+
+	@Override
+	public boolean isComplete(BlockState state) {
+		return true;
+	}
+
+	@Override
+	public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) {
+		return BigCannonEnd.CLOSED;
+	}
 
 	@Override
 	public <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
 																							Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
 																							StructureBlockInfo info, AbstractContraptionEntity entity) {
-		if (!(be instanceof QuickfiringBreechBlockEntity breech)) return false;
+		if (((BigCannonBlock) info.state.getBlock()).getFacing(info.state).getAxis() != side.getAxis()
+			|| be.cannonBehavior().isConnectedTo(side)
+			|| !(be instanceof QuickfiringBreechBlockEntity breech)) return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
 
 		Direction pushDirection = side.getOpposite();
@@ -100,7 +121,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 				changed.add(localPos);
 
 				if (breech.getOpenDirection() > 0) {
-					BlockEntity be1 = cannon.presentTileEntities.get(nextPos);
+					BlockEntity be1 = cannon.presentBlockEntities.get(nextPos);
 					if (be1 instanceof IBigCannonBlockEntity cbe1) {
 						StructureBlockInfo info1 = cbe1.cannonBehavior().block();
 						ItemStack extract = info1.state.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
@@ -131,7 +152,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 		if (!breech.isOpen() || breech.onInteractionCooldown()) return false;
 
 		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
-			BlockEntity be1 = cannon.presentTileEntities.get(nextPos);
+			BlockEntity be1 = cannon.presentBlockEntities.get(nextPos);
 			if (!(be1 instanceof IBigCannonBlockEntity cbe1)) return false;
 
 			StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, nextPos, pushDirection);
@@ -142,8 +163,9 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 
 				if (!info1.state.isAir()) {
 					BlockPos posAfter = nextPos.relative(pushDirection);
-					BlockEntity be2 = cannon.presentTileEntities.get(posAfter);
-					if (!(be2 instanceof IBigCannonBlockEntity cbe2) || !cbe2.cannonBehavior().canLoadBlock(info1)) return false;
+					BlockEntity be2 = cannon.presentBlockEntities.get(posAfter);
+					if (!(be2 instanceof IBigCannonBlockEntity cbe2) || !cbe2.cannonBehavior().canLoadBlock(info1))
+						return false;
 					cbe2.cannonBehavior().loadBlock(info1);
 					cbe1.cannonBehavior().removeBlock();
 					changes.add(posAfter);
@@ -192,8 +214,8 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 
 	protected BlockState getConversion(BlockState old) {
 		return this.slidingConversion.get().defaultBlockState()
-				.setValue(FACING, old.getValue(FACING))
-				.setValue(AXIS, old.getValue(AXIS));
+			.setValue(FACING, old.getValue(FACING))
+			.setValue(AXIS, old.getValue(AXIS));
 	}
 
 	@Override
@@ -249,6 +271,9 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements ITE<Qu
 		return InteractionResult.PASS;
 	}
 
-	@Override public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) { return InteractionResult.PASS; }
+	@Override
+	public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
+		return InteractionResult.PASS;
+	}
 
 }

@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -21,10 +22,17 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 	public FluidShellBlock(Properties properties) {
 		super(properties);
 	}
-	
-	@Override public Class<AbstractFluidShellBlockEntity> getTileEntityClass() { return AbstractFluidShellBlockEntity.class; }
-	@Override public BlockEntityType<? extends AbstractFluidShellBlockEntity> getTileEntityType() { return CBCBlockEntities.FLUID_SHELL.get(); }
-	
+
+	@Override
+	public Class<AbstractFluidShellBlockEntity> getBlockEntityClass() {
+		return AbstractFluidShellBlockEntity.class;
+	}
+
+	@Override
+	public BlockEntityType<? extends AbstractFluidShellBlockEntity> getBlockEntityType() {
+		return CBCBlockEntities.FLUID_SHELL.get();
+	}
+
 	@Override
 	public AbstractCannonProjectile getProjectile(Level level, BlockState state, BlockPos pos, BlockEntity blockEntity) {
 		FluidShellProjectile projectile = CBCEntityTypes.FLUID_SHELL.create(level);
@@ -33,13 +41,15 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 		return projectile;
 	}
 
+	@Override public EntityType<?> getAssociatedEntityType() { return CBCEntityTypes.FLUID_SHELL.get(); }
+
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(hand);
 		Direction facing = hit.getDirection();
 		if (facing != state.getValue(FACING) || hand == InteractionHand.OFF_HAND) return InteractionResult.PASS;
 
-		return this.onTileEntityUse(level, pos, shell -> {
+		return this.onBlockEntityUse(level, pos, shell -> {
 			if (!stack.isEmpty()) {
 				if (shell.tryEmptyItemIntoTE(level, player, hand, stack, facing)) return InteractionResult.SUCCESS;
 				if (shell.tryFillItemFromTE(level, player, hand, stack, facing)) return InteractionResult.SUCCESS;

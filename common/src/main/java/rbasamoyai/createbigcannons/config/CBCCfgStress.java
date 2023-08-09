@@ -1,9 +1,14 @@
 package rbasamoyai.createbigcannons.config;
 
-import com.simibubi.create.foundation.block.BlockStressDefaults;
-import com.simibubi.create.foundation.block.BlockStressValues.IStressValueProvider;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
+import com.simibubi.create.content.kinetics.BlockStressDefaults;
+import com.simibubi.create.content.kinetics.BlockStressValues;
 import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;
@@ -11,17 +16,13 @@ import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCDefaultStress;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Supplier;
-
-public class CBCCfgStress extends CBCConfigBase implements IStressValueProvider {
+public class CBCCfgStress extends CBCConfigBase implements BlockStressValues.IStressValueProvider {
 
 	private final Map<ResourceLocation, ConfigValue<Double>> capacities = new HashMap<>();
 	private final Map<ResourceLocation, ConfigValue<Double>> impacts = new HashMap<>();
 
 	@Override
-	protected void registerAll(Builder builder) {
+	public void registerAll(Builder builder) {
 		builder.comment("", Comments.su, Comments.impact)
 			.push("impact");
 		CBCDefaultStress.DEFAULT_IMPACTS.forEach((r, i) -> {

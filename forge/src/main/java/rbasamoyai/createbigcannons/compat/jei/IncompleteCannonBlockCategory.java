@@ -11,22 +11,23 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import rbasamoyai.createbigcannons.compat.common_jei.IncompleteCannonBlockRecipe;
 
 import java.util.List;
 
 public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<IncompleteCannonBlockRecipe> {
-	
+
 	public IncompleteCannonBlockCategory(Info<IncompleteCannonBlockRecipe> info) {
 		super(info);
 	}
-	
+
 	final String[] romans = { "I", "II", "III", "IV", "V", "VI", "-" };
-	
+
 	@Override
 	public void draw(IncompleteCannonBlockRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack stack, double mouseX, double mouseY) {
 		Minecraft mc = Minecraft.getInstance();
 		AllGuiTextures.JEI_LONG_ARROW.render(stack, 54, 44);
-		
+
 		int sz = recipe.ingredients().size();
 		int base = this.getBackground().getWidth() / 2 - 12 * sz + 24;
 		for (int i = 0; i < sz; ++i) {
@@ -37,7 +38,7 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 			mc.font.draw(stack, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
 		}
 	}
-	
+
 	@Override
 	public void setRecipe(IRecipeLayoutBuilder builder, IncompleteCannonBlockRecipe recipe, IFocusGroup focuses) {
 		List<ItemStack> ingredients = recipe.ingredients();
@@ -47,7 +48,7 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 			.addItemStack(ingredients.get(i))
 			.setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1);
 		}
-		
+
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 141, 40)
 		.addItemStack(new ItemStack(recipe.getResultBlock()))
 		.setBackground(CreateRecipeCategory.getRenderedSlot(), -1, -1);
