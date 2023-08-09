@@ -315,7 +315,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		Vec3 vec1 = spawnPos.subtract(centerPos).normalize();
 		Vec3 particlePos = spawnPos.subtract(vec1.scale(1.5));
 
-		float recoilMagnitude = speed;
+		float recoilMagnitude = properties.baseRecoil();
 
 		boolean isTracer = CBCConfigs.SERVER.munitions.allProjectilesAreTracers.get() || round.isTracer(foundProjectile);
 
