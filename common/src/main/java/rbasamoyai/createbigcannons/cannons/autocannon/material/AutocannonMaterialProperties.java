@@ -7,7 +7,7 @@ import net.minecraft.util.GsonHelper;
 
 public record AutocannonMaterialProperties(int maxBarrelLength, float weight, float baseSpread, float spreadReductionPerBarrel,
 										   float baseSpeed, float speedIncreasePerBarrel, int maxSpeedIncreases,
-										   int projectileLifetime) {
+										   int projectileLifetime, float baseRecoil) {
 
 	public static AutocannonMaterialProperties fromJson(JsonObject obj) {
 		int maxBarrelLength = Math.max(1, GsonHelper.getAsInt(obj, "maximum_barrel_length"));
@@ -18,8 +18,9 @@ public record AutocannonMaterialProperties(int maxBarrelLength, float weight, fl
 		float speedIncreasePerBarrel = Math.max(0, GsonHelper.getAsFloat(obj, "speed_increase_per_barrel", 0.5f));
 		int maxSpeedIncreases = Math.max(0, GsonHelper.getAsInt(obj, "max_speed_increases", 2));
 		int projectileLifetime = Math.max(1, GsonHelper.getAsInt(obj, "projectile_lifetime"));
+		float baseRecoil = Math.max(0, GsonHelper.getAsFloat(obj, "base_recoil", 1));
 		return new AutocannonMaterialProperties(maxBarrelLength, weight, baseSpread, spreadReductionPerBarrel, baseSpeed,
-			speedIncreasePerBarrel, maxSpeedIncreases, projectileLifetime);
+			speedIncreasePerBarrel, maxSpeedIncreases, projectileLifetime, baseRecoil);
 	}
 
 	public JsonObject serialize() {
@@ -32,6 +33,7 @@ public record AutocannonMaterialProperties(int maxBarrelLength, float weight, fl
 		obj.addProperty("speed_increase_per_barrel", this.speedIncreasePerBarrel);
 		obj.addProperty("max_speed_increases", this.maxSpeedIncreases);
 		obj.addProperty("projectile_lifetime", this.projectileLifetime);
+		obj.addProperty("base_recoil", this.baseRecoil);
 		return obj;
 	}
 
@@ -43,7 +45,8 @@ public record AutocannonMaterialProperties(int maxBarrelLength, float weight, fl
 			.writeFloat(this.baseSpeed)
 			.writeFloat(this.speedIncreasePerBarrel);
 		buf.writeVarInt(this.maxSpeedIncreases)
-			.writeVarInt(this.projectileLifetime);
+			.writeVarInt(this.projectileLifetime)
+			.writeFloat(this.baseRecoil);
 	}
 
 	public static AutocannonMaterialProperties fromBuf(FriendlyByteBuf buf) {
@@ -55,8 +58,9 @@ public record AutocannonMaterialProperties(int maxBarrelLength, float weight, fl
 		float speedIncreasePerBarrel = buf.readFloat();
 		int maxSpeedIncreases = buf.readVarInt();
 		int projectileLifetime = buf.readVarInt();
+		float baseRecoil = buf.readFloat();
 		return new AutocannonMaterialProperties(maxBarrelLength, weight, baseSpread, spreadReductionPerBarrel, baseSpeed,
-			speedIncreasePerBarrel, maxSpeedIncreases, projectileLifetime);
+			speedIncreasePerBarrel, maxSpeedIncreases, projectileLifetime, baseRecoil);
 	}
 
 }
