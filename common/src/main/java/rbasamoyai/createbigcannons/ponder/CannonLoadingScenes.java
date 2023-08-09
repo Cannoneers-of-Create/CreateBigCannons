@@ -586,7 +586,8 @@ public class CannonLoadingScenes {
 		scene.idle(30);
 
 		scene.overlay.showText(60)
-			.text("Autocannon Ammo Containers are a convenient way to store autocannon ammo and to load autocannons.");
+			.text("Autocannon Ammo Containers are a convenient way to store autocannon ammo and to load autocannons.")
+			.pointAt(util.vector.centerOf(1, 3, 1));
 		scene.idle(75);
 
 		scene.overlay.showText(80)
@@ -719,7 +720,8 @@ public class CannonLoadingScenes {
 
 		scene.overlay.showText(80)
 			.attachKeyFrame()
-			.text("The container can also be filled with deployers.");
+			.text("The container can also be filled with deployers.")
+			.pointAt(util.vector.topOf(deployer));
 		scene.idle(20);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(deployer, Direction.WEST), Pointing.LEFT)
 			.withItem(ammo), 30);
@@ -807,8 +809,9 @@ public class CannonLoadingScenes {
 		scene.world.createItemOnBeltLike(takeDepot, Direction.EAST, filledContainer);
 		scene.idle(30);
 		scene.world.instructArm(arm, Phase.MOVE_TO_OUTPUT, filledContainer, 0);
-		scene.overlay.showText(120)
-			.text("Mechanical Arms can load assembled autocannons with Autocannon Ammo Containers.");
+		scene.overlay.showSelectionWithText(armSel, 120)
+			.text("Mechanical Arms can load assembled autocannons with Autocannon Ammo Containers.")
+			.colored(PonderPalette.GREEN);
 		scene.idle(35);
 		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
 			tag.put("Magazine", filledContainer.save(new CompoundTag()));
