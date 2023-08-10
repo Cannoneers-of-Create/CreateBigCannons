@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
@@ -23,6 +24,7 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientForge::onFovModify);
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
+		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
 	}
 
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
@@ -68,11 +70,20 @@ public class CBCClientForge {
 	}
 
 	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
-		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getPlayer(), evt.getPartialTick());
+		if (CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), (AbstractClientPlayer) evt.getPlayer(), evt.getRenderer(), evt.getPartialTick())
+			&& evt.isCancelable())
+			evt.setCanceled(true);
 	}
 
 	public static void onTextureStitchAtlasPre(TextureStitchEvent.Pre evt) {
 		CBCClientCommon.onTextureAtlasStitchPre(evt::addSprite);
+	}
+
+	public static void onSetupCamera(EntityViewRenderEvent.CameraSetup evt) {
+		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTicks(), evt.getYaw(), evt.getPitch(), evt.getRoll(),
+			evt::setYaw, evt::setPitch, evt::setRoll) && evt.isCancelable()) {
+			evt.setCanceled(true);
+		}
 	}
 
 }
