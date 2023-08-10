@@ -22,6 +22,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
@@ -62,6 +63,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	@Override
 	public BlockState getControllerState() {
 		return this.getBlockState();
+	}
+
+	@Override
+	protected AABB createRenderBoundingBox() {
+		// TODO: based on state for things like upside down mounts
+		return new AABB(this.getBlockPos()).expandTowards(0, 2, 0);
 	}
 
 	@Override

@@ -10,8 +10,10 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,6 +41,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		ScreenEvents.BEFORE_INIT.register(CBCClientFabric::onOpenScreen);
 		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
 		TextureStitchCallback.PRE.register(CBCClientFabric::onTextureAtlasStitchPre);
+		CameraSetupCallback.EVENT.register(CBCClientFabric::onSetupCamera);
 	}
 
 	public static void onParticleRegistry() {
@@ -97,12 +100,19 @@ public class CBCClientFabric implements ClientModInitializer {
 
 	public static boolean onBeforeRender(LivingEntity entity, LivingEntityRenderer<?, ?> renderer, float partialRenderTick,
 									  PoseStack matrixStack, MultiBufferSource buffers, int light) {
-		CBCClientCommon.onPlayerRenderPre(matrixStack, entity, partialRenderTick);
+		if (entity instanceof AbstractClientPlayer cplayer && renderer instanceof PlayerRenderer playerRenderer) {
+			return CBCClientCommon.onPlayerRenderPre(matrixStack, cplayer, playerRenderer, partialRenderTick);
+		}
 		return false;
 	}
 
 	public static void onTextureAtlasStitchPre(TextureAtlas atlas, Consumer<ResourceLocation> cons) {
 		CBCClientCommon.onTextureAtlasStitchPre(cons);
+	}
+
+	public static boolean onSetupCamera(CameraSetupCallback.CameraInfo info) {
+		return CBCClientCommon.onCameraSetup(info.camera, info.partialTicks, info.yaw, info.pitch, info.roll,
+			y -> info.yaw = y, p -> info.pitch = p, r -> info.roll = r);
 	}
 
 }
