@@ -21,42 +21,64 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile> extends EntityRenderer<T> {
 
+	private static final ResourceLocation TEXTURE_LOCATION = CreateBigCannons.resource("textures/entity/shrapnel.png");
+	private static final RenderType RENDER_TYPE = RenderType.entityCutoutNoCull(TEXTURE_LOCATION);
+
     public AutocannonProjectileRenderer(EntityRendererProvider.Context context) { super(context); }
 
     @Override
     public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
-		Vec3 previous = entity.getPreviousPos();
-		Vec3 current = entity.position();
-		Vec3 dir = previous == null ? Vec3.ZERO : current.subtract(previous);
-		boolean flag = dir.lengthSqr() < 1e-4d;
+		if (entity.isTracer()) {
+			Vec3 previous = entity.getPreviousPos();
+			Vec3 current = entity.position();
+			Vec3 dir = previous == null ? Vec3.ZERO : current.subtract(previous);
+			boolean flag = dir.lengthSqr() < 1e-4d;
 
-		float yaw = flag ? entity.getViewYRot(partialTicks) : (float) Math.atan2(dir.x, dir.z) * Mth.RAD_TO_DEG;
-		float pitch = flag ? entity.getViewXRot(partialTicks) : (float) Math.atan2(dir.y, dir.horizontalDistance()) * Mth.RAD_TO_DEG;
-        Quaternion q = Vector3f.YP.rotationDegrees(yaw + 180.0f);
-        Quaternion q1 = Vector3f.XP.rotationDegrees(pitch);
-        q.mul(q1);
+			float yaw = flag ? entity.getViewYRot(partialTicks) : (float) Math.atan2(dir.x, dir.z) * Mth.RAD_TO_DEG;
+			float pitch = flag ? entity.getViewXRot(partialTicks) : (float) Math.atan2(dir.y, dir.horizontalDistance()) * Mth.RAD_TO_DEG;
+			Quaternion q = Vector3f.YP.rotationDegrees(yaw + 180.0f);
+			Quaternion q1 = Vector3f.XP.rotationDegrees(pitch);
+			q.mul(q1);
 
-        poseStack.pushPose();
-		poseStack.mulPose(q);
-		poseStack.translate(0, entity.getBbHeight() / 2, 0);
+			poseStack.pushPose();
+			poseStack.mulPose(q);
+			poseStack.translate(0, entity.getBbHeight() / 2, 0);
 
-		float len = (float) dir.length();
-		PoseStack.Pose lastPose = poseStack.last();
-		Matrix4f pose = lastPose.pose();
-		Matrix3f normal = lastPose.normal();
+			float len = (float) dir.length();
+			PoseStack.Pose lastPose = poseStack.last();
+			Matrix4f pose = lastPose.pose();
+			Matrix3f normal = lastPose.normal();
 
-		// TODO: config tracer color per projectile?
-		VertexConsumer vcons = buffers.getBuffer(RenderType.entityCutout(CreateBigCannons.resource("textures/entity/tracer.png")));
-		renderBox(vcons, pose, normal, 255, 216, 0, len, 1 / 32f);
-		renderBoxInverted(vcons, pose, normal, 255, 80, 0, len, 1.5f / 32f);
+			// TODO: config tracer color per projectile?
+			VertexConsumer vcons = buffers.getBuffer(RenderType.entityCutout(CreateBigCannons.resource("textures/entity/tracer.png")));
+			renderBox(vcons, pose, normal, 255, 216, 0, len, 1 / 32f);
+			renderBoxInverted(vcons, pose, normal, 255, 80, 0, len, 1.5f / 32f);
 
-        poseStack.popPose();
+			poseStack.popPose();
+		} else {
+			poseStack.pushPose();
+			poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
+			poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0f));
+			poseStack.scale(0.5f, 0.5f, 0.5f);
+
+			PoseStack.Pose lastPose = poseStack.last();
+			Matrix4f pose = lastPose.pose();
+			Matrix3f normal = lastPose.normal();
+			VertexConsumer builder = buffers.getBuffer(RENDER_TYPE);
+
+			vertexShrapnel(builder, pose, normal, packedLight, 0.0f, 0, 0, 1);
+			vertexShrapnel(builder, pose, normal, packedLight, 1.0f, 0, 1, 1);
+			vertexShrapnel(builder, pose, normal, packedLight, 1.0f, 1, 1, 0);
+			vertexShrapnel(builder, pose, normal, packedLight, 0.0f, 1, 0, 0);
+
+			poseStack.popPose();
+		}
         super.render(entity, entityYaw, partialTicks, poseStack, buffers, packedLight);
     }
 
     @Override
     public boolean shouldRender(T entity, Frustum frustrum, double x, double y, double z) {
-        return entity.isTracer();
+        return entity.isTracer() || super.shouldRender(entity, frustrum, x, y, z);
     }
 
 	private static void renderBox(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int r, int g,
@@ -162,8 +184,14 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
                 .endVertex();
     }
 
-	private static Vec3 lerpVec(float t, Vec3 start, Vec3 end) {
-		return start.add(end.subtract(start).scale(t));
+	private static void vertexShrapnel(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int packedLight, float x, int y, int u, int v) {
+		builder.vertex(pose, x - 0.5f, (float) y - 0.25f, 0.0f)
+			.color(255, 255, 255, 255)
+			.uv((float) u, (float) v)
+			.overlayCoords(OverlayTexture.NO_OVERLAY)
+			.uv2(packedLight)
+			.normal(normal, 0.0f, 1.0f, 0.0f)
+			.endVertex();
 	}
 
     @Override public ResourceLocation getTextureLocation(T entity) { return null; }
