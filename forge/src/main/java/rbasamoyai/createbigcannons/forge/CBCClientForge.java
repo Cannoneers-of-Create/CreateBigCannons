@@ -1,6 +1,8 @@
 package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -22,22 +24,20 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientForge::onFovModify);
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
+		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
 	}
 
-	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
+	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
 		Minecraft mc = Minecraft.getInstance();
 		CBCClientCommon.onRegisterParticleFactories(mc, mc.particleEngine);
 	}
 
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		CBCClientCommon.onClientSetup();
+		CBCClientCommon.registerKeyMappings(ClientRegistry::registerKeyBinding);
 	}
 
-	public static void registerBindings(RegisterKeyMappingsEvent event) {
-		CBCClientCommon.registerKeyMappings(event::register);
-	}
-
-	public static void getFogColor(ViewportEvent.ComputeFogColor event) {
+	public static void getFogColor(EntityViewRenderEvent.FogColors event) {
 		CBCClientCommon.setFogColor(event.getCamera(), (r, g, b) -> {
 			event.setRed(r);
 			event.setGreen(g);
@@ -45,7 +45,7 @@ public class CBCClientForge {
 		});
 	}
 
-	public static void getFogDensity(ViewportEvent.RenderFog event) {
+	public static void getFogDensity(EntityViewRenderEvent.RenderFogEvent event) {
 		if (!event.isCancelable()) return;
 		float density = CBCClientCommon.getFogDensity(event.getCamera(), event.getFarPlaneDistance());
 		if (density != -1) {
@@ -59,22 +59,31 @@ public class CBCClientForge {
 		CBCClientCommon.onClientGameTick(Minecraft.getInstance());
 	}
 
-	public static void onScrollMouse(InputEvent.MouseScrollingEvent evt) {
+	public static void onScrollMouse(InputEvent.MouseScrollEvent evt) {
 		if (CBCClientCommon.onScrollMouse(Minecraft.getInstance(), evt.getScrollDelta()) && evt.isCancelable()) {
 			evt.setCanceled(true);
 		}
 	}
 
-	public static void onFovModify(ComputeFovModifierEvent evt) {
-		evt.setNewFovModifier(CBCClientCommon.onFovModify(Minecraft.getInstance(), evt.getFovModifier()));
+	public static void onFovModify(FOVModifierEvent evt) {
+		evt.setNewfov(CBCClientCommon.onFovModify(Minecraft.getInstance(), evt.getFov()));
 	}
 
 	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
-		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getEntity(), evt.getPartialTick());
+		if (CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), (AbstractClientPlayer) evt.getPlayer(), evt.getRenderer(), evt.getPartialTick())
+			&& evt.isCancelable())
+			evt.setCanceled(true);
 	}
 
 	public static void onTextureStitchAtlasPre(TextureStitchEvent.Pre evt) {
 		CBCClientCommon.onTextureAtlasStitchPre(evt::addSprite);
+	}
+
+	public static void onSetupCamera(EntityViewRenderEvent.CameraSetup evt) {
+		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTicks(), evt.getYaw(), evt.getPitch(), evt.getRoll(),
+			evt::setYaw, evt::setPitch, evt::setRoll) && evt.isCancelable()) {
+			evt.setCanceled(true);
+		}
 	}
 
 }
