@@ -32,7 +32,12 @@ subprojects {
     repositories {
         mavenCentral()
         maven { url = "https://maven.shedaniel.me/" } // Cloth Config, REI
-        maven { url = "https://dvs1.progwml6.com/files/maven/" } // JEI
+        maven { // JEI
+			url = "https://dvs1.progwml6.com/files/maven/"
+			content {
+				includeGroup("mezz.jei")
+			}
+		}
         maven { url = "https://maven.parchmentmc.org" } // Parchment mappings
         maven { url = "https://maven.quiltmc.org/repository/release" } // Quilt Mappings
         maven { // Flywheel
