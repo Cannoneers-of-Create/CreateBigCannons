@@ -175,7 +175,7 @@ public class CBCClientCommon {
 	}
 
 	private static float lerpFov(Minecraft mc, float fov) {
-		return Mth.lerp(mc.options.fovEffectScale, 1.0F, fov);
+		return Mth.lerp(mc.options.fovEffectScale().get().floatValue(), 1.0F, fov);
 	}
 
 	public static boolean onPlayerRenderPre(PoseStack stack, AbstractClientPlayer player, PlayerRenderer renderer, float partialTicks) {
