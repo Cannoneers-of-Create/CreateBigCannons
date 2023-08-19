@@ -244,10 +244,7 @@ public class CBCTooltip {
 	}
 
 	public static void appendBlockHardnessText(BlockItem item, List<Component> tooltip, TooltipFlag flag) {
-		CBCCfgServer.HardnessToolTipVisibility visibility = CBCConfigs.SERVER.hardness_tooltip.get();
-		if (visibility.equals(CBCCfgServer.HardnessToolTipVisibility.DISABLED) ||
-			(visibility.equals(CBCCfgServer.HardnessToolTipVisibility.ADVANCED) && !flag.isAdvanced()))
-			return;
+		if (!Screen.hasShiftDown()) return;
 		String key = "block." + CreateBigCannons.MOD_ID + ".hardness.tooltip";
 		double hardness = BlockHardnessHandler.getHardness(item.getBlock().defaultBlockState());
 		tooltip.add(new TranslatableComponent(key).withStyle(ChatFormatting.GRAY).append(": " + hardness));
