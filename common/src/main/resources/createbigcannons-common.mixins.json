@@ -19,7 +19,8 @@
     "BeltTileEntityMixin",
     "EntityMixin",
     "FilterItemMixin",
-    "ServerEntityMixin"
+    "ServerEntityMixin",
+    "BlockItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

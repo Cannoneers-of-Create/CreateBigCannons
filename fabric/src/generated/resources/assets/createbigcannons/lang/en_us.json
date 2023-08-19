@@ -89,6 +89,7 @@
   "block.createbigcannons.fluid_shell.tooltip.condition2": "Filling",
   "block.createbigcannons.fluid_shell.tooltip.condition3": "Note",
   "block.createbigcannons.fluid_shell.tooltip.summary": "Spreads the contained fluid all over the targeted area, with _different effects depending on the fluid_.",
+  "block.createbigcannons.hardness.tooltip": "Block Hardness",
   "block.createbigcannons.he_shell": "High Explosive (HE) Shell",
   "block.createbigcannons.he_shell.tooltip": "HIGH EXPLOSIVE (HE) SHELL",
   "block.createbigcannons.he_shell.tooltip.behaviour1": "Explodes with a bit more power than _TNT_.",
