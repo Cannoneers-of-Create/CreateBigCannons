@@ -1,7 +1,14 @@
 package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.*;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraftforge.client.event.ComputeFovModifierEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -13,6 +20,7 @@ public class CBCClientForge {
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
 		modEventBus.addListener(CBCClientForge::onClientSetup);
+		modEventBus.addListener(CBCClientForge::onRegisterKeyMappings);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
 		modEventBus.addListener(CBCClientForge::onTextureStitchAtlasPre);
 
@@ -22,6 +30,7 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientForge::onFovModify);
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
+		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
 	}
 
 	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
@@ -33,7 +42,7 @@ public class CBCClientForge {
 		CBCClientCommon.onClientSetup();
 	}
 
-	public static void registerBindings(RegisterKeyMappingsEvent event) {
+	public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
 		CBCClientCommon.registerKeyMappings(event::register);
 	}
 
@@ -66,15 +75,24 @@ public class CBCClientForge {
 	}
 
 	public static void onFovModify(ComputeFovModifierEvent evt) {
-		evt.setNewFovModifier(CBCClientCommon.onFovModify(Minecraft.getInstance(), evt.getFovModifier()));
+		evt.setNewFovModifier(CBCClientCommon.onFovModify(Minecraft.getInstance(), evt.getNewFovModifier()));
 	}
 
 	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
-		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getEntity(), evt.getPartialTick());
+		if (CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), (AbstractClientPlayer) evt.getEntity(), evt.getRenderer(), evt.getPartialTick())
+			&& evt.isCancelable())
+			evt.setCanceled(true);
 	}
 
 	public static void onTextureStitchAtlasPre(TextureStitchEvent.Pre evt) {
 		CBCClientCommon.onTextureAtlasStitchPre(evt::addSprite);
+	}
+
+	public static void onSetupCamera(ViewportEvent.ComputeCameraAngles evt) {
+		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTick(), evt.getYaw(), evt.getPitch(), evt.getRoll(),
+			evt::setYaw, evt::setPitch, evt::setRoll) && evt.isCancelable()) {
+			evt.setCanceled(true);
+		}
 	}
 
 }
