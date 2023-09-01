@@ -43,6 +43,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges", "Maximum Powder Charges");
 		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges.value", "This mortar stone can handle up to _%s Powder Charges_ (or equivalent) before breaking.");
 
+		REGISTRATE.addLang("block", new ResourceLocation(CreateBigCannons.MOD_ID, "hardness.tooltip"), "Block Hardness");
+
 		tooltip(CBCBlocks.BAG_OF_GRAPESHOT)
 		.header("BAG OF GRAPESHOT")
 		.summary("Contains _grapeshot_, which can damage soft blocks such as _wood_.")
