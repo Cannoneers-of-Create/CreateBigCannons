@@ -57,7 +57,7 @@ dependencies {
 
     // Development QOL
     modLocalRuntime("maven.modrinth:lazydfu:${lazydfu_version}")
-    modLocalRuntime("com.terraformersmc:modmenu:${modmenu_version}")
+    modImplementation("com.terraformersmc:modmenu:${modmenu_version}")
 
     // Recipe Viewers - Create Fabric supports JEI, REI, and EMI.
     // See root gradle.properties to choose which to use at runtime.
@@ -81,14 +81,14 @@ dependencies {
 
 processResources {
     // set up properties for filling into metadata
-    Map<String, String> properties = Map.of(
-            "version", version,
-            "fabric_loader_version", fabric_loader_version,
-            "fabric_api_version", fabric_api_version,
-            "minecraft_version", minecraft_version,
-            "create_version", create_fabric_version // on fabric, use the entire version, unlike forge
-    )
-    properties.forEach((k, v) -> inputs.property(k, v))
+    def properties = [
+            version: version,
+            fabric_loader_version: fabric_loader_version,
+            fabric_api_version: fabric_api_version,
+            minecraft_version: minecraft_version,
+            create_version: create_fabric_version // on fabric, use the entire version, unlike forge
+    ]
+    inputs.properties properties
 
     filesMatching("fabric.mod.json") {
         expand properties

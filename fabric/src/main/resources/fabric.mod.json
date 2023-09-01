@@ -26,6 +26,9 @@
     ],
     "jei_mod_plugin": [
       "rbasamoyai.createbigcannons.compat.jei.CBCJEI"
+    ],
+    "modmenu": [
+      "rbasamoyai.createbigcannons.compat.modmenu.CBCModMenuCompat"
     ]
   },
   "mixins": [

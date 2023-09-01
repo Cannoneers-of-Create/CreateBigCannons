@@ -6,6 +6,10 @@ import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+import com.simibubi.create.foundation.config.ui.BaseConfigScreen;
+
+import net.minecraft.client.gui.screens.Screen;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.simibubi.create.content.kinetics.BlockStressValues;
@@ -69,4 +73,11 @@ public class CBCConfigs {
 				config.onReload();
 	}
 
+	public static BaseConfigScreen createConfigScreen(Screen parent) {
+		BaseConfigScreen.setDefaultActionFor(CreateBigCannons.MOD_ID, (base) ->
+			base.withSpecs(CLIENT.specification, null, SERVER.specification) // not including common since there's nothing there
+				.withTitles("Client Settings", "", "Server Settings")
+		);
+		return new BaseConfigScreen(parent, CreateBigCannons.MOD_ID);
+	}
 }
