@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.cannon_control.effects;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import org.joml.Vector3f;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
@@ -13,6 +12,7 @@ import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class CannonSmokeParticleData implements ParticleOptions, ICustomParticleDataWithSprite<CannonSmokeParticleData> {
@@ -20,9 +20,9 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
 	public static final Codec<CannonSmokeParticleData> CODEC = RecordCodecBuilder.create(i -> i
 		.group(Codec.FLOAT.fieldOf("scale")
 				.forGetter(data -> data.scale),
-			Vector3f.CODEC.fieldOf("startColor")
+			Vec3.CODEC.fieldOf("startColor")
 				.forGetter(data -> data.startColor),
-			Vector3f.CODEC.fieldOf("endColor")
+			Vec3.CODEC.fieldOf("endColor")
 				.forGetter(data -> data.endColor),
 			Codec.INT.fieldOf("shiftTime")
 				.forGetter(data -> data.shiftTime))
@@ -33,8 +33,8 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
 		@Override
 		public CannonSmokeParticleData fromNetwork(ParticleType<CannonSmokeParticleData> type, FriendlyByteBuf buf) {
 			float scale = buf.readFloat();
-			Vector3f startColor = new Vector3f(buf.readFloat(), buf.readFloat(), buf.readFloat());
-			Vector3f endColor = new Vector3f(buf.readFloat(), buf.readFloat(), buf.readFloat());
+			Vec3 startColor = new Vec3(buf.readFloat(), buf.readFloat(), buf.readFloat());
+			Vec3 endColor = new Vec3(buf.readFloat(), buf.readFloat(), buf.readFloat());
 			int shiftTime = buf.readVarInt();
 			return new CannonSmokeParticleData(scale, startColor, endColor, shiftTime);
 		}
@@ -57,16 +57,16 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
 			float bf = reader.readFloat();
 			reader.expect(' ');
 			int shiftTime = reader.readInt();
-			return new CannonSmokeParticleData(scale, new Vector3f(rs, gs, bs), new Vector3f(rf, gf, bf), shiftTime);
+			return new CannonSmokeParticleData(scale, new Vec3(rs, gs, bs), new Vec3(rf, gf, bf), shiftTime);
 		}
 	};
 
 	private final float scale;
-	private final Vector3f startColor;
-	private final Vector3f endColor;
+	private final Vec3 startColor;
+	private final Vec3 endColor;
 	private final int shiftTime;
 
-	public CannonSmokeParticleData(float scale, Vector3f startColor, Vector3f endColor, int shiftTime) {
+	public CannonSmokeParticleData(float scale, Vec3 startColor, Vec3 endColor, int shiftTime) {
 		this.scale = scale;
 		this.startColor = startColor;
 		this.endColor = endColor;
@@ -74,18 +74,18 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
 	}
 
 	public CannonSmokeParticleData() {
-		this(0, Vector3f.ZERO, Vector3f.ZERO, 1);
+		this(0, Vec3.ZERO, Vec3.ZERO, 1);
 	}
 
 	public float scale() {
 		return this.scale;
 	}
 
-	public Vector3f startColor() {
+	public Vec3 startColor() {
 		return this.startColor;
 	}
 
-	public Vector3f endColor() {
+	public Vec3 endColor() {
 		return this.endColor;
 	}
 
@@ -102,13 +102,13 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
 	public void writeToNetwork(FriendlyByteBuf buf) {
 		buf.writeFloat(this.scale);
 
-		buf.writeFloat(this.startColor.x());
-		buf.writeFloat(this.startColor.y());
-		buf.writeFloat(this.startColor.z());
+		buf.writeFloat((float) this.startColor.x());
+		buf.writeFloat((float) this.startColor.y());
+		buf.writeFloat((float) this.startColor.z());
 
-		buf.writeFloat(this.endColor.x());
-		buf.writeFloat(this.endColor.y());
-		buf.writeFloat(this.endColor.z());
+		buf.writeFloat((float) this.endColor.x());
+		buf.writeFloat((float) this.endColor.y());
+		buf.writeFloat((float) this.endColor.z());
 
 		buf.writeVarInt(this.shiftTime);
 	}

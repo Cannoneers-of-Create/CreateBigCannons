@@ -61,7 +61,7 @@ public class BasinFoundryBlockEntity extends BasinOperatingBlockEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.level.isClientSide && (this.currentRecipe == null || this.meltingTime == -1)) {
+		if (!this.getLevel().isClientSide && (this.currentRecipe == null || this.meltingTime == -1)) {
 			--this.recipeCooldown;
 			if (this.recipeCooldown <= 0) {
 				this.running = false;
@@ -73,11 +73,11 @@ public class BasinFoundryBlockEntity extends BasinOperatingBlockEntity {
 			this.recipeCooldown = 0;
 		}
 
-		if (this.running && this.level != null) {
-			if (this.level.isClientSide && this.meltingTime > 0) {
+		if (this.running && this.getLevel() != null) {
+			if (this.getLevel().isClientSide && this.meltingTime > 0) {
 				this.renderParticles();
 			}
-			if (!this.level.isClientSide && this.meltingTime <= 0) {
+			if (!this.getLevel().isClientSide && this.meltingTime <= 0) {
 				this.meltingTime = -1;
 				this.applyBasinRecipe();
 				this.sendData();
@@ -89,19 +89,19 @@ public class BasinFoundryBlockEntity extends BasinOperatingBlockEntity {
 
 	private void renderParticles() {
 		// Code sheepishly stolen from MechanicalMixerTileEntity#spillParticle with modifications
-		float angle = this.level.random.nextFloat() * 360.0f;
+		float angle = this.getLevel().random.nextFloat() * 360.0f;
 		Vec3 offset = new Vec3(0, 0, 0.25f);
 		offset = VecHelper.rotate(offset, angle, Axis.Y);
 		Vec3 target = VecHelper.rotate(offset, -25, Axis.Y).add(0, .5f, 0);
 		Vec3 center = offset.add(Vec3.atBottomCenterOf(this.worldPosition));
-		target = VecHelper.offsetRandomly(target.subtract(offset), this.level.random, 1 / 128f);
-		this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.LAVA.defaultBlockState()), center.x, center.y + 0.3, center.z, target.x, target.y, target.z);
+		target = VecHelper.offsetRandomly(target.subtract(offset), this.getLevel().random, 1 / 128f);
+		this.getLevel().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.LAVA.defaultBlockState()), center.x, center.y + 0.3, center.z, target.x, target.y, target.z);
 	}
 
 	@Override
 	protected boolean updateBasin() {
 		if (this.running) return true;
-		if (this.level == null || this.level.isClientSide) return true;
+		if (this.getLevel() == null || this.getLevel().isClientSide) return true;
 		if (!this.getBasin().filter(BasinBlockEntity::canContinueProcessing).isPresent()) return true;
 
 		List<Recipe<?>> recipes = this.getMatchingRecipes();
@@ -134,7 +134,7 @@ public class BasinFoundryBlockEntity extends BasinOperatingBlockEntity {
 
 	@Override
 	protected Optional<BasinBlockEntity> getBasin() {
-		return this.level != null && this.level.getBlockEntity(this.worldPosition.below()) instanceof BasinBlockEntity basin ? Optional.of(basin) : Optional.empty();
+		return this.getLevel() != null && this.getLevel().getBlockEntity(this.worldPosition.below()) instanceof BasinBlockEntity basin ? Optional.of(basin) : Optional.empty();
 	}
 
 }

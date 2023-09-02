@@ -1,10 +1,12 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -26,7 +28,7 @@ public class ShrapnelRenderer extends EntityRenderer<Shrapnel> {
 	public void render(Shrapnel entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
 		poseStack.pushPose();
 		poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-		poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0f));
+		poseStack.mulPose(Axis.YP.rotationDegrees(180.0f));
 
 		PoseStack.Pose lastPose = poseStack.last();
 		Matrix4f pose = lastPose.pose();

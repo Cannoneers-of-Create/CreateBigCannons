@@ -9,10 +9,10 @@ import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
-import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
-public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity implements FluidTransferable {
+public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity implements SidedStorageBlockEntity {
 
 	protected FluidTank lubricant;
 
@@ -34,7 +34,7 @@ public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity imple
 	}
 
 	protected void onFluidStackChanged(FluidStack newStack) {
-		if (this.hasLevel() && !this.level.isClientSide) {
+		if (this.hasLevel() && !this.getLevel().isClientSide) {
 			this.notifyUpdate();
 		}
 	}

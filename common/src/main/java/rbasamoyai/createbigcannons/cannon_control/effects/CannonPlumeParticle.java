@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.cannon_control.effects;
 
-import org.joml.Vector3f;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -52,7 +51,7 @@ public class CannonPlumeParticle extends NoRenderParticle {
 			if (this.plumesSetting == PlumeSetting.LEGACY) {
 				this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.x, this.y, this.z, vel.x, vel.y, vel.z);
 			} else {
-				this.level.addParticle(new CannonSmokeParticleData(this.scale, new Vector3f(0.85f, 0.85f, 0.85f), new Vector3f(0.75f, 0.75f, 0.75f), 60), this.x, this.y, this.z, vel.x, vel.y, vel.z);
+				this.level.addParticle(new CannonSmokeParticleData(this.scale, new Vec3(0.85, 0.85, 0.85), new Vec3(0.75, 0.75, 0.75), 60), this.x, this.y, this.z, vel.x, vel.y, vel.z);
 			}
 		}
 
@@ -78,7 +77,7 @@ public class CannonPlumeParticle extends NoRenderParticle {
 							.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * scale1))
 							.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * scale1))
 							.scale(0.4f);
-					this.level.addParticle(new CannonSmokeParticleData(this.scale * 0.25f, new Vector3f(1.0f, 96f / 255f, 0.0f), new Vector3f(0.92f, 0.92f, 0.92f), 20), this.x, this.y, this.z, vel.x, vel.y, vel.z);
+					this.level.addParticle(new CannonSmokeParticleData(this.scale * 0.25f, new Vec3(1, 96 / 255.0, 0), new Vec3(0.92, 0.92, 0.92), 20), this.x, this.y, this.z, vel.x, vel.y, vel.z);
 				}
 			}
 		}

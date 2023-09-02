@@ -76,7 +76,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 			.expandTowards(dir.scale(1.75))
 			.inflate(1)
 			.move(location.subtract(projectile.position()));
-		List<Entity> entities = projectile.level.getEntities(projectile, currentMovementRegion, projectile::canHitEntity);
+		List<Entity> entities = projectile.level().getEntities(projectile, currentMovementRegion, projectile::canHitEntity);
 
 		int radius = 2;
 		double scale = 1.5;
@@ -85,7 +85,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 				Vec3 ray = dir.add(right.scale(i * scale)).add(up.scale(j * scale));
 				Vec3 rayEnd = location.add(ray);
 
-				if (projectile.level.clip(new ClipContext(location, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile)).getType() != HitResult.Type.MISS) {
+				if (projectile.level().clip(new ClipContext(location, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile)).getType() != HitResult.Type.MISS) {
 					return true;
 				}
 

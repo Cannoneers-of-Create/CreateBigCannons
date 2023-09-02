@@ -130,7 +130,7 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 						ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, drop);
 						level.addFreshEntity(dropEntity);
 						dropEntity.setNoPickUpDelay();
-						dropEntity.setOwner(player.getUUID());
+						dropEntity.setTarget(player.getUUID());
 					}
 				}
 				autocannon1.setSeatColor(null);
@@ -234,7 +234,7 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 			if (!level.isClientSide) {
 				breech.setMagazine(stack);
 				player.setItemInHand(interactionHand, ItemStack.EMPTY);
-				CBCSoundEvents.PLACE_AUTOCANNON_AMMO_CONTAINER.playOnServer(level, new BlockPos(globalPos));
+				CBCSoundEvents.PLACE_AUTOCANNON_AMMO_CONTAINER.playOnServer(level, BlockPos.containing(globalPos));
 			}
 			changed = true;
 		}

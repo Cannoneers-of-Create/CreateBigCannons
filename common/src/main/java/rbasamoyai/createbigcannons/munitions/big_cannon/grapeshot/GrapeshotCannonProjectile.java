@@ -16,11 +16,11 @@ public class GrapeshotCannonProjectile extends DisintegratingBigCannonProjectile
 	public GrapeshotCannonProjectile(EntityType<? extends GrapeshotCannonProjectile> type, Level level) {
 		super(type, level);
 	}
-	
+
 	@Override
 	protected void disintegrate() {
 		ShrapnelProperties properties = this.getProperties().shrapnel();
-		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.GRAPESHOT.get(), this.position(), this.getDeltaMovement(),
+		Shrapnel.spawnShrapnelBurst(this.level(), CBCEntityTypes.GRAPESHOT.get(), this.position(), this.getDeltaMovement(),
 				properties.count(), properties.spread(), (float) properties.damage());
 	}
 

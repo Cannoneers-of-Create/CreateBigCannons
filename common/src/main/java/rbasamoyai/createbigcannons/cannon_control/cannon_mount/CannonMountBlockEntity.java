@@ -79,7 +79,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 		boolean flag = this.mountedContraption != null && this.mountedContraption.canBeTurnedByController(this);
 
-		if (this.level.isClientSide) {
+		if (this.getLevel().isClientSide) {
 			this.clientYawDiff = flag ? this.clientYawDiff * 0.5f : 0;
 			this.clientPitchDiff = flag ? this.clientPitchDiff * 0.5f : 0;
 		}
@@ -147,7 +147,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 	public void onRedstoneUpdate(boolean assemblyPowered, boolean prevAssemblyPowered, boolean firePowered, boolean prevFirePowered, int firePower) {
 		if (assemblyPowered != prevAssemblyPowered) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(CannonMountBlock.ASSEMBLY_POWERED, assemblyPowered), 3);
+			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonMountBlock.ASSEMBLY_POWERED, assemblyPowered), 3);
 			if (assemblyPowered) {
 				try {
 					this.assemble();
@@ -162,9 +162,9 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 			}
 		}
 		if (firePowered != prevFirePowered) {
-			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(CannonMountBlock.FIRE_POWERED, firePowered), 3);
+			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonMountBlock.FIRE_POWERED, firePowered), 3);
 		}
-		if (this.running && this.mountedContraption != null && this.level instanceof ServerLevel slevel) {
+		if (this.running && this.mountedContraption != null && this.getLevel() instanceof ServerLevel slevel) {
 			((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).onRedstoneUpdate(slevel, this.mountedContraption, firePowered != prevFirePowered, firePower, this);
 		}
 	}
@@ -220,7 +220,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (sup.get() == 0) {
 			speed = 0;
 		}
-		if (this.level.isClientSide) {
+		if (this.getLevel().isClientSide) {
 			speed *= ServerSpeedProvider.get();
 			speed += clientDiff / 3.0f;
 		}
@@ -230,30 +230,30 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	protected void assemble() throws AssemblyException {
 		if (!CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) return;
 		BlockPos assemblyPos = this.worldPosition.above(2);
-		if (this.level.isOutsideBuildHeight(assemblyPos)) {
+		if (this.getLevel().isOutsideBuildHeight(assemblyPos)) {
 			throw cannonBlockOutsideOfWorld(assemblyPos);
 		}
 
 		AbstractMountedCannonContraption mountedCannon = this.getContraption(assemblyPos);
-		if (mountedCannon == null || !mountedCannon.assemble(this.level, assemblyPos)) return;
+		if (mountedCannon == null || !mountedCannon.assemble(this.getLevel(), assemblyPos)) return;
 		Direction facing = this.getBlockState().getValue(CannonMountBlock.HORIZONTAL_FACING);
 		Direction facing1 = mountedCannon.initialOrientation();
 		if (facing.getAxis() != facing1.getAxis() && facing1.getAxis().isHorizontal()) return;
 		this.running = true;
 
-		mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
-		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing1, this);
+		mountedCannon.removeBlocksFromWorld(this.getLevel(), BlockPos.ZERO);
+		PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.getLevel(), mountedCannon, facing1, this);
 		this.mountedContraption = contraptionEntity;
 		this.resetContraptionToOffset();
-		this.level.addFreshEntity(contraptionEntity);
+		this.getLevel().addFreshEntity(contraptionEntity);
 
 		this.sendData();
 
-		AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(this.level, this.worldPosition);
+		AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(this.getLevel(), this.worldPosition);
 	}
 
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
-		net.minecraft.world.level.block.Block block = this.level.getBlockState(pos).getBlock();
+		net.minecraft.world.level.block.Block block = this.getLevel().getBlockState(pos).getBlock();
 		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
 		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
 		return null;
@@ -265,13 +265,13 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 			this.resetContraptionToOffset();
 			this.mountedContraption.save(new CompoundTag()); // Crude refresh of block data
 			this.mountedContraption.disassemble();
-			AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.level, this.worldPosition);
+			AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.getLevel(), this.worldPosition);
 		}
 
 		this.running = false;
 
 		if (this.remove) {
-			CBCBlocks.CANNON_MOUNT.get().playerWillDestroy(this.level, this.worldPosition, this.getBlockState(), null);
+			CBCBlocks.CANNON_MOUNT.get().playerWillDestroy(this.getLevel(), this.worldPosition, this.getBlockState(), null);
 		}
 	}
 
@@ -346,7 +346,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	@Override
 	public void remove() {
 		this.remove = true;
-		if (!this.level.isClientSide) this.disassemble();
+		if (!this.getLevel().isClientSide) this.disassemble();
 		super.remove();
 	}
 
@@ -359,7 +359,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	public void attach(PitchOrientedContraptionEntity contraption) {
 		if (!(contraption.getContraption() instanceof AbstractMountedCannonContraption)) return;
 		this.mountedContraption = contraption;
-		if (!this.level.isClientSide) {
+		if (!this.getLevel().isClientSide) {
 			this.running = true;
 			this.sendData();
 		}
@@ -367,7 +367,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 	@Override
 	public void onStall() {
-		if (!this.level.isClientSide) this.sendData();
+		if (!this.getLevel().isClientSide) this.sendData();
 	}
 
 	@Override

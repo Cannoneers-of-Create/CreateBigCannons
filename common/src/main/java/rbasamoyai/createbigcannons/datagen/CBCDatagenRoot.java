@@ -15,7 +15,9 @@ import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 import rbasamoyai.createbigcannons.ponder.CBCPonderTags;
 
 public class CBCDatagenRoot {
-	public static void register(DataGenerator gen, ExistingFileHelper helper, boolean client, boolean server) {
+
+	public static void register(DataGenerator gen, boolean client, boolean server) {
+		DataGenerator.PackGenerator modDatapack = gen.getBuiltinDatapack(client || server, CreateBigCannons.MOD_ID);
 		if (server) {
 			BlockRecipeProvider.registerAll(gen);
 			CBCCraftingRecipeProvider.register();
@@ -33,4 +35,5 @@ public class CBCDatagenRoot {
 			CBCPonderIndex.registerLang();
 		}
 	}
+
 }

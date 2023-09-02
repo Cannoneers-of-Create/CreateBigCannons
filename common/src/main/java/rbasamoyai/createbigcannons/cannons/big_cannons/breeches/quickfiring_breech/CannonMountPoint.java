@@ -39,7 +39,7 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 
 	@Override
 	protected Vec3 getInteractionPositionVector() {
-		return this.level.getBlockEntity(this.pos) instanceof CannonMountBlockEntity mount ? mount.getInteractionLocation() : super.getInteractionPositionVector();
+		return this.getLevel().getBlockEntity(this.pos) instanceof CannonMountBlockEntity mount ? mount.getInteractionLocation() : super.getInteractionPositionVector();
 	}
 
 	public ItemStack getInsertedResultAndDoSomething(ItemStack stack, boolean simulate, AbstractMountedCannonContraption cannon,
@@ -69,7 +69,7 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 		int barrelLength = 0;
 		while (bigCannon.presentBlockEntities.get(nextPos) instanceof IBigCannonBlockEntity cbe2) {
 			StructureBlockInfo info = cbe2.cannonBehavior().block();
-			if (!info.state.isAir()) return stack;
+			if (!info.state().isAir()) return stack;
 			nextPos = nextPos.relative(pushDirection);
 			++barrelLength;
 		}
@@ -80,14 +80,14 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 
 		if (munition instanceof ProjectileBlock) {
 			if (barrelLength == 0) return stack;
-			if (firstInfo.state.getBlock() instanceof BigCartridgeBlock cartridge) {
+			if (firstInfo.state().getBlock() instanceof BigCartridgeBlock cartridge) {
 				if (!simulate) {
 					loadProjectile(stack, munition, poce, bigCannon);
 					breech.setLoadingCooldown(getLoadingCooldown());
 				}
 				return BigCartridgeBlock.getPowerFromData(firstInfo) == 0 ? cartridge.getExtractedItem(firstInfo) : stack;
 			}
-			if (!firstInfo.state.isAir()) return stack;
+			if (!firstInfo.state().isAir()) return stack;
 			if (!simulate) {
 				loadProjectile(stack, munition, poce, bigCannon);
 				breech.setLoadingCooldown(getLoadingCooldown());
@@ -97,7 +97,7 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 			return copy;
 		}
 		if (munition instanceof BigCartridgeBlock) {
-			if (BigCartridgeBlockItem.getPower(stack) == 0 || !(firstInfo.state.getBlock() instanceof ProjectileBlock))
+			if (BigCartridgeBlockItem.getPower(stack) == 0 || !(firstInfo.state().getBlock() instanceof ProjectileBlock))
 				return stack;
 			if (!simulate) {
 				loadCartridge(stack, munition, poce, bigCannon);
@@ -133,7 +133,7 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 		IBigCannonBlockEntity cbe = (IBigCannonBlockEntity) be;
 
 		StructureBlockInfo oldInfo = cbe.cannonBehavior().block();
-		if (!oldInfo.state.isAir()) {
+		if (!oldInfo.state().isAir()) {
 			BlockPos nextPos = startPos.relative(dir);
 			BlockEntity be1 = cannon.presentBlockEntities.get(nextPos);
 			IBigCannonBlockEntity cbe1 = (IBigCannonBlockEntity) be1;

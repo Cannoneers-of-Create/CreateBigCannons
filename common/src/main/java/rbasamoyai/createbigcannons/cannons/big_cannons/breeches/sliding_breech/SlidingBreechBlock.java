@@ -29,7 +29,7 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	private final NonNullSupplier<? extends Block> quickfiringConversion;
 
 	public SlidingBreechBlock(Properties properties, BigCannonMaterial cannonMaterial, NonNullSupplier<? extends Block> quickfiringConversion) {
-		super(properties);
+		super(properties.pushReaction(PushReaction.BLOCK));
 		this.cannonMaterial = cannonMaterial;
 		this.quickfiringConversion = quickfiringConversion;
 	}
@@ -57,11 +57,6 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 	@Override
 	public BigCannonEnd getOpeningType(MountedBigCannonContraption contraption, BlockState state, BlockPos pos) {
 		return contraption.presentBlockEntities.get(pos) instanceof SlidingBreechBlockEntity breech ? breech.getOpeningType() : BigCannonEnd.OPEN;
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	@Override

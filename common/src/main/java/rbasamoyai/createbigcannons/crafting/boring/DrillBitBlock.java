@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -92,11 +91,6 @@ public class DrillBitBlock extends WrenchableDirectionalBlock implements SimpleW
 
 	private static boolean isDrillBlock(BlockState state) {
 		return CBCBlocks.CANNON_DRILL.has(state);
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.NORMAL;
 	}
 
 	@Override

@@ -1,10 +1,9 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell;
 
-import org.joml.Vector3f;
-
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -12,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleData;
 
 public class SmokeEmitterEntity extends Entity {
@@ -30,7 +30,7 @@ public class SmokeEmitterEntity extends Entity {
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this);
 	}
 
@@ -53,7 +53,7 @@ public class SmokeEmitterEntity extends Entity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.level.isClientSide) {
+		if (this.level().isClientSide) {
 			float size = this.getSize();
 			ParticleOptions particle = this.getParticle();
 			for (int i = 0; i < Math.ceil(size * 4); ++i) {
@@ -63,7 +63,7 @@ public class SmokeEmitterEntity extends Entity {
 				double dx = this.random.nextGaussian() * 0.05;
 				double dy = this.random.nextGaussian() * 0.02;
 				double dz = this.random.nextGaussian() * 0.05;
-				this.level.addParticle(particle, rx, ry, rz, dx, dy, dz);
+				this.level().addParticle(particle, rx, ry, rz, dx, dy, dz);
 			}
 		} else {
 			--this.duration;
@@ -72,7 +72,7 @@ public class SmokeEmitterEntity extends Entity {
 	}
 
 	protected ParticleOptions getParticle() {
-		return new CannonSmokeParticleData(4, new Vector3f(0.85f, 0.85f, 0.85f), new Vector3f(0.75f, 0.75f, 0.75f), 60);
+		return new CannonSmokeParticleData(4, new Vec3(0.85, 0.85, 0.85), new Vec3(0.75, 0.75, 0.75), 60);
 	}
 
 }

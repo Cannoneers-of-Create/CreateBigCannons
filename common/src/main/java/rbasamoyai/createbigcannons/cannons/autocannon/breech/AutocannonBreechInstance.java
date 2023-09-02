@@ -7,6 +7,8 @@ import com.jozufozu.flywheel.core.Materials;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
 import com.jozufozu.flywheel.util.AnimationTickHolder;
+import com.mojang.math.Axis;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -36,7 +38,7 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
         super.init();
 
         this.facing = this.blockState.getValue(BlockStateProperties.FACING);
-        Quaternionf q = Vector3f.YP.rotationDegrees(this.facing.getAxis().isVertical() ? 180 : 0);
+        Quaternionf q = Axis.YP.rotationDegrees(this.facing.getAxis().isVertical() ? 180 : 0);
 
         this.ejector = this.materialManager.defaultCutout()
                 .material(Materials.ORIENTED)
@@ -57,10 +59,10 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
 		boolean flag = this.facing.getAxis().isVertical();
 		Quaternionf q1;
 		if (flag) {
-			q1 = Vector3f.ZP.rotationDegrees(180);
-			q1.mul(Vector3f.YP.rotationDegrees(180));
+			q1 = Axis.ZP.rotationDegrees(180);
+			q1.mul(Axis.YP.rotationDegrees(180));
 		} else {
-			q1 = Vector3f.YP.rotationDegrees(180);
+			q1 = Axis.YP.rotationDegrees(180);
 		}
 		Direction offset = flag
 			? this.facing.getCounterClockWise(Direction.Axis.Z)

@@ -9,15 +9,19 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public abstract class BlockRecipeProvider implements DataProvider {
@@ -25,32 +29,34 @@ public abstract class BlockRecipeProvider implements DataProvider {
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
 
-	private final DataGenerator gen;
+	private final PackOutput output;
 	protected final String modid;
 	protected ResourceLocation info;
 
-	public BlockRecipeProvider(String modid, DataGenerator gen) {
+	public BlockRecipeProvider(String modid, PackOutput output) {
 		this.modid = modid;
-		this.gen = gen;
+		this.output	= output;
 	}
 
 	protected static final List<BlockRecipeProvider> GENERATORS = new ArrayList<>();
 
-	public static void registerAll(DataGenerator gen) {
-		GENERATORS.add(new CannonCastRecipeProvider(gen));
-		GENERATORS.add(new BuiltUpHeatingRecipeProvider(gen));
-		GENERATORS.add(new DrillBoringRecipeProvider(gen));
+	public static void registerAll(PackOutput output) {
+		GENERATORS.add(new CannonCastRecipeProvider(output));
+		GENERATORS.add(new BuiltUpHeatingRecipeProvider(output));
+		GENERATORS.add(new DrillBoringRecipeProvider(output));
 
-		gen.addProvider(true, new DataProvider() {
+		output.
+
+		output.addProvider(true, new DataProvider() {
 			@Override
-			public void run(CachedOutput cache) throws IOException {
-				GENERATORS.forEach(gen -> {
+			public CompletableFuture<?> run(CachedOutput cache) {
+				return CompletableFuture.allOf(GENERATORS.stream().map(gen -> {
 					try {
-						gen.run(cache);
+						return gen.run(cache);
 					} catch (Exception e) {
-						e.printStackTrace();
+						throw e;
 					}
-				});
+				}).toArray(i -> new CompletableFuture[i]));
 			}
 
 			@Override
@@ -61,16 +67,20 @@ public abstract class BlockRecipeProvider implements DataProvider {
 	}
 
 	@Override
-	public void run(CachedOutput cache) throws IOException {
-		Path path = this.gen.getOutputFolder();
-		Set<ResourceLocation> set = new HashSet<>();
+	public CompletableFuture<?> run(CachedOutput cache) {
+		Path path = this.output.getOutputFolder();
+		Map<ResourceLocation, FinishedBlockRecipe> map = new HashMap<>();
 		this.registerRecipes(recipe -> {
-			if (!set.add(recipe.id())) {
+			if (map.put(recipe.id(), recipe) != null) {
 				throw new IllegalStateException("Duplicate block recipe " + recipe.id());
-			} else {
-				saveRecipe(cache, recipe.serializeRecipe(), path.resolve("data/" + recipe.id().getNamespace() + "/block_recipes/" + recipe.id().getPath() + ".json"));
 			}
 		});
+		return CompletableFuture.allOf(map.entrySet().stream()
+			.map(e -> {
+				ResourceLocation id = e.getKey();
+				FinishedBlockRecipe recipe = e.getValue();
+				return DataProvider.saveStable(cache, recipe.serializeRecipe(), path.resolve("data/" + id.getNamespace() + "/block_recipes/" + id.getPath() + ".json"));
+			}).toArray(i -> new CompletableFuture[i]));
 	}
 
 	private static void saveRecipe(CachedOutput cache, JsonObject obj, Path path) {

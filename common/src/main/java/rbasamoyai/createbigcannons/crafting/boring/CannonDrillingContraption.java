@@ -101,9 +101,9 @@ public class CannonDrillingContraption extends PoleContraption {
 		this.bounds = new AABB(0, 0, 0, 0, 0, 0);
 
 		for (StructureBlockInfo pole : poles) {
-			BlockPos relPos = pole.pos.relative(direction, -extensionsInFront);
+			BlockPos relPos = pole.pos().relative(direction, -extensionsInFront);
 			BlockPos localPos = relPos.subtract(this.anchor);
-			this.getBlocks().put(localPos, new StructureBlockInfo(localPos, pole.state, null));
+			this.getBlocks().put(localPos, new StructureBlockInfo(localPos, pole.state(), null));
 		}
 
 		return true;

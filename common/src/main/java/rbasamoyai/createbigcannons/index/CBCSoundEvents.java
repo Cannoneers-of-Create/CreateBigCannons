@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import static com.simibubi.create.AllSoundEvents.SoundEntry;
@@ -86,8 +87,9 @@ public class CBCSoundEvents {
 		}
 
 		@Override
-		public void run(CachedOutput cache) throws IOException {
+		public CompletableFuture<?> run(CachedOutput cache) throws IOException {
 			generate(this.generator.getOutputFolder(), cache);
+			return null;
 		}
 
 		@Override

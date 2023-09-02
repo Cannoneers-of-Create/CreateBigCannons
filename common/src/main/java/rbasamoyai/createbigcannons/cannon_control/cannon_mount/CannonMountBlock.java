@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
-import java.util.Random;
-
 import com.simibubi.create.content.kinetics.base.KineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 

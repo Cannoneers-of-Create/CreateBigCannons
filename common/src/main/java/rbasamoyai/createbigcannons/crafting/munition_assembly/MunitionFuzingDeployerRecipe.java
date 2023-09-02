@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
@@ -43,10 +44,10 @@ public class MunitionFuzingDeployerRecipe implements Recipe<Container> {
 		return false;
 	}
 
-	@Override public ItemStack assemble(Container inv) { return this.getResultItem(); }
+	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		ItemStack result = this.munition.copy();
 		result.setCount(1);
 		ItemStack fuzeCopy = this.fuze.copy();

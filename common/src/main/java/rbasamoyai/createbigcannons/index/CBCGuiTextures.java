@@ -1,9 +1,8 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.element.ScreenElement;
-import net.minecraft.client.gui.GuiComponent;
+
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
@@ -42,14 +41,9 @@ public enum CBCGuiTextures implements ScreenElement {
 		this.height = height;
 	}
 
-	public void bind() {
-		RenderSystem.setShaderTexture(0, this.texture);
-	}
-
 	@Override
-	public void render(PoseStack ms, int x, int y) {
-		this.bind();
-		GuiComponent.blit(ms, x, y, 0, this.texX, this.texY, this.width, this.height, 256, 256);
+	public void render(GuiGraphics graphics, int x, int y) {
+		graphics.blit(this.texture, x, y, 0, this.texX, this.texY, this.width, this.height, 256, 256);
 	}
 
 }

@@ -64,11 +64,6 @@ public class CannonCastBlock extends Block implements IBE<AbstractCannonCastBloc
 	}
 
 	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
-	}
-
-	@Override
 	public Class<AbstractCannonCastBlockEntity> getBlockEntityClass() {
 		return AbstractCannonCastBlockEntity.class;
 	}

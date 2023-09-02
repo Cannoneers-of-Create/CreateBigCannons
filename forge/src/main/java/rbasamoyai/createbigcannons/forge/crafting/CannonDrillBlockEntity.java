@@ -67,7 +67,7 @@ public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity {
 	}
 
 	protected void onFluidStackChanged(FluidStack newStack) {
-		if (this.hasLevel() && !this.level.isClientSide) {
+		if (this.hasLevel() && !this.getLevel().isClientSide) {
 			this.notifyUpdate();
 		}
 	}

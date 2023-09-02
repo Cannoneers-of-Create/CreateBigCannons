@@ -1,15 +1,17 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
+import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_BG;
+import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_SELECTOR;
+
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
-
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-
 import com.simibubi.create.foundation.utility.Lang;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,10 +19,6 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ServerboundSetContainerValuePacket;
-
-import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
-import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_BG;
-import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_SELECTOR;
 
 public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<AutocannonAmmoContainerMenu> {
 
@@ -50,21 +48,21 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 	}
 
 	@Override
-	protected void renderBg(PoseStack poseStack, float partialTick, int mouseX, int mouseY) {
+	protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
 		int invX = this.getLeftOfCentered(PLAYER_INVENTORY.width);
 		int invY = this.topPos + AUTOCANNON_AMMO_CONTAINER_BG.height + 4;
-		this.renderPlayerInventory(poseStack, invX, invY);
+		this.renderPlayerInventory(graphics, invX, invY);
 
-		AUTOCANNON_AMMO_CONTAINER_BG.render(poseStack, this.leftPos, this.topPos);
-		drawCenteredString(poseStack, this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
+		AUTOCANNON_AMMO_CONTAINER_BG.render(graphics, this.leftPos, this.topPos);
+		graphics.drawCenteredString(this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
 		int offsX = this.setValue.getState() * 8 - 8;
-		AUTOCANNON_AMMO_CONTAINER_SELECTOR.render(poseStack, this.leftPos + 86 + offsX, this.topPos + 23);
+		AUTOCANNON_AMMO_CONTAINER_SELECTOR.render(graphics, this.leftPos + 86 + offsX, this.topPos + 23);
 
 		GuiGameElement.of(this.menu.isFilled() ? CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_FILLED : CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_EMPTY)
 			.scale(50)
 			.rotate(30, 45, 0)
 			.at(this.leftPos + AUTOCANNON_AMMO_CONTAINER_BG.width + 5, this.topPos + AUTOCANNON_AMMO_CONTAINER_BG.height, 200)
-			.render(poseStack);
+			.render(graphics);
 	}
 
 	@Override

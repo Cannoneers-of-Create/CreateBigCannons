@@ -76,7 +76,7 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	@Override
 	public void tick() {
 		super.tick();
-		this.allTick(this.level);
+		this.allTick(this.getLevel());
 	}
 
 	@Override

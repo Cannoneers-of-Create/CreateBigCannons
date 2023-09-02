@@ -16,7 +16,8 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.Util;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -42,7 +43,7 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 		FluidBuilder<T, P> ret = this.tag(ProviderType.FLUID_TAGS, tags);
 		if (this.tags.isEmpty()) {
 			ret.getOwner().<RegistrateTagsProvider<Fluid>, Fluid>setDataGenerator(ret.sourceName, getRegistryKey(), ProviderType.FLUID_TAGS,
-					prov -> this.tags.stream().map(prov::tag).forEach(p -> p.add(this.getSource())));
+					prov -> this.tags.stream().map(prov::addTag).forEach(p -> p.add(this.getSource())));
 		}
 		this.tags.addAll(Arrays.asList(tags));
 		return ret;
@@ -65,18 +66,18 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 
 	@Override
 	public FluidBuilder<T, P> defaultLang() {
-		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), RegistrateLangProvider.toEnglishName(sourceName));
+		return lang(f -> Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(f.getSource())), RegistrateLangProvider.toEnglishName(sourceName));
 	}
 
 	@Override
 	public FluidBuilder<T, P> lang(String name) {
-		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), name);
+		return lang(f -> Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(f.getSource())), name);
 	}
 
 	@Override
 	protected CBCFlowingFluid.Properties makeProperties() {
 		CBCFluidData.Builder attributes = this.attributes.get();
-		RegistryEntry<Block> block = getOwner().getOptional(this.sourceName, Registry.BLOCK_REGISTRY);
+		RegistryEntry<Block> block = getOwner().getOptional(this.sourceName, Registries.BLOCK);
 		this.attributesCallback.accept(attributes);
 		attributes.translationKey(Util.makeDescriptionId("fluid", new ResourceLocation(getOwner().getModid(), this.sourceName)));
 		return super.makeProperties();

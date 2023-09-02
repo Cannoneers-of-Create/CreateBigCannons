@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
+import com.mojang.math.Axis;
+
 import org.lwjgl.glfw.GLFW;
 
 import com.jozufozu.flywheel.core.PartialModel;
@@ -170,24 +172,24 @@ public class CBCClientCommon {
 	}
 
 	private static float lerpFov(Minecraft mc, float fov) {
-		return Mth.lerp(mc.options.fovEffectScale, 1.0F, fov);
+		return Mth.lerp(mc.options.fovEffectScale().get().floatValue(), 1.0F, fov);
 	}
 
 	public static void onPlayerRenderPre(PoseStack stack, LivingEntity player, float partialTicks) {
 		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-			Vector3f pVec = new Vector3f(player.getPosition(partialTicks));
+			Vector3f pVec = player.getPosition(partialTicks).toVector3f();
 			stack.translate(-pVec.x(), -pVec.y(), -pVec.z());
 
 			BlockPos seatPos = poce.getSeatPos(player);
 			double offs = player.getEyeHeight() + player.getMyRidingOffset() - 0.15;
 			Vec3 vec = new Vec3(poce.getInitialOrientation().step()).scale(0.25);
-			Vector3f pVec1 = new Vector3f(poce.toGlobalVector(Vec3.atCenterOf(seatPos).subtract(vec).subtract(0, offs, 0), partialTicks));
+			Vector3f pVec1 = poce.toGlobalVector(Vec3.atCenterOf(seatPos).subtract(vec).subtract(0, offs, 0), partialTicks).toVector3f();
 			stack.translate(pVec1.x(), pVec1.y(), pVec1.z());
 
 			float yr = (-Mth.lerp(partialTicks, player.yRotO, player.getYRot()) + 90) * Mth.DEG_TO_RAD;
 			Vector3f vec3 = new Vector3f(Mth.sin(yr), 0, Mth.cos(yr));
 			float xr = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
-			stack.mulPose(vec3.rotationDegrees(xr));
+			stack.mulPose(Axis.of(vec3).rotationDegrees(xr));
 		}
 	}
 

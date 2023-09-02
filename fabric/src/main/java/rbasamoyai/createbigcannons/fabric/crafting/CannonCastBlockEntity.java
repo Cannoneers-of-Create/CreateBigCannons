@@ -9,10 +9,10 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
-import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,7 +29,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity implements FluidTransferable {
+public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity implements SidedStorageBlockEntity {
 
 	protected FluidTank fluid;
 	protected FluidStack leakage = FluidStack.EMPTY;
@@ -55,14 +55,14 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 			for (int xOffset = 0; xOffset < 3; xOffset++) {
 				for (int zOffset = 0; zOffset < 3; zOffset++) {
 					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
-					AbstractCannonCastBlockEntity castAt = ConnectivityHandler.partAt(this.getType(), this.level, pos);
+					AbstractCannonCastBlockEntity castAt = ConnectivityHandler.partAt(this.getType(), this.getLevel(), pos);
 					if (castAt == null) continue;
-					this.level.updateNeighbourForOutputSignal(pos, castAt.getBlockState().getBlock());
+					this.getLevel().updateNeighbourForOutputSignal(pos, castAt.getBlockState().getBlock());
 				}
 			}
 		}
 
-		if (!this.level.isClientSide) {
+		if (!this.getLevel().isClientSide) {
 			this.notifyUpdate();
 		}
 
@@ -104,7 +104,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 		}
 		if (this.leakage.getAmount() >= 1250) {
 			net.minecraft.world.level.material.Fluid leakFluid = this.leakage.getFluid();
-			this.level.setBlock(this.worldPosition.below(), leakFluid.defaultFluidState().createLegacyBlock(), 11);
+			this.getLevel().setBlock(this.worldPosition.below(), leakFluid.defaultFluidState().createLegacyBlock(), 11);
 			this.leakage.setAmount(this.leakage.getAmount() - 1000);
 		}
 	}
@@ -148,16 +148,16 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 			.map(CannonCastShape::fluidSize)
 			.reduce(Integer::sum)
 			.orElse(0);
-		long leakAmount = Mth.clamp(controller.fluid.getFluidAmount() - capacityUpTo, 0, this.castShape.fluidSize());
+		long leakAmount = (long) Mth.clamp(controller.fluid.getFluidAmount() - capacityUpTo, 0, this.castShape.fluidSize());
 		FluidStack addLeak = leakAmount < 1 ? FluidStack.EMPTY : TransferUtil.extractAnyFluid(controller.fluid, leakAmount);
 		controller.fluid.setCapacity(Math.max(1, controller.fluid.getCapacity() - this.castShape.fluidSize()));
 		FluidStack remaining = controller.fluid.getFluid();
 
 		if (controller == this && this.height > 0) {
-			if (this.level.getBlockEntity(this.worldPosition.above()) instanceof CannonCastBlockEntity otherCast) {
+			if (this.getLevel().getBlockEntity(this.worldPosition.above()) instanceof CannonCastBlockEntity otherCast) {
 				otherCast.controllerPos = null;
 				otherCast.height = this.height;
-				otherCast.structure = getStructureFromPoint(this.level, this.worldPosition.above(), this.height);
+				otherCast.structure = getStructureFromPoint(this.getLevel(), this.worldPosition.above(), this.height);
 				otherCast.fluid = new SmartFluidTank(otherCast.calculateCapacityFromStructure(), otherCast::onFluidStackChanged);
 				if (!remaining.isEmpty()) TransferUtil.insertFluid(otherCast.fluid, remaining);
 				otherCast.updatePotentialCastsAbove();
@@ -175,10 +175,10 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 			controller.updateRecipes = true;
 			controller.notifyUpdate();
 
-			if (this.level.getBlockEntity(this.worldPosition.above()) instanceof CannonCastBlockEntity otherCast) {
+			if (this.getLevel().getBlockEntity(this.worldPosition.above()) instanceof CannonCastBlockEntity otherCast) {
 				otherCast.controllerPos = null;
 				otherCast.height = oldHeight - controller.height;
-				otherCast.structure = getStructureFromPoint(this.level, this.worldPosition.above(), otherCast.height);
+				otherCast.structure = getStructureFromPoint(this.getLevel(), this.worldPosition.above(), otherCast.height);
 				otherCast.fluid = new SmartFluidTank(otherCast.calculateCapacityFromStructure(), otherCast::onFluidStackChanged);
 				if (!remaining.isEmpty()) TransferUtil.insertFluid(otherCast.fluid, remaining);
 				otherCast.updatePotentialCastsAbove();
@@ -189,13 +189,13 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 
 		if (this.castShape.isLarge()) {
 			for (BlockPos pos : BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1))) {
-				if (CBCBlocks.CANNON_CAST.has(this.level.getBlockState(pos)))
-					this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+				if (CBCBlocks.CANNON_CAST.has(this.getLevel().getBlockState(pos)))
+					this.getLevel().setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
 			}
 		}
 
 		if (!addLeak.isEmpty() && addLeak.getAmount() >= 1000) {
-			this.level.setBlock(this.worldPosition, addLeak.getFluid().defaultFluidState().createLegacyBlock(), 11);
+			this.getLevel().setBlock(this.worldPosition, addLeak.getFluid().defaultFluidState().createLegacyBlock(), 11);
 		}
 	}
 

@@ -58,13 +58,13 @@ public abstract class PoleMoverBlockEntity extends LinearActuatorBlockEntity {
 		this.clientOffsetDiff = 0;
 
 		BlockPos startPos = BlockPos.ZERO.relative(this.getBlockState().getValue(FACING), contraption.initialExtensionProgress());
-		contraption.removeBlocksFromWorld(this.level, startPos);
+		contraption.removeBlocksFromWorld(this.getLevel(), startPos);
 		this.movedContraption = ControlledContraptionEntity.create(this.getLevel(), this, contraption);
 		this.resetContraptionToOffset();
 		this.forceMove = true;
-		this.level.addFreshEntity(this.movedContraption);
+		this.getLevel().addFreshEntity(this.movedContraption);
 
-		AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(this.level, this.worldPosition);
+		AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(this.getLevel(), this.worldPosition);
 	}
 
 	protected abstract PoleContraption innerAssemble() throws AssemblyException;
@@ -75,14 +75,14 @@ public abstract class PoleMoverBlockEntity extends LinearActuatorBlockEntity {
 		if (this.movedContraption != null) {
 			this.resetContraptionToOffset();
 			this.movedContraption.disassemble();
-			AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.level, this.worldPosition);
+			AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.getLevel(), this.worldPosition);
 		}
 		this.running = false;
 		this.movedContraption = null;
 		this.sendData();
 
 		if (this.remove) {
-			this.getBlockState().getBlock().playerWillDestroy(this.level, this.worldPosition, this.getBlockState(), null);
+			this.getBlockState().getBlock().playerWillDestroy(this.getLevel(), this.worldPosition, this.getBlockState(), null);
 		}
 	}
 
@@ -107,7 +107,7 @@ public abstract class PoleMoverBlockEntity extends LinearActuatorBlockEntity {
 	@Override
 	public float getMovementSpeed() {
 		float movementSpeed = Mth.clamp(convertToLinear(this.getSpeed()), -0.49f, 0.49f);
-		if (this.level.isClientSide) {
+		if (this.getLevel().isClientSide) {
 			movementSpeed *= ServerSpeedProvider.get();
 		}
 		Direction facing = this.getBlockState().getValue(FACING);

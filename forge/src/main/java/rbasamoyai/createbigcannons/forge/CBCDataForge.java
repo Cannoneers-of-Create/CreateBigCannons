@@ -13,7 +13,8 @@ public class CBCDataForge {
 	@SubscribeEvent
 	public static void onDatagen(GatherDataEvent evt) {
 		Tags.init();
-		CBCDatagenRoot.register(evt.getGenerator(), evt.getExistingFileHelper(), evt.includeClient(), evt.includeServer());
+		evt.getExistingFileHelper()
+		CBCDatagenRoot.register(evt.getGenerator(), evt.includeClient(), evt.includeServer());
 	}
 
 }

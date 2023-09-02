@@ -18,7 +18,7 @@ public abstract class BigCannonBaseBlock extends DirectionalBlock implements Big
 	private final BigCannonMaterial material;
 
 	protected BigCannonBaseBlock(Properties properties, BigCannonMaterial material) {
-		super(properties);
+		super(properties.pushReaction(PushReaction.BLOCK));
 		this.material = material;
 	}
 
@@ -30,7 +30,6 @@ public abstract class BigCannonBaseBlock extends DirectionalBlock implements Big
 
 	@Override public BigCannonMaterial getCannonMaterial() { return this.material; }
 	@Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
-	@Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 
 	@SuppressWarnings("deprecation")
 	@Override

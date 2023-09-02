@@ -3,6 +3,8 @@ package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 import com.jozufozu.flywheel.backend.Backend;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
@@ -37,7 +39,7 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 		if (state.getValue(AutocannonBreechBlock.HANDLE)) {
 			if (breech.getSeatColor() != null) {
 				CachedBufferer.partialFacing(CBCBlockPartials.autocannonSeatFor(breech.getSeatColor()), state, facing)
-					.rotateCentered(Vector3f.YP.rotationDegrees(facing.getAxis().isVertical() ? 180 : 0))
+					.rotateCentered(Axis.YP.rotationDegrees(facing.getAxis().isVertical() ? 180 : 0))
 					.light(light)
 					.renderInto(ms, buffer.getBuffer(RenderType.cutoutMipped()));
 			}
@@ -46,7 +48,7 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 			normal.mul(breech.getAnimateOffset(partialTicks) * -0.5f);
 			CachedBufferer.partialFacing(getPartialModelForState(breech), state, facing)
 				.translate(normal)
-				.rotateCentered(Vector3f.YP.rotationDegrees(facing.getAxis().isVertical() ? 180 : 0))
+				.rotateCentered(Axis.YP.rotationDegrees(facing.getAxis().isVertical() ? 180 : 0))
 				.light(light)
 				.renderInto(ms, buffer.getBuffer(RenderType.cutoutMipped()));
 		}
@@ -56,10 +58,10 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 			boolean flag = facing.getAxis().isVertical();
 			Quaternionf q1;
 			if (flag) {
-				q1 = Vector3f.ZP.rotationDegrees(180);
-				q1.mul(Vector3f.YP.rotationDegrees(180));
+				q1 = Axis.ZP.rotationDegrees(180);
+				q1.mul(Axis.YP.rotationDegrees(180));
 			} else {
-				q1 = Vector3f.YP.rotationDegrees(180);
+				q1 = Axis.YP.rotationDegrees(180);
 			}
 			Direction offset = flag
 				? facing.getCounterClockWise(Direction.Axis.Z)

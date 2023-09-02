@@ -124,7 +124,7 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	@Override
 	public void consumePropellant(BigCannonBehavior behavior) {
 		StructureBlockInfo oldData = behavior.block();
-		behavior.loadBlock(new StructureBlockInfo(oldData.pos, oldData.state.setValue(FILLED, false), new CompoundTag()));
+		behavior.loadBlock(new StructureBlockInfo(oldData.pos(), oldData.state().setValue(FILLED, false), new CompoundTag()));
 	}
 
 	@Override
@@ -134,11 +134,11 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 
 	@Override
 	public boolean canBeIgnited(StructureBlockInfo data, Direction dir) {
-		return data.state.getValue(FACING) == dir && getPowerFromData(data) > 0;
+		return data.state().getValue(FACING) == dir && getPowerFromData(data) > 0;
 	}
 
 	public static float getPowerFromData(StructureBlockInfo data) {
-		return data.nbt == null ? 0 : data.nbt.getInt("Power");
+		return data.nbt() == null ? 0 : data.nbt().getInt("Power");
 	}
 
 	@Override
@@ -171,8 +171,8 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	@Override
 	public ItemStack getExtractedItem(StructureBlockInfo info) {
 		ItemStack stack = new ItemStack(this);
-		if (info.nbt != null) {
-			stack.getOrCreateTag().putInt("Power", info.nbt.getInt("Power"));
+		if (info.nbt() != null) {
+			stack.getOrCreateTag().putInt("Power", info.nbt().getInt("Power"));
 		}
 		return stack;
 	}

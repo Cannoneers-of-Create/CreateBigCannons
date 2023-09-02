@@ -5,6 +5,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -42,10 +44,10 @@ public class BlockHardnessHandler {
 					ResourceLocation loc = entry.getKey();
 					if (loc.getPath().startsWith("tags/")) {
 						ResourceLocation pruned = new ResourceLocation(loc.getNamespace(), loc.getPath().substring(5));
-						TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, pruned);
+						TagKey<Block> tag = TagKey.create(Registries.BLOCK, pruned);
 						TAGS_TO_EVALUATE.put(tag, hardness);
 					} else {
-						Block block = Registry.BLOCK.getOptional(loc).orElseThrow(() -> {
+						Block block = BuiltInRegistries.BLOCK.getOptional(loc).orElseThrow(() -> {
 							return new JsonSyntaxException("Unknown block '" + loc + "'");
 						});
 						BLOCK_MAP.put(block, hardness);
@@ -61,7 +63,7 @@ public class BlockHardnessHandler {
 		TAG_MAP.clear();
 		for (Map.Entry<TagKey<Block>, Double> entry : TAGS_TO_EVALUATE.entrySet()) {
 			double hardness = entry.getValue();
-			for (Holder<Block> holder : Registry.BLOCK.getTagOrEmpty(entry.getKey())) {
+			for (Holder<Block> holder : BuiltInRegistries.BLOCK.getTagOrEmpty(entry.getKey())) {
 				TAG_MAP.put(holder.value(), hardness);
 			}
 		}

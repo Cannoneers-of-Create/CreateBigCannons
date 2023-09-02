@@ -53,32 +53,32 @@ public class ScrewBreechBlockEntity extends KineticBlockEntity implements IBigCa
 			this.openProgress = Mth.clamp(this.openProgress + progress, 0.0f, 1.0f);
 		}
 
-		if (this.level != null && !this.level.isClientSide) {
+		if (this.getLevel() != null && !this.getLevel().isClientSide) {
 			BigCannonEnd openState = this.getBlockState().getValue(ScrewBreechBlock.OPEN);
 			Direction facing = this.getBlockState().getValue(BlockStateProperties.FACING).getOpposite();
 			if (this.openProgress <= 0 && openState != BigCannonEnd.CLOSED) {
-				this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, BigCannonEnd.CLOSED), 3);
+				this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, BigCannonEnd.CLOSED), 3);
 				this.cannonBehavior.setConnectedFace(facing, true);
 				this.setChanged();
-				BlockEntity be = this.level.getBlockEntity(this.worldPosition.relative(facing));
+				BlockEntity be = this.getLevel().getBlockEntity(this.worldPosition.relative(facing));
 				if (be instanceof IBigCannonBlockEntity cbe) {
 					cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), true);
 					be.setChanged();
 				}
 			} else if (this.openProgress >= 1 && openState != BigCannonEnd.OPEN) {
-				this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, BigCannonEnd.OPEN), 3);
+				this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, BigCannonEnd.OPEN), 3);
 				this.cannonBehavior.setConnectedFace(facing, false);
 				this.setChanged();
-				BlockEntity be = this.level.getBlockEntity(this.worldPosition.relative(facing));
+				BlockEntity be = this.getLevel().getBlockEntity(this.worldPosition.relative(facing));
 				if (be instanceof IBigCannonBlockEntity cbe) {
 					cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), false);
 					be.setChanged();
 				}
 			} else if (this.openProgress > 0 && this.openProgress < 1 && openState != BigCannonEnd.PARTIAL) {
 				boolean previouslyConnected = this.cannonBehavior.isConnectedTo(facing);
-				this.level.setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, BigCannonEnd.PARTIAL), 3);
+				this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(ScrewBreechBlock.OPEN, BigCannonEnd.PARTIAL), 3);
 				this.cannonBehavior.setConnectedFace(facing, previouslyConnected);
-				BlockEntity be = this.level.getBlockEntity(this.worldPosition.relative(facing));
+				BlockEntity be = this.getLevel().getBlockEntity(this.worldPosition.relative(facing));
 				if (be instanceof IBigCannonBlockEntity cbe) {
 					cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), previouslyConnected);
 					be.setChanged();

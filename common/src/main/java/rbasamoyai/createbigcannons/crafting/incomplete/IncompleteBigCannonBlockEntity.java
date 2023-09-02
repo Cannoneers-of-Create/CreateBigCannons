@@ -32,16 +32,16 @@ public class IncompleteBigCannonBlockEntity extends BigCannonEndBlockEntity impl
 	public InteractionResult onWandUsed(UseOnContext context) {
 		if (!(this.getBlockState().getBlock() instanceof IncompleteWithItemsCannonBlock incomplete))
 			return InteractionResult.PASS;
-		if (!this.level.isClientSide) {
+		if (!this.getLevel().isClientSide) {
 			CompoundTag loadTag = this.saveWithFullMetadata();
 			loadTag.putBoolean("JustBored", true);
 			BlockState boredState = incomplete.getCompleteBlockState(this.getBlockState());
 			this.setRemoved();
-			this.level.setBlock(this.worldPosition, boredState, 11);
-			BlockEntity newBE = this.level.getBlockEntity(this.worldPosition);
+			this.getLevel().setBlock(this.worldPosition, boredState, 11);
+			BlockEntity newBE = this.getLevel().getBlockEntity(this.worldPosition);
 			if (newBE != null) newBE.load(loadTag);
 		}
-		return InteractionResult.sidedSuccess(this.level.isClientSide);
+		return InteractionResult.sidedSuccess(this.getLevel().isClientSide);
 	}
 
 }

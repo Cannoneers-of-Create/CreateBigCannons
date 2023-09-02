@@ -6,7 +6,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -38,7 +38,7 @@ public class DimensionMunitionPropertiesHandler {
                 if (!element.isJsonObject()) continue;
 				try {
 					ResourceLocation entityLoc = entry.getKey();
-					ResourceKey<Level> dimension = ResourceKey.create(Registry.DIMENSION_REGISTRY, entry.getKey());
+					ResourceKey<Level> dimension = ResourceKey.create(Registries.DIMENSION, entry.getKey());
 					DimensionMunitionProperties properties = DimensionMunitionProperties.fromJson(element.getAsJsonObject(), entityLoc.toString());
 					DIMENSIONS.put(dimension, properties);
 				} catch (Exception e) {

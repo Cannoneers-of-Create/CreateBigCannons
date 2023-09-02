@@ -124,9 +124,9 @@ public class CannonBuildingContraption extends PoleContraption {
 		this.bounds = new AABB(0, 0, 0, 0, 0, 0);
 
 		for (StructureBlockInfo pole : poles) {
-			BlockPos relPos = pole.pos.relative(direction, -extensionsInFront);
+			BlockPos relPos = pole.pos().relative(direction, -extensionsInFront);
 			BlockPos localPos = relPos.subtract(this.anchor);
-			this.getBlocks().put(localPos, new StructureBlockInfo(localPos, pole.state, null));
+			this.getBlocks().put(localPos, new StructureBlockInfo(localPos, pole.state(), null));
 		}
 
 		return true;
@@ -237,7 +237,7 @@ public class CannonBuildingContraption extends PoleContraption {
 					fullShape = isConnectedTo(level, shape, cBlock, state, currentPos, this.orientation) ? shape : null;
 					connectedShapes.clear();
 				}
-			} else if (forcedDirection == this.orientation && (!state.getMaterial().isReplaceable() || !state.getCollisionShape(level, currentPos).isEmpty())) {
+			} else if (forcedDirection == this.orientation && (!state.canBeReplaced() || !state.getCollisionShape(level, currentPos).isEmpty())) {
 				return false;
 			} else {
 				break;
@@ -317,15 +317,15 @@ public class CannonBuildingContraption extends PoleContraption {
 		}
 
 		if (builder.movedContraption != null) {
-			BlockPos entityAnchor = new BlockPos(builder.movedContraption.getAnchorVec().add(0.5d, 0.5d, 0.5d));
+			BlockPos entityAnchor = BlockPos.containing(builder.movedContraption.getAnchorVec().add(0.5d, 0.5d, 0.5d));
 
 			BlockPos blockPos = pos.subtract(entityAnchor);
 			StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
 			BlockEntity blockEntity1 = level.getBlockEntity(pos);
 
 			if (blockEntity1 instanceof LayeredBigCannonBlockEntity layered) {
-				if (blockInfo.nbt == null || !blockInfo.nbt.contains("id")) return true;
-				BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, blockInfo.nbt);
+				if (blockInfo.nbt() == null || !blockInfo.nbt().contains("id")) return true;
+				BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, blockInfo.nbt());
 				if (!(infoBE instanceof LayeredBigCannonBlockEntity layered1)) return true;
 				layered.addLayersOfOther(layered1);
 				layered.updateBlockstate();
@@ -353,8 +353,9 @@ public class CannonBuildingContraption extends PoleContraption {
 		BlockEntity blockEntity1 = level.getBlockEntity(pos);
 
 		if (blockInfo != null && blockEntity1 instanceof LayeredBigCannonBlockEntity layered) {
-			if (blockInfo.nbt == null || !blockInfo.nbt.contains("id")) return true;
-			BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, blockInfo.nbt);
+			CompoundTag infoNbt = blockInfo.nbt();
+			if (infoNbt == null || !infoNbt.contains("id")) return true;
+			BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, infoNbt);
 			if (!(infoBE instanceof LayeredBigCannonBlockEntity layered1)) return true;
 			layered.removeLayersOfOther(layered1);
 			layered.updateBlockstate();
@@ -374,19 +375,19 @@ public class CannonBuildingContraption extends PoleContraption {
 			this.cachedColliderDirection = movementDirection;
 
 			for (StructureBlockInfo blockInfo : this.getBlocks().values()) {
-				BlockPos offsetPos = blockInfo.pos.relative(movementDirection);
-				if (blockInfo.state.getCollisionShape(level, offsetPos).isEmpty()) continue;
-				if (CBCBlocks.CANNON_BUILDER_HEAD.has(blockInfo.state) && movementDirection != this.orientation)
+				BlockPos offsetPos = blockInfo.pos().relative(movementDirection);
+				if (blockInfo.state().getCollisionShape(level, offsetPos).isEmpty()) continue;
+				if (CBCBlocks.CANNON_BUILDER_HEAD.has(blockInfo.state()) && movementDirection != this.orientation)
 					continue;
 
 				if (this.getBlocks().containsKey(offsetPos)) {
 					StructureBlockInfo offsetInfo = this.getBlocks().get(offsetPos);
-					if (!offsetInfo.state.getCollisionShape(level, offsetPos).isEmpty()
-						&& (AllBlocks.PISTON_EXTENSION_POLE.has(blockInfo.state) || CBCBlocks.CANNON_BUILDER_HEAD.has(offsetInfo.state)))
+					if (!offsetInfo.state().getCollisionShape(level, offsetPos).isEmpty()
+						&& (AllBlocks.PISTON_EXTENSION_POLE.has(blockInfo.state()) || CBCBlocks.CANNON_BUILDER_HEAD.has(offsetInfo.state())))
 						continue;
 				}
 
-				this.cachedColliders.add(blockInfo.pos);
+				this.cachedColliders.add(blockInfo.pos());
 			}
 		}
 		return this.cachedColliders;

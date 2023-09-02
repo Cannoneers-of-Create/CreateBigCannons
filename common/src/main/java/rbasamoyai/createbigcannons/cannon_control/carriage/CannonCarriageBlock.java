@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
@@ -72,7 +72,7 @@ public class CannonCarriageBlock extends Block implements IWrenchable, IBE<Canno
 						ItemEntity item = player.drop(resultStack, false);
 						if (item != null) {
 							item.setNoPickUpDelay();
-							item.setOwner(player.getUUID());
+							item.setTarget(player.getUUID());
 						}
 					}
 				}
@@ -89,10 +89,9 @@ public class CannonCarriageBlock extends Block implements IWrenchable, IBE<Canno
 		return InteractionResult.PASS;
 	}
 
-	@SuppressWarnings("deprecated")
 	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		List<ItemStack> loot = super.getDrops(state, builder);
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+		List<ItemStack> loot = super.getDrops(state, params);
 		if (state.getValue(SADDLED)) loot.add(Items.SADDLE.getDefaultInstance());
 		return loot;
 	}
@@ -105,6 +104,6 @@ public class CannonCarriageBlock extends Block implements IWrenchable, IBE<Canno
 	@Override
 	public BlockEntityType<? extends CannonCarriageBlockEntity> getBlockEntityType() {
 		return CBCBlockEntities.CANNON_CARRIAGE.get();
-
 	}
+
 }

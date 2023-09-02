@@ -1,9 +1,13 @@
 package rbasamoyai.createbigcannons.cannon_control.effects;
 
-import org.joml.Vector3f;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.*;
+import net.minecraft.client.particle.BaseAshSmokeParticle;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public class CannonSmokeParticle extends BaseAshSmokeParticle {
 
@@ -72,9 +76,11 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 
 		@Override
 		public Particle createParticle(CannonSmokeParticleData data, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-			Vector3f startColor = data.startColor();
-			Vector3f endColor = data.endColor();
-			return new CannonSmokeParticle(level, x, y, z, dx, dy, dz, data.scale(), this.sprites, startColor.x(), startColor.y(), startColor.z(), endColor.x(), endColor.y(), endColor.z(), data.shiftTime());
+			Vec3 startColor = data.startColor();
+			Vec3 endColor = data.endColor();
+			return new CannonSmokeParticle(level, x, y, z, dx, dy, dz, data.scale(), this.sprites,
+				(float) startColor.x(), (float) startColor.y(), (float) startColor.z(), (float) endColor.x(),
+				(float) endColor.y(), (float) endColor.z(), data.shiftTime());
 		}
 
 	}

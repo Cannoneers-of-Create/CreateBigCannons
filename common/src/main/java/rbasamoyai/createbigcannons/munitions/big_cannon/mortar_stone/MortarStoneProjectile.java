@@ -25,7 +25,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
     @Override
     public void tick() {
         if (this.tooManyCharges) {
-            if (this.level instanceof ServerLevel slevel) {
+            if (this.level() instanceof ServerLevel slevel) {
                 slevel.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, this.getRenderedBlockState()), this.getX(), this.getY(), this.getZ(), 40, 0.1f, 0.1f, 0.1f, 0.01d);
             }
             SoundType soundType = this.getRenderedBlockState().getSoundType();
@@ -39,9 +39,9 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
     @Override
     protected void onImpact(HitResult result, boolean stopped) {
         super.onImpact(result, stopped);
-        if (!this.level.isClientSide) {
+        if (!this.level().isClientSide) {
             Vec3 hitLoc = result.getLocation();
-            this.level.explode(null, this.indirectArtilleryFire(), null, hitLoc.x, hitLoc.y, hitLoc.z,
+            this.level().explode(null, this.indirectArtilleryFire(), null, hitLoc.x, hitLoc.y, hitLoc.z,
                     (float) this.getProperties().explosivePower(), false,
                     CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
             this.tooManyCharges = true;

@@ -66,8 +66,8 @@ public class DefaultFluidCompat {
 	public static void douseFire(BlockPos root, FluidBlob blob, Level level) {
 		float chance = FluidBlob.getBlockAffectChance();
 		AABB bounds = blob.getAreaOfEffect(root);
-		BlockPos pos1 = new BlockPos(Math.floor(bounds.minX), Math.floor(bounds.minY), Math.floor(bounds.minZ));
-		BlockPos pos2 = new BlockPos(Math.floor(bounds.maxX), Math.floor(bounds.maxY), Math.floor(bounds.maxZ));
+		BlockPos pos1 = BlockPos.containing(bounds.minX, bounds.minY, bounds.minZ);
+		BlockPos pos2 = BlockPos.containing(bounds.maxX, bounds.maxY, bounds.maxZ);
 		for (BlockPos pos : BlockPos.betweenClosed(pos1, pos2)) {
 			if (chance == 0 || level.getRandom().nextFloat() > chance) continue;
 			BlockState state = level.getBlockState(pos);
@@ -86,8 +86,8 @@ public class DefaultFluidCompat {
 	public static void spawnFire(BlockPos root, FluidBlob blob, Level level) {
 		float chance = FluidBlob.getBlockAffectChance();
 		AABB bounds = blob.getAreaOfEffect(root);
-		BlockPos pos1 = new BlockPos(Math.floor(bounds.minX), Math.floor(bounds.minY), Math.floor(bounds.minZ));
-		BlockPos pos2 = new BlockPos(Math.floor(bounds.maxX), Math.floor(bounds.maxY), Math.floor(bounds.maxZ));
+		BlockPos pos1 = BlockPos.containing(bounds.minX, bounds.minY, bounds.minZ);
+		BlockPos pos2 = BlockPos.containing(bounds.maxX, bounds.maxY, bounds.maxZ);
 		for (BlockPos pos : BlockPos.betweenClosed(pos1, pos2)) {
 			if (chance > 0 && level.getRandom().nextFloat() <= chance && level.isEmptyBlock(pos)) {
 				level.setBlockAndUpdate(pos, BaseFireBlock.getState(level, pos));

@@ -60,10 +60,10 @@ public class ClientboundUpdateContraptionPacket implements RootPacket {
 		for (Map.Entry<BlockPos, StructureBlockInfo> entry : this.changes.entrySet()) {
 			StructureBlockInfo info = entry.getValue();
 			buf.writeBlockPos(entry.getKey())
-				.writeBlockPos(info.pos)
-				.writeVarInt(Block.getId(info.state))
-				.writeBoolean(info.nbt != null);
-			if (info.nbt != null) buf.writeNbt(info.nbt);
+				.writeBlockPos(info.pos())
+				.writeVarInt(Block.getId(info.state()))
+				.writeBoolean(info.nbt() != null);
+			if (info.nbt() != null) buf.writeNbt(info.nbt());
 		}
 	}
 

@@ -71,7 +71,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 			--damage;
 			tag.putInt("Damage", damage);
 			float f = this.getDetonateChance();
-			if (f > 0 && projectile.level.getRandom().nextFloat() < f) {
+			if (f > 0 && projectile.level().getRandom().nextFloat() < f) {
 				tag.putBoolean("Activated", true);
 			}
 		}

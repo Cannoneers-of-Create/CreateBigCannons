@@ -7,7 +7,6 @@ import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
-import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
@@ -88,10 +87,6 @@ public class IndexPlatformImpl {
 		return () -> CannonCastBlockEntityRenderer::new;
 	}
 
-	public static int getModGroupId() {
-		return -1;
-	}
-
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluidBuilder(AbstractRegistrate<?> owner,
 																					   P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
 																					   NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
@@ -118,10 +113,6 @@ public class IndexPlatformImpl {
 	@OnlyIn(Dist.CLIENT)
 	public static <T extends ItemPropertyFunction> void registerClampedItemProperty(Item item, ResourceLocation loc, T func) {
 		ItemProperties.register(item, loc, func);
-	}
-
-	public static Object getUnchecked(RegistryEntry<?> ent) {
-		return ent.getUnchecked();
 	}
 
 	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {

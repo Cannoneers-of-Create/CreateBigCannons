@@ -27,7 +27,7 @@ public class CannonLoaderCollider {
 		Vec3 motion = contraptionEntity.getDeltaMovement();
 		AABB bounds = contraptionEntity.getBoundingBox();
 		Vec3 position = contraptionEntity.position();
-		BlockPos gridPos = new BlockPos(position);
+		BlockPos gridPos = BlockPos.containing(position);
 
 		if (bounds == null) return false;
 		if (motion.equals(Vec3.ZERO)) return false;
@@ -53,7 +53,7 @@ public class CannonLoaderCollider {
 			if (!bounds.move(motion).intersects(otherBounds.move(otherMotion))) continue;
 
 			for (BlockPos colliderPos : contraption.getOrCreateColliders(level, movementDirection)) {
-				colliderPos = colliderPos.offset(gridPos).subtract(new BlockPos(otherPosition));
+				colliderPos = colliderPos.offset(gridPos).subtract(BlockPos.containing(otherPosition));
 				if (!otherContraption.getBlocks().containsKey(colliderPos)) {
 					continue;
 				}
@@ -80,7 +80,7 @@ public class CannonLoaderCollider {
 				}
 			}
 
-			if (!collidedState.getMaterial().isReplaceable() && !emptyCollider) {
+			if (!collidedState.canBeReplaced() && !emptyCollider) {
 				return true;
 			}
 		}

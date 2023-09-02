@@ -61,7 +61,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		double hardness = BlockHardnessHandler.getHardness(state) / bonus;
 		this.setProjectileMass((float) Math.max(mass - hardness, 0));
 
-		if (!level.isClientSide()) this.level.destroyBlock(result.getBlockPos(), false);
+		if (!this.level().isClientSide()) this.level().destroyBlock(result.getBlockPos(), false);
 	}
 
 	@Override

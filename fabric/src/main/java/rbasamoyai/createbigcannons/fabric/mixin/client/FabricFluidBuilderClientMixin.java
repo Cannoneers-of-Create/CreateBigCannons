@@ -16,7 +16,6 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandler;
 import net.fabricmc.fabric.api.client.render.fluid.v1.FluidRenderHandlerRegistry;
 import net.fabricmc.fabric.api.client.render.fluid.v1.SimpleFluidRenderHandler;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
@@ -53,16 +52,15 @@ public abstract class FabricFluidBuilderClientMixin extends FluidBuilder<CBCFlow
 		this.renderHandler(() -> SimpleFluidRenderHandler::new);
 	}
 
-	@SuppressWarnings("deprecation")
 	protected void registerRenderHandler(CBCFlowingFluid entry) {
 		EnvExecute.executeOnClient(() -> () -> {
 			final FluidRenderHandler handler = this.renderHandler.get().create(this.stillTexture, this.flowingTexture);
 			FluidRenderHandlerRegistry.INSTANCE.register(entry, handler);
 			FluidRenderHandlerRegistry.INSTANCE.register(entry.getSource(), handler);
-			ClientSpriteRegistryCallback.event(TextureAtlas.LOCATION_BLOCKS).register((atlasTexture, registry) -> {
-				registry.register(this.stillTexture);
-				registry.register(this.flowingTexture);
-			});
+//			ClientSpriteRegistryCallback.event(TextureAtlas.LOCATION_BLOCKS).register((atlasTexture, registry) -> {
+//				registry.register(this.stillTexture);
+//				registry.register(this.flowingTexture);
+//			});
 		});
 	}
 

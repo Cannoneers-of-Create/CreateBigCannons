@@ -57,7 +57,7 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 			nbt.remove("x");
 			nbt.remove("y");
 			nbt.remove("z");
-			this.blocks.put(entry.getKey(), new StructureBlockInfo(info.pos, info.state, nbt));
+			this.blocks.put(entry.getKey(), new StructureBlockInfo(info.pos(), info.state(), nbt));
 		}
 
 		CompoundTag tag = super.writeNBT(spawnPacket);
@@ -77,16 +77,18 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 		if (world.isClientSide) return;
 		for (Map.Entry<BlockPos, StructureBlockInfo> entry : this.blocks.entrySet()) {
 			StructureBlockInfo info = this.blocks.get(entry.getKey());
-			if (info == null || info.nbt == null) continue;
+			if (info == null || info.nbt() == null) continue;
+			CompoundTag infoNbt = info.nbt();
+			BlockPos pos = info.pos();
 
-			info.nbt.putInt("x", info.pos.getX());
-			info.nbt.putInt("y", info.pos.getY());
-			info.nbt.putInt("z", info.pos.getZ());
+			infoNbt.putInt("x", pos.getX());
+			infoNbt.putInt("y", pos.getY());
+			infoNbt.putInt("z", pos.getZ());
 
-			BlockEntity be = BlockEntity.loadStatic(info.pos, info.state, info.nbt);
+			BlockEntity be = BlockEntity.loadStatic(pos, info.state(), infoNbt);
 			if (be == null) continue;
 			be.setLevel(world);
-			this.presentBlockEntities.put(info.pos, be);
+			this.presentBlockEntities.put(pos, be);
 		}
 	}
 

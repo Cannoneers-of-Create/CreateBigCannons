@@ -41,7 +41,7 @@ public class SlidingBreechBlockEntity extends AbstractBigCannonBreechBlockEntity
 	}
 
 	public boolean canClose() {
-		return this.cannonBehavior.block().state.isAir() && this.level.getEntitiesOfClass(ControlledContraptionEntity.class, new AABB(this.worldPosition))
+		return this.cannonBehavior.block().state().isAir() && this.getLevel().getEntitiesOfClass(ControlledContraptionEntity.class, new AABB(this.worldPosition))
 			.stream().noneMatch(cce -> cce.getContraption() instanceof TranslatingContraption);
 	}
 

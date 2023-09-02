@@ -35,7 +35,7 @@ public class ImpactFuzeItem extends FuzeItem {
 		}
 		if (damage == 0) return false;
 		float f = this.getDetonateChance();
-		return f > 0 && projectile.level.getRandom().nextFloat() < f;
+		return f > 0 && projectile.level().getRandom().nextFloat() < f;
 	}
 
 	@Override

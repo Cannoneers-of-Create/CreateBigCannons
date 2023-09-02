@@ -5,7 +5,7 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -13,13 +13,13 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
-import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.manualloading.RamRodItem;
 import rbasamoyai.createbigcannons.manualloading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonRoundItem;
@@ -32,7 +32,7 @@ import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 public class CBCItems {
 
 	static {
-		REGISTRATE.creativeModeTab(() -> ModGroup.GROUP);
+		REGISTRATE.useCreativeTab(ModGroup.getMainCreativeTabKey());
 	}
 
 	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new).register();
@@ -214,7 +214,7 @@ public class CBCItems {
 	public static void register() {
 	}
 
-	private static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registry.ITEM_REGISTRY, loc); }
+	private static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registries.ITEM, loc); }
 	private static TagKey<Item> forgeTag(String loc) { return tag(new ResourceLocation("forge", loc)); }
 	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
 

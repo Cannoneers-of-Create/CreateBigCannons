@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
+import org.joml.Quaternionf;
+
 import com.jozufozu.flywheel.api.Instancer;
 import com.jozufozu.flywheel.api.Material;
 import com.jozufozu.flywheel.api.MaterialManager;
@@ -7,8 +9,7 @@ import com.jozufozu.flywheel.api.instance.DynamicInstance;
 import com.jozufozu.flywheel.core.Materials;
 import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
 import com.jozufozu.flywheel.util.AnimationTickHolder;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import com.mojang.math.Axis;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityInstance;
 import com.simibubi.create.content.kinetics.base.flwdata.RotatingData;
@@ -98,13 +99,13 @@ public class CannonMountInstance extends KineticBlockEntityInstance<CannonMountB
 		float partialTicks = AnimationTickHolder.getPartialTicks();
 
 		float yaw = this.blockEntity.getYawOffset(partialTicks);
-		Quaternionf qyaw = Vector3f.YN.rotationDegrees(yaw);
+		Quaternionf qyaw = Axis.YN.rotationDegrees(yaw);
 		this.rotatingMount.setRotation(qyaw);
 		float pitch = this.blockEntity.getPitchOffset(partialTicks);
 		Direction facing = this.blockEntity.getContraptionDirection();
 		boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
-		Quaternionf qpitch = Vector3f.XP.rotationDegrees(flag ? -pitch : pitch);
-		Quaternionf qyaw1 = qyaw.copy();
+		Quaternionf qpitch = Axis.XP.rotationDegrees(flag ? -pitch : pitch);
+		Quaternionf qyaw1 = new Quaternionf(qyaw);
 		qyaw1.mul(qpitch);
 		this.rotatingMountShaft.setRotation(qyaw1);
 	}

@@ -129,7 +129,7 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 	}
 
 	protected void onFluidStackChanged(FluidStack newStack) {
-		if (this.level != null && !this.level.isClientSide) this.notifyUpdate();
+		if (this.getLevel() != null && !this.getLevel().isClientSide) this.notifyUpdate();
 	}
 
 	@Override

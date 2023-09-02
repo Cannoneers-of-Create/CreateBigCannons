@@ -1,12 +1,14 @@
 package rbasamoyai.createbigcannons.multiloader;
 
+import java.util.function.Supplier;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
-import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,11 +19,14 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -35,8 +40,6 @@ import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
-
-import java.util.function.Supplier;
 
 public class IndexPlatform {
 
@@ -73,8 +76,6 @@ public class IndexPlatform {
 		throw new AssertionError();
 	}
 
-	@ExpectPlatform public static int getModGroupId() { throw new AssertionError(); }
-
 	@SuppressWarnings("unchecked") public static <T extends DataGenerator> T castGen(DataGenerator gen) { return (T) gen; }
 
 	@ExpectPlatform
@@ -104,8 +105,6 @@ public class IndexPlatform {
 	public static <T extends ItemPropertyFunction> void registerClampedItemProperty(Item item, ResourceLocation loc, T func) {
 		throw new AssertionError();
 	}
-
-	@ExpectPlatform public static Object getUnchecked(RegistryEntry<?> ent) { throw new AssertionError(); }
 
 	@ExpectPlatform
 	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {

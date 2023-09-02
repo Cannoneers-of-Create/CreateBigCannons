@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.Blocks;
@@ -48,8 +49,8 @@ public class BigCannonBehavior extends CannonBehavior {
 	protected void onRotate(Direction.Axis rotationAxis, Rotation rotation) {
 		if (this.containedBlockInfo.isPresent()) {
 			StructureBlockInfo oldInfo = this.containedBlockInfo.get();
-			if (oldInfo.state.getBlock() instanceof BigCannonMunitionBlock mblock) {
-				this.loadBlock(new StructureBlockInfo(oldInfo.pos, mblock.onCannonRotate(oldInfo.state, rotationAxis, rotation), oldInfo.nbt));
+			if (oldInfo.state().getBlock() instanceof BigCannonMunitionBlock mblock) {
+				this.loadBlock(new StructureBlockInfo(oldInfo.pos(), mblock.onCannonRotate(oldInfo.state(), rotationAxis, rotation), oldInfo.nbt()));
 			}
 			this.blockEntity.setChanged();
 		}
@@ -61,11 +62,11 @@ public class BigCannonBehavior extends CannonBehavior {
 		super.write(nbt, spawnPacket);
 		if (this.containedBlockInfo.isPresent()) {
 			StructureBlockInfo blockInfo = this.containedBlockInfo.get();
-			if (!blockInfo.state.isAir()) {
-				nbt.putLong("Pos", blockInfo.pos.asLong());
-				nbt.put("State", NbtUtils.writeBlockState(blockInfo.state));
-				if (blockInfo.nbt != null) {
-					nbt.put("Data", blockInfo.nbt);
+			if (!blockInfo.state().isAir()) {
+				nbt.putLong("Pos", blockInfo.pos().asLong());
+				nbt.put("State", NbtUtils.writeBlockState(blockInfo.state()));
+				if (blockInfo.nbt() != null) {
+					nbt.put("Data", blockInfo.nbt());
 				}
 			}
 		}
@@ -75,7 +76,7 @@ public class BigCannonBehavior extends CannonBehavior {
 	public void read(CompoundTag nbt, boolean clientPacket) {
 		super.read(nbt, clientPacket);
 		BlockPos pos = BlockPos.of(nbt.getLong("Pos"));
-		BlockState state = NbtUtils.readBlockState(nbt.getCompound("State"));
+		BlockState state = NbtUtils.readBlockState(this.getWorld().holderLookup(Registries.BLOCK), nbt.getCompound("State"));
 		CompoundTag tag = nbt.contains("Data") ? nbt.getCompound("Data") : null;
 		this.containedBlockInfo = Optional.of(new StructureBlockInfo(pos, state, tag));
 	}

@@ -11,14 +11,13 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.data.loot.BlockLoot;
+import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
@@ -28,7 +27,6 @@ import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
@@ -147,7 +145,7 @@ public class CBCBuilderTransformers {
 		ResourceLocation breechblockBottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_breechblock_bottom");
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(new SlidingBreechBlockGen(pathAndMaterial)::generate)
+			.blockstate(SlidingBreechBlockGen.create(pathAndMaterial)::generate)
 			.item(BigCannonBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 				.texture("hole", holeLoc)
@@ -164,13 +162,13 @@ public class CBCBuilderTransformers {
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreechUnbored(String pathAndMaterial) {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(new SlidingBreechBlockGen(pathAndMaterial)::generate);
+			.blockstate(SlidingBreechBlockGen.create(pathAndMaterial)::generate);
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreechIncomplete(String pathAndMaterial) {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(new IncompleteSlidingBreechBlockGen(pathAndMaterial)::generate);
+			.blockstate(IncompleteSlidingBreechBlockGen.create(pathAndMaterial)::generate);
 	}
 
 	public static <T extends Block & BigCannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreech(String pathAndMaterial) {
@@ -220,7 +218,7 @@ public class CBCBuilderTransformers {
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreechIncomplete(String pathAndMaterial) {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(new IncompleteScrewBreechBlockGen(pathAndMaterial)::generate);
+			.blockstate(IncompleteScrewBreechBlockGen.create(pathAndMaterial)::generate);
 	}
 
 	public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> screwLock(String pathAndMaterial) {
@@ -344,7 +342,7 @@ public class CBCBuilderTransformers {
 	public static <T extends DirectionalAxisKineticBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonLoader() {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(new CannonLoaderGen()::generate)
+			.blockstate(CannonLoaderGen.create()::generate)
 			.item()
 			.model((c, p) -> {})
 			.build();
@@ -353,7 +351,7 @@ public class CBCBuilderTransformers {
 	public static <T extends DirectionalAxisKineticBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonDrill() {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(new CannonDrillGen()::generate)
+			.blockstate(CannonDrillGen.create()::generate)
 			.item()
 			.model((c, p) -> {})
 			.build();
@@ -369,7 +367,7 @@ public class CBCBuilderTransformers {
 	public static <T extends DirectionalAxisKineticBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBuilder() {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(new CannonBuilderGen()::generate)
+			.blockstate(CannonBuilderGen.create()::generate)
 			.item()
 			.model((c, p) -> {})
 			.build();
@@ -401,7 +399,7 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::solid)
 			.blockstate((c, p) -> {
-				BlockModelBuilder builder = p.models().withExistingParent(c.getName(), baseLoc)
+				var builder = p.models().withExistingParent(c.getName(), baseLoc)
 					.texture("side", sideLoc)
 					.texture("top", topLoc)
 					.texture("particle", topLoc);
@@ -426,7 +424,7 @@ public class CBCBuilderTransformers {
 				return p.models().getExistingFile(s.getValue(BigCartridgeBlock.FILLED) ? filledLoc : emptyLoc);
 			}))
 			.loot((t, c) -> {
-				((BlockLoot) t).add(c, LootTable.lootTable()
+				((BlockLootSubProvider) t).add(c, LootTable.lootTable()
 					.withPool(LootPool.lootPool()
 						.add(LootItem.lootTableItem(c))
 						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
@@ -493,7 +491,7 @@ public class CBCBuilderTransformers {
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> castMould(String size) {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/cast_mould/" + size + "_cast_mould");
 		ResourceLocation sandLoc = CreateBigCannons.resource("block/casting_sand");
-		return b -> b.initialProperties(Material.WOOD, MaterialColor.PODZOL)
+		return b -> b.properties(p -> p.mapColor(MapColor.PODZOL))
 			.properties(p -> p.strength(2.0f, 3.0f))
 			.properties(p -> p.sound(SoundType.WOOD))
 			.properties(p -> p.noOcclusion())

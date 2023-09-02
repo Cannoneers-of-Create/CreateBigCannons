@@ -27,7 +27,7 @@ public abstract class CannonMountPointMixin extends ArmInteractionPoint {
 		CannonMountPoint self = (CannonMountPoint) (Object) this;
 		boolean simulate = !stack.getOrCreateTag().contains("DontSimulate");
 		if (!simulate) stack.getTag().remove("DontSimulate");
-		if (!(this.level.getBlockEntity(this.pos) instanceof CannonMountBlockEntity mount)) return stack;
+		if (!(this.getLevel().getBlockEntity(this.pos) instanceof CannonMountBlockEntity mount)) return stack;
 		PitchOrientedContraptionEntity poce = mount.getContraption();
 		if (poce == null || !(poce.getContraption() instanceof AbstractMountedCannonContraption cannon)) return stack;
 		return self.getInsertedResultAndDoSomething(stack, simulate, cannon, poce);

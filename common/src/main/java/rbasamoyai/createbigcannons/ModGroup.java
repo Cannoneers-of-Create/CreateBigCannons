@@ -1,30 +1,29 @@
 package rbasamoyai.createbigcannons;
 
-import net.minecraft.core.NonNullList;
+import java.util.Arrays;
+import java.util.function.Supplier;
+
+import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
-import java.util.Arrays;
-
 public class ModGroup {
 
-	public static final CreativeModeTab GROUP = new CreativeModeTab(IndexPlatform.getModGroupId(), CreateBigCannons.MOD_ID) {
-		@Override
-		public ItemStack makeIcon() {
-			return CBCBlocks.SOLID_SHOT.asStack();
-		}
-
-		@Override
-		public void fillItemList(NonNullList<ItemStack> list) {
-			list.addAll(Arrays.asList(
+	public static final Supplier<CreativeModeTab> GROUP = wrapGroup(() -> createBuilder()
+		.title(Component.translatable("itemGroup." + CreateBigCannons.MOD_ID))
+		.icon(CBCBlocks.SOLID_SHOT::asStack)
+		.displayItems((param, output) -> {
+			output.acceptAll(Arrays.asList(
 				CBCBlocks.CANNON_MOUNT.asStack(),
 				CBCBlocks.YAW_CONTROLLER.asStack(),
 
@@ -223,11 +222,18 @@ public class ModGroup {
 				CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD.asStack(),
 
 				CBCItems.SPRING_WIRE.asStack()));
-		}
-	};
+		})
+		.build());
+
+	@ExpectPlatform public static Supplier<CreativeModeTab> wrapGroup(Supplier<CreativeModeTab> sup) { throw new AssertionError(); }
+	@ExpectPlatform public static CreativeModeTab.Builder createBuilder() { throw new AssertionError(); }
+
+	public static ResourceKey<CreativeModeTab> getMainCreativeTabKey() {
+		return BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(GROUP.get()).orElseThrow();
+	}
 
 	public static void register() {
-		CreateBigCannons.REGISTRATE.creativeModeTab(() -> GROUP, "Create Big Cannons");
+		CreateBigCannons.REGISTRATE.addRawLang("itemGroup." + CreateBigCannons.MOD_ID, "Create Big Cannons");
 	}
 
 }

@@ -35,7 +35,7 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 	private final VoxelShaper shapes;
 
 	public ProjectileBlock(Properties properties) {
-		super(properties);
+		super(properties.pushReaction(PushReaction.NORMAL));
 		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP));
 		this.shapes = this.makeShapes();
 	}
@@ -84,11 +84,6 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 	public abstract AbstractCannonProjectile getProjectile(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity blockEntity);
 
 	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.NORMAL;
-	}
-
-	@Override
 	public boolean canBeLoaded(BlockState state, Direction.Axis facing) {
 		return state.getValue(FACING).getAxis() == facing;
 	}
@@ -119,8 +114,8 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 	@Override
 	public ItemStack getExtractedItem(StructureBlockInfo info) {
 		ItemStack stack = new ItemStack(this);
-		if (info.nbt != null) {
-			stack.getOrCreateTag().put("BlockEntityTag", info.nbt);
+		if (info.nbt() != null) {
+			stack.getOrCreateTag().put("BlockEntityTag", info.nbt());
 		}
 		return stack;
 	}

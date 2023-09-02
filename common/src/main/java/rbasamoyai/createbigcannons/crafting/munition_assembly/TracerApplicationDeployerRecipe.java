@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -35,10 +36,10 @@ public class TracerApplicationDeployerRecipe implements Recipe<Container> {
 		return false;
 	}
 
-	@Override public ItemStack assemble(Container inv) { return this.getResultItem(); }
+	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		ItemStack result = this.munition.copy();
 		result.setCount(1);
 		if (result.getItem() instanceof AutocannonRoundItem) {

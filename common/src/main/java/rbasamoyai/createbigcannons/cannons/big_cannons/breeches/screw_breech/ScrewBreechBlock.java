@@ -35,7 +35,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements IBE<Scr
 	private final BigCannonMaterial material;
 
 	public ScrewBreechBlock(Properties properties, BigCannonMaterial material) {
-		super(properties);
+		super(properties.pushReaction(PushReaction.BLOCK));
 		this.material = material;
 		this.registerDefaultState(this.getStateDefinition().any().setValue(OPEN, BigCannonEnd.CLOSED));
 	}
@@ -74,11 +74,6 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements IBE<Scr
 	@Override
 	public Axis getRotationAxis(BlockState state) {
 		return state.getValue(FACING).getAxis();
-	}
-
-	@Override
-	public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.BLOCK;
 	}
 
 	@Override

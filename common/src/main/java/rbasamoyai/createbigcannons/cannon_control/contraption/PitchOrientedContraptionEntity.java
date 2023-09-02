@@ -61,7 +61,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		super.readAdditional(compound, spawnPacket);
 		if (compound.contains("ControllerRelative"))
 			this.controllerPos = NbtUtils.readBlockPos(compound.getCompound("ControllerRelative")).offset(this.blockPosition());
-		else if (this.level.getBlockEntity(this.blockPosition().below(2)) instanceof ControlPitchContraption.Block controller && !this.isPassenger()) {
+		else if (this.level().getBlockEntity(this.blockPosition().below(2)) instanceof ControlPitchContraption.Block controller && !this.isPassenger()) {
 			// Legacy, cannon mount
 			this.controllerPos = controller.getControllerBlockPos();
 		}
@@ -78,8 +78,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	protected ControlPitchContraption getController() {
 		if (this.controllerPos != null) {
-			if (!this.level.isLoaded(this.controllerPos)) return null;
-			return this.level.getBlockEntity(this.controllerPos) instanceof ControlPitchContraption controller ? controller : null;
+			if (!this.level().isLoaded(this.controllerPos)) return null;
+			return this.level().getBlockEntity(this.controllerPos) instanceof ControlPitchContraption controller ? controller : null;
 		}
 		return this.getVehicle() instanceof ControlPitchContraption controller ? controller : null;
 	}
@@ -94,16 +94,17 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		}
 
 		this.contraption.anchor = this.blockPosition();
-		if (this.contraption instanceof AbstractMountedCannonContraption mounted) mounted.tick(this.level, this);
+		Level level = this.level();
+		if (this.contraption instanceof AbstractMountedCannonContraption mounted) mounted.tick(level, this);
 
 		ControlPitchContraption controller = this.getController();
 		if (controller == null) {
-			if (!this.level.isClientSide) this.disassemble();
+			if (!level.isClientSide) this.disassemble();
 			return;
 		}
 		if (!controller.isAttachedTo(this)) {
 			controller.attach(this);
-			if (this.level.isClientSide) this.setPos(this.getX(), this.getY(), this.getZ());
+			if (level.isClientSide) this.setPos(this.getX(), this.getY(), this.getZ());
 		}
 	}
 
@@ -209,7 +210,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	}
 
 	@Override
-	public void positionRider(Entity passenger) {
+	public void positionRider(Entity passenger, Entity.MoveFunction function) {
 		if (!this.hasPassenger(passenger)) return;
 		Vec3 transformedVector = this.getPassengerPosition(passenger, 1);
 		transformedVector = this.processRiderPositionHook(passenger, transformedVector);
@@ -260,7 +261,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	@Nullable
 	@Override
-	public Entity getControllingPassenger() {
+	public LivingEntity getControllingPassenger() {
 		return this.getFirstPassenger() instanceof Player player ? player : null;
 	}
 
@@ -269,7 +270,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	}
 
 	public void tryFiringShot() {
-		if (this.contraption instanceof AbstractMountedCannonContraption cannon && this.level instanceof ServerLevel slevel) {
+		if (this.contraption instanceof AbstractMountedCannonContraption cannon && this.level() instanceof ServerLevel slevel) {
 			cannon.fireShot(slevel, this, this.getController());
 		}
 	}
@@ -280,9 +281,9 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			BlockEntity be = this.contraption.presentBlockEntities.get(localPos);
 			StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
 
-			if (info.state.getBlock() instanceof BigCannonBlock cBlock
+			if (info.state().getBlock() instanceof BigCannonBlock cBlock
 				&& be instanceof IBigCannonBlockEntity cbe
-				&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level, cannon,
+				&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level(), cannon,
 				(BlockEntity & IBigCannonBlockEntity) cbe, info, this)) {
 				return true;
 			}
@@ -290,9 +291,9 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 			BlockEntity be = this.contraption.presentBlockEntities.get(localPos);
 			StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
 
-			if (info.state.getBlock() instanceof AutocannonBlock cBlock
+			if (info.state().getBlock() instanceof AutocannonBlock cBlock
 				&& be instanceof IAutocannonBlockEntity cbe
-				&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level, autocannon,
+				&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level(), autocannon,
 				(BlockEntity & IAutocannonBlockEntity) cbe, info, this)) {
 				return true;
 			}
