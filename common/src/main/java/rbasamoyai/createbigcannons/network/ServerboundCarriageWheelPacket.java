@@ -35,7 +35,7 @@ public class ServerboundCarriageWheelPacket implements RootPacket {
 
     @Override
     public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-        if (sender != null && sender.level.getEntity(this.id) instanceof CannonCarriageEntity carriage) carriage.setWheelState(this.state);
+        if (sender != null && sender.level().getEntity(this.id) instanceof CannonCarriageEntity carriage) carriage.setWheelState(this.state);
     }
 
 }

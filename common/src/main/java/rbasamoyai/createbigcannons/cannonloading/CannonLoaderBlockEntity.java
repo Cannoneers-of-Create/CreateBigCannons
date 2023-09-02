@@ -20,16 +20,16 @@ public class CannonLoaderBlockEntity extends PoleMoverBlockEntity {
 
 	@Override
 	protected PoleContraption innerAssemble() throws AssemblyException {
-		if (!(this.level.getBlockState(this.worldPosition).getBlock() instanceof CannonLoaderBlock)) return null;
+		if (!(this.getLevel().getBlockState(this.worldPosition).getBlock() instanceof CannonLoaderBlock)) return null;
 
 		Direction facing = this.getBlockState().getValue(CannonLoaderBlock.FACING);
 		CannonLoadingContraption contraption = new CannonLoadingContraption(facing, this.getMovementSpeed() < 0);
-		if (!contraption.assemble(this.level, this.worldPosition)) return null;
+		if (!contraption.assemble(this.getLevel(), this.worldPosition)) return null;
 
 		Direction positive = Direction.get(Direction.AxisDirection.POSITIVE, facing.getAxis());
 		Direction movementDirection = (this.getSpeed() > 0) ^ facing.getAxis() != Direction.Axis.Z ? positive : positive.getOpposite();
 		BlockPos anchor = contraption.anchor.relative(facing, contraption.initialExtensionProgress());
-		return CannonLoaderCollider.isCollidingWithWorld(this.level, contraption, anchor.relative(movementDirection), movementDirection) ? null : contraption;
+		return CannonLoaderCollider.isCollidingWithWorld(this.getLevel(), contraption, anchor.relative(movementDirection), movementDirection) ? null : contraption;
 	}
 
 	@Override

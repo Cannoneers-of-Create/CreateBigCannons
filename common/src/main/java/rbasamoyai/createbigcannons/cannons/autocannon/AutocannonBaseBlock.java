@@ -19,7 +19,7 @@ public abstract class AutocannonBaseBlock extends DirectionalBlock implements Au
     private final AutocannonMaterial material;
 
     protected AutocannonBaseBlock(Properties properties, AutocannonMaterial material) {
-        super(properties);
+        super(properties.pushReaction(PushReaction.BLOCK));
         this.material = material;
         this.registerDefaultState(this.getStateDefinition().any().setValue(BlockStateProperties.WATERLOGGED, false));
     }
@@ -32,7 +32,6 @@ public abstract class AutocannonBaseBlock extends DirectionalBlock implements Au
 
     @Override public AutocannonMaterial getAutocannonMaterial() { return this.material; }
     @Override public Direction getFacing(BlockState state) { return state.getValue(FACING); }
-    @Override public PushReaction getPistonPushReaction(BlockState state) { return PushReaction.BLOCK; }
 
     @SuppressWarnings("deprecation")
     @Override

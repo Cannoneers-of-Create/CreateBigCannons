@@ -8,6 +8,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -34,7 +35,7 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 	private final int flowspeed;
 	private final int tickRate;
 	private final float blastResistance;
-	
+
 	// Forge fluid attributes
 	protected final ResourceLocation stillTex;
 	protected final ResourceLocation flowingTex;
@@ -61,7 +62,7 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 
 	@Override public Fluid getFlowing() { return this.flowing.get(); }
 	@Override public Fluid getSource() { return this.still.get(); }
-	@Override protected boolean canConvertToSource() { return this.infinite; }
+	@Override protected boolean canConvertToSource(Level level) { return this.infinite; }
 
 	@Override
 	protected void beforeDestroyingBlock(LevelAccessor level, BlockPos pos, BlockState state) {

@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -41,12 +42,15 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Cont
 			&& existing.getCount() < existing.getMaxStackSize();
 	}
 
-	@Override public ItemStack assemble(Container container) { return this.getResultItem(); }
+	@Override
+	public ItemStack assemble(Container container, RegistryAccess registryAccess) {
+		return this.getResultItem(registryAccess);
+	}
 
 	@Override public boolean canCraftInDimensions(int width, int height) { return true; }
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		if (!(this.insertedAmmo.getItem() instanceof AutocannonAmmoItem ammoItem)) return ItemStack.EMPTY;
 		ItemStack result = this.ammoContainer.copy();
 		boolean tracer = ammoItem.isTracer(this.insertedAmmo);

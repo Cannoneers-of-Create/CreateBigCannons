@@ -3,17 +3,16 @@ package rbasamoyai.createbigcannons.multiloader.fabric;
 import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
-import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
-import io.github.fabricators_of_create.porting_lib.util.ItemGroupUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
@@ -26,10 +25,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -91,10 +92,6 @@ public class IndexPlatformImpl {
 		return () -> CannonCastBlockEntityRenderer::new;
 	}
 
-	public static int getModGroupId() {
-		return ItemGroupUtil.expandArrayAndGetId();
-	}
-
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluidBuilder(AbstractRegistrate<?> owner,
 																					   P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
 																					   NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
@@ -131,17 +128,13 @@ public class IndexPlatformImpl {
 		ItemProperties.register(item, loc, func::call);
 	}
 
-	public static Object getUnchecked(RegistryEntry<?> ent) {
-		return ent.getUnchecked();
-	}
-
 	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {
-		RecipeSerializer<?> ret = Registry.register(Registry.RECIPE_SERIALIZER, id, sup.get());
+		RecipeSerializer<?> ret = Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id, sup.get());
 		return () -> ret;
 	}
 
 	public static void registerRecipeType(ResourceLocation id, Supplier<RecipeType<?>> type) {
-		Registry.register(Registry.RECIPE_TYPE, id, type.get());
+		Registry.register(BuiltInRegistries.RECIPE_TYPE, id, type.get());
 	}
 
 	public static float getFluidConversionFactor() {

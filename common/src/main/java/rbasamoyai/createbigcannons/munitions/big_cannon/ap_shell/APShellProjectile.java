@@ -14,10 +14,10 @@ public class APShellProjectile extends FuzedBigCannonProjectile {
 	public APShellProjectile(EntityType<? extends APShellProjectile> type, Level level) {
 		super(type, level);
 	}
-	
+
 	@Override
 	protected void detonate() {
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), (float) this.getProperties().explosivePower(),
+		this.level().explode(null, this.getX(), this.getY(), this.getZ(), (float) this.getProperties().explosivePower(),
 				CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.discard();
 	}

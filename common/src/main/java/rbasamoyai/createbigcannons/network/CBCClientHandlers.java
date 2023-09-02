@@ -26,11 +26,11 @@ public class CBCClientHandlers {
 			for (Map.Entry<BlockPos, StructureBlockInfo> entry : pkt.changes().entrySet()) {
 				BlockEntity be = contraption.presentBlockEntities.get(entry.getKey());
 				StructureBlockInfo info = entry.getValue();
-				if (be == null || info.nbt == null) continue;
-				CompoundTag copy = info.nbt.copy();
-				copy.putInt("x", info.pos.getX());
-				copy.putInt("y", info.pos.getY());
-				copy.putInt("z", info.pos.getZ());
+				if (be == null || info.nbt() == null) continue;
+				CompoundTag copy = info.nbt().copy();
+				copy.putInt("x", info.pos().getX());
+				copy.putInt("y", info.pos().getY());
+				copy.putInt("z", info.pos().getZ());
 				be.load(copy);
 			}
 			contraption.deferInvalidate = true;

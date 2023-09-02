@@ -102,14 +102,14 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 			for (int xOffset = 0; xOffset < 3; xOffset++) {
 				for (int zOffset = 0; zOffset < 3; zOffset++) {
 					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
-					AbstractCannonCastBlockEntity castAt = ConnectivityHandler.partAt(this.getType(), this.level, pos);
+					AbstractCannonCastBlockEntity castAt = ConnectivityHandler.partAt(this.getType(), this.getLevel(), pos);
 					if (castAt == null) continue;
-					this.level.updateNeighbourForOutputSignal(pos, castAt.getBlockState().getBlock());
+					this.getLevel().updateNeighbourForOutputSignal(pos, castAt.getBlockState().getBlock());
 				}
 			}
 		}
 
-		if (!this.level.isClientSide) {
+		if (!this.getLevel().isClientSide) {
 			this.notifyUpdate();
 		}
 
@@ -133,7 +133,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 		}
 		if (this.leakage.getAmount() >= 1250) {
 			net.minecraft.world.level.material.Fluid leakFluid = this.leakage.getFluid();
-			this.level.setBlock(this.worldPosition.below(), leakFluid.defaultFluidState().createLegacyBlock(), 11);
+			this.getLevel().setBlock(this.worldPosition.below(), leakFluid.defaultFluidState().createLegacyBlock(), 11);
 			this.leakage.setAmount(this.leakage.getAmount() - 1000);
 		}
 	}
@@ -182,10 +182,10 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 		FluidStack remaining = controller.fluid.getFluid();
 
 		if (controller == this && this.height > 0) {
-			if (this.level.getBlockEntity(this.worldPosition.above()) instanceof CannonCastBlockEntity otherCast) {
+			if (this.getLevel().getBlockEntity(this.worldPosition.above()) instanceof CannonCastBlockEntity otherCast) {
 				otherCast.controllerPos = null;
 				otherCast.height = this.height;
-				otherCast.structure = getStructureFromPoint(this.level, this.worldPosition.above(), this.height);
+				otherCast.structure = getStructureFromPoint(this.getLevel(), this.worldPosition.above(), this.height);
 				otherCast.fluid = new SmartFluidTank(otherCast.calculateCapacityFromStructure(), otherCast::onFluidStackChanged);
 				otherCast.fluid.fill(remaining, IFluidHandler.FluidAction.EXECUTE);
 				otherCast.updatePotentialCastsAbove();
@@ -201,10 +201,10 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 			controller.updateRecipes = true;
 			controller.notifyUpdate();
 
-			if (this.level.getBlockEntity(this.worldPosition.above()) instanceof CannonCastBlockEntity otherCast) {
+			if (this.getLevel().getBlockEntity(this.worldPosition.above()) instanceof CannonCastBlockEntity otherCast) {
 				otherCast.controllerPos = null;
 				otherCast.height = oldHeight - controller.height;
-				otherCast.structure = getStructureFromPoint(this.level, this.worldPosition.above(), otherCast.height);
+				otherCast.structure = getStructureFromPoint(this.getLevel(), this.worldPosition.above(), otherCast.height);
 				otherCast.fluid = new SmartFluidTank(otherCast.calculateCapacityFromStructure(), otherCast::onFluidStackChanged);
 				otherCast.fluid.fill(remaining, IFluidHandler.FluidAction.EXECUTE);
 				otherCast.updatePotentialCastsAbove();
@@ -215,13 +215,13 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 
 		if (this.castShape.isLarge()) {
 			for (BlockPos pos : BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1))) {
-				if (CBCBlocks.CANNON_CAST.has(this.level.getBlockState(pos)))
-					this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
+				if (CBCBlocks.CANNON_CAST.has(this.getLevel().getBlockState(pos)))
+					this.getLevel().setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
 			}
 		}
 
 		if (!addLeak.isEmpty() && addLeak.getAmount() >= 1000) {
-			this.level.setBlock(this.worldPosition, addLeak.getFluid().defaultFluidState().createLegacyBlock(), 11);
+			this.getLevel().setBlock(this.worldPosition, addLeak.getFluid().defaultFluidState().createLegacyBlock(), 11);
 		}
 	}
 

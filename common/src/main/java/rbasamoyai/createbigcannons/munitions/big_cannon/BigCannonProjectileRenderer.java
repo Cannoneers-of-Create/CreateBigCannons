@@ -1,11 +1,14 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.world.item.ItemDisplayContext;
+
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -26,16 +29,16 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 		if (blockState.getRenderShape() == RenderShape.MODEL) {
 			poseStack.pushPose();
 
-			Quaternionf q = Vector3f.YP.rotationDegrees(entity.getViewYRot(partialTicks) + 180.0f);
-			Quaternionf q1 = Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks) - 90.0f);
+			Quaternionf q = Axis.YP.rotationDegrees(entity.getViewYRot(partialTicks) + 180.0f);
+			Quaternionf q1 = Axis.XP.rotationDegrees(entity.getViewXRot(partialTicks) - 90.0f);
 			q.mul(q1);
 
 			poseStack.translate(0.0d, 0.4d, 0.0d);
 			poseStack.mulPose(q);
 
 			Minecraft.getInstance().getItemRenderer()
-					.renderStatic(new ItemStack(blockState.getBlock()), ItemTransforms.TransformType.NONE, packedLight,
-							OverlayTexture.NO_OVERLAY, poseStack, buffers, 0);
+					.renderStatic(new ItemStack(blockState.getBlock()), ItemDisplayContext.NONE, packedLight,
+							OverlayTexture.NO_OVERLAY, poseStack, buffers, entity.level(), 0);
 
 			poseStack.popPose();
 			super.render(entity, entityYaw, partialTicks, poseStack, buffers, packedLight);

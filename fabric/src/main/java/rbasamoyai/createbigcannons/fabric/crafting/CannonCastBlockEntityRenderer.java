@@ -5,8 +5,9 @@ import com.jozufozu.flywheel.fabric.model.DefaultLayerFilteringBakedModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
-import io.github.fabricators_of_create.porting_lib.render.virtual.FixedLightBakedModel;
-import io.github.fabricators_of_create.porting_lib.render.virtual.TranslucentBakedModel;
+
+import io.github.fabricators_of_create.porting_lib.models.virtual.FixedLightBakedModel;
+import io.github.fabricators_of_create.porting_lib.models.virtual.TranslucentBakedModel;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -17,8 +18,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntityRenderer;
-
-import java.util.Random;
 
 public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntityRenderer {
 

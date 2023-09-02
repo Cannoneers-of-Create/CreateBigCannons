@@ -18,23 +18,23 @@ public interface IBigCannonBlockEntity extends ICannonBlockEntity<BigCannonBehav
 		if (blockInfo == null) return false;
 		BlockState cannonState = ((BlockEntity) this).getBlockState();
 		if (!(cannonState.getBlock() instanceof BigCannonBlock cannon)) return false;
-		if (!this.cannonBehavior().block().state.isAir()) return false;
+		if (!this.cannonBehavior().block().state().isAir()) return false;
 
 		Axis cannonAxis = cannon.getFacing(cannonState).getAxis();
-		if (CBCBlocks.RAM_HEAD.has(blockInfo.state)
-			|| CBCBlocks.WORM_HEAD.has(blockInfo.state)
-			|| AllBlocks.PISTON_EXTENSION_POLE.has(blockInfo.state)) {
-			return blockInfo.state.getValue(BlockStateProperties.FACING).getAxis() == cannonAxis;
+		if (CBCBlocks.RAM_HEAD.has(blockInfo.state())
+			|| CBCBlocks.WORM_HEAD.has(blockInfo.state())
+			|| AllBlocks.PISTON_EXTENSION_POLE.has(blockInfo.state())) {
+			return blockInfo.state().getValue(BlockStateProperties.FACING).getAxis() == cannonAxis;
 		}
-		if (blockInfo.state.getBlock() instanceof BigCannonMunitionBlock munition) {
-			return munition.canBeLoaded(blockInfo.state, cannonAxis);
+		if (blockInfo.state().getBlock() instanceof BigCannonMunitionBlock munition) {
+			return munition.canBeLoaded(blockInfo.state(), cannonAxis);
 		}
 
 		return false;
 	}
 
 	default boolean blockCanHandle(StructureBlockInfo data) {
-		return data.state.is(CBCTags.BlockCBC.THICK_TUBING);
+		return data.state().is(CBCTags.BlockCBC.THICK_TUBING);
 	}
 
 }

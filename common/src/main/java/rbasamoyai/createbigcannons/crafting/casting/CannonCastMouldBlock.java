@@ -27,24 +27,24 @@ public class CannonCastMouldBlock extends Block {
 	public static final BooleanProperty SAND = BooleanProperty.create("sand");
 	private final VoxelShape noSandShape;
 	private final Supplier<CannonCastShape> cannonShape;
-	
+
 	public CannonCastMouldBlock(Properties properties, VoxelShape noSandShape, Supplier<CannonCastShape> cannonShape) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(SAND, false));
 		this.noSandShape = noSandShape;
 		this.cannonShape = cannonShape;
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter blockGetter, BlockPos pos, CollisionContext context) {
 		return state.getValue(SAND) ? Shapes.or(this.noSandShape, Shapes.block()) : this.noSandShape;
 	}
-	
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		builder.add(SAND);
 	}
-	
+
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
 		ItemStack stack = player.getItemInHand(hand);
@@ -58,7 +58,7 @@ public class CannonCastMouldBlock extends Block {
 						ItemEntity item = player.drop(resultStack, false);
 						if (item != null) {
 							item.setNoPickUpDelay();
-							item.setOwner(player.getUUID());
+							item.setTarget(player.getUUID());
 						}
 					}
 				}
@@ -71,7 +71,7 @@ public class CannonCastMouldBlock extends Block {
 						ItemEntity item = player.drop(resultStack, false);
 						if (item != null) {
 							item.setNoPickUpDelay();
-							item.setOwner(player.getUUID());
+							item.setTarget(player.getUUID());
 						}
 					}
 				}
@@ -88,9 +88,9 @@ public class CannonCastMouldBlock extends Block {
 		}
 		return InteractionResult.PASS;
 	}
-	
+
 	protected boolean isSurroundingAreaCompleteForTransformation(BlockState state, Level level, BlockPos pos) {
 		return !this.cannonShape.get().isLarge() || BlockPos.betweenClosedStream(pos.offset(-1, 0, -1), pos.offset(1, 0, 1)).filter(p -> !pos.equals(p)).map(level::getBlockState).allMatch(CBCBlocks.CASTING_SAND::has);
 	}
-	
+
 }

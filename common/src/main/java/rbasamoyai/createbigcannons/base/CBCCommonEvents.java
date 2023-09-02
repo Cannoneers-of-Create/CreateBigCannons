@@ -21,6 +21,7 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCTags;
@@ -159,6 +160,7 @@ public class CBCCommonEvents {
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
 		BiConsumer<Supplier<Optional<? extends Recipe<? extends Container>>>, Integer> cons) {
+		Level level = ((BlockEntity) deployer).getLevel();
 		ItemStack containerItem = container.getItem(0);
 		ItemStack deployerItem = container.getItem(1);
 
@@ -173,15 +175,15 @@ public class CBCCommonEvents {
 			cons.accept(() -> Optional.of(new CartridgeAssemblyDeployerRecipe(deployerItem)), 25);
 		}
 		MunitionFuzingDeployerRecipe fuzingRecipe = new MunitionFuzingDeployerRecipe(containerItem, deployerItem);
-		if (fuzingRecipe.matches(container, deployer.getLevel())) {
+		if (fuzingRecipe.matches(container, level)) {
 			cons.accept(() -> Optional.of(fuzingRecipe), 25);
 		}
 		TracerApplicationDeployerRecipe tracerRecipe = new TracerApplicationDeployerRecipe(containerItem, deployerItem);
-		if (tracerRecipe.matches(container, deployer.getLevel())) {
+		if (tracerRecipe.matches(container, level)) {
 			cons.accept(() -> Optional.of(tracerRecipe), 25);
 		}
 		AutocannonAmmoContainerFillingDeployerRecipe ammoContainerRecipe = new AutocannonAmmoContainerFillingDeployerRecipe(containerItem, deployerItem);
-		if (ammoContainerRecipe.matches(container, deployer.getLevel())) {
+		if (ammoContainerRecipe.matches(container, level)) {
 			cons.accept(() -> Optional.of(ammoContainerRecipe), 25);
 		}
 	}

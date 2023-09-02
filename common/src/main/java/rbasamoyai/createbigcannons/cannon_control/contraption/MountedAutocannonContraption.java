@@ -153,43 +153,43 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		this.startPos = this.startPos.subtract(pos);
 
 		for (StructureBlockInfo blockInfo : cannonBlocks) {
-			BlockPos localPos = blockInfo.pos.subtract(pos);
-			StructureBlockInfo localBlockInfo = new StructureBlockInfo(localPos, blockInfo.state, blockInfo.nbt);
+			BlockPos localPos = blockInfo.pos().subtract(pos);
+			StructureBlockInfo localBlockInfo = new StructureBlockInfo(localPos, blockInfo.state(), blockInfo.nbt());
 			this.blocks.put(localPos, localBlockInfo);
 
-			if (blockInfo.nbt == null) continue;
-			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state, blockInfo.nbt);
+			if (blockInfo.nbt() == null) continue;
+			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state(), blockInfo.nbt());
 			this.presentBlockEntities.put(localPos, be);
 		}
 
 		StructureBlockInfo startInfo = this.blocks.get(this.startPos);
-		if (startInfo == null || !(startInfo.state.getBlock() instanceof AutocannonBreechBlock))
+		if (startInfo == null || !(startInfo.state().getBlock() instanceof AutocannonBreechBlock))
 			throw noAutocannonBreech();
-		this.isHandle = startInfo.state.hasProperty(AutocannonBreechBlock.HANDLE) && startInfo.state.getValue(AutocannonBreechBlock.HANDLE);
+		this.isHandle = startInfo.state().hasProperty(AutocannonBreechBlock.HANDLE) && startInfo.state().getValue(AutocannonBreechBlock.HANDLE);
 		if (this.isHandle) {
 			this.getSeats().add(this.startPos.immutable());
 		}
 
 		StructureBlockInfo possibleSpring = this.blocks.get(this.startPos.relative(this.initialOrientation));
 		if (possibleSpring != null
-			&& possibleSpring.state.getBlock() instanceof AutocannonRecoilSpringBlock springBlock
-			&& springBlock.getFacing(possibleSpring.state) == this.initialOrientation) {
+			&& possibleSpring.state().getBlock() instanceof AutocannonRecoilSpringBlock springBlock
+			&& springBlock.getFacing(possibleSpring.state()) == this.initialOrientation) {
 			this.recoilSpringPos = this.startPos.relative(this.initialOrientation).immutable();
 			if (this.presentBlockEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity springBE) {
 				for (int i = 2; i < cannonLength; ++i) {
 					BlockPos pos1 = this.startPos.relative(this.initialOrientation, i);
 					StructureBlockInfo blockInfo = this.blocks.get(pos1);
 					if (blockInfo == null) continue;
-					springBE.toAnimate.put(pos1.subtract(this.recoilSpringPos), blockInfo.state);
-					if (blockInfo.state.hasProperty(AutocannonBarrelBlock.ASSEMBLED)) {
-						this.blocks.put(pos1, new StructureBlockInfo(pos1, blockInfo.state.setValue(AutocannonBarrelBlock.ASSEMBLED, true), blockInfo.nbt));
+					springBE.toAnimate.put(pos1.subtract(this.recoilSpringPos), blockInfo.state());
+					if (blockInfo.state().hasProperty(AutocannonBarrelBlock.ASSEMBLED)) {
+						this.blocks.put(pos1, new StructureBlockInfo(pos1, blockInfo.state().setValue(AutocannonBarrelBlock.ASSEMBLED, true), blockInfo.nbt()));
 					}
 				}
 				CompoundTag newTag = springBE.saveWithFullMetadata();
 				newTag.remove("x");
 				newTag.remove("y");
 				newTag.remove("z");
-				this.blocks.put(this.recoilSpringPos, new StructureBlockInfo(this.recoilSpringPos, possibleSpring.state, newTag));
+				this.blocks.put(this.recoilSpringPos, new StructureBlockInfo(this.recoilSpringPos, possibleSpring.state(), newTag));
 			}
 		}
 
@@ -216,7 +216,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		Map<BlockPos, StructureBlockInfo> modifiedBlocks = new HashMap<>();
 		for (Map.Entry<BlockPos, StructureBlockInfo> entry : this.blocks.entrySet()) {
 			StructureBlockInfo info = entry.getValue();
-			BlockState newState = info.state;
+			BlockState newState = info.state();
 			boolean modified = true;
 
 			if (newState.hasProperty(AutocannonBarrelBlock.ASSEMBLED) && newState.getValue(AutocannonBarrelBlock.ASSEMBLED)) {
@@ -224,18 +224,19 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				modified = true;
 			}
 
-			if (info.nbt != null) {
-				if (info.nbt.contains("AnimateTicks")) {
-					info.nbt.remove("AnimateTicks");
+			CompoundTag infoNbt = info.nbt();
+			if (infoNbt != null) {
+				if (infoNbt.contains("AnimateTicks")) {
+					infoNbt.remove("AnimateTicks");
 					modified = true;
 				}
-				if (info.nbt.contains("RenderedBlocks")) {
-					info.nbt.remove("RenderedBlocks");
+				if (infoNbt.contains("RenderedBlocks")) {
+					infoNbt.remove("RenderedBlocks");
 					modified = true;
 				}
 			}
 
-			if (modified) modifiedBlocks.put(info.pos, new StructureBlockInfo(info.pos, newState, info.nbt));
+			if (modified) modifiedBlocks.put(info.pos(), new StructureBlockInfo(info.pos(), newState, infoNbt));
 		}
 		this.blocks.putAll(modifiedBlocks);
 		super.addBlocksToWorld(world, transform);
@@ -289,10 +290,10 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					tag.remove("x");
 					tag.remove("y");
 					tag.remove("z");
-					StructureBlockInfo squibInfo = new StructureBlockInfo(currentPos, oldInfo.state, tag);
+					StructureBlockInfo squibInfo = new StructureBlockInfo(currentPos, oldInfo.state(), tag);
 					this.blocks.put(currentPos, squibInfo);
 					Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
-					level.playSound(null, squibPos.x, squibPos.y, squibPos.z, oldInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 10.0f, 0.0f);
+					level.playSound(null, squibPos.x, squibPos.y, squibPos.z, oldInfo.state().getSoundType().getBreakSound(), SoundSource.BLOCKS, 10.0f, 0.0f);
 					return;
 				}
 				currentPos = currentPos.relative(this.initialOrientation);
@@ -300,7 +301,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				behavior.removeItem();
 				if (canFail) {
 					Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
-					level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2, Explosion.BlockInteraction.NONE);
+					level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2, Level.ExplosionInteraction.NONE);
 					for (int i = 0; i < 10; ++i) {
 						BlockPos pos = currentPos.relative(this.initialOrientation, i);
 						this.blocks.remove(pos);
@@ -344,7 +345,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			if (entity.getControllingPassenger() == player) continue;
 			level.sendParticles(player, new CannonPlumeParticleData(0.1f), true, particlePos.x, particlePos.y, particlePos.z, 0, vec1.x, vec1.y, vec1.z, 1.0f);
 		}
-		CBCSoundEvents.FIRE_AUTOCANNON.playOnServer(level, new BlockPos(spawnPos));
+		CBCSoundEvents.FIRE_AUTOCANNON.playOnServer(level, BlockPos.containing(spawnPos));
 	}
 
 	@Override

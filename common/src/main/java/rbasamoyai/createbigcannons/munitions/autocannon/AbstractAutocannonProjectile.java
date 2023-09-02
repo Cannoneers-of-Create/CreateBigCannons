@@ -61,7 +61,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 		super.tick();
 
-		if (!this.level.isClientSide && this.level.hasChunkAt(this.blockPosition())) {
+		if (!this.level().isClientSide && this.level().hasChunkAt(this.blockPosition())) {
 			this.ageRemaining--;
 			if (this.ageRemaining <= 0) this.expireProjectile();
 		}
@@ -87,14 +87,14 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	@Override
 	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
-		if (this.level instanceof ServerLevel) {
+		if (this.level() instanceof ServerLevel) {
 			BlockPos pos = result.getBlockPos();
-			if (state.getDestroySpeed(this.level, pos) == -1) return;
+			if (state.getDestroySpeed(this.level(), pos) == -1) return;
 
 			Vec3 curVel = this.getDeltaMovement();
 			double curPom = this.getProjectileMass() * curVel.length();
 			double hardness = BlockHardnessHandler.getHardness(state) * 10;
-			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
+			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level());
 
 			if (curPom > hardness) {
 				double startMass = this.getProjectileMass();

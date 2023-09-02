@@ -220,7 +220,7 @@ public interface BigCannonBlock {
 	default <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
 			Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
 			StructureBlockInfo info, AbstractContraptionEntity entity) {
-		boolean flag = ((BigCannonBlock) info.state.getBlock()).getFacing(info.state).getAxis() == side.getAxis()
+		boolean flag = ((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() == side.getAxis()
 			&& !be.cannonBehavior().isConnectedTo(side);
 
 		ItemStack stack = player.getItemInHand(interactionHand);
@@ -229,7 +229,7 @@ public interface BigCannonBlock {
 			if (!level.isClientSide && be.cannonBehavior().tryLoadingBlock(loadInfo)) {
 				writeAndSyncSingleBlockData(be, info, entity, cannon);
 
-				SoundType sound = loadInfo.state.getSoundType();
+				SoundType sound = loadInfo.state().getSoundType();
 				level.playSound(null, player.blockPosition(), sound.getPlaceSound(), SoundSource.BLOCKS, sound.getVolume(), sound.getPitch());
 				if (!player.isCreative()) stack.shrink(1);
 			}
@@ -247,9 +247,9 @@ public interface BigCannonBlock {
 		tag.remove("x");
 		tag.remove("y");
 		tag.remove("z");
-		StructureBlockInfo newInfo = new StructureBlockInfo(oldInfo.pos, oldInfo.state, tag);
-		contraption.getBlocks().put(oldInfo.pos, newInfo);
-		NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(entity, oldInfo.pos, newInfo), entity);
+		StructureBlockInfo newInfo = new StructureBlockInfo(oldInfo.pos(), oldInfo.state(), tag);
+		contraption.getBlocks().put(oldInfo.pos(), newInfo);
+		NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(entity, oldInfo.pos(), newInfo), entity);
 	}
 
 	static void writeAndSyncMultipleBlockData(Set<BlockPos> changed, AbstractContraptionEntity entity, Contraption contraption) {
@@ -265,7 +265,7 @@ public interface BigCannonBlock {
 				tag.remove("y");
 				tag.remove("z");
 			}
-			StructureBlockInfo newInfo = new StructureBlockInfo(oldInfo.pos, oldInfo.state, tag);
+			StructureBlockInfo newInfo = new StructureBlockInfo(oldInfo.pos(), oldInfo.state(), tag);
 			changes.put(pos, newInfo);
 		}
 		blocks.putAll(changes);

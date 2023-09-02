@@ -66,7 +66,7 @@ public class CannonLoadingContraption extends PoleContraption {
 
 			if (this.isValidCannonBlock(level, nextBlock, start)) {
 				StructureBlockInfo containedBlock = ((IBigCannonBlockEntity) level.getBlockEntity(start)).cannonBehavior().block();
-				nextBlock = containedBlock.state;
+				nextBlock = containedBlock.state();
 				if (matcher.matchesAxis(nextBlock, blockAxis)) {
 					poles.add(new StructureBlockInfo(start, nextBlock.setValue(FACING, direction), null));
 				} else if (this.isValidLoaderHead(nextBlock)) {
@@ -136,9 +136,9 @@ public class CannonLoadingContraption extends PoleContraption {
 		this.bounds = new AABB(0, 0, 0, 0, 0, 0);
 
 		for (StructureBlockInfo pole : poles) {
-			BlockPos relPos = pole.pos.relative(direction, -extensionsInFront);
+			BlockPos relPos = pole.pos().relative(direction, -extensionsInFront);
 			BlockPos localPos = relPos.subtract(this.anchor);
-			this.getBlocks().put(localPos, new StructureBlockInfo(localPos, pole.state, null));
+			this.getBlocks().put(localPos, new StructureBlockInfo(localPos, pole.state(), null));
 		}
 
 		return true;
@@ -166,7 +166,7 @@ public class CannonLoadingContraption extends PoleContraption {
 				BlockEntity blockEntity = level.getBlockEntity(ahead);
 				if (!(blockEntity instanceof IBigCannonBlockEntity cannon)) return true;
 				StructureBlockInfo blockInfo = cannon.cannonBehavior().block();
-				if (this.isValidLoadBlock(blockInfo.state, level, ahead)) {
+				if (this.isValidLoadBlock(blockInfo.state(), level, ahead)) {
 					frontier.add(ahead);
 				}
 			}
@@ -197,11 +197,12 @@ public class CannonLoadingContraption extends PoleContraption {
 		if (blockEntity instanceof IBigCannonBlockEntity cannon) {
 			StructureBlockInfo containedInfo = cannon.cannonBehavior().block();
 			BlockEntity containedBlockEntity = null;
-			if (containedInfo.nbt != null) {
-				containedInfo.nbt.putInt("x", pos.getX());
-				containedInfo.nbt.putInt("y", pos.getY());
-				containedInfo.nbt.putInt("z", pos.getZ());
-				containedBlockEntity = BlockEntity.loadStatic(pos, containedInfo.state, containedInfo.nbt);
+			CompoundTag infoNbt = containedInfo.nbt();
+			if (infoNbt != null) {
+				infoNbt.putInt("x", pos.getX());
+				infoNbt.putInt("y", pos.getY());
+				infoNbt.putInt("z", pos.getZ());
+				containedBlockEntity = BlockEntity.loadStatic(pos, containedInfo.state(), infoNbt);
 			}
 			pair = Pair.of(containedInfo, containedBlockEntity);
 		}
@@ -230,7 +231,7 @@ public class CannonLoadingContraption extends PoleContraption {
 				BlockEntity blockEntity = level.getBlockEntity(currentPos);
 				if (!(blockEntity instanceof IBigCannonBlockEntity cannon)) return true;
 				StructureBlockInfo blockInfo = cannon.cannonBehavior().block();
-				if (this.isValidLoadBlock(blockInfo.state, level, currentPos)) {
+				if (this.isValidLoadBlock(blockInfo.state(), level, currentPos)) {
 					frontier.add(currentPos);
 				} else {
 					return true;
@@ -265,7 +266,7 @@ public class CannonLoadingContraption extends PoleContraption {
 		}
 
 		if (clbe.movedContraption != null) {
-			BlockPos entityAnchor = new BlockPos(clbe.movedContraption.getAnchorVec().add(0.5d, 0.5d, 0.5d));
+			BlockPos entityAnchor = BlockPos.containing(clbe.movedContraption.getAnchorVec().add(0.5d, 0.5d, 0.5d));
 
 			BlockPos blockPos = pos.subtract(entityAnchor);
 			StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);

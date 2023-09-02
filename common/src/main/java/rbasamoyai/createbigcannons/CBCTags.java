@@ -1,7 +1,15 @@
 package rbasamoyai.createbigcannons;
 
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
+
 import com.tterrag.registrate.providers.ProviderType;
-import net.minecraft.core.Registry;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;
@@ -12,12 +20,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
-
-import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCTags {
 
@@ -37,7 +39,7 @@ public class CBCTags {
 			NETHERRACK = commonTag("netherrack", "netherrack", "netherrack");
 
 		public static TagKey<Block> makeTag(String path) {
-			TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, CreateBigCannons.resource(path));
+			TagKey<Block> tag = TagKey.create(Registries.BLOCK, CreateBigCannons.resource(path));
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> ((TagsProvider<Block>) prov).tag(tag));
 			return tag;
 		}
@@ -53,7 +55,10 @@ public class CBCTags {
 
 		public static void addBlocksToBlockTag(TagKey<Block> tag, Block... blocks) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
-				((TagsProvider<Block>) prov).tag(tag).add(blocks);
+				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
+				for (Block block : blocks) {
+					BuiltInRegistries.BLOCK.getResourceKey(block).ifPresent(app::add);
+				}
 			});
 		}
 
@@ -61,7 +66,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
 				for (Block b : blocks.get()) {
-					app.add(b);
+					BuiltInRegistries.BLOCK.getResourceKey(b).ifPresent(app::add);
 				}
 			});
 		}
@@ -119,7 +124,7 @@ public class CBCTags {
 			NITROPOWDER = makeTag("nitropowder");
 
 		public static TagKey<Item> makeTag(String loc) {
-			TagKey<Item> tag = TagKey.create(Registry.ITEM_REGISTRY, CreateBigCannons.resource(loc));
+			TagKey<Item> tag = TagKey.create(Registries.ITEM, CreateBigCannons.resource(loc));
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> ((TagsProvider<Item>) prov).tag(tag));
 			return tag;
 		}
@@ -135,7 +140,10 @@ public class CBCTags {
 
 		public static void addItemsToItemTag(TagKey<Item> tag, Item... items) {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
-				((TagsProvider<Item>) prov).tag(tag).add(items);
+				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
+				for (Item item : items) {
+					BuiltInRegistries.ITEM.getResourceKey(item).ifPresent(app::add);
+				}
 			});
 		}
 
@@ -143,7 +151,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
 				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				for (ItemLike bp : items) {
-					app.add(bp.asItem());
+					BuiltInRegistries.ITEM.getResourceKey(bp.asItem()).ifPresent(app::add);
 				}
 			});
 		}
@@ -188,7 +196,7 @@ public class CBCTags {
 			MOLTEN_METAL = makeTag("molten_metal");
 
 		public static TagKey<Fluid> makeTag(String loc) {
-			TagKey<Fluid> tag = TagKey.create(Registry.FLUID_REGISTRY, CreateBigCannons.resource(loc));
+			TagKey<Fluid> tag = TagKey.create(Registries.FLUID, CreateBigCannons.resource(loc));
 			REGISTRATE.addDataGenerator(ProviderType.FLUID_TAGS, prov -> ((TagsProvider<Fluid>) prov).tag(tag));
 			return tag;
 		}

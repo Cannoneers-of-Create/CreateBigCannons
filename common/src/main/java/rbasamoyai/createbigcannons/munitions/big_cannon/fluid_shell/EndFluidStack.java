@@ -4,7 +4,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
-import net.minecraft.core.Registry;
+
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -31,7 +32,7 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 	}
 
 	public static EndFluidStack readTag(CompoundTag tag) {
-		Fluid fluid = Registry.FLUID.get(new ResourceLocation(tag.getString("Fluid")));
+		Fluid fluid = BuiltInRegistries.FLUID.get(new ResourceLocation(tag.getString("Fluid")));
 		int amount = tag.getInt("FluidAmount");
 		CompoundTag data = tag.getCompound("FluidTag");
 		return new EndFluidStack(fluid, amount, data);
@@ -44,7 +45,7 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 	}
 
 	public static EndFluidStack readBuf(FriendlyByteBuf buf) {
-		return new EndFluidStack(Registry.FLUID.get(buf.readResourceLocation()), buf.readVarInt(), buf.readNbt());
+		return new EndFluidStack(BuiltInRegistries.FLUID.get(buf.readResourceLocation()), buf.readVarInt(), buf.readNbt());
 	}
 
 	public boolean isEmpty() {
@@ -59,9 +60,9 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 
 	public static DataResult<Fluid> read(ResourceLocation location) {
 		try {
-			return DataResult.success(Registry.FLUID.get(location));
+			return DataResult.success(BuiltInRegistries.FLUID.get(location));
 		} catch (Exception var2) {
-			return DataResult.error("Not a valid fluid id: " + location + " " + var2.getMessage());
+			return DataResult.error(() -> "Not a valid fluid id: " + location + " " + var2.getMessage());
 		}
 	}
 

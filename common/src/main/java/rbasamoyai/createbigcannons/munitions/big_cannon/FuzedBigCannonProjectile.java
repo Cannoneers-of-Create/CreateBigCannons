@@ -56,7 +56,7 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	}
 
 	protected final boolean canDetonate(Predicate<FuzeItem> cons) {
-		return !this.level.isClientSide && this.level.hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
+		return !this.level().isClientSide && this.level().hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
 	}
 
 	protected abstract void detonate();

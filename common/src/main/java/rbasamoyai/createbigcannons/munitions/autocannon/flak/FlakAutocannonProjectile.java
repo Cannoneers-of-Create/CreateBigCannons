@@ -55,10 +55,10 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		this.level().explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
 		ShrapnelProperties properties = this.getProperties().shrapnel();
-		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(),
+		Shrapnel.spawnShrapnelBurst(this.level(), CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(),
 				properties.count(), properties.spread(), (float) properties.damage());
 		this.discard();
 	}
@@ -78,7 +78,7 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	}
 
 	protected final boolean canDetonate(Predicate<FuzeItem> cons) {
-		return !this.level.isClientSide && this.level.hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
+		return !this.level().isClientSide && this.level().hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
 	}
 
 }

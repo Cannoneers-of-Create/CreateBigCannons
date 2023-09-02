@@ -5,17 +5,18 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import com.google.gson.JsonObject;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import com.simibubi.create.foundation.utility.Lang;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraft.world.item.crafting.SimpleRecipeSerializer;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.foundry.MeltingRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.AutocannonAmmoContainerFillingDeployerRecipe;
@@ -107,6 +108,28 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
 	private static <T extends Recipe<?>> NonNullSupplier<RecipeSerializer<?>> noSerializer(Function<ResourceLocation, T> prov) {
 		return () -> new SimpleRecipeSerializer<>(prov);
+	}
+
+	private static class SimpleRecipeSerializer<T extends Recipe<?>> implements RecipeSerializer<T> {
+		private final Function<ResourceLocation, T> constructor;
+
+		public SimpleRecipeSerializer(Function<ResourceLocation, T> constructor) {
+			this.constructor = constructor;
+		}
+
+		@Override
+		public T fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
+			return this.constructor.apply(recipeId);
+		}
+
+		@Override
+		public T fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
+			return this.constructor.apply(recipeId);
+		}
+
+		@Override
+		public void toNetwork(FriendlyByteBuf buffer, T recipe) {
+		}
 	}
 
 }

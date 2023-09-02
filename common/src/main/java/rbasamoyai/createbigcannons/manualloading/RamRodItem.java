@@ -74,7 +74,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 		int k = 0;
 		if (level.getBlockEntity(pos) instanceof IBigCannonBlockEntity) {
 			BlockState state = level.getBlockState(pos.relative(face));
-			if (state.getMaterial().blocksMotion()) return InteractionResult.PASS;
+			if (state.blocksMotion()) return InteractionResult.PASS;
 			k = -1;
 			for (int i = 0; i < getReach(); ++i) {
 				BlockPos pos1 = pos.relative(pushDirection, i);
@@ -84,7 +84,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 
 				if (level.getBlockEntity(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info = cbe.cannonBehavior().block();
-					if (info.state == null || info.state.isAir()) continue;
+					if (info.state() == null || info.state().isAir()) continue;
 				}
 				k = i;
 				break;
@@ -105,7 +105,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 			if (be instanceof IBigCannonBlockEntity cbe) {
 				encounteredCannon = true;
 				StructureBlockInfo info = cbe.cannonBehavior().block();
-				if (info.state.isAir()) break;
+				if (info.state().isAir()) break;
 				toPush.add(info);
 			} else {
 				CompoundTag tag = null;
@@ -136,9 +136,9 @@ public class RamRodItem extends Item implements HandloadingTool {
 			if (level.getBlockEntity(pos2) instanceof IBigCannonBlockEntity cbe) {
 				cbe.cannonBehavior().tryLoadingBlock(info);
 			} else {
-				level.setBlock(pos2, info.state, Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);
+				level.setBlock(pos2, info.state(), Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);
 				BlockEntity be2 = level.getBlockEntity(pos2);
-				CompoundTag tag = info.nbt;
+				CompoundTag tag = info.nbt();
 				if (be2 != null) tag = NBTProcessors.process(be2, tag, false);
 				if (be2 != null && tag != null) {
 					tag.putInt("x", pos2.getX());
@@ -165,11 +165,11 @@ public class RamRodItem extends Item implements HandloadingTool {
 			for (int i = 0; i < getReach(); ++i) {
 				BlockPos pos1 = startPos.relative(pushDirection, i);
 				StructureBlockInfo info = contraption.getBlocks().get(pos1);
-				if (info == null || !isValidLoadBlock(info.state, contraption, pos1, pushDirection)) return;
+				if (info == null || !isValidLoadBlock(info.state(), contraption, pos1, pushDirection)) return;
 
 				if (contraption.presentBlockEntities.get(pos1) instanceof IBigCannonBlockEntity cbe) {
 					StructureBlockInfo info1 = cbe.cannonBehavior().block();
-					if (info1.state.isAir()) continue;
+					if (info1.state().isAir()) continue;
 				}
 				k = i;
 				break;
@@ -183,11 +183,11 @@ public class RamRodItem extends Item implements HandloadingTool {
 		for (int i = 0; i < maxCount + 1; ++i) {
 			BlockPos pos1 = startPos.relative(pushDirection, i + k);
 			StructureBlockInfo info = contraption.getBlocks().get(pos1);
-			if (info == null || !isValidLoadBlock(info.state, contraption, pos1, pushDirection)) return;
+			if (info == null || !isValidLoadBlock(info.state(), contraption, pos1, pushDirection)) return;
 			if (!(contraption.presentBlockEntities.get(pos1) instanceof IBigCannonBlockEntity cbe)) break;
 			encounteredCannon = true;
 			StructureBlockInfo info1 = cbe.cannonBehavior().block();
-			if (info1.state.isAir()) break;
+			if (info1.state().isAir()) break;
 			toPush.add(info1);
 			if (toPush.size() > maxCount) return;
 		}

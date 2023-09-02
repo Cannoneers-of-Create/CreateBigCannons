@@ -1,11 +1,13 @@
 package rbasamoyai.createbigcannons.cannon_control.carriage;
 
+import org.joml.Vector4f;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import org.joml.Vector3f;
-import org.joml.Vector4f;
+import com.mojang.math.Axis;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.render.SuperByteBuffer;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -38,7 +40,7 @@ public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity>
 
         stack.pushPose();
 
-        stack.mulPose(Vector3f.YP.rotationDegrees(180 - entityYaw));
+        stack.mulPose(Axis.YP.rotationDegrees(180 - entityYaw));
 
         carriageBuf.translate(-0.5, 0, -0.5)
                 .light(light)

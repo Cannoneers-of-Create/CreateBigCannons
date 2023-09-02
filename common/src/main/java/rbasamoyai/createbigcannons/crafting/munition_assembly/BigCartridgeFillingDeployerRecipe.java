@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
@@ -34,8 +35,8 @@ public class BigCartridgeFillingDeployerRecipe implements Recipe<Container> {
 			&& container.getItem(1).is(CBCTags.ItemCBC.NITROPOWDER);
 	}
 
-	@Override public ItemStack assemble(Container inv) { return this.getResultItem(); }
-	@Override public ItemStack getResultItem() { return BigCartridgeBlockItem.getWithPower(this.resultPower); }
+	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
+	@Override public ItemStack getResultItem(RegistryAccess access) { return BigCartridgeBlockItem.getWithPower(this.resultPower); }
 
 	@Override public boolean canCraftInDimensions(int width, int height) { return true; }
 

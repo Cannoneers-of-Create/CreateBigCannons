@@ -1,6 +1,10 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -12,9 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class AutocannonRecoilSpringBlockEntity extends AutocannonBlockEntity implements AnimatedAutocannon {
 
@@ -81,7 +82,8 @@ public class AutocannonRecoilSpringBlockEntity extends AutocannonBlockEntity imp
         ListTag renderedList = tag.getList("RenderedBlocks", Tag.TAG_COMPOUND);
         for (int i = 0; i < renderedList.size(); ++i) {
             CompoundTag block = renderedList.getCompound(i);
-            this.toAnimate.put(NbtUtils.readBlockPos(block.getCompound("Pos")), NbtUtils.readBlockState(block.getCompound("Block")));
+            this.toAnimate.put(NbtUtils.readBlockPos(block.getCompound("Pos")),
+				NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), block.getCompound("Block")));
         }
     }
 

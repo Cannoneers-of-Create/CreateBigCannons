@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -29,10 +30,10 @@ public class CartridgeAssemblyDeployerRecipe implements Recipe<Container> {
 		return CBCItems.FILLED_AUTOCANNON_CARTRIDGE.isIn(container.getItem(0)) && this.round.getItem() instanceof AutocannonRoundItem;
 	}
 
-	@Override public ItemStack assemble(Container inv) { return this.getResultItem(); }
+	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
 
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess access) {
 		ItemStack result = CBCItems.AUTOCANNON_CARTRIDGE.asStack();
 		CompoundTag tag = result.getOrCreateTag();
 		ItemStack roundCopy = this.round.copy();

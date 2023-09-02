@@ -4,6 +4,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+
 import org.joml.Vector4f;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
@@ -116,9 +118,9 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	@Nullable
 	@Override
-	public Entity getControllingPassenger() {
+	public LivingEntity getControllingPassenger() {
 		return this.canTurnCannon()
-			? this.getPassengers().stream().filter(Player.class::isInstance).findFirst().orElse(null)
+			? (Player) this.getPassengers().stream().filter(Player.class::isInstance).findFirst().orElse(null)
 			: this.cannonContraption.getControllingPassenger();
 	}
 
@@ -132,7 +134,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 		if (this.isControlledByLocalInstance()) {
 			this.moveCarriage();
-			if (this.level.isClientSide) {
+			if (this.level().isClientSide) {
 				this.controlCarriage();
 				NetworkPlatform.sendToServer(new ServerboundCarriageWheelPacket(this));
 			}
@@ -141,7 +143,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			this.setDeltaMovement(Vec3.ZERO);
 		}
 
-		if (!this.level.isClientSide
+		if (!this.level().isClientSide
 			&& this.getControllingPassenger() instanceof Player player
 			&& this.cannonContraption != null
 			&& this.cannonContraption.getContraption() instanceof MountedAutocannonContraption) {
@@ -152,7 +154,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	public void tryFiringShot() {
-		if (this.level instanceof ServerLevel slevel
+		if (this.level() instanceof ServerLevel slevel
 			&& this.cannonContraption != null
 			&& this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
 			if (this.getControllingPassenger() instanceof Player player && cannon instanceof ItemCannon itemCannon) {
@@ -194,7 +196,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	private void controlCarriage() {
-		if (!this.hasPlayerController() || !this.isOnGround()) return;
+		if (!this.hasPlayerController() || !this.onGround()) return;
 
 		float deltaYaw = 0;
 
@@ -281,22 +283,23 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	public InteractionResult interact(Player player, InteractionHand hand) {
 		InteractionResult ret = super.interact(player, hand);
 		if (ret.consumesAction()) return ret;
+		Level level = this.level();
 
 		ItemStack stack = player.getItemInHand(hand);
 		if (player.isSecondaryUseActive()) {
 			if (stack.isEmpty() && this.isCannonRider()) {
-				if (!this.level.isClientSide) {
+				if (!level.isClientSide) {
 					this.setCannonRider(false);
 					ItemStack resultStack = Items.SADDLE.getDefaultInstance();
 					if (!player.addItem(resultStack) && !player.isCreative()) {
 						ItemEntity item = player.drop(resultStack, false);
 						if (item != null) {
 							item.setNoPickUpDelay();
-							item.setOwner(player.getUUID());
+							item.setTarget(player.getUUID());
 						}
 					}
 				}
-				return InteractionResult.sidedSuccess(this.level.isClientSide);
+				return InteractionResult.sidedSuccess(level.isClientSide);
 			}
 			return InteractionResult.PASS;
 		}
@@ -304,33 +307,33 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		if (stack.isEmpty()) {
 			if (this.hasPlayerController() || this.isUnderWater() || player.isUnderWater())
 				return InteractionResult.PASS;
-			if (this.level.isClientSide) return InteractionResult.SUCCESS;
+			if (level.isClientSide) return InteractionResult.SUCCESS;
 			if (!this.canTurnCannon())
 				return player.startRiding(this.cannonContraption) ? InteractionResult.CONSUME : InteractionResult.PASS;
 			return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		}
 		if (AllItems.WRENCH.isIn(stack)) {
-			if (!this.level.isClientSide) this.disassemble();
+			if (!level.isClientSide) this.disassemble();
 
 			Direction dir = this.getDirection();
 			BlockPos placePos = this.blockPosition();
 
-			if (this.level.getBlockState(placePos).getDestroySpeed(this.level, placePos) != -1) {
-				this.level.destroyBlock(placePos, true);
-				this.level.setBlock(placePos, CBCBlocks.CANNON_CARRIAGE.getDefaultState()
+			if (level.getBlockState(placePos).getDestroySpeed(level, placePos) != -1) {
+				level.destroyBlock(placePos, true);
+				level.setBlock(placePos, CBCBlocks.CANNON_CARRIAGE.getDefaultState()
 					.setValue(CannonCarriageBlock.FACING, dir)
 					.setValue(CannonCarriageBlock.SADDLED, this.isCannonRider()), 11);
 			}
 
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
+			return InteractionResult.sidedSuccess(level.isClientSide);
 		}
 		if (stack.is(Items.SADDLE) && !this.isCannonRider()) {
-			if (!this.level.isClientSide) {
+			if (!level.isClientSide) {
 				this.setCannonRider(true);
 				if (!player.isCreative()) stack.shrink(1);
 			}
-			this.level.playSound(player, this, SoundEvents.HORSE_SADDLE, SoundSource.NEUTRAL, 0.5F, 1.0F);
-			return InteractionResult.sidedSuccess(this.level.isClientSide);
+			level.playSound(player, this, SoundEvents.HORSE_SADDLE, SoundSource.NEUTRAL, 0.5F, 1.0F);
+			return InteractionResult.sidedSuccess(level.isClientSide);
 		}
 		return super.interact(player, hand);
 	}
@@ -350,7 +353,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
-		if (!this.level.isClientSide && this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon)
+		if (!this.level().isClientSide && this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon)
 			autocannon.trySettingFireRateCarriage(fireRateAdjustment);
 	}
 
@@ -361,20 +364,20 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	@Override
-	public void positionRider(Entity entity) {
+	protected void positionRider(Entity entity, Entity.MoveFunction function) {
 		if (!(entity instanceof Player)) {
-			super.positionRider(entity);
+			super.positionRider(entity, function);
 			return;
 		}
 		if (!this.hasPassenger(entity)) return;
 
 		if (this.isCannonRider()) {
-			entity.setPos(this.getX(), this.getY() + 1.375, this.getZ());
+			function.accept(entity, this.getX(), this.getY() + 1.375, this.getZ());
 		} else {
 			double yawRad = Math.toRadians(this.getYRot());
 			double x = this.getX() + Math.cos(yawRad) * 1.5;
 			double z = this.getZ() + Math.sin(yawRad) * 1.5;
-			entity.setPos(x, this.getY(), z);
+			function.accept(entity, x, this.getY(), z);
 		}
 	}
 
@@ -393,7 +396,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			this.resetContraptionToOffset();
 			this.cannonContraption.stopRiding();
 		}
-		AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.level, this.blockPosition());
+		AllSoundEvents.CONTRAPTION_DISASSEMBLE.playOnServer(this.level(), this.blockPosition());
 		this.discard();
 	}
 
@@ -435,7 +438,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	@Override
 	public boolean hurt(DamageSource source, float damage) {
 		if (this.isInvulnerableTo(source)) return false;
-		if (this.level.isClientSide || this.isRemoved()) return true;
+		if (this.level().isClientSide || this.isRemoved()) return true;
 		this.setHurtDir(-this.getHurtDir());
 		this.setHurtTime(10);
 		this.setDamage(this.getDamage() + damage * 10.0f);
@@ -443,7 +446,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		this.gameEvent(GameEvent.ENTITY_DAMAGE, source.getEntity());
 		boolean flag = source.getEntity() instanceof Player player && player.getAbilities().instabuild;
 		if (flag || this.getDamage() > 40.0F) {
-			if (!flag && this.level.getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
+			if (!flag && this.level().getGameRules().getBoolean(GameRules.RULE_DOENTITYDROPS)) {
 				this.spawnAtLocation(CBCBlocks.CANNON_CARRIAGE.asStack());
 				if (this.isCannonRider()) this.spawnAtLocation(Items.SADDLE);
 			}
@@ -523,7 +526,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this);
 	}
 

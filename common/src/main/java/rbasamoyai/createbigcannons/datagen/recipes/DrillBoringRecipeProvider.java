@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.datagen.recipes;
 import com.google.gson.JsonObject;
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -15,10 +16,10 @@ import java.util.function.Consumer;
 
 public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 
-	DrillBoringRecipeProvider(DataGenerator gen) { this(CreateBigCannons.MOD_ID, gen); }
+	DrillBoringRecipeProvider(PackOutput output) { this(CreateBigCannons.MOD_ID, output); }
 
-	public DrillBoringRecipeProvider(String modid, DataGenerator gen) {
-		super(modid, gen);
+	public DrillBoringRecipeProvider(String modid, PackOutput output) {
+		super(modid, output);
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 		cons.accept(recipe(CBCBlocks.UNBORED_LARGE_NETHERSTEEL_CANNON_LAYER.get(), CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER.get()));
 		cons.accept(recipe(CBCBlocks.UNBORED_VERY_LARGE_NETHERSTEEL_CANNON_LAYER.get(), CBCBlocks.VERY_LARGE_NETHERSTEEL_CANNON_LAYER.get()));
 		cons.accept(recipe(CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH.get(), CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH.get()));
-		
+
 		cons.accept(recipe(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BARREL.get(), CBCBlocks.CAST_IRON_AUTOCANNON_BARREL.get()));
 		cons.accept(recipe(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING.get(), CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_RECOIL_SPRING.get()));
 		cons.accept(recipe(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BREECH.get(), CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_BREECH.get()));

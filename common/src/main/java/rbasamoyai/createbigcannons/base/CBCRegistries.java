@@ -4,6 +4,7 @@ import com.mojang.serialization.Lifecycle;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.WritableRegistry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
@@ -26,12 +27,12 @@ public class CBCRegistries {
 
 	@SuppressWarnings("rawtypes")
 	private static <T> MappedRegistry<T> makeRegistrySimple(ResourceKey<? extends Registry<T>> key) {
-		MappedRegistry<T> registry = new MappedRegistry<>(key, Lifecycle.stable(), null);
-		WritableRegistry root = (WritableRegistry) Registry.REGISTRY;
+		MappedRegistry<T> registry = new MappedRegistry<>(key, Lifecycle.stable(), false);
+		WritableRegistry root = (WritableRegistry) BuiltInRegistries.REGISTRY;
 		root.register(key, registry, Lifecycle.stable());
 		return registry;
 	}
-	
+
 	public static void init() {
 		BLOCK_RECIPE_SERIALIZERS = makeRegistrySimple(Keys.BLOCK_RECIPE_SERIALIZERS);
 		BLOCK_RECIPE_TYPES = makeRegistrySimple(Keys.BLOCK_RECIPE_TYPES);
@@ -41,5 +42,5 @@ public class CBCRegistries {
 		BlockRecipeSerializer.register();
 		BlockRecipeType.register();
 	}
-	
+
 }

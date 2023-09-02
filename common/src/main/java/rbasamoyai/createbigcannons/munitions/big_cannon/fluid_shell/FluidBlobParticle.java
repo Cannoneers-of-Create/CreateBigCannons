@@ -13,7 +13,7 @@ public class FluidBlobParticle extends NoRenderParticle {
 	private final float scale;
 	private final int particleCount;
 	private final EndFluidStack fluid;
-	
+
 	FluidBlobParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float scale, EndFluidStack fluid) {
 		super(level, x, y, z, dx, dy, dz);
 		this.scale = scale;
@@ -21,13 +21,13 @@ public class FluidBlobParticle extends NoRenderParticle {
 		this.lifetime = 0;
 		this.fluid = fluid;
 	}
-	
+
 	@Override
 	public void tick() {
 		if (this.particleCount == 0) return;
-		
+
 		super.tick();
-		
+
 		ParticleOptions options = IndexPlatform.createFluidDripParticle(this.fluid);
 		for (int i = 0; i < this.particleCount; ++i) {
 			double rx = this.random.nextGaussian() * this.scale;
@@ -36,7 +36,7 @@ public class FluidBlobParticle extends NoRenderParticle {
 			double rdx = this.random.nextGaussian() * 0.1d;
 			double rdy = this.random.nextGaussian() * 0.1d;
 			double rdz = this.random.nextGaussian() * 0.1d;
-			this.level.addParticle(options, this.x + rx, this.y + ry, this.z + rz, this.xd + rdx, this.yd + rdy, this.zd + rdz);
+			this.getLevel().addParticle(options, this.x + rx, this.y + ry, this.z + rz, this.xd + rdx, this.yd + rdy, this.zd + rdz);
 		}
 	}
 

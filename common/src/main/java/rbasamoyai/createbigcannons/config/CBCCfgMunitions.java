@@ -1,7 +1,8 @@
 package rbasamoyai.createbigcannons.config;
 
 import com.simibubi.create.foundation.config.ConfigBase;
-import net.minecraft.world.level.Explosion.BlockInteraction;
+
+import net.minecraft.world.level.Level.ExplosionInteraction;
 
 public class CBCCfgMunitions extends ConfigBase {
 
@@ -99,17 +100,17 @@ public class CBCCfgMunitions extends ConfigBase {
 	}
 
 	public enum GriefState {
-		ALL_DAMAGE(BlockInteraction.DESTROY),
-		NO_EXPLOSIVE_DAMAGE(BlockInteraction.NONE),
-		NO_DAMAGE(BlockInteraction.NONE);
+		ALL_DAMAGE(ExplosionInteraction.BLOCK),
+		NO_EXPLOSIVE_DAMAGE(ExplosionInteraction.NONE),
+		NO_DAMAGE(ExplosionInteraction.NONE);
 
-		private final BlockInteraction explosiveInteraction;
+		private final ExplosionInteraction explosiveInteraction;
 
-		private GriefState(BlockInteraction explosiveInteraction) {
+		GriefState(ExplosionInteraction explosiveInteraction) {
 			this.explosiveInteraction = explosiveInteraction;
 		}
 
-		public BlockInteraction explosiveInteraction() { return this.explosiveInteraction; }
+		public ExplosionInteraction explosiveInteraction() { return this.explosiveInteraction; }
 	}
 
 }

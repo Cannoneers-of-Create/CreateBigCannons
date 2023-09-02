@@ -102,7 +102,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 	public <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
 																							Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
 																							StructureBlockInfo info, AbstractContraptionEntity entity) {
-		if (((BigCannonBlock) info.state.getBlock()).getFacing(info.state).getAxis() != side.getAxis()
+		if (((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() != side.getAxis()
 			|| be.cannonBehavior().isConnectedTo(side)
 			|| !(be instanceof QuickfiringBreechBlockEntity breech)) return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
@@ -124,12 +124,12 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 					BlockEntity be1 = cannon.presentBlockEntities.get(nextPos);
 					if (be1 instanceof IBigCannonBlockEntity cbe1) {
 						StructureBlockInfo info1 = cbe1.cannonBehavior().block();
-						ItemStack extract = info1.state.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
+						ItemStack extract = info1.state().getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
 						if (!player.addItem(extract) && !player.isCreative()) {
 							ItemEntity item = player.drop(extract, false);
 							if (item != null) {
 								item.setNoPickUpDelay();
-								item.setOwner(player.getUUID());
+								item.setTarget(player.getUUID());
 							}
 						}
 						cbe1.cannonBehavior().removeBlock();
@@ -161,7 +161,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 			if (!level.isClientSide) {
 				Set<BlockPos> changes = new HashSet<>(2);
 
-				if (!info1.state.isAir()) {
+				if (!info1.state().isAir()) {
 					BlockPos posAfter = nextPos.relative(pushDirection);
 					BlockEntity be2 = cannon.presentBlockEntities.get(posAfter);
 					if (!(be2 instanceof IBigCannonBlockEntity cbe2) || !cbe2.cannonBehavior().canLoadBlock(info1))
@@ -175,7 +175,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 
 				BigCannonBlock.writeAndSyncMultipleBlockData(changes, entity, cannon);
 
-				SoundType sound = loadInfo.state.getSoundType();
+				SoundType sound = loadInfo.state().getSoundType();
 				level.playSound(null, player.blockPosition(), sound.getPlaceSound(), SoundSource.BLOCKS, sound.getVolume(), sound.getPitch());
 				if (!player.isCreative()) stack.shrink(1);
 			}
@@ -234,13 +234,13 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 				StructureBlockInfo loaded = cbe.cannonBehavior().block();
 				if (player != null) {
 					if (loaded != null) {
-						Block block = loaded.state.getBlock();
+						Block block = loaded.state().getBlock();
 						ItemStack resultStack = block instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(loaded) : new ItemStack(block);
 						if (!player.addItem(resultStack) && !player.isCreative()) {
 							ItemEntity item = player.drop(resultStack, false);
 							if (item != null) {
 								item.setNoPickUpDelay();
-								item.setOwner(player.getUUID());
+								item.setTarget(player.getUUID());
 							}
 						}
 					}
@@ -249,7 +249,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 						ItemEntity item = player.drop(resultStack, false);
 						if (item != null) {
 							item.setNoPickUpDelay();
-							item.setOwner(player.getUUID());
+							item.setTarget(player.getUUID());
 						}
 					}
 				}

@@ -63,7 +63,7 @@ public class FinishedCannonCastBlockEntity extends SmartBlockEntity {
 	public void initialize() {
 		super.initialize();
 		this.sendData();
-		if (this.level.isClientSide) this.invalidateRenderBoundingBox();
+		if (this.getLevel().isClientSide) this.invalidateRenderBoundingBox();
 	}
 
 	@Override
@@ -74,13 +74,13 @@ public class FinishedCannonCastBlockEntity extends SmartBlockEntity {
 	public void removeCast() {
 		this.setRemoved();
 		if (this.isCentralBlock()) {
-			this.level.playSound(null, this.worldPosition.offset(1, 0, 1), this.getBlockState().getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0f, 1.0f);
+			this.getLevel().playSound(null, this.worldPosition.offset(1, 0, 1), this.getBlockState().getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0f, 1.0f);
 			for (BlockPos pos : BlockPos.betweenClosed(this.worldPosition, this.worldPosition.offset(2, 0, 2))) {
 				BlockPos posI = pos.immutable();
 				if (posI.equals(this.worldPosition.offset(1, 0, 1))) continue;
-				this.level.setBlock(posI, Blocks.AIR.defaultBlockState(), 11);
+				this.getLevel().setBlock(posI, Blocks.AIR.defaultBlockState(), 11);
 			}
-		} else if (this.level.getBlockEntity(this.centralBlock) instanceof FinishedCannonCastBlockEntity cast && cast.isCentralBlock()) {
+		} else if (this.getLevel().getBlockEntity(this.centralBlock) instanceof FinishedCannonCastBlockEntity cast && cast.isCentralBlock()) {
 			cast.removeCast();
 		}
 	}

@@ -19,12 +19,12 @@ public class SmokeShellProjectile extends FuzedBigCannonProjectile {
 
 	@Override
 	protected void detonate() {
-		SmokeEmitterEntity smoke = CBCEntityTypes.SMOKE_EMITTER.create(this.level);
+		SmokeEmitterEntity smoke = CBCEntityTypes.SMOKE_EMITTER.create(this.level());
 		smoke.setPos(this.position());
 		smoke.setDuration(CBCConfigs.SERVER.munitions.smokeShellCloudDuration.get());
 		smoke.setSize(CBCConfigs.SERVER.munitions.smokeShellCloudSize.getF());
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2, Explosion.BlockInteraction.NONE);
-		this.level.addFreshEntity(smoke);
+		this.level().explode(null, this.getX(), this.getY(), this.getZ(), 2, Level.ExplosionInteraction.NONE);
+		this.level().addFreshEntity(smoke);
 		this.discard();
 	}
 

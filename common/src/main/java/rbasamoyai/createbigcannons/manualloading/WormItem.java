@@ -73,7 +73,7 @@ public class WormItem extends Item implements HandloadingTool {
 				|| !(be instanceof IBigCannonBlockEntity cbe)) return InteractionResult.FAIL;
 
 			StructureBlockInfo info = cbe.cannonBehavior().block();
-			if (info.state.isAir()) continue;
+			if (info.state().isAir()) continue;
 
 			BlockPos pos2 = pos1.relative(context.getClickedFace());
 			BlockEntity be1 = level.getBlockEntity(pos2);
@@ -84,9 +84,9 @@ public class WormItem extends Item implements HandloadingTool {
 				}
 			} else if (level.getBlockState(pos2).isAir()) {
 				if (!level.isClientSide) {
-					level.setBlock(pos2, info.state, Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);
+					level.setBlock(pos2, info.state(), Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);
 					BlockEntity be2 = level.getBlockEntity(pos2);
-					CompoundTag tag = info.nbt;
+					CompoundTag tag = info.nbt();
 					if (be2 != null) tag = NBTProcessors.process(be2, tag, false);
 					if (be2 != null && tag != null) {
 						tag.putInt("x", pos2.getX());
@@ -121,12 +121,12 @@ public class WormItem extends Item implements HandloadingTool {
 		for (int i = 0; i < CBCConfigs.SERVER.cannons.wormReach.get(); ++i) {
 			BlockPos pos1 = startPos.relative(reachDirection, i);
 			StructureBlockInfo info = contraption.getBlocks().get(pos1);
-			if (info == null || !isValidLoadBlock(info.state, contraption, pos1, reachDirection)) return;
+			if (info == null || !isValidLoadBlock(info.state(), contraption, pos1, reachDirection)) return;
 			BlockEntity be = contraption.presentBlockEntities.get(pos1);
 			if (!(be instanceof IBigCannonBlockEntity cbe)) return;
 
 			StructureBlockInfo info1 = cbe.cannonBehavior().block();
-			if (info1.state.isAir()) continue;
+			if (info1.state().isAir()) continue;
 
 			BlockPos pos2 = pos1.relative(face);
 			BlockEntity be1 = contraption.presentBlockEntities.get(pos2);
@@ -137,12 +137,12 @@ public class WormItem extends Item implements HandloadingTool {
 				}
 			} else if (i == 0) {
 				if (!level.isClientSide) {
-					ItemStack stack = info1.state.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
+					ItemStack stack = info1.state().getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
 					if (!player.addItem(stack) && !player.isCreative()) {
 						ItemEntity item = player.drop(stack, false);
 						if (item != null) {
 							item.setNoPickUpDelay();
-							item.setOwner(player.getUUID());
+							item.setTarget(player.getUUID());
 						}
 					}
 				}

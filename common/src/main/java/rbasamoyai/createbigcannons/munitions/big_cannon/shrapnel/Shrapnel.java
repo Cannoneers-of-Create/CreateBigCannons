@@ -85,7 +85,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 			this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
 		}
 
-		if (!this.level.isClientSide && this.age > 20) {
+		if (!this.level().isClientSide && this.age > 20) {
 			this.discard();
 		}
 	}
@@ -116,16 +116,16 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	protected void onHitBlock(BlockHitResult result) {
 		super.onHitBlock(result);
 		BlockPos pos = result.getBlockPos();
-		BlockState state = this.level.getChunk(pos).getBlockState(pos);
-		if (!this.level.isClientSide && state.getDestroySpeed(this.level, pos) != -1 && this.canDestroyBlock(state)) {
+		BlockState state = this.level().getChunk(pos).getBlockState(pos);
+		if (!this.level().isClientSide && state.getDestroySpeed(this.level(), pos) != -1 && this.canDestroyBlock(state)) {
 			Vec3 curVel = this.getDeltaMovement();
 			double curPom = this.getProjectileMass() * curVel.length();
 			double hardness = BlockHardnessHandler.getHardness(state) * 10;
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state,
-				this.level);
+				this.level());
 
 			SoundType type = state.getSoundType();
-			this.level.playSound(null, pos, type.getBreakSound(), SoundSource.NEUTRAL, type.getVolume() * 0.25f,
+			this.level().playSound(null, pos, type.getBreakSound(), SoundSource.NEUTRAL, type.getVolume() * 0.25f,
 				type.getPitch());
 			this.discard();
 		}
@@ -150,7 +150,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	@Override
 	protected void onHit(HitResult result) {
 		super.onHit(result);
-		if (!this.level.isClientSide && (!(result instanceof EntityHitResult eResult)
+		if (!this.level().isClientSide && (!(result instanceof EntityHitResult eResult)
 			|| eResult.getEntity().getType() != this.getType())) {
 			this.discard();
 		}

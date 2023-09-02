@@ -32,12 +32,12 @@ public abstract class BearingCannonDrillFinderMixin extends GeneratingKineticBlo
 
 	@Inject(at = @At("HEAD"), method = "tick", remap = false)
 	public void createbigcannons$tick(CallbackInfo ci) {
-		if (this.level.isClientSide || !this.running || this.movedContraption == null) return;
-		List<ControlledContraptionEntity> contraptions = this.level.getEntitiesOfClass(ControlledContraptionEntity.class, this.movedContraption.getBoundingBox().inflate(2), e -> !e.equals(this.movedContraption));
+		if (this.getLevel().isClientSide || !this.running || this.movedContraption == null) return;
+		List<ControlledContraptionEntity> contraptions = this.getLevel().getEntitiesOfClass(ControlledContraptionEntity.class, this.movedContraption.getBoundingBox().inflate(2), e -> !e.equals(this.movedContraption));
 		for (ControlledContraptionEntity e : contraptions) {
 			if (!(e.getContraption() instanceof CannonDrillingContraption drill)) continue;
 			BlockPos drillBase = drill.anchor.relative(drill.orientation(), -1);
-			if (!(this.level.getBlockEntity(drillBase) instanceof AbstractCannonDrillBlockEntity drillBE)) continue;
+			if (!(this.getLevel().getBlockEntity(drillBase) instanceof AbstractCannonDrillBlockEntity drillBE)) continue;
 			drillBE.collideWithContraptionToBore(this.movedContraption, false);
 		}
 	}

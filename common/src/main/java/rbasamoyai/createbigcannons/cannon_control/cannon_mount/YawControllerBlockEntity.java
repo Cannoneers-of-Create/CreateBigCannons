@@ -16,7 +16,7 @@ public class YawControllerBlockEntity extends KineticBlockEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		BlockEntity be = this.level.getBlockEntity(this.worldPosition.above());
+		BlockEntity be = this.getLevel().getBlockEntity(this.worldPosition.above());
 		if (be instanceof CannonMountBlockEntity cmbe && cmbe.isRunning()) {
 			cmbe.yawSpeed = this.getSpeed();
 		}
@@ -24,7 +24,7 @@ public class YawControllerBlockEntity extends KineticBlockEntity {
 
 	@Override
 	public float calculateStressApplied() {
-		BlockEntity be = this.level.getBlockEntity(this.worldPosition.above());
+		BlockEntity be = this.getLevel().getBlockEntity(this.worldPosition.above());
 		return be instanceof CannonMountBlockEntity cmbe ? cmbe.calculateStressApplied() : 0.0f;
 	}
 

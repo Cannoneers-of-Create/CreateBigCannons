@@ -19,6 +19,7 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -178,7 +179,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			this.resultPreview.clear();
 			ListTag preview = tag.getList("Preview", Tag.TAG_COMPOUND);
 			for (int i = 0; i < preview.size(); ++i) {
-				this.resultPreview.add(NbtUtils.readBlockState(preview.getCompound(i)));
+				this.resultPreview.add(NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), preview.getCompound(i)));
 			}
 
 			this.controllerPos = null;
@@ -196,7 +197,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		if (!clientPacket) return;
 		boolean changeOfController = !Objects.equals(controllerBefore, this.controllerPos);
 		if (changeOfController || this.getControllerBE() != null && prevHeight != this.getControllerBE().height) {
-			if (this.hasLevel()) this.level.sendBlockUpdated(this.getBlockPos(), getBlockState(), getBlockState(), 16);
+			if (this.hasLevel()) this.getLevel().sendBlockUpdated(this.getBlockPos(), getBlockState(), getBlockState(), 16);
 			if (this.isController()) this.updateFluidClient();
 			this.invalidateRenderBoundingBox();
 		}
@@ -254,8 +255,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	}
 
 	protected void tickCastingBehavior() {
-		if (this.level.isClientSide) return;
-		if (this.level.getBlockState(this.worldPosition.below()).getMaterial().isReplaceable()) {
+		if (this.getLevel().isClientSide) return;
+		if (this.getLevel().getBlockState(this.worldPosition.below()).canBeReplaced()) {
 			this.leakContents();
 		} else {
 			if (this.canStartCasting()) {
@@ -288,10 +289,10 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 
 	protected void updateRecipes() {
 		this.recipes.clear();
-		List<BlockRecipe> list = BlockRecipeFinder.get(CASTING_RECIPES_KEY, this.level, this::matchingRecipeCache);
+		List<BlockRecipe> list = BlockRecipeFinder.get(CASTING_RECIPES_KEY, this.getLevel(), this::matchingRecipeCache);
 		list.stream()
 			.map(CannonCastingRecipe.class::cast)
-			.filter(r -> r.matches(this.level, this.worldPosition))
+			.filter(r -> r.matches(this.getLevel(), this.worldPosition))
 			.forEach(r -> this.recipes.put(r.shape(), r));
 	}
 
@@ -319,15 +320,15 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			if (recipe == null) break;
 
 			BlockPos pos = this.worldPosition.above(y);
-			if (!(this.level.getBlockEntity(pos) instanceof AbstractCannonCastBlockEntity cast)) break;
+			if (!(this.getLevel().getBlockEntity(pos) instanceof AbstractCannonCastBlockEntity cast)) break;
 			BlockPos corner = pos.offset(-1, 0, -1);
 			if (cast.getRenderedSize().isLarge()) {
 				BlockPos.betweenClosedStream(corner, pos.offset(1, 0, 1)).forEach(pos1 -> {
-					if (pos.equals(pos1) || !(this.level.getBlockEntity(pos1) instanceof AbstractCannonCastBlockEntity cast1))
+					if (pos.equals(pos1) || !(this.getLevel().getBlockEntity(pos1) instanceof AbstractCannonCastBlockEntity cast1))
 						return;
 					cast1.setRemoved();
-					this.level.setBlock(pos1, CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), 11);
-					if (!(this.level.getBlockEntity(pos1) instanceof FinishedCannonCastBlockEntity fCast)) return;
+					this.getLevel().setBlock(pos1, CBCBlocks.FINISHED_CANNON_CAST.getDefaultState(), 11);
+					if (!(this.getLevel().getBlockEntity(pos1) instanceof FinishedCannonCastBlockEntity fCast)) return;
 					if (pos1.equals(corner)) {
 						fCast.setRenderedShape(cast.castShape);
 						fCast.setHeight(this.height);
@@ -337,30 +338,30 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 					}
 				});
 			}
-			recipe.assembleInWorld(this.level, pos);
+			recipe.assembleInWorld(this.getLevel(), pos);
 
-			if (y > 0 && this.level.getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe && this.level.getBlockEntity(pos.below()) instanceof ICannonBlockEntity<?> cbe1) {
+			if (y > 0 && this.getLevel().getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe && this.getLevel().getBlockEntity(pos.below()) instanceof ICannonBlockEntity<?> cbe1) {
 				cbe.cannonBehavior().setConnectedFace(Direction.DOWN, true);
 				cbe1.cannonBehavior().setConnectedFace(Direction.UP, true);
 			}
 		}
 		SoundEvent sound = AllSoundEvents.STEAM.getMainEvent();
-		this.level.playSound(null, this.getBlockPos(), sound, SoundSource.BLOCKS, 1.0f, 1.0f);
+		this.getLevel().playSound(null, this.getBlockPos(), sound, SoundSource.BLOCKS, 1.0f, 1.0f);
 	}
 
 	@Override
 	public InteractionResult onWandUsed(UseOnContext context) {
-		if (!this.level.isClientSide) {
+		if (!this.getLevel().isClientSide) {
 			AbstractCannonCastBlockEntity controller = this.getControllerBE();
 			if (controller != null) controller.castingTime = 0;
 		}
-		return InteractionResult.sidedSuccess(this.level.isClientSide);
+		return InteractionResult.sidedSuccess(this.getLevel().isClientSide);
 	}
 
 	public void initializeCastMultiblock(CannonCastShape size) {
 		this.castShape = size;
 		if (this.castShape == null) return;
-		if (this.level.getBlockEntity(this.worldPosition.below()) instanceof AbstractCannonCastBlockEntity otherCast
+		if (this.getLevel().getBlockEntity(this.worldPosition.below()) instanceof AbstractCannonCastBlockEntity otherCast
 			&& otherCast.getType() == this.getType()
 			&& otherCast.getHeight() < getMaxHeight()) {
 			this.controllerPos = otherCast.getController();
@@ -375,7 +376,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			this.reInitTank();
 			this.structure.add(this.castShape);
 		}
-		if (this.level.getBlockEntity(this.worldPosition.above()) instanceof AbstractCannonCastBlockEntity otherCast && otherCast.isController()) {
+		if (this.getLevel().getBlockEntity(this.worldPosition.above()) instanceof AbstractCannonCastBlockEntity otherCast && otherCast.isController()) {
 			AbstractCannonCastBlockEntity controller = this.getControllerBE();
 			if (controller != null && controller.height + otherCast.height <= getMaxHeight()) {
 				controller.height += otherCast.height;
@@ -392,8 +393,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			for (Iterator<BlockPos> iter = BlockPos.betweenClosed(this.worldPosition.offset(-1, 0, -1), this.worldPosition.offset(1, 0, 1)).iterator(); iter.hasNext(); ) {
 				BlockPos pos = iter.next();
 				if (pos.equals(this.worldPosition)) continue;
-				this.level.setBlock(pos, CBCBlocks.CANNON_CAST.getDefaultState(), 11);
-				if (this.level.getBlockEntity(pos) instanceof AbstractCannonCastBlockEntity childCast && childCast.getType() == this.getType()) {
+				this.getLevel().setBlock(pos, CBCBlocks.CANNON_CAST.getDefaultState(), 11);
+				if (this.getLevel().getBlockEntity(pos) instanceof AbstractCannonCastBlockEntity childCast && childCast.getType() == this.getType()) {
 					childCast.controllerPos = this.getController();
 					childCast.notifyUpdate();
 				}
@@ -418,7 +419,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	public void destroyCastMultiblockAtLayer() {
 		if (this.canRenderCastModel() && this.castShape != null) {
 			this.onDestroyCenterCast();
-		} else if (this.level.getBlockEntity(this.getCenterBlock()) instanceof AbstractCannonCastBlockEntity otherCast) {
+		} else if (this.getLevel().getBlockEntity(this.getCenterBlock()) instanceof AbstractCannonCastBlockEntity otherCast) {
 			otherCast.destroyCastMultiblockAtLayer();
 		}
 	}
@@ -439,13 +440,13 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	protected void updatePotentialCastsAbove() {
 		if (!this.isController()) return;
 		for (int y = 0; y < this.height; ++y) {
-			if (!(this.level.getBlockEntity(this.worldPosition.above(y)) instanceof AbstractCannonCastBlockEntity cast))
+			if (!(this.getLevel().getBlockEntity(this.worldPosition.above(y)) instanceof AbstractCannonCastBlockEntity cast))
 				break;
 			if (y != 0) cast.setController(this.worldPosition);
 			if (cast.getRenderedSize().isLarge()) {
 				for (int x = -1; x < 2; ++x) {
 					for (int z = -1; z < 2; ++z) {
-						if ((x != 0 || z != 0) && this.level.getBlockEntity(this.worldPosition.offset(x, y, z)) instanceof AbstractCannonCastBlockEntity cast1) {
+						if ((x != 0 || z != 0) && this.getLevel().getBlockEntity(this.worldPosition.offset(x, y, z)) instanceof AbstractCannonCastBlockEntity cast1) {
 							cast1.setController(this.worldPosition);
 							cast1.setChanged();
 						}
@@ -494,7 +495,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	@Nullable
 	@Override
 	public AbstractCannonCastBlockEntity getControllerBE() {
-		return this.isController() ? this : this.level.getBlockEntity(this.controllerPos) instanceof AbstractCannonCastBlockEntity cast ? cast : null;
+		return this.isController() ? this : this.getLevel().getBlockEntity(this.controllerPos) instanceof AbstractCannonCastBlockEntity cast ? cast : null;
 	}
 
 	@Override
@@ -506,8 +507,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 
 	@Override
 	public void setController(BlockPos pos) {
-		if (this.level.isClientSide) this.invalidateRenderBoundingBox();
-		if (this.level.isClientSide && !this.isVirtual() || pos.equals(this.controllerPos)) return;
+		if (this.getLevel().isClientSide) this.invalidateRenderBoundingBox();
+		if (this.getLevel().isClientSide && !this.isVirtual() || pos.equals(this.controllerPos)) return;
 		this.controllerPos = pos;
 		this.refreshCap();
 		this.notifyUpdate();

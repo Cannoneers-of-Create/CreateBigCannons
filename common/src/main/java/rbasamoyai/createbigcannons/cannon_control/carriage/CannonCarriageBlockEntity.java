@@ -28,11 +28,11 @@ public class CannonCarriageBlockEntity extends SyncedBlockEntity {
 
 	public void tryAssemble() {
 		Direction facing = this.getBlockState().getValue(CannonCarriageBlock.FACING);
-		CannonCarriageEntity carriage = CBCEntityTypes.CANNON_CARRIAGE.create(this.level);
+		CannonCarriageEntity carriage = CBCEntityTypes.CANNON_CARRIAGE.create(this.getLevel());
 		carriage.setPos(Vec3.atBottomCenterOf(this.getBlockPos()).add(0, 0.125, 0));
 		carriage.setYRot(facing.toYRot());
 		carriage.setCannonRider(this.getBlockState().getValue(CannonCarriageBlock.SADDLED));
-		this.level.addFreshEntity(carriage);
+		this.getLevel().addFreshEntity(carriage);
 
 		try {
 			this.assemble(carriage);
@@ -40,35 +40,35 @@ public class CannonCarriageBlockEntity extends SyncedBlockEntity {
 
 		}
 
-		AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(this.level, this.worldPosition);
+		AllSoundEvents.CONTRAPTION_ASSEMBLE.playOnServer(this.getLevel(), this.worldPosition);
 
 		this.setRemoved();
-		this.level.removeBlock(this.worldPosition, false);
+		this.getLevel().removeBlock(this.worldPosition, false);
 	}
 
 	protected void assemble(CannonCarriageEntity carriage) throws AssemblyException {
 		if (!CBCBlocks.CANNON_CARRIAGE.has(this.getBlockState())) return;
 		BlockPos assemblyPos = this.worldPosition.above();
-		if (this.level.isOutsideBuildHeight(assemblyPos)) {
+		if (this.getLevel().isOutsideBuildHeight(assemblyPos)) {
 			throw CannonMountBlockEntity.cannonBlockOutsideOfWorld(assemblyPos);
 		}
 
 		Direction facing = this.getBlockState().getValue(CannonCarriageBlock.FACING);
 
 		AbstractMountedCannonContraption mountedCannon = this.getContraption(assemblyPos);
-		if (mountedCannon != null && mountedCannon.assemble(this.level, assemblyPos)) {
+		if (mountedCannon != null && mountedCannon.assemble(this.getLevel(), assemblyPos)) {
 			if (mountedCannon.initialOrientation() == facing) {
-				mountedCannon.removeBlocksFromWorld(this.level, BlockPos.ZERO);
-				PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.level, mountedCannon, facing, false);
+				mountedCannon.removeBlocksFromWorld(this.getLevel(), BlockPos.ZERO);
+				PitchOrientedContraptionEntity contraptionEntity = PitchOrientedContraptionEntity.create(this.getLevel(), mountedCannon, facing, false);
 				carriage.attach(contraptionEntity);
 				carriage.applyRotation();
-				this.level.addFreshEntity(contraptionEntity);
+				this.getLevel().addFreshEntity(contraptionEntity);
 			}
 		}
 	}
 
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
-		Block block = this.level.getBlockState(pos).getBlock();
+		Block block = this.getLevel().getBlockState(pos).getBlock();
 		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
 		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
 		return null;

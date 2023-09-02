@@ -1,9 +1,12 @@
 package rbasamoyai.createbigcannons.index;
 
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
+
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
-import net.minecraft.core.Registry;
+
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
@@ -13,8 +16,6 @@ import rbasamoyai.createbigcannons.crafting.foundry.MoltenMetalLiquidBlock;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
-
-import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCFluids {
 
@@ -34,7 +35,7 @@ public class CBCFluids {
 			.block(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
-	
+
 	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_BRONZE =
 			standardFluid("molten_bronze")
 			.lang("Molten Bronze")
@@ -51,7 +52,7 @@ public class CBCFluids {
 			.block(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
-	
+
 	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_STEEL =
 			standardFluid("molten_steel")
 			.lang("Molten Steel")
@@ -68,7 +69,7 @@ public class CBCFluids {
 			.block(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
-	
+
 	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
 			standardFluid("molten_nethersteel")
 			.lang("Molten Nethersteel")
@@ -83,7 +84,7 @@ public class CBCFluids {
 			.block(MoltenMetalLiquidBlock::new).build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
-	
+
 	public static void register() {}
 
 	private static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluid(String name, NonNullFunction<CBCFlowingFluid.Properties, T> fac) {
@@ -100,11 +101,11 @@ public class CBCFluids {
 	private static <S> S regSelf(AbstractRegistrate<?> reg) { return (S) reg; }
 
 	private static TagKey<Fluid> forgeTag(String path) {
-		return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation("forge", path));
+		return TagKey.create(Registries.FLUID, new ResourceLocation("forge", path));
 	}
 
 	private static TagKey<Fluid> fabricTag(String path) {
-		return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation("c", path));
+		return TagKey.create(Registries.FLUID, new ResourceLocation("c", path));
 	}
 
 }

@@ -1,8 +1,12 @@
 package rbasamoyai.createbigcannons.base;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.simibubi.create.foundation.utility.NBTHelper;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -12,9 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class PartialBlockDamageSaveData extends SavedData {
 
@@ -46,7 +47,7 @@ public class PartialBlockDamageSaveData extends SavedData {
 		CompoundTag values = tag.getCompound("BlockDamage");
 
 		for (String key : values.getAllKeys()) {
-			ResourceKey<Level> dimensionKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(key));
+			ResourceKey<Level> dimensionKey = ResourceKey.create(Registries.DIMENSION, new ResourceLocation(key));
 			ListTag damagesTag = values.getList(key, Tag.TAG_COMPOUND);
 			Map<BlockPos, Integer> damages = new HashMap<>(damagesTag.size());
 

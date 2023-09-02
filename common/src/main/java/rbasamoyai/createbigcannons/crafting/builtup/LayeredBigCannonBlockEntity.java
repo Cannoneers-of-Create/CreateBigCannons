@@ -23,7 +23,7 @@ import com.simibubi.create.foundation.utility.Iterate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -45,8 +45,8 @@ import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
@@ -96,9 +96,9 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 
 		BlockState state = this.getBlockState();
 
-		if (!this.level.isClientSide && this.isEmpty()) {
+		if (!this.getLevel().isClientSide && this.isEmpty()) {
 			this.setRemoved();
-			this.level.setBlock(this.worldPosition, Blocks.AIR.defaultBlockState(), 3 | 16);
+			this.getLevel().setBlock(this.worldPosition, Blocks.AIR.defaultBlockState(), 3 | 16);
 			return;
 		}
 
@@ -129,7 +129,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 			int cap = CBCConfigs.SERVER.crafting.builtUpCannonHeatingTime.get();
 			if (this.completionProgress >= cap) {
 				this.completionProgress = cap;
-				if (!this.level.isClientSide && !this.tryFinishHeating()) this.completionProgress = 0;
+				if (!this.getLevel().isClientSide && !this.tryFinishHeating()) this.completionProgress = 0;
 			}
 		} else if (this.completionProgress > 0) {
 			--this.completionProgress;
@@ -138,20 +138,20 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 	}
 
 	private boolean tryFinishHeating() {
-		List<BlockRecipe> recipes = BlockRecipeFinder.get(BUILT_UP_HEATING_RECIPES_KEY, this.level, this::matchingRecipeCache);
+		List<BlockRecipe> recipes = BlockRecipeFinder.get(BUILT_UP_HEATING_RECIPES_KEY, this.getLevel(), this::matchingRecipeCache);
 		if (recipes.isEmpty()) return false;
 		Optional<BlockRecipe> recipe = recipes.stream()
-			.filter(r -> r.matches(this.level, this.worldPosition))
+			.filter(r -> r.matches(this.getLevel(), this.worldPosition))
 			.findFirst();
 		if (!recipe.isPresent()) return false;
-		recipe.get().assembleInWorld(this.level, this.worldPosition);
+		recipe.get().assembleInWorld(this.getLevel(), this.worldPosition);
 		return true;
 	}
 
 	@Override
 	public InteractionResult onWandUsed(UseOnContext context) {
-		if (!this.level.isClientSide) this.tryFinishHeating();
-		return InteractionResult.sidedSuccess(this.level.isClientSide);
+		if (!this.getLevel().isClientSide) this.tryFinishHeating();
+		return InteractionResult.sidedSuccess(this.getLevel().isClientSide);
 	}
 
 	private boolean matchingRecipeCache(BlockRecipe recipe) {
@@ -264,9 +264,9 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 				newState = newState.setValue(FACING, this.getBlockState().getValue(FACING));
 			}
 			this.setRemoved();
-			this.level.setBlock(this.worldPosition, newState, 3 | 16);
+			this.getLevel().setBlock(this.worldPosition, newState, 3 | 16);
 			if (!this.getType().isValid(newState)) return;
-			BlockEntity be = this.level.getBlockEntity(this.worldPosition);
+			BlockEntity be = this.getLevel().getBlockEntity(this.worldPosition);
 			if (!(be instanceof LayeredBigCannonBlockEntity newLayered)) return;
 			newLayered.layeredBlocks = this.layeredBlocks;
 			newLayered.layersConnectedTowards = this.layersConnectedTowards;
@@ -313,7 +313,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 
 	public boolean isCollidingWith(StructureBlockInfo info, LayeredBigCannonBlockEntity other, Direction dir) {
 		if (this.currentFacing == null || dir.getAxis() != this.currentFacing.getAxis()) return true;
-		if (info.nbt == null || !info.nbt.contains("id")) return true;
+		if (info.nbt() == null || !info.nbt().contains("id")) return true;
 		if (other.baseMaterial != this.baseMaterial) return true;
 		Set<Integer> set = this.layeredBlocks.keySet().stream().map(CannonCastShape::diameter).collect(Collectors.toCollection(HashSet::new));
 		Set<Integer> set1 = other.layeredBlocks.keySet().stream().map(CannonCastShape::diameter).collect(Collectors.toCollection(HashSet::new));
@@ -343,7 +343,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		for (Map.Entry<CannonCastShape, Block> e : this.layeredBlocks.entrySet()) {
 			CompoundTag entryTag = new CompoundTag();
 			entryTag.putString("Shape", CBCRegistries.CANNON_CAST_SHAPES.getKey(e.getKey()).toString());
-			entryTag.putString("Block", Registry.BLOCK.getKey(e.getValue()).toString());
+			entryTag.putString("Block", BuiltInRegistries.BLOCK.getKey(e.getValue()).toString());
 			layerTag.add(entryTag);
 		}
 		tag.put("Layers", layerTag);
@@ -392,7 +392,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		for (int i = 0; i < layers.size(); ++i) {
 			CompoundTag entry = layers.getCompound(i);
 			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(entry.getString("Shape"))),
-				Registry.BLOCK.get(new ResourceLocation(entry.getString("Block"))));
+				BuiltInRegistries.BLOCK.get(new ResourceLocation(entry.getString("Block"))));
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;
 		this.completionProgress = tag.getInt("Progress");

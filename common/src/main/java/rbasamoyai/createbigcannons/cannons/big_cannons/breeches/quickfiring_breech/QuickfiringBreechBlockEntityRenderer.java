@@ -3,6 +3,8 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bre
 import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import com.simibubi.create.AllBlocks;
@@ -44,11 +46,11 @@ public class QuickfiringBreechBlockEntityRenderer extends SafeBlockEntityRendere
 		boolean alongFirst = blockState.getValue(QuickfiringBreechBlock.AXIS);
 		if (facing.getAxis().isHorizontal() && !alongFirst) {
 			Direction rotDir = facing.getAxis() == Direction.Axis.X ? Direction.UP : Direction.EAST;
-			qrot = rotDir.step().rotationDegrees(90f);
+			qrot = Axis.of(rotDir.step()).rotationDegrees(90f);
 		} else if (facing.getAxis() == Direction.Axis.X && alongFirst) {
-			qrot = blockRotation.step().rotationDegrees(90f);
+			qrot = Axis.of(blockRotation.step()).rotationDegrees(90f);
 		} else {
-			qrot = blockRotation.step().rotationDegrees(0);
+			qrot = Axis.of(blockRotation.step()).rotationDegrees(0);
 		}
 
 		VertexConsumer vcons = buffer.getBuffer(RenderType.solid());
@@ -72,9 +74,10 @@ public class QuickfiringBreechBlockEntityRenderer extends SafeBlockEntityRendere
 		float angle = progress * 90;
 		Direction dir = facing.getCounterClockWise(blockRotation.getAxis());
 		Vector3f normal1 = dir.step();
+		Axis axis1 = Axis.of(normal1);
 
 		CachedBufferer.block(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, axis))
-			.rotateCentered(normal1.rotationDegrees(angle))
+			.rotateCentered(axis1.rotationDegrees(angle))
 			.light(light)
 			.renderInto(ms, vcons);
 
@@ -82,7 +85,7 @@ public class QuickfiringBreechBlockEntityRenderer extends SafeBlockEntityRendere
 		ms.pushPose();
 
 		CachedBufferer.partialFacing(CBCBlockPartials.QUICKFIRING_BREECH_LEVER, blockState, dir)
-			.rotateCentered(normal1.rotationDegrees(angle))
+			.rotateCentered(axis1.rotationDegrees(angle))
 			.translate(normal1)
 			.light(light)
 			.renderInto(ms, vcons);

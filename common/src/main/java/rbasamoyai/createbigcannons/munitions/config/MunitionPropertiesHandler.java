@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -47,7 +48,7 @@ public class MunitionPropertiesHandler {
                 if (!element.isJsonObject()) continue;
 				try {
 					ResourceLocation entityLoc = entry.getKey();
-					EntityType<?> type = Registry.ENTITY_TYPE.getOptional(entityLoc).orElseThrow(() -> {
+					EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getOptional(entityLoc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown entity type '" + entityLoc + "'");
 					});
 					MunitionProperties properties = MunitionProperties.fromJson(element.getAsJsonObject(), entityLoc.toString());
@@ -65,7 +66,7 @@ public class MunitionPropertiesHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(PROJECTILES.size());
 		for (Map.Entry<EntityType<?>, MunitionProperties> entry : PROJECTILES.entrySet()) {
-			buf.writeUtf(Registry.ENTITY_TYPE.getKey(entry.getKey()).toString());
+			buf.writeUtf(BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()).toString());
 			entry.getValue().writeBuf(buf);
 		}
 	}
@@ -75,7 +76,7 @@ public class MunitionPropertiesHandler {
 		int sz = buf.readVarInt();
 
 		for (int i = 0; i < sz; ++i) {
-			PROJECTILES.put(Registry.ENTITY_TYPE.get(new ResourceLocation(buf.readUtf())), MunitionProperties.readBuf(buf));
+			PROJECTILES.put(BuiltInRegistries.ENTITY_TYPE.get(new ResourceLocation(buf.readUtf())), MunitionProperties.readBuf(buf));
 		}
 	}
 

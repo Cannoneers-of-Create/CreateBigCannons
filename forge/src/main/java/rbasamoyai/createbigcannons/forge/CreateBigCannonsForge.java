@@ -1,8 +1,7 @@
 package rbasamoyai.createbigcannons.forge;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.sounds.SoundEvent;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -31,7 +30,7 @@ public class CreateBigCannonsForge {
 
     public static final DeferredRegister<ParticleType<?>> PARTICLE_REGISTER = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, CreateBigCannons.MOD_ID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER_REGISTER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, CreateBigCannons.MOD_ID);
-    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_REGISTER = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, CreateBigCannons.MOD_ID);
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_REGISTER = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, CreateBigCannons.MOD_ID);
 
     public CreateBigCannonsForge() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -43,6 +42,7 @@ public class CreateBigCannonsForge {
 
         CreateBigCannons.REGISTRATE.registerEventListeners(modEventBus);
         CreateBigCannons.init();
+		ModGroupImpl.registerForge(modEventBus);
         CBCParticleTypes.register();
         CBCConfigs.registerConfigs(mlContext::registerConfig);
 
@@ -68,7 +68,7 @@ public class CreateBigCannonsForge {
     }
 
     private void onRegisterSounds(RegisterEvent event) {
-        event.register(Registry.SOUND_EVENT_REGISTRY, helper -> CBCSoundEvents.register(soundEntry -> soundEntry.register(helper)));
+        event.register(Registries.SOUND_EVENT, helper -> CBCSoundEvents.register(soundEntry -> soundEntry.register(helper)));
     }
 
     private void onLoadConfig(ModConfigEvent.Loading evt) {

@@ -1,9 +1,12 @@
 package rbasamoyai.createbigcannons.crafting.boring;
 
+import java.util.List;
+
 import com.google.gson.JsonObject;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -16,8 +19,6 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
-
-import java.util.List;
 
 public class DrillBoringBlockRecipe implements BlockRecipe {
 
@@ -70,7 +71,7 @@ public class DrillBoringBlockRecipe implements BlockRecipe {
 		@Override
 		public DrillBoringBlockRecipe fromJson(ResourceLocation id, JsonObject obj) {
 			BlockRecipeIngredient input = BlockRecipeIngredient.fromJson(obj.get("input"));
-			Block result = Registry.BLOCK.get(new ResourceLocation(obj.get("result").getAsString()));
+			Block result = BuiltInRegistries.BLOCK.get(new ResourceLocation(obj.get("result").getAsString()));
 			boolean obeyFacing = !obj.has("obey_facing_or_axis") || obj.get("obey_facing_or_axis").getAsBoolean();
 			return new DrillBoringBlockRecipe(id, input, result, obeyFacing);
 		}
@@ -78,7 +79,7 @@ public class DrillBoringBlockRecipe implements BlockRecipe {
 		@Override
 		public DrillBoringBlockRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
 			BlockRecipeIngredient input = BlockRecipeIngredient.fromNetwork(buf);
-			Block result = Registry.BLOCK.get(buf.readResourceLocation());
+			Block result = BuiltInRegistries.BLOCK.get(buf.readResourceLocation());
 			boolean obeyFacing = buf.readBoolean();
 			return new DrillBoringBlockRecipe(id, input, result, obeyFacing);
 		}
@@ -86,7 +87,7 @@ public class DrillBoringBlockRecipe implements BlockRecipe {
 		@Override
 		public void toNetwork(FriendlyByteBuf buf, DrillBoringBlockRecipe recipe) {
 			recipe.input.toNetwork(buf);
-			buf.writeResourceLocation(Registry.BLOCK.getKey(recipe.result))
+			buf.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(recipe.result))
 			.writeBoolean(recipe.obeyFacingOrAxis);
 		}
 	}

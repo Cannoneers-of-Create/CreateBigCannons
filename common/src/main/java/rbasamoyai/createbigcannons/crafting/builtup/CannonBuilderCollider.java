@@ -26,7 +26,7 @@ public class CannonBuilderCollider {
 		Vec3 motion = contraptionEntity.getDeltaMovement();
 		AABB bounds = contraptionEntity.getBoundingBox();
 		Vec3 position = contraptionEntity.position();
-		BlockPos gridPos = new BlockPos(position);
+		BlockPos gridPos = BlockPos.containing(position);
 
 		if (contraption == null) return false;
 		if (bounds == null) return false;
@@ -53,7 +53,7 @@ public class CannonBuilderCollider {
 			if (!bounds.move(motion).intersects(otherBounds.move(otherMotion))) continue;
 
 			for (BlockPos colliderPos : contraption.getOrCreateColliders(level, movementDirection)) {
-				colliderPos = colliderPos.offset(gridPos).subtract(new BlockPos(otherPosition));
+				colliderPos = colliderPos.offset(gridPos).subtract(BlockPos.containing(otherPosition));
 				if (!otherContraption.getBlocks().containsKey(colliderPos)) {
 					continue;
 				}
@@ -77,7 +77,7 @@ public class CannonBuilderCollider {
 
 			if (contraption.isActivated) {
 				if (be instanceof LayeredBigCannonBlockEntity layered) {
-					if (CBCBlocks.CANNON_BUILDER_HEAD.has(blockInfo.state)) {
+					if (CBCBlocks.CANNON_BUILDER_HEAD.has(blockInfo.state())) {
 						if (contraption.entity == null && contraption.getBlocks().keySet().contains(colliderPos.subtract(contraption.anchor)))
 							continue;
 						return true;
@@ -91,7 +91,7 @@ public class CannonBuilderCollider {
 				}
 			}
 
-			if (!collidedState.getMaterial().isReplaceable() && !emptyCollider) {
+			if (!collidedState.canBeReplaced() && !emptyCollider) {
 				if (!contraption.isActivated || contraption.entity != null || !contraption.getBlocks().keySet().contains(pos))
 					return true;
 			}
