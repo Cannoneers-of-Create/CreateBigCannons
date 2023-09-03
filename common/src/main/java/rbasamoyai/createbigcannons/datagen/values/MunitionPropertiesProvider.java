@@ -6,8 +6,8 @@ import java.util.function.BiConsumer;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -18,15 +18,15 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 
 	private final Map<EntityType<?>, MunitionProperties> projectiles = new LinkedHashMap<>();
 
-	public MunitionPropertiesProvider(String modid, DataGenerator gen) {
-		super(modid, gen, "munition_properties");
+	public MunitionPropertiesProvider(String modid, PackOutput output) {
+		super(modid, output, "munition_properties");
 	}
 
 	@Override
 	protected final void generateData(BiConsumer<ResourceLocation, JsonObject> cons) {
 		this.addEntries();
 		for (Map.Entry<EntityType<?>, MunitionProperties> entry : this.projectiles.entrySet()) {
-			cons.accept(Registry.ENTITY_TYPE.getKey(entry.getKey()), entry.getValue().serialize());
+			cons.accept(BuiltInRegistries.ENTITY_TYPE.getKey(entry.getKey()), entry.getValue().serialize());
 		}
 	}
 

@@ -7,8 +7,8 @@ import java.util.function.BiConsumer;
 import com.google.gson.JsonObject;
 import com.simibubi.create.AllBlocks;
 
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -22,15 +22,15 @@ public class BlockHardnessProvider extends CBCDataProvider {
 	private final Map<TagKey<Block>, Double> tags = new LinkedHashMap<>();
 	private final Map<ResourceLocation, Double> locs = new LinkedHashMap<>();
 
-	public BlockHardnessProvider(String modid, DataGenerator gen) {
-		super(modid, gen, "block_hardness");
+	public BlockHardnessProvider(String modid, PackOutput output) {
+		super(modid, output, "block_hardness");
 	}
 
 	@Override
 	protected final void generateData(BiConsumer<ResourceLocation, JsonObject> cons) {
 		this.addEntries();
 		for (Map.Entry<Block, Double> entry : this.blocks.entrySet()) {
-			cons.accept(Registry.BLOCK.getKey(entry.getKey()), writeHardness(entry.getValue()));
+			cons.accept(BuiltInRegistries.BLOCK.getKey(entry.getKey()), writeHardness(entry.getValue()));
 		}
 		for (Map.Entry<ResourceLocation, Double> entry : this.locs.entrySet()) {
 			cons.accept(entry.getKey(), writeHardness(entry.getValue()));

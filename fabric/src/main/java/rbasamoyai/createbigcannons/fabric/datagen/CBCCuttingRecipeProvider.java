@@ -5,19 +5,18 @@ import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.level.ItemLike;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 
-	public CBCCuttingRecipeProvider(DataGenerator gen) {
-		super(IndexPlatform.castGen(gen));
+	public CBCCuttingRecipeProvider(FabricDataOutput output) {
+		super(output);
 	}
 
 	@Override
@@ -64,7 +63,7 @@ public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 	}
 
 	private GeneratedRecipe castMould(ItemLike item) {
-		return create(Registry.ITEM.getKey(item.asItem()), b -> b.require(ItemTags.LOGS)
+		return create(BuiltInRegistries.ITEM.getKey(item.asItem()), b -> b.require(ItemTags.LOGS)
 			.output(item));
 	}
 

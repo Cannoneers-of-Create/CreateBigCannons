@@ -1,7 +1,12 @@
 package rbasamoyai.createbigcannons.fabric;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.fabricators_of_create.porting_lib.event.client.*;
+
+import io.github.fabricators_of_create.porting_lib.event.client.FieldOfViewEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.FogEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.LivingEntityRenderEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.MouseInputEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.ParticleManagerRegistrationCallback;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -12,15 +17,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlas;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
-
-import java.util.function.Consumer;
 
 public class CBCClientFabric implements ClientModInitializer {
 	@Override
@@ -34,11 +35,10 @@ public class CBCClientFabric implements ClientModInitializer {
 		FogEvents.SET_COLOR.register(CBCClientFabric::setFogColor);
 		FogEvents.SET_DENSITY.register(CBCClientFabric::getFogDensity);
 		ClientTickEvents.END_CLIENT_TICK.register(CBCClientFabric::onClientTick);
-		MouseScrolledCallback.EVENT.register(CBCClientFabric::onScrolledMouse);
-		FOVModifierCallback.EVENT.register(CBCClientFabric::getFov);
+		MouseInputEvents.AFTER_SCROLL.register(CBCClientFabric::onScrolledMouse);
+		FieldOfViewEvents.MODIFY.register(CBCClientFabric::getFov);
 		ScreenEvents.BEFORE_INIT.register(CBCClientFabric::onOpenScreen);
 		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
-		TextureStitchCallback.PRE.register(CBCClientFabric::onTextureAtlasStitchPre);
 	}
 
 	public static void onParticleRegistry() {
@@ -63,8 +63,8 @@ public class CBCClientFabric implements ClientModInitializer {
 		CBCClientCommon.onClientGameTick(mc);
 	}
 
-	public static boolean onScrolledMouse(double delta) {
-		return CBCClientCommon.onScrollMouse(Minecraft.getInstance(), delta);
+	public static boolean onScrolledMouse(double deltaX, double deltaY) {
+		return CBCClientCommon.onScrollMouse(Minecraft.getInstance(), deltaY);
 	}
 
 	public static float getFov(Player player, float oldFov) {
@@ -99,10 +99,6 @@ public class CBCClientFabric implements ClientModInitializer {
 									  PoseStack matrixStack, MultiBufferSource buffers, int light) {
 		CBCClientCommon.onPlayerRenderPre(matrixStack, entity, partialRenderTick);
 		return false;
-	}
-
-	public static void onTextureAtlasStitchPre(TextureAtlas atlas, Consumer<ResourceLocation> cons) {
-		CBCClientCommon.onTextureAtlasStitchPre(cons);
 	}
 
 }

@@ -1,23 +1,23 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.google.gson.JsonObject;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import rbasamoyai.createbigcannons.CreateBigCannons;
+import static com.simibubi.create.AllSoundEvents.SoundEntry;
+import static com.simibubi.create.AllSoundEvents.SoundEntryBuilder;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import static com.simibubi.create.AllSoundEvents.SoundEntry;
-import static com.simibubi.create.AllSoundEvents.SoundEntryBuilder;
+import com.google.gson.JsonObject;
+
+import net.minecraft.data.CachedOutput;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CBCSoundEvents {
 
@@ -75,45 +75,26 @@ public class CBCSoundEvents {
 		}
 	}
 
-	public static SoundEntryProvider provider(DataGenerator generator) {
-		return new SoundEntryProvider(generator);
+	public static SoundEntryProvider provider(PackOutput output) {
+		return new SoundEntryProvider(output);
 	}
 
-	private static class SoundEntryProvider implements DataProvider {
-		private DataGenerator generator;
+	public static class SoundEntryProvider implements DataProvider {
+		private PackOutput output;
 
-		public SoundEntryProvider(DataGenerator generator) {
-			this.generator = generator;
+		public SoundEntryProvider(PackOutput output) {
+			this.output = output;
 		}
 
 		@Override
-		public CompletableFuture<?> run(CachedOutput cache) throws IOException {
-			generate(this.generator.getOutputFolder(), cache);
-			return null;
+		public CompletableFuture<?> run(CachedOutput cache) {
+			Path path = this.output.getOutputFolder().resolve("assets/" + CreateBigCannons.MOD_ID);
+			JsonObject json = new JsonObject();
+			ALL.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(entry -> entry.getValue().write(json));
+			return DataProvider.saveStable(cache, json, path.resolve("sounds.json"));
 		}
 
-		@Override
-		public String getName() {
-			return "Create Big Cannons custom sounds";
-		}
-
-		public void generate(Path path, CachedOutput cache) {
-			path = path.resolve("assets/" + CreateBigCannons.MOD_ID);
-
-			try {
-				JsonObject json = new JsonObject();
-				ALL.entrySet()
-					.stream()
-					.sorted(Map.Entry.comparingByKey())
-					.forEach(entry -> {
-						entry.getValue()
-							.write(json);
-					});
-				DataProvider.saveStable(cache, json, path.resolve("sounds.json"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+		@Override public String getName() { return "Create Big Cannons custom sounds"; }
 	}
 
 }

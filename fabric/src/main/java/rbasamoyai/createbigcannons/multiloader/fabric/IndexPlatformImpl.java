@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.multiloader.fabric;
 import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
@@ -26,11 +25,9 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -46,13 +43,6 @@ import rbasamoyai.createbigcannons.fabric.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonDrillBlockEntity;
-import rbasamoyai.createbigcannons.fabric.datagen.CBCCompactingRecipeProvider;
-import rbasamoyai.createbigcannons.fabric.datagen.CBCCuttingRecipeProvider;
-import rbasamoyai.createbigcannons.fabric.datagen.CBCLootTableProvider;
-import rbasamoyai.createbigcannons.fabric.datagen.CBCMillingRecipeProvider;
-import rbasamoyai.createbigcannons.fabric.datagen.CBCMixingRecipeProvider;
-import rbasamoyai.createbigcannons.fabric.datagen.CBCSequencedAssemblyRecipeProvider;
-import rbasamoyai.createbigcannons.fabric.datagen.MeltingRecipeProvider;
 import rbasamoyai.createbigcannons.fabric.index.fluid_utils.FabricFluidBuilder;
 import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.munitions.fluid_shell.FluidShellBlockEntity;
@@ -139,16 +129,6 @@ public class IndexPlatformImpl {
 
 	public static float getFluidConversionFactor() {
 		return (float) FluidConstants.BUCKET / 1000;
-	}
-
-	public static void addSidedDataGenerators(DataGenerator gen) {
-		gen.addProvider(true, new CBCCompactingRecipeProvider(gen));
-		gen.addProvider(true, new MeltingRecipeProvider(gen));
-		gen.addProvider(true, new CBCMixingRecipeProvider(gen));
-		gen.addProvider(true, new CBCMillingRecipeProvider(gen));
-		gen.addProvider(true, new CBCSequencedAssemblyRecipeProvider(gen));
-		gen.addProvider(true, new CBCCuttingRecipeProvider(gen));
-		gen.addProvider(true, new CBCLootTableProvider(CreateBigCannons.REGISTRATE, gen));
 	}
 
 	public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) {

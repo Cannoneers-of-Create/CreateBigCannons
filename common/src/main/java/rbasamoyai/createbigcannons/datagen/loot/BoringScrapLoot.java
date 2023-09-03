@@ -1,6 +1,9 @@
 package rbasamoyai.createbigcannons.datagen.loot;
 
-import net.minecraft.core.Registry;
+import java.util.function.BiConsumer;
+
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -15,26 +18,23 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-
-public class BoringScrapLoot implements Consumer<BiConsumer<ResourceLocation, LootTable.Builder>> {
+public class BoringScrapLoot implements LootTableSubProvider {
 
 	@Override
-	public void accept(BiConsumer<ResourceLocation, LootTable.Builder> cons) {
+	public void generate(BiConsumer<ResourceLocation, LootTable.Builder> cons) {
 		ItemLike castIron = CBCItems.CAST_IRON_NUGGET.get();
 		ItemLike bronze = CBCItems.BRONZE_SCRAP.get();
 		ItemLike steel = CBCItems.STEEL_SCRAP.get();
 		ItemLike nethersteel = CBCItems.NETHERSTEEL_NUGGET.get();
-		
+
 		cons.accept(loc(CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL.get()), dropAmount(castIron, 40, 50));
 		cons.accept(loc(CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER.get()), dropAmount(castIron, 85, 95));
 		cons.accept(loc(CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH.get()), dropAmount(castIron, 58, 68));
-		
+
 		cons.accept(loc(CBCBlocks.UNBORED_BRONZE_CANNON_BARREL.get()), dropAmount(bronze, 40, 50));
 		cons.accept(loc(CBCBlocks.UNBORED_BRONZE_CANNON_CHAMBER.get()), dropAmount(bronze, 85, 95));
 		cons.accept(loc(CBCBlocks.UNBORED_BRONZE_SLIDING_BREECH.get()), dropAmount(bronze, 58, 68));
-		
+
 		cons.accept(loc(CBCBlocks.UNBORED_VERY_SMALL_STEEL_CANNON_LAYER.get()), dropAmount(steel, 40, 50));
 		cons.accept(loc(CBCBlocks.UNBORED_SMALL_STEEL_CANNON_LAYER.get()), dropAmount(steel, 58, 68));
 		cons.accept(loc(CBCBlocks.UNBORED_MEDIUM_STEEL_CANNON_LAYER.get()), dropAmount(steel, 85, 95));
@@ -42,7 +42,7 @@ public class BoringScrapLoot implements Consumer<BiConsumer<ResourceLocation, Lo
 		cons.accept(loc(CBCBlocks.UNBORED_VERY_LARGE_STEEL_CANNON_LAYER.get()), dropAmount(steel, 157, 167));
 		cons.accept(loc(CBCBlocks.UNBORED_STEEL_SLIDING_BREECH.get()), dropAmount(steel, 58, 68));
 		cons.accept(loc(CBCBlocks.UNBORED_STEEL_SCREW_BREECH.get()), dropAmount(steel, 58, 68));
-		
+
 		cons.accept(loc(CBCBlocks.UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get()), dropAmount(nethersteel, 40, 50));
 		cons.accept(loc(CBCBlocks.UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER.get()), dropAmount(nethersteel, 58, 68));
 		cons.accept(loc(CBCBlocks.UNBORED_MEDIUM_NETHERSTEEL_CANNON_LAYER.get()), dropAmount(nethersteel, 85, 95));
@@ -62,9 +62,9 @@ public class BoringScrapLoot implements Consumer<BiConsumer<ResourceLocation, Lo
 		cons.accept(loc(CBCBlocks.UNBORED_STEEL_AUTOCANNON_RECOIL_SPRING.get()), dropAmount(steel, 25, 30));
 		cons.accept(loc(CBCBlocks.UNBORED_STEEL_AUTOCANNON_BREECH.get()), dropAmount(steel, 25, 30));
 	}
-	
+
 	protected static ResourceLocation loc(Block block) {
-		ResourceLocation id = Registry.BLOCK.getKey(block);
+		ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
 		return new ResourceLocation(id.getNamespace(), "boring_scrap/" + id.getPath());
 	}
 

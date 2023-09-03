@@ -4,15 +4,14 @@ import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 
-import net.minecraft.data.DataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CBCMillingRecipeProvider extends ProcessingRecipeGen {
 
-	public CBCMillingRecipeProvider(DataGenerator gen) {
-		super(IndexPlatform.castGen(gen));
+	public CBCMillingRecipeProvider(FabricDataOutput output) {
+		super(output);
 	}
 
 	@Override

@@ -11,10 +11,11 @@ import com.simibubi.create.foundation.utility.Pair;
 
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
-import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTransferable;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +31,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFlui
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellProjectile;
 
-public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity implements FluidTransferable {
+public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity implements SidedStorageBlockEntity {
 
 	protected FluidTank tank;
 
@@ -82,7 +83,7 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity impleme
 		Pair<FluidStack, ItemStack> emptyingResult = GenericItemEmptying.emptyItem(worldIn, heldItem, true);
 		FluidStack fluidStack = emptyingResult.getFirst();
 
-		if (fluidStack.getAmount() != this.tank.simulateInsert(fluidStack.getType(), fluidStack.getAmount(), null))
+		if (fluidStack.getAmount() != StorageUtil.simulateInsert(this.tank, fluidStack.getType(), fluidStack.getAmount(), null))
 			return false;
 
 		ItemStack copyOfHeld = heldItem.copy();

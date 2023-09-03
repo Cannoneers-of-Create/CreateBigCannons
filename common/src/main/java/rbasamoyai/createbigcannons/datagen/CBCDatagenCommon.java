@@ -1,34 +1,32 @@
 package rbasamoyai.createbigcannons.datagen;
 
 import net.minecraft.data.DataGenerator;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.datagen.assets.CBCBlockPartialsGen;
 import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
 import rbasamoyai.createbigcannons.datagen.recipes.BlockRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.recipes.CBCCraftingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.values.BlockHardnessProvider;
 import rbasamoyai.createbigcannons.datagen.values.MunitionPropertiesProvider;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 import rbasamoyai.createbigcannons.ponder.CBCPonderTags;
 
-public class CBCDatagenRoot {
+public class CBCDatagenCommon {
+
+	public static final String PLATFORM = System.getProperty("createbigcannons.datagen.platform", "fabric");
+	public static final int FLUID_MULTIPLIER = PLATFORM.equals("fabric") ? 81 : 1;
 
 	public static void register(DataGenerator gen, boolean client, boolean server) {
 		DataGenerator.PackGenerator modDatapack = gen.getBuiltinDatapack(client || server, CreateBigCannons.MOD_ID);
 		if (server) {
-			BlockRecipeProvider.registerAll(gen);
+			BlockRecipeProvider.registerAll(modDatapack);
 			CBCCraftingRecipeProvider.register();
-			gen.addProvider(true, new BlockHardnessProvider(CreateBigCannons.MOD_ID, gen));
-			gen.addProvider(true, new MunitionPropertiesProvider(CreateBigCannons.MOD_ID, gen));
-			IndexPlatform.addSidedDataGenerators(gen);
+			modDatapack.addProvider(output -> new BlockHardnessProvider(CreateBigCannons.MOD_ID, output));
+			modDatapack.addProvider(output -> new MunitionPropertiesProvider(CreateBigCannons.MOD_ID, output));
 		}
 		if (client) {
 			CBCLangGen.prepare();
-			gen.addProvider(true, new CBCBlockPartialsGen(gen, helper));
-			gen.addProvider(true, CBCSoundEvents.provider(gen));
+			modDatapack.addProvider(CBCSoundEvents::provider);
 			CBCSoundEvents.registerLangEntries();
 			CBCPonderTags.register();
 			CBCPonderIndex.register();
