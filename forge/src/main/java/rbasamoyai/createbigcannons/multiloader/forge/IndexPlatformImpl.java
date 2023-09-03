@@ -18,7 +18,6 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
@@ -42,13 +41,6 @@ import rbasamoyai.createbigcannons.forge.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.forge.crafting.CannonDrillBlockEntity;
-import rbasamoyai.createbigcannons.forge.datagen.CBCCompactingRecipeProvider;
-import rbasamoyai.createbigcannons.forge.datagen.CBCCuttingRecipeProvider;
-import rbasamoyai.createbigcannons.forge.datagen.CBCLootTableProvider;
-import rbasamoyai.createbigcannons.forge.datagen.CBCMillingRecipeProvider;
-import rbasamoyai.createbigcannons.forge.datagen.CBCMixingRecipeProvider;
-import rbasamoyai.createbigcannons.forge.datagen.CBCSequencedAssemblyRecipeProvider;
-import rbasamoyai.createbigcannons.forge.datagen.MeltingRecipeProvider;
 import rbasamoyai.createbigcannons.forge.index.fluid_utils.ForgeFluidBuilder;
 import rbasamoyai.createbigcannons.forge.munitions.fluid_shell.FluidShellBlockEntity;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
@@ -125,16 +117,6 @@ public class IndexPlatformImpl {
 
 	public static float getFluidConversionFactor() {
 		return 1;
-	}
-
-	public static void addSidedDataGenerators(DataGenerator gen) {
-		gen.addProvider(true, new CBCCompactingRecipeProvider(gen));
-		gen.addProvider(true, new MeltingRecipeProvider(gen));
-		gen.addProvider(true, new CBCMixingRecipeProvider(gen));
-		gen.addProvider(true, new CBCMillingRecipeProvider(gen));
-		gen.addProvider(true, new CBCSequencedAssemblyRecipeProvider(gen));
-		gen.addProvider(true, new CBCCuttingRecipeProvider(gen));
-		gen.addProvider(true, new CBCLootTableProvider(CreateBigCannons.REGISTRATE, gen));
 	}
 
 	public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) {

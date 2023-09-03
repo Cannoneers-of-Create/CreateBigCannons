@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
+import java.util.function.Consumer;
+
 import com.google.gson.JsonObject;
-import net.minecraft.core.Registry;
-import net.minecraft.data.DataGenerator;
+
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -11,8 +13,6 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-
-import java.util.function.Consumer;
 
 public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 
@@ -61,7 +61,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 	}
 
 	protected Result recipe(Block input, Block result) {
-		return recipe(Registry.BLOCK.getKey(result).getPath(), input, result);
+		return recipe(BuiltInRegistries.BLOCK.getKey(result).getPath(), input, result);
 	}
 
 	protected Result recipe(String path, Block input, Block result) {
@@ -73,7 +73,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 	}
 
 	protected Result recipe(TagKey<Block> input, Block result) {
-		return recipe(Registry.BLOCK.getKey(result).getPath(), input, result);
+		return recipe(BuiltInRegistries.BLOCK.getKey(result).getPath(), input, result);
 	}
 
 	protected Result recipe(String path, TagKey<Block> input, Block result) {
@@ -88,7 +88,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 		@Override
 		public void serializeRecipeData(JsonObject obj) {
 			obj.addProperty("input", this.input.stringForSerialization());
-			obj.addProperty("result", Registry.BLOCK.getKey(this.result).toString());
+			obj.addProperty("result", BuiltInRegistries.BLOCK.getKey(this.result).toString());
 			obj.addProperty("obey_facing_or_axis", this.obeyFacing);
 		}
 

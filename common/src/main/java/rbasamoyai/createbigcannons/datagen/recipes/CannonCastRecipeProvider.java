@@ -1,11 +1,13 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
+import java.util.Objects;
+import java.util.function.Consumer;
+
 import com.google.gson.JsonObject;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import net.minecraft.core.Registry;
+
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -18,9 +20,6 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
-
-import java.util.Objects;
-import java.util.function.Consumer;
 
 public class CannonCastRecipeProvider extends BlockRecipeProvider {
 

@@ -8,17 +8,16 @@ import com.simibubi.create.content.kinetics.saw.CuttingRecipe;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeBuilder;
 import com.simibubi.create.foundation.data.recipe.CreateRecipeProvider;
 
-import net.minecraft.data.DataGenerator;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 
 public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 
-	public CBCSequencedAssemblyRecipeProvider(DataGenerator gen) {
-		super(IndexPlatform.castGen(gen));
+	public CBCSequencedAssemblyRecipeProvider(FabricDataOutput output) {
+		super(output);
 	}
 
 	@Override

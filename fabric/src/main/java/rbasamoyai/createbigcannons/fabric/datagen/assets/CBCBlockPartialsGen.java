@@ -1,17 +1,19 @@
-package rbasamoyai.createbigcannons.datagen.assets;
+package rbasamoyai.createbigcannons.fabric.datagen.assets;
 
 import com.simibubi.create.Create;
+
+import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import io.github.fabricators_of_create.porting_lib.models.generators.block.BlockModelProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.DyeColor;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import javax.annotation.Nonnull;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CBCBlockPartialsGen extends BlockModelProvider {
 
-	public CBCBlockPartialsGen(DataGenerator gen, ExistingFileHelper helper) {
-		super(gen, CreateBigCannons.MOD_ID, helper);
+	public CBCBlockPartialsGen(PackOutput output, DataGenerator gen, ExistingFileHelper helper) {
+		super(output, CreateBigCannons.MOD_ID, helper);
 	}
 
 	@Override

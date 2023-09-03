@@ -1,28 +1,29 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+
+import net.minecraft.data.DataGenerator;
+
+import org.slf4j.Logger;
+
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
+
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 public abstract class BlockRecipeProvider implements DataProvider {
 
@@ -38,21 +39,19 @@ public abstract class BlockRecipeProvider implements DataProvider {
 		this.output	= output;
 	}
 
-	protected static final List<BlockRecipeProvider> GENERATORS = new ArrayList<>();
+	protected static final List<DataProvider.Factory<BlockRecipeProvider>> GENERATORS = new ArrayList<>();
 
-	public static void registerAll(PackOutput output) {
-		GENERATORS.add(new CannonCastRecipeProvider(output));
-		GENERATORS.add(new BuiltUpHeatingRecipeProvider(output));
-		GENERATORS.add(new DrillBoringRecipeProvider(output));
+	public static void registerAll(DataGenerator.PackGenerator gen) {
+		GENERATORS.add(CannonCastRecipeProvider::new);
+		GENERATORS.add(BuiltUpHeatingRecipeProvider::new);
+		GENERATORS.add(DrillBoringRecipeProvider::new);
 
-		output.
-
-		output.addProvider(true, new DataProvider() {
+		gen.addProvider(output -> new DataProvider() {
 			@Override
 			public CompletableFuture<?> run(CachedOutput cache) {
 				return CompletableFuture.allOf(GENERATORS.stream().map(gen -> {
 					try {
-						return gen.run(cache);
+						return gen.create(output).run(cache);
 					} catch (Exception e) {
 						throw e;
 					}

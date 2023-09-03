@@ -1,11 +1,13 @@
 package rbasamoyai.createbigcannons.fabric.mixin;
 
 import javax.annotation.Nullable;
+
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
+
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 
-import io.github.fabricators_of_create.porting_lib.transfer.item.ItemTransferable;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.Direction;
@@ -15,7 +17,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 import rbasamoyai.createbigcannons.fabric.mixin_interface.GetItemStorage;
 
 @Mixin(PitchOrientedContraptionEntity.class)
-public class PitchOrientedContraptionEntityMixin extends OrientedContraptionEntity implements ItemTransferable {
+public class PitchOrientedContraptionEntityMixin extends OrientedContraptionEntity implements SidedStorageBlockEntity {
 
 	PitchOrientedContraptionEntityMixin(EntityType<?> type, Level world) {
 		super(type, world);
