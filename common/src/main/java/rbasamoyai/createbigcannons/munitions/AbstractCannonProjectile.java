@@ -18,21 +18,19 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.PreciseProjectile;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
@@ -54,7 +52,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 	@Override
 	public void tick() {
-		if (this.getLevel().isClientSide || this.getLevel().hasChunkAt(this.blockPosition())) {
+		if (this.level().isClientSide || this.level().hasChunkAt(this.blockPosition())) {
 			super.tick();
 
 			if (!this.isInGround()) this.clipAndDamage();
@@ -65,7 +63,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				this.setDeltaMovement(Vec3.ZERO);
 				if (this.shouldFall()) {
 					this.setInGround(false);
-				} else if (!this.getLevel().isClientSide) {
+				} else if (!this.level().isClientSide) {
 					this.inGroundTime++;
 
 					if (this.inGroundTime == 400) {
@@ -82,7 +80,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				vel = vel.scale(this.getDrag());
 				this.setDeltaMovement(vel);
 				Vec3 position = newPos.add(vel.subtract(uel).scale(0.5));
-				if (this.getLevel().hasChunkAt(BlockPos.containing(position))) this.setPos(position);
+				if (this.level().hasChunkAt(BlockPos.containing(position))) this.setPos(position);
 
 				ParticleOptions particle = this.getTrailParticles();
 				if (particle != null) {
@@ -91,7 +89,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 						double dx = Mth.lerp(partial, this.xOld, this.getX());
 						double dy = Mth.lerp(partial, this.yOld, this.getY());
 						double dz = Mth.lerp(partial, this.zOld, this.getZ());
-						this.getLevel().addParticle(particle, dx, dy, dz, 0.0d, 0.0d, 0.0d);
+						this.level().addParticle(particle, dx, dy, dz, 0.0d, 0.0d, 0.0d);
 					}
 				}
 			}
@@ -115,7 +113,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 			if (vel.lengthSqr() < 1e-4d) break;
 
 			Vec3 end = start.add(vel);
-			BlockHitResult bResult = this.getLevel().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+			BlockHitResult bResult = this.level().clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 			if (bResult.getType() != HitResult.Type.MISS) end = bResult.getLocation();
 
 			AABB currentMovementRegion = this.getBoundingBox().expandTowards(end.subtract(start)).inflate(1).move(start.subtract(pos));
@@ -123,7 +121,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 			Vec3 finalStart = start;
 			Vec3 finalEnd = end;
 			AABB thisBB = this.getBoundingBox();
-			for (Entity target : this.getLevel().getEntities(this, currentMovementRegion, e -> {
+			for (Entity target : this.level().getEntities(this, currentMovementRegion, e -> {
 				if (projCtx.hasHitEntity(e) || !this.canHitEntity(e)) return false;
 				AABB bb = e.getBoundingBox();
 				return bb.intersects(thisBB) || bb.inflate(reach).clip(finalStart, finalEnd).isPresent();
@@ -134,7 +132,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 			Vec3 hitLoc = end;
 			if (bResult.getType() != HitResult.Type.MISS) {
 				BlockPos bpos = bResult.getBlockPos().immutable();
-				BlockState state = this.getLevel().getChunkAt(bpos).getBlockState(bpos);
+				BlockState state = this.level().getChunkAt(bpos).getBlockState(bpos);
 
 				Vec3 curVel = this.getDeltaMovement();
 				double mag = curVel.length();
@@ -146,13 +144,13 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 					double curPom = startMass * mag;
 					double hardness = BlockHardnessHandler.getHardness(state);
 
-					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.getLevel(), bpos) == -1 || curPom < hardness) {
+					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level(), bpos) == -1 || curPom < hardness) {
 						this.setInGround(true);
 						this.setDeltaMovement(Vec3.ZERO);
 						this.onImpact(bResult, true);
 						breakEarly = true;
 					} else {
-						state.onProjectileHit(this.getLevel(), state, bResult, this);
+						state.onProjectileHit(this.level(), state, bResult, this);
 						this.onDestroyBlock(state, bResult);
 						if (this.isRemoved()) {
 							breakEarly = true;
@@ -180,11 +178,11 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 		for (Entity e : projCtx.hitEntities()) this.onHitEntity(e);
 
-		if (!this.getLevel().isClientSide && projCtx.griefState() != GriefState.NO_DAMAGE) {
+		if (!this.level().isClientSide && projCtx.griefState() != GriefState.NO_DAMAGE) {
 			Vec3 oldVel = this.getDeltaMovement();
 			for (Map.Entry<BlockPos, Float> explosion : projCtx.getQueuedExplosions().entrySet()) {
 				BlockPos bpos = explosion.getKey();
-				this.getLevel().explode(this, bpos.getX() + 0.5, bpos.getY() + 0.5, bpos.getZ() + 0.5, explosion.getValue(), Level.ExplosionInteraction.BLOCK);
+				this.level().explode(this, bpos.getX() + 0.5, bpos.getY() + 0.5, bpos.getZ() + 0.5, explosion.getValue(), Level.ExplosionInteraction.BLOCK);
 			}
 			this.setDeltaMovement(oldVel);
 		}
@@ -212,7 +210,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		if (bounce == BounceType.DEFLECT) {
 			if (momentum > BlockHardnessHandler.getHardness(state) * 0.5) {
 				Vec3 spallLoc = this.position().add(oldVel.normalize().scale(2));
-				this.getLevel().explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Level.ExplosionInteraction.NONE);
+				this.level().explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Level.ExplosionInteraction.NONE);
 			}
 			SoundType sound = state.getSoundType();
 			this.playSound(sound.getBreakSound(), sound.getVolume(), sound.getPitch());
@@ -226,8 +224,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	/** Use for fuzes and any other effects */
 	protected void onImpact(HitResult result, boolean stopped) {
 		if (result.getType() == HitResult.Type.BLOCK) {
-			BlockState state = this.getLevel().getBlockState(((BlockHitResult) result).getBlockPos());
-			state.onProjectileHit(this.getLevel(), state, (BlockHitResult) result, this);
+			BlockState state = this.level().getBlockState(((BlockHitResult) result).getBlockPos());
+			state.onProjectileHit(this.level(), state, (BlockHitResult) result, this);
 		}
 	}
 
@@ -235,9 +233,9 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 	protected void onHitEntity(Entity entity) {
 		if (this.getProjectileMass() <= 0) return;
-		if (!this.getLevel().isClientSide) {
+		if (!this.level().isClientSide) {
 			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
-			DamageSource source = this.getEntityDamage();
+			DamageSource source = this.getEntityDamage(entity);
 			entity.hurt(source, this.damage);
 			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) entity.invulnerableTime = 0;
 			double penalty = entity.isAlive() ? 2 : 0.2;
@@ -246,8 +244,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		}
 	}
 
-	protected DamageSource getEntityDamage() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile", this, null);
+	protected DamageSource getEntityDamage(Entity entity) {
+		return this.indirectArtilleryFire();
 	}
 
 	protected float getKnockback(Entity target) { return 2.0f; }
@@ -304,7 +302,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	}
 
 	private boolean shouldFall() {
-		return this.isInGround() && this.getLevel().noCollision(new AABB(this.position(), this.position()).inflate(0.06d));
+		return this.isInGround() && this.level().noCollision(new AABB(this.position(), this.position()).inflate(0.06d));
 	}
 
 	@Nullable protected ParticleOptions getTrailParticles() { return null; }
@@ -346,11 +344,11 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	}
 
 	protected float getGravity() {
-		float multiplier = (float) DimensionMunitionPropertiesHandler.getProperties(this.getLevel()).gravityMultiplier();
+		float multiplier = (float) DimensionMunitionPropertiesHandler.getProperties(this.level()).gravityMultiplier();
 		return (float) this.getProperties().gravity() * multiplier;
 	}
 	protected float getDrag() {
-		float scalar = (float) DimensionMunitionPropertiesHandler.getProperties(this.getLevel()).dragMultiplier();
+		float scalar = (float) DimensionMunitionPropertiesHandler.getProperties(this.level()).dragMultiplier();
 		float baseDrag = (float) this.getProperties().drag();
 		if (scalar <= 1) return Mth.lerp(scalar, 1, baseDrag);
 		float diff = baseDrag - 1;
@@ -370,7 +368,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	}
 
 	public DamageSource indirectArtilleryFire() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile", this, null).setScalesWithDifficulty().setExplosion();
+		return new CannonDamageSource(this.level().damageSources().damageTypes.getHolderOrThrow(CBCDamageTypes.CANNON_PROJECTILE), this);
 	}
 
 }

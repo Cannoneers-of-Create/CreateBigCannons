@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "S": {
       "tag": "createbigcannons:stone"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "createbigcannons:mortar_stone"
-  }
+  },
+  "show_notification": true
 }

@@ -8,13 +8,14 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
@@ -75,8 +76,8 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	}
 
 	@Override
-	protected DamageSource getEntityDamage() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".big_cannon_projectile", this, null);
+	protected DamageSource getEntityDamage(Entity entity) {
+		return new CannonDamageSource(this.level().damageSources().damageTypes.getHolderOrThrow(CBCDamageTypes.BIG_CANNON_PROJECTILE), this);
 	}
 
 }

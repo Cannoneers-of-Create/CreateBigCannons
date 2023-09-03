@@ -2,7 +2,7 @@
   "type": "create:cutting",
   "ingredients": [
     {
-      "tag": "forge:plates/iron"
+      "tag": "c:plates/iron"
     }
   ],
   "results": [

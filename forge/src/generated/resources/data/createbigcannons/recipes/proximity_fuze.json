@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "A": {
       "item": "minecraft:iron_bars"
@@ -22,5 +23,6 @@
   "result": {
     "count": 4,
     "item": "createbigcannons:proximity_fuze"
-  }
+  },
+  "show_notification": true
 }

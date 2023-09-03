@@ -1,15 +1,21 @@
 package rbasamoyai.createbigcannons.fabric;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.simibubi.create.content.kinetics.deployer.DeployerRecipeSearchEvent;
 
-import io.github.fabricators_of_create.porting_lib.event.common.BlockEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -20,10 +26,11 @@ import net.minecraft.server.packs.resources.CloseableResourceManager;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
 
 public class CBCCommonFabricEvents {
 
@@ -34,7 +41,7 @@ public class CBCCommonFabricEvents {
 		ServerWorldEvents.LOAD.register(CBCCommonFabricEvents::onLoadLevel);
 		ServerLifecycleEvents.END_DATA_PACK_RELOAD.register(CBCCommonFabricEvents::onDatapackReload);
 		ServerLifecycleEvents.SYNC_DATA_PACK_CONTENTS.register(CBCCommonFabricEvents::onDatapackSync);
-		BlockEvents.BLOCK_BREAK.register(CBCCommonFabricEvents::onPlayerBreakBlock);
+		PlayerBlockBreakEvents.AFTER.register(CBCCommonFabricEvents::onPlayerBreakBlock);
 		DeployerRecipeSearchEvent.EVENT.register(CBCCommonFabricEvents::onDeployerRecipeSearch);
 
 		CBCCommonEvents.onAddReloadListeners(CBCCommonFabricEvents::wrapAndRegisterReloadListener);
@@ -44,8 +51,8 @@ public class CBCCommonFabricEvents {
 		CBCCommonEvents.serverLevelTickEnd(level);
 	}
 
-	public static void onPlayerBreakBlock(BlockEvents.BreakEvent event) {
-		CBCCommonEvents.onPlayerBreakBlock(event.getState(), event.getWorld(), event.getPos(), event.getPlayer());
+	public static void onPlayerBreakBlock(Level level, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
+		CBCCommonEvents.onPlayerBreakBlock(state, level, pos, player);
 	}
 
 	public static void onPlayerLogin(ServerGamePacketListenerImpl handler, PacketSender sender, MinecraftServer server) {

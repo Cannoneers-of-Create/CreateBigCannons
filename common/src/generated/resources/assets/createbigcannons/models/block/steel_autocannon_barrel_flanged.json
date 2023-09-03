@@ -1,6 +1,0 @@
-{
-  "parent": "createbigcannons:block/autocannon/barrel_flanged",
-  "textures": {
-    "material": "createbigcannons:block/autocannon/steel_autocannon"
-  }
-}

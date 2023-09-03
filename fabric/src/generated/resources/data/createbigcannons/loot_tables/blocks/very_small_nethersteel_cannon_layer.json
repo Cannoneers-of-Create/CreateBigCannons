@@ -18,5 +18,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "createbigcannons:blocks/very_small_nethersteel_cannon_layer"
 }

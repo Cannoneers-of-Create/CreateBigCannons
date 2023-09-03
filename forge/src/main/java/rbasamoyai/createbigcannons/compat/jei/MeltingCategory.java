@@ -1,12 +1,12 @@
 package rbasamoyai.createbigcannons.compat.jei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.compat.jei.category.BasinCategory;
 import com.simibubi.create.compat.jei.category.animations.AnimatedBlazeBurner;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import net.minecraft.client.gui.GuiGraphics;
 import rbasamoyai.createbigcannons.compat.jei.animated.BasinFoundryLidElement;
 
 public class MeltingCategory extends BasinCategory {
@@ -19,15 +19,15 @@ public class MeltingCategory extends BasinCategory {
 	}
 
 	@Override
-	public void draw(BasinRecipe recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
-		super.draw(recipe, recipeSlotsView, matrixStack, mouseX, mouseY);
+	public void draw(BasinRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+		super.draw(recipe, recipeSlotsView, graphics, mouseX, mouseY);
 
 		HeatCondition heatCondition = recipe.getRequiredHeat();
 		if (heatCondition != HeatCondition.NONE) {
 			this.heater.withHeat(heatCondition.visualizeAsBlazeBurner())
-				.draw(matrixStack, this.getBackground().getWidth() / 2 + 3, 55);
+				.draw(graphics, this.getBackground().getWidth() / 2 + 3, 55);
 		}
-		this.lid.draw(matrixStack, getBackground().getWidth() / 2 + 3, 34);
+		this.lid.draw(graphics, getBackground().getWidth() / 2 + 3, 34);
 	}
 
 }

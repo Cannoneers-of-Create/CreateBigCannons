@@ -16,5 +16,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "createbigcannons:blocks/screw_breech_cast_mould"
 }

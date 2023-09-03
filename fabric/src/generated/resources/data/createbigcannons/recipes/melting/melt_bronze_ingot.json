@@ -1,5 +1,4 @@
 {
-  "type": "createbigcannons:melting",
   "fabric:load_conditions": [
     {
       "condition": "fabric:item_tags_populated",
@@ -8,6 +7,7 @@
       ]
     }
   ],
+  "type": "createbigcannons:melting",
   "heatRequirement": "heated",
   "ingredients": [
     {

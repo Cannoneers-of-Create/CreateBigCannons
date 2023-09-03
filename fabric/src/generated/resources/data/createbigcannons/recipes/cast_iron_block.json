@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "building",
   "key": {
     "#": {
       "item": "createbigcannons:cast_iron_ingot"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "createbigcannons:cast_iron_block"
-  }
+  },
+  "show_notification": true
 }

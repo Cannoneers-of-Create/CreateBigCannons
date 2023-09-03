@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.function.Supplier;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
@@ -18,6 +18,8 @@ import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
 public class ModGroup {
+
+	public static final ResourceKey<CreativeModeTab> MAIN_TAB_KEY = ResourceKey.create(Registries.CREATIVE_MODE_TAB, CreateBigCannons.resource("base"));
 
 	public static final Supplier<CreativeModeTab> GROUP = wrapGroup(() -> createBuilder()
 		.title(Component.translatable("itemGroup." + CreateBigCannons.MOD_ID))
@@ -227,10 +229,6 @@ public class ModGroup {
 
 	@ExpectPlatform public static Supplier<CreativeModeTab> wrapGroup(Supplier<CreativeModeTab> sup) { throw new AssertionError(); }
 	@ExpectPlatform public static CreativeModeTab.Builder createBuilder() { throw new AssertionError(); }
-
-	public static ResourceKey<CreativeModeTab> getMainCreativeTabKey() {
-		return BuiltInRegistries.CREATIVE_MODE_TAB.getResourceKey(GROUP.get()).orElseThrow();
-	}
 
 	public static void register() {
 		CreateBigCannons.REGISTRATE.addRawLang("itemGroup." + CreateBigCannons.MOD_ID, "Create Big Cannons");

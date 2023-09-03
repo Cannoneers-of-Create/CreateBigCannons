@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "item": "create:cogwheel"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "createbigcannons:cast_iron_sliding_breechblock"
-  }
+  },
+  "show_notification": true
 }

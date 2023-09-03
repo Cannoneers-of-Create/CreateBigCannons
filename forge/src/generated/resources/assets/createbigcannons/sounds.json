@@ -36,8 +36,8 @@
   "place_autocannon_ammo_container": {
     "sounds": [
       {
-        "name": "minecraft:item.armor.equip_iron",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:item.armor.equip_iron"
       }
     ]
   }

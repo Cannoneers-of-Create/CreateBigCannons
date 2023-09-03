@@ -19,5 +19,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "createbigcannons:blocks/unbored_bronze_cannon_chamber"
 }

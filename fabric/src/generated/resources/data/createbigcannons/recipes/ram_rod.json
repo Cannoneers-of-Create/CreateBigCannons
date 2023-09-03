@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "H": {
       "item": "createbigcannons:ram_head"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "createbigcannons:ram_rod"
-  }
+  },
+  "show_notification": true
 }

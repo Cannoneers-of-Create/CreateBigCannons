@@ -2,6 +2,9 @@ package rbasamoyai.createbigcannons.forge.mixin;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
@@ -11,7 +14,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.forge.mixin_interface.GetItemStorage;
@@ -28,7 +30,7 @@ public class PitchOrientedContraptionEntityMixin extends OrientedContraptionEnti
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (cap == ForgeCapabilities.ITEM_HANDLER) {
 			if (this.itemOptional == null)
 				this.itemOptional = this.contraption instanceof GetItemStorage storage ? storage.getItemStorage() : LazyOptional.empty();
 			return this.itemOptional.cast();

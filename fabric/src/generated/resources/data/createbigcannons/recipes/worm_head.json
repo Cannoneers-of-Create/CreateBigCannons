@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "H": {
       "item": "minecraft:iron_bars"
@@ -14,5 +15,6 @@
   ],
   "result": {
     "item": "createbigcannons:worm_head"
-  }
+  },
+  "show_notification": true
 }

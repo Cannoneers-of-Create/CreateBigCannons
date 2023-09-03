@@ -1,18 +1,17 @@
 {
-  "type": "create:compacting",
-  "conditions": [
+  "fabric:load_conditions": [
     {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "createbigcannons:ingot_steel"
-      }
+      "condition": "fabric:item_tags_populated",
+      "values": [
+        "createbigcannons:ingot_steel"
+      ]
     }
   ],
+  "type": "create:compacting",
   "ingredients": [
     {
       "amount": 90,
-      "fluidTag": "forge:molten_steel"
+      "fluidTag": "c:molten_steel"
     }
   ],
   "results": [

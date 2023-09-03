@@ -32,7 +32,7 @@ import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 public class CBCItems {
 
 	static {
-		REGISTRATE.useCreativeTab(ModGroup.getMainCreativeTabKey());
+		REGISTRATE.useCreativeTab(ModGroup.MAIN_TAB_KEY);
 	}
 
 	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new).register();

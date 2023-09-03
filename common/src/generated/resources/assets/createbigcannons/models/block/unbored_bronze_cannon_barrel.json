@@ -1,8 +1,0 @@
-{
-  "parent": "createbigcannons:block/cannon_barrel",
-  "textures": {
-    "side": "createbigcannons:block/cannon_barrel/bronze_cannon_barrel_side",
-    "end": "createbigcannons:block/cannon_barrel/unbored_bronze_cannon_barrel_end",
-    "particle": "createbigcannons:block/cannon_barrel/bronze_cannon_barrel_side"
-  }
-}
