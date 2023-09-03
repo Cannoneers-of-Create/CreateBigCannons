@@ -13,7 +13,6 @@ import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -27,7 +26,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.base.CBCDefaultStress;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
@@ -899,10 +897,7 @@ public class CBCBlocks {
 		.block("built_up_cannon", BuiltUpCannonBlock::new)
 		.transform(strongCannonBlock())
 		.properties(p -> p.noOcclusion())
-		.blockstate((c, p) -> {
-			ResourceLocation texLoc = CreateBigCannons.resource("block/cannon_chamber/steel_cannon_chamber_side");
-			p.directionalBlock(c.get(), p.models().getBuilder(c.getName()).texture("particle", texLoc));
-		})
+		.blockstate(CBCBuilderTransformers.builtUpCannon())
 		.register();
 
 	public static final BlockEntry<Block> CAST_IRON_BLOCK = REGISTRATE
@@ -977,7 +972,7 @@ public class CBCBlocks {
 		.properties(p -> p.instabreak())
 		.properties(p -> p.sound(SoundType.WOOD))
 		.properties(p -> p.noOcclusion())
-		.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/traffic_cone"))))
+		.blockstate(CBCBuilderTransformers.trafficCone())
 		.item(TrafficConeBlockItem::new)
 		.initialProperties(() -> new Item.Properties().rarity(Rarity.EPIC))
 		.build()
@@ -1031,7 +1026,7 @@ public class CBCBlocks {
 		.block("mortar_stone_projectile", Block::new)
 		.initialProperties(SharedProperties::stone)
 		.properties(p -> p.noOcclusion())
-		.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/mortar_stone_projectile"))))
+		.blockstate(CBCBuilderTransformers.simpleBlock("block/mortar_stone_projectile"))
 		.simpleItem()
 		.register();
 
@@ -1114,7 +1109,7 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 		.properties(p -> p.noOcclusion())
 		.tag(BlockTags.MINEABLE_WITH_PICKAXE)
-		.blockstate((b, p) -> p.simpleBlock(b.get(), p.models().getExistingFile(CreateBigCannons.resource("block/basin_foundry_lid"))))
+		.blockstate(CBCBuilderTransformers.simpleBlock("block/basin_foundry_lid"))
 		.simpleItem()
 		.register();
 

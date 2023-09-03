@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_steel_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "createbigcannons:ingot_steel"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "createbigcannons:steel_sliding_breechblock"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_steel_ingot",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "createbigcannons:steel_sliding_breechblock"
+    ]
+  },
+  "sends_telemetry_event": false
+}
