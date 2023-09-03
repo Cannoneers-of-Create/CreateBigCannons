@@ -1,0 +1,33 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_inexpensive_big_cartridge_sheet": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "createbigcannons:inexpensive_big_cartridge_sheet"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:big_cannon_sheet_inexpensive"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_inexpensive_big_cartridge_sheet",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:big_cannon_sheet_inexpensive"
+    ]
+  },
+  "sends_telemetry_event": false
+}
