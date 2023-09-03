@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "tag": "createbigcannons:nugget_copper"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "createbigcannons:machine_gun_round"
-  }
+  },
+  "show_notification": true
 }

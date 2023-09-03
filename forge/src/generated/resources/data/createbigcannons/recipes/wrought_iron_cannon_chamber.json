@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "G": {
       "tag": "createbigcannons:gunpowder"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "createbigcannons:wrought_iron_cannon_chamber"
-  }
+  },
+  "show_notification": true
 }

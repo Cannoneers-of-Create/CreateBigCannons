@@ -32,7 +32,7 @@ public class FluidBlobEffectRegistry {
 	public static void effectOnAllHit(FluidBlob projectile, HitResult result) {
 		EndFluidStack fstack = projectile.getFluidStack();
 		OnHit cons = getHitEffect(fstack.fluid());
-		if (cons != null) cons.hit(fstack, projectile, projectile.getLevel(), result);
+		if (cons != null) cons.hit(fstack, projectile, projectile.level(), result);
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class FluidBlobEffectRegistry {
 	public static void effectOnHitBlock(FluidBlob projectile, BlockHitResult result) {
 		EndFluidStack fstack = projectile.getFluidStack();
 		OnHitBlock cons = getHitBlockEffect(fstack.fluid());
-		if (cons != null) cons.hit(fstack, projectile, projectile.getLevel(), result);
+		if (cons != null) cons.hit(fstack, projectile, projectile.level(), result);
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class FluidBlobEffectRegistry {
 	public static void effectOnHitEntity(FluidBlob projectile, EntityHitResult result) {
 		EndFluidStack fstack = projectile.getFluidStack();
 		OnHitEntity cons = getHitEntityEffect(fstack.fluid());
-		if (cons != null) cons.hit(fstack, projectile, projectile.getLevel(), result);
+		if (cons != null) cons.hit(fstack, projectile, projectile.level(), result);
 	}
 
 }

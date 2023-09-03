@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "S": {
       "tag": "createbigcannons:sheet_brass"
@@ -12,5 +13,6 @@
   "result": {
     "count": 2,
     "item": "createbigcannons:big_cartridge_sheet"
-  }
+  },
+  "show_notification": true
 }

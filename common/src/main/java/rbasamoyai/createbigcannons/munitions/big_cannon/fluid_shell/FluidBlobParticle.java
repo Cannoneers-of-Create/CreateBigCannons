@@ -36,7 +36,7 @@ public class FluidBlobParticle extends NoRenderParticle {
 			double rdx = this.random.nextGaussian() * 0.1d;
 			double rdy = this.random.nextGaussian() * 0.1d;
 			double rdz = this.random.nextGaussian() * 0.1d;
-			this.getLevel().addParticle(options, this.x + rx, this.y + ry, this.z + rz, this.xd + rdx, this.yd + rdy, this.zd + rdz);
+			this.level.addParticle(options, this.x + rx, this.y + ry, this.z + rz, this.xd + rdx, this.yd + rdy, this.zd + rdz);
 		}
 	}
 

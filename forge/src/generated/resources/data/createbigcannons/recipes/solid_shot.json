@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "I": {
       "tag": "createbigcannons:ingot_iron"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "createbigcannons:solid_shot"
-  }
+  },
+  "show_notification": true
 }

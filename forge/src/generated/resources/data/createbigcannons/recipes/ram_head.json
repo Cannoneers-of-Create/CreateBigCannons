@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "H": {
       "tag": "minecraft:planks"
@@ -14,5 +15,6 @@
   ],
   "result": {
     "item": "createbigcannons:ram_head"
-  }
+  },
+  "show_notification": true
 }

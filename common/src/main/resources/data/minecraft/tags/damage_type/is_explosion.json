@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:cannon_projectile",
+    "createbigcannons:big_cannon_projectile"
+  ]
+}

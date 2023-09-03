@@ -1,10 +1,10 @@
 {
-  "entity_damage": 30.0,
-  "durability_mass": 8.0,
-  "renders_invulnerable": false,
-  "ignores_entity_armor": true,
   "base_fuze": false,
-  "gravity": -0.05,
   "drag": 0.99,
-  "explosive_power": 8.0
+  "durability_mass": 8.0,
+  "entity_damage": 30.0,
+  "explosive_power": 8.0,
+  "gravity": -0.05,
+  "ignores_entity_armor": true,
+  "renders_invulnerable": false
 }

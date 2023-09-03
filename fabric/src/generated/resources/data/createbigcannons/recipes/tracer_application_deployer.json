@@ -1,3 +1,4 @@
 {
-  "type": "createbigcannons:tracer_application_deployer"
+  "type": "createbigcannons:tracer_application_deployer",
+  "category": "misc"
 }

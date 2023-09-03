@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "createbigcannons:log_cannon_chamber",
     "createbigcannons:log_cannon_end",

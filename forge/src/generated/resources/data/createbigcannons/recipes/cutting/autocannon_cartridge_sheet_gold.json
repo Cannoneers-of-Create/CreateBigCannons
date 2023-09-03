@@ -2,7 +2,7 @@
   "type": "create:cutting",
   "ingredients": [
     {
-      "tag": "forge:plates/gold"
+      "tag": "c:plates/gold"
     }
   ],
   "results": [

@@ -1,9 +1,0 @@
-{
-  "parent": "createbigcannons:block/projectile_block",
-  "textures": {
-    "side": "createbigcannons:block/projectile/ap_shell",
-    "top": "createbigcannons:block/projectile/ap_shell_top",
-    "particle": "createbigcannons:block/projectile/ap_shell_top",
-    "bottom": "createbigcannons:block/projectile/ap_shell_bottom"
-  }
-}

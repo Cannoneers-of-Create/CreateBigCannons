@@ -2,7 +2,7 @@
   "type": "create:cutting",
   "ingredients": [
     {
-      "tag": "forge:plates/brass"
+      "tag": "c:plates/brass"
     }
   ],
   "results": [

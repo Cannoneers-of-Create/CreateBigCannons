@@ -41,7 +41,7 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 	@Override
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
-		this.getLevel().explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		this.level().explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
 
 		if (!this.fluidStack.isEmpty()) {
@@ -50,7 +50,7 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 			int convertCount = IndexPlatform.convertFluid(mbPerBlob);
 			int count = (int) Math.ceil(this.fluidStack.amount() / (double) convertCount);
 			float spread = CBCConfigs.SERVER.munitions.fluidBlobSpread.getF();
-			List<FluidBlob> list = Shrapnel.spawnShrapnelBurst(this.getLevel(), CBCEntityTypes.FLUID_BLOB.get(), this.position(), this.getDeltaMovement(), count, spread, 0);
+			List<FluidBlob> list = Shrapnel.spawnShrapnelBurst(this.level(), CBCEntityTypes.FLUID_BLOB.get(), this.position(), this.getDeltaMovement(), count, spread, 0);
 			for (FluidBlob blob : list) {
 				EndFluidStack copy = this.fluidStack.copy(convertCount);
 				blob.setFluidStack(copy);

@@ -71,26 +71,26 @@ public class FluidBlob extends Shrapnel {
 
 		if (!this.getFluidStack().isEmpty()) {
 			Vec3 vel = this.getDeltaMovement();
-			this.getLevel().addParticle(new FluidBlobParticleData(this.getBlobSize() * 0.25f + 1, this.getFluidStack().copy()), this.getX(), this.getY(), this.getZ(), vel.x, vel.y, vel.z);
+			this.level().addParticle(new FluidBlobParticleData(this.getBlobSize() * 0.25f + 1, this.getFluidStack().copy()), this.getX(), this.getY(), this.getZ(), vel.x, vel.y, vel.z);
 		}
 	}
 
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
-		if (!this.getLevel().isClientSide) FluidBlobEffectRegistry.effectOnHitBlock(this, result);
+		if (!this.level().isClientSide) FluidBlobEffectRegistry.effectOnHitBlock(this, result);
 		super.onHitBlock(result);
 	}
 
 	@Override
 	protected void onHit(HitResult result) {
-		if (!this.getLevel().isClientSide) FluidBlobEffectRegistry.effectOnAllHit(this, result);
+		if (!this.level().isClientSide) FluidBlobEffectRegistry.effectOnAllHit(this, result);
 		super.onHit(result);
 	}
 
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		if (result.getEntity().getType() == this.getType()) return;
-		if (!this.getLevel().isClientSide) FluidBlobEffectRegistry.effectOnHitEntity(this, result);
+		if (!this.level().isClientSide) FluidBlobEffectRegistry.effectOnHitEntity(this, result);
 	}
 
 	public AABB getAreaOfEffect(BlockPos pos) {

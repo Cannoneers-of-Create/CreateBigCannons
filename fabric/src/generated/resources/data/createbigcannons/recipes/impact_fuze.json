@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "R": {
       "tag": "createbigcannons:dusts_redstone"
@@ -15,5 +16,6 @@
   "result": {
     "count": 4,
     "item": "createbigcannons:impact_fuze"
-  }
+  },
+  "show_notification": true
 }

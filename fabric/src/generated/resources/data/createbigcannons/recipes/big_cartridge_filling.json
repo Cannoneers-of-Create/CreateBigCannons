@@ -1,3 +1,4 @@
 {
-  "type": "createbigcannons:big_cartridge_filling"
+  "type": "createbigcannons:big_cartridge_filling",
+  "category": "misc"
 }

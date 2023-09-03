@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "I": {
       "item": "createbigcannons:nethersteel_ingot"
@@ -14,5 +15,6 @@
   ],
   "result": {
     "item": "createbigcannons:nethersteel_screw_lock"
-  }
+  },
+  "show_notification": true
 }

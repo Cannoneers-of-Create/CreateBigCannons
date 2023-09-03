@@ -1,9 +1,9 @@
 {
-  "entity_damage": 50.0,
-  "durability_mass": 30.0,
-  "renders_invulnerable": false,
-  "ignores_entity_armor": true,
   "base_fuze": false,
+  "drag": 0.99,
+  "durability_mass": 30.0,
+  "entity_damage": 50.0,
   "gravity": -0.05,
-  "drag": 0.99
+  "ignores_entity_armor": true,
+  "renders_invulnerable": false
 }

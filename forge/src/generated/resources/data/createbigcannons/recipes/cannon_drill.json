@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "item": "create:andesite_casing"
@@ -21,5 +22,6 @@
   ],
   "result": {
     "item": "createbigcannons:cannon_drill"
-  }
+  },
+  "show_notification": true
 }

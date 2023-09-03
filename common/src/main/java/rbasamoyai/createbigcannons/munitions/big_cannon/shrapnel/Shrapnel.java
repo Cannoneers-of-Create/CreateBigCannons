@@ -24,6 +24,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
@@ -157,7 +158,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	}
 
 	protected DamageSource getDamageSource() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".shrapnel", this, null);
+		return new CannonDamageSource(this.level().damageSources().damageTypes.getHolderOrThrow(CBCDamageTypes.SHRAPNEL), this);
 	}
 
 	@Override

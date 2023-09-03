@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "tag": "createbigcannons:ingot_cast_iron"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "createbigcannons:ap_shot"
-  }
+  },
+  "show_notification": true
 }
