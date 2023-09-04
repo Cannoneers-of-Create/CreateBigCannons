@@ -37,7 +37,9 @@ public class CBCCommonForgeEvents {
 	}
 
 	public static void onPlayerBreakBlock(BreakEvent event) {
-		CBCCommonEvents.onPlayerBreakBlock(event.getState(), event.getWorld(), event.getPos(), event.getPlayer());
+		if (CBCCommonEvents.onPlayerBreakBlock(event.getState(), event.getWorld(), event.getPos(), event.getPlayer()) && event.isCancelable()) {
+			event.setCanceled(true);
+		}
 	}
 
 	public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent evt) {
