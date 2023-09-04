@@ -6,7 +6,10 @@ import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.mixin.accessor.FluidBlockAccessor;
+import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -20,6 +23,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -57,6 +61,16 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 	@Override
 	public BlockBuilder<LiquidBlock, FluidBuilder<T, P>> block() {
 		return block1(FluidBlockAccessor::callInit);
+	}
+
+	@Override
+	protected <B extends Block> void acceptBlockstate(DataGenContext<Block, B> ctx, RegistrateBlockstateProvider prov) {
+		prov.simpleBlock(ctx.get(), prov.models().getBuilder(this.sourceName).texture("particle", this.stillTexture));
+	}
+
+	@Override
+	protected <I extends Item> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov) {
+		prov.generated(ctx, new ResourceLocation(this.getOwner().getModid(), "item/" + this.bucketName));
 	}
 
 	@SuppressWarnings("unchecked")

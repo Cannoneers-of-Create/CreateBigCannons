@@ -19,9 +19,9 @@ import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
 public class ModGroup {
 
-	public static final ResourceKey<CreativeModeTab> MAIN_TAB_KEY = ResourceKey.create(Registries.CREATIVE_MODE_TAB, CreateBigCannons.resource("base"));
+	public static final ResourceKey<CreativeModeTab> MAIN_TAB_KEY = makeKey("base");
 
-	public static final Supplier<CreativeModeTab> GROUP = wrapGroup(() -> createBuilder()
+	public static final Supplier<CreativeModeTab> GROUP = wrapGroup("base", () -> createBuilder()
 		.title(Component.translatable("itemGroup." + CreateBigCannons.MOD_ID))
 		.icon(CBCBlocks.SOLID_SHOT::asStack)
 		.displayItems((param, output) -> {
@@ -227,8 +227,14 @@ public class ModGroup {
 		})
 		.build());
 
-	@ExpectPlatform public static Supplier<CreativeModeTab> wrapGroup(Supplier<CreativeModeTab> sup) { throw new AssertionError(); }
+	@ExpectPlatform public static Supplier<CreativeModeTab> wrapGroup(String id, Supplier<CreativeModeTab> sup) { throw new AssertionError(); }
 	@ExpectPlatform public static CreativeModeTab.Builder createBuilder() { throw new AssertionError(); }
+
+	@ExpectPlatform public static void useModTab(ResourceKey<CreativeModeTab> key) { throw new AssertionError(); }
+
+	public static ResourceKey<CreativeModeTab> makeKey(String id) {
+		return ResourceKey.create(Registries.CREATIVE_MODE_TAB, CreateBigCannons.resource(id));
+	}
 
 	public static void register() {
 		CreateBigCannons.REGISTRATE.addRawLang("itemGroup." + CreateBigCannons.MOD_ID, "Create Big Cannons");

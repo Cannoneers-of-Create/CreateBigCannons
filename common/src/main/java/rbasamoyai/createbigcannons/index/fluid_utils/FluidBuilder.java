@@ -13,7 +13,10 @@ import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.builders.ItemBuilder;
+import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.ProviderType;
+import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
+import com.tterrag.registrate.providers.RegistrateItemModelProvider;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
@@ -117,9 +120,10 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		NonNullSupplier<T> supplier = asSupplier();
 		return getOwner().<B, FluidBuilder<T, P>>block(this, sourceName, p -> factory.apply(supplier, p))
 			.properties(p -> BlockBehaviour.Properties.copy(Blocks.WATER).noLootTable())
-			.blockstate((ctx, prov) -> prov.simpleBlock(ctx.get(), prov.models().getBuilder(sourceName)
-				.texture("particle", stillTexture)));
+			.blockstate(this::acceptBlockstate);
 	}
+
+	protected abstract <B extends Block> void acceptBlockstate(DataGenContext<Block, B> ctx, RegistrateBlockstateProvider prov);
 
 	@Beta
 	public FluidBuilder<T, P> noBlock() {
@@ -153,8 +157,10 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		}
 		return getOwner().<I, FluidBuilder<T, P>>item(this, bucketName, p -> ((NonNullBiFunction<CBCFlowingFluid, Item.Properties, ? extends I>) factory).apply(this.source.get(), p)) // Fabric TODO
 			.properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
-			.model((ctx, prov) -> prov.generated(ctx, new ResourceLocation(getOwner().getModid(), "item/" + bucketName)));
+			.model(this::acceptItemModel);
 	}
+
+	protected abstract <I extends Item> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov);
 
 	@Beta
 	public FluidBuilder<T, P> noBucket() {
