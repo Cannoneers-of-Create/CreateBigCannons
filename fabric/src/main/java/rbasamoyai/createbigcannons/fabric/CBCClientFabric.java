@@ -16,10 +16,9 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
@@ -101,8 +100,8 @@ public class CBCClientFabric implements ClientModInitializer {
 
 	public static boolean onBeforeRender(LivingEntity entity, LivingEntityRenderer<?, ?> renderer, float partialRenderTick,
 									  PoseStack matrixStack, MultiBufferSource buffers, int light) {
-		if (entity instanceof AbstractClientPlayer cplayer && renderer instanceof PlayerRenderer playerRenderer) {
-			return CBCClientCommon.onPlayerRenderPre(matrixStack, cplayer, playerRenderer, partialRenderTick);
+		if (entity.getType() == EntityType.PLAYER) {
+			CBCClientCommon.onPlayerRenderPre(matrixStack, entity, partialRenderTick);
 		}
 		return false;
 	}
