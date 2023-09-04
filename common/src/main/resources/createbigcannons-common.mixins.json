@@ -5,6 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.AbstractMountedCannonContraptionMixin",
+    "client.CameraAccessor",
+    "client.EntityRenderDispatcherMixin",
     "client.HumanoidPoseMixin",
     "client.PitchOrientedContraptionEntityMixin",
     "client.PoleContraptionMixin",

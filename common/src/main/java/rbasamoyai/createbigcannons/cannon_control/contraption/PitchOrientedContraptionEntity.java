@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
-import com.simibubi.create.content.contraptions.actors.seat.SeatEntity;
 import com.simibubi.create.foundation.utility.VecHelper;
 
 import net.minecraft.core.BlockPos;
@@ -215,8 +214,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		Vec3 transformedVector = this.getPassengerPosition(passenger, 1);
 		transformedVector = this.processRiderPositionHook(passenger, transformedVector);
 		if (transformedVector == null) return;
-		passenger.setPos(transformedVector.x,
-			transformedVector.y + SeatEntity.getCustomEntitySeatOffset(passenger) - 1 / 8f, transformedVector.z);
+		passenger.setPos(transformedVector.x, transformedVector.y, transformedVector.z);
 	}
 
 	/**
@@ -238,9 +236,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 		BlockPos seat = cannon.getSeatPos(passenger);
 		if (seat == null) return null;
-		return this.toGlobalVector(Vec3.atLowerCornerOf(seat)
-				.add(.5, 1, .5), partialTicks)
-			.subtract(0, passenger.getEyeHeight(), 0);
+		Vec3 normal = new Vec3(this.getInitialOrientation().step());
+		return this.toGlobalVector(Vec3.atCenterOf(seat).add(normal.scale(-0.25f)).add(0, -1.25, 0), partialTicks);
 	}
 
 	@Override
