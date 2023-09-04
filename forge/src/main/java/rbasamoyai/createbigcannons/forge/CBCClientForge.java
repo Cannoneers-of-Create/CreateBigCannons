@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -9,9 +11,6 @@ import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -112,8 +111,8 @@ public class CBCClientForge {
 			ModContainer container = ModList.get()
 				.getModContainerById(CreateBigCannons.MOD_ID)
 				.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
-			container.registerExtensionPoint(ConfigGuiFactory.class,
-				() -> new ConfigGuiFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));
+			container.registerExtensionPoint(ConfigScreenFactory.class,
+				() -> new ConfigScreenFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));
 		}
 	}
 }
