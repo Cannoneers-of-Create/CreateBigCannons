@@ -2,6 +2,10 @@ package rbasamoyai.createbigcannons.forge.mixin;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.Util;
+
+import net.minecraft.core.Registry;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -13,6 +17,9 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
+
+import org.spongepowered.asm.mixin.Unique;
+
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 
 @Mixin(CBCFlowingFluid.class)
@@ -34,11 +41,18 @@ public abstract class CBCFlowingFluidMixin extends FlowingFluid {
 	@Final
 	protected SoundEvent emptySound;
 
+	@Unique private FluidType fluidType;
+
 	@Nonnull
 	@Override
 	public FluidType getFluidType() {
-		return CreateRegistrate.defaultFluidType(
-			FluidType.Properties.create().sound(SoundActions.BUCKET_FILL, this.fillSound)
-				.sound(SoundActions.BUCKET_EMPTY, this.emptySound), stillTex, flowingTex);
+		if (this.fluidType == null) {
+			this.fluidType = CreateRegistrate.defaultFluidType(
+				FluidType.Properties.create()
+					.sound(SoundActions.BUCKET_FILL, this.fillSound)
+					.sound(SoundActions.BUCKET_EMPTY, this.emptySound)
+					.descriptionId(Util.makeDescriptionId("fluid", Registry.FLUID.getKey(this))), this.stillTex, this.flowingTex);
+		}
+		return this.fluidType;
 	}
 }

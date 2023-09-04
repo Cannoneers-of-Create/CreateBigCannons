@@ -13,6 +13,8 @@ import com.tterrag.registrate.util.nullness.NonNullBiFunction;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
+import net.minecraft.Util;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -208,6 +210,10 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 			throw new IllegalStateException("Fluid must have a source version: " + getName());
 		}
 		return super.register();
+	}
+
+	protected String makeDescriptionId(T fluid) {
+		return Util.makeDescriptionId("fluid", new ResourceLocation(this.getOwner().getModid(), this.sourceName));
 	}
 
 }

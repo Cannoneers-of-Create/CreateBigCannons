@@ -65,12 +65,12 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 
 	@Override
 	public FluidBuilder<T, P> defaultLang() {
-		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), RegistrateLangProvider.toEnglishName(sourceName));
+		return lang(this::makeDescriptionId, RegistrateLangProvider.toEnglishName(sourceName));
 	}
 
 	@Override
 	public FluidBuilder<T, P> lang(String name) {
-		return lang(f -> Util.makeDescriptionId("fluid", Registry.FLUID.getKey(f.getSource())), name);
+		return lang(this::makeDescriptionId, name);
 	}
 
 	@Override
