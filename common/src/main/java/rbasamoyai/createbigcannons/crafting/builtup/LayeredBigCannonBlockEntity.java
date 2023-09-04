@@ -23,6 +23,7 @@ import com.simibubi.create.foundation.utility.Iterate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -340,9 +341,10 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 			tag.putString("Material", this.baseMaterial.name().toString());
 		}
 		ListTag layerTag = new ListTag();
+		Registry<CannonCastShape> cannonCastShapeRegistry = CBCRegistries.cannonCastShapes();
 		for (Map.Entry<CannonCastShape, Block> e : this.layeredBlocks.entrySet()) {
 			CompoundTag entryTag = new CompoundTag();
-			entryTag.putString("Shape", CBCRegistries.CANNON_CAST_SHAPES.getKey(e.getKey()).toString());
+			entryTag.putString("Shape", cannonCastShapeRegistry.getKey(e.getKey()).toString());
 			entryTag.putString("Block", BuiltInRegistries.BLOCK.getKey(e.getValue()).toString());
 			layerTag.add(entryTag);
 		}
@@ -352,7 +354,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 			if (!this.layersConnectedTowards.containsKey(dir)) continue;
 			layerConnectionTag.put(dir.getSerializedName(),
 				this.layersConnectedTowards.get(dir).stream()
-					.map(CBCRegistries.CANNON_CAST_SHAPES::getKey)
+					.map(cannonCastShapeRegistry::getKey)
 					.map(ResourceLocation::toString)
 					.map(StringTag::valueOf)
 					.collect(Collectors.toCollection(ListTag::new)));
@@ -371,11 +373,12 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 
 		this.layersConnectedTowards.clear();
 		CompoundTag layerConnectionTag = tag.getCompound("LayerConnections");
+		Registry<CannonCastShape> cannonCastShapeRegistry = CBCRegistries.cannonCastShapes();
 		for (Direction dir : Iterate.directions) {
 			if (!layerConnectionTag.contains(dir.getSerializedName())) continue;
 			ListTag connections = layerConnectionTag.getList(dir.getSerializedName(), Tag.TAG_STRING);
 			for (int i = 0; i < connections.size(); ++i) {
-				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(connections.getString(i)));
+				CannonCastShape shape = cannonCastShapeRegistry.get(new ResourceLocation(connections.getString(i)));
 				if (shape != null) this.layersConnectedTowards.put(dir, shape);
 			}
 		}
@@ -391,7 +394,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		ListTag layers = tag.getList("Layers", Tag.TAG_COMPOUND);
 		for (int i = 0; i < layers.size(); ++i) {
 			CompoundTag entry = layers.getCompound(i);
-			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(entry.getString("Shape"))),
+			this.layeredBlocks.put(cannonCastShapeRegistry.get(new ResourceLocation(entry.getString("Shape"))),
 				BuiltInRegistries.BLOCK.get(new ResourceLocation(entry.getString("Block"))));
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;

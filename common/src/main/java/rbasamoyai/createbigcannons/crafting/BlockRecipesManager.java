@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -52,19 +53,21 @@ public class BlockRecipesManager {
 	@SuppressWarnings("unchecked")
 	public static <T extends BlockRecipe> void toNetworkCasted(FriendlyByteBuf buf, T recipe) {
 		BlockRecipeSerializer<T> ser = (BlockRecipeSerializer<T>) recipe.getSerializer();
-		buf.writeResourceLocation(CBCRegistries.BLOCK_RECIPE_SERIALIZERS.getKey(ser));
+		buf.writeResourceLocation(CBCRegistries.blockRecipeSerializers().getKey(ser));
 		ser.toNetwork(buf, recipe);
 	}
 
 	public static void readBuf(FriendlyByteBuf buf) {
 		clear();
 		int sz = buf.readVarInt();
+		Registry<BlockRecipeSerializer<?>> serializersRegistry = CBCRegistries.blockRecipeSerializers();
+		Registry<BlockRecipeType<?>> typeRegistry = CBCRegistries.blockRecipeTypes();
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation id = buf.readResourceLocation();
 			ResourceLocation type = buf.readResourceLocation();
-			BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get(type).fromNetwork(id, buf);
+			BlockRecipe recipe = serializersRegistry.get(type).fromNetwork(id, buf);
 			BLOCK_RECIPES_BY_NAME.put(id, recipe);
-			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get(type);
+			BlockRecipeType<?> recipeType = typeRegistry.get(type);
 			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType)) {
 				BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
 			}
@@ -93,15 +96,18 @@ public class BlockRecipesManager {
 			ProfilerFiller profiler) {
 			clear();
 
+			Registry<BlockRecipeSerializer<?>> serializersRegistry = CBCRegistries.blockRecipeSerializers();
+			Registry<BlockRecipeType<?>> typeRegistry = CBCRegistries.blockRecipeTypes();
+
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 				JsonElement el = entry.getValue();
 				if (el.isJsonObject()) {
 					ResourceLocation id = entry.getKey();
 					JsonObject obj = el.getAsJsonObject();
 					ResourceLocation type = new ResourceLocation(obj.get("type").getAsString());
-					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get(type).fromJson(id, obj);
+					BlockRecipe recipe = serializersRegistry.get(type).fromJson(id, obj);
 					BLOCK_RECIPES_BY_NAME.put(id, recipe);
-					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get(type);
+					BlockRecipeType<?> recipeType = typeRegistry.get(type);
 					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType)) {
 						BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
 					}

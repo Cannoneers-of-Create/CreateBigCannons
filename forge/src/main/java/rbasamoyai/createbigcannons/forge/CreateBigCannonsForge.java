@@ -1,7 +1,9 @@
 package rbasamoyai.createbigcannons.forge;
 
+import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -17,9 +19,13 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegisterEvent;
+import net.minecraftforge.registries.RegistryBuilder;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -51,6 +57,7 @@ public class CreateBigCannonsForge {
         modEventBus.addListener(this::onLoadConfig);
         modEventBus.addListener(this::onReloadConfig);
         modEventBus.addListener(this::onRegisterSounds);
+		modEventBus.addListener(this::onRegister);
 
         CBCCommonForgeEvents.register(forgeEventBus);
 
@@ -64,8 +71,32 @@ public class CreateBigCannonsForge {
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {
-        CBCRegistries.init();
+        evt.create(new RegistryBuilder<>().setName(CBCRegistries.BLOCK_RECIPE_SERIALIZERS.location())
+			.hasTags()
+			.allowModification()
+			.setDefaultKey(CreateBigCannons.resource("cannon_casting")));
+
+		evt.create(new RegistryBuilder<>().setName(CBCRegistries.BLOCK_RECIPE_TYPES.location())
+			.hasTags()
+			.allowModification()
+			.setDefaultKey(CreateBigCannons.resource("cannon_casting")));
+
+		evt.create(new RegistryBuilder<>().setName(CBCRegistries.CANNON_CAST_SHAPES.location())
+			.hasTags()
+			.allowModification()
+			.setDefaultKey(CreateBigCannons.resource("very_small")));
     }
+
+	private void onRegister(RegisterEvent evt) {
+		ResourceKey<? extends Registry<?>> key = evt.getRegistryKey();
+		if (CBCRegistries.BLOCK_RECIPE_SERIALIZERS.equals(key)) {
+			BlockRecipeSerializer.register();
+		} else if (CBCRegistries.BLOCK_RECIPE_TYPES.equals(key)) {
+			BlockRecipeType.register();
+		} else if (CBCRegistries.CANNON_CAST_SHAPES.equals(key)) {
+			CannonCastShape.register();
+		}
+	}
 
     private void onRegisterSounds(RegisterEvent event) {
         event.register(Registries.SOUND_EVENT, helper -> CBCSoundEvents.register(soundEntry -> soundEntry.register(helper)));
