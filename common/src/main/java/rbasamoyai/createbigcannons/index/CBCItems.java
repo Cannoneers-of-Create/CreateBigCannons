@@ -31,9 +31,7 @@ import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
 public class CBCItems {
 
-	static {
-		REGISTRATE.useCreativeTab(ModGroup.MAIN_TAB_KEY);
-	}
+	static { ModGroup.useModTab(ModGroup.MAIN_TAB_KEY); }
 
 	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new).register();
 	public static final ItemEntry<TimedFuzeItem> TIMED_FUZE = REGISTRATE.item("timed_fuze", TimedFuzeItem::new).register();

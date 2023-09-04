@@ -82,7 +82,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficCone
 
 public class CBCBlocks {
 
-	static { REGISTRATE.useCreativeTab(ModGroup.MAIN_TAB_KEY); }
+	static { ModGroup.useModTab(ModGroup.MAIN_TAB_KEY); }
 
 	//////// Log cannon blocks ////////
 
