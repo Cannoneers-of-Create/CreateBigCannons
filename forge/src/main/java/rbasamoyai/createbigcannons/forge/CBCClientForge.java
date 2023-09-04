@@ -9,10 +9,20 @@ import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.ClientRegistry;
+import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import rbasamoyai.createbigcannons.CBCClientCommon;
+import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class CBCClientForge {
@@ -95,4 +105,15 @@ public class CBCClientForge {
 		}
 	}
 
+	@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+	public static abstract class ClientModBusEvents {
+		@SubscribeEvent
+		static void onLoadComplete(FMLLoadCompleteEvent event) {
+			ModContainer container = ModList.get()
+				.getModContainerById(CreateBigCannons.MOD_ID)
+				.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
+			container.registerExtensionPoint(ConfigGuiFactory.class,
+				() -> new ConfigGuiFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));
+		}
+	}
 }

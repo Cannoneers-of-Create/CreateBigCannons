@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import com.simibubi.create.content.contraptions.Contraption;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -21,6 +22,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
@@ -201,6 +204,13 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 		if (!this.outputBuffer.isEmpty()) list.add(this.outputBuffer.copy());
 		if (!this.magazine.isEmpty()) list.add(this.magazine.copy());
 		return list;
+	}
+
+	@Override
+	protected AABB createRenderBoundingBox() {
+		Direction dir = this.getBlockState().getValue(AutocannonBreechBlock.FACING);
+		Direction ammoContainerDir = dir.getAxis().isHorizontal() ? dir.getClockWise(Direction.Axis.Y) : Direction.EAST;
+		return super.createRenderBoundingBox().expandTowards(new Vec3(dir.getOpposite().step()).add(new Vec3(ammoContainerDir.step())));
 	}
 
 }

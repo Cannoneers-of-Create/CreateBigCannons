@@ -19,6 +19,7 @@
     "BeltTileEntityMixin",
     "EntityMixin",
     "FilterItemMixin",
+    "PlayerMixin",
     "ServerEntityMixin"
   ],
   "injectors": {
