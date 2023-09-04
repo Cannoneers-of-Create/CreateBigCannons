@@ -261,6 +261,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				ItemEntity ejectEntity = new ItemEntity(level, ejectPos.x, ejectPos.y, ejectPos.z, ejectStack);
 				Vec3 eject = ejectPos.subtract(centerPos).normalize();
 				ejectEntity.setDeltaMovement(eject.scale(this.isHandle ? 0.1 : 0.5));
+				ejectEntity.setPickUpDelay(20);
 				level.addFreshEntity(ejectEntity);
 			}
 		}

@@ -5,19 +5,21 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.mojang.math.Axis;
-
+import org.joml.AxisAngle4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import org.joml.Vector3f;
 
 import net.minecraft.client.Camera;
+import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +40,7 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
+import rbasamoyai.createbigcannons.mixin.client.CameraAccessor;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
@@ -177,19 +180,12 @@ public class CBCClientCommon {
 
 	public static void onPlayerRenderPre(PoseStack stack, LivingEntity player, float partialTicks) {
 		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-			Vector3f pVec = player.getPosition(partialTicks).toVector3f();
-			stack.translate(-pVec.x(), -pVec.y(), -pVec.z());
-
-			BlockPos seatPos = poce.getSeatPos(player);
-			double offs = player.getEyeHeight() + player.getMyRidingOffset() - 0.15;
-			Vec3 vec = new Vec3(poce.getInitialOrientation().step()).scale(0.25);
-			Vector3f pVec1 = poce.toGlobalVector(Vec3.atCenterOf(seatPos).subtract(vec).subtract(0, offs, 0), partialTicks).toVector3f();
-			stack.translate(pVec1.x(), pVec1.y(), pVec1.z());
-
 			float yr = (-Mth.lerp(partialTicks, player.yRotO, player.getYRot()) + 90) * Mth.DEG_TO_RAD;
 			Vector3f vec3 = new Vector3f(Mth.sin(yr), 0, Mth.cos(yr));
 			float xr = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
-			stack.mulPose(Axis.of(vec3).rotationDegrees(xr));
+			Quaternionf q = new Quaternionf(new AxisAngle4f(Mth.DEG_TO_RAD * xr, vec3));
+
+			stack.mulPose(q);
 		}
 	}
 
@@ -219,6 +215,39 @@ public class CBCClientCommon {
 
 	public static void onTextureAtlasStitchPre(Consumer<ResourceLocation> cons) {
 		cons.accept(CreateBigCannons.resource("item/tracer_slot"));
+	}
+
+	public static boolean onCameraSetup(Camera camera, double partialTicks, float yaw, float pitch, float roll,
+										Consumer<Float> setYaw, Consumer<Float> setPitch, Consumer<Float> setRoll) {
+		Minecraft mc = Minecraft.getInstance();
+		LocalPlayer player = mc.player;
+		if (player == null || camera.getEntity() != player ||
+			!(player.getVehicle() instanceof PitchOrientedContraptionEntity poce) || poce.getSeatPos(player) == null)
+			return false;
+		CameraAccessor camAccess = (CameraAccessor) camera;
+
+		Direction dir = poce.getInitialOrientation();
+		Vec3 normal = new Vec3(dir.step());
+		Direction up = Direction.UP; // TODO: up and down cases
+
+		Vec3 upNormal = new Vec3(up.step());
+		Vec3 localPos = Vec3.atCenterOf(poce.getSeatPos(player));
+		if (mc.options.getCameraType() == CameraType.FIRST_PERSON) {
+			localPos = localPos.add(upNormal.scale(0.35));
+			Vec3 camPos = poce.toGlobalVector(localPos, (float) partialTicks);
+			camAccess.callSetPosition(camPos);
+		} else {
+			camAccess.callSetPosition(camera.getPosition().add(poce.applyRotation(upNormal.scale(1.25), (float) partialTicks)));
+		}
+
+		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+		boolean flag1 = mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT;
+		float sgn = flag1 ? -1 : 1;
+		float add = flag1 ? 180 : 0;
+		setYaw.accept(poce.yaw + add);
+		setPitch.accept((flag ? -poce.pitch : poce.pitch) * sgn);
+		setRoll.accept(0f);
+		return true;
 	}
 
 }

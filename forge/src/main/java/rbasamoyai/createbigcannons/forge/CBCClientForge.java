@@ -21,6 +21,7 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientForge::onFovModify);
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
+		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
 	}
 
 	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
@@ -70,6 +71,13 @@ public class CBCClientForge {
 
 	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
 		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getEntity(), evt.getPartialTick());
+	}
+
+	public static void onSetupCamera(ViewportEvent.ComputeCameraAngles evt) {
+		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTick(), evt.getYaw(), evt.getPitch(), evt.getRoll(),
+			evt::setYaw, evt::setPitch, evt::setRoll) && evt.isCancelable()) {
+			evt.setCanceled(true);
+		}
 	}
 
 }
