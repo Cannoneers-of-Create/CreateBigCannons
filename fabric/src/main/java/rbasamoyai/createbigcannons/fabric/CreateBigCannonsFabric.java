@@ -11,6 +11,9 @@ import net.minecraft.core.registries.Registries;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -28,6 +31,10 @@ public class CreateBigCannonsFabric implements ModInitializer {
 		CBCSoundEvents.register(AllSoundEvents.SoundEntry::register);
 
 		CBCRegistries.init();
+		CannonCastShape.register();
+		BlockRecipeSerializer.register();
+		BlockRecipeType.register();
+
 		CBCConfigs.registerConfigs((t, c) -> ForgeConfigRegistry.INSTANCE.register(CreateBigCannons.MOD_ID, t, c));
 
 		CBCNetworkFabric.INSTANCE.initServerListener();

@@ -311,7 +311,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 
 		@Override
 		public void serializeRecipeData(JsonObject obj) {
-			obj.addProperty("cast_shape", CBCRegistries.CANNON_CAST_SHAPES.getKey(this.shape).toString());
+			obj.addProperty("cast_shape", CBCRegistries.cannonCastShapes().getKey(this.shape).toString());
 			obj.add("fluid", this.ingredient.serialize());
 			obj.addProperty("casting_time", this.castingTime);
 			obj.addProperty("result", BuiltInRegistries.BLOCK.getKey(this.result).toString());

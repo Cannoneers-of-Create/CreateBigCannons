@@ -97,7 +97,7 @@ public class CannonCastShape {
 
 	@Override
 	public String toString() {
-		return "CannonCastShape[" + CBCRegistries.CANNON_CAST_SHAPES.getKey(this) + ",fluidSize=" + this.fluidSize + ",diameter=" + this.diameter + "]";
+		return "CannonCastShape[" + CBCRegistries.cannonCastShapes().getKey(this) + ",fluidSize=" + this.fluidSize + ",diameter=" + this.diameter + "]";
 	}
 
 	public static class PropertySetter<T extends Comparable<T>> {
@@ -122,7 +122,7 @@ public class CannonCastShape {
 	}
 
 	private static CannonCastShape register(String id, CannonCastShape shape) {
-		return Registry.register(CBCRegistries.CANNON_CAST_SHAPES, CreateBigCannons.resource(id), shape);
+		return Registry.register(CBCRegistries.cannonCastShapes(), CreateBigCannons.resource(id), shape);
 	}
 
 }

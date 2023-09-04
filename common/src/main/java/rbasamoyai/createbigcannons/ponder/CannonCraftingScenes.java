@@ -849,7 +849,7 @@ public class CannonCraftingScenes {
 	}
 
 	private static Consumer<CompoundTag> setUnfinishedCannonShape(CannonCastShape shape) {
-		return tag -> tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.getKey(shape).toString());
+		return tag -> tag.putString("Size", CBCRegistries.cannonCastShapes().getKey(shape).toString());
 	}
 
 	private static Consumer<CompoundTag> setCentralBlock(BlockPos pos) {
@@ -857,7 +857,7 @@ public class CannonCraftingScenes {
 	}
 
 	private static Consumer<CompoundTag> setFinishedCannonShape(CannonCastShape shape) {
-		return tag -> tag.putString("RenderedShape", CBCRegistries.CANNON_CAST_SHAPES.getKey(shape).toString());
+		return tag -> tag.putString("RenderedShape", CBCRegistries.cannonCastShapes().getKey(shape).toString());
 	}
 
 }

@@ -91,7 +91,7 @@ public class FinishedCannonCastBlockEntity extends SmartBlockEntity {
 		if (this.isCentralBlock()) {
 			tag.put("RootBlock", NbtUtils.writeBlockPos(this.getRootBlock()));
 			tag.putInt("Height", this.height);
-			tag.putString("RenderedShape", CBCRegistries.CANNON_CAST_SHAPES.getKey(this.renderedShape).toString());
+			tag.putString("RenderedShape", CBCRegistries.cannonCastShapes().getKey(this.renderedShape).toString());
 		} else {
 			tag.put("CentralBlock", NbtUtils.writeBlockPos(this.centralBlock));
 		}
@@ -104,7 +104,7 @@ public class FinishedCannonCastBlockEntity extends SmartBlockEntity {
 		this.rootBlock = tag.contains("RootBlock") ? NbtUtils.readBlockPos(tag.getCompound("RootBlock")) : this.worldPosition;
 		this.height = tag.getInt("Height");
 		this.renderedShape = tag.contains("RenderedShape")
-			? CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(tag.getString("RenderedShape")))
+			? CBCRegistries.cannonCastShapes().get(new ResourceLocation(tag.getString("RenderedShape")))
 			: CannonCastShape.VERY_SMALL;
 	}
 

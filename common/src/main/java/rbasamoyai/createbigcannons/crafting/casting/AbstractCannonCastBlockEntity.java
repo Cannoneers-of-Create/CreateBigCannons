@@ -19,6 +19,7 @@ import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -103,8 +104,9 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 
 	@Override
 	protected void write(CompoundTag tag, boolean clientPacket) {
+		Registry<CannonCastShape> shapeRegistry = CBCRegistries.cannonCastShapes();
 		if (this.canRenderCastModel() && this.castShape != null) {
-			tag.putString("Size", CBCRegistries.CANNON_CAST_SHAPES.getKey(this.castShape).toString());
+			tag.putString("Size", shapeRegistry.getKey(this.castShape).toString());
 		}
 		if (this.lastKnownPos != null) tag.put("LastKnownPos", NbtUtils.writeBlockPos(this.lastKnownPos));
 
@@ -112,7 +114,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			if (!this.structure.isEmpty()) {
 				ListTag structureTag = new ListTag();
 				for (CannonCastShape sz : this.structure) {
-					structureTag.add(StringTag.valueOf(CBCRegistries.CANNON_CAST_SHAPES.getKey(sz).toString()));
+					structureTag.add(StringTag.valueOf(shapeRegistry.getKey(sz).toString()));
 				}
 				tag.put("Structure", structureTag);
 			}
@@ -157,17 +159,19 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	protected void read(CompoundTag tag, boolean clientPacket) {
 		super.read(tag, clientPacket);
 
+		Registry<CannonCastShape> shapeRegistry = CBCRegistries.cannonCastShapes();
+
 		BlockPos controllerBefore = this.controllerPos;
 		int prevHeight = this.getControllerBE() == null ? 0 : this.getControllerBE().height;
 
-		this.castShape = tag.contains("Size") ? CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(tag.getString("Size"))) : null;
+		this.castShape = tag.contains("Size") ? shapeRegistry.get(new ResourceLocation(tag.getString("Size"))) : null;
 		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
 
 		this.structure.clear();
 		if (tag.contains("Structure")) {
 			ListTag list = tag.getList("Structure", Tag.TAG_STRING);
 			for (int i = 0; i < list.size(); ++i) {
-				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(list.getString(i)));
+				CannonCastShape shape = shapeRegistry.get(new ResourceLocation(list.getString(i)));
 				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL : shape);
 			}
 			this.height = tag.getInt("Height");
