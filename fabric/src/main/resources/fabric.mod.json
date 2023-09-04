@@ -3,9 +3,11 @@
   "id": "createbigcannons",
   "version": "${version}",
   "name": "Create Big Cannons",
-  "description": "Artillery engineering comes to Create",
+  "description": "Artillery engineering comes to Create\n\nAttributions:\nLogo by Milkyfur\nCast iron and nethersteel item textures by LopyLuna",
   "authors": [
-    "rbasamoyai"
+    "rbasamoyai",
+    "logo by Milkyfur",
+    "cast iron and nethersteel item textures by LopyLuna"
   ],
   "contact": {
     "sources": "https://github.com/Cannoneers-of-Create/CreateBigCannons",
