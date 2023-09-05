@@ -7,15 +7,18 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 
 @Mixin(Entity.class)
 public abstract class EntityMixin {
 
-	private final Entity self = (Entity) (Object) this;
+	@Unique private final Entity self = (Entity) (Object) this;
 
 	@Inject(method = "turn", at = @At("HEAD"), cancellable = true)
 	public void createbigcannons$turn(double yaw, double pitch, CallbackInfo ci) {
@@ -49,6 +52,22 @@ public abstract class EntityMixin {
 	private void createbigcannons$getEyeHeight(CallbackInfoReturnable<Float> cir) {
 		if (this.onAutocannon())
 			cir.setReturnValue(this.self.getBbWidth() * 0.425f);
+	}
+
+	@Inject(method = "getEyePosition(F)Lnet/minecraft/world/phys/Vec3;", at = @At("HEAD"), cancellable = true)
+	private void createbigcannons$getEyePosition(float partialTicks, CallbackInfoReturnable<Vec3> cir) {
+		if (!this.onAutocannon() || !(this.self instanceof Player player)) return;
+		PitchOrientedContraptionEntity poce = (PitchOrientedContraptionEntity) this.self.getVehicle();
+
+		Direction dir = poce.getInitialOrientation();
+		Vec3 normal = new Vec3(dir.step());
+		Direction up = Direction.UP; // TODO: up and down cases
+
+		Vec3 upNormal = new Vec3(up.step());
+		Vec3 localPos = Vec3.atCenterOf(poce.getSeatPos(player));
+		localPos = localPos.add(upNormal.scale(0.35));
+		Vec3 eyePos = poce.toGlobalVector(localPos, partialTicks);
+		cir.setReturnValue(eyePos);
 	}
 
 	@Unique

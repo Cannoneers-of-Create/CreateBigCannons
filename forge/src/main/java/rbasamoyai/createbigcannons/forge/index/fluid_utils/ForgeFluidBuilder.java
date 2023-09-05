@@ -13,7 +13,6 @@ import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 
-import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -64,10 +63,6 @@ public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilde
 	@Override
 	protected <I extends Item> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov) {
 		prov.generated(ctx, new ResourceLocation(this.getOwner().getModid(), "item/" + this.bucketName));
-	}
-
-	private String makeDescriptionId(T fluid) {
-		return Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(fluid.getSource()));
 	}
 
 }
