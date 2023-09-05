@@ -187,6 +187,7 @@ public class CBCClientCommon {
 			Quaternion q = vec3.rotationDegrees(xr);
 
 			stack.mulPose(q);
+			stack.translate(0, -1.25, 0);
 		}
 		return false;
 	}
@@ -239,7 +240,7 @@ public class CBCClientCommon {
 			Vec3 camPos = poce.toGlobalVector(localPos, (float) partialTicks);
 			camAccess.callSetPosition(camPos);
 		} else {
-			camAccess.callSetPosition(camera.getPosition().add(poce.applyRotation(upNormal.scale(1.25), (float) partialTicks)));
+			camAccess.callSetPosition(camera.getPosition()); // Left in for Landlord compat
 		}
 
 		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
