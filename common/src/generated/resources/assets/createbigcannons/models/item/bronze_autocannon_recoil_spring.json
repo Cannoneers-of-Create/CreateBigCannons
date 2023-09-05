@@ -1,6 +1,0 @@
-{
-  "parent": "createbigcannons:block/autocannon/recoil_spring_item",
-  "textures": {
-    "material": "createbigcannons:block/autocannon/bronze_autocannon"
-  }
-}
