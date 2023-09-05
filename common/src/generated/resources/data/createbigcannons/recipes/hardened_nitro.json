@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "ingredient": {
-    "item": "createbigcannons:congealed_nitro"
-  },
-  "result": "createbigcannons:hardened_nitro",
-  "experience": 5.0,
-  "cookingtime": 200
-}

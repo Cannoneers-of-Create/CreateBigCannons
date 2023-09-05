@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "createbigcannons:item/empty_machine_gun_round"
-  }
-}
