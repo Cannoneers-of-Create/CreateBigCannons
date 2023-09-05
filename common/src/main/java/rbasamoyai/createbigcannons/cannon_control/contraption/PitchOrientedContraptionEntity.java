@@ -237,7 +237,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity im
 		BlockPos seat = cannon.getSeatPos(passenger);
 		if (seat == null) return null;
 		Vec3 normal = new Vec3(this.getInitialOrientation().step());
-		return this.toGlobalVector(Vec3.atCenterOf(seat).add(normal.scale(-0.25f)).add(0, -1.25, 0), partialTicks);
+		return this.toGlobalVector(Vec3.atCenterOf(seat).add(normal.scale(-0.25f)), partialTicks);
 	}
 
 	@Override
