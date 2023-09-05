@@ -45,7 +45,9 @@ public class CBCCommonFabricEvents {
 	}
 
 	public static void onPlayerBreakBlock(BlockEvents.BreakEvent event) {
-		CBCCommonEvents.onPlayerBreakBlock(event.getState(), event.getWorld(), event.getPos(), event.getPlayer());
+		if (CBCCommonEvents.onPlayerBreakBlock(event.getState(), event.getWorld(), event.getPos(), event.getPlayer())) {
+			event.setCanceled(true);
+		}
 	}
 
 	public static void onPlayerLogin(ServerGamePacketListenerImpl handler, PacketSender sender, MinecraftServer server) {

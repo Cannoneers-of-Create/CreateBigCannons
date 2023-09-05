@@ -3,13 +3,15 @@
   "id": "createbigcannons",
   "version": "${version}",
   "name": "Create Big Cannons",
-  "description": "Artillery engineering comes to Create",
+  "description": "Artillery engineering comes to Create\n\nAttributions:\nLogo by Milkyfur\nCast iron and nethersteel item textures by LopyLuna",
   "authors": [
-    "rbasamoyai"
+    "rbasamoyai",
+    "logo by Milkyfur",
+    "cast iron and nethersteel item textures by LopyLuna"
   ],
   "contact": {
-    "homepage": "",
-    "sources": "https://github.com/Cannoneers-of-Create/CreateBigCannons"
+    "sources": "https://github.com/Cannoneers-of-Create/CreateBigCannons",
+    "issues": "https://github.com/Cannoneers-of-Create/CreateBigCannons/issues"
   },
   "license": "MIT",
   "icon": "icon.png",
@@ -26,6 +28,9 @@
     ],
     "jei_mod_plugin": [
       "rbasamoyai.createbigcannons.compat.jei.CBCJEI"
+    ],
+    "modmenu": [
+      "rbasamoyai.createbigcannons.compat.modmenu.CBCModMenuCompat"
     ]
   },
   "mixins": [
@@ -37,5 +42,17 @@
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": ">=${fabric_api_version}",
     "create": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "parent": {
+        "id": "create"
+      },
+      "links": {
+        "Modrinth": "https://modrinth.com/mod/create-big-cannons",
+        "CurseForge": "https://curseforge.com/minecraft/mc-mods/create-big-cannons",
+        "Discord": "https://discord.gg/vgfMMUUgvT"
+      }
+    }
   }
 }

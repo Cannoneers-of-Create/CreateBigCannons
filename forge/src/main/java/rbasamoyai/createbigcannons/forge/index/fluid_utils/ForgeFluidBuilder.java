@@ -50,8 +50,4 @@ public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilde
 		return block(LiquidBlock::new);
 	}
 
-	private String makeDescriptionId(T fluid) {
-		return Util.makeDescriptionId("fluid", Registry.FLUID.getKey(fluid.getSource()));
-	}
-
 }
