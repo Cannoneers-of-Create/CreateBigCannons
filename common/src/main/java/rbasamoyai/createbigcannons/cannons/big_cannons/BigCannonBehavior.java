@@ -10,7 +10,6 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.Blocks;
@@ -76,7 +75,7 @@ public class BigCannonBehavior extends CannonBehavior {
 	public void read(CompoundTag nbt, boolean clientPacket) {
 		super.read(nbt, clientPacket);
 		BlockPos pos = BlockPos.of(nbt.getLong("Pos"));
-		BlockState state = NbtUtils.readBlockState(this.getWorld().holderLookup(Registries.BLOCK), nbt.getCompound("State"));
+		BlockState state = NbtUtils.readBlockState(this.blockEntity.blockHolderGetter(), nbt.getCompound("State"));
 		CompoundTag tag = nbt.contains("Data") ? nbt.getCompound("Data") : null;
 		this.containedBlockInfo = Optional.of(new StructureBlockInfo(pos, state, tag));
 	}

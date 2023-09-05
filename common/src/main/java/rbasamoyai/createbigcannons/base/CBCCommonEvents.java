@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialPropertiesHandler;
@@ -65,7 +66,11 @@ public class CBCCommonEvents {
 		CreateBigCannons.BLOCK_DAMAGE.playerLogout(player);
 	}
 
-	public static void onPlayerBreakBlock(BlockState state, LevelAccessor level, BlockPos pos, Player player) {
+	public static boolean onPlayerBreakBlock(BlockState state, LevelAccessor level, BlockPos pos, Player player) {
+		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
+			return true;
+		}
+
 		if (AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
 			BlockPos drillPos = destroyPoleContraption(CBCBlocks.CANNON_DRILL_BIT.get(), CBCBlocks.CANNON_DRILL.get(),
 				CannonDrillBlock.maxAllowedDrillLength(), state, level, pos, player);
@@ -75,7 +80,7 @@ public class CBCCommonEvents {
 				if (level.getBlockEntity(pos) instanceof AbstractCannonDrillBlockEntity drill) {
 					drill.onLengthBroken();
 				}
-				return;
+				return false;
 			}
 			BlockPos builderPos = destroyPoleContraption(CBCBlocks.CANNON_BUILDER_HEAD.get(),
 				CBCBlocks.CANNON_BUILDER.get(),
@@ -88,6 +93,7 @@ public class CBCCommonEvents {
 				}
 			}
 		}
+		return false;
 	}
 
 	private static BlockPos destroyPoleContraption(Block head, Block base, int limit, BlockState state,

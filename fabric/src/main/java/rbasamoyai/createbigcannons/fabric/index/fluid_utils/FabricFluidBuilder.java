@@ -19,7 +19,6 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.Util;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -80,12 +79,12 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 
 	@Override
 	public FluidBuilder<T, P> defaultLang() {
-		return lang(f -> Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(f.getSource())), RegistrateLangProvider.toEnglishName(sourceName));
+		return lang(this::makeDescriptionId, RegistrateLangProvider.toEnglishName(sourceName));
 	}
 
 	@Override
 	public FluidBuilder<T, P> lang(String name) {
-		return lang(f -> Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(f.getSource())), name);
+		return lang(this::makeDescriptionId, name);
 	}
 
 	@Override
