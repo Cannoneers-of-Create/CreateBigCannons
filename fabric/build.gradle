@@ -69,7 +69,8 @@ dependencies {
         default: println("Unknown recipe viewer specified: ${fabric_recipe_viewer}. Must be JEI, REI, EMI, or disabled.")
     }
     // if you would like to add integration with them, uncomment them here.
-	modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+	//modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+	modCompileOnlyApi "curse.maven:jei-238222:${jei_fabric_file}"
 	modCompileOnly("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
 //    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}")
 //    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}")
