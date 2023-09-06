@@ -11,7 +11,6 @@ import org.lwjgl.glfw.GLFW;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import net.minecraft.client.Camera;
@@ -181,19 +180,17 @@ public class CBCClientCommon {
 
 	public static boolean onPlayerRenderPre(PoseStack stack, AbstractClientPlayer player, PlayerRenderer renderer, float partialTicks) {
 		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-			float yaw = -Mth.lerp(partialTicks, player.yRotO, player.getYRot()) + 90;
+			float yaw = (-Mth.lerp(partialTicks, player.yRotO, player.getYRot()) + 90) * Mth.DEG_TO_RAD;
 			yaw = modifyPlayerRenderYaw(yaw, partialTicks, player, poce);
 			float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
 			pitch = modifyPlayerRenderPitch(pitch, partialTicks, player, poce);
 			float roll = 0;
 			roll = modifyPlayerRenderRoll(roll, partialTicks, player, poce);
 
-			Quaternion q = Quaternion.ONE.copy();
-			q.mul(Vector3f.ZP.rotationDegrees(roll));
-			q.mul(Vector3f.YP.rotationDegrees(yaw));
-			q.mul(Vector3f.XP.rotationDegrees(pitch));
-
-			stack.mulPose(q);
+			Vector3f pitchVec = new Vector3f(Mth.sin(yaw), 0, Mth.cos(yaw));
+			Vector3f rollVec = new Vector3f(Mth.sin(yaw + Mth.HALF_PI), 0, Mth.cos(yaw + Mth.HALF_PI));
+			stack.mulPose(pitchVec.rotationDegrees(pitch));
+			stack.mulPose(rollVec.rotationDegrees(roll));
 			stack.translate(0, -1.25, 0);
 		}
 		return false;
