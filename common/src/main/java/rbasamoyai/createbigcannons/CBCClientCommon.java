@@ -181,16 +181,27 @@ public class CBCClientCommon {
 
 	public static boolean onPlayerRenderPre(PoseStack stack, AbstractClientPlayer player, PlayerRenderer renderer, float partialTicks) {
 		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-			float yr = (-Mth.lerp(partialTicks, player.yRotO, player.getYRot()) + 90) * Mth.DEG_TO_RAD;
-			Vector3f vec3 = new Vector3f(Mth.sin(yr), 0, Mth.cos(yr));
-			float xr = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
-			Quaternion q = vec3.rotationDegrees(xr);
+			float yaw = -Mth.lerp(partialTicks, player.yRotO, player.getYRot()) + 90;
+			yaw = modifyPlayerRenderYaw(yaw);
+			float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+			pitch = modifyPlayerRenderPitch(pitch);
+			float roll = 0;
+			roll = modifyPlayerRenderRoll(roll);
+
+			Quaternion q = Quaternion.ONE.copy();
+			q.mul(Vector3f.ZP.rotationDegrees(roll));
+			q.mul(Vector3f.YP.rotationDegrees(yaw));
+			q.mul(Vector3f.XP.rotationDegrees(pitch));
 
 			stack.mulPose(q);
 			stack.translate(0, -1.25, 0);
 		}
 		return false;
 	}
+
+	public static float modifyPlayerRenderYaw(float yaw) { return yaw; }
+	public static float modifyPlayerRenderPitch(float pitch) { return pitch; }
+	public static float modifyPlayerRenderRoll(float roll) { return roll; }
 
 	private static boolean isControllingCannon(Entity entity) {
 		Entity vehicle = entity.getVehicle();
@@ -239,8 +250,6 @@ public class CBCClientCommon {
 			localPos = localPos.add(upNormal.scale(0.35));
 			Vec3 camPos = poce.toGlobalVector(localPos, (float) partialTicks);
 			camAccess.callSetPosition(camPos);
-		} else {
-			camAccess.callSetPosition(camera.getPosition()); // Left in for Landlord compat
 		}
 
 		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
