@@ -331,7 +331,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 			if (foundProjectile != null) {
 				++barrelTravelled;
-				if (cannonInfo.state.is(CBCTags.BlockCBC.REDUCES_SPREAD)) {
+				if (cannonInfo.state.is(CBCTags.CBCBlockTags.REDUCES_SPREAD)) {
 					spread = Math.max(spread - spreadSub, 0.0f);
 				}
 

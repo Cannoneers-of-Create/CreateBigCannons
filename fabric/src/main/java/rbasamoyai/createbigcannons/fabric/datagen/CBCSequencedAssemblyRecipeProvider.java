@@ -9,7 +9,7 @@ import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeB
 import com.simibubi.create.foundation.data.recipe.CreateRecipeProvider;
 
 import net.minecraft.data.DataGenerator;
-import rbasamoyai.createbigcannons.CBCTags;
+import rbasamoyai.createbigcannons.CBCTags.CBCItemTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
@@ -31,7 +31,7 @@ public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 	FILLING_AUTOCANNON_CARTRIDGE = create("filling_autocannon_cartridge", b -> b.require(CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.get())
 		.transitionTo(CBCItems.PARTIALLY_FILLED_AUTOCANNON_CARTRIDGE.get())
 		.loops(3)
-		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCTags.ItemCBC.GUNPOWDER))
+		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCItemTags.GUNPOWDER))
 		.addOutput(CBCItems.FILLED_AUTOCANNON_CARTRIDGE.get(), 1)),
 
 	PRESSING_AUTOCANNON_CARTRIDGE = create("pressing_autocannon_cartridge", b -> b.require(CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get())
@@ -43,8 +43,8 @@ public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 	ASSEMBLING_MACHINE_GUN_ROUND = create("assembling_machine_gun_round", b -> b.require(CBCItems.EMPTY_MACHINE_GUN_ROUND.get())
 		.transitionTo(CBCItems.PARTIALLY_ASSEMBLED_MACHINE_GUN_ROUND.get())
 		.loops(1)
-		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCTags.ItemCBC.GUNPOWDER))
-		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCTags.ItemCBC.NUGGET_COPPER))
+		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCItemTags.GUNPOWDER))
+		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCItemTags.NUGGET_COPPER))
 		.addOutput(CBCItems.MACHINE_GUN_ROUND.get(), 1)),
 
 	RECOIL_SPRING = create("recoil_spring", b -> b.require(CBCItems.SPRING_WIRE.get())
@@ -53,19 +53,19 @@ public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 		.addStep(PressingRecipe::new, rb -> rb)
 		.addOutput(CBCItems.RECOIL_SPRING.get(), 1)),
 
-	CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR = create("cast_iron_autocannon_breech_extractor", b -> b.require(CBCTags.ItemCBC.INGOT_CAST_IRON)
+	CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR = create("cast_iron_autocannon_breech_extractor", b -> b.require(CBCItemTags.INGOT_CAST_IRON)
 		.transitionTo(CBCItems.PARTIAL_CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR.get())
 		.loops(3)
 		.addStep(CuttingRecipe::new, rb -> rb)
 		.addOutput(CBCItems.CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR.get(), 1)),
 
-	BRONZE_AUTOCANNON_BREECH_EXTRACTOR = create("bronze_autocannon_breech_extractor", b -> b.require(CBCTags.ItemCBC.INGOT_BRONZE)
+	BRONZE_AUTOCANNON_BREECH_EXTRACTOR = create("bronze_autocannon_breech_extractor", b -> b.require(CBCItemTags.INGOT_BRONZE)
 		.transitionTo(CBCItems.PARTIAL_BRONZE_AUTOCANNON_BREECH_EXTRACTOR.get())
 		.loops(3)
 		.addStep(CuttingRecipe::new, rb -> rb)
 		.addOutput(CBCItems.BRONZE_AUTOCANNON_BREECH_EXTRACTOR.get(), 1)),
 
-	STEEL_AUTOCANNON_BREECH_EXTRACTOR = create("steel_autocannon_breech_extractor", b -> b.require(CBCTags.ItemCBC.INGOT_STEEL)
+	STEEL_AUTOCANNON_BREECH_EXTRACTOR = create("steel_autocannon_breech_extractor", b -> b.require(CBCItemTags.INGOT_STEEL)
 		.transitionTo(CBCItems.PARTIAL_STEEL_AUTOCANNON_BREECH_EXTRACTOR.get())
 		.loops(3)
 		.addStep(CuttingRecipe::new, rb -> rb)

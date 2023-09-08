@@ -291,7 +291,7 @@ public class CBCBlocks {
 		.block("built_up_steel_cannon_barrel", p -> BigCannonTubeBlock.small(p, CBCBigCannonMaterials.STEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.builtUpCannonBarrel("steel", true))
-		.tag(CBCTags.BlockCBC.REDUCES_SPREAD)
+		.tag(CBCTags.CBCBlockTags.REDUCES_SPREAD)
 		.lang("Built-Up Steel Cannon Barrel")
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.BUILT_UP_STEEL_CANNON_BARREL)))
@@ -311,7 +311,7 @@ public class CBCBlocks {
 		.block("built_up_steel_cannon_chamber", p -> BigCannonTubeBlock.large(p, CBCBigCannonMaterials.STEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.builtUpCannonChamber("steel", true))
-		.tag(CBCTags.BlockCBC.THICK_TUBING)
+		.tag(CBCTags.CBCBlockTags.THICK_TUBING)
 		.lang("Built-Up Steel Cannon Chamber")
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.BUILT_UP_STEEL_CANNON_CHAMBER)))
@@ -322,7 +322,7 @@ public class CBCBlocks {
 		.block("thick_steel_cannon_chamber", p -> BigCannonTubeBlock.veryLarge(p, CBCBigCannonMaterials.STEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.thickCannonChamber("steel", true))
-		.tag(CBCTags.BlockCBC.THICK_TUBING)
+		.tag(CBCTags.CBCBlockTags.THICK_TUBING)
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.THICK_STEEL_CANNON_CHAMBER)))
 		.item(BigCannonBlockItem::new).build()
@@ -487,7 +487,7 @@ public class CBCBlocks {
 		.block("built_up_nethersteel_cannon_barrel", p -> BigCannonTubeBlock.small(p, CBCBigCannonMaterials.NETHERSTEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.builtUpCannonBarrel("nethersteel", true))
-		.tag(CBCTags.BlockCBC.REDUCES_SPREAD)
+		.tag(CBCTags.CBCBlockTags.REDUCES_SPREAD)
 		.lang("Built-Up Nethersteel Cannon Barrel")
 		.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.BUILT_UP_NETHERSTEEL_CANNON_BARREL)))
@@ -507,7 +507,7 @@ public class CBCBlocks {
 		.block("built_up_nethersteel_cannon_chamber", p -> BigCannonTubeBlock.large(p, CBCBigCannonMaterials.NETHERSTEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.builtUpCannonChamber("nethersteel", true))
-		.tag(CBCTags.BlockCBC.THICK_TUBING)
+		.tag(CBCTags.CBCBlockTags.THICK_TUBING)
 		.lang("Built-Up Nethersteel Cannon Chamber")
 		.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.BUILT_UP_NETHERSTEEL_CANNON_CHAMBER)))
@@ -518,7 +518,7 @@ public class CBCBlocks {
 		.block("thick_nethersteel_cannon_chamber", p -> BigCannonTubeBlock.veryLarge(p, CBCBigCannonMaterials.NETHERSTEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.thickCannonChamber("nethersteel", true))
-		.tag(CBCTags.BlockCBC.THICK_TUBING)
+		.tag(CBCTags.CBCBlockTags.THICK_TUBING)
 		.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.THICK_NETHERSTEEL_CANNON_CHAMBER)))
 		.item(BigCannonBlockItem::new).build()
@@ -914,7 +914,7 @@ public class CBCBlocks {
 		.tag(BlockTags.NEEDS_STONE_TOOL)
 		.lang("Block of Cast Iron")
 		.item()
-		.tag(CBCTags.ItemCBC.BLOCK_CAST_IRON)
+		.tag(CBCTags.CBCItemTags.BLOCK_CAST_IRON)
 		.build()
 		.register();
 
@@ -1127,7 +1127,7 @@ public class CBCBlocks {
 			.properties(p -> p.requiresCorrectToolForDrops())
 			.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 			.tag(BlockTags.NEEDS_IRON_TOOL);
-		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) : transform;
+		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 
 	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> logCannonBlock() {
@@ -1139,8 +1139,8 @@ public class CBCBlocks {
 			.properties(p -> p.strength(2.0f))
 			.properties(p -> p.sound(SoundType.WOOD))
 			.tag(BlockTags.MINEABLE_WITH_AXE)
-			.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH);
-		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) : transform;
+			.tag(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH);
+		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 
 	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> strongCannonBlock() {
@@ -1154,7 +1154,7 @@ public class CBCBlocks {
 			.properties(p -> p.requiresCorrectToolForDrops())
 			.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 			.tag(BlockTags.NEEDS_DIAMOND_TOOL);
-		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) : transform;
+		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 
 	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> shell(MaterialColor color) {
