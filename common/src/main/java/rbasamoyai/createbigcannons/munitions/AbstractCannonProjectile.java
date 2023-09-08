@@ -255,14 +255,14 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 	public static boolean isDeflector(BlockState state) {
 		return state.is(CBCTags.CBCBlockTags.DEFLECTS_SHOTS);
-//		if (state.is(CBCTags.BlockCBC.DOESNT_DEFLECT_SHOTS)) return false;
+//		if (state.is(CBCTags.CBCBlockTags.DOESNT_DEFLECT_SHOTS)) return false;
 //		Material material = state.getMaterial();
 //		return material == Material.METAL || material == Material.HEAVY_METAL;
 	}
 
 	public static boolean isBounceableOffOf(BlockState state) {
 		return state.is(CBCTags.CBCBlockTags.BOUNCES_SHOTS);
-//		if (state.is(CBCTags.BlockCBC.DOESNT_BOUNCE_SHOTS)) return false;
+//		if (state.is(CBCTags.CBCBlockTags.DOESNT_BOUNCE_SHOTS)) return false;
 //		Material material = state.getMaterial();
 //		return material.isSolidBlocking() && material.getPushReaction() != PushReaction.DESTROY;
 	}

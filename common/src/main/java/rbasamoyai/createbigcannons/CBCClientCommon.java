@@ -184,7 +184,7 @@ public class CBCClientCommon {
 			float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
 
 			Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
-			stack.mulPose(pitchVec.rotationDegrees(pitch));
+			stack.mulPose(new Quaternionf(new AxisAngle4f(pitch, pitchVec)));
 			stack.translate(0, -1.25, 0);
 		}
 	}

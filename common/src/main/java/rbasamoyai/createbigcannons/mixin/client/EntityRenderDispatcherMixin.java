@@ -2,13 +2,13 @@ package rbasamoyai.createbigcannons.mixin.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
-
 import net.minecraft.client.renderer.MultiBufferSource;
 
 import net.minecraft.util.Mth;
 
+import org.joml.AxisAngle4f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -34,14 +34,12 @@ public class EntityRenderDispatcherMixin {
 													  float partialTicks, PoseStack matrixStack, MultiBufferSource buffer,
 													  int packedLight, CallbackInfo ci) {
 		if (entity.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(entity) != null) {
-			float yr = (-Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) + 90) * Mth.DEG_TO_RAD;
-			Vector3f vec3 = new Vector3f(Mth.sin(yr), 0, Mth.cos(yr));
-			float xr = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
-			Quaternion q = vec3.rotationDegrees(xr);
-			q.conj();
+			float yaw = 90 - Mth.lerp(partialTicks, entity.yRotO, entity.getYRot());
+			float pitch = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
 
+			Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
 			matrixStack.translate(0, 1.25, 0);
-			matrixStack.mulPose(q);
+			matrixStack.mulPose(new Quaternionf(new AxisAngle4f(pitch, pitchVec)).conjugate());
 		}
 	}
 
