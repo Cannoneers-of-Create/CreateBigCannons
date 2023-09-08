@@ -121,7 +121,7 @@ public class CBCItems {
 
 	CONGEALED_NITRO = REGISTRATE.item("congealed_nitro", Item::new).register(),
 	HARDENED_NITRO = REGISTRATE.item("hardened_nitro", Item::new).register(),
-	NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.ItemCBC.NITROPOWDER).register(),
+	NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.CBCItemTags.NITROPOWDER).register(),
 
 	EMPTY_MACHINE_GUN_ROUND = REGISTRATE.item("empty_machine_gun_round", Item::new).register(),
 

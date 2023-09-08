@@ -254,15 +254,15 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	protected boolean canBounceOffOf(BlockState state) { return isBounceableOffOf(state); }
 
 	public static boolean isDeflector(BlockState state) {
-		return state.is(CBCTags.BlockCBC.DEFLECTS_SHOTS);
-//		if (state.is(CBCTags.BlockCBC.DOESNT_DEFLECT_SHOTS)) return false;
+		return state.is(CBCTags.CBCBlockTags.DEFLECTS_SHOTS);
+//		if (state.is(CBCTags.CBCBlockTags.DOESNT_DEFLECT_SHOTS)) return false;
 //		Material material = state.getMaterial();
 //		return material == Material.METAL || material == Material.HEAVY_METAL;
 	}
 
 	public static boolean isBounceableOffOf(BlockState state) {
-		return state.is(CBCTags.BlockCBC.BOUNCES_SHOTS);
-//		if (state.is(CBCTags.BlockCBC.DOESNT_BOUNCE_SHOTS)) return false;
+		return state.is(CBCTags.CBCBlockTags.BOUNCES_SHOTS);
+//		if (state.is(CBCTags.CBCBlockTags.DOESNT_BOUNCE_SHOTS)) return false;
 //		Material material = state.getMaterial();
 //		return material.isSolidBlocking() && material.getPushReaction() != PushReaction.DESTROY;
 	}

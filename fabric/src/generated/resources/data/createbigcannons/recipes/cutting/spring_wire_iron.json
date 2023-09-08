@@ -2,7 +2,7 @@
   "type": "create:cutting",
   "ingredients": [
     {
-      "tag": "c:plates/iron"
+      "tag": "createbigcannons:sheet_iron"
     }
   ],
   "results": [

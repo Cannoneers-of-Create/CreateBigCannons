@@ -182,7 +182,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 				if (recipe != null) {
 					this.currentRecipe = recipe;
 					return false;
-				} else if (!latheBlockInfo.state().is(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) {
+				} else if (!latheBlockInfo.state().is(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH)) {
 					return true;
 				}
 			}
@@ -316,7 +316,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 
 			DrillBoringBlockRecipe candidate = getBlockRecipe(latheBlockInfo.state(), facing);
 			if (candidate == null) {
-				if (latheBlockInfo.state().is(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) continue;
+				if (latheBlockInfo.state().is(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH)) continue;
 				this.stopBoringState();
 				this.simulateStop();
 				return true;
