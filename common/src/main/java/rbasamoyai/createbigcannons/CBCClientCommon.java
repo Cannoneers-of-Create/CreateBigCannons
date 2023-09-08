@@ -180,12 +180,12 @@ public class CBCClientCommon {
 
 	public static void onPlayerRenderPre(PoseStack stack, LivingEntity player, float partialTicks) {
 		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-			float yr = (-Mth.lerp(partialTicks, player.yRotO, player.getYRot()) + 90) * Mth.DEG_TO_RAD;
-			Vector3f vec3 = new Vector3f(Mth.sin(yr), 0, Mth.cos(yr));
-			float xr = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
-			Quaternionf q = new Quaternionf(new AxisAngle4f(Mth.DEG_TO_RAD * xr, vec3));
+			float yaw = 90 - Mth.lerp(partialTicks, player.yRotO, player.getYRot());
+			float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
 
-			stack.mulPose(q);
+			Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
+			stack.mulPose(pitchVec.rotationDegrees(pitch));
+			stack.translate(0, -1.25, 0);
 		}
 	}
 
@@ -236,8 +236,6 @@ public class CBCClientCommon {
 			localPos = localPos.add(upNormal.scale(0.35));
 			Vec3 camPos = poce.toGlobalVector(localPos, (float) partialTicks);
 			camAccess.callSetPosition(camPos);
-		} else {
-			camAccess.callSetPosition(camera.getPosition().add(poce.applyRotation(upNormal.scale(1.25), (float) partialTicks)));
 		}
 
 		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);

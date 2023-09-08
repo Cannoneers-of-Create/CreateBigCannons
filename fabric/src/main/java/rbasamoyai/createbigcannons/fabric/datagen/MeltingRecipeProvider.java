@@ -28,64 +28,64 @@ public class MeltingRecipeProvider extends ProcessingRecipeGen {
 	GeneratedRecipe
 
 		MELT_CAST_IRON_BLOCK = create(CreateBigCannons.resource("melt_cast_iron_block"), b -> b
-		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.ItemCBC.BLOCK_CAST_IRON))
-		.require(CBCTags.ItemCBC.BLOCK_CAST_IRON)
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.BLOCK_CAST_IRON))
+		.require(CBCTags.CBCItemTags.BLOCK_CAST_IRON)
 		.duration(1620)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_CAST_IRON.get().getSource(), 810 * CBCDatagenCommon.FLUID_MULTIPLIER)),
 
 	MELT_CAST_IRON_INGOT = create(CreateBigCannons.resource("melt_cast_iron_ingot"), b -> b
-		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.ItemCBC.INGOT_CAST_IRON))
-		.require(CBCTags.ItemCBC.INGOT_CAST_IRON)
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.INGOT_CAST_IRON))
+		.require(CBCTags.CBCItemTags.INGOT_CAST_IRON)
 		.duration(180)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_CAST_IRON.get().getSource(), 90 * CBCDatagenCommon.FLUID_MULTIPLIER)),
 
 	MELT_CAST_IRON_NUGGET = create(CreateBigCannons.resource("melt_cast_iron_nugget"), b -> b
-		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.ItemCBC.NUGGET_CAST_IRON))
-		.require(CBCTags.ItemCBC.NUGGET_CAST_IRON)
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.NUGGET_CAST_IRON))
+		.require(CBCTags.CBCItemTags.NUGGET_CAST_IRON)
 		.duration(20)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_CAST_IRON.get().getSource(), 10 * CBCDatagenCommon.FLUID_MULTIPLIER)),
 
 	MELT_BRONZE_BLOCK = create(CreateBigCannons.resource("melt_bronze_block"), b -> b
-		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.ItemCBC.BLOCK_BRONZE))
-		.require(CBCTags.ItemCBC.BLOCK_BRONZE)
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.BLOCK_BRONZE))
+		.require(CBCTags.CBCItemTags.BLOCK_BRONZE)
 		.duration(1620)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_BRONZE.get().getSource(), 810 * CBCDatagenCommon.FLUID_MULTIPLIER)),
 
 	MELT_BRONZE_INGOT = create(CreateBigCannons.resource("melt_bronze_ingot"), b -> b
-		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.ItemCBC.INGOT_BRONZE))
-		.require(CBCTags.ItemCBC.INGOT_BRONZE)
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.INGOT_BRONZE))
+		.require(CBCTags.CBCItemTags.INGOT_BRONZE)
 		.duration(180)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_BRONZE.get().getSource(), 90 * CBCDatagenCommon.FLUID_MULTIPLIER)),
 
 	MELT_BRONZE_NUGGET = create(CreateBigCannons.resource("melt_bronze_nugget"), b -> b
-		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.ItemCBC.NUGGET_BRONZE))
-		.require(CBCTags.ItemCBC.NUGGET_BRONZE)
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.NUGGET_BRONZE))
+		.require(CBCTags.CBCItemTags.NUGGET_BRONZE)
 		.duration(20)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_BRONZE.get().getSource(), 10 * CBCDatagenCommon.FLUID_MULTIPLIER)),
 
 	MELT_STEEL_BLOCK = create(CreateBigCannons.resource("melt_steel_block"), b -> b
-		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.ItemCBC.BLOCK_STEEL))
-		.require(CBCTags.ItemCBC.BLOCK_STEEL)
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.BLOCK_STEEL))
+		.require(CBCTags.CBCItemTags.BLOCK_STEEL)
 		.duration(1620)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_STEEL.get().getSource(), 810 * CBCDatagenCommon.FLUID_MULTIPLIER)),
 
 	MELT_STEEL_INGOT = create(CreateBigCannons.resource("melt_steel_ingot"), b -> b
-		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.ItemCBC.INGOT_STEEL))
-		.require(CBCTags.ItemCBC.INGOT_STEEL)
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.INGOT_STEEL))
+		.require(CBCTags.CBCItemTags.INGOT_STEEL)
 		.duration(180)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_STEEL.get().getSource(), 90 * CBCDatagenCommon.FLUID_MULTIPLIER)),
 
 	MELT_STEEL_NUGGET = create(CreateBigCannons.resource("melt_steel_nugget"), b -> b
-		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.ItemCBC.NUGGET_STEEL))
-		.require(CBCTags.ItemCBC.NUGGET_STEEL)
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.NUGGET_STEEL))
+		.require(CBCTags.CBCItemTags.NUGGET_STEEL)
 		.duration(20)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_STEEL.get().getSource(), 10 * CBCDatagenCommon.FLUID_MULTIPLIER)),

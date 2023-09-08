@@ -170,7 +170,7 @@ public class CBCCommonEvents {
 		ItemStack containerItem = container.getItem(0);
 		ItemStack deployerItem = container.getItem(1);
 
-		if (CBCBlocks.BIG_CARTRIDGE.isIn(containerItem) && deployerItem.is(CBCTags.ItemCBC.NITROPOWDER)) {
+		if (CBCBlocks.BIG_CARTRIDGE.isIn(containerItem) && deployerItem.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 			int power = BigCartridgeBlockItem.getPower(containerItem);
 			if (power < CBCConfigs.SERVER.munitions.maxBigCartridgePower.get()) {
 				cons.accept(() -> Optional.of(new BigCartridgeFillingDeployerRecipe(power, power + 1)), 25);

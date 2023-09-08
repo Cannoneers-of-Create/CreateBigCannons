@@ -1,14 +1,16 @@
 package rbasamoyai.createbigcannons.fabric.datagen;
 
 import com.simibubi.create.AllRecipeTypes;
-import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
+import rbasamoyai.createbigcannons.CBCTags.CBCItemTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -26,13 +28,14 @@ public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 
 	GeneratedRecipe
 
-		SPRING_WIRE_IRON = springWire("iron", 1),
-		SPRING_WIRE_STEEL = springWire("steel", 3),
+		SPRING_WIRE_IRON = springWire("iron", CBCItemTags.SHEET_IRON, 1),
+		SPRING_WIRE_STEEL = springWire("steel", CBCItemTags.SHEET_STEEL, 3),
 
-	AUTOCANNON_CARTRIDGE_SHEET_IRON = autocannonCartridgeSheet("iron", 1),
-		AUTOCANNON_CARTRIDGE_SHEET_COPPER = autocannonCartridgeSheet("copper", 1),
-		AUTOCANNON_CARTRIDGE_SHEET_BRASS = autocannonCartridgeSheet("brass", 4),
-		AUTOCANNON_CARTRIDGE_SHEET_GOLD = create(CreateBigCannons.resource("autocannon_cartridge_sheet_gold"), b -> b.require(AllTags.forgeItemTag("plates/gold"))
+	AUTOCANNON_CARTRIDGE_SHEET_IRON = autocannonCartridgeSheet("iron", CBCItemTags.SHEET_IRON, 1),
+		AUTOCANNON_CARTRIDGE_SHEET_COPPER = autocannonCartridgeSheet("copper", CBCItemTags.SHEET_COPPER, 1),
+		AUTOCANNON_CARTRIDGE_SHEET_BRASS = autocannonCartridgeSheet("brass", CBCItemTags.SHEET_BRASS, 4),
+		AUTOCANNON_CARTRIDGE_SHEET_GOLD = create(CreateBigCannons.resource("autocannon_cartridge_sheet_gold"), b -> b
+			.require(CBCItemTags.SHEET_GOLD)
 			.output(CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get())
 			.output(0.125f, CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get(), 1)
 			.output(0.125f, CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get(), 1)),
@@ -52,13 +55,13 @@ public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 		AUTOCANNON_RECOIL_SPRING_CAST_MOULD = castMould(CBCBlocks.AUTOCANNON_RECOIL_SPRING_CAST_MOULD.get()),
 		AUTOCANNON_BREECH_CAST_MOULD = castMould(CBCBlocks.AUTOCANNON_BREECH_CAST_MOULD.get());
 
-	private GeneratedRecipe springWire(String metal, int count) {
-		return create(CreateBigCannons.resource("spring_wire_" + metal), b -> b.require(AllTags.forgeItemTag("plates/" + metal))
+	private GeneratedRecipe springWire(String metal, TagKey<Item> tag, int count) {
+		return create(CreateBigCannons.resource("spring_wire_" + metal), b -> b.require(tag)
 			.output(CBCItems.SPRING_WIRE.get(), count));
 	}
 
-	private GeneratedRecipe autocannonCartridgeSheet(String metal, int count) {
-		return create(CreateBigCannons.resource("autocannon_cartridge_sheet_" + metal), b -> b.require(AllTags.forgeItemTag("plates/" + metal))
+	private GeneratedRecipe autocannonCartridgeSheet(String metal, TagKey<Item> tag, int count) {
+		return create(CreateBigCannons.resource("autocannon_cartridge_sheet_" + metal), b -> b.require(tag)
 			.output(CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get(), count));
 	}
 

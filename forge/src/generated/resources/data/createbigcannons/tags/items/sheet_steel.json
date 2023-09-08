@@ -1,15 +1,15 @@
 {
   "values": [
     {
-      "id": "#forge:ingots/brass",
+      "id": "#forge:plates/steel",
       "required": false
     },
     {
-      "id": "#c:ingots/brass",
+      "id": "#c:plates/steel",
       "required": false
     },
     {
-      "id": "#c:brass_ingots",
+      "id": "#c:steel_plates",
       "required": false
     }
   ]

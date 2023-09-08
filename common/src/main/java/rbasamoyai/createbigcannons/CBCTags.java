@@ -23,7 +23,7 @@ import net.minecraft.world.level.material.Fluid;
 
 public class CBCTags {
 
-	public static class BlockCBC {
+	public static class CBCBlockTags {
 		public static final TagKey<Block>
 			THICK_TUBING = makeTag("thick_tubing"),
 			REDUCES_SPREAD = makeTag("reduces_spread"),
@@ -93,7 +93,7 @@ public class CBCTags {
 		}
 	}
 
-	public static class ItemCBC {
+	public static class CBCItemTags {
 		public static final TagKey<Item>
 			IMPACT_FUZE_HEAD = makeTag("impact_fuze_head"),
 			NUGGET_CAST_IRON = commonTag("nugget_cast_iron", "nuggets/cast_iron", "cast_iron_nuggets"),
@@ -119,6 +119,7 @@ public class CBCTags {
 			INGOT_BRASS = commonTag("ingot_brass", "ingots/brass", "brass_ingots"),
 			SHEET_COPPER = commonTag("sheet_copper", "plates/copper", "copper_plates"),
 			SHEET_GOLD = commonTag("sheet_copper", "plates/gold", "gold_plates"),
+			SHEET_STEEL = commonTag("sheet_steel", "plates/steel", "steel_plates"),
 			DUST_GLOWSTONE = commonTag("dust_glowstone", "dusts/glowstone", "glowstone_dusts"),
 			INEXPENSIVE_BIG_CARTRIDGE_SHEET = makeTag("inexpensive_big_cartridge_sheet"),
 			NITROPOWDER = makeTag("nitropowder");
@@ -191,7 +192,7 @@ public class CBCTags {
 		}
 	}
 
-	public static class FluidCBC {
+	public static class CBCFluidTags {
 		public static final TagKey<Fluid>
 			MOLTEN_METAL = makeTag("molten_metal");
 
@@ -203,8 +204,8 @@ public class CBCTags {
 	}
 
 	public static void register() {
-		BlockCBC.sectionRegister();
-		ItemCBC.sectionRegister();
+		CBCBlockTags.sectionRegister();
+		CBCItemTags.sectionRegister();
 	}
 
 	private static ResourceLocation alloyed(String path) { return new ResourceLocation("alloyed", path); }

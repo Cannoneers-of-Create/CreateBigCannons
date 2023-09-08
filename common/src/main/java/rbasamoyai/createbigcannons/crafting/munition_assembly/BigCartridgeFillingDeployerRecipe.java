@@ -32,7 +32,7 @@ public class BigCartridgeFillingDeployerRecipe implements Recipe<Container> {
 	public boolean matches(Container container, Level level) {
 		ItemStack cartridge = container.getItem(0);
 		return CBCBlocks.BIG_CARTRIDGE.isIn(cartridge) && BigCartridgeBlockItem.getPower(cartridge) == this.startPower
-			&& container.getItem(1).is(CBCTags.ItemCBC.NITROPOWDER);
+			&& container.getItem(1).is(CBCTags.CBCItemTags.NITROPOWDER);
 	}
 
 	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
