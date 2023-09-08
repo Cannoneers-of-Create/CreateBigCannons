@@ -34,7 +34,7 @@ public interface IBigCannonBlockEntity extends ICannonBlockEntity<BigCannonBehav
 	}
 
 	default boolean blockCanHandle(StructureBlockInfo data) {
-		return data.state.is(CBCTags.BlockCBC.THICK_TUBING);
+		return data.state.is(CBCTags.CBCBlockTags.THICK_TUBING);
 	}
 
 }

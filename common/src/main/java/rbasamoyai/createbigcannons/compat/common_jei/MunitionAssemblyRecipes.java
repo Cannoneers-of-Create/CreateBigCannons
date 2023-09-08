@@ -112,7 +112,7 @@ public class MunitionAssemblyRecipes {
 		String group = CreateBigCannons.MOD_ID + ".big_cartridge_filling";
 		ResourceLocation id = CreateBigCannons.resource(group + "." + CBCBlocks.BIG_CARTRIDGE.get().getDescriptionId());
 		NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(BigCartridgeBlockItem.getWithPower(0)),
-				Ingredient.of(CBCTags.ItemCBC.NITROPOWDER));
+				Ingredient.of(CBCTags.CBCItemTags.NITROPOWDER));
 		return List.of(new ShapelessRecipe(id, group, BigCartridgeBlockItem.getWithPower(1), inputs));
 	}
 
@@ -231,7 +231,7 @@ public class MunitionAssemblyRecipes {
 
 		return List.of(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id)
 			.require(Ingredient.of(BigCartridgeBlockItem.getWithPower(0)))
-			.require(CBCTags.ItemCBC.NITROPOWDER)
+			.require(CBCTags.CBCItemTags.NITROPOWDER)
 			.output(result)
 			.build());
 	}

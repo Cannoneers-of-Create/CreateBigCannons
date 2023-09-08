@@ -34,9 +34,9 @@ public class CBCCompactingRecipeProvider extends ProcessingRecipeGen {
 
 	GeneratedRecipe
 
-		PACKED_GUNPOWDER = create(CreateBigCannons.resource("packed_gunpowder"), b -> b.require(CBCTags.ItemCBC.GUNPOWDER)
-		.require(CBCTags.ItemCBC.GUNPOWDER)
-		.require(CBCTags.ItemCBC.GUNPOWDER)
+		PACKED_GUNPOWDER = create(CreateBigCannons.resource("packed_gunpowder"), b -> b.require(CBCTags.CBCItemTags.GUNPOWDER)
+		.require(CBCTags.CBCItemTags.GUNPOWDER)
+		.require(CBCTags.CBCItemTags.GUNPOWDER)
 		.output(CBCItems.PACKED_GUNPOWDER.get())),
 
 	FORGE_CAST_IRON_INGOT = create(CreateBigCannons.resource("forge_cast_iron_ingot"), b -> b.require(AllTags.forgeFluidTag("molten_cast_iron"), IndexPlatform.convertFluid(90))
@@ -46,12 +46,12 @@ public class CBCCompactingRecipeProvider extends ProcessingRecipeGen {
 		.output(CBCItems.CAST_IRON_NUGGET.get())),
 
 	FORGE_BRONZE_INGOT = create(CreateBigCannons.resource("forge_bronze_ingot"), b -> b
-		.withCondition(tagPopulated(CBCTags.ItemCBC.INGOT_BRONZE))
+		.withCondition(tagPopulated(CBCTags.CBCItemTags.INGOT_BRONZE))
 		.require(AllTags.forgeFluidTag("molten_bronze"), IndexPlatform.convertFluid(90))
 		.output(1, new ResourceLocation("alloyed", "bronze_ingot"), 1)),
 
 	FORGE_STEEL_INGOT = create(CreateBigCannons.resource("forge_steel_ingot"), b -> b
-		.withCondition(tagPopulated(CBCTags.ItemCBC.INGOT_STEEL))
+		.withCondition(tagPopulated(CBCTags.CBCItemTags.INGOT_STEEL))
 		.require(AllTags.forgeFluidTag("molten_steel"), IndexPlatform.convertFluid(90))
 		.output(1, new ResourceLocation("alloyed", "steel_ingot"), 1)),
 

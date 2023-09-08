@@ -1,18 +1,18 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "tag": "createbigcannons:ingot_brass"
+    },
+    "I": {
+      "tag": "createbigcannons:sheet_iron"
+    }
+  },
   "pattern": [
     " B ",
     "I I",
     "III"
   ],
-  "key": {
-    "I": {
-      "tag": "createbigcannons:sheet_iron"
-    },
-    "B": {
-      "tag": "createbigcannons:ingot_brass"
-    }
-  },
   "result": {
     "item": "createbigcannons:autocannon_ammo_container"
   }
