@@ -28,7 +28,7 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 			if (CBCBlocks.BIG_CARTRIDGE.is(stack.getItem())) {
 				if (!cartridge.isEmpty()) return false;
 				cartridge = stack;
-			} else if (stack.is(CBCTags.ItemCBC.NITROPOWDER)) {
+			} else if (stack.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 				++powderCount;
 			} else {
 				return false;
@@ -48,7 +48,7 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 			if (CBCBlocks.BIG_CARTRIDGE.is(stack.getItem())) {
 				if (!cartridge.isEmpty()) return ItemStack.EMPTY;
 				cartridge = stack;
-			} else if (stack.is(CBCTags.ItemCBC.NITROPOWDER)) {
+			} else if (stack.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 				++powderCount;
 			} else {
 				return ItemStack.EMPTY;
@@ -77,7 +77,7 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 			ItemStack stack = container.getItem(i);
 			if (CBCBlocks.BIG_CARTRIDGE.is(stack.getItem())) {
 				oldCartridge = stack;
-			} else if (stack.is(CBCTags.ItemCBC.NITROPOWDER)) {
+			} else if (stack.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 				++powderCount;
 			}
 		}
@@ -90,7 +90,7 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 
 		for (int i = 0; i < sz; ++i) {
 			ItemStack stack = container.getItem(i);
-			if (stack.is(CBCTags.ItemCBC.NITROPOWDER)) {
+			if (stack.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 				if (consumed > 0) --consumed;
 				else stack.grow(1);
 			}

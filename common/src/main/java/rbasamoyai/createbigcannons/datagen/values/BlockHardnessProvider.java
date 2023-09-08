@@ -43,13 +43,13 @@ public class BlockHardnessProvider extends CBCDataProvider {
 	}
 
 	protected void addEntries() {
-		setHardness(CBCTags.BlockCBC.OBSIDIAN, 12);
+		setHardness(CBCTags.CBCBlockTags.OBSIDIAN, 12);
 		setHardness(Blocks.CRYING_OBSIDIAN, 12);
 		setHardness(BlockTags.ANVIL, 6);
 		setHardness(AllBlocks.ITEM_VAULT.get(), 6);
-		setHardness(CBCTags.BlockCBC.SANDSTONE, 4.5);
-		setHardness(CBCTags.BlockCBC.CONCRETE, 4.5);
-		setHardness(CBCTags.BlockCBC.NETHERRACK, 3);
+		setHardness(CBCTags.CBCBlockTags.SANDSTONE, 4.5);
+		setHardness(CBCTags.CBCBlockTags.CONCRETE, 4.5);
+		setHardness(CBCTags.CBCBlockTags.NETHERRACK, 3);
 		setHardness(BlockTags.TERRACOTTA, 4.5);
 	}
 
