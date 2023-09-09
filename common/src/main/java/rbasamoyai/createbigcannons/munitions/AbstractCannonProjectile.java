@@ -368,7 +368,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	}
 
 	public DamageSource indirectArtilleryFire() {
-		return new CannonDamageSource(this.level().damageSources().damageTypes.getHolderOrThrow(CBCDamageTypes.CANNON_PROJECTILE), this);
+		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.CANNON_PROJECTILE), this);
 	}
 
 }

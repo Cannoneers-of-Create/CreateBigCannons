@@ -158,7 +158,7 @@ public class Shrapnel extends AbstractHurtingProjectile {
 	}
 
 	protected DamageSource getDamageSource() {
-		return new CannonDamageSource(this.level().damageSources().damageTypes.getHolderOrThrow(CBCDamageTypes.SHRAPNEL), this);
+		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.SHRAPNEL), this);
 	}
 
 	@Override
