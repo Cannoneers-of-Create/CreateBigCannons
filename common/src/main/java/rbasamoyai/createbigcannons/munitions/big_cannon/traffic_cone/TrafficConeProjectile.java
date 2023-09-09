@@ -25,7 +25,7 @@ public class TrafficConeProjectile extends AbstractBigCannonProjectile {
 
 	@Override
 	protected DamageSource getEntityDamage(Entity entity) {
-		return new CannonDamageSource(this.level().damageSources().damageTypes.getHolderOrThrow(CBCDamageTypes.TRAFFIC_CONE), this);
+		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.TRAFFIC_CONE), this);
 	}
 
 }
