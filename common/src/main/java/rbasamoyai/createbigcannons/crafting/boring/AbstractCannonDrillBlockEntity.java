@@ -72,23 +72,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 	protected FailureReason failureReason = FailureReason.NONE;
 	private DrillBoringBlockRecipe currentRecipe;
 
-	private static final int SYNC_RATE = 8;
-	protected boolean queuedSync;
-	protected int syncCooldown;
-
 	protected AbstractCannonDrillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-	}
-
-	@Override
-	public void sendData() {
-		if (this.syncCooldown > 0) {
-			this.queuedSync = true;
-			return;
-		}
-		super.sendData();
-		this.queuedSync = false;
-		this.syncCooldown = SYNC_RATE;
 	}
 
 	@Override
@@ -213,15 +198,12 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		if (!this.level.isClientSide && this.running && this.movedContraption != null && this.offset + this.getMovementSpeed() >= this.getExtensionRange()) {
 			this.collideWithContraptionToBore(null, false);
 		}
-
 		super.tick();
+	}
 
-		if (this.syncCooldown > 0) {
-			this.syncCooldown--;
-			if (this.syncCooldown == 0 && this.queuedSync) {
-				this.sendData();
-			}
-		}
+	@Override
+	public void lazyTick() {
+		if (!this.level.isClientSide) this.sendData();
 	}
 
 	@Override
