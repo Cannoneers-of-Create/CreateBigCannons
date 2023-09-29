@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.crafting.incomplete;
 import java.util.List;
 
 import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.foundation.utility.Iterate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,7 +17,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.cannons.IncompleteItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
+import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
@@ -44,6 +48,7 @@ public class IncompleteAutocannonBlockEntity extends AutocannonBlockEntity imple
 		if (!this.level.isClientSide) {
 			BlockState state = this.getBlockState();
 			Direction dir = state.getValue(BlockStateProperties.FACING);
+			AutocannonMaterial material = ((AutocannonBlock) state.getBlock()).getAutocannonMaterialInLevel(this.level, state, this.worldPosition);
 			DrillBoringBlockRecipe recipe = AbstractCannonDrillBlockEntity.getBlockRecipe(state, dir);
 			CompoundTag loadTag = this.saveWithFullMetadata();
 			if (recipe != null) {
@@ -55,10 +60,23 @@ public class IncompleteAutocannonBlockEntity extends AutocannonBlockEntity imple
 			} else {
 				return InteractionResult.PASS;
 			}
-			loadTag.putBoolean("JustBored", true);
 			this.setRemoved();
 			BlockEntity newBE = this.level.getBlockEntity(this.worldPosition);
 			if (newBE != null) newBE.load(loadTag);
+
+			for (Direction dir1 : Iterate.directions) {
+				if (!this.cannonBehavior().isConnectedTo(dir1)) continue;
+				BlockPos pos1 = this.worldPosition.relative(dir1);
+				BlockState state1 = this.level.getBlockState(pos1);
+				BlockEntity be1 = this.level.getBlockEntity(pos1);
+				if (state1.getBlock() instanceof AutocannonBlock cBlock1
+					&& cBlock1.getAutocannonMaterialInLevel(this.level, state1, pos1) == material
+					&& cBlock1.canConnectToSide(this.level, state1, pos1, dir1.getOpposite())
+					&& be1 instanceof IAutocannonBlockEntity cbe1) {
+					cbe1.cannonBehavior().setConnectedFace(dir1.getOpposite(), true);
+					be1.setChanged();
+				}
+			}
 		}
 		return InteractionResult.sidedSuccess(this.level.isClientSide);
 	}
