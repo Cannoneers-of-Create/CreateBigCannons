@@ -9,6 +9,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -54,9 +56,11 @@ public class IncompleteAutocannonBlockEntity extends AutocannonBlockEntity imple
 			if (recipe != null) {
 				BlockState newState = recipe.getResultState(state);
 				this.level.setBlock(this.worldPosition, newState, 11);
+				this.level.playSound(null, this.worldPosition, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0f, 1.0f);
 			} else if (state.getBlock() instanceof IncompleteWithItemsCannonBlock incomplete) {
 				BlockState newState = incomplete.getCompleteBlockState(state);
 				this.level.setBlock(this.worldPosition, newState, 11);
+				this.level.playSound(null, this.worldPosition, SoundEvents.NETHERITE_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
 			} else {
 				return InteractionResult.PASS;
 			}
