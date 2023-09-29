@@ -5,10 +5,11 @@ Changelog
 
 Create patch E is now supported.
 
-Added:
-- Added autocannon boring to cannon crafting wand
 Changes:
 - New projectile textures courtesy of Milkyfur
+ - Updated attributions
 - Increased data sync rate for cannon drill to avoid laggy motion
 Fixes:
+- Fixed cannon crafting wand not boring autocannons
+- Fixed cannon crafting wand not properly connecting cannons
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly
