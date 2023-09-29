@@ -3,6 +3,8 @@ Changelog
 "a love supreme"
 - John Coltrane, A Love Supreme (1965)
 
+Added:
+- Added autocannon boring to cannon crafting wand
 Changes:
 - Increased data sync rate for cannon drill to avoid laggy motion
 Fixes:
