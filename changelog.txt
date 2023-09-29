@@ -5,6 +5,8 @@ Changelog
 
 Create patch E is now supported.
 
+Added:
+- Added sound effects to cannon casting wand
 Changes:
 - New projectile textures courtesy of Milkyfur
  - Updated attributions
