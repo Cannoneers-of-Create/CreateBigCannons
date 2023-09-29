@@ -3,6 +3,8 @@ Changelog
 "a love supreme"
 - John Coltrane, A Love Supreme (1965)
 
+Create patch E is now supported.
+
 Added:
 - Added autocannon boring to cannon crafting wand
 Changes:
