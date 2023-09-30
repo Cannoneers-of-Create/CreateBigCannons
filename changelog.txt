@@ -7,6 +7,7 @@ Create patch E is now supported.
 
 Added:
 - Added sound effects to cannon casting wand
+- Added tooltip for invalid cannon cast recipes
 Changes:
 - New projectile textures courtesy of Milkyfur
  - Updated attributions
@@ -15,4 +16,5 @@ Fixes:
 - Fixed cannon crafting wand not boring autocannons
 - Fixed cannon crafting wand not properly connecting cannons
 - Fixed cannons moving in irregular fashion on cannon carriage
+- Fixed cannon cast getting stuck when encountering invalid recipes
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly
