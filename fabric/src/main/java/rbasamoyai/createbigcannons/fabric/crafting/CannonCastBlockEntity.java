@@ -115,6 +115,11 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	}
 
 	@Override
+	protected net.minecraft.world.level.material.Fluid getFluid() {
+		return this.fluid.getFluid().getFluid();
+	}
+
+	@Override
 	protected void addStructureCapacityToController(AbstractCannonCastBlockEntity controller) {
 		if (controller instanceof CannonCastBlockEntity cController) {
 			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.castShape.fluidSize());
