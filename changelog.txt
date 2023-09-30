@@ -14,4 +14,5 @@ Changes:
 Fixes:
 - Fixed cannon crafting wand not boring autocannons
 - Fixed cannon crafting wand not properly connecting cannons
+- Fixed cannons moving in irregular fashion on cannon carriage
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly

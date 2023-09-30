@@ -61,4 +61,13 @@ public class CBCClientHandlers {
 		entity.setOnGround(pkt.onGround());
 	}
 
+	public static void syncPreciseRotation(ClientboundPreciseRotationSyncPacket pkt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null) return;
+		Entity entity = mc.level.getEntity(pkt.entityId());
+		if (entity == null) return;
+
+		entity.lerpTo(entity.getX(), entity.getY(), entity.getZ(), pkt.yRot(), pkt.xRot(), 3, false);
+	}
+
 }
