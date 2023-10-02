@@ -17,4 +17,5 @@ Fixes:
 - Fixed cannon crafting wand not properly connecting cannons
 - Fixed cannons moving in irregular fashion on cannon carriage
 - Fixed cannon cast getting stuck when encountering invalid recipes
+- Fixed big cannon layer crashing game when placed
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly

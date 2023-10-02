@@ -55,6 +55,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBigCannonBlockEntity, WandActionable {
 
@@ -122,8 +123,10 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 			}
 		}
 
-		if (this.clockStack.processedBy == FanProcessing.Type.BLASTING) {
-			this.clockStack.processedBy = FanProcessing.Type.NONE;
+		// TODO: remove when updated to 0.5.1.e
+		//if (this.clockStack.processedBy == FanProcessing.Type.BLASTING) {
+		//	this.clockStack.processedBy = FanProcessing.Type.NONE;
+		if (IndexPlatform.layeredCannonClockStackCheck(this.clockStack)) {
 			++this.completionProgress;
 			this.sendData();
 			int cap = CBCConfigs.SERVER.crafting.builtUpCannonHeatingTime.get();

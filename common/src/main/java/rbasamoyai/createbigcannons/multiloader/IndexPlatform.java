@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.multiloader;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -41,6 +42,9 @@ import java.util.function.Supplier;
 public class IndexPlatform {
 
 	@ExpectPlatform public static boolean isFakePlayer(Player player) { throw new AssertionError(); }
+
+	// TODO: remove when updated to 0.5.1.e
+	@ExpectPlatform public static boolean layeredCannonClockStackCheck(TransportedItemStack stack) { throw new AssertionError(); }
 
 	@ExpectPlatform
 	public static AbstractCannonDrillBlockEntity makeDrill(BlockEntityType<?> type, BlockPos pos, BlockState state) {
