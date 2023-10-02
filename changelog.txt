@@ -18,4 +18,5 @@ Fixes:
 - Fixed cannons moving in irregular fashion on cannon carriage
 - Fixed cannon cast getting stuck when encountering invalid recipes
 - Fixed big cannon layer crashing game when placed
+- Fixed cannon carriage spawning ghost blocks
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly

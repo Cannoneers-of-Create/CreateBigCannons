@@ -310,18 +310,18 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			return player.startRiding(this) ? InteractionResult.CONSUME : InteractionResult.PASS;
 		}
 		if (AllItems.WRENCH.isIn(stack)) {
-			if (!this.level.isClientSide) this.disassemble();
+			if (!this.level.isClientSide) {
+				this.disassemble();
+				Direction dir = this.getDirection();
+				BlockPos placePos = this.blockPosition();
 
-			Direction dir = this.getDirection();
-			BlockPos placePos = this.blockPosition();
-
-			if (this.level.getBlockState(placePos).getDestroySpeed(this.level, placePos) != -1) {
-				this.level.destroyBlock(placePos, true);
-				this.level.setBlock(placePos, CBCBlocks.CANNON_CARRIAGE.getDefaultState()
-					.setValue(CannonCarriageBlock.FACING, dir)
-					.setValue(CannonCarriageBlock.SADDLED, this.isCannonRider()), 11);
+				if (this.level.getBlockState(placePos).getDestroySpeed(this.level, placePos) != -1) {
+					this.level.destroyBlock(placePos, true);
+					this.level.setBlock(placePos, CBCBlocks.CANNON_CARRIAGE.getDefaultState()
+						.setValue(CannonCarriageBlock.FACING, dir)
+						.setValue(CannonCarriageBlock.SADDLED, this.isCannonRider()), 11);
+				}
 			}
-
 			return InteractionResult.sidedSuccess(this.level.isClientSide);
 		}
 		if (stack.is(Items.SADDLE) && !this.isCannonRider()) {
