@@ -9,7 +9,7 @@ Added:
 - Added sound effects to cannon casting wand
 - Added tooltip for invalid cannon cast recipes
 Changes:
-- New projectile textures courtesy of Milkyfur
+- Some new textures courtesy of Milkyfur and LopyLuna
  - Updated attributions
 - Increased data sync rate for cannon drill to avoid laggy motion
 Fixes:
