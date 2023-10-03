@@ -31,13 +31,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.PreciseProjectile;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.ritchiesprojectilelib.PreciseProjectile;
 
 public abstract class AbstractCannonProjectile extends Projectile implements PreciseProjectile {
 

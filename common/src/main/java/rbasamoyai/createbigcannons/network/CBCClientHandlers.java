@@ -50,17 +50,6 @@ public class CBCClientHandlers {
 				.append(" Please use a matching format."));
 	}
 
-	public static void syncPreciseMotion(ClientboundPreciseMotionSyncPacket pkt) {
-		Minecraft mc = Minecraft.getInstance();
-		if (mc.level == null) return;
-		Entity entity = mc.level.getEntity(pkt.entityId());
-		if (entity == null) return;
-
-		entity.lerpTo(pkt.x(), pkt.y(), pkt.z(), pkt.yRot(), pkt.xRot(), 3, false);
-		entity.setDeltaMovement(pkt.dx(), pkt.dy(), pkt.dz());
-		entity.setOnGround(pkt.onGround());
-	}
-
 	public static void syncPreciseRotation(ClientboundPreciseRotationSyncPacket pkt) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null) return;

@@ -12,6 +12,7 @@ Changes:
 - Some new textures courtesy of Milkyfur and LopyLuna
  - Updated attributions
 - Increased data sync rate for cannon drill to avoid laggy motion
+- Create Big Cannons now uses an integrated mod jar for projectile syncing
 Fixes:
 - Fixed cannon crafting wand not boring autocannons
 - Fixed cannon crafting wand not properly connecting cannons

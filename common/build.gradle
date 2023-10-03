@@ -37,5 +37,5 @@ dependencies {
     // Flywheel and Registrate must also be used carefully due to differences.
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
 
-	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-common")) { transitive = false } // Ritchie's Projectile Library
+	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-common") { transitive = false } // Ritchie's Projectile Library
 }
