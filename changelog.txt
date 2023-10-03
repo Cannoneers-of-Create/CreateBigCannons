@@ -15,6 +15,7 @@ Changes:
 - Create Big Cannons now uses an integrated mod jar for projectile syncing
 - Projectiles now chunkload
  - Can be turned off in mod config
+- Doubled power of big cartridge, powder charges
 Fixes:
 - Fixed cannon crafting wand not boring autocannons
 - Fixed cannon crafting wand not properly connecting cannons
