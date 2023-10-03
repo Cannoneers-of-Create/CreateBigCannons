@@ -129,7 +129,4 @@ public class IndexPlatform {
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { throw new AssertionError(); }
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { throw new AssertionError(); }
 
-	// TODO: remove once Fabric catches up with Forge
-	@ExpectPlatform public static float modifyRotationStateYaw(boolean flag, boolean vertRotation, float yaw) { throw new AssertionError(); }
-
 }
