@@ -13,6 +13,8 @@ Changes:
  - Updated attributions
 - Increased data sync rate for cannon drill to avoid laggy motion
 - Create Big Cannons now uses an integrated mod jar for projectile syncing
+- Projectiles now chunkload
+ - Can be turned off in mod config
 Fixes:
 - Fixed cannon crafting wand not boring autocannons
 - Fixed cannon crafting wand not properly connecting cannons

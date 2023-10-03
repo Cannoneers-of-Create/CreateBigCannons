@@ -12,6 +12,7 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat smokeShellCloudSize = f(10, 1, 20, "smokeShellCloudSize", Comments.smokeShellCloudSize);
 	public final ConfigFloat minVelocityForPenetrationBonus = f(1, 0, "minimumVelocityForPenetrationBonus", Comments.minVelocityForPenetrationBonus);
 	public final ConfigFloat penetrationBonusScale = f(0.1f, 0, "penetrationBonusScale");
+	public final ConfigBool projectilesCanChunkload = b(true, "projectilesCanChunkload");
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
 
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes");
