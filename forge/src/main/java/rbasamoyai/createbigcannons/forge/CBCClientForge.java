@@ -5,7 +5,13 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.FOVModifierEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -34,6 +40,7 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onFovModify);
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
 		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
+		forgeEventBus.addListener(CBCClientForge::onPlayerLogOut);
 	}
 
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
@@ -89,10 +96,14 @@ public class CBCClientForge {
 	}
 
 	public static void onSetupCamera(EntityViewRenderEvent.CameraSetup evt) {
-		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTicks(), evt.getYaw(), evt.getPitch(), evt.getRoll(),
+		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTicks(), evt::getYaw, evt::getPitch, evt::getRoll,
 			evt::setYaw, evt::setPitch, evt::setRoll) && evt.isCancelable()) {
 			evt.setCanceled(true);
 		}
+	}
+
+	public static void onPlayerLogOut(ClientPlayerNetworkEvent.LoggedOutEvent evt) {
+		CBCClientCommon.onPlayerLogOut(evt.getPlayer());
 	}
 
 	@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
