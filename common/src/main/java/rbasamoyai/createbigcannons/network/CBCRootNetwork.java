@@ -38,6 +38,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ClientboundBigCannonMaterialPropertiesPacket.class, ClientboundBigCannonMaterialPropertiesPacket::copyOf);
 		addMsg(id++, ClientboundBigCannonBreechStrengthPacket.class, ClientboundBigCannonBreechStrengthPacket::copyOf);
 		addMsg(id++, ClientboundPreciseRotationSyncPacket.class, ClientboundPreciseRotationSyncPacket::new);
+		addMsg(id++, ClientboundAddShakeEffectPacket.class, ClientboundAddShakeEffectPacket::new);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {

@@ -7,9 +7,8 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
 
-import javax.annotation.Nullable;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.AssemblyException;
@@ -36,20 +35,22 @@ import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
-import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
+import rbasamoyai.createbigcannons.network.ClientboundAddShakeEffectPacket;
 
 public class MountedBigCannonContraption extends AbstractMountedCannonContraption {
 
@@ -380,8 +381,17 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		this.hasFired = true;
 
+		float shakeDistance = chargesUsed * 6;
+		Vec3 plumePos = spawnPos.subtract(vec.scale(0.5));
 		for (ServerPlayer player : level.players()) {
-			level.sendParticles(player, new CannonPlumeParticleData(smokeScale * 0.5f), true, spawnPos.x, spawnPos.y, spawnPos.z, 0, vec.x, vec.y, vec.z, 1.0f);
+			level.sendParticles(player, new CannonPlumeParticleData(smokeScale * 0.25f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
+			float dist = player.distanceTo(entity);
+			if (dist < shakeDistance && shakeDistance > 0.1f) {
+				float f = 1 - dist / shakeDistance;
+				float f2 = f * f;
+				float shake = Math.min(45, shakeDistance * f2);
+				NetworkPlatform.sendToClientPlayer(new ClientboundAddShakeEffectPacket(level.random.nextInt(10000), 50, shake), player);
+			}
 		}
 		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(level, new BlockPos(spawnPos));
 	}

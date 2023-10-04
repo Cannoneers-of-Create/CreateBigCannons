@@ -8,6 +8,8 @@ Create patch E is now supported.
 Added:
 - Added sound effects to cannon casting wand
 - Added tooltip for invalid cannon cast recipes
+- Added camera shake for cannons
+ - Scale of shake configurable via "Distortion Effects" in Accessibility Settings
 Changes:
 - Some new textures courtesy of Milkyfur and LopyLuna
  - Updated attributions
@@ -16,6 +18,7 @@ Changes:
 - Projectiles now chunkload
  - Can be turned off in mod config
 - Doubled power of big cartridge, powder charges
+- Changed cannon plume profile
 Fixes:
 - Fixed cannon crafting wand not boring autocannons
 - Fixed cannon crafting wand not properly connecting cannons
