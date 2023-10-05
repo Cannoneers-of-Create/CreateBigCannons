@@ -3,7 +3,7 @@ Changelog
 "a love supreme"
 - John Coltrane, A Love Supreme (1965)
 
-Create patch E is now supported.
+Create Big Cannons now supports Patch E on Forge and Patch C on Fabric.
 
 Added:
 - Added sound effects to cannon casting wand
@@ -26,4 +26,6 @@ Fixes:
 - Fixed cannon cast getting stuck when encountering invalid recipes
 - Fixed big cannon layer crashing game when placed
 - Fixed cannon carriage spawning ghost blocks
+- Fixed big cannon layer crashing game when blasted
+[Fabric] - Fixed cannon collision
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly
