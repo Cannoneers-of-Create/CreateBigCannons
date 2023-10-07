@@ -93,7 +93,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				vel = vel.scale(this.getDrag());
 				this.setDeltaMovement(vel);
 				Vec3 position = newPos.add(vel.subtract(uel).scale(0.5));
-				if (this.level.hasChunkAt(new BlockPos(position))) this.setPos(position);
+				this.setPos(position);
 
 				ParticleOptions particle = this.getTrailParticles();
 				if (particle != null) {
@@ -107,7 +107,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				}
 			}
 
-			if (this.level instanceof ServerLevel slevel) {
+			if (this.level instanceof ServerLevel slevel && !this.isRemoved()) {
 				if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
 					ChunkPos cpos1 = new ChunkPos(this.blockPosition());
 					RitchiesProjectileLib.queueForceLoad(slevel, this, cpos1.x, cpos1.z, true);
