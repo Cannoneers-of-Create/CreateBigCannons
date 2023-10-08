@@ -72,6 +72,10 @@ public class IndexPlatformImpl {
 		return false;
 	}
 
+	public static void layeredCannonClockStackCallback(TransportedItemStack stack) {
+		stack.processedBy = AllFanProcessingTypes.NONE;
+	}
+
 	public static AbstractCannonDrillBlockEntity makeDrill(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		return new CannonDrillBlockEntity(type, pos, state);
 	}
