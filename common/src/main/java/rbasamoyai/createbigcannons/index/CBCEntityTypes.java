@@ -84,6 +84,7 @@ public class CBCEntityTypes {
 		.entity("smoke_emitter", SmokeEmitterEntity::new, MobCategory.MISC)
 		.properties(configure(c -> c.trackingRange(4)
 			.fireImmune()
+			.trackingRange(16)
 			.size(0, 0)))
 		.renderer(() -> NoopRenderer::new)
 		.register();
