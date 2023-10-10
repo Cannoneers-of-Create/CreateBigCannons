@@ -19,6 +19,7 @@ Changes:
  - Can be turned off in mod config
 - Doubled power of big cartridge, powder charges
 - Changed cannon plume profile
+- Reduced particle count of smoke shell
 Fixes:
 - Fixed cannon crafting wand not boring autocannons
 - Fixed cannon crafting wand not properly connecting cannons
@@ -27,5 +28,6 @@ Fixes:
 - Fixed big cannon layer crashing game when placed
 - Fixed cannon carriage spawning ghost blocks
 - Fixed big cannon layer crashing game when blasted
+- Fixed cannon shell smoke not displaying at far distances on client
 [Fabric] - Fixed cannon collision
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly

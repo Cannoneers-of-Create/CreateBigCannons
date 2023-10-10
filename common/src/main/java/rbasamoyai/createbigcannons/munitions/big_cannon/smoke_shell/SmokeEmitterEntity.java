@@ -54,16 +54,18 @@ public class SmokeEmitterEntity extends Entity {
 	public void tick() {
 		super.tick();
 		if (this.level.isClientSide) {
-			float size = this.getSize();
-			ParticleOptions particle = this.getParticle();
-			for (int i = 0; i < Math.ceil(size * 4); ++i) {
-				double rx = this.random.nextDouble() * size - size * 0.5f + this.getX();
-				double ry = this.random.nextDouble() * size - size * 0.5f + this.getY();
-				double rz = this.random.nextDouble() * size - size * 0.5f + this.getZ();
-				double dx = this.random.nextGaussian() * 0.05;
-				double dy = this.random.nextGaussian() * 0.02;
-				double dz = this.random.nextGaussian() * 0.05;
-				this.level.addParticle(particle, rx, ry, rz, dx, dy, dz);
+			if (this.firstTick || (this.level.getGameTime() + this.getId()) % 5 == 0) {
+				float size = this.getSize();
+				ParticleOptions particle = this.getParticle();
+				for (int i = 0; i < Math.ceil(size * 4); ++i) {
+					double rx = this.random.nextDouble() * size - size * 0.5f + this.getX();
+					double ry = this.random.nextDouble() * size - size * 0.5f + this.getY();
+					double rz = this.random.nextDouble() * size - size * 0.5f + this.getZ();
+					double dx = this.random.nextGaussian() * 0.05;
+					double dy = this.random.nextGaussian() * 0.02;
+					double dz = this.random.nextGaussian() * 0.05;
+					this.level.addParticle(particle, true, rx, ry, rz, dx, dy, dz);
+				}
 			}
 		} else {
 			--this.duration;
