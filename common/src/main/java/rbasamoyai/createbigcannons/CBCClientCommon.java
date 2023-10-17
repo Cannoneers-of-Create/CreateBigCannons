@@ -268,7 +268,7 @@ public class CBCClientCommon {
 			dp += shakeEffect.magnitude * f1 * shakeEffect.pitchNoise.getValue(0, f2, false);
 			dr += shakeEffect.magnitude * f1 * shakeEffect.rollNoise.getValue(0, f2, false);
 		}
-		float s = mc.options.screenEffectScale;
+		float s = mc.options.screenEffectScale().get().floatValue();
 		setYaw.accept(yaw.get() + dy * s);
 		setPitch.accept(pitch.get() + dp * s);
 		setRoll.accept(roll.get() + dr * s);
