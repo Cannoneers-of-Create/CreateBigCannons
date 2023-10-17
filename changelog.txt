@@ -1,0 +1,36 @@
+Changelog
+
+"a love supreme"
+- John Coltrane, A Love Supreme (1965)
+
+Create Big Cannons now supports Patch E on Forge and Patch C on Fabric.
+
+Added:
+- Added sound effects to cannon casting wand
+- Added tooltip for invalid cannon cast recipes
+- Added camera shake for cannons
+ - Scale of shake configurable via "Distortion Effects" in Accessibility Settings
+Changes:
+- Some new textures courtesy of Milkyfur and LopyLuna
+ - Updated attributions
+- Increased data sync rate for cannon drill to avoid laggy motion
+- Create Big Cannons now uses an integrated mod jar for projectile syncing
+- Projectiles now chunkload
+ - Can be turned off in mod config
+- Doubled power of big cartridge, powder charges
+- Changed cannon plume profile
+- Reduced particle count of smoke shell
+- Changed big cannon munitions system to be more robust and allow for multiblock munitions
+Fixes:
+- Fixed cannon crafting wand not boring autocannons
+- Fixed cannon crafting wand not properly connecting cannons
+- Fixed cannons moving in irregular fashion on cannon carriage
+- Fixed cannon cast getting stuck when encountering invalid recipes
+- Fixed big cannon layer crashing game when placed
+- Fixed cannon carriage spawning ghost blocks
+- Fixed big cannon layer crashing game when blasted
+- Fixed cannon shell smoke not displaying at far distances on client
+- Fixed quickfiring breech not displaying correctly when opening time is instant
+- Fixed culling on cannon carriage
+[Fabric] - Fixed cannon collision
+[Fabric 1.20.1] - Fixed cannon carriage model not loading properly

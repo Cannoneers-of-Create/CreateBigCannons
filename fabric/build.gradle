@@ -42,6 +42,12 @@ repositories {
     maven { url = "https://maven.cafeteria.dev/releases" } // Fake Player API
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
     maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
+	maven { // Ritchie's Projectile Library
+		url = "https://maven.realrobotix.me/master/"
+		content {
+			includeGroup("com.rbasamoyai")
+		}
+	}
 }
 
 dependencies {
@@ -77,6 +83,8 @@ dependencies {
 //    modCompileOnly("dev.emi:emi:${emi_version}")
 
     modLocalRuntime("curse.maven:spark-361579:${spark_fabric_file}") // Spark
+
+	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-fabric")) { transitive = false } // Ritchie's Projectile Library
 }
 
 processResources {

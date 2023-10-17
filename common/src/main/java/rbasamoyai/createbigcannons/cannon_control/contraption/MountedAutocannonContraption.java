@@ -341,9 +341,10 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			spring.handleFiring();
 		NetworkPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
 
+		Vec3 particleVel = vec1.scale(1.25);
 		for (ServerPlayer player : level.players()) {
 			if (entity.getControllingPassenger() == player) continue;
-			level.sendParticles(player, new CannonPlumeParticleData(0.1f), true, particlePos.x, particlePos.y, particlePos.z, 0, vec1.x, vec1.y, vec1.z, 1.0f);
+			level.sendParticles(player, new CannonPlumeParticleData(0.1f), true, particlePos.x, particlePos.y, particlePos.z, 0, particleVel.x, particleVel.y, particleVel.z, 1.0f);
 		}
 		CBCSoundEvents.FIRE_AUTOCANNON.playOnServer(level, new BlockPos(spawnPos));
 	}

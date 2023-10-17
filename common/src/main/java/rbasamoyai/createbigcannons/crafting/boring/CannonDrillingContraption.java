@@ -126,9 +126,9 @@ public class CannonDrillingContraption extends PoleContraption {
 		BlockEntity blockEntity = level.getBlockEntity(levelPos);
 		if (!(blockEntity instanceof AbstractCannonDrillBlockEntity drill) || blockEntity.isRemoved()) return true;
 
-		if (pos.equals(levelPos)) {
-			if (!AllBlocks.PISTON_EXTENSION_POLE.has(state) && CBCBlocks.CANNON_DRILL.has(drillState)) {
-				level.setBlock(levelPos, drillState.setValue(CannonDrillBlock.STATE, MechanicalPistonBlock.PistonState.EXTENDED), 3 | 16);
+		if (pos.equals(levelPos) && CBCBlocks.CANNON_DRILL.has(drillState)) {
+			if (!AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
+				level.setBlock(levelPos, drillState.setValue(CannonDrillBlock.STATE, MechanicalPistonBlock.PistonState.RETRACTED), 3 | 16);
 			}
 			return true;
 		}
