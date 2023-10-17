@@ -1,118 +1,118 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "8.1.1"
+	id "com.github.johnrengelman.shadow" version "8.1.1"
 }
 
 architectury {
-    platformSetupLoomIde()
-    forge()
+	platformSetupLoomIde()
+	forge()
 }
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
+	accessWidenerPath = project(":common").loom.accessWidenerPath
 
-    forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-    }
+	forge {
+		convertAccessWideners = true
+		extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+	}
 }
 
 configurations {
-    common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+	common
+	shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+	compileClasspath.extendsFrom common
+	runtimeClasspath.extendsFrom common
+	developmentForge.extendsFrom common
 }
 
 repositories {
-    // mavens for Forge-exclusives
-    maven { url = "https://maven.theillusivec4.top/" } // Curios
-    maven { // Create Forge and Registrate Forge
-        url = "https://maven.tterrag.com/"
-        content {
-            includeGroup("com.tterrag.registrate")
-            includeGroup("com.simibubi.create")
-        }
-    }
+	// mavens for Forge-exclusives
+	maven { url = "https://maven.theillusivec4.top/" } // Curios
+	maven { // Create Forge and Registrate Forge
+		url = "https://maven.tterrag.com/"
+		content {
+			includeGroup("com.tterrag.registrate")
+			includeGroup("com.simibubi.create")
+		}
+	}
 }
 
 dependencies {
-    forge("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
-    common(project(path: ":common", configuration: "namedElements")) { transitive = false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+	forge("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
+	common(project(path: ":common", configuration: "namedElements")) { transitive = false }
+	shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-    // Create and its dependencies
-    modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
-    modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
+	// Create and its dependencies
+	modImplementation("com.simibubi.create:create-${minecraft_version}:${create_forge_version}:slim") { transitive = false }
+	modImplementation("com.tterrag.registrate:Registrate:${registrate_forge_version}")
 	// Please replace 1.20 with ${minecraft_version} at a later date
-    modImplementation("com.jozufozu.flywheel:flywheel-forge-1.20:${flywheel_forge_version}")
+	modImplementation("com.jozufozu.flywheel:flywheel-forge-1.20.1:${flywheel_forge_version}")
 
-    // Development QOL
-    modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
+	// Development QOL
+	modLocalRuntime("mezz.jei:jei-${minecraft_version}-forge:${jei_version}") { transitive = false }
 
-    // if you would like to add integration with JEI, uncomment this line.
-    modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+	// if you would like to add integration with JEI, uncomment this line.
+	modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
 
-    modImplementation("curse.maven:spark-361579:${spark_forge_file}") // Spark
+	modImplementation("curse.maven:spark-361579:${spark_forge_file}") // Spark
 }
 
 processResources {
-    // set up properties for filling into metadata
-    Map<String, String> properties = Map.of(
-            "version", version,
-            "forge_version", forge_version.split("\\.")[0], // only specify major version of forge
-            "minecraft_version", minecraft_version,
-            "create_version", create_forge_version.split("-")[0] // cut off build number
-    )
-    properties.forEach((k, v) -> inputs.property(k, v))
+	// set up properties for filling into metadata
+	Map<String, String> properties = Map.of(
+		"version", version as String,
+		"forge_version", forge_version.split("\\.")[0], // only specify major version of forge
+		"minecraft_version", minecraft_version,
+		"create_version", create_forge_version.split("-")[0] // cut off build number
+	)
+	properties.forEach((k, v) -> inputs.property(k, v))
 
-    filesMatching("META-INF/mods.toml") {
-        expand properties
-    }
+	filesMatching("META-INF/mods.toml") {
+		expand properties
+	}
 }
 
 loom {
-    forge {
-        mixinConfig(
-                "createbigcannons-common.mixins.json",
-                "createbigcannons.mixins.json"
-        )
-    }
+	forge {
+		mixinConfig(
+			"createbigcannons-common.mixins.json",
+			"createbigcannons.mixins.json"
+		)
+	}
 }
 
 shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
+	exclude "fabric.mod.json"
+	exclude "architectury.common.json"
 
-    configurations = [project.configurations.shadowCommon]
-    setArchiveClassifier "dev-shadow"
+	configurations = [project.configurations.shadowCommon]
+	setArchiveClassifier "dev-shadow"
 }
 
 remapJar {
-    inputFile = shadowJar.archiveFile
-    dependsOn shadowJar
-    setArchiveClassifier null
+	inputFile = shadowJar.archiveFile
+	dependsOn shadowJar
+	setArchiveClassifier null
 }
 
 jar {
-    setArchiveClassifier "dev"
+	setArchiveClassifier "dev"
 }
 
 sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
+	def commonSources = project(":common").sourcesJar
+	dependsOn commonSources
+	from commonSources.archiveFile.map { zipTree(it) }
 }
 
 components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
+	withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+		skip()
+	}
 }
 
 sourceSets.main {
-    resources { // include generated resources in resources
-        srcDir("src/generated/resources")
-        exclude("src/generated/resources/.cache")
-    }
+	resources { // include generated resources in resources
+		srcDir("src/generated/resources")
+		exclude("src/generated/resources/.cache")
+	}
 }
