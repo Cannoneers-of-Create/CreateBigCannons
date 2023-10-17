@@ -4,6 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -40,6 +41,7 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onFovModify);
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
 		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
+		forgeEventBus.addListener(CBCClientForge::onPlayerLogOut);
 	}
 
 	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
@@ -98,10 +100,14 @@ public class CBCClientForge {
 	}
 
 	public static void onSetupCamera(ViewportEvent.ComputeCameraAngles evt) {
-		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTick(), evt.getYaw(), evt.getPitch(), evt.getRoll(),
+		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTick(), evt::getYaw, evt::getPitch, evt::getRoll,
 			evt::setYaw, evt::setPitch, evt::setRoll) && evt.isCancelable()) {
 			evt.setCanceled(true);
 		}
+	}
+
+	public static void onPlayerLogOut(ClientPlayerNetworkEvent.LoggingOut evt) {
+		CBCClientCommon.onPlayerLogOut(evt.getPlayer());
 	}
 
 	@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

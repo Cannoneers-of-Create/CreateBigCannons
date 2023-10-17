@@ -6,6 +6,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
+import java.util.List;
+
 public interface BigCannonPropellantBlock extends BigCannonMunitionBlock {
 
 	float getChargePower(StructureBlockInfo data);
@@ -18,7 +20,7 @@ public interface BigCannonPropellantBlock extends BigCannonMunitionBlock {
 
 	void consumePropellant(BigCannonBehavior behavior);
 
-	default boolean isCompatibleWith(BigCannonPropellantBlock other, StructureBlockInfo data, Direction dir) { return this == other; }
+	boolean isCompatibleWith(List<StructureBlockInfo> total, StructureBlockInfo self, int index, Direction dir);
 
 	default boolean canBeIgnited(StructureBlockInfo data, Direction dir) { return true; }
 

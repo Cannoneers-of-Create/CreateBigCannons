@@ -2,8 +2,11 @@ package rbasamoyai.createbigcannons;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.lwjgl.glfw.GLFW;
 
@@ -32,6 +35,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.effects.ShakeEffect;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
@@ -53,6 +57,8 @@ public class CBCClientCommon {
 	public static final KeyMapping PITCH_MODE = IndexPlatform.createSafeKeyMapping(KEY_ROOT + ".pitch_mode", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_C);
 	public static final KeyMapping FIRE_CONTROLLED_CANNON = IndexPlatform.createSafeKeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT);
 	public static final List<KeyMapping> KEYS = new ArrayList<>();
+
+	private static final List<ShakeEffect> ACTIVE_SHAKE_EFFECTS = new LinkedList<>();
 
 	public static void onRegisterParticleFactories(Minecraft mc, ParticleEngine engine) {
 		CBCParticleTypes.registerFactories();
@@ -140,6 +146,12 @@ public class CBCClientCommon {
 
 	public static void onClientGameTick(Minecraft mc) {
 		if (mc.player == null || mc.level == null) return;
+
+		for (Iterator<ShakeEffect> iter = ACTIVE_SHAKE_EFFECTS.iterator(); iter.hasNext(); ) {
+			ShakeEffect effect = iter.next();
+			if (effect.tick()) iter.remove();
+		}
+
 		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
 			boolean isPitching = CBCClientCommon.PITCH_MODE.isDown();
@@ -217,35 +229,56 @@ public class CBCClientCommon {
 		cons.accept(CreateBigCannons.resource("item/tracer_slot"));
 	}
 
-	public static boolean onCameraSetup(Camera camera, double partialTicks, float yaw, float pitch, float roll,
+	public static boolean onCameraSetup(Camera camera, double partialTicks, Supplier<Float> yaw, Supplier<Float> pitch, Supplier<Float> roll,
 										Consumer<Float> setYaw, Consumer<Float> setPitch, Consumer<Float> setRoll) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
-		if (player == null || camera.getEntity() != player ||
-			!(player.getVehicle() instanceof PitchOrientedContraptionEntity poce) || poce.getSeatPos(player) == null)
-			return false;
 		CameraAccessor camAccess = (CameraAccessor) camera;
 
-		Direction dir = poce.getInitialOrientation();
-		Vec3 normal = new Vec3(dir.step());
-		Direction up = Direction.UP; // TODO: up and down cases
+		if (player != null && camera.getEntity() == player && player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
+			Direction dir = poce.getInitialOrientation();
+			Vec3 normal = new Vec3(dir.step());
+			Direction up = Direction.UP; // TODO: up and down cases
 
-		Vec3 upNormal = new Vec3(up.step());
-		Vec3 localPos = Vec3.atCenterOf(poce.getSeatPos(player));
-		if (mc.options.getCameraType() == CameraType.FIRST_PERSON) {
-			localPos = localPos.add(upNormal.scale(0.35));
-			Vec3 camPos = poce.toGlobalVector(localPos, (float) partialTicks);
-			camAccess.callSetPosition(camPos);
+			Vec3 upNormal = new Vec3(up.step());
+			Vec3 localPos = Vec3.atCenterOf(poce.getSeatPos(player));
+			if (mc.options.getCameraType() == CameraType.FIRST_PERSON) {
+				localPos = localPos.add(upNormal.scale(0.35));
+				Vec3 camPos = poce.toGlobalVector(localPos, (float) partialTicks);
+				camAccess.callSetPosition(camPos);
+			}
+
+			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+			boolean flag1 = mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT;
+			float sgn = flag1 ? -1 : 1;
+			float add = flag1 ? 180 : 0;
+			setYaw.accept(poce.yaw + add);
+			setPitch.accept((flag ? -poce.pitch : poce.pitch) * sgn);
+			setRoll.accept(0f);
 		}
 
-		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-		boolean flag1 = mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT;
-		float sgn = flag1 ? -1 : 1;
-		float add = flag1 ? 180 : 0;
-		setYaw.accept(poce.yaw + add);
-		setPitch.accept((flag ? -poce.pitch : poce.pitch) * sgn);
-		setRoll.accept(0f);
+		float dy = 0;
+		float dp = 0;
+		float dr = 0;
+		for (ShakeEffect shakeEffect : ACTIVE_SHAKE_EFFECTS) {
+			float f = shakeEffect.getProgressNormalized((float) partialTicks);
+			float f1 = f * f;
+			float f2 = shakeEffect.getProgress((float) partialTicks);
+			dy += shakeEffect.magnitude * f1 * shakeEffect.yawNoise.getValue(0, f2, false);
+			dp += shakeEffect.magnitude * f1 * shakeEffect.pitchNoise.getValue(0, f2, false);
+			dr += shakeEffect.magnitude * f1 * shakeEffect.rollNoise.getValue(0, f2, false);
+		}
+		float s = mc.options.screenEffectScale().get().floatValue();
+		setYaw.accept(yaw.get() + dy * s);
+		setPitch.accept(pitch.get() + dp * s);
+		setRoll.accept(roll.get() + dr * s);
 		return true;
+	}
+
+	public static void addShakeEffect(ShakeEffect effect) { ACTIVE_SHAKE_EFFECTS.add(effect); }
+
+	public static void onPlayerLogOut(LocalPlayer player) {
+		ACTIVE_SHAKE_EFFECTS.clear();
 	}
 
 }
