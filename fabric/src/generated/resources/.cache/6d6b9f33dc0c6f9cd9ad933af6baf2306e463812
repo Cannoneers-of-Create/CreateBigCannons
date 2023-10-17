@@ -1,4 +1,4 @@
-// 1.19.2	2023-09-08T18:29:45.5494833	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2023-10-17T17:38:13.4968877	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 94cfc4617ea3de3e60cec71b1437181535c502c4 assets\createbigcannons\models\block\built_up_steel_cannon_chamber.json
 fe6e01eaf074da16c3a8f3d91c7198c4b595a5be data\createbigcannons\tags\items\nugget_bronze.json
 24187d8d93679914d44542579bbe8c89b9bd265c assets\createbigcannons\blockstates\very_small_steel_cannon_layer.json
@@ -54,7 +54,7 @@ d158d01d671115e257fab5a488eff3fcaf1dceea data\createbigcannons\tags\fluids\molte
 e3a4deefb5ff37fac6508e21b94a80953f67fba7 assets\createbigcannons\models\block\incomplete_cast_iron_sliding_breech.json
 90821a52885f9974a21a8279c2daebdc29a28f56 data\createbigcannons\recipes\smoke_shell.json
 8b1a9d440c77ff85e57868af0b70ea10ddc1a720 data\createbigcannons\tags\items\gems_quartz.json
-befe40244b94a43e4f260c6aaf4df6c34e980e72 assets\createbigcannons\lang\en_us.json
+a67887c56f99aae26b98cf22bf7d0ae74dfd9a8f assets\createbigcannons\lang\en_us.json
 ce188efda2f01096283330b7bd2477de2d5a6207 data\createbigcannons\tags\blocks\thick_tubing.json
 979b7d0252d053744234f7a4fdd062330cb14046 assets\createbigcannons\models\item\nethersteel_cannon_chamber.json
 1fc2748ca32189ca33dc69bd16b9adb5bec1a80b data\createbigcannons\loot_tables\blocks\unbored_large_steel_cannon_layer.json
@@ -657,7 +657,7 @@ fabb8f3d49628422c88bb4a2d0fef10e2627e622 assets\createbigcannons\models\block\in
 ac943280e2826382e6d3fcc7f8e7272110a62c8f assets\createbigcannons\models\item\cast_iron_autocannon_breech.json
 ea92bda87eacbd38c4c6efe8715ddae09af717fe data\createbigcannons\recipes\nethersteel_ingot_from_nuggets.json
 b1ecea53f4f054c7aa04975f6c61780a76a7bb60 assets\createbigcannons\models\item\sliding_breech_cast_mould.json
-43aaa25efaef60ba3cecd433296805d2b1c9db29 assets\createbigcannons\lang\en_ud.json
+8e92b48e0cc23ce2c77e442a171e4e484244462f assets\createbigcannons\lang\en_ud.json
 489bf692ca4dbb439dd6615a70d31c678185fb24 assets\createbigcannons\blockstates\cannon_cast.json
 595d4b1a99bf0b319af989a00ff5d63b3bbaf3a5 assets\createbigcannons\blockstates\unbored_very_small_steel_cannon_layer.json
 48387cad849dedfa57d90ab53b7fc2566a1bcd71 assets\createbigcannons\blockstates\unbored_steel_autocannon_barrel.json
