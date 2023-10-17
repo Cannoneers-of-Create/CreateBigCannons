@@ -4,7 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
@@ -20,8 +20,8 @@ public record InvalidCastingError(BlockPos pos, Fluid fluid, CannonCastShape sha
 		if (error == null) return;
 		CompoundTag errorTag = new CompoundTag();
 		errorTag.put("Position", NbtUtils.writeBlockPos(error.pos));
-		errorTag.putString("Fluid", Registry.FLUID.getKey(error.fluid).toString());
-		errorTag.putString("CastShape", CBCRegistries.CANNON_CAST_SHAPES.getKey(error.shape).toString());
+		errorTag.putString("Fluid", BuiltInRegistries.FLUID.getKey(error.fluid).toString());
+		errorTag.putString("CastShape", CBCRegistries.cannonCastShapes().getKey(error.shape).toString());
 		tag.put("CastingError", errorTag);
 	}
 
@@ -32,15 +32,15 @@ public record InvalidCastingError(BlockPos pos, Fluid fluid, CannonCastShape sha
 		if (!errorTag.contains("Position", Tag.TAG_COMPOUND)) return null;
 		BlockPos pos = NbtUtils.readBlockPos(errorTag.getCompound("Position"));
 		if (!errorTag.contains("Fluid", Tag.TAG_STRING)) return null;
-		Fluid fluid = Registry.FLUID.get(new ResourceLocation(errorTag.getString("Fluid")));
+		Fluid fluid = BuiltInRegistries.FLUID.get(new ResourceLocation(errorTag.getString("Fluid")));
 		if (!errorTag.contains("CastShape", Tag.TAG_STRING)) return null;
-		CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(errorTag.getString("CastShape")));
+		CannonCastShape shape = CBCRegistries.cannonCastShapes().get(new ResourceLocation(errorTag.getString("CastShape")));
 		return new InvalidCastingError(pos, fluid, shape);
 	}
 
 	public MutableComponent getMessage() {
-		MutableComponent fluidText = Component.translatable(Util.makeDescriptionId("fluid", Registry.FLUID.getKey(this.fluid)));
-		MutableComponent shapeText = Component.translatable(Util.makeDescriptionId("cast_shape", CBCRegistries.CANNON_CAST_SHAPES.getKey(this.shape)));
+		MutableComponent fluidText = Component.translatable(Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(this.fluid)));
+		MutableComponent shapeText = Component.translatable(Util.makeDescriptionId("cast_shape", CBCRegistries.cannonCastShapes().getKey(this.shape)));
 		return Component.translatable("exception.createbigcannons.casting", this.pos.getX(), this.pos.getY(), this.pos.getZ(), fluidText, shapeText);
 	}
 

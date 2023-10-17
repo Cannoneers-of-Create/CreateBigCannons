@@ -82,7 +82,7 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	@Override
 	public boolean isCompatibleWith(List<StructureBlockInfo> total, StructureBlockInfo self, int index, Direction dir) {
 		for (StructureBlockInfo info : total) {
-			if (info.state.getBlock() != this) return false;
+			if (info.state().getBlock() != this) return false;
 		}
 		return true;
 	}

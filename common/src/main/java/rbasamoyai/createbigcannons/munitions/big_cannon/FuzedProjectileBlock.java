@@ -30,8 +30,8 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 	protected static ItemStack getFuze(List<StructureBlockInfo> blocks) {
 		if (blocks.isEmpty()) return ItemStack.EMPTY;
 		StructureBlockInfo info = blocks.get(0);
-		if (info.nbt == null) return ItemStack.EMPTY;
-		BlockEntity load = BlockEntity.loadStatic(info.pos, info.state, info.nbt);
+		if (info.nbt() == null) return ItemStack.EMPTY;
+		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt());
 		return load instanceof FuzedBlockEntity fuzed ? fuzed.getItem(0) : ItemStack.EMPTY;
 	}
 

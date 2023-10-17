@@ -42,8 +42,8 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 		projectile.setFuze(getFuze(projectileBlocks));
 		if (!projectileBlocks.isEmpty()) {
 			StructureBlockInfo info = projectileBlocks.get(0);
-			if (info.nbt != null) {
-				BlockEntity load = BlockEntity.loadStatic(info.pos, info.state, info.nbt);
+			if (info.nbt() != null) {
+				BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt());
 				if (load instanceof AbstractFluidShellBlockEntity shell) shell.setFluidShellStack(projectile);
 			}
 		}

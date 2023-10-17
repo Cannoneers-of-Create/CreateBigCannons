@@ -237,8 +237,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power", "Power");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power.value", "_%s_ / _%s_");
 
-		for (Iterator<CannonCastShape> iter = CBCRegistries.CANNON_CAST_SHAPES.iterator(); iter.hasNext(); ) {
-			ResourceLocation loc = CBCRegistries.CANNON_CAST_SHAPES.getKey(iter.next());
+		for (Iterator<CannonCastShape> iter = CBCRegistries.cannonCastShapes().iterator(); iter.hasNext(); ) {
+			ResourceLocation loc = CBCRegistries.cannonCastShapes().getKey(iter.next());
 			if (!loc.getNamespace().equals(CreateBigCannons.MOD_ID)) continue;
 			REGISTRATE.addLang("cast_shape", loc, RegistrateLangProvider.toEnglishName(loc.getPath()));
 		}
