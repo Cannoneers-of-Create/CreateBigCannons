@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
+import java.util.List;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -11,10 +13,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
 
 public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBlockEntity> {
@@ -34,10 +37,17 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 	}
 
 	@Override
-	public AbstractCannonProjectile getProjectile(Level level, BlockState state, BlockPos pos, BlockEntity blockEntity) {
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		FluidShellProjectile projectile = CBCEntityTypes.FLUID_SHELL.create(level);
-		projectile.setFuze(getFuze(blockEntity));
-		if (blockEntity instanceof AbstractFluidShellBlockEntity shell) shell.setFluidShellStack(projectile);
+		projectile.setFuze(getFuze(projectileBlocks));
+		if (!projectileBlocks.isEmpty()) {
+			StructureBlockInfo info = projectileBlocks.get(0);
+			if (info.nbt != null) {
+				BlockEntity load = BlockEntity.loadStatic(info.pos, info.state, info.nbt);
+				if (load instanceof AbstractFluidShellBlockEntity shell) shell.setFluidShellStack(projectile);
+			}
+		}
+
 		return projectile;
 	}
 

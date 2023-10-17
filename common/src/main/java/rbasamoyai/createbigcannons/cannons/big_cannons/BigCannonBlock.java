@@ -69,47 +69,46 @@ public interface BigCannonBlock {
 	}
 
 	default void onRemoveCannon(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (state.getBlock() instanceof BigCannonBlock cBlock) {
-			Direction facing = cBlock.getFacing(state);
-			BigCannonMaterial material = cBlock.getCannonMaterial();
+		if (!(state.getBlock() instanceof BigCannonBlock cBlock) || state.is(newState.getBlock())) return;
+		Direction facing = cBlock.getFacing(state);
+		BigCannonMaterial material = cBlock.getCannonMaterial();
 
-			BlockPos pos1 = pos.relative(facing);
-			BlockState state1 = level.getBlockState(pos1);
-			BlockEntity be1 = level.getBlockEntity(pos1);
+		BlockPos pos1 = pos.relative(facing);
+		BlockState state1 = level.getBlockState(pos1);
+		BlockEntity be1 = level.getBlockEntity(pos1);
 
-			if (state1.getBlock() instanceof BigCannonBlock cBlock1
-				&& cBlock1.getCannonMaterialInLevel(level, state1, pos1) == material
-				&& be1 instanceof IBigCannonBlockEntity cbe1) {
-				Direction facing1 = cBlock1.getFacing(state1);
-				if (facing == facing1.getOpposite() || cBlock1.isDoubleSidedCannon(state1) && facing.getAxis() == facing1.getAxis()) {
-					Direction opposite = facing.getOpposite();
-					cbe1.cannonBehavior().setConnectedFace(opposite, false);
-					if (cbe1 instanceof LayeredBigCannonBlockEntity layered) {
-						for (CannonCastShape layer : layered.getLayers().keySet()) {
-							layered.setLayerConnectedTo(opposite, layer, false);
-						}
+		if (state1.getBlock() instanceof BigCannonBlock cBlock1
+			&& cBlock1.getCannonMaterialInLevel(level, state1, pos1) == material
+			&& be1 instanceof IBigCannonBlockEntity cbe1) {
+			Direction facing1 = cBlock1.getFacing(state1);
+			if (facing == facing1.getOpposite() || cBlock1.isDoubleSidedCannon(state1) && facing.getAxis() == facing1.getAxis()) {
+				Direction opposite = facing.getOpposite();
+				cbe1.cannonBehavior().setConnectedFace(opposite, false);
+				if (cbe1 instanceof LayeredBigCannonBlockEntity layered) {
+					for (CannonCastShape layer : layered.getLayers().keySet()) {
+						layered.setLayerConnectedTo(opposite, layer, false);
 					}
-					be1.setChanged();
 				}
+				be1.setChanged();
 			}
-			BlockPos pos2 = pos.relative(facing.getOpposite());
-			BlockState state2 = level.getBlockState(pos2);
-			BlockEntity be2 = level.getBlockEntity(pos2);
+		}
+		BlockPos pos2 = pos.relative(facing.getOpposite());
+		BlockState state2 = level.getBlockState(pos2);
+		BlockEntity be2 = level.getBlockEntity(pos2);
 
-			if (cBlock.isDoubleSidedCannon(state)
-				&& state2.getBlock() instanceof BigCannonBlock cBlock2
-				&& cBlock2.getCannonMaterialInLevel(level, state2, pos2) == material
-				&& be2 instanceof IBigCannonBlockEntity cbe2) {
-				Direction facing2 = cBlock2.getFacing(state2);
-				if (facing == facing2 || cBlock2.isDoubleSidedCannon(state2) && facing.getAxis() == facing2.getAxis()) {
-					cbe2.cannonBehavior().setConnectedFace(facing, false);
-					if (cbe2 instanceof LayeredBigCannonBlockEntity layered) {
-						for (CannonCastShape layer : layered.getLayers().keySet()) {
-							layered.setLayerConnectedTo(facing, layer, false);
-						}
+		if (cBlock.isDoubleSidedCannon(state)
+			&& state2.getBlock() instanceof BigCannonBlock cBlock2
+			&& cBlock2.getCannonMaterialInLevel(level, state2, pos2) == material
+			&& be2 instanceof IBigCannonBlockEntity cbe2) {
+			Direction facing2 = cBlock2.getFacing(state2);
+			if (facing == facing2 || cBlock2.isDoubleSidedCannon(state2) && facing.getAxis() == facing2.getAxis()) {
+				cbe2.cannonBehavior().setConnectedFace(facing, false);
+				if (cbe2 instanceof LayeredBigCannonBlockEntity layered) {
+					for (CannonCastShape layer : layered.getLayers().keySet()) {
+						layered.setLayerConnectedTo(facing, layer, false);
 					}
-					be2.setChanged();
 				}
+				be2.setChanged();
 			}
 		}
 	}

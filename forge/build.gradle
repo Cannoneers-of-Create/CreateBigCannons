@@ -34,6 +34,12 @@ repositories {
             includeGroup("com.simibubi.create")
         }
     }
+	maven { // Ritchie's Projectile Library
+		url = "https://maven.realrobotix.me/master/"
+		content {
+			includeGroup("com.rbasamoyai")
+		}
+	}
 }
 
 dependencies {
@@ -54,6 +60,8 @@ dependencies {
     modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
 
     modImplementation("curse.maven:spark-361579:${spark_forge_file}") // Spark
+
+	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-forge")) { transitive = false } // Ritchie's Projectile Library
 }
 
 processResources {
