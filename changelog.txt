@@ -31,5 +31,6 @@ Fixes:
 - Fixed big cannon layer crashing game when blasted
 - Fixed cannon shell smoke not displaying at far distances on client
 - Fixed quickfiring breech not displaying correctly when opening time is instant
+- Fixed culling on cannon carriage
 [Fabric] - Fixed cannon collision
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly
