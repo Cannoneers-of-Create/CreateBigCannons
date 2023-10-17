@@ -20,6 +20,7 @@ Changes:
 - Doubled power of big cartridge, powder charges
 - Changed cannon plume profile
 - Reduced particle count of smoke shell
+- Changed big cannon munitions system to be more robust and allow for multiblock munitions
 Fixes:
 - Fixed cannon crafting wand not boring autocannons
 - Fixed cannon crafting wand not properly connecting cannons

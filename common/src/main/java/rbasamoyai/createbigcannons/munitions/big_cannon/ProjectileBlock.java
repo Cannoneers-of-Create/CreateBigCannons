@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
-import javax.annotation.Nullable;
-
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.utility.VoxelShaper;
@@ -19,7 +17,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -28,7 +25,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+
+import java.util.List;
 
 public abstract class ProjectileBlock extends DirectionalBlock implements IWrenchable, BigCannonMunitionBlock {
 
@@ -81,7 +79,7 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 
-	public abstract AbstractCannonProjectile getProjectile(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity blockEntity);
+	public abstract AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
 
 	@Override
 	public PushReaction getPistonPushReaction(BlockState state) {
@@ -126,5 +124,15 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 	}
 
 	public abstract EntityType<?> getAssociatedEntityType();
+
+	public boolean isValidAddition(List<StructureBlockInfo> total, StructureBlockInfo data, int index, Direction dir) {
+		return total.size() == 1 && total.get(0) == data;
+	}
+
+	public int getExpectedSize() { return 1; }
+
+	public boolean isComplete(List<StructureBlockInfo> total, Direction dir) {
+		return total.size() == this.getExpectedSize();
+	}
 
 }

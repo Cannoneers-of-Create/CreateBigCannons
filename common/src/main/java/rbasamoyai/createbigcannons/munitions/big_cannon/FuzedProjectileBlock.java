@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
+import java.util.List;
+
 import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
@@ -14,6 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
@@ -24,8 +27,12 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 		super(properties);
 	}
 
-	protected static ItemStack getFuze(BlockEntity blockEntity) {
-		return blockEntity instanceof FuzedBlockEntity fuzed ? fuzed.getItem(0) : ItemStack.EMPTY;
+	protected static ItemStack getFuze(List<StructureBlockInfo> blocks) {
+		if (blocks.isEmpty()) return ItemStack.EMPTY;
+		StructureBlockInfo info = blocks.get(0);
+		if (info.nbt == null) return ItemStack.EMPTY;
+		BlockEntity load = BlockEntity.loadStatic(info.pos, info.state, info.nbt);
+		return load instanceof FuzedBlockEntity fuzed ? fuzed.getItem(0) : ItemStack.EMPTY;
 	}
 
 	@Override
