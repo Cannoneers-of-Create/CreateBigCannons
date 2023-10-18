@@ -32,6 +32,8 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
+import java.util.List;
+
 public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock, IBE<BigCartridgeBlockEntity> {
 
 	public static final BooleanProperty FILLED = BooleanProperty.create("filled");
@@ -128,8 +130,8 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	}
 
 	@Override
-	public boolean isCompatibleWith(BigCannonPropellantBlock other, StructureBlockInfo data, Direction dir) {
-		return false;
+	public boolean isCompatibleWith(List<StructureBlockInfo> total, StructureBlockInfo self, int index, Direction dir) {
+		return total.size() == 1 && total.get(0) == self;
 	}
 
 	@Override

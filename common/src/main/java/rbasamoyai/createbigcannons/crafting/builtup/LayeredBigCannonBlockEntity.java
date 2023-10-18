@@ -16,7 +16,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.kinetics.fan.FanProcessing;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -56,6 +55,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBigCannonBlockEntity, WandActionable {
 
@@ -123,8 +123,10 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 			}
 		}
 
-		if (this.clockStack.processedBy == FanProcessing.Type.BLASTING) {
-			this.clockStack.processedBy = FanProcessing.Type.NONE;
+		// TODO: remove when updated to 0.5.1.e
+		//if (this.clockStack.processedBy == FanProcessing.Type.BLASTING) {
+		//	this.clockStack.processedBy = FanProcessing.Type.NONE;
+		if (IndexPlatform.layeredCannonClockStackCheck(this.clockStack)) {
 			++this.completionProgress;
 			this.sendData();
 			int cap = CBCConfigs.SERVER.crafting.builtUpCannonHeatingTime.get();
@@ -329,7 +331,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 	}
 
 	private void clockCallback(float maxDistanceFromCenter, Function<TransportedItemStack, TransportedItemStackHandlerBehaviour.TransportedResult> func) {
-		this.clockStack.processedBy = FanProcessing.Type.NONE;
+		IndexPlatform.layeredCannonClockStackCallback(this.clockStack);
 		func.apply(this.clockStack);
 		this.clockStack.processingTime = -1;
 	}

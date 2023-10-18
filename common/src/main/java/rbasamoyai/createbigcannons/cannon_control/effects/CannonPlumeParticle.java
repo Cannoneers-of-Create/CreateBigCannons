@@ -40,45 +40,44 @@ public class CannonPlumeParticle extends NoRenderParticle {
 
 		int count = Mth.ceil(this.scale * (this.plumesSetting == PlumeSetting.LEGACY ? 20 : 2));
 		float tScale = this.age >= this.lifetime ? 0 : 1.0f - (float) this.age / (float) this.lifetime;
+		float t1 = Mth.cos(tScale * Mth.PI);
+		t1 = t1 * t1 * Mth.sqrt(tScale) + 0.25f;
 
 		for (int i = 0; i < count; ++i) {
-			double dirScale = this.scale * (0.9d + 0.1d * this.random.nextDouble()) * tScale;
+			double dirScale = this.scale * (0.5 + 0.1d * this.random.nextDouble()) * t1;
 			Vec3 vel = this.direction.scale(dirScale)
-					.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * this.scale * 0.5f))
-					.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * this.scale * 0.5f))
-					.scale(0.4f);
+					.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * this.scale * 0.25f))
+					.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * this.scale * 0.25f))
+					.scale(1f);
 
 			if (this.plumesSetting == PlumeSetting.LEGACY) {
-				this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+				this.level.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
 			} else {
-				this.level.addParticle(new CannonSmokeParticleData(this.scale, new Vec3(0.85, 0.85, 0.85), new Vec3(0.75, 0.75, 0.75), 60), this.x, this.y, this.z, vel.x, vel.y, vel.z);
+				this.level.addParticle(new CannonSmokeParticleData(this.scale, new Vec3(0.85, 0.85, 0.85), new Vec3(0.75, 0.75, 0.75), 60),
+					true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
 			}
 		}
 
 		if (this.age == 0) {
 			if (this.plumesSetting == PlumeSetting.LEGACY) {
 				this.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, this.x, this.y, this.z, 0, 0, 0);
-				float scale1 = this.scale / 2.0f;
-				float count1 = this.scale * 50;
-				float speed = 0.5f;
-				for (int i = 0; i < count1; ++i) {
-					double rx = this.random.nextGaussian() * scale1;
-					double ry = this.random.nextGaussian() * scale1;
-					double rz = this.random.nextGaussian() * scale1;
-					double dx = this.random.nextGaussian() * speed;
-					double dy = this.random.nextGaussian() * speed;
-					double dz = this.random.nextGaussian() * speed;
-					this.level.addParticle(ParticleTypes.CLOUD, rx + this.x, ry + this.y, rz + this.z, dx, dy, dz);
-				}
 			} else {
 				float scale1 = this.scale * 0.5f;
 				for (int i = 0; i < Mth.ceil(this.scale * 2); ++i) {
-					Vec3 vel = this.direction.scale(scale1)
+					Vec3 vel = this.direction.scale(0.5)
 							.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * scale1))
 							.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * scale1))
-							.scale(0.4f);
+							.scale(1);
 					this.level.addParticle(new CannonSmokeParticleData(this.scale * 0.25f, new Vec3(1, 96 / 255.0, 0), new Vec3(0.92, 0.92, 0.92), 20), this.x, this.y, this.z, vel.x, vel.y, vel.z);
 				}
+			}
+			float scale1 = this.scale * 1.5f;
+			float count1 = this.scale * 50;
+			for (int i = 0; i < count1; ++i) {
+				Vec3 vel = this.direction.scale(0.5)
+					.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * scale1))
+					.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * scale1));
+				this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
 			}
 		}
 

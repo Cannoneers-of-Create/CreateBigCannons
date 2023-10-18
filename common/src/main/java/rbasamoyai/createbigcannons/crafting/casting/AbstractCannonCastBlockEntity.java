@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Objects;
 
 import javax.annotation.Nullable;
 
 import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.item.TooltipHelper;
+import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 
@@ -26,6 +30,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -47,7 +52,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity implements WandActionable, IMultiBlockEntityContainer {
+public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity implements WandActionable, IMultiBlockEntityContainer, IHaveHoveringInformation {
 
 	private static final Object CASTING_RECIPES_KEY = new Object();
 
@@ -62,6 +67,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	protected int startCastingTime;
 	protected Map<CannonCastShape, CannonCastingRecipe> recipes = new HashMap<>();
 	protected List<BlockState> resultPreview = new ArrayList<>();
+	protected InvalidCastingError invalidCastingError = null;
+	protected int castDelay = 0;
 	protected boolean updateRecipes;
 
 	private static final int SYNC_RATE = 8;
@@ -138,6 +145,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 				}
 				tag.put("Preview", previewList);
 			}
+			InvalidCastingError.write(tag, this.invalidCastingError);
+			tag.putInt("CastingDelay", this.castDelay);
 		} else {
 			tag.put("Controller", NbtUtils.writeBlockPos(this.controllerPos));
 		}
@@ -185,6 +194,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			for (int i = 0; i < preview.size(); ++i) {
 				this.resultPreview.add(NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), preview.getCompound(i)));
 			}
+			this.invalidCastingError = InvalidCastingError.read(tag);
+			this.castDelay = tag.getInt("CastingDelay");
 
 			this.controllerPos = null;
 		} else if (tag.contains("Controller")) {
@@ -260,30 +271,42 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 
 	protected void tickCastingBehavior() {
 		if (this.getLevel().isClientSide) return;
+		if (this.castDelay > 0) {
+			this.castDelay--;
+			this.notifyUpdate();
+		}
 		if (this.getLevel().getBlockState(this.worldPosition.below()).canBeReplaced()) {
 			this.leakContents();
-		} else {
-			if (this.canStartCasting()) {
-				if (this.updateRecipes) {
-					this.updateRecipes();
+		} else if (this.canStartCasting() && this.castDelay <= 0) {
+			if (this.updateRecipes) {
+				this.invalidCastingError = null;
+				this.updateRecipes();
+				if (this.invalidCastingError == null) {
 					int oldStartCastingTime = this.startCastingTime;
 					this.startCastingTime = this.calculateCastingTime();
 					if (this.startCastingTime != oldStartCastingTime) {
 						this.castingTime = this.startCastingTime;
 					}
 					this.updateRecipes = false;
-				}
-				this.castingTime--;
-				this.notifyUpdate();
-				if (this.castingTime <= 0) {
-					this.finishCasting();
+				} else {
+					this.startCastingTime = 1;
+					this.castingTime = 0;
+					this.castDelay = 8;
+					this.recipes.clear();
+					this.notifyUpdate();
 					return;
 				}
-			} else {
-				this.startCastingTime = 1;
-				this.castingTime = 0;
-				this.updateRecipes = true;
 			}
+			this.castingTime--;
+			this.notifyUpdate();
+			if (this.castingTime <= 0) {
+				this.finishCasting();
+				return;
+			}
+		} else {
+			this.startCastingTime = 1;
+			this.castingTime = 0;
+			this.updateRecipes = true;
 		}
 	}
 
@@ -298,15 +321,20 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			.map(CannonCastingRecipe.class::cast)
 			.filter(r -> r.matches(this.getLevel(), this.worldPosition))
 			.forEach(r -> this.recipes.put(r.shape(), r));
+		for (ListIterator<CannonCastShape> iter = this.structure.listIterator(); iter.hasNext(); ) {
+			int i = iter.nextIndex();
+			CannonCastShape shape = iter.next();
+			if (this.recipes.containsKey(shape)) continue;
+			this.invalidCastingError = new InvalidCastingError(this.worldPosition.above(i), this.getFluid(), shape);
+			return;
+		}
 	}
 
 	protected boolean matchingRecipeCache(BlockRecipe recipe) {
 		return recipe instanceof CannonCastingRecipe;
 	}
 
-	protected boolean shapeMatches(CannonCastingRecipe recipe) {
-		return this.structure.contains(recipe.shape());
-	}
+	protected abstract net.minecraft.world.level.material.Fluid getFluid();
 
 	protected int calculateCastingTime() {
 		return this.structure.stream()
@@ -597,5 +625,17 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	public abstract boolean tryEmptyItemIntoBE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
 
 	public abstract boolean tryFillItemFromBE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
+
+	@Override
+	public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		AbstractCannonCastBlockEntity controller = this.getControllerBE();
+		if (controller == null || controller.invalidCastingError == null) return false;
+		Component errorMsg = controller.invalidCastingError.getMessage();
+		List<Component> cutErrorLines = TooltipHelper.cutTextComponent(errorMsg, TooltipHelper.Palette.GRAY_AND_WHITE);
+		for (Component cline : cutErrorLines) {
+			Lang.builder().add(cline.copy()).forGoggles(tooltip);
+		}
+		return true;
+	}
 
 }

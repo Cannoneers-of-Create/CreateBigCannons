@@ -21,6 +21,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
+import java.util.List;
+
 public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock {
 
 	private static final EnumProperty<Axis> AXIS = RotatedPillarBlock.AXIS;
@@ -75,6 +77,14 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	@Override
 	public void consumePropellant(BigCannonBehavior behavior) {
 		behavior.removeBlock();
+	}
+
+	@Override
+	public boolean isCompatibleWith(List<StructureBlockInfo> total, StructureBlockInfo self, int index, Direction dir) {
+		for (StructureBlockInfo info : total) {
+			if (info.state().getBlock() != this) return false;
+		}
+		return true;
 	}
 
 	public static float getPowderChargeEquivalent(float baseStress) {

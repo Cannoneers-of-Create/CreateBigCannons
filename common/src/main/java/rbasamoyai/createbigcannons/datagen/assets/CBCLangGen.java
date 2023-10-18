@@ -1,12 +1,17 @@
 package rbasamoyai.createbigcannons.datagen.assets;
 
+import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import net.minecraft.resources.ResourceLocation;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+
+import java.util.Iterator;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
@@ -19,6 +24,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonLoaderInsideDuringAssembly", "Cannon block at [%s, %s, %s] contains a cannon loader part");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "hasIncompleteCannonBlocks", "Cannon block at [%s, %s, %s] has not finished the crafting process");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "noAutocannonBreech", "This cannon requires an autocannon breech to fire");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("casting"), "Cannon cast at [%s, %s, %s] does not have a valid recipe for fluid %s and shape %s");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("cannon_projectile"), "%s was hit with artillery fire");
@@ -230,6 +236,12 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.added_stress.value", "_%s_");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power", "Power");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power.value", "_%s_ / _%s_");
+
+		for (Iterator<CannonCastShape> iter = CBCRegistries.cannonCastShapes().iterator(); iter.hasNext(); ) {
+			ResourceLocation loc = CBCRegistries.cannonCastShapes().getKey(iter.next());
+			if (!loc.getNamespace().equals(CreateBigCannons.MOD_ID)) continue;
+			REGISTRATE.addLang("cast_shape", loc, RegistrateLangProvider.toEnglishName(loc.getPath()));
+		}
 	}
 
 	private static class TooltipBuilder {

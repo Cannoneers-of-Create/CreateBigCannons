@@ -26,7 +26,8 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 	CannonSmokeParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float size, SpriteSet sprites, float rs, float gs, float bs, float rf, float gf, float bf, int shiftTime) {
 		super(level, x, y, z, 0.1f, 0.1f, 0.1f, dx, dy, dz, 1, sprites, 0, 8, -0.05f, true);
 
-		this.friction = 0.99f;
+		this.friction = 0.95f;
+		this.gravity = 0;
 
 		this.lifetime = 200;
 

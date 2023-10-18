@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
@@ -27,7 +29,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.base.PreciseProjectile;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
@@ -35,6 +37,8 @@ import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.ritchiesprojectilelib.PreciseProjectile;
+import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
 public abstract class AbstractCannonProjectile extends Projectile implements PreciseProjectile {
 
@@ -52,7 +56,14 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 	@Override
 	public void tick() {
-		if (this.level().isClientSide || this.level().hasChunkAt(this.blockPosition())) {
+		ChunkPos cpos = new ChunkPos(this.blockPosition());
+		if (this.level().isClientSide || this.level().hasChunk(cpos.x, cpos.z)) {
+			if (this.level() instanceof ServerLevel slevel) {
+				if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+					RitchiesProjectileLib.queueForceLoad(slevel, this, cpos.x, cpos.z, false);
+				}
+			}
+
 			super.tick();
 
 			if (!this.isInGround()) this.clipAndDamage();
@@ -80,7 +91,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				vel = vel.scale(this.getDrag());
 				this.setDeltaMovement(vel);
 				Vec3 position = newPos.add(vel.subtract(uel).scale(0.5));
-				if (this.level().hasChunkAt(BlockPos.containing(position))) this.setPos(position);
+				this.setPos(position);
 
 				ParticleOptions particle = this.getTrailParticles();
 				if (particle != null) {
@@ -93,7 +104,22 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 					}
 				}
 			}
+
+			if (this.level() instanceof ServerLevel slevel && !this.isRemoved()) {
+				if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+					ChunkPos cpos1 = new ChunkPos(this.blockPosition());
+					RitchiesProjectileLib.queueForceLoad(slevel, this, cpos1.x, cpos1.z, true);
+				}
+			}
 		}
+	}
+
+	@Override
+	public void remove(RemovalReason reason) {
+		if (this.level() instanceof ServerLevel slevel) {
+			RitchiesProjectileLib.removeAllForceLoaded(slevel, this);
+		}
+		super.remove(reason);
 	}
 
 	protected void onTickRotate() {}
