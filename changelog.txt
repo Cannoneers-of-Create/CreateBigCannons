@@ -34,3 +34,6 @@ Fixes:
 - Fixed culling on cannon carriage
 [Fabric] - Fixed cannon collision
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly
+[1.20.1] - Fixed mod tab crashing game
+[1.20.1] - Fixed autocannon barrel not rendering properly
+[1.20.1] - Fixed cannon cast block not rendering properly
