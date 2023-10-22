@@ -24,7 +24,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -192,7 +191,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			this.resultPreview.clear();
 			ListTag preview = tag.getList("Preview", Tag.TAG_COMPOUND);
 			for (int i = 0; i < preview.size(); ++i) {
-				this.resultPreview.add(NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), preview.getCompound(i)));
+				this.resultPreview.add(NbtUtils.readBlockState(this.blockHolderGetter(), preview.getCompound(i)));
 			}
 			this.invalidCastingError = InvalidCastingError.read(tag);
 			this.castDelay = tag.getInt("CastingDelay");
