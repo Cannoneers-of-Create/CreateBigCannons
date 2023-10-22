@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -83,7 +82,7 @@ public class AutocannonRecoilSpringBlockEntity extends AutocannonBlockEntity imp
         for (int i = 0; i < renderedList.size(); ++i) {
             CompoundTag block = renderedList.getCompound(i);
             this.toAnimate.put(NbtUtils.readBlockPos(block.getCompound("Pos")),
-				NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), block.getCompound("Block")));
+				NbtUtils.readBlockState(this.blockHolderGetter(), block.getCompound("Block")));
         }
     }
 
