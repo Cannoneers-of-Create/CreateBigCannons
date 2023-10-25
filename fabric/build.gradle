@@ -104,21 +104,21 @@ processResources {
 }
 
 shadowJar {
-    exclude "architectury.common.json"
+	exclude "architectury.common.json"
 
-    configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+	configurations = [project.configurations.shadowCommon]
+	setArchiveClassifier "dev-shadow"
 }
 
 remapJar {
-    injectAccessWidener = true
-    inputFile = shadowJar.archiveFile
-    dependsOn shadowJar
-    classifier null
+	injectAccessWidener = true
+	input.set shadowJar.archiveFile
+	dependsOn shadowJar
+	setArchiveClassifier null
 }
 
 jar {
-    classifier "dev"
+    setArchiveClassifier "dev"
 }
 
 sourcesJar {
