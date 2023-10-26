@@ -10,6 +10,7 @@ Added:
 - Added tooltip for invalid cannon cast recipes
 - Added camera shake for cannons
  - Scale of shake configurable via "Distortion Effects" in Accessibility Settings
+- Added display link info to cannon mount and yaw controller, displaying rotation and cannon contents by default
 Changes:
 - Some new textures courtesy of Milkyfur and LopyLuna
  - Updated attributions

@@ -4,6 +4,7 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import java.util.function.Supplier;
 
+import com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -31,6 +32,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.base.CBCDefaultStress;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountDisplaySource;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
@@ -844,6 +846,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMount())
+		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
 		.register();
 
 	public static final BlockEntry<YawControllerBlock> YAW_CONTROLLER = REGISTRATE
@@ -851,6 +854,7 @@ public class CBCBlocks {
 		.properties(p -> p.color(MaterialColor.PODZOL))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.yawController())
+		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
 		.register();
 
 	public static final BlockEntry<CannonCarriageBlock> CANNON_CARRIAGE = REGISTRATE

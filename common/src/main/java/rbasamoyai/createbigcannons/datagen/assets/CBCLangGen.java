@@ -242,6 +242,14 @@ public class CBCLangGen {
 			if (!loc.getNamespace().equals(CreateBigCannons.MOD_ID)) continue;
 			REGISTRATE.addLang("cast_shape", loc, RegistrateLangProvider.toEnglishName(loc.getPath()));
 		}
+
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount_source", "From Cannon Mount");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.not_enough_space", "Not enough space ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.for_cannon_status", "for Cannon Status");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.no_cannon_present", "No Cannon present");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_pitch", "Cannon Pitch: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_yaw", "Cannon Yaw: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.degrees", "%s\u00ba");
 	}
 
 	private static class TooltipBuilder {

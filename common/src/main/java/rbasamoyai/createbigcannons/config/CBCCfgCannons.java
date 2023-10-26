@@ -24,6 +24,10 @@ public class CBCCfgCannons extends ConfigBase {
 	public final ConfigFloat carriageTurnRate = f(1f, 0.1f, 10f, "carriageTurnRate", Comments.carriageTurnRate);
 	public final ConfigBool cannonWeightAffectsCarriageSpeed = b(true, "cannonWeightAffectsCarriageSpeed");
 
+	public final ConfigGroup displayLink = group(0, "displayLink", "Display Link Info");
+	public final ConfigBool shouldDisplayCannonRotation = b(true, "shouldDisplayCannonRotation");
+	public final ConfigBool shouldDisplayContainedMunitions = b(true, "shouldDisplayContainedMunitions");
+
 	public CBCCfgCannons() {
 		super();
 	}
