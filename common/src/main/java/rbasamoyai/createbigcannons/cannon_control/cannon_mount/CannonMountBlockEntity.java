@@ -9,6 +9,7 @@ import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.redstone.displayLink.DisplayLinkBlock;
 import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
@@ -34,7 +35,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block {
+public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block, ExtendsCannonMount {
 
 	private static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -118,7 +119,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 				this.cannonPitch = Mth.clamp(newPitch % 360.0f, cd, cu);
 			}
 		}
-
 		this.applyRotation();
 	}
 
@@ -212,6 +212,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 			partialTicks = 0;
 		float aSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);
 		return Mth.lerp(partialTicks, this.cannonYaw, this.cannonYaw + aSpeed);
+	}
+
+	public float getDisplayPitch() {
+		float ret = this.getPitchOffset(0);
+		Direction dir = this.getContraptionDirection();
+		return (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X) ? ret : -ret;
 	}
 
 	public void setYaw(float yaw) {
@@ -404,6 +410,19 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	@Nullable
 	public PitchOrientedContraptionEntity getContraption() {
 		return this.mountedContraption;
+	}
+
+	@Nullable
+	@Override
+	public CannonMountBlockEntity getCannonMount() {
+		return this;
+	}
+
+	public void updateDisplays() {
+		if (!this.hasLevel() || this.level.isClientSide) return;
+		DisplayLinkBlock.sendToGatherers(this.level, this.worldPosition, (link, src) -> {
+			link.updateGatheredData();
+		}, CannonMountDisplaySource.class);
 	}
 
 }
