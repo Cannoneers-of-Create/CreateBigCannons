@@ -33,6 +33,7 @@ Fixes:
 - Fixed cannon shell smoke not displaying at far distances on client
 - Fixed quickfiring breech not displaying correctly when opening time is instant
 - Fixed culling on cannon carriage
+- Fixed layered cannon block casting progress being blocked by other processing blocks
 [Fabric] - Fixed cannon collision
 [Fabric 1.20.1] - Fixed cannon carriage model not loading properly
 [1.20.1] - Fixed mod tab crashing game
