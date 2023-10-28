@@ -115,7 +115,7 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 
 	@Override
 	public float getSpread(StructureBlockInfo data) {
-		return getPowerFromData(data) * CBCConfigs.SERVER.munitions.addedSpread.getF();
+		return getPowerFromData(data) * CBCConfigs.SERVER.munitions.bigCartridgeAddedSpread.getF();
 	}
 
 	@Override
