@@ -13,6 +13,9 @@ Added:
 - Added display link info to cannon mount and yaw controller, displaying rotation and cannon contents by default
 - Added more configuration for CBC propellant recoil
  - Separated CBC propellant power and recoil
+- Added configuration for minimum charge power for big cannon projectiles
+- Added configuration for ignoring squibbing for big cannon projectiles
+- Added configuration for added recoil for big cannon projectiles
 [Development] - Added registry events for cannon cast shapes
 [Development] - Added support for projectiles with integrated propellant
 Changes:
