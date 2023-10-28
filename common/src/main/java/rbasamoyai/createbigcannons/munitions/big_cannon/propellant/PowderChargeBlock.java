@@ -70,6 +70,11 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	}
 
 	@Override
+	public float getRecoil(StructureBlockInfo data) {
+		return CBCConfigs.SERVER.munitions.powderChargeRecoil.getF();
+	}
+
+	@Override
 	public boolean canBeLoaded(BlockState state, Direction.Axis axis) {
 		return axis == state.getValue(AXIS);
 	}

@@ -119,6 +119,11 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	}
 
 	@Override
+	public float getRecoil(StructureBlockInfo data) {
+		return getPowerFromData(data) * CBCConfigs.SERVER.munitions.bigCartridgeRecoil.getF();
+	}
+
+	@Override
 	public boolean canBeLoaded(BlockState state, Direction.Axis facing) {
 		return state.getValue(FACING).getAxis() == facing;
 	}

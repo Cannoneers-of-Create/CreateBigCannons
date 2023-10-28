@@ -377,6 +377,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
 
+		if (propelCtx.chargesUsed <= 0) propelCtx.chargesUsed = 0.5f;
+
 		float recoilMagnitude = 0;
 
 		if (projectile != null) {
@@ -400,8 +402,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			recoilMagnitude += 1;
 		}
 
-		recoilMagnitude += propelCtx.chargesUsed;
-		if (propelCtx.chargesUsed <= 0) propelCtx.chargesUsed = 0.5f;
+		recoilMagnitude += propelCtx.recoil;
 		recoilMagnitude *= CBCConfigs.SERVER.cannons.bigCannonRecoilScale.getF();
 		if (controller != null) controller.onRecoil(vec.scale(-recoilMagnitude), entity);
 
@@ -541,6 +542,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	protected static class PropellantContext {
 		public float chargesUsed = 0;
+		public float recoil = 0;
 		public float stress = 0;
 		public float smokeScale = 0;
 		public int barrelTravelled = 0;
@@ -559,6 +561,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			float power = Math.max(0, propellant.getChargePower(info));
 			this.chargesUsed += power;
 			this.smokeScale += power;
+			this.recoil = Math.max(0, propellant.getRecoil(info));
 			this.stress += propellant.getStressOnCannon(info);
 			this.spread += propellant.getSpread(info);
 			return true;
