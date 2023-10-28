@@ -66,7 +66,7 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 
 	@Override
 	public float getSpread(StructureBlockInfo data) {
-		return CBCConfigs.SERVER.munitions.addedSpread.getF();
+		return CBCConfigs.SERVER.munitions.powderChargeAddedSpread.getF();
 	}
 
 	@Override

@@ -33,10 +33,11 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat powderChargeStrength = f(2, 0.5f, 8, "powderChargeStrength", Comments.powderChargeStrength);
 	public final ConfigFloat powderChargeStress = f(1, 0, "powderChargeStress", Comments.powderChargeStress);
 	public final ConfigFloat powderChargeRecoil = f(2, 0, "powderChargeRecoil", Comments.powderChargeRecoil);
-	public final ConfigFloat addedSpread = f(2.0f, 0.0f, "addedSpread", Comments.addedSpread);
+	public final ConfigFloat powderChargeAddedSpread = f(2.0f, 0.0f, "powderChargeAddedSpread", Comments.powderChargeAddedSpread);
 	public final ConfigFloat bigCartridgeStrength = f(2.0f, 0.5f, 8, "bigCartridgeStrength", Comments.bigCartridgeStrength);
 	public final ConfigFloat bigCartridgeStress = f(0.5f, 0, "bigCartridgeStress", Comments.bigCartridgeStress);
 	public final ConfigFloat bigCartridgeRecoil = f(2, 0, "bigCartridgeRecoil", Comments.bigCartridgeRecoil);
+	public final ConfigFloat bigCartridgeAddedSpread = f(2.0f, 0.0f, "bigCartridgeAddedSpread", Comments.bigCartridgeAddedSpread);
 	public final ConfigInt maxBigCartridgePower = i(4, 1, 8, "maxBigCartridgePower", Comments.maxBigCartridgePower);
 
 	public final ConfigGroup deflectChances = group(0, "deflectChances", "Deflection");
@@ -88,10 +89,11 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String powderChargeStrength = "How much a single Powder Charge adds to the muzzle velocity of a projectile in meters per game tick. (1 m/gt = 20 m/s)";
 		static String powderChargeStress = "How much stress a single Powder Charge exerts on a cannon.";
 		static String powderChargeRecoil = "The scale of the recoil produced by a single Powder Charge.";
-		static String addedSpread = "How much each Powder Charge-equivalent propellant used affects the spread of a fired projectile.";
+		static String powderChargeAddedSpread = "How much each Powder Charge used affects the spread of a fired projectile.";
 		static String bigCartridgeStrength = "How much each power level of a Big Cartridge adds to the muzzle velocity of a projectile in meters per game tick. (1 m/gt = 20 m/s)";
 		static String bigCartridgeStress = "How much stress each power level of a Big Cartridge exerts on a cannon.";
 		static String bigCartridgeRecoil = "The scale of the recoil produced by one power level of a Big Cartridge.";
+		static String bigCartridgeAddedSpread = "How much each power level of a Big Cartridge affects the spread of a fired projectile.";
 		static String maxBigCartridgePower = "The maximum amount of power a Big Cartridge can store.";
 		static String bigCannonDeflectChance = "The chance that a big cannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
 		static String autocannonDeflectChance = "The chance that an autocannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";

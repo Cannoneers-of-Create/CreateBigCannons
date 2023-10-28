@@ -6,7 +6,7 @@ Changelog
 Create Big Cannons now supports Patch E on Forge and Patch C on Fabric.
 
 Added:
-- Added sound effects to cannon casting wand
+- Added sound effects to Cannon Crafting Wand
 - Added tooltip for invalid cannon cast recipes
 - Added camera shake for cannons
  - Scale of shake configurable via "Distortion Effects" in Accessibility Settings
@@ -22,24 +22,25 @@ Changes:
 - Create Big Cannons now uses an integrated mod jar for projectile syncing
 - Projectiles now chunkload
  - Can be turned off in mod config
-- Doubled power of big cartridge, powder charges
+- Doubled power of Big Cartridge, Powder Charge
 - Changed cannon plume profile
-- Reduced particle count of smoke shell
+- Reduced particle count of Smoke Shell
 - Changed big cannon munitions system to be more robust and allow for multiblock munitions
+- Separated spread configuration for Powder Charge and Big Cartridge
 Fixes:
-- Fixed cannon crafting wand not boring autocannons
-- Fixed cannon crafting wand not properly connecting cannons
-- Fixed cannons moving in irregular fashion on cannon carriage
+- Fixed Cannon Crafting Wand not boring autocannons
+- Fixed Cannon Crafting Wand not properly connecting cannons
+- Fixed cannons moving in irregular fashion on Cannon Carriage
 - Fixed cannon cast getting stuck when encountering invalid recipes
-- Fixed big cannon layer crashing game when placed
-- Fixed cannon carriage spawning ghost blocks
-- Fixed big cannon layer crashing game when blasted
+- Fixed Big Cannon Layer crashing game when placed
+- Fixed Cannon Carriage spawning ghost blocks
+- Fixed Big Cannon Layer crashing game when blasted
 - Fixed cannon shell smoke not displaying at far distances on client
-- Fixed quickfiring breech not displaying correctly when opening time is instant
-- Fixed culling on cannon carriage
+- Fixed Quick-Firing Breech not displaying correctly when opening time is instant
+- Fixed culling on Cannon Carriage
 - Fixed layered cannon block casting progress being blocked by other processing blocks
 [Fabric] - Fixed cannon collision
-[Fabric 1.20.1] - Fixed cannon carriage model not loading properly
+[Fabric 1.20.1] - Fixed Cannon Carriage model not loading properly
 [1.20.1] - Fixed mod tab crashing game
 [1.20.1] - Fixed autocannon barrel not rendering properly
-[1.20.1] - Fixed cannon cast block not rendering properly
+[1.20.1] - Fixed Cannon Cast block not rendering properly
