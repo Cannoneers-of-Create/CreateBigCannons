@@ -17,6 +17,7 @@ public interface BigCannonPropellantBlock extends BigCannonMunitionBlock {
 	float getStressOnCannon(ItemStack stack);
 
 	float getSpread(StructureBlockInfo data);
+	float getRecoil(StructureBlockInfo data);
 
 	void consumePropellant(BigCannonBehavior behavior);
 
