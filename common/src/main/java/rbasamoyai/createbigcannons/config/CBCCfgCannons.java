@@ -37,7 +37,6 @@ public class CBCCfgCannons extends ConfigBase {
 	private static class Comments {
 		static String maxCannonLength = "Maximum length of cannons that can be built.";
 		static String barrelSpreadReduction = "How much each cannon barrel reduces the spread of a fired projectile passing through.";
-		static String weakBreechStrength = "Maximum amount of Powder Charges that weak breech blocks can safely handle. Set to -1 to disable this behavior.";
 		static String deployersCanUseLoadingTools = "If deployers can use loading tools.";
 		static String ramRodReach = "How many blocks inside a cannon a Ram Rod can reach.";
 		static String ramRodStrength = "Maximum amount of munition blocks a Ram Rod can push.";
