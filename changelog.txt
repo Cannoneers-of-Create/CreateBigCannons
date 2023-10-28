@@ -11,7 +11,8 @@ Added:
 - Added camera shake for cannons
  - Scale of shake configurable via "Distortion Effects" in Accessibility Settings
 - Added display link info to cannon mount and yaw controller, displaying rotation and cannon contents by default
-- Added registry events for cannon cast shapes
+[Development] - Added registry events for cannon cast shapes
+[Development] - Added support for projectiles with integrated propellant
 Changes:
 - Some new textures courtesy of Milkyfur and LopyLuna
  - Updated attributions
