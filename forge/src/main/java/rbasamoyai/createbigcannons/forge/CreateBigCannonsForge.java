@@ -22,6 +22,7 @@ import net.minecraftforge.registries.NewRegistryEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -65,7 +66,8 @@ public class CreateBigCannonsForge {
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {
-        CBCRegistries.init();
+        CBCRegistries.actualInit();
+		FMLJavaModLoadingContext.get().getModEventBus().post(new CBCForgeRegisterEvent<>(CannonCastShape.class, CBCRegistries.CANNON_CAST_SHAPES));
     }
 
     private void onRegisterSounds(RegistryEvent.Register<SoundEvent> evt) {
