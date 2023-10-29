@@ -192,8 +192,10 @@ public class CBCClientCommon {
 
 	public static boolean onPlayerRenderPre(PoseStack stack, AbstractClientPlayer player, PlayerRenderer renderer, float partialTicks) {
 		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-			float yaw = 90 - Mth.lerp(partialTicks, player.yRotO, player.getYRot());
-			float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+			float yaw = 90 - player.getYRot();
+			float pitch = player.getXRot();
+			//float yaw = 90 - Mth.lerp(partialTicks, player.yRotO, player.getYRot());
+			///float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
 
 			Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
 			stack.mulPose(pitchVec.rotationDegrees(pitch));
@@ -251,10 +253,10 @@ public class CBCClientCommon {
 
 			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
 			boolean flag1 = mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT;
-			float sgn = flag1 ? -1 : 1;
+			float sgn = flag == flag1 ? 1 : -1;
 			float add = flag1 ? 180 : 0;
-			setYaw.accept(poce.yaw + add);
-			setPitch.accept((flag ? -poce.pitch : poce.pitch) * sgn);
+			setYaw.accept(-poce.getViewYRot((float) partialTicks) + add);
+			setPitch.accept(poce.getViewXRot((float) partialTicks) * sgn);
 			setRoll.accept(0f);
 		}
 

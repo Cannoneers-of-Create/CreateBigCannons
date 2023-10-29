@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,6 +37,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
@@ -51,6 +53,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
@@ -361,6 +364,21 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override
 	public void tick(Level level, PitchOrientedContraptionEntity entity) {
 		super.tick(level, entity);
+
+		Entity controller = entity.getControllingPassenger();
+		if (this.canBeTurnedByPassenger(controller)) {
+			Direction dir = entity.getInitialOrientation();
+			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+			entity.pitch = flag ? -controller.xRotO : controller.xRotO;
+			entity.yaw = Mth.wrapDegrees(controller.yRotO);
+			controller.setYBodyRot(controller.getYRot());
+			if (CBCEntityTypes.CANNON_CARRIAGE.is(entity.getVehicle())) {
+				entity.getVehicle().onPassengerTurned(entity);
+			} else if (entity.getController() instanceof CannonMountBlockEntity) {
+				entity.setXRot(entity.pitch);
+				entity.setYRot(entity.yaw);
+			}
+		}
 
 		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController()))
 			this.fireShot(slevel, entity, entity.getController());
