@@ -9,7 +9,6 @@ import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.content.redstone.displayLink.DisplayLinkBlock;
 import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
@@ -137,19 +136,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	protected void applyRotation() {
 		if (this.mountedContraption == null) return;
 		if (!this.mountedContraption.canBeTurnedByController(this)) {
-			this.cannonPitch = this.mountedContraption.getXRot();
-			this.cannonYaw = this.mountedContraption.getYRot();
+			this.cannonPitch = this.mountedContraption.pitch;
+			this.cannonYaw = this.mountedContraption.yaw;
+		} else {
+			this.mountedContraption.pitch = this.cannonPitch;
+			this.mountedContraption.yaw = this.cannonYaw;
 		}
-		this.mountedContraption.pitch = this.cannonPitch;
-		this.mountedContraption.yaw = this.cannonYaw;
-	}
-
-	public void applyHandRotation() {
-		if (this.mountedContraption == null) return;
-		this.cannonPitch = this.mountedContraption.pitch;
-		this.cannonYaw = this.mountedContraption.yaw;
-		this.prevPitch = this.cannonPitch;
-		this.prevYaw = this.cannonYaw;
 	}
 
 	public void onRedstoneUpdate(boolean assemblyPowered, boolean prevAssemblyPowered, boolean firePowered, boolean prevFirePowered, int firePower) {
@@ -189,6 +181,9 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 			return Mth.lerp(partialTicks + 0.5f, this.prevPitch, this.cannonPitch);
 		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
 			partialTicks = 0;
+		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this)) {
+			return this.mountedContraption.getViewXRot(partialTicks);
+		}
 		float aSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
 		return Mth.lerp(partialTicks, this.cannonPitch, this.cannonPitch + aSpeed);
 	}
@@ -210,6 +205,9 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 			return Mth.lerp(partialTicks + 0.5f, this.prevYaw, this.cannonYaw);
 		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
 			partialTicks = 0;
+		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this)) {
+			return -this.mountedContraption.getViewYRot(partialTicks);
+		}
 		float aSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);
 		return Mth.lerp(partialTicks, this.cannonYaw, this.cannonYaw + aSpeed);
 	}
@@ -340,10 +338,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 		if (!clientPacket) return;
 
-		if (!oldRunning) {
-			int x = 0;
-		}
-
 		if (this.running) {
 			if (oldRunning && (this.mountedContraption == null || !this.mountedContraption.isStalled())) {
 				this.clientYawDiff = AngleHelper.getShortestAngleDiff(this.prevYaw, this.cannonYaw);
@@ -416,13 +410,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	@Override
 	public CannonMountBlockEntity getCannonMount() {
 		return this;
-	}
-
-	public void updateDisplays() {
-		if (!this.hasLevel() || this.level.isClientSide) return;
-		DisplayLinkBlock.sendToGatherers(this.level, this.worldPosition, (link, src) -> {
-			link.updateGatheredData();
-		}, CannonMountDisplaySource.class);
 	}
 
 }

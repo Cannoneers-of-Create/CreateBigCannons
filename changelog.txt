@@ -42,6 +42,8 @@ Fixes:
 - Fixed Quick-Firing Breech not displaying correctly when opening time is instant
 - Fixed culling on Cannon Carriage
 - Fixed layered cannon block casting progress being blocked by other processing blocks
+- Fixed autocannon player turning issues
+- Fixed Cannon Mount display issues
 [Fabric] - Fixed cannon collision
 [Fabric 1.20.1] - Fixed Cannon Carriage model not loading properly
 [1.20.1] - Fixed mod tab crashing game

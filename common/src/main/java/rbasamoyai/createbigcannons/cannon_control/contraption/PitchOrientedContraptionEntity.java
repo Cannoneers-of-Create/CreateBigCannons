@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -90,6 +89,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		if (this.updatesOwnRotation) {
 			this.prevYaw = this.yaw;
 			this.prevPitch = this.pitch;
+			this.xRotO = this.getXRot();
+			this.yRotO = this.getYRot();
 		}
 
 		this.contraption.anchor = this.blockPosition();
@@ -165,29 +166,6 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	}
 
 	@Override
-	public void onPassengerTurned(Entity entity) {
-		if (this.contraption instanceof AbstractMountedCannonContraption cannon && cannon.canBeTurnedByPassenger(entity)) {
-			Direction dir = this.getInitialOrientation();
-			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-			this.prevPitch = flag ? -entity.xRotO : entity.xRotO;
-			this.pitch = flag ? -entity.getXRot() : entity.getXRot();
-			this.prevYaw = entity.yRotO;
-			this.yaw = entity.getYRot();
-
-			entity.setYBodyRot(entity.getYRot());
-			if (CBCEntityTypes.CANNON_CARRIAGE.is(this.getVehicle())) {
-				this.getVehicle().onPassengerTurned(this);
-			} else if (this.getController() instanceof CannonMountBlockEntity mount) {
-				mount.applyHandRotation();
-				this.xRotO = this.prevPitch;
-				this.setXRot(this.pitch);
-				this.yRotO = this.prevYaw;
-				this.setYRot(this.yaw);
-			}
-		}
-	}
-
-	@Override
 	public void addSittingPassenger(Entity passenger, int seatIndex) {
 		if (passenger instanceof Mob mob && mob.getLeashHolder() instanceof Player player) {
 			this.addSittingPassenger(player, seatIndex);
@@ -244,11 +222,6 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		ControlPitchContraption controller = this.getController();
 		Vec3 superResult = super.getDismountLocationForPassenger(entityLiving); // Call to process other stuff
 		return controller != null ? Vec3.atCenterOf(controller.getDismountPositionForContraption(this)) : superResult;
-	}
-
-	@Override
-	protected void removePassenger(Entity passenger) {
-		super.removePassenger(passenger);
 	}
 
 	public BlockPos getSeatPos(Entity passenger) {
