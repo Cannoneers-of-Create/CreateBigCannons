@@ -30,6 +30,8 @@ Changes:
 - Reduced particle count of Smoke Shell
 - Changed big cannon munitions system to be more robust and allow for multiblock munitions
 - Separated spread configuration for Powder Charge and Big Cartridge
+- Changed casting time to a flat rate regardless of size based on fluid type or tag
+ - Casting times are configurable via datapack
 Fixes:
 - Fixed Cannon Crafting Wand not boring autocannons
 - Fixed Cannon Crafting Wand not properly connecting cannons

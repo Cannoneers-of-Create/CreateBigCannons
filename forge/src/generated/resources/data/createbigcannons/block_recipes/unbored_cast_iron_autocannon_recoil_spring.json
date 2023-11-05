@@ -6,6 +6,5 @@
     "nbt": {},
     "amount": 1
   },
-  "casting_time": 750,
   "result": "createbigcannons:unbored_cast_iron_autocannon_recoil_spring"
 }

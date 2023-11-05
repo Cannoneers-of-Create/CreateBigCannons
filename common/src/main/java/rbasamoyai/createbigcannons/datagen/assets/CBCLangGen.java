@@ -211,7 +211,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("drill_boring"), "Drill Boring");
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("incomplete_cannon_blocks"), "Incomplete Cannon Blocks");
 
-		REGISTRATE.addLang("recipe", CreateBigCannons.resource("added_casting_time"), "Added casting time: %ss");
+		REGISTRATE.addLang("recipe", CreateBigCannons.resource("casting_time"), "Casting time: %ss");
 
 		REGISTRATE.addLang("block", CreateBigCannons.resource("shell"), "tooltip.fuze", "Fuze:");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("shell"), "tooltip.fuze.none", "(none)");
