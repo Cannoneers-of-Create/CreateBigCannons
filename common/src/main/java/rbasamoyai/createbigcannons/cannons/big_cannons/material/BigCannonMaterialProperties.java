@@ -15,9 +15,9 @@ public record BigCannonMaterialProperties(int squibRatioNum, int squibRatioDem, 
 
 	/**
 	 * The squib ratio describes the maximum ratio of <b>cannon barrel</b> to
-	 * <b>ignited powder charges</b> that cannons of this material can safely
-	 * operate at. If the squib ratio exceeds this value, the cannon squib
-	 * chance is increased.
+	 * <b>meters per gametick</b> that cannons of this material can safely
+	 * operate at. If the actual squib ratio exceeds this value, the cannon
+	 * squib chance is increased.
 	 *
 	 * @return A double representing the squib ratio of the material
 	 */
