@@ -12,15 +12,15 @@ public class CBCBigCannonMaterials {
 			new BigCannonMaterialProperties(0, 1, 1.0f, 0, FailureMode.FRAGMENT)),
 		LOG = BigCannonMaterial.register(CreateBigCannons.resource("log"),
 			new BigCannonMaterialProperties(0, 1, 1.0f, 0, FailureMode.FRAGMENT)),
-		WROUGHT_IRON = BigCannonMaterial.register(CreateBigCannons.resource("cast_iron"),
-			new BigCannonMaterialProperties(1, 1, 2.0f, 1, FailureMode.RUPTURE)),
+		WROUGHT_IRON = BigCannonMaterial.register(CreateBigCannons.resource("wrought_iron"),
+			new BigCannonMaterialProperties(1, 2, 2.0f, 1, FailureMode.RUPTURE)),
 		CAST_IRON = BigCannonMaterial.register(CreateBigCannons.resource("cast_iron"),
-			new BigCannonMaterialProperties(1, 1, 3.0f, 2, FailureMode.FRAGMENT)),
+			new BigCannonMaterialProperties(1, 2, 3.0f, 2, FailureMode.FRAGMENT)),
 		BRONZE = BigCannonMaterial.register(CreateBigCannons.resource("bronze"),
-			new BigCannonMaterialProperties(3, 2, 2.0f, 4, FailureMode.RUPTURE)),
+			new BigCannonMaterialProperties(3, 4, 2.0f, 4, FailureMode.RUPTURE)),
 		STEEL = BigCannonMaterial.register(CreateBigCannons.resource("steel"),
-			new BigCannonMaterialProperties(2, 1, 5.0f, 6, FailureMode.FRAGMENT)),
+			new BigCannonMaterialProperties(2, 2, 5.0f, 6, FailureMode.FRAGMENT)),
 		NETHERSTEEL = BigCannonMaterial.register(CreateBigCannons.resource("nethersteel"),
-			new BigCannonMaterialProperties(3, 1, 6.0f, 8, FailureMode.FRAGMENT));
+			new BigCannonMaterialProperties(3, 2, 6.0f, 8, FailureMode.FRAGMENT));
 
 }

@@ -32,6 +32,7 @@ Changes:
 - Separated spread configuration for Powder Charge and Big Cartridge
 - Changed casting time to a flat rate regardless of size based on fluid type or tag
  - Casting times are configurable via datapack
+- Changed squib ratio values
 Fixes:
 - Fixed Cannon Crafting Wand not boring autocannons
 - Fixed Cannon Crafting Wand not properly connecting cannons
@@ -46,6 +47,7 @@ Fixes:
 - Fixed layered cannon block casting progress being blocked by other processing blocks
 - Fixed autocannon player turning issues
 - Fixed Cannon Mount display issues
+- Fixed Wrought Iron big cannon material registration
 [Fabric] - Fixed cannon collision
 [Fabric 1.20.1] - Fixed Cannon Carriage model not loading properly
 [1.20.1] - Fixed mod tab crashing game
