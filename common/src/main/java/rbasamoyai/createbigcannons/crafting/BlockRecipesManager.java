@@ -112,7 +112,7 @@ public class BlockRecipesManager {
 		public ClientboundRecipesPacket() {}
 
 		public ClientboundRecipesPacket(FriendlyByteBuf buf) {
-			this.buf = buf;
+			this.buf = new FriendlyByteBuf(buf.copy());
 		}
 
 		@Override public void rootEncode(FriendlyByteBuf buf) {

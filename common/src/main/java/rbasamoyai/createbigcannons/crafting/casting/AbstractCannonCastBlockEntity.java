@@ -278,7 +278,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 				this.updateRecipes();
 				if (this.invalidCastingError == null) {
 					int oldStartCastingTime = this.startCastingTime;
-					this.startCastingTime = this.calculateCastingTime();
+					this.startCastingTime = FluidCastingTimeHandler.getCastingTime(this.getFluid());
 					if (this.startCastingTime != oldStartCastingTime) {
 						this.castingTime = this.startCastingTime;
 					}
@@ -330,14 +330,6 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	}
 
 	protected abstract net.minecraft.world.level.material.Fluid getFluid();
-
-	protected int calculateCastingTime() {
-		return this.structure.stream()
-			.map(this.recipes::get)
-			.map(r -> r == null ? 1200 : r.castingTime())
-			.reduce(Integer::sum)
-			.orElse(0);
-	}
 
 	protected void finishCasting() {
 		if (!this.isController() || this.structure.isEmpty()) return;

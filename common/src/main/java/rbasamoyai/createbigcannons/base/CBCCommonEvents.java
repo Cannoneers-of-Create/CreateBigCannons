@@ -36,6 +36,7 @@ import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntit
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
+import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.AutocannonAmmoContainerFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
@@ -136,12 +137,14 @@ public class CBCCommonEvents {
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
 		if (level.getServer() != null && !level.isClientSide() && level.getServer().overworld() == level) {
 			BlockHardnessHandler.loadTags();
+			FluidCastingTimeHandler.loadTags();
 		}
 	}
 
 	public static void onDatapackReload(MinecraftServer server) {
 		BlockHardnessHandler.loadTags();
 		BlockRecipesManager.syncToAll(server);
+		FluidCastingTimeHandler.syncToAll(server);
 	}
 
 	public static void onDatapackSync(ServerPlayer player) {
@@ -150,6 +153,7 @@ public class CBCCommonEvents {
 		AutocannonMaterialPropertiesHandler.syncTo(player);
 		BigCannonMaterialPropertiesHandler.syncTo(player);
 		BigCannonBreechStrengthHandler.syncTo(player);
+		FluidCastingTimeHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
@@ -161,6 +165,7 @@ public class CBCCommonEvents {
 		cons.accept(AutocannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("autocannon_material_properties_handler"));
 		cons.accept(BigCannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_material_properties_handler"));
 		cons.accept(BigCannonBreechStrengthHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_breech_strength_handler"));
+		cons.accept(FluidCastingTimeHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("fluid_casting_time_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,

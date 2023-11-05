@@ -6,6 +6,5 @@
     "nbt": {},
     "amount": 1
   },
-  "casting_time": 750,
   "result": "createbigcannons:unbored_bronze_autocannon_barrel"
 }
