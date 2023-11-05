@@ -3,7 +3,7 @@ Changelog
 "a love supreme"
 - John Coltrane, A Love Supreme (1965)
 
-Create Big Cannons now supports Patch E on Forge and Patch C on Fabric.
+Create Big Cannons now supports Patch F on Forge and Patch C on Fabric.
 
 Added:
 - Added sound effects to Cannon Crafting Wand
