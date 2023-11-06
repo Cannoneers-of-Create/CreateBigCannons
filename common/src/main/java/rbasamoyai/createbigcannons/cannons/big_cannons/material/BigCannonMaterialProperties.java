@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public record BigCannonMaterialProperties(int squibRatioNum, int squibRatioDem, float weight, int maxSafeBaseCharges, FailureMode failureMode) {
+public record BigCannonMaterialProperties(int squibRatioNum, int squibRatioDem, float weight, int maxSafePropellantStress, FailureMode failureMode) {
 
 	/**
 	 * The squib ratio describes the maximum ratio of <b>cannon barrel</b> to
@@ -39,7 +39,7 @@ public record BigCannonMaterialProperties(int squibRatioNum, int squibRatioDem, 
 		obj.addProperty("squib_ratio_barrels", this.squibRatioNum);
 		obj.addProperty("squib_ratio_propellant", this.squibRatioDem);
 		obj.addProperty("weight", this.weight);
-		obj.addProperty("max_safe_charges", this.maxSafeBaseCharges);
+		obj.addProperty("max_safe_charges", this.maxSafePropellantStress);
 		obj.addProperty("failure_mode", this.failureMode.toString());
 		return obj;
 	}
@@ -48,7 +48,7 @@ public record BigCannonMaterialProperties(int squibRatioNum, int squibRatioDem, 
 		buf.writeVarInt(this.squibRatioNum)
 			.writeVarInt(this.squibRatioDem)
 			.writeFloat(this.weight);
-		buf.writeVarInt(this.maxSafeBaseCharges)
+		buf.writeVarInt(this.maxSafePropellantStress)
 			.writeVarInt(this.failureMode.ordinal());
 	}
 
