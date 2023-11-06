@@ -44,10 +44,10 @@ public class CBCLangGen {
 
 		tooltip(CBCBlocks.MORTAR_STONE)
 		.header("MORTAR STONE")
-		.summary("Powerful stone that _explodes on impact._ _Flies further_ than other projectiles. Good for attacking _walls and fortifications._ _Cannot be fuzed and detonated._ Will _break_ if too many Powder Charges are used.");
+		.summary("Powerful stone that _explodes on impact._ _Flies further_ than other projectiles. Good for attacking _walls and fortifications._ _Cannot be fuzed and detonated._ Will _break_ if the propellant is too strong.");
 
-		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges", "Maximum Powder Charges");
-		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges.value", "This mortar stone can handle up to _%s Powder Charges_ (or equivalent) before breaking.");
+		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges", "Maximum Firing Speed");
+		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges.value", "This mortar stone can be fired at a speed of _%s m/s_ before breaking.");
 
 		tooltip(CBCBlocks.BAG_OF_GRAPESHOT)
 		.header("BAG OF GRAPESHOT")
@@ -180,17 +180,17 @@ public class CBCLangGen {
 
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.materialProperties", "Cannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength", "Strength");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.goggles", "_%s Powder Charge(s)_");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.goggles", "_%s Propellant Stress_");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.unlimited", "Unlimited");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.squibRatio", "Squib Ratio");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.squibRatio.goggles", "_%s barrel(s) travelled_ to _%s Powder Charge(s)_");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.squibRatio.goggles", "_%s m/s per barrel_");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weightImpact", "Weight Impact");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weightImpact.goggles", "_%sx RPM_");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure", "On Failure");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.rupture", "The cannon _ruptures_ on failure.");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.fragment", "The cannon _fragments_ on failure.");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.breechStrength", "Breech Strength");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.breechStrength.desc", "Cannons built with this as the closing can safely handle up to _%s Powder Charge(s)_ or equivalent.");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.breechStrength.desc", "Cannons built with this as the closing can safely handle up to _%s Propellant Stress_.");
 
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.materialProperties", "Autocannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxBarrelLength", "Maximum Length");

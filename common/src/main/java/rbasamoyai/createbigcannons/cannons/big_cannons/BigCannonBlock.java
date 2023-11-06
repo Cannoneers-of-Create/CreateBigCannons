@@ -44,11 +44,15 @@ public interface BigCannonBlock {
 
 	Direction getFacing(BlockState state);
 
-	BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos);
+	default BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) {
+		return this.getDefaultOpeningType();
+	}
 
 	default BigCannonEnd getOpeningType(MountedBigCannonContraption contraption, BlockState state, BlockPos pos) {
-		return this.getOpeningType((Level) null, state, pos);
+		return this.getDefaultOpeningType();
 	}
+
+	BigCannonEnd getDefaultOpeningType();
 
 	boolean isComplete(BlockState state);
 

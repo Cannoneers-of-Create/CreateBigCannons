@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
-import javax.annotation.Nullable;
-
 import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
@@ -19,8 +17,8 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
@@ -64,10 +62,7 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements IBE<LayeredB
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
-	@Override
-	public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) {
-		return BigCannonEnd.CLOSED;
-	}
+	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.OPEN; }
 
 	@Override
 	public boolean isComplete(BlockState state) {

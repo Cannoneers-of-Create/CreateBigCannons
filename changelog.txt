@@ -33,6 +33,7 @@ Changes:
 - Changed casting time to a flat rate regardless of size based on fluid type or tag
  - Casting times are configurable via datapack
 - Changed squib ratio values
+- Changed cannon tooltips
 Fixes:
 - Fixed Cannon Crafting Wand not boring autocannons
 - Fixed Cannon Crafting Wand not properly connecting cannons

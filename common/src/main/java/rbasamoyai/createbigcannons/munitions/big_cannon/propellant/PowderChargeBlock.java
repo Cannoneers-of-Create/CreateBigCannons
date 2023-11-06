@@ -92,10 +92,6 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 		return true;
 	}
 
-	public static float getPowderChargeEquivalent(float baseStress) {
-		return baseStress / getPowderChargeStress();
-	}
-
 	public static float getPowderChargeStress() {
 		return CBCConfigs.SERVER.munitions.powderChargeStress.getF();
 	}

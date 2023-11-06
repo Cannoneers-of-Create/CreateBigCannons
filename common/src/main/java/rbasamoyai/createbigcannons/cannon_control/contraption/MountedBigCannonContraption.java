@@ -245,7 +245,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		int count = 0;
 		BigCannonMaterialProperties properties = this.cannonMaterial.properties();
 		StructureBlockInfo breech = this.blocks.get(this.startPos.relative(this.initialOrientation.getOpposite()));
-		int materialStrength = properties.maxSafeBaseCharges();
+		int materialStrength = properties.maxSafePropellantStress();
 		int maxSafeCharges = Math.min(materialStrength, BigCannonBreechStrengthHandler.getStrength(breech.state.getBlock(), materialStrength));
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		float spreadSub = CBCConfigs.SERVER.cannons.barrelSpreadReduction.getF();
