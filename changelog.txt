@@ -16,6 +16,7 @@ Added:
 - Added configuration for minimum charge power for big cannon projectiles
 - Added configuration for ignoring squibbing for big cannon projectiles
 - Added configuration for added recoil for big cannon projectiles
+- Added Cannon Welder
 [Development] - Added registry events for cannon cast shapes
 [Development] - Added support for projectiles with integrated propellant
 Changes:

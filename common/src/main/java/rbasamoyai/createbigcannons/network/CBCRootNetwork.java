@@ -41,6 +41,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ClientboundPreciseRotationSyncPacket.class, ClientboundPreciseRotationSyncPacket::new);
 		addMsg(id++, ClientboundAddShakeEffectPacket.class, ClientboundAddShakeEffectPacket::new);
 		addMsg(id++, ClientboundFluidCastingTimePacket.class, ClientboundFluidCastingTimePacket::copyOf);
+		addMsg(id++, ServerboundUseWelderPacket.class, ServerboundUseWelderPacket::new);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {

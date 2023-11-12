@@ -89,6 +89,7 @@ public class ModGroup {
 				DelayedImpactFuzeItem.getCreativeTabItem(20),
 				CBCItems.TRACER_TIP.asStack(),
 
+				CBCItems.CANNON_WELDER.asStack(),
 				CBCItems.CANNON_CRAFTING_WAND.asStack(),
 				CBCBlocks.CASTING_SAND.asStack(),
 				CBCBlocks.VERY_SMALL_CAST_MOULD.asStack(),

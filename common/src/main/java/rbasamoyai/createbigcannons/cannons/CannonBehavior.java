@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 public abstract class CannonBehavior extends BlockEntityBehaviour {
 
 	protected final Set<Direction> connectedTowards = EnumSet.noneOf(Direction.class);
+	protected final Set<Direction> weldedTowards = EnumSet.noneOf(Direction.class);
 	protected Direction currentFacing;
 
 	protected CannonBehavior(SmartBlockEntity te) {
@@ -98,6 +99,13 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 			.forEach(connectionTag::add);
 		nbt.put("Connections", connectionTag);
 
+		ListTag weldsTag = new ListTag();
+		this.weldedTowards.stream()
+			.map(Direction::getSerializedName)
+			.map(StringTag::valueOf)
+			.forEach(weldsTag::add);
+		nbt.put("Welds", weldsTag);
+
 		super.write(nbt, spawnPacket);
 	}
 
@@ -113,7 +121,26 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 			.filter(Objects::nonNull)
 			.forEach(this.connectedTowards::add);
 
+		this.weldedTowards.clear();
+		ListTag weldsTag = nbt.getList("Welds", Tag.TAG_STRING);
+		weldsTag.stream()
+			.map(Tag::getAsString)
+			.map(Direction::byName)
+			.filter(Objects::nonNull)
+			.forEach(this.weldedTowards::add);
+
 		super.read(nbt, clientPacket);
 	}
+
+	public void setWelded(Direction face, boolean welded) {
+		if (welded) {
+			if (this.weldedTowards.add(face)) this.blockEntity.setChanged();
+		} else {
+			if (this.weldedTowards.remove(face)) this.blockEntity.setChanged();
+		}
+	}
+
+	public boolean isWelded() { return !this.weldedTowards.isEmpty(); }
+	public boolean isWeldedOn(Direction dir) { return this.weldedTowards.contains(dir); }
 
 }

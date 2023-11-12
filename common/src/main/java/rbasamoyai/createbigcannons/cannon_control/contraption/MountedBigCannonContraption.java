@@ -60,6 +60,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	private BigCannonMaterial cannonMaterial;
 	public boolean hasFired = false;
+	public boolean hasWeldedPenalty = false;
 
 	@Override
 	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
@@ -186,6 +187,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			if (blockInfo.nbt == null) continue;
 			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state, blockInfo.nbt);
 			this.presentBlockEntities.put(localPos, be);
+			if (be instanceof IBigCannonBlockEntity cbe && cbe.cannonBehavior().isWelded()) this.hasWeldedPenalty = true;
 		}
 		this.cannonMaterial = material;
 
@@ -247,6 +249,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		StructureBlockInfo breech = this.blocks.get(this.startPos.relative(this.initialOrientation.getOpposite()));
 		int materialStrength = properties.maxSafePropellantStress();
 		int maxSafeCharges = Math.min(materialStrength, BigCannonBreechStrengthHandler.getStrength(breech.state.getBlock(), materialStrength));
+		if (this.hasWeldedPenalty) maxSafeCharges -= properties.weldStressPenalty();
+		maxSafeCharges = Math.max(maxSafeCharges, 0);
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		float spreadSub = CBCConfigs.SERVER.cannons.barrelSpreadReduction.getF();
 		boolean emptyNoProjectile = false;
@@ -540,6 +544,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);
 		tag.putString("CannonMaterial", this.cannonMaterial == null ? CBCBigCannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
+		if (this.hasWeldedPenalty) tag.putBoolean("WeldedCannon", true);
 		return tag;
 	}
 
@@ -547,6 +552,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public void readNBT(Level level, CompoundTag tag, boolean clientData) {
 		super.readNBT(level, tag, clientData);
 		this.cannonMaterial = BigCannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("CannonMaterial")));
+		this.hasWeldedPenalty = tag.contains("WeldedCannon");
 		if (this.cannonMaterial == null) this.cannonMaterial = CBCBigCannonMaterials.CAST_IRON;
 	}
 

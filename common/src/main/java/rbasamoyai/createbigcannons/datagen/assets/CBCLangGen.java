@@ -250,6 +250,14 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_pitch", "Cannon Pitch: ");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_yaw", "Cannon Yaw: ");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.degrees", "%s\u00ba");
+
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.click_to_confirm", "Click again to confirm");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.invalid_weld", "Cannot weld these blocks");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.too_far", "Cannot weld more than two blocks at a time");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.click_to_discard", "Sneak-click to discard selection");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.abort", "Selection discarded");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.success", "Welding blocks...");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.first_pos", "First position selected");
 	}
 
 	private static class TooltipBuilder {

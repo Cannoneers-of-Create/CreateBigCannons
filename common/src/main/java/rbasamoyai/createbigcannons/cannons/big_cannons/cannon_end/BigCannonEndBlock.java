@@ -20,10 +20,7 @@ public class BigCannonEndBlock extends SolidBigCannonBlock<BigCannonEndBlockEnti
 		super(properties, cannonMaterial);
 	}
 
-	@Override
-	public boolean isDoubleSidedCannon(BlockState state) {
-		return false;
-	}
+	@Override public boolean canConnectToSide(BlockState state, Direction dir) { return this.getFacing(state) == dir; }
 
 	@Override
 	public Direction getFacing(BlockState state) {

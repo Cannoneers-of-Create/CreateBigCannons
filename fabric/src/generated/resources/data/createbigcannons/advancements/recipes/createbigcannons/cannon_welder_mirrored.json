@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:cannon_welder_mirrored"
+    ]
+  },
+  "criteria": {
+    "has_blaze_burner": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "create:blaze_burner"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:cannon_welder_mirrored"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_blaze_burner",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -13,6 +13,7 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
+import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
@@ -202,6 +203,12 @@ public class CBCItems {
 		.item("cannon_crafting_wand", CannonCraftingWandItem::new)
 		.properties(p -> p.stacksTo(1))
 		.properties(p -> p.rarity(Rarity.EPIC))
+		.model((c, p) -> {})
+		.register();
+
+	public static final ItemEntry<CannonWelderItem> CANNON_WELDER = REGISTRATE
+		.item("cannon_welder", CannonWelderItem::new)
+		.properties(p -> p.durability(64))
 		.model((c, p) -> {})
 		.register();
 
