@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "createbigcannons:cannon_welder"
+    ]
+  },
+  "criteria": {
+    "has_blaze_burner": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "create:blaze_burner"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "createbigcannons:cannon_welder"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_blaze_burner",
+      "has_the_recipe"
+    ]
+  ]
+}

@@ -39,6 +39,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 import rbasamoyai.createbigcannons.cannon_control.effects.ShakeEffect;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
+import rbasamoyai.createbigcannons.crafting.welding.CannonWelderSelectionHandler;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
@@ -60,6 +61,8 @@ public class CBCClientCommon {
 	public static final List<KeyMapping> KEYS = new ArrayList<>();
 
 	private static final List<ShakeEffect> ACTIVE_SHAKE_EFFECTS = new LinkedList<>();
+
+	public static final CannonWelderSelectionHandler CANNON_WELDER_HANDLER = new CannonWelderSelectionHandler();
 
 	public static void onRegisterParticleFactories(Minecraft mc, ParticleEngine engine) {
 		CBCParticleTypes.registerFactories();
@@ -164,6 +167,19 @@ public class CBCClientCommon {
 			mc.player.handsBusy = true;
 			NetworkPlatform.sendToServer(new ServerboundFiringActionPacket());
 		}
+
+		CANNON_WELDER_HANDLER.tick();
+	}
+
+	public static boolean onClickMouse(KeyMapping mapping) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.screen != null) return false;
+
+		boolean isUse = mc.options.keyUse.same(mapping);
+		if (isUse) {
+			if (CANNON_WELDER_HANDLER.onMouseInput()) return true;
+		}
+		return false;
 	}
 
 	public static boolean onScrollMouse(Minecraft mc, double delta) {

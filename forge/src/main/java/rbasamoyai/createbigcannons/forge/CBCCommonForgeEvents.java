@@ -3,15 +3,19 @@ package rbasamoyai.createbigcannons.forge;
 import com.simibubi.create.content.kinetics.deployer.DeployerRecipeSearchEvent;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
+import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 
 public class CBCCommonForgeEvents {
 
@@ -24,6 +28,7 @@ public class CBCCommonForgeEvents {
 		forgeEventBus.addListener(CBCCommonForgeEvents::onDatapackSync);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onAddReloadListeners);
 		forgeEventBus.addListener(CBCCommonForgeEvents::onDeployerRecipeSearch);
+		forgeEventBus.addListener(CBCCommonForgeEvents::onUseItemOnBlock);
 	}
 
 	public static void onServerWorldTick(TickEvent.WorldTickEvent evt) {
@@ -70,6 +75,12 @@ public class CBCCommonForgeEvents {
 
 	public static void onDeployerRecipeSearch(DeployerRecipeSearchEvent evt) {
 		CBCCommonEvents.onAddDeployerRecipes(evt.getBlockEntity(), evt.getInventory(), evt::addRecipe);
+	}
+
+	public static void onUseItemOnBlock(PlayerInteractEvent.RightClickBlock event) {
+		if (event.getItemStack().getItem() instanceof CannonWelderItem
+			&& CannonWelderItem.welderItemAlwaysPlacesWhenUsed(event.getPlayer(), event.getWorld(), event.getHand(), event.getHitVec()) == InteractionResult.FAIL)
+			event.setUseBlock(Event.Result.DENY);
 	}
 
 }

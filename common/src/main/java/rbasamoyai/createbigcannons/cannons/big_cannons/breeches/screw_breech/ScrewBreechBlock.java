@@ -83,10 +83,7 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements IBE<Scr
 		return PushReaction.BLOCK;
 	}
 
-	@Override
-	public boolean isDoubleSidedCannon(BlockState state) {
-		return false;
-	}
+	@Override public boolean canConnectToSide(BlockState state, Direction dir) { return this.getFacing(state) == dir; }
 
 	@Override
 	public boolean isComplete(BlockState state) {

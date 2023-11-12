@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
@@ -45,6 +46,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		TextureStitchCallback.PRE.register(CBCClientFabric::onTextureAtlasStitchPre);
 		CameraSetupCallback.EVENT.register(CBCClientFabric::onSetupCamera);
 		ClientLoginConnectionEvents.DISCONNECT.register(CBCClientFabric::onPlayerLogOut);
+		MouseButtonCallback.EVENT.register(CBCClientFabric::onClickMouse);
 	}
 
 	public static void onParticleRegistry() {
@@ -67,6 +69,17 @@ public class CBCClientFabric implements ClientModInitializer {
 
 	public static void onClientTick(Minecraft mc) {
 		CBCClientCommon.onClientGameTick(mc);
+	}
+
+	public static InteractionResult onClickMouse(int button, int action, int mods) {
+		if (action != 1) return InteractionResult.PASS;
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.screen != null) return InteractionResult.PASS;
+		KeyMapping mapping = null;
+		if (mc.options.keyUse.matchesMouse(button)) mapping = mc.options.keyUse;
+		if (mc.options.keyAttack.matchesMouse(button)) mapping = mc.options.keyAttack;
+		if (mapping == null) return InteractionResult.PASS;
+		return CBCClientCommon.onClickMouse(mapping) ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
 	public static boolean onScrolledMouse(double delta) {
