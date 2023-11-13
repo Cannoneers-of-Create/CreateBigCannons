@@ -35,6 +35,7 @@ Changes:
  - Casting times are configurable via datapack
 - Changed squib ratio values
 - Changed cannon tooltips
+- Cast Iron, Bronze, and Steel cannon blocks and autocannon blocks can now be picked up with Silk Touch
 Fixes:
 - Fixed Cannon Crafting Wand not boring autocannons
 - Fixed Cannon Crafting Wand not properly connecting cannons
