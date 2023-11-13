@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.cannon_control.carriage;
 
-import java.util.List;
-
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 
@@ -25,7 +23,6 @@ import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
@@ -87,14 +84,6 @@ public class CannonCarriageBlock extends Block implements IWrenchable, IBE<Canno
 			}
 		}
 		return InteractionResult.PASS;
-	}
-
-	@SuppressWarnings("deprecated")
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		List<ItemStack> loot = super.getDrops(state, builder);
-		if (state.getValue(SADDLED)) loot.add(Items.SADDLE.getDefaultInstance());
-		return loot;
 	}
 
 	@Override

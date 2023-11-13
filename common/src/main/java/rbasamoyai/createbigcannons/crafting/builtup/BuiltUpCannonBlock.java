@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
+import java.util.List;
+
 import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
@@ -16,6 +18,8 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
@@ -60,6 +64,17 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements IBE<LayeredB
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!level.isClientSide) this.onRemoveCannon(state, level, pos, newState, isMoving);
 		super.onRemove(state, level, pos, newState, isMoving);
+	}
+
+	@Override
+	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		List<ItemStack> drops = super.getDrops(state, builder);
+		if (builder.getParameter(LootContextParams.BLOCK_ENTITY) instanceof LayeredBigCannonBlockEntity layered) {
+			for (Block block : layered.getLayers().values()) {
+				drops.addAll(block.defaultBlockState().getDrops(builder));
+			}
+		}
+		return drops;
 	}
 
 	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.OPEN; }

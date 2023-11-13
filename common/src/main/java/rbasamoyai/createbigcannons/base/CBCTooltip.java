@@ -209,7 +209,6 @@ public class CBCTooltip {
 		String key = block.getDescriptionId() + ".tooltip";
 
 		String fire = I18n.get(CBCClientCommon.FIRE_CONTROLLED_CANNON.getTranslatedKeyMessage().getString());
-		// TODO: Style.EMPTY used to correspond to GRAY and WHITE colour values.
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".keyPressed", fire), primary, highlight));
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".fireCannon"), palette.primary(), palette.highlight(), 1));
 
