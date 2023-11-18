@@ -14,6 +14,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMateria
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler.ClientboundFluidCastingTimePacket;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
+import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantPropertiesHandler.ClientboundBigCannonPropellantPropertiesPacket;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler.ClientboundMunitionPropertiesPacket;
 
 public class CBCRootNetwork {
@@ -42,6 +43,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ClientboundAddShakeEffectPacket.class, ClientboundAddShakeEffectPacket::new);
 		addMsg(id++, ClientboundFluidCastingTimePacket.class, ClientboundFluidCastingTimePacket::copyOf);
 		addMsg(id++, ServerboundUseWelderPacket.class, ServerboundUseWelderPacket::new);
+		addMsg(id++, ClientboundBigCannonPropellantPropertiesPacket.class, ClientboundBigCannonPropellantPropertiesPacket::copyOf);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {

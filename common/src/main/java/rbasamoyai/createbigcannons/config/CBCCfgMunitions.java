@@ -30,14 +30,6 @@ public class CBCCfgMunitions extends ConfigBase {
 
 
 	public final ConfigGroup propellant = group(0, "propellant", "Propellant");
-	public final ConfigFloat powderChargeStrength = f(2, 0.5f, 8, "powderChargeStrength", Comments.powderChargeStrength);
-	public final ConfigFloat powderChargeStress = f(1, 0, "powderChargeStress", Comments.powderChargeStress);
-	public final ConfigFloat powderChargeRecoil = f(2, 0, "powderChargeRecoil", Comments.powderChargeRecoil);
-	public final ConfigFloat powderChargeAddedSpread = f(2.0f, 0.0f, "powderChargeAddedSpread", Comments.powderChargeAddedSpread);
-	public final ConfigFloat bigCartridgeStrength = f(2.0f, 0.5f, 8, "bigCartridgeStrength", Comments.bigCartridgeStrength);
-	public final ConfigFloat bigCartridgeStress = f(0.5f, 0, "bigCartridgeStress", Comments.bigCartridgeStress);
-	public final ConfigFloat bigCartridgeRecoil = f(2, 0, "bigCartridgeRecoil", Comments.bigCartridgeRecoil);
-	public final ConfigFloat bigCartridgeAddedSpread = f(2.0f, 0.0f, "bigCartridgeAddedSpread", Comments.bigCartridgeAddedSpread);
 	public final ConfigInt maxBigCartridgePower = i(4, 1, 8, "maxBigCartridgePower", Comments.maxBigCartridgePower);
 
 	public final ConfigGroup deflectChances = group(0, "deflectChances", "Deflection");
