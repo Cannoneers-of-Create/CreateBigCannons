@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -51,9 +52,9 @@ import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.IntegratedPropellantProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.IntegratedPropellantProjectile;
 import rbasamoyai.createbigcannons.network.ClientboundAddShakeEffectPacket;
 
 public class MountedBigCannonContraption extends AbstractMountedCannonContraption {
@@ -572,13 +573,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		public boolean addPropellant(BigCannonPropellantBlock propellant, StructureBlockInfo info, Direction initialOrientation) {
 			this.propellantBlocks.add(info);
-			List<StructureBlockInfo> copy = ImmutableList.copyOf(this.propellantBlocks);
-			for (ListIterator<StructureBlockInfo> propIter = this.propellantBlocks.listIterator(); propIter.hasNext(); ) {
-				int i = propIter.nextIndex();
-				StructureBlockInfo propInfo = propIter.next();
-				if (!(propInfo.state.getBlock() instanceof BigCannonPropellantBlock cpropel1) ||
-					!cpropel1.isCompatibleWith(copy, propInfo, i, initialOrientation)) return false;
-			}
+			if (!safeLoad(ImmutableList.copyOf(this.propellantBlocks), initialOrientation)) return false;
 			float power = Math.max(0, propellant.getChargePower(info));
 			this.chargesUsed += power;
 			this.smokeScale += power;
@@ -590,12 +585,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		public boolean addIntegratedPropellant(IntegratedPropellantProjectile propellant, StructureBlockInfo firstInfo, Direction initialOrientation) {
 			List<StructureBlockInfo> copy = ImmutableList.<StructureBlockInfo>builder().addAll(this.propellantBlocks).add(firstInfo).build();
-			for (ListIterator<StructureBlockInfo> propIter = this.propellantBlocks.listIterator(); propIter.hasNext(); ) {
-				int i = propIter.nextIndex();
-				StructureBlockInfo propInfo = propIter.next();
-				if (!(propInfo.state.getBlock() instanceof BigCannonPropellantBlock cpropel1) ||
-					!cpropel1.isCompatibleWith(copy, propInfo, i, initialOrientation)) return false;
-			}
+			if (!safeLoad(copy, initialOrientation)) return false;
 			float power = Math.max(0, propellant.getChargePower());
 			this.chargesUsed += power;
 			this.smokeScale += power;
@@ -605,6 +595,34 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		}
 
 		public double getCurrentSquibRatio() { return (double) this.barrelTravelled / (double) this.chargesUsed; }
+
+		public static boolean safeLoad(List<StructureBlockInfo> propellant, Direction orientation) {
+			Map<Block, Integer> allowedCounts = new HashMap<>();
+			Map<Block, Integer> actualCounts = new HashMap<>();
+			for (ListIterator<StructureBlockInfo> iter = propellant.listIterator(); iter.hasNext(); ) {
+				int index = iter.nextIndex();
+				StructureBlockInfo info = iter.next();
+
+				Block block = info.state.getBlock();
+				if (!(block instanceof BigCannonPropellantBlock cpropel) || !(cpropel.isValidAddition(info, index, orientation))) return false;
+				if (actualCounts.containsKey(block)) {
+					actualCounts.put(block, actualCounts.get(block) + 1);
+				} else {
+					actualCounts.put(block, 1);
+				}
+				for (Map.Entry<Block, Integer> entry : cpropel.getPropellantProperties().validPropellantCounts().entrySet()) {
+					Block block1 = entry.getKey();
+					int oldCount = allowedCounts.getOrDefault(block1, -1);
+					int newCount = entry.getValue();
+					if (newCount >= 0 && (oldCount < 0 || newCount < oldCount)) allowedCounts.put(block1, newCount);
+				}
+			}
+			for (Map.Entry<Block, Integer> entry : actualCounts.entrySet()) {
+				Block block = entry.getKey();
+				if (allowedCounts.containsKey(block) && allowedCounts.get(block) < entry.getValue()) return false;
+			}
+			return true;
+		}
 	}
 
 }

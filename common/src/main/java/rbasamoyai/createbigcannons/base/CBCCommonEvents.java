@@ -53,6 +53,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
 public class CBCCommonEvents {
@@ -158,6 +159,7 @@ public class CBCCommonEvents {
 		BigCannonMaterialPropertiesHandler.syncTo(player);
 		BigCannonBreechStrengthHandler.syncTo(player);
 		FluidCastingTimeHandler.syncTo(player);
+		BigCannonPropellantPropertiesHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
@@ -170,6 +172,7 @@ public class CBCCommonEvents {
 		cons.accept(BigCannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_material_properties_handler"));
 		cons.accept(BigCannonBreechStrengthHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_breech_strength_handler"));
 		cons.accept(FluidCastingTimeHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("fluid_casting_time_handler"));
+		cons.accept(BigCannonPropellantPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_propellant_properties_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,

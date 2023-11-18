@@ -15,7 +15,6 @@ Added:
  - Separated CBC propellant power and recoil
 - Added configuration for minimum charge power for big cannon projectiles
 - Added configuration for ignoring squibbing for big cannon projectiles
-- Added configuration for added recoil for big cannon projectiles
 - Added Cannon Welder
 [Development] - Added registry events for cannon cast shapes
 [Development] - Added support for projectiles with integrated propellant
@@ -36,6 +35,9 @@ Changes:
 - Changed squib ratio values
 - Changed cannon tooltips
 - Cast Iron, Bronze, and Steel cannon blocks and autocannon blocks can now be picked up with Silk Touch
+- Big cannon propellant properties are now datapacked instead of set through config
+ - Some values, like maximum power level for Big Cartridges, still configured in config menu
+- Changed Powder Charge tooltip to include added cannon stress
 Fixes:
 - Fixed Cannon Crafting Wand not boring autocannons
 - Fixed Cannon Crafting Wand not properly connecting cannons
