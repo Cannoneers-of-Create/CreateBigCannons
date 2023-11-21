@@ -137,6 +137,24 @@ public class CBCBuilderTransformers {
 				.texture("particle", topLoc)));
 	}
 
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarEnd(String pathAndMaterial) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/drop_mortar_end");
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_end_side");
+		ResourceLocation topLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_end_top");
+		ResourceLocation bottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_end_bottom");
+		ResourceLocation knobLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_end_knob");
+		ResourceLocation spikeLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_drop_mortar_end_spike");
+		return b -> b.properties(p -> p.noOcclusion())
+			.addLayer(() -> RenderType::cutoutMipped)
+			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
+				.texture("spike", spikeLoc)
+				.texture("side", sideLoc)
+				.texture("top", topLoc)
+				.texture("bottom", bottomLoc)
+				.texture("knob", knobLoc)
+				.texture("particle", topLoc)));
+	}
+
 	public static <T extends Block & BigCannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreech(String pathAndMaterial) {
 		ResourceLocation itemBaseLoc = CreateBigCannons.resource("block/sliding_breech_item");
 		ResourceLocation holeLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_sliding_breech_hole");
@@ -552,6 +570,12 @@ public class CBCBuilderTransformers {
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot() {
 		return shellLoot(t -> t);
+	}
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarShell() {
+		return b -> b.properties(p -> p.noOcclusion())
+			.addLayer(() -> RenderType::cutout)
+			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/drop_mortar_shell"))));
 	}
 
 }

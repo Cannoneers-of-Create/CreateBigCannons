@@ -74,7 +74,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		compound.putBoolean("UpdatesOwnRotation", this.updatesOwnRotation);
 	}
 
-	protected ControlPitchContraption getController() {
+	public ControlPitchContraption getController() {
 		if (this.controllerPos != null) {
 			if (!this.level.isLoaded(this.controllerPos)) return null;
 			return this.level.getBlockEntity(this.controllerPos) instanceof ControlPitchContraption controller ? controller : null;
@@ -240,7 +240,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	public void tryFiringShot() {
 		if (this.contraption instanceof AbstractMountedCannonContraption cannon && this.level instanceof ServerLevel slevel) {
-			cannon.fireShot(slevel, this, this.getController());
+			cannon.fireShot(slevel, this);
 		}
 	}
 

@@ -20,11 +20,13 @@ import com.simibubi.create.content.contraptions.ContraptionType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -46,12 +48,14 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarMunition;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.IntegratedPropellantProjectile;
@@ -62,6 +66,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	private BigCannonMaterial cannonMaterial;
 	public boolean hasFired = false;
 	public boolean hasWeldedPenalty = false;
+
+	protected int mortarDelay = 0;
+	protected ItemStack cachedMortarRound = ItemStack.EMPTY;
 
 	@Override
 	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
@@ -229,19 +236,26 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
 		if (this.presentBlockEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech)
 			qfbreech.tickAnimation();
+		if (!level.isClientSide && this.isDropMortar() && this.mortarDelay > 0) {
+			--this.mortarDelay;
+			if (this.mortarDelay == 0) this.actuallyFireDropMortar();
+		}
 	}
 
 	@Override
 	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
 		if (!togglePower || firePower <= 0) return;
-		this.fireShot(level, entity, controller);
+		this.fireShot(level, entity);
 	}
 
 	@Override
-	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
+	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity) {
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
 		if (this.presentBlockEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech && qfbreech.getOpenProgress() > 0)
 			return;
+		if (this.isDropMortar()) return;
+
+		ControlPitchContraption controller = entity.getController();
 
 		Random rand = level.getRandom();
 		BlockPos currentPos = this.startPos.immutable();
@@ -403,7 +417,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		if (projectile != null) {
 			if (projectile instanceof IntegratedPropellantProjectile integPropel && !projectileBlocks.isEmpty()) {
-				if (propelCtx.addIntegratedPropellant(integPropel, projectileBlocks.get(0), this.initialOrientation) && canFail) {
+				if (!propelCtx.addIntegratedPropellant(integPropel, projectileBlocks.get(0), this.initialOrientation) && canFail) {
 					this.fail(currentPos, level, entity, null, (int) propelCtx.chargesUsed);
 					return;
 				}
@@ -546,6 +560,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		CompoundTag tag = super.writeNBT(clientData);
 		tag.putString("CannonMaterial", this.cannonMaterial == null ? CBCBigCannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
 		if (this.hasWeldedPenalty) tag.putBoolean("WeldedCannon", true);
+		if (this.mortarDelay > 0) tag.putInt("MortarDelay", this.mortarDelay);
+		if (this.cachedMortarRound != null && !this.cachedMortarRound.isEmpty()) tag.put("CachedMortarRound", this.cachedMortarRound.save(new CompoundTag()));
 		return tag;
 	}
 
@@ -555,11 +571,75 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		this.cannonMaterial = BigCannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("CannonMaterial")));
 		this.hasWeldedPenalty = tag.contains("WeldedCannon");
 		if (this.cannonMaterial == null) this.cannonMaterial = CBCBigCannonMaterials.CAST_IRON;
+		this.mortarDelay = Math.max(0, tag.getInt("MortarDelay"));
+		this.cachedMortarRound = tag.contains("CachedMortarRound", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("CachedMortarRound")) : ItemStack.EMPTY;
 	}
 
 	@Override
 	public ContraptionType getType() {
 		return CBCContraptionTypes.MOUNTED_CANNON;
+	}
+
+	public boolean isDropMortar() {
+		StructureBlockInfo breech = this.blocks.get(this.startPos.relative(this.initialOrientation.getOpposite()));
+		return breech.state.getBlock() instanceof BigCannonBlock cblock && cblock.getCannonShape() == CannonCastShape.DROP_MORTAR_END;
+	}
+
+	public boolean tryDroppingMortarRound(ItemStack stack) {
+		if (!this.isDropMortar() || this.cachedMortarRound != null && !this.cachedMortarRound.isEmpty()
+			|| !(Block.byItem(stack.getItem()) instanceof DropMortarMunition)) return false;
+		BlockPos currentPos = this.startPos.immutable();
+		while (this.presentBlockEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
+			BigCannonBehavior behavior = cbe.cannonBehavior();
+			if (!behavior.block().state.isAir()) return false;
+			currentPos = currentPos.relative(this.initialOrientation);
+		}
+		this.cachedMortarRound = stack.copy();
+		this.mortarDelay = CBCConfigs.SERVER.cannons.dropMortarDelay.get();
+		if (this.mortarDelay <= 0) this.actuallyFireDropMortar();
+		return true;
+	}
+
+	public void actuallyFireDropMortar() {
+		if (!(this.entity instanceof PitchOrientedContraptionEntity poce) || !(poce.level instanceof ServerLevel slevel)) return;
+		ItemStack stack = this.cachedMortarRound;
+		this.cachedMortarRound = ItemStack.EMPTY;
+		if (!(Block.byItem(stack.getItem()) instanceof DropMortarMunition munition)) return;
+
+		ControlPitchContraption controller = poce.getController();
+		AbstractBigCannonProjectile projectile = munition.getProjectile(slevel, stack);
+
+		BlockPos currentPos = this.startPos.immutable();
+		while (this.presentBlockEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
+			BigCannonBehavior behavior = cbe.cannonBehavior();
+			if (!behavior.block().state.isAir()) return;
+			currentPos = currentPos.relative(this.initialOrientation);
+		}
+
+		// TODO: config for projectile values
+		float recoilMagnitude = 1;
+		float power = 4;
+		float spread = 0.1f;
+
+		Vec3 spawnPos = this.entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+		Vec3 vec = spawnPos.subtract(this.entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
+
+		projectile.setPos(spawnPos);
+		projectile.setChargePower(power);
+		projectile.shoot(vec.x, vec.y, vec.z, power, spread);
+		projectile.xRotO = projectile.getXRot();
+		projectile.yRotO = projectile.getYRot();
+		slevel.addFreshEntity(projectile);
+
+		recoilMagnitude *= CBCConfigs.SERVER.cannons.bigCannonRecoilScale.getF();
+		if (controller != null) controller.onRecoil(vec.scale(-recoilMagnitude), entity);
+
+		Vec3 plumePos = spawnPos.subtract(vec.scale(0.5));
+		for (ServerPlayer player : slevel.players()) {
+			slevel.sendParticles(player, new CannonPlumeParticleData(0.2f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
+		}
+		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(slevel, new BlockPos(spawnPos));
+		this.hasFired = true;
 	}
 
 	protected static class PropellantContext {

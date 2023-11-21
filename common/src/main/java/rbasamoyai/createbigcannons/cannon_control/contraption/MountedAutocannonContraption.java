@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
@@ -245,7 +244,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	}
 
 	@Override
-	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller) {
+	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity) {
 		if (this.startPos == null
 			|| this.cannonMaterial == null
 			|| !(this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
@@ -253,6 +252,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		ItemStack foundProjectile = breech.extractNextInput();
 		if (!(foundProjectile.getItem() instanceof AutocannonAmmoItem round)) return;
+		ControlPitchContraption controller = entity.getController();
 
 		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? Direction.DOWN : this.initialOrientation.getOpposite())), 1.0f);
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
@@ -381,7 +381,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController()))
-			this.fireShot(slevel, entity, entity.getController());
+			this.fireShot(slevel, entity);
 
 		for (Map.Entry<BlockPos, BlockEntity> entry : this.presentBlockEntities.entrySet()) {
 			if (entry.getValue() instanceof IAutocannonBlockEntity autocannon)

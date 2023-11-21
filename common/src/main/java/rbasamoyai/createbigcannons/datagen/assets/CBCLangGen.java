@@ -80,6 +80,11 @@ public class CBCLangGen {
 		.conditionAndBehavior("Filling", "The shell can only be filled through _the same face that the fuze is placed on._ If a fuze is present, the shell _cannot be filled._")
 		.conditionAndBehavior("Note", "Some fluids may not have any effect on release. Supported fluids include, but may not be limited to, _water, lava, and liquid potions._");
 
+		tooltip(CBCBlocks.DROP_MORTAR_SHELL)
+		.header("DROP MORTAR SHELL")
+		.summary("Light anti-entity _explosive_ shell that deals a bit of structural damage. Fired by _dropping into a drop mortar-type_ big cannon, although it can also be _conventionally fired._")
+		.conditionAndBehavior("On Detonation", "Explodes.");
+
 		tooltip(CBCItems.IMPACT_FUZE)
 		.header("IMPACT FUZE")
 		.summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact.")

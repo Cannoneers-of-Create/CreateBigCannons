@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bre
 import java.util.HashSet;
 import java.util.Set;
 
-import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
@@ -38,6 +37,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBaseBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
@@ -96,7 +96,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 	@Override
 	public <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
 																							Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
-																							StructureBlockInfo info, AbstractContraptionEntity entity) {
+																							StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
 		if (((BigCannonBlock) info.state.getBlock()).getFacing(info.state).getAxis() != side.getAxis()
 			|| be.cannonBehavior().isConnectedTo(side)
 			|| !(be instanceof QuickfiringBreechBlockEntity breech)) return false;
