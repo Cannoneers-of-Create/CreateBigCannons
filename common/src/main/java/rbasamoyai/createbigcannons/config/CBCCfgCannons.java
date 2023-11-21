@@ -11,6 +11,10 @@ public class CBCCfgCannons extends ConfigBase {
 	public final ConfigFloat bigCannonRecoilScale = f(4f, 0, "bigCannonRecoilScale");
 	public final ConfigFloat autocannonRecoilScale = f(0.5f, 0, "autocannonRecoilScale");
 
+	public final ConfigGroup dropMortar = group(0, "dropMortar", "Drop Mortar");
+	public final ConfigInt dropMortarDelay = i(5, 0, "dropMortarDelay", Comments.dropMortarDelay);
+	public final ConfigInt dropMortarItemCooldown = i(40, 0, "dropMortarItemCooldown", Comments.dropMortarItemCooldown);
+
 	public final ConfigGroup loadingTools = group(0, "loadingTools", "Loading Tools");
 	public final ConfigBool deployersCanUseLoadingTools = b(false, "deployersCanUseLoadingTools", Comments.deployersCanUseLoadingTools);
 	public final ConfigInt ramRodReach = i(5, 1, "ramRodReach", Comments.ramRodReach);
@@ -47,6 +51,8 @@ public class CBCCfgCannons extends ConfigBase {
 		static String carriageTurnRate = "How fast the carriage turns, in degrees per tick.";
 		static String quickfiringBreechLoadingCooldown = "Time when the Quickfiring Breech cannot be loaded by Mechanical Arms.";
 		static String quickfiringBreechOpeningCooldown = "Time it takes for the Quickfiring Breech to fully open/close, during which it cannot be loaded.";
+		static String dropMortarDelay = "Time in ticks between inserting a munition into a drop mortar and the drop mortar firing it. There are 20 ticks in 1 second.";
+		static String dropMortarItemCooldown = "Length in ticks that the player has to wait for before inserting the same munition type into a drop mortar again. There are 20 ticks in 1 second.";
 	}
 
 }

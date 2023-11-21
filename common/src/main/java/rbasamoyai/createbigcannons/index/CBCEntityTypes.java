@@ -24,6 +24,8 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProject
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.Grapeshot;
@@ -61,6 +63,12 @@ public class CBCEntityTypes {
 	public static final EntityEntry<FluidShellProjectile> FLUID_SHELL = cannonProjectile("fluid_shell", FluidShellProjectile::new);
 	public static final EntityEntry<SmokeShellProjectile> SMOKE_SHELL = cannonProjectile("smoke_shell", SmokeShellProjectile::new);
 	public static final EntityEntry<MortarStoneProjectile> MORTAR_STONE = cannonProjectile("mortar_stone", MortarStoneProjectile::new);
+
+	public static final EntityEntry<DropMortarShellProjectile> DROP_MORTAR_SHELL = REGISTRATE
+		.entity("drop_mortar_shell", DropMortarShellProjectile::new, MobCategory.MISC)
+		.properties(cannonProperties())
+		.renderer(() -> DropMortarShellRenderer::new)
+		.register();
 
 	public static final EntityEntry<Shrapnel> SHRAPNEL = REGISTRATE
 		.entity("shrapnel", Shrapnel::new, MobCategory.MISC)

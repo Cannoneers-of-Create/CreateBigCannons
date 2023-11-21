@@ -33,6 +33,7 @@ public class ModGroup {
 
 				CBCBlocks.WROUGHT_IRON_CANNON_END.asStack(),
 				CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER.asStack(),
+				CBCBlocks.WROUGHT_IRON_DROP_MORTAR_END.asStack(),
 
 				CBCBlocks.CAST_IRON_CANNON_END.asStack(),
 				CBCBlocks.CAST_IRON_SLIDING_BREECH.asStack(),
@@ -83,6 +84,7 @@ public class ModGroup {
 				CBCBlocks.SHRAPNEL_SHELL.asStack(),
 				CBCBlocks.FLUID_SHELL.asStack(),
 				CBCBlocks.SMOKE_SHELL.asStack(),
+				CBCBlocks.DROP_MORTAR_SHELL.asStack(),
 				CBCItems.IMPACT_FUZE.asStack(),
 				TimedFuzeItem.getCreativeTabItem(20),
 				ProximityFuzeItem.getCreativeTabItem(1),

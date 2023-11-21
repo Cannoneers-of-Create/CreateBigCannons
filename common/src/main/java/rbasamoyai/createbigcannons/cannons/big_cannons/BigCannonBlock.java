@@ -27,8 +27,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.welding.WeldableBlock;
@@ -211,23 +213,30 @@ public interface BigCannonBlock extends WeldableBlock {
 
 	default <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
 			Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
-			StructureBlockInfo info, AbstractContraptionEntity entity) {
-		boolean flag = ((BigCannonBlock) info.state.getBlock()).getFacing(info.state).getAxis() == side.getAxis()
-			&& !be.cannonBehavior().isConnectedTo(side);
-
+			StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
+		if (((BigCannonBlock) info.state.getBlock()).getFacing(info.state).getAxis() != side.getAxis() || be.cannonBehavior().isConnectedTo(side))
+			return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
-		if (flag && Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
+		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
 			StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
-			if (!level.isClientSide && be.cannonBehavior().tryLoadingBlock(loadInfo)) {
-				writeAndSyncSingleBlockData(be, info, entity, cannon);
-
-				SoundType sound = loadInfo.state.getSoundType();
-				level.playSound(null, player.blockPosition(), sound.getPlaceSound(), SoundSource.BLOCKS, sound.getVolume(), sound.getPitch());
-				if (!player.isCreative()) stack.shrink(1);
+			if (!level.isClientSide) {
+				boolean flag = false;
+				if (!player.getCooldowns().isOnCooldown(stack.getItem()) && cannon.tryDroppingMortarRound(stack)) {
+					player.getCooldowns().addCooldown(stack.getItem(), CBCConfigs.SERVER.cannons.dropMortarItemCooldown.get());
+					flag = true;
+				} else if (be.cannonBehavior().tryLoadingBlock(loadInfo)) {
+					writeAndSyncSingleBlockData(be, info, entity, cannon);
+					flag = true;
+				}
+				if (flag) {
+					SoundType sound = loadInfo.state.getSoundType();
+					level.playSound(null, player.blockPosition(), sound.getPlaceSound(), SoundSource.BLOCKS, sound.getVolume(), sound.getPitch());
+					if (!player.isCreative()) stack.shrink(1);
+				}
 			}
 			return true;
 		}
-		if (flag && stack.getItem() instanceof HandloadingTool tool && !player.getCooldowns().isOnCooldown(stack.getItem())) {
+		if (stack.getItem() instanceof HandloadingTool tool && !player.getCooldowns().isOnCooldown(stack.getItem())) {
 			tool.onUseOnCannon(player, level, localPos, side, cannon);
 			return true;
 		}
