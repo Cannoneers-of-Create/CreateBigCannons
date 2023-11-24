@@ -17,6 +17,7 @@ Added:
 - Added configuration for ignoring squibbing for big cannon projectiles
 - Added Cannon Welder
 - Added drop mortar and Drop Mortar Shell for Wrought Iron big cannon (Wrought Iron Drop Mortar End)
+- Added more info to Engineer's Goggles for Cannon Mount, Yaw Controller
 [Development] - Added registry events for cannon cast shapes
 [Development] - Added support for projectiles with integrated propellant
 Changes:
@@ -37,7 +38,7 @@ Changes:
 - Changed cannon tooltips
 - Cast Iron, Bronze, and Steel cannon blocks and autocannon blocks can now be picked up with Silk Touch
 - Big cannon propellant properties are now datapacked instead of set through config
- [Remove?] - Some values, like maximum power level for Big Cartridges, still configured in config menu
+ - Some values, like maximum power level for Big Cartridges, still configured in config menu
 - Changed Powder Charge tooltip to include added cannon stress
 Fixes:
 - Fixed Cannon Crafting Wand not boring autocannons

@@ -230,6 +230,8 @@
   "createbigcannons.cannon_welder.success": "\u02D9\u02D9\u02D9s\u029E\u0254o\u05DFq bu\u0131p\u05DF\u01DDM",
   "createbigcannons.cannon_welder.too_far": "\u01DD\u026F\u0131\u0287 \u0250 \u0287\u0250 s\u029E\u0254o\u05DFq o\u028D\u0287 u\u0250\u0265\u0287 \u01DD\u0279o\u026F p\u05DF\u01DD\u028D \u0287ouu\u0250\u0186",
   "createbigcannons.display_source.cannon_mount.cannon_pitch": " :\u0265\u0254\u0287\u0131\u0500 uouu\u0250\u0186",
+  "createbigcannons.display_source.cannon_mount.cannon_strength": " :\u0265\u0287bu\u01DD\u0279\u0287S uouu\u0250\u0186",
+  "createbigcannons.display_source.cannon_mount.cannon_strength.value": "ss\u01DD\u0279\u0287S \u0287u\u0250\u05DF\u05DF\u01DDdo\u0279\u0500 %s",
   "createbigcannons.display_source.cannon_mount.cannon_yaw": " :\u028D\u0250\u028E uouu\u0250\u0186",
   "createbigcannons.display_source.cannon_mount.degrees": "\u00BA%s",
   "createbigcannons.display_source.cannon_mount.for_cannon_status": "sn\u0287\u0250\u0287S uouu\u0250\u0186 \u0279o\u025F",

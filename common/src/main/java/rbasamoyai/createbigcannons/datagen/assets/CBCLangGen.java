@@ -263,6 +263,9 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.abort", "Selection discarded");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.success", "Welding blocks...");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.first_pos", "First position selected");
+
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength", "Cannon Strength: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength.value", "%s Propellant Stress");
 	}
 
 	private static class TooltipBuilder {

@@ -248,6 +248,15 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		this.fireShot(level, entity);
 	}
 
+	public int getMaxSafeCharges() {
+		BigCannonMaterialProperties properties = this.cannonMaterial.properties();
+		StructureBlockInfo breech = this.blocks.get(this.startPos.relative(this.initialOrientation.getOpposite()));
+		int materialStrength = properties.maxSafePropellantStress();
+		int maxSafeCharges = Math.min(materialStrength, BigCannonBreechStrengthHandler.getStrength(breech.state.getBlock(), materialStrength));
+		if (this.hasWeldedPenalty) maxSafeCharges -= properties.weldStressPenalty();
+		return Math.max(maxSafeCharges, 0);
+	}
+
 	@Override
 	public void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity) {
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
@@ -260,12 +269,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		Random rand = level.getRandom();
 		BlockPos currentPos = this.startPos.immutable();
 		int count = 0;
-		BigCannonMaterialProperties properties = this.cannonMaterial.properties();
-		StructureBlockInfo breech = this.blocks.get(this.startPos.relative(this.initialOrientation.getOpposite()));
-		int materialStrength = properties.maxSafePropellantStress();
-		int maxSafeCharges = Math.min(materialStrength, BigCannonBreechStrengthHandler.getStrength(breech.state.getBlock(), materialStrength));
-		if (this.hasWeldedPenalty) maxSafeCharges -= properties.weldStressPenalty();
-		maxSafeCharges = Math.max(maxSafeCharges, 0);
+		int maxSafeCharges = this.getMaxSafeCharges();
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		float spreadSub = CBCConfigs.SERVER.cannons.barrelSpreadReduction.getF();
 		boolean emptyNoProjectile = false;
@@ -618,7 +622,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		// TODO: config for projectile values
 		float recoilMagnitude = 1;
-		float power = 4;
+		float power = 3;
 		float spread = 0.1f;
 
 		Vec3 spawnPos = this.entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);

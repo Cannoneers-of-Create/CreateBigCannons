@@ -230,6 +230,8 @@
   "createbigcannons.cannon_welder.success": "Welding blocks...",
   "createbigcannons.cannon_welder.too_far": "Cannot weld more than two blocks at a time",
   "createbigcannons.display_source.cannon_mount.cannon_pitch": "Cannon Pitch: ",
+  "createbigcannons.display_source.cannon_mount.cannon_strength": "Cannon Strength: ",
+  "createbigcannons.display_source.cannon_mount.cannon_strength.value": "%s Propellant Stress",
   "createbigcannons.display_source.cannon_mount.cannon_yaw": "Cannon Yaw: ",
   "createbigcannons.display_source.cannon_mount.degrees": "%s\u00BA",
   "createbigcannons.display_source.cannon_mount.for_cannon_status": "for Cannon Status",
