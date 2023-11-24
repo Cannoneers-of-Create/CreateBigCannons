@@ -3,11 +3,14 @@ package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
+
+import java.util.List;
 
 public class YawControllerBlockEntity extends KineticBlockEntity implements ExtendsCannonMount {
 
@@ -34,6 +37,14 @@ public class YawControllerBlockEntity extends KineticBlockEntity implements Exte
 	@Override
 	public CannonMountBlockEntity getCannonMount() {
 		return this.level.getBlockEntity(this.worldPosition.above()) instanceof CannonMountBlockEntity mount ? mount : null;
+	}
+
+	@Override
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		if (!super.addToGoggleTooltip(tooltip, isPlayerSneaking)) return false;
+		CannonMountBlockEntity mount = this.getCannonMount();
+		if (mount != null) ExtendsCannonMount.addCannonInfoToTooltip(tooltip, mount.mountedContraption);
+		return true;
 	}
 
 }

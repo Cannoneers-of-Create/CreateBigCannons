@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -34,7 +36,8 @@ import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block, ExtendsCannonMount {
+public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block,
+	ExtendsCannonMount {
 
 	private static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -410,6 +413,13 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	@Override
 	public CannonMountBlockEntity getCannonMount() {
 		return this;
+	}
+
+	@Override
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		if (!super.addToGoggleTooltip(tooltip, isPlayerSneaking)) return false;
+		ExtendsCannonMount.addCannonInfoToTooltip(tooltip, this.mountedContraption);
+		return true;
 	}
 
 }
