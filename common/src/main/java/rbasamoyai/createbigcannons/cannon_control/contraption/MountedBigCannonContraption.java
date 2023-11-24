@@ -72,6 +72,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	@Override
 	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
+		if (this.isDropMortar()) return -15;
 		BlockState state = controller.getControllerState();
 		if (CBCBlocks.CANNON_MOUNT.has(state)) return 30;
 		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
@@ -80,6 +81,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	@Override
 	public float maximumElevation(@Nonnull ControlPitchContraption controller) {
+		if (this.isDropMortar()) return 85;
 		BlockState state = controller.getControllerState();
 		if (CBCBlocks.CANNON_MOUNT.has(state)) return 60;
 		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 30;
