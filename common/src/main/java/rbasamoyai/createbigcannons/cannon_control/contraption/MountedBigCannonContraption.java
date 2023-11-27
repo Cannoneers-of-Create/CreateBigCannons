@@ -304,8 +304,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					if (cannonInfo.state.is(CBCTags.CBCBlockTags.REDUCES_SPREAD)) {
 						propelCtx.spread = Math.max(propelCtx.spread - spreadSub, 0.0f);
 					}
-					if (projectile.canSquib() && propelCtx.chargesUsed > 0
-						&& propelCtx.getCurrentSquibRatio() > this.cannonMaterial.properties().squibRatio() && rollSquib(rand)) {
+					if (projectile.canSquib() && this.cannonMaterial.properties().mayGetStuck(propelCtx.chargesUsed, propelCtx.barrelTravelled) && rollSquib(rand)) {
 						this.squibBlocks(currentPos, projectileBlocks);
 						Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 						level.playSound(null, squibPos.x, squibPos.y, squibPos.z, cannonInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 10.0f, 0.0f);
@@ -679,8 +678,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			this.spread += propellant.getSpread();
 			return true;
 		}
-
-		public double getCurrentSquibRatio() { return (double) this.barrelTravelled / (double) this.chargesUsed; }
 
 		public static boolean safeLoad(List<StructureBlockInfo> propellant, Direction orientation) {
 			Map<Block, Integer> allowedCounts = new HashMap<>();
