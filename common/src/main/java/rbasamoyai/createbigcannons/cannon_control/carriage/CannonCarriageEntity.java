@@ -163,7 +163,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 					if (stack.isEmpty()) player.getInventory().removeItem(stack);
 				}
 			}
-			cannon.fireShot(slevel, this.cannonContraption, this);
+			cannon.fireShot(slevel, this.cannonContraption);
 		}
 	}
 

@@ -59,6 +59,8 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 		return contraption.presentBlockEntities.get(pos) instanceof SlidingBreechBlockEntity breech ? breech.getOpeningType() : BigCannonEnd.OPEN;
 	}
 
+	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.CLOSED; }
+
 	@Override
 	public PushReaction getPistonPushReaction(BlockState state) {
 		return PushReaction.BLOCK;

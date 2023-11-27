@@ -2,19 +2,43 @@
   "type": "minecraft:block",
   "pools": [
     {
+      "rolls": 1.0,
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
           "name": "createbigcannons:cannon_carriage"
         }
+      ]
+    },
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "minecraft:saddle"
+        }
       ],
-      "rolls": 1.0
+      "conditions": [
+        {
+          "condition": "minecraft:block_state_property",
+          "block": "createbigcannons:cannon_carriage",
+          "properties": {
+            "saddled": "true"
+          }
+        }
+      ]
     }
   ]
 }

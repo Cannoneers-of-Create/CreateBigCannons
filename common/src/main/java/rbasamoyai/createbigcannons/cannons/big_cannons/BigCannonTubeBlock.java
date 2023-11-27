@@ -2,15 +2,12 @@ package rbasamoyai.createbigcannons.cannons.big_cannons;
 
 import java.util.function.Supplier;
 
-import javax.annotation.Nullable;
-
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -74,10 +71,7 @@ public class BigCannonTubeBlock extends BigCannonBaseBlock implements IBE<BigCan
 		return this.visualShapes.get(this.getFacing(state));
 	}
 
-	@Override
-	public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) {
-		return BigCannonEnd.OPEN;
-	}
+	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.OPEN; }
 
 	@Override
 	public boolean isComplete(BlockState state) {

@@ -22,7 +22,7 @@ public record ShrapnelProperties(double damage, double spread, int count) {
 
 	private static <T> T getOrWarn(JsonObject obj, String key, String id, T defValue, Function<JsonElement, T> func) {
 		if (!obj.has(key)) {
-			CreateBigCannons.LOGGER.warn("{} is missing {} value, will be set to 1", id, key);
+			CreateBigCannons.LOGGER.warn("{} is missing {} value, will be set to {}", id, key, defValue);
 			return defValue;
 		}
 		return func.apply(obj.getAsJsonPrimitive(key));

@@ -26,8 +26,8 @@ public class CreateBigCannonsFabric implements ModInitializer {
 		CBCParticleTypes.register();
 		CBCSoundEvents.register(AllSoundEvents.SoundEntry::register);
 
-		CBCRegistries.init();
-		CBCConfigs.registerConfigs((t, c) -> ModLoadingContext.registerConfig(CreateBigCannons.MOD_ID, t, c));
+        CBCRegistries.forceInit();
+        CBCConfigs.registerConfigs((t, c) -> ModLoadingContext.registerConfig(CreateBigCannons.MOD_ID, t, c));
 
 		CBCNetworkFabric.INSTANCE.initServerListener();
 		DefaultFluidCompat.registerMinecraftBlobEffects();

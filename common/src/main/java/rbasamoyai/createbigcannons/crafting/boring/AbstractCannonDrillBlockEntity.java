@@ -470,8 +470,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			Component exceptionText = Lang.builder("exception")
 				.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip." + this.failureReason.getSerializedName())
 				.component();
-			// TODO: ChatFormatting.Gray is now no longer used but cutTextComponent and replaced by style.
-			tooltip.addAll(TooltipHelper.cutTextComponent(exceptionText, Style.EMPTY, Style.EMPTY, 4));
+			TooltipHelper.Palette palette = TooltipHelper.Palette.GRAY_AND_WHITE;
+			tooltip.addAll(TooltipHelper.cutTextComponent(exceptionText, palette.primary(), palette.highlight(), 4));
 		}
 
 		return true;

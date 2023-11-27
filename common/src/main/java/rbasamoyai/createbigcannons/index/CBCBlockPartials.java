@@ -48,6 +48,7 @@ public class CBCBlockPartials {
 		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
 		YAW_SHAFT = block("cannon_mount/yaw_axis"),
 		FUZE = block("fuze"),
+		DROP_MORTAR_SHELL_FLYING = new PartialModel(CreateBigCannons.resource("block/drop_mortar_shell_flying")),
 
 		CANNON_CARRIAGE = block("cannon_carriage/carriage"),
 		CANNON_CARRIAGE_AXLE = block("cannon_carriage/carriage_axle"),

@@ -42,6 +42,7 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
 		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
 		forgeEventBus.addListener(CBCClientForge::onPlayerLogOut);
+		forgeEventBus.addListener(CBCClientForge::onClickMouse);
 	}
 
 	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
@@ -77,6 +78,10 @@ public class CBCClientForge {
 
 	public static void onClientGameTick(TickEvent.ClientTickEvent evt) {
 		CBCClientCommon.onClientGameTick(Minecraft.getInstance());
+	}
+
+	public static void onClickMouse(InputEvent.ClickInputEvent evt) {
+		if (CBCClientCommon.onClickMouse(evt.getKeyMapping()) && evt.isCancelable()) evt.setCanceled(true);
 	}
 
 	public static void onScrollMouse(InputEvent.MouseScrollingEvent evt) {
