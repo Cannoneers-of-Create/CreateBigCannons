@@ -8,8 +8,10 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.LogicalSide;
 import rbasamoyai.createbigcannons.base.CBCCommonEvents;
@@ -75,7 +77,7 @@ public class CBCCommonForgeEvents {
 
 	public static void onUseItemOnBlock(PlayerInteractEvent.RightClickBlock event) {
 		if (event.getItemStack().getItem() instanceof CannonWelderItem
-			&& CannonWelderItem.welderItemAlwaysPlacesWhenUsed(event.getPlayer(), event.getWorld(), event.getHand(), event.getHitVec()) == InteractionResult.FAIL)
+			&& CannonWelderItem.welderItemAlwaysPlacesWhenUsed(event.getEntity(), event.getLevel(), event.getHand(), event.getHitVec()) == InteractionResult.FAIL)
 			event.setUseBlock(Event.Result.DENY);
 	}
 

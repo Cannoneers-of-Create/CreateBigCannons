@@ -80,7 +80,7 @@ public class CBCClientForge {
 		CBCClientCommon.onClientGameTick(Minecraft.getInstance());
 	}
 
-	public static void onClickMouse(InputEvent.ClickInputEvent evt) {
+	public static void onClickMouse(InputEvent.InteractionKeyMappingTriggered evt) {
 		if (CBCClientCommon.onClickMouse(evt.getKeyMapping()) && evt.isCancelable()) evt.setCanceled(true);
 	}
 

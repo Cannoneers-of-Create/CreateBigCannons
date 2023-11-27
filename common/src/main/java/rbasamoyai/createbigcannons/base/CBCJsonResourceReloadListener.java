@@ -1,11 +1,8 @@
 package rbasamoyai.createbigcannons.base;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.nio.charset.StandardCharsets;
+import java.util.Map;
 
 import org.slf4j.Logger;
 
@@ -43,53 +40,30 @@ public abstract class CBCJsonResourceReloadListener extends SimplePreparableRelo
 		Multimap<ResourceLocation, JsonElement> map = HashMultimap.create();
 		int i = this.directory.length() + 1;
 
-		for(ResourceLocation loco : resourceManager.listResources(this.directory, path -> path.endsWith(".json"))) {
+		for(Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources(this.directory, path -> path.getPath().endsWith(".json")).entrySet()) {
+			ResourceLocation loco = entry.getKey();
 			String string = loco.getPath();
 			ResourceLocation loc2 = new ResourceLocation(loco.getNamespace(), string.substring(i, string.length() - PATH_SUFFIX_LENGTH));
 			try {
-				Resource resource = resourceManager.getResource(loco);
+				Reader reader = entry.getValue().openAsReader();
 				try {
-					InputStream inputStream = resource.getInputStream();
-					try {
-						Reader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
-						try {
-							JsonElement jsonElement = GsonHelper.fromJson(this.gson, reader, JsonElement.class);
-							if (jsonElement != null) {
-								map.put(loc2, jsonElement);
-							} else {
-								LOGGER.error("Couldn't load data file {} from {} as it's null or empty", loc2, loco);
-							}
-						} catch (Throwable var17) {
-							try {
-								reader.close();
-							} catch (Throwable var16) {
-								var17.addSuppressed(var16);
-							}
-							throw var17;
-						}
-						reader.close();
-					} catch (Throwable var18) {
-						if (inputStream != null) {
-							try {
-								inputStream.close();
-							} catch (Throwable var15) {
-								var18.addSuppressed(var15);
-							}
-						}
-						throw var18;
+					JsonElement jsonElement = GsonHelper.fromJson(this.gson, reader, JsonElement.class);
+					if (jsonElement != null) {
+						map.put(loc2, jsonElement);
+					} else {
+						LOGGER.error("Couldn't load data file {} from {} as it's null or empty", loc2, loco);
 					}
-					if (inputStream != null) inputStream.close();
-				} catch (Throwable var19) {
-					if (resource != null) {
+				} catch (Throwable var17) {
+					if (reader != null) {
 						try {
-							resource.close();
-						} catch (Throwable var14) {
-							var19.addSuppressed(var14);
+							reader.close();
+						} catch (Throwable var16) {
+							var17.addSuppressed(var16);
 						}
 					}
-					throw var19;
+					throw var17;
 				}
-				if (resource != null) resource.close();
+				if (reader != null) reader.close();
 			} catch (IllegalArgumentException | IOException | JsonParseException var20) {
 				LOGGER.error("Couldn't parse data file {} from {}", loc2, loco, var20);
 			}
