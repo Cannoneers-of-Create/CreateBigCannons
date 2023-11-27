@@ -1,24 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " IV",
-    "BZB",
-    " B "
-  ],
   "key": {
-    "V": {
-      "tag": "create:valve_handles"
+    "B": {
+      "tag": "createbigcannons:sheet_brass"
     },
     "I": {
       "tag": "createbigcannons:sheet_iron"
     },
-    "B": {
-      "tag": "createbigcannons:sheet_brass"
+    "V": {
+      "tag": "create:valve_handles"
     },
     "Z": {
       "item": "create:blaze_burner"
     }
   },
+  "pattern": [
+    " IV",
+    "BZB",
+    " B "
+  ],
   "result": {
     "item": "createbigcannons:cannon_welder"
   }

@@ -1,9 +1,5 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "E",
-    "B"
-  ],
   "key": {
     "B": {
       "item": "minecraft:iron_bars"
@@ -12,6 +8,10 @@
       "item": "createbigcannons:wrought_iron_cannon_end"
     }
   },
+  "pattern": [
+    "E",
+    "B"
+  ],
   "result": {
     "item": "createbigcannons:wrought_iron_drop_mortar_end"
   }

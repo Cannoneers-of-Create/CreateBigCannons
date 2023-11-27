@@ -1,13 +1,8 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " X ",
-    "ISI",
-    " C "
-  ],
   "key": {
-    "X": {
-      "item": "minecraft:tnt"
+    "C": {
+      "item": "createbigcannons:powder_charge"
     },
     "I": {
       "tag": "createbigcannons:sheet_iron"
@@ -15,10 +10,15 @@
     "S": {
       "item": "create:shaft"
     },
-    "C": {
-      "item": "createbigcannons:powder_charge"
+    "X": {
+      "item": "minecraft:tnt"
     }
   },
+  "pattern": [
+    " X ",
+    "ISI",
+    " C "
+  ],
   "result": {
     "item": "createbigcannons:drop_mortar_shell"
   }

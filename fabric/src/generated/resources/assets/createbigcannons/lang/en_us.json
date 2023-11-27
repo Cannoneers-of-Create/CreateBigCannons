@@ -233,7 +233,7 @@
   "createbigcannons.display_source.cannon_mount.cannon_strength": "Cannon Strength: ",
   "createbigcannons.display_source.cannon_mount.cannon_strength.value": "%s Propellant Stress",
   "createbigcannons.display_source.cannon_mount.cannon_yaw": "Cannon Yaw: ",
-  "createbigcannons.display_source.cannon_mount.degrees": "%s\u00BA",
+  "createbigcannons.display_source.cannon_mount.degrees": "%sº",
   "createbigcannons.display_source.cannon_mount.for_cannon_status": "for Cannon Status",
   "createbigcannons.display_source.cannon_mount.no_cannon_present": "No Cannon present",
   "createbigcannons.display_source.cannon_mount.not_enough_space": "Not enough space ",

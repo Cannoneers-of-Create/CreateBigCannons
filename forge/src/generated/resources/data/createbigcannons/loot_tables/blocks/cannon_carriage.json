@@ -2,7 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -14,11 +13,20 @@
           ],
           "name": "createbigcannons:cannon_carriage"
         }
-      ]
+      ],
+      "rolls": 1.0
     },
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "createbigcannons:cannon_carriage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "saddled": "true"
+          }
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
@@ -30,15 +38,7 @@
           "name": "minecraft:saddle"
         }
       ],
-      "conditions": [
-        {
-          "condition": "minecraft:block_state_property",
-          "block": "createbigcannons:cannon_carriage",
-          "properties": {
-            "saddled": "true"
-          }
-        }
-      ]
+      "rolls": 1.0
     }
   ]
 }
