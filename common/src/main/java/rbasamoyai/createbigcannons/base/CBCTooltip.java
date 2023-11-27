@@ -92,12 +92,12 @@ public class CBCTooltip {
 			tooltip.add(getNoGogglesMeter(strength, false, true));
 		}
 
-		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".squibRatio")).withStyle(ChatFormatting.GRAY));
+		double minVelPerBarrel = material.minimumVelocityPerBarrel();
+		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".cannonJamming")).withStyle(ChatFormatting.GRAY));
 		if (hasGoggles) {
-			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".squibRatio.goggles", material.squibRatioNum(), material.squibRatioDem()), palette.primary(), palette.highlight(), 2));
+			tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(rootKey + ".cannonJamming.goggles", String.format("%.2f", minVelPerBarrel * 20)), palette.primary(), palette.highlight(), 2));
 		} else {
-			double squibRatio = material.squibRatio();
-			tooltip.add(getNoGogglesMeter(squibRatio < 1d ? 0 : Mth.ceil(material.squibRatio() * 5d / 6d), false, true));
+			tooltip.add(getNoGogglesMeter(minVelPerBarrel < 1d ? 0 : Mth.ceil(minVelPerBarrel * 5d / 6d), false, true));
 		}
 
 		tooltip.add(new TextComponent(" " + I18n.get(rootKey + ".weightImpact")).withStyle(ChatFormatting.GRAY));
