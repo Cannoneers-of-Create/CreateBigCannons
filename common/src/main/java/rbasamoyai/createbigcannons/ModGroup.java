@@ -66,6 +66,7 @@ public class ModGroup {
 				CBCBlocks.CANNON_LOADER.asStack(),
 				CBCBlocks.RAM_HEAD.asStack(),
 				CBCBlocks.WORM_HEAD.asStack(),
+				CBCBlocks.GANTRY_RAMMER_CARRIAGE.asStack(),
 
 				CBCBlocks.POWDER_CHARGE.asStack(),
 				BigCartridgeBlockItem.getWithPower(0),

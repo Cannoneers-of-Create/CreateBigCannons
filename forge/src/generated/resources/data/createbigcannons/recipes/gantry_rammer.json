@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "RGR",
+    " C "
+  ],
+  "key": {
+    "C": {
+      "item": "create:gantry_carriage"
+    },
+    "G": {
+      "tag": "createbigcannons:gunpowder"
+    },
+    "R": {
+      "item": "createbigcannons:ram_head"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "item": "createbigcannons:gantry_rammer"
+  }
+}

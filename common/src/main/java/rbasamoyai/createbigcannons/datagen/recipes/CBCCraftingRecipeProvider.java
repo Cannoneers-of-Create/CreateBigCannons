@@ -21,6 +21,7 @@ import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -240,6 +241,14 @@ public class CBCCraftingRecipeProvider {
 			.pattern("C")
 			.pattern("P")
 			.unlockedBy(getHasName(AllBlocks.PISTON_EXTENSION_POLE.get()), has(AllBlocks.PISTON_EXTENSION_POLE.get()))
+			.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCBlocks.GANTRY_RAMMER_CARRIAGE.get())
+			.define('C', AllBlocks.GANTRY_CARRIAGE.get()).define('G', CBCTags.CBCItemTags.GUNPOWDER).define('R', CBCBlocks.RAM_HEAD.get()).define('I', Blocks.IRON_BLOCK)
+			.pattern(" I ")
+			.pattern("RGR")
+			.pattern(" C ")
+			.unlockedBy(getHasName(AllBlocks.GANTRY_CARRIAGE.get()), has(AllBlocks.GANTRY_CARRIAGE.get()))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.RAM_HEAD.get())
