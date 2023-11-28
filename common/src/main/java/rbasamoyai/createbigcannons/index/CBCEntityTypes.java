@@ -4,6 +4,7 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import java.util.function.Consumer;
 
+import com.simibubi.create.content.contraptions.render.ContraptionEntityRenderer;
 import com.simibubi.create.content.contraptions.render.OrientedContraptionEntityRenderer;
 import com.tterrag.registrate.util.entry.EntityEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
@@ -14,6 +15,7 @@ import net.minecraft.world.entity.MobCategory;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageRenderer;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannonloading.GantryRammerContraptionEntity;
 import rbasamoyai.createbigcannons.multiloader.EntityTypeConfigurator;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileRenderer;
@@ -105,6 +107,16 @@ public class CBCEntityTypes {
 			.size(1.5f, 1.5f)))
 		.renderer(() -> CannonCarriageRenderer::new)
 		.register();
+
+	public static final EntityEntry<GantryRammerContraptionEntity> GANTRY_RAMMER_CONTRAPTION = REGISTRATE
+		.entity("gantry_rammer", GantryRammerContraptionEntity::new, MobCategory.MISC)
+		.properties(configure(b -> b.trackingRange(10)
+			.updateInterval(40)
+			.updateVelocity(false)
+			.fireImmune()))
+		.renderer(() -> ContraptionEntityRenderer::new)
+		.register();
+
 	public static final EntityEntry<APAutocannonProjectile> AP_AUTOCANNON = autocannonProjectile("ap_autocannon", APAutocannonProjectile::new, "Armor Piercing (AP) Autocannon Round");
 	public static final EntityEntry<FlakAutocannonProjectile> FLAK_AUTOCANNON = autocannonProjectile("flak_autocannon", FlakAutocannonProjectile::new, "Flak Autocannon Round");
 	public static final EntityEntry<MachineGunProjectile> MACHINE_GUN_BULLET = autocannonProjectile("machine_gun_bullet", MachineGunProjectile::new);

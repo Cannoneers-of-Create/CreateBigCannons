@@ -15,6 +15,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.ShakeEffect;
+import rbasamoyai.createbigcannons.cannonloading.GantryRammerContraption;
+import rbasamoyai.createbigcannons.cannonloading.GantryRammerContraptionEntity;
 
 public class CBCClientHandlers {
 
@@ -37,6 +39,11 @@ public class CBCClientHandlers {
 			}
 			contraption.deferInvalidate = true;
 		}
+	}
+
+	public static void updateGantryRammer(ClientboundGantryRammerContraptionPacket pkt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level.getEntity(pkt.id()) instanceof GantryRammerContraptionEntity grc) grc.handlePacket(pkt);
 	}
 
 	public static void animateCannon(ClientboundAnimateCannonContraptionPacket pkt) {

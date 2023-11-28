@@ -1,10 +1,13 @@
 package rbasamoyai.createbigcannons.index;
 
+import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
+import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import java.util.function.Supplier;
 
 import com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours;
+import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -36,6 +39,7 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountDispla
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.cannonloading.GantryRammerBlock;
 import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
 import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
@@ -826,6 +830,17 @@ public class CBCBlocks {
 		.properties(p -> p.color(MaterialColor.PODZOL))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonLoader())
+		.transform(CBCDefaultStress.setImpact(8.0d))
+		.register();
+
+	public static final BlockEntry<GantryRammerBlock> GANTRY_RAMMER_CARRIAGE = REGISTRATE
+		.block("gantry_rammer", GantryRammerBlock::new)
+		.initialProperties(SharedProperties::stone)
+		.properties(p -> p.noOcclusion().color(MaterialColor.PODZOL))
+		.transform(axeOrPickaxe())
+		.blockstate(BlockStateGen.directionalAxisBlockProvider())
+		.item()
+		.transform(customItemModel())
 		.transform(CBCDefaultStress.setImpact(8.0d))
 		.register();
 

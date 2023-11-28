@@ -44,6 +44,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ClientboundFluidCastingTimePacket.class, ClientboundFluidCastingTimePacket::copyOf);
 		addMsg(id++, ServerboundUseWelderPacket.class, ServerboundUseWelderPacket::new);
 		addMsg(id++, ClientboundBigCannonPropellantPropertiesPacket.class, ClientboundBigCannonPropellantPropertiesPacket::copyOf);
+		addMsg(id++, ClientboundGantryRammerContraptionPacket.class, ClientboundGantryRammerContraptionPacket::new);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {

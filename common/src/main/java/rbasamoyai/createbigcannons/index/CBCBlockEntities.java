@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.index;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
+import com.simibubi.create.content.contraptions.gantry.GantryCarriageRenderer;
 import com.simibubi.create.content.kinetics.base.ShaftInstance;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -14,6 +15,9 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBloc
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerInstance;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEntity;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntity;
+import rbasamoyai.createbigcannons.cannonloading.GantryRammerBlockEntity;
+import rbasamoyai.createbigcannons.cannonloading.GantryRammerInstance;
+import rbasamoyai.createbigcannons.cannonloading.GantryRammerRenderer;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechInstance;
@@ -99,6 +103,13 @@ public class CBCBlockEntities {
 		.instance(() -> ShaftInstance::new, false)
 		.renderer(() -> ShaftRenderer::new)
 		.validBlock(CBCBlocks.CANNON_LOADER)
+		.register();
+
+	public static final BlockEntityEntry<GantryRammerBlockEntity> GANTRY_RAMMER = REGISTRATE
+		.blockEntity("gantry_rammer", GantryRammerBlockEntity::new)
+		.instance(() -> GantryRammerInstance::new)
+		.validBlocks(CBCBlocks.GANTRY_RAMMER_CARRIAGE)
+		.renderer(() -> GantryRammerRenderer::new)
 		.register();
 
 	public static final BlockEntityEntry<CannonMountBlockEntity> CANNON_MOUNT = REGISTRATE
