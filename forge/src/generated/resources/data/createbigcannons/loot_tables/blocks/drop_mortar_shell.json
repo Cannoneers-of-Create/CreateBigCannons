@@ -33,5 +33,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "createbigcannons:blocks/drop_mortar_shell"
 }

@@ -1,7 +1,6 @@
 {
   "type": "createbigcannons:cannon_casting",
   "cast_shape": "createbigcannons:large",
-  "casting_time": 4200,
   "fluid": {
     "amount": 1,
     "fluid": "createbigcannons:molten_nethersteel",

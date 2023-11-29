@@ -1,7 +1,6 @@
 {
   "type": "createbigcannons:cannon_casting",
   "cast_shape": "createbigcannons:autocannon_recoil_spring",
-  "casting_time": 750,
   "fluid": {
     "amount": 1,
     "fluid": "createbigcannons:molten_cast_iron",
