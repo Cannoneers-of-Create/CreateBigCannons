@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "tag": "createbigcannons:sheet_brass"
@@ -21,5 +22,6 @@
   ],
   "result": {
     "item": "createbigcannons:cannon_welder"
-  }
+  },
+  "show_notification": true
 }

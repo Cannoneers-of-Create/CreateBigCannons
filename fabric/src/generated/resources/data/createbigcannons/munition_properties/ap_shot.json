@@ -1,9 +1,12 @@
 {
+  "added_recoil": 1.0,
   "base_fuze": false,
+  "can_squib": true,
   "drag": 0.99,
   "durability_mass": 30.0,
   "entity_damage": 50.0,
   "gravity": -0.05,
   "ignores_entity_armor": true,
+  "minimum_charge_power": 1.0,
   "renders_invulnerable": false
 }

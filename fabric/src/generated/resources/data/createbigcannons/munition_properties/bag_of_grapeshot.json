@@ -1,10 +1,13 @@
 {
+  "added_recoil": 1.0,
   "base_fuze": false,
+  "can_squib": true,
   "drag": 0.99,
   "durability_mass": 1.0,
   "entity_damage": 0.0,
   "gravity": -0.05,
   "ignores_entity_armor": false,
+  "minimum_charge_power": 1.0,
   "renders_invulnerable": true,
   "shrapnel_properties": {
     "count": 25,
