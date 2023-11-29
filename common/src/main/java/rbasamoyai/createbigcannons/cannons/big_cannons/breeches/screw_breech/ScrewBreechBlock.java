@@ -71,15 +71,14 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements IBE<Scr
 		return state.getValue(OPEN);
 	}
 
+	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.CLOSED; }
+
 	@Override
 	public Axis getRotationAxis(BlockState state) {
 		return state.getValue(FACING).getAxis();
 	}
 
-	@Override
-	public boolean isDoubleSidedCannon(BlockState state) {
-		return false;
-	}
+	@Override public boolean canConnectToSide(BlockState state, Direction dir) { return this.getFacing(state) == dir; }
 
 	@Override
 	public boolean isComplete(BlockState state) {

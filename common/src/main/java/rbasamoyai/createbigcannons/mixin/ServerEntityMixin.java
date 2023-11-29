@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundPreciseRotationSyncPacket;
@@ -21,9 +20,10 @@ public class ServerEntityMixin {
 
 	@Inject(method = "sendChanges", at = @At("HEAD"))
 	private void createbigcannons$sendChanges1(CallbackInfo ci) {
-		if (this.entity instanceof PitchOrientedContraptionEntity) {
-			Vec3 pos = this.entity.position();
-			NetworkPlatform.sendToClientTracking(new ClientboundPreciseRotationSyncPacket(this.entity.getId(), this.entity.getYRot(), this.entity.getXRot()), this.entity);
+		if (this.entity instanceof PitchOrientedContraptionEntity poce) {
+			if (poce.getControllingPassenger() == null) {
+				NetworkPlatform.sendToClientTracking(new ClientboundPreciseRotationSyncPacket(this.entity.getId(), this.entity.getYRot(), this.entity.getXRot()), this.entity);
+			}
 			this.entity.hasImpulse = false;
 		}
 	}

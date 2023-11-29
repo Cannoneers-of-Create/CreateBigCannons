@@ -59,6 +59,8 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 		return contraption.presentBlockEntities.get(pos) instanceof SlidingBreechBlockEntity breech ? breech.getOpeningType() : BigCannonEnd.OPEN;
 	}
 
+	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.CLOSED; }
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		Direction facing = context.getNearestLookingDirection().getOpposite();
@@ -78,7 +80,6 @@ public class SlidingBreechBlock extends DirectionalAxisKineticBlock implements I
 		return InteractionResult.PASS;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!level.isClientSide) this.onRemoveCannon(state, level, pos, newState, isMoving);

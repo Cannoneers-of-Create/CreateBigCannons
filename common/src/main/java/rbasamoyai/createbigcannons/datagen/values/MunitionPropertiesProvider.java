@@ -41,6 +41,7 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 
 		builder(CBCEntityTypes.MORTAR_STONE.get()).entityDamage(50).explosivePower(4).durabilityMass(4)
 			.gravity(-0.025f).build(this);
+		builder(CBCEntityTypes.DROP_MORTAR_SHELL.get()).entityDamage(20).explosivePower(4).durabilityMass(2.5).build(this);
 
 		builder(CBCEntityTypes.SHRAPNEL_SHELL.get()).entityDamage(30).durabilityMass(8)
 			.shrapnel(5, 0.25, 50).build(this);
@@ -76,6 +77,9 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 		private double gravity = -0.05;
 		private double drag = 0.99;
 		private boolean baseFuze = false;
+		private float minimumChargePower = 1;
+		private boolean canSquib = true;
+		private float addedRecoil = 1;
 		private double shrapnelDamage;
 		private double shrapnelSpread;
 		private int shrapnelCount;
@@ -104,7 +108,8 @@ public class MunitionPropertiesProvider extends CBCDataProvider {
 
 		public void build(MunitionPropertiesProvider cons) {
 			cons.projectiles.put(this.type, new MunitionProperties(this.entityDamage, this.explosivePower, this.durabilityMass,
-				this.renderInvulnerable, this.ignoresEntityArmor, this.baseFuze, this.gravity, this.drag, this.buildShrapnel ?
+				this.renderInvulnerable, this.ignoresEntityArmor, this.baseFuze, this.gravity, this.drag, this.minimumChargePower,
+				this.canSquib, this.addedRecoil, this.buildShrapnel ?
 				new ShrapnelProperties(this.shrapnelDamage, this.shrapnelSpread, this.shrapnelCount) : null));
 		}
 	}

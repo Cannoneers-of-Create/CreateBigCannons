@@ -123,7 +123,7 @@ processResources {
 }
 
 shadowJar {
-    exclude "architectury.common.json"
+	exclude "architectury.common.json"
 
 	configurations = [project.configurations.shadowCommon]
 	setArchiveClassifier "dev-shadow"

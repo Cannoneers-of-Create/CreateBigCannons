@@ -22,7 +22,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -77,10 +76,7 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 		return CannonCastShape.AUTOCANNON_BREECH;
 	}
 
-	@Override
-	public boolean canConnectToSide(LevelAccessor level, BlockState state, BlockPos pos, Direction face) {
-		return this.getFacing(state) == face;
-	}
+	@Override public boolean canConnectToSide(BlockState state, Direction face) { return this.getFacing(state) == face; }
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {

@@ -32,7 +32,6 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 
 	@Override
 	protected void init() {
-		// TODO: figure out why the hell classloading causes lag here
 		this.setWindowSize(AUTOCANNON_AMMO_CONTAINER_BG.width, AUTOCANNON_AMMO_CONTAINER_BG.height + 4 + PLAYER_INVENTORY.height);
 		this.setWindowOffset(1, 0);
 		super.init();

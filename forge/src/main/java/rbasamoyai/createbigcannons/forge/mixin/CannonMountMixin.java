@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons.forge.mixin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -15,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;

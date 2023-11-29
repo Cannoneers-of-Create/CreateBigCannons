@@ -45,6 +45,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
 		CameraSetupCallback.EVENT.register(CBCClientFabric::onSetupCamera);
 		ClientLoginConnectionEvents.DISCONNECT.register(CBCClientFabric::onPlayerLogOut);
+		MouseInputEvents.BEFORE_BUTTON.register(CBCClientFabric::onClickMouse);
 	}
 
 	public static void onParticleRegistry() {
@@ -67,6 +68,17 @@ public class CBCClientFabric implements ClientModInitializer {
 
 	public static void onClientTick(Minecraft mc) {
 		CBCClientCommon.onClientGameTick(mc);
+	}
+
+	public static boolean onClickMouse(int button, int mods, MouseInputEvents.Action action) {
+		if (action != MouseInputEvents.Action.PRESS) return false;
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.screen != null) return false;
+		KeyMapping mapping = null;
+		if (mc.options.keyUse.matchesMouse(button)) mapping = mc.options.keyUse;
+		if (mc.options.keyAttack.matchesMouse(button)) mapping = mc.options.keyAttack;
+		if (mapping == null) return false;
+		return CBCClientCommon.onClickMouse(mapping);
 	}
 
 	public static boolean onScrolledMouse(double deltaX, double deltaY) {

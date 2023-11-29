@@ -15,6 +15,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
@@ -37,11 +40,13 @@ import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntit
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
+import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.AutocannonAmmoContainerFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationDeployerRecipe;
+import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
@@ -49,6 +54,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
 public class CBCCommonEvents {
@@ -137,12 +143,14 @@ public class CBCCommonEvents {
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
 		if (level.getServer() != null && !level.isClientSide() && level.getServer().overworld() == level) {
 			BlockHardnessHandler.loadTags();
+			FluidCastingTimeHandler.loadTags();
 		}
 	}
 
 	public static void onDatapackReload(MinecraftServer server) {
 		BlockHardnessHandler.loadTags();
 		BlockRecipesManager.syncToAll(server);
+		FluidCastingTimeHandler.syncToAll(server);
 	}
 
 	public static void onDatapackSync(ServerPlayer player) {
@@ -151,6 +159,8 @@ public class CBCCommonEvents {
 		AutocannonMaterialPropertiesHandler.syncTo(player);
 		BigCannonMaterialPropertiesHandler.syncTo(player);
 		BigCannonBreechStrengthHandler.syncTo(player);
+		FluidCastingTimeHandler.syncTo(player);
+		BigCannonPropellantPropertiesHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
@@ -162,6 +172,8 @@ public class CBCCommonEvents {
 		cons.accept(AutocannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("autocannon_material_properties_handler"));
 		cons.accept(BigCannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_material_properties_handler"));
 		cons.accept(BigCannonBreechStrengthHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_breech_strength_handler"));
+		cons.accept(FluidCastingTimeHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("fluid_casting_time_handler"));
+		cons.accept(BigCannonPropellantPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_propellant_properties_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
@@ -192,6 +204,12 @@ public class CBCCommonEvents {
 		if (ammoContainerRecipe.matches(container, level)) {
 			cons.accept(() -> Optional.of(ammoContainerRecipe), 25);
 		}
+	}
+
+	public static InteractionResult onUseItemOnBlock(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (stack.getItem() instanceof CannonWelderItem) return CannonWelderItem.welderItemAlwaysPlacesWhenUsed(player, level, hand, hitResult);
+		return InteractionResult.PASS;
 	}
 
 }

@@ -44,10 +44,10 @@ public class CBCLangGen {
 
 		tooltip(CBCBlocks.MORTAR_STONE)
 		.header("MORTAR STONE")
-		.summary("Powerful stone that _explodes on impact._ _Flies further_ than other projectiles. Good for attacking _walls and fortifications._ _Cannot be fuzed and detonated._ Will _break_ if too many Powder Charges are used.");
+		.summary("Powerful stone that _explodes on impact._ _Flies further_ than other projectiles. Good for attacking _walls and fortifications._ _Cannot be fuzed and detonated._ Will _break_ if the propellant is too strong.");
 
-		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges", "Maximum Powder Charges");
-		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges.value", "This mortar stone can handle up to _%s Powder Charges_ (or equivalent) before breaking.");
+		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges", "Maximum Firing Speed");
+		REGISTRATE.addLang("block", CBCBlocks.MORTAR_STONE.getId(), "tooltip.maximumCharges.value", "This mortar stone can be fired at a speed of _%s m/s_ before breaking.");
 
 		tooltip(CBCBlocks.BAG_OF_GRAPESHOT)
 		.header("BAG OF GRAPESHOT")
@@ -79,6 +79,11 @@ public class CBCLangGen {
 		.conditionAndBehavior("On Detonation", "Releases its contents.")
 		.conditionAndBehavior("Filling", "The shell can only be filled through _the same face that the fuze is placed on._ If a fuze is present, the shell _cannot be filled._")
 		.conditionAndBehavior("Note", "Some fluids may not have any effect on release. Supported fluids include, but may not be limited to, _water, lava, and liquid potions._");
+
+		tooltip(CBCBlocks.DROP_MORTAR_SHELL)
+		.header("DROP MORTAR SHELL")
+		.summary("Light anti-entity _explosive_ shell that deals a bit of structural damage. Fired by _dropping into a drop mortar-type_ big cannon, although it can also be _conventionally fired._")
+		.conditionAndBehavior("On Detonation", "Explodes.");
 
 		tooltip(CBCItems.IMPACT_FUZE)
 		.header("IMPACT FUZE")
@@ -180,17 +185,17 @@ public class CBCLangGen {
 
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.materialProperties", "Cannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength", "Strength");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.goggles", "_%s Powder Charge(s)_");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.goggles", "_%s Propellant Stress_");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.strength.unlimited", "Unlimited");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.squibRatio", "Squib Ratio");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.squibRatio.goggles", "_%s barrel(s) travelled_ to _%s Powder Charge(s)_");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.cannonJamming", "Cannon Jamming");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.cannonJamming.goggles", "_At least %s m/s per barrel_ needed to prevent jamming");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weightImpact", "Weight Impact");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.weightImpact.goggles", "_%sx RPM_");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure", "On Failure");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.rupture", "The cannon _ruptures_ on failure.");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.onFailure.fragment", "The cannon _fragments_ on failure.");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.breechStrength", "Breech Strength");
-		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.breechStrength.desc", "Cannons built with this as the closing can safely handle up to _%s Powder Charge(s)_ or equivalent.");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("cannon"), "tooltip.breechStrength.desc", "Cannons built with this as the closing can safely handle up to _%s Propellant Stress_.");
 
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.materialProperties", "Autocannon Properties");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("autocannon"), "tooltip.maxBarrelLength", "Maximum Length");
@@ -211,7 +216,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("drill_boring"), "Drill Boring");
 		REGISTRATE.addLang("recipe", CreateBigCannons.resource("incomplete_cannon_blocks"), "Incomplete Cannon Blocks");
 
-		REGISTRATE.addLang("recipe", CreateBigCannons.resource("added_casting_time"), "Added casting time: %ss");
+		REGISTRATE.addLang("recipe", CreateBigCannons.resource("casting_time"), "Casting time: %ss");
 
 		REGISTRATE.addLang("block", CreateBigCannons.resource("shell"), "tooltip.fuze", "Fuze:");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("shell"), "tooltip.fuze.none", "(none)");
@@ -242,6 +247,25 @@ public class CBCLangGen {
 			if (!loc.getNamespace().equals(CreateBigCannons.MOD_ID)) continue;
 			REGISTRATE.addLang("cast_shape", loc, RegistrateLangProvider.toEnglishName(loc.getPath()));
 		}
+
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount_source", "From Cannon Mount");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.not_enough_space", "Not enough space ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.for_cannon_status", "for Cannon Status");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.no_cannon_present", "No Cannon present");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_pitch", "Cannon Pitch: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_yaw", "Cannon Yaw: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.degrees", "%s\u00ba");
+
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.click_to_confirm", "Click again to confirm");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.invalid_weld", "Cannot weld these blocks");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.too_far", "Cannot weld more than two blocks at a time");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.click_to_discard", "Sneak-click to discard selection");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.abort", "Selection discarded");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.success", "Welding blocks...");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.first_pos", "First position selected");
+
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength", "Cannon Strength: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength.value", "%s Propellant Stress");
 	}
 
 	private static class TooltipBuilder {

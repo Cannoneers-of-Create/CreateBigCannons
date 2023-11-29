@@ -80,4 +80,12 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.BIG_CANNON_PROJECTILE), this);
 	}
 
+	public int addedChargePower() { return 0; }
+
+	public float minimumChargePower() { return this.getProperties().minimumChargePower(); }
+
+	public boolean canSquib() { return this.getProperties().canSquib(); }
+
+	public float addedRecoil() { return this.getProperties().addedRecoil(); }
+
 }

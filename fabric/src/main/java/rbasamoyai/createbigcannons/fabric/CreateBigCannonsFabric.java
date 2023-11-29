@@ -30,7 +30,7 @@ public class CreateBigCannonsFabric implements ModInitializer {
 		CBCParticleTypes.register();
 		CBCSoundEvents.register(AllSoundEvents.SoundEntry::register);
 
-		CBCRegistries.init();
+		CBCRegistries.forceInit();
 		CannonCastShape.register();
 		BlockRecipeSerializer.register();
 		BlockRecipeType.register();
