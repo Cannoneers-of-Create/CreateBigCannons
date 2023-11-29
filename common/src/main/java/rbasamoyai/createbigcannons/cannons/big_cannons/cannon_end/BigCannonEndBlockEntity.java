@@ -72,20 +72,18 @@ public class BigCannonEndBlockEntity extends SmartBlockEntity implements IBigCan
 				BlockPos pos1 = this.worldPosition.relative(dir1);
 				BlockState state1 = this.level.getBlockState(pos1);
 				BlockEntity be1 = this.level.getBlockEntity(pos1);
+				Direction opposite = dir1.getOpposite();
 				if (state1.getBlock() instanceof BigCannonBlock cBlock1
 					&& cBlock1.getCannonMaterialInLevel(this.level, state1, pos1) == material
-					&& be1 instanceof IBigCannonBlockEntity cbe1) {
-					Direction dir2 = cBlock1.getFacing(state1);
-					if (dir1 == dir2.getOpposite() || cBlock1.isDoubleSidedCannon(state1) && dir1.getAxis() == dir2.getAxis()) {
-						Direction opposite = dir1.getOpposite();
-						cbe1.cannonBehavior().setConnectedFace(opposite, true);
-						if (cbe1 instanceof LayeredBigCannonBlockEntity layered) {
-							for (CannonCastShape layer : layered.getLayers().keySet()) {
-								layered.setLayerConnectedTo(opposite, layer, true);
-							}
+					&& be1 instanceof IBigCannonBlockEntity cbe1
+					&& cBlock1.canConnectToSide(state1, opposite)) {
+					cbe1.cannonBehavior().setConnectedFace(opposite, true);
+					if (cbe1 instanceof LayeredBigCannonBlockEntity layered) {
+						for (CannonCastShape layer : layered.getLayers().keySet()) {
+							layered.setLayerConnectedTo(opposite, layer, true);
 						}
-						be1.setChanged();
 					}
+					be1.setChanged();
 				}
 			}
 			this.level.playSound(null, this.worldPosition, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0f, 1.0f);

@@ -79,4 +79,12 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".big_cannon_projectile", this, null);
 	}
 
+	public int addedChargePower() { return 0; }
+
+	public float minimumChargePower() { return this.getProperties().minimumChargePower(); }
+
+	public boolean canSquib() { return this.getProperties().canSquib(); }
+
+	public float addedRecoil() { return this.getProperties().addedRecoil(); }
+
 }

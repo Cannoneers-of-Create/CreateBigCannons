@@ -20,6 +20,7 @@ import com.simibubi.create.foundation.ponder.element.InputWindowElement;
 import com.simibubi.create.foundation.ponder.element.WorldSectionElement;
 import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
 import com.simibubi.create.foundation.ponder.instruction.FadeOutOfSceneInstruction;
+import com.simibubi.create.foundation.ponder.instruction.HighlightValueBoxInstruction;
 import com.simibubi.create.foundation.utility.Pointing;
 import com.simibubi.create.foundation.utility.VecHelper;
 
@@ -29,16 +30,21 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.util.RandomSource;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ComparatorBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
@@ -47,6 +53,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.FinishedCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteWithItemsCannonBlock;
+import rbasamoyai.createbigcannons.crafting.welding.CannonWelderSelectionHandler;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -832,6 +839,133 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 
+	public static void weldingCannons(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_crafting/cannon_welder", "Using the Cannon Welder");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		scene.world.showSection(util.select.fromTo(1, 1, 2, 3, 1, 2), Direction.DOWN);
+		scene.idle(20);
+		scene.world.setBlock(util.grid.at(3, 1, 2), CBCBlocks.CAST_IRON_CANNON_END.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.idle(5);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.CAST_IRON_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.idle(5);
+		scene.world.setBlock(util.grid.at(1, 1, 2), CBCBlocks.CAST_IRON_CANNON_BARREL.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.idle(20);
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("Cannon blocks placed in survival will not connect to other cannon blocks.")
+			.pointAt(util.vector.centerOf(2, 1, 2))
+			.placeNearTarget();
+		Vec3 seam1 = util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.EAST);
+		Vec3 seam2 = util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.WEST);
+		scene.addInstruction(new HighlightValueBoxInstruction(seam1, util.vector.of(1 / 8f, 0.5, 0.5), 50));
+		scene.addInstruction(new HighlightValueBoxInstruction(seam2, util.vector.of(1 / 8f, 0.5, 0.5), 50));
+		scene.idle(75);
+
+		scene.overlay.showText(50)
+			.attachKeyFrame()
+			.text("The Cannon Welder can quickly connect two cannon blocks at a time.");
+		scene.idle(75);
+		scene.overlay.showText(80)
+			.text("Right-click two adjacent cannon blocks to weld them together.");
+		scene.idle(20);
+		AABB weld1 = new AABB(util.grid.at(3, 1, 2));
+		AABB weld2 = weld1.expandTowards(-1, 0, 0);
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.BLUE, weld1, weld1, 5);
+		scene.idle(1);
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.BLUE, weld1, weld2, 30);
+		scene.idle(10);
+		scene.overlay.showControls(new InputWindowElement(seam1.add(0, 0.5, 0), Pointing.DOWN).rightClick().withItem(CBCItems.CANNON_WELDER.asStack()), 20);
+		scene.idle(10);
+		scene.effects.emitParticles(util.vector.centerOf(3, 1, 2), particleEmitterForCannonWelder(Direction.WEST), 5, 1);
+		scene.world.modifyBlockEntityNBT(util.select.position(3, 1, 2), BlockEntity.class, setWeldInTag(Direction.WEST, true), true);
+		scene.world.modifyBlockEntityNBT(util.select.position(2, 1, 2), BlockEntity.class, setWeldInTag(Direction.EAST, true), true);
+		scene.idle(40);
+
+		AABB weld3 = new AABB(util.grid.at(2, 1, 2));
+		AABB weld4 = weld3.expandTowards(-1, 0, 0);
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.BLUE, weld3, weld3, 5);
+		scene.idle(1);
+		scene.overlay.chaseBoundingBoxOutline(PonderPalette.BLUE, weld3, weld4, 30);
+		scene.idle(10);
+		scene.overlay.showControls(new InputWindowElement(seam2.add(0, 0.5, 0), Pointing.DOWN).rightClick().withItem(CBCItems.CANNON_WELDER.asStack()), 20);
+		scene.idle(10);
+		scene.effects.emitParticles(util.vector.centerOf(2, 1, 2), particleEmitterForCannonWelder(Direction.WEST), 5, 1);
+		scene.world.modifyBlockEntityNBT(util.select.position(2, 1, 2), BlockEntity.class, setWeldInTag(Direction.WEST, true), true);
+		scene.world.modifyBlockEntityNBT(util.select.position(1, 1, 2), BlockEntity.class, setWeldInTag(Direction.EAST, true), true);
+		scene.idle(40);
+
+		scene.overlay.showText(140)
+			.attachKeyFrame()
+			.text("The cannon blocks must align, connect, have the same material, and have the same cannon type.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(10);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.CAST_IRON_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.SOUTH), true);
+		scene.overlay.showSelectionWithText(util.select.fromTo(2, 1, 2, 3, 1, 2), 120)
+			.text("Invalid")
+			.colored(PonderPalette.RED)
+			.placeNearTarget();
+		scene.idle(30);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.CAST_IRON_CANNON_END.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.idle(30);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.BRONZE_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.idle(30);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.CAST_IRON_AUTOCANNON_RECOIL_SPRING.getDefaultState().setValue(FACING, Direction.WEST), true);
+		scene.idle(45);
+
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("By default, the Cannon Welder cannot weld some cannon materials and/or types together.")
+			.colored(PonderPalette.RED);
+		scene.idle(30);
+		scene.world.setBlock(util.grid.at(3, 1, 2), CBCBlocks.WROUGHT_IRON_CANNON_END.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.world.setBlock(util.grid.at(1, 1, 2), CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.idle(5);
+		scene.overlay.showOutline(PonderPalette.RED, new Object(), util.select.fromTo(1, 1, 2, 3, 1, 2), 50);
+		scene.idle(30);
+		scene.world.setBlock(util.grid.at(3, 1, 2), CBCBlocks.NETHERSTEEL_SCREW_BREECH.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.NETHERSTEEL_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.world.setBlock(util.grid.at(1, 1, 2), CBCBlocks.NETHERSTEEL_CANNON_BARREL.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.idle(15);
+
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("The Cannon Welder can weld different types of cannon.")
+			.pointAt(util.vector.centerOf(2, 1, 2))
+			.placeNearTarget();
+		scene.idle(20);
+		scene.world.setBlock(util.grid.at(3, 1, 2), CBCBlocks.STEEL_AUTOCANNON_BREECH.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.STEEL_AUTOCANNON_RECOIL_SPRING.getDefaultState().setValue(FACING, Direction.WEST), true);
+		scene.world.setBlock(util.grid.at(1, 1, 2), CBCBlocks.STEEL_AUTOCANNON_BARREL.getDefaultState().setValue(FACING, Direction.WEST), true);
+		scene.world.modifyBlockEntityNBT(util.select.position(3, 1, 2), BlockEntity.class, setWeldInTag(Direction.WEST, true), true);
+		scene.world.modifyBlockEntityNBT(util.select.position(2, 1, 2), BlockEntity.class, setWeldInTag(Direction.EAST, true), true);
+		scene.world.modifyBlockEntityNBT(util.select.position(2, 1, 2), BlockEntity.class, setWeldInTag(Direction.WEST, true), true);
+		scene.world.modifyBlockEntityNBT(util.select.position(1, 1, 2), BlockEntity.class, setWeldInTag(Direction.EAST, true), true);
+		scene.idle(40);
+		scene.world.setBlock(util.grid.at(3, 1, 2), CBCBlocks.CAST_IRON_CANNON_END.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.world.setBlock(util.grid.at(2, 1, 2), CBCBlocks.CAST_IRON_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.world.setBlock(util.grid.at(1, 1, 2), CBCBlocks.CAST_IRON_CANNON_BARREL.getDefaultState().setValue(FACING, Direction.EAST), true);
+		scene.world.modifyBlockEntityNBT(util.select.position(3, 1, 2), BlockEntity.class, setWeldInTag(Direction.WEST, true), true);
+		scene.world.modifyBlockEntityNBT(util.select.position(2, 1, 2), BlockEntity.class, setWeldInTag(Direction.EAST, true), true);
+		scene.idle(40);
+
+		scene.overlay.showText(60)
+			.attachKeyFrame()
+			.text("Welding cannon blocks together can weaken certain types of cannon.")
+			.colored(PonderPalette.RED)
+			.pointAt(seam1)
+			.placeNearTarget();
+		scene.idle(75);
+		scene.overlay.showText(60)
+			.text("It is recommended to craft and move cannon pieces in their entirety instead.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(80);
+
+		scene.markAsFinished();
+	}
+
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	private static final BooleanProperty ATTACHED = CannonBuilderHeadBlock.ATTACHED;
@@ -859,6 +993,28 @@ public class CannonCraftingScenes {
 
 	private static Consumer<CompoundTag> setFinishedCannonShape(CannonCastShape shape) {
 		return tag -> tag.putString("RenderedShape", CBCRegistries.CANNON_CAST_SHAPES.getKey(shape).toString());
+	}
+
+	public static Emitter particleEmitterForCannonWelder(Direction dir) {
+		return (w, x, y, z) -> CannonWelderSelectionHandler.spawnParticles(w, new BlockPos(x, y, z), dir, true);
+	}
+
+	public static Consumer<CompoundTag> setConnectionInTag(Direction dir, boolean connected) {
+		String name = dir.getSerializedName();
+		return nbt -> {
+			ListTag weldedTowards = nbt.getList("Connections", Tag.TAG_STRING);
+			weldedTowards.removeIf(t -> t.getType() == StringTag.TYPE && t.getAsString().equals(name));
+			if (connected) weldedTowards.add(StringTag.valueOf(name));
+		};
+	}
+
+	public static Consumer<CompoundTag> setWeldInTag(Direction dir, boolean welded) {
+		String name = dir.getSerializedName();
+		return nbt -> {
+			ListTag weldedTowards = nbt.getList("Welds", Tag.TAG_STRING);
+			weldedTowards.removeIf(t -> t.getType() == StringTag.TYPE && t.getAsString().equals(name));
+			if (welded) weldedTowards.add(StringTag.valueOf(name));
+		};
 	}
 
 }

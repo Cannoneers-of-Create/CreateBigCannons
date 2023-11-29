@@ -125,17 +125,21 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		// TODO: remove when updated to 0.5.1.e
 		//if (this.clockStack.processedBy == FanProcessing.Type.BLASTING) {
 		//	this.clockStack.processedBy = FanProcessing.Type.NONE;
-		if (IndexPlatform.layeredCannonClockStackCheck(this.clockStack)) {
-			++this.completionProgress;
-			this.sendData();
-			int cap = CBCConfigs.SERVER.crafting.builtUpCannonHeatingTime.get();
-			if (this.completionProgress >= cap) {
-				this.completionProgress = cap;
-				if (!this.level.isClientSide && !this.tryFinishHeating()) this.completionProgress = 0;
+		if (!this.level.isClientSide) {
+			if (IndexPlatform.layeredCannonClockStackCheck(this.clockStack)) {
+				IndexPlatform.layeredCannonClockStackCallback(this.clockStack);
+				this.clockStack.processingTime = -1;
+				++this.completionProgress;
+				this.sendData();
+				int cap = CBCConfigs.SERVER.crafting.builtUpCannonHeatingTime.get();
+				if (this.completionProgress >= cap) {
+					this.completionProgress = cap;
+					if (!this.tryFinishHeating()) this.completionProgress = 0;
+				}
+			} else if (this.completionProgress > 0) {
+				--this.completionProgress;
+				this.sendData();
 			}
-		} else if (this.completionProgress > 0) {
-			--this.completionProgress;
-			this.sendData();
 		}
 	}
 
@@ -330,9 +334,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 	}
 
 	private void clockCallback(float maxDistanceFromCenter, Function<TransportedItemStack, TransportedItemStackHandlerBehaviour.TransportedResult> func) {
-		IndexPlatform.layeredCannonClockStackCallback(this.clockStack);
 		func.apply(this.clockStack);
-		this.clockStack.processingTime = -1;
 	}
 
 	@Override

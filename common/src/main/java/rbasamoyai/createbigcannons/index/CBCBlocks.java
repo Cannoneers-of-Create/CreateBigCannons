@@ -4,6 +4,7 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import java.util.function.Supplier;
 
+import com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -31,6 +32,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.base.CBCDefaultStress;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountDisplaySource;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
@@ -47,6 +49,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech.Scr
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechCTBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEndBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.drop_mortar.DropMortarEndBlock;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBitBlock;
 import rbasamoyai.createbigcannons.crafting.boring.UnboredAutocannonBlock;
@@ -68,6 +71,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBl
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
@@ -117,6 +121,13 @@ public class CBCBlocks {
 		.block("wrought_iron_cannon_end", p -> new BigCannonEndBlock(p, CBCBigCannonMaterials.WROUGHT_IRON))
 		.transform(cannonBlock(false))
 		.transform(CBCBuilderTransformers.cannonEnd("cannon_end/wrought_iron"))
+		.item(BigCannonBlockItem::new).build()
+		.register();
+
+	public static final BlockEntry<DropMortarEndBlock> WROUGHT_IRON_DROP_MORTAR_END = REGISTRATE
+		.block("wrought_iron_drop_mortar_end", p -> new DropMortarEndBlock(p, CBCBigCannonMaterials.WROUGHT_IRON))
+		.transform(cannonBlock(false))
+		.transform(CBCBuilderTransformers.dropMortarEnd("cannon_end/wrought_iron"))
 		.item(BigCannonBlockItem::new).build()
 		.register();
 
@@ -844,6 +855,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMount())
+		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
 		.register();
 
 	public static final BlockEntry<YawControllerBlock> YAW_CONTROLLER = REGISTRATE
@@ -851,6 +863,7 @@ public class CBCBlocks {
 		.properties(p -> p.color(MaterialColor.PODZOL))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.yawController())
+		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
 		.register();
 
 	public static final BlockEntry<CannonCarriageBlock> CANNON_CARRIAGE = REGISTRATE
@@ -1032,6 +1045,15 @@ public class CBCBlocks {
 		.initialProperties(SharedProperties::stone)
 		.properties(p -> p.noOcclusion())
 		.blockstate((c, p) -> p.simpleBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/mortar_stone_projectile"))))
+		.simpleItem()
+		.register();
+
+	public static final BlockEntry<DropMortarShellBlock> DROP_MORTAR_SHELL = REGISTRATE
+		.block("drop_mortar_shell", DropMortarShellBlock::new)
+		.transform(shell(MaterialColor.COLOR_RED))
+		.transform(axeOrPickaxe())
+		.transform(CBCBuilderTransformers.dropMortarShell())
+		.loot(CBCBuilderTransformers.shellLoot())
 		.simpleItem()
 		.register();
 
