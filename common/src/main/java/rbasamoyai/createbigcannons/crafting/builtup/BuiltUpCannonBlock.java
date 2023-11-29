@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
-import javax.annotation.Nullable;
+import java.util.List;
 
 import com.simibubi.create.foundation.block.IBE;
 
@@ -18,9 +18,11 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
@@ -65,9 +67,17 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements IBE<LayeredB
 	}
 
 	@Override
-	public BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) {
-		return BigCannonEnd.CLOSED;
+	public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+		List<ItemStack> drops = super.getDrops(state, params);
+		if (params.getParameter(LootContextParams.BLOCK_ENTITY) instanceof LayeredBigCannonBlockEntity layered) {
+			for (Block block : layered.getLayers().values()) {
+				drops.addAll(block.defaultBlockState().getDrops(params));
+			}
+		}
+		return drops;
 	}
+
+	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.OPEN; }
 
 	@Override
 	public boolean isComplete(BlockState state) {

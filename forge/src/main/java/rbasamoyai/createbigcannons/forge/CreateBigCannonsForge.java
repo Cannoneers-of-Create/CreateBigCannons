@@ -96,6 +96,7 @@ public class CreateBigCannonsForge {
 		} else if (CBCRegistries.CANNON_CAST_SHAPES.equals(key)) {
 			CannonCastShape.register();
 		}
+		FMLJavaModLoadingContext.get().getModEventBus().post(new CBCForgeRegisterEvent<>(CannonCastShape.class, CBCRegistries.cannonCastShapes()));
 	}
 
     private void onRegisterSounds(RegisterEvent event) {

@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons.forge.mixin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
@@ -13,6 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;

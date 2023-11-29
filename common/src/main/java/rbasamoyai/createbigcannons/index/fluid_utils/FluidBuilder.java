@@ -156,9 +156,9 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		if (source == null) {
 			throw new IllegalStateException("Cannot create a bucket before creating a source block");
 		}
-		return getOwner().<I, FluidBuilder<T, P>>item(this, bucketName, p -> ((NonNullBiFunction<CBCFlowingFluid, Item.Properties, ? extends I>) factory).apply(this.source.get(), p)) // Fabric TODO
-			.properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
-			.model(this::acceptItemModel);
+		return getOwner().<I, FluidBuilder<T, P>>item(this, bucketName, p -> ((NonNullBiFunction<CBCFlowingFluid, Item.Properties, ? extends I>) factory).apply(this.source.get(), p))
+				.properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
+				.model((ctx, prov) -> prov.generated(ctx, new ResourceLocation(getOwner().getModid(), "item/" + bucketName)));
 	}
 
 	protected abstract <I extends Item> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov);

@@ -18,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -225,8 +226,17 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 			}
 		}
 
-		if (!addLeak.isEmpty() && addLeak.getAmount() >= 1000) {
-			this.getLevel().setBlock(this.worldPosition, addLeak.getFluid().defaultFluidState().createLegacyBlock(), 11);
+		if (!addLeak.isEmpty()) {
+			net.minecraft.world.level.material.Fluid fluid = addLeak.getFluid();
+			int amount = addLeak.getAmount() - 250;
+			if (fluid instanceof FlowingFluid flowing) {
+				int fluidLevel = Math.max(Math.floorDiv(amount * 8, 1000), 0);
+				if (fluidLevel > 0) {
+					this.level.setBlock(this.worldPosition, flowing.getFlowing(fluidLevel, this.level.getBlockState(this.worldPosition.below()).isAir()).createLegacyBlock(), 11);
+				}
+			} else if (amount >= 1000) {
+				this.level.setBlock(this.worldPosition, addLeak.getFluid().defaultFluidState().createLegacyBlock(), 11);
+			}
 		}
 	}
 

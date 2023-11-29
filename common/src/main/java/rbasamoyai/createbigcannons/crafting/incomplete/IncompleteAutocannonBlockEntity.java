@@ -75,7 +75,7 @@ public class IncompleteAutocannonBlockEntity extends AutocannonBlockEntity imple
 				BlockEntity be1 = this.level.getBlockEntity(pos1);
 				if (state1.getBlock() instanceof AutocannonBlock cBlock1
 					&& cBlock1.getAutocannonMaterialInLevel(this.level, state1, pos1) == material
-					&& cBlock1.canConnectToSide(this.level, state1, pos1, dir1.getOpposite())
+					&& cBlock1.canConnectToSide(state1, dir1.getOpposite())
 					&& be1 instanceof IAutocannonBlockEntity cbe1) {
 					cbe1.cannonBehavior().setConnectedFace(dir1.getOpposite(), true);
 					be1.setChanged();

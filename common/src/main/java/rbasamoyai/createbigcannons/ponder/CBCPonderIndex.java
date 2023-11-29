@@ -75,6 +75,9 @@ public class CBCPonderIndex {
 			.addStoryBoard("munitions/using_autocannon_ammo_container", CannonLoadingScenes::usingAutocannonAmmoContainer)
 			.addStoryBoard("munitions/filling_autocannon_ammo_container", CannonLoadingScenes::fillingAutocannonAmmoContainer)
 			.addStoryBoard("munitions/automating_autocannon_ammo_container", CannonLoadingScenes::automatingAutocannonAmmoContainer);
+
+		HELPER.forComponents(CBCItems.CANNON_WELDER)
+			.addStoryBoard("cannon_crafting/cannon_welder", CannonCraftingScenes::weldingCannons);
 	}
 
 	public static void registerTags() {
@@ -109,6 +112,7 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.CANNON_DRILL)
 			.add(CBCBlocks.CANNON_BUILDER)
 			.add(AllBlocks.ENCASED_FAN)
+			.add(CBCItems.CANNON_WELDER)
 			.add(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH)
 			.add(CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH)
 			.add(CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH)

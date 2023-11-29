@@ -1,0 +1,52 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"0": "createbigcannons:block/projectile/drop_mortar_shell_bottom",
+		"1": "createbigcannons:block/projectile/drop_mortar_shell_fins",
+		"2": "createbigcannons:block/projectile/drop_mortar_shell_side",
+		"3": "createbigcannons:block/projectile/drop_mortar_shell_top",
+		"particle": "createbigcannons:block/projectile/drop_mortar_shell_side"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 7],
+			"to": [9, 3, 9],
+			"faces": {
+				"north": {"uv": [7, 11, 9, 14], "texture": "#1"},
+				"east": {"uv": [7, 11, 9, 14], "texture": "#1"},
+				"south": {"uv": [7, 11, 9, 14], "texture": "#1"},
+				"west": {"uv": [7, 11, 9, 14], "texture": "#1"},
+				"down": {"uv": [7, 14, 9, 16], "texture": "#1"}
+			}
+		},
+		{
+			"from": [3, 2, 3],
+			"to": [13, 16, 13],
+			"faces": {
+				"north": {"uv": [3, 0, 13, 14], "texture": "#2"},
+				"east": {"uv": [3, 0, 13, 14], "texture": "#2"},
+				"south": {"uv": [3, 0, 13, 14], "texture": "#2"},
+				"west": {"uv": [3, 0, 13, 14], "texture": "#2"},
+				"up": {"uv": [3, 3, 13, 13], "texture": "#3"},
+				"down": {"uv": [3, 3, 13, 13], "texture": "#0"}
+			}
+		},
+		{
+			"from": [8, 0, 4],
+			"to": [8, 3, 12],
+			"faces": {
+				"east": {"uv": [4, 11, 12, 14], "texture": "#1"},
+				"west": {"uv": [4, 11, 12, 14], "texture": "#1"}
+			}
+		},
+		{
+			"from": [4, 0, 8],
+			"to": [12, 3, 8],
+			"faces": {
+				"north": {"uv": [4, 11, 12, 14], "texture": "#1"},
+				"south": {"uv": [4, 11, 12, 14], "texture": "#1"}
+			}
+		}
+	]
+}
