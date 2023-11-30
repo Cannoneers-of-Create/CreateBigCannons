@@ -13,7 +13,6 @@ import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
@@ -102,11 +101,5 @@ public class CBCBuilderTransformers {
 
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarShell() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarEnd(String pathAndMaterial) { throw new AssertionError(); }
-
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarShell() {
-		return b -> b.properties(p -> p.noOcclusion())
-			.addLayer(() -> RenderType::cutout)
-			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/drop_mortar_shell"))));
-	}
 
 }

@@ -1052,15 +1052,6 @@ public class CBCBlocks {
 		.simpleItem()
 		.register();
 
-	public static final BlockEntry<DropMortarShellBlock> DROP_MORTAR_SHELL = REGISTRATE
-		.block("drop_mortar_shell", DropMortarShellBlock::new)
-		.transform(shell(MaterialColor.COLOR_RED))
-		.transform(axeOrPickaxe())
-		.transform(CBCBuilderTransformers.dropMortarShell())
-		.loot(CBCBuilderTransformers.shellLoot())
-		.simpleItem()
-		.register();
-
 	public static final BlockEntry<PowderChargeBlock> POWDER_CHARGE = REGISTRATE
 		.block("powder_charge", PowderChargeBlock::new)
 		.initialProperties(() -> Blocks.TNT)

@@ -212,14 +212,6 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy(getHasName(Items.HAY_BLOCK), has(Items.HAY_BLOCK))
 			.save(cons);
 
-		ShapedRecipeBuilder.shaped(CBCBlocks.DROP_MORTAR_SHELL.get())
-			.define('X', Items.TNT).define('I', CBCTags.CBCItemTags.SHEET_IRON).define('S', AllBlocks.SHAFT.get()).define('C', CBCBlocks.POWDER_CHARGE.get())
-			.pattern(" X ")
-			.pattern("ISI")
-			.pattern(" C ")
-			.unlockedBy(getHasName(Items.TNT), has(Items.TNT))
-			.save(cons);
-
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCBlocks.DROP_MORTAR_SHELL.get())
 			.define('X', Items.TNT).define('I', CBCTags.CBCItemTags.SHEET_IRON).define('S', AllBlocks.SHAFT.get()).define('C', CBCBlocks.POWDER_CHARGE.get())
 			.pattern(" X ")
