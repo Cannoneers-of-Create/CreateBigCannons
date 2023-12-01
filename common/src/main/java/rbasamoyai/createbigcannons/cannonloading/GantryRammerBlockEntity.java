@@ -142,7 +142,7 @@ public class GantryRammerBlockEntity extends KineticBlockEntity implements IDisp
             return defaultModifier;
         if (!AllBlocks.GANTRY_SHAFT.has(stateTo))
             return defaultModifier;
-        if (!stateTo.getValue(GantryShaftBlock.POWERED))
+        if (stateTo.getValue(GantryShaftBlock.POWERED))
             return defaultModifier;
 
         Direction direction = Direction.getNearest(diff.getX(), diff.getY(), diff.getZ());
