@@ -10,6 +10,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -33,7 +34,9 @@ public class BigCannonBlockItem<T extends Block & BigCannonBlock> extends BlockI
 	public InteractionResult place(BlockPlaceContext context) {
 		InteractionResult result = super.place(context);
 		Player player = context.getPlayer();
-		if (player != null && player.isCreative()) BigCannonBlock.onPlace(context.getLevel(), context.getClickedPos());
+		BigCannonMaterial material = this.cannonBlock.getCannonMaterial();
+		if (player != null && (material.properties().connectsInSurvival() || player.isCreative()))
+			BigCannonBlock.onPlace(context.getLevel(), context.getClickedPos());
 		return result;
 	}
 

@@ -7,8 +7,8 @@ import net.minecraft.util.GsonHelper;
 
 public record AutocannonMaterialProperties(int maxBarrelLength, float weight, float baseSpread, float spreadReductionPerBarrel,
 										   float baseSpeed, float speedIncreasePerBarrel, int maxSpeedIncreases,
-										   int projectileLifetime, float baseRecoil, boolean isWeldable, int weldDamage,
-										   int weldStressPenalty) {
+										   int projectileLifetime, float baseRecoil, boolean connectsInSurvival,
+										   boolean isWeldable, int weldDamage, int weldStressPenalty) {
 
 	public static AutocannonMaterialProperties fromJson(JsonObject obj) {
 		int maxBarrelLength = Math.max(1, GsonHelper.getAsInt(obj, "maximum_barrel_length"));
@@ -20,11 +20,13 @@ public record AutocannonMaterialProperties(int maxBarrelLength, float weight, fl
 		int maxSpeedIncreases = Math.max(0, GsonHelper.getAsInt(obj, "max_speed_increases", 2));
 		int projectileLifetime = Math.max(1, GsonHelper.getAsInt(obj, "projectile_lifetime"));
 		float baseRecoil = Math.max(0, GsonHelper.getAsFloat(obj, "base_recoil", 1));
+		boolean connectsInSurvival = GsonHelper.getAsBoolean(obj, "connects_in_survival", false);
 		boolean isWeldable = GsonHelper.getAsBoolean(obj, "is_weldable", false);
 		int weldDamage = Math.max(GsonHelper.getAsInt(obj, "weld_damage", 0), 0);
 		int weldStressPenalty = Math.max(GsonHelper.getAsInt(obj, "weld_stress_penalty", 0), 0);
 		return new AutocannonMaterialProperties(maxBarrelLength, weight, baseSpread, spreadReductionPerBarrel, baseSpeed,
-			speedIncreasePerBarrel, maxSpeedIncreases, projectileLifetime, baseRecoil, isWeldable, weldDamage, weldStressPenalty);
+			speedIncreasePerBarrel, maxSpeedIncreases, projectileLifetime, baseRecoil, connectsInSurvival, isWeldable,
+			weldDamage, weldStressPenalty);
 	}
 
 	public JsonObject serialize() {
@@ -38,6 +40,7 @@ public record AutocannonMaterialProperties(int maxBarrelLength, float weight, fl
 		obj.addProperty("max_speed_increases", this.maxSpeedIncreases);
 		obj.addProperty("projectile_lifetime", this.projectileLifetime);
 		obj.addProperty("base_recoil", this.baseRecoil);
+		obj.addProperty("connects_in_survival",  this.connectsInSurvival);
 		obj.addProperty("is_weldable", this.isWeldable);
 		obj.addProperty("weld_damage", this.weldDamage);
 		obj.addProperty("weld_stress_penalty", this.weldStressPenalty);
@@ -54,6 +57,7 @@ public record AutocannonMaterialProperties(int maxBarrelLength, float weight, fl
 		buf.writeVarInt(this.maxSpeedIncreases)
 			.writeVarInt(this.projectileLifetime)
 			.writeFloat(this.baseRecoil)
+			.writeBoolean(this.connectsInSurvival)
 			.writeBoolean(this.isWeldable);
 		buf.writeVarInt(this.weldDamage)
 			.writeVarInt(this.weldStressPenalty);
@@ -69,11 +73,13 @@ public record AutocannonMaterialProperties(int maxBarrelLength, float weight, fl
 		int maxSpeedIncreases = buf.readVarInt();
 		int projectileLifetime = buf.readVarInt();
 		float baseRecoil = buf.readFloat();
+		boolean connectsInSurvival = buf.readBoolean();
 		boolean isWeldable = buf.readBoolean();
 		int weldDamage = buf.readVarInt();
 		int weldStressPenalty = buf.readVarInt();
 		return new AutocannonMaterialProperties(maxBarrelLength, weight, baseSpread, spreadReductionPerBarrel, baseSpeed,
-			speedIncreasePerBarrel, maxSpeedIncreases, projectileLifetime, baseRecoil, isWeldable, weldDamage, weldStressPenalty);
+			speedIncreasePerBarrel, maxSpeedIncreases, projectileLifetime, baseRecoil, connectsInSurvival, isWeldable,
+			weldDamage, weldStressPenalty);
 	}
 
 }
