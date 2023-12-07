@@ -93,7 +93,7 @@ public class GantryRammerContraptionEntity extends AbstractContraptionEntity {
         Direction direction = blockState.getValue(GantryShaftBlock.FACING);
         GantryShaftBlockEntity GantryShaftBlockEntity = (GantryShaftBlockEntity) te;
 
-        float pinionMovementSpeed = GantryShaftBlockEntity.getPinionMovementSpeed();
+        float pinionMovementSpeed = GantryShaftBlockEntity.getPinionMovementSpeed() * 0.5f;
         movementVec = Vec3.atLowerCornerOf(direction.getNormal()).scale(pinionMovementSpeed);
 
         if (blockState.getValue(GantryShaftBlock.POWERED) || pinionMovementSpeed == 0) {
