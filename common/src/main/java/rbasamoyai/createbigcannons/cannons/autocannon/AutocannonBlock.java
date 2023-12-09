@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannons.autocannon;
 
+import javax.annotation.Nonnull;
+
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 
 import net.minecraft.core.BlockPos;
@@ -16,14 +18,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.welding.WeldableBlock;
 
-public interface AutocannonBlock extends WeldableBlock {
+public interface AutocannonBlock extends WeldableBlock, CannonContraptionProviderBlock {
 
     AutocannonMaterial getAutocannonMaterial();
     default AutocannonMaterial getAutocannonMaterialInLevel(LevelAccessor level, BlockState state, BlockPos pos) { return this.getAutocannonMaterial(); }
@@ -164,6 +168,12 @@ public interface AutocannonBlock extends WeldableBlock {
 		behavior.setConnectedFace(dir, true);
 		behavior.setWelded(dir, true);
 		behavior.blockEntity.notifyUpdate();
+	}
+
+	@Nonnull
+	@Override
+	default AbstractMountedCannonContraption getCannonContraption() {
+		return new MountedAutocannonContraption();
 	}
 
 }
