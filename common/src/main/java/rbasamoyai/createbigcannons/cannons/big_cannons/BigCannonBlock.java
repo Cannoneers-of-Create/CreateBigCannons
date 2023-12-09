@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -26,8 +27,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -39,7 +42,7 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
-public interface BigCannonBlock extends WeldableBlock {
+public interface BigCannonBlock extends WeldableBlock, CannonContraptionProviderBlock {
 
 	BigCannonMaterial getCannonMaterial();
 
@@ -296,6 +299,12 @@ public interface BigCannonBlock extends WeldableBlock {
 		behavior.setConnectedFace(dir, true);
 		behavior.setWelded(dir, true);
 		behavior.blockEntity.notifyUpdate();
+	}
+
+	@Nonnull
+	@Override
+	default AbstractMountedCannonContraption getCannonContraption() {
+		return new MountedBigCannonContraption();
 	}
 
 }

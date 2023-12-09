@@ -29,11 +29,8 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block,
@@ -267,10 +264,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
-		net.minecraft.world.level.block.Block block = this.level.getBlockState(pos).getBlock();
-		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
-		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
-		return null;
+		return this.level.getBlockState(pos).getBlock() instanceof CannonContraptionProviderBlock provBlock ? provBlock.getCannonContraption() : null;
 	}
 
 	public void disassemble() {
