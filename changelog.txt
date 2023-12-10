@@ -2,6 +2,7 @@ Changelog
 
 Changed:
 - Can now configure if cannon blocks connect when placed by hand in survival
+[Development] - More versatile cannon contraption building system for addon developers
 Fixed:
 - Fixed inability to weld wrought iron and log cannons by default in survival
 - Fixed textures that don't connect from connecting
