@@ -9,6 +9,7 @@ import java.util.function.Consumer;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 
@@ -34,14 +35,14 @@ public class CBCCraftingRecipeProvider {
 
 	public static void buildCraftingRecipes(Consumer<FinishedRecipe> cons) {
 		ShapedRecipeBuilder.shaped(CBCItems.IMPACT_FUZE.get(), 4)
-			.define('T', CBCTags.ItemCBC.IMPACT_FUZE_HEAD).define('R', CBCTags.ItemCBC.DUSTS_REDSTONE)
+			.define('T', CBCTags.CBCItemTags.IMPACT_FUZE_HEAD).define('R', CBCTags.CBCItemTags.DUSTS_REDSTONE)
 			.pattern("T")
 			.pattern("R")
-			.unlockedBy("has_impact_fuze_head", has(CBCTags.ItemCBC.IMPACT_FUZE_HEAD))
+			.unlockedBy("has_impact_fuze_head", has(CBCTags.CBCItemTags.IMPACT_FUZE_HEAD))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.TIMED_FUZE.get(), 4)
-			.define('I', CBCTags.ItemCBC.INGOT_IRON).define('C', Items.CLOCK).define('R', CBCTags.ItemCBC.DUSTS_REDSTONE)
+			.define('I', CBCTags.CBCItemTags.INGOT_IRON).define('C', Items.CLOCK).define('R', CBCTags.CBCItemTags.DUSTS_REDSTONE)
 			.pattern("I")
 			.pattern("C")
 			.pattern("R")
@@ -49,12 +50,12 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.PROXIMITY_FUZE.get(), 4)
-			.define('A', Items.IRON_BARS).define('C', CBCTags.ItemCBC.GEMS_QUARTZ).define('R', CBCTags.ItemCBC.DUSTS_REDSTONE).define('I', CBCTags.ItemCBC.INGOT_IRON)
+			.define('A', Items.IRON_BARS).define('C', CBCTags.CBCItemTags.GEMS_QUARTZ).define('R', CBCTags.CBCItemTags.DUSTS_REDSTONE).define('I', CBCTags.CBCItemTags.INGOT_IRON)
 			.pattern(" A ")
 			.pattern("RCR")
 			.pattern(" I ")
 			.unlockedBy(getHasName(Items.IRON_BARS), has(Items.IRON_BARS))
-			.unlockedBy("has_quartz", has(CBCTags.ItemCBC.GEMS_QUARTZ))
+			.unlockedBy("has_quartz", has(CBCTags.CBCItemTags.GEMS_QUARTZ))
 			.save(cons);
 
 		ShapelessRecipeBuilder.shapeless(CBCItems.DELAYED_IMPACT_FUZE.get())
@@ -64,8 +65,8 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapelessRecipeBuilder.shapeless(CBCItems.TRACER_TIP.get(), 4)
-			.requires(CBCTags.ItemCBC.DUST_GLOWSTONE).requires(Items.BLAZE_POWDER)
-			.unlockedBy("has_glowstone", has(CBCTags.ItemCBC.DUST_GLOWSTONE))
+			.requires(CBCTags.CBCItemTags.DUST_GLOWSTONE).requires(Items.BLAZE_POWDER)
+			.unlockedBy("has_glowstone", has(CBCTags.CBCItemTags.DUST_GLOWSTONE))
 			.unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))
 			.save(cons);
 
@@ -74,31 +75,31 @@ public class CBCCraftingRecipeProvider {
 			.pattern("S")
 			.pattern("W")
 			.pattern("S")
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
 		ShapelessRecipeBuilder.shapeless(CBCBlocks.POWDER_CHARGE.get())
 			.requires(CBCItems.PACKED_GUNPOWDER.get())
 			.requires(CBCItems.EMPTY_POWDER_CHARGE.get())
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.BIG_CARTRIDGE_SHEET.get(), 2)
-			.define('S', CBCTags.ItemCBC.SHEET_BRASS)
+			.define('S', CBCTags.CBCItemTags.SHEET_BRASS)
 			.pattern("SS")
 			.pattern("SS")
-			.unlockedBy("has_brass_sheet", has(CBCTags.ItemCBC.SHEET_BRASS))
+			.unlockedBy("has_brass_sheet", has(CBCTags.CBCItemTags.SHEET_BRASS))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.BIG_CARTRIDGE_SHEET.get())
-			.define('S', CBCTags.ItemCBC.INEXPENSIVE_BIG_CARTRIDGE_SHEET)
+			.define('S', CBCTags.CBCItemTags.INEXPENSIVE_BIG_CARTRIDGE_SHEET)
 			.pattern("SS")
 			.pattern("SS")
-			.unlockedBy("has_inexpensive_big_cartridge_sheet", has(CBCTags.ItemCBC.INEXPENSIVE_BIG_CARTRIDGE_SHEET))
+			.unlockedBy("has_inexpensive_big_cartridge_sheet", has(CBCTags.CBCItemTags.INEXPENSIVE_BIG_CARTRIDGE_SHEET))
 			.save(cons, "big_cannon_sheet_inexpensive");
 
 		ShapedRecipeBuilder.shaped(CBCItems.AUTOCANNON_AMMO_CONTAINER.get())
-			.define('I', CBCTags.ItemCBC.SHEET_IRON).define('B', CBCTags.ItemCBC.INGOT_BRASS)
+			.define('I', CBCTags.CBCItemTags.SHEET_IRON).define('B', CBCTags.CBCItemTags.INGOT_BRASS)
 			.pattern(" B ")
 			.pattern("I I")
 			.pattern("III")
@@ -114,12 +115,12 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.MACHINE_GUN_ROUND.get())
-			.define('C', CBCItems.EMPTY_MACHINE_GUN_ROUND.get()).define('P', CBCTags.ItemCBC.GUNPOWDER)
-			.define('B', CBCTags.ItemCBC.NUGGET_COPPER)
+			.define('C', CBCItems.EMPTY_MACHINE_GUN_ROUND.get()).define('P', CBCTags.CBCItemTags.GUNPOWDER)
+			.define('B', CBCTags.CBCItemTags.NUGGET_COPPER)
 			.pattern("B")
 			.pattern("P")
 			.pattern("C")
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
 		nineBlockStorageRecipesRecipesWithCustomUnpacking(cons, CBCItems.CAST_IRON_INGOT.get(), CBCBlocks.CAST_IRON_BLOCK.get(), "cast_iron_ingot_from_block", "cast_iron_ingot");
@@ -129,36 +130,36 @@ public class CBCCraftingRecipeProvider {
 		nineBlockStorageRecipesWithCustomPacking(cons, CBCItems.NETHERSTEEL_NUGGET.get(), CBCItems.NETHERSTEEL_INGOT.get(), "nethersteel_ingot_from_nuggets", "nethersteel_ingot");
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.SOLID_SHOT.get())
-			.define('I', CBCTags.ItemCBC.INGOT_IRON).define('i', CBCTags.ItemCBC.NUGGET_IRON).define('S', ItemTags.WOODEN_SLABS)
+			.define('I', CBCTags.CBCItemTags.INGOT_IRON).define('i', CBCTags.CBCItemTags.NUGGET_IRON).define('S', ItemTags.WOODEN_SLABS)
 			.pattern("iIi")
 			.pattern("III")
 			.pattern(" S ")
-			.unlockedBy("has_iron_ingot", has(CBCTags.ItemCBC.INGOT_IRON))
+			.unlockedBy("has_iron_ingot", has(CBCTags.CBCItemTags.INGOT_IRON))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.AP_SHOT.get())
-			.define('C', CBCTags.ItemCBC.INGOT_CAST_IRON).define('I', CBCTags.ItemCBC.INGOT_IRON).define('S', ItemTags.WOODEN_SLABS)
+			.define('C', CBCTags.CBCItemTags.INGOT_CAST_IRON).define('I', CBCTags.CBCItemTags.INGOT_IRON).define('S', ItemTags.WOODEN_SLABS)
 			.pattern(" C ")
 			.pattern("III")
 			.pattern(" S ")
-			.unlockedBy("has_cast_iron_ingot", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
+			.unlockedBy("has_cast_iron_ingot", has(CBCTags.CBCItemTags.INGOT_CAST_IRON))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.MORTAR_STONE.get())
-			.define('S', CBCTags.ItemCBC.STONE).define('s', ItemTags.WOODEN_SLABS)
+			.define('S', CBCTags.CBCItemTags.STONE).define('s', ItemTags.WOODEN_SLABS)
 			.pattern(" S ")
 			.pattern("SSS")
 			.pattern(" s ")
-			.unlockedBy("has_stone", has(CBCTags.ItemCBC.STONE))
+			.unlockedBy("has_stone", has(CBCTags.CBCItemTags.STONE))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.SHOT_BALLS.get(), 2)
-			.define('i', CBCTags.ItemCBC.NUGGET_IRON).define('I', CBCTags.ItemCBC.INGOT_IRON)
+			.define('i', CBCTags.CBCItemTags.NUGGET_IRON).define('I', CBCTags.CBCItemTags.INGOT_IRON)
 			.pattern("iii")
 			.pattern("iIi")
 			.pattern("iii")
-			.unlockedBy("has_iron_nugget", has(CBCTags.ItemCBC.NUGGET_IRON))
-			.unlockedBy("has_iron_ingot", has(CBCTags.ItemCBC.INGOT_IRON))
+			.unlockedBy("has_iron_nugget", has(CBCTags.CBCItemTags.NUGGET_IRON))
+			.unlockedBy("has_iron_ingot", has(CBCTags.CBCItemTags.INGOT_IRON))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.BAG_OF_GRAPESHOT.get())
@@ -166,12 +167,12 @@ public class CBCCraftingRecipeProvider {
 			.pattern("DDD")
 			.pattern("WLW")
 			.pattern(" S ")
-			.unlockedBy("has_iron_nugget", has(CBCTags.ItemCBC.NUGGET_IRON))
-			.unlockedBy("has_iron_ingot", has(CBCTags.ItemCBC.INGOT_IRON))
+			.unlockedBy("has_iron_nugget", has(CBCTags.CBCItemTags.NUGGET_IRON))
+			.unlockedBy("has_iron_ingot", has(CBCTags.CBCItemTags.INGOT_IRON))
 			.save(cons);
 
 		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.SHRAPNEL_SHELL.get())
-			.key('I', CBCTags.ItemCBC.INGOT_IRON).key('L', CBCItems.SHOT_BALLS.get()).key('S', ItemTags.WOODEN_SLABS).key('P', CBCTags.ItemCBC.GUNPOWDER)
+			.key('I', CBCTags.CBCItemTags.INGOT_IRON).key('L', CBCItems.SHOT_BALLS.get()).key('S', ItemTags.WOODEN_SLABS).key('P', CBCTags.CBCItemTags.GUNPOWDER)
 			.patternLine(" I ")
 			.patternLine("ILI")
 			.patternLine("IPI")
@@ -179,7 +180,7 @@ public class CBCCraftingRecipeProvider {
 			.build(cons);
 
 		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.HE_SHELL.get())
-			.key('I', CBCTags.ItemCBC.INGOT_IRON).key('T', Items.TNT).key('S', ItemTags.WOODEN_SLABS)
+			.key('I', CBCTags.CBCItemTags.INGOT_IRON).key('T', Items.TNT).key('S', ItemTags.WOODEN_SLABS)
 			.patternLine(" I ")
 			.patternLine("ITI")
 			.patternLine("ITI")
@@ -187,7 +188,7 @@ public class CBCCraftingRecipeProvider {
 			.build(cons);
 
 		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.AP_SHELL.get())
-			.key('I', CBCTags.ItemCBC.INGOT_IRON).key('C', CBCTags.ItemCBC.INGOT_CAST_IRON).key('T', Items.TNT).key('S', ItemTags.WOODEN_SLABS)
+			.key('I', CBCTags.CBCItemTags.INGOT_IRON).key('C', CBCTags.CBCItemTags.INGOT_CAST_IRON).key('T', Items.TNT).key('S', ItemTags.WOODEN_SLABS)
 			.patternLine(" C ")
 			.patternLine("ICI")
 			.patternLine("ITI")
@@ -195,7 +196,7 @@ public class CBCCraftingRecipeProvider {
 			.build(cons);
 
 		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.FLUID_SHELL.get())
-			.key('I', CBCTags.ItemCBC.INGOT_IRON).key('P', AllBlocks.FLUID_PIPE.get()).key('S', ItemTags.WOODEN_SLABS)
+			.key('I', CBCTags.CBCItemTags.INGOT_IRON).key('P', AllBlocks.FLUID_PIPE.get()).key('S', ItemTags.WOODEN_SLABS)
 			.patternLine(" I ")
 			.patternLine("IPI")
 			.patternLine("IPI")
@@ -203,22 +204,30 @@ public class CBCCraftingRecipeProvider {
 			.build(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.SMOKE_SHELL.get())
-			.define('I', CBCTags.ItemCBC.INGOT_IRON).define('P', CBCTags.ItemCBC.SHEET_IRON).define('H', Items.HAY_BLOCK)
+			.define('I', CBCTags.CBCItemTags.INGOT_IRON).define('P', CBCTags.CBCItemTags.SHEET_IRON).define('H', Items.HAY_BLOCK)
 			.pattern("PHP")
 			.pattern("PHP")
 			.pattern("PIP")
 			.unlockedBy(getHasName(Items.HAY_BLOCK), has(Items.HAY_BLOCK))
 			.save(cons);
 
+		ShapedRecipeBuilder.shaped(CBCBlocks.DROP_MORTAR_SHELL.get())
+			.define('X', Items.TNT).define('I', CBCTags.CBCItemTags.SHEET_IRON).define('S', AllBlocks.SHAFT.get()).define('C', CBCBlocks.POWDER_CHARGE.get())
+			.pattern(" X ")
+			.pattern("ISI")
+			.pattern(" C ")
+			.unlockedBy(getHasName(Items.TNT), has(Items.TNT))
+			.save(cons);
+
 		ShapedRecipeBuilder.shaped(CBCItems.AP_AUTOCANNON_ROUND.get(), 4)
-			.define('C', CBCTags.ItemCBC.INGOT_CAST_IRON).define('I', CBCTags.ItemCBC.INGOT_IRON)
+			.define('C', CBCTags.CBCItemTags.INGOT_CAST_IRON).define('I', CBCTags.CBCItemTags.INGOT_IRON)
 			.pattern("C")
 			.pattern("I")
-			.unlockedBy("has_cast_iron", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
+			.unlockedBy("has_cast_iron", has(CBCTags.CBCItemTags.INGOT_CAST_IRON))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.FLAK_AUTOCANNON_ROUND.get(), 2)
-			.define('S', CBCItems.SHOT_BALLS.get()).define('G', CBCTags.ItemCBC.GUNPOWDER).define('C', CBCTags.ItemCBC.SHEET_IRON)
+			.define('S', CBCItems.SHOT_BALLS.get()).define('G', CBCTags.CBCItemTags.GUNPOWDER).define('C', CBCTags.CBCItemTags.SHEET_IRON)
 			.pattern("S")
 			.pattern("G")
 			.pattern("C")
@@ -226,7 +235,7 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_LOADER.get())
-			.define('C', AllBlocks.ANDESITE_CASING.get()).define('G', CBCTags.ItemCBC.GUNPOWDER).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
+			.define('C', AllBlocks.ANDESITE_CASING.get()).define('G', CBCTags.CBCItemTags.GUNPOWDER).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
 			.pattern("G")
 			.pattern("C")
 			.pattern("P")
@@ -248,7 +257,7 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_BUILDER.get())
-			.define('C', AllBlocks.ANDESITE_CASING.get()).define('H', CBCTags.ItemCBC.SHEET_IRON).define('h', CBCTags.ItemCBC.NUGGET_IRON).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
+			.define('C', AllBlocks.ANDESITE_CASING.get()).define('H', CBCTags.CBCItemTags.SHEET_IRON).define('h', CBCTags.CBCItemTags.NUGGET_IRON).define('P', AllBlocks.PISTON_EXTENSION_POLE.get())
 			.pattern("hHh")
 			.pattern(" C ")
 			.pattern(" P ")
@@ -256,7 +265,7 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_DRILL.get())
-			.define('C', AllBlocks.ANDESITE_CASING.get()).define('D', CBCTags.ItemCBC.INGOT_IRON).define('P', AllBlocks.PISTON_EXTENSION_POLE.get()).define('p', AllBlocks.FLUID_PIPE.get())
+			.define('C', AllBlocks.ANDESITE_CASING.get()).define('D', CBCTags.CBCItemTags.INGOT_IRON).define('P', AllBlocks.PISTON_EXTENSION_POLE.get()).define('p', AllBlocks.FLUID_PIPE.get())
 			.pattern(" D ")
 			.pattern("pCp")
 			.pattern(" P ")
@@ -278,47 +287,61 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.LOG_CANNON_END.get())
-			.define('L', ItemTags.LOGS).define('K', ItemTags.WOODEN_BUTTONS).define('G', CBCTags.ItemCBC.GUNPOWDER)
+			.define('L', ItemTags.LOGS).define('K', ItemTags.WOODEN_BUTTONS).define('G', CBCTags.CBCItemTags.GUNPOWDER)
 			.pattern(" K ")
 			.pattern("LLL")
 			.pattern(" G ")
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.LOG_CANNON_CHAMBER.get())
-			.define('L', ItemTags.LOGS).define('G', CBCTags.ItemCBC.GUNPOWDER)
+			.define('L', ItemTags.LOGS).define('G', CBCTags.CBCItemTags.GUNPOWDER)
 			.pattern(" L ")
 			.pattern("LGL")
 			.pattern(" L ")
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.WROUGHT_IRON_CANNON_END.get())
-			.define('I', CBCTags.ItemCBC.SHEET_IRON).define('K', CBCTags.ItemCBC.INGOT_IRON).define('G', CBCTags.ItemCBC.GUNPOWDER)
+			.define('I', CBCTags.CBCItemTags.SHEET_IRON).define('K', CBCTags.CBCItemTags.INGOT_IRON).define('G', CBCTags.CBCItemTags.GUNPOWDER)
 			.pattern(" K ")
 			.pattern("III")
 			.pattern(" G ")
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.WROUGHT_IRON_CANNON_CHAMBER.get())
-			.define('I', CBCTags.ItemCBC.SHEET_IRON).define('G', CBCTags.ItemCBC.GUNPOWDER)
+			.define('I', CBCTags.CBCItemTags.SHEET_IRON).define('G', CBCTags.CBCItemTags.GUNPOWDER)
 			.pattern(" I ")
 			.pattern("IGI")
 			.pattern(" I ")
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
+		ShapedRecipeBuilder.shaped(CBCBlocks.WROUGHT_IRON_DROP_MORTAR_END.get())
+			.define('B', Items.IRON_BARS).define('E', CBCBlocks.WROUGHT_IRON_CANNON_END.get())
+			.pattern("E")
+			.pattern("B")
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
+			.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCBlocks.WROUGHT_IRON_DROP_MORTAR_END.get())
+			.define('B', Items.IRON_BARS).define('E', CBCBlocks.WROUGHT_IRON_CANNON_END.get())
+			.pattern("B")
+			.pattern("E")
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
+			.save(cons, "wrought_iron_drop_mortar_end_mirrored");
+
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_MOUNT.get())
-			.define('S', AllBlocks.SHAFT.get()).define('C', AllBlocks.ANDESITE_CASING.get()).define('G', CBCTags.ItemCBC.GUNPOWDER).define('I', CBCTags.ItemCBC.SHEET_IRON)
+			.define('S', AllBlocks.SHAFT.get()).define('C', AllBlocks.ANDESITE_CASING.get()).define('G', CBCTags.CBCItemTags.GUNPOWDER).define('I', CBCTags.CBCItemTags.SHEET_IRON)
 			.pattern("ISI")
 			.pattern("SCS")
 			.pattern("GSG")
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.YAW_CONTROLLER.get())
-			.define('S', AllBlocks.SHAFT.get()).define('C', AllBlocks.ANDESITE_CASING.get()).define('G', CBCTags.ItemCBC.GUNPOWDER)
+			.define('S', AllBlocks.SHAFT.get()).define('C', AllBlocks.ANDESITE_CASING.get()).define('G', CBCTags.CBCItemTags.GUNPOWDER)
 			.pattern(" S ")
 			.pattern("GCG")
 			.pattern(" S ")
@@ -326,34 +349,34 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.CAST_IRON_SLIDING_BREECHBLOCK.get())
-			.define('I', CBCTags.ItemCBC.INGOT_CAST_IRON).define('C', AllBlocks.COGWHEEL.get())
+			.define('I', CBCTags.CBCItemTags.INGOT_CAST_IRON).define('C', AllBlocks.COGWHEEL.get())
 			.pattern(" I ")
 			.pattern("CIC")
 			.pattern(" I ")
-			.unlockedBy("has_cast_iron_ingot", has(CBCTags.ItemCBC.INGOT_CAST_IRON))
+			.unlockedBy("has_cast_iron_ingot", has(CBCTags.CBCItemTags.INGOT_CAST_IRON))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.BRONZE_SLIDING_BREECHBLOCK.get())
-			.define('I', CBCTags.ItemCBC.INGOT_BRONZE).define('C', AllBlocks.COGWHEEL.get())
+			.define('I', CBCTags.CBCItemTags.INGOT_BRONZE).define('C', AllBlocks.COGWHEEL.get())
 			.pattern(" I ")
 			.pattern("CIC")
 			.pattern(" I ")
-			.unlockedBy("has_bronze_ingot", has(CBCTags.ItemCBC.INGOT_BRONZE))
+			.unlockedBy("has_bronze_ingot", has(CBCTags.CBCItemTags.INGOT_BRONZE))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.STEEL_SLIDING_BREECHBLOCK.get())
-			.define('I', CBCTags.ItemCBC.INGOT_STEEL).define('C', AllBlocks.COGWHEEL.get())
+			.define('I', CBCTags.CBCItemTags.INGOT_STEEL).define('C', AllBlocks.COGWHEEL.get())
 			.pattern(" I ")
 			.pattern("CIC")
 			.pattern(" I ")
-			.unlockedBy("has_steel_ingot", has(CBCTags.ItemCBC.INGOT_STEEL))
+			.unlockedBy("has_steel_ingot", has(CBCTags.CBCItemTags.INGOT_STEEL))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.STEEL_SCREW_LOCK.get())
-			.define('I', CBCTags.ItemCBC.INGOT_STEEL).define('S', AllBlocks.SHAFT.get())
+			.define('I', CBCTags.CBCItemTags.INGOT_STEEL).define('S', AllBlocks.SHAFT.get())
 			.pattern(" S ")
 			.pattern("III")
-			.unlockedBy("has_steel_ingot", has(CBCTags.ItemCBC.INGOT_STEEL))
+			.unlockedBy("has_steel_ingot", has(CBCTags.CBCItemTags.INGOT_STEEL))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.NETHERSTEEL_SCREW_LOCK.get())
@@ -380,11 +403,11 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.PAIR_OF_CANNON_WHEELS.get(), 2)
-			.define('S', CBCTags.ItemCBC.SHEET_IRON).define('L', ItemTags.LOGS)
+			.define('S', CBCTags.CBCItemTags.SHEET_IRON).define('L', ItemTags.LOGS)
 			.pattern(" S ")
 			.pattern("SLS")
 			.pattern(" S ")
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.CANNON_CARRIAGE.get())
@@ -392,8 +415,26 @@ public class CBCCraftingRecipeProvider {
 			.pattern(" SP")
 			.pattern("PPP")
 			.pattern("W W")
-			.unlockedBy("has_gunpowder", has(CBCTags.ItemCBC.GUNPOWDER))
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCItems.CANNON_WELDER.get())
+			.define('V', AllTags.AllItemTags.VALVE_HANDLES.tag).define('I', CBCTags.CBCItemTags.SHEET_IRON)
+			.define('B', CBCTags.CBCItemTags.SHEET_BRASS).define('Z', AllBlocks.BLAZE_BURNER.get())
+			.pattern("VI ")
+			.pattern("BZB")
+			.pattern(" B ")
+			.unlockedBy(getHasName(AllBlocks.BLAZE_BURNER.get()), has(AllBlocks.BLAZE_BURNER.get()))
+			.save(cons);
+
+		ShapedRecipeBuilder.shaped(CBCItems.CANNON_WELDER.get())
+			.define('V', AllTags.AllItemTags.VALVE_HANDLES.tag).define('I', CBCTags.CBCItemTags.SHEET_IRON)
+			.define('B', CBCTags.CBCItemTags.SHEET_BRASS).define('Z', AllBlocks.BLAZE_BURNER.get())
+			.pattern(" IV")
+			.pattern("BZB")
+			.pattern(" B ")
+			.unlockedBy(getHasName(AllBlocks.BLAZE_BURNER.get()), has(AllBlocks.BLAZE_BURNER.get()))
+			.save(cons, "cannon_welder_mirrored");
 
 		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING.getSerializer()).save(cons, "munition_fuzing");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY.getSerializer()).save(cons, "cartridge_assembly");

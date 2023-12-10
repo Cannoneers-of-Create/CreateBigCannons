@@ -153,17 +153,17 @@ public class CannonLoadingScenes {
 		scene.overlay.showText(100).text("When loading a cannon, care must be taken to ensure that cannon loads are safe and effective.");
 		scene.idle(110);
 
-		scene.overlay.showText(80).text("A cannon's material has two factors that can cause the cannon to fail; its squib ratio and its strength.").colored(PonderPalette.RED);
+		scene.overlay.showText(80).text("A cannon's material has two main factors that can cause the cannon to fail; its main factor and its strength.").colored(PonderPalette.RED);
 		scene.idle(90);
 
 		scene.overlay.showText(80)
 			.attachKeyFrame()
-			.text("The squib ratio determines the minimum length of barrel per Powder Charge a projectile can safely travel through before possibly getting stuck.");
+			.text("The minimum projectile velocity per barrel determines how much power a projectile should have to not get stuck in a cannon.");
 		scene.idle(90);
 
 		Selection safeLoad = util.select.fromTo(0, 2, 2, 3, 2, 2);
 		scene.world.showSection(safeLoad, Direction.UP);
-		scene.overlay.showText(80).text("For example, the squib ratio of cast iron is 1 barrel to 1 Powder Charge.");
+		scene.overlay.showText(80).text("For example, the default minimum projectile velocity of cast iron is equivalent to 1 Powder Charge for every barrel.");
 		scene.idle(20);
 
 		AABB bb1 = new AABB(util.grid.at(3, 2, 2));
@@ -178,7 +178,7 @@ public class CannonLoadingScenes {
 
 		scene.idle(40);
 
-		scene.overlay.showText(80).text("The barrel that the loaded projectile is in is also counted towards the distance travelled.");
+		scene.overlay.showText(80).text("The barrel that the loaded projectile is in is also counted towards the barrels travelled.");
 		scene.idle(120);
 
 		scene.overlay.showText(80)
@@ -195,6 +195,13 @@ public class CannonLoadingScenes {
 		scene.idle(70);
 		scene.world.hideSection(safeLoad, Direction.UP);
 		scene.idle(20);
+
+		scene.overlay.showSelectionWithText(util.select.position(4, 1, 2), 60)
+			.text("The strength of a cannon can be affected by its breech.")
+			.colored(PonderPalette.RED)
+			.placeNearTarget()
+			.pointAt(util.vector.centerOf(4, 1, 2));
+		scene.idle(90);
 
 		scene.overlay.showText(80)
 			.attachKeyFrame()
@@ -586,7 +593,8 @@ public class CannonLoadingScenes {
 		scene.idle(30);
 
 		scene.overlay.showText(60)
-			.text("Autocannon Ammo Containers are a convenient way to store autocannon ammo and to load autocannons.");
+			.text("Autocannon Ammo Containers are a convenient way to store autocannon ammo and to load autocannons.")
+			.pointAt(util.vector.centerOf(1, 3, 1));
 		scene.idle(75);
 
 		scene.overlay.showText(80)
@@ -719,7 +727,8 @@ public class CannonLoadingScenes {
 
 		scene.overlay.showText(80)
 			.attachKeyFrame()
-			.text("The container can also be filled with deployers.");
+			.text("The container can also be filled with deployers.")
+			.pointAt(util.vector.topOf(deployer));
 		scene.idle(20);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(deployer, Direction.WEST), Pointing.LEFT)
 			.withItem(ammo), 30);
@@ -807,8 +816,9 @@ public class CannonLoadingScenes {
 		scene.world.createItemOnBeltLike(takeDepot, Direction.EAST, filledContainer);
 		scene.idle(30);
 		scene.world.instructArm(arm, Phase.MOVE_TO_OUTPUT, filledContainer, 0);
-		scene.overlay.showText(120)
-			.text("Mechanical Arms can load assembled autocannons with Autocannon Ammo Containers.");
+		scene.overlay.showSelectionWithText(armSel, 120)
+			.text("Mechanical Arms can load assembled autocannons with Autocannon Ammo Containers.")
+			.colored(PonderPalette.GREEN);
 		scene.idle(35);
 		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
 			tag.put("Magazine", filledContainer.save(new CompoundTag()));

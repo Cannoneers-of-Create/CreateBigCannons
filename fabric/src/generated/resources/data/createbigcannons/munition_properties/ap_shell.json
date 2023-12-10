@@ -6,5 +6,8 @@
   "base_fuze": true,
   "gravity": -0.05,
   "drag": 0.99,
+  "minimum_charge_power": 1.0,
+  "can_squib": true,
+  "added_recoil": 1.0,
   "explosive_power": 5.0
 }

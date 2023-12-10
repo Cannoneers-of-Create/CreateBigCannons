@@ -8,7 +8,11 @@ modId = "createbigcannons"
 version = "${version}"
 displayName = "Create Big Cannons"
 authors = "rbasamoyai"
-description = '''Artillery engineering comes to Create'''
+description = """Artillery engineering comes to Create
+Attributions:
+Logo by Milkyfur
+Textures by rbasamoyai, Milkyfur, and LopyLuna
+"""
 logoFile = "icon.png"
 
 [[dependencies.createbigcannons]]

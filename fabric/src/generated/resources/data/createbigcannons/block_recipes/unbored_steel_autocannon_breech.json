@@ -6,6 +6,5 @@
     "nbt": {},
     "amount": 1
   },
-  "casting_time": 1500,
   "result": "createbigcannons:unbored_steel_autocannon_breech"
 }

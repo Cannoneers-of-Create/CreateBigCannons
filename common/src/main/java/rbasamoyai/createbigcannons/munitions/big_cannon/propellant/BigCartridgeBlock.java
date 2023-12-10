@@ -28,7 +28,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
@@ -93,27 +92,32 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 
 	@Override
 	public float getChargePower(StructureBlockInfo data) {
-		return getPowerFromData(data) * CBCConfigs.SERVER.munitions.bigCartridgeStrength.getF();
+		return getPowerFromData(data) * BigCannonPropellantBlock.super.getChargePower(data);
 	}
 
 	@Override
 	public float getChargePower(ItemStack stack) {
-		return BigCartridgeBlockItem.getPower(stack) * CBCConfigs.SERVER.munitions.bigCartridgeStrength.getF();
+		return BigCartridgeBlockItem.getPower(stack) * BigCannonPropellantBlock.super.getChargePower(stack);
 	}
 
 	@Override
 	public float getStressOnCannon(StructureBlockInfo data) {
-		return getPowerFromData(data) * CBCConfigs.SERVER.munitions.bigCartridgeStress.getF();
+		return getPowerFromData(data) * BigCannonPropellantBlock.super.getStressOnCannon(data);
 	}
 
 	@Override
 	public float getStressOnCannon(ItemStack stack) {
-		return BigCartridgeBlockItem.getPower(stack) * CBCConfigs.SERVER.munitions.bigCartridgeStress.getF();
+		return BigCartridgeBlockItem.getPower(stack) * BigCannonPropellantBlock.super.getStressOnCannon(stack);
 	}
 
 	@Override
 	public float getSpread(StructureBlockInfo data) {
-		return getPowerFromData(data) * CBCConfigs.SERVER.munitions.addedSpread.getF();
+		return getPowerFromData(data) * BigCannonPropellantBlock.super.getSpread(data);
+	}
+
+	@Override
+	public float getRecoil(StructureBlockInfo data) {
+		return getPowerFromData(data) * BigCannonPropellantBlock.super.getRecoil(data);
 	}
 
 	@Override
@@ -128,8 +132,8 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	}
 
 	@Override
-	public boolean isCompatibleWith(BigCannonPropellantBlock other, StructureBlockInfo data, Direction dir) {
-		return false;
+	public boolean isValidAddition(StructureBlockInfo self, int index, Direction dir) {
+		return this.canBeIgnited(self, dir) && index == 0;
 	}
 
 	@Override

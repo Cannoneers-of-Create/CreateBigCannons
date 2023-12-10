@@ -120,7 +120,7 @@ public class CannonMountScenes {
 			tag.putFloat("PitchSpeed", 8.0f);
 		});
 		scene.world.rotateSection(cannon, 0, 0, -30, 40);
-		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(util.grid.at(2, 3, 2), -30, 40));
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(util.grid.at(2, 3, 2), 30, 40));
 
 		scene.overlay.showText(80)
 			.attachKeyFrame()
@@ -198,7 +198,7 @@ public class CannonMountScenes {
 			tag.putFloat("CannonPitch", 0);
 		});
 		scene.world.rotateSection(cannon, 0, 0, -30, 40);
-		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(util.grid.at(2, 2, 2), -30, 40));
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(util.grid.at(2, 2, 2), 30, 40));
 		scene.idle(40);
 		scene.world.setKineticSpeed(util.select.position(1, 1, 2), 0.0f);
 		scene.world.setKineticSpeed(util.select.position(1, 1, 3), 0.0f);
@@ -319,8 +319,8 @@ public class CannonMountScenes {
 		for (int i = 0; i < 5; ++i) {
 			scene.effects.emitParticles(emitPos, emitter, 1, 10);
 			scene.world.moveSection(autocannonBarrel, util.vector.of(0.5, 0, 0), 1);
-			scene.world.modifyBlockEntityNBT(breech, AbstractAutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
-			scene.world.modifyBlockEntityNBT(spring, AutocannonRecoilSpringBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
+			scene.world.modifyBlockEntityNBT(breech, AbstractAutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimateTicks", 0));
+			scene.world.modifyBlockEntityNBT(spring, AutocannonRecoilSpringBlockEntity.class, tag -> tag.putInt("AnimateTicks", 0));
 			scene.addInstruction(CBCAnimateBlockEntityInstruction.autocannon(util.grid.at(2, 5, 2), 5));
 			scene.addInstruction(CBCAnimateBlockEntityInstruction.autocannon(util.grid.at(3, 5, 2), 5));
 			scene.idle(1);
@@ -344,8 +344,8 @@ public class CannonMountScenes {
 		for (int i = 0; i < 20; ++i) {
 			scene.effects.emitParticles(emitPos, emitter, 1, 10);
 			scene.world.moveSection(autocannonBarrel, util.vector.of(0.5, 0, 0), 1);
-			scene.world.modifyBlockEntityNBT(breech, AbstractAutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
-			scene.world.modifyBlockEntityNBT(spring, AutocannonRecoilSpringBlockEntity.class, tag -> tag.putInt("AnimationTicks", 0));
+			scene.world.modifyBlockEntityNBT(breech, AbstractAutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimateTicks", 0));
+			scene.world.modifyBlockEntityNBT(spring, AutocannonRecoilSpringBlockEntity.class, tag -> tag.putInt("AnimateTicks", 0));
 			scene.addInstruction(CBCAnimateBlockEntityInstruction.autocannon(util.grid.at(2, 5, 2), 5));
 			scene.addInstruction(CBCAnimateBlockEntityInstruction.autocannon(util.grid.at(3, 5, 2), 5));
 			scene.idle(1);
@@ -412,9 +412,9 @@ public class CannonMountScenes {
 		BlockPos mountPos = util.grid.at(2, 1, 2);
 
 		scene.world.rotateSection(autocannon, 0, 0, -60, 40);
-		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(mountPos, -60, 40));
-		scene.idle(60);
 		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(mountPos, 60, 40));
+		scene.idle(60);
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(mountPos, -60, 40));
 		scene.world.rotateSection(autocannon, 0, 0, 60, 40);
 		scene.idle(60);
 

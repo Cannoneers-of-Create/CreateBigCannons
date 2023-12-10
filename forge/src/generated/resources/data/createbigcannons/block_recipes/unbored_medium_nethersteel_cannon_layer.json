@@ -6,6 +6,5 @@
     "nbt": {},
     "amount": 1
   },
-  "casting_time": 3600,
   "result": "createbigcannons:unbored_medium_nethersteel_cannon_layer"
 }

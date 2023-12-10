@@ -19,7 +19,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock {
 
@@ -43,31 +42,6 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	}
 
 	@Override
-	public float getChargePower(StructureBlockInfo data) {
-		return CBCConfigs.SERVER.munitions.powderChargeStrength.getF();
-	}
-
-	@Override
-	public float getChargePower(ItemStack stack) {
-		return CBCConfigs.SERVER.munitions.powderChargeStrength.getF();
-	}
-
-	@Override
-	public float getStressOnCannon(StructureBlockInfo data) {
-		return getPowderChargeStress();
-	}
-
-	@Override
-	public float getStressOnCannon(ItemStack stack) {
-		return getPowderChargeStress();
-	}
-
-	@Override
-	public float getSpread(StructureBlockInfo data) {
-		return CBCConfigs.SERVER.munitions.addedSpread.getF();
-	}
-
-	@Override
 	public boolean canBeLoaded(BlockState state, Direction.Axis axis) {
 		return axis == state.getValue(AXIS);
 	}
@@ -75,14 +49,6 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	@Override
 	public void consumePropellant(BigCannonBehavior behavior) {
 		behavior.removeBlock();
-	}
-
-	public static float getPowderChargeEquivalent(float baseStress) {
-		return baseStress / getPowderChargeStress();
-	}
-
-	public static float getPowderChargeStress() {
-		return CBCConfigs.SERVER.munitions.powderChargeStress.getF();
 	}
 
 	@Override

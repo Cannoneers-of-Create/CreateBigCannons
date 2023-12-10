@@ -10,11 +10,13 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
@@ -22,10 +24,10 @@ import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.TagEntry;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
@@ -58,35 +60,35 @@ public class CBCBuilderTransformers {
 		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(CreateBigCannons.resource("block/cannon_barrel"),
 			"cannon_barrel/" + material + "_cannon_barrel_side",
 			"cannon_barrel/" + (bored ? "" : "unbored_") + material + "_cannon_barrel_end");
-		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.REDUCES_SPREAD));
+		return b1.andThen(b -> b.tag(CBCTags.CBCBlockTags.REDUCES_SPREAD));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> builtUpCannonBarrel(String material, boolean bored) {
 		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(CreateBigCannons.resource("block/built_up_cannon_barrel"),
 			"cannon_barrel/built_up_" + material + "_cannon_barrel_side",
 			"cannon_barrel/" + (bored ? "" : "unbored_") + "built_up_" + material + "_cannon_barrel_end");
-		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.REDUCES_SPREAD));
+		return b1.andThen(b -> b.tag(CBCTags.CBCBlockTags.REDUCES_SPREAD));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonChamber(String material, boolean bored) {
 		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(new ResourceLocation("block/cube_column"),
 			"cannon_chamber/" + material + "_cannon_chamber_side",
 			"cannon_chamber/" + (bored ? "" : "unbored_") + material + "_cannon_chamber_end");
-		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.THICK_TUBING));
+		return b1.andThen(b -> b.tag(CBCTags.CBCBlockTags.THICK_TUBING));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> builtUpCannonChamber(String material, boolean bored) {
 		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(CreateBigCannons.resource("block/built_up_cannon_chamber"),
 			"cannon_chamber/built_up_" + material + "_cannon_chamber_side",
 			"cannon_chamber/" + (bored ? "" : "unbored_") + "built_up_" + material + "_cannon_chamber_end");
-		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.THICK_TUBING));
+		return b1.andThen(b -> b.tag(CBCTags.CBCBlockTags.THICK_TUBING));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> thickCannonChamber(String material, boolean bored) {
 		NonNullUnaryOperator<BlockBuilder<T, P>> b1 = cannonPart(CreateBigCannons.resource("block/thick_cannon_chamber"),
 			"cannon_chamber/thick_" + material + "_cannon_chamber_side",
 			"cannon_chamber/" + (bored ? "" : "unbored_") + "thick_" + material + "_cannon_chamber_end");
-		return b1.andThen(b -> b.tag(CBCTags.BlockCBC.THICK_TUBING));
+		return b1.andThen(b -> b.tag(CBCTags.CBCBlockTags.THICK_TUBING));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonPart(ResourceLocation model, String side, String end) {
@@ -94,7 +96,7 @@ public class CBCBuilderTransformers {
 		ResourceLocation endLoc = CreateBigCannons.resource("block/" + end);
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.tag(CBCTags.BlockCBC.THICK_TUBING)
+			.tag(CBCTags.CBCBlockTags.THICK_TUBING)
 			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), model)
 				.texture("side", sideLoc)
 				.texture("end", endLoc)
@@ -128,6 +130,24 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
+				.texture("side", sideLoc)
+				.texture("top", topLoc)
+				.texture("bottom", bottomLoc)
+				.texture("knob", knobLoc)
+				.texture("particle", topLoc)));
+	}
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarEnd(String pathAndMaterial) {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/drop_mortar_end");
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_end_side");
+		ResourceLocation topLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_end_top");
+		ResourceLocation bottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_end_bottom");
+		ResourceLocation knobLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_cannon_end_knob");
+		ResourceLocation spikeLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_drop_mortar_end_spike");
+		return b -> b.properties(p -> p.noOcclusion())
+			.addLayer(() -> RenderType::cutoutMipped)
+			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
+				.texture("spike", spikeLoc)
 				.texture("side", sideLoc)
 				.texture("top", topLoc)
 				.texture("bottom", bottomLoc)
@@ -466,6 +486,13 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate((c, p) -> p.horizontalBlock(c.get(), s -> p.models().getExistingFile(s.getValue(CannonCarriageBlock.SADDLED) ? saddleLoc : blockLoc)))
+			.loot((t, u) -> t.add(u, LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+					.add(BlockLoot.applyExplosionDecay(u, LootItem.lootTableItem(u))))
+				.withPool(LootPool.lootPool()
+					.add(BlockLoot.applyExplosionDecay(u, LootItem.lootTableItem(Items.SADDLE)))
+					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(u)
+						.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CannonCarriageBlock.SADDLED, true))))))
 			.item(CannonCarriageBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(blockLoc)))
 			.build();
@@ -515,15 +542,15 @@ public class CBCBuilderTransformers {
 	}
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> castIronScrapLoot(int count) {
-		return (t, u) -> t.add(u, LootTable.lootTable().withPool(LootPool.lootPool().add(LootItem.lootTableItem(CBCItems.CAST_IRON_NUGGET.get()).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count))))));
+		return (t, u) -> t.add(u, BlockLoot.createSingleItemTableWithSilkTouch(u, CBCItems.CAST_IRON_NUGGET.get(), ConstantValue.exactly(count)));
 	}
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> bronzeScrapLoot(int count) {
-		return (t, u) -> t.add(u, LootTable.lootTable().withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_BRONZE).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count))))));
+		return (t, u) -> t.add(u, BlockLoot.createSingleItemTableWithSilkTouch(u, CBCItems.BRONZE_SCRAP.get(), ConstantValue.exactly(count)));
 	}
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> steelScrapLoot(int count) {
-		return (t, u) -> t.add(u, LootTable.lootTable().withPool(LootPool.lootPool().add(TagEntry.expandTag(CBCTags.ItemCBC.NUGGET_STEEL).apply(SetItemCountFunction.setCount(ConstantValue.exactly(count))))));
+		return (t, u) -> t.add(u, BlockLoot.createSingleItemTableWithSilkTouch(u, CBCItems.STEEL_SCRAP.get(), ConstantValue.exactly(count)));
 	}
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> nethersteelScrapLoot(int count) {
@@ -543,6 +570,12 @@ public class CBCBuilderTransformers {
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot() {
 		return shellLoot(t -> t);
+	}
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarShell() {
+		return b -> b.properties(p -> p.noOcclusion())
+			.addLayer(() -> RenderType::cutout)
+			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/drop_mortar_shell"))));
 	}
 
 }

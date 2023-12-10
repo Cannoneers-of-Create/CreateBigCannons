@@ -6,6 +6,5 @@
     "nbt": {},
     "amount": 1
   },
-  "casting_time": 1500,
   "result": "createbigcannons:cast_iron_cannon_end"
 }

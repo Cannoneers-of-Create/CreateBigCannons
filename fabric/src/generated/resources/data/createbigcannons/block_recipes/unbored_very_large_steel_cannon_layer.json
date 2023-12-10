@@ -5,6 +5,5 @@
     "fluidTag": "c:molten_steel",
     "amount": 1
   },
-  "casting_time": 4800,
   "result": "createbigcannons:unbored_very_large_steel_cannon_layer"
 }

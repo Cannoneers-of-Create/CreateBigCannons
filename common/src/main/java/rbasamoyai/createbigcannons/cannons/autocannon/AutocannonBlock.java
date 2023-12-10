@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannons.autocannon;
 
+import javax.annotation.Nonnull;
+
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 
 import net.minecraft.core.BlockPos;
@@ -16,11 +18,16 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
+import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.crafting.welding.WeldableBlock;
 
-public interface AutocannonBlock {
+public interface AutocannonBlock extends WeldableBlock, CannonContraptionProviderBlock {
 
     AutocannonMaterial getAutocannonMaterial();
     default AutocannonMaterial getAutocannonMaterialInLevel(LevelAccessor level, BlockState state, BlockPos pos) { return this.getAutocannonMaterial(); }
@@ -30,9 +37,7 @@ public interface AutocannonBlock {
 
     Direction getFacing(BlockState state);
 
-    default boolean canConnectToSide(LevelAccessor level, BlockState state, BlockPos pos, Direction face) {
-        return this.getFacing(state).getAxis() == face.getAxis();
-    }
+    default boolean canConnectToSide(BlockState state, Direction face) { return this.getFacing(state).getAxis() == face.getAxis(); }
 
     boolean isBreechMechanism(BlockState state);
     boolean isComplete(BlockState state);
@@ -49,28 +54,28 @@ public interface AutocannonBlock {
             }
         }
 
-        if (cBlock.canConnectToSide(level, state, pos, facing)) {
+        if (cBlock.canConnectToSide(state, facing)) {
             BlockPos pos1 = pos.relative(facing);
             BlockState state1 = level.getBlockState(pos1);
             BlockEntity be1 = level.getBlockEntity(pos1);
 
             if (state1.getBlock() instanceof AutocannonBlock cBlock1
                     && cBlock1.getAutocannonMaterialInLevel(level, state1, pos1) == material
-                    && cBlock1.canConnectToSide(level, state1, pos1, opposite)
+                    && cBlock1.canConnectToSide(state1, opposite)
                     && be1 instanceof IAutocannonBlockEntity cbe1) {
                 cbe1.cannonBehavior().setConnectedFace(opposite, false);
                 be1.setChanged();
             }
         }
 
-        if (cBlock.canConnectToSide(level, state, pos, opposite)) {
+        if (cBlock.canConnectToSide(state, opposite)) {
             BlockPos pos2 = pos.relative(opposite);
             BlockState state2 = level.getBlockState(pos2);
             BlockEntity be2 = level.getBlockEntity(pos2);
 
             if (state2.getBlock() instanceof AutocannonBlock cBlock2
                     && cBlock2.getAutocannonMaterialInLevel(level, state2, pos2) == material
-                    && cBlock2.canConnectToSide(level, state2, pos2, facing)
+                    && cBlock2.canConnectToSide(state2, facing)
                     && be2 instanceof IAutocannonBlockEntity cbe2) {
                 cbe2.cannonBehavior().setConnectedFace(facing, false);
                 be2.setChanged();
@@ -99,7 +104,7 @@ public interface AutocannonBlock {
 
         if (state1.getBlock() instanceof AutocannonBlock cBlock1
                 && cBlock1.getAutocannonMaterialInLevel(level, state1, pos1) == material
-                && cBlock1.canConnectToSide(level, state1, pos1, opposite)) {
+                && cBlock1.canConnectToSide(state1, opposite)) {
             if (state1.hasProperty(AutocannonBarrelBlock.BARREL_END)) {
                 level.setBlock(pos1, state1.setValue(AutocannonBarrelBlock.BARREL_END, AutocannonBarrelBlock.AutocannonBarrelEnd.NOTHING), 3);
             }
@@ -118,7 +123,7 @@ public interface AutocannonBlock {
 
         if (state2.getBlock() instanceof AutocannonBlock cBlock2
                 && cBlock2.getAutocannonMaterialInLevel(level, state2, pos2) == material
-                && cBlock2.canConnectToSide(level, state2, pos2, facing)) {
+                && cBlock2.canConnectToSide(state2, facing)) {
             if (state2.hasProperty(AutocannonBarrelBlock.BARREL_END)) {
                 level.setBlock(pos2, state2.setValue(AutocannonBarrelBlock.BARREL_END, AutocannonBarrelBlock.AutocannonBarrelEnd.NOTHING), 3);
             }
@@ -138,6 +143,37 @@ public interface AutocannonBlock {
 			Direction side, InteractionHand interactionHand, Level level, MountedAutocannonContraption cannon, T be,
 			StructureBlockInfo info, AbstractContraptionEntity entity) {
 		return false;
+	}
+
+	@Override default boolean isWeldable(BlockState state) { return this.getAutocannonMaterial().properties().isWeldable(); }
+	@Override default int weldDamage() { return this.getAutocannonMaterial().properties().weldDamage(); }
+
+	@Override
+	default boolean canWeldSide(Level level, Direction dir, BlockState state, BlockState otherState, BlockPos pos) {
+		return otherState.getBlock() instanceof AutocannonBlock cblock
+			&& cblock.getAutocannonMaterial() == this.getAutocannonMaterial()
+			&& this.isWeldable(state)
+			&& cblock.isWeldable(otherState)
+			&& this.canConnectToSide(state, dir)
+			&& cblock.canConnectToSide(otherState, dir.getOpposite())
+			&& level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe
+			&& level.getBlockEntity(pos.relative(dir)) instanceof IAutocannonBlockEntity cbe1
+			&& (!cbe.cannonBehavior().isConnectedTo(dir) || !cbe1.cannonBehavior().isConnectedTo(dir.getOpposite()));
+	}
+
+	@Override
+	default void weldBlock(Level level, BlockState state, BlockPos pos, Direction dir) {
+		if (!(level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe)) return;
+		BigCannonBehavior behavior = cbe.cannonBehavior();
+		behavior.setConnectedFace(dir, true);
+		behavior.setWelded(dir, true);
+		behavior.blockEntity.notifyUpdate();
+	}
+
+	@Nonnull
+	@Override
+	default AbstractMountedCannonContraption getCannonContraption() {
+		return new MountedAutocannonContraption();
 	}
 
 }

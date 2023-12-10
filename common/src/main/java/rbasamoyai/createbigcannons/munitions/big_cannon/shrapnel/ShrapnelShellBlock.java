@@ -1,12 +1,12 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel;
 
-import net.minecraft.core.BlockPos;
+import java.util.List;
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.SimpleShellBlock;
 
 public class ShrapnelShellBlock extends SimpleShellBlock {
@@ -16,9 +16,9 @@ public class ShrapnelShellBlock extends SimpleShellBlock {
 	}
 
 	@Override
-	public AbstractCannonProjectile getProjectile(Level level, BlockState state, BlockPos pos, BlockEntity blockEntity) {
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		ShrapnelShellProjectile projectile = CBCEntityTypes.SHRAPNEL_SHELL.create(level);
-		projectile.setFuze(getFuze(blockEntity));
+		projectile.setFuze(getFuze(projectileBlocks));
 		return projectile;
 	}
 

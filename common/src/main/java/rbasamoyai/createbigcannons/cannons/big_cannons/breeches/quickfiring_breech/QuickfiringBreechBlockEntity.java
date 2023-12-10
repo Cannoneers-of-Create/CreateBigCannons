@@ -71,15 +71,15 @@ public class QuickfiringBreechBlockEntity extends SmartBlockEntity implements IB
 	}
 
 	public void tickAnimation() {
-		if (this.openDirection != 0) {
-			this.openProgress = Mth.clamp(this.openProgress + this.openDirection, 0, getOpeningTime());
+		if (this.openDirection != 0 && !isInstantOpen()) {
+			this.openProgress = Mth.clamp(this.openProgress + this.openDirection, 0, Math.max(getOpeningTime(), 1));
 			if (!this.onInteractionCooldown()) this.openDirection = 0;
 		}
 		if (this.loadingCooldown > 0) --this.loadingCooldown;
 	}
 
 	public boolean isOpen() {
-		return this.openProgress >= getOpeningTime();
+		return isInstantOpen() ? this.openProgress > 0 : this.openProgress >= getOpeningTime();
 	}
 
 	public int getOpenDirection() {
@@ -87,10 +87,19 @@ public class QuickfiringBreechBlockEntity extends SmartBlockEntity implements IB
 	}
 
 	public void toggleOpening() {
-		if (!this.onInteractionCooldown()) this.openDirection = this.isOpen() ? -1 : 1;
+		if (isInstantOpen()) {
+			this.openProgress = this.openProgress > 0 ? 0 : 1;
+			return;
+		}
+		if (!this.onInteractionCooldown()) {
+			this.openDirection = this.isOpen() ? -1 : 1;
+		}
 	}
 
 	public float getOpenProgress(float partialTicks) {
+		if (isInstantOpen()) {
+			return Mth.clamp(this.openProgress, 0.0f, 1.0f);
+		}
 		return Mth.clamp((this.openProgress + this.openDirection * partialTicks) / getOpeningTime(), 0.0f, 1.0f);
 	}
 
@@ -113,5 +122,7 @@ public class QuickfiringBreechBlockEntity extends SmartBlockEntity implements IB
 	public static int getOpeningTime() {
 		return CBCConfigs.SERVER.cannons.quickfiringBreechOpeningCooldown.get();
 	}
+
+	public static boolean isInstantOpen() { return getOpeningTime() <= 0; }
 
 }

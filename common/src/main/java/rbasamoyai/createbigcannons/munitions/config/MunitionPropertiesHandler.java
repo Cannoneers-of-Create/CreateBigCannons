@@ -26,7 +26,7 @@ public class MunitionPropertiesHandler {
 
     public static Map<EntityType<?>, MunitionProperties> PROJECTILES = new HashMap<>();
     private static final MunitionProperties DEFAULT = new MunitionProperties(0, 0, 0,
-		true, false, false, -0.05, 0.99, null);
+		true, false, false, -0.05, 0.99, 1, true, 1, null);
 
     public static class ReloadListener extends SimpleJsonResourceReloadListener {
 
@@ -93,7 +93,7 @@ public class MunitionPropertiesHandler {
 		@Override public void rootEncode(FriendlyByteBuf buf) { writeBuf(buf); }
 
 		@Override
-		public void handle(Executor exec, PacketListener listener, @javax.annotation.Nullable ServerPlayer sender) {
+		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
 			if (this.buf != null) readBuf(this.buf);
 		}
 	}

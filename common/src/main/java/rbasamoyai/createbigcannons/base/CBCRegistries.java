@@ -1,6 +1,8 @@
 package rbasamoyai.createbigcannons.base;
 
 import com.mojang.serialization.Lifecycle;
+
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.WritableRegistry;
@@ -31,8 +33,12 @@ public class CBCRegistries {
 		root.register(key, registry, Lifecycle.stable());
 		return registry;
 	}
-	
-	public static void init() {
+
+	private static boolean initialized = false;
+
+	public static void actualInit() {
+		if (initialized) return;
+		initialized = true;
 		BLOCK_RECIPE_SERIALIZERS = makeRegistrySimple(Keys.BLOCK_RECIPE_SERIALIZERS);
 		BLOCK_RECIPE_TYPES = makeRegistrySimple(Keys.BLOCK_RECIPE_TYPES);
 		CANNON_CAST_SHAPES = makeRegistrySimple(Keys.CANNON_CAST_SHAPES);
@@ -41,5 +47,13 @@ public class CBCRegistries {
 		BlockRecipeSerializer.register();
 		BlockRecipeType.register();
 	}
-	
+
+	public static void forceInit() {}
+
+	@ExpectPlatform public static void onClinit() { throw new AssertionError(); }
+
+	static {
+		onClinit();
+	}
+
 }

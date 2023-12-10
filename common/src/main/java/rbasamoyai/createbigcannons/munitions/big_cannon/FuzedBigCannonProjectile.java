@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -15,13 +14,13 @@ import java.util.function.Predicate;
 public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjectile {
 
 	private ItemStack fuze = ItemStack.EMPTY;
-	
+
 	protected FuzedBigCannonProjectile(EntityType<? extends FuzedBigCannonProjectile> type, Level level) {
 		super(type, level);
 	}
-	
+
 	public void setFuze(ItemStack stack) { this.fuze = stack == null ? ItemStack.EMPTY : stack; }
-	
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -29,9 +28,9 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	}
 
 	@Override
-	protected boolean onClip(ProjectileContext ctx, BlockPos pos) {
+	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
 		if (super.onClip(ctx, pos)) return true;
-		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, Vec3.atCenterOf(pos), ctx))) {
+		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, pos, ctx))) {
 			this.detonate();
 			return true;
 		}
@@ -43,13 +42,13 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 		super.onHit(result);
 		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped))) this.detonate();
 	}
-	
+
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.put("Fuze", this.fuze.save(new CompoundTag()));
 	}
-	
+
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
@@ -59,7 +58,7 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	protected final boolean canDetonate(Predicate<FuzeItem> cons) {
 		return !this.level.isClientSide && this.level.hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
 	}
-	
+
 	protected abstract void detonate();
 
 }

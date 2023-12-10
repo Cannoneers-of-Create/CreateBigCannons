@@ -1,12 +1,28 @@
 package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.FOVModifierEvent;
+import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModContainer;
+import net.minecraftforge.fml.ModList;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import rbasamoyai.createbigcannons.CBCClientCommon;
+import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class CBCClientForge {
@@ -23,6 +39,9 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientForge::onFovModify);
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
+		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
+		forgeEventBus.addListener(CBCClientForge::onPlayerLogOut);
+		forgeEventBus.addListener(CBCClientForge::onClickMouse);
 	}
 
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
@@ -57,6 +76,10 @@ public class CBCClientForge {
 		CBCClientCommon.onClientGameTick(Minecraft.getInstance());
 	}
 
+	public static void onClickMouse(InputEvent.ClickInputEvent evt) {
+		if (CBCClientCommon.onClickMouse(evt.getKeyMapping()) && evt.isCancelable()) evt.setCanceled(true);
+	}
+
 	public static void onScrollMouse(InputEvent.MouseScrollEvent evt) {
 		if (CBCClientCommon.onScrollMouse(Minecraft.getInstance(), evt.getScrollDelta()) && evt.isCancelable()) {
 			evt.setCanceled(true);
@@ -68,11 +91,35 @@ public class CBCClientForge {
 	}
 
 	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
-		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getPlayer(), evt.getPartialTick());
+		if (CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), (AbstractClientPlayer) evt.getPlayer(), evt.getRenderer(), evt.getPartialTick())
+			&& evt.isCancelable())
+			evt.setCanceled(true);
 	}
 
 	public static void onTextureStitchAtlasPre(TextureStitchEvent.Pre evt) {
 		CBCClientCommon.onTextureAtlasStitchPre(evt::addSprite);
 	}
 
+	public static void onSetupCamera(EntityViewRenderEvent.CameraSetup evt) {
+		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTicks(), evt::getYaw, evt::getPitch, evt::getRoll,
+			evt::setYaw, evt::setPitch, evt::setRoll) && evt.isCancelable()) {
+			evt.setCanceled(true);
+		}
+	}
+
+	public static void onPlayerLogOut(ClientPlayerNetworkEvent.LoggedOutEvent evt) {
+		CBCClientCommon.onPlayerLogOut(evt.getPlayer());
+	}
+
+	@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+	public static abstract class ClientModBusEvents {
+		@SubscribeEvent
+		static void onLoadComplete(FMLLoadCompleteEvent event) {
+			ModContainer container = ModList.get()
+				.getModContainerById(CreateBigCannons.MOD_ID)
+				.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
+			container.registerExtensionPoint(ConfigGuiFactory.class,
+				() -> new ConfigGuiFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));
+		}
+	}
 }

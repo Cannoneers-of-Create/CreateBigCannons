@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.cannon_control.contraption;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.Contraption;
@@ -38,7 +37,7 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 
 	public abstract void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller);
 
-	public abstract void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity, @Nullable ControlPitchContraption controller);
+	public abstract void fireShot(ServerLevel level, PitchOrientedContraptionEntity entity);
 
 	public abstract float getWeightForStress();
 

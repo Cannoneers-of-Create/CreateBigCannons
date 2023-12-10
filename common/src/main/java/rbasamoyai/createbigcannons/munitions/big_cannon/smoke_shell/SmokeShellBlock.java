@@ -1,15 +1,12 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell;
 
-import net.minecraft.core.BlockPos;
+import java.util.List;
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-
-import javax.annotation.Nullable;
-
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
-import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.SimpleShellBlock;
 
 public class SmokeShellBlock extends SimpleShellBlock {
@@ -19,9 +16,9 @@ public class SmokeShellBlock extends SimpleShellBlock {
 	}
 
 	@Override
-	public AbstractCannonProjectile getProjectile(Level level, BlockState state, BlockPos pos, @Nullable BlockEntity blockEntity) {
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		SmokeShellProjectile projectile = CBCEntityTypes.SMOKE_SHELL.get().create(level);
-		projectile.setFuze(getFuze(blockEntity));
+		projectile.setFuze(getFuze(projectileBlocks));
 		return projectile;
 	}
 

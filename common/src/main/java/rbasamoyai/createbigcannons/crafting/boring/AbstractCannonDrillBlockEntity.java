@@ -28,7 +28,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -72,23 +71,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 	protected FailureReason failureReason = FailureReason.NONE;
 	private DrillBoringBlockRecipe currentRecipe;
 
-	private static final int SYNC_RATE = 8;
-	protected boolean queuedSync;
-	protected int syncCooldown;
-
 	protected AbstractCannonDrillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
-	}
-
-	@Override
-	public void sendData() {
-		if (this.syncCooldown > 0) {
-			this.queuedSync = true;
-			return;
-		}
-		super.sendData();
-		this.queuedSync = false;
-		this.syncCooldown = SYNC_RATE;
 	}
 
 	@Override
@@ -183,7 +167,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 				if (recipe != null) {
 					this.currentRecipe = recipe;
 					return false;
-				} else if (!latheBlockInfo.state.is(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) {
+				} else if (!latheBlockInfo.state.is(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH)) {
 					return true;
 				}
 			}
@@ -213,15 +197,12 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		if (!this.level.isClientSide && this.running && this.movedContraption != null && this.offset + this.getMovementSpeed() >= this.getExtensionRange()) {
 			this.collideWithContraptionToBore(null, false);
 		}
-
 		super.tick();
+	}
 
-		if (this.syncCooldown > 0) {
-			this.syncCooldown--;
-			if (this.syncCooldown == 0 && this.queuedSync) {
-				this.sendData();
-			}
-		}
+	@Override
+	public void lazyTick() {
+		if (!this.level.isClientSide) this.sendData();
 	}
 
 	@Override
@@ -317,7 +298,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 
 			DrillBoringBlockRecipe candidate = getBlockRecipe(latheBlockInfo.state, facing);
 			if (candidate == null) {
-				if (latheBlockInfo.state.is(CBCTags.BlockCBC.DRILL_CAN_PASS_THROUGH)) continue;
+				if (latheBlockInfo.state.is(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH)) continue;
 				this.stopBoringState();
 				this.simulateStop();
 				return true;
@@ -489,8 +470,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			Component exceptionText = Lang.builder("exception")
 				.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip." + this.failureReason.getSerializedName())
 				.component();
-			// TODO: ChatFormatting.Gray is now no longer used but cutTextComponent and replaced by style.
-			tooltip.addAll(TooltipHelper.cutTextComponent(exceptionText, Style.EMPTY, Style.EMPTY, 4));
+			TooltipHelper.Palette palette = TooltipHelper.Palette.GRAY_AND_WHITE;
+			tooltip.addAll(TooltipHelper.cutTextComponent(exceptionText, palette.primary(), palette.highlight(), 4));
 		}
 
 		return true;

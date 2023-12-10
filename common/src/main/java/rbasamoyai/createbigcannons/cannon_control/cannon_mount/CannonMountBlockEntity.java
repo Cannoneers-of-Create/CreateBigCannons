@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -22,18 +24,17 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block {
+public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block,
+	ExtendsCannonMount {
 
 	private static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -65,6 +66,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	@Override
+	protected AABB createRenderBoundingBox() {
+		// TODO: based on state for things like upside down mounts
+		return new AABB(this.getBlockPos()).expandTowards(0, 2, 0);
+	}
+
+	@Override
 	public void tick() {
 		super.tick();
 
@@ -84,7 +91,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 			this.clientPitchDiff = flag ? this.clientPitchDiff * 0.5f : 0;
 		}
 
-		if (!this.running) {
+		if (!this.running && !this.isVirtual()) {
 			if (CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) {
 				this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
 				this.prevYaw = this.cannonYaw;
@@ -111,7 +118,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 				this.cannonPitch = Mth.clamp(newPitch % 360.0f, cd, cu);
 			}
 		}
-
 		this.applyRotation();
 	}
 
@@ -130,19 +136,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	protected void applyRotation() {
 		if (this.mountedContraption == null) return;
 		if (!this.mountedContraption.canBeTurnedByController(this)) {
-			this.cannonPitch = this.mountedContraption.getXRot();
-			this.cannonYaw = this.mountedContraption.getYRot();
+			this.cannonPitch = this.mountedContraption.pitch;
+			this.cannonYaw = this.mountedContraption.yaw;
+		} else {
+			this.mountedContraption.pitch = this.cannonPitch;
+			this.mountedContraption.yaw = this.cannonYaw;
 		}
-		this.mountedContraption.pitch = this.cannonPitch;
-		this.mountedContraption.yaw = this.cannonYaw;
-	}
-
-	public void applyHandRotation() {
-		if (this.mountedContraption == null) return;
-		this.cannonPitch = this.mountedContraption.pitch;
-		this.cannonYaw = this.mountedContraption.yaw;
-		this.prevPitch = this.cannonPitch;
-		this.prevYaw = this.cannonYaw;
 	}
 
 	public void onRedstoneUpdate(boolean assemblyPowered, boolean prevAssemblyPowered, boolean firePowered, boolean prevFirePowered, int firePower) {
@@ -178,10 +177,15 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	public float getPitchOffset(float partialTicks) {
-		if (!this.running) {
-			return this.cannonPitch;
+		if (this.isVirtual())
+			return Mth.lerp(partialTicks + 0.5f, this.prevPitch, this.cannonPitch);
+		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
+			partialTicks = 0;
+		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this)) {
+			return this.mountedContraption.getViewXRot(partialTicks);
 		}
-		return this.cannonPitch + convertToAngular(this.getSpeed()) * 0.125f * partialTicks;
+		float aSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
+		return Mth.lerp(partialTicks, this.cannonPitch, this.cannonPitch + aSpeed);
 	}
 
 	public void setPitch(float pitch) {
@@ -197,10 +201,21 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	public float getYawOffset(float partialTicks) {
-		if (!this.running) {
-			return this.cannonYaw;
+		if (this.isVirtual())
+			return Mth.lerp(partialTicks + 0.5f, this.prevYaw, this.cannonYaw);
+		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
+			partialTicks = 0;
+		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this)) {
+			return -this.mountedContraption.getViewYRot(partialTicks);
 		}
-		return this.cannonYaw + convertToAngular(this.getYawSpeed()) * 0.125f * partialTicks;
+		float aSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);
+		return Mth.lerp(partialTicks, this.cannonYaw, this.cannonYaw + aSpeed);
+	}
+
+	public float getDisplayPitch() {
+		float ret = this.getPitchOffset(0);
+		Direction dir = this.getContraptionDirection();
+		return (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X) ? ret : -ret;
 	}
 
 	public void setYaw(float yaw) {
@@ -249,10 +264,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
-		net.minecraft.world.level.block.Block block = this.level.getBlockState(pos).getBlock();
-		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
-		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
-		return null;
+		return this.level.getBlockState(pos).getBlock() instanceof CannonContraptionProviderBlock provBlock ? provBlock.getCannonContraption() : null;
 	}
 
 	public void disassemble() {
@@ -323,10 +335,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 		if (!clientPacket) return;
 
-		if (!oldRunning) {
-			int x = 0;
-		}
-
 		if (this.running) {
 			if (oldRunning && (this.mountedContraption == null || !this.mountedContraption.isStalled())) {
 				this.clientYawDiff = AngleHelper.getShortestAngleDiff(this.prevYaw, this.cannonYaw);
@@ -393,6 +401,19 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	@Nullable
 	public PitchOrientedContraptionEntity getContraption() {
 		return this.mountedContraption;
+	}
+
+	@Nullable
+	@Override
+	public CannonMountBlockEntity getCannonMount() {
+		return this;
+	}
+
+	@Override
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		if (!super.addToGoggleTooltip(tooltip, isPlayerSneaking)) return false;
+		ExtendsCannonMount.addCannonInfoToTooltip(tooltip, this.mountedContraption);
+		return true;
 	}
 
 }

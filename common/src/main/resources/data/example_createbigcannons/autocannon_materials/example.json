@@ -6,5 +6,6 @@
   "base_speed": 5,
   "speed_increase_per_barrel": 1,
   "max_speed_increases": 2,
-  "projectile_lifetime": 30
+  "projectile_lifetime": 30,
+  "base_recoil": 1
 }

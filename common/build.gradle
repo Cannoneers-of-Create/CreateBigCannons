@@ -17,6 +17,13 @@ repositories {
     maven { url = "https://maven.cafeteria.dev/releases" } // Fake Player API
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
     maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
+
+	maven { // Ritchie's Projectile Library
+		url = "https://maven.realrobotix.me/master/"
+		content {
+			includeGroup("com.rbasamoyai")
+		}
+	}
 }
 
 dependencies {
@@ -29,4 +36,7 @@ dependencies {
     // All dependencies except Flywheel and Registrate are NOT safe to use!
     // Flywheel and Registrate must also be used carefully due to differences.
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
+	modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
+
+	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-common") { transitive = false } // Ritchie's Projectile Library
 }

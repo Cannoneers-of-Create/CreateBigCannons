@@ -5,15 +5,20 @@ import io.github.fabricators_of_create.porting_lib.event.client.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
@@ -39,6 +44,9 @@ public class CBCClientFabric implements ClientModInitializer {
 		ScreenEvents.BEFORE_INIT.register(CBCClientFabric::onOpenScreen);
 		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
 		TextureStitchCallback.PRE.register(CBCClientFabric::onTextureAtlasStitchPre);
+		CameraSetupCallback.EVENT.register(CBCClientFabric::onSetupCamera);
+		ClientLoginConnectionEvents.DISCONNECT.register(CBCClientFabric::onPlayerLogOut);
+		MouseButtonCallback.EVENT.register(CBCClientFabric::onClickMouse);
 	}
 
 	public static void onParticleRegistry() {
@@ -61,6 +69,17 @@ public class CBCClientFabric implements ClientModInitializer {
 
 	public static void onClientTick(Minecraft mc) {
 		CBCClientCommon.onClientGameTick(mc);
+	}
+
+	public static InteractionResult onClickMouse(int button, int action, int mods) {
+		if (action != 1) return InteractionResult.PASS;
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.screen != null) return InteractionResult.PASS;
+		KeyMapping mapping = null;
+		if (mc.options.keyUse.matchesMouse(button)) mapping = mc.options.keyUse;
+		if (mc.options.keyAttack.matchesMouse(button)) mapping = mc.options.keyAttack;
+		if (mapping == null) return InteractionResult.PASS;
+		return CBCClientCommon.onClickMouse(mapping) ? InteractionResult.SUCCESS : InteractionResult.PASS;
 	}
 
 	public static boolean onScrolledMouse(double delta) {
@@ -97,12 +116,23 @@ public class CBCClientFabric implements ClientModInitializer {
 
 	public static boolean onBeforeRender(LivingEntity entity, LivingEntityRenderer<?, ?> renderer, float partialRenderTick,
 									  PoseStack matrixStack, MultiBufferSource buffers, int light) {
-		CBCClientCommon.onPlayerRenderPre(matrixStack, entity, partialRenderTick);
+		if (entity instanceof AbstractClientPlayer cplayer && renderer instanceof PlayerRenderer playerRenderer) {
+			return CBCClientCommon.onPlayerRenderPre(matrixStack, cplayer, playerRenderer, partialRenderTick);
+		}
 		return false;
 	}
 
 	public static void onTextureAtlasStitchPre(TextureAtlas atlas, Consumer<ResourceLocation> cons) {
 		CBCClientCommon.onTextureAtlasStitchPre(cons);
+	}
+
+	public static boolean onSetupCamera(CameraSetupCallback.CameraInfo info) {
+		return CBCClientCommon.onCameraSetup(info.camera, info.partialTicks, () -> info.yaw, () -> info.pitch, () -> info.roll,
+			y -> info.yaw = y, p -> info.pitch = p, r -> info.roll = r);
+	}
+
+	public static void onPlayerLogOut(ClientHandshakePacketListenerImpl impl, Minecraft client) {
+		CBCClientCommon.onPlayerLogOut(client.player);
 	}
 
 }

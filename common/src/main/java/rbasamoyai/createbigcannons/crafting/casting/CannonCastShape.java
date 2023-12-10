@@ -28,6 +28,7 @@ public class CannonCastShape {
 		CANNON_END = register("cannon_end", new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.CANNON_END_CAST_MOULD)),
 		SLIDING_BREECH = register("sliding_breech", new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SLIDING_BREECH_CAST_MOULD, PropertySetter.of(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, false))),
 		SCREW_BREECH = register("screw_breech", new CannonCastShape(9 * INGOT_SIZE_MB, 16, CBCBlocks.SCREW_BREECH_CAST_MOULD, true, false)),
+		DROP_MORTAR_END = register("drop_mortar_end", new CannonCastShape(9 * INGOT_SIZE_MB, 16, () -> Blocks.AIR)),
 
 	AUTOCANNON_BARREL = register("autocannon_barrel", new CannonCastShape(3 * INGOT_SIZE_MB, 4, CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD, false, false, PropertySetter.of(BlockStateProperties.FACING, Direction.UP))),
 		AUTOCANNON_BARREL_FLANGED = register("autocannon_barrel_flanged", new CannonCastShape(3 * INGOT_SIZE_MB, 4, () -> Blocks.AIR, false, false)),
@@ -64,7 +65,7 @@ public class CannonCastShape {
 		this.castMould = castMould;
 		this.isLarge = large;
 		this.properties = properties;
-		this.texturesCanConnect = true;
+		this.texturesCanConnect = texturesCanConnect;
 	}
 
 	public int fluidSize() {

@@ -15,6 +15,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.world.Container;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -23,8 +25,10 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialPropertiesHandler;
@@ -35,11 +39,13 @@ import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntit
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
+import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.AutocannonAmmoContainerFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationDeployerRecipe;
+import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
@@ -47,6 +53,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
 public class CBCCommonEvents {
@@ -64,7 +71,11 @@ public class CBCCommonEvents {
 		CreateBigCannons.BLOCK_DAMAGE.playerLogout(player);
 	}
 
-	public static void onPlayerBreakBlock(BlockState state, LevelAccessor level, BlockPos pos, Player player) {
+	public static boolean onPlayerBreakBlock(BlockState state, LevelAccessor level, BlockPos pos, Player player) {
+		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
+			return true;
+		}
+
 		if (AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
 			BlockPos drillPos = destroyPoleContraption(CBCBlocks.CANNON_DRILL_BIT.get(), CBCBlocks.CANNON_DRILL.get(),
 				CannonDrillBlock.maxAllowedDrillLength(), state, level, pos, player);
@@ -74,7 +85,7 @@ public class CBCCommonEvents {
 				if (level.getBlockEntity(pos) instanceof AbstractCannonDrillBlockEntity drill) {
 					drill.onLengthBroken();
 				}
-				return;
+				return false;
 			}
 			BlockPos builderPos = destroyPoleContraption(CBCBlocks.CANNON_BUILDER_HEAD.get(),
 				CBCBlocks.CANNON_BUILDER.get(),
@@ -87,6 +98,7 @@ public class CBCCommonEvents {
 				}
 			}
 		}
+		return false;
 	}
 
 	private static BlockPos destroyPoleContraption(Block head, Block base, int limit, BlockState state,
@@ -130,12 +142,14 @@ public class CBCCommonEvents {
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
 		if (level.getServer() != null && !level.isClientSide() && level.getServer().overworld() == level) {
 			BlockHardnessHandler.loadTags();
+			FluidCastingTimeHandler.loadTags();
 		}
 	}
 
 	public static void onDatapackReload(MinecraftServer server) {
 		BlockHardnessHandler.loadTags();
 		BlockRecipesManager.syncToAll(server);
+		FluidCastingTimeHandler.syncToAll(server);
 	}
 
 	public static void onDatapackSync(ServerPlayer player) {
@@ -144,6 +158,8 @@ public class CBCCommonEvents {
 		AutocannonMaterialPropertiesHandler.syncTo(player);
 		BigCannonMaterialPropertiesHandler.syncTo(player);
 		BigCannonBreechStrengthHandler.syncTo(player);
+		FluidCastingTimeHandler.syncTo(player);
+		BigCannonPropellantPropertiesHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
@@ -155,6 +171,8 @@ public class CBCCommonEvents {
 		cons.accept(AutocannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("autocannon_material_properties_handler"));
 		cons.accept(BigCannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_material_properties_handler"));
 		cons.accept(BigCannonBreechStrengthHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_breech_strength_handler"));
+		cons.accept(FluidCastingTimeHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("fluid_casting_time_handler"));
+		cons.accept(BigCannonPropellantPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_propellant_properties_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
@@ -162,7 +180,7 @@ public class CBCCommonEvents {
 		ItemStack containerItem = container.getItem(0);
 		ItemStack deployerItem = container.getItem(1);
 
-		if (CBCBlocks.BIG_CARTRIDGE.isIn(containerItem) && deployerItem.is(CBCTags.ItemCBC.NITROPOWDER)) {
+		if (CBCBlocks.BIG_CARTRIDGE.isIn(containerItem) && deployerItem.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 			int power = BigCartridgeBlockItem.getPower(containerItem);
 			if (power < CBCConfigs.SERVER.munitions.maxBigCartridgePower.get()) {
 				cons.accept(() -> Optional.of(new BigCartridgeFillingDeployerRecipe(power, power + 1)), 25);
@@ -184,6 +202,12 @@ public class CBCCommonEvents {
 		if (ammoContainerRecipe.matches(container, deployer.getLevel())) {
 			cons.accept(() -> Optional.of(ammoContainerRecipe), 25);
 		}
+	}
+
+	public static InteractionResult onUseItemOnBlock(Player player, Level level, InteractionHand hand, BlockHitResult hitResult) {
+		ItemStack stack = player.getItemInHand(hand);
+		if (stack.getItem() instanceof CannonWelderItem) return CannonWelderItem.welderItemAlwaysPlacesWhenUsed(player, level, hand, hitResult);
+		return InteractionResult.PASS;
 	}
 
 }
