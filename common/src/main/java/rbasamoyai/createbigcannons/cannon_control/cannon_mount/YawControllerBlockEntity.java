@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-
 import com.simibubi.create.content.kinetics.transmission.sequencer.SequencerInstructions;
 
 import net.minecraft.core.BlockPos;
