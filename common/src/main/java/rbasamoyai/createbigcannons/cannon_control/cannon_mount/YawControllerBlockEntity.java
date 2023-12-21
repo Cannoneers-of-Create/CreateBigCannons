@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 
+import com.simibubi.create.content.kinetics.transmission.sequencer.SequencerInstructions;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -16,6 +18,21 @@ public class YawControllerBlockEntity extends KineticBlockEntity implements Exte
 
 	public YawControllerBlockEntity(BlockEntityType<? extends YawControllerBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
+	}
+
+	@Override
+	public void onSpeedChanged(float prevSpeed) {
+		super.onSpeedChanged(prevSpeed);
+
+		if (this.getCannonMount() == null) return;
+
+		if (this.sequenceContext != null &&
+			this.sequenceContext.instruction() == SequencerInstructions.TURN_ANGLE) {
+			this.getCannonMount().setSequencedYawAngleLimit(
+				(float) (this.sequenceContext.getEffectiveValue(getTheoreticalSpeed()) * 0.125f));
+		} else {
+			this.getCannonMount().setSequencedYawAngleLimit(-1);
+		}
 	}
 
 	@Override

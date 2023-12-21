@@ -10,6 +10,7 @@ import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.kinetics.transmission.sequencer.SequencerInstructions;
 import com.simibubi.create.foundation.utility.AngleHelper;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
@@ -26,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
@@ -48,6 +50,8 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	private float prevPitch;
 	private float clientYawDiff;
 	private float clientPitchDiff;
+	protected double sequencedPitchAngleLimit;
+	protected double sequencedYawAngleLimit;
 
 	float yawSpeed;
 
@@ -58,6 +62,8 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 			this.cannonYaw = state.getValue(HORIZONTAL_FACING).toYRot();
 		}
 		this.setLazyTickRate(3);
+		sequencedYawAngleLimit = -1;
+		sequencedPitchAngleLimit = -1;
 	}
 
 	@Override
@@ -69,6 +75,20 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	protected AABB createRenderBoundingBox() {
 		// TODO: based on state for things like upside down mounts
 		return new AABB(this.getBlockPos()).expandTowards(0, 2, 0);
+	}
+
+	@Override
+	public void onSpeedChanged(float prevSpeed) {
+		super.onSpeedChanged(prevSpeed);
+		this.sequencedPitchAngleLimit = -1;
+
+		if (this.sequenceContext != null && this.sequenceContext.instruction() == SequencerInstructions.TURN_ANGLE) {
+			this.sequencedPitchAngleLimit = this.sequenceContext.getEffectiveValue(getTheoreticalSpeed()) * 0.125f;
+		}
+	}
+
+	public void setSequencedYawAngleLimit(float angleLimit) {
+		this.sequencedYawAngleLimit = angleLimit;
 	}
 
 	@Override
@@ -104,6 +124,17 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (!(this.mountedContraption != null && this.mountedContraption.isStalled()) && flag) {
 			float yawSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);
 			float pitchSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
+
+			if (this.sequencedYawAngleLimit >= 0) {
+				yawSpeed = (float) Mth.clamp(yawSpeed, -this.sequencedYawAngleLimit, this.sequencedYawAngleLimit);
+				this.sequencedYawAngleLimit = Math.max(0, this.sequencedYawAngleLimit - Math.abs(yawSpeed));
+			}
+
+			if (this.sequencedPitchAngleLimit >= 0) {
+				pitchSpeed = (float) Mth.clamp(pitchSpeed, -this.sequencedPitchAngleLimit, this.sequencedPitchAngleLimit);
+				this.sequencedPitchAngleLimit = Math.max(0, this.sequencedPitchAngleLimit - Math.abs(pitchSpeed));
+			}
+
 			float newYaw = this.cannonYaw + yawSpeed;
 			float newPitch = this.cannonPitch + pitchSpeed;
 			this.cannonYaw = newYaw % 360.0f;
