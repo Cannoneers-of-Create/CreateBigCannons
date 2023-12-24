@@ -56,9 +56,12 @@ import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarMunition;
+import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.IntegratedPropellantProjectile;
+import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilities;
+import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler;
 import rbasamoyai.createbigcannons.network.ClientboundAddShakeEffectPacket;
 
 public class MountedBigCannonContraption extends AbstractMountedCannonContraption {
@@ -612,7 +615,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		if (!(Block.byItem(stack.getItem()) instanceof DropMortarMunition munition)) return;
 
 		ControlPitchContraption controller = poce.getController();
-		AbstractBigCannonProjectile projectile = munition.getProjectile(slevel, stack);
+		AbstractBigCannonProjectile<? extends DropMortarProjectileProperties> projectile = munition.getProjectile(slevel, stack);
 
 		BlockPos currentPos = this.startPos.immutable();
 		while (this.presentBlockEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
@@ -621,10 +624,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			currentPos = currentPos.relative(this.initialOrientation);
 		}
 
-		// TODO: config for projectile values
-		float recoilMagnitude = 1;
-		float power = 3;
-		float spread = 0.1f;
+		DropMortarProjectileProperties properties = projectile.getProperties();
+		float recoilMagnitude = properties == null ? 1 : properties.mortarRecoil();
+		float power = properties == null ? 3 : properties.mortarPower();
+		float spread = properties == null ? 0.1f : properties.mortarSpread();
 
 		Vec3 spawnPos = this.entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(this.entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
@@ -693,7 +696,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				} else {
 					actualCounts.put(block, 1);
 				}
-				for (Map.Entry<Block, Integer> entry : cpropel.getPropellantProperties().validPropellantCounts().entrySet()) {
+				BigCannonPropellantCompatibilities compatibilities = BigCannonPropellantCompatibilityHandler.getCompatibilities(block);
+				for (Map.Entry<Block, Integer> entry : compatibilities.validPropellantCounts().entrySet()) {
 					Block block1 = entry.getKey();
 					int oldCount = allowedCounts.getOrDefault(block1, -1);
 					int newCount = entry.getValue();

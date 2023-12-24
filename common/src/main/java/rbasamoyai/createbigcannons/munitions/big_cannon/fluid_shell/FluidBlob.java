@@ -111,19 +111,4 @@ public class FluidBlob extends Shrapnel {
 		return false;
 	}
 
-	@Override
-	protected float getProjectileMass() {
-		return 0;
-	}
-
-	@Override
-	public float getDamage() {
-		return 0;
-	}
-
-	@Override
-	protected double getGravity() {
-		return -0.3d;
-	}
-
 }

@@ -1,0 +1,11 @@
+{
+  "entity_damage": 8.0,
+  "durability_mass": 0.1,
+  "renders_invulnerable": false,
+  "ignores_entity_armor": false,
+  "gravity": -0.025,
+  "drag": 0.99,
+  "knockback": 0.025,
+  "added_recoil": 0.5,
+  "can_squib": true
+}

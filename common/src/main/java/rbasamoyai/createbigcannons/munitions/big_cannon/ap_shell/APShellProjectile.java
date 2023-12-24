@@ -7,18 +7,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.munitions.big_cannon.CommonShellBigCannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
 
-public class APShellProjectile extends FuzedBigCannonProjectile {
+public class APShellProjectile extends FuzedBigCannonProjectile<CommonShellBigCannonProjectileProperties> {
 
 	public APShellProjectile(EntityType<? extends APShellProjectile> type, Level level) {
 		super(type, level);
 	}
-	
+
 	@Override
 	protected void detonate() {
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), (float) this.getProperties().explosivePower(),
-				CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		CommonShellBigCannonProjectileProperties properties = this.getProperties();
+		this.level.explode(null, this.indirectArtilleryFire(), null, this.getX(), this.getY(),
+			this.getZ(), properties == null ? 0 : properties.explosivePower(), false,
+			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.discard();
 	}
 

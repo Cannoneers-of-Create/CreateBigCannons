@@ -8,20 +8,24 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.SimpleShellBlock;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
-public class SmokeShellBlock extends SimpleShellBlock {
+public class SmokeShellBlock extends SimpleShellBlock<SmokeShellProperties> {
 
 	public SmokeShellBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		SmokeShellProjectile projectile = CBCEntityTypes.SMOKE_SHELL.get().create(level);
 		projectile.setFuze(getFuze(projectileBlocks));
 		return projectile;
 	}
 
-	@Override public EntityType<?> getAssociatedEntityType() { return CBCEntityTypes.SMOKE_SHELL.get(); }
+	@Override
+	public EntityType<? extends PropertiesMunitionEntity<? extends SmokeShellProperties>> getAssociatedEntityType() {
+		return CBCEntityTypes.SMOKE_SHELL.get();
+	}
 
 }
