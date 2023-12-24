@@ -79,7 +79,7 @@ public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileP
 		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".big_cannon_projectile", this, null);
 	}
 
-	public int addedChargePower() {
+	public float addedChargePower() {
 		T properties = this.getProperties();
 		return properties == null ? 0 : properties.addedChargePower();
 	}

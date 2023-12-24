@@ -29,9 +29,9 @@ public interface ExtendsCannonMount {
 	static void addCannonInfoToTooltip(List<Component> tooltip, @Nullable PitchOrientedContraptionEntity mountedContraption) {
 		if (mountedContraption != null && mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
 			tooltip.add(gogglesPadding.copy().append(cannonYawComponent.copy().withStyle(ChatFormatting.GRAY))
-				.append(Components.translatable(degreesKey, mountedContraption.yaw).withStyle(ChatFormatting.WHITE)));
+				.append(Components.translatable(degreesKey, String.format("%.2f", mountedContraption.yaw)).withStyle(ChatFormatting.WHITE)));
 			tooltip.add(gogglesPadding.copy().append(cannonPitchComponent.copy().withStyle(ChatFormatting.GRAY))
-				.append(Components.translatable(degreesKey, mountedContraption.pitch).withStyle(ChatFormatting.WHITE)));
+				.append(Components.translatable(degreesKey, String.format("%.2f", mountedContraption.pitch)).withStyle(ChatFormatting.WHITE)));
 			if (cannon instanceof MountedBigCannonContraption bigCannon) {
 				tooltip.add(gogglesPadding.copy().append(bigCannonStrengthComponent.copy().withStyle(ChatFormatting.GRAY))
 					.append(Components.translatable(bigCannonStrengthValueKey, bigCannon.getMaxSafeCharges()).withStyle(ChatFormatting.WHITE)));
