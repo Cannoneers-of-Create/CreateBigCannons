@@ -8,6 +8,7 @@ Changed:
  - Many munition configuration changes made, please fix your datapacks.
  - The CBC Github repository has munition datapack information under src/main/resources/data/createbigcannons/munition_properties.
 [Development] - More versatile cannon contraption building system for addon developers
+[Development] - More versatile cannon contraption interaction code
 Fixed:
 - Fixed inability to weld wrought iron and log cannons by default in survival
 - Fixed textures that don't connect from connecting
