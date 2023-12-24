@@ -238,6 +238,7 @@
   "createbigcannons.display_source.cannon_mount.no_cannon_present": "No Cannon present",
   "createbigcannons.display_source.cannon_mount.not_enough_space": "Not enough space ",
   "createbigcannons.display_source.cannon_mount_source": "From Cannon Mount",
+  "createbigcannons.gui.autocannon_ammo_container.tracer_slot": "Tracer/Secondary Rounds",
   "createbigcannons.gui.autocannon_ammo_container.tracer_spacing": "Tracer Spacing: Every %s round(s)",
   "createbigcannons.gui.set_proximity_fuze.distance": "Detonation Distance: %s blocks",
   "createbigcannons.gui.set_timed_fuze.time": "Fuze Time: %ss %s ticks",

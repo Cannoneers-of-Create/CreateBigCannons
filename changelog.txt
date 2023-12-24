@@ -2,12 +2,15 @@ Changelog
 
 Fixes, config, and developer changes galore.
 
+Added:
+- Added tooltip to secondary autocannon ammo container slot
 Changed:
 - Can now configure if cannon blocks connect when placed by hand in survival
 - More specific munition properties configuration using data packs
  - Many munition configuration changes made, please fix your data packs.
  - The CBC GitHub repository has munition data pack information under src/main/resources/data/createbigcannons/munition_properties.
 - Changed Cannon Mount tooltip to display rotation up to 2 decimal places
+- Updated various item textures
 [Development] - More versatile cannon contraption building system for addon developers
 [Development] - More versatile cannon contraption interaction code
 Fixed:
