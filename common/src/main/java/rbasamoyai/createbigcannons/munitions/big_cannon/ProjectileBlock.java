@@ -25,10 +25,11 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
 import java.util.List;
 
-public abstract class ProjectileBlock extends DirectionalBlock implements IWrenchable, BigCannonMunitionBlock {
+public abstract class ProjectileBlock<T extends BigCannonProjectileProperties> extends DirectionalBlock implements IWrenchable, BigCannonMunitionBlock {
 
 	private final VoxelShaper shapes;
 
@@ -79,7 +80,7 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 
-	public abstract AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
+	public abstract AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
 
 	@Override
 	public PushReaction getPistonPushReaction(BlockState state) {
@@ -123,7 +124,7 @@ public abstract class ProjectileBlock extends DirectionalBlock implements IWrenc
 		return stack;
 	}
 
-	public abstract EntityType<?> getAssociatedEntityType();
+	public abstract EntityType<? extends PropertiesMunitionEntity<? extends T>> getAssociatedEntityType();
 
 	public boolean isValidAddition(List<StructureBlockInfo> total, StructureBlockInfo data, int index, Direction dir) {
 		return total.size() == 1 && total.get(0) == data;

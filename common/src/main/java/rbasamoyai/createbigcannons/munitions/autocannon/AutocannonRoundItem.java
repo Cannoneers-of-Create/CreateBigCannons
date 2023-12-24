@@ -7,12 +7,14 @@ import javax.annotation.Nullable;
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
 public abstract class AutocannonRoundItem extends Item {
 
@@ -20,7 +22,8 @@ public abstract class AutocannonRoundItem extends Item {
         super(properties);
     }
 
-    public abstract AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level);
+    public abstract AbstractAutocannonProjectile<?> getAutocannonProjectile(ItemStack stack, Level level);
+	public abstract EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> getEntityType(ItemStack stack);
 
     public ItemStack getCreativeTabCartridgeItem() {
         ItemStack stack = CBCItems.AUTOCANNON_CARTRIDGE.asStack();

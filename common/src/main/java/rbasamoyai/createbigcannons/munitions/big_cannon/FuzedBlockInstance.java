@@ -57,7 +57,7 @@ public class FuzedBlockInstance extends BlockEntityInstance<FuzedBlockEntity> im
 	}
 
 	private boolean isBaseFuze() {
-		return this.blockState.getBlock() instanceof FuzedProjectileBlock<?> fuzed && fuzed.isBaseFuze();
+		return this.blockState.getBlock() instanceof FuzedProjectileBlock<?, ?> fuzed && fuzed.isBaseFuze();
 	}
 
 }

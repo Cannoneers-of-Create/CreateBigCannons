@@ -16,7 +16,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
 
 import java.util.List;
 
-public class FluidShellProjectile extends FuzedBigCannonProjectile {
+public class FluidShellProjectile extends FuzedBigCannonProjectile<FluidShellProperties> {
 
 	private EndFluidStack fluidStack;
 
@@ -37,19 +37,20 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 	}
 
 	public void setFluidStack(EndFluidStack fstack) { this.fluidStack = fstack; }
-	
+
 	@Override
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
 		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
 
+		FluidShellProperties properties = this.getProperties();
 		if (!this.fluidStack.isEmpty()) {
-			int mbPerBlob = CBCConfigs.SERVER.munitions.mbPerFluidBlob.get();
-			byte blobSize = (byte)(mbPerBlob / (double) CBCConfigs.SERVER.munitions.mbPerAoeRadius.get()); // No conversion because ratio would be same
+			int mbPerBlob = properties == null ? 250 : properties.mBPerFluidBlob();
+			byte blobSize = (byte)(mbPerBlob / (properties == null ? 50d : (double) properties.mBPerAoeRadius())); // No conversion because ratio would be same
 			int convertCount = IndexPlatform.convertFluid(mbPerBlob);
 			int count = (int) Math.ceil(this.fluidStack.amount() / (double) convertCount);
-			float spread = CBCConfigs.SERVER.munitions.fluidBlobSpread.getF();
+			float spread = properties == null ? 1 : properties.fluidBlobSpread();
 			List<FluidBlob> list = Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.FLUID_BLOB.get(), this.position(), this.getDeltaMovement(), count, spread, 0);
 			for (FluidBlob blob : list) {
 				EndFluidStack copy = this.fluidStack.copy(convertCount);
@@ -59,10 +60,10 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 		}
 		this.discard();
 	}
-	
+
 	@Override
 	public BlockState getRenderedBlockState() {
 		return CBCBlocks.FLUID_SHELL.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);
 	}
-	
+
 }

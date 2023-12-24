@@ -1,8 +1,14 @@
 Changelog
 
+Fixes, config, and developer changes galore.
+
 Changed:
 - Can now configure if cannon blocks connect when placed by hand in survival
+- More specific munition properties configuration
+ - Many munition configuration changes made, please fix your datapacks.
+ - The CBC Github repository has munition datapack information under src/main/resources/data/createbigcannons/munition_properties.
 [Development] - More versatile cannon contraption building system for addon developers
 Fixed:
 - Fixed inability to weld wrought iron and log cannons by default in survival
 - Fixed textures that don't connect from connecting
+[1.19.2 Fabric/Quilt] - Downgrade CBC and RPL version requirements for Quilt from 0.76.1 to 0.76.0
