@@ -4,6 +4,7 @@ Fixes, config, and developer changes galore.
 
 Added:
 - Added tooltip to secondary autocannon ammo container slot
+- Added hover tooltip for cannon info to Cannon Carriage
 Changed:
 - Can now configure if cannon blocks connect when placed by hand in survival
 - More specific munition properties configuration using data packs
@@ -21,4 +22,6 @@ Fixed:
 - Fixed Cannon Mount and Cannon Carriage not correctly aligning Drop Mortar when assembled
 - Fixed Cannon Builder collision
 - Fixed default big cannon spread
+- Fixed cannon pitch value on Cannon Mount tooltip
+- Fixed unused "No Cannon present" message on Cannon Mount tooltip
 [1.19.2 Fabric/Quilt] - Downgrade CBC and RPL version requirements for Quilt from 0.76.1 to 0.76.0

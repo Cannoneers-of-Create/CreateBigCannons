@@ -141,7 +141,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		float sgn = flag ? 1 : -1;
 		float d = -this.mountedContraption.maximumDepression();
 		float e = this.mountedContraption.maximumElevation();
-		
+
 		if (!this.mountedContraption.canBeTurnedByController(this)) {
 			this.cannonPitch = Mth.clamp(this.mountedContraption.pitch, d, e) * sgn;
 			this.cannonYaw = this.mountedContraption.yaw;
@@ -418,7 +418,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		if (!super.addToGoggleTooltip(tooltip, isPlayerSneaking)) return false;
+		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		ExtendsCannonMount.addCannonInfoToTooltip(tooltip, this.mountedContraption);
 		return true;
 	}
