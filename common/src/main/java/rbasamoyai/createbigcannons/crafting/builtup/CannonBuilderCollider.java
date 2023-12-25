@@ -15,6 +15,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
+import java.util.Map;
+
 public class CannonBuilderCollider {
 
 	public static boolean collideBlocks(AbstractContraptionEntity contraptionEntity) {
@@ -65,12 +67,13 @@ public class CannonBuilderCollider {
 	}
 
 	public static boolean isCollidingWithWorld(Level level, CannonBuildingContraption contraption, BlockPos anchor, Direction movementDirection) {
+		Map<BlockPos, StructureBlockInfo> blocks = contraption.getBlocks();
 		for (BlockPos pos : contraption.getOrCreateColliders(level, movementDirection)) {
 			BlockPos colliderPos = pos.offset(anchor);
 			if (!level.isLoaded(colliderPos)) return true;
 
 			BlockState collidedState = level.getBlockState(colliderPos);
-			StructureBlockInfo blockInfo = contraption.getBlocks().get(pos);
+			StructureBlockInfo blockInfo = blocks.get(pos);
 			boolean emptyCollider = collidedState.getCollisionShape(level, pos).isEmpty();
 
 			BlockEntity be = level.getBlockEntity(colliderPos);
@@ -78,13 +81,13 @@ public class CannonBuilderCollider {
 			if (contraption.isActivated) {
 				if (be instanceof LayeredBigCannonBlockEntity layered) {
 					if (CBCBlocks.CANNON_BUILDER_HEAD.has(blockInfo.state)) {
-						if (contraption.entity == null && contraption.getBlocks().keySet().contains(colliderPos.subtract(contraption.anchor)))
+						if (contraption.entity == null && blocks.containsKey(pos))
 							continue;
 						return true;
 					}
 					BlockEntity be1 = contraption.presentBlockEntities.get(pos);
 					if (be1 instanceof LayeredBigCannonBlockEntity layered1) {
-						if (contraption.entity == null && contraption.getBlocks().keySet().contains(pos)) continue;
+						if (contraption.entity == null && blocks.containsKey(pos.relative(movementDirection))) continue;
 						if (layered.isCollidingWith(blockInfo, layered1, movementDirection)) return true;
 						continue;
 					}
@@ -92,7 +95,7 @@ public class CannonBuilderCollider {
 			}
 
 			if (!collidedState.getMaterial().isReplaceable() && !emptyCollider) {
-				if (!contraption.isActivated || contraption.entity != null || !contraption.getBlocks().keySet().contains(pos))
+				if (!contraption.isActivated || contraption.entity != null || !blocks.containsKey(pos.relative(movementDirection)))
 					return true;
 			}
 		}
