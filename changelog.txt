@@ -18,4 +18,5 @@ Fixed:
 - Fixed textures that don't connect from connecting
 - Fixed Drop Mortar Shell not firing from regular cannon when not accompanied by propellant
 - Fixed Cannon Mount and Cannon Carriage not correctly aligning Drop Mortar when assembled
+- Fixed Cannon Builder collision
 [1.19.2 Fabric/Quilt] - Downgrade CBC and RPL version requirements for Quilt from 0.76.1 to 0.76.0
