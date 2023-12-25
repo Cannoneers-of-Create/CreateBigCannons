@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 
-public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock {
+public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock<BigCannonPropellantProperties> {
 
 	private static final EnumProperty<Axis> AXIS = RotatedPillarBlock.AXIS;
 

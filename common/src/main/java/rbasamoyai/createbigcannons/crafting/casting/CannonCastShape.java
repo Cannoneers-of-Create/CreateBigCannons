@@ -65,7 +65,7 @@ public class CannonCastShape {
 		this.castMould = castMould;
 		this.isLarge = large;
 		this.properties = properties;
-		this.texturesCanConnect = true;
+		this.texturesCanConnect = texturesCanConnect;
 	}
 
 	public int fluidSize() {

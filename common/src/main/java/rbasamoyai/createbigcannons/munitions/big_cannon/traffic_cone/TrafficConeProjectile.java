@@ -10,8 +10,9 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileProperties;
 
-public class TrafficConeProjectile extends AbstractBigCannonProjectile {
+public class TrafficConeProjectile extends AbstractBigCannonProjectile<BigCannonProjectileProperties> {
 
 	public TrafficConeProjectile(EntityType<? extends TrafficConeProjectile> type, Level level) {
 		super(type, level);

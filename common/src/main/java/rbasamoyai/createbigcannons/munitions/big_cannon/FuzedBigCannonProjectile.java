@@ -11,7 +11,7 @@ import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 import java.util.function.Predicate;
 
-public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjectile {
+public abstract class FuzedBigCannonProjectile<T extends FuzedBigCannonProjectileProperties> extends AbstractBigCannonProjectile<T> {
 
 	private ItemStack fuze = ItemStack.EMPTY;
 
@@ -30,7 +30,9 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	@Override
 	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
 		if (super.onClip(ctx, pos)) return true;
-		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, pos, ctx))) {
+		T properties = this.getProperties();
+		boolean baseFuze = properties != null && properties.baseFuze();
+		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, pos, ctx, baseFuze))) {
 			this.detonate();
 			return true;
 		}
@@ -40,7 +42,9 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	@Override
 	protected void onImpact(HitResult result, boolean stopped) {
 		super.onHit(result);
-		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped))) this.detonate();
+		T properties = this.getProperties();
+		boolean baseFuze = properties != null && properties.baseFuze();
+		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped, baseFuze))) this.detonate();
 	}
 
 	@Override

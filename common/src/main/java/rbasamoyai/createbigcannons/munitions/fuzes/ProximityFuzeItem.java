@@ -41,17 +41,17 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result, boolean stopped) {
-		return !projectile.getProperties().baseFuze();
+	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile<?> projectile, HitResult result, boolean stopped, boolean baseFuze) {
+		return !baseFuze;
 	}
 
 	@Override
-	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) {
+	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile<?> projectile) {
 		return true;
 	}
 
 	@Override
-	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
+	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile<?> projectile) {
 		CompoundTag tag = stack.getOrCreateTag();
 		int airTime = tag.getInt("AirTime");
 		if (airTime > CBCConfigs.SERVER.munitions.proximityFuzeArmingTime.get()) tag.putBoolean("Armed", true);
@@ -60,8 +60,8 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile projectile, Vec3 location, ProjectileContext ctx) {
-		if (projectile.getProperties().baseFuze()) return false;
+	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile<?> projectile, Vec3 location, ProjectileContext ctx, boolean baseFuze) {
+		if (baseFuze) return false;
 		CompoundTag tag = stack.getOrCreateTag();
 		if (!tag.contains("Armed")) return false;
 
@@ -96,7 +96,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 			}
 		}
 
-		return super.onProjectileClip(stack, projectile, location, ctx);
+		return super.onProjectileClip(stack, projectile, location, ctx, false);
 	}
 
 	@Override

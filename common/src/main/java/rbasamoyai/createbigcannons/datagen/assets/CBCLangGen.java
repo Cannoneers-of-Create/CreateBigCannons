@@ -37,6 +37,7 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %ss %s ticks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.distance", "Detonation Distance: %s blocks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.autocannon_ammo_container.tracer_spacing", "Tracer Spacing: Every %s round(s)");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.autocannon_ammo_container.tracer_slot", "Tracer/Secondary Rounds");
 
 		tooltip(CBCBlocks.SOLID_SHOT)
 		.header("SOLID SHOT")
@@ -249,12 +250,10 @@ public class CBCLangGen {
 		}
 
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount_source", "From Cannon Mount");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.not_enough_space", "Not enough space ");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.for_cannon_status", "for Cannon Status");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.no_cannon_present", "No Cannon present");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_pitch", "Cannon Pitch: ");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_yaw", "Cannon Yaw: ");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.degrees", "%s\u00ba");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.yaw", "Cannon Yaw");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.pitch", "Cannon Pitch");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.display_rotation_axis", "Display Rotation Axis");
 
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.click_to_confirm", "Click again to confirm");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.invalid_weld", "Cannot weld these blocks");
@@ -264,8 +263,11 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.success", "Welding blocks...");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.first_pos", "First position selected");
 
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength", "Cannon Strength: ");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength.value", "%s Propellant Stress");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.no_cannon_present", "No Cannon present");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.cannon_strength", "Cannon Strength: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.cannon_strength.value", "%s Propellant Stress");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.pitch", "Cannon Pitch: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.yaw", "Cannon Yaw: ");
 	}
 
 	private static class TooltipBuilder {

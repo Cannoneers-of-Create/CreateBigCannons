@@ -12,6 +12,7 @@ import com.google.gson.JsonElement;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -67,6 +68,10 @@ public class BigCannonMaterialPropertiesHandler {
 
 	public static void syncTo(ServerPlayer player) {
 		NetworkPlatform.sendToClientPlayer(new ClientboundBigCannonMaterialPropertiesPacket(), player);
+	}
+
+	public static void syncToAll(MinecraftServer server) {
+		NetworkPlatform.sendToClientAll(new ClientboundBigCannonMaterialPropertiesPacket(), server);
 	}
 
 	public record ClientboundBigCannonMaterialPropertiesPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {

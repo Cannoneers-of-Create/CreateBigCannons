@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.autocannon.bullet;
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -13,6 +14,8 @@ import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
 import javax.annotation.Nullable;
 
@@ -27,8 +30,14 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 
 	@Override
 	@Nullable
-	public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
+	public AbstractAutocannonProjectile<?> getAutocannonProjectile(ItemStack stack, Level level) {
 		return CBCEntityTypes.MACHINE_GUN_BULLET.create(level);
+	}
+
+	@Nullable
+	@Override
+	public EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> getEntityType(ItemStack stack) {
+		return CBCEntityTypes.MACHINE_GUN_BULLET.get();
 	}
 
 	@Override public boolean isTracer(ItemStack stack) { return stack.getOrCreateTag().getBoolean("Tracer"); }

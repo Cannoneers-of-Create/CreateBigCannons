@@ -1,11 +1,13 @@
 package rbasamoyai.createbigcannons.fabric;
 
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.fabricators_of_create.porting_lib.event.client.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
@@ -32,6 +34,12 @@ public class CBCClientFabric implements ClientModInitializer {
 	public void onInitializeClient() {
 		CBCClientCommon.onClientSetup();
 		CBCClientCommon.registerKeyMappings(KeyBindingHelper::registerKeyBinding);
+		CBCClientCommon.registerOverlays((id, overlay) -> {
+			HudRenderCallback.EVENT.register((stack, partialTicks) -> {
+				Window window = Minecraft.getInstance().getWindow();
+				overlay.renderOverlay(stack, partialTicks, window.getGuiScaledWidth(), window.getGuiScaledHeight());
+			});
+		});
 
 		CBCNetworkFabric.INSTANCE.initClientListener();
 

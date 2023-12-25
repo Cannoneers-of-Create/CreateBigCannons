@@ -29,6 +29,14 @@ public class CBCClientForge {
 
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
+
+		CBCClientCommon.registerOverlays((id, overlay) -> {
+			// TODO: more flexible but concise method specified in common
+			OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, id, (gui, stack, partialTicks, width, height) -> {
+				overlay.renderOverlay(stack, partialTicks, width, height);
+			});
+		});
+
 		modEventBus.addListener(CBCClientForge::onClientSetup);
 		modEventBus.addListener(CBCClientForge::onRegisterKeyMappings);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
