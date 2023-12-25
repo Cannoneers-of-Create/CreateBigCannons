@@ -21,23 +21,24 @@ public interface ExtendsCannonMount {
 
 	@Nullable CannonMountBlockEntity getCannonMount();
 
-	MutableComponent noCannonPresent = Components.translatable(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.no_cannon_present");
-	MutableComponent cannonYawComponent = Components.translatable(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_yaw");
-	MutableComponent cannonPitchComponent = Components.translatable(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_pitch");
-	MutableComponent bigCannonStrengthComponent = Components.translatable(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength");
-	String bigCannonStrengthValueKey = CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength.value";
-	String degreesKey = CreateBigCannons.MOD_ID + ".display_source.cannon_mount.degrees";
+	MutableComponent noCannonPresent = Components.translatable(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.no_cannon_present");
+	MutableComponent cannonYawComponent = Components.translatable(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.yaw");
+	MutableComponent cannonPitchComponent = Components.translatable(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.pitch");
+	MutableComponent bigCannonStrengthComponent = Components.translatable(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.cannon_strength");
+	String bigCannonStrengthValueKey = CreateBigCannons.MOD_ID + ".goggles.cannon_mount.cannon_strength.value";
 
 	static void addCannonInfoToTooltip(List<Component> tooltip, @Nullable PitchOrientedContraptionEntity mountedContraption) {
 		if (mountedContraption != null && mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon) {
 			Direction dir = mountedContraption.getInitialOrientation();
 			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+			float pitch = flag ? mountedContraption.pitch : -mountedContraption.pitch;
+			if (Math.abs(pitch) < 1e-1f) pitch = 0;
 
 			Lang.builder().add(cannonYawComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Components.translatable(degreesKey, String.format("%.2f", mountedContraption.yaw)).withStyle(ChatFormatting.WHITE)))
+					.append(Components.literal(String.format("%.1f\u00ba", mountedContraption.yaw)).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
 			Lang.builder().add(cannonPitchComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Components.translatable(degreesKey, String.format("%.2f", flag ? mountedContraption.pitch : -mountedContraption.pitch)).withStyle(ChatFormatting.WHITE)))
+					.append(Components.literal(String.format("%.1f\u00ba", pitch)).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
 			if (cannon instanceof MountedBigCannonContraption bigCannon) {
 				Lang.builder().add(bigCannonStrengthComponent.copy().withStyle(ChatFormatting.GRAY)

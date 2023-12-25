@@ -10,9 +10,10 @@ Changed:
 - More specific munition properties configuration using data packs
  - Many munition configuration changes made, please fix your data packs.
  - The CBC GitHub repository has munition data pack information under src/main/resources/data/createbigcannons/munition_properties.
-- Changed Cannon Mount tooltip to display rotation up to 2 decimal places
+- Changed Cannon Mount tooltip to display rotation up to 1 decimal places
 - Updated various item textures
 - Big Cannon Chambers now reduce spread
+- Redid Cannon Mount Display Link integration, separating cannon yaw and cannon pitch display
 [Development] - More versatile cannon contraption building system for addon developers
 [Development] - More versatile cannon contraption interaction code
 Fixed:
