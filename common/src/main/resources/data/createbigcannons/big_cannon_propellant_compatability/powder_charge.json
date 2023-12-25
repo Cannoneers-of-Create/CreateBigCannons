@@ -9,10 +9,5 @@
       "type": "createbigcannons:powder_charge",
       "maximum_amount": -1
     }
-  ],
-  "replace_stats": true,
-  "strength": 2,
-  "added_stress": 1,
-  "added_recoil": 2,
-  "added_spread": 2
+  ]
 }

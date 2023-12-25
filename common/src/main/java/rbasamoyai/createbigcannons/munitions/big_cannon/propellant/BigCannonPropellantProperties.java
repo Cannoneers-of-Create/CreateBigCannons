@@ -26,7 +26,7 @@ public class BigCannonPropellantProperties implements MunitionProperties {
 		this.strength = Math.max(0, GsonHelper.getAsFloat(obj, "strength", 2));
 		this.addedStress = Math.max(0, GsonHelper.getAsFloat(obj, "added_stress", 1));
 		this.addedRecoil = Math.max(0, GsonHelper.getAsFloat(obj, "added_recoil", 2));
-		this.addedSpread = Math.max(0, GsonHelper.getAsFloat(obj, "added_spread", 2));
+		this.addedSpread = Math.max(0, GsonHelper.getAsFloat(obj, "added_spread", 1));
 	}
 
 	public BigCannonPropellantProperties(FriendlyByteBuf buf) {
