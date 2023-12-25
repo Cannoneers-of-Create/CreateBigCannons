@@ -11,6 +11,7 @@ Changed:
  - The CBC GitHub repository has munition data pack information under src/main/resources/data/createbigcannons/munition_properties.
 - Changed Cannon Mount tooltip to display rotation up to 2 decimal places
 - Updated various item textures
+- Big Cannon Chambers now reduce spread
 [Development] - More versatile cannon contraption building system for addon developers
 [Development] - More versatile cannon contraption interaction code
 Fixed:
@@ -19,4 +20,5 @@ Fixed:
 - Fixed Drop Mortar Shell not firing from regular cannon when not accompanied by propellant
 - Fixed Cannon Mount and Cannon Carriage not correctly aligning Drop Mortar when assembled
 - Fixed Cannon Builder collision
+- Fixed default big cannon spread
 [1.19.2 Fabric/Quilt] - Downgrade CBC and RPL version requirements for Quilt from 0.76.1 to 0.76.0
