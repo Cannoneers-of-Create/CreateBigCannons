@@ -221,6 +221,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 	public float getDisplayPitch() {
 		float ret = this.getPitchOffset(0);
+		if (Math.abs(ret) < 1e-1f) return 0;
 		Direction dir = this.getContraptionDirection();
 		return (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X) ? ret : -ret;
 	}
