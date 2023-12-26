@@ -9,6 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 public class CannonDamageSource extends DamageSource {
@@ -17,7 +18,8 @@ public class CannonDamageSource extends DamageSource {
 
 	public CannonDamageSource(Holder<DamageType> type, Entity entity) {
 		super(type);
-		this.bypassArmor = MunitionPropertiesHandler.getProperties(entity).ignoresEntityArmor();
+		MunitionProperties properties = MunitionPropertiesHandler.getProperties(entity);
+		if (properties instanceof BaseProjectileProperties bpp && bpp.ignoresEntityArmor()) this.bypassArmor = true;
 	}
 
 	@Override

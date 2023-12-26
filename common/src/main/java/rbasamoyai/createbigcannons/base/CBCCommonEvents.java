@@ -33,7 +33,6 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialPropertiesHandler;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
@@ -50,11 +49,12 @@ import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
+import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
-import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 
 public class CBCCommonEvents {
@@ -150,6 +150,10 @@ public class CBCCommonEvents {
 	public static void onDatapackReload(MinecraftServer server) {
 		BlockHardnessHandler.loadTags();
 		BlockRecipesManager.syncToAll(server);
+		MunitionPropertiesHandler.syncToAll(server);
+		AutocannonMaterialPropertiesHandler.syncToAll(server);
+		BigCannonMaterialPropertiesHandler.syncToAll(server);
+		BigCannonBreechStrengthHandler.syncToAll(server);
 		FluidCastingTimeHandler.syncToAll(server);
 	}
 
@@ -160,20 +164,22 @@ public class CBCCommonEvents {
 		BigCannonMaterialPropertiesHandler.syncTo(player);
 		BigCannonBreechStrengthHandler.syncTo(player);
 		FluidCastingTimeHandler.syncTo(player);
-		BigCannonPropellantPropertiesHandler.syncTo(player);
+		BigCannonPropellantCompatibilityHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
 		cons.accept(BlockRecipeFinder.LISTENER, CreateBigCannons.resource("block_recipe_finder"));
 		cons.accept(BlockRecipesManager.ReloadListener.INSTANCE, CreateBigCannons.resource("block_recipe_manager"));
 		cons.accept(BlockHardnessHandler.BlockReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
-		cons.accept(MunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("munition_properties_handler"));
+		cons.accept(MunitionPropertiesHandler.ReloadListenerProjectiles.INSTANCE, CreateBigCannons.resource("projectile_properties_handler"));
+		cons.accept(MunitionPropertiesHandler.ReloadListenerBlockPropellant.INSTANCE, CreateBigCannons.resource("block_propellant_properties_handler"));
+		cons.accept(MunitionPropertiesHandler.ReloadListenerItemPropellant.INSTANCE, CreateBigCannons.resource("item_propellant_properties_handler"));
 		cons.accept(DimensionMunitionPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("dimension_munition_properties_handler"));
 		cons.accept(AutocannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("autocannon_material_properties_handler"));
 		cons.accept(BigCannonMaterialPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_material_properties_handler"));
 		cons.accept(BigCannonBreechStrengthHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_breech_strength_handler"));
 		cons.accept(FluidCastingTimeHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("fluid_casting_time_handler"));
-		cons.accept(BigCannonPropellantPropertiesHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_propellant_properties_handler"));
+		cons.accept(BigCannonPropellantCompatibilityHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_propellant_compatibility_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
@@ -184,7 +190,7 @@ public class CBCCommonEvents {
 
 		if (CBCBlocks.BIG_CARTRIDGE.isIn(containerItem) && deployerItem.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 			int power = BigCartridgeBlockItem.getPower(containerItem);
-			if (power < CBCConfigs.SERVER.munitions.maxBigCartridgePower.get()) {
+			if (power < BigCartridgeBlock.getMaximumPowerLevels()) {
 				cons.accept(() -> Optional.of(new BigCartridgeFillingDeployerRecipe(power, power + 1)), 25);
 			}
 		}

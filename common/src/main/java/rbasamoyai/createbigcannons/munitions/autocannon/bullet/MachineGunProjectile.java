@@ -9,8 +9,9 @@ import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
 
-public class MachineGunProjectile extends AbstractAutocannonProjectile {
+public class MachineGunProjectile extends AbstractAutocannonProjectile<AutocannonProjectileProperties> {
 
 	public MachineGunProjectile(EntityType<? extends MachineGunProjectile> type, Level level) {
 		super(type, level);
@@ -20,12 +21,6 @@ public class MachineGunProjectile extends AbstractAutocannonProjectile {
 	protected DamageSource getEntityDamage(Entity entity) {
 		ResourceKey<DamageType> type = entity.isInWater() ? CBCDamageTypes.MACHINE_GUN_FIRE_IN_WATER : CBCDamageTypes.MACHINE_GUN_FIRE;
 		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(type), this);
-	}
-
-	@Override
-	protected float getKnockback(Entity target) {
-		float length = this.getDeltaMovement().lengthSqr() > 1e-4d ? 1 : (float) this.getDeltaMovement().lengthSqr();
-		return 0.1f / length;
 	}
 
 }

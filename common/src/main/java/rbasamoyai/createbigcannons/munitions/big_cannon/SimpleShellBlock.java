@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
-public abstract class SimpleShellBlock extends FuzedProjectileBlock<FuzedBlockEntity> {
+public abstract class SimpleShellBlock<T extends FuzedBigCannonProjectileProperties> extends FuzedProjectileBlock<FuzedBlockEntity, T> {
 
 	protected SimpleShellBlock(Properties properties) {
 		super(properties);
