@@ -113,8 +113,8 @@ public class CBCClientForge {
 	public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent evt) {
 		CBCClientCommon.registerOverlays((id, overlay) -> {
 			// TODO: more flexible but concise method specified in common
-			evt.registerAbove(VanillaGuiOverlay.HOTBAR.id(), id, (gui, stack, partialTicks, width, height) -> {
-				overlay.renderOverlay(stack, partialTicks, width, height);
+			evt.registerAbove(VanillaGuiOverlay.HOTBAR.id(), id, (gui, graphics, partialTicks, width, height) -> {
+				overlay.renderOverlay(graphics, partialTicks, width, height);
 			});
 		});
 	}

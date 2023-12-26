@@ -100,7 +100,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 											StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
 		if (!(contraption instanceof MountedBigCannonContraption cannon)
 			|| !(be instanceof QuickfiringBreechBlockEntity breech)
-			|| ((BigCannonBlock) info.state().getBlock()).getFacing(info.state).getAxis() != side.getAxis()
+			|| ((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() != side.getAxis()
 			|| breech.cannonBehavior().isConnectedTo(side)) return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
 

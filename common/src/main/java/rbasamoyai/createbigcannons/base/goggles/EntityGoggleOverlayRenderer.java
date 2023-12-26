@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.base.goggles;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.goggles.GogglesItem;
 import com.simibubi.create.foundation.gui.RemovedGuiUtils;
@@ -15,6 +14,7 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CClient;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.Mth;
@@ -29,7 +29,7 @@ public class EntityGoggleOverlayRenderer {
 
 	public static int hoverTicks = 0;
 
-	public static void renderOverlay(PoseStack poseStack, float partialTicks, int windowWidth, int windowHeight) {
+	public static void renderOverlay(GuiGraphics graphics, float partialTicks, int windowWidth, int windowHeight) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.options.hideGui || mc.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
 
@@ -73,7 +73,7 @@ public class EntityGoggleOverlayRenderer {
 			return;
 		}
 
-		poseStack.pushPose();
+		graphics.pose().pushPose();
 
 		int tooltipTextWidth = 0;
 		for (FormattedText textLine : tooltip) {
@@ -108,20 +108,20 @@ public class EntityGoggleOverlayRenderer {
 			.copy();
 
 		if (fade < 1) {
-			poseStack.translate(Math.pow(1 - fade, 3) * Math.signum(cfg.overlayOffsetX.get() + .5f) * 8, 0, 0);
+			graphics.pose().translate(Math.pow(1 - fade, 3) * Math.signum(cfg.overlayOffsetX.get() + .5f) * 8, 0, 0);
 			colorBackground.scaleAlpha(fade);
 			colorBorderTop.scaleAlpha(fade);
 			colorBorderBot.scaleAlpha(fade);
 		}
 
-		RemovedGuiUtils.drawHoveringText(poseStack, tooltip, posX, posY, windowWidth, windowHeight, -1, colorBackground.getRGB(),
+		RemovedGuiUtils.drawHoveringText(graphics, tooltip, posX, posY, windowWidth, windowHeight, -1, colorBackground.getRGB(),
 			colorBorderTop.getRGB(), colorBorderBot.getRGB(), mc.font);
 
 		ItemStack item = AllItems.GOGGLES.asStack();
 		GuiGameElement.of(item)
 			.at(posX + 10, posY - 16, 450)
-			.render(poseStack);
-		poseStack.popPose();
+			.render(graphics);
+		graphics.pose().popPose();
 	}
 
 }

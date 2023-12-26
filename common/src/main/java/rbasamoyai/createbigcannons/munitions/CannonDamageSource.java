@@ -19,7 +19,7 @@ public class CannonDamageSource extends DamageSource {
 	public CannonDamageSource(Holder<DamageType> type, Entity entity) {
 		super(type);
 		MunitionProperties properties = MunitionPropertiesHandler.getProperties(entity);
-		if (properties instanceof BaseProjectileProperties bpp && bpp.ignoresEntityArmor()) this.bypassArmor = true;
+		this.bypassArmor = properties instanceof BaseProjectileProperties bpp && bpp.ignoresEntityArmor();
 	}
 
 	@Override

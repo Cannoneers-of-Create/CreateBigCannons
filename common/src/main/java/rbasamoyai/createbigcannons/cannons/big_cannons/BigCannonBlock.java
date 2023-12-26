@@ -221,7 +221,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 											 StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
 		if (!(be instanceof IBigCannonBlockEntity cbe)
 			|| !(contraption instanceof MountedBigCannonContraption cannon)
-			|| ((BigCannonBlock) info.state().getBlock()).getFacing(info.state).getAxis() != side.getAxis()
+			|| ((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() != side.getAxis()
 			|| cbe.cannonBehavior().isConnectedTo(side))
 			return false;
 		ItemStack stack = player.getItemInHand(interactionHand);

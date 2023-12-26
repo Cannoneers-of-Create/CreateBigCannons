@@ -9,6 +9,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.minecraft.client.gui.GuiGraphics;
+
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -102,7 +104,7 @@ public class CBCClientCommon {
 
 	@FunctionalInterface
 	public interface CBCGuiOverlay {
-		void renderOverlay(PoseStack poseStack, float partialTicks, int windowWidth, int windowHeight);
+		void renderOverlay(GuiGraphics graphics, float partialTicks, int windowWidth, int windowHeight);
 	}
 
 	public static void setFogColor(Camera info, SetColorWrapper wrapper) {

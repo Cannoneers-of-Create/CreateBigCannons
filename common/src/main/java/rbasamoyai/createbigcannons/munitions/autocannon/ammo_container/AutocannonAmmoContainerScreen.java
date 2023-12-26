@@ -65,10 +65,10 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 	}
 
 	@Override
-	protected void renderTooltip(PoseStack poseStack, int x, int y) {
-		super.renderTooltip(poseStack, x, y);
+	protected void renderTooltip(GuiGraphics graphics, int x, int y) {
+		super.renderTooltip(graphics, x, y);
 		if (this.hoveredSlot != null && this.hoveredSlot.index == 1 && !this.hoveredSlot.hasItem()) {
-			this.renderTooltip(poseStack, Lang.builder(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_slot").component(), x ,y);
+			graphics.renderTooltip(this.font, Lang.builder(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_slot").component(), x ,y);
 		}
 	}
 

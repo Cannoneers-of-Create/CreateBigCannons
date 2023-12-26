@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.fabric;
 
-import java.util.function.Consumer;
-
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -37,9 +35,9 @@ public class CBCClientFabric implements ClientModInitializer {
 		CBCClientCommon.onClientSetup();
 		CBCClientCommon.registerKeyMappings(KeyBindingHelper::registerKeyBinding);
 		CBCClientCommon.registerOverlays((id, overlay) -> {
-			HudRenderCallback.EVENT.register((stack, partialTicks) -> {
+			HudRenderCallback.EVENT.register((graphics, partialTicks) -> {
 				Window window = Minecraft.getInstance().getWindow();
-				overlay.renderOverlay(stack, partialTicks, window.getGuiScaledWidth(), window.getGuiScaledHeight());
+				overlay.renderOverlay(graphics, partialTicks, window.getGuiScaledWidth(), window.getGuiScaledHeight());
 			});
 		});
 
