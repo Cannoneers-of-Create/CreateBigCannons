@@ -7,11 +7,13 @@ import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.ViewportEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -30,17 +32,11 @@ public class CBCClientForge {
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
 
-		CBCClientCommon.registerOverlays((id, overlay) -> {
-			// TODO: more flexible but concise method specified in common
-			OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, id, (gui, stack, partialTicks, width, height) -> {
-				overlay.renderOverlay(stack, partialTicks, width, height);
-			});
-		});
-
 		modEventBus.addListener(CBCClientForge::onClientSetup);
 		modEventBus.addListener(CBCClientForge::onRegisterKeyMappings);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
 		modEventBus.addListener(CBCClientForge::onTextureStitchAtlasPre);
+		modEventBus.addListener(CBCClientForge::onRegisterGuiOverlays);
 
 		forgeEventBus.addListener(CBCClientForge::getFogColor);
 		forgeEventBus.addListener(CBCClientForge::getFogDensity);
@@ -121,6 +117,15 @@ public class CBCClientForge {
 
 	public static void onPlayerLogOut(ClientPlayerNetworkEvent.LoggingOut evt) {
 		CBCClientCommon.onPlayerLogOut(evt.getPlayer());
+	}
+
+	public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent evt) {
+		CBCClientCommon.registerOverlays((id, overlay) -> {
+			// TODO: more flexible but concise method specified in common
+			evt.registerAbove(VanillaGuiOverlay.HOTBAR.id(), id, (gui, stack, partialTicks, width, height) -> {
+				overlay.renderOverlay(stack, partialTicks, width, height);
+			});
+		});
 	}
 
 	@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)

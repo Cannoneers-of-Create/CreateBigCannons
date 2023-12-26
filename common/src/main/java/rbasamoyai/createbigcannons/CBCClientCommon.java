@@ -96,7 +96,7 @@ public class CBCClientCommon {
 	}
 
 	public static void registerOverlays(BiConsumer<String, CBCGuiOverlay> cons) {
-		cons.accept("Create Big Cannons' Entity Goggles Overlay", EntityGoggleOverlayRenderer::renderOverlay);
+		cons.accept("entity_goggles_overlay", EntityGoggleOverlayRenderer::renderOverlay);
 	}
 
 	@FunctionalInterface
