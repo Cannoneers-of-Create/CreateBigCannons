@@ -28,11 +28,8 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block,
@@ -137,11 +134,18 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 	protected void applyRotation() {
 		if (this.mountedContraption == null) return;
+
+		Direction dir = this.mountedContraption.getInitialOrientation();
+		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+		float sgn = flag ? 1 : -1;
+		float d = -this.mountedContraption.maximumDepression();
+		float e = this.mountedContraption.maximumElevation();
+
 		if (!this.mountedContraption.canBeTurnedByController(this)) {
-			this.cannonPitch = this.mountedContraption.pitch;
+			this.cannonPitch = Mth.clamp(this.mountedContraption.pitch, d, e) * sgn;
 			this.cannonYaw = this.mountedContraption.yaw;
 		} else {
-			this.mountedContraption.pitch = this.cannonPitch;
+			this.mountedContraption.pitch = Mth.clamp(this.cannonPitch, d, e) * sgn;
 			this.mountedContraption.yaw = this.cannonYaw;
 		}
 	}
@@ -216,6 +220,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 	public float getDisplayPitch() {
 		float ret = this.getPitchOffset(0);
+		if (Math.abs(ret) < 1e-1f) return 0;
 		Direction dir = this.getContraptionDirection();
 		return (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X) ? ret : -ret;
 	}
@@ -266,10 +271,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	private AbstractMountedCannonContraption getContraption(BlockPos pos) {
-		net.minecraft.world.level.block.Block block = this.getLevel().getBlockState(pos).getBlock();
-		if (block instanceof BigCannonBlock) return new MountedBigCannonContraption();
-		if (block instanceof AutocannonBlock) return new MountedAutocannonContraption();
-		return null;
+		return this.level.getBlockState(pos).getBlock() instanceof CannonContraptionProviderBlock provBlock ? provBlock.getCannonContraption() : null;
 	}
 
 	public void disassemble() {
@@ -416,7 +418,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		if (!super.addToGoggleTooltip(tooltip, isPlayerSneaking)) return false;
+		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		ExtendsCannonMount.addCannonInfoToTooltip(tooltip, this.mountedContraption);
 		return true;
 	}

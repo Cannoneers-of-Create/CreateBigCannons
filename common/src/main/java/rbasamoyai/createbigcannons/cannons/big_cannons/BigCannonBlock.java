@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -26,8 +27,11 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
+import rbasamoyai.createbigcannons.cannons.InteractableCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -39,7 +43,7 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
-public interface BigCannonBlock extends WeldableBlock {
+public interface BigCannonBlock extends WeldableBlock, CannonContraptionProviderBlock, InteractableCannonBlock {
 
 	BigCannonMaterial getCannonMaterial();
 
@@ -211,10 +215,14 @@ public interface BigCannonBlock extends WeldableBlock {
 		}
 	}
 
-	default <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
-			Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
-			StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
-		if (((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() != side.getAxis() || be.cannonBehavior().isConnectedTo(side))
+	@Override
+	default boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,
+											 Level level, Contraption contraption, BlockEntity be,
+											 StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
+		if (!(be instanceof IBigCannonBlockEntity cbe)
+			|| !(contraption instanceof MountedBigCannonContraption cannon)
+			|| ((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() != side.getAxis()
+			|| cbe.cannonBehavior().isConnectedTo(side))
 			return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
 		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
@@ -224,8 +232,8 @@ public interface BigCannonBlock extends WeldableBlock {
 				if (!player.getCooldowns().isOnCooldown(stack.getItem()) && cannon.tryDroppingMortarRound(stack)) {
 					player.getCooldowns().addCooldown(stack.getItem(), CBCConfigs.SERVER.cannons.dropMortarItemCooldown.get());
 					flag = true;
-				} else if (be.cannonBehavior().tryLoadingBlock(loadInfo)) {
-					writeAndSyncSingleBlockData(be, info, entity, cannon);
+				} else if (cbe.cannonBehavior().tryLoadingBlock(loadInfo)) {
+					writeAndSyncSingleBlockData(be, info, entity, contraption);
 					flag = true;
 				}
 				if (flag) {
@@ -296,6 +304,12 @@ public interface BigCannonBlock extends WeldableBlock {
 		behavior.setConnectedFace(dir, true);
 		behavior.setWelded(dir, true);
 		behavior.blockEntity.notifyUpdate();
+	}
+
+	@Nonnull
+	@Override
+	default AbstractMountedCannonContraption getCannonContraption() {
+		return new MountedBigCannonContraption();
 	}
 
 }

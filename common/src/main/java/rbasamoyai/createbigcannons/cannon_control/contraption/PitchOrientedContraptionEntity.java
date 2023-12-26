@@ -23,10 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
-import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.InteractableCannonBlock;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 
 public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
@@ -247,26 +244,12 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 
 	@Override
 	public boolean handlePlayerInteraction(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand) {
-		if (this.contraption instanceof MountedBigCannonContraption cannon && interactionHand == InteractionHand.MAIN_HAND) {
-			BlockEntity be = this.contraption.presentBlockEntities.get(localPos);
-			StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
+		BlockEntity be = this.contraption.presentBlockEntities.get(localPos);
+		StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
 
-			if (info.state().getBlock() instanceof BigCannonBlock cBlock
-				&& be instanceof IBigCannonBlockEntity cbe
-				&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level(), cannon,
-				(BlockEntity & IBigCannonBlockEntity) cbe, info, this)) {
-				return true;
-			}
-		} else if (this.contraption instanceof MountedAutocannonContraption autocannon && interactionHand == InteractionHand.MAIN_HAND) {
-			BlockEntity be = this.contraption.presentBlockEntities.get(localPos);
-			StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
-
-			if (info.state().getBlock() instanceof AutocannonBlock cBlock
-				&& be instanceof IAutocannonBlockEntity cbe
-				&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level(), autocannon,
-				(BlockEntity & IAutocannonBlockEntity) cbe, info, this)) {
-				return true;
-			}
+		if (info.state().getBlock() instanceof InteractableCannonBlock cBlock && interactionHand == InteractionHand.MAIN_HAND
+			&& cBlock.onInteractWhileAssembled(player, localPos, side, interactionHand, this.level(), this.contraption, be, info, this)) {
+			return true;
 		}
 		return super.handlePlayerInteraction(player, localPos, side, interactionHand);
 	}

@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
+import static rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock.writeAndSyncSingleBlockData;
+
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.actors.seat.SeatBlock;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
@@ -34,17 +36,14 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBaseBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
-
-import static rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock.writeAndSyncSingleBlockData;
 
 public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<AbstractAutocannonBreechBlockEntity>, IWrenchable {
 
@@ -205,9 +204,9 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 	}
 
 	@Override
-	public <T extends BlockEntity & IAutocannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
-			Direction side, InteractionHand interactionHand, Level level, MountedAutocannonContraption cannon, T be,
-			StructureBlockInfo info, AbstractContraptionEntity entity) {
+	public boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,
+											Level level, Contraption contraption, BlockEntity be, StructureBlockInfo info,
+											PitchOrientedContraptionEntity entity) {
 		if (!(be instanceof AbstractAutocannonBreechBlockEntity breech)) return false;
 
 		ItemStack stack = player.getItemInHand(interactionHand);
@@ -239,7 +238,7 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 			ItemEntity dropEntity = new ItemEntity(level, globalPos.x, globalPos.y, globalPos.z, container);
 			level.addFreshEntity(dropEntity);
 		}
-		if (changed && !level.isClientSide) writeAndSyncSingleBlockData(be, info, entity, cannon);
+		if (changed && !level.isClientSide) writeAndSyncSingleBlockData(be, info, entity, contraption);
 		return changed;
 	}
 

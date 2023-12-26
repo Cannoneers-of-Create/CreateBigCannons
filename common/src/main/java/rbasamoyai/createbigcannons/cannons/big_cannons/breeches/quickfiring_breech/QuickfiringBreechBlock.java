@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bre
 import java.util.HashSet;
 import java.util.Set;
 
+import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.ITransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
@@ -94,12 +95,13 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.CLOSED; }
 
 	@Override
-	public <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
-																							Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
-																							StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
-		if (((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() != side.getAxis()
-			|| be.cannonBehavior().isConnectedTo(side)
-			|| !(be instanceof QuickfiringBreechBlockEntity breech)) return false;
+	public boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,
+											Level level, Contraption contraption, BlockEntity be,
+											StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
+		if (!(contraption instanceof MountedBigCannonContraption cannon)
+			|| !(be instanceof QuickfiringBreechBlockEntity breech)
+			|| ((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() != side.getAxis()
+			|| breech.cannonBehavior().isConnectedTo(side)) return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
 
 		Direction pushDirection = side.getOpposite();
@@ -116,7 +118,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 				changed.add(localPos);
 
 				if (breech.getOpenDirection() > 0) {
-					BlockEntity be1 = cannon.presentBlockEntities.get(nextPos);
+					BlockEntity be1 = contraption.presentBlockEntities.get(nextPos);
 					if (be1 instanceof IBigCannonBlockEntity cbe1) {
 						StructureBlockInfo info1 = cbe1.cannonBehavior().block();
 						ItemStack extract = info1.state().getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
@@ -140,14 +142,14 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 						}
 					}
 				}
-				BigCannonBlock.writeAndSyncMultipleBlockData(changed, entity, cannon);
+				BigCannonBlock.writeAndSyncMultipleBlockData(changed, entity, contraption);
 			}
 			return true;
 		}
 		if (!breech.isOpen() || breech.onInteractionCooldown()) return false;
 
 		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
-			BlockEntity be1 = cannon.presentBlockEntities.get(nextPos);
+			BlockEntity be1 = contraption.presentBlockEntities.get(nextPos);
 			if (!(be1 instanceof IBigCannonBlockEntity cbe1)) return false;
 
 			StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, nextPos, pushDirection);
@@ -158,7 +160,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 
 				if (!info1.state().isAir()) {
 					BlockPos posAfter = nextPos.relative(pushDirection);
-					BlockEntity be2 = cannon.presentBlockEntities.get(posAfter);
+					BlockEntity be2 = contraption.presentBlockEntities.get(posAfter);
 					if (!(be2 instanceof IBigCannonBlockEntity cbe2) || !cbe2.cannonBehavior().canLoadBlock(info1))
 						return false;
 					cbe2.cannonBehavior().loadBlock(info1);
@@ -168,7 +170,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 				cbe1.cannonBehavior().tryLoadingBlock(loadInfo);
 				changes.add(nextPos);
 
-				BigCannonBlock.writeAndSyncMultipleBlockData(changes, entity, cannon);
+				BigCannonBlock.writeAndSyncMultipleBlockData(changes, entity, contraption);
 
 				SoundType sound = loadInfo.state().getSoundType();
 				level.playSound(null, player.blockPosition(), sound.getPlaceSound(), SoundSource.BLOCKS, sound.getVolume(), sound.getPitch());

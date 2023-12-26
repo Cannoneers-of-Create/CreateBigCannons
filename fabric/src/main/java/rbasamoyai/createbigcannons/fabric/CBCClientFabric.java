@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.fabric;
 
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import io.github.fabricators_of_create.porting_lib.event.client.CameraSetupCallback;
@@ -12,6 +13,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
@@ -32,6 +34,12 @@ public class CBCClientFabric implements ClientModInitializer {
 	public void onInitializeClient() {
 		CBCClientCommon.onClientSetup();
 		CBCClientCommon.registerKeyMappings(KeyBindingHelper::registerKeyBinding);
+		CBCClientCommon.registerOverlays((id, overlay) -> {
+			HudRenderCallback.EVENT.register((graphics, partialTicks) -> {
+				Window window = Minecraft.getInstance().getWindow();
+				overlay.renderOverlay(graphics, partialTicks, window.getGuiScaledWidth(), window.getGuiScaledHeight());
+			});
+		});
 
 		CBCNetworkFabric.INSTANCE.initClientListener();
 
@@ -39,7 +47,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		FogEvents.SET_COLOR.register(CBCClientFabric::setFogColor);
 		FogEvents.SET_DENSITY.register(CBCClientFabric::getFogDensity);
 		ClientTickEvents.END_CLIENT_TICK.register(CBCClientFabric::onClientTick);
-		MouseInputEvents.AFTER_SCROLL.register(CBCClientFabric::onScrolledMouse);
+		MouseInputEvents.BEFORE_SCROLL.register(CBCClientFabric::onScrolledMouse);
 		FieldOfViewEvents.MODIFY.register(CBCClientFabric::getFov);
 		ScreenEvents.BEFORE_INIT.register(CBCClientFabric::onOpenScreen);
 		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
@@ -77,8 +85,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		KeyMapping mapping = null;
 		if (mc.options.keyUse.matchesMouse(button)) mapping = mc.options.keyUse;
 		if (mc.options.keyAttack.matchesMouse(button)) mapping = mc.options.keyAttack;
-		if (mapping == null) return false;
-		return CBCClientCommon.onClickMouse(mapping);
+		return mapping != null && CBCClientCommon.onClickMouse(mapping);
 	}
 
 	public static boolean onScrolledMouse(double deltaX, double deltaY) {

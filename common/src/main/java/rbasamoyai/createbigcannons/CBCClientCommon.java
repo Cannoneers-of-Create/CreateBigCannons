@@ -5,8 +5,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import net.minecraft.client.gui.GuiGraphics;
 
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -34,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.base.goggles.EntityGoggleOverlayRenderer;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.ShakeEffect;
@@ -82,9 +86,9 @@ public class CBCClientCommon {
 		});
 
 		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("big_cartridge_filled"),
-			(stack, level, player, a) -> {
-				return BigCartridgeBlockItem.getPower(stack);
-			});
+		(stack, level, player, a) -> {
+			return BigCartridgeBlockItem.getPower(stack);
+		});
 	}
 
 	public static void registerKeyMappings(Consumer<KeyMapping> cons) {
@@ -92,6 +96,15 @@ public class CBCClientCommon {
 		cons.accept(FIRE_CONTROLLED_CANNON);
 		KEYS.add(PITCH_MODE);
 		KEYS.add(FIRE_CONTROLLED_CANNON);
+	}
+
+	public static void registerOverlays(BiConsumer<String, CBCGuiOverlay> cons) {
+		cons.accept("entity_goggles_overlay", EntityGoggleOverlayRenderer::renderOverlay);
+	}
+
+	@FunctionalInterface
+	public interface CBCGuiOverlay {
+		void renderOverlay(GuiGraphics graphics, float partialTicks, int windowWidth, int windowHeight);
 	}
 
 	public static void setFogColor(Camera info, SetColorWrapper wrapper) {

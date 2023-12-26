@@ -19,8 +19,9 @@ import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
-public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBlockEntity> {
+public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBlockEntity, FluidShellProperties> {
 
 	public FluidShellBlock(Properties properties) {
 		super(properties);
@@ -37,7 +38,7 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 	}
 
 	@Override
-	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		FluidShellProjectile projectile = CBCEntityTypes.FLUID_SHELL.create(level);
 		projectile.setFuze(getFuze(projectileBlocks));
 		if (!projectileBlocks.isEmpty()) {
@@ -51,7 +52,10 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 		return projectile;
 	}
 
-	@Override public EntityType<?> getAssociatedEntityType() { return CBCEntityTypes.FLUID_SHELL.get(); }
+	@Override
+	public EntityType<? extends PropertiesMunitionEntity<? extends FluidShellProperties>> getAssociatedEntityType() {
+		return CBCEntityTypes.FLUID_SHELL.get();
+	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {

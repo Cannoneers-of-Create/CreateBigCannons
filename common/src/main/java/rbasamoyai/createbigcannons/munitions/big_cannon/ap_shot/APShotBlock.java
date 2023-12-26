@@ -7,19 +7,24 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
-public class APShotBlock extends ProjectileBlock {
+public class APShotBlock extends ProjectileBlock<BigCannonProjectileProperties> {
 
 	public APShotBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		return CBCEntityTypes.AP_SHOT.create(level);
 	}
 
-	@Override public EntityType<?> getAssociatedEntityType() { return CBCEntityTypes.AP_SHOT.get(); }
+	@Override
+	public EntityType<? extends PropertiesMunitionEntity<? extends BigCannonProjectileProperties>> getAssociatedEntityType() {
+		return CBCEntityTypes.AP_SHOT.get();
+	}
 
 }

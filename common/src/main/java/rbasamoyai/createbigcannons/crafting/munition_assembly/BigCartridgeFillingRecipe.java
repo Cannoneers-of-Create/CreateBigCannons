@@ -11,9 +11,9 @@ import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 
 public class BigCartridgeFillingRecipe extends CustomRecipe {
 
@@ -63,7 +63,7 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 		result.setCount(1);
 		CompoundTag tag = result.getOrCreateTag();
 		int oldPower = tag.getInt("Power");
-		int newPower = Math.min(CBCConfigs.SERVER.munitions.maxBigCartridgePower.get(), oldPower + powderCount);
+		int newPower = Math.min(BigCartridgeBlock.getMaximumPowerLevels(), oldPower + powderCount);
 		tag.putInt("Power", newPower);
 		return result;
 	}
@@ -87,7 +87,7 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 		if (oldCartridge.isEmpty()) return result;
 
 		int oldPower = oldCartridge.getOrCreateTag().getInt("Power");
-		int newPower = Math.min(CBCConfigs.SERVER.munitions.maxBigCartridgePower.get(), oldPower + powderCount);
+		int newPower = Math.min(BigCartridgeBlock.getMaximumPowerLevels(), oldPower + powderCount);
 		int consumed = newPower - oldPower;
 
 		for (int i = 0; i < sz; ++i) {

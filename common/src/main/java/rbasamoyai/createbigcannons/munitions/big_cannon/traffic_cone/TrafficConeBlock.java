@@ -12,16 +12,18 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
-public class TrafficConeBlock extends ProjectileBlock {
+public class TrafficConeBlock extends ProjectileBlock<BigCannonProjectileProperties> {
 
 	public TrafficConeBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		return CBCEntityTypes.TRAFFIC_CONE.create(level);
 	}
 
@@ -31,6 +33,9 @@ public class TrafficConeBlock extends ProjectileBlock {
 		return new AllShapes.Builder(base).forDirectional();
 	}
 
-	@Override public EntityType<?> getAssociatedEntityType() { return CBCEntityTypes.TRAFFIC_CONE.get(); }
+	@Override
+	public EntityType<? extends PropertiesMunitionEntity<? extends BigCannonProjectileProperties>> getAssociatedEntityType() {
+		return CBCEntityTypes.TRAFFIC_CONE.get();
+	}
 
 }

@@ -29,9 +29,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
-public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock, IBE<BigCartridgeBlockEntity> {
+public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock<BigCartridgeProperties>, IBE<BigCartridgeBlockEntity> {
 
 	public static final BooleanProperty FILLED = BooleanProperty.create("filled");
 
@@ -179,6 +180,11 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 			stack.getOrCreateTag().putInt("Power", info.nbt().getInt("Power"));
 		}
 		return stack;
+	}
+
+	public static int getMaximumPowerLevels() { // For createbigcannons:big_cartridge only
+		BigCartridgeProperties properties = CBCBlocks.BIG_CARTRIDGE.get().getProperties();
+		return properties == null ? 4 : properties.maxPowerLevels();
 	}
 
 }

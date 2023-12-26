@@ -117,7 +117,7 @@ public class CannonBuildingContraption extends PoleContraption {
 		this.anchor = pos.relative(direction, this.initialExtensionProgress + 1);
 		this.initialExtensionProgress = extensionsInFront;
 		this.pistonContraptionHitbox = new AABB(
-			BlockPos.ZERO,
+			BlockPos.ZERO.relative(direction, -1),
 			BlockPos.ZERO.relative(direction, -this.extensionLength - 1))
 			.expandTowards(1, 1, 1);
 
