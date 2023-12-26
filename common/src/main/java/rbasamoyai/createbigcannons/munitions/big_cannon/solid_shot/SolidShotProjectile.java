@@ -8,13 +8,14 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileProperties;
 
-public class SolidShotProjectile extends AbstractBigCannonProjectile {
+public class SolidShotProjectile extends AbstractBigCannonProjectile<BigCannonProjectileProperties> {
 
 	public SolidShotProjectile(EntityType<? extends SolidShotProjectile> type, Level level) {
 		super(type, level);
 	}
-	
+
 	@Override
 	public BlockState getRenderedBlockState() {
 		return CBCBlocks.SOLID_SHOT.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);

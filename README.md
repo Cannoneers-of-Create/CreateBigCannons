@@ -16,7 +16,7 @@
 <ul>
 <li>Multiblock big cannons, built out of various cannon blocks with different materials of different tiers</li>
 <li>Multiblock autocannons, for faster fire rate and anti-air capabilties, coming in a variety of materials of different tiers</li>
-<li>A menagerie projectiles to wreak destruction with</li>
+<li>A menagerie of projectiles to wreak destruction with</li>
 <li>Kinetic-powered cannon mechanisms to load and aim your cannons</li>
 <li>Different fuze items to set off certain projectiles in various ways</li>
 <li>A crafting system to build multiblock cannons using Create's kinetic system and a multiblock casting system</li>
@@ -32,7 +32,7 @@
 <p><img src="https://i.imgur.com/vzeKdza.png" width="472" height="250"></p>
 <h4><strong>What dependencies are required?</strong></h4>
 <p><a href="https://www.curseforge.com/minecraft/mc-mods/create" rel="nofollow">Create</a> is required.</p>
-<p>A mod that adds bronze and steel is needed to access the </p><a href="https://www.curseforge.com/minecraft/mc-mods/create-alloyed" rel="nofollow">Create: Alloyed</a> is an optional dependency if you want to access higher tier cannon materials.</p>
+<p>A mod that adds bronze and steel is needed to access the bronze and steel cannon materials. </p><a href="https://www.curseforge.com/minecraft/mc-mods/create-alloyed" rel="nofollow">Create: Alloyed</a> is the recommended mod.</p>
 <p><strong>Will older versions be supported?</strong></p>
 <p>No, although the mod is open source and MIT licensed so feel free to port it yourself.</p>
 <br>

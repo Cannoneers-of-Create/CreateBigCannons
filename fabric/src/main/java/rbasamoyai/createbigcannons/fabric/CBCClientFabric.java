@@ -1,11 +1,22 @@
 package rbasamoyai.createbigcannons.fabric;
 
+import java.util.function.Consumer;
+
+import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.fabricators_of_create.porting_lib.event.client.*;
+
+import io.github.fabricators_of_create.porting_lib.event.client.CameraSetupCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.FieldOfViewEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.FogEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.LivingEntityRenderEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.MouseInputEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.ParticleManagerRegistrationCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.TextureStitchCallback;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
@@ -18,20 +29,23 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
 
-import java.util.function.Consumer;
-
 public class CBCClientFabric implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		CBCClientCommon.onClientSetup();
 		CBCClientCommon.registerKeyMappings(KeyBindingHelper::registerKeyBinding);
+		CBCClientCommon.registerOverlays((id, overlay) -> {
+			HudRenderCallback.EVENT.register((stack, partialTicks) -> {
+				Window window = Minecraft.getInstance().getWindow();
+				overlay.renderOverlay(stack, partialTicks, window.getGuiScaledWidth(), window.getGuiScaledHeight());
+			});
+		});
 
 		CBCNetworkFabric.INSTANCE.initClientListener();
 
@@ -39,14 +53,14 @@ public class CBCClientFabric implements ClientModInitializer {
 		FogEvents.SET_COLOR.register(CBCClientFabric::setFogColor);
 		FogEvents.SET_DENSITY.register(CBCClientFabric::getFogDensity);
 		ClientTickEvents.END_CLIENT_TICK.register(CBCClientFabric::onClientTick);
-		MouseScrolledCallback.EVENT.register(CBCClientFabric::onScrolledMouse);
-		FOVModifierCallback.EVENT.register(CBCClientFabric::getFov);
+		MouseInputEvents.BEFORE_SCROLL.register(CBCClientFabric::onScrolledMouse);
+		FieldOfViewEvents.MODIFY.register(CBCClientFabric::getFov);
 		ScreenEvents.BEFORE_INIT.register(CBCClientFabric::onOpenScreen);
 		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
 		TextureStitchCallback.PRE.register(CBCClientFabric::onTextureAtlasStitchPre);
 		CameraSetupCallback.EVENT.register(CBCClientFabric::onSetupCamera);
 		ClientLoginConnectionEvents.DISCONNECT.register(CBCClientFabric::onPlayerLogOut);
-		MouseButtonCallback.EVENT.register(CBCClientFabric::onClickMouse);
+		MouseInputEvents.BEFORE_BUTTON.register(CBCClientFabric::onClickMouse);
 	}
 
 	public static void onParticleRegistry() {
@@ -71,19 +85,18 @@ public class CBCClientFabric implements ClientModInitializer {
 		CBCClientCommon.onClientGameTick(mc);
 	}
 
-	public static InteractionResult onClickMouse(int button, int action, int mods) {
-		if (action != 1) return InteractionResult.PASS;
+	public static boolean onClickMouse(int button, int mods, MouseInputEvents.Action action) {
+		if (action != MouseInputEvents.Action.PRESS) return false;
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.screen != null) return InteractionResult.PASS;
+		if (mc.screen != null) return false;
 		KeyMapping mapping = null;
 		if (mc.options.keyUse.matchesMouse(button)) mapping = mc.options.keyUse;
 		if (mc.options.keyAttack.matchesMouse(button)) mapping = mc.options.keyAttack;
-		if (mapping == null) return InteractionResult.PASS;
-		return CBCClientCommon.onClickMouse(mapping) ? InteractionResult.SUCCESS : InteractionResult.PASS;
+		return mapping != null && CBCClientCommon.onClickMouse(mapping);
 	}
 
-	public static boolean onScrolledMouse(double delta) {
-		return CBCClientCommon.onScrollMouse(Minecraft.getInstance(), delta);
+	public static boolean onScrolledMouse(double deltaX, double deltaY) {
+		return CBCClientCommon.onScrollMouse(Minecraft.getInstance(), deltaY);
 	}
 
 	public static float getFov(Player player, float oldFov) {

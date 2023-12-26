@@ -13,8 +13,6 @@ public class Grapeshot extends Shrapnel {
 		super(type, level);
 	}
 
-	@Override protected float getProjectileMass() { return 3; }
-
 	@Override protected DamageSource getDamageSource() { return new CannonDamageSource(CreateBigCannons.MOD_ID + ".grapeshot", this, null); }
 
 }

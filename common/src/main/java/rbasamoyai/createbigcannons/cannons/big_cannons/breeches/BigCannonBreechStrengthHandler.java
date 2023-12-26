@@ -14,6 +14,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -74,6 +75,10 @@ public class BigCannonBreechStrengthHandler {
 
 	public static void syncTo(ServerPlayer player) {
 		NetworkPlatform.sendToClientPlayer(new ClientboundBigCannonBreechStrengthPacket(), player);
+	}
+
+	public static void syncToAll(MinecraftServer server) {
+		NetworkPlatform.sendToClientAll(new ClientboundBigCannonBreechStrengthPacket(), server);
 	}
 
 	public record ClientboundBigCannonBreechStrengthPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {

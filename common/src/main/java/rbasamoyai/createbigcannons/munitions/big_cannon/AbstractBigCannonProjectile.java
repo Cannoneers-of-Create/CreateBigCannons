@@ -19,7 +19,7 @@ import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
-public abstract class AbstractBigCannonProjectile extends AbstractCannonProjectile {
+public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileProperties> extends AbstractCannonProjectile<T> {
 
 	protected AbstractBigCannonProjectile(EntityType<? extends AbstractBigCannonProjectile> type, Level level) {
 		super(type, level);
@@ -79,12 +79,24 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".big_cannon_projectile", this, null);
 	}
 
-	public int addedChargePower() { return 0; }
+	public float addedChargePower() {
+		T properties = this.getProperties();
+		return properties == null ? 0 : properties.addedChargePower();
+	}
 
-	public float minimumChargePower() { return this.getProperties().minimumChargePower(); }
+	public float minimumChargePower() {
+		T properties = this.getProperties();
+		return properties == null ? 1 : properties.minimumChargePower();
+	}
 
-	public boolean canSquib() { return this.getProperties().canSquib(); }
+	public boolean canSquib() {
+		T properties = this.getProperties();
+		return properties == null || properties.canSquib();
+	}
 
-	public float addedRecoil() { return this.getProperties().addedRecoil(); }
+	public float addedRecoil() {
+		T properties = this.getProperties();
+		return properties == null ? 1 : properties.addedRecoil();
+	}
 
 }
