@@ -6,3 +6,4 @@ Changes:
 - Changed Machine Gun Round texture, forgot to add in 0.5.3.a
 Fixes:
 - Fixed Freecam mod unable to rotate when mounting autocannon
+- Fixed rotation range of cannons controlled by kinetics on Cannon Mount

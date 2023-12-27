@@ -20,7 +20,7 @@ public abstract class EntityClientMixin {
 	@Inject(method = "turn", at = @At("HEAD"), cancellable = true)
 	public void createbigcannons$turn(double yaw, double pitch, CallbackInfo ci) {
 		Minecraft mc = Minecraft.getInstance();
-		boolean playerIsCamera = mc.getCameraEntity() == null;
+		boolean playerIsCamera = mc.getCameraEntity() == mc.player;
 		if (playerIsCamera && this.self.getVehicle() instanceof PitchOrientedContraptionEntity poce) {
 			float crot = poce.getRotationCoefficient();
 			float dxr = (float) pitch * crot;
