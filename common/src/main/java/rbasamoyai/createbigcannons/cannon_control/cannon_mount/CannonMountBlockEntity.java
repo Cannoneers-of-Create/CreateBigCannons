@@ -138,15 +138,17 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 		Direction dir = this.mountedContraption.getInitialOrientation();
 		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-		float sgn = flag ? 1 : -1;
-		float d = -this.mountedContraption.maximumDepression();
-		float e = this.mountedContraption.maximumElevation();
 
 		if (!this.mountedContraption.canBeTurnedByController(this)) {
+			float sgn = flag ? 1 : -1;
+			float d = -this.mountedContraption.maximumDepression();
+			float e = this.mountedContraption.maximumElevation();
 			this.cannonPitch = Mth.clamp(this.mountedContraption.pitch, d, e) * sgn;
 			this.cannonYaw = this.mountedContraption.yaw;
 		} else {
-			this.mountedContraption.pitch = Mth.clamp(this.cannonPitch, d, e) * sgn;
+			float cu = flag ? this.getMaxElevate() : this.getMaxDepress();
+			float cd = flag ? -this.getMaxDepress() : -this.getMaxElevate();
+			this.mountedContraption.pitch = Mth.clamp(this.cannonPitch, cd, cu);
 			this.mountedContraption.yaw = this.cannonYaw;
 		}
 	}
