@@ -4,3 +4,5 @@ Create Big Cannons 0.5.3.b, with more minor fixes.
 
 Changes:
 - Changed Machine Gun Round texture, forgot to add in 0.5.3.a
+Fixes:
+- Fixed Freecam mod unable to rotate when mounting autocannon

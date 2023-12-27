@@ -7,6 +7,7 @@
     "client.AbstractMountedCannonContraptionMixin",
     "client.CameraAccessor",
     "client.CannonMountDisplaySourceMixin",
+    "client.EntityClientMixin",
     "client.EntityRenderDispatcherMixin",
     "client.HumanoidPoseMixin",
     "client.PitchOrientedContraptionEntityMixin",
