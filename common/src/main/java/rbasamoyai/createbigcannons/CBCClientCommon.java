@@ -208,7 +208,7 @@ public class CBCClientCommon {
 	}
 
 	public static float onFovModify(Minecraft mc, float oldFov) {
-		if (mc.player == null || !mc.options.getCameraType().isFirstPerson()) return lerpFov(mc, oldFov);
+		if (mc.player == null || mc.getCameraEntity() != null || !mc.options.getCameraType().isFirstPerson()) return lerpFov(mc, oldFov);
 		return lerpFov(mc, mc.options.keyUse.isDown() && isControllingCannon(mc.player) ? oldFov * 0.5f : oldFov);
 	}
 
