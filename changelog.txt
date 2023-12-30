@@ -8,3 +8,4 @@ Changes:
 Fixes:
 - Fixed Freecam mod unable to rotate when mounting autocannon
 - Fixed rotation range of cannons controlled by kinetics on Cannon Mount
+- Fixed crash on misfire

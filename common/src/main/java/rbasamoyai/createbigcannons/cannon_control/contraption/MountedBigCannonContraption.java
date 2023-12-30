@@ -256,6 +256,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public int getMaxSafeCharges() {
 		BigCannonMaterialProperties properties = this.cannonMaterial.properties();
 		StructureBlockInfo breech = this.blocks.get(this.startPos.relative(this.initialOrientation.getOpposite()));
+		if (breech == null) return 0;
 		int materialStrength = properties.maxSafePropellantStress();
 		int maxSafeCharges = Math.min(materialStrength, BigCannonBreechStrengthHandler.getStrength(breech.state.getBlock(), materialStrength));
 		if (this.hasWeldedPenalty) maxSafeCharges -= properties.weldStressPenalty();
@@ -289,6 +290,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			BigCannonBehavior behavior = cbe.cannonBehavior();
 			StructureBlockInfo containedBlockInfo = behavior.block();
 			StructureBlockInfo cannonInfo = this.blocks.get(currentPos);
+			if (cannonInfo == null) break;
 
 			Block block = containedBlockInfo.state.getBlock();
 
@@ -590,7 +592,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	public boolean isDropMortar() {
 		StructureBlockInfo breech = this.blocks.get(this.startPos.relative(this.initialOrientation.getOpposite()));
-		return breech.state.getBlock() instanceof BigCannonBlock cblock && cblock.getCannonShape() == CannonCastShape.DROP_MORTAR_END;
+		return breech != null && breech.state.getBlock() instanceof BigCannonBlock cblock && cblock.getCannonShape() == CannonCastShape.DROP_MORTAR_END;
 	}
 
 	public boolean tryDroppingMortarRound(ItemStack stack) {

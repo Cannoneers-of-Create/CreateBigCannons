@@ -295,6 +295,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				spread = Math.max(spread, 0);
 				if (canSquib && barrelTravelled > properties.maxBarrelLength()) {
 					StructureBlockInfo oldInfo = this.blocks.get(currentPos);
+					if (oldInfo == null) return;
 					behavior.tryLoadingItem(foundProjectile);
 					CompoundTag tag = this.presentBlockEntities.get(currentPos).saveWithFullMetadata();
 					tag.remove("x");
