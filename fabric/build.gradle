@@ -87,7 +87,7 @@ dependencies {
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-fabric")) { transitive = false } // Ritchie's Projectile Library
 
 	// Fixes, integration
-	modImplementation(include("curse.maven:free-cam-557076:${freecam_fabric_file}")) // Freecam
+	modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
 }
 
 processResources {
