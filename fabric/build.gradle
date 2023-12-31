@@ -104,6 +104,9 @@ dependencies {
     modLocalRuntime("curse.maven:spark-361579:${spark_fabric_file}") // Spark
 
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-fabric")) { transitive = false } // Ritchie's Projectile Library
+
+	// Fixes, integration
+	modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
 }
 
 processResources {
