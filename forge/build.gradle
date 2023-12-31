@@ -62,6 +62,9 @@ dependencies {
     modImplementation("curse.maven:spark-361579:${spark_forge_file}") // Spark
 
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-forge")) { transitive = false } // Ritchie's Projectile Library
+
+	// Fixes, integration
+	modImplementation(include("curse.maven:free-cam-557076:${freecam_forge_file}")) // Freecam
 }
 
 processResources {
