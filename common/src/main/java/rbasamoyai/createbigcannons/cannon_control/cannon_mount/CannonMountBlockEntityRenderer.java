@@ -6,7 +6,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Constants;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.utility.AnimationTickHolder;
@@ -18,19 +17,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
-public class CannonMountBlockEntityRenderer extends KineticBlockEntityRenderer {
+public class CannonMountBlockEntityRenderer extends KineticBlockEntityRenderer<CannonMountBlockEntity> {
 
 	public CannonMountBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}
 
 	@Override
-	protected void renderSafe(KineticBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+	protected void renderSafe(CannonMountBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		super.renderSafe(te, partialTicks, ms, buffer, light, overlay);
 		if (Backend.canUseInstancing(te.getLevel())) return;
 
 		BlockState state = te.getBlockState();
-		CannonMountBlockEntity cmbe = (CannonMountBlockEntity) te;
 
 		VertexConsumer solidBuf = buffer.getBuffer(RenderType.solid());
 
@@ -38,10 +36,10 @@ public class CannonMountBlockEntityRenderer extends KineticBlockEntityRenderer {
 
 		CachedBufferer.partialFacing(CBCBlockPartials.YAW_SHAFT, state, Direction.DOWN)
 			.light(light)
-			.rotateCentered(Direction.UP, getYawAngle(cmbe))
+			.rotateCentered(Direction.UP, getYawAngle(te))
 			.renderInto(ms, solidBuf);
 
-		float yaw = getMountYaw(cmbe);
+		float yaw = getMountYaw(te);
 		Quaternion qyaw = Vector3f.YN.rotation(yaw);
 		CachedBufferer.partial(CBCBlockPartials.ROTATING_MOUNT, state)
 			.translate(0.0d, 1.0d, 0.0d)
@@ -49,10 +47,8 @@ public class CannonMountBlockEntityRenderer extends KineticBlockEntityRenderer {
 			.rotateCentered(qyaw)
 			.renderInto(ms, solidBuf);
 
-		float pitch = cmbe.getPitchOffset(partialTicks);
-		Direction facing = cmbe.getContraptionDirection();
-		boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
-		Quaternion qpitch = Vector3f.XP.rotationDegrees(flag ? -pitch : pitch);
+		float pitch = te.getPitchOffset(partialTicks);
+		Quaternion qpitch = Vector3f.XP.rotationDegrees(-pitch);
 		Quaternion qyaw1 = qyaw.copy();
 		qyaw1.mul(qpitch);
 
@@ -78,7 +74,7 @@ public class CannonMountBlockEntityRenderer extends KineticBlockEntityRenderer {
 	}
 
 	@Override
-	protected BlockState getRenderedBlockState(KineticBlockEntity te) {
+	protected BlockState getRenderedBlockState(CannonMountBlockEntity te) {
 		return shaft(getRotationAxisOf(te));
 	}
 

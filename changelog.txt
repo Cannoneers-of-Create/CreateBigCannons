@@ -9,7 +9,9 @@ Changes:
 - A few texture changes
 - Basin Foundry Lids can now be wrenched
 - Changed default big cannon propellant values
+- Changed Cannon Mount data to be more user-friendly, such as with ComputerCraft
 Fixes:
 - Fixed Freecam mod unable to rotate when mounting autocannon
 - Fixed rotation range of cannons controlled by kinetics on Cannon Mount
 - Fixed crash on misfire
+- Fixed Cannon Mount yaw rotation direction
