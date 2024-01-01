@@ -1,9 +1,9 @@
-// 1.20.1	2023-12-25T20:19:16.4202384	Create Big Cannons/Custom block hardness: createbigcannons
+// 1.20.1	2024-01-01T15:16:07.2250039	Create Big Cannons/Custom block hardness: createbigcannons
 e2c64c4dd7ca2fc82023c702076c2289b15dc5c4 data\minecraft\block_hardness\crying_obsidian.json
 091a2ec9678476b7eac6a08df30e5a7d54581abf data\minecraft\block_hardness\tags\anvil.json
 272235cd9a621a05de129b150cb1d5ad0cf44c7a data\minecraft\block_hardness\tags\terracotta.json
-b5714595bb6da956bc4ce9b7aee065466855a554 data\createbigcannons\block_hardness\tags\netherrack.json
 272235cd9a621a05de129b150cb1d5ad0cf44c7a data\createbigcannons\block_hardness\tags\concrete.json
+b5714595bb6da956bc4ce9b7aee065466855a554 data\createbigcannons\block_hardness\tags\netherrack.json
 e2c64c4dd7ca2fc82023c702076c2289b15dc5c4 data\createbigcannons\block_hardness\tags\obsidian.json
 091a2ec9678476b7eac6a08df30e5a7d54581abf data\create\block_hardness\item_vault.json
 272235cd9a621a05de129b150cb1d5ad0cf44c7a data\createbigcannons\block_hardness\tags\sandstone.json

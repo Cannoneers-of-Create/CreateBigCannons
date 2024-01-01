@@ -102,9 +102,7 @@ public class CannonMountInstance extends KineticBlockEntityInstance<CannonMountB
 		Quaternionf qyaw = Axis.YN.rotationDegrees(yaw);
 		this.rotatingMount.setRotation(qyaw);
 		float pitch = this.blockEntity.getPitchOffset(partialTicks);
-		Direction facing = this.blockEntity.getContraptionDirection();
-		boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
-		Quaternionf qpitch = Axis.XP.rotationDegrees(flag ? -pitch : pitch);
+		Quaternionf qpitch = Axis.XP.rotationDegrees(-pitch);
 		Quaternionf qyaw1 = new Quaternionf(qyaw);
 		qyaw1.mul(qpitch);
 		this.rotatingMountShaft.setRotation(qyaw1);
