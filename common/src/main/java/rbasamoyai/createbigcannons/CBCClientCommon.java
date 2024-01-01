@@ -218,10 +218,10 @@ public class CBCClientCommon {
 
 	public static boolean onPlayerRenderPre(PoseStack stack, AbstractClientPlayer player, PlayerRenderer renderer, float partialTicks) {
 		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-			float yaw = 90 - player.getYRot();
-			float pitch = player.getXRot();
-			//float yaw = 90 - Mth.lerp(partialTicks, player.yRotO, player.getYRot());
-			///float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+			player.yBodyRot = player.yHeadRot;
+			player.yBodyRotO = player.yHeadRotO;
+			float yaw = 90 - Mth.lerp(partialTicks, player.yHeadRotO, player.yHeadRot);
+			float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
 
 			Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
 			stack.mulPose(pitchVec.rotationDegrees(pitch));
