@@ -17,3 +17,4 @@ Fixes:
 - Fixed Cannon Mount yaw rotation direction
 - Fixed Drop Mortar interaction, preventing chamber loading
 - Fixed Cannon Welder not welding autocannons
+- Fixed schematic data for some CBC block entities

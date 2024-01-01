@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.datagen.assets;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -444,6 +445,7 @@ public class CBCBuilderTransformers {
 			.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> {
 				return p.models().getExistingFile(s.getValue(BigCartridgeBlock.FILLED) ? filledLoc : emptyLoc);
 			}))
+			.tag(AllBlockTags.SAFE_NBT.tag)
 			.loot((t, c) -> {
 				((BlockLoot) t).add(c, LootTable.lootTable()
 					.withPool(LootPool.lootPool()
@@ -485,6 +487,7 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate((c, p) -> p.horizontalBlock(c.get(), s -> p.models().getExistingFile(s.getValue(CannonCarriageBlock.SADDLED) ? saddleLoc : blockLoc)))
+			.tag(AllBlockTags.SAFE_NBT.tag)
 			.loot((t, u) -> t.add(u, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.add(BlockLoot.applyExplosionDecay(u, LootItem.lootTableItem(u))))
@@ -575,6 +578,10 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutout)
 			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/drop_mortar_shell"))));
+	}
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> safeNbt() {
+		return b -> b.tag(AllBlockTags.SAFE_NBT.tag);
 	}
 
 }
