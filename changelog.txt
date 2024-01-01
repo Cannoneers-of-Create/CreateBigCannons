@@ -21,3 +21,4 @@ Fixes:
 - Fixed schematic data for some CBC block entities
 - Fixed ParCool! camera animations not working when installed with Create Big Cannons
 - Fixed Shoulder Surfing Reloaded rendering problems when installed with Create Big Cannons
+- Fixed player model rotation when mounting autocannon
