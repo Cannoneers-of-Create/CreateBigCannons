@@ -1,0 +1,10 @@
+{
+  "values": [
+    "createbigcannons:cannon_carriage",
+    "createbigcannons:he_shell",
+    "createbigcannons:shrapnel_shell",
+    "createbigcannons:ap_shell",
+    "createbigcannons:fluid_shell",
+    "createbigcannons:big_cartridge"
+  ]
+}

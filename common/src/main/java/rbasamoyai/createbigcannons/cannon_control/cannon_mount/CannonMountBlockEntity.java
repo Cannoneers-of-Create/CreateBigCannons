@@ -103,19 +103,15 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (!(this.mountedContraption != null && this.mountedContraption.isStalled()) && flag) {
 			float yawSpeed = this.getAngularSpeed(this::getYawSpeed, this.clientYawDiff);
 			float pitchSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
-			float newYaw = this.cannonYaw + yawSpeed;
-			float newPitch = this.cannonPitch + pitchSpeed;
-			this.cannonYaw = newYaw % 360.0f;
 
-			if (this.mountedContraption == null) {
-				this.cannonPitch = 0.0f;
-			} else {
-				Direction dir = this.getContraptionDirection();
-				boolean flag1 = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-				float cu = flag1 ? this.getMaxElevate() : this.getMaxDepress();
-				float cd = flag1 ? -this.getMaxDepress() : -this.getMaxElevate();
-				this.cannonPitch = Mth.clamp(newPitch % 360.0f, cd, cu);
-			}
+			Direction dir = this.mountedContraption.getInitialOrientation();
+			boolean flag1 = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+			float sgn = flag1 ? 1 : -1;
+
+			float newYaw = this.cannonYaw - yawSpeed;
+			float newPitch = this.cannonPitch + pitchSpeed * sgn;
+			this.cannonYaw = newYaw % 360.0f;
+			this.cannonPitch = this.mountedContraption == null ? 0 : Mth.clamp(newPitch % 360.0f, -this.getMaxDepress(), this.getMaxElevate());
 		}
 		this.applyRotation();
 	}
@@ -137,17 +133,15 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 		Direction dir = this.mountedContraption.getInitialOrientation();
 		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+		float sgn = flag ? 1 : -1;
 
 		if (!this.mountedContraption.canBeTurnedByController(this)) {
-			float sgn = flag ? 1 : -1;
 			float d = -this.mountedContraption.maximumDepression();
 			float e = this.mountedContraption.maximumElevation();
 			this.cannonPitch = Mth.clamp(this.mountedContraption.pitch, d, e) * sgn;
 			this.cannonYaw = this.mountedContraption.yaw;
 		} else {
-			float cu = flag ? this.getMaxElevate() : this.getMaxDepress();
-			float cd = flag ? -this.getMaxDepress() : -this.getMaxElevate();
-			this.mountedContraption.pitch = Mth.clamp(this.cannonPitch, cd, cu);
+			this.mountedContraption.pitch = this.cannonPitch * sgn;
 			this.mountedContraption.yaw = this.cannonYaw;
 		}
 	}
@@ -190,7 +184,10 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
 			partialTicks = 0;
 		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this)) {
-			return this.mountedContraption.getViewXRot(partialTicks);
+			Direction facing = this.getContraptionDirection();
+			boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
+			float sgn = flag ? 1 : -1;
+			return this.mountedContraption.getViewXRot(partialTicks) * sgn;
 		}
 		float aSpeed = this.getAngularSpeed(this::getSpeed, this.clientPitchDiff);
 		return Mth.lerp(partialTicks, this.cannonPitch, this.cannonPitch + aSpeed);
@@ -221,10 +218,11 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	public float getDisplayPitch() {
-		float ret = this.getPitchOffset(0);
-		if (Math.abs(ret) < 1e-1f) return 0;
-		Direction dir = this.getContraptionDirection();
-		return (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X) ? ret : -ret;
+//		float ret = this.getPitchOffset(0);
+//		if (Math.abs(ret) < 1e-1f) return 0;
+//		Direction dir = this.getContraptionDirection();
+//		return (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X) ? ret : -ret;
+		return Math.abs(this.cannonPitch) < 1e-1f ? 0 : this.cannonPitch;
 	}
 
 	public void setYaw(float yaw) {
