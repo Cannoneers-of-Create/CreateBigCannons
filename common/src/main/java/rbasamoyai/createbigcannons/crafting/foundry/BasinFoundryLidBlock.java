@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.foundry;
 
+import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
@@ -12,7 +13,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
-public class BasinFoundryLidBlock extends Block implements IBE<BasinFoundryBlockEntity> {
+public class BasinFoundryLidBlock extends Block implements IBE<BasinFoundryBlockEntity>, IWrenchable {
 
 	private static final VoxelShape SHAPE = Shapes.or(box(0, 0, 0, 16, 4, 16), box(4, 4, 4, 12, 5, 12));
 

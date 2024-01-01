@@ -287,6 +287,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		AbstractBigCannonProjectile<?> projectile = null;
 		BlockPos assemblyPos = null;
 
+		float minimumSpread = CBCConfigs.SERVER.cannons.minimumBigCannonSpread.getF();
+
 		while (this.presentBlockEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
 			BigCannonBehavior behavior = cbe.cannonBehavior();
 			StructureBlockInfo containedBlockInfo = behavior.block();
@@ -308,7 +310,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				} else {
 					++propelCtx.barrelTravelled;
 					if (cannonInfo.state.is(CBCTags.CBCBlockTags.REDUCES_SPREAD)) {
-						propelCtx.spread = Math.max(propelCtx.spread - spreadSub, 0.0f);
+						propelCtx.spread = Math.max(propelCtx.spread - spreadSub, minimumSpread);
 					}
 					if (projectile.canSquib() && this.cannonMaterial.properties().mayGetStuck(propelCtx.chargesUsed, propelCtx.barrelTravelled) && rollSquib(rand)) {
 						this.squibBlocks(currentPos, projectileBlocks);
@@ -422,7 +424,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
 
-		if (propelCtx.chargesUsed <= 0) propelCtx.chargesUsed = 0.5f;
+		if (propelCtx.chargesUsed < minimumSpread) propelCtx.chargesUsed = minimumSpread;
 
 		float recoilMagnitude = 0;
 
