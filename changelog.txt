@@ -10,6 +10,7 @@ Changes:
 - Basin Foundry Lids can now be wrenched
 - Changed default big cannon propellant values
 - Changed Cannon Mount data to be more user-friendly, such as with ComputerCraft
+- Updated Russian translation
 Fixes:
 - Fixed Freecam mod unable to rotate when mounting autocannon
 - Fixed rotation range of cannons controlled by kinetics on Cannon Mount
@@ -18,3 +19,5 @@ Fixes:
 - Fixed Drop Mortar interaction, preventing chamber loading
 - Fixed Cannon Welder not welding autocannons
 - Fixed schematic data for some CBC block entities
+- Fixed ParCool! camera animations not working when installed with Create Big Cannons
+- Fixed Shoulder Surfing Reloaded rendering problems when installed with Create Big Cannons

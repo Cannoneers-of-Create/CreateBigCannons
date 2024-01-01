@@ -301,7 +301,7 @@ public class CBCClientCommon {
 		setYaw.accept(yaw.get() + dy * s);
 		setPitch.accept(pitch.get() + dp * s);
 		setRoll.accept(roll.get() + dr * s);
-		return true;
+		return false;
 	}
 
 	public static void addShakeEffect(ShakeEffect effect) { ACTIVE_SHAKE_EFFECTS.add(effect); }
