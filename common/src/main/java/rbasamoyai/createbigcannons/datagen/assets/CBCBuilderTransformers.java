@@ -102,8 +102,6 @@ public class CBCBuilderTransformers {
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarShell() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarEnd(String pathAndMaterial) { throw new AssertionError(); }
 
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> safeNbt() {
-		return b -> b.tag(AllBlockTags.SAFE_NBT.tag);
-	}
+	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> safeNbt() { throw new AssertionError(); }
 
 }
