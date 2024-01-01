@@ -49,9 +49,7 @@ public class CannonMountBlockEntityRenderer extends KineticBlockEntityRenderer<C
 			.renderInto(ms, solidBuf);
 
 		float pitch = be.getPitchOffset(partialTicks);
-		Direction facing = be.getContraptionDirection();
-		boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
-		Quaternionf qpitch = Axis.XP.rotationDegrees(flag ? -pitch : pitch);
+		Quaternionf qpitch = Axis.XP.rotationDegrees(-pitch);
 		Quaternionf qyaw1 = new Quaternionf(qyaw);
 		qyaw1.mul(qpitch);
 

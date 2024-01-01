@@ -226,15 +226,19 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 			return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
 		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
-			StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
 			if (!level.isClientSide) {
+				StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
 				boolean flag = false;
-				if (!player.getCooldowns().isOnCooldown(stack.getItem()) && cannon.tryDroppingMortarRound(stack)) {
-					player.getCooldowns().addCooldown(stack.getItem(), CBCConfigs.SERVER.cannons.dropMortarItemCooldown.get());
-					flag = true;
-				} else if (cbe.cannonBehavior().tryLoadingBlock(loadInfo)) {
-					writeAndSyncSingleBlockData(be, info, entity, contraption);
-					flag = true;
+				if (cannon.isDropMortar()) {
+					if (!player.getCooldowns().isOnCooldown(stack.getItem()) && cannon.tryDroppingMortarRound(stack)) {
+						player.getCooldowns().addCooldown(stack.getItem(), CBCConfigs.SERVER.cannons.dropMortarItemCooldown.get());
+						flag = true;
+					}
+				} else {
+				 	if (cbe.cannonBehavior().tryLoadingBlock(loadInfo)) {
+						writeAndSyncSingleBlockData(be, info, entity, contraption);
+						flag = true;
+					}
 				}
 				if (flag) {
 					SoundType sound = loadInfo.state().getSoundType();
