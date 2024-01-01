@@ -20,3 +20,4 @@ Fixes:
 - Fixed Cannon Welder not welding autocannons
 - Fixed schematic data for some CBC block entities
 - Fixed ParCool! camera animations not working when installed with Create Big Cannons
+- Fixed Shoulder Surfing Reloaded rendering problems when installed with Create Big Cannons
