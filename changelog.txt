@@ -15,3 +15,4 @@ Fixes:
 - Fixed rotation range of cannons controlled by kinetics on Cannon Mount
 - Fixed crash on misfire
 - Fixed Cannon Mount yaw rotation direction
+- Fixed Drop Mortar interaction, preventing chamber loading
