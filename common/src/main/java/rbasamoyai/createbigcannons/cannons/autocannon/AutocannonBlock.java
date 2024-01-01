@@ -23,9 +23,8 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonC
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.cannons.InteractableCannonBlock;
+import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
-import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.welding.WeldableBlock;
 
@@ -166,8 +165,8 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
 
 	@Override
 	default void weldBlock(Level level, BlockState state, BlockPos pos, Direction dir) {
-		if (!(level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe)) return;
-		BigCannonBehavior behavior = cbe.cannonBehavior();
+		if (!(level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe)) return;
+		ItemCannonBehavior behavior = cbe.cannonBehavior();
 		behavior.setConnectedFace(dir, true);
 		behavior.setWelded(dir, true);
 		behavior.blockEntity.notifyUpdate();

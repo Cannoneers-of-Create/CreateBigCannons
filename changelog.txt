@@ -16,3 +16,4 @@ Fixes:
 - Fixed crash on misfire
 - Fixed Cannon Mount yaw rotation direction
 - Fixed Drop Mortar interaction, preventing chamber loading
+- Fixed Cannon Welder not welding autocannons
