@@ -137,9 +137,9 @@ public class CannonMountScenes {
 
 		scene.idle(50);
 
-		scene.world.setKineticSpeed(util.select.position(1, 1, 1), 16.0f);
-		scene.world.setKineticSpeed(util.select.position(2, 1, 2), -8.0f);
-		scene.world.setKineticSpeed(util.select.position(1, 2, 1), 16.0f);
+		scene.world.setKineticSpeed(util.select.position(1, 1, 1), -16.0f);
+		scene.world.setKineticSpeed(util.select.position(2, 1, 2), 8.0f);
+		scene.world.setKineticSpeed(util.select.position(1, 2, 1), -16.0f);
 
 		scene.world.setKineticSpeed(util.select.position(2, 2, 2), -8.0f);
 		scene.world.modifyBlockEntityNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
