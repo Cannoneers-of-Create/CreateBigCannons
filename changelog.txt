@@ -19,3 +19,4 @@ Fixes:
 - Fixed Drop Mortar interaction, preventing chamber loading
 - Fixed Cannon Welder not welding autocannons
 - Fixed schematic data for some CBC block entities
+- Fixed ParCool! camera animations not working when installed with Create Big Cannons
