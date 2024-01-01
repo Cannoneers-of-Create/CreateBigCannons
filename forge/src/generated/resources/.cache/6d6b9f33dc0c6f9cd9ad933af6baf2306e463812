@@ -1,4 +1,4 @@
-// 1.19.2	2023-12-25T20:21:41.7759404	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2024-01-01T10:59:51.3509835	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 7ddc90e7893c143c68d55b3c04522d7b0198a497 assets/createbigcannons/blockstates/ap_shell.json
 31c7ed6e131abf69528863a9b54c94765f722d68 assets/createbigcannons/blockstates/ap_shot.json
 7a6245db956a62e8fc034547d81d7e961d0c49e1 assets/createbigcannons/blockstates/autocannon_barrel_cast_mould.json
@@ -693,6 +693,7 @@ fb4acaffaf3bf8f24b13250e01209c44993e9c81 data/createbigcannons/tags/items/sheet_
 3b18bacd84fb3be97871d5b2b35e38daa8da57b5 data/createbigcannons/tags/items/sheet_iron.json
 9d5f539f018cb37fd563159227e9b2e061ffdd93 data/createbigcannons/tags/items/sheet_steel.json
 f805ee7f5f2e6d58d80ff506842a4e33efb65086 data/createbigcannons/tags/items/stone.json
+804b582d07667fe8769cf5c4baf7654cbe13b838 data/create/tags/blocks/safe_nbt.json
 09c7e9635c24eda5df6ec39394b949a5c5c29134 data/c/tags/fluids/molten_bronze.json
 5a19d9eb5689496c87da0fa7cb4c802afca0909a data/c/tags/fluids/molten_cast_iron.json
 4bf44af988a2b206bd824b9d63b2df6542d1a48b data/c/tags/fluids/molten_steel.json

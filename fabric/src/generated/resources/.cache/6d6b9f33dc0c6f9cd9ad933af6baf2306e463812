@@ -1,4 +1,4 @@
-// 1.19.2	2023-12-25T20:20:48.5492941	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2024-01-01T11:06:17.6847287	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 94cfc4617ea3de3e60cec71b1437181535c502c4 assets\createbigcannons\models\block\built_up_steel_cannon_chamber.json
 fe6e01eaf074da16c3a8f3d91c7198c4b595a5be data\createbigcannons\tags\items\nugget_bronze.json
 24187d8d93679914d44542579bbe8c89b9bd265c assets\createbigcannons\blockstates\very_small_steel_cannon_layer.json
@@ -374,6 +374,7 @@ ab0dced0bc4555f16d8c8f9f84625b55de22d92d data\createbigcannons\loot_tables\block
 1374688ee723df58c59d30a0ca29a6e699a80ca2 assets\createbigcannons\models\block\cast_iron_autocannon_barrel_assembled.json
 48d11d14dbba10d2423b9c4b49abebbe9225a2bd assets\createbigcannons\models\item\unbored_very_small_steel_cannon_layer.json
 c1efc5a3dee1def9ccc3c4b538e04332fbd800ad assets\createbigcannons\models\item\cast_iron_quickfiring_breech.json
+7e3bfb16e703033ffcac083becd1f6244af3a195 data\create\tags\blocks\safe_nbt.json
 0a4d4d0587fa91517a5a0b7ef851c8aaffa952da assets\createbigcannons\models\item\wrought_iron_cannon_end.json
 8648063aa59317b39768a6164d5ea72aa4028877 assets\createbigcannons\blockstates\cannon_loader.json
 30f8197708dda0bd8c26a291c88c7fbe84be6327 assets\createbigcannons\models\item\autocannon_cartridge_sheet.json
