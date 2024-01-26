@@ -22,7 +22,7 @@ public class InspectResistanceToolItem extends Item {
 		Level level = ctx.getLevel();
 		if (!level.isClientSide && player != null && !IndexPlatform.isFakePlayer(player)) {
 			String key = "debug." + CreateBigCannons.MOD_ID + ".block_resistance";
-			double hardness = BlockHardnessHandler.getHardness(level.getBlockState(ctx.getClickedPos()));
+			double hardness = BlockHardnessHandler.getHardness(level.getBlockState(ctx.getClickedPos()), level, ctx.getClickedPos());
 			player.displayClientMessage(new TranslatableComponent(key, String.format("%.2f", hardness)), true);
 		}
 		return super.useOn(ctx);
