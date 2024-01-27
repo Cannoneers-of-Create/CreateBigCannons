@@ -22,6 +22,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,6 +58,9 @@ import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
+import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
 
 public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon {
@@ -269,9 +273,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		AutocannonMaterialProperties properties = this.cannonMaterial.properties();
+		EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> type = round.getEntityType(foundProjectile);
+		AutocannonProjectileProperties roundProperties = (AutocannonProjectileProperties) MunitionPropertiesHandler.getProperties(type);
 
 		float speed = properties.baseSpeed();
 		float spread = properties.baseSpread();
+		boolean canSquib = roundProperties == null || roundProperties.canSquib();
 
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		BlockPos currentPos = this.startPos.relative(this.initialOrientation);
@@ -286,8 +293,9 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					speed += properties.speedIncreasePerBarrel();
 				spread -= properties.spreadReductionPerBarrel();
 				spread = Math.max(spread, 0);
-				if (barrelTravelled > properties.maxBarrelLength()) {
+				if (canSquib && barrelTravelled > properties.maxBarrelLength()) {
 					StructureBlockInfo oldInfo = this.blocks.get(currentPos);
+					if (oldInfo == null) return;
 					behavior.tryLoadingItem(foundProjectile);
 					CompoundTag tag = this.presentBlockEntities.get(currentPos).saveWithFullMetadata();
 					tag.remove("x");
@@ -323,7 +331,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		boolean isTracer = CBCConfigs.SERVER.munitions.allProjectilesAreTracers.get() || round.isTracer(foundProjectile);
 
-		AbstractAutocannonProjectile projectile = round.getAutocannonProjectile(foundProjectile, level);
+		AbstractAutocannonProjectile<?> projectile = round.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {
 			projectile.setPos(spawnPos);
 			projectile.setChargePower(barrelTravelled);
@@ -333,7 +341,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			projectile.xRotO = projectile.getXRot();
 			projectile.yRotO = projectile.getYRot();
 			level.addFreshEntity(projectile);
-			recoilMagnitude += 0.5;
+			if (roundProperties != null) recoilMagnitude += roundProperties.addedRecoil();
 		}
 
 		recoilMagnitude *= CBCConfigs.SERVER.cannons.autocannonRecoilScale.getF();

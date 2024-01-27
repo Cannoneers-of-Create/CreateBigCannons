@@ -63,8 +63,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result, boolean stopped) {
-		if (projectile.getProperties().baseFuze()) return false;
+	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile<?> projectile, HitResult result, boolean stopped, boolean baseFuze) {
 		CompoundTag tag = stack.getOrCreateTag();
 		int damage = tag.contains("Damage") ? tag.getInt("Damage") : CBCConfigs.SERVER.munitions.impactFuzeDurability.get();
 		if (damage > 0 && !tag.contains("Activated")) {
@@ -79,7 +78,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
+	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile<?> projectile) {
 		CompoundTag tag = stack.getOrCreateTag();
 		if (!tag.contains("Activated")) return false;
 		if (!tag.contains("FuzeTimer")) return true;
@@ -90,7 +89,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) {
+	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile<?> projectile) {
 		return true;
 	}
 

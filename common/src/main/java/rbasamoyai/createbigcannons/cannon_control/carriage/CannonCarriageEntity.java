@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_control.carriage;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.FloatTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -44,7 +46,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.goggles.IHaveEntityGoggleInformation;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.ExtendsCannonMount;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.ItemCannon;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
@@ -57,7 +61,7 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
 
-public class CannonCarriageEntity extends Entity implements ControlPitchContraption {
+public class CannonCarriageEntity extends Entity implements ControlPitchContraption, IHaveEntityGoggleInformation {
 
 	private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
@@ -411,8 +415,11 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 		Direction dir = this.cannonContraption.getInitialOrientation();
 		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-		this.cannonContraption.prevPitch = flag ? this.xRotO : -this.xRotO;
-		this.cannonContraption.pitch = flag ? this.getXRot() : -this.getXRot();
+		float sgn = flag ? 1 : -1;
+		float d = -this.cannonContraption.maximumDepression();
+		float e = this.cannonContraption.maximumElevation();
+		this.cannonContraption.prevPitch = Mth.clamp(this.xRotO, d, e) * sgn;
+		this.cannonContraption.pitch = Mth.clamp(this.getXRot(), d, e) * sgn;
 		this.cannonContraption.prevYaw = this.yRotO;
 		this.cannonContraption.yaw = this.getYRot();
 	}
@@ -547,6 +554,12 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	@Override
 	public void onStall() {
+	}
+
+	@Override
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		ExtendsCannonMount.addCannonInfoToTooltip(tooltip, this.cannonContraption);
+		return true;
 	}
 
 }

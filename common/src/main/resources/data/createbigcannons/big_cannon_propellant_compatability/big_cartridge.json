@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "propellant": [
+    {
+      "type": "createbigcannons:big_cartridge",
+      "maximum_amount": 1
+    },
+    {
+      "type": "createbigcannons:powder_charge",
+      "maximum_amount": 0
+    }
+  ]
+}

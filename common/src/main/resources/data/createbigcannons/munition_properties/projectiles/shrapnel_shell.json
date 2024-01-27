@@ -1,0 +1,16 @@
+{
+  "entity_damage": 30.0,
+  "durability_mass": 8.0,
+  "renders_invulnerable": false,
+  "ignores_entity_armor": true,
+  "gravity": -0.05,
+  "drag": 0.99,
+  "added_charge_power": 0,
+  "minimum_charge_power": 1.0,
+  "can_squib": true,
+  "added_recoil": 1.0,
+  "base_fuze": false,
+  "shrapnel_entity_damage": 5.0,
+  "shrapnel_spread": 0.25,
+  "shrapnel_count": 50
+}

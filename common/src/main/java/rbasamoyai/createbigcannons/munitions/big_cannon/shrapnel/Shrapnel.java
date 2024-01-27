@@ -1,9 +1,14 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -19,17 +24,13 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.munitions.BaseProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
-import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
-import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-public class Shrapnel extends AbstractHurtingProjectile {
+public class Shrapnel extends AbstractHurtingProjectile implements PropertiesMunitionEntity<BaseProjectileProperties> {
 
 	private int age;
 	protected float damage;
@@ -37,7 +38,8 @@ public class Shrapnel extends AbstractHurtingProjectile {
 
 	public Shrapnel(EntityType<? extends Shrapnel> type, Level level) {
 		super(type, level);
-		this.mass = (float) this.getProperties().durabilityMass();
+		BaseProjectileProperties properties = this.getProperties();
+		this.mass = properties == null ? 0 : properties.durabilityMass();
 	}
 
 	@Override
@@ -94,8 +96,10 @@ public class Shrapnel extends AbstractHurtingProjectile {
 
 	@Override
 	protected void onHitEntity(EntityHitResult result) {
+		BaseProjectileProperties properties = this.getProperties();
+		if (properties == null || properties.ignoresEntityArmor()) result.getEntity().invulnerableTime = 0;
 		result.getEntity().hurt(this.getDamageSource(), this.damage);
-		if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) result.getEntity().invulnerableTime = 0;
+		if (properties == null || !properties.rendersInvulnerable()) result.getEntity().invulnerableTime = 0;
 	}
 
 	@Override
@@ -108,13 +112,24 @@ public class Shrapnel extends AbstractHurtingProjectile {
 
 	@Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) { return 0.125f; }
 
-	@Override protected float getInertia() { return (float) this.getProperties().drag(); }
+	@Override
+	protected float getInertia() {
+		BaseProjectileProperties properties = this.getProperties();
+		float baseDrag = properties == null ? 0.99f : (float) properties.drag();
+		float scalar = (float) DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier();
+		if (scalar <= 1) return Mth.lerp(scalar, 1, baseDrag);
+		float diff = baseDrag - 1;
+		return (float) Mth.clamp(baseDrag + diff * (scalar - 1), 0.9, baseDrag);
+	}
 
-	protected double getGravity() { return this.getProperties().gravity(); }
+	protected float getGravity() {
+		BaseProjectileProperties properties = this.getProperties();
+		float val = properties == null ? -0.05f : (float) properties.gravity();
+		float multiplier = (float) DimensionMunitionPropertiesHandler.getProperties(this.level).gravityMultiplier();
+		return val * multiplier;
+	}
 
 	@Override protected boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
-
-	public MunitionProperties getProperties() { return MunitionPropertiesHandler.getProperties(this); }
 
 	public static <T extends Shrapnel> List<T> spawnShrapnelBurst(Level level, EntityType<T> type, Vec3 position, Vec3 initialVelocity,
 																  int count, double spread, float damage) {

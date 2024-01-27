@@ -5,7 +5,7 @@ import net.minecraft.world.level.Level;
 
 public interface DropMortarMunition {
 
-	AbstractBigCannonProjectile getProjectile(Level level, ItemStack stack);
+	AbstractBigCannonProjectile<? extends DropMortarProjectileProperties> getProjectile(Level level, ItemStack stack);
 
 	static ItemStack getFuze(ItemStack stack) {
 		return ItemStack.of(stack.getOrCreateTag().getCompound("BlockEntityTag").getCompound("Fuze"));
