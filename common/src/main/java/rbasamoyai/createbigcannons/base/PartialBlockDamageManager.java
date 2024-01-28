@@ -81,7 +81,7 @@ public class PartialBlockDamageManager {
 				} else {
 					newSet.put(entry.getKey(), newProgress);
 				}
-				double hardnessRec = 1 / BlockHardnessHandler.getHardness(state);
+				double hardnessRec = 1 / BlockHardnessHandler.getHardness(state, level, pos);
 				int oldPart = (int) Math.floor(oldProgress * hardnessRec);
 				int newPart = (int) Math.floor(newProgress * hardnessRec);
 				if (oldPart - newPart > 0) level.destroyBlockProgress(-1, pos, newPart);
@@ -102,7 +102,7 @@ public class PartialBlockDamageManager {
 		int oldProgress = levelSet.getOrDefault(pos, 0);
 		levelSet.merge(pos, added, Integer::sum);
 
-		double hardnessRec = 1 / BlockHardnessHandler.getHardness(state);
+		double hardnessRec = 1 / BlockHardnessHandler.getHardness(state, level, pos);
 		int oldPart = (int) Math.floor(oldProgress * hardnessRec);
 		int newPart = (int) Math.floor(levelSet.get(pos) * hardnessRec);
 

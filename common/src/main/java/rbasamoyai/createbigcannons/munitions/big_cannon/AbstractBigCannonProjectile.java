@@ -58,7 +58,7 @@ public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileP
 		double bonus = 1 + Math.max(0, (mag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
 			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
 
-		double hardness = BlockHardnessHandler.getHardness(state) / bonus;
+		double hardness = BlockHardnessHandler.getHardness(state, this.level, result.getBlockPos()) / bonus;
 		this.setProjectileMass((float) Math.max(mass - hardness, 0));
 
 		if (!level.isClientSide()) this.level.destroyBlock(result.getBlockPos(), false);

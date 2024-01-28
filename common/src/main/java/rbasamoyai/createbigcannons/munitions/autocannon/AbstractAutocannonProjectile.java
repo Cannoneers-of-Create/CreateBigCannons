@@ -84,7 +84,7 @@ public abstract class AbstractAutocannonProjectile<T extends BaseProjectilePrope
 
 			Vec3 curVel = this.getDeltaMovement();
 			double curPom = this.getProjectileMass() * curVel.length();
-			double hardness = BlockHardnessHandler.getHardness(state) * 10;
+			double hardness = BlockHardnessHandler.getHardness(state, this.level, pos) * 10;
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
 
 			if (curPom > hardness) {

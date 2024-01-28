@@ -19,6 +19,7 @@
     "ArmorStandMixin",
     "BearingCannonDrillFinderMixin",
     "BeltTileEntityMixin",
+    "CopycatMixin",
     "EntityMixin",
     "FilterItemMixin",
     "PlayerMixin",
