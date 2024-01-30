@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
 
-public class DropMortarShellProjectile extends FuzedBigCannonProjectile {
+public class DropMortarShellProjectile extends FuzedBigCannonProjectile<DropMortarShellProperties> {
 
 	public DropMortarShellProjectile(EntityType<? extends DropMortarShellProjectile> type, Level level) {
 		super(type, level);
@@ -19,13 +19,13 @@ public class DropMortarShellProjectile extends FuzedBigCannonProjectile {
 
 	@Override
 	protected void detonate() {
-		float power = (float) this.getProperties().explosivePower();
+		DropMortarShellProperties properties = this.getProperties();
 		Vec3 pos = this.position();
 		this.level.explode(null, this.indirectArtilleryFire(), null, pos.x, pos.y, pos.z,
-			power, false,
+			properties == null ? 0 : properties.entityDamagingExplosionPower(), false,
 			Explosion.BlockInteraction.NONE);
 		this.level.explode(null, this.indirectArtilleryFire(), null, pos.x, pos.y, pos.z,
-			power * 0.25f, false,
+			properties == null ? 0 : properties.blockDamagingExplosionPower(), false,
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.discard();
 	}

@@ -12,6 +12,8 @@ import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -29,6 +31,14 @@ public class CBCClientForge {
 
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
+
+		CBCClientCommon.registerOverlays((id, overlay) -> {
+			// TODO: more flexible but concise method specified in common
+			OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, id, (gui, stack, partialTicks, width, height) -> {
+				overlay.renderOverlay(stack, partialTicks, width, height);
+			});
+		});
+
 		modEventBus.addListener(CBCClientForge::onClientSetup);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
 		modEventBus.addListener(CBCClientForge::onTextureStitchAtlasPre);

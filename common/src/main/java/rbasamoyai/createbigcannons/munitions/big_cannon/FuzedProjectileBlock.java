@@ -21,7 +21,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends ProjectileBlock implements IBE<T> {
+public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity, S extends FuzedBigCannonProjectileProperties>
+	extends ProjectileBlock<S> implements IBE<T> {
 
 	protected FuzedProjectileBlock(Properties properties) {
 		super(properties);
@@ -78,6 +79,9 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity> extends P
 		});
 	}
 
-	public boolean isBaseFuze() { return MunitionPropertiesHandler.getProperties(this.getAssociatedEntityType()).baseFuze(); }
+	public boolean isBaseFuze() {
+		FuzedBigCannonProjectileProperties properties = (FuzedBigCannonProjectileProperties) MunitionPropertiesHandler.getProperties(this.getAssociatedEntityType());
+		return properties == null || properties.baseFuze();
+	}
 
 }

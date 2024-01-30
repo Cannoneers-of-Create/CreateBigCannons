@@ -14,7 +14,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 
-public class MortarStoneProjectile extends AbstractBigCannonProjectile {
+public class MortarStoneProjectile extends AbstractBigCannonProjectile<MortarStoneProperties> {
 
     private boolean tooManyCharges = false;
 
@@ -41,8 +41,9 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
         super.onImpact(result, stopped);
         if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
+			MortarStoneProperties properties = this.getProperties();
             this.level.explode(null, this.indirectArtilleryFire(), null, hitLoc.x, hitLoc.y, hitLoc.z,
-                    (float) this.getProperties().explosivePower(), false,
+                    properties == null ? 4 : properties.explosionPower(), false,
                     CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
             this.tooManyCharges = true;
         }
@@ -67,7 +68,8 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 
     @Override
     public void setChargePower(float power) {
-        float maxCharges = CBCConfigs.SERVER.munitions.maxMortarStoneCharges.getF();
+		MortarStoneProperties properties = this.getProperties();
+        float maxCharges = properties == null ? 2f : properties.maxCharges();
         this.tooManyCharges = maxCharges >= 0 && power > maxCharges;
     }
 

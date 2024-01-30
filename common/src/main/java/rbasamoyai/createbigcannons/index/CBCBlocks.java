@@ -78,6 +78,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
@@ -85,6 +86,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell.SmokeShellBl
 import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlockItem;
+import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 public class CBCBlocks {
 
@@ -302,7 +304,6 @@ public class CBCBlocks {
 		.block("built_up_steel_cannon_barrel", p -> BigCannonTubeBlock.small(p, CBCBigCannonMaterials.STEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.builtUpCannonBarrel("steel", true))
-		.tag(CBCTags.CBCBlockTags.REDUCES_SPREAD)
 		.lang("Built-Up Steel Cannon Barrel")
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.BUILT_UP_STEEL_CANNON_BARREL)))
@@ -322,7 +323,6 @@ public class CBCBlocks {
 		.block("built_up_steel_cannon_chamber", p -> BigCannonTubeBlock.large(p, CBCBigCannonMaterials.STEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.builtUpCannonChamber("steel", true))
-		.tag(CBCTags.CBCBlockTags.THICK_TUBING)
 		.lang("Built-Up Steel Cannon Chamber")
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.BUILT_UP_STEEL_CANNON_CHAMBER)))
@@ -333,7 +333,6 @@ public class CBCBlocks {
 		.block("thick_steel_cannon_chamber", p -> BigCannonTubeBlock.veryLarge(p, CBCBigCannonMaterials.STEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.thickCannonChamber("steel", true))
-		.tag(CBCTags.CBCBlockTags.THICK_TUBING)
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.THICK_STEEL_CANNON_CHAMBER)))
 		.item(BigCannonBlockItem::new).build()
@@ -498,7 +497,6 @@ public class CBCBlocks {
 		.block("built_up_nethersteel_cannon_barrel", p -> BigCannonTubeBlock.small(p, CBCBigCannonMaterials.NETHERSTEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.builtUpCannonBarrel("nethersteel", true))
-		.tag(CBCTags.CBCBlockTags.REDUCES_SPREAD)
 		.lang("Built-Up Nethersteel Cannon Barrel")
 		.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.BUILT_UP_NETHERSTEEL_CANNON_BARREL)))
@@ -518,7 +516,6 @@ public class CBCBlocks {
 		.block("built_up_nethersteel_cannon_chamber", p -> BigCannonTubeBlock.large(p, CBCBigCannonMaterials.NETHERSTEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.builtUpCannonChamber("nethersteel", true))
-		.tag(CBCTags.CBCBlockTags.THICK_TUBING)
 		.lang("Built-Up Nethersteel Cannon Chamber")
 		.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.BUILT_UP_NETHERSTEEL_CANNON_CHAMBER)))
@@ -529,7 +526,6 @@ public class CBCBlocks {
 		.block("thick_nethersteel_cannon_chamber", p -> BigCannonTubeBlock.veryLarge(p, CBCBigCannonMaterials.NETHERSTEEL))
 		.transform(strongCannonBlock())
 		.transform(CBCBuilderTransformers.thickCannonChamber("nethersteel", true))
-		.tag(CBCTags.CBCBlockTags.THICK_TUBING)
 		.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 		.onRegister(CreateRegistrate.connectedTextures(() -> new BuiltUpCannonCTBehavior(CBCSpriteShifts.THICK_NETHERSTEEL_CANNON_CHAMBER)))
 		.item(BigCannonBlockItem::new).build()
@@ -960,6 +956,7 @@ public class CBCBlocks {
 		.transform(shell(MaterialColor.COLOR_RED))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/he_shell"))
+		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("High Explosive (HE) Shell")
 		.simpleItem()
@@ -970,6 +967,7 @@ public class CBCBlocks {
 		.transform(shell(MaterialColor.COLOR_GREEN))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
+		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.simpleItem()
 		.register();
@@ -1001,6 +999,7 @@ public class CBCBlocks {
 		.transform(shell(MaterialColor.COLOR_BLUE))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/ap_shell"))
+		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("Armor Piercing (AP) Shell")
 		.simpleItem()
@@ -1011,6 +1010,7 @@ public class CBCBlocks {
 		.transform(shell(MaterialColor.COLOR_ORANGE))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/fluid_shell"))
+		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot(f -> f.copy("FluidContent", "BlockEntityTag.FluidContent")))
 		.simpleItem()
 		.register();
@@ -1063,6 +1063,7 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.WOOL))
 		.transform(CBCBuilderTransformers.powderCharge())
 		.item(PowderChargeItem::new).build()
+		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, CBCMunitionPropertiesSerializers.BASE_BIG_CANNON_PROPELLANT))
 		.register();
 
 	public static final BlockEntry<BigCartridgeBlock> BIG_CARTRIDGE = REGISTRATE
@@ -1070,6 +1071,7 @@ public class CBCBlocks {
 		.initialProperties(() -> Blocks.TNT)
 		.properties(p -> p.sound(SoundType.METAL))
 		.transform(CBCBuilderTransformers.bigCartridge())
+		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, new BigCartridgeProperties.Serializer()))
 		.register();
 
 	//////// Crafting blocks ////////
