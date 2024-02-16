@@ -3,6 +3,8 @@ package rbasamoyai.createbigcannons.munitions.config;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
@@ -11,6 +13,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -74,6 +77,7 @@ public class BlockHardnessHandler {
 		TAGS_TO_EVALUATE.clear();
 	}
 
+	@Deprecated
 	public static double getHardness(BlockState state) {
 		Block block = state.getBlock();
 		if (BLOCK_MAP.containsKey(block)) return BLOCK_MAP.get(block);
@@ -81,4 +85,11 @@ public class BlockHardnessHandler {
 		return block.getExplosionResistance();
 	}
 
+	public static double getHardness(BlockState state, Level level, BlockPos pos) {
+		Block block = state.getBlock();
+		if (block instanceof PropertiesMimicTypeBlock m) block = m.createBigCannons$getActualBlock(state, level, pos);
+		if (BLOCK_MAP.containsKey(block)) return BLOCK_MAP.get(block);
+		if (TAG_MAP.containsKey(block)) return TAG_MAP.get(block);
+		return block.getExplosionResistance();
+	}
 }
