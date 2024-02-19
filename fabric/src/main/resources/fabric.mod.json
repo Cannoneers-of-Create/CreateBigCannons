@@ -27,6 +27,9 @@
     "jei_mod_plugin": [
       "rbasamoyai.createbigcannons.compat.jei.CBCJEI"
     ],
+    "rei_client": [
+      "rbasamoyai.createbigcannons.compat.rei.CBCREI"
+    ],
     "modmenu": [
       "rbasamoyai.createbigcannons.compat.modmenu.CBCModMenuCompat"
     ]
