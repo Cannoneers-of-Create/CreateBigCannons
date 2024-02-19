@@ -4,3 +4,6 @@ Create Big Cannons 0.5.3.c, with more minor fixes.
 
 Added:
 - Added REI compatibility
+Fixes:
+- Fixed drop mortar not dropping stored item if disassembled or broken before fired
+- Fixed drop mortar holding entire stack
