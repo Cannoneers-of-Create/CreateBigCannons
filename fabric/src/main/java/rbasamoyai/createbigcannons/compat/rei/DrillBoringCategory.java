@@ -98,8 +98,8 @@ public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlock
 	@Override
 	public void addWidgets(CBCDisplay<DrillBoringBlockRecipe> display, List<Widget> ingredients, Point origin) {
 		DrillBoringBlockRecipe recipe = display.getRecipe();
-		ingredients.add(basicSlot(21, 51, origin).markInput().entries(EntryIngredients.ofItemStacks(recipe.ingredients())));
-		ingredients.add(basicSlot(141, 51, origin).markOutput().entry(EntryStacks.of(recipe.getResultBlock())));
+		ingredients.add(basicSlot(21, 51, origin).markInput().entries(EntryIngredients.ofItemStacks(recipe.ingredients())).backgroundEnabled(true));
+		ingredients.add(basicSlot(141, 51, origin).markOutput().entry(EntryStacks.of(recipe.getResultBlock())).backgroundEnabled(true));
 	}
 
 }

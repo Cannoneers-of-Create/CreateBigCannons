@@ -151,8 +151,7 @@ public class CBCREI implements REIClientPlugin {
 		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getBigCartridgeFillingRecipe());
 		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getTracerRecipes());
 		for (CraftingRecipe r : munitionCraftingRecipes) {
-			Collection<Display> displays = registry.tryFillDisplay(r);
-			for (Display display : displays) {
+			for (Display display : registry.tryFillDisplay(r)) {
 				if (Objects.equals(display.getCategoryIdentifier(), BuiltinPlugin.CRAFTING)) {
 					registry.add(display, r);
 				}
@@ -165,12 +164,7 @@ public class CBCREI implements REIClientPlugin {
 		munitionDeployerRecipes.addAll(MunitionAssemblyRecipes.getBigCartridgeDeployerRecipe());
 		munitionDeployerRecipes.addAll(MunitionAssemblyRecipes.getTracerDeployerRecipes());
 		for (DeployerApplicationRecipe r : munitionDeployerRecipes) {
-			Collection<Display> displays = registry.tryFillDisplay(r);
-			for (Display display : displays) {
-				if (Objects.equals(display.getCategoryIdentifier(), DEPLOYING_TYPE)) {
-					registry.add(display, r);
-				}
-			}
+			registry.add(new CreateDisplay<>(r, DEPLOYING_TYPE));
 		}
 	}
 
