@@ -1,24 +1,6 @@
 Changelog
 
-Create Big Cannons 0.5.3.b, with more minor fixes.
+Create Big Cannons 0.5.3.c, with more minor fixes.
 
 Added:
-- Added minimum big cannon spread config value
-Changes:
-- Changed Machine Gun Round texture, forgot to add in 0.5.3.a
-- A few texture changes
-- Basin Foundry Lids can now be wrenched
-- Changed default big cannon propellant values
-- Changed Cannon Mount data to be more user-friendly, such as with ComputerCraft
-- Updated Russian translation
-Fixes:
-- Fixed Freecam mod unable to rotate when mounting autocannon
-- Fixed rotation range of cannons controlled by kinetics on Cannon Mount
-- Fixed crash on misfire
-- Fixed Cannon Mount yaw rotation direction
-- Fixed Drop Mortar interaction, preventing chamber loading
-- Fixed Cannon Welder not welding autocannons
-- Fixed schematic data for some CBC block entities
-- Fixed ParCool! camera animations not working when installed with Create Big Cannons
-- Fixed Shoulder Surfing Reloaded rendering problems when installed with Create Big Cannons
-- Fixed player model rotation when mounting autocannon
+- Added REI compatibility
