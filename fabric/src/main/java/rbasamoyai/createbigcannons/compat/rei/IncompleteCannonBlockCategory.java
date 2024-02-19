@@ -27,7 +27,7 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 	@Override
 	public void draw(IncompleteCannonBlockRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
 		Minecraft mc = Minecraft.getInstance();
-		AllGuiTextures.JEI_LONG_ARROW.render(stack, 54, 44);
+		AllGuiTextures.JEI_LONG_ARROW.render(stack, 54, 38);
 
 		int sz = recipe.ingredients().size();
 		int base = this.getDisplayWidth(null) / 2 - 12 * sz + 24;
@@ -44,11 +44,14 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 	public void addWidgets(CBCDisplay<IncompleteCannonBlockRecipe> display, List<Widget> ingredients, Point origin) {
 		IncompleteCannonBlockRecipe recipe = display.getRecipe();
 		List<ItemStack> recipeInds = recipe.ingredients();
-		int base = this.getDisplayWidth(null) / 2 - 12 * ingredients.size() + 16;
-		for (int i = 0; i < recipeInds.size(); ++i) {
-			ingredients.add(basicSlot(i == 0 ? 21 : base + 24 * i - 24, i == 0 ? 40 : 15, origin).markInput().entry(EntryStacks.of(recipeInds.get(i))));
+		int sz = recipeInds.size();
+		int base = this.getDisplayWidth(null) / 2 - 12 * sz + 16;
+		for (int i = 0; i < sz; ++i) {
+			int x = i == 0 ? 21 : base + 24 * i - 24;
+			int y = i == 0 ? 34 : 15;
+			ingredients.add(basicSlot(x, y, origin).markInput().entry(EntryStacks.of(recipeInds.get(i))).backgroundEnabled(true));
 		}
-		ingredients.add(basicSlot(141, 40, origin).markOutput().entry(EntryStacks.of(recipe.getResultBlock())));
+		ingredients.add(basicSlot(141, 34, origin).markOutput().entry(EntryStacks.of(recipe.getResultBlock())).backgroundEnabled(true));
 	}
 
 }

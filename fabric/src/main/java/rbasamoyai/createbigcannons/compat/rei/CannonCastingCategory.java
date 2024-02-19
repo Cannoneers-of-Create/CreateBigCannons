@@ -39,7 +39,10 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 	@Override
 	public void draw(CannonCastingRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
 		CBCGuiTextures.CANNON_CAST_SHADOW.render(stack, 40, 45);
-		this.cannonCast.withShape(recipe.shape()).render(stack, this.getDisplayWidth(null) / 2 - 15, 55, 0);
+		stack.pushPose();
+		stack.translate(this.getDisplayWidth(null) / 2 - 15, 55, 0);
+		this.cannonCast.withShape(recipe.shape()).render(stack, (int) mouseX, (int) mouseY, 0);
+		stack.popPose();
 		CBCGuiTextures.CASTING_ARROW.render(stack, 21, 47);
 		CBCGuiTextures.CASTING_ARROW_1.render(stack, 124, 27);
 
@@ -71,11 +74,11 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 		}
 		setFluidRenderRatio(inputSlot);
 		setFluidTooltip(inputSlot);
-		ingredients.add(inputSlot);
+		ingredients.add(inputSlot.backgroundEnabled(true));
 
-		ingredients.add(basicSlot(142, 62, origin).markOutput().entry(EntryStacks.of(output)));
+		ingredients.add(basicSlot(142, 62, origin).markOutput().entry(EntryStacks.of(output)).backgroundEnabled(true));
 
-		ingredients.add(basicSlot(80, 5, origin).entry(EntryStacks.of(catalyst.castMould())));
+		ingredients.add(basicSlot(80, 5, origin).entry(EntryStacks.of(catalyst.castMould())).backgroundEnabled(true));
 	}
 
 }

@@ -113,7 +113,14 @@ public class MunitionAssemblyRecipes {
 		ResourceLocation id = CreateBigCannons.resource(group + "." + CBCBlocks.BIG_CARTRIDGE.get().getDescriptionId());
 		NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(BigCartridgeBlockItem.getWithPower(0)),
 				Ingredient.of(CBCTags.CBCItemTags.NITROPOWDER));
-		return List.of(new ShapelessRecipe(id, group, BigCartridgeBlockItem.getWithPower(1), inputs));
+		ItemStack result = BigCartridgeBlockItem.getWithPower(1);
+		ListTag loreTag = new ListTag();
+		String loc = I18n.get("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_power");
+		loreTag.add(StringTag.valueOf("\"" + loc + "\""));
+		CompoundTag displayTag = new CompoundTag();
+		displayTag.put("Lore", loreTag);
+		result.getOrCreateTag().put("display", displayTag);
+		return List.of(new ShapelessRecipe(id, group, result, inputs));
 	}
 
 	public static List<CraftingRecipe> getTracerRecipes() {

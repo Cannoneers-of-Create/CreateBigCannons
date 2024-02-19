@@ -9,11 +9,22 @@ import com.simibubi.create.compat.rei.category.animations.AnimatedKinetics;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
+import me.shedaniel.math.Point;
+import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
+import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCGuiTextures;
+
+import java.util.List;
+import java.util.Set;
+
+import static com.simibubi.create.compat.rei.category.CreateRecipeCategory.basicSlot;
 
 public class BuiltUpHeatingCategory extends CBCBlockRecipeCategory<BuiltUpHeatingRecipe> {
 
@@ -28,7 +39,7 @@ public class BuiltUpHeatingCategory extends CBCBlockRecipeCategory<BuiltUpHeatin
 		AllGuiTextures.JEI_SHADOW.render(stack, 23, 55);
 		AllGuiTextures.JEI_SHADOW.render(stack, 99, 55);
 		AllGuiTextures.JEI_LIGHT.render(stack, 118, 65);
-		CBCGuiTextures.CANNON_BUILDING_ARROW.render(stack, 83, 34);
+		CBCGuiTextures.CANNON_BUILDING_ARROW.render(stack, 82, 34);
 
 		stack.pushPose();
 		stack.translate(33, 59, 0);
@@ -75,6 +86,22 @@ public class BuiltUpHeatingCategory extends CBCBlockRecipeCategory<BuiltUpHeatin
 			.scale(scale)
 			.render(stack);
 		stack.popPose();
+	}
+
+	@Override
+	public void addWidgets(CBCDisplay<BuiltUpHeatingRecipe> display, List<Widget> ingredients, Point origin) {
+		BuiltUpHeatingRecipe recipe = display.getRecipe();
+		Set<BlockRecipeIngredient> layers = recipe.layers();
+
+		int i = 0;
+		int width = this.getDisplayWidth(null);
+		int base = width / 2 - 11 * layers.size() + 1;
+
+		for (BlockRecipeIngredient layer : layers) {
+			ingredients.add(basicSlot(base + i * 22, 5, origin).markInput().entries(EntryIngredients.ofItemStacks(layer.getBlockItems())).backgroundEnabled(true));
+			++i;
+		}
+		ingredients.add(basicSlot(width / 2 - 10, 74, origin).markOutput().entry(EntryStacks.of(new ItemStack(recipe.getResultBlock()))).backgroundEnabled(true));
 	}
 
 }
