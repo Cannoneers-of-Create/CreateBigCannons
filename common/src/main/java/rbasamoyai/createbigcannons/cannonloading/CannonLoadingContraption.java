@@ -16,13 +16,16 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.base.PoleContraption;
@@ -39,6 +42,8 @@ public class CannonLoadingContraption extends PoleContraption {
 
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 	private static final BooleanProperty MOVING = CannonLoaderBlock.MOVING;
+
+	private boolean brokenDisassembly = false;
 
 	public CannonLoadingContraption() {
 	}
@@ -270,7 +275,15 @@ public class CannonLoadingContraption extends PoleContraption {
 			BlockPos blockPos = pos.subtract(entityAnchor);
 			StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
 			BlockEntity blockEntity1 = level.getBlockEntity(pos);
+			BlockState intersectState = level.getBlockState(pos);
 
+			if (this.brokenDisassembly && !intersectState.isAir() && blockInfo != null && !blockInfo.state.isAir()) {
+				BlockEntity contraptionBE = blockInfo.nbt == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state, blockInfo.nbt);
+				Block.dropResources(blockInfo.state, this.entity.level, pos, contraptionBE, null, ItemStack.EMPTY);
+				level.levelEvent(2001, pos, Block.getId(blockInfo.state));
+				level.gameEvent(this.entity, GameEvent.BLOCK_DESTROY, pos);
+				return true;
+			}
 			if (blockEntity1 instanceof IBigCannonBlockEntity cannon) {
 				return cannon.cannonBehavior().tryLoadingBlock(blockInfo);
 			}
@@ -299,6 +312,8 @@ public class CannonLoadingContraption extends PoleContraption {
 
 		return false;
 	}
+
+	public void setBrokenDisassembly() { this.brokenDisassembly = true; }
 
 	@Override
 	public void readNBT(Level level, CompoundTag tag, boolean spawnData) {
