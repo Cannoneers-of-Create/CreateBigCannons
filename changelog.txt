@@ -7,3 +7,4 @@ Added:
 Fixes:
 - Fixed drop mortar not dropping stored item if disassembled or broken before fired
 - Fixed drop mortar holding entire stack
+- Fixed glitch-loading, with toggle to re-enable it
