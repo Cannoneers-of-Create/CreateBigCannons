@@ -41,13 +41,42 @@ public class CBCChecks {
 	}
 
 	private static BlockMovementChecks.CheckResult attachedCheckCannonLoader(BlockState state, Level level, BlockPos pos, Direction attached) {
-		if (CBCBlocks.CANNON_LOADER.has(state)
-			|| AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
-			return BlockMovementChecks.CheckResult.of(state.getValue(BlockStateProperties.FACING).getAxis() == attached.getAxis());
+		BlockState rootState = level.getBlockState(pos.relative(attached));
+		state = getInnerCannonBlockState(level, pos, state);
+		rootState = getInnerCannonBlockState(level, pos.relative(attached), rootState);
+
+		if (CBCBlocks.CANNON_LOADER.has(state)) {
+			Direction facing = state.getValue(BlockStateProperties.FACING);
+			if (CBCBlocks.RAM_HEAD.has(rootState) || CBCBlocks.WORM_HEAD.has(rootState)) {
+				Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+				return BlockMovementChecks.CheckResult.of(facing == facing1 && facing == attached);
+			}
+			if (AllBlocks.PISTON_EXTENSION_POLE.has(rootState)) {
+				Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+				return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
+			}
 		}
-		if (CBCBlocks.WORM_HEAD.has(state)
-			|| CBCBlocks.RAM_HEAD.has(state)) {
-			return BlockMovementChecks.CheckResult.of(state.getValue(BlockStateProperties.FACING) == attached.getOpposite());
+		if (AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
+			Direction facing = state.getValue(BlockStateProperties.FACING);
+			if (CBCBlocks.RAM_HEAD.has(rootState) || CBCBlocks.WORM_HEAD.has(rootState)) {
+				Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+				return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing1 == attached);
+			}
+			if (CBCBlocks.CANNON_LOADER.has(rootState)) {
+				Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+				return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
+			}
+		}
+		if (CBCBlocks.WORM_HEAD.has(state) || CBCBlocks.RAM_HEAD.has(state)) {
+			Direction facing = state.getValue(BlockStateProperties.FACING);
+			if (CBCBlocks.CANNON_LOADER.has(rootState)) {
+				Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+				return BlockMovementChecks.CheckResult.of(facing == facing1 && facing == attached.getOpposite());
+			}
+			if (AllBlocks.PISTON_EXTENSION_POLE.has(rootState)) {
+				Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+				return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing == attached.getOpposite());
+			}
 		}
 
 		return BlockMovementChecks.CheckResult.PASS;
@@ -96,6 +125,14 @@ public class CBCChecks {
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::overridePushReactionCheck);
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::unmovableCannonMount);
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckAutocannons);
+	}
+
+	private static BlockState getInnerCannonBlockState(Level level, BlockPos pos, BlockState state) {
+		// TODO: move to IBigCannonBlockEntity
+		if (state.getBlock() instanceof BigCannonBlock && level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe) {
+			return cbe.cannonBehavior().block().state;
+		}
+		return state;
 	}
 
 }
