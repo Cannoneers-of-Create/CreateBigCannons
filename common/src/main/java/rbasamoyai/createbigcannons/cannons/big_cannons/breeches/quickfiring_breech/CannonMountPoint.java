@@ -85,7 +85,12 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 					loadProjectile(stack, munition, poce, bigCannon);
 					breech.setLoadingCooldown(getLoadingCooldown());
 				}
-				return BigCartridgeBlock.getPowerFromData(firstInfo) == 0 ? cartridge.getExtractedItem(firstInfo) : stack;
+				if (BigCartridgeBlock.getPowerFromData(firstInfo) == 0) {
+					stack.setCount(1);
+					return cartridge.getExtractedItem(firstInfo);
+				} else {
+					return stack;
+				}
 			}
 			if (!firstInfo.state.isAir()) return stack;
 			if (!simulate) {
