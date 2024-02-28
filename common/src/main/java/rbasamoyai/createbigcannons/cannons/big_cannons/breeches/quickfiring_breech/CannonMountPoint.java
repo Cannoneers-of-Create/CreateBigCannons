@@ -86,7 +86,7 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 					breech.setLoadingCooldown(getLoadingCooldown());
 				}
 				if (BigCartridgeBlock.getPowerFromData(firstInfo) == 0) {
-					stack.setCount(1);
+					if (simulate) stack.setCount(1);
 					return cartridge.getExtractedItem(firstInfo);
 				} else {
 					return stack;
