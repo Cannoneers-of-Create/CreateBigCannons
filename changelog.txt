@@ -1,6 +1,10 @@
 Changelog
 
+"Now, occasionally you're going to get stuck. It's nothing to get upset about. Don't go hurling your controller at the cat, because it might throw something back, and it'll only escalate, and then, well..."
+- Stephen Fry, LittleBigPlanet (2008)
+
 Create Big Cannons 0.5.3.c, with more minor fixes.
+Now supports Create Fabric 0.5.1.f.
 
 Added:
 - Added REI compatibility

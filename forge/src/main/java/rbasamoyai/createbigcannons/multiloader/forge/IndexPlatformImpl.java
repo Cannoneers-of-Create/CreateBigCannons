@@ -4,8 +4,6 @@ import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
-import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.kinetics.fan.processing.AllFanProcessingTypes;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -62,18 +60,6 @@ public class IndexPlatformImpl {
 
 	public static boolean isFakePlayer(Player player) {
 		return player instanceof FakePlayer;
-	}
-
-	public static boolean layeredCannonClockStackCheck(TransportedItemStack stack) {
-		if (stack.processedBy == AllFanProcessingTypes.BLASTING) {
-			stack.processedBy = AllFanProcessingTypes.NONE;
-			return true;
-		}
-		return false;
-	}
-
-	public static void layeredCannonClockStackCallback(TransportedItemStack stack) {
-		stack.processedBy = AllFanProcessingTypes.NONE;
 	}
 
 	public static AbstractCannonDrillBlockEntity makeDrill(BlockEntityType<?> type, BlockPos pos, BlockState state) {

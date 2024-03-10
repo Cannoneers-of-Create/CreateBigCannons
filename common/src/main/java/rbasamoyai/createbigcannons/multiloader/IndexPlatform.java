@@ -1,13 +1,15 @@
 package rbasamoyai.createbigcannons.multiloader;
 
+import java.util.function.Supplier;
+
 import com.mojang.blaze3d.platform.InputConstants;
-import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
+
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -37,15 +39,9 @@ import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
-import java.util.function.Supplier;
-
 public class IndexPlatform {
 
 	@ExpectPlatform public static boolean isFakePlayer(Player player) { throw new AssertionError(); }
-
-	// TODO: remove when Fabric updated to 0.5.1.e
-	@ExpectPlatform public static boolean layeredCannonClockStackCheck(TransportedItemStack stack) { throw new AssertionError(); }
-	@ExpectPlatform public static void layeredCannonClockStackCallback(TransportedItemStack stack) { throw new AssertionError(); }
 
 	@ExpectPlatform
 	public static AbstractCannonDrillBlockEntity makeDrill(BlockEntityType<?> type, BlockPos pos, BlockState state) {
