@@ -819,7 +819,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonLoaderBlock> CANNON_LOADER = REGISTRATE
 		.block("cannon_loader", CannonLoaderBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonLoader())
 		.transform(CBCDefaultStress.setImpact(4.0d))
@@ -847,7 +847,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonMountBlock> CANNON_MOUNT = REGISTRATE
 		.block("cannon_mount", CannonMountBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMount())
@@ -856,7 +856,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<YawControllerBlock> YAW_CONTROLLER = REGISTRATE
 		.block("yaw_controller", YawControllerBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.yawController())
 		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
@@ -864,7 +864,9 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonCarriageBlock> CANNON_CARRIAGE = REGISTRATE
 		.block("cannon_carriage", CannonCarriageBlock::new)
+		.initialProperties(() -> Blocks.OAK_PLANKS)
 		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(axeOnly())
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(CBCBuilderTransformers.cannonCarriage())
 		.register();
@@ -873,7 +875,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonDrillBlock> CANNON_DRILL = REGISTRATE
 		.block("cannon_drill", CannonDrillBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonDrill())
 		.transform(CBCDefaultStress.setImpact(8.0d))
@@ -889,7 +891,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonBuilderBlock> CANNON_BUILDER = REGISTRATE
 		.block("cannon_builder", CannonBuilderBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonBuilder())
 		.transform(CBCDefaultStress.setImpact(8.0d))
@@ -1027,6 +1029,7 @@ public class CBCBlocks {
 	public static final BlockEntry<GrapeshotBlock> BAG_OF_GRAPESHOT = REGISTRATE
 		.block("bag_of_grapeshot", GrapeshotBlock::new)
 		.initialProperties(Material.METAL, MaterialColor.WOOL)
+		.properties(p -> p.strength(0.8f))
 		.properties(p -> p.sound(SoundType.WOOL))
 		.transform(CBCBuilderTransformers.projectileLegacy("projectile/grapeshot"))
 		.lang("Bag of Grapeshot")
@@ -1181,6 +1184,12 @@ public class CBCBlocks {
 		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cbcMachine() {
+		return b -> b.initialProperties(() -> Blocks.GOLD_BLOCK)
+			.properties(p -> p.color(MaterialColor.PODZOL))
+			.properties(p -> p.sound(SoundType.NETHERITE_BLOCK));
+	}
+
 	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> shell(MaterialColor color) {
 		return b -> b.addLayer(() -> RenderType::solid)
 			.initialProperties(Material.EXPLOSIVE, color)
@@ -1196,6 +1205,10 @@ public class CBCBlocks {
 	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> axeOrPickaxe() {
 		return b -> b.tag(BlockTags.MINEABLE_WITH_AXE)
 			.tag(BlockTags.MINEABLE_WITH_PICKAXE);
+	}
+
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> axeOnly() {
+		return b -> b.tag(BlockTags.MINEABLE_WITH_AXE);
 	}
 
 	private static BlockEntry<CannonCastMouldBlock> castMould(String name, VoxelShape blockShape, Supplier<CannonCastShape> castShape) {
