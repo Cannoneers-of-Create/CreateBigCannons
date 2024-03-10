@@ -21,5 +21,6 @@ Fixes:
 - Fixed attachment checks
 - Fixed Cannon Loader not breaking other blocks when destroyed
 - Fixed Cannon Loader not assembling when new under certain conditions
+- Fixed block properties of some blocks
 
 *May have issues with contraption-modifying mods such as Create: Interactive
