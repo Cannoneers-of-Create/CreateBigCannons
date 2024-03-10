@@ -4,8 +4,14 @@ Create Big Cannons 0.5.3.c, with more minor fixes.
 
 Added:
 - Added REI compatibility
+- Added ability for some base Create contraptions to load cannons*
+ - Mechanical Piston, Gantry, and Rope Pulley
+- Added Cannon Loader breaking features similar to Mechanical Piston
 Fixes:
 - Fixed drop mortar not dropping stored item if disassembled or broken before fired
 - Fixed drop mortar holding entire stack
-- Fixed glitch-loading, with toggle to re-enable it
+- Fixed glitch-loading, with toggle to re-enable it*
 - Fixed attachment checks
+- Fixed Cannon Loader not breaking other blocks when destroyed
+
+*May have issues with contraption-modifying mods such as Create: Interactive

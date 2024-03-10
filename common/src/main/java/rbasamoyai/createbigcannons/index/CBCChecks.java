@@ -42,8 +42,8 @@ public class CBCChecks {
 
 	private static BlockMovementChecks.CheckResult attachedCheckCannonLoader(BlockState state, Level level, BlockPos pos, Direction attached) {
 		BlockState rootState = level.getBlockState(pos.relative(attached));
-		state = getInnerCannonBlockState(level, pos, state);
-		rootState = getInnerCannonBlockState(level, pos.relative(attached), rootState);
+		state = IBigCannonBlockEntity.getInnerCannonBlockState(level, pos, state);
+		rootState = IBigCannonBlockEntity.getInnerCannonBlockState(level, pos.relative(attached), rootState);
 
 		if (CBCBlocks.CANNON_LOADER.has(state)) {
 			Direction facing = state.getValue(BlockStateProperties.FACING);
@@ -63,6 +63,10 @@ public class CBCChecks {
 				return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing1 == attached);
 			}
 			if (CBCBlocks.CANNON_LOADER.has(rootState)) {
+				Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+				return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
+			}
+			if (AllBlocks.PISTON_EXTENSION_POLE.has(rootState)) {
 				Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
 				return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
 			}
@@ -125,14 +129,6 @@ public class CBCChecks {
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::overridePushReactionCheck);
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::unmovableCannonMount);
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckAutocannons);
-	}
-
-	private static BlockState getInnerCannonBlockState(Level level, BlockPos pos, BlockState state) {
-		// TODO: move to IBigCannonBlockEntity
-		if (state.getBlock() instanceof BigCannonBlock && level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe) {
-			return cbe.cannonBehavior().block().state;
-		}
-		return state;
 	}
 
 }

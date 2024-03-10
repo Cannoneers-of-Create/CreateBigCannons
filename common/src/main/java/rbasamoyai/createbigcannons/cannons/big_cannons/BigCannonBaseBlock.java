@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.cannons.big_cannons;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -37,6 +38,12 @@ public abstract class BigCannonBaseBlock extends DirectionalBlock implements Big
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (!level.isClientSide) this.onRemoveCannon(state, level, pos, newState, isMoving);
 		super.onRemove(state, level, pos, newState, isMoving);
+	}
+
+	@Override
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		if (!level.isClientSide) this.playerWillDestroyBigCannon(level, pos, state, player);
+		super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override

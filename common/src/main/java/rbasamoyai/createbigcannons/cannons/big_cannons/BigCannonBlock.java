@@ -119,6 +119,20 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 		}
 	}
 
+	default void playerWillDestroyBigCannon(Level level, BlockPos pos, BlockState state, Player player) {
+		BlockEntity be = level.getBlockEntity(pos);
+		if (be instanceof IBigCannonBlockEntity cbe) {
+			BlockState innerState = cbe.cannonBehavior().block().state;
+			cbe.cannonBehavior().removeBlock();
+			be.setChanged();
+			if (!innerState.isAir()) {
+				innerState.getBlock().playerWillDestroy(level, pos, innerState, player);
+				SoundType soundtype = innerState.getSoundType();
+				level.playSound(null, pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+			}
+		}
+	}
+
 	static void onPlace(Level level, BlockPos pos) {
 		BlockState state = level.getBlockState(pos);
 

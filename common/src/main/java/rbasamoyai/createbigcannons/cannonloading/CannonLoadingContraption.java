@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.cannonloading;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
@@ -16,18 +17,18 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
+
+import org.jetbrains.annotations.Nullable;
+
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
@@ -35,8 +36,9 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
+import rbasamoyai.createbigcannons.remix.ContraptionRemix;
 
-public class CannonLoadingContraption extends PoleContraption {
+public class CannonLoadingContraption extends PoleContraption implements CanLoadBigCannon {
 
 	protected LoadingHead loadingHead = LoadingHead.NOTHING;
 
@@ -44,6 +46,8 @@ public class CannonLoadingContraption extends PoleContraption {
 	private static final BooleanProperty MOVING = CannonLoaderBlock.MOVING;
 
 	private boolean brokenDisassembly = false;
+	private final Set<BlockPos> fragileBlocks = new HashSet<>();
+	private final Set<BlockPos> colliderBlocks = new HashSet<>();
 
 	public CannonLoadingContraption() {
 	}
@@ -119,6 +123,7 @@ public class CannonLoadingContraption extends PoleContraption {
 			poles.add(new StructureBlockInfo(end, nextBlock.setValue(FACING, direction), null));
 			extensionsInBack++;
 			nextBlock = level.getBlockState(end.relative(opposite));
+			nextBlock = ContraptionRemix.getInnerCannonState(level, nextBlock, end.relative(opposite), direction);
 
 			if (extensionsInFront + extensionsInBack > CannonLoaderBlock.maxAllowedLoaderLength()) {
 				throw AssemblyException.tooManyPistonPoles();
@@ -250,7 +255,7 @@ public class CannonLoadingContraption extends PoleContraption {
 
 	private boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos) {
 		Direction.Axis axis = this.orientation.getAxis();
-		if (state.getBlock() instanceof BigCannonPropellantBlock propellant) return propellant.canBeLoaded(state, axis);
+		if (state.getBlock() instanceof BigCannonPropellantBlock<?> propellant) return propellant.canBeLoaded(state, axis);
 		if (state.getBlock() instanceof ProjectileBlock) {
 			return state.getValue(FACING).getAxis() == axis;
 		}
@@ -262,33 +267,13 @@ public class CannonLoadingContraption extends PoleContraption {
 		BlockPos levelPos = this.anchor.relative(this.orientation, -2);
 		BlockState loaderState = level.getBlockState(levelPos);
 		BlockEntity blockEntity = level.getBlockEntity(levelPos);
-		if (!(blockEntity instanceof CannonLoaderBlockEntity clbe) || blockEntity.isRemoved()) return true;
+		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
 
 		if (pos.equals(levelPos)) {
 			level.setBlock(levelPos, loaderState.setValue(MOVING, false), 3 | 16);
 			return true;
 		}
-
-		if (clbe.movedContraption != null) {
-			BlockPos entityAnchor = new BlockPos(clbe.movedContraption.getAnchorVec().add(0.5d, 0.5d, 0.5d));
-
-			BlockPos blockPos = pos.subtract(entityAnchor);
-			StructureBlockInfo blockInfo = this.getBlocks().get(blockPos);
-			BlockEntity blockEntity1 = level.getBlockEntity(pos);
-			BlockState intersectState = level.getBlockState(pos);
-
-			if (this.brokenDisassembly && !intersectState.isAir() && blockInfo != null && !blockInfo.state.isAir()) {
-				BlockEntity contraptionBE = blockInfo.nbt == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state, blockInfo.nbt);
-				Block.dropResources(blockInfo.state, this.entity.level, pos, contraptionBE, null, ItemStack.EMPTY);
-				level.levelEvent(2001, pos, Block.getId(blockInfo.state));
-				level.gameEvent(this.entity, GameEvent.BLOCK_DESTROY, pos);
-				return true;
-			}
-			if (blockEntity1 instanceof IBigCannonBlockEntity cannon) {
-				return cannon.cannonBehavior().tryLoadingBlock(blockInfo);
-			}
-		}
-
+		// Loading code moved to ContraptionMixin and ContraptionRemix
 		return false;
 	}
 
@@ -300,20 +285,25 @@ public class CannonLoadingContraption extends PoleContraption {
 			level.setBlock(loaderPos, loaderState.setValue(MOVING, true), 66 | 16);
 			return true;
 		}
-
-		BlockEntity blockEntity = level.getBlockEntity(loaderPos);
-		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
-		BlockEntity blockEntity1 = level.getBlockEntity(pos);
-
-		if (blockEntity1 instanceof IBigCannonBlockEntity cannon) {
-			cannon.cannonBehavior().removeBlock();
-			return true;
-		}
-
+		// Loading code moved to ContraptionMixin and ContraptionRemix
 		return false;
 	}
 
-	public void setBrokenDisassembly() { this.brokenDisassembly = true; }
+	@Override public void createbigcannons$setBrokenDisassembly(boolean flag) { this.brokenDisassembly = flag; }
+
+	@Override public boolean createbigcannons$isBrokenDisassembly() { return this.brokenDisassembly; }
+
+	@Override public BlockPos createbigcannons$toLocalPos(BlockPos globalPos) { return this.toLocalPos(globalPos); }
+
+	@Override public Set<BlockPos> createbigcannons$getFragileBlockPositions() { return this.fragileBlocks; }
+
+    @Override public Set<BlockPos> createbigcannons$getCannonLoadingColliders() { return this.colliderBlocks; }
+
+    @Override
+	@Nullable
+	public Direction createbigcannons$getAssemblyMovementDirection(Level level) {
+		return this.orientation != null && this.retract ? this.orientation.getOpposite() : this.orientation;
+	}
 
 	@Override
 	public void readNBT(Level level, CompoundTag tag, boolean spawnData) {

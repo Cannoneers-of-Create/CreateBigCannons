@@ -13,10 +13,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
-
 import com.simibubi.create.content.contraptions.StructureTransform;
 
 import net.minecraft.core.BlockPos;
@@ -219,7 +217,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		BlockEntity be = level.getBlockEntity(pos);
 		if (!(be instanceof IBigCannonBlockEntity cannon)) return false;
 		BlockState containedState = cannon.cannonBehavior().block().state;
-		return CBCBlocks.RAM_HEAD.has(containedState) || CBCBlocks.WORM_HEAD.has(containedState) || AllBlocks.PISTON_EXTENSION_POLE.has(containedState);
+		return IBigCannonBlockEntity.isValidLoader(null, new StructureBlockInfo(BlockPos.ZERO, containedState, null));
 	}
 
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, BigCannonMaterial material) {

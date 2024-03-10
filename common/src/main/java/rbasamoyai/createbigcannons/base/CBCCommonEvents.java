@@ -25,11 +25,15 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler;
+import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialPropertiesHandler;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
@@ -55,6 +59,7 @@ import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
+import rbasamoyai.createbigcannons.remix.ContraptionRemix;
 
 public class CBCCommonEvents {
 
@@ -76,6 +81,7 @@ public class CBCCommonEvents {
 			return true;
 		}
 
+		state = ContraptionRemix.getInnerCannonState(level, state, pos, null);
 		if (AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
 			BlockPos drillPos = destroyPoleContraption(CBCBlocks.CANNON_DRILL_BIT.get(), CBCBlocks.CANNON_DRILL.get(),
 				CannonDrillBlock.maxAllowedDrillLength(), state, level, pos, player);
@@ -96,6 +102,9 @@ public class CBCCommonEvents {
 				if (level.getBlockEntity(pos) instanceof CannonBuilderBlockEntity builder) {
 					builder.onLengthBroken();
 				}
+			}
+			if (level instanceof Level llevel) {
+				if (destroyCannonLoader(state, llevel, pos, player)) return true;
 			}
 		}
 		return false;
@@ -136,6 +145,57 @@ public class CBCCommonEvents {
 			.filter(p -> !p.equals(pos) && !p.equals(baseCopy))
 			.forEach(p -> level.destroyBlock(p, !player.isCreative()));
 		return baseCopy;
+	}
+
+	public static boolean destroyCannonLoader(BlockState state, Level level, BlockPos pos, Player player) {
+		Direction.Axis axis = state.getValue(BlockStateProperties.FACING).getAxis();
+		Direction positive = Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE);
+		Direction dirFinal = null;
+
+		BlockPos headPos = null;
+		BlockState headState = null;
+		BlockPos basePos = null;
+		int LIMIT = CannonLoaderBlock.maxAllowedLoaderLength();
+
+		for (int mod : new int[]{1, -1}) {
+			for (int offs = mod; mod * offs < LIMIT; offs += mod) {
+				BlockPos pos1 = pos.relative(positive, offs);
+				BlockState currentState = ContraptionRemix.getInnerCannonState(level, level.getBlockState(pos1), pos1, positive);
+
+				if (AllBlocks.PISTON_EXTENSION_POLE.has(currentState) && axis == currentState.getValue(BlockStateProperties.FACING).getAxis()) {
+					continue;
+				}
+				if (CannonLoaderBlock.isLoaderHead(currentState) && axis == currentState.getValue(BlockStateProperties.FACING).getAxis()) {
+					headPos = pos1;
+					headState = currentState;
+				}
+				if (CBCBlocks.CANNON_LOADER.has(currentState) && axis == currentState.getValue(BlockStateProperties.FACING).getAxis()) {
+					basePos = pos1;
+					dirFinal = currentState.getValue(BlockStateProperties.FACING);
+				}
+				break;
+			}
+		}
+		if (headPos == null || basePos == null) return false;
+		final BlockPos baseCopy = basePos.immutable();
+		final BlockPos headCopy = headPos.immutable();
+		BlockPos.betweenClosedStream(headPos, basePos)
+			.filter(p -> !p.equals(pos) && !p.equals(baseCopy))
+			.forEach(p -> {
+				boolean drop = !player.isCreative() && !p.equals(headCopy);
+				if (!ContraptionRemix.removeCannonContentsOnBreak(level, p, drop))
+					level.destroyBlock(p, drop);
+			});
+
+		if (level.getBlockEntity(basePos) instanceof CannonLoaderBlockEntity loader) loader.onLengthBroken();
+		BlockPos aheadPos = basePos.relative(dirFinal);
+		boolean cancel = pos.equals(aheadPos);
+		if (level.getBlockEntity(aheadPos) instanceof IBigCannonBlockEntity cbe && !cancel) {
+			cbe.cannonBehavior().loadBlock(new StructureBlockInfo(BlockPos.ZERO, headState, null));
+		} else {
+			level.setBlock(aheadPos, headState, 3);
+		}
+		return cancel;
 	}
 
 	public static void onLoadLevel(LevelAccessor level) {
