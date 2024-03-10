@@ -77,7 +77,7 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 				if (this.shouldFall()) {
 					this.setInGround(false);
 				} else if (!this.level.isClientSide) {
-					this.inGroundTime++;
+					if (!this.canLingerInGround()) this.inGroundTime++;
 
 					if (this.inGroundTime == 400) {
 						this.discard();
@@ -396,6 +396,8 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 	public void setChargePower(float power) {}
 
 	@Override public boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
+
+	public boolean canLingerInGround() { return false; }
 
 	public enum BounceType {
 		DEFLECT,
