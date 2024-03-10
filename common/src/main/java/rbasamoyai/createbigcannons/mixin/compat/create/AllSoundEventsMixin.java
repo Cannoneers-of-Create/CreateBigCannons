@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.mixin;
+package rbasamoyai.createbigcannons.mixin.compat.create;
 
 import com.simibubi.create.AllSoundEvents;
 import org.spongepowered.asm.mixin.Mixin;

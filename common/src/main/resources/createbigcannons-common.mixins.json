@@ -15,13 +15,13 @@
     "client.PonderRegistryMixin"
   ],
   "mixins": [
-    "AllSoundEventsMixin",
+    "compat.create.AllSoundEventsMixin",
     "ArmorStandMixin",
-    "BearingCannonDrillFinderMixin",
-    "BeltTileEntityMixin",
-    "CopycatMixin",
+    "compat.create.MechanicalBearingBlockEntityMixin",
+    "compat.create.BeltTileEntityMixin",
+    "compat.create.CopycatBlockMixin",
     "EntityMixin",
-    "FilterItemMixin",
+    "compat.create.FilterItemMixin",
     "PlayerMixin",
     "ServerEntityMixin",
     "compat.create.AbstractContraptionEntityMixin",

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.mixin;
+package rbasamoyai.createbigcannons.mixin.compat.create;
 
 import java.util.List;
 
@@ -19,14 +19,14 @@ import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntit
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillingContraption;
 
 @Mixin(MechanicalBearingBlockEntity.class)
-public abstract class BearingCannonDrillFinderMixin extends GeneratingKineticBlockEntity {
+public abstract class MechanicalBearingBlockEntityMixin extends GeneratingKineticBlockEntity {
 
 	@Shadow
 	protected ControlledContraptionEntity movedContraption;
 	@Shadow
 	protected boolean running;
 
-	public BearingCannonDrillFinderMixin(BlockEntityType<? extends MechanicalBearingBlockEntity> type, BlockPos pos, BlockState state) {
+	MechanicalBearingBlockEntityMixin(BlockEntityType<? extends MechanicalBearingBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
