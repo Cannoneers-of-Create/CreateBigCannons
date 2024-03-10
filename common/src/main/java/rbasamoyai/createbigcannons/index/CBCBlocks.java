@@ -822,7 +822,7 @@ public class CBCBlocks {
 		.properties(p -> p.color(MaterialColor.PODZOL))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonLoader())
-		.transform(CBCDefaultStress.setImpact(8.0d))
+		.transform(CBCDefaultStress.setImpact(4.0d))
 		.register();
 
 	public static final BlockEntry<RamHeadBlock> RAM_HEAD = REGISTRATE

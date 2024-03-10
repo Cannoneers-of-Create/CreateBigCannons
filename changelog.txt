@@ -12,11 +12,14 @@ Added:
  - Mechanical Piston, Gantry, and Rope Pulley
 - Added Cannon Loader breaking features similar to Mechanical Piston
 - Added block hardness compatibility with Create's Copycat blocks
+Changes:
+- Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
 Fixes:
 - Fixed drop mortar not dropping stored item if disassembled or broken before fired
 - Fixed drop mortar holding entire stack
 - Fixed glitch-loading, with toggle to re-enable it*
 - Fixed attachment checks
 - Fixed Cannon Loader not breaking other blocks when destroyed
+- Fixed Cannon Loader not assembling when new under certain conditions
 
 *May have issues with contraption-modifying mods such as Create: Interactive
