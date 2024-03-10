@@ -6,12 +6,10 @@ import com.simibubi.create.content.contraptions.ControlledContraptionEntity;
 import com.simibubi.create.content.contraptions.DirectionalExtenderScrollOptionSlot;
 import com.simibubi.create.content.contraptions.piston.LinearActuatorBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
-import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -106,16 +104,10 @@ public abstract class PoleMoverBlockEntity extends LinearActuatorBlockEntity {
 
 	@Override
 	public float getMovementSpeed() {
-		float movementSpeed = Mth.clamp(convertToLinear(this.getSpeed()), -0.49f, 0.49f);
-		if (this.level.isClientSide) {
-			movementSpeed *= ServerSpeedProvider.get();
-		}
+		float movementSpeed = super.getMovementSpeed();
 		Direction facing = this.getBlockState().getValue(FACING);
 		int movementModifier = facing.getAxisDirection().getStep() * (facing.getAxis() == Direction.Axis.Z ? -1 : 1);
-		movementSpeed = movementSpeed * -movementModifier + this.clientOffsetDiff * 0.5f;
-
-		movementSpeed = Mth.clamp(movementSpeed, 0 - this.offset, this.extensionLength - this.offset);
-		return movementSpeed;
+		return movementSpeed * -movementModifier;
 	}
 
 	@Override
