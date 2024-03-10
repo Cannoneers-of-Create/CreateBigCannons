@@ -23,7 +23,20 @@
     "EntityMixin",
     "FilterItemMixin",
     "PlayerMixin",
-    "ServerEntityMixin"
+    "ServerEntityMixin",
+    "compat.create.AbstractContraptionEntityMixin",
+    "compat.create.ChassisBlockEntityMixin",
+    "compat.create.ContraptionColliderMixin",
+    "compat.create.ContraptionMixin",
+    "compat.create.GantryContraptionMixin",
+    "compat.create.LinearActuatorBlockEntityMixin",
+    "compat.create.MechanicalPistonBlockMixin",
+    "compat.create.PistonContraptionMixin",
+    "compat.create.PulleyBlockEntityMixin",
+    "compat.create.PulleyBlockMixin",
+    "compat.create.PulleyContraptionMixin",
+    "compat.create.RopeBlockBaseMixin",
+    "compat.create.TranslatingContraptionMixin"
   ],
   "injectors": {
     "defaultRequire": 1
