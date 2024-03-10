@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.mixin;
+package rbasamoyai.createbigcannons.mixin.compat.create;
 
 import javax.annotation.Nonnull;
 
@@ -13,9 +13,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.munitions.config.PropertiesMimicTypeBlock;
 
 @Mixin(CopycatBlock.class)
-public abstract class CopycatMixin implements PropertiesMimicTypeBlock {
+public abstract class CopycatBlockMixin implements PropertiesMimicTypeBlock {
 	@Override
-	public @Nonnull Block createBigCannons$getActualBlock(BlockState state, Level level, BlockPos pos) {
+	@Nonnull
+	public Block createbigcannons$getActualBlock(BlockState state, Level level, BlockPos pos) {
 		return CopycatBlock.getMaterial(level, pos).getBlock();
 	}
+
 }

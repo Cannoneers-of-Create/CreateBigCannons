@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public interface PropertiesMimicTypeBlock {
-	@Nonnull
-	Block createBigCannons$getActualBlock(BlockState state, Level level, BlockPos pos);
+
+	@Nonnull Block createbigcannons$getActualBlock(BlockState state, Level level, BlockPos pos);
+
 }

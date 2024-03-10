@@ -87,7 +87,7 @@ public class BlockHardnessHandler {
 
 	public static double getHardness(BlockState state, Level level, BlockPos pos) {
 		Block block = state.getBlock();
-		if (block instanceof PropertiesMimicTypeBlock m) block = m.createBigCannons$getActualBlock(state, level, pos);
+		if (block instanceof PropertiesMimicTypeBlock m) block = m.createbigcannons$getActualBlock(state, level, pos);
 		if (BLOCK_MAP.containsKey(block)) return BLOCK_MAP.get(block);
 		if (TAG_MAP.containsKey(block)) return TAG_MAP.get(block);
 		return block.getExplosionResistance();
