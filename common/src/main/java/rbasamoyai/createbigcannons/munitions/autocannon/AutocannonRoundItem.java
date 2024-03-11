@@ -6,8 +6,10 @@ import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.utility.Lang;
 
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -37,6 +39,16 @@ public abstract class AutocannonRoundItem extends Item {
 		if (stack.getOrCreateTag().getBoolean("Tracer")) {
 			Lang.builder("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);
 		}
+	}
+
+	@Override
+	public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
+		if (category == CreativeModeTab.TAB_SEARCH && this.allowdedIn(category)) {
+			items.add(new ItemStack(this));
+			items.add(this.getCreativeTabCartridgeItem());
+			return;
+		}
+		super.fillItemCategory(category, items);
 	}
 
 }
