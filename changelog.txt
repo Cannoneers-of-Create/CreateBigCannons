@@ -30,5 +30,6 @@ Fixes:
 - Fixed munitions not dropping when breaking cannon blocks
 - Fixed preferred placement for screw breech when next to kinetic blocks
 - Fixed Mechanical Arm taking entire stack when loading quick-firing breech
+- Fixed Fluid Stack serializer crashing other mods
 
 *May have issues with contraption-modifying mods such as Create: Interactive

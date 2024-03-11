@@ -567,7 +567,7 @@ public class CBCBuilderTransformers {
 					.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
 					.apply(additionalCopyData.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
 						.copy("Fuze", "BlockEntityTag.Fuze")
-						.copy("id", "BlockEntityTag.id"))))));
+						.copy("id", "BlockEntityTag.entityId"))))));
 	}
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot() {
