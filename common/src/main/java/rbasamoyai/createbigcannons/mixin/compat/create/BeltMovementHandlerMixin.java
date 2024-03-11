@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 
 @Mixin(BeltMovementHandler.class)
-public class BeltTileEntityMixin {
+public class BeltMovementHandlerMixin {
 
 	@Inject(at = @At("HEAD"), method = "canBeTransported", remap = false, cancellable = true)
 	private static void createbigcannons$canBeTransported(Entity entity, CallbackInfoReturnable<Boolean> cir) {
