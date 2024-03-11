@@ -16,6 +16,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -122,7 +123,12 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 	default void playerWillDestroyBigCannon(Level level, BlockPos pos, BlockState state, Player player) {
 		BlockEntity be = level.getBlockEntity(pos);
 		if (be instanceof IBigCannonBlockEntity cbe) {
-			BlockState innerState = cbe.cannonBehavior().block().state;
+			StructureBlockInfo info = cbe.cannonBehavior().block();
+			BlockState innerState = info.state;
+			ItemStack stack = innerState.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info) : ItemStack.EMPTY;
+			if (!stack.isEmpty()) {
+				Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
+			}
 			cbe.cannonBehavior().removeBlock();
 			be.setChanged();
 			if (!innerState.isAir()) {
