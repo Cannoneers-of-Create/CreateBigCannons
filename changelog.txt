@@ -12,6 +12,7 @@ Added:
  - Mechanical Piston, Gantry, and Rope Pulley
 - Added Cannon Loader breaking features similar to Mechanical Piston
 - Added block hardness compatibility with Create's Copycat blocks
+- Added default autocannon rounds to search tab
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
 Fixes:
