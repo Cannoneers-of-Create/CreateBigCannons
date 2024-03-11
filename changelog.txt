@@ -29,5 +29,6 @@ Fixes:
 - Fixed primed Timed Fuze and Delayed Impact Fuze despawning before detonating
 - Fixed munitions not dropping when breaking cannon blocks
 - Fixed preferred placement for screw breech when next to kinetic blocks
+- Fixed Mechanical Arm taking entire stack when loading quick-firing breech
 
 *May have issues with contraption-modifying mods such as Create: Interactive
