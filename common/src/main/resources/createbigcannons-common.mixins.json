@@ -18,7 +18,7 @@
     "compat.create.AllSoundEventsMixin",
     "ArmorStandMixin",
     "compat.create.MechanicalBearingBlockEntityMixin",
-    "compat.create.BeltTileEntityMixin",
+    "compat.create.BeltMovementHandlerMixin",
     "compat.create.CopycatBlockMixin",
     "EntityMixin",
     "compat.create.FilterItemMixin",

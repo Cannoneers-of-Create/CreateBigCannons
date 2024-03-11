@@ -40,7 +40,7 @@ public abstract class AbstractContraptionEntityMixin extends Entity {
 
 	AbstractContraptionEntityMixin(EntityType<?> entityType, Level level) { super(entityType, level); }
 
-	@Inject(method = "tick", at = @At("TAIL"), remap = false)
+	@Inject(method = "tick", at = @At("TAIL"))
 	private void createbigcannons$tick(CallbackInfo ci) {
 		if (this.contraption instanceof HasFragileContraption hfc && this.contraption instanceof CanLoadBigCannon loader) {
 			Map<BlockPos, BlockState> encountered = hfc.createbigcannons$getEncounteredBlocks();
