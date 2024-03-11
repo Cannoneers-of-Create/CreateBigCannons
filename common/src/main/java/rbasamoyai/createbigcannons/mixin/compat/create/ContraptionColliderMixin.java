@@ -14,6 +14,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannonloading.CanLoadBigCannon;
+import rbasamoyai.createbigcannons.crafting.builtup.CannonBuildingContraption;
+import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.remix.ContraptionRemix;
 
 @Mixin(ContraptionCollider.class)
@@ -36,6 +39,16 @@ public abstract class ContraptionColliderMixin {
 				return ContraptionRemix.isLoadingCannon(level, colliderPos, movementDirection, collidedState, blockInfo) && !specialCollider;
 			StructureBlockInfo offsetInfo = contraption.getBlocks().get(offsetPos);
 			return !specialCollider || offsetInfo.state.getBlock() == collidedState.getBlock();
+		} else if (contraption instanceof CannonBuildingContraption builder) {
+			if (!builder.isActivated()) return false;
+			boolean flag = contraption.entity == null && builder.getBlocks().containsKey(pos.relative(movementDirection));
+			if (level.getBlockEntity(colliderPos) instanceof LayeredBigCannonBlockEntity layered) {
+				if (CBCBlocks.CANNON_BUILDER_HEAD.has(blockInfo.state))
+					return contraption.entity == null && builder.getBlocks().containsKey(pos);
+				if (contraption.presentBlockEntities.get(pos) instanceof LayeredBigCannonBlockEntity layered1)
+					return flag || !layered.isCollidingWith(blockInfo, layered1, movementDirection);
+			}
+			return !flag;
 		}
 		return false;
 	}
