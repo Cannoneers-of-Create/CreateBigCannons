@@ -396,6 +396,8 @@ public class CannonBuildingContraption extends PoleContraption {
 		return CBCBlocks.CANNON_BUILDER_HEAD.has(state);
 	}
 
+	public boolean isActivated() { return this.isActivated; }
+
 	@Override
 	public CompoundTag writeNBT(boolean spawnPacket) {
 		CompoundTag tag = super.writeNBT(spawnPacket);
