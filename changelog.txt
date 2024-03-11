@@ -17,6 +17,7 @@ Added:
 - Added assembly connectivity between Yaw Controller and Cannon Mount
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
+- Reduced default blob count of Fluid Shell
 Fixes:
 - Fixed drop mortar not dropping stored item if disassembled or broken before fired
 - Fixed drop mortar holding entire stack
