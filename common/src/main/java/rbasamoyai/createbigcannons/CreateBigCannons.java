@@ -16,7 +16,6 @@ import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCChecks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
-import rbasamoyai.createbigcannons.index.CBCDataSerializers;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -57,8 +56,6 @@ public class CreateBigCannons {
 	static {
 		REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
 			.andThen(TooltipModifier.mapNull(KineticStats.create(item))));
-
-		CBCDataSerializers.registerSerializers();
 	}
 
 	public static ResourceLocation resource(String path) {

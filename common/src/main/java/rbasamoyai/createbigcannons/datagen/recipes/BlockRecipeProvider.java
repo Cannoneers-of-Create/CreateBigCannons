@@ -21,24 +21,24 @@ public abstract class BlockRecipeProvider implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
-	
+
 	private final DataGenerator gen;
 	protected final String modid;
 	protected ResourceLocation info;
-	
+
 	public BlockRecipeProvider(String modid, DataGenerator gen) {
 		this.modid = modid;
 		this.gen = gen;
 	}
-	
+
 	protected static final List<BlockRecipeProvider> GENERATORS = new ArrayList<>();
-	
+
 	public static void registerAll(DataGenerator gen) {
 		GENERATORS.add(new CannonCastRecipeProvider(gen));
 		GENERATORS.add(new BuiltUpHeatingRecipeProvider(gen));
 		GENERATORS.add(new DrillBoringRecipeProvider(gen));
-		
-		gen.addProvider(new DataProvider() {	
+
+		gen.addProvider(new DataProvider() {
 			@Override
 			public void run(HashCache cache) throws IOException {
 				GENERATORS.forEach(gen -> {
@@ -49,14 +49,14 @@ public abstract class BlockRecipeProvider implements DataProvider {
 					}
 				});
 			}
-			
+
 			@Override
 			public String getName() {
 				return "Create Big Cannons Block Recipes";
 			}
 		});
 	}
-	
+
 	@Override
 	public void run(HashCache cache) throws IOException {
 		Path path = this.gen.getOutputFolder();
@@ -69,7 +69,7 @@ public abstract class BlockRecipeProvider implements DataProvider {
 			}
 		});
 	}
-	
+
 	private static void saveRecipe(HashCache cache, JsonObject obj, Path path) {
 		try {
 			String s = GSON.toJson(obj);
@@ -77,7 +77,7 @@ public abstract class BlockRecipeProvider implements DataProvider {
 			if (!Objects.equals(cache.getHash(path), s1) || !Files.exists(path)) {
 				Files.createDirectories(path.getParent());
 				BufferedWriter writer = Files.newBufferedWriter(path);
-				
+
 				try {
 					writer.write(s);
 				} catch (Throwable throwable) {
@@ -90,23 +90,23 @@ public abstract class BlockRecipeProvider implements DataProvider {
 					}
 					throw throwable;
 				}
-				
+
 				if (writer != null) {
 					writer.close();
 				}
 			}
-			
+
 			cache.putNew(path, s1);
 		} catch (IOException e) {
 			LOGGER.error("Couldn't save block recipe {}", path, e);
 		}
 	}
-	
+
 	protected abstract void registerRecipes(Consumer<FinishedBlockRecipe> cons);
-	
+
 	@Override
 	public String getName() {
-		return "Create Big Cannons Block Recipes: " + (this.info == null ? "unknown id" : this.info);
+		return "Create Big Cannons Block Recipes: " + (this.info == null ? "unknown entityId" : this.info);
 	}
 
 }
