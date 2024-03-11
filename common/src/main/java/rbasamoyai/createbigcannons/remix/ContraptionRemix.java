@@ -46,7 +46,11 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.material.PushReaction;
+
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
 import rbasamoyai.createbigcannons.cannonloading.CanLoadBigCannon;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
@@ -94,6 +98,35 @@ public class ContraptionRemix {
 			}
 		}
 		return false;
+	}
+
+	public static void customChecks(Contraption contraption, Level level, BlockPos pos, BlockState state,
+									@Nullable Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited,
+									CallbackInfoReturnable<Boolean> cir) {
+		if (CBCBlocks.CANNON_MOUNT.has(state)) {
+			Direction mountFacing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+			BlockPos assemblyPos = pos.above(2);
+			if (level.isOutsideBuildHeight(assemblyPos)) return;
+			BlockState state1 = level.getBlockState(assemblyPos);
+			if (!(state1.getBlock() instanceof CannonContraptionProviderBlock provider)) return;
+			Direction facing = provider.getFacing(state1);
+			if (facing.getAxis().isVertical() || facing.getAxis() == mountFacing.getAxis()) {
+				frontier.add(assemblyPos);
+				return;
+			}
+		}
+		if (CBCBlocks.CANNON_CARRIAGE.has(state)) {
+			Direction mountFacing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+			BlockPos assemblyPos = pos.above();
+			if (level.isOutsideBuildHeight(assemblyPos)) return;
+			BlockState state1 = level.getBlockState(assemblyPos);
+			if (!(state1.getBlock() instanceof CannonContraptionProviderBlock provider)) return;
+			Direction facing = provider.getFacing(state1);
+			if (facing.getAxis().isVertical() || facing.getAxis() == mountFacing.getAxis()) {
+				frontier.add(assemblyPos);
+				return;
+			}
+		}
 	}
 
 	public static <T extends Contraption & CanLoadBigCannon> void simpleMarking(T contraption, Level level, BlockPos pos,

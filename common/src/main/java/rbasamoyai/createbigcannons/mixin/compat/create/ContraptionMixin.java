@@ -90,6 +90,16 @@ public abstract class ContraptionMixin {
 	}
 
 	@Inject(method = "moveBlock",
+			at = @At(value = "INVOKE", target = "Lcom/tterrag/registrate/util/entry/BlockEntry;has(Lnet/minecraft/world/level/block/state/BlockState;)Z", ordinal = 0, shift = At.Shift.BEFORE),
+			locals = LocalCapture.CAPTURE_FAILHARD,
+			remap = false)
+	private void createbigcannons$moveBlock$customChecks(Level level, Direction forcedDirection, Queue<BlockPos> frontier,
+														 Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir,
+														 BlockPos pos, BlockState state) {
+		ContraptionRemix.customChecks(this.self, level, pos, state, forcedDirection, frontier, visited, cir);
+	}
+
+	@Inject(method = "moveBlock",
 			at = @At(value = "INVOKE", target = "Ljava/util/Set;contains(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.BEFORE),
 			locals = LocalCapture.CAPTURE_FAILHARD,
 			remap = false)

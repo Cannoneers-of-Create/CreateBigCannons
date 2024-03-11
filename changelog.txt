@@ -13,6 +13,8 @@ Added:
 - Added Cannon Loader breaking features similar to Mechanical Piston
 - Added block hardness compatibility with Create's Copycat blocks
 - Added default autocannon rounds to search tab
+- Added assembly connectivity between Cannon Mount/Cannon Carriage and unassembled cannons
+- Added assembly connectivity between Yaw Controller and Cannon Mount
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
 Fixes:
