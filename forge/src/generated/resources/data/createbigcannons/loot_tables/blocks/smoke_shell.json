@@ -23,7 +23,7 @@
                 },
                 {
                   "source": "id",
-                  "target": "BlockEntityTag.id",
+                  "target": "BlockEntityTag.entityId",
                   "op": "replace"
                 }
               ]

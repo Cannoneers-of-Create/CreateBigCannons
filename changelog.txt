@@ -39,5 +39,6 @@ Fixes:
 - Fixed preferred placement for screw breech when next to kinetic blocks
 - Fixed Mechanical Arm taking entire stack when loading quick-firing breech
 - Fixed Fluid Stack serializer crashing other mods
+- Fixed Fluid tags for certain recipes
 
 *May have issues with contraption-modifying mods such as Create: Interactive
