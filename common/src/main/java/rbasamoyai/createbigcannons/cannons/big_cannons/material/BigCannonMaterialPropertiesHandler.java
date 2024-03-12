@@ -39,7 +39,7 @@ public class BigCannonMaterialPropertiesHandler {
 				if (!el.isJsonObject()) continue;
 				try {
 					BigCannonMaterial material = BigCannonMaterial.fromName(entry.getKey());
-					PROPERTIES.put(material, BigCannonMaterialProperties.fromJson(el.getAsJsonObject()));
+					PROPERTIES.put(material, BigCannonMaterialProperties.fromJson(entry.getKey(), el.getAsJsonObject()));
 				} catch (Exception e) {
 
 				}

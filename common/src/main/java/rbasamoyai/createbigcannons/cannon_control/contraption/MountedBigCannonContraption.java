@@ -279,7 +279,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		int count = 0;
 		int maxSafeCharges = this.getMaxSafeCharges();
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
-		float spreadSub = CBCConfigs.SERVER.cannons.barrelSpreadReduction.getF();
+		float spreadSub = this.cannonMaterial.properties().spreadReductionPerBarrel();
 		boolean emptyNoProjectile = false;
 
 		PropellantContext propelCtx = new PropellantContext();
@@ -288,7 +288,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		AbstractBigCannonProjectile<?> projectile = null;
 		BlockPos assemblyPos = null;
 
-		float minimumSpread = CBCConfigs.SERVER.cannons.minimumBigCannonSpread.getF();
+		float minimumSpread = this.cannonMaterial.properties().minimumSpread();
 
 		while (this.presentBlockEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
 			BigCannonBehavior behavior = cbe.cannonBehavior();
@@ -356,6 +356,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					return;
 				}
 				this.consumeBlock(behavior, currentPos);
+				if (cannonInfo.state.is(CBCTags.CBCBlockTags.REDUCES_SPREAD)) {
+					propelCtx.spread = Math.max(propelCtx.spread - spreadSub, minimumSpread);
+				}
 				if (projBlock.isComplete(projectileBlocks, this.initialOrientation)) {
 					projectile = projBlock.getProjectile(level, projectileBlocks);
 					propelCtx.chargesUsed += projectile.addedChargePower();
