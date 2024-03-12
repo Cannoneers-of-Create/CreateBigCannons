@@ -454,6 +454,7 @@ public class CBCBuilderTransformers {
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Power", "Power"))));
 			})
 			.item(BigCartridgeBlockItem::new)
+			.tag(CBCItems.modTag("big_cannon_cartridges"))
 			.model((c, p) -> {
 				p.withExistingParent(c.getName(), emptyLoc)
 					.override().model(p.getExistingFile(filledLoc)).predicate(CreateBigCannons.resource("big_cartridge_filled"), 1).end();

@@ -17,6 +17,17 @@ Added:
 - Added assembly connectivity between Yaw Controller and Cannon Mount
 - Added minimum spread option to big cannon materials
 - Added spread reduction option to big cannon materials
+- Added tags for various Create Big Cannons munitions items
+ - #createbigcannons:fuzes
+ - #createbigcannons:autocannon_ammo_containers
+ - #createbigcannons:autocannon_cartridges
+ - #createbigcannons:autocannon_rounds
+ - #createbigcannons:spent_autocannon_casings
+ - #createbigcannons:big_cannon_projectiles
+ - #createbigcannons:big_cannon_propellant
+  - Includes:
+   - #createbigcannons:big_cannon_cartridges
+   - #createbigcannons:big_cannon_propellant_bags
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
 - Reduced default blob count of Fluid Shell
