@@ -950,7 +950,9 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/solid_shot"))
-		.simpleItem()
+		.item()
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<HEShellBlock> HE_SHELL = REGISTRATE
@@ -961,7 +963,9 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("High Explosive (HE) Shell")
-		.simpleItem()
+		.item()
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<ShrapnelShellBlock> SHRAPNEL_SHELL = REGISTRATE
@@ -971,7 +975,9 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
-		.simpleItem()
+		.item()
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<APShotBlock> AP_SHOT = REGISTRATE
@@ -980,7 +986,9 @@ public class CBCBlocks {
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/ap_shot"))
 		.lang("Armor Piercing (AP) Shot")
-		.simpleItem()
+		.item()
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<TrafficConeBlock> TRAFFIC_CONE = REGISTRATE
@@ -993,6 +1001,7 @@ public class CBCBlocks {
 		.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/traffic_cone"))))
 		.item(TrafficConeBlockItem::new)
 		.initialProperties(() -> new Item.Properties().rarity(Rarity.EPIC))
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
 		.build()
 		.register();
 
@@ -1004,7 +1013,9 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("Armor Piercing (AP) Shell")
-		.simpleItem()
+		.item()
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<FluidShellBlock> FLUID_SHELL = REGISTRATE
@@ -1014,7 +1025,9 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.projectile("projectile/fluid_shell"))
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot(f -> f.copy("FluidContent", "BlockEntityTag.FluidContent")))
-		.simpleItem()
+		.item()
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<SmokeShellBlock> SMOKE_SHELL = REGISTRATE
@@ -1023,7 +1036,9 @@ public class CBCBlocks {
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/smoke_shell"))
 		.loot(CBCBuilderTransformers.shellLoot())
-		.simpleItem()
+		.item()
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<GrapeshotBlock> BAG_OF_GRAPESHOT = REGISTRATE
@@ -1033,14 +1048,18 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.WOOL))
 		.transform(CBCBuilderTransformers.projectileLegacy("projectile/grapeshot"))
 		.lang("Bag of Grapeshot")
-		.simpleItem()
+		.item()
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<MortarStoneBlock> MORTAR_STONE = REGISTRATE
 		.block("mortar_stone", MortarStoneBlock::new)
 		.initialProperties(SharedProperties::stone)
 		.transform(CBCBuilderTransformers.projectileLegacy("projectile/mortar_stone"))
-		.item(MortarStoneItem::new).build()
+		.item(MortarStoneItem::new)
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<Block> MORTAR_STONE_PROJECTILE = REGISTRATE
@@ -1057,7 +1076,9 @@ public class CBCBlocks {
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.dropMortarShell())
 		.loot(CBCBuilderTransformers.shellLoot())
-		.simpleItem()
+		.item()
+		.tag(CBCItems.modTag("big_cannon_projectiles"))
+		.build()
 		.register();
 
 	public static final BlockEntry<PowderChargeBlock> POWDER_CHARGE = REGISTRATE
@@ -1065,7 +1086,9 @@ public class CBCBlocks {
 		.initialProperties(() -> Blocks.TNT)
 		.properties(p -> p.sound(SoundType.WOOL))
 		.transform(CBCBuilderTransformers.powderCharge())
-		.item(PowderChargeItem::new).build()
+		.item(PowderChargeItem::new)
+		.tag(CBCItems.modTag("big_cannon_propellant_bags"))
+		.build()
 		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, CBCMunitionPropertiesSerializers.BASE_BIG_CANNON_PROPELLANT))
 		.register();
 

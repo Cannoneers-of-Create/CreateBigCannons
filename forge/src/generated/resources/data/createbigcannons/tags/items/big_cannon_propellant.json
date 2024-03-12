@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#createbigcannons:big_cannon_propellant_bags",
+      "required": false
+    },
+    {
+      "id": "#createbigcannons:big_cannon_cartridges",
+      "required": false
+    }
+  ]
+}

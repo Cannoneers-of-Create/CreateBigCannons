@@ -36,10 +36,18 @@ public class CBCItems {
 		REGISTRATE.creativeModeTab(() -> ModGroup.GROUP);
 	}
 
-	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new).register();
-	public static final ItemEntry<TimedFuzeItem> TIMED_FUZE = REGISTRATE.item("timed_fuze", TimedFuzeItem::new).register();
-	public static final ItemEntry<ProximityFuzeItem> PROXIMITY_FUZE = REGISTRATE.item("proximity_fuze", ProximityFuzeItem::new).register();
-	public static final ItemEntry<DelayedImpactFuzeItem> DELAYED_IMPACT_FUZE = REGISTRATE.item("delayed_impact_fuze", DelayedImpactFuzeItem::new).register();
+	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new)
+		.tag(modTag("fuzes"))
+		.register();
+	public static final ItemEntry<TimedFuzeItem> TIMED_FUZE = REGISTRATE.item("timed_fuze", TimedFuzeItem::new)
+		.tag(modTag("fuzes"))
+		.register();
+	public static final ItemEntry<ProximityFuzeItem> PROXIMITY_FUZE = REGISTRATE.item("proximity_fuze", ProximityFuzeItem::new)
+		.tag(modTag("fuzes"))
+		.register();
+	public static final ItemEntry<DelayedImpactFuzeItem> DELAYED_IMPACT_FUZE = REGISTRATE.item("delayed_impact_fuze", DelayedImpactFuzeItem::new)
+		.tag(modTag("fuzes"))
+		.register();
 
 	public static final ItemEntry<Item>
 		CAST_IRON_SLIDING_BREECHBLOCK = REGISTRATE.item("cast_iron_sliding_breechblock", Item::new)
@@ -105,6 +113,7 @@ public class CBCItems {
 		AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
 
 	EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
+		.tag(modTag("spent_autocannon_casings"))
 		.model((c, p) -> {})
 		.register(),
 
@@ -126,7 +135,9 @@ public class CBCItems {
 	HARDENED_NITRO = REGISTRATE.item("hardened_nitro", Item::new).register(),
 	NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.CBCItemTags.NITROPOWDER).register(),
 
-	EMPTY_MACHINE_GUN_ROUND = REGISTRATE.item("empty_machine_gun_round", Item::new).register(),
+	EMPTY_MACHINE_GUN_ROUND = REGISTRATE.item("empty_machine_gun_round", Item::new)
+		.tag(modTag("spent_autocannon_casings"))
+		.register(),
 
 	TRACER_TIP = REGISTRATE.item("tracer_tip", Item::new).register();
 
@@ -160,25 +171,30 @@ public class CBCItems {
 
 	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE
 		.item("autocannon_cartridge", AutocannonCartridgeItem::new)
+		.tag(modTag("autocannon_cartridges"))
 		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<APAutocannonRoundItem> AP_AUTOCANNON_ROUND = REGISTRATE
 		.item("ap_autocannon_round", APAutocannonRoundItem::new)
 		.lang("Armor Piercing (AP) Autocannon Round")
+		.tag(modTag("autocannon_rounds"))
 		.register();
 
 	public static final ItemEntry<FlakAutocannonRoundItem> FLAK_AUTOCANNON_ROUND = REGISTRATE
 		.item("flak_autocannon_round", FlakAutocannonRoundItem::new)
+		.tag(modTag("autocannon_rounds"))
 		.register();
 
 	public static final ItemEntry<MachineGunRoundItem> MACHINE_GUN_ROUND = REGISTRATE
 		.item("machine_gun_round", MachineGunRoundItem::new)
+		.tag(modTag("autocannon_cartridges"))
 		.register();
 
 	public static final ItemEntry<AutocannonAmmoContainerItem> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
 		.item("autocannon_ammo_container", AutocannonAmmoContainerItem::new)
 		.properties(p -> p.stacksTo(1))
+		.tag(modTag("autocannon_ammo_containers"))
 		.model((c, p) -> {})
 		.register();
 
@@ -221,8 +237,9 @@ public class CBCItems {
 	public static void register() {
 	}
 
-	private static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registry.ITEM_REGISTRY, loc); }
+	public static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registry.ITEM_REGISTRY, loc); }
 	private static TagKey<Item> forgeTag(String loc) { return tag(new ResourceLocation("forge", loc)); }
 	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
+	public static TagKey<Item> modTag(String loc) { return tag(CreateBigCannons.resource(loc)); }
 
 }
