@@ -15,9 +15,16 @@ Added:
 - Added default autocannon rounds to search tab
 - Added assembly connectivity between Cannon Mount/Cannon Carriage and unassembled cannons
 - Added assembly connectivity between Yaw Controller and Cannon Mount
+- Added minimum spread option to big cannon materials
+- Added spread reduction option to big cannon materials
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
 - Reduced default blob count of Fluid Shell
+- Changed minimum spread of cannons, varying by material strength
+- Changed "max_safe_charges" big cannon config option to "max_safe_propellant_stress"
+ - The old field still works, but a warning will be printed in the game log highlighting any deprecated files.
+- Changed "squib_ratio_barrels" and "squib_ratio_propellant" to "minimum_velocity_per_barrel"
+ - The old fields still work, but a warning will be printed in the game log highlighting any deprecated files.
 Fixes:
 - Fixed drop mortar not dropping stored item if disassembled or broken before fired
 - Fixed drop mortar holding entire stack
