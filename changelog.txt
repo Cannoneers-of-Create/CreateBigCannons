@@ -36,6 +36,8 @@ Changes:
  - The old field still works, but a warning will be printed in the game log highlighting any deprecated files.
 - Changed "squib_ratio_barrels" and "squib_ratio_propellant" to "minimum_velocity_per_barrel"
  - The old fields still work, but a warning will be printed in the game log highlighting any deprecated files.
+- Changed minimum timing for Timed Fuze from 20 ticks (1 second) to 1 tick, reduced maximum time from 25s 15t to 24s 15t
+- Changed minimum timing for Delayed Impact Fuze from 20 ticks (1 second) to 1 tick, reduced maximum time from 6s to 5s
 Fixes:
 - Fixed drop mortar not dropping stored item if disassembled or broken before fired
 - Fixed drop mortar holding entire stack
