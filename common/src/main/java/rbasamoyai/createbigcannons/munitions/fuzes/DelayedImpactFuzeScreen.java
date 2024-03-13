@@ -23,15 +23,15 @@ public class DelayedImpactFuzeScreen extends AbstractFuzeScreen<DelayedImpactFuz
 				.withRange(0, 100)
 				.calling(state -> {
 					this.lastUpdated = 0;
-					int time = 20 + state;
+					int time = state + 1;
 					int seconds = time / 20;
 					int ticks = time - seconds * 20;
 					this.setValue.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
 				})
-				.setState(Mth.clamp(this.menu.getValue() - 20, 0, 100));
+				.setState(Mth.clamp(this.menu.getValue() - 1, 0, 100));
 	}
 
-	@Override public int getUpdateState() { return 20 + this.setValue.getState(); }
+	@Override public int getUpdateState() { return this.setValue.getState() + 1; }
 
 	@Override
 	protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {
