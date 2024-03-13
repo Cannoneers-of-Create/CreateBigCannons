@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonloading;
+package rbasamoyai.createbigcannons.cannon_loading;
 
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.data.SpecialBlockStateGen;

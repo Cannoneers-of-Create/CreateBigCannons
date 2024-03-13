@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannonloading;
+package rbasamoyai.createbigcannons.cannon_loading;
 
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 

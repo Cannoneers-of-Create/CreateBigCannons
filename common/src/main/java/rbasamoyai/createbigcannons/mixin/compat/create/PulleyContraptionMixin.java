@@ -14,7 +14,7 @@ import net.minecraft.world.level.Level;
 
 import org.spongepowered.asm.mixin.Unique;
 
-import rbasamoyai.createbigcannons.cannonloading.CanLoadBigCannon;
+import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.base;
+package rbasamoyai.createbigcannons;
 
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -30,8 +30,8 @@ import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntity;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler;
