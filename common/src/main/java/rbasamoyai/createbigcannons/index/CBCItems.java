@@ -18,8 +18,8 @@ import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.Autocanno
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
-import rbasamoyai.createbigcannons.manualloading.RamRodItem;
-import rbasamoyai.createbigcannons.manualloading.WormItem;
+import rbasamoyai.createbigcannons.manual_loading.RamRodItem;
+import rbasamoyai.createbigcannons.manual_loading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunRoundItem;

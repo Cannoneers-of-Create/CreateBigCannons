@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import rbasamoyai.createbigcannons.cannonloading.CanLoadBigCannon;
+import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 
 import java.util.Map;

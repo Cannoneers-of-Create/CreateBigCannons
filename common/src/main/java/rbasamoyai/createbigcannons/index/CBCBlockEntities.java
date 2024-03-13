@@ -13,7 +13,7 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBloc
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerInstance;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEntity;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntity;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechInstance;

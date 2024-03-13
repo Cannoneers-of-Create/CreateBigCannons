@@ -36,7 +36,7 @@ import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockItem;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockItem;
