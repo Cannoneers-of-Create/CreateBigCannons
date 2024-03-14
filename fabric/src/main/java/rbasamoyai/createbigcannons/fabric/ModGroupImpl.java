@@ -22,6 +22,6 @@ public class ModGroupImpl {
 		return FabricItemGroup.builder();
 	}
 
-	public static void useModTab(ResourceKey<CreativeModeTab> key) { CreateBigCannons.REGISTRATE.useCreativeTab(key); }
+	public static void useModTab(ResourceKey<CreativeModeTab> key) { CreateBigCannons.REGISTRATE.setCreativeTab(key); }
 
 }

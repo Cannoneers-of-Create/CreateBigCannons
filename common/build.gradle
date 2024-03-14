@@ -13,6 +13,8 @@ repositories {
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
     maven { url = "https://mvn.devos.one/snapshots/" }
     // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
+	maven { url = "https://mvn.devos.one/releases" } // Porting Lib Releases
+	maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge config api port
     maven { url = "https://cursemaven.com" } // Forge Config API Port
     maven { url = "https://maven.cafeteria.dev/releases" } // Fake Player API
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
