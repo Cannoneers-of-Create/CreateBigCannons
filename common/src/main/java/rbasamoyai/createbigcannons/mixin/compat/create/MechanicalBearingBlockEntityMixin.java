@@ -30,7 +30,7 @@ public abstract class MechanicalBearingBlockEntityMixin extends GeneratingKineti
 		super(type, pos, state);
 	}
 
-	@Inject(at = @At("HEAD"), method = "tick", remap = false)
+	@Inject(method = "tick", at = @At("HEAD"), remap = false)
 	public void createbigcannons$tick(CallbackInfo ci) {
 		if (this.level.isClientSide || !this.running || this.movedContraption == null) return;
 		List<ControlledContraptionEntity> contraptions = this.level.getEntitiesOfClass(ControlledContraptionEntity.class, this.movedContraption.getBoundingBox().inflate(2), e -> !e.equals(this.movedContraption));
