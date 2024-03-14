@@ -16,6 +16,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
+import com.simibubi.create.content.kinetics.fan.processing.AllFanProcessingTypes;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.Iterate;
@@ -55,7 +56,6 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBigCannonBlockEntity, WandActionable {
 
@@ -127,8 +127,8 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		//if (this.clockStack.processedBy == FanProcessing.Type.BLASTING) {
 		//	this.clockStack.processedBy = FanProcessing.Type.NONE;
 		if (!this.getLevel().isClientSide) {
-			if (IndexPlatform.layeredCannonClockStackCheck(this.clockStack)) {
-				IndexPlatform.layeredCannonClockStackCallback(this.clockStack);
+			if (this.clockStack.processedBy == AllFanProcessingTypes.BLASTING) {
+				this.clockStack.processedBy = AllFanProcessingTypes.NONE;
 				this.clockStack.processingTime = -1;
 				++this.completionProgress;
 				this.sendData();
