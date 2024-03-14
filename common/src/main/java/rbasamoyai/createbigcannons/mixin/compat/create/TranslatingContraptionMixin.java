@@ -28,9 +28,10 @@ import java.util.Set;
 @Mixin(TranslatingContraption.class)
 public abstract class TranslatingContraptionMixin extends Contraption {
 
-	@ModifyExpressionValue(method = "createColliders", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/shapes/VoxelShape;isEmpty()Z", ordinal = 1), remap = false)
-	private boolean createbigcannons$createColliders$0(boolean original, Level world, Direction movementDirection,
-													 @Local StructureBlockInfo info, @Local BlockPos offsetPos) {
+	@ModifyExpressionValue(method = "createColliders",
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/shapes/VoxelShape;isEmpty()Z", ordinal = 0))
+	private boolean createbigcannons$createColliders$0(boolean original, Level level, Direction movementDirection,
+													   @Local StructureBlockInfo info, @Local BlockPos offsetPos) {
 		if (original) return true;
 		if (!(this instanceof CanLoadBigCannon)) return false;
 		StructureBlockInfo offsetInfo = this.blocks.get(offsetPos);
@@ -42,7 +43,7 @@ public abstract class TranslatingContraptionMixin extends Contraption {
 	}
 
 	@Inject(method = "createColliders", at = @At("TAIL"), remap = false, cancellable = true)
-	private void createbigcannons$createColliders$1(Level world, Direction movementDirection, CallbackInfoReturnable<Set<BlockPos>> cir) {
+	private void createbigcannons$createColliders$1(Level level, Direction movementDirection, CallbackInfoReturnable<Set<BlockPos>> cir) {
 		if (!(this instanceof CanLoadBigCannon loader)) return;
 		Set<BlockPos> original = cir.getReturnValue();
 		original.addAll(loader.createbigcannons$getCannonLoadingColliders());

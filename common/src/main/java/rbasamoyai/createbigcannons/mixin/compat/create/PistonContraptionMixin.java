@@ -81,8 +81,7 @@ public abstract class PistonContraptionMixin extends TranslatingContraption impl
 	}
 
 	@Redirect(method = "collectExtensions",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"),
-		remap = false)
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
 	private BlockState createbigcannons$collectExtensions$1(Level instance, BlockPos pos, @Local Direction direction, @Local(ordinal = 0) BlockPos posArg) {
 		BlockState state = instance.getBlockState(pos);
 		return pos.equals(posArg) ? state : ContraptionRemix.getInnerCannonState(instance, state, pos, direction);

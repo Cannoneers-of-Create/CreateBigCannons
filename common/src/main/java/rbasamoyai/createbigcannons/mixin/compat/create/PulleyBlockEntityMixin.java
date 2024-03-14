@@ -50,8 +50,7 @@ public abstract class PulleyBlockEntityMixin extends LinearActuatorBlockEntity {
 	}
 
 	@Redirect(method = "removeRopes",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"),
-			remap = false)
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
 	private boolean createbigcannons$removeRopes(Level instance, BlockPos pos, BlockState newState, int flags, @Local BlockState oldState) {
 		if (oldState.getBlock() instanceof BigCannonBlock cBlock
 			&& cBlock.getFacing(oldState).getAxis().isVertical()
@@ -63,17 +62,17 @@ public abstract class PulleyBlockEntityMixin extends LinearActuatorBlockEntity {
 		return instance.setBlock(pos, newState, flags);
 	}
 
-	@Redirect(method = "disassemble", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;destroyBlock(Lnet/minecraft/core/BlockPos;Z)Z", ordinal = 0), remap = false)
+	@Redirect(method = "disassemble", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;destroyBlock(Lnet/minecraft/core/BlockPos;Z)Z", ordinal = 0))
 	private boolean createbigcannons$disassemble$0(Level instance, BlockPos pos, boolean dropBlock) {
 		return !isLoadingCannon(instance, pos, AllBlocks.PULLEY_MAGNET.getDefaultState()) && instance.destroyBlock(pos, dropBlock);
 	}
 
-	@Redirect(method = "disassemble", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;destroyBlock(Lnet/minecraft/core/BlockPos;Z)Z", ordinal = 1), remap = false)
+	@Redirect(method = "disassemble", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;destroyBlock(Lnet/minecraft/core/BlockPos;Z)Z", ordinal = 1))
 	private boolean createbigcannons$disassemble$1(Level instance, BlockPos pos, boolean dropBlock) {
 		return !isLoadingCannon(instance, pos, AllBlocks.ROPE.getDefaultState()) && instance.destroyBlock(pos, dropBlock);
 	}
 
-	@Redirect(method = "disassemble", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"), remap = false)
+	@Redirect(method = "disassemble", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
 	private boolean createbigcannons$disassemble$2(Level instance, BlockPos pos, BlockState state, int flag) {
 		if (isLoadingCannon(instance, pos, state)) {
 			BlockEntity be = instance.getBlockEntity(pos);

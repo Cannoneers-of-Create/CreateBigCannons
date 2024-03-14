@@ -39,5 +39,7 @@ dependencies {
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
 	modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 
+	annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixinextras_version}")) // MixinExtras
+
 	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-common") { transitive = false } // Ritchie's Projectile Library
 }

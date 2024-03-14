@@ -22,9 +22,7 @@ import rbasamoyai.createbigcannons.remix.ContraptionRemix;
 @Mixin(ContraptionCollider.class)
 public abstract class ContraptionColliderMixin {
 
-	@ModifyExpressionValue(method = "isCollidingWithWorld",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Material;isReplaceable()Z"),
-		remap = false)
+	@ModifyExpressionValue(method = "isCollidingWithWorld", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/material/Material;isReplaceable()Z"))
 	private static boolean createbigcannons$isCollidingWithWorld(boolean original, Level level, TranslatingContraption contraption,
 																 BlockPos anchor, Direction movementDirection,
 																 @Local(ordinal = 1) BlockPos pos,

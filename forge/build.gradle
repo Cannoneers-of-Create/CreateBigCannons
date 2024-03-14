@@ -77,8 +77,8 @@ dependencies {
 
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-forge")) { transitive = false } // Ritchie's Projectile Library
 
-	compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${mixinextras_version}"))
-	implementation(include("io.github.llamalad7:mixinextras-forge:${mixinextras_version}"))
+	compileOnly("io.github.llamalad7:mixinextras-common:${mixinextras_version}")
+	annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixinextras_version}")))
 
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_forge_file}") // Freecam

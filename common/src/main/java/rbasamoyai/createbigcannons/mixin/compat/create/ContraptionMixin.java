@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
-import com.simibubi.create.content.contraptions.StructureTransform;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,6 +23,7 @@ import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.Contraption;
+import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.contraptions.chassis.ChassisBlockEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.pulley.PulleyContraption;
@@ -31,7 +32,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
@@ -40,18 +40,12 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.remix.ContraptionRemix;
 
-import javax.annotation.Nullable;
-
 @Mixin(Contraption.class)
 public abstract class ContraptionMixin {
 
 	@Unique private final Contraption self = (Contraption) (Object) this;
 
 	@Shadow private Set<SuperGlueEntity> glueToRemove;
-
-	@Shadow protected abstract boolean customBlockPlacement(LevelAccessor world, BlockPos pos, BlockState state);
-
-	@Shadow protected abstract boolean customBlockRemoval(LevelAccessor world, BlockPos pos, BlockState state);
 
 	@Shadow protected abstract Pair<StructureBlockInfo, BlockEntity> capture(Level world, BlockPos pos);
 
@@ -138,9 +132,8 @@ public abstract class ContraptionMixin {
 	}
 
 	@Inject(method = "moveBlock",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;below()Lnet/minecraft/core/BlockPos;"),
-			locals = LocalCapture.CAPTURE_FAILHARD,
-			remap = false)
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;below()Lnet/minecraft/core/BlockPos;", shift = At.Shift.BEFORE),
+			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void createbigcannons$moveBlock$loaderBlocks(Level level, Direction forcedDirection, Queue<BlockPos> frontier,
 														 Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir,
 														 BlockPos pos, BlockState state) {
@@ -194,9 +187,7 @@ public abstract class ContraptionMixin {
 		return original;
 	}
 
-	@Inject(method = "movePulley",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getBlock()Lnet/minecraft/world/level/block/Block;", shift = At.Shift.BEFORE),
-			remap = false)
+	@Inject(method = "movePulley", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getBlock()Lnet/minecraft/world/level/block/Block;", shift = At.Shift.BEFORE))
 	private void createbigcannons$movePulley$0(Level level, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited, CallbackInfo ci,
 											   @Local(ordinal = 1) BlockPos ropePos, @Local LocalRef<BlockState> ropeState) {
 		if (this.self instanceof CanLoadBigCannon)
