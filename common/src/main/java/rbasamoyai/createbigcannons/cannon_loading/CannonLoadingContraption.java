@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.simibubi.create.AllBlocks;
@@ -26,9 +28,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
-
-import org.jetbrains.annotations.Nullable;
-
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;

@@ -1,37 +1,21 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.Container;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
-public class AutocannonAmmoContainerContainer implements Container {
-
-	public static final int AMMO_SLOT = 0;
-	public static final int TRACER_SLOT = 1;
+public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoContainerContainer {
 
 	private final ItemStack stack;
 
-	public AutocannonAmmoContainerContainer(ItemStack stack) {
+	public AutocannonAmmoContainerItemContainer(ItemStack stack) {
 		this.stack = stack;
 	}
 
-	@Override public int getContainerSize() { return 2; }
-
-	@Override
-	public boolean isEmpty() {
-		return this.getItem(AMMO_SLOT).isEmpty() && this.getItem(TRACER_SLOT).isEmpty();
-	}
-
-	@Override
-	public ItemStack getItem(int slot) {
-		return switch (slot) {
-			case 0 -> AutocannonAmmoContainerItem.getMainAmmoStack(this.stack);
-			case 1 -> AutocannonAmmoContainerItem.getTracerAmmoStack(this.stack);
-			default -> ItemStack.EMPTY;
-		};
-	}
+	@Override public ItemStack getMainAmmoStack() { return AutocannonAmmoContainerItem.getMainAmmoStack(this.stack); }
+	@Override public ItemStack getTracerStack() { return AutocannonAmmoContainerItem.getTracerAmmoStack(this.stack); }
 
 	@Override
 	public ItemStack removeItem(int slot, int amount) {
@@ -73,10 +57,14 @@ public class AutocannonAmmoContainerContainer implements Container {
 		tag.put("Tracers", ItemStack.EMPTY.save(new CompoundTag()));
 	}
 
-	public int getTotalCount() { return AutocannonAmmoContainerItem.getTotalAmmoCount(this.stack); }
+	@Override
+	public void startOpen(Player player) {
+		player.level.playSound(player, player.blockPosition(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.PLAYERS, 0.5F, player.level.getRandom().nextFloat() * 0.1F + 0.9F);
+	}
 
-	public AutocannonAmmoType getType() {
-		return AutocannonAmmoContainerItem.getTypeOfContainer(this.stack);
+	@Override
+	public void stopOpen(Player player) {
+		player.level.playSound(player, player.blockPosition(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.PLAYERS, 0.5F, player.level.getRandom().nextFloat() * 0.1F + 0.9F);
 	}
 
 }

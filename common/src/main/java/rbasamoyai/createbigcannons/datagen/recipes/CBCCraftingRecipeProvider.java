@@ -98,7 +98,7 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy("has_inexpensive_big_cartridge_sheet", has(CBCTags.CBCItemTags.INEXPENSIVE_BIG_CARTRIDGE_SHEET))
 			.save(cons, "big_cannon_sheet_inexpensive");
 
-		ShapedRecipeBuilder.shaped(CBCItems.AUTOCANNON_AMMO_CONTAINER.get())
+		ShapedRecipeBuilder.shaped(CBCBlocks.AUTOCANNON_AMMO_CONTAINER.get())
 			.define('I', CBCTags.CBCItemTags.SHEET_IRON).define('B', CBCTags.CBCItemTags.INGOT_BRASS)
 			.pattern(" B ")
 			.pattern("I I")

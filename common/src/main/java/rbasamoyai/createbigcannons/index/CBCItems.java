@@ -13,10 +13,9 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
-import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
-import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
+import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.manual_loading.RamRodItem;
 import rbasamoyai.createbigcannons.manual_loading.WormItem;
@@ -189,13 +188,6 @@ public class CBCItems {
 	public static final ItemEntry<MachineGunRoundItem> MACHINE_GUN_ROUND = REGISTRATE
 		.item("machine_gun_round", MachineGunRoundItem::new)
 		.tag(modTag("autocannon_cartridges"))
-		.register();
-
-	public static final ItemEntry<AutocannonAmmoContainerItem> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
-		.item("autocannon_ammo_container", AutocannonAmmoContainerItem::new)
-		.properties(p -> p.stacksTo(1))
-		.tag(modTag("autocannon_ammo_containers"))
-		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE

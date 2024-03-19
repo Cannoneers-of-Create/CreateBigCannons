@@ -1,26 +1,25 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
+import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
+import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_BG;
+import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_SELECTOR;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
-
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ServerboundSetContainerValuePacket;
-
-import static com.simibubi.create.foundation.gui.AllGuiTextures.PLAYER_INVENTORY;
-import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_BG;
-import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_CONTAINER_SELECTOR;
 
 public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<AutocannonAmmoContainerMenu> {
 
@@ -59,10 +58,13 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 		int offsX = this.setValue.getState() * 8 - 8;
 		AUTOCANNON_AMMO_CONTAINER_SELECTOR.render(poseStack, this.leftPos + 86 + offsX, this.topPos + 23);
 
-		GuiGameElement.of(this.menu.isFilled() ? CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_FILLED : CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_EMPTY)
+		// TODO: block customization
+		BlockState state = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getDefaultState();
+		state = state.setValue(AutocannonAmmoContainerBlock.CONTAINER_STATE, AutocannonAmmoContainerBlock.State.getFromFilled(this.menu.isFilled()));
+		GuiGameElement.of(state)
 			.scale(50)
-			.rotate(30, 45, 0)
-			.at(this.leftPos + AUTOCANNON_AMMO_CONTAINER_BG.width + 5, this.topPos + AUTOCANNON_AMMO_CONTAINER_BG.height, 200)
+			.rotate(30, 135, 0)
+			.at(this.leftPos + AUTOCANNON_AMMO_CONTAINER_BG.width + 32, this.topPos + AUTOCANNON_AMMO_CONTAINER_BG.height, 200)
 			.render(poseStack);
 	}
 
