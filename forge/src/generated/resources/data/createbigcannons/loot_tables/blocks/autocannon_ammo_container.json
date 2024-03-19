@@ -7,7 +7,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "createbigcannons:big_cartridge"
+          "name": "createbigcannons:autocannon_ammo_container"
         }
       ],
       "conditions": [
@@ -17,17 +17,26 @@
       ],
       "functions": [
         {
-          "function": "minecraft:set_count",
-          "count": 1.0,
-          "add": false
+          "function": "minecraft:copy_name",
+          "source": "block_entity"
         },
         {
           "function": "minecraft:copy_nbt",
           "source": "block_entity",
           "ops": [
             {
-              "source": "Power",
-              "target": "Power",
+              "source": "Ammo",
+              "target": "Ammo",
+              "op": "replace"
+            },
+            {
+              "source": "Tracers",
+              "target": "Tracers",
+              "op": "replace"
+            },
+            {
+              "source": "TracerSpacing",
+              "target": "TracerSpacing",
               "op": "replace"
             }
           ]

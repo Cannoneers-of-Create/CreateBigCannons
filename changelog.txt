@@ -28,6 +28,7 @@ Added:
   - Includes:
    - #createbigcannons:big_cannon_cartridges
    - #createbigcannons:big_cannon_propellant_bags
+- Added ability to place Autocannon Ammo Containers as blocks
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
 - Reduced default blob count of Fluid Shell

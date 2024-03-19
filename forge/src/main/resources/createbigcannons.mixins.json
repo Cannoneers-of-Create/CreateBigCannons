@@ -6,11 +6,12 @@
   "client": [
   ],
   "mixins": [
-    "CBCLiquidBlockMixin",
-    "CBCFlowingFluidMixin",
     "AbstractCannonProjectileMixin",
+    "AutocannonAmmoContainerBlockEntityMixin",
     "CannonMountMixin",
     "CannonMountPointMixin",
+    "CBCFlowingFluidMixin",
+    "CBCLiquidBlockMixin",
     "MountedAutocannonContraptionMixin",
     "PitchOrientedContraptionEntityMixin"
   ],

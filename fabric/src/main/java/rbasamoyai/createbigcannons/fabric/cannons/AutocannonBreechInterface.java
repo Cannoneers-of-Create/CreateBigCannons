@@ -1,5 +1,11 @@
 package rbasamoyai.createbigcannons.fabric.cannons;
 
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import io.github.fabricators_of_create.porting_lib.transfer.StorageViewArrayIterator;
 import io.github.fabricators_of_create.porting_lib.transfer.item.ItemHandlerHelper;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -8,13 +14,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import net.fabricmc.fabric.api.transfer.v1.transaction.base.SnapshotParticipant;
 import net.minecraft.world.item.ItemStack;
-import javax.annotation.Nonnull;
-
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
-
-import java.util.Deque;
-import java.util.Iterator;
-import java.util.List;
 
 public class AutocannonBreechInterface extends SnapshotParticipant<AutocannonBreechInterface.BreechSnapshot> implements Storage<ItemVariant> {
 
@@ -37,8 +37,9 @@ public class AutocannonBreechInterface extends SnapshotParticipant<AutocannonBre
 		if (!this.isItemValid(stack) || this.breech.isInputFull()) return 0;
 
 		Deque<ItemStack> input = this.breech.getInputBuffer();
-		int maxCount = Math.min(this.breech.getQueueLimit() - input.size(), stack.getCount());
-		for (int i = 0; i < maxCount; ++i) {
+		long maxCount = Math.min(this.breech.getQueueLimit() - input.size(), stack.getCount());
+		maxCount = Math.min(maxCount, maxAmount);
+		for (long i = 0; i < maxCount; ++i) {
 			updateSnapshots(transaction);
 			input.add(ItemHandlerHelper.copyStackWithSize(stack, 1));
 		}

@@ -585,9 +585,9 @@ public class CannonLoadingScenes {
 		BlockPos breechPos = util.grid.at(2, 3, 1);
 		Selection breechSel = util.select.position(breechPos);
 
-		ItemStack filledContainer = CBCItems.AUTOCANNON_AMMO_CONTAINER.asStack();
+		ItemStack filledContainer = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack();
 		filledContainer.getOrCreateTag().put("Ammo", CBCItems.MACHINE_GUN_ROUND.asStack(64).save(new CompoundTag()));
-		ItemStack emptyContainer = CBCItems.AUTOCANNON_AMMO_CONTAINER.asStack();
+		ItemStack emptyContainer = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack();
 
 		scene.world.showSection(autocannon, Direction.DOWN);
 		scene.idle(30);
@@ -787,7 +787,7 @@ public class CannonLoadingScenes {
 		BlockPos takeFunnel = util.grid.at(6, 2, 0);
 		BlockPos depositFunnel = util.grid.at(6, 2, 1);
 
-		ItemStack emptyContainer = CBCItems.AUTOCANNON_AMMO_CONTAINER.asStack();
+		ItemStack emptyContainer = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack();
 		ItemStack filledContainer = emptyContainer.copy();
 		filledContainer.getOrCreateTag().put("Ammo", CBCItems.MACHINE_GUN_ROUND.asStack(64).save(new CompoundTag()));
 

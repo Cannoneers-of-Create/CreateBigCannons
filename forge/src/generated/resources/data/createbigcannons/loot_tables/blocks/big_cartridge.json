@@ -10,6 +10,11 @@
           "name": "createbigcannons:big_cartridge"
         }
       ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "functions": [
         {
           "function": "minecraft:set_count",

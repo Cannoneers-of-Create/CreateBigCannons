@@ -69,6 +69,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellBlock;
@@ -1098,6 +1099,17 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.METAL))
 		.transform(CBCBuilderTransformers.bigCartridge())
 		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, new BigCartridgeProperties.Serializer()))
+		.register();
+
+	//////// Autocannon Ammo Container Blocks ////////
+
+	public static final BlockEntry<AutocannonAmmoContainerBlock> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
+		.block("autocannon_ammo_container", AutocannonAmmoContainerBlock::new)
+		.initialProperties(Material.METAL, MaterialColor.COLOR_GREEN)
+		.properties(p -> p.strength(0.0f, 2.5f))
+		.properties(p -> p.sound(SoundType.CHAIN))
+		.properties(p -> p.noOcclusion())
+		.transform(CBCBuilderTransformers.autocannonAmmoContainer(false))
 		.register();
 
 	//////// Crafting blocks ////////

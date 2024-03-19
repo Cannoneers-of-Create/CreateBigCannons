@@ -71,7 +71,7 @@ public class CBCPonderIndex {
 		HELPER.forComponents(CBCItems.WORM, CBCItems.RAM_ROD)
 			.addStoryBoard("cannon_loader/handloading_tools", CannonLoadingScenes::handloadingTools);
 
-		HELPER.forComponents(CBCItems.AUTOCANNON_AMMO_CONTAINER)
+		HELPER.forComponents(CBCBlocks.AUTOCANNON_AMMO_CONTAINER)
 			.addStoryBoard("munitions/using_autocannon_ammo_container", CannonLoadingScenes::usingAutocannonAmmoContainer)
 			.addStoryBoard("munitions/filling_autocannon_ammo_container", CannonLoadingScenes::fillingAutocannonAmmoContainer)
 			.addStoryBoard("munitions/automating_autocannon_ammo_container", CannonLoadingScenes::automatingAutocannonAmmoContainer);
@@ -105,7 +105,7 @@ public class CBCPonderIndex {
 			.add(CBCItems.TIMED_FUZE)
 			.add(CBCItems.PROXIMITY_FUZE)
 			.add(CBCItems.DELAYED_IMPACT_FUZE)
-			.add(CBCItems.AUTOCANNON_AMMO_CONTAINER);
+			.add(CBCBlocks.AUTOCANNON_AMMO_CONTAINER);
 
 		PonderRegistry.TAGS.forTag(CBCPonderTags.CANNON_CRAFTING)
 			.add(CBCBlocks.CASTING_SAND)

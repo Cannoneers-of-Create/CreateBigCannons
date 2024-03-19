@@ -43,6 +43,7 @@ import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockInstance;
@@ -208,6 +209,11 @@ public class CBCBlockEntities {
 	public static final BlockEntityEntry<BigCartridgeBlockEntity> BIG_CARTRIDGE = REGISTRATE
 		.blockEntity("big_cartridge", BigCartridgeBlockEntity::new)
 		.validBlock(CBCBlocks.BIG_CARTRIDGE)
+		.register();
+
+	public static final BlockEntityEntry<AutocannonAmmoContainerBlockEntity> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
+		.blockEntity("autocannon_ammo_container", AutocannonAmmoContainerBlockEntity::new)
+		.validBlock(CBCBlocks.AUTOCANNON_AMMO_CONTAINER)
 		.register();
 
 	public static void register() {
