@@ -268,6 +268,10 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.cannon_strength.value", "%s Propellant Stress");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.pitch", "Cannon Pitch: ");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.yaw", "Cannon Yaw: ");
+
+		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.main_ammo", "x%1$s %2$s");
+		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.tracers", "Tracers: x%1$s %2$s");
+		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.tracer_spacing", "Tracer Spacing: 1 tracer every %s round(s)");
 	}
 
 	private static class TooltipBuilder {

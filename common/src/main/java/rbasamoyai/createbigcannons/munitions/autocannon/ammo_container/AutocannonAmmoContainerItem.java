@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -15,11 +16,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
+
+import java.util.List;
 
 public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvider {
 
@@ -140,6 +144,25 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 			}
 		}
 		return ret;
+	}
+
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+		super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+		String infinity = "\u221E";
+
+		ItemStack mainAmmo = getMainAmmoStack(stack);
+		if (!mainAmmo.isEmpty()) {
+			String mainValue = this.isCreative() ? infinity : Integer.toString(mainAmmo.getCount());
+			tooltipComponents.add(new TranslatableComponent("block.createbigcannons.autocannon_ammo_container.tooltip.main_ammo", mainValue, mainAmmo.getDisplayName()));
+		}
+		ItemStack tracerAmmo = getTracerAmmoStack(stack);
+		if (!tracerAmmo.isEmpty()) {
+			String tracerValue = this.isCreative() ? infinity : Integer.toString(tracerAmmo.getCount());
+			tooltipComponents.add(new TranslatableComponent("block.createbigcannons.autocannon_ammo_container.tooltip.tracers", tracerValue, tracerAmmo.getDisplayName()));
+		}
+		int spacingValue = getTracerSpacing(stack);
+		tooltipComponents.add(new TranslatableComponent("block.createbigcannons.autocannon_ammo_container.tooltip.tracer_spacing", spacingValue));
 	}
 
 	public boolean isCreative() { return false; }
