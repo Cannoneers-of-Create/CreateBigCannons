@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -502,6 +503,7 @@ public class CBCBuilderTransformers {
 			})
 			.item(AutocannonAmmoContainerItem::new)
 			.properties(p -> p.stacksTo(1))
+			.properties(p -> isCreative ? p.rarity(Rarity.EPIC) : p)
 			.tag(modTag("autocannon_ammo_containers"))
 			.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/autocannon_ammo_containers/" + root)))
 			.build();

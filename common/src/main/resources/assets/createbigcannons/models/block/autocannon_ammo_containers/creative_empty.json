@@ -2,14 +2,14 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
 	"textures": {
-		"0": "createbigcannons:block/autocannon_ammo_container/front",
-		"1": "createbigcannons:block/autocannon_ammo_container/side",
-		"2": "createbigcannons:block/autocannon_ammo_container/bottom",
-		"3": "createbigcannons:block/autocannon_ammo_container/top_empty",
-		"4": "createbigcannons:block/autocannon_ammo_container/lid",
-		"5": "createbigcannons:block/autocannon_ammo_container/lid_bottom",
-		"6": "createbigcannons:block/autocannon_ammo_container/lid_top",
-		"particle": "createbigcannons:block/autocannon_ammo_container/front"
+		"0": "createbigcannons:block/creative_autocannon_ammo_container/front",
+		"1": "createbigcannons:block/creative_autocannon_ammo_container/side",
+		"2": "createbigcannons:block/creative_autocannon_ammo_container/bottom",
+		"3": "createbigcannons:block/creative_autocannon_ammo_container/top_empty",
+		"4": "createbigcannons:block/creative_autocannon_ammo_container/lid",
+		"5": "createbigcannons:block/creative_autocannon_ammo_container/lid_bottom",
+		"6": "createbigcannons:block/creative_autocannon_ammo_container/lid_top",
+		"particle": "createbigcannons:block/creative_autocannon_ammo_container/front"
 	},
 	"elements": [
 		{

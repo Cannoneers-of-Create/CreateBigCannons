@@ -20,6 +20,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
@@ -165,6 +166,6 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 		tooltipComponents.add(new TranslatableComponent("block.createbigcannons.autocannon_ammo_container.tooltip.tracer_spacing", spacingValue));
 	}
 
-	public boolean isCreative() { return false; }
+	public boolean isCreative() { return CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.is(this); }
 
 }

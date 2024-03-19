@@ -213,7 +213,7 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<AutocannonAmmoContainerBlockEntity> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
 		.blockEntity("autocannon_ammo_container", AutocannonAmmoContainerBlockEntity::new)
-		.validBlock(CBCBlocks.AUTOCANNON_AMMO_CONTAINER)
+		.validBlocks(CBCBlocks.AUTOCANNON_AMMO_CONTAINER, CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER)
 		.register();
 
 	public static void register() {

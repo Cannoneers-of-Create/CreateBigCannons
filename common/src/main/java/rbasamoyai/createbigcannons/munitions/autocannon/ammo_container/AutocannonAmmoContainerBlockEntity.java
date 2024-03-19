@@ -130,7 +130,7 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		return AutocannonAmmoContainerMenu.getServerMenuForBlockEntity(i, inventory, this, this.isCreativeContainer());
 	}
 
-	public boolean isCreativeContainer() { return false; }
+	public boolean isCreativeContainer() { return CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.has(this.getBlockState()); }
 
 	@Override
 	public ItemStack removeItem(int slot, int amount) {

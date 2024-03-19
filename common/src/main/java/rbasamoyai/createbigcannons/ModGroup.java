@@ -197,6 +197,7 @@ public class ModGroup {
 				CBCItems.MACHINE_GUN_ROUND.asStack(),
 				CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack(),
 				CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack(),
+				CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.asStack(),
 
 				CBCItems.RECOIL_SPRING.asStack(),
 

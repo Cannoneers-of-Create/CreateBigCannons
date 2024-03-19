@@ -1112,6 +1112,15 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.autocannonAmmoContainer(false))
 		.register();
 
+	public static final BlockEntry<AutocannonAmmoContainerBlock> CREATIVE_AUTOCANNON_AMMO_CONTAINER = REGISTRATE
+		.block("creative_autocannon_ammo_container", AutocannonAmmoContainerBlock::new)
+		.initialProperties(Material.METAL, MaterialColor.COLOR_MAGENTA)
+		.properties(p -> p.strength(0.0f, 2.5f))
+		.properties(p -> p.sound(SoundType.CHAIN))
+		.properties(p -> p.noOcclusion())
+		.transform(CBCBuilderTransformers.autocannonAmmoContainer(true))
+		.register();
+
 	//////// Crafting blocks ////////
 
 	public static final BlockEntry<Block> CASTING_SAND = REGISTRATE

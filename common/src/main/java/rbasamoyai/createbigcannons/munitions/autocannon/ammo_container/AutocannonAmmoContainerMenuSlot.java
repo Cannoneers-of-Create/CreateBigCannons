@@ -7,10 +7,12 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 public class AutocannonAmmoContainerMenuSlot extends Slot {
 
 	private final IAutocannonAmmoContainerContainer ammoContainer;
+	private final boolean isCreative;
 
-	public AutocannonAmmoContainerMenuSlot(IAutocannonAmmoContainerContainer container, int slot, int x, int y) {
+	public AutocannonAmmoContainerMenuSlot(IAutocannonAmmoContainerContainer container, int slot, int x, int y, boolean isCreative) {
 		super(container, slot, x, y);
 		this.ammoContainer = container;
+		this.isCreative = isCreative;
 	}
 
 	@Override
@@ -23,6 +25,7 @@ public class AutocannonAmmoContainerMenuSlot extends Slot {
 
 	@Override
 	public int getMaxStackSize(ItemStack stack) {
+		if (this.isCreative) return 1;
 		AutocannonAmmoType ctType = this.ammoContainer.getAmmoType();
 		if (ctType == AutocannonAmmoType.NONE) return AutocannonAmmoType.of(stack).getCapacity();
 		int buf = Math.max(ctType.getCapacity() - this.ammoContainer.getTotalCount(), 0);
