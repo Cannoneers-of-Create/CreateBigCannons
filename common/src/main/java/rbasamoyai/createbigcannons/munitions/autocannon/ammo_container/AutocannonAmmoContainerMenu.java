@@ -64,8 +64,8 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 										  IAutocannonAmmoContainerContainer ct, ContainerData data, boolean isCreative, boolean isItem) {
 		super(type, id);
 
-		this.addSlot(new AutocannonAmmoContainerMenuSlot(ct, IAutocannonAmmoContainerContainer.AMMO_SLOT, 32, 26));
-		this.addSlot(new AutocannonAmmoContainerMenuSlot(ct, IAutocannonAmmoContainerContainer.TRACER_SLOT, 59, 26) {
+		this.addSlot(new AutocannonAmmoContainerMenuSlot(ct, IAutocannonAmmoContainerContainer.AMMO_SLOT, 32, 26, isCreative));
+		this.addSlot(new AutocannonAmmoContainerMenuSlot(ct, IAutocannonAmmoContainerContainer.TRACER_SLOT, 59, 26, isCreative) {
 			@Nullable
 			@Override
 			public Pair<ResourceLocation, ResourceLocation> getNoItemIcon() {
@@ -73,14 +73,15 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 			}
 		});
 
+		int add = isCreative ? 18 : 8;
 		for (int row = 0; row < 3; ++row) {
 			for (int col = 0; col < 9; ++col) {
-				this.addSlot(new Slot(playerInv, row * 9 + col + 9, col * 18 + 8, row * 18 + 105));
+				this.addSlot(new Slot(playerInv, row * 9 + col + 9, col * 18 + add, row * 18 + 105));
 			}
 		}
 
 		for (int i = 0; i < 9; ++i) {
-			this.addSlot(new Slot(playerInv, i, i * 18 + 8, 163));
+			this.addSlot(new Slot(playerInv, i, i * 18 + add, 163));
 		}
 
 		this.addDataSlots(data);

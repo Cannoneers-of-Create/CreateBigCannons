@@ -83,6 +83,7 @@
   "block.createbigcannons.cast_iron_quickfiring_breech": "Cast Iron Quick-Firing Breech",
   "block.createbigcannons.cast_iron_sliding_breech": "Cast Iron Sliding Breech",
   "block.createbigcannons.casting_sand": "Casting Sand",
+  "block.createbigcannons.creative_autocannon_ammo_container": "Creative Autocannon Ammo Container",
   "block.createbigcannons.drop_mortar_shell": "Drop Mortar Shell",
   "block.createbigcannons.drop_mortar_shell.tooltip": "DROP MORTAR SHELL",
   "block.createbigcannons.drop_mortar_shell.tooltip.behaviour1": "Explodes.",
