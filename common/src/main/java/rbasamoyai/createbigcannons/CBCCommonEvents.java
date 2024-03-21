@@ -27,8 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
-import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.block_hardness.TerminalBallisticsBlockPropertiesHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
@@ -55,7 +54,6 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler;
-import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
@@ -201,13 +199,13 @@ public class CBCCommonEvents {
 	public static void onLoadLevel(LevelAccessor level) {
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
 		if (level.getServer() != null && !level.isClientSide() && level.getServer().overworld() == level) {
-			BlockHardnessHandler.loadTags();
+			TerminalBallisticsBlockPropertiesHandler.loadTags();
 			FluidCastingTimeHandler.loadTags();
 		}
 	}
 
 	public static void onDatapackReload(MinecraftServer server) {
-		BlockHardnessHandler.loadTags();
+		TerminalBallisticsBlockPropertiesHandler.loadTags();
 		BlockRecipesManager.syncToAll(server);
 		MunitionPropertiesHandler.syncToAll(server);
 		AutocannonMaterialPropertiesHandler.syncToAll(server);
@@ -229,7 +227,7 @@ public class CBCCommonEvents {
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
 		cons.accept(BlockRecipeFinder.LISTENER, CreateBigCannons.resource("block_recipe_finder"));
 		cons.accept(BlockRecipesManager.ReloadListener.INSTANCE, CreateBigCannons.resource("block_recipe_manager"));
-		cons.accept(BlockHardnessHandler.BlockReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
+		cons.accept(TerminalBallisticsBlockPropertiesHandler.BlockReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListenerProjectiles.INSTANCE, CreateBigCannons.resource("projectile_properties_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListenerBlockPropellant.INSTANCE, CreateBigCannons.resource("block_propellant_properties_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListenerItemPropellant.INSTANCE, CreateBigCannons.resource("item_propellant_properties_handler"));
