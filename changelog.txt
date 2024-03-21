@@ -32,7 +32,7 @@ Added:
 - Added tooltip to Autocannon Ammo Container showing contained items and spacing
 - Added Creative Autocannon Ammo Container, an endless source of autocannon ammo
 - Added block properties compatibility with Create Copycat blocks
-- Added block proeprties compatibility with Copycats+
+- Added block properties compatibility with Copycats+
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
 - Reduced default blob count of Fluid Shell
