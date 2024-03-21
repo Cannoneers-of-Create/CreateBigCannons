@@ -1,0 +1,10 @@
+{
+  "default_block_hardness": 0.5,
+  "material_hardness_multiplier": 0.5,
+  "variants": {
+    "negative_layers=8,positive_layers=8": {
+      "default_block_hardness": 1,
+      "material_hardness_multiplier": 1
+    }
+  }
+}

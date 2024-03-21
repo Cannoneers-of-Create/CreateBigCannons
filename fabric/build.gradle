@@ -97,6 +97,7 @@ dependencies {
 
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
+	modLocalRuntime("curse.maven:copycats-968398:${copycats_fabric_file}")
 }
 
 processResources {
