@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.block_hardness;
+package rbasamoyai.createbigcannons.block_terminal_properties;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,7 +25,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.BlockStatePredicateHelper;
 
 public class TerminalBallisticsBlockPropertiesHandler {
@@ -69,7 +68,8 @@ public class TerminalBallisticsBlockPropertiesHandler {
 						}
 					}
 				} catch (Exception e) {
-					CreateBigCannons.LOGGER.warn("Exception loading terminal ballistics block properties: {}", e.getMessage());
+					//CreateBigCannons.LOGGER.warn("Exception loading terminal ballistics block properties: {}", e.getMessage());
+					//Commented out for silent "optional" loading if a bit silly
 				}
 			}
 		}

@@ -15,7 +15,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.block_hardness.TerminalBallisticsBlockPropertiesHandler;
+import rbasamoyai.createbigcannons.block_terminal_properties.TerminalBallisticsBlockPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.BaseProjectileProperties;

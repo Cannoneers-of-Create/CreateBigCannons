@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.block_hardness;
+package rbasamoyai.createbigcannons.block_terminal_properties;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
