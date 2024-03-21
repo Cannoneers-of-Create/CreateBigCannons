@@ -31,6 +31,7 @@ Added:
 - Added ability to place Autocannon Ammo Containers as blocks
 - Added tooltip to Autocannon Ammo Container showing contained items and spacing
 - Added Creative Autocannon Ammo Container, an endless source of autocannon ammo
+- Added block hardness compatibility with Create Copycat blocks
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
 - Reduced default blob count of Fluid Shell
@@ -41,6 +42,7 @@ Changes:
  - The old fields still work, but a warning will be printed in the game log highlighting any deprecated files.
 - Changed minimum timing for Timed Fuze from 20 ticks (1 second) to 1 tick, reduced maximum time from 25s 15t to 24s 15t
 - Changed minimum timing for Delayed Impact Fuze from 20 ticks (1 second) to 1 tick, reduced maximum time from 6s to 5s
+- Improved data pack config for block hardness and block properties for terminal ballistics in general
 Fixes:
 - Fixed drop mortar not dropping stored item if disassembled or broken before fired
 - Fixed drop mortar holding entire stack

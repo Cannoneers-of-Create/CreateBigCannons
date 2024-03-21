@@ -33,9 +33,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.block_hardness.TerminalBallisticsBlockPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 import rbasamoyai.ritchiesprojectilelib.PreciseProjectile;
@@ -170,7 +170,7 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 
 					double startMass = this.getProjectileMass();
 					double curPom = startMass * mag;
-					double hardness = BlockHardnessHandler.getHardness(state, level, bpos);
+					double hardness = TerminalBallisticsBlockPropertiesHandler.getProperties(state).hardness(this.level, state, bpos, true);
 
 					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, bpos) == -1 || curPom < hardness) {
 						this.setInGround(true);
@@ -236,7 +236,7 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 		Vec3 oldVel = this.getDeltaMovement();
 		double momentum = this.getProjectileMass() * oldVel.length();
 		if (bounce == BounceType.DEFLECT) {
-			if (momentum > BlockHardnessHandler.getHardness(state, this.level, result.getBlockPos()) * 0.5) {
+			if (momentum > TerminalBallisticsBlockPropertiesHandler.getProperties(state).hardness(this.level, state, result.getBlockPos(), true) * 0.5) {
 				Vec3 spallLoc = this.position().add(oldVel.normalize().scale(2));
 				this.level.explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Explosion.BlockInteraction.NONE);
 			}
