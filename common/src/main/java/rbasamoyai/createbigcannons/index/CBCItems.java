@@ -13,7 +13,7 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
-import rbasamoyai.createbigcannons.block_terminal_properties.InspectResistanceToolItem;
+import rbasamoyai.createbigcannons.block_armor_properties.InspectResistanceToolItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;

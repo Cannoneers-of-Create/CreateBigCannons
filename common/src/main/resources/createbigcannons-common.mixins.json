@@ -25,7 +25,6 @@
     "compat.create.ChassisBlockEntityMixin",
     "compat.create.ContraptionColliderMixin",
     "compat.create.ContraptionMixin",
-    "compat.create.CopycatBlockMixin",
     "compat.create.FilterItemMixin",
     "compat.create.GantryContraptionMixin",
     "compat.create.LinearActuatorBlockEntityMixin",

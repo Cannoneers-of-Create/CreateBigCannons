@@ -33,6 +33,7 @@ Added:
 - Added Creative Autocannon Ammo Container, an endless source of autocannon ammo
 - Added block properties compatibility with Create Copycat blocks
 - Added block properties compatibility with Copycats+
+[Forge] - Added block properties compatibility with Framed Blocks
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
 - Reduced default blob count of Fluid Shell

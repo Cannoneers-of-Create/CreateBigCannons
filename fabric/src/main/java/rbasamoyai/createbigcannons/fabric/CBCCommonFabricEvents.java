@@ -1,8 +1,13 @@
 package rbasamoyai.createbigcannons.fabric;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+
 import com.simibubi.create.content.kinetics.deployer.DeployerRecipeSearchEvent;
 
 import io.github.fabricators_of_create.porting_lib.event.common.BlockEvents;
+import io.github.fabricators_of_create.porting_lib.event.common.ModsLoadedCallback;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
@@ -27,9 +32,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCCommonEvents;
-
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.Executor;
+import rbasamoyai.createbigcannons.compat.copycats.CopycatsCompat;
+import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 
 public class CBCCommonFabricEvents {
 
@@ -43,8 +47,14 @@ public class CBCCommonFabricEvents {
 		BlockEvents.BLOCK_BREAK.register(CBCCommonFabricEvents::onPlayerBreakBlock);
 		DeployerRecipeSearchEvent.EVENT.register(CBCCommonFabricEvents::onDeployerRecipeSearch);
 		UseBlockCallback.EVENT.register(CBCCommonFabricEvents::onUseItemOnBlock);
+		ModsLoadedCallback.EVENT.register(CBCCommonFabricEvents::onModsLoaded);
 
 		CBCCommonEvents.onAddReloadListeners(CBCCommonFabricEvents::wrapAndRegisterReloadListener);
+	}
+
+	public static void onModsLoaded(EnvType type) {
+		DefaultCreateCompat.init();
+		CBCModsFabric.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init());
 	}
 
 	public static void onServerLevelTick(ServerLevel level) {

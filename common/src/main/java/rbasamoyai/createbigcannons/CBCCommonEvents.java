@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
-import rbasamoyai.createbigcannons.block_terminal_properties.TerminalBallisticsBlockPropertiesHandler;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
@@ -199,13 +199,13 @@ public class CBCCommonEvents {
 	public static void onLoadLevel(LevelAccessor level) {
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
 		if (level.getServer() != null && !level.isClientSide() && level.getServer().overworld() == level) {
-			TerminalBallisticsBlockPropertiesHandler.loadTags();
+			BlockArmorPropertiesHandler.onDataPackReload();
 			FluidCastingTimeHandler.loadTags();
 		}
 	}
 
 	public static void onDatapackReload(MinecraftServer server) {
-		TerminalBallisticsBlockPropertiesHandler.loadTags();
+		BlockArmorPropertiesHandler.onDataPackReload();
 		BlockRecipesManager.syncToAll(server);
 		MunitionPropertiesHandler.syncToAll(server);
 		AutocannonMaterialPropertiesHandler.syncToAll(server);
@@ -227,7 +227,7 @@ public class CBCCommonEvents {
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
 		cons.accept(BlockRecipeFinder.LISTENER, CreateBigCannons.resource("block_recipe_finder"));
 		cons.accept(BlockRecipesManager.ReloadListener.INSTANCE, CreateBigCannons.resource("block_recipe_manager"));
-		cons.accept(TerminalBallisticsBlockPropertiesHandler.BlockReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
+		cons.accept(BlockArmorPropertiesHandler.BlockReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListenerProjectiles.INSTANCE, CreateBigCannons.resource("projectile_properties_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListenerBlockPropellant.INSTANCE, CreateBigCannons.resource("block_propellant_properties_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListenerItemPropellant.INSTANCE, CreateBigCannons.resource("item_propellant_properties_handler"));

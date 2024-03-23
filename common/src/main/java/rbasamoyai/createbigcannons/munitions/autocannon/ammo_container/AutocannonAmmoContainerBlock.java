@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
+import java.util.Locale;
 import java.util.Random;
 
 import javax.annotation.Nullable;
@@ -163,7 +164,7 @@ public class AutocannonAmmoContainerBlock extends Block implements IWrenchable, 
 		EMPTY,
 		FILLED;
 
-		private final String id = this.name().toLowerCase();
+		private final String id = this.name().toLowerCase(Locale.ROOT);
 
 		@Override public String getSerializedName() { return this.id; }
 

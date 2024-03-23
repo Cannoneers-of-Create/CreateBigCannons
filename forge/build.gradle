@@ -1,5 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 architectury {
@@ -55,6 +56,7 @@ repositories {
 			includeGroup("com.rbasamoyai")
 		}
 	}
+    mavenCentral()
 }
 
 dependencies {
@@ -82,7 +84,9 @@ dependencies {
 
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_forge_file}") // Freecam
-	modLocalRuntime("curse.maven:copycats-968398:${copycats_forge_file}")
+	modImplementation("curse.maven:copycats-968398:${copycats_forge_file}")
+	modImplementation("curse.maven:framedblocks-441647:${framedblocks_forge_file}")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 processResources {
@@ -144,5 +148,8 @@ sourceSets.main {
         srcDir("src/generated/resources")
         exclude("src/generated/resources/.cache")
     }
+}
+kotlin {
+    jvmToolchain(17)
 }
 
