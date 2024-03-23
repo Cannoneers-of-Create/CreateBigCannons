@@ -45,7 +45,6 @@ public class DimensionMunitionPropertiesHandler {
 
 				}
             }
-			int x = 0;
         }
     }
 

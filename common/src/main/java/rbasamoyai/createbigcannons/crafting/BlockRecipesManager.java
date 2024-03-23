@@ -1,8 +1,18 @@
 package rbasamoyai.createbigcannons.crafting;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Executor;
+
+import javax.annotation.Nullable;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -11,20 +21,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import javax.annotation.Nullable;
-import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Executor;
 
 public class BlockRecipesManager {
 
-	private static final Map<ResourceLocation, BlockRecipe> BLOCK_RECIPES_BY_NAME = new HashMap<>();
-	private static final Map<BlockRecipeType<?>, Map<ResourceLocation, BlockRecipe>> BLOCK_RECIPES_BY_TYPE = new HashMap<>();
+	private static final Map<ResourceLocation, BlockRecipe> BLOCK_RECIPES_BY_NAME = new Object2ObjectOpenHashMap<>();
+	private static final Map<BlockRecipeType<?>, Map<ResourceLocation, BlockRecipe>> BLOCK_RECIPES_BY_TYPE = new Reference2ObjectOpenHashMap<>();
 
 	public static Collection<BlockRecipe> getRecipes() {
 		return BLOCK_RECIPES_BY_NAME.values();
@@ -64,7 +68,7 @@ public class BlockRecipesManager {
 			BLOCK_RECIPES_BY_NAME.put(id, recipe);
 			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get(type);
 			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
-				BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
+				BLOCK_RECIPES_BY_TYPE.put(recipeType, new Object2ObjectOpenHashMap<>());
 			BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
 		}
 	}

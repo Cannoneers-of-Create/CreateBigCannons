@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -10,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
+import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
@@ -26,7 +26,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class BigCannonBreechStrengthHandler {
 
-	private static final Map<Block, Integer> BREECH_STRENGTHS = new HashMap<>();
+	private static final Map<Block, Integer> BREECH_STRENGTHS = new Reference2IntOpenHashMap<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();

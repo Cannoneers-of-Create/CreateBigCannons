@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.material;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -9,6 +8,7 @@ import javax.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +22,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class AutocannonMaterialPropertiesHandler {
 
-	public static final Map<AutocannonMaterial, AutocannonMaterialProperties> PROPERTIES = new HashMap<>();
+	public static final Map<AutocannonMaterial, AutocannonMaterialProperties> PROPERTIES = new Reference2ObjectOpenHashMap<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();

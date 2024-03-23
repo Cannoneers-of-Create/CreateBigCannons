@@ -6,8 +6,9 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
-import it.unimi.dsi.fastutil.objects.Reference2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -24,9 +25,9 @@ public class BlockArmorPropertiesHandler {
 
 	private static final Map<Block, BlockArmorPropertiesProvider> TAG_MAP = new Reference2ObjectOpenHashMap<>();
 	private static final Map<Block, BlockArmorPropertiesProvider> BLOCK_MAP = new Reference2ObjectOpenHashMap<>();
-	private static final Map<TagKey<Block>, BlockArmorPropertiesProvider> TAGS_TO_EVALUATE = new Reference2ObjectLinkedOpenHashMap<>();
+	private static final Map<TagKey<Block>, BlockArmorPropertiesProvider> TAGS_TO_EVALUATE = new Object2ObjectLinkedOpenHashMap<>();
 
-	private static final Map<Block, BlockArmorPropertiesSerializer> CUSTOM_SERIALIZERS = new Reference2ObjectOpenHashMap<>();
+	private static final Map<Block, BlockArmorPropertiesSerializer> CUSTOM_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
 
 	private static final BlockArmorPropertiesProvider FALLBACK_PROVIDER = new BlockArmorPropertiesProvider() {
 		@Override public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) { return state.getBlock().getExplosionResistance(); }
