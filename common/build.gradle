@@ -42,4 +42,6 @@ dependencies {
 	annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixinextras_version}")) // MixinExtras
 
 	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-common") { transitive = false } // Ritchie's Projectile Library
+
+	modImplementation("curse.maven:copycats-968398:${copycats_fabric_file}")
 }

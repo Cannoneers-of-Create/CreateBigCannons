@@ -1,5 +1,11 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.material;
 
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import com.google.gson.JsonObject;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -7,11 +13,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.StringRepresentable;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-
-import java.util.Arrays;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public record BigCannonMaterialProperties(double minimumVelocityPerBarrel, float weight, int maxSafePropellantStress,
 										  FailureMode failureMode, boolean connectsInSurvival, boolean isWeldable,
@@ -113,7 +114,7 @@ public record BigCannonMaterialProperties(double minimumVelocityPerBarrel, float
 		private final String name;
 
 		FailureMode() {
-			this.name = this.name().toLowerCase();
+			this.name = this.name().toLowerCase(Locale.ROOT);
 		}
 
 		@Override public String getSerializedName() { return this.name; }

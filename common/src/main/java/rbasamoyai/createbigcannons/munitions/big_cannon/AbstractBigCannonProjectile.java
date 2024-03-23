@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.block_terminal_properties.TerminalBallisticsBlockPropertiesHandler;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
@@ -58,7 +58,7 @@ public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileP
 		double bonus = 1 + Math.max(0, (mag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
 			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
 
-		double hardness = TerminalBallisticsBlockPropertiesHandler.getProperties(state).hardness(this.level, state, result.getBlockPos(), true) / bonus;
+		double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, result.getBlockPos(), true) / bonus;
 		this.setProjectileMass((float) Math.max(mass - hardness, 0));
 
 		if (!level.isClientSide()) this.level.destroyBlock(result.getBlockPos(), false);
