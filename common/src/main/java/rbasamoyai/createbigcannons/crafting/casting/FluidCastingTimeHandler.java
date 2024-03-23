@@ -1,15 +1,18 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.Executor;
+
+import javax.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -26,13 +29,11 @@ import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
-import javax.annotation.Nullable;
-
 public class FluidCastingTimeHandler {
 
-	public static final Map<TagKey<Fluid>, Integer> TAGS_TO_LOAD = new HashMap<>();
-	public static final Map<Fluid, Integer> FLUID_MAP = new HashMap<>();
-	public static final Map<Fluid, Integer> TAG_MAP = new HashMap<>();
+	public static final Map<TagKey<Fluid>, Integer> TAGS_TO_LOAD = new Object2ObjectLinkedOpenHashMap<>();
+	public static final Map<Fluid, Integer> FLUID_MAP = new Reference2ObjectOpenHashMap<>();
+	public static final Map<Fluid, Integer> TAG_MAP = new Reference2ObjectOpenHashMap<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();

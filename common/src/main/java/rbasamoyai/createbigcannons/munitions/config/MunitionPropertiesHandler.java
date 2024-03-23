@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.config;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -10,6 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
@@ -30,14 +31,14 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class MunitionPropertiesHandler {
 
-	private static final Map<EntityType<?>, MunitionPropertiesSerializer<?>> ENTITY_TYPE_SERIALIZERS = new HashMap<>();
-    private static final Map<EntityType<?>, MunitionProperties> PROJECTILES = new HashMap<>();
+	private static final Map<EntityType<?>, MunitionPropertiesSerializer<?>> ENTITY_TYPE_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
+    private static final Map<EntityType<?>, MunitionProperties> PROJECTILES = new Reference2ObjectOpenHashMap<>();
 
-	private static final Map<Block, MunitionPropertiesSerializer<?>> BLOCK_SERIALIZERS = new HashMap<>();
-	private static final Map<Block, MunitionProperties> BLOCK_PROPELLANT = new HashMap<>();
+	private static final Map<Block, MunitionPropertiesSerializer<?>> BLOCK_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
+	private static final Map<Block, MunitionProperties> BLOCK_PROPELLANT = new Reference2ObjectOpenHashMap<>();
 
-	private static final Map<Item, MunitionPropertiesSerializer<?>> ITEM_SERIALIZERS = new HashMap<>();
-	private static final Map<Item, MunitionProperties> ITEM_PROPELLANT = new HashMap<>();
+	private static final Map<Item, MunitionPropertiesSerializer<?>> ITEM_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
+	private static final Map<Item, MunitionProperties> ITEM_PROPELLANT = new Reference2ObjectOpenHashMap<>();
 
     public static class ReloadListenerProjectiles extends SimpleJsonResourceReloadListener {
 
