@@ -29,6 +29,7 @@ public abstract class AbstractMimickingBlockArmorProperties implements BlockArmo
 	public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) {
 		MimickingBlockArmorUnit properties = this.unitsByState.getOrDefault(state, this.defaultUnit);
 		BlockState copiedState = this.getCopiedState(level, state, pos);
+		if (copiedState.getDestroySpeed(level, pos) == -1) return copiedState.getBlock().getExplosionResistance();
 		return !recurse || this.isEmptyState(level, copiedState, state, pos) ? properties.emptyHardness()
 			: BlockArmorPropertiesHandler.getProperties(copiedState).hardness(level, copiedState, pos, false) * properties.materialHardnessMultiplier();
 	}
