@@ -44,4 +44,10 @@ public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesPro
 		return primaryPart + secondaryPart;
 	}
 
+	public MimickingBlockArmorUnit getPrimaryDefaultProperties() { return this.defaultPropertiesPrimary; }
+	public MimickingBlockArmorUnit getSecondaryDefaultProperties() { return this.defaultPropertiesSecondary; }
+
+	public Map<BlockState, MimickingBlockArmorUnit> getPrimaryPropertiesByState() { return this.primaryPropertiesByState; }
+	public Map<BlockState, MimickingBlockArmorUnit> getSecondaryPropertiesByState() { return this.secondaryPropertiesByState; }
+
 }

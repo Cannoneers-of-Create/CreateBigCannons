@@ -12,6 +12,7 @@ import com.google.gson.JsonSyntaxException;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,7 +27,7 @@ public record VariantBlockArmorProperties(SimpleBlockArmorProperties defaultProp
 		return this.propertiesByState.getOrDefault(state, this.defaultProperties).hardness(level, state, pos, recurse);
 	}
 
-	public static VariantBlockArmorProperties fromJson(Block block, String id, JsonObject obj) {
+	public static VariantBlockArmorProperties fromJson(Block block, JsonObject obj) {
 		StateDefinition<Block, BlockState> definition = block.getStateDefinition();
 		Set<BlockState> states = new HashSet<>(definition.getPossibleStates());
 		Map<BlockState, SimpleBlockArmorProperties> propertiesByState = new Reference2ObjectOpenHashMap<>();
@@ -40,7 +41,7 @@ public record VariantBlockArmorProperties(SimpleBlockArmorProperties defaultProp
 					throw new JsonSyntaxException("Invalid info for variant '" + key + "''");
 				}
 				JsonObject variantInfo = el.getAsJsonObject();
-				SimpleBlockArmorProperties properties = SimpleBlockArmorProperties.fromJson(id, variantInfo);
+				SimpleBlockArmorProperties properties = SimpleBlockArmorProperties.fromJson(variantInfo);
 				for (Iterator<BlockState> stateIter = states.iterator(); stateIter.hasNext(); ) {
 					BlockState state = stateIter.next();
 					if (pred.test(state)) {
@@ -50,7 +51,28 @@ public record VariantBlockArmorProperties(SimpleBlockArmorProperties defaultProp
 				}
 			}
 		}
-		SimpleBlockArmorProperties defaultProperties = SimpleBlockArmorProperties.fromJson(id, obj);
+		SimpleBlockArmorProperties defaultProperties = SimpleBlockArmorProperties.fromJson(obj);
+		return new VariantBlockArmorProperties(defaultProperties, propertiesByState);
+	}
+
+	public void toNetwork(FriendlyByteBuf buf) {
+		this.defaultProperties.toNetwork(buf);
+		buf.writeVarInt(this.propertiesByState.size());
+		for (Map.Entry<BlockState, SimpleBlockArmorProperties> entry : this.propertiesByState.entrySet()) {
+			buf.writeVarInt(Block.getId(entry.getKey()));
+			entry.getValue().toNetwork(buf);
+		}
+	}
+
+	public static VariantBlockArmorProperties fromNetwork(FriendlyByteBuf buf) {
+		SimpleBlockArmorProperties defaultProperties = SimpleBlockArmorProperties.fromNetwork(buf);
+		int sz = buf.readVarInt();
+		Map<BlockState, SimpleBlockArmorProperties> propertiesByState = new Reference2ObjectOpenHashMap<>();
+		for (int i = 0; i < sz; ++i) {
+			BlockState state = Block.stateById(buf.readVarInt());
+			SimpleBlockArmorProperties properties = SimpleBlockArmorProperties.fromNetwork(buf);
+			propertiesByState.put(state, properties);
+		}
 		return new VariantBlockArmorProperties(defaultProperties, propertiesByState);
 	}
 

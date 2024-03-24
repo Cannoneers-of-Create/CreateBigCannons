@@ -200,13 +200,13 @@ public class CBCCommonEvents {
 	public static void onLoadLevel(LevelAccessor level) {
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
 		if (level.getServer() != null && !level.isClientSide() && level.getServer().overworld() == level) {
-			BlockArmorPropertiesHandler.onDataPackReload();
+			BlockArmorPropertiesHandler.onDataPackReload(level.getServer());
 			FluidCastingTimeHandler.loadTags();
 		}
 	}
 
 	public static void onDatapackReload(MinecraftServer server) {
-		BlockArmorPropertiesHandler.onDataPackReload();
+		BlockArmorPropertiesHandler.onDataPackReload(server);
 		BlockRecipesManager.syncToAll(server);
 		MunitionPropertiesHandler.syncToAll(server);
 		AutocannonMaterialPropertiesHandler.syncToAll(server);
@@ -214,9 +214,11 @@ public class CBCCommonEvents {
 		BigCannonBreechStrengthHandler.syncToAll(server);
 		FluidCastingTimeHandler.syncToAll(server);
 		CannonMountPropertiesHandler.syncToAll(server);
+		DimensionMunitionPropertiesHandler.syncToAll(server);
 	}
 
 	public static void onDatapackSync(ServerPlayer player) {
+		BlockArmorPropertiesHandler.syncTo(player);
 		BlockRecipesManager.syncTo(player);
 		MunitionPropertiesHandler.syncTo(player);
 		AutocannonMaterialPropertiesHandler.syncTo(player);
@@ -225,6 +227,7 @@ public class CBCCommonEvents {
 		FluidCastingTimeHandler.syncTo(player);
 		BigCannonPropellantCompatibilityHandler.syncTo(player);
 		CannonMountPropertiesHandler.syncTo(player);
+		DimensionMunitionPropertiesHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {

@@ -2,10 +2,13 @@ package rbasamoyai.createbigcannons.block_armor_properties;
 
 import com.google.gson.JsonObject;
 
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.Block;
 
-public interface BlockArmorPropertiesSerializer {
+public interface BlockArmorPropertiesSerializer<T extends BlockArmorPropertiesProvider> {
 
-	BlockArmorPropertiesProvider loadBlockArmorPropertiesFromJson(Block block, String id, JsonObject obj);
+	T loadBlockArmorPropertiesFromJson(Block block, JsonObject obj);
+	void toNetwork(T properties, FriendlyByteBuf buf);
+	T fromNetwork(FriendlyByteBuf buf);
 
 }
