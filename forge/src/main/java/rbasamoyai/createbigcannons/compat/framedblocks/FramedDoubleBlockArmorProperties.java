@@ -37,6 +37,14 @@ public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesPro
 			primaryState = fbe.getCamoState();
 			secondaryState = fbe.getCamoStateTwo();
 		}
+
+		boolean secondaryUnbreakable = secondaryState.getDestroySpeed(level, pos) == -1;
+		if (primaryState.getDestroySpeed(level, pos) == -1) {
+			double primaryResistance = primaryState.getBlock().getExplosionResistance();
+			return secondaryUnbreakable ? Math.max(primaryResistance, secondaryState.getBlock().getExplosionResistance()) : primaryResistance;
+		}
+		if (secondaryState.getDestroySpeed(level, pos) == -1) return secondaryState.getBlock().getExplosionResistance();
+
 		double primaryPart = !recurse || primaryState.isAir() ? primary.emptyHardness()
 			: BlockArmorPropertiesHandler.getProperties(primaryState).hardness(level, primaryState, pos, false) * primary.materialHardnessMultiplier();
 		double secondaryPart = !recurse || secondaryState.isAir() ? secondary.emptyHardness()

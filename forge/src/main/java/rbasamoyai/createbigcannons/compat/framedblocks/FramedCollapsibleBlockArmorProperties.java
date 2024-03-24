@@ -20,7 +20,8 @@ public class FramedCollapsibleBlockArmorProperties extends SingleFramedBlockArmo
 	}
 
 	public double getCollapsibleMultiplier(Level level, BlockState state, BlockPos pos) {
-		if (!((level.getBlockEntity(pos)) instanceof FramedCollapsibleBlockEntity fcbe)) return 1;
+		if (!((level.getBlockEntity(pos)) instanceof FramedCollapsibleBlockEntity fcbe)
+			|| fcbe.getCamoState().getDestroySpeed(level, pos) == -1) return 1;
 		byte[] offsets = fcbe.getVertexOffsets();
 		int result = 0;
 		for (byte b : offsets) result += 16 - b;
