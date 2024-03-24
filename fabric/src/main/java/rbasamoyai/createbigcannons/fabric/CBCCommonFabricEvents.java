@@ -32,6 +32,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCCommonEvents;
+import rbasamoyai.createbigcannons.cannon_control.config.DefaultCannonMountPropertiesSerializers;
 import rbasamoyai.createbigcannons.compat.copycats.CopycatsCompat;
 import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 
@@ -54,6 +55,7 @@ public class CBCCommonFabricEvents {
 
 	public static void onModsLoaded(EnvType type) {
 		DefaultCreateCompat.init();
+		DefaultCannonMountPropertiesSerializers.init();
 		CBCModsFabric.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init());
 	}
 

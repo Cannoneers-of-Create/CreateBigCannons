@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
@@ -40,6 +39,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -52,7 +53,6 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMateria
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -74,24 +74,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	protected int mortarDelay = 0;
 	protected ItemStack cachedMortarRound = ItemStack.EMPTY;
-
-	@Override
-	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
-		if (this.isDropMortar()) return -15;
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 30;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
-		return 0;
-	}
-
-	@Override
-	public float maximumElevation(@Nonnull ControlPitchContraption controller) {
-		if (this.isDropMortar()) return 85;
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 60;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 30;
-		return 0;
-	}
 
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
@@ -579,6 +561,11 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	@Override
 	public Vec3 getInteractionVec(PitchOrientedContraptionEntity poce) {
 		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.initialOrientation.getOpposite())), 1);
+	}
+
+	@Override
+	public ICannonContraptionType getCannonType() {
+		return this.isDropMortar() ? CBCCannonContraptionTypes.DROP_MORTAR : CBCCannonContraptionTypes.BIG_CANNON;
 	}
 
 	@Override

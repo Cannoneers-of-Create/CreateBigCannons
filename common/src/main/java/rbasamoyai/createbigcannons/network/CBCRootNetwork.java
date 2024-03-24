@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import rbasamoyai.createbigcannons.cannon_control.config.CannonMountPropertiesHandler.ClientboundSyncCannonMountPropertiesPacket;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler.ClientboundAutocannonMaterialPropertiesPacket;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler.ClientboundBigCannonBreechStrengthPacket;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialPropertiesHandler.ClientboundBigCannonMaterialPropertiesPacket;
@@ -22,7 +23,7 @@ public class CBCRootNetwork {
 	private static final Int2ObjectMap<Function<FriendlyByteBuf, ? extends RootPacket>> ID_TO_CONSTRUCTOR = new Int2ObjectOpenHashMap<>();
 	private static final Object2IntMap<Class<? extends RootPacket>> TYPE_TO_ID = new Object2IntOpenHashMap<>();
 
-	public static final String VERSION = "1.3.1";
+	public static final String VERSION = "1.3.2";
 
 	public static void init() {
 		int id = 0;
@@ -45,6 +46,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ServerboundUseWelderPacket.class, ServerboundUseWelderPacket::new);
 		addMsg(id++, ClientboundBigCannonPropellantPropertiesPacket.class, ClientboundBigCannonPropellantPropertiesPacket::copyOf);
 		addMsg(id++, ClientboundFluidBlobStackSyncPacket.class, ClientboundFluidBlobStackSyncPacket::new);
+		addMsg(id++, ClientboundSyncCannonMountPropertiesPacket.class, ClientboundSyncCannonMountPropertiesPacket::copyOf);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {
