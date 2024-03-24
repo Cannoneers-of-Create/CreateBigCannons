@@ -52,7 +52,7 @@ public class AutocannonMaterialPropertiesHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(PROPERTIES.size());
 		for (Map.Entry<AutocannonMaterial, AutocannonMaterialProperties> entry : PROPERTIES.entrySet()) {
-			buf.writeUtf(entry.getKey().name().toString());
+			buf.writeResourceLocation(entry.getKey().name());
 			entry.getValue().writeBuf(buf);
 		}
 	}
@@ -62,7 +62,7 @@ public class AutocannonMaterialPropertiesHandler {
 		int sz = buf.readVarInt();
 
 		for (int i = 0; i < sz; ++i) {
-			PROPERTIES.put(AutocannonMaterial.fromName(new ResourceLocation(buf.readUtf())), AutocannonMaterialProperties.fromBuf(buf));
+			PROPERTIES.put(AutocannonMaterial.fromName(buf.readResourceLocation()), AutocannonMaterialProperties.fromBuf(buf));
 		}
 	}
 

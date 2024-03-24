@@ -189,21 +189,21 @@ public class MunitionPropertiesHandler {
 
 	@SuppressWarnings("unchecked")
 	private static <T extends MunitionProperties> void toNetworkCasted(FriendlyByteBuf buf, EntityType<?> type, T properties) {
-		buf.writeUtf(Registry.ENTITY_TYPE.getKey(type).toString());
+		buf.writeResourceLocation(Registry.ENTITY_TYPE.getKey(type));
 		MunitionPropertiesSerializer<T> ser = (MunitionPropertiesSerializer<T>) ENTITY_TYPE_SERIALIZERS.get(type);
 		ser.toNetwork(buf, properties);
 	}
 
 	@SuppressWarnings("unchecked")
 	private static <T extends MunitionProperties> void toNetworkCasted(FriendlyByteBuf buf, Block block, T properties) {
-		buf.writeUtf(Registry.BLOCK.getKey(block).toString());
+		buf.writeResourceLocation(Registry.BLOCK.getKey(block));
 		MunitionPropertiesSerializer<T> ser = (MunitionPropertiesSerializer<T>) BLOCK_SERIALIZERS.get(block);
 		ser.toNetwork(buf, properties);
 	}
 
 	@SuppressWarnings("unchecked")
 	private static <T extends MunitionProperties> void toNetworkCasted(FriendlyByteBuf buf, Item item, T properties) {
-		buf.writeUtf(Registry.ITEM.getKey(item).toString());
+		buf.writeResourceLocation(Registry.ITEM.getKey(item));
 		MunitionPropertiesSerializer<T> ser = (MunitionPropertiesSerializer<T>) ITEM_SERIALIZERS.get(item);
 		ser.toNetwork(buf, properties);
 	}
@@ -212,7 +212,7 @@ public class MunitionPropertiesHandler {
 		PROJECTILES.clear();
 		int szProj = buf.readVarInt();
 		for (int i = 0; i < szProj; ++i) {
-			ResourceLocation loc = new ResourceLocation(buf.readUtf());
+			ResourceLocation loc = buf.readResourceLocation();
 			EntityType<?> type = Registry.ENTITY_TYPE.get(loc);
 			MunitionPropertiesSerializer<?> ser = ENTITY_TYPE_SERIALIZERS.get(type);
 			PROJECTILES.put(type, ser.fromNetwork(loc, buf));
@@ -220,7 +220,7 @@ public class MunitionPropertiesHandler {
 		BLOCK_PROPELLANT.clear();
 		int szBlock = buf.readVarInt();
 		for (int i = 0; i < szBlock; ++i) {
-			ResourceLocation loc = new ResourceLocation(buf.readUtf());
+			ResourceLocation loc = buf.readResourceLocation();
 			Block block = Registry.BLOCK.get(loc);
 			MunitionPropertiesSerializer<?> ser = BLOCK_SERIALIZERS.get(block);
 			BLOCK_PROPELLANT.put(block, ser.fromNetwork(loc, buf));
@@ -228,7 +228,7 @@ public class MunitionPropertiesHandler {
 		ITEM_PROPELLANT.clear();
 		int szItem = buf.readVarInt();
 		for (int i = 0; i < szItem; ++i) {
-			ResourceLocation loc = new ResourceLocation(buf.readUtf());
+			ResourceLocation loc = buf.readResourceLocation();
 			Item item = Registry.ITEM.get(loc);
 			MunitionPropertiesSerializer<?> ser = ITEM_SERIALIZERS.get(item);
 			ITEM_PROPELLANT.put(item, ser.fromNetwork(loc, buf));

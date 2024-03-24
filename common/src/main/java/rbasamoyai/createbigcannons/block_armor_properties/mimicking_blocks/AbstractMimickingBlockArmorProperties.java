@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -38,10 +39,13 @@ public abstract class AbstractMimickingBlockArmorProperties implements BlockArmo
 		return copiedState == null || copiedState.isAir();
 	}
 
-	public static BlockArmorPropertiesSerializer createMimicrySerializer(Factory fac) {
-		return new BlockArmorPropertiesSerializer() {
+	public MimickingBlockArmorUnit getDefaultProperties() { return this.defaultUnit; }
+	public Map<BlockState, MimickingBlockArmorUnit> getPropertiesByState() { return this.unitsByState; }
+
+	public static <T extends AbstractMimickingBlockArmorProperties> BlockArmorPropertiesSerializer<T> createMimicrySerializer(Factory<T> fac) {
+		return new BlockArmorPropertiesSerializer<>() {
 			@Override
-			public BlockArmorPropertiesProvider loadBlockArmorPropertiesFromJson(Block block, String id, JsonObject obj) {
+			public T loadBlockArmorPropertiesFromJson(Block block, JsonObject obj) {
 				MimickingBlockArmorUnit defaultProperties = MimickingBlockArmorUnit.fromJson(obj);
 				Map<BlockState, MimickingBlockArmorUnit> propertiesByState = new Reference2ObjectOpenHashMap<>();
 				if (obj.has("variants") && obj.get("variants").isJsonObject()) {
@@ -49,11 +53,25 @@ public abstract class AbstractMimickingBlockArmorProperties implements BlockArmo
 				}
 				return fac.apply(defaultProperties, propertiesByState);
 			}
+
+			@Override
+			public void toNetwork(T properties, FriendlyByteBuf buf) {
+				properties.getDefaultProperties().toNetwork(buf);
+				MimickingBlockArmorUnit.writePropertiesToBuf(properties.getPropertiesByState(), buf);
+			}
+
+			@Override
+			public T fromNetwork(FriendlyByteBuf buf) {
+				MimickingBlockArmorUnit defaultProperties = MimickingBlockArmorUnit.fromNetwork(buf);
+				Map<BlockState, MimickingBlockArmorUnit> propertiesByState = MimickingBlockArmorUnit.readPropertiesFromBuf(buf);
+				return fac.apply(defaultProperties, propertiesByState);
+			}
 		};
 	}
 
 	@FunctionalInterface
-	public interface Factory extends BiFunction<MimickingBlockArmorUnit, Map<BlockState, MimickingBlockArmorUnit>, AbstractMimickingBlockArmorProperties> {
+	public interface Factory<T extends AbstractMimickingBlockArmorProperties>
+		extends BiFunction<MimickingBlockArmorUnit, Map<BlockState, MimickingBlockArmorUnit>, T> {
 	}
 
 }

@@ -8,6 +8,7 @@ import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler.ClientboundSyncBlockArmorPropertiesPacket;
 import rbasamoyai.createbigcannons.cannon_control.config.CannonMountPropertiesHandler.ClientboundSyncCannonMountPropertiesPacket;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialPropertiesHandler.ClientboundAutocannonMaterialPropertiesPacket;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.BigCannonBreechStrengthHandler.ClientboundBigCannonBreechStrengthPacket;
@@ -16,6 +17,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler.ClientboundFluidCastingTimePacket;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler.ClientboundBigCannonPropellantPropertiesPacket;
+import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler.ClientboundSyncDimensionMunitionPropertiesPacket;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler.ClientboundMunitionPropertiesPacket;
 
 public class CBCRootNetwork {
@@ -47,6 +49,8 @@ public class CBCRootNetwork {
 		addMsg(id++, ClientboundBigCannonPropellantPropertiesPacket.class, ClientboundBigCannonPropellantPropertiesPacket::copyOf);
 		addMsg(id++, ClientboundFluidBlobStackSyncPacket.class, ClientboundFluidBlobStackSyncPacket::new);
 		addMsg(id++, ClientboundSyncCannonMountPropertiesPacket.class, ClientboundSyncCannonMountPropertiesPacket::copyOf);
+		addMsg(id++, ClientboundSyncBlockArmorPropertiesPacket.class, ClientboundSyncBlockArmorPropertiesPacket::copyOf);
+		addMsg(id++, ClientboundSyncDimensionMunitionPropertiesPacket.class, ClientboundSyncDimensionMunitionPropertiesPacket::copyOf);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {
