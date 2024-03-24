@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.item.TooltipModifier;
 
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -44,6 +45,7 @@ public class CreateBigCannons {
 		CBCMenuTypes.register();
 		CBCFluids.register();
 		CBCRecipeTypes.register();
+		CBCCannonContraptionTypes.register();
 
 		CBCContraptionTypes.prepare();
 		CBCArmInteractionPointTypes.register();

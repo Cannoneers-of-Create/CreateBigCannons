@@ -20,6 +20,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
+import rbasamoyai.createbigcannons.cannon_control.config.CannonMountPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public abstract class AbstractMountedCannonContraption extends Contraption {
@@ -27,9 +29,27 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 	protected Direction initialOrientation = Direction.NORTH;
 	protected BlockPos startPos = BlockPos.ZERO;
 
-	public abstract float maximumDepression(@Nonnull ControlPitchContraption controller);
+	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
+		ICannonContraptionType type = this.getCannonType();
+		if (controller instanceof BlockEntity beMount) {
+			return CannonMountPropertiesHandler.getProperties(beMount, type).maximumDepression(beMount);
+		} else if (controller instanceof Entity entityMount) {
+			return CannonMountPropertiesHandler.getProperties(entityMount, type).maximumDepression(entityMount);
+		} else {
+			return 0;
+		}
+	}
 
-	public abstract float maximumElevation(@Nonnull ControlPitchContraption controller);
+	public float maximumElevation(@Nonnull ControlPitchContraption controller) {
+		ICannonContraptionType type = this.getCannonType();
+		if (controller instanceof BlockEntity beMount) {
+			return CannonMountPropertiesHandler.getProperties(beMount, type).maximumElevation(beMount);
+		} else if (controller instanceof Entity entityMount) {
+			return CannonMountPropertiesHandler.getProperties(entityMount, type).maximumElevation(entityMount);
+		} else {
+			return 0;
+		}
+	}
 
 	public Direction initialOrientation() {
 		return this.initialOrientation;
@@ -115,6 +135,8 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 	public BlockPos getStartPos() {
 		return this.startPos;
 	}
+
+	public abstract ICannonContraptionType getCannonType();
 
 	public static int getMaxCannonLength() {
 		return CBCConfigs.SERVER.cannons.maxCannonLength.get();

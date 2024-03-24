@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
-
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -38,20 +36,21 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
-import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialProperties;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -68,22 +67,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	private AutocannonMaterial cannonMaterial;
 	private BlockPos recoilSpringPos;
 	private boolean isHandle = false;
-
-	@Override
-	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 45;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
-		return 0;
-	}
-
-	@Override
-	public float maximumElevation(@Nonnull ControlPitchContraption controller) {
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 90;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return this.isHandle ? 45 : 90;
-		return 0;
-	}
 
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
@@ -443,7 +426,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos), 1);
 	}
 
-	@Override
+    @Override
+	public ICannonContraptionType getCannonType() {
+		return this.isHandle ? CBCCannonContraptionTypes.HANDLE_AUTOCANNON : CBCCannonContraptionTypes.AUTOCANNON;
+	}
+
+    @Override
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);
 		tag.putString("AutocannonMaterial", this.cannonMaterial == null ? CBCAutocannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
