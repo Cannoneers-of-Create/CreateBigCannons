@@ -61,5 +61,6 @@ Fixes:
 - Fixed Mechanical Arm taking entire stack when loading quick-firing breech
 - Fixed Fluid Stack serializer crashing other mods
 - Fixed Fluid tags for certain recipes
+- Fixed CBC GUIs obstructing recipe viewer items
 
 *May have issues with contraption-modifying mods such as Create: Interactive
