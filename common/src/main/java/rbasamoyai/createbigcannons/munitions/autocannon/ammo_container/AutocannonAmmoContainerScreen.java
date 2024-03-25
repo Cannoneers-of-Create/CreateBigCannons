@@ -6,6 +6,10 @@ import static rbasamoyai.createbigcannons.index.CBCGuiTextures.AUTOCANNON_AMMO_C
 import static rbasamoyai.createbigcannons.index.CBCGuiTextures.CREATIVE_AUTOCANNON_AMMO_CONTAINER_BG;
 import static rbasamoyai.createbigcannons.index.CBCGuiTextures.CREATIVE_AUTOCANNON_AMMO_CONTAINER_SELECTOR;
 
+import java.util.Collections;
+import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
@@ -14,12 +18,14 @@ import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 import com.simibubi.create.foundation.utility.Lang;
 
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCGuiTextures;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ServerboundSetContainerValuePacket;
 
@@ -28,6 +34,7 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 	protected ScrollInput setValue;
 	protected int lastUpdated = -1;
 	protected IconButton confirmButton;
+	private List<Rect2i> extraAreas = Collections.emptyList();
 
 	public AutocannonAmmoContainerScreen(AutocannonAmmoContainerMenu container, Inventory inv, Component title) {
 		super(container, inv, title);
@@ -36,8 +43,8 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 	@Override
 	protected void init() {
 		boolean isCreative = this.menu.isCreativeContainer();
-		int width = isCreative ? CREATIVE_AUTOCANNON_AMMO_CONTAINER_BG.width : AUTOCANNON_AMMO_CONTAINER_BG.width;
-		this.setWindowSize(width, AUTOCANNON_AMMO_CONTAINER_BG.height + 4 + PLAYER_INVENTORY.height);
+		CBCGuiTextures bg = isCreative ? CREATIVE_AUTOCANNON_AMMO_CONTAINER_BG : AUTOCANNON_AMMO_CONTAINER_BG;
+		this.setWindowSize(bg.width, bg.height + 4 + PLAYER_INVENTORY.height);
 		this.setWindowOffset(1, 0);
 		super.init();
 
@@ -49,6 +56,8 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 		this.confirmButton = new IconButton(this.leftPos + this.imageWidth - 33, this.topPos + 59, AllIcons.I_CONFIRM);
 		this.confirmButton.withCallback(this::onClose);
 		this.addRenderableWidget(this.confirmButton);
+
+		this.extraAreas = ImmutableList.of(new Rect2i(this.leftPos + bg.width, this.topPos + bg.height - 68, 60, 60));
 	}
 
 	@Override
@@ -59,24 +68,23 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 		boolean isCreative = this.menu.isCreativeContainer();
 		int offsX = this.setValue.getState() * 8 - 8;
 
+		CBCGuiTextures bg = isCreative ? CREATIVE_AUTOCANNON_AMMO_CONTAINER_BG : AUTOCANNON_AMMO_CONTAINER_BG;
+		bg.render(poseStack, this.leftPos, this.topPos);
 		if (isCreative) {
-			CREATIVE_AUTOCANNON_AMMO_CONTAINER_BG.render(poseStack, this.leftPos, this.topPos);
 			this.font.draw(poseStack, this.title, this.leftPos + 4, this.topPos + 3, 0x54214f);
-			CREATIVE_AUTOCANNON_AMMO_CONTAINER_SELECTOR.render(poseStack, this.leftPos + 86 + offsX, this.topPos + 23);
 		} else {
-			AUTOCANNON_AMMO_CONTAINER_BG.render(poseStack, this.leftPos, this.topPos);
 			drawCenteredString(poseStack, this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
-			AUTOCANNON_AMMO_CONTAINER_SELECTOR.render(poseStack, this.leftPos + 86 + offsX, this.topPos + 23);
 		}
+		CBCGuiTextures sel = isCreative ? CREATIVE_AUTOCANNON_AMMO_CONTAINER_SELECTOR : AUTOCANNON_AMMO_CONTAINER_SELECTOR;
+		sel.render(poseStack, this.leftPos + 86 + offsX, this.topPos + 23);
 
 		BlockState state = isCreative ? CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.getDefaultState()
 			: CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getDefaultState();
-		int add = isCreative ? 52 : 32;
 		state = state.setValue(AutocannonAmmoContainerBlock.CONTAINER_STATE, AutocannonAmmoContainerBlock.State.getFromFilled(this.menu.isFilled()));
 		GuiGameElement.of(state)
 			.scale(50)
 			.rotate(30, 135, 0)
-			.at(this.leftPos + AUTOCANNON_AMMO_CONTAINER_BG.width + add, this.topPos + AUTOCANNON_AMMO_CONTAINER_BG.height, 200)
+			.at(this.leftPos + bg.width + 32, this.topPos + bg.height, 200)
 			.render(poseStack);
 	}
 
@@ -126,5 +134,7 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 			})
 			.setState(Mth.clamp(this.menu.getValue(), 1, 6));
 	}
+
+	@Override public List<Rect2i> getExtraAreas() { return this.extraAreas; }
 
 }
