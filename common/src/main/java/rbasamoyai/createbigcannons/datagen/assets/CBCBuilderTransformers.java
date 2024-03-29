@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.datagen.assets;
 
-import static rbasamoyai.createbigcannons.index.CBCItems.modTag;
-
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
@@ -462,7 +460,7 @@ public class CBCBuilderTransformers {
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Power", "Power")))));
 			})
 			.item(BigCartridgeBlockItem::new)
-			.tag(modTag("big_cannon_cartridges"))
+			.tag(CBCTags.CBCItemTags.BIG_CANNON_CARTRIDGES)
 			.model((c, p) -> {
 				p.withExistingParent(c.getName(), emptyLoc)
 					.override().model(p.getExistingFile(filledLoc)).predicate(CreateBigCannons.resource("big_cartridge_filled"), 1).end();
@@ -504,7 +502,7 @@ public class CBCBuilderTransformers {
 			.item(AutocannonAmmoContainerItem::new)
 			.properties(p -> p.stacksTo(1))
 			.properties(p -> isCreative ? p.rarity(Rarity.EPIC) : p)
-			.tag(modTag("autocannon_ammo_containers"))
+			.tag(CBCTags.CBCItemTags.AUTOCANNON_AMMO_CONTAINERS)
 			.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/autocannon_ammo_containers/" + root)))
 			.build();
 	}

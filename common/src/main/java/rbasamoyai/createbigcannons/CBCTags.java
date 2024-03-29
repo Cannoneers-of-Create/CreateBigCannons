@@ -1,6 +1,13 @@
 package rbasamoyai.createbigcannons;
 
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
+
 import com.tterrag.registrate.providers.ProviderType;
+
 import net.minecraft.core.Registry;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
@@ -12,12 +19,6 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Supplier;
-
-import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCTags {
 
@@ -118,7 +119,15 @@ public class CBCTags {
 			DUST_GLOWSTONE = commonTag("dust_glowstone", "dusts/glowstone", "glowstone_dusts"),
 			INEXPENSIVE_BIG_CARTRIDGE_SHEET = makeTag("inexpensive_big_cartridge_sheet"),
 			NITROPOWDER = makeTag("nitropowder"),
-			BIG_CANNON_PROPELLANT = makeTag("big_cannon_propellant");
+			BIG_CANNON_PROPELLANT = makeTag("big_cannon_propellant"),
+			BIG_CANNON_PROPELLANT_BAGS = makeTag("big_cannon_propellant_bags"),
+			BIG_CANNON_CARTRIDGES = makeTag("big_cannon_cartridges"),
+			BIG_CANNON_PROJECTILES = makeTag("big_cannon_projectiles"),
+			AUTOCANNON_AMMO_CONTAINERS = makeTag("autocannon_ammo_containers"),
+			FUZES = makeTag("fuzes"),
+			SPENT_AUTOCANNON_CASINGS = makeTag("spent_autocannon_casings"),
+			AUTOCANNON_CARTRIDGES = makeTag("autocannon_cartridges"),
+			AUTOCANNON_ROUNDS = makeTag("autocannon_rounds");
 
 		public static TagKey<Item> makeTag(String loc) {
 			TagKey<Item> tag = TagKey.create(Registry.ITEM_REGISTRY, CreateBigCannons.resource(loc));
@@ -182,7 +191,7 @@ public class CBCTags {
 			addIdsToItemTag(BLOCK_STEEL, alloyed("steel_block"));
 			addIdsToItemTag(BLOCK_CAST_IRON, createdeco("cast_iron_block"));
 			addTagsToItemTag(INEXPENSIVE_BIG_CARTRIDGE_SHEET, SHEET_GOLD, SHEET_COPPER);
-			addOptionalTagsToItemTag(BIG_CANNON_PROPELLANT, List.of(CreateBigCannons.resource("big_cannon_propellant_bags"), CreateBigCannons.resource("big_cannon_cartridges")));
+			addTagsToItemTag(BIG_CANNON_PROPELLANT, BIG_CANNON_PROPELLANT_BAGS, BIG_CANNON_CARTRIDGES);
 		}
 	}
 

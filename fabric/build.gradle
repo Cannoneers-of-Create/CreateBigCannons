@@ -87,7 +87,7 @@ dependencies {
     modCompileOnly("mezz.jei:jei-${minecraft_version}-common:${jei_fabric_version}")
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}")
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}")
-//    modCompileOnly("dev.emi:emi:${emi_version}")
+    modCompileOnly("dev.emi:emi:${emi_version}")
 
     modLocalRuntime("curse.maven:spark-361579:${spark_fabric_file}") // Spark
 

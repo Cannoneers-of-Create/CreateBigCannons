@@ -36,16 +36,16 @@ public class CBCItems {
 	}
 
 	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new)
-		.tag(modTag("fuzes"))
+		.tag(CBCTags.CBCItemTags.FUZES)
 		.register();
 	public static final ItemEntry<TimedFuzeItem> TIMED_FUZE = REGISTRATE.item("timed_fuze", TimedFuzeItem::new)
-		.tag(modTag("fuzes"))
+		.tag(CBCTags.CBCItemTags.FUZES)
 		.register();
 	public static final ItemEntry<ProximityFuzeItem> PROXIMITY_FUZE = REGISTRATE.item("proximity_fuze", ProximityFuzeItem::new)
-		.tag(modTag("fuzes"))
+		.tag(CBCTags.CBCItemTags.FUZES)
 		.register();
 	public static final ItemEntry<DelayedImpactFuzeItem> DELAYED_IMPACT_FUZE = REGISTRATE.item("delayed_impact_fuze", DelayedImpactFuzeItem::new)
-		.tag(modTag("fuzes"))
+		.tag(CBCTags.CBCItemTags.FUZES)
 		.register();
 
 	public static final ItemEntry<Item>
@@ -112,7 +112,7 @@ public class CBCItems {
 		AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
 
 	EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
-		.tag(modTag("spent_autocannon_casings"))
+		.tag(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS)
 		.model((c, p) -> {})
 		.register(),
 
@@ -135,7 +135,7 @@ public class CBCItems {
 	NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.CBCItemTags.NITROPOWDER).register(),
 
 	EMPTY_MACHINE_GUN_ROUND = REGISTRATE.item("empty_machine_gun_round", Item::new)
-		.tag(modTag("spent_autocannon_casings"))
+		.tag(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS)
 		.register(),
 
 	TRACER_TIP = REGISTRATE.item("tracer_tip", Item::new).register();
@@ -170,24 +170,24 @@ public class CBCItems {
 
 	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE
 		.item("autocannon_cartridge", AutocannonCartridgeItem::new)
-		.tag(modTag("autocannon_cartridges"))
+		.tag(CBCTags.CBCItemTags.AUTOCANNON_CARTRIDGES)
 		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<APAutocannonRoundItem> AP_AUTOCANNON_ROUND = REGISTRATE
 		.item("ap_autocannon_round", APAutocannonRoundItem::new)
 		.lang("Armor Piercing (AP) Autocannon Round")
-		.tag(modTag("autocannon_rounds"))
+		.tag(CBCTags.CBCItemTags.AUTOCANNON_ROUNDS)
 		.register();
 
 	public static final ItemEntry<FlakAutocannonRoundItem> FLAK_AUTOCANNON_ROUND = REGISTRATE
 		.item("flak_autocannon_round", FlakAutocannonRoundItem::new)
-		.tag(modTag("autocannon_rounds"))
+		.tag(CBCTags.CBCItemTags.AUTOCANNON_ROUNDS)
 		.register();
 
 	public static final ItemEntry<MachineGunRoundItem> MACHINE_GUN_ROUND = REGISTRATE
 		.item("machine_gun_round", MachineGunRoundItem::new)
-		.tag(modTag("autocannon_cartridges"))
+		.tag(CBCTags.CBCItemTags.AUTOCANNON_CARTRIDGES)
 		.register();
 
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE
@@ -232,6 +232,5 @@ public class CBCItems {
 	public static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registry.ITEM_REGISTRY, loc); }
 	private static TagKey<Item> forgeTag(String loc) { return tag(new ResourceLocation("forge", loc)); }
 	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
-	public static TagKey<Item> modTag(String loc) { return tag(CreateBigCannons.resource(loc)); }
 
 }

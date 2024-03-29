@@ -7,7 +7,6 @@ Create Big Cannons 0.5.4, with more QoL features and minor fixes.
 Now supports Create Fabric 0.5.1.f.
 
 Added:
-- Added REI compatibility
 - Added ability for some base Create contraptions to load cannons*
  - Mechanical Piston, Gantry, and Rope Pulley
 - Added Cannon Loader breaking features similar to Mechanical Piston
@@ -34,6 +33,8 @@ Added:
 - Added block properties compatibility with Create Copycat blocks
 - Added block properties compatibility with Copycats+
 - Added cannon pitch config for different cannon mounts and different cannon types
+[Fabric] - Added REI compatibility
+[Fabric] - Added EMI compatibility
 [Forge] - Added block properties compatibility with Framed Blocks
 Changes:
 - Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
@@ -61,6 +62,6 @@ Fixes:
 - Fixed Mechanical Arm taking entire stack when loading quick-firing breech
 - Fixed Fluid Stack serializer crashing other mods
 - Fixed Fluid tags for certain recipes
-- Fixed CBC GUIs obstructing recipe viewer items
+- Fixed CBC GUIs obstructing recipe viewer items in JEI, REI, and EMI
 
 *May have issues with contraption-modifying mods such as Create: Interactive
