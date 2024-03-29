@@ -30,6 +30,9 @@
     "rei_client": [
       "rbasamoyai.createbigcannons.compat.rei.CBCREI"
     ],
+    "emi": [
+      "rbasamoyai.createbigcannons.compat.emi.CBCEmiPlugin"
+    ],
     "modmenu": [
       "rbasamoyai.createbigcannons.compat.modmenu.CBCModMenuCompat"
     ]

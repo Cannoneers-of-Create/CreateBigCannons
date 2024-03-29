@@ -325,10 +325,17 @@ public class CBCLangGen {
 		createEMITagTranslation(fabricTag("nuggets/bronze"), "Bronze Nuggets (Forge Format)");
 		createEMITagTranslation(fabricTag("nuggets/cast_iron"), "Cast Iron Nuggets (Forge Format)");
 		createEMITagTranslation(fabricTag("nuggets/steel"), "Steel Nuggets (Forge Format)");
+
+		createEMICategoryTranslation("melting", "Basin Melting");
+		createEMICategoryTranslation("cannon_casting");
+		createEMICategoryTranslation("built_up_heating", "Cannon Building");
+		createEMICategoryTranslation("drill_boring");
+		createEMICategoryTranslation("incomplete_cannon_blocks");
 	}
 
 	private static void createEMITagTranslation(TagKey<?> tag, String enUS) {
 		ResourceLocation loc = tag.location();
+		//REGISTRATE.addRawLang("tag." + tag.registry().location().getPath() + "." + loc.getNamespace() + "." + loc.getPath().replace('/', '.'), enUS);
 		REGISTRATE.addRawLang("tag." + loc.getNamespace() + "." + loc.getPath().replace('/', '.'), enUS);
 	}
 
@@ -336,6 +343,14 @@ public class CBCLangGen {
 
 	private static void createEMITagTranslation(TagKey<?> tag) {
 		createEMITagTranslation(tag, capitalizeAll(tag.location().getPath().replace('_', ' ')));
+	}
+
+	private static void createEMICategoryTranslation(String id, String enUS) {
+		REGISTRATE.addRawLang("emi.category." + CreateBigCannons.MOD_ID + "." + id, enUS);
+	}
+
+	private static void createEMICategoryTranslation(String id) {
+		createEMICategoryTranslation(id, capitalizeAll(id.replace('_', ' ')));
 	}
 
 	private static String capitalizeAll(String str) {

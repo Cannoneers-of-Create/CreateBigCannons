@@ -53,7 +53,12 @@ Additions: \
 &plus; `"tag.createbigcannons.sheet_iron": "Iron Sheets"` \
 &plus; `"tag.createbigcannons.sheet_steel": "Steel Sheets"` \
 &plus; `"tag.createbigcannons.spent_autocannon_casings": "Spent Autocannon Casings"` \
-&plus; `"tag.createbigcannons.stone": "Stone"`
+&plus; `"tag.createbigcannons.stone": "Stone"` \
+&plus; `"emi.category.createbigcannons.built_up_heating": "Cannon Building"` \
+&plus; `"emi.category.createbigcannons.cannon_casting": "Cannon Casting"` \
+&plus; `"emi.category.createbigcannons.drill_boring": "Drill Boring"` \
+&plus; `"emi.category.createbigcannons.incomplete_cannon_blocks": "Incomplete Cannon Blocks"` \
+&plus; `"emi.category.createbigcannons.melting": "Basin Melting"`
 
 Key Changes: \
 `"item.createbigcannons.autocannon_ammo_container"` → `"block.createbigcannons.autocannon_ammo_container"`
