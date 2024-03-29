@@ -63,5 +63,6 @@ Fixes:
 - Fixed Fluid Stack serializer crashing other mods
 - Fixed Fluid tags for certain recipes
 - Fixed CBC GUIs obstructing recipe viewer items in JEI, REI, and EMI
+- Fixed Cannon Builder not pushing on unconnected layers of the same shape
 
 *May have issues with contraption-modifying mods such as Create: Interactive

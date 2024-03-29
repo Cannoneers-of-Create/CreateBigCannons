@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
@@ -213,12 +215,13 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		return result;
 	}
 
-	public LayeredBigCannonBlockEntity getSplitBlockEntity(Collection<CannonCastShape> layers, Direction from) {
+	public LayeredBigCannonBlockEntity getSplitBlockEntity(Collection<CannonCastShape> layers, Direction from, @Nullable Direction movementDirection) {
+		boolean forced = movementDirection != null && from == movementDirection.getOpposite();
 		LayeredBigCannonBlockEntity newLayer = new LayeredBigCannonBlockEntity(CBCBlockEntities.LAYERED_CANNON.get(), this.worldPosition, this.getBlockState());
 		newLayer.baseMaterial = this.baseMaterial;
 		newLayer.currentFacing = this.currentFacing;
 		for (CannonCastShape layer : layers) {
-			if (!this.layeredBlocks.containsKey(layer) || from != null && !this.isLayerConnectedTo(from, layer))
+			if (!this.layeredBlocks.containsKey(layer) || from != null && !this.isLayerConnectedTo(from, layer) && !forced)
 				continue;
 			newLayer.setLayer(layer, this.getLayer(layer));
 			for (Direction dir : Iterate.directions) {
@@ -232,8 +235,8 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		return newLayer;
 	}
 
-	public LayeredBigCannonBlockEntity getSplitBlockEntity(CannonCastShape fullShape, Direction from) {
-		return this.getSplitBlockEntity(Arrays.asList(fullShape), from);
+	public LayeredBigCannonBlockEntity getSplitBlockEntity(CannonCastShape fullShape, Direction from, @Nullable Direction movementDirection) {
+		return this.getSplitBlockEntity(Arrays.asList(fullShape), from, movementDirection);
 	}
 
 	public void removeLayersOfOther(LayeredBigCannonBlockEntity other) {
