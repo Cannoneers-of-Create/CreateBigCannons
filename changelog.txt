@@ -33,6 +33,7 @@ Added:
 - Added block properties compatibility with Create Copycat blocks
 - Added block properties compatibility with Copycats+
 - Added cannon pitch config for different cannon mounts and different cannon types
+- Added Flak explosion config
 [Fabric] - Added REI compatibility
 [Fabric] - Added EMI compatibility
 [Forge] - Added block properties compatibility with Framed Blocks

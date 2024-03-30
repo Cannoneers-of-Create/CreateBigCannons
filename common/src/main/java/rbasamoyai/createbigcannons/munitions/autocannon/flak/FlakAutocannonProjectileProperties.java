@@ -15,15 +15,17 @@ public class FlakAutocannonProjectileProperties extends AutocannonProjectileProp
 	private final float shrapnelDamage;
 	private final double shrapnelSpread;
 	private final int shrapnelCount;
+	private final float explosionPower;
 
 	public FlakAutocannonProjectileProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable,
 											  boolean ignoresEntityArmor, double gravity, double drag, float knockback,
 											  double addedRecoil, boolean canSquib, float shrapnelDamage, double shrapnelSpread,
-											  int shrapnelCount) {
+											  int shrapnelCount, float explosionPower) {
 		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback, addedRecoil, canSquib);
 		this.shrapnelDamage = shrapnelDamage;
 		this.shrapnelSpread = shrapnelSpread;
 		this.shrapnelCount = shrapnelCount;
+		this.explosionPower = explosionPower;
 	}
 
 	public FlakAutocannonProjectileProperties(String id, JsonObject obj) {
@@ -31,6 +33,7 @@ public class FlakAutocannonProjectileProperties extends AutocannonProjectileProp
 		this.shrapnelDamage = Math.max(0, getOrWarn(obj, "shrapnel_entity_damage", id, 1f, JsonElement::getAsFloat));
 		this.shrapnelSpread = Math.max(0, getOrWarn(obj, "shrapnel_spread", id, 1d, JsonElement::getAsDouble));
 		this.shrapnelCount = Math.max(0, getOrWarn(obj, "shrapnel_count", id, 1, JsonElement::getAsInt));
+		this.explosionPower = Math.max(0, getOrWarn(obj, "explosion_power", id, 2f, JsonElement::getAsFloat));
 	}
 
 	public FlakAutocannonProjectileProperties(FriendlyByteBuf buf) {
@@ -38,6 +41,7 @@ public class FlakAutocannonProjectileProperties extends AutocannonProjectileProp
 		this.shrapnelDamage = buf.readFloat();
 		this.shrapnelSpread = buf.readDouble();
 		this.shrapnelCount = buf.readVarInt();
+		this.explosionPower = buf.readFloat();
 	}
 
 	@Override
@@ -45,12 +49,14 @@ public class FlakAutocannonProjectileProperties extends AutocannonProjectileProp
 		super.toNetwork(buf);
 		buf.writeFloat(this.shrapnelDamage)
 			.writeDouble(this.shrapnelSpread);
-		buf.writeVarInt(this.shrapnelCount);
+		buf.writeVarInt(this.shrapnelCount)
+			.writeFloat(this.explosionPower);
 	}
 
 	public float shrapnelDamage() { return this.shrapnelDamage; }
 	public double shrapnelSpread() { return this.shrapnelSpread; }
 	public int shrapnelCount() { return this.shrapnelCount; }
+	public float explosionPower() { return this.explosionPower; }
 
 	public static class Serializer implements MunitionPropertiesSerializer<FlakAutocannonProjectileProperties> {
 		@Override
