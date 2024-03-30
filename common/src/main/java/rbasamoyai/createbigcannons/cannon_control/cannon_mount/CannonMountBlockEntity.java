@@ -19,6 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -27,7 +28,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
@@ -70,6 +70,10 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	public BlockState getControllerState() {
 		return this.getBlockState();
 	}
+
+	@Nullable
+	@Override
+	public ResourceLocation getTypeId() { return CreateBigCannons.resource("cannon_mount"); }
 
 	@Override
 	protected AABB createRenderBoundingBox() {

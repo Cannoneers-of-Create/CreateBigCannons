@@ -67,7 +67,11 @@ Additions: \
 &plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.text_1": "Mechanical Pistons, Gantries, and Rope Pulleys can also load big cannons."` \
 &plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.text_2": "Munition blocks can be pulled out of big cannons depending on the connectivity of certain blocks."` \
 &plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.text_3": "Unlike the Cannon Loader, other blocks can still be attached to the contraption."` \
-&plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.text_4": "This does not affect cannon loading in any way, although only aligned munition blocks can be inserted into big cannons."`
+&plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.text_4": "This does not affect cannon loading in any way, although only aligned munition blocks can be inserted into big cannons."` \
+&plus; `"block.createbigcannons.cannon_carriage.hotbar.fireRate.createbigcannons.cannon_carriage": "Rate of fire: %s RPM (scroll to change)"` \
+&plus; `"block.createbigcannons.cannon_carriage.hotbar.fireRate.createbigcannons.cannon_mount": "Rate of fire: %s RPM (set signal strength on firing side to change)"` \
+&plus; `"createbigcannons.goggles.cannon_mount.autocannon_rate_of_fire": "Autocannon Rate of Fire: "` \
+&plus; `"createbigcannons.goggles.cannon_mount.autocannon_rate_of_fire.value": "%s RPM"`
 
 Key Changes: \
 `"item.createbigcannons.autocannon_ammo_container"` → `"block.createbigcannons.autocannon_ammo_container"`

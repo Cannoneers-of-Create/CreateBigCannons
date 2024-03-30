@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
+import static rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock.writeAndSyncSingleBlockData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -371,6 +373,20 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			}
 		}
 
+		if (CBCEntityTypes.CANNON_CARRIAGE.is(entity.getVehicle())) {
+			controller = entity.getVehicle().getControllingPassenger();
+		}
+		if (!level.isClientSide && controller instanceof Player player) {
+			String key = "";
+			ControlPitchContraption controllerBlock = entity.getController();
+			if (controllerBlock != null) {
+				ResourceLocation loc = controllerBlock.getTypeId();
+				if (loc != null) key = "." + loc.getNamespace() + "." + loc.getPath();
+			}
+			player.displayClientMessage(new TranslatableComponent("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
+				this.getReferencedFireRate()), true);
+		}
+
 		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController()))
 			this.fireShot(slevel, entity);
 
@@ -402,14 +418,19 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 	@Override
 	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
-		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
+		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech) {
 			breech.setFireRate(firePower);
+			writeAndSyncSingleBlockData(breech, this.blocks.get(this.startPos), entity, this);
+		}
 	}
 
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
 		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech
-			&& (fireRateAdjustment > 0 || breech.getFireRate() > 1)) // Can't turn off carriage autocannon
+			&& (fireRateAdjustment > 0 || breech.getFireRate() > 1)) {
+			// > 0 because can't turn off carriage autocannon
 			breech.setFireRate(breech.getFireRate() + fireRateAdjustment);
+			writeAndSyncSingleBlockData(breech, this.blocks.get(this.startPos), entity, this);
+		}
 	}
 
 	public int getReferencedFireRate() {

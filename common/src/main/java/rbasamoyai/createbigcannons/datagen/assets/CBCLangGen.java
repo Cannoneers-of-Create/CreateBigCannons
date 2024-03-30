@@ -152,6 +152,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.fireCannon", "_Fires cannon_ on carriage if present. _Repeatedly fires cannon_ if possible.");
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.pitchMode", "The forward/backward keys _set pitch_ instead of moving the cannon.");
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "hotbar.fireRate", "Rate of fire: %s RPM");
+		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "hotbar.fireRate.createbigcannons.cannon_mount", "Rate of fire: %s RPM (set signal strength on firing side to change)");
+		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "hotbar.fireRate.createbigcannons.cannon_carriage", "Rate of fire: %s RPM (scroll to change)");
 
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength", "Push Strength");
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength.value", "Up to _%s blocks_");
@@ -277,6 +279,8 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.cannon_strength.value", "%s Propellant Stress");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.pitch", "Cannon Pitch: ");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.yaw", "Cannon Yaw: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.autocannon_rate_of_fire", "Autocannon Rate of Fire: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.autocannon_rate_of_fire.value", "%s RPM");
 
 		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.main_ammo", "x%1$s %2$s");
 		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.tracers", "Tracers: x%1$s %2$s");
