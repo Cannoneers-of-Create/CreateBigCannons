@@ -245,7 +245,7 @@ public class CannonLoadingScenes {
 		ElementLink<WorldSectionElement> pistonBlockElement = scene.world.showIndependentSectionImmediately(util.select.position(1, 2, 4));
 		scene.world.moveSection(pistonMunitionsElement, util.vector.of(0, -1, 0), 0);
 		scene.world.moveSection(pistonBlockElement, util.vector.of(0, -1, 0), 0);
-		scene.idle(15);
+		scene.idle(50);
 
 		scene.overlay.showText(50)
 			.text("This does not affect cannon loading in any way, although only aligned munition blocks can be inserted into big cannons.");
@@ -690,16 +690,16 @@ public class CannonLoadingScenes {
 		scene.world.instructArm(mechanicalArmPos, Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
 		scene.idle(30);
 
-		scene.overlay.showText(50)
+		scene.overlay.showText(60)
 			.text("Once the cannon fires, the arm will automatically extract empty cartridges when provided a deposit area.")
-			.pointAt(util.vector.centerOf(2, 2, 6))
+			.pointAt(util.vector.centerOf(3, 2, 6))
 			.attachKeyFrame();
 		scene.world.showSection(util.select.fromTo(3, 1, 6, 3, 2, 6), Direction.DOWN);
 		scene.idle(30);
 		scene.world.instructArm(mechanicalArmPos, Phase.MOVE_TO_OUTPUT, ItemStack.EMPTY, 0);
-		scene.idle(30);
+		scene.idle(45);
 
-		scene.overlay.showText(50)
+		scene.overlay.showText(60)
 			.text("Deposit areas should have an empty Big Cartridge filter to avoid item mismanagement.")
 			.colored(PonderPalette.BLUE);
 		ItemStack emptyCartridge = BigCartridgeBlockItem.getWithPower(0);
