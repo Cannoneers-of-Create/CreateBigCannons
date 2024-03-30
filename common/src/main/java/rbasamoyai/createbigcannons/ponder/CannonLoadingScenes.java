@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.ponder;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity.Phase;
 import com.simibubi.create.foundation.ponder.ElementLink;
@@ -17,8 +18,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeverBlock;
+import net.minecraft.world.level.block.piston.PistonHeadBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
@@ -137,6 +141,128 @@ public class CannonLoadingScenes {
 
 		scene.world.setKineticSpeed(util.select.position(loaderPos), 0.0f);
 		scene.world.setKineticSpeed(util.select.position(crankPos), 0.0f);
+
+		scene.idle(20);
+		scene.markAsFinished();
+	}
+
+	public static void baseContraptionLoadingBigCannons(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_loader/base_contraption_loading", "Loading Big Cannons with base Create contraptions");
+		scene.configureBasePlate(0, 0, 9);
+		scene.showBasePlate();
+
+		scene.world.showSection(util.select.fromTo(1, 1, 6, 1, 1, 8), Direction.UP);
+		scene.world.showSection(util.select.fromTo(4, 1, 6, 4, 1, 8), Direction.UP);
+		scene.world.showSection(util.select.fromTo(7, 1, 4, 7, 3, 4), Direction.UP);
+		scene.idle(30);
+
+		Selection pistonSelection = util.select.fromTo(0, 1, 3, 1, 1, 3);
+		scene.world.showSection(pistonSelection, Direction.WEST);
+		ElementLink<WorldSectionElement> pistonElement = scene.world.showIndependentSection(util.select.fromTo(1, 2, 1, 1, 2, 3), Direction.WEST);
+		scene.world.moveSection(pistonElement, util.vector.of(0, -1, 0), 0);
+		scene.idle(5);
+		ElementLink<WorldSectionElement> pistonMunitionsElement = scene.world.showIndependentSection(util.select.fromTo(1, 2, 4, 1, 2, 5), null);
+		scene.world.moveSection(pistonMunitionsElement, util.vector.of(0, -1, 0), 0);
+		scene.idle(5);
+
+		Selection gantryShaftSelection = util.select.fromTo(5, 1, 0, 5, 1, 5);
+		scene.world.showSection(gantryShaftSelection, Direction.WEST);
+		ElementLink<WorldSectionElement> gantryElement = scene.world.showIndependentSection(util.select.position(4, 1, 1), Direction.WEST);
+		scene.idle(5);
+		ElementLink<WorldSectionElement> gantryMunitionsElement = scene.world.showIndependentSection(util.select.fromTo(4, 1, 2, 4, 1, 3), null);
+		scene.idle(5);
+
+		Selection pulleySelection = util.select.fromTo(6, 6, 4, 7, 6, 4);
+		scene.world.showSection(pulleySelection, Direction.DOWN);
+		scene.idle(5);
+		ElementLink<WorldSectionElement> pulleyMunitionsElement = scene.world.showIndependentSection(util.select.position(7, 4, 4), null);
+		ElementLink<WorldSectionElement> pulleyMunitionsElementExtract = scene.world.showIndependentSection(util.select.position(7, 5, 4), null);
+		scene.idle(20);
+
+		scene.overlay.showText(60)
+			.text("Mechanical Pistons, Gantries, and Rope Pulleys can also load big cannons.")
+			.attachKeyFrame();
+		scene.idle(20);
+
+		scene.world.setKineticSpeed(pistonSelection, 16);
+		scene.world.moveSection(pistonElement, util.vector.of(0, 0, 2), 40);
+		scene.world.moveSection(pistonMunitionsElement, util.vector.of(0, 0, 2), 40);
+		scene.idle(10);
+		scene.world.setKineticSpeed(gantryShaftSelection, -16);
+		scene.world.moveSection(gantryElement, util.vector.of(0, 0, 4), 80);
+		scene.world.moveSection(gantryMunitionsElement, util.vector.of(0, 0, 4), 80);
+		scene.idle(10);
+		scene.world.setKineticSpeed(pulleySelection, 16);
+		scene.world.movePulley(util.grid.at(7, 6, 4), 2, 40);
+		scene.world.moveSection(pulleyMunitionsElement, util.vector.of(0, -2, 0), 40);
+		scene.world.moveSection(pulleyMunitionsElementExtract, util.vector.of(0, -2, 0), 40);
+		scene.idle(20);
+
+		scene.world.setKineticSpeed(pistonSelection, 0);
+		scene.world.hideIndependentSectionImmediately(pistonMunitionsElement);
+		scene.idle(20);
+		scene.world.setKineticSpeed(pulleySelection, 0);
+		scene.world.hideIndependentSectionImmediately(pulleyMunitionsElement);
+		scene.idle(30);
+		scene.world.setKineticSpeed(gantryShaftSelection, 0);
+		scene.world.hideIndependentSectionImmediately(gantryMunitionsElement);
+		scene.idle(15);
+
+		scene.overlay.showText(50)
+			.text("Munition blocks can be pulled out of big cannons depending on the connectivity of certain blocks.")
+			.colored(PonderPalette.BLUE)
+			.attachKeyFrame();
+		scene.idle(15);
+
+		scene.world.setKineticSpeed(pistonSelection, -16);
+		scene.world.moveSection(pistonElement, util.vector.of(0, 0, -2), 40);
+		scene.world.setKineticSpeed(gantryShaftSelection, 16);
+		scene.world.moveSection(gantryElement, util.vector.of(0, 0, -4), 80);
+		scene.world.setKineticSpeed(pulleySelection, -16);
+		scene.world.movePulley(util.grid.at(7, 6, 4), -2, 40);
+		scene.world.moveSection(pulleyMunitionsElementExtract, util.vector.of(0, 2, 0), 40);
+		scene.idle(10);
+
+		scene.overlay.showOutline(PonderPalette.RED, new Object(), util.select.fromTo(7, 3, 4, 7, 6, 4), 30);
+		scene.idle(30);
+		scene.world.setKineticSpeed(pistonSelection, 0);
+		scene.world.setKineticSpeed(pulleySelection, 0);
+		scene.idle(40);
+		scene.world.setKineticSpeed(gantryShaftSelection, 0);
+		scene.idle(30);
+
+		scene.overlay.showText(50)
+			.text("Unlike the Cannon Loader, other blocks can still be attached to the contraption.")
+			.attachKeyFrame();
+		scene.world.setBlock(util.grid.at(1, 2, 3), AllBlocks.MECHANICAL_PISTON_HEAD.getDefaultState()
+			.setValue(BlockStateProperties.FACING, Direction.SOUTH).setValue(PistonHeadBlock.TYPE, PistonType.STICKY), false);
+		scene.effects.emitParticles(util.vector.blockSurface(util.grid.at(1, 1, 3), Direction.SOUTH), Emitter.simple(ParticleTypes.ITEM_SLIME, Vec3.ZERO), 8, 1);
+		scene.world.setBlock(util.grid.at(1, 2, 4), Blocks.OAK_PLANKS.defaultBlockState(), false);
+		scene.idle(20);
+
+		scene.overlay.showOutline(PonderPalette.WHITE, new Object(), util.select.fromTo(1, 1, 3, 1, 1, 5), 20);
+		pistonMunitionsElement = scene.world.showIndependentSectionImmediately(util.select.position(1, 2, 5));
+		ElementLink<WorldSectionElement> pistonBlockElement = scene.world.showIndependentSectionImmediately(util.select.position(1, 2, 4));
+		scene.world.moveSection(pistonMunitionsElement, util.vector.of(0, -1, 0), 0);
+		scene.world.moveSection(pistonBlockElement, util.vector.of(0, -1, 0), 0);
+		scene.idle(15);
+
+		scene.overlay.showText(50)
+			.text("This does not affect cannon loading in any way, although only aligned munition blocks can be inserted into big cannons.");
+		scene.idle(15);
+		scene.world.setKineticSpeed(pistonSelection, 16);
+		scene.world.moveSection(pistonElement, util.vector.of(0, 0, 1), 20);
+		scene.world.moveSection(pistonBlockElement, util.vector.of(0, 0, 1), 20);
+		scene.world.moveSection(pistonMunitionsElement, util.vector.of(0, 0, 1), 20);
+		scene.idle(20);
+		scene.world.setKineticSpeed(pistonSelection, 0);
+		scene.world.hideIndependentSectionImmediately(pistonMunitionsElement);
+		scene.idle(10);
+		scene.world.setKineticSpeed(pistonSelection, -16);
+		scene.world.moveSection(pistonElement, util.vector.of(0, 0, -1), 20);
+		scene.world.moveSection(pistonBlockElement, util.vector.of(0, 0, -1), 20);
+		scene.idle(20);
+		scene.world.setKineticSpeed(pistonSelection, 0);
 
 		scene.idle(20);
 		scene.markAsFinished();
@@ -532,7 +658,16 @@ public class CannonLoadingScenes {
 
 		scene.idle(60);
 
-		scene.idle(20);
+		scene.overlay.showText(50)
+			.text("The Quick-Firing Breech must be closed in order for the arm to operate.")
+			.colored(PonderPalette.RED)
+			.attachKeyFrame();
+		scene.idle(75);
+		scene.overlay.showText(50)
+			.text("The arm will not load the big cannon if the breech is open.")
+			.colored(PonderPalette.RED);
+		scene.idle(75);
+
 		scene.world.instructArm(mechanicalArmPos, Phase.MOVE_TO_INPUT, ItemStack.EMPTY, 0);
 		scene.idle(30);
 		scene.world.removeItemsFromBelt(shotDepotPos);
@@ -553,7 +688,27 @@ public class CannonLoadingScenes {
 		scene.idle(30);
 		scene.world.createItemOnBeltLike(cannonMountPos, Direction.UP, cartridge);
 		scene.world.instructArm(mechanicalArmPos, Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
-		scene.idle(50);
+		scene.idle(30);
+
+		scene.overlay.showText(50)
+			.text("Once the cannon fires, the arm will automatically extract empty cartridges when provided a deposit area.")
+			.pointAt(util.vector.centerOf(2, 2, 6))
+			.attachKeyFrame();
+		scene.world.showSection(util.select.fromTo(3, 1, 6, 3, 2, 6), Direction.DOWN);
+		scene.idle(30);
+		scene.world.instructArm(mechanicalArmPos, Phase.MOVE_TO_OUTPUT, ItemStack.EMPTY, 0);
+		scene.idle(30);
+
+		scene.overlay.showText(50)
+			.text("Deposit areas should have an empty Big Cartridge filter to avoid item mismanagement.")
+			.colored(PonderPalette.BLUE);
+		ItemStack emptyCartridge = BigCartridgeBlockItem.getWithPower(0);
+		scene.world.instructArm(mechanicalArmPos, Phase.SEARCH_OUTPUTS, emptyCartridge, -1);
+		scene.idle(20);
+		scene.world.instructArm(mechanicalArmPos, Phase.MOVE_TO_OUTPUT, emptyCartridge, 1);
+		scene.idle(30);
+		scene.world.instructArm(mechanicalArmPos, Phase.SEARCH_INPUTS, ItemStack.EMPTY, -1);
+		scene.idle(45);
 
 		scene.markAsFinished();
 	}

@@ -58,7 +58,16 @@ Additions: \
 &plus; `"emi.category.createbigcannons.cannon_casting": "Cannon Casting"` \
 &plus; `"emi.category.createbigcannons.drill_boring": "Drill Boring"` \
 &plus; `"emi.category.createbigcannons.incomplete_cannon_blocks": "Incomplete Cannon Blocks"` \
-&plus; `"emi.category.createbigcannons.melting": "Basin Melting"`
+&plus; `"emi.category.createbigcannons.melting": "Basin Melting"` \
+&plus; `"createbigcannons.ponder.cannon_kinetics/automating_quick_firing_breeches.text_3": "The Quick-Firing Breech must be closed in order for the arm to operate."` \
+&plus; `"createbigcannons.ponder.cannon_kinetics/automating_quick_firing_breeches.text_4": "The arm will not load the big cannon if the breech is open."` \
+&plus; `"createbigcannons.ponder.cannon_kinetics/automating_quick_firing_breeches.text_5": "Once the cannon fires, the arm will automatically extract empty cartridges when provided a deposit area."` \
+&plus; `"createbigcannons.ponder.cannon_kinetics/automating_quick_firing_breeches.text_6": "Deposit areas should have an empty Big Cartridge filter to avoid item mismanagement."` \
+&plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.header": "Loading Big Cannons with base Create contraptions"` \
+&plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.text_1": "Mechanical Pistons, Gantries, and Rope Pulleys can also load big cannons."` \
+&plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.text_2": "Munition blocks can be pulled out of big cannons depending on the connectivity of certain blocks."` \
+&plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.text_3": "Unlike the Cannon Loader, other blocks can still be attached to the contraption."` \
+&plus; `"createbigcannons.ponder.cannon_loader/base_contraption_loading.text_4": "This does not affect cannon loading in any way, although only aligned munition blocks can be inserted into big cannons."`
 
 Key Changes: \
 `"item.createbigcannons.autocannon_ammo_container"` → `"block.createbigcannons.autocannon_ammo_container"`
