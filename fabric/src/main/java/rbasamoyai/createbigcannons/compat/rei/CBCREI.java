@@ -150,6 +150,8 @@ public class CBCREI implements REIClientPlugin {
 		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getAutocannonRoundRecipes());
 		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getBigCartridgeFillingRecipe());
 		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getTracerRecipes());
+		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getFuzeRemovalRecipes());
+		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getTracerRemovalRecipes());
 		for (CraftingRecipe r : munitionCraftingRecipes) {
 			for (Display display : registry.tryFillDisplay(r)) {
 				if (Objects.equals(display.getCategoryIdentifier(), BuiltinPlugin.CRAFTING)) {
