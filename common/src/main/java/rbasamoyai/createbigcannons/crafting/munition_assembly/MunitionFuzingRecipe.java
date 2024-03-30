@@ -25,14 +25,13 @@ public class MunitionFuzingRecipe extends CustomRecipe {
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack = container.getItem(i);
 			if (stack.isEmpty()) continue;
+
+			if (stack.getItem() instanceof AutocannonCartridgeItem) {
+				if (!round.isEmpty()) return false;
+				stack = AutocannonCartridgeItem.getProjectileStack(stack);
+			}
 			if (stack.getItem() instanceof FuzedItemMunition) {
 				if (!round.isEmpty() || stack.getOrCreateTag().contains("Fuze", Tag.TAG_COMPOUND)) return false;
-				round = stack;
-			} else if (stack.getItem() instanceof AutocannonCartridgeItem) {
-				if (!round.isEmpty()) return false;
-				ItemStack cartridgeRound = AutocannonCartridgeItem.getProjectileStack(stack);
-				if (!(cartridgeRound.getItem() instanceof FuzedItemMunition) || cartridgeRound.getOrCreateTag().contains("Fuze", Tag.TAG_COMPOUND))
-					return false;
 				round = stack;
 			} else if (stack.getItem() instanceof FuzeItem) {
 				if (!fuze.isEmpty()) return false;

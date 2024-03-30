@@ -83,6 +83,8 @@ public class CBCEmiPlugin implements EmiPlugin {
 		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getAutocannonRoundRecipes());
 		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getBigCartridgeFillingRecipe());
 		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getTracerRecipes());
+		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getFuzeRemovalRecipes());
+		munitionCraftingRecipes.addAll(MunitionAssemblyRecipes.getTracerRemovalRecipes());
 		this.addHardcodedCraftingRecipes(registry, munitionCraftingRecipes);
 
 		List<DeployerApplicationRecipe> munitionDeployerRecipes = new ArrayList<>();

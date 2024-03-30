@@ -1,5 +1,10 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -13,12 +18,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import javax.annotation.Nullable;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem {
 
@@ -85,7 +86,7 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 		if (!hasProjectile(stack)) return;
 		CompoundTag tag = stack.getOrCreateTag().getCompound("Projectile");
 		if (!tag.contains("tag", Tag.TAG_COMPOUND)) tag.put("tag", new CompoundTag());
-		tag.getCompound("tag").putBoolean("Tracer", true);
+		tag.getCompound("tag").putBoolean("Tracer", value);
 	}
 
 	@Override

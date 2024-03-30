@@ -34,6 +34,7 @@ Added:
 - Added block properties compatibility with Copycats+
 - Added cannon pitch config for different cannon mounts and different cannon types
 - Added Flak explosion config
+- Added crafting table munition disassembly for fuzes and tracers on autocannon rounds
 [Fabric] - Added REI compatibility
 [Fabric] - Added EMI compatibility
 [Forge] - Added block properties compatibility with Framed Blocks
