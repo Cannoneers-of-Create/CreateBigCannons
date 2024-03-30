@@ -245,14 +245,14 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
 		ItemStack ejectStack = round.getSpentItem(foundProjectile);
 		if (!ejectStack.isEmpty()) {
-			ItemStack output = breech.insertOutput(ejectStack);
-			if (!output.isEmpty()) {
-				ItemEntity ejectEntity = new ItemEntity(level, ejectPos.x, ejectPos.y, ejectPos.z, ejectStack);
-				Vec3 eject = ejectPos.subtract(centerPos).normalize();
-				ejectEntity.setDeltaMovement(eject.scale(this.isHandle ? 0.1 : 0.5));
-				ejectEntity.setPickUpDelay(20);
-				level.addFreshEntity(ejectEntity);
-			}
+			//ItemStack output = breech.insertOutput(ejectStack);
+			//if (!output.isEmpty()) {
+			ItemEntity ejectEntity = new ItemEntity(level, ejectPos.x, ejectPos.y, ejectPos.z, ejectStack);
+			Vec3 eject = ejectPos.subtract(centerPos).normalize();
+			ejectEntity.setDeltaMovement(eject.scale(this.isHandle ? 0.1 : 0.5));
+			ejectEntity.setPickUpDelay(20);
+			level.addFreshEntity(ejectEntity);
+			//}
 		}
 
 		AutocannonMaterialProperties properties = this.cannonMaterial.properties();

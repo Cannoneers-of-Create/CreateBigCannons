@@ -68,5 +68,6 @@ Fixes:
 - Fixed CBC GUIs obstructing recipe viewer items in JEI, REI, and EMI
 - Fixed Cannon Builder not pushing on unconnected layers of the same shape
 - Fixed zoom in for autocannon not working
+- Fixed autocannon ammo ejection
 
 *May have issues with contraption-modifying mods such as Create: Interactive
