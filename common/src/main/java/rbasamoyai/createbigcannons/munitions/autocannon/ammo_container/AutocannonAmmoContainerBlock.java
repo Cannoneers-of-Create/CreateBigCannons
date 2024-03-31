@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
 import java.util.Locale;
-import java.util.Random;
 
 import javax.annotation.Nullable;
 
@@ -12,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -138,7 +138,7 @@ public class AutocannonAmmoContainerBlock extends Block implements IWrenchable, 
 	}
 
 	@Override
-	public void tick(BlockState state, ServerLevel level, BlockPos pos, Random random) {
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 		super.tick(state, level, pos, random);
 		if (level.getBlockEntity(pos) instanceof AutocannonAmmoContainerBlockEntity be) be.recheckOpen();
 	}

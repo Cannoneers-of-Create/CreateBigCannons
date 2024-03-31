@@ -5,7 +5,6 @@ import static com.simibubi.create.compat.emi.recipes.CreateEmiRecipe.addSlot;
 import java.util.ArrayList;
 
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import com.simibubi.create.foundation.utility.Components;
 
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiStack;
@@ -47,7 +46,7 @@ public class IncompleteCannonBlockEmiRecipe extends CBCEmiBlockRecipe<Incomplete
 				if (i == 0) continue;
 				int j = i - 1;
 				int posX = base1 + 24 * j;
-				Component num = Components.literal(this.romans[Math.min(j, 6)]);
+				Component num = Component.literal(this.romans[Math.min(j, 6)]);
 				mc.font.draw(stack, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
 			}
 		}));

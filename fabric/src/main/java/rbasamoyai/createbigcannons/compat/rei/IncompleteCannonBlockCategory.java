@@ -1,10 +1,11 @@
 package rbasamoyai.createbigcannons.compat.rei;
 
+import static com.simibubi.create.compat.rei.category.CreateRecipeCategory.basicSlot;
+
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import com.simibubi.create.foundation.utility.Components;
 
 import me.shedaniel.math.Point;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
@@ -13,8 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.compat.common_jei.IncompleteCannonBlockRecipe;
-
-import static com.simibubi.create.compat.rei.category.CreateRecipeCategory.basicSlot;
 
 public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<IncompleteCannonBlockRecipe> {
 
@@ -35,7 +34,7 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 			if (i == 0) continue;
 			int j = i - 1;
 			int posX = base + 24 * j;
-			Component num = Components.literal(this.romans[Math.min(j, 6)]);
+			Component num = Component.literal(this.romans[Math.min(j, 6)]);
 			mc.font.draw(stack, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
 		}
 	}

@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.mojang.math.Vector3f;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
-import com.simibubi.create.foundation.utility.Components;
 
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
@@ -72,7 +71,7 @@ public class CannonCastingEmiRecipe extends CBCEmiBlockRecipe<CannonCastingRecip
 				if (fstack.getFluid() != Fluids.EMPTY) castingTime = (float) FluidCastingTimeHandler.getCastingTime(fstack.getFluid());
 			}
 			Minecraft mc = Minecraft.getInstance();
-			Component text = Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
+			Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
 			mc.font.draw(poseStack, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
 		}));
 	}

@@ -100,7 +100,7 @@ public class AutocannonAmmoContainerInterface extends SnapshotParticipant<Autoca
 	}
 
 	@Override
-	public Iterator<? extends StorageView<ItemVariant>> iterator(TransactionContext transaction) {
+	public Iterator<StorageView<ItemVariant>> iterator() {
 		return new StorageViewArrayIterator<>(this.views);
 	}
 

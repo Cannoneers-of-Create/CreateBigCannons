@@ -43,7 +43,7 @@ public abstract class AutocannonRoundItem extends Item {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-		if (category == CreativeModeTab.TAB_SEARCH && this.allowdedIn(category)) {
+		if (category == CreativeModeTab.TAB_SEARCH && this.allowedIn(category)) {
 			items.add(new ItemStack(this));
 			items.add(this.getCreativeTabCartridgeItem());
 			return;

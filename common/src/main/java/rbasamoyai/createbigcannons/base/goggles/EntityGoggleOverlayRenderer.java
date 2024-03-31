@@ -10,7 +10,6 @@ import com.simibubi.create.foundation.gui.RemovedGuiUtils;
 import com.simibubi.create.foundation.gui.Theme;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.utility.Color;
-import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CClient;
 
@@ -57,7 +56,7 @@ public class EntityGoggleOverlayRenderer {
 			goggleAddedInformation = ((IHaveEntityGoggleInformation) entity).addToGoggleTooltip(tooltip, shiftKey);
 		}
 		if (hasHoveringInformation) {
-			if (!tooltip.isEmpty()) tooltip.add(Components.immutableEmpty());
+			if (!tooltip.isEmpty()) tooltip.add(Component.empty());
 			hoverAddedInformation = ((IHaveEntityHoverInformation) entity).addToTooltip(tooltip, shiftKey);
 			if (goggleAddedInformation && !hoverAddedInformation) tooltip.remove(tooltip.size() - 1);
 		}

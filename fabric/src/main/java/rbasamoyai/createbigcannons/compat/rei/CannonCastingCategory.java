@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import com.simibubi.create.foundation.utility.Components;
 
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import me.shedaniel.math.Point;
@@ -54,7 +53,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 			if (fstack.getFluid() != Fluids.EMPTY) castingTime = (float) FluidCastingTimeHandler.getCastingTime(fstack.getFluid());
 		}
 		Minecraft mc = Minecraft.getInstance();
-		Component text = Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
+		Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
 		mc.font.draw(stack, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
 	}
 

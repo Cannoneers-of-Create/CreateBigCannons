@@ -18,7 +18,7 @@ public class SingleFramedBlockArmorProperties extends AbstractMimickingBlockArmo
 
 	@Override
 	protected BlockState getCopiedState(Level level, BlockState state, BlockPos pos) {
-		return level.getBlockEntity(pos) instanceof FramedBlockEntity fbe ? fbe.getCamoState() : Blocks.AIR.defaultBlockState();
+		return level.getBlockEntity(pos) instanceof FramedBlockEntity fbe ? fbe.getCamo().getState() : Blocks.AIR.defaultBlockState();
 	}
 
 }

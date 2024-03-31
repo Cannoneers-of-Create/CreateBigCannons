@@ -383,7 +383,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				ResourceLocation loc = controllerBlock.getTypeId();
 				if (loc != null) key = "." + loc.getNamespace() + "." + loc.getPath();
 			}
-			player.displayClientMessage(new TranslatableComponent("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
+			player.displayClientMessage(Component.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
 				this.getReferencedFireRate()), true);
 		}
 

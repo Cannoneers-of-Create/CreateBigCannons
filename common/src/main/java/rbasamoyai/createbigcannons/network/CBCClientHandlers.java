@@ -4,11 +4,11 @@ import java.util.Map;
 
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.Contraption;
-import com.simibubi.create.foundation.utility.Components;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
@@ -50,7 +50,7 @@ public class CBCClientHandlers {
 		if (CBCRootNetwork.VERSION.equals(pkt.serverVersion())) return;
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.getConnection() != null)
-			mc.getConnection().onDisconnect(Components.literal("Create Big Cannons on the client uses a different network format than the server.")
+			mc.getConnection().onDisconnect(Component.literal("Create Big Cannons on the client uses a different network format than the server.")
 				.append(" Please use a matching format."));
 	}
 

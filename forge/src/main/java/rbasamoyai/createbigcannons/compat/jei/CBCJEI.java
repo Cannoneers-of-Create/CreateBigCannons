@@ -16,7 +16,6 @@ import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.compat.jei.category.ProcessingViaFanCategory;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
-import com.simibubi.create.foundation.utility.Components;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -29,6 +28,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -66,7 +66,7 @@ public class CBCJEI implements IModPlugin {
 		meltingCatalysts.add(AllBlocks.BASIN::asStack);
 		CreateRecipeCategory.Info<BasinRecipe> meltingInfo = new CreateRecipeCategory.Info<BasinRecipe>(
 			new RecipeType<>(CreateBigCannons.resource("melting"), BasinRecipe.class),
-			Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
+			Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
 			new EmptyBackground(177, 103),
 			new DoubleItemIcon(AllBlocks.BASIN::asStack, CBCBlocks.BASIN_FOUNDRY_LID::asStack),
 			meltingSupplier,
@@ -209,7 +209,7 @@ public class CBCJEI implements IModPlugin {
 			};
 			CBCBlockRecipeCategory.Info<T> info = new CBCBlockRecipeCategory.Info<>(
 				new RecipeType<>(CreateBigCannons.resource(id), this.recipeClass),
-				Components.translatable("recipe." + CreateBigCannons.MOD_ID + "." + id),
+				Component.translatable("recipe." + CreateBigCannons.MOD_ID + "." + id),
 				this.background,
 				this.icon,
 				recipesSupplier,

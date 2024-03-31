@@ -1,9 +1,11 @@
 package rbasamoyai.createbigcannons.compat.jei;
 
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import com.simibubi.create.foundation.utility.Components;
+
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -12,8 +14,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.compat.common_jei.IncompleteCannonBlockRecipe;
-
-import java.util.List;
 
 public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<IncompleteCannonBlockRecipe> {
 
@@ -34,7 +34,7 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 			if (i == 0) continue;
 			int j = i - 1;
 			int posX = base + 24 * j;
-			Component num = Components.literal(this.romans[Math.min(j, 6)]);
+			Component num = Component.literal(this.romans[Math.min(j, 6)]);
 			mc.font.draw(stack, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
 		}
 	}
