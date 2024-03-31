@@ -31,14 +31,21 @@ configurations {
     developmentFabric.extendsFrom common
 }
 
+configurations.configureEach {
+	resolutionStrategy {
+		force("net.fabricmc:fabric-loader:${fabric_loader_version}")
+	}
+}
+
 repositories {
     // mavens for Fabric-exclusives
     maven { url = "https://mvn.devos.one/#/" }
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
     maven { url = "https://mvn.devos.one/snapshots/" }
-    // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
-    maven { url = "https://cursemaven.com" } // Forge Config API Port
+    // Create Fabric, Forge Tags, Milk Lib, Registrate Fabric
+	maven { url = "https://mvn.devos.one/releases" } // Porting Lib Releases
+	maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge config api port
     maven { url = "https://maven.cafeteria.dev/releases" } // Fake Player API
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
     maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
@@ -75,19 +82,22 @@ dependencies {
         default: println("Unknown recipe viewer specified: ${fabric_recipe_viewer}. Must be JEI, REI, EMI, or disabled.")
     }
     // if you would like to add integration with them, uncomment them here.
-	//modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
-	modCompileOnlyApi "curse.maven:jei-238222:${jei_fabric_file}"
-	modCompileOnly("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
-//    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}")
-//    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}")
-//    modCompileOnly("dev.emi:emi:${emi_version}")
+    //modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric:${jei_version}")
+    modCompileOnlyApi "curse.maven:jei-238222:${jei_fabric_file}"
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-fabric:${rei_version}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${rei_version}")
+    modCompileOnly("dev.emi:emi:${emi_version}")
 
     modLocalRuntime("curse.maven:spark-361579:${spark_fabric_file}") // Spark
+
+	annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-fabric:${mixinextras_version}"))) // MixinExtras
 
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-fabric")) { transitive = false } // Ritchie's Projectile Library
 
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
+	modImplementation("curse.maven:copycats-968398:${copycats_fabric_file}")
 }
 
 processResources {

@@ -1,7 +1,13 @@
 package rbasamoyai.createbigcannons.compat.jei;
 
+import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.addFluidTooltip;
+import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRenderedSlot;
+
+import java.util.List;
+import java.util.Optional;
+
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.utility.Components;
+
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
@@ -13,16 +19,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler;
-import rbasamoyai.createbigcannons.index.CBCGuiTextures;
 import rbasamoyai.createbigcannons.compat.jei.animated.CannonCastGuiElement;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
-
-import java.util.List;
-import java.util.Optional;
-
-import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.addFluidTooltip;
-import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRenderedSlot;
+import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler;
+import rbasamoyai.createbigcannons.index.CBCGuiTextures;
 
 public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingRecipe> {
 
@@ -47,7 +47,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 			if (ing.isPresent()) castingTime = (float) FluidCastingTimeHandler.getCastingTime(ing.get().getFluid());
 		}
 		Minecraft mc = Minecraft.getInstance();
-		Component text = Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
+		Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
 		mc.font.draw(stack, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
 	}
 

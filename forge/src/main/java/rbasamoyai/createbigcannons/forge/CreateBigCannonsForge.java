@@ -20,6 +20,10 @@ import net.minecraftforge.registries.NewRegistryEvent;
 import net.minecraftforge.registries.RegisterEvent;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.cannon_control.config.DefaultCannonMountPropertiesSerializers;
+import rbasamoyai.createbigcannons.compat.copycats.CopycatsCompat;
+import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
+import rbasamoyai.createbigcannons.compat.framedblocks.FramedBlocksCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
@@ -62,6 +66,11 @@ public class CreateBigCannonsForge {
         CBCNetworkForge.init();
         DefaultFluidCompat.registerMinecraftBlobEffects();
         DefaultFluidCompat.registerCreateBlobEffects();
+
+		DefaultCreateCompat.init();
+		DefaultCannonMountPropertiesSerializers.init();
+		CBCModsForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init());
+		CBCModsForge.FRAMEDBLOCKS.executeIfInstalled(() -> () -> FramedBlocksCompat.init());
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {

@@ -5,7 +5,7 @@ import com.simibubi.create.content.contraptions.ContraptionType;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoadingContraption;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoadingContraption;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillingContraption;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuildingContraption;
 

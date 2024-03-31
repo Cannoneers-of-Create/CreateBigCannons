@@ -183,37 +183,37 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 
 		builder("unbored_bronze_autocannon_breech")
 		.castingShape(CannonCastShape.AUTOCANNON_BREECH)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BREECH.get())
 		.save(cons);
 
 		builder("unbored_bronze_autocannon_recoil_spring")
 		.castingShape(CannonCastShape.AUTOCANNON_RECOIL_SPRING)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.UNBORED_BRONZE_AUTOCANNON_RECOIL_SPRING.get())
 		.save(cons);
 
 		builder("unbored_bronze_autocannon_barrel")
 		.castingShape(CannonCastShape.AUTOCANNON_BARREL)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BARREL.get())
 		.save(cons);
 
 		builder("unbored_steel_autocannon_breech")
 		.castingShape(CannonCastShape.AUTOCANNON_BREECH)
-		.ingredient(CBCFluids.MOLTEN_STEEL.get())
+		.ingredient(steelTag)
 		.result(CBCBlocks.UNBORED_STEEL_AUTOCANNON_BREECH.get())
 		.save(cons);
 
 		builder("unbored_steel_autocannon_recoil_spring")
 		.castingShape(CannonCastShape.AUTOCANNON_RECOIL_SPRING)
-		.ingredient(CBCFluids.MOLTEN_STEEL.get())
+		.ingredient(steelTag)
 		.result(CBCBlocks.UNBORED_STEEL_AUTOCANNON_RECOIL_SPRING.get())
 		.save(cons);
 
 		builder("unbored_steel_autocannon_barrel")
 		.castingShape(CannonCastShape.AUTOCANNON_BARREL)
-		.ingredient(CBCFluids.MOLTEN_STEEL.get())
+		.ingredient(steelTag)
 		.result(CBCBlocks.UNBORED_STEEL_AUTOCANNON_BARREL.get())
 		.save(cons);
 	}

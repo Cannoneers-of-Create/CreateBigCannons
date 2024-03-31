@@ -4,17 +4,19 @@ import java.util.Map;
 
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.Contraption;
-import com.simibubi.create.foundation.utility.Components;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.CBCClientCommon;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.ShakeEffect;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 
 public class CBCClientHandlers {
 
@@ -48,7 +50,7 @@ public class CBCClientHandlers {
 		if (CBCRootNetwork.VERSION.equals(pkt.serverVersion())) return;
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.getConnection() != null)
-			mc.getConnection().onDisconnect(Components.literal("Create Big Cannons on the client uses a different network format than the server.")
+			mc.getConnection().onDisconnect(Component.literal("Create Big Cannons on the client uses a different network format than the server.")
 				.append(" Please use a matching format."));
 	}
 
@@ -64,6 +66,17 @@ public class CBCClientHandlers {
 	public static void addShakeEffect(ClientboundAddShakeEffectPacket pkt) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.player != null) CBCClientCommon.addShakeEffect(new ShakeEffect(pkt.seed(), pkt.time(), pkt.magnitude()));
+	}
+
+	public static void updateFluidBlob(ClientboundFluidBlobStackSyncPacket pkt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null) return;
+		Entity entity = mc.level.getEntity(pkt.entityId());
+		if (entity instanceof FluidBlob blob) {
+			blob.setFluidStack(pkt.fstack());
+		} else {
+			CreateBigCannons.LOGGER.error("Invalid ClientboundFluidBlobStackSyncPacket for non-fluid blob entity: " + entity);
+		}
 	}
 
 }

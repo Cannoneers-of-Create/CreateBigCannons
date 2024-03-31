@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.material;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -9,6 +8,7 @@ import javax.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +22,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class BigCannonMaterialPropertiesHandler {
 
-	public static final Map<BigCannonMaterial, BigCannonMaterialProperties> PROPERTIES = new HashMap<>();
+	public static final Map<BigCannonMaterial, BigCannonMaterialProperties> PROPERTIES = new Reference2ObjectOpenHashMap<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
@@ -39,7 +39,7 @@ public class BigCannonMaterialPropertiesHandler {
 				if (!el.isJsonObject()) continue;
 				try {
 					BigCannonMaterial material = BigCannonMaterial.fromName(entry.getKey());
-					PROPERTIES.put(material, BigCannonMaterialProperties.fromJson(el.getAsJsonObject()));
+					PROPERTIES.put(material, BigCannonMaterialProperties.fromJson(entry.getKey(), el.getAsJsonObject()));
 				} catch (Exception e) {
 
 				}
@@ -52,7 +52,7 @@ public class BigCannonMaterialPropertiesHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(PROPERTIES.size());
 		for (Map.Entry<BigCannonMaterial, BigCannonMaterialProperties> entry : PROPERTIES.entrySet()) {
-			buf.writeUtf(entry.getKey().name().toString());
+			buf.writeResourceLocation(entry.getKey().name());
 			entry.getValue().writeBuf(buf);
 		}
 	}
@@ -62,7 +62,7 @@ public class BigCannonMaterialPropertiesHandler {
 		int sz = buf.readVarInt();
 
 		for (int i = 0; i < sz; ++i) {
-			PROPERTIES.put(BigCannonMaterial.fromName(new ResourceLocation(buf.readUtf())), BigCannonMaterialProperties.fromBuf(buf));
+			PROPERTIES.put(BigCannonMaterial.fromName(buf.readResourceLocation()), BigCannonMaterialProperties.fromBuf(buf));
 		}
 	}
 

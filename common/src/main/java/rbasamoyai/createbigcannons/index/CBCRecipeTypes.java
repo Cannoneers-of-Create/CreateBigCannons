@@ -23,10 +23,12 @@ import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillin
 import rbasamoyai.createbigcannons.crafting.munition_assembly.BigCartridgeFillingRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.CartridgeAssemblyRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.FuzeRemovalRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.MunitionFuzingRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationDeployerRecipe;
 import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationRecipe;
+import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerRemovalRecipe;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public enum CBCRecipeTypes implements IRecipeTypeInfo {
@@ -40,7 +42,9 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	CARTRIDGE_ASSEMBLY_DEPLOYER(noSerializer(r -> new CartridgeAssemblyDeployerRecipe())),
 	TRACER_APPLICATION(noSerializer(TracerApplicationRecipe::new)),
 	TRACER_APPLICATION_DEPLOYER(noSerializer(r -> new TracerApplicationDeployerRecipe())),
-	AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER(noSerializer(r -> new AutocannonAmmoContainerFillingDeployerRecipe()));
+	AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER(noSerializer(r -> new AutocannonAmmoContainerFillingDeployerRecipe())),
+	FUZE_REMOVAL(noSerializer(FuzeRemovalRecipe::new)),
+	TRACER_REMOVAL(noSerializer(TracerRemovalRecipe::new));
 
 	private final ResourceLocation id;
 	private final Supplier<RecipeSerializer<?>> serializerObject;
@@ -85,22 +89,15 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 		};
 	}
 
-	@Override
-	public ResourceLocation getId() {
-		return id;
-	}
+	@Override public ResourceLocation getId() { return this.id; }
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends RecipeSerializer<?>> T getSerializer() {
-		return (T) serializerObject.get();
-	}
+	public <T extends RecipeSerializer<?>> T getSerializer() { return (T) this.serializerObject.get(); }
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends RecipeType<?>> T getType() {
-		return (T) type.get();
-	}
+	public <T extends RecipeType<?>> T getType() { return (T) this.type.get(); }
 
 	public static void register() {
 	}

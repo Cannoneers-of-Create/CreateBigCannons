@@ -6,10 +6,12 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -83,7 +85,11 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 		if (!hasProjectile(stack)) return;
 		CompoundTag tag = stack.getOrCreateTag().getCompound("Projectile");
 		if (!tag.contains("tag", Tag.TAG_COMPOUND)) tag.put("tag", new CompoundTag());
-		tag.getCompound("tag").putBoolean("Tracer", true);
+		tag.getCompound("tag").putBoolean("Tracer", value);
+	}
+
+	@Override
+	public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
 	}
 
 }

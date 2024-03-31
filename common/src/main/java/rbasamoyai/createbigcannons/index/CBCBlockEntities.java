@@ -13,7 +13,7 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBloc
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerInstance;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEntity;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlockEntity;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechInstance;
@@ -43,6 +43,7 @@ import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockInstance;
@@ -208,6 +209,11 @@ public class CBCBlockEntities {
 	public static final BlockEntityEntry<BigCartridgeBlockEntity> BIG_CARTRIDGE = REGISTRATE
 		.blockEntity("big_cartridge", BigCartridgeBlockEntity::new)
 		.validBlock(CBCBlocks.BIG_CARTRIDGE)
+		.register();
+
+	public static final BlockEntityEntry<AutocannonAmmoContainerBlockEntity> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
+		.blockEntity("autocannon_ammo_container", AutocannonAmmoContainerBlockEntity::new)
+		.validBlocks(CBCBlocks.AUTOCANNON_AMMO_CONTAINER, CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER)
 		.register();
 
 	public static void register() {

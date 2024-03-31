@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons;
 
+import java.util.Arrays;
+
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -11,8 +13,6 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
-
-import java.util.Arrays;
 
 public class ModGroup {
 
@@ -196,7 +196,8 @@ public class ModGroup {
 				CBCItems.FLAK_AUTOCANNON_ROUND.asStack(),
 				CBCItems.MACHINE_GUN_ROUND.asStack(),
 				CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack(),
-				CBCItems.AUTOCANNON_AMMO_CONTAINER.asStack(),
+				CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack(),
+				CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.asStack(),
 
 				CBCItems.RECOIL_SPRING.asStack(),
 
@@ -225,7 +226,9 @@ public class ModGroup {
 				CBCBlocks.AUTOCANNON_RECOIL_SPRING_CAST_MOULD.asStack(),
 				CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD.asStack(),
 
-				CBCItems.SPRING_WIRE.asStack()));
+				CBCItems.SPRING_WIRE.asStack(),
+
+				CBCItems.RESISTANCE_INSPECTION_TOOL.asStack()));
 		}
 	};
 

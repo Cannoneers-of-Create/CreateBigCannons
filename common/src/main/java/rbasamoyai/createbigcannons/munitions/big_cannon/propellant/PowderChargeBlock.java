@@ -68,6 +68,8 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 		return oldState;
 	}
 
+	@Override public Axis getAxis(BlockState state) { return state.getValue(AXIS); }
+
 	@Override
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(AXIS, cannonOrientation.getAxis());

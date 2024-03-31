@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "type=bottom": {
+      "default_block_hardness": 0.5,
+      "material_hardness_multiplier": 0.5
+    },
+    "type=top": {
+      "default_block_hardness": 0.5,
+      "material_hardness_multiplier": 0.5
+    },
+    "type=double": {
+      "default_block_hardness": 1,
+      "material_hardness_multiplier": 1
+    }
+  }
+}

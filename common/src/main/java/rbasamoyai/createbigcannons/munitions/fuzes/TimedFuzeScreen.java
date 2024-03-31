@@ -23,15 +23,15 @@ public class TimedFuzeScreen extends AbstractFuzeScreen<TimedFuzeContainer> {
 				.withRange(0, 100)
 				.calling(state -> {
 					this.lastUpdated = 0;
-					int time = 20 + state * 5;
+					int time = Math.max(1, state * 5);
 					int seconds = time / 20;
 					int ticks = time - seconds * 20;
 					this.setValue.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
 				})
-				.setState(Mth.clamp(this.menu.getValue() / 5 - 4, 0, 100));
+				.setState(Mth.clamp(this.menu.getValue() / 5, 0, 100));
 	}
 
-	@Override public int getUpdateState() { return 20 + this.setValue.getState() * 5; }
+	@Override public int getUpdateState() { return Math.max(1, this.setValue.getState() * 5); }
 
 	@Override
 	protected void renderBg(PoseStack poseStack, float partialTicks, int mouseX, int mouseY) {

@@ -35,9 +35,9 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountDisplaySource;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
-import rbasamoyai.createbigcannons.cannonloading.RamHeadBlock;
-import rbasamoyai.createbigcannons.cannonloading.WormHeadBlock;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.cannon_loading.RamHeadBlock;
+import rbasamoyai.createbigcannons.cannon_loading.WormHeadBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlock;
@@ -69,6 +69,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellBlock;
@@ -819,10 +820,10 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonLoaderBlock> CANNON_LOADER = REGISTRATE
 		.block("cannon_loader", CannonLoaderBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonLoader())
-		.transform(CBCDefaultStress.setImpact(8.0d))
+		.transform(CBCDefaultStress.setImpact(4.0d))
 		.register();
 
 	public static final BlockEntry<RamHeadBlock> RAM_HEAD = REGISTRATE
@@ -847,7 +848,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonMountBlock> CANNON_MOUNT = REGISTRATE
 		.block("cannon_mount", CannonMountBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMount())
@@ -856,7 +857,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<YawControllerBlock> YAW_CONTROLLER = REGISTRATE
 		.block("yaw_controller", YawControllerBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.yawController())
 		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
@@ -864,7 +865,9 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonCarriageBlock> CANNON_CARRIAGE = REGISTRATE
 		.block("cannon_carriage", CannonCarriageBlock::new)
+		.initialProperties(() -> Blocks.OAK_PLANKS)
 		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(axeOnly())
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(CBCBuilderTransformers.cannonCarriage())
 		.register();
@@ -873,7 +876,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonDrillBlock> CANNON_DRILL = REGISTRATE
 		.block("cannon_drill", CannonDrillBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonDrill())
 		.transform(CBCDefaultStress.setImpact(8.0d))
@@ -889,7 +892,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<CannonBuilderBlock> CANNON_BUILDER = REGISTRATE
 		.block("cannon_builder", CannonBuilderBlock::new)
-		.properties(p -> p.color(MaterialColor.PODZOL))
+		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonBuilder())
 		.transform(CBCDefaultStress.setImpact(8.0d))
@@ -948,7 +951,9 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/solid_shot"))
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<HEShellBlock> HE_SHELL = REGISTRATE
@@ -959,7 +964,9 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("High Explosive (HE) Shell")
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<ShrapnelShellBlock> SHRAPNEL_SHELL = REGISTRATE
@@ -969,7 +976,9 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<APShotBlock> AP_SHOT = REGISTRATE
@@ -978,7 +987,9 @@ public class CBCBlocks {
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/ap_shot"))
 		.lang("Armor Piercing (AP) Shot")
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<TrafficConeBlock> TRAFFIC_CONE = REGISTRATE
@@ -991,6 +1002,7 @@ public class CBCBlocks {
 		.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/traffic_cone"))))
 		.item(TrafficConeBlockItem::new)
 		.initialProperties(() -> new Item.Properties().rarity(Rarity.EPIC))
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
 
@@ -1002,7 +1014,9 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("Armor Piercing (AP) Shell")
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<FluidShellBlock> FLUID_SHELL = REGISTRATE
@@ -1012,7 +1026,9 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.projectile("projectile/fluid_shell"))
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot(f -> f.copy("FluidContent", "BlockEntityTag.FluidContent")))
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<SmokeShellBlock> SMOKE_SHELL = REGISTRATE
@@ -1021,23 +1037,30 @@ public class CBCBlocks {
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/smoke_shell"))
 		.loot(CBCBuilderTransformers.shellLoot())
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<GrapeshotBlock> BAG_OF_GRAPESHOT = REGISTRATE
 		.block("bag_of_grapeshot", GrapeshotBlock::new)
 		.initialProperties(Material.METAL, MaterialColor.WOOL)
+		.properties(p -> p.strength(0.8f))
 		.properties(p -> p.sound(SoundType.WOOL))
 		.transform(CBCBuilderTransformers.projectileLegacy("projectile/grapeshot"))
 		.lang("Bag of Grapeshot")
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<MortarStoneBlock> MORTAR_STONE = REGISTRATE
 		.block("mortar_stone", MortarStoneBlock::new)
 		.initialProperties(SharedProperties::stone)
 		.transform(CBCBuilderTransformers.projectileLegacy("projectile/mortar_stone"))
-		.item(MortarStoneItem::new).build()
+		.item(MortarStoneItem::new)
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<Block> MORTAR_STONE_PROJECTILE = REGISTRATE
@@ -1054,7 +1077,9 @@ public class CBCBlocks {
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.dropMortarShell())
 		.loot(CBCBuilderTransformers.shellLoot())
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
+		.build()
 		.register();
 
 	public static final BlockEntry<PowderChargeBlock> POWDER_CHARGE = REGISTRATE
@@ -1062,7 +1087,9 @@ public class CBCBlocks {
 		.initialProperties(() -> Blocks.TNT)
 		.properties(p -> p.sound(SoundType.WOOL))
 		.transform(CBCBuilderTransformers.powderCharge())
-		.item(PowderChargeItem::new).build()
+		.item(PowderChargeItem::new)
+		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROPELLANT_BAGS)
+		.build()
 		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, CBCMunitionPropertiesSerializers.BASE_BIG_CANNON_PROPELLANT))
 		.register();
 
@@ -1072,6 +1099,26 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.METAL))
 		.transform(CBCBuilderTransformers.bigCartridge())
 		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, new BigCartridgeProperties.Serializer()))
+		.register();
+
+	//////// Autocannon Ammo Container Blocks ////////
+
+	public static final BlockEntry<AutocannonAmmoContainerBlock> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
+		.block("autocannon_ammo_container", AutocannonAmmoContainerBlock::new)
+		.initialProperties(Material.METAL, MaterialColor.COLOR_GREEN)
+		.properties(p -> p.strength(0.0f, 2.5f))
+		.properties(p -> p.sound(SoundType.CHAIN))
+		.properties(p -> p.noOcclusion())
+		.transform(CBCBuilderTransformers.autocannonAmmoContainer(false))
+		.register();
+
+	public static final BlockEntry<AutocannonAmmoContainerBlock> CREATIVE_AUTOCANNON_AMMO_CONTAINER = REGISTRATE
+		.block("creative_autocannon_ammo_container", AutocannonAmmoContainerBlock::new)
+		.initialProperties(Material.METAL, MaterialColor.COLOR_MAGENTA)
+		.properties(p -> p.strength(0.0f, 2.5f))
+		.properties(p -> p.sound(SoundType.CHAIN))
+		.properties(p -> p.noOcclusion())
+		.transform(CBCBuilderTransformers.autocannonAmmoContainer(true))
 		.register();
 
 	//////// Crafting blocks ////////
@@ -1181,6 +1228,12 @@ public class CBCBlocks {
 		return canPassThrough ? transform.andThen(b -> b.tag(CBCTags.CBCBlockTags.DRILL_CAN_PASS_THROUGH)) : transform;
 	}
 
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cbcMachine() {
+		return b -> b.initialProperties(() -> Blocks.GOLD_BLOCK)
+			.properties(p -> p.color(MaterialColor.PODZOL))
+			.properties(p -> p.sound(SoundType.NETHERITE_BLOCK));
+	}
+
 	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> shell(MaterialColor color) {
 		return b -> b.addLayer(() -> RenderType::solid)
 			.initialProperties(Material.EXPLOSIVE, color)
@@ -1196,6 +1249,10 @@ public class CBCBlocks {
 	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> axeOrPickaxe() {
 		return b -> b.tag(BlockTags.MINEABLE_WITH_AXE)
 			.tag(BlockTags.MINEABLE_WITH_PICKAXE);
+	}
+
+	private static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> axeOnly() {
+		return b -> b.tag(BlockTags.MINEABLE_WITH_AXE);
 	}
 
 	private static BlockEntry<CannonCastMouldBlock> castMould(String name, VoxelShape blockShape, Supplier<CannonCastShape> castShape) {

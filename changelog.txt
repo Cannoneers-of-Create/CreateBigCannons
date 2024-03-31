@@ -1,24 +1,74 @@
 Changelog
 
-Create Big Cannons 0.5.3.b, with more minor fixes.
+"Now, occasionally you're going to get stuck. It's nothing to get upset about. Don't go hurling your controller at the cat, because it might throw something back, and it'll only escalate, and then, well..."
+- Stephen Fry, LittleBigPlanet (2008)
+
+Create Big Cannons 0.5.4, with more QoL features and minor fixes.
+Now supports Create Fabric 0.5.1.f.
 
 Added:
-- Added minimum big cannon spread config value
+- Added ability for some base Create contraptions to load cannons*
+ - Mechanical Piston, Gantry, and Rope Pulley
+- Added Cannon Loader breaking features similar to Mechanical Piston
+- Added block hardness compatibility with Create's Copycat blocks
+- Added default autocannon rounds to search tab
+- Added assembly connectivity between Cannon Mount/Cannon Carriage and unassembled cannons
+- Added assembly connectivity between Yaw Controller and Cannon Mount
+- Added minimum spread option to big cannon materials
+- Added spread reduction option to big cannon materials
+- Added tags for various Create Big Cannons munitions items
+ - #createbigcannons:fuzes
+ - #createbigcannons:autocannon_ammo_containers
+ - #createbigcannons:autocannon_cartridges
+ - #createbigcannons:autocannon_rounds
+ - #createbigcannons:spent_autocannon_casings
+ - #createbigcannons:big_cannon_projectiles
+ - #createbigcannons:big_cannon_propellant
+  - Includes:
+   - #createbigcannons:big_cannon_cartridges
+   - #createbigcannons:big_cannon_propellant_bags
+- Added ability to place Autocannon Ammo Containers as blocks
+- Added tooltip to Autocannon Ammo Container showing contained items and spacing
+- Added Creative Autocannon Ammo Container, an endless source of autocannon ammo
+- Added block properties compatibility with Create Copycat blocks
+- Added block properties compatibility with Copycats+
+- Added cannon pitch config for different cannon mounts and different cannon types
+- Added Flak explosion config
+- Added crafting table munition disassembly for fuzes and tracers on autocannon rounds
+- Added autocannon RPM display to cannon mount tooltip and action bar when controlling autocannon
+[Fabric] - Added REI compatibility
+[Fabric] - Added EMI compatibility
+[Forge] - Added block properties compatibility with Framed Blocks
 Changes:
-- Changed Machine Gun Round texture, forgot to add in 0.5.3.a
-- A few texture changes
-- Basin Foundry Lids can now be wrenched
-- Changed default big cannon propellant values
-- Changed Cannon Mount data to be more user-friendly, such as with ComputerCraft
-- Updated Russian translation
+- Reduced the stress cost of the Cannon Loader to match that of the Mechanical Piston
+- Reduced default blob count of Fluid Shell
+- Changed minimum spread of cannons, varying by material strength
+- Changed "max_safe_charges" big cannon config option to "max_safe_propellant_stress"
+ - The old field still works, but a warning will be printed in the game log highlighting any deprecated files.
+- Changed "squib_ratio_barrels" and "squib_ratio_propellant" to "minimum_velocity_per_barrel"
+ - The old fields still work, but a warning will be printed in the game log highlighting any deprecated files.
+- Changed minimum timing for Timed Fuze from 20 ticks (1 second) to 1 tick, reduced maximum time from 25s 15t to 24s 15t
+- Changed minimum timing for Delayed Impact Fuze from 20 ticks (1 second) to 1 tick, reduced maximum time from 6s to 5s
+- Improved data pack config for block hardness and block properties for terminal ballistics in general
+- Update ponder documentation for base contraption loading, cannon block breaking, and quick-firing breech loading
 Fixes:
-- Fixed Freecam mod unable to rotate when mounting autocannon
-- Fixed rotation range of cannons controlled by kinetics on Cannon Mount
-- Fixed crash on misfire
-- Fixed Cannon Mount yaw rotation direction
-- Fixed Drop Mortar interaction, preventing chamber loading
-- Fixed Cannon Welder not welding autocannons
-- Fixed schematic data for some CBC block entities
-- Fixed ParCool! camera animations not working when installed with Create Big Cannons
-- Fixed Shoulder Surfing Reloaded rendering problems when installed with Create Big Cannons
-- Fixed player model rotation when mounting autocannon
+- Fixed drop mortar not dropping stored item if disassembled or broken before fired
+- Fixed drop mortar holding entire stack
+- Fixed glitch-loading, with toggle to re-enable it*
+- Fixed attachment checks
+- Fixed Cannon Loader not breaking other blocks when destroyed
+- Fixed Cannon Loader not assembling when new under certain conditions
+- Fixed block properties of some blocks
+- Fixed back-fuzed Delayed Impact Fuze going off when it should not
+- Fixed primed Timed Fuze and Delayed Impact Fuze despawning before detonating
+- Fixed munitions not dropping when breaking cannon blocks
+- Fixed preferred placement for screw breech when next to kinetic blocks
+- Fixed Mechanical Arm taking entire stack when loading quick-firing breech
+- Fixed Fluid Stack serializer crashing other mods
+- Fixed Fluid tags for certain recipes
+- Fixed CBC GUIs obstructing recipe viewer items in JEI, REI, and EMI
+- Fixed Cannon Builder not pushing on unconnected layers of the same shape
+- Fixed zoom in for autocannon not working
+- Fixed autocannon ammo ejection
+
+*May have issues with contraption-modifying mods such as Create: Interactive

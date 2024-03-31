@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.utility.Components;
 
 import mezz.jei.api.fabric.constants.FabricTypes;
 import mezz.jei.api.fabric.ingredients.fluids.IJeiFluidIngredient;
@@ -49,7 +48,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 			if (ing.isPresent()) castingTime = (float) FluidCastingTimeHandler.getCastingTime(ing.get().getFluid());
 		}
 		Minecraft mc = Minecraft.getInstance();
-		Component text = Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
+		Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
 		mc.font.draw(stack, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
 	}
 

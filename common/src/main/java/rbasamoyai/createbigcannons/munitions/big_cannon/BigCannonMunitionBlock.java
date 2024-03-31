@@ -10,6 +10,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 public interface BigCannonMunitionBlock {
 
 	BlockState onCannonRotate(BlockState oldState, Direction.Axis rotationAxis, Rotation rotation);
+	Direction.Axis getAxis(BlockState state);
 	boolean canBeLoaded(BlockState state, Direction.Axis facing);
 	StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation);
 	ItemStack getExtractedItem(StructureBlockInfo info);
