@@ -3,6 +3,8 @@ package rbasamoyai.createbigcannons.forge.mixin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -13,7 +15,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.forge.munitions.autocannon.AutocannonAmmoContainerInterface;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlockEntity;
@@ -36,7 +37,7 @@ public abstract class AutocannonAmmoContainerBlockEntityMixin extends BlockEntit
 	@Nonnull
 	@Override
 	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (CapabilityItemHandler.ITEM_HANDLER_CAPABILITY == cap) {
+		if (ForgeCapabilities.ITEM_HANDLER == cap) {
 			if (this.itemOptional == null)
 				this.itemOptional = LazyOptional.of(this::createItemHandler);
 			return this.itemOptional.cast();
