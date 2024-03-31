@@ -308,7 +308,7 @@ public class CannonCraftingScenes {
 		scene.idle(20);
 
 		scene.overlay.showText(80)
-			.text("By default, cast cannons will turn into scrap when broken, some even with Silk Touch.")
+			.text("By default, most cast cannons will turn into scrap when broken without a Silk Touch pickaxe.")
 			.colored(PonderPalette.RED);
 		scene.idle(20);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 1, 0), Pointing.DOWN).withItem(CBCItems.CAST_IRON_NUGGET.asStack()), 40);

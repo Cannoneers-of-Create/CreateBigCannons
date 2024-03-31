@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.config;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -12,6 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
@@ -27,7 +27,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class BigCannonPropellantCompatibilityHandler {
 
-	public static final Map<Block, BigCannonPropellantCompatibilities> PROPERTIES_MAP = new HashMap<>();
+	public static final Map<Block, BigCannonPropellantCompatibilities> PROPERTIES_MAP = new Reference2ObjectOpenHashMap<>();
 
 	public static class ReloadListener extends CBCJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
@@ -62,7 +62,7 @@ public class BigCannonPropellantCompatibilityHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(PROPERTIES_MAP.size());
 		for (Map.Entry<Block, BigCannonPropellantCompatibilities> entry : PROPERTIES_MAP.entrySet()) {
-			buf.writeUtf(Registry.BLOCK.getKey(entry.getKey()).toString());
+			buf.writeResourceLocation(Registry.BLOCK.getKey(entry.getKey()));
 			entry.getValue().writeBuf(buf);
 		}
 	}
@@ -72,7 +72,7 @@ public class BigCannonPropellantCompatibilityHandler {
 		int sz = buf.readVarInt();
 
 		for (int i = 0; i < sz; ++i) {
-			PROPERTIES_MAP.put(Registry.BLOCK.get(new ResourceLocation(buf.readUtf())), BigCannonPropellantCompatibilities.readBuf(buf));
+			PROPERTIES_MAP.put(Registry.BLOCK.get(buf.readResourceLocation()), BigCannonPropellantCompatibilities.readBuf(buf));
 		}
 	}
 

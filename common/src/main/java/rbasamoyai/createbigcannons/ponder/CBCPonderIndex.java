@@ -20,7 +20,7 @@ public class CBCPonderIndex {
 			.addStoryBoard("cannon_mount/using_autocannons", CannonMountScenes::usingAutocannons)
 			.addStoryBoard("cannon_mount/customizing_autocannons", CannonMountScenes::customizingAutocannons);
 
-		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.RAM_HEAD, CBCBlocks.WORM_HEAD, AllBlocks.PISTON_EXTENSION_POLE)
+		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.RAM_HEAD, CBCBlocks.WORM_HEAD)
 			.addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons);
 
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.POWDER_CHARGE)
@@ -37,6 +37,9 @@ public class CBCPonderIndex {
 				CBCItems.QUICKFIRING_MECHANISM)
 			.addStoryBoard("cannon_crafting/making_quick_firing_breeches", CannonCraftingScenes::makingQuickFiringBreeches)
 			.addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::quickFiringBreech)
+			.addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::automatingQuickFiringBreeches);
+
+		HELPER.forComponents(AllBlocks.MECHANICAL_ARM)
 			.addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::automatingQuickFiringBreeches);
 
 		HELPER.forComponents(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
@@ -71,13 +74,21 @@ public class CBCPonderIndex {
 		HELPER.forComponents(CBCItems.WORM, CBCItems.RAM_ROD)
 			.addStoryBoard("cannon_loader/handloading_tools", CannonLoadingScenes::handloadingTools);
 
-		HELPER.forComponents(CBCItems.AUTOCANNON_AMMO_CONTAINER)
+		HELPER.forComponents(CBCBlocks.AUTOCANNON_AMMO_CONTAINER, CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER)
 			.addStoryBoard("munitions/using_autocannon_ammo_container", CannonLoadingScenes::usingAutocannonAmmoContainer)
 			.addStoryBoard("munitions/filling_autocannon_ammo_container", CannonLoadingScenes::fillingAutocannonAmmoContainer)
 			.addStoryBoard("munitions/automating_autocannon_ammo_container", CannonLoadingScenes::automatingAutocannonAmmoContainer);
 
 		HELPER.forComponents(CBCItems.CANNON_WELDER)
 			.addStoryBoard("cannon_crafting/cannon_welder", CannonCraftingScenes::weldingCannons);
+
+		HELPER.forComponents(AllBlocks.MECHANICAL_PISTON, AllBlocks.STICKY_MECHANICAL_PISTON,
+				AllBlocks.GANTRY_CARRIAGE, AllBlocks.GANTRY_SHAFT, AllBlocks.ROPE_PULLEY)
+			.addStoryBoard("cannon_loader/base_contraption_loading", CannonLoadingScenes::baseContraptionLoadingBigCannons);
+
+		HELPER.forComponents(AllBlocks.PISTON_EXTENSION_POLE)
+			.addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons)
+			.addStoryBoard("cannon_loader/base_contraption_loading", CannonLoadingScenes::baseContraptionLoadingBigCannons);
 	}
 
 	public static void registerTags() {
@@ -89,12 +100,22 @@ public class CBCPonderIndex {
 			.add(CBCBlocks.WORM_HEAD)
 			.add(AllBlocks.PISTON_EXTENSION_POLE)
 			.add(CBCBlocks.CAST_IRON_SLIDING_BREECH)
+			.add(CBCBlocks.CAST_IRON_QUICKFIRING_BREECH)
 			.add(CBCBlocks.BRONZE_SLIDING_BREECH)
+			.add(CBCBlocks.BRONZE_QUICKFIRING_BREECH)
 			.add(CBCBlocks.STEEL_SLIDING_BREECH)
+			.add(CBCBlocks.STEEL_QUICKFIRING_BREECH)
 			.add(CBCBlocks.STEEL_SCREW_BREECH)
 			.add(CBCBlocks.NETHERSTEEL_SCREW_BREECH)
+			.add(CBCItems.QUICKFIRING_MECHANISM)
+			.add(AllBlocks.MECHANICAL_ARM)
 			.add(CBCItems.RAM_ROD)
-			.add(CBCItems.WORM);
+			.add(CBCItems.WORM)
+			.add(AllBlocks.MECHANICAL_PISTON)
+			.add(AllBlocks.STICKY_MECHANICAL_PISTON)
+			.add(AllBlocks.GANTRY_CARRIAGE)
+			.add(AllBlocks.GANTRY_SHAFT)
+			.add(AllBlocks.ROPE_PULLEY);
 
 		PonderRegistry.TAGS.forTag(CBCPonderTags.MUNITIONS)
 			.add(CBCBlocks.POWDER_CHARGE)
@@ -105,7 +126,8 @@ public class CBCPonderIndex {
 			.add(CBCItems.TIMED_FUZE)
 			.add(CBCItems.PROXIMITY_FUZE)
 			.add(CBCItems.DELAYED_IMPACT_FUZE)
-			.add(CBCItems.AUTOCANNON_AMMO_CONTAINER);
+			.add(CBCBlocks.AUTOCANNON_AMMO_CONTAINER)
+			.add(CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER);
 
 		PonderRegistry.TAGS.forTag(CBCPonderTags.CANNON_CRAFTING)
 			.add(CBCBlocks.CASTING_SAND)

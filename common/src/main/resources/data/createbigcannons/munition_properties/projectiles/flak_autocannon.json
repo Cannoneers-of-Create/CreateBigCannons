@@ -11,5 +11,6 @@
   "can_squib": true,
   "shrapnel_entity_damage": 5.0,
   "shrapnel_spread": 0.25,
-  "shrapnel_count": 15
+  "shrapnel_count": 15,
+  "explosion_power": 2.0
 }

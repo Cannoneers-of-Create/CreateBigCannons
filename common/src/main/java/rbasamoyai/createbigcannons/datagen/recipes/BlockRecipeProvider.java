@@ -87,7 +87,7 @@ public abstract class BlockRecipeProvider implements DataProvider {
 
 	@Override
 	public String getName() {
-		return "Create Big Cannons Block Recipes: " + (this.info == null ? "unknown id" : this.info);
+		return "Create Big Cannons Block Recipes: " + (this.info == null ? "unknown entityId" : this.info);
 	}
 
 }

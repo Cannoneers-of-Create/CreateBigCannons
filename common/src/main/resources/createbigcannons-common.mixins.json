@@ -15,14 +15,27 @@
     "client.PonderRegistryMixin"
   ],
   "mixins": [
-    "AllSoundEventsMixin",
     "ArmorStandMixin",
-    "BearingCannonDrillFinderMixin",
-    "BeltTileEntityMixin",
     "EntityMixin",
-    "FilterItemMixin",
     "PlayerMixin",
-    "ServerEntityMixin"
+    "ServerEntityMixin",
+    "compat.create.AbstractContraptionEntityMixin",
+    "compat.create.AllSoundEventsMixin",
+    "compat.create.BeltMovementHandlerMixin",
+    "compat.create.ChassisBlockEntityMixin",
+    "compat.create.ContraptionColliderMixin",
+    "compat.create.ContraptionMixin",
+    "compat.create.FilterItemMixin",
+    "compat.create.GantryContraptionMixin",
+    "compat.create.LinearActuatorBlockEntityMixin",
+    "compat.create.MechanicalBearingBlockEntityMixin",
+    "compat.create.MechanicalPistonBlockMixin",
+    "compat.create.PistonContraptionMixin",
+    "compat.create.PulleyBlockEntityMixin",
+    "compat.create.PulleyBlockMixin",
+    "compat.create.PulleyContraptionMixin",
+    "compat.create.RopeBlockBaseMixin",
+    "compat.create.TranslatingContraptionMixin"
   ],
   "injectors": {
     "defaultRequire": 1

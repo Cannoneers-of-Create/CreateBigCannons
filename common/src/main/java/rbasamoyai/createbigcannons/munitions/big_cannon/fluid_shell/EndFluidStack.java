@@ -61,7 +61,7 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 		try {
 			return DataResult.success(Registry.FLUID.get(location));
 		} catch (Exception var2) {
-			return DataResult.error("Not a valid fluid id: " + location + " " + var2.getMessage());
+			return DataResult.error("Not a valid fluid entityId: " + location + " " + var2.getMessage());
 		}
 	}
 

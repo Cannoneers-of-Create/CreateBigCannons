@@ -169,7 +169,9 @@ public class CannonBuildingContraption extends PoleContraption {
 							return false;
 						}
 					}
-					LayeredBigCannonBlockEntity split = fullShape == null ? layered.getSplitBlockEntity(connectedShapes, offset == 0 ? null : opposite) : layered.getSplitBlockEntity(fullShape, opposite);
+					LayeredBigCannonBlockEntity split = fullShape == null
+						? layered.getSplitBlockEntity(connectedShapes, offset == 0 ? null : opposite, forcedDirection)
+						: layered.getSplitBlockEntity(fullShape, opposite, forcedDirection);
 					if (split.isEmpty()) break;
 					if (layered.getLayers().size() > 1 && offset == 0 && forcedDirection == this.orientation) {
 						return false;
@@ -182,8 +184,10 @@ public class CannonBuildingContraption extends PoleContraption {
 					preAddedBlocks.put(currentPos, Pair.of(new StructureBlockInfo(currentPos, simpleState, tag), split));
 
 					connectedShapes.addAll(split.getLayers().keySet());
-					Collection<CannonCastShape> connectedShapes1 = split.getConnectedTo(this.orientation);
-					connectedShapes.removeIf(s -> !connectedShapes1.contains(s));
+					if (retracting) {
+						Collection<CannonCastShape> connectedShapes1 = split.getConnectedTo(this.orientation);
+						connectedShapes.removeIf(s -> !connectedShapes1.contains(s));
+					}
 					fullShape = null;
 				} else {
 					CannonCastShape shape = cBlock.getShapeInLevel(level, state, currentPos);
@@ -234,7 +238,7 @@ public class CannonBuildingContraption extends PoleContraption {
 
 					BlockEntity be = level.getBlockEntity(currentPos);
 					preAddedBlocks.put(currentPos, Pair.of(new StructureBlockInfo(currentPos, state, this.getBlockEntityTag(be)), be));
-					fullShape = isConnectedTo(level, shape, cBlock, state, currentPos, this.orientation) ? shape : null;
+					fullShape = isConnectedTo(level, shape, cBlock, state, currentPos, this.orientation, forcedDirection) ? shape : null;
 					connectedShapes.clear();
 				}
 			} else if (forcedDirection == this.orientation && (!state.getMaterial().isReplaceable() || !state.getCollisionShape(level, currentPos).isEmpty())) {
@@ -273,17 +277,18 @@ public class CannonBuildingContraption extends PoleContraption {
 		return this.material == null || ((BigCannonBlock) state.getBlock()).getCannonMaterialInLevel(level, state, pos) == this.material;
 	}
 
-	private static boolean isConnectedTo(Level level, CannonCastShape shape, BigCannonBlock cBlock, BlockState state, BlockPos pos, Direction dir) {
+	private static boolean isConnectedTo(Level level, CannonCastShape shape, BigCannonBlock cBlock, BlockState state, BlockPos pos, Direction dir, Direction forcedMovement) {
+		boolean pushing = dir == forcedMovement;
 		if (cBlock.getFacing(state).getAxis() != dir.getAxis()
 			|| cBlock.getShapeInLevel(level, state, pos) != shape
 			|| !(level.getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe)
-			|| !cbe.cannonBehavior().isConnectedTo(dir)) return false;
+			|| !cbe.cannonBehavior().isConnectedTo(dir) && !pushing) return false;
 
 		BlockEntity be = level.getBlockEntity(pos.relative(dir));
 		if (be instanceof LayeredBigCannonBlockEntity layered) {
-			return layered.isLayerConnectedTo(dir.getOpposite(), shape);
+			return layered.isLayerConnectedTo(dir.getOpposite(), shape) || pushing && layered.hasLayer(shape);
 		} else if (be instanceof ICannonBlockEntity<?> cbe1) {
-			return cbe1.cannonBehavior().isConnectedTo(dir.getOpposite());
+			return cbe1.cannonBehavior().isConnectedTo(dir.getOpposite()) || pushing;
 		} else {
 			return false;
 		}
@@ -395,6 +400,8 @@ public class CannonBuildingContraption extends PoleContraption {
 	private static boolean isBuilderHead(BlockState state) {
 		return CBCBlocks.CANNON_BUILDER_HEAD.has(state);
 	}
+
+	public boolean isActivated() { return this.isActivated; }
 
 	@Override
 	public CompoundTag writeNBT(boolean spawnPacket) {

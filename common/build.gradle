@@ -12,8 +12,9 @@ repositories {
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
     maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
     maven { url = "https://mvn.devos.one/snapshots/" }
-    // Create Fabric, Porting Lib, Forge Tags, Milk Lib, Registrate Fabric
-    maven { url = "https://cursemaven.com" } // Forge Config API Port
+    // Create Fabric, Forge Tags, Milk Lib, Registrate Fabric
+	maven { url = "https://mvn.devos.one/releases" } // Porting Lib Releases
+	maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // Forge config api port
     maven { url = "https://maven.cafeteria.dev/releases" } // Fake Player API
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
     maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
@@ -38,5 +39,9 @@ dependencies {
     modCompileOnly("com.simibubi.create:create-fabric-${minecraft_version}:${create_fabric_version}")
 	modCompileOnly("net.fabricmc.fabric-api:fabric-api:${fabric_api_version}")
 
+	annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixinextras_version}")) // MixinExtras
+
 	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-common") { transitive = false } // Ritchie's Projectile Library
+
+	modImplementation("curse.maven:copycats-968398:${copycats_fabric_file}")
 }

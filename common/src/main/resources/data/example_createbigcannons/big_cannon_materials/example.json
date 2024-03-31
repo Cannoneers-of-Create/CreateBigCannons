@@ -1,7 +1,12 @@
 {
-  "squib_ratio_barrels": 3,
-  "squib_ratio_propellant": 7,
-  "weight": 4,
-  "max_safe_charges": 9,
-  "failure_mode": "fragment"
+  "minimum_velocity_per_barrel": 0.5,
+  "weight": 4.0,
+  "max_safe_propellant_stress": 9,
+  "failure_mode": "fragment",
+  "connects_in_survival": false,
+  "is_weldable": true,
+  "weld_damage": 1,
+  "weld_stress_penalty": 1,
+  "minimum_spread": 0.1,
+  "spread_reduction_per_barrel": 1.0
 }

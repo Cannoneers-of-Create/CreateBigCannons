@@ -9,6 +9,11 @@
           "name": "createbigcannons:big_cartridge"
         }
       ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "functions": [
         {
           "add": false,

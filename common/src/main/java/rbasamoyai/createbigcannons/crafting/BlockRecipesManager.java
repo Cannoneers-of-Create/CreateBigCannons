@@ -11,6 +11,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -25,8 +27,8 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class BlockRecipesManager {
 
-	private static final Map<ResourceLocation, BlockRecipe> BLOCK_RECIPES_BY_NAME = new HashMap<>();
-	private static final Map<BlockRecipeType<?>, Map<ResourceLocation, BlockRecipe>> BLOCK_RECIPES_BY_TYPE = new HashMap<>();
+	private static final Map<ResourceLocation, BlockRecipe> BLOCK_RECIPES_BY_NAME = new Object2ObjectOpenHashMap<>();
+	private static final Map<BlockRecipeType<?>, Map<ResourceLocation, BlockRecipe>> BLOCK_RECIPES_BY_TYPE = new Reference2ObjectOpenHashMap<>();
 
 	public static Collection<BlockRecipe> getRecipes() {
 		return BLOCK_RECIPES_BY_NAME.values();
@@ -65,9 +67,8 @@ public class BlockRecipesManager {
 			BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get(type).fromNetwork(id, buf);
 			BLOCK_RECIPES_BY_NAME.put(id, recipe);
 			BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get(type);
-			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType)) {
-				BLOCK_RECIPES_BY_TYPE.put(recipeType, new HashMap<>());
-			}
+			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
+				BLOCK_RECIPES_BY_TYPE.put(recipeType, new Object2ObjectOpenHashMap<>());
 			BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
 		}
 	}

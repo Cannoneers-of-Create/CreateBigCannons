@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:empty_autocannon_cartridge",
+    "createbigcannons:empty_machine_gun_round"
+  ]
+}

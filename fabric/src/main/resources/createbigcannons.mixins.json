@@ -12,11 +12,13 @@
   "mixins": [
     "AbstractCannonProjectileMixin",
     "ArmTileEntityMixin",
+    "AutocannonAmmoContainerBlockEntityMixin",
     "CannonMountMixin",
+    "CannonMountPointMixin",
     "CreateInitMixin",
     "MountedAutocannonContraptionMixin",
     "PitchOrientedContraptionEntityMixin",
-    "CannonMountPointMixin"
+    "compat.fabric_api.ItemStorageMixin"
   ],
   "injectors": {
     "defaultRequire": 1
