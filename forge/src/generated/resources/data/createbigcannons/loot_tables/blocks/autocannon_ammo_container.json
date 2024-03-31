@@ -2,17 +2,16 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
       "entries": [
         {
           "type": "minecraft:item",
           "name": "createbigcannons:autocannon_ammo_container"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ],
       "functions": [
@@ -22,26 +21,27 @@
         },
         {
           "function": "minecraft:copy_nbt",
-          "source": "block_entity",
           "ops": [
             {
+              "op": "replace",
               "source": "Ammo",
-              "target": "Ammo",
-              "op": "replace"
+              "target": "Ammo"
             },
             {
+              "op": "replace",
               "source": "Tracers",
-              "target": "Tracers",
-              "op": "replace"
+              "target": "Tracers"
             },
             {
+              "op": "replace",
               "source": "TracerSpacing",
-              "target": "TracerSpacing",
-              "op": "replace"
+              "target": "TracerSpacing"
             }
-          ]
+          ],
+          "source": "block_entity"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }
