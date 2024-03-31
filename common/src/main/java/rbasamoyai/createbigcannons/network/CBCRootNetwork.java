@@ -59,13 +59,13 @@ public class CBCRootNetwork {
 	}
 
 	public static RootPacket constructPacket(FriendlyByteBuf buf, int id) {
-		if (!ID_TO_CONSTRUCTOR.containsKey(id)) throw new IllegalStateException("Attempted to deserialize packet with illegal entityId: " + id);
+		if (!ID_TO_CONSTRUCTOR.containsKey(id)) throw new IllegalStateException("Attempted to deserialize packet with illegal id: " + id);
 		return ID_TO_CONSTRUCTOR.get(id).apply(buf);
 	}
 
 	public static void writeToBuf(RootPacket pkt, FriendlyByteBuf buf) {
 		int id = TYPE_TO_ID.getOrDefault(pkt.getClass(), -1);
-		if (id == -1) throw new IllegalStateException("Attempted to serialize packet with illegal entityId: " + id);
+		if (id == -1) throw new IllegalStateException("Attempted to serialize packet with illegal id: " + id);
 		buf.writeVarInt(id);
 		pkt.rootEncode(buf);
 	}

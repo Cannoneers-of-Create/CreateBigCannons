@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
+
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -61,7 +62,7 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 		try {
 			return DataResult.success(Registry.FLUID.get(location));
 		} catch (Exception var2) {
-			return DataResult.error("Not a valid fluid entityId: " + location + " " + var2.getMessage());
+			return DataResult.error("Not a valid fluid id: " + location + " " + var2.getMessage());
 		}
 	}
 

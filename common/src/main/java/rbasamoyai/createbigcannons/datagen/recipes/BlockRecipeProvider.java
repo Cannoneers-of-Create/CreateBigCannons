@@ -1,21 +1,27 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.mojang.logging.LogUtils;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
-import net.minecraft.resources.ResourceLocation;
-import org.slf4j.Logger;
-
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
+
+import org.slf4j.Logger;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.mojang.logging.LogUtils;
+
+import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
+import net.minecraft.data.HashCache;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class BlockRecipeProvider implements DataProvider {
 
@@ -106,7 +112,7 @@ public abstract class BlockRecipeProvider implements DataProvider {
 
 	@Override
 	public String getName() {
-		return "Create Big Cannons Block Recipes: " + (this.info == null ? "unknown entityId" : this.info);
+		return "Create Big Cannons Block Recipes: " + (this.info == null ? "unknown id" : this.info);
 	}
 
 }
