@@ -11,7 +11,7 @@
     "sources": "https://github.com/Cannoneers-of-Create/CreateBigCannons",
     "issues": "https://github.com/Cannoneers-of-Create/CreateBigCannons/issues"
   },
-  "license": "MIT",
+  "license": "MIT and CC BY-NC-SA (see github for details)",
   "icon": "icon.png",
   "environment": "*",
   "entrypoints": {
