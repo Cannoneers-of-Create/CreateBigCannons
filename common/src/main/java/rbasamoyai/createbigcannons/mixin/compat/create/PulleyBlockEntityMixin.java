@@ -1,15 +1,15 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
 
-import com.llamalad7.mixinextras.sugar.Local;
-
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.piston.LinearActuatorBlockEntity;
 import com.simibubi.create.content.contraptions.pulley.PulleyBlockEntity;
@@ -21,11 +21,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.remix.HasFragileContraption;
@@ -37,8 +32,7 @@ public abstract class PulleyBlockEntityMixin extends LinearActuatorBlockEntity {
 
 	@Inject(method = "assemble",
 			at = @At(value = "INVOKE", target = "Lcom/tterrag/registrate/util/entry/BlockEntry;has(Lnet/minecraft/world/level/block/state/BlockState;)Z", ordinal = 0, shift = At.Shift.BEFORE),
-			locals = LocalCapture.CAPTURE_FAILHARD,
-			remap = false)
+			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void createbigcannons$assemble(CallbackInfo ci, int maxLength, int i, BlockPos ropePos, @Local LocalRef<BlockState> ropeStateRef) {
 		BlockState ropeState = ropeStateRef.get();
 		if (!(ropeState.getBlock() instanceof BigCannonBlock cBlock)
