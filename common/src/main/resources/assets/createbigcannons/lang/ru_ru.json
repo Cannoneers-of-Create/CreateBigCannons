@@ -1,6 +1,6 @@
 {
-"block.createbigcannons.ap_shell": "Бронебойно-фугасный снаряд",
-"block.createbigcannons.ap_shell.tooltip": "БРОНЕБОЙНО-ФУГАСНЫЙ СНАРЯД",
+"block.createbigcannons.ap_shell": "Бронебойный каморный снаряд",
+"block.createbigcannons.ap_shell.tooltip": "БРОНЕБОЙНЫЙ КАМОРНЫЙ СНАРЯД",
 "block.createbigcannons.ap_shell.tooltip.behaviour1": "Взрывается",
 "block.createbigcannons.ap_shell.tooltip.condition1": "При детонации:",
 "block.createbigcannons.ap_shell.tooltip.summary": "Может эффективно _пробивать блоки_, взрываясь внутри защищенных структур.",
