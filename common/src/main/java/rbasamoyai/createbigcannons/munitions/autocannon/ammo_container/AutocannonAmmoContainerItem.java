@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.CompoundTag;
@@ -22,8 +24,6 @@ import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
-
-import java.util.List;
 
 public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvider {
 
@@ -106,7 +106,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 		ItemStack ret = ItemStack.EMPTY;
 		boolean isCreative = ctItem.isCreative();
 
-		if (isCreative && shouldPullTracer(container) || getTotalAmmoCount(container) % getTracerSpacing(container) == 0) {
+		if (isCreative && shouldPullTracer(container) || !isCreative && getTotalAmmoCount(container) % getTracerSpacing(container) == 0) {
 			if (!tracerAmmo.isEmpty()) {
 				if (isCreative) {
 					ret = tracerAmmo.copy();
