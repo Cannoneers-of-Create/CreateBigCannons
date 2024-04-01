@@ -51,6 +51,7 @@ Changes:
 - Changed minimum timing for Delayed Impact Fuze from 20 ticks (1 second) to 1 tick, reduced maximum time from 6s to 5s
 - Improved data pack config for block hardness and block properties for terminal ballistics in general
 - Update ponder documentation for base contraption loading, cannon block breaking, and quick-firing breech loading
+- Changed molten cast iron recipes to use tag rather than raw fluid
 Fixes:
 - Fixed drop mortar not dropping stored item if disassembled or broken before fired
 - Fixed drop mortar holding entire stack

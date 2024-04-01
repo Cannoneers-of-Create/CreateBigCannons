@@ -1,8 +1,12 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
+import java.util.Objects;
+import java.util.function.Consumer;
+
 import com.google.gson.JsonObject;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
+
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
@@ -17,9 +21,6 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
-import java.util.Objects;
-import java.util.function.Consumer;
-
 public class CannonCastRecipeProvider extends BlockRecipeProvider {
 
 	CannonCastRecipeProvider(DataGenerator gen) {
@@ -33,27 +34,29 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 
 	@Override
 	protected void registerRecipes(Consumer<FinishedBlockRecipe> cons) {
+		TagKey<Fluid> castIronTag = AllTags.forgeFluidTag("molten_cast_iron");
+
 		builder("unbored_cast_iron_cannon_barrel")
 		.castingShape(CannonCastShape.VERY_SMALL)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_cannon_chamber")
 		.castingShape(CannonCastShape.MEDIUM)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER.get())
 		.save(cons);
 
 		builder("cast_iron_cannon_end")
 		.castingShape(CannonCastShape.CANNON_END)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.CAST_IRON_CANNON_END.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_sliding_breech")
 		.castingShape(CannonCastShape.SLIDING_BREECH)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH.get())
 		.save(cons);
 

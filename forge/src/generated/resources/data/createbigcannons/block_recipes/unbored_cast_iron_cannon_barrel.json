@@ -2,8 +2,7 @@
   "type": "createbigcannons:cannon_casting",
   "cast_shape": "createbigcannons:very_small",
   "fluid": {
-    "fluid": "createbigcannons:molten_cast_iron",
-    "nbt": {},
+    "fluidTag": "forge:molten_cast_iron",
     "amount": 1
   },
   "result": "createbigcannons:unbored_cast_iron_cannon_barrel"
