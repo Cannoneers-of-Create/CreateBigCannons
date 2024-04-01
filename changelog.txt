@@ -72,5 +72,6 @@ Fixes:
 - Fixed zoom in for autocannon not working
 - Fixed autocannon ammo ejection
 - Fixed Fluid tags for fluid-based recipes
+- Fixed cannon casting not working on relog
 
 *May have issues with contraption-modifying mods such as Create: Interactive
