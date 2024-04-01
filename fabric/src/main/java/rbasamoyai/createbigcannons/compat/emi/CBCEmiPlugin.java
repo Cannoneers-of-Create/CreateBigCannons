@@ -14,6 +14,7 @@ import com.simibubi.create.compat.emi.recipes.DeployingEmiRecipe;
 import com.simibubi.create.compat.emi.recipes.fan.FanEmiRecipe;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 
+import dev.emi.emi.EmiPort;
 import dev.emi.emi.api.EmiPlugin;
 import dev.emi.emi.api.EmiRegistry;
 import dev.emi.emi.api.recipe.EmiCraftingRecipe;
@@ -115,7 +116,7 @@ public class CBCEmiPlugin implements EmiPlugin {
 				for (Ingredient i : r.getIngredients()) {
 					ingredients.add(EmiIngredient.of(i));
 				}
-				registry.addRecipe(new EmiCraftingRecipe(ingredients, EmiStack.of(r.getResultItem()), r.getId()));
+				registry.addRecipe(new EmiCraftingRecipe(ingredients, EmiStack.of(EmiPort.getOutput(r)), r.getId()));
 			}
 		}
 	}

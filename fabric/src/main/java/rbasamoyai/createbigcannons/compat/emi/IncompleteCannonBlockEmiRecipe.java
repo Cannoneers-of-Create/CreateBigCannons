@@ -37,9 +37,9 @@ public class IncompleteCannonBlockEmiRecipe extends CBCEmiBlockRecipe<Incomplete
 		}
 		addSlot(widgets, EmiStack.of(this.recipe.getResultBlock()), 141, 34).recipeContext(this);
 
-		widgets.addDrawable(0, 0, 0, 0, ((stack, mouseX, mouseY, delta) -> {
+		widgets.addDrawable(0, 0, 0, 0, ((graphics, mouseX, mouseY, delta) -> {
 			Minecraft mc = Minecraft.getInstance();
-			AllGuiTextures.JEI_LONG_ARROW.render(stack, 54, 38);
+			AllGuiTextures.JEI_LONG_ARROW.render(graphics, 54, 38);
 
 			int base1 = this.width / 2 - 12 * sz + 24;
 			for (int i = 0; i < sz; ++i) {
@@ -47,7 +47,7 @@ public class IncompleteCannonBlockEmiRecipe extends CBCEmiBlockRecipe<Incomplete
 				int j = i - 1;
 				int posX = base1 + 24 * j;
 				Component num = Component.literal(this.romans[Math.min(j, 6)]);
-				mc.font.draw(stack, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
+				graphics.drawString(mc.font, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
 			}
 		}));
 	}

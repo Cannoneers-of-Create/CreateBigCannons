@@ -11,6 +11,7 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.AssemblyException;
@@ -46,9 +47,6 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.material.PushReaction;
-
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
 import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
@@ -61,17 +59,17 @@ public class ContraptionRemix {
 
 	public static boolean customBlockPlacement(Contraption contraption, LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
 		if (contraption instanceof CanLoadBigCannon loader && contraption.entity != null) {
-			BlockPos entityAnchor = new BlockPos(contraption.entity.getAnchorVec().add(0.5d, 0.5d, 0.5d));
+			BlockPos entityAnchor = BlockPos.containing(contraption.entity.getAnchorVec().add(0.5d, 0.5d, 0.5d));
 
 			BlockPos blockPos = pos.subtract(entityAnchor);
 			StructureBlockInfo blockInfo = contraption.getBlocks().get(blockPos);
 			BlockEntity blockEntity1 = levelAccessor.getBlockEntity(pos);
 			BlockState intersectState = levelAccessor.getBlockState(pos);
 
-			if (loader.createbigcannons$isBrokenDisassembly() && !intersectState.isAir() && blockInfo != null && !blockInfo.state.isAir()) {
-				BlockEntity contraptionBE = blockInfo.nbt == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state, blockInfo.nbt);
-				Block.dropResources(blockInfo.state, contraption.entity.level, pos, contraptionBE, null, ItemStack.EMPTY);
-				levelAccessor.levelEvent(2001, pos, Block.getId(blockInfo.state));
+			if (loader.createbigcannons$isBrokenDisassembly() && !intersectState.isAir() && blockInfo != null && !blockInfo.state().isAir()) {
+				BlockEntity contraptionBE = blockInfo.nbt() == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state(), blockInfo.nbt());
+				Block.dropResources(blockInfo.state(), contraption.entity.level(), pos, contraptionBE, null, ItemStack.EMPTY);
+				levelAccessor.levelEvent(2001, pos, Block.getId(blockInfo.state()));
 				levelAccessor.gameEvent(contraption.entity, GameEvent.BLOCK_DESTROY, pos);
 				return true;
 			}
@@ -140,10 +138,10 @@ public class ContraptionRemix {
 				contraption.getBlocks().put(local, new StructureBlockInfo(BlockPos.ZERO, Blocks.AIR.defaultBlockState(), null));
 			}
 			StructureBlockInfo oldInfo = contraption.getBlocks().get(local);
-			if (oldInfo.state.getBlock() instanceof BigCannonBlock) return;
-			CompoundTag tag = oldInfo.nbt == null ? new CompoundTag() : oldInfo.nbt.copy();
+			if (oldInfo.state().getBlock() instanceof BigCannonBlock) return;
+			CompoundTag tag = oldInfo.nbt() == null ? new CompoundTag() : oldInfo.nbt().copy();
 			tag.putBoolean("createbigcannons:add_as_cannon", true);
-			contraption.getBlocks().put(local, new StructureBlockInfo(oldInfo.pos, oldInfo.state, tag));
+			contraption.getBlocks().put(local, new StructureBlockInfo(oldInfo.pos(), oldInfo.state(), tag));
 		} else if (IBigCannonBlockEntity.isValidMunitionState(forcedDirection.getAxis(), state)
 			&& forcedDirection.getAxis() != attached.getAxis()) {
 			addPosToCannonColliders(contraption, local, forcedDirection);
@@ -201,7 +199,7 @@ public class ContraptionRemix {
 					finalCannonBlocks.add(pos);
 					continue;
 				}
-				boolean addAsCannon = cbe.cannonBehavior().block().state.isAir();
+				boolean addAsCannon = cbe.cannonBehavior().block().state().isAir();
 				if (!addAsCannon) {
 					for (Direction dir1 : Iterate.directions) {
 						BlockPos offset = pos.relative(dir1);
@@ -250,10 +248,10 @@ public class ContraptionRemix {
 				contraption.getBlocks().put(local, new StructureBlockInfo(BlockPos.ZERO, Blocks.AIR.defaultBlockState(), null));
 			}
 			StructureBlockInfo oldInfo = contraption.getBlocks().get(local);
-			if (oldInfo.state.getBlock() instanceof BigCannonBlock) continue;
-			CompoundTag tag = oldInfo.nbt == null ? new CompoundTag() : oldInfo.nbt.copy();
+			if (oldInfo.state().getBlock() instanceof BigCannonBlock) continue;
+			CompoundTag tag = oldInfo.nbt() == null ? new CompoundTag() : oldInfo.nbt().copy();
 			tag.putBoolean("createbigcannons:add_as_cannon", true);
-			contraption.getBlocks().put(local, new StructureBlockInfo(oldInfo.pos, oldInfo.state, tag));
+			contraption.getBlocks().put(local, new StructureBlockInfo(oldInfo.pos(), oldInfo.state(), tag));
 		}
 	}
 
@@ -264,7 +262,7 @@ public class ContraptionRemix {
 		state = IBigCannonBlockEntity.getInnerCannonBlockState(level, pos, state);
 		if (state.getBlock() instanceof BigCannonBlock && be instanceof IBigCannonBlockEntity cbe) {
 			StructureBlockInfo blockInfo = cbe.cannonBehavior().block();
-			if (!blockInfo.state.isAir()) state = blockInfo.state;
+			if (!blockInfo.state().isAir()) state = blockInfo.state();
 		}
 
 		if (CBCBlocks.WORM_HEAD.has(state)
@@ -277,7 +275,7 @@ public class ContraptionRemix {
 				&& cBlock.getFacing(offsetState).getAxis() == facing.getAxis()
 				&& level.getBlockEntity(offset) instanceof IBigCannonBlockEntity cbe) {
 				StructureBlockInfo containedInfo = cbe.cannonBehavior().block();
-				if (containedInfo.state.getBlock() instanceof BigCannonMunitionBlock) offsetState = containedInfo.state;
+				if (containedInfo.state().getBlock() instanceof BigCannonMunitionBlock) offsetState = containedInfo.state();
 			}
 			if (offsetState.getBlock() instanceof BigCannonMunitionBlock mBlock
 				&& mBlock.getAxis(offsetState) == forcedDirection.getAxis()) {
@@ -295,7 +293,7 @@ public class ContraptionRemix {
 			BlockPos localOffsetPos = contraption.createbigcannons$toLocalPos(offsetPos);
 			if (contraption.getBlocks().containsKey(localOffsetPos)) {
 				StructureBlockInfo offsetInfo = contraption.getBlocks().get(localOffsetPos);
-				if (BlockMovementChecks.isBlockAttachedTowards(offsetInfo.state, level, offsetPos, offset.getOpposite())) return true;
+				if (BlockMovementChecks.isBlockAttachedTowards(offsetInfo.state(), level, offsetPos, offset.getOpposite())) return true;
 			}
 			Direction.Axis offsetAxis = offset.getAxis();
 			if (offsetState.getBlock() instanceof BigCannonBlock cBlock
@@ -304,7 +302,7 @@ public class ContraptionRemix {
 				BlockPos localPos = contraption.createbigcannons$toLocalPos(pos);
 				if (contraption.getBlocks().containsKey(localPos)) {
 					StructureBlockInfo info = contraption.getBlocks().get(localPos);
-					if (info.nbt != null && info.nbt.contains("createbigcannons:add_as_cannon")) return true;
+					if (info.nbt() != null && info.nbt().contains("createbigcannons:add_as_cannon")) return true;
 				}
 				StructureBlockInfo offsetInfo = cbe.cannonBehavior().block();
 				BlockPos prevPos = pos.relative(offset.getOpposite());
@@ -320,11 +318,11 @@ public class ContraptionRemix {
 				if (state.getBlock() instanceof BigCannonBlock cBlock1
 					&& cBlock1.getFacing(state).getAxis() == offsetAxis
 					&& level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe1) {
-					currentState = cbe1.cannonBehavior().block().state;
+					currentState = cbe1.cannonBehavior().block().state();
 				}
 				if (IBigCannonBlockEntity.isValidMunitionState(offsetAxis, currentState)
-					&& prevInfo != null && IBigCannonBlockEntity.isValidMunitionState(offsetAxis, prevInfo.state)) {
-					if (BlockMovementChecks.isBlockAttachedTowards(offsetInfo.state, level, offsetPos, offset.getOpposite())) return true;
+					&& prevInfo != null && IBigCannonBlockEntity.isValidMunitionState(offsetAxis, prevInfo.state())) {
+					if (BlockMovementChecks.isBlockAttachedTowards(offsetInfo.state(), level, offsetPos, offset.getOpposite())) return true;
 				} else {
 					return true;
 				}
@@ -354,7 +352,7 @@ public class ContraptionRemix {
 		if (offsetState.getBlock() instanceof BigCannonBlock cBlock
 			&& cBlock.getFacing(offsetState).getAxis() == forcedAxis
 			&& level.getBlockEntity(offsetPos) instanceof IBigCannonBlockEntity cbe) {
-			pushState = cbe.cannonBehavior().block().state;
+			pushState = cbe.cannonBehavior().block().state();
 		}
 		boolean push = offset == forcedDirection && !BlockMovementChecks.isNotSupportive(state, forcedDirection);
 		if ((contraption instanceof GantryContraption || contraption instanceof PulleyContraption && !push)
@@ -395,9 +393,9 @@ public class ContraptionRemix {
 					contraption.getBlocks().put(localOffset, new StructureBlockInfo(localOffset, Blocks.AIR.defaultBlockState(), null));
 				}
 				StructureBlockInfo offsetInfo = contraption.getBlocks().get(localOffset);
-				CompoundTag tag = offsetInfo.nbt == null ? new CompoundTag() : offsetInfo.nbt.copy();
+				CompoundTag tag = offsetInfo.nbt() == null ? new CompoundTag() : offsetInfo.nbt().copy();
 				tag.putBoolean("createbigcannons:add_as_cannon", true);
-				contraption.getBlocks().put(localOffset, new StructureBlockInfo(offsetInfo.pos, offsetInfo.state, tag));
+				contraption.getBlocks().put(localOffset, new StructureBlockInfo(offsetInfo.pos(), offsetInfo.state(), tag));
 			} else if (contraption.getBlocks().containsKey(localOffset) && !visited.contains(offsetPos)) {
 				flag = !shouldAddAsCannon(contraption, localPos); // Prevent back tracking
 			} else if (shouldAddAsCannon(contraption, localPos)) {
@@ -419,13 +417,13 @@ public class ContraptionRemix {
 					&& prevInfo != null
 					&& stickFlag) {
 					// Determine from previous block if grabbing cannon.
-					boolean prevMunition = IBigCannonBlockEntity.isValidMunitionState(forcedAxis, prevInfo.state);
-					boolean alignedCannonBlock = prevInfo.state.getBlock() instanceof BigCannonBlock cBlock2
-						&& cBlock2.getFacing(prevInfo.state).getAxis() == forcedAxis;
+					boolean prevMunition = IBigCannonBlockEntity.isValidMunitionState(forcedAxis, prevInfo.state());
+					boolean alignedCannonBlock = prevInfo.state().getBlock() instanceof BigCannonBlock cBlock2
+						&& cBlock2.getFacing(prevInfo.state()).getAxis() == forcedAxis;
 
-					BlockState innerState = cbe1.cannonBehavior().block().state;
+					BlockState innerState = cbe1.cannonBehavior().block().state();
 					boolean filled = IBigCannonBlockEntity.isValidMunitionState(forcedAxis, innerState);
-					BlockState innerOffsetState = cbe.cannonBehavior().block().state;
+					BlockState innerOffsetState = cbe.cannonBehavior().block().state();
 
 					if (filled && (prevMunition || !alignedCannonBlock)) {
 						flag = !IBigCannonBlockEntity.isValidMunitionState(forcedAxis, innerOffsetState);
@@ -455,7 +453,7 @@ public class ContraptionRemix {
 		BlockPos localPos = contraption.createbigcannons$toLocalPos(pos);
 		if (shouldAddAsCannon(contraption, localPos)) {
 			StructureBlockInfo info = contraption.getBlocks().get(localPos);
-			if (info != null && info.nbt != null) info.nbt.remove("createbigcannons:add_as_cannon");
+			if (info != null && info.nbt() != null) info.nbt().remove("createbigcannons:add_as_cannon");
 			visited.add(pos);
 			return null;
 		}
@@ -472,7 +470,7 @@ public class ContraptionRemix {
 		BigCannonBehavior behavior = cbe.cannonBehavior();
 		StructureBlockInfo currentInfo = behavior.block();
 
-		BlockState addedState = currentInfo.state;
+		BlockState addedState = currentInfo.state();
 		for (Direction offset : Iterate.directions) {
 			Direction.Axis offsetAxis = offset.getAxis();
 			if (offsetAxis != forcedAxis) continue;
@@ -482,8 +480,8 @@ public class ContraptionRemix {
 
 			if (contraption.getBlocks().containsKey(localOffsetPos)) {
 				StructureBlockInfo offsetInfo = contraption.getBlocks().get(localOffsetPos);
-				if (offsetInfo.state.getBlock() instanceof BigCannonBlock cBlock1
-					&& cBlock1.getFacing(offsetInfo.state).getAxis() == forcedAxis) {
+				if (offsetInfo.state().getBlock() instanceof BigCannonBlock cBlock1
+					&& cBlock1.getFacing(offsetInfo.state()).getAxis() == forcedAxis) {
 					if (!visited.contains(offsetPos)) {
 						frontier.remove(offsetPos);
 					} else if (behavior.isConnectedTo(offset)) {
@@ -500,10 +498,10 @@ public class ContraptionRemix {
 					BlockPos prevLocalPos = localPos.relative(offset.getOpposite());
 					if (!contraption.getBlocks().containsKey(prevLocalPos)) continue;
 					StructureBlockInfo otherInfo = cbe1.cannonBehavior().block();
-					BlockState otherState = otherInfo.state;
+					BlockState otherState = otherInfo.state();
 					StructureBlockInfo prevInfo = contraption.getBlocks().get(prevLocalPos);
 					if (!IBigCannonBlockEntity.isValidMunitionState(offsetAxis, prevInfo)) {
-						if (prevInfo.state.getBlock() instanceof BigCannonBlock || addedState.isAir() || offset == forcedDirection) return null;
+						if (prevInfo.state().getBlock() instanceof BigCannonBlock || addedState.isAir() || offset == forcedDirection) return null;
 					}
 
 					if (addedState.isAir() || otherState.isAir() || !isAttachedCapture(level, offset, pos, offsetPos,
@@ -525,9 +523,9 @@ public class ContraptionRemix {
 		if (addedState.isAir()) return null;
 
 		visited.remove(pos);
-		CompoundTag tag = currentInfo.nbt == null ? null : currentInfo.nbt.copy();
-		BlockEntity newBe = tag != null && tag.contains("id", Tag.TAG_STRING) ? BlockEntity.loadStatic(currentInfo.pos, currentInfo.state, tag) : null;
-		return Pair.of(new StructureBlockInfo(currentInfo.pos, currentInfo.state, tag), newBe);
+		CompoundTag tag = currentInfo.nbt() == null ? null : currentInfo.nbt().copy();
+		BlockEntity newBe = tag != null && tag.contains("id", Tag.TAG_STRING) ? BlockEntity.loadStatic(currentInfo.pos(), currentInfo.state(), tag) : null;
+		return Pair.of(new StructureBlockInfo(currentInfo.pos(), currentInfo.state(), tag), newBe);
 	}
 
 	private static boolean isAttachedCapture(Level level, Direction offset, BlockPos pos, BlockPos offsetPos,
@@ -611,7 +609,7 @@ public class ContraptionRemix {
 		if (state.getBlock() instanceof BigCannonBlock cBlock
 			&& cBlock.getFacing(state).getAxis().isVertical()
 			&& level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe) {
-			BlockState innerState = cbe.cannonBehavior().block().state;
+			BlockState innerState = cbe.cannonBehavior().block().state();
 			if (!AllBlocks.ROPE.has(innerState) && !AllBlocks.PULLEY_MAGNET.has(innerState)) return;
 
 			cbe.cannonBehavior().removeBlock();
@@ -626,7 +624,7 @@ public class ContraptionRemix {
 		Map<BlockPos, StructureBlockInfo> blocks = contraption.getBlocks();
 		if (!blocks.containsKey(localPos)) return false;
 		StructureBlockInfo info = blocks.get(localPos);
-		return info.nbt != null && info.nbt.contains("createbigcannons:add_as_cannon");
+		return info.nbt() != null && info.nbt().contains("createbigcannons:add_as_cannon");
 	}
 
 	public static void pulleyChecks(PulleyContraption contraption, Level level, BlockPos pos, @Nullable Direction forcedDirection, Queue<BlockPos> frontier) {
@@ -635,7 +633,7 @@ public class ContraptionRemix {
 		if (state.getBlock() instanceof BigCannonBlock cBlock
 			&& cBlock.getFacing(state).getAxis().isVertical()
 			&& level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe) {
-			BlockState innerState = cbe.cannonBehavior().block().state;
+			BlockState innerState = cbe.cannonBehavior().block().state();
 			if (innerState.isAir()) {
 				frontier.remove(pos);
 				return;
@@ -658,7 +656,7 @@ public class ContraptionRemix {
 			&& (direction == null || cBlock.getFacing(state).getAxis() == direction.getAxis())
 			&& level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe) {
 			StructureBlockInfo info = cbe.cannonBehavior().block();
-			return info.state;
+			return info.state();
 		}
 		return state;
 	}
@@ -669,9 +667,9 @@ public class ContraptionRemix {
 		StructureBlockInfo info = cbe.cannonBehavior().block();
 		cbe.cannonBehavior().removeBlock();
 		cbe.cannonBehavior().blockEntity.notifyUpdate();
-		info.state.onRemove(level, pos, Blocks.AIR.defaultBlockState(), false);
-		if (drops) Block.dropResources(info.state, level, pos, null, null, ItemStack.EMPTY);
-		SoundType soundtype = info.state.getSoundType();
+		info.state().onRemove(level, pos, Blocks.AIR.defaultBlockState(), false);
+		if (drops) Block.dropResources(info.state(), level, pos, null, null, ItemStack.EMPTY);
+		SoundType soundtype = info.state().getSoundType();
 		level.playSound(null, pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
 		return true;
 	}
@@ -689,10 +687,10 @@ public class ContraptionRemix {
 			StructureBlockInfo info = entry.getValue();
 			if (levelState.getBlock() instanceof BigCannonBlock
 				&& level.getBlockEntity(gpos) instanceof IBigCannonBlockEntity cbe) {
-				if (AllBlocks.ROPE.has(info.state) || AllBlocks.PULLEY_MAGNET.has(info.state))
+				if (AllBlocks.ROPE.has(info.state()) || AllBlocks.PULLEY_MAGNET.has(info.state()))
 					throw AssemblyException.unmovableBlock(gpos, level.getBlockState(gpos));
 				StructureBlockInfo contained = cbe.cannonBehavior().block();
-				if (!AllBlocks.ROPE.has(contained.state) && !AllBlocks.PULLEY_MAGNET.has(contained.state)) continue;
+				if (!AllBlocks.ROPE.has(contained.state()) && !AllBlocks.PULLEY_MAGNET.has(contained.state())) continue;
 				blocksToCheck.add(gpos);
 			}
 		}

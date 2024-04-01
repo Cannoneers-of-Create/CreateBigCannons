@@ -5,9 +5,9 @@ import javax.annotation.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import io.github.fabricators_of_create.porting_lib.transfer.item.ItemTransferable;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
+import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -17,7 +17,7 @@ import rbasamoyai.createbigcannons.fabric.munitions.autocannon.AutocannonAmmoCon
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlockEntity;
 
 @Mixin(AutocannonAmmoContainerBlockEntity.class)
-public abstract class AutocannonAmmoContainerBlockEntityMixin extends BlockEntity implements ItemTransferable {
+public abstract class AutocannonAmmoContainerBlockEntityMixin extends BlockEntity implements SidedStorageBlockEntity {
 
 	@Unique private Storage<ItemVariant> inventory;
 

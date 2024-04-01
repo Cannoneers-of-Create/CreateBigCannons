@@ -9,8 +9,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.generators.ModelFile;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderGen;
 
 public class CannonLoaderGenImpl extends CannonLoaderGen {
 

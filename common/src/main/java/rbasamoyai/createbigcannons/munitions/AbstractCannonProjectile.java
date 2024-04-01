@@ -167,7 +167,7 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 
 					double startMass = this.getProjectileMass();
 					double curPom = startMass * mag;
-					double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, bpos, true);
+					double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level(), state, bpos, true);
 
 					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level(), bpos) == -1 || curPom < hardness) {
 						this.setInGround(true);
@@ -233,7 +233,7 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 		Vec3 oldVel = this.getDeltaMovement();
 		double momentum = this.getProjectileMass() * oldVel.length();
 		if (bounce == BounceType.DEFLECT) {
-			if (momentum > BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, result.getBlockPos(), true) * 0.5) {
+			if (momentum > BlockArmorPropertiesHandler.getProperties(state).hardness(this.level(), state, result.getBlockPos(), true) * 0.5) {
 				Vec3 spallLoc = this.position().add(oldVel.normalize().scale(2));
 				this.level().explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Level.ExplosionInteraction.NONE);
 			}

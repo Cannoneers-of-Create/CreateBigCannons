@@ -6,14 +6,15 @@ import static com.simibubi.create.compat.emi.recipes.CreateEmiRecipe.fluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -47,23 +48,24 @@ public class CannonCastingEmiRecipe extends CBCEmiBlockRecipe<CannonCastingRecip
 		CannonCastShape shape = this.recipe.shape();
 		addSlot(widgets, EmiStack.of(shape.castMould()), 80, 5).recipeContext(this);
 
-		widgets.addDrawable(0, 0, 0, 0, ((poseStack, mouseX, mouseY, delta) -> {
-			CBCGuiTextures.CANNON_CAST_SHADOW.render(poseStack, 40, 45);
+		widgets.addDrawable(0, 0, 0, 0, ((graphics, mouseX, mouseY, delta) -> {
+			CBCGuiTextures.CANNON_CAST_SHADOW.render(graphics, 40, 45);
+			PoseStack poseStack = graphics.pose();
 			poseStack.pushPose();
 			poseStack.translate(this.width / 2 - 15, 55, 200);
-			poseStack.mulPose(Vector3f.XP.rotationDegrees(-22.5f));
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(22.5f));
+			poseStack.mulPose(Axis.XP.rotationDegrees(-22.5f));
+			poseStack.mulPose(Axis.YP.rotationDegrees(22.5f));
 			int scale = 23;
 
 			GuiGameElement.of(CBCBlockPartials.cannonCastFor(shape))
 				.atLocal(0, 0.25, 0)
 				.scale(scale)
-				.render(poseStack);
+				.render(graphics);
 
 			poseStack.popPose();
 
-			CBCGuiTextures.CASTING_ARROW.render(poseStack, 21, 47);
-			CBCGuiTextures.CASTING_ARROW_1.render(poseStack, 124, 27);
+			CBCGuiTextures.CASTING_ARROW.render(graphics, 21, 47);
+			CBCGuiTextures.CASTING_ARROW_1.render(graphics, 124, 27);
 
 			float castingTime = 0;
 			if (!matchingStacks.isEmpty()) {
@@ -72,7 +74,7 @@ public class CannonCastingEmiRecipe extends CBCEmiBlockRecipe<CannonCastingRecip
 			}
 			Minecraft mc = Minecraft.getInstance();
 			Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
-			mc.font.draw(poseStack, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
+			graphics.drawString(mc.font, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
 		}));
 	}
 

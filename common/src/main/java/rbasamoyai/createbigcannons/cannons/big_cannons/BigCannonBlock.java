@@ -124,7 +124,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 		BlockEntity be = level.getBlockEntity(pos);
 		if (be instanceof IBigCannonBlockEntity cbe) {
 			StructureBlockInfo info = cbe.cannonBehavior().block();
-			BlockState innerState = info.state;
+			BlockState innerState = info.state();
 			ItemStack stack = innerState.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info) : ItemStack.EMPTY;
 			if (!stack.isEmpty()) {
 				Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);

@@ -21,6 +21,7 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -100,11 +101,12 @@ public abstract class CBCBlockRecipeCategory<T extends BlockRecipe> implements D
 	public List<Widget> setupDisplay(CBCDisplay<T> display, Rectangle bounds) {
 		List<Widget> widgets = new ArrayList<>();
 		widgets.add(Widgets.createRecipeBase(bounds));
-		widgets.add(Widgets.createDrawableWidget((helper, poseStack, mouseX, mouseY, partialTick) -> {
+		widgets.add(Widgets.createDrawableWidget((graphics, mouseX, mouseY, partialTick) -> {
+			PoseStack poseStack = graphics.pose();
 			poseStack.pushPose();
 			poseStack.translate(bounds.getX(), bounds.getY() + 4, 0);
-			draw(display.getRecipe(), poseStack, mouseX, mouseY);
-			draw(display.getRecipe(), display, poseStack, mouseX, mouseY);
+			draw(display.getRecipe(), graphics, mouseX, mouseY);
+			draw(display.getRecipe(), display, graphics, mouseX, mouseY);
 			poseStack.popPose();
 		}));
 		this.addWidgets(display, widgets, new Point(bounds.getX(), bounds.getY() + 4));
@@ -112,9 +114,9 @@ public abstract class CBCBlockRecipeCategory<T extends BlockRecipe> implements D
 		return widgets;
 	}
 
-	public void draw(T recipe, PoseStack matrixStack, double mouseX, double mouseY) {}
+	public void draw(T recipe, GuiGraphics graphics, double mouseX, double mouseY) {}
 
-	public void draw(T recipe, CBCDisplay<T> display, PoseStack matrixStack, double mouseX, double mouseY) {}
+	public void draw(T recipe, CBCDisplay<T> display, GuiGraphics graphics, double mouseX, double mouseY) {}
 
 	public record Info<T extends BlockRecipe>(CategoryIdentifier<CBCDisplay<T>> recipeType, Component title, Renderer background,
 											  Renderer icon, Supplier<List<T>> recipes, List<Supplier<? extends ItemStack>> catalysts,

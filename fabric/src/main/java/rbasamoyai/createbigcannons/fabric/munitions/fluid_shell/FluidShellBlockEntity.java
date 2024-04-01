@@ -9,13 +9,13 @@ import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 import com.simibubi.create.foundation.utility.Pair;
 
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
-import net.fabricmc.fabric.api.transfer.v1.storage.StorageUtil;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -83,19 +83,22 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity impleme
 		Pair<FluidStack, ItemStack> emptyingResult = GenericItemEmptying.emptyItem(worldIn, heldItem, true);
 		FluidStack fluidStack = emptyingResult.getFirst();
 
-		if (fluidStack.getAmount() != StorageUtil.simulateInsert(this.tank, fluidStack.getType(), fluidStack.getAmount(), null))
-			return false;
-
-		ItemStack copyOfHeld = heldItem.copy();
-		emptyingResult = GenericItemEmptying.emptyItem(worldIn, copyOfHeld, false);
-		TransferUtil.insertFluid(this.tank, fluidStack);
-
-		if (!player.isCreative()) {
-			if (copyOfHeld.isEmpty())
-				player.setItemInHand(handIn, emptyingResult.getSecond());
-			else {
-				player.setItemInHand(handIn, copyOfHeld);
-				player.getInventory().placeItemBackInInventory(emptyingResult.getSecond());
+		try (Transaction t = TransferUtil.getTransaction()) {
+			try (Transaction nested = t.openNested()) {
+				if (!fluidStack.isEmpty() && fluidStack.getAmount() != this.tank.insert(fluidStack.getType(), fluidStack.getAmount(), nested)) return false;
+			}
+			ItemStack copyOfHeld = heldItem.copy();
+			emptyingResult = GenericItemEmptying.emptyItem(worldIn, copyOfHeld, false);
+			TransferUtil.insertFluid(this.tank, fluidStack);
+			t.commit();
+			this.notifyUpdate();
+			if (!player.isCreative()) {
+				if (copyOfHeld.isEmpty())
+					player.setItemInHand(handIn, emptyingResult.getSecond());
+				else {
+					player.setItemInHand(handIn, copyOfHeld);
+					player.getInventory().placeItemBackInInventory(emptyingResult.getSecond());
+				}
 			}
 		}
 		return true;

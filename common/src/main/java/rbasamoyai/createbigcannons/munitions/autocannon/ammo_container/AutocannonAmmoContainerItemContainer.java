@@ -59,12 +59,12 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 
 	@Override
 	public void startOpen(Player player) {
-		player.level.playSound(player, player.blockPosition(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.PLAYERS, 0.5F, player.level.getRandom().nextFloat() * 0.1F + 0.9F);
+		player.level().playSound(player, player.blockPosition(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.PLAYERS, 0.5F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 	}
 
 	@Override
 	public void stopOpen(Player player) {
-		player.level.playSound(player, player.blockPosition(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.PLAYERS, 0.5F, player.level.getRandom().nextFloat() * 0.1F + 0.9F);
+		player.level().playSound(player, player.blockPosition(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.PLAYERS, 0.5F, player.level().getRandom().nextFloat() * 0.1F + 0.9F);
 	}
 
 }

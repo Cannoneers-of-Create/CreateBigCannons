@@ -4,13 +4,13 @@ import static com.simibubi.create.compat.rei.category.CreateRecipeCategory.basic
 
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
 
 import me.shedaniel.math.Point;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.compat.common_jei.IncompleteCannonBlockRecipe;
@@ -24,9 +24,9 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 	final String[] romans = { "I", "II", "III", "IV", "V", "VI", "-" };
 
 	@Override
-	public void draw(IncompleteCannonBlockRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
+	public void draw(IncompleteCannonBlockRecipe recipe, GuiGraphics graphics, double mouseX, double mouseY) {
 		Minecraft mc = Minecraft.getInstance();
-		AllGuiTextures.JEI_LONG_ARROW.render(stack, 54, 38);
+		AllGuiTextures.JEI_LONG_ARROW.render(graphics, 54, 38);
 
 		int sz = recipe.ingredients().size();
 		int base = this.getDisplayWidth(null) / 2 - 12 * sz + 24;
@@ -35,7 +35,7 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 			int j = i - 1;
 			int posX = base + 24 * j;
 			Component num = Component.literal(this.romans[Math.min(j, 6)]);
-			mc.font.draw(stack, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
+			graphics.drawString(mc.font, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
 		}
 	}
 

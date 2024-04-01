@@ -80,7 +80,7 @@ public abstract class ContraptionMixin {
 	@ModifyExpressionValue(method = "removeBlocksFromWorld", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/Contraption;customBlockRemoval(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"), remap = false)
 	private boolean createbigcannons$removeBlocksFromWorld$customBlockRemoval(boolean original, Level level, BlockPos offset,
 																			  @Local(ordinal = 1) BlockPos add, @Local(ordinal = 0) StructureBlockInfo block) {
-		return original || ContraptionRemix.customBlockRemoval(this.self, level, add, block.state);
+		return original || ContraptionRemix.customBlockRemoval(this.self, level, add, block.state());
 	}
 
 	@Inject(method = "moveBlock",
@@ -201,10 +201,10 @@ public abstract class ContraptionMixin {
 		if (state.getBlock() instanceof BigCannonBlock cBlock
 			&& cBlock.getFacing(state).getAxis().isVertical()
 			&& level.getBlockEntity(ropePos) instanceof IBigCannonBlockEntity cbe
-			&& cbe.cannonBehavior().block().state.isAir()) {
+			&& cbe.cannonBehavior().block().state().isAir()) {
 			BlockPos local = this.toLocalPos(ropePos.above());
 			if (this.self.getBlocks().containsKey(local)
-				&& this.self.getBlocks().get(local).state.getBlock() instanceof BigCannonBlock
+				&& this.self.getBlocks().get(local).state().getBlock() instanceof BigCannonBlock
 				&& level.getBlockEntity(ropePos.above()) instanceof IBigCannonBlockEntity cbe1
 				&& cbe1.cannonBehavior().isConnectedTo(Direction.DOWN)) {
 				return;
@@ -227,7 +227,7 @@ public abstract class ContraptionMixin {
 
 		if ((forcedDirection == null || forcedDirection.getAxis().isHorizontal())
 			&& this.self.getBlocks().containsKey(local)
-			&& this.self.getBlocks().get(local).state.getBlock() instanceof BigCannonBlock) {
+			&& this.self.getBlocks().get(local).state().getBlock() instanceof BigCannonBlock) {
 			return original;
 		}
 		if (state.getBlock() instanceof BigCannonBlock cBlock

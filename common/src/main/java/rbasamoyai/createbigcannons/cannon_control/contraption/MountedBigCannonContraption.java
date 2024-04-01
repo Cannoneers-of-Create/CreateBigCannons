@@ -337,7 +337,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					return;
 				}
 				this.consumeBlock(behavior, currentPos);
-				if (cannonInfo.state.is(CBCTags.CBCBlockTags.REDUCES_SPREAD)) {
+				if (cannonInfo.state().is(CBCTags.CBCBlockTags.REDUCES_SPREAD)) {
 					propelCtx.spread = Math.max(propelCtx.spread - spreadSub, minimumSpread);
 				}
 				if (projBlock.isComplete(projectileBlocks, this.initialOrientation)) {

@@ -287,7 +287,7 @@ public class MunitionAssemblyRecipes {
 		List<Item> fuzes = new ArrayList<>();
 		List<Item> munitions = new ArrayList<>();
 
-		Registry.ITEM.stream()
+		BuiltInRegistries.ITEM.stream()
 		.forEach(i -> {
 			if (i instanceof FuzeItem) fuzes.add(i);
 			else if (i instanceof FuzedItemMunition) munitions.add(i);
@@ -306,7 +306,7 @@ public class MunitionAssemblyRecipes {
 				String subid = munition.getDescriptionId() + "." + fuze.getDescriptionId();
 				NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(fuzedMunitionStack));
 				ResourceLocation id = CreateBigCannons.resource(group + "." + subid);
-				recipes.add(new ShapelessRecipe(id, group, fuzeStack, inputs));
+				recipes.add(new ShapelessRecipe(id, group, CraftingBookCategory.MISC, fuzeStack, inputs));
 
 				if (munition instanceof AutocannonRoundItem) {
 					ItemStack fuzedCartridge = CBCItems.AUTOCANNON_CARTRIDGE.asStack();
@@ -314,7 +314,7 @@ public class MunitionAssemblyRecipes {
 
 					NonNullList<Ingredient> inputs1 = NonNullList.of(Ingredient.EMPTY, Ingredient.of(fuzedCartridge));
 					ResourceLocation id1 = CreateBigCannons.resource(group + ".autocannon_round." + subid);
-					recipes.add(new ShapelessRecipe(id1, group + ".autocannon_round", fuzeStack, inputs1));
+					recipes.add(new ShapelessRecipe(id1, group + ".autocannon_round", CraftingBookCategory.MISC, fuzeStack, inputs1));
 				}
 			}
 		}
@@ -323,7 +323,7 @@ public class MunitionAssemblyRecipes {
 
 	public static List<CraftingRecipe> getTracerRemovalRecipes() {
 		List<Item> munitions = new ArrayList<>();
-		Registry.ITEM.stream()
+		BuiltInRegistries.ITEM.stream()
 		.forEach(i -> {
 			if (i instanceof AutocannonRoundItem || CBCItems.MACHINE_GUN_ROUND.is(i)) munitions.add(i);
 		});
@@ -336,14 +336,14 @@ public class MunitionAssemblyRecipes {
 			tracerMunition.getOrCreateTag().putBoolean("Tracer", true);
 			ResourceLocation id = CreateBigCannons.resource(group + "." + munition.getDescriptionId());
 			NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(tracerMunition));
-			recipes.add(new ShapelessRecipe(id, group, CBCItems.TRACER_TIP.asStack(), inputs));
+			recipes.add(new ShapelessRecipe(id, group, CraftingBookCategory.MISC, CBCItems.TRACER_TIP.asStack(), inputs));
 
 			if (munition instanceof AutocannonRoundItem round) {
 				ItemStack tracerCartridge = round.getCreativeTabCartridgeItem();
 				CBCItems.AUTOCANNON_CARTRIDGE.get().setTracer(tracerCartridge, true);
 				NonNullList<Ingredient> inputs1 = NonNullList.of(Ingredient.EMPTY, Ingredient.of(tracerCartridge));
 				ResourceLocation id1 = CreateBigCannons.resource(group + ".autocannon_round." + munition.getDescriptionId());
-				recipes.add(new ShapelessRecipe(id1, group + ".autocannon_round", CBCItems.TRACER_TIP.asStack(), inputs1));
+				recipes.add(new ShapelessRecipe(id1, group + ".autocannon_round", CraftingBookCategory.MISC, CBCItems.TRACER_TIP.asStack(), inputs1));
 			}
 		}
 		return recipes;

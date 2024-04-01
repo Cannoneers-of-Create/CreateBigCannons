@@ -71,7 +71,7 @@ public abstract class PistonContraptionMixin extends TranslatingContraption impl
 
 		if (state.getBlock() instanceof BigCannonBlock && level.getBlockEntity(currentPos) instanceof IBigCannonBlockEntity cbe && !retracting) {
 			StructureBlockInfo loadedInfo = cbe.cannonBehavior().block();
-			if (!loadedInfo.state.isAir() && CBCBlocks.WORM_HEAD.has(offsetState)
+			if (!loadedInfo.state().isAir() && CBCBlocks.WORM_HEAD.has(offsetState)
 				|| cbe.canPushBlock(new StructureBlockInfo(BlockPos.ZERO, offsetState, null))) {
 				cir.setReturnValue(true);
 			}

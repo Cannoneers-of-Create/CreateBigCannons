@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 
@@ -24,7 +24,7 @@ public enum CBCModsFabric {
 
 	public ResourceLocation resource(String path) { return new ResourceLocation(this.id, path); }
 
-	public Block getBlock(String id) { return Registry.BLOCK.get(resource(id)); }
+	public Block getBlock(String id) { return BuiltInRegistries.BLOCK.get(resource(id)); }
 
 	public boolean isLoaded() { return FabricLoader.getInstance().isModLoaded(this.id); }
 

@@ -14,7 +14,8 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -61,10 +62,10 @@ public class BlockArmorPropertiesHandler {
 					ResourceLocation loc = entry.getKey();
 					if (loc.getPath().startsWith("tags/")) {
 						ResourceLocation pruned = new ResourceLocation(loc.getNamespace(), loc.getPath().substring(5));
-						TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, pruned);
+						TagKey<Block> tag = TagKey.create(Registries.BLOCK, pruned);
 						TAGS_TO_EVALUATE.put(tag, SimpleBlockArmorProperties.fromJson(el.getAsJsonObject()));
 					} else {
-						Block block = Registry.BLOCK.getOptional(loc).orElseThrow(() -> {
+						Block block = BuiltInRegistries.BLOCK.getOptional(loc).orElseThrow(() -> {
 							return new JsonSyntaxException("Unknown block '" + loc + "'");
 						});
 						if (CUSTOM_SERIALIZERS.containsKey(block)) {
@@ -85,7 +86,7 @@ public class BlockArmorPropertiesHandler {
 		TAG_MAP.clear();
 		for (Map.Entry<TagKey<Block>, SimpleBlockArmorProperties> entry : TAGS_TO_EVALUATE.entrySet()) {
 			SimpleBlockArmorProperties properties = entry.getValue();
-			for (Holder<Block> holder : Registry.BLOCK.getTagOrEmpty(entry.getKey())) {
+			for (Holder<Block> holder : BuiltInRegistries.BLOCK.getTagOrEmpty(entry.getKey())) {
 				TAG_MAP.put(holder.value(), properties);
 			}
 		}
@@ -113,7 +114,7 @@ public class BlockArmorPropertiesHandler {
 
 	public static <T extends BlockArmorPropertiesSerializer<?>> T registerCustomSerializer(Block block, T ser) {
 		if (CUSTOM_SERIALIZERS.containsKey(block)) {
-			throw new IllegalStateException("Serializer for block " + Registry.BLOCK.getKey(block) + " already registered");
+			throw new IllegalStateException("Serializer for block " + BuiltInRegistries.BLOCK.getKey(block) + " already registered");
 		}
 		CUSTOM_SERIALIZERS.put(block, ser);
 		return ser;
@@ -122,12 +123,12 @@ public class BlockArmorPropertiesHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(TAG_MAP.size());
 		for (Map.Entry<Block, SimpleBlockArmorProperties> entry : TAG_MAP.entrySet()) {
-			buf.writeResourceLocation(Registry.BLOCK.getKey(entry.getKey()));
+			buf.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(entry.getKey()));
 			entry.getValue().toNetwork(buf);
 		}
 		buf.writeVarInt(BLOCK_MAP.size());
 		for (Map.Entry<Block, BlockArmorPropertiesProvider> entry : BLOCK_MAP.entrySet()) {
-			buf.writeResourceLocation(Registry.BLOCK.getKey(entry.getKey()));
+			buf.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(entry.getKey()));
 			toNetworkCasted(entry.getKey(), entry.getValue(), buf);
 		}
 	}
@@ -149,14 +150,14 @@ public class BlockArmorPropertiesHandler {
 		TAG_MAP.clear();
 		int tagSz = buf.readVarInt();
 		for (int i = 0; i < tagSz; ++i) {
-			Block block = Registry.BLOCK.get(buf.readResourceLocation());
+			Block block = BuiltInRegistries.BLOCK.get(buf.readResourceLocation());
 			SimpleBlockArmorProperties properties = SimpleBlockArmorProperties.fromNetwork(buf);
 			TAG_MAP.put(block, properties);
 		}
 		BLOCK_MAP.clear();
 		int blockSz = buf.readVarInt();
 		for (int i = 0; i < blockSz; ++i) {
-			Block block = Registry.BLOCK.get(buf.readResourceLocation());
+			Block block = BuiltInRegistries.BLOCK.get(buf.readResourceLocation());
 			BlockArmorPropertiesSerializer<?> ser = CUSTOM_SERIALIZERS.get(block);
 			BLOCK_MAP.put(block, ser == null ? VariantBlockArmorProperties.fromNetwork(buf) : ser.fromNetwork(buf));
 		}

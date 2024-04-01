@@ -1,15 +1,15 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
 
-import com.llamalad7.mixinextras.sugar.Local;
-
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import com.llamalad7.mixinextras.sugar.Local;
+import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.piston.LinearActuatorBlockEntity;
 import com.simibubi.create.content.contraptions.pulley.PulleyBlockEntity;
@@ -21,11 +21,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.remix.HasFragileContraption;
@@ -45,8 +40,8 @@ public abstract class PulleyBlockEntityMixin extends LinearActuatorBlockEntity {
 			|| !cBlock.getFacing(ropeState).getAxis().isVertical()
 			|| !(this.level.getBlockEntity(ropePos) instanceof IBigCannonBlockEntity cbe)) return;
 		StructureBlockInfo info = cbe.cannonBehavior().block();
-		if (AllBlocks.ROPE.has(info.state) || AllBlocks.PULLEY_MAGNET.has(info.state))
-			ropeStateRef.set(info.state);
+		if (AllBlocks.ROPE.has(info.state()) || AllBlocks.PULLEY_MAGNET.has(info.state()))
+			ropeStateRef.set(info.state());
 	}
 
 	@Redirect(method = "removeRopes",

@@ -10,10 +10,10 @@ import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
-import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;

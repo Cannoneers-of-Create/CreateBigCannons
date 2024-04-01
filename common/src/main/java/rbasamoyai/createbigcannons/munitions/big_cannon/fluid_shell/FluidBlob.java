@@ -65,8 +65,8 @@ public class FluidBlob extends Shrapnel {
 	public void tick() {
 		super.tick();
 
-		if (!this.level.isClientSide) {
-			if (this.level.getGameTime() % 3 == 0) {
+		if (!this.level().isClientSide) {
+			if (this.level().getGameTime() % 3 == 0) {
 				NetworkPlatform.sendToClientTracking(new ClientboundFluidBlobStackSyncPacket(this), this);
 			}
 		}

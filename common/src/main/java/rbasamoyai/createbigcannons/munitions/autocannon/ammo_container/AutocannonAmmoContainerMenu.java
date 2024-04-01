@@ -46,7 +46,7 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 		IAutocannonAmmoContainerContainer ct;
 		if (isBlock) {
 			BlockPos pos = buf.readBlockPos();
-			BlockEntity be = playerInv.player.level.getBlockEntity(pos);
+			BlockEntity be = playerInv.player.level().getBlockEntity(pos);
 			ct = new AutocannonAmmoContainerBlockEntityContainerWrapper(be instanceof AutocannonAmmoContainerBlockEntity abe ? abe : null, pos);
 		} else {
 			ct = new AutocannonAmmoContainerItemContainer(buf.readItem());

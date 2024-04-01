@@ -17,7 +17,6 @@ import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
 import rbasamoyai.createbigcannons.datagen.loot.BoringScrapLoot;
 import rbasamoyai.createbigcannons.datagen.recipes.BlockRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.recipes.CBCCraftingRecipeProvider;
-import rbasamoyai.createbigcannons.datagen.values.BlockHardnessProvider;
 import rbasamoyai.createbigcannons.fabric.datagen.CBCCompactingRecipeProvider;
 import rbasamoyai.createbigcannons.fabric.datagen.CBCCuttingRecipeProvider;
 import rbasamoyai.createbigcannons.fabric.datagen.CBCMillingRecipeProvider;
@@ -53,8 +52,6 @@ public class CBCDataFabric implements DataGeneratorEntrypoint {
 		CBCPonderIndex.registerLang();
 
 		modDatapack.addProvider((Factory<CBCBlockPartialsGen>) output -> new CBCBlockPartialsGen(output, helper));
-
-		modDatapack.addProvider((Factory<BlockHardnessProvider>) output -> new BlockHardnessProvider(CreateBigCannons.MOD_ID, output));
 
 		modDatapack.addProvider(CBCCompactingRecipeProvider::new);
 		modDatapack.addProvider(MeltingRecipeProvider::new);

@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.mojang.math.Vector3f;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.emi.CreateEmiAnimations;
@@ -49,57 +50,58 @@ public class BuiltUpHeatingEmiRecipe extends CBCEmiBlockRecipe<BuiltUpHeatingRec
 		}
 		addSlot(widgets, EmiIngredient.of(Ingredient.of(this.recipe.getResultBlock())), this.width / 2 - 10, 74).recipeContext(this);
 
-		widgets.addDrawable(0, 0, 0, 0, ((poseStack, mouseX, mouseY, delta) -> {
+		widgets.addDrawable(0, 0, 0, 0, ((graphics, mouseX, mouseY, delta) -> {
 			int scale = 24;
-			AllGuiTextures.JEI_SHADOW.render(poseStack, 23, 55);
-			AllGuiTextures.JEI_SHADOW.render(poseStack, 99, 55);
-			AllGuiTextures.JEI_LIGHT.render(poseStack, 118, 65);
-			CBCGuiTextures.CANNON_BUILDING_ARROW.render(poseStack, 82, 34);
+			AllGuiTextures.JEI_SHADOW.render(graphics, 23, 55);
+			AllGuiTextures.JEI_SHADOW.render(graphics, 99, 55);
+			AllGuiTextures.JEI_LIGHT.render(graphics, 118, 65);
+			CBCGuiTextures.CANNON_BUILDING_ARROW.render(graphics, 82, 34);
 
+			PoseStack poseStack = graphics.pose();
 			poseStack.pushPose();
 			poseStack.translate(33, 59, 0);
-			poseStack.mulPose(Vector3f.XP.rotationDegrees(-12.5f));
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(22.5f));
+			poseStack.mulPose(Axis.XP.rotationDegrees(-12.5f));
+			poseStack.mulPose(Axis.YP.rotationDegrees(22.5f));
 			CreateEmiAnimations.defaultBlockElement(CBCBlocks.CANNON_BUILDER.getDefaultState().setValue(CannonBuilderBlock.STATE, CannonBuilderBlock.BuilderState.ACTIVATED))
 				.rotateBlock(0, 180, 0)
 				.atLocal(0, 0, 0)
 				.scale(scale)
-				.render(poseStack);
+				.render(graphics);
 
 			CreateEmiAnimations.defaultBlockElement(AllBlocks.SHAFT.getDefaultState())
 				.rotateBlock(0, CreateEmiAnimations.getCurrentAngle(), -90)
 				.atLocal(0, 0, 0)
 				.scale(scale)
-				.render(poseStack);
+				.render(graphics);
 			poseStack.popPose();
 
 			poseStack.pushPose();
 			poseStack.translate(109, 59, 0);
-			poseStack.mulPose(Vector3f.XP.rotationDegrees(-12.5f));
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(22.5f));
+			poseStack.mulPose(Axis.XP.rotationDegrees(-12.5f));
+			poseStack.mulPose(Axis.YP.rotationDegrees(22.5f));
 
 			CreateEmiAnimations.defaultBlockElement(AllPartialModels.ENCASED_FAN_INNER)
 				.rotateBlock(180, 0, CreateEmiAnimations.getCurrentAngle() * 16)
 				.scale(scale)
-				.render(poseStack);
+				.render(graphics);
 
 			CreateEmiAnimations.defaultBlockElement(AllBlocks.ENCASED_FAN.getDefaultState())
 				.rotateBlock(0, 180, 0)
 				.atLocal(0, 0, 0)
 				.scale(scale)
-				.render(poseStack);
+				.render(graphics);
 			poseStack.popPose();
 
 			poseStack.pushPose();
 			poseStack.translate(109, 59, 0);
-			poseStack.mulPose(Vector3f.XP.rotationDegrees(-12.5f));
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(22.5f));
+			poseStack.mulPose(Axis.XP.rotationDegrees(-12.5f));
+			poseStack.mulPose(Axis.YP.rotationDegrees(22.5f));
 
 			GuiGameElement.of(Fluids.LAVA)
 				.rotateBlock(0, 180, 0)
 				.atLocal(0, 0, 2)
 				.scale(scale)
-				.render(poseStack);
+				.render(graphics);
 			poseStack.popPose();
 		}));
 	}

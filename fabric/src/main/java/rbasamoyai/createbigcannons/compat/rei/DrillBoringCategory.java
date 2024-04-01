@@ -1,9 +1,11 @@
 package rbasamoyai.createbigcannons.compat.rei;
 
+import static com.simibubi.create.compat.rei.category.CreateRecipeCategory.basicSlot;
+
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.rei.category.animations.AnimatedKinetics;
@@ -14,6 +16,7 @@ import me.shedaniel.math.Point;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -25,8 +28,6 @@ import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-import static com.simibubi.create.compat.rei.category.CreateRecipeCategory.basicSlot;
-
 public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlockRecipe> {
 
 	public DrillBoringCategory(Info<DrillBoringBlockRecipe> info) {
@@ -34,20 +35,21 @@ public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlock
 	}
 
 	@Override
-	public void draw(DrillBoringBlockRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
+	public void draw(DrillBoringBlockRecipe recipe, GuiGraphics graphics, double mouseX, double mouseY) {
 		int scale = 23;
-		AllGuiTextures.JEI_SHADOW.render(stack, 35, 28);
-		AllGuiTextures.JEI_SHADOW.render(stack, 97, 36);
-		AllGuiTextures.JEI_LONG_ARROW.render(stack, 54, 54);
+		AllGuiTextures.JEI_SHADOW.render(graphics, 35, 28);
+		AllGuiTextures.JEI_SHADOW.render(graphics, 97, 36);
+		AllGuiTextures.JEI_LONG_ARROW.render(graphics, 54, 54);
+		PoseStack stack = graphics.pose();
 		stack.pushPose();
 		stack.translate(45, 35, 10);
-		stack.mulPose(Vector3f.XP.rotationDegrees(-12.5f));
-		stack.mulPose(Vector3f.YP.rotationDegrees(60.0f));
+		stack.mulPose(Axis.XP.rotationDegrees(-12.5f));
+		stack.mulPose(Axis.YP.rotationDegrees(60.0f));
 		AnimatedKinetics.defaultBlockElement(CBCBlocks.CANNON_DRILL.getDefaultState().setValue(CannonDrillBlock.STATE, MechanicalPistonBlock.PistonState.RETRACTED))
 			.rotateBlock(0, 180, 0)
 			.atLocal(0, 0, 0)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 
 		BlockState shaft = AllBlocks.SHAFT.getDefaultState();
 		Direction.Axis axis = shaft.getValue(BlockStateProperties.AXIS);
@@ -56,7 +58,7 @@ public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlock
 			.rotateBlock(0, AnimatedKinetics.getCurrentAngle(), -90)
 			.atLocal(0, 0, 0)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 
 		List<ItemStack> ingredients = recipe.ingredients();
 		Block block = !ingredients.isEmpty() && ingredients.get(0).getItem() instanceof BlockItem item ? item.getBlock() : Blocks.BARRIER;
@@ -73,25 +75,25 @@ public class DrillBoringCategory extends CBCBlockRecipeCategory<DrillBoringBlock
 			.rotateBlock(90, 0, AnimatedKinetics.getCurrentAngle())
 			.atLocal(0, 0, 2)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 
 		AnimatedKinetics.defaultBlockElement(AllBlocks.MECHANICAL_BEARING.getDefaultState())
 			.rotateBlock(0, 0, 0)
 			.atLocal(0, 0, 3)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 
 		AnimatedKinetics.defaultBlockElement(AllPartialModels.BEARING_TOP)
 			.rotateBlock(-90, 0, AnimatedKinetics.getCurrentAngle())
 			.atLocal(0, 0, 3)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 
 		AnimatedKinetics.defaultBlockElement(AllPartialModels.SHAFT_HALF)
 			.rotateBlock(0, 0, AnimatedKinetics.getCurrentAngle())
 			.atLocal(0, 0, 3)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 		stack.popPose();
 	}
 

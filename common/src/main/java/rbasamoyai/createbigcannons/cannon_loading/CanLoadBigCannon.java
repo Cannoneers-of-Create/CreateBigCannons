@@ -1,5 +1,11 @@
 package rbasamoyai.createbigcannons.cannon_loading;
 
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.annotation.Nullable;
+
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 
 import net.minecraft.core.BlockPos;
@@ -7,12 +13,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-
-import javax.annotation.Nullable;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public interface CanLoadBigCannon {
 
@@ -31,7 +31,7 @@ public interface CanLoadBigCannon {
 
 	static boolean checkForIntersectingBlocks(Level level, AbstractContraptionEntity movedContraption, Map<BlockPos, BlockState> encounteredBlocks) {
 		if (!(movedContraption.getContraption() instanceof CanLoadBigCannon loader)) return false;
-		BlockPos anchor = new BlockPos(movedContraption.getAnchorVec());
+		BlockPos anchor = BlockPos.containing(movedContraption.getAnchorVec());
 		Set<BlockPos> fragileBlocks = loader.createbigcannons$getFragileBlockPositions();
 		Set<BlockPos> encountered = new HashSet<>();
 		for (BlockPos lpos : fragileBlocks) {
@@ -50,7 +50,7 @@ public interface CanLoadBigCannon {
 	}
 
 	static boolean canBreakLoader(BlockState state) {
-		return !state.getMaterial().isReplaceable() || state.getMaterial().isSolid();
+		return !state.canBeReplaced() || state.isSolid();
 	}
 
 }

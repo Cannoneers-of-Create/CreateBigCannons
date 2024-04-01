@@ -1,8 +1,12 @@
 package rbasamoyai.createbigcannons.compat.rei;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import static com.simibubi.create.compat.rei.category.CreateRecipeCategory.basicSlot;
 
-import com.mojang.math.Vector3f;
+import java.util.List;
+import java.util.Set;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.compat.rei.category.animations.AnimatedKinetics;
@@ -13,6 +17,7 @@ import me.shedaniel.math.Point;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
@@ -21,11 +26,6 @@ import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCGuiTextures;
 
-import java.util.List;
-import java.util.Set;
-
-import static com.simibubi.create.compat.rei.category.CreateRecipeCategory.basicSlot;
-
 public class BuiltUpHeatingCategory extends CBCBlockRecipeCategory<BuiltUpHeatingRecipe> {
 
 	public BuiltUpHeatingCategory(Info<BuiltUpHeatingRecipe> info) {
@@ -33,58 +33,59 @@ public class BuiltUpHeatingCategory extends CBCBlockRecipeCategory<BuiltUpHeatin
 	}
 
 	@Override
-	public void draw(BuiltUpHeatingRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
-		super.draw(recipe, stack, mouseX, mouseY);
+	public void draw(BuiltUpHeatingRecipe recipe, GuiGraphics graphics, double mouseX, double mouseY) {
+		super.draw(recipe, graphics, mouseX, mouseY);
 		int scale = 24;
-		AllGuiTextures.JEI_SHADOW.render(stack, 23, 55);
-		AllGuiTextures.JEI_SHADOW.render(stack, 99, 55);
-		AllGuiTextures.JEI_LIGHT.render(stack, 118, 65);
-		CBCGuiTextures.CANNON_BUILDING_ARROW.render(stack, 82, 34);
+		AllGuiTextures.JEI_SHADOW.render(graphics, 23, 55);
+		AllGuiTextures.JEI_SHADOW.render(graphics, 99, 55);
+		AllGuiTextures.JEI_LIGHT.render(graphics, 118, 65);
+		CBCGuiTextures.CANNON_BUILDING_ARROW.render(graphics, 82, 34);
 
+		PoseStack stack = graphics.pose();
 		stack.pushPose();
 		stack.translate(33, 59, 0);
-		stack.mulPose(Vector3f.XP.rotationDegrees(-12.5f));
-		stack.mulPose(Vector3f.YP.rotationDegrees(22.5f));
+		stack.mulPose(Axis.XP.rotationDegrees(-12.5f));
+		stack.mulPose(Axis.YP.rotationDegrees(22.5f));
 		AnimatedKinetics.defaultBlockElement(CBCBlocks.CANNON_BUILDER.getDefaultState().setValue(CannonBuilderBlock.STATE, CannonBuilderBlock.BuilderState.ACTIVATED))
 			.rotateBlock(0, 180, 0)
 			.atLocal(0, 0, 0)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 
 		AnimatedKinetics.defaultBlockElement(AllBlocks.SHAFT.getDefaultState())
 			.rotateBlock(0, AnimatedKinetics.getCurrentAngle(), -90)
 			.atLocal(0, 0, 0)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 		stack.popPose();
 
 		stack.pushPose();
 		stack.translate(109, 59, 0);
-		stack.mulPose(Vector3f.XP.rotationDegrees(-12.5f));
-		stack.mulPose(Vector3f.YP.rotationDegrees(22.5f));
+		stack.mulPose(Axis.XP.rotationDegrees(-12.5f));
+		stack.mulPose(Axis.YP.rotationDegrees(22.5f));
 
 		AnimatedKinetics.defaultBlockElement(AllPartialModels.ENCASED_FAN_INNER)
 			.rotateBlock(180, 0, AnimatedKinetics.getCurrentAngle() * 16)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 
 		AnimatedKinetics.defaultBlockElement(AllBlocks.ENCASED_FAN.getDefaultState())
 			.rotateBlock(0, 180, 0)
 			.atLocal(0, 0, 0)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 		stack.popPose();
 
 		stack.pushPose();
 		stack.translate(109, 59, 0);
-		stack.mulPose(Vector3f.XP.rotationDegrees(-12.5f));
-		stack.mulPose(Vector3f.YP.rotationDegrees(22.5f));
+		stack.mulPose(Axis.XP.rotationDegrees(-12.5f));
+		stack.mulPose(Axis.YP.rotationDegrees(22.5f));
 
 		GuiGameElement.of(Fluids.LAVA)
 			.rotateBlock(0, 180, 0)
 			.atLocal(0, 0, 2)
 			.scale(scale)
-			.render(stack);
+			.render(graphics);
 		stack.popPose();
 	}
 

@@ -10,13 +10,14 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import me.shedaniel.math.Point;
 import me.shedaniel.rei.api.client.gui.widgets.Slot;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluids;
@@ -36,14 +37,15 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 	}
 
 	@Override
-	public void draw(CannonCastingRecipe recipe, PoseStack stack, double mouseX, double mouseY) {
-		CBCGuiTextures.CANNON_CAST_SHADOW.render(stack, 40, 45);
+	public void draw(CannonCastingRecipe recipe, GuiGraphics graphics, double mouseX, double mouseY) {
+		CBCGuiTextures.CANNON_CAST_SHADOW.render(graphics, 40, 45);
+		PoseStack stack = graphics.pose();
 		stack.pushPose();
 		stack.translate(this.getDisplayWidth(null) / 2 - 15, 55, 0);
-		this.cannonCast.withShape(recipe.shape()).render(stack, (int) mouseX, (int) mouseY, 0);
+		this.cannonCast.withShape(recipe.shape()).render(graphics, (int) mouseX, (int) mouseY, 0);
 		stack.popPose();
-		CBCGuiTextures.CASTING_ARROW.render(stack, 21, 47);
-		CBCGuiTextures.CASTING_ARROW_1.render(stack, 124, 27);
+		CBCGuiTextures.CASTING_ARROW.render(graphics, 21, 47);
+		CBCGuiTextures.CASTING_ARROW_1.render(graphics, 124, 27);
 
 		float castingTime = 0;
 		FluidIngredient input = recipe.ingredient();
@@ -54,7 +56,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 		}
 		Minecraft mc = Minecraft.getInstance();
 		Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
-		mc.font.draw(stack, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
+		graphics.drawString(mc.font, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
 	}
 
 	@Override

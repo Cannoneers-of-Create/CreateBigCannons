@@ -1,7 +1,11 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
 
+import java.util.Set;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -15,15 +19,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-
-import org.spongepowered.asm.mixin.injection.Inject;
-
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
 import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
-
-import java.util.Set;
 
 @Mixin(TranslatingContraption.class)
 public abstract class TranslatingContraptionMixin extends Contraption {
@@ -37,8 +34,8 @@ public abstract class TranslatingContraptionMixin extends Contraption {
 		StructureBlockInfo offsetInfo = this.blocks.get(offsetPos);
 		Direction.Axis axis = movementDirection.getAxis();
 		if (this.getType() == ContraptionType.PISTON
-			&& info.state.getBlock() == AllBlocks.MECHANICAL_PISTON_HEAD.get()
-			&& info.state.getValue(BlockStateProperties.FACING) != movementDirection) return false;
+			&& info.state().getBlock() == AllBlocks.MECHANICAL_PISTON_HEAD.get()
+			&& info.state().getValue(BlockStateProperties.FACING) != movementDirection) return false;
 		return !IBigCannonBlockEntity.isValidMunitionState(axis, info) && IBigCannonBlockEntity.isValidMunitionState(axis, offsetInfo);
 	}
 
