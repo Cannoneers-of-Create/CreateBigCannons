@@ -24,6 +24,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -97,6 +98,10 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		return CBCBlocks.CANNON_CARRIAGE.getDefaultState();
 	}
 
+	@Nullable
+	@Override
+	public ResourceLocation getTypeId() { return CreateBigCannons.resource("cannon_carriage"); }
+
 	@Override
 	protected void defineSynchedData() {
 		this.entityData.define(DATA_ID_HURT, 0);
@@ -145,14 +150,6 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		} else {
 			this.setDeltaMovement(Vec3.ZERO);
 		}
-
-		if (!this.level().isClientSide
-			&& this.getControllingPassenger() instanceof Player player
-			&& this.cannonContraption != null
-			&& this.cannonContraption.getContraption() instanceof MountedAutocannonContraption) {
-			player.displayClientMessage(Component.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate", this.getActualFireRate()), true);
-		}
-
 		this.applyRotation();
 	}
 
@@ -358,12 +355,6 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
 		if (!this.level().isClientSide && this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon)
 			autocannon.trySettingFireRateCarriage(fireRateAdjustment);
-	}
-
-	public int getActualFireRate() {
-		return this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon
-			? autocannon.getReferencedFireRate()
-			: 0;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -11,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -26,7 +26,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class BigCannonBreechStrengthHandler {
 
-	private static final Map<Block, Integer> BREECH_STRENGTHS = new HashMap<>();
+	private static final Map<Block, Integer> BREECH_STRENGTHS = new Reference2IntOpenHashMap<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
@@ -59,7 +59,7 @@ public class BigCannonBreechStrengthHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(BREECH_STRENGTHS.size());
 		for (Map.Entry<Block, Integer> entry : BREECH_STRENGTHS.entrySet()) {
-			buf.writeUtf(BuiltInRegistries.BLOCK.getKey(entry.getKey()).toString())
+			buf.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(entry.getKey()))
 				.writeVarInt(entry.getValue());
 		}
 	}
@@ -69,7 +69,7 @@ public class BigCannonBreechStrengthHandler {
 		int sz = buf.readVarInt();
 
 		for (int i = 0; i < sz; ++i) {
-			BREECH_STRENGTHS.put(BuiltInRegistries.BLOCK.get(new ResourceLocation(buf.readUtf())), buf.readVarInt());
+			BREECH_STRENGTHS.put(BuiltInRegistries.BLOCK.get(buf.readResourceLocation()), buf.readVarInt());
 		}
 	}
 

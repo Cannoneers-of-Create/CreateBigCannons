@@ -14,11 +14,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
-import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
 public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileProperties> extends AbstractCannonProjectile<T> {
 
@@ -59,7 +59,7 @@ public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileP
 		double bonus = 1 + Math.max(0, (mag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
 			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
 
-		double hardness = BlockHardnessHandler.getHardness(state) / bonus;
+		double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level(), state, result.getBlockPos(), true) / bonus;
 		this.setProjectileMass((float) Math.max(mass - hardness, 0));
 
 		if (!this.level().isClientSide()) this.level().destroyBlock(result.getBlockPos(), false);

@@ -20,6 +20,7 @@ public class FuzeItem extends Item {
 	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile<?> projectile, Vec3 location, ProjectileContext ctx, boolean baseFuze) { return false; }
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile<?> projectile, HitResult result, boolean stopped, boolean baseFuze) { return false; }
 	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile<?> projectile) { return false; }
+	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile<?> projectile) { return false; }
 
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {}
 

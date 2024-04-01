@@ -131,4 +131,6 @@ public abstract class ProjectileBlock<T extends BigCannonProjectileProperties> e
 		return total.size() == this.getExpectedSize();
 	}
 
+	@Override public Direction.Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
+
 }

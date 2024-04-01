@@ -13,10 +13,14 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
 public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutocannonBreechBlockEntity> implements DynamicInstance {
@@ -28,6 +32,7 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
 
     private Direction facing;
 	private boolean isFilled = false;
+	private Item magazineItem = null;
 
     public AutocannonBreechInstance(MaterialManager manager, AbstractAutocannonBreechBlockEntity blockEntity) {
         super(manager, blockEntity);
@@ -54,15 +59,16 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
 
 		this.ammoContainer = this.materialManager.defaultCutout()
 			.material(Materials.ORIENTED)
-			.getModel(this.getAmmoContainerModel(), this.blockState, this.facing)
+			.getModel(this.getAmmoContainerModel())
 			.createInstance();
 		boolean flag = this.facing.getAxis().isVertical();
 		Quaternionf q1;
 		if (flag) {
-			q1 = Axis.ZP.rotationDegrees(180);
-			q1.mul(Axis.YP.rotationDegrees(180));
+			float f = this.facing == Direction.UP ? 90 : -90;
+			q1 = Axis.ZP.rotationDegrees(f);
+			q1.mul(Axis.XP.rotationDegrees(f));
 		} else {
-			q1 = Axis.YP.rotationDegrees(180);
+			q1 = Axis.YP.rotationDegrees(-90 - this.facing.toYRot());
 		}
 		Direction offset = flag
 			? this.facing.getCounterClockWise(Direction.Axis.Z)
@@ -71,6 +77,7 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
 		normal.mul(10 / 16f);
 		this.ammoContainer.setRotation(q1).setPosition(this.getInstancePosition()).nudge(normal.x(), normal.y(), normal.z());
 		this.isFilled = this.isFilled();
+		this.magazineItem = this.getMagazineItem();
 
         this.updateTransforms();
     }
@@ -92,7 +99,7 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
 
 		ItemStack container = this.blockEntity.getMagazine();
 		this.ammoContainer.setColor((byte) 255, (byte) 255, (byte) 255, (byte)(container.getItem() instanceof AutocannonAmmoContainerItem ? 255 : 0));
-		if (this.isFilled != this.isFilled()) {
+		if (this.isFilled != this.isFilled() || this.magazineItem != this.getMagazineItem()) {
 			this.remove();
 			this.init();
 			this.updateLight();
@@ -120,13 +127,23 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
                 : CBCBlockPartials.CAST_IRON_AUTOCANNON_EJECTOR;
     }
 
-	private PartialModel getAmmoContainerModel() {
-		ItemStack container = this.blockEntity.getMagazine();
-		return container.getItem() instanceof AutocannonAmmoContainerItem && AutocannonAmmoContainerItem.getTotalAmmoCount(container) > 0
-			? CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_FILLED
-			: CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_EMPTY;
+	private BlockState getAmmoContainerModel() {
+		ItemStack item = this.blockEntity.getMagazine();
+		if (item == null || item.isEmpty() || !(item.getItem() instanceof AutocannonAmmoContainerItem blockItem))
+			return Blocks.AIR.defaultBlockState();
+		BlockState state = blockItem.getBlock().defaultBlockState();
+		if (state.hasProperty(AutocannonAmmoContainerBlock.CONTAINER_STATE)) {
+			state = state.setValue(AutocannonAmmoContainerBlock.CONTAINER_STATE,
+				AutocannonAmmoContainerBlock.State.getFromFilled(AutocannonAmmoContainerItem.getTotalAmmoCount(item) > 0));
+		}
+		return state;
 	}
 
 	private boolean isFilled() { return AutocannonAmmoContainerItem.getTotalAmmoCount(this.blockEntity.getMagazine()) > 0; }
+
+	private Item getMagazineItem() {
+		ItemStack stack = this.blockEntity.getMagazine();
+		return stack == null || stack.isEmpty() ? null : stack.getItem();
+	}
 
 }

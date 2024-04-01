@@ -1,11 +1,11 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
+import static rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock.writeAndSyncSingleBlockData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
 
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
@@ -37,6 +37,8 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
@@ -50,7 +52,6 @@ import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRe
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -67,22 +68,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	private AutocannonMaterial cannonMaterial;
 	private BlockPos recoilSpringPos;
 	private boolean isHandle = false;
-
-	@Override
-	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 45;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
-		return 0;
-	}
-
-	@Override
-	public float maximumElevation(@Nonnull ControlPitchContraption controller) {
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 90;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return this.isHandle ? 45 : 90;
-		return 0;
-	}
 
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
@@ -262,14 +247,14 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
 		ItemStack ejectStack = round.getSpentItem(foundProjectile);
 		if (!ejectStack.isEmpty()) {
-			ItemStack output = breech.insertOutput(ejectStack);
-			if (!output.isEmpty()) {
-				ItemEntity ejectEntity = new ItemEntity(level, ejectPos.x, ejectPos.y, ejectPos.z, ejectStack);
-				Vec3 eject = ejectPos.subtract(centerPos).normalize();
-				ejectEntity.setDeltaMovement(eject.scale(this.isHandle ? 0.1 : 0.5));
-				ejectEntity.setPickUpDelay(20);
-				level.addFreshEntity(ejectEntity);
-			}
+			//ItemStack output = breech.insertOutput(ejectStack);
+			//if (!output.isEmpty()) {
+			ItemEntity ejectEntity = new ItemEntity(level, ejectPos.x, ejectPos.y, ejectPos.z, ejectStack);
+			Vec3 eject = ejectPos.subtract(centerPos).normalize();
+			ejectEntity.setDeltaMovement(eject.scale(this.isHandle ? 0.1 : 0.5));
+			ejectEntity.setPickUpDelay(20);
+			level.addFreshEntity(ejectEntity);
+			//}
 		}
 
 		AutocannonMaterialProperties properties = this.cannonMaterial.properties();
@@ -388,6 +373,20 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			}
 		}
 
+		if (CBCEntityTypes.CANNON_CARRIAGE.is(entity.getVehicle())) {
+			controller = entity.getVehicle().getControllingPassenger();
+		}
+		if (!level.isClientSide && controller instanceof Player player) {
+			String key = "";
+			ControlPitchContraption controllerBlock = entity.getController();
+			if (controllerBlock != null) {
+				ResourceLocation loc = controllerBlock.getTypeId();
+				if (loc != null) key = "." + loc.getNamespace() + "." + loc.getPath();
+			}
+			player.displayClientMessage(Component.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
+				this.getReferencedFireRate()), true);
+		}
+
 		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController()))
 			this.fireShot(slevel, entity);
 
@@ -419,14 +418,19 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 	@Override
 	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
-		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
+		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech) {
 			breech.setFireRate(firePower);
+			writeAndSyncSingleBlockData(breech, this.blocks.get(this.startPos), entity, this);
+		}
 	}
 
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
 		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech
-			&& (fireRateAdjustment > 0 || breech.getFireRate() > 1)) // Can't turn off carriage autocannon
+			&& (fireRateAdjustment > 0 || breech.getFireRate() > 1)) {
+			// > 0 because can't turn off carriage autocannon
 			breech.setFireRate(breech.getFireRate() + fireRateAdjustment);
+			writeAndSyncSingleBlockData(breech, this.blocks.get(this.startPos), entity, this);
+		}
 	}
 
 	public int getReferencedFireRate() {
@@ -443,7 +447,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos), 1);
 	}
 
-	@Override
+    @Override
+	public ICannonContraptionType getCannonType() {
+		return this.isHandle ? CBCCannonContraptionTypes.HANDLE_AUTOCANNON : CBCCannonContraptionTypes.AUTOCANNON;
+	}
+
+    @Override
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);
 		tag.putString("AutocannonMaterial", this.cannonMaterial == null ? CBCAutocannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());

@@ -4,18 +4,16 @@ import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
-import com.simibubi.create.content.kinetics.belt.transport.TransportedItemStack;
-import com.simibubi.create.content.kinetics.fan.FanProcessing;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
-import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
-import io.github.fabricators_of_create.porting_lib.util.FluidStack;
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.entity.FakePlayer;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -57,18 +55,6 @@ public class IndexPlatformImpl {
 
 	public static boolean isFakePlayer(Player player) {
 		return player instanceof FakePlayer;
-	}
-
-	public static boolean layeredCannonClockStackCheck(TransportedItemStack stack) {
-		if (stack.processedBy == FanProcessing.Type.BLASTING) {
-			stack.processedBy = FanProcessing.Type.NONE;
-			return true;
-		}
-		return false;
-	}
-
-	public static void layeredCannonClockStackCallback(TransportedItemStack stack) {
-		stack.processedBy = FanProcessing.Type.NONE;
 	}
 
 	public static AbstractCannonDrillBlockEntity makeDrill(BlockEntityType<?> type, BlockPos pos, BlockState state) {

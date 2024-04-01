@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:impact_fuze",
+    "createbigcannons:timed_fuze",
+    "createbigcannons:proximity_fuze",
+    "createbigcannons:delayed_impact_fuze"
+  ]
+}

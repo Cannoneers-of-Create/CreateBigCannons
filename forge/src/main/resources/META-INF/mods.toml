@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "[${forge_version},)"
 issueTrackerURL = "https://github.com/Cannoneers-of-Create/CreateBigCannons/issues"
-license = "MIT"
+license = "MIT and CC BY-NC-SA (see github for details)"
 
 [[mods]]
 modId = "createbigcannons"

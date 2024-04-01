@@ -47,7 +47,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMateria
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.manualloading.HandloadingTool;
+import rbasamoyai.createbigcannons.manual_loading.HandloadingTool;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
 public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<QuickfiringBreechBlockEntity>, ITransformableBlock, IWrenchable {

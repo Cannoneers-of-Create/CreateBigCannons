@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
+import java.util.function.Predicate;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -8,8 +10,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
-
-import java.util.function.Predicate;
 
 public abstract class FuzedBigCannonProjectile<T extends FuzedBigCannonProjectileProperties> extends AbstractBigCannonProjectile<T> {
 
@@ -64,5 +64,10 @@ public abstract class FuzedBigCannonProjectile<T extends FuzedBigCannonProjectil
 	}
 
 	protected abstract void detonate();
+
+	@Override
+	public boolean canLingerInGround() {
+		return !this.level().isClientSide && this.level().hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && fuzeItem.canLingerInGround(this.fuze, this);
+	}
 
 }

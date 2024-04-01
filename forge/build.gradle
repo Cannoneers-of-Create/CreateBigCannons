@@ -40,6 +40,7 @@ repositories {
 			includeGroup("com.rbasamoyai")
 		}
 	}
+    mavenCentral()
 }
 
 dependencies {
@@ -63,8 +64,14 @@ dependencies {
 
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-forge")) { transitive = false } // Ritchie's Projectile Library
 
+	compileOnly("io.github.llamalad7:mixinextras-common:${mixinextras_version}")
+	annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixinextras_version}")))
+
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_forge_file}") // Freecam
+	modImplementation("curse.maven:copycats-968398:${copycats_forge_file}")
+	modImplementation("curse.maven:framedblocks-441647:${framedblocks_forge_file}")
+	forgeRuntimeLibrary("com.github.ben-manes.caffeine:caffeine:3.1.1") // For FramedBlocks
 }
 
 processResources {

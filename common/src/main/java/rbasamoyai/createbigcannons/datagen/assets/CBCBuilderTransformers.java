@@ -104,4 +104,6 @@ public class CBCBuilderTransformers {
 
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> safeNbt() { throw new AssertionError(); }
 
+	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonAmmoContainer(boolean isCreative) { throw new AssertionError(); }
+
 }
