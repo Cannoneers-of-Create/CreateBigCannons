@@ -163,7 +163,7 @@ public class CBCTooltip {
 		String key = stack.getDescriptionId() + ".tooltip.maximumCharges";
 		tooltip.add(new TranslatableComponent(key).withStyle(ChatFormatting.GRAY));
 		MortarStoneProperties properties = (MortarStoneProperties) MunitionPropertiesHandler.getProperties(CBCEntityTypes.MORTAR_STONE.get());
-		String value = String.format("%.2f", properties == null ? 2f : properties.maxCharges());
+		String value = String.format("%.2f", (properties == null ? 2f : properties.maxCharges()) * 20f);
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", value), palette.primary(), palette.highlight(), 1));
 	}
 
