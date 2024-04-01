@@ -66,6 +66,11 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
+	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile<?> projectile) {
+		return stack.getOrCreateTag().contains("FuzeTimer");
+	}
+
+	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory playerInv, Player player) {
 		ItemStack stack = player.getMainHandItem();
 		return TimedFuzeContainer.getServerMenu(windowId, playerInv, stack);

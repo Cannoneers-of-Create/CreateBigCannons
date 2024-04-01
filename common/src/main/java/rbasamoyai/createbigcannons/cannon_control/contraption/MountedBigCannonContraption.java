@@ -8,13 +8,12 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
+import com.simibubi.create.content.contraptions.StructureTransform;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,6 +25,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -37,6 +38,8 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -49,7 +52,6 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMateria
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -71,24 +73,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	protected int mortarDelay = 0;
 	protected ItemStack cachedMortarRound = ItemStack.EMPTY;
-
-	@Override
-	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
-		if (this.isDropMortar()) return -15;
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 30;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
-		return 0;
-	}
-
-	@Override
-	public float maximumElevation(@Nonnull ControlPitchContraption controller) {
-		if (this.isDropMortar()) return 85;
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 60;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 30;
-		return 0;
-	}
 
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
@@ -214,7 +198,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		BlockEntity be = level.getBlockEntity(pos);
 		if (!(be instanceof IBigCannonBlockEntity cannon)) return false;
 		BlockState containedState = cannon.cannonBehavior().block().state();
-		return CBCBlocks.RAM_HEAD.has(containedState) || CBCBlocks.WORM_HEAD.has(containedState) || AllBlocks.PISTON_EXTENSION_POLE.has(containedState);
+		return IBigCannonBlockEntity.isValidLoader(null, new StructureBlockInfo(BlockPos.ZERO, containedState, null));
 	}
 
 	private boolean isConnectedToCannon(LevelAccessor level, BlockState state, BlockPos pos, Direction connection, BigCannonMaterial material) {
@@ -276,7 +260,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		int count = 0;
 		int maxSafeCharges = this.getMaxSafeCharges();
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
-		float spreadSub = CBCConfigs.SERVER.cannons.barrelSpreadReduction.getF();
+		float spreadSub = this.cannonMaterial.properties().spreadReductionPerBarrel();
 		boolean emptyNoProjectile = false;
 
 		PropellantContext propelCtx = new PropellantContext();
@@ -285,7 +269,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		AbstractBigCannonProjectile<?> projectile = null;
 		BlockPos assemblyPos = null;
 
-		float minimumSpread = CBCConfigs.SERVER.cannons.minimumBigCannonSpread.getF();
+		float minimumSpread = this.cannonMaterial.properties().minimumSpread();
 
 		while (this.presentBlockEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
 			BigCannonBehavior behavior = cbe.cannonBehavior();
@@ -353,6 +337,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					return;
 				}
 				this.consumeBlock(behavior, currentPos);
+				if (cannonInfo.state.is(CBCTags.CBCBlockTags.REDUCES_SPREAD)) {
+					propelCtx.spread = Math.max(propelCtx.spread - spreadSub, minimumSpread);
+				}
 				if (projBlock.isComplete(projectileBlocks, this.initialOrientation)) {
 					projectile = projBlock.getProjectile(level, projectileBlocks);
 					propelCtx.chargesUsed += projectile.addedChargePower();
@@ -562,8 +549,22 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
+	public void addPassengersToWorld(Level world, StructureTransform transform, List<Entity> seatedEntities) {
+		super.addPassengersToWorld(world, transform, seatedEntities);
+		if (!world.isClientSide && this.isDropMortar() && this.cachedMortarRound != null && !this.cachedMortarRound.isEmpty() && this.entity != null) {
+			Vec3 pos = this.entity.toGlobalVector(Vec3.atCenterOf(this.startPos), 0);
+			world.addFreshEntity(new ItemEntity(world, pos.x, pos.y, pos.z, this.cachedMortarRound.copy()));
+		}
+	}
+
+	@Override
 	public Vec3 getInteractionVec(PitchOrientedContraptionEntity poce) {
 		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.initialOrientation.getOpposite())), 1);
+	}
+
+	@Override
+	public ICannonContraptionType getCannonType() {
+		return this.isDropMortar() ? CBCCannonContraptionTypes.DROP_MORTAR : CBCCannonContraptionTypes.BIG_CANNON;
 	}
 
 	@Override
@@ -606,6 +607,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			currentPos = currentPos.relative(this.initialOrientation);
 		}
 		this.cachedMortarRound = stack.copy();
+		this.cachedMortarRound.setCount(1);
 		this.mortarDelay = CBCConfigs.SERVER.cannons.dropMortarDelay.get();
 		if (this.mortarDelay <= 0) this.actuallyFireDropMortar();
 		return true;

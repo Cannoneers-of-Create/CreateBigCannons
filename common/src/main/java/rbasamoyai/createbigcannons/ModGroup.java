@@ -197,7 +197,8 @@ public class ModGroup {
 				CBCItems.FLAK_AUTOCANNON_ROUND.asStack(),
 				CBCItems.MACHINE_GUN_ROUND.asStack(),
 				CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack(),
-				CBCItems.AUTOCANNON_AMMO_CONTAINER.asStack(),
+				CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack(),
+				CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.asStack(),
 
 				CBCItems.RECOIL_SPRING.asStack(),
 
@@ -226,7 +227,9 @@ public class ModGroup {
 				CBCBlocks.AUTOCANNON_RECOIL_SPRING_CAST_MOULD.asStack(),
 				CBCBlocks.AUTOCANNON_BARREL_CAST_MOULD.asStack(),
 
-				CBCItems.SPRING_WIRE.asStack()));
+				CBCItems.SPRING_WIRE.asStack(),
+
+				CBCItems.RESISTANCE_INSPECTION_TOOL.asStack()));
 		})
 		.build());
 

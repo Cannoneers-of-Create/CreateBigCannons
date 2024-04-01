@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "axis=x,state=closed": {
+      "model": "createbigcannons:block/autocannon_ammo_containers/creative",
+      "y": 90
+    },
+    "axis=x,state=empty": {
+      "model": "createbigcannons:block/autocannon_ammo_containers/creative_empty",
+      "y": 90
+    },
+    "axis=x,state=filled": {
+      "model": "createbigcannons:block/autocannon_ammo_containers/creative_filled",
+      "y": 90
+    },
+    "axis=z,state=closed": {
+      "model": "createbigcannons:block/autocannon_ammo_containers/creative"
+    },
+    "axis=z,state=empty": {
+      "model": "createbigcannons:block/autocannon_ammo_containers/creative_empty"
+    },
+    "axis=z,state=filled": {
+      "model": "createbigcannons:block/autocannon_ammo_containers/creative_filled"
+    }
+  }
+}

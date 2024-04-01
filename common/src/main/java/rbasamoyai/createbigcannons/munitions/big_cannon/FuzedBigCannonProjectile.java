@@ -65,4 +65,9 @@ public abstract class FuzedBigCannonProjectile<T extends FuzedBigCannonProjectil
 
 	protected abstract void detonate();
 
+	@Override
+	public boolean canLingerInGround() {
+		return !this.level.isClientSide && this.level.hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && fuzeItem.canLingerInGround(this.fuze, this);
+	}
+
 }

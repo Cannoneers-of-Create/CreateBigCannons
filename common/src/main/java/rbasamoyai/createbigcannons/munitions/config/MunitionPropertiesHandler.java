@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.config;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -11,6 +10,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -30,14 +31,14 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class MunitionPropertiesHandler {
 
-	private static final Map<EntityType<?>, MunitionPropertiesSerializer<?>> ENTITY_TYPE_SERIALIZERS = new HashMap<>();
-    private static final Map<EntityType<?>, MunitionProperties> PROJECTILES = new HashMap<>();
+	private static final Map<EntityType<?>, MunitionPropertiesSerializer<?>> ENTITY_TYPE_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
+    private static final Map<EntityType<?>, MunitionProperties> PROJECTILES = new Reference2ObjectOpenHashMap<>();
 
-	private static final Map<Block, MunitionPropertiesSerializer<?>> BLOCK_SERIALIZERS = new HashMap<>();
-	private static final Map<Block, MunitionProperties> BLOCK_PROPELLANT = new HashMap<>();
+	private static final Map<Block, MunitionPropertiesSerializer<?>> BLOCK_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
+	private static final Map<Block, MunitionProperties> BLOCK_PROPELLANT = new Reference2ObjectOpenHashMap<>();
 
-	private static final Map<Item, MunitionPropertiesSerializer<?>> ITEM_SERIALIZERS = new HashMap<>();
-	private static final Map<Item, MunitionProperties> ITEM_PROPELLANT = new HashMap<>();
+	private static final Map<Item, MunitionPropertiesSerializer<?>> ITEM_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
+	private static final Map<Item, MunitionProperties> ITEM_PROPELLANT = new Reference2ObjectOpenHashMap<>();
 
     public static class ReloadListenerProjectiles extends SimpleJsonResourceReloadListener {
 
@@ -188,21 +189,21 @@ public class MunitionPropertiesHandler {
 
 	@SuppressWarnings("unchecked")
 	private static <T extends MunitionProperties> void toNetworkCasted(FriendlyByteBuf buf, EntityType<?> type, T properties) {
-		buf.writeUtf(BuiltInRegistries.ENTITY_TYPE.getKey(type).toString());
+		buf.writeResourceLocation(BuiltInRegistries.ENTITY_TYPE.getKey(type));
 		MunitionPropertiesSerializer<T> ser = (MunitionPropertiesSerializer<T>) ENTITY_TYPE_SERIALIZERS.get(type);
 		ser.toNetwork(buf, properties);
 	}
 
 	@SuppressWarnings("unchecked")
 	private static <T extends MunitionProperties> void toNetworkCasted(FriendlyByteBuf buf, Block block, T properties) {
-		buf.writeUtf(BuiltInRegistries.BLOCK.getKey(block).toString());
+		buf.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(block));
 		MunitionPropertiesSerializer<T> ser = (MunitionPropertiesSerializer<T>) BLOCK_SERIALIZERS.get(block);
 		ser.toNetwork(buf, properties);
 	}
 
 	@SuppressWarnings("unchecked")
 	private static <T extends MunitionProperties> void toNetworkCasted(FriendlyByteBuf buf, Item item, T properties) {
-		buf.writeUtf(BuiltInRegistries.ITEM.getKey(item).toString());
+		buf.writeResourceLocation(BuiltInRegistries.ITEM.getKey(item));
 		MunitionPropertiesSerializer<T> ser = (MunitionPropertiesSerializer<T>) ITEM_SERIALIZERS.get(item);
 		ser.toNetwork(buf, properties);
 	}
@@ -211,7 +212,7 @@ public class MunitionPropertiesHandler {
 		PROJECTILES.clear();
 		int szProj = buf.readVarInt();
 		for (int i = 0; i < szProj; ++i) {
-			ResourceLocation loc = new ResourceLocation(buf.readUtf());
+			ResourceLocation loc = buf.readResourceLocation();
 			EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(loc);
 			MunitionPropertiesSerializer<?> ser = ENTITY_TYPE_SERIALIZERS.get(type);
 			PROJECTILES.put(type, ser.fromNetwork(loc, buf));
@@ -219,7 +220,7 @@ public class MunitionPropertiesHandler {
 		BLOCK_PROPELLANT.clear();
 		int szBlock = buf.readVarInt();
 		for (int i = 0; i < szBlock; ++i) {
-			ResourceLocation loc = new ResourceLocation(buf.readUtf());
+			ResourceLocation loc = buf.readResourceLocation();
 			Block block = BuiltInRegistries.BLOCK.get(loc);
 			MunitionPropertiesSerializer<?> ser = BLOCK_SERIALIZERS.get(block);
 			BLOCK_PROPELLANT.put(block, ser.fromNetwork(loc, buf));
@@ -227,7 +228,7 @@ public class MunitionPropertiesHandler {
 		ITEM_PROPELLANT.clear();
 		int szItem = buf.readVarInt();
 		for (int i = 0; i < szItem; ++i) {
-			ResourceLocation loc = new ResourceLocation(buf.readUtf());
+			ResourceLocation loc = buf.readResourceLocation();
 			Item item = BuiltInRegistries.ITEM.get(loc);
 			MunitionPropertiesSerializer<?> ser = ITEM_SERIALIZERS.get(item);
 			ITEM_PROPELLANT.put(item, ser.fromNetwork(loc, buf));

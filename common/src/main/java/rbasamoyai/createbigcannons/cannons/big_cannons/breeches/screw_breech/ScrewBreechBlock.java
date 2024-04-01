@@ -5,10 +5,14 @@ import javax.annotation.Nullable;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 
+import com.simibubi.create.foundation.utility.Iterate;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -98,6 +102,12 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements IBE<Scr
 	}
 
 	@Override
+	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		if (!level.isClientSide) this.playerWillDestroyBigCannon(level, pos, state, player);
+		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	@Override
 	public Class<ScrewBreechBlockEntity> getBlockEntityClass() {
 		return ScrewBreechBlockEntity.class;
 	}
@@ -110,6 +120,32 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements IBE<Scr
 	@Override
 	public InteractionResult onWrenched(BlockState state, UseOnContext context) {
 		return state.getValue(OPEN) == BigCannonEnd.OPEN ? super.onWrenched(state, context) : InteractionResult.PASS;
+	}
+
+	@Override
+	public Direction getPreferredFacing(BlockPlaceContext context) {
+		Direction preferredSide = null;
+		Level level = context.getLevel();
+		BlockPos pos = context.getClickedPos();
+		Direction clickedFace = context.getClickedFace();
+		for (Direction side : Iterate.directions) {
+			BlockState blockState = level.getBlockState(pos.relative(side));
+			if (blockState.getBlock() instanceof BigCannonBlock cBlock
+				&& cBlock.getCannonMaterial() == this.getCannonMaterial()
+				&& cBlock.canConnectToSide(blockState, side.getOpposite())) {
+
+				if (side.getOpposite() == clickedFace) {
+					preferredSide = side;
+					break;
+				} else if (preferredSide != null && preferredSide.getAxis() != side.getAxis()) {
+					preferredSide = null;
+					break;
+				} else {
+					preferredSide = side;
+				}
+			}
+		}
+		return preferredSide != null ? preferredSide : super.getPreferredFacing(context);
 	}
 
 }

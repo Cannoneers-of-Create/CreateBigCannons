@@ -6,8 +6,6 @@ import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRe
 import java.util.List;
 import java.util.Optional;
 
-import com.simibubi.create.foundation.utility.Components;
-
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
@@ -48,7 +46,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 			if (ing.isPresent()) castingTime = (float) FluidCastingTimeHandler.getCastingTime(ing.get().getFluid());
 		}
 		Minecraft mc = Minecraft.getInstance();
-		Component text = Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
+		Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
 		graphics.drawString(mc.font, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
 	}
 

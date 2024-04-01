@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.simibubi.create.compat.jei.category.CreateRecipeCategory;
 import com.simibubi.create.foundation.gui.AllGuiTextures;
-import com.simibubi.create.foundation.utility.Components;
 
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -35,7 +34,7 @@ public class IncompleteCannonBlockCategory extends CBCBlockRecipeCategory<Incomp
 			if (i == 0) continue;
 			int j = i - 1;
 			int posX = base + 24 * j;
-			Component num = Components.literal(this.romans[Math.min(j, 6)]);
+			Component num = Component.literal(this.romans[Math.min(j, 6)]);
 			graphics.drawString(mc.font, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
 		}
 	}

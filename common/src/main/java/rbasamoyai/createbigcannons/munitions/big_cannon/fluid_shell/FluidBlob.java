@@ -17,12 +17,14 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.index.CBCDataSerializers;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
+import rbasamoyai.createbigcannons.network.ClientboundFluidBlobStackSyncPacket;
 
 public class FluidBlob extends Shrapnel {
 	private static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FluidBlob.class, EntityDataSerializers.BYTE);
-	private static final EntityDataAccessor<EndFluidStack> FLUID_STACK = SynchedEntityData.defineId(FluidBlob.class, CBCDataSerializers.FLUID_STACK_SERIALIZER);
+
+	private EndFluidStack fluidStack = EndFluidStack.EMPTY;
 
 	public FluidBlob(EntityType<? extends FluidBlob> type, Level level) {
 		super(type, level);
@@ -32,7 +34,6 @@ public class FluidBlob extends Shrapnel {
 	protected void defineSynchedData() {
 		super.defineSynchedData();
 		this.entityData.define(BLOB_SIZE, (byte) 0);
-		this.entityData.define(FLUID_STACK, EndFluidStack.EMPTY);
 	}
 
 	@Override
@@ -57,18 +58,18 @@ public class FluidBlob extends Shrapnel {
 		return this.entityData.get(BLOB_SIZE);
 	}
 
-	public void setFluidStack(EndFluidStack fstack) {
-		this.entityData.set(FLUID_STACK, fstack);
-	}
-
-	public EndFluidStack getFluidStack() {
-		return this.entityData.get(FLUID_STACK);
-	}
+	public void setFluidStack(EndFluidStack fstack) { this.fluidStack = fstack; }
+	public EndFluidStack getFluidStack() { return this.fluidStack; }
 
 	@Override
 	public void tick() {
 		super.tick();
 
+		if (!this.level.isClientSide) {
+			if (this.level.getGameTime() % 3 == 0) {
+				NetworkPlatform.sendToClientTracking(new ClientboundFluidBlobStackSyncPacket(this), this);
+			}
+		}
 		if (!this.getFluidStack().isEmpty()) {
 			Vec3 vel = this.getDeltaMovement();
 			this.level().addParticle(new FluidBlobParticleData(this.getBlobSize() * 0.25f + 1, this.getFluidStack().copy()), this.getX(), this.getY(), this.getZ(), vel.x, vel.y, vel.z);
