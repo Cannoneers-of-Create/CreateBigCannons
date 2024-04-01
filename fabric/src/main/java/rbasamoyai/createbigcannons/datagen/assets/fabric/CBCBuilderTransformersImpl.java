@@ -13,15 +13,19 @@ import com.tterrag.registrate.util.nullness.NonNullBiConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
+import io.github.fabricators_of_create.porting_lib.models.generators.ConfiguredModel;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Direction;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -36,7 +40,7 @@ import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockItem;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderGen;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockItem;
@@ -51,6 +55,8 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlockGen;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
@@ -436,6 +442,7 @@ public class CBCBuilderTransformersImpl {
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Power", "Power"))));
 			})
 			.item(BigCartridgeBlockItem::new)
+			.tag(CBCTags.CBCItemTags.BIG_CANNON_CARTRIDGES)
 			.model((c, p) -> {
 				p.withExistingParent(c.getName(), emptyLoc)
 					.override().model(p.getExistingFile(filledLoc)).predicate(CreateBigCannons.resource("big_cartridge_filled"), 1).end();
@@ -597,6 +604,45 @@ public class CBCBuilderTransformersImpl {
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> safeNbt() {
 		return b -> b.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+	}
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonAmmoContainer(boolean isCreative) {
+		String root = isCreative ? "creative": "regular";
+		return b -> b.addLayer(() -> RenderType::cutoutMipped)
+			.blockstate((c, p) -> p.getVariantBuilder(c.get())
+				.forAllStatesExcept(state -> {
+					AutocannonAmmoContainerBlock.State containerState = state.getValue(AutocannonAmmoContainerBlock.CONTAINER_STATE);
+					String suffix = switch (containerState) {
+						case CLOSED -> "";
+						case EMPTY -> "_empty";
+						case FILLED -> "_filled";
+					};
+					ResourceLocation loc = p.modLoc("block/autocannon_ammo_containers/" + root + suffix);
+					Direction.Axis axis = state.getValue(BlockStateProperties.HORIZONTAL_AXIS);
+					return ConfiguredModel.builder()
+						.modelFile(p.models().getExistingFile(loc))
+						.rotationY(axis == Direction.Axis.X ? 90 : 0)
+						.build();
+				}, BlockStateProperties.WATERLOGGED))
+			.loot((t, c) -> {
+				CopyNbtFunction.Builder func = CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+					.copy("Ammo", "Ammo")
+					.copy("Tracers", "Tracers")
+					.copy("TracerSpacing", "TracerSpacing");
+				if (isCreative)
+					func = func.copy("CurrentIndex", "CurrentIndex");
+				t.add(c, LootTable.lootTable()
+					.withPool(t.applyExplosionCondition(c, LootPool.lootPool()
+							.add(LootItem.lootTableItem(c))
+							.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)))
+						.apply(func)));
+			})
+			.item(AutocannonAmmoContainerItem::new)
+			.properties(p -> p.stacksTo(1))
+			.properties(p -> isCreative ? p.rarity(Rarity.EPIC) : p)
+			.tag(CBCTags.CBCItemTags.AUTOCANNON_AMMO_CONTAINERS)
+			.model((c, p) -> p.withExistingParent(c.getName(), p.modLoc("block/autocannon_ammo_containers/" + root)))
+			.build();
 	}
 
 }

@@ -1100,7 +1100,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<AutocannonAmmoContainerBlock> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
 		.block("autocannon_ammo_container", AutocannonAmmoContainerBlock::new)
-		.initialProperties(Material.METAL, MaterialColor.COLOR_GREEN)
+		.properties(p -> p.mapColor(MapColor.COLOR_GREEN))
 		.properties(p -> p.strength(0.0f, 2.5f))
 		.properties(p -> p.sound(SoundType.CHAIN))
 		.properties(p -> p.noOcclusion())
@@ -1109,7 +1109,7 @@ public class CBCBlocks {
 
 	public static final BlockEntry<AutocannonAmmoContainerBlock> CREATIVE_AUTOCANNON_AMMO_CONTAINER = REGISTRATE
 		.block("creative_autocannon_ammo_container", AutocannonAmmoContainerBlock::new)
-		.initialProperties(Material.METAL, MaterialColor.COLOR_MAGENTA)
+		.properties(p -> p.mapColor(MapColor.COLOR_MAGENTA))
 		.properties(p -> p.strength(0.0f, 2.5f))
 		.properties(p -> p.sound(SoundType.CHAIN))
 		.properties(p -> p.noOcclusion())
