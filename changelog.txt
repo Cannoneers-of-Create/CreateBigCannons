@@ -74,5 +74,6 @@ Fixes:
 - Fixed Fluid tags for fluid-based recipes
 - Fixed cannon casting not working on relog
 - Fixed incorrect display value for Mortar Stone tooltip
+- Fixed motion of Cannon Loader, Cannon Drill, and Cannon Builder
 
 *May have issues with contraption-modifying mods such as Create: Interactive
