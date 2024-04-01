@@ -1,14 +1,7 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
 
-import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
-import com.simibubi.create.content.contraptions.piston.LinearActuatorBlockEntity;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.state.BlockState;
-
-import net.minecraft.world.phys.Vec3;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,11 +10,16 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+import com.simibubi.create.content.contraptions.piston.LinearActuatorBlockEntity;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.remix.HasFragileContraption;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Mixin(LinearActuatorBlockEntity.class)
 public abstract class LinearActuatorBlockEntityMixin extends KineticBlockEntity implements HasFragileContraption {
@@ -51,7 +49,7 @@ public abstract class LinearActuatorBlockEntityMixin extends KineticBlockEntity 
 		}
 	}
 
-	@Inject(method = "remove", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/piston/LinearActuatorBlockEntity;disassemble()V"))
+	@Inject(method = "remove", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/piston/LinearActuatorBlockEntity;disassemble()V"), remap = false)
 	private void createbigcannons$remove(CallbackInfo ci) {
 		this.encounteredBlocks.clear();
 	}
