@@ -11,7 +11,6 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.Contraption;
-import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 
 import net.minecraft.core.BlockPos;
@@ -26,15 +25,14 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 public abstract class TranslatingContraptionMixin extends Contraption {
 
 	@ModifyExpressionValue(method = "createColliders",
-		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/shapes/VoxelShape;isEmpty()Z", ordinal = 0))
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/shapes/VoxelShape;isEmpty()Z", ordinal = 1))
 	private boolean createbigcannons$createColliders$0(boolean original, Level level, Direction movementDirection,
 													   @Local StructureBlockInfo info, @Local BlockPos offsetPos) {
 		if (original) return true;
 		if (!(this instanceof CanLoadBigCannon)) return false;
 		StructureBlockInfo offsetInfo = this.blocks.get(offsetPos);
 		Direction.Axis axis = movementDirection.getAxis();
-		if (this.getType() == ContraptionType.PISTON
-			&& info.state().getBlock() == AllBlocks.MECHANICAL_PISTON_HEAD.get()
+		if (info.state().getBlock() == AllBlocks.MECHANICAL_PISTON_HEAD.get()
 			&& info.state().getValue(BlockStateProperties.FACING) != movementDirection) return false;
 		return !IBigCannonBlockEntity.isValidMunitionState(axis, info) && IBigCannonBlockEntity.isValidMunitionState(axis, offsetInfo);
 	}

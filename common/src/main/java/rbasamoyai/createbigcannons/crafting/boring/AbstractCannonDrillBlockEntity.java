@@ -452,6 +452,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		movementSpeed = movementSpeed * -movementModifier + this.clientOffsetDiff * 0.5f;
 
 		movementSpeed = Mth.clamp(movementSpeed, 0 - this.offset, this.extensionLength - this.offset);
+		if (this.sequencedOffsetLimit >= 0)
+			movementSpeed = (float) Mth.clamp(movementSpeed, -this.sequencedOffsetLimit, this.sequencedOffsetLimit);
 		return movementSpeed;
 	}
 

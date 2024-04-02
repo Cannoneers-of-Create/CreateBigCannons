@@ -46,8 +46,7 @@ public abstract class ChassisBlockEntityMixin extends SmartBlockEntity {
 	}
 
 	@ModifyExpressionValue(method = "getIncludedBlockPositionsRadial",
-			at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isNotSupportive(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z"),
-			remap = false)
+			at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isNotSupportive(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z"))
 	private boolean createbigcannons$getIncludedBlockPositionsRadial$1(boolean original, Direction forcedMovement, boolean visualize,
 																	   @Local(ordinal = 0) List<BlockPos> positions,
 																	   @Local(ordinal = 1) BlockPos searchPos,
@@ -64,8 +63,7 @@ public abstract class ChassisBlockEntityMixin extends SmartBlockEntity {
 	}
 
 	@ModifyExpressionValue(method = "getIncludedBlockPositionsLinear",
-		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isNotSupportive(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z"),
-		remap = false)
+		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isNotSupportive(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z"))
 	private boolean createbigcannons$getIncludedBlockPositionsLinear$1(boolean original, Direction forcedMovement, boolean visualize,
 																	   @Local List<BlockPos> positions,
 																	   @Local BlockPos currentPos,

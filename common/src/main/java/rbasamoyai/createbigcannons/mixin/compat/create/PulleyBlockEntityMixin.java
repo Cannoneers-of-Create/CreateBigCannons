@@ -32,8 +32,7 @@ public abstract class PulleyBlockEntityMixin extends LinearActuatorBlockEntity {
 
 	@Inject(method = "assemble",
 			at = @At(value = "INVOKE", target = "Lcom/tterrag/registrate/util/entry/BlockEntry;has(Lnet/minecraft/world/level/block/state/BlockState;)Z", ordinal = 0, shift = At.Shift.BEFORE),
-			locals = LocalCapture.CAPTURE_FAILHARD,
-			remap = false)
+			locals = LocalCapture.CAPTURE_FAILHARD)
 	private void createbigcannons$assemble(CallbackInfo ci, int maxLength, int i, BlockPos ropePos, @Local LocalRef<BlockState> ropeStateRef) {
 		BlockState ropeState = ropeStateRef.get();
 		if (!(ropeState.getBlock() instanceof BigCannonBlock cBlock)
