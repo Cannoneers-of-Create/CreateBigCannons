@@ -12,5 +12,6 @@
   "base_fuze": false,
   "shrapnel_entity_damage": 5.0,
   "shrapnel_spread": 0.25,
-  "shrapnel_count": 50
+  "shrapnel_count": 50,
+  "explosion_power": 2
 }

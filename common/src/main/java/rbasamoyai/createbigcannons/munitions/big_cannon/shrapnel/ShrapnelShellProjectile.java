@@ -20,10 +20,11 @@ public class ShrapnelShellProjectile extends FuzedBigCannonProjectile<ShrapnelSh
 	@Override
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
-		this.level().explode(null, this.indirectArtilleryFire(), null, this.getX(), this.getY(), this.getZ(), 2.0f, false,
+		ShrapnelShellProperties properties = this.getProperties();
+		this.level().explode(null, this.indirectArtilleryFire(), null, this.getX(), this.getY(), this.getZ(),
+			properties == null ? 2.0f : properties.explosionPower(), false,
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
-		ShrapnelShellProperties properties = this.getProperties();
 		if (properties != null) {
 			Shrapnel.spawnShrapnelBurst(this.level(), CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(),
 				properties.shrapnelCount(), properties.shrapnelSpread(), properties.shrapnelDamage());
