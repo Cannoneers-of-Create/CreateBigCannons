@@ -47,7 +47,7 @@ public class IncompleteCannonBlockEmiRecipe extends CBCEmiBlockRecipe<Incomplete
 				int j = i - 1;
 				int posX = base1 + 24 * j;
 				Component num = Component.literal(this.romans[Math.min(j, 6)]);
-				graphics.drawString(mc.font, num, mc.font.width(num) / -2 + posX, 2, 0x888888);
+				graphics.drawString(mc.font, num, mc.font.width(num) / -2 + posX, 2, 0x888888, false);
 			}
 		}));
 	}
