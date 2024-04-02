@@ -56,7 +56,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 		}
 		Minecraft mc = Minecraft.getInstance();
 		Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
-		graphics.drawString(mc.font, text, (177 - mc.font.width(text)) / 2, 90, 4210752);
+		graphics.drawString(mc.font, text, (177 - mc.font.width(text)) / 2, 90, 4210752, false);
 	}
 
 	@Override

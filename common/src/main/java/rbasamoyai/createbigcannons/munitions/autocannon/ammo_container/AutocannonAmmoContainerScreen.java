@@ -71,7 +71,7 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 		CBCGuiTextures bg = isCreative ? CREATIVE_AUTOCANNON_AMMO_CONTAINER_BG : AUTOCANNON_AMMO_CONTAINER_BG;
 		bg.render(graphics, this.leftPos, this.topPos);
 		if (isCreative) {
-			graphics.drawString(this.font, this.title, this.leftPos + 4, this.topPos + 3, 0x54214f);
+			graphics.drawString(this.font, this.title, this.leftPos + 4, this.topPos + 3, 0x54214f, false);
 		} else {
 			graphics.drawCenteredString(this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
 		}
