@@ -81,7 +81,7 @@ public class BlockArmorPropertiesHandler {
 		}
 	}
 
-	public static void onDataPackReload(MinecraftServer server) {
+	public static void loadTags() {
 		TAG_MAP.clear();
 		for (Map.Entry<TagKey<Block>, SimpleBlockArmorProperties> entry : TAGS_TO_EVALUATE.entrySet()) {
 			SimpleBlockArmorProperties properties = entry.getValue();
@@ -90,6 +90,9 @@ public class BlockArmorPropertiesHandler {
 			}
 		}
 		TAGS_TO_EVALUATE.clear();
+	}
+
+	public static void syncToAll(MinecraftServer server) {
 		NetworkPlatform.sendToClientAll(new ClientboundSyncBlockArmorPropertiesPacket(), server);
 	}
 
