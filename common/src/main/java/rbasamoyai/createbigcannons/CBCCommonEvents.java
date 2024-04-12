@@ -200,13 +200,19 @@ public class CBCCommonEvents {
 	public static void onLoadLevel(LevelAccessor level) {
 		CreateBigCannons.BLOCK_DAMAGE.levelLoaded(level);
 		if (level.getServer() != null && !level.isClientSide() && level.getServer().overworld() == level) {
-			BlockArmorPropertiesHandler.onDataPackReload(level.getServer());
-			FluidCastingTimeHandler.loadTags();
+			loadTags();
 		}
 	}
 
+	public static void loadTags() {
+		BlockArmorPropertiesHandler.loadTags();
+		FluidCastingTimeHandler.loadTags();
+	}
+
 	public static void onDatapackReload(MinecraftServer server) {
-		BlockArmorPropertiesHandler.onDataPackReload(server);
+		loadTags();
+
+		BlockArmorPropertiesHandler.syncToAll(server);
 		BlockRecipesManager.syncToAll(server);
 		MunitionPropertiesHandler.syncToAll(server);
 		AutocannonMaterialPropertiesHandler.syncToAll(server);
