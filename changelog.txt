@@ -4,7 +4,7 @@ Changelog
 - Stephen Fry, LittleBigPlanet (2008)
 
 Create Big Cannons 0.5.4, with more QoL features and minor fixes.
-Now supports Create Fabric 0.5.1.f.
+Now supports Create Fabric 0.5.1.f patch 1.
 
 Added:
 - Added ability for some base Create contraptions to load cannons*
