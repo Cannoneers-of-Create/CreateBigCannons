@@ -2,8 +2,8 @@
   "type": "createbigcannons:cannon_casting",
   "cast_shape": "createbigcannons:autocannon_recoil_spring",
   "fluid": {
-    "fluidTag": "forge:molten_cast_iron",
-    "amount": 1
+    "amount": 1,
+    "fluidTag": "forge:molten_cast_iron"
   },
   "result": "createbigcannons:unbored_cast_iron_autocannon_recoil_spring"
 }

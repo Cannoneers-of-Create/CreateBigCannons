@@ -128,7 +128,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		.result(CBCBlocks.UNBORED_STEEL_SCREW_BREECH.get())
 		.save(cons);
 
-		TagKey<Fluid> nethersteelTag = AllTags.forgeFluidTag("molten_nethersteel");
+		TagKey<Fluid> nethersteelTag = fluidTag("molten_nethersteel");
 
 		builder("unbored_very_small_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.VERY_SMALL)

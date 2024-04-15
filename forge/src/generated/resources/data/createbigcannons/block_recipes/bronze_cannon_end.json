@@ -3,7 +3,7 @@
   "cast_shape": "createbigcannons:cannon_end",
   "fluid": {
     "amount": 1,
-    "fluidTag": "c:molten_bronze"
+    "fluidTag": "forge:molten_bronze"
   },
   "result": "createbigcannons:bronze_cannon_end"
 }

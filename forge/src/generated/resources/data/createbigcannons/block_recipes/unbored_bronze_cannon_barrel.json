@@ -3,7 +3,7 @@
   "cast_shape": "createbigcannons:very_small",
   "fluid": {
     "amount": 1,
-    "fluidTag": "c:molten_bronze"
+    "fluidTag": "forge:molten_bronze"
   },
   "result": "createbigcannons:unbored_bronze_cannon_barrel"
 }
