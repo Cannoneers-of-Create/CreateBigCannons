@@ -96,8 +96,17 @@ public class CBCItems {
 			.tag(fabricTag("nuggets/cast_iron"))
 			.tag(fabricTag("cast_iron_nuggets"))
 			.register(),
-		NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new).register(),
-		NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new).register(),
+		NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new)
+			.tag(forgeTag("ingots/nethersteel"))
+			.tag(fabricTag("ingots/nethersteel"))
+			.tag(fabricTag("nethersteel_ingots"))
+			.register(),
+		NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new)
+			.tag(forgeTag("nuggets/nethersteel"))
+			.tag(fabricTag("nuggets/nethersteel"))
+			.tag(fabricTag("nethersteel_nuggets"))
+			.register(),
+
 		BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
 			.tag(forgeTag("nuggets/bronze"))
 			.tag(fabricTag("nuggets/bronze"))

@@ -1,16 +1,24 @@
 {
   "type": "createbigcannons:melting",
-  "heatRequirement": "heated",
   "ingredients": [
     {
-      "item": "createbigcannons:nethersteel_block"
+      "tag": "createbigcannons:block_nethersteel"
+    }
+  ],
+  "results": [
+    {
+      "fluid": "createbigcannons:molten_nethersteel",
+      "amount": 65610
     }
   ],
   "processingTime": 1620,
-  "results": [
+  "heatRequirement": "heated",
+  "fabric:load_conditions": [
     {
-      "amount": 65610,
-      "fluid": "createbigcannons:molten_nethersteel"
+      "condition": "fabric:item_tags_populated",
+      "values": [
+        "createbigcannons:block_nethersteel"
+      ]
     }
   ]
 }
