@@ -109,6 +109,8 @@ public class ContraptionRemix {
 			if (!(state1.getBlock() instanceof CannonContraptionProviderBlock provider)) return;
 			Direction facing = provider.getFacing(state1);
 			if (facing.getAxis().isVertical() || facing.getAxis() == mountFacing.getAxis()) {
+				if (contraption instanceof CanLoadBigCannon)
+					simpleMarking((Contraption & CanLoadBigCannon) contraption, level, assemblyPos, Direction.DOWN, forcedDirection);
 				frontier.add(assemblyPos);
 				return;
 			}
@@ -676,7 +678,7 @@ public class ContraptionRemix {
 
 	public static void validateCannonRope(Contraption contraption, Level level, @Nullable Direction direction,
 										  Function<BlockPos, BlockPos> toLocalPos) throws AssemblyException {
-		if (direction == null || direction.getAxis().isVertical()) return;
+		if (contraption instanceof CanLoadBigCannon && (direction == null || direction.getAxis().isVertical())) return;
 		BlockPos diff = toLocalPos.apply(BlockPos.ZERO).multiply(-1);
 
 		Set<BlockPos> blocksToCheck = new HashSet<>();

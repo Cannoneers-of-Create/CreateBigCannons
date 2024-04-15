@@ -73,6 +73,8 @@ public class CBCFluids {
 	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
 			standardFluid("molten_nethersteel")
 			.lang("Molten Nethersteel")
+			.tag(forgeTag("molten_nethersteel"))
+			.tag(fabricTag("molten_nethersteel"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
 //			.attributes(b -> b.viscosity(1250)
 //					.density(7040)

@@ -1,0 +1,17 @@
+{
+  "values": [
+    {
+      "id": "#forge:blocks/nethersteel",
+      "required": false
+    },
+    {
+      "id": "#c:blocks/nethersteel",
+      "required": false
+    },
+    {
+      "id": "#c:nethersteel_blocks",
+      "required": false
+    },
+    "createbigcannons:nethersteel_block"
+  ]
+}
