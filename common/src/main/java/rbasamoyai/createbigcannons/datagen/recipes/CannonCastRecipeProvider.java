@@ -18,7 +18,6 @@ import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CannonCastRecipeProvider extends BlockRecipeProvider {
@@ -130,57 +129,59 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		.result(CBCBlocks.UNBORED_STEEL_SCREW_BREECH.get())
 		.save(cons);
 
+		TagKey<Fluid> nethersteelTag = AllTags.forgeFluidTag("molten_nethersteel");
+
 		builder("unbored_very_small_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.VERY_SMALL)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_small_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.SMALL)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_medium_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.MEDIUM)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_MEDIUM_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_large_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.LARGE)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_LARGE_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_very_large_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.VERY_LARGE)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_VERY_LARGE_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_nethersteel_screw_breech")
 		.castingShape(CannonCastShape.SCREW_BREECH)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_autocannon_breech")
 		.castingShape(CannonCastShape.AUTOCANNON_BREECH)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BREECH.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_autocannon_recoil_spring")
 		.castingShape(CannonCastShape.AUTOCANNON_RECOIL_SPRING)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_autocannon_barrel")
 		.castingShape(CannonCastShape.AUTOCANNON_BARREL)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BARREL.get())
 		.save(cons);
 

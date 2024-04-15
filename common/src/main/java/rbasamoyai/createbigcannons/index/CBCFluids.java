@@ -1,8 +1,11 @@
 package rbasamoyai.createbigcannons.index;
 
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
+
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
+
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -13,8 +16,6 @@ import rbasamoyai.createbigcannons.crafting.foundry.MoltenMetalLiquidBlock;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
-
-import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCFluids {
 
@@ -72,6 +73,8 @@ public class CBCFluids {
 	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
 			standardFluid("molten_nethersteel")
 			.lang("Molten Nethersteel")
+			.tag(forgeTag("molten_nethersteel"))
+			.tag(fabricTag("molten_nethersteel"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
 //			.attributes(b -> b.viscosity(1250)
 //					.density(7040)

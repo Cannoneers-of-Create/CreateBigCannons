@@ -11,6 +11,7 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.tuple.Pair;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.AssemblyException;
@@ -46,9 +47,6 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.material.PushReaction;
-
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
 import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
@@ -111,6 +109,8 @@ public class ContraptionRemix {
 			if (!(state1.getBlock() instanceof CannonContraptionProviderBlock provider)) return;
 			Direction facing = provider.getFacing(state1);
 			if (facing.getAxis().isVertical() || facing.getAxis() == mountFacing.getAxis()) {
+				if (contraption instanceof CanLoadBigCannon)
+					simpleMarking((Contraption & CanLoadBigCannon) contraption, level, assemblyPos, Direction.DOWN, forcedDirection);
 				frontier.add(assemblyPos);
 				return;
 			}
@@ -678,7 +678,7 @@ public class ContraptionRemix {
 
 	public static void validateCannonRope(Contraption contraption, Level level, @Nullable Direction direction,
 										  Function<BlockPos, BlockPos> toLocalPos) throws AssemblyException {
-		if (direction == null || direction.getAxis().isVertical()) return;
+		if (contraption instanceof CanLoadBigCannon && (direction == null || direction.getAxis().isVertical())) return;
 		BlockPos diff = toLocalPos.apply(BlockPos.ZERO).multiply(-1);
 
 		Set<BlockPos> blocksToCheck = new HashSet<>();
