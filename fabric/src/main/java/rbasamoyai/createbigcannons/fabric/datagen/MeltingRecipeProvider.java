@@ -8,9 +8,7 @@ import net.fabricmc.fabric.api.resource.conditions.v1.DefaultResourceConditions;
 import net.minecraft.data.DataGenerator;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
-import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
@@ -90,17 +88,23 @@ public class MeltingRecipeProvider extends ProcessingRecipeGen {
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_STEEL.get().getSource(), IndexPlatform.convertFluid(10))),
 
-	MELT_NETHERSTEEL_BLOCK = create(CreateBigCannons.resource("melt_nethersteel_block"), b -> b.require(CBCBlocks.NETHERSTEEL_BLOCK.get())
+	MELT_NETHERSTEEL_BLOCK = create(CreateBigCannons.resource("melt_nethersteel_block"), b -> b
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL))
+		.require(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL)
 		.duration(1620)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_NETHERSTEEL.get().getSource(), IndexPlatform.convertFluid(810))),
 
-	MELT_NETHERSTEEL_INGOT = create(CreateBigCannons.resource("melt_nethersteel_ingot"), b -> b.require(CBCItems.NETHERSTEEL_INGOT.get())
+	MELT_NETHERSTEEL_INGOT = create(CreateBigCannons.resource("melt_nethersteel_ingot"), b -> b
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.INGOT_NETHERSTEEL))
+		.require(CBCTags.CBCItemTags.INGOT_NETHERSTEEL)
 		.duration(180)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_NETHERSTEEL.get().getSource(), IndexPlatform.convertFluid(90))),
 
-	MELT_NETHERSTEEL_NUGGET = create(CreateBigCannons.resource("melt_nethersteel_nugget"), b -> b.require(CBCItems.NETHERSTEEL_NUGGET.get())
+	MELT_NETHERSTEEL_NUGGET = create(CreateBigCannons.resource("melt_nethersteel_nugget"), b -> b
+		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.NUGGET_NETHERSTEEL))
+		.require(CBCTags.CBCItemTags.NUGGET_NETHERSTEEL)
 		.duration(20)
 		.requiresHeat(HeatCondition.HEATED)
 		.output(CBCFluids.MOLTEN_NETHERSTEEL.get().getSource(), IndexPlatform.convertFluid(10)));

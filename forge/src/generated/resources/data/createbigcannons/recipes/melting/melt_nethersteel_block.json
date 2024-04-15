@@ -2,7 +2,7 @@
   "type": "createbigcannons:melting",
   "ingredients": [
     {
-      "item": "createbigcannons:nethersteel_block"
+      "tag": "createbigcannons:block_nethersteel"
     }
   ],
   "results": [
@@ -12,5 +12,14 @@
     }
   ],
   "processingTime": 1620,
-  "heatRequirement": "heated"
+  "heatRequirement": "heated",
+  "conditions": [
+    {
+      "value": {
+        "tag": "createbigcannons:block_nethersteel",
+        "type": "forge:tag_empty"
+      },
+      "type": "forge:not"
+    }
+  ]
 }
