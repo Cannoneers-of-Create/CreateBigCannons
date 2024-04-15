@@ -35,6 +35,6 @@
 <p><a href="https://www.curseforge.com/minecraft/mc-mods/create" rel="nofollow">Create</a> is required.</p>
 <p>A mod that adds bronze and steel is needed to access the bronze and steel cannon materials. </p><a href="https://www.curseforge.com/minecraft/mc-mods/create-alloyed" rel="nofollow">Create: Alloyed</a> is the recommended mod.</p>
 <p><strong>Will older versions be supported?</strong></p>
-<p>No, although the mod is open source and MIT licensed so feel free to port it yourself.</p>
+<p>No. Porting is allowed; see <a href=https://github.com/Cannoneers-of-Create/CreateBigCannons/blob/1.18.2/dev/LICENSE.md>the license</a> for more info.</p>
 <br>
 <p>An rbasamoyai mod.</p>
