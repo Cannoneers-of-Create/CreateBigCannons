@@ -3,8 +3,7 @@
   "cast_shape": "createbigcannons:autocannon_recoil_spring",
   "fluid": {
     "amount": 1,
-    "fluid": "createbigcannons:molten_cast_iron",
-    "nbt": {}
+    "fluidTag": "c:molten_cast_iron"
   },
   "result": "createbigcannons:unbored_cast_iron_autocannon_recoil_spring"
 }

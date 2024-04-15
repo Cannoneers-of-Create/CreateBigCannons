@@ -935,7 +935,9 @@ public class CBCBlocks {
 		.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 		.tag(BlockTags.NEEDS_DIAMOND_TOOL)
 		.lang("Block of Nethersteel")
-		.simpleItem()
+		.item()
+		.tag(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL)
+		.build()
 		.register();
 
 	//////// Projectiles ////////

@@ -3,7 +3,7 @@
   "cast_shape": "createbigcannons:medium",
   "fluid": {
     "amount": 1,
-    "fluidTag": "c:molten_steel"
+    "fluidTag": "forge:molten_steel"
   },
   "result": "createbigcannons:unbored_medium_steel_cannon_layer"
 }

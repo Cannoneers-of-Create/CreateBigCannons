@@ -105,6 +105,9 @@ public class CBCTags {
 			NUGGET_STEEL = commonTag("nugget_steel", "nuggets/steel", "steel_nuggets"),
 			INGOT_STEEL = commonTag("ingot_steel", "ingots/steel", "steel_ingots"),
 			BLOCK_STEEL = commonTag("block_steel", "storage_blocks/steel", "steel_blocks"),
+			NUGGET_NETHERSTEEL = commonTag("nugget_nethersteel", "nuggets/nethersteel", "nethersteel_nuggets"),
+			INGOT_NETHERSTEEL = commonTag("ingot_nethersteel", "ingots/nethersteel", "nethersteel_ingots"),
+			BLOCK_NETHERSTEEL = commonTag("block_nethersteel", "blocks/nethersteel", "nethersteel_blocks"),
 
 			// Crafting tags
 			INGOT_IRON = commonTag("ingot_iron", "ingots/iron", "iron_ingots"),

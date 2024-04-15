@@ -48,5 +48,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "createbigcannons:blocks/creative_autocannon_ammo_container"
 }

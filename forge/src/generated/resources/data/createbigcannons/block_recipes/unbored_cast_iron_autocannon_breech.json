@@ -3,8 +3,7 @@
   "cast_shape": "createbigcannons:autocannon_breech",
   "fluid": {
     "amount": 1,
-    "fluid": "createbigcannons:molten_cast_iron",
-    "nbt": {}
+    "fluidTag": "forge:molten_cast_iron"
   },
   "result": "createbigcannons:unbored_cast_iron_autocannon_breech"
 }

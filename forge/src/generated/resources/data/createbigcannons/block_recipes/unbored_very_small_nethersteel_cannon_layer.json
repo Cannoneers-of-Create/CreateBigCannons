@@ -3,8 +3,7 @@
   "cast_shape": "createbigcannons:very_small",
   "fluid": {
     "amount": 1,
-    "fluid": "createbigcannons:molten_nethersteel",
-    "nbt": {}
+    "fluidTag": "forge:molten_nethersteel"
   },
   "result": "createbigcannons:unbored_very_small_nethersteel_cannon_layer"
 }

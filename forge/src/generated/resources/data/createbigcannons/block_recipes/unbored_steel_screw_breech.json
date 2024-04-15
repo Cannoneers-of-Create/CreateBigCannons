@@ -3,7 +3,7 @@
   "cast_shape": "createbigcannons:screw_breech",
   "fluid": {
     "amount": 1,
-    "fluidTag": "c:molten_steel"
+    "fluidTag": "forge:molten_steel"
   },
   "result": "createbigcannons:unbored_steel_screw_breech"
 }
