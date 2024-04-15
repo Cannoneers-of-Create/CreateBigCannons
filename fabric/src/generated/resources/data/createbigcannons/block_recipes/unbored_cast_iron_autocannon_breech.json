@@ -2,8 +2,7 @@
   "type": "createbigcannons:cannon_casting",
   "cast_shape": "createbigcannons:autocannon_breech",
   "fluid": {
-    "fluid": "createbigcannons:molten_cast_iron",
-    "nbt": {},
+    "fluidTag": "c:molten_cast_iron",
     "amount": 1
   },
   "result": "createbigcannons:unbored_cast_iron_autocannon_breech"

@@ -296,6 +296,7 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.BIG_CANNON_PROPELLANT_BAGS);
 		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_BRONZE, "Bronze Blocks");
 		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_CAST_IRON, "Cast Iron Blocks");
+		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL, "Nethersteel Blocks");
 		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_STEEL, "Steel Blocks");
 		createEMITagTranslation(CBCTags.CBCItemTags.DUST_GLOWSTONE, "Glowstone Dusts");
 		createEMITagTranslation(CBCTags.CBCItemTags.DUSTS_REDSTONE, "Redstone Dusts");
@@ -308,12 +309,14 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_BRONZE, "Bronze Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_CAST_IRON, "Cast Iron Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_IRON, "Iron Ingots");
+		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_NETHERSTEEL, "Nethersteel Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_STEEL, "Steel Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.NITROPOWDER);
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_BRONZE, "Bronze Nuggets");
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_CAST_IRON, "Cast Iron Nuggets");
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_COPPER, "Copper Nuggets");
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_IRON, "Iron Nuggets");
+		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_NETHERSTEEL, "Nethersteel Nuggets");
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_STEEL, "Steel Nuggets");
 		createEMITagTranslation(CBCTags.CBCItemTags.SHEET_BRASS, "Brass Sheets");
 		createEMITagTranslation(CBCTags.CBCItemTags.SHEET_COPPER, "Copper Sheets");
@@ -322,12 +325,16 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS);
 		createEMITagTranslation(CBCTags.CBCItemTags.STONE);
 		createEMITagTranslation(fabricTag("cast_iron_ingots"));
+		createEMITagTranslation(fabricTag("nethersteel_ingots"));
 		createEMITagTranslation(fabricTag("bronze_nuggets"));
 		createEMITagTranslation(fabricTag("cast_iron_nuggets"));
+		createEMITagTranslation(fabricTag("nethersteel_nuggets"));
 		createEMITagTranslation(fabricTag("steel_nuggets"));
 		createEMITagTranslation(fabricTag("ingots/cast_iron"), "Cast Iron Ingots (Forge Format)");
+		createEMITagTranslation(fabricTag("ingots/nethersteel"), "Nethersteel Ingots (Forge Format)");
 		createEMITagTranslation(fabricTag("nuggets/bronze"), "Bronze Nuggets (Forge Format)");
 		createEMITagTranslation(fabricTag("nuggets/cast_iron"), "Cast Iron Nuggets (Forge Format)");
+		createEMITagTranslation(fabricTag("nuggets/nethersteel"), "Nethersteel Nuggets (Forge Format)");
 		createEMITagTranslation(fabricTag("nuggets/steel"), "Steel Nuggets (Forge Format)");
 
 		createEMICategoryTranslation("melting", "Basin Melting");
