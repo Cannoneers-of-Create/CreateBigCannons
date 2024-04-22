@@ -3,12 +3,13 @@ package rbasamoyai.createbigcannons.crafting.builtup;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.AssemblyException;
 
+import com.simibubi.create.content.contraptions.ContraptionCollider;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.base.PoleMoverBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderState;
@@ -31,7 +32,7 @@ public class CannonBuilderBlockEntity extends PoleMoverBlockEntity {
 		Direction positive = Direction.get(Direction.AxisDirection.POSITIVE, facing.getAxis());
 		Direction movementDirection = (this.getSpeed() > 0) ^ facing.getAxis() != Direction.Axis.Z ? positive : positive.getOpposite();
 		BlockPos anchor = contraption.anchor.relative(facing, contraption.initialExtensionProgress());
-		return CannonBuilderCollider.isCollidingWithWorld(this.getLevel(), contraption, anchor.relative(movementDirection), movementDirection) ? null : contraption;
+		return ContraptionCollider.isCollidingWithWorld(this.getLevel(), contraption, anchor.relative(movementDirection), movementDirection) ? null : contraption;
 	}
 
 	@Override
@@ -41,21 +42,6 @@ public class CannonBuilderBlockEntity extends PoleMoverBlockEntity {
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonBuilderBlock.STATE, BuilderState.EXTENDED), 3 | 16);
 		}
 		super.disassemble();
-	}
-
-	@Override
-	protected boolean moveAndCollideContraption() {
-		if (this.movedContraption == null) {
-			return false;
-		}
-		if (this.movedContraption.isStalled()) {
-			this.movedContraption.setDeltaMovement(Vec3.ZERO);
-			return false;
-		}
-		Vec3 motion = this.getMotionVector();
-		this.movedContraption.setContraptionMotion(motion);
-		this.movedContraption.move(motion.x, motion.y, motion.z);
-		return CannonBuilderCollider.collideBlocks(this.movedContraption);
 	}
 
 	public BlockState updateBlockstatesOnPowered(BlockState state) {

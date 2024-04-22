@@ -7,8 +7,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileProperties;
 
-public class APShotProjectile extends AbstractBigCannonProjectile {
+public class APShotProjectile extends AbstractBigCannonProjectile<BigCannonProjectileProperties> {
 
 	public APShotProjectile(EntityType<? extends APShotProjectile> type, Level level) {
 		super(type, level);

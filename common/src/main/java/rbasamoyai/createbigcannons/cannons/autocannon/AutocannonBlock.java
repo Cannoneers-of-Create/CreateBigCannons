@@ -1,6 +1,8 @@
 package rbasamoyai.createbigcannons.cannons.autocannon;
 
-import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
+import javax.annotation.Nonnull;
+
+import com.simibubi.create.content.contraptions.Contraption;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,14 +18,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
+import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
+import rbasamoyai.createbigcannons.cannons.InteractableCannonBlock;
+import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
-import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
-import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.welding.WeldableBlock;
 
-public interface AutocannonBlock extends WeldableBlock {
+public interface AutocannonBlock extends WeldableBlock, CannonContraptionProviderBlock, InteractableCannonBlock {
 
     AutocannonMaterial getAutocannonMaterial();
     default AutocannonMaterial getAutocannonMaterialInLevel(LevelAccessor level, BlockState state, BlockPos pos) { return this.getAutocannonMaterial(); }
@@ -135,9 +140,10 @@ public interface AutocannonBlock extends WeldableBlock {
         be.setChanged();
     }
 
-	default <T extends BlockEntity & IAutocannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
-			Direction side, InteractionHand interactionHand, Level level, MountedAutocannonContraption cannon, T be,
-			StructureBlockInfo info, AbstractContraptionEntity entity) {
+	@Override
+	default boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,
+											 Level level, Contraption contraption, BlockEntity be, StructureBlockInfo info,
+											 PitchOrientedContraptionEntity entity) {
 		return false;
 	}
 
@@ -159,11 +165,17 @@ public interface AutocannonBlock extends WeldableBlock {
 
 	@Override
 	default void weldBlock(Level level, BlockState state, BlockPos pos, Direction dir) {
-		if (!(level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe)) return;
-		BigCannonBehavior behavior = cbe.cannonBehavior();
+		if (!(level.getBlockEntity(pos) instanceof IAutocannonBlockEntity cbe)) return;
+		ItemCannonBehavior behavior = cbe.cannonBehavior();
 		behavior.setConnectedFace(dir, true);
 		behavior.setWelded(dir, true);
 		behavior.blockEntity.notifyUpdate();
+	}
+
+	@Nonnull
+	@Override
+	default AbstractMountedCannonContraption getCannonContraption() {
+		return new MountedAutocannonContraption();
 	}
 
 }

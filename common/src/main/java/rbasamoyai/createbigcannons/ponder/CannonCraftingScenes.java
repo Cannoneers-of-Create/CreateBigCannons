@@ -307,7 +307,7 @@ public class CannonCraftingScenes {
 		scene.idle(20);
 
 		scene.overlay.showText(80)
-			.text("By default, cast cannons will turn into scrap when broken, even if broken with Silk Touch.")
+			.text("By default, most cast cannons will turn into scrap when broken without a Silk Touch pickaxe.")
 			.colored(PonderPalette.RED);
 		scene.idle(20);
 		scene.overlay.showControls(new InputWindowElement(util.vector.topOf(2, 1, 0), Pointing.DOWN).withItem(CBCItems.CAST_IRON_NUGGET.asStack()), 40);
@@ -996,28 +996,6 @@ public class CannonCraftingScenes {
 
 	public static Emitter particleEmitterForCannonWelder(Direction dir) {
 		return (w, x, y, z) -> CannonWelderSelectionHandler.spawnParticles(w, BlockPos.containing(x, y, z), dir, true);
-	}
-
-	public static Consumer<CompoundTag> setConnectionInTag(Direction dir, boolean connected) {
-		String name = dir.getSerializedName();
-		return nbt -> {
-			ListTag weldedTowards = nbt.getList("Connections", Tag.TAG_STRING);
-			weldedTowards.removeIf(t -> t.getType() == StringTag.TYPE && t.getAsString().equals(name));
-			if (connected) weldedTowards.add(StringTag.valueOf(name));
-		};
-	}
-
-	public static Consumer<CompoundTag> setWeldInTag(Direction dir, boolean welded) {
-		String name = dir.getSerializedName();
-		return nbt -> {
-			ListTag weldedTowards = nbt.getList("Welds", Tag.TAG_STRING);
-			weldedTowards.removeIf(t -> t.getType() == StringTag.TYPE && t.getAsString().equals(name));
-			if (welded) weldedTowards.add(StringTag.valueOf(name));
-		};
-	}
-
-	public static Emitter particleEmitterForCannonWelder(Direction dir) {
-		return (w, x, y, z) -> CannonWelderSelectionHandler.spawnParticles(w, new BlockPos(x, y, z), dir, true);
 	}
 
 	public static Consumer<CompoundTag> setConnectionInTag(Direction dir, boolean connected) {

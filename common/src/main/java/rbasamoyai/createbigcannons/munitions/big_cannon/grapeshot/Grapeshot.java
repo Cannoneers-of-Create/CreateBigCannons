@@ -13,8 +13,6 @@ public class Grapeshot extends Shrapnel {
 		super(type, level);
 	}
 
-	@Override protected float getProjectileMass() { return 3; }
-
 	@Override
 	protected DamageSource getDamageSource() {
 		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.GRAPESHOT), this);

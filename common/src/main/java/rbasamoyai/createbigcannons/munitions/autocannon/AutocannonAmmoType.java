@@ -12,12 +12,15 @@ public enum AutocannonAmmoType {
 	},
 	NONE {
 		@Override public int getCapacity() { return 0; }
+		@Override public boolean isValidMunition(ItemStack stack) { return of(stack) != this; }
 	};
 
 	AutocannonAmmoType() {
 	}
 
 	public abstract int getCapacity();
+
+	public boolean isValidMunition(ItemStack stack) { return of(stack) == this; }
 
 	public static AutocannonAmmoType of(ItemStack stack) {
 		return stack.getItem() instanceof AutocannonAmmoItem item ? item.getType() : NONE;

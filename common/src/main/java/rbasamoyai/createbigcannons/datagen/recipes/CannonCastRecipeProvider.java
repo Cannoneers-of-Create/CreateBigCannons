@@ -4,10 +4,10 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import com.google.gson.JsonObject;
-import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -17,8 +17,8 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.datagen.CBCDatagenCommon;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CannonCastRecipeProvider extends BlockRecipeProvider {
@@ -32,31 +32,33 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 
 	@Override
 	protected void registerRecipes(Consumer<FinishedBlockRecipe> cons) {
+		TagKey<Fluid> castIronTag = fluidTag("molten_cast_iron");
+
 		builder("unbored_cast_iron_cannon_barrel")
 		.castingShape(CannonCastShape.VERY_SMALL)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_CANNON_BARREL.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_cannon_chamber")
 		.castingShape(CannonCastShape.MEDIUM)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_CANNON_CHAMBER.get())
 		.save(cons);
 
 		builder("cast_iron_cannon_end")
 		.castingShape(CannonCastShape.CANNON_END)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.CAST_IRON_CANNON_END.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_sliding_breech")
 		.castingShape(CannonCastShape.SLIDING_BREECH)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_SLIDING_BREECH.get())
 		.save(cons);
 
-		TagKey<Fluid> bronzeTag = AllTags.forgeFluidTag("molten_bronze");
+		TagKey<Fluid> bronzeTag = fluidTag("molten_bronze");
 
 		builder("unbored_bronze_cannon_barrel")
 		.castingShape(CannonCastShape.VERY_SMALL)
@@ -82,7 +84,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		.result(CBCBlocks.UNBORED_BRONZE_SLIDING_BREECH.get())
 		.save(cons);
 
-		TagKey<Fluid> steelTag = AllTags.forgeFluidTag("molten_steel");
+		TagKey<Fluid> steelTag = fluidTag("molten_steel");
 
 		builder("unbored_very_small_steel_cannon_layer")
 		.castingShape(CannonCastShape.VERY_SMALL)
@@ -126,93 +128,95 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		.result(CBCBlocks.UNBORED_STEEL_SCREW_BREECH.get())
 		.save(cons);
 
+		TagKey<Fluid> nethersteelTag = fluidTag("molten_nethersteel");
+
 		builder("unbored_very_small_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.VERY_SMALL)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_small_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.SMALL)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_medium_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.MEDIUM)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_MEDIUM_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_large_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.LARGE)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_LARGE_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_very_large_nethersteel_cannon_layer")
 		.castingShape(CannonCastShape.VERY_LARGE)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_VERY_LARGE_NETHERSTEEL_CANNON_LAYER.get())
 		.save(cons);
 
 		builder("unbored_nethersteel_screw_breech")
 		.castingShape(CannonCastShape.SCREW_BREECH)
-		.ingredient(CBCFluids.MOLTEN_NETHERSTEEL.get())
+		.ingredient(nethersteelTag)
 		.result(CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_autocannon_breech")
 		.castingShape(CannonCastShape.AUTOCANNON_BREECH)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BREECH.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_autocannon_recoil_spring")
 		.castingShape(CannonCastShape.AUTOCANNON_RECOIL_SPRING)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING.get())
 		.save(cons);
 
 		builder("unbored_cast_iron_autocannon_barrel")
 		.castingShape(CannonCastShape.AUTOCANNON_BARREL)
-		.ingredient(CBCFluids.MOLTEN_CAST_IRON.get())
+		.ingredient(castIronTag)
 		.result(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BARREL.get())
 		.save(cons);
 
 		builder("unbored_bronze_autocannon_breech")
 		.castingShape(CannonCastShape.AUTOCANNON_BREECH)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BREECH.get())
 		.save(cons);
 
 		builder("unbored_bronze_autocannon_recoil_spring")
 		.castingShape(CannonCastShape.AUTOCANNON_RECOIL_SPRING)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.UNBORED_BRONZE_AUTOCANNON_RECOIL_SPRING.get())
 		.save(cons);
 
 		builder("unbored_bronze_autocannon_barrel")
 		.castingShape(CannonCastShape.AUTOCANNON_BARREL)
-		.ingredient(CBCFluids.MOLTEN_BRONZE.get())
+		.ingredient(bronzeTag)
 		.result(CBCBlocks.UNBORED_BRONZE_AUTOCANNON_BARREL.get())
 		.save(cons);
 
 		builder("unbored_steel_autocannon_breech")
 		.castingShape(CannonCastShape.AUTOCANNON_BREECH)
-		.ingredient(CBCFluids.MOLTEN_STEEL.get())
+		.ingredient(steelTag)
 		.result(CBCBlocks.UNBORED_STEEL_AUTOCANNON_BREECH.get())
 		.save(cons);
 
 		builder("unbored_steel_autocannon_recoil_spring")
 		.castingShape(CannonCastShape.AUTOCANNON_RECOIL_SPRING)
-		.ingredient(CBCFluids.MOLTEN_STEEL.get())
+		.ingredient(steelTag)
 		.result(CBCBlocks.UNBORED_STEEL_AUTOCANNON_RECOIL_SPRING.get())
 		.save(cons);
 
 		builder("unbored_steel_autocannon_barrel")
 		.castingShape(CannonCastShape.AUTOCANNON_BARREL)
-		.ingredient(CBCFluids.MOLTEN_STEEL.get())
+		.ingredient(steelTag)
 		.result(CBCBlocks.UNBORED_STEEL_AUTOCANNON_BARREL.get())
 		.save(cons);
 	}
@@ -282,6 +286,10 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 
 		@Override public ResourceLocation id() { return this.id; }
 		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.CANNON_CASTING; }
+	}
+
+	private static TagKey<Fluid> fluidTag(String path) {
+		return TagKey.create(Registries.FLUID, new ResourceLocation(CBCDatagenCommon.PLATFORM.tagNamespace(), path));
 	}
 
 }

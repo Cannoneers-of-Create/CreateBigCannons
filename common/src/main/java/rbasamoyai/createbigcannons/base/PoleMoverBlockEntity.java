@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.cannonloading.CannonLoaderBlock;
+import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
 
 public abstract class PoleMoverBlockEntity extends LinearActuatorBlockEntity {
 
@@ -107,14 +107,15 @@ public abstract class PoleMoverBlockEntity extends LinearActuatorBlockEntity {
 	@Override
 	public float getMovementSpeed() {
 		float movementSpeed = Mth.clamp(convertToLinear(this.getSpeed()), -0.49f, 0.49f);
-		if (this.getLevel().isClientSide) {
+		if (this.level.isClientSide)
 			movementSpeed *= ServerSpeedProvider.get();
-		}
 		Direction facing = this.getBlockState().getValue(FACING);
 		int movementModifier = facing.getAxisDirection().getStep() * (facing.getAxis() == Direction.Axis.Z ? -1 : 1);
 		movementSpeed = movementSpeed * -movementModifier + this.clientOffsetDiff * 0.5f;
 
-		movementSpeed = Mth.clamp(movementSpeed, 0 - this.offset, this.extensionLength - this.offset);
+		movementSpeed = Mth.clamp(movementSpeed, 0 - this.offset, this.getExtensionRange() - this.offset);
+		if (this.sequencedOffsetLimit >= 0)
+			movementSpeed = (float) Mth.clamp(movementSpeed, -this.sequencedOffsetLimit, this.sequencedOffsetLimit);
 		return movementSpeed;
 	}
 

@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.material;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -9,9 +8,11 @@ import javax.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
+import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -21,7 +22,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class AutocannonMaterialPropertiesHandler {
 
-	public static final Map<AutocannonMaterial, AutocannonMaterialProperties> PROPERTIES = new HashMap<>();
+	public static final Map<AutocannonMaterial, AutocannonMaterialProperties> PROPERTIES = new Reference2ObjectOpenHashMap<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
@@ -51,7 +52,7 @@ public class AutocannonMaterialPropertiesHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(PROPERTIES.size());
 		for (Map.Entry<AutocannonMaterial, AutocannonMaterialProperties> entry : PROPERTIES.entrySet()) {
-			buf.writeUtf(entry.getKey().name().toString());
+			buf.writeResourceLocation(entry.getKey().name());
 			entry.getValue().writeBuf(buf);
 		}
 	}
@@ -61,12 +62,16 @@ public class AutocannonMaterialPropertiesHandler {
 		int sz = buf.readVarInt();
 
 		for (int i = 0; i < sz; ++i) {
-			PROPERTIES.put(AutocannonMaterial.fromName(new ResourceLocation(buf.readUtf())), AutocannonMaterialProperties.fromBuf(buf));
+			PROPERTIES.put(AutocannonMaterial.fromName(buf.readResourceLocation()), AutocannonMaterialProperties.fromBuf(buf));
 		}
 	}
 
 	public static void syncTo(ServerPlayer player) {
 		NetworkPlatform.sendToClientPlayer(new ClientboundAutocannonMaterialPropertiesPacket(), player);
+	}
+
+	public static void syncToAll(MinecraftServer server) {
+		NetworkPlatform.sendToClientAll(new ClientboundAutocannonMaterialPropertiesPacket(), server);
 	}
 
 	public record ClientboundAutocannonMaterialPropertiesPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {

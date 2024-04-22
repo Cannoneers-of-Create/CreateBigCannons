@@ -1,15 +1,20 @@
 package rbasamoyai.createbigcannons.index;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+
 import com.jozufozu.flywheel.core.PartialModel;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-
-import java.util.*;
-import java.util.function.Supplier;
 
 public class CBCBlockPartials {
 
@@ -78,10 +83,7 @@ public class CBCBlockPartials {
 		AUTOCANNON_SEAT_BROWN = autocannonSeatPartial(DyeColor.BROWN, "autocannon/seat_brown"),
 		AUTOCANNON_SEAT_GREEN = autocannonSeatPartial(DyeColor.GREEN, "autocannon/seat_green"),
 		AUTOCANNON_SEAT_RED = autocannonSeatPartial(DyeColor.RED, "autocannon/seat_red"),
-		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_black"),
-
-		AUTOCANNON_AMMO_CONTAINER_EMPTY = new PartialModel(CreateBigCannons.resource("item/autocannon_ammo_container_empty")),
-		AUTOCANNON_AMMO_CONTAINER_FILLED = new PartialModel(CreateBigCannons.resource("item/autocannon_ammo_container_filled"));
+		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_black");
 
 
 	private static PartialModel block(String path) {

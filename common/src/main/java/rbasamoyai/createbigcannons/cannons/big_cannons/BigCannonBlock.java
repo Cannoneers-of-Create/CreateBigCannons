@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -15,6 +16,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,20 +28,23 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
+import rbasamoyai.createbigcannons.cannons.InteractableCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.welding.WeldableBlock;
-import rbasamoyai.createbigcannons.manualloading.HandloadingTool;
+import rbasamoyai.createbigcannons.manual_loading.HandloadingTool;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 
-public interface BigCannonBlock extends WeldableBlock {
+public interface BigCannonBlock extends WeldableBlock, CannonContraptionProviderBlock, InteractableCannonBlock {
 
 	BigCannonMaterial getCannonMaterial();
 
@@ -112,6 +117,25 @@ public interface BigCannonBlock extends WeldableBlock {
 				}
 			}
 			be2.setChanged();
+		}
+	}
+
+	default void playerWillDestroyBigCannon(Level level, BlockPos pos, BlockState state, Player player) {
+		BlockEntity be = level.getBlockEntity(pos);
+		if (be instanceof IBigCannonBlockEntity cbe) {
+			StructureBlockInfo info = cbe.cannonBehavior().block();
+			BlockState innerState = info.state();
+			ItemStack stack = innerState.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info) : ItemStack.EMPTY;
+			if (!stack.isEmpty()) {
+				Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
+			}
+			cbe.cannonBehavior().removeBlock();
+			be.setChanged();
+			if (!innerState.isAir()) {
+				innerState.getBlock().playerWillDestroy(level, pos, innerState, player);
+				SoundType soundtype = innerState.getSoundType();
+				level.playSound(null, pos, soundtype.getBreakSound(), SoundSource.BLOCKS, (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
+			}
 		}
 	}
 
@@ -211,22 +235,30 @@ public interface BigCannonBlock extends WeldableBlock {
 		}
 	}
 
-	default <T extends BlockEntity & IBigCannonBlockEntity> boolean onInteractWhileAssembled(Player player, BlockPos localPos,
-			Direction side, InteractionHand interactionHand, Level level, MountedBigCannonContraption cannon, T be,
-			StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
-		if (((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() != side.getAxis() || be.cannonBehavior().isConnectedTo(side))
+	@Override
+	default boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,
+											 Level level, Contraption contraption, BlockEntity be,
+											 StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
+		if (!(be instanceof IBigCannonBlockEntity cbe)
+			|| !(contraption instanceof MountedBigCannonContraption cannon)
+			|| ((BigCannonBlock) info.state().getBlock()).getFacing(info.state()).getAxis() != side.getAxis()
+			|| cbe.cannonBehavior().isConnectedTo(side))
 			return false;
 		ItemStack stack = player.getItemInHand(interactionHand);
 		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
-			StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
 			if (!level.isClientSide) {
+				StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
 				boolean flag = false;
-				if (!player.getCooldowns().isOnCooldown(stack.getItem()) && cannon.tryDroppingMortarRound(stack)) {
-					player.getCooldowns().addCooldown(stack.getItem(), CBCConfigs.SERVER.cannons.dropMortarItemCooldown.get());
-					flag = true;
-				} else if (be.cannonBehavior().tryLoadingBlock(loadInfo)) {
-					writeAndSyncSingleBlockData(be, info, entity, cannon);
-					flag = true;
+				if (cannon.isDropMortar()) {
+					if (!player.getCooldowns().isOnCooldown(stack.getItem()) && cannon.tryDroppingMortarRound(stack)) {
+						player.getCooldowns().addCooldown(stack.getItem(), CBCConfigs.SERVER.cannons.dropMortarItemCooldown.get());
+						flag = true;
+					}
+				} else {
+				 	if (cbe.cannonBehavior().tryLoadingBlock(loadInfo)) {
+						writeAndSyncSingleBlockData(be, info, entity, contraption);
+						flag = true;
+					}
 				}
 				if (flag) {
 					SoundType sound = loadInfo.state().getSoundType();
@@ -296,6 +328,12 @@ public interface BigCannonBlock extends WeldableBlock {
 		behavior.setConnectedFace(dir, true);
 		behavior.setWelded(dir, true);
 		behavior.blockEntity.notifyUpdate();
+	}
+
+	@Nonnull
+	@Override
+	default AbstractMountedCannonContraption getCannonContraption() {
+		return new MountedBigCannonContraption();
 	}
 
 }

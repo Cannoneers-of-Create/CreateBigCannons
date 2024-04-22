@@ -14,13 +14,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
-import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 
-public abstract class AbstractBigCannonProjectile extends AbstractCannonProjectile {
+public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileProperties> extends AbstractCannonProjectile<T> {
 
 	protected AbstractBigCannonProjectile(EntityType<? extends AbstractBigCannonProjectile> type, Level level) {
 		super(type, level);
@@ -59,7 +59,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		double bonus = 1 + Math.max(0, (mag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
 			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
 
-		double hardness = BlockHardnessHandler.getHardness(state) / bonus;
+		double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level(), state, result.getBlockPos(), true) / bonus;
 		this.setProjectileMass((float) Math.max(mass - hardness, 0));
 
 		if (!this.level().isClientSide()) this.level().destroyBlock(result.getBlockPos(), false);
@@ -80,12 +80,24 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.BIG_CANNON_PROJECTILE), this);
 	}
 
-	public int addedChargePower() { return 0; }
+	public float addedChargePower() {
+		T properties = this.getProperties();
+		return properties == null ? 0 : properties.addedChargePower();
+	}
 
-	public float minimumChargePower() { return this.getProperties().minimumChargePower(); }
+	public float minimumChargePower() {
+		T properties = this.getProperties();
+		return properties == null ? 1 : properties.minimumChargePower();
+	}
 
-	public boolean canSquib() { return this.getProperties().canSquib(); }
+	public boolean canSquib() {
+		T properties = this.getProperties();
+		return properties == null || properties.canSquib();
+	}
 
-	public float addedRecoil() { return this.getProperties().addedRecoil(); }
+	public float addedRecoil() {
+		T properties = this.getProperties();
+		return properties == null ? 1 : properties.addedRecoil();
+	}
 
 }

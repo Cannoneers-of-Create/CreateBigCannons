@@ -1,9 +1,0 @@
-{
-  "base_fuze": false,
-  "drag": 0.99,
-  "durability_mass": 0.1,
-  "entity_damage": 4.0,
-  "gravity": -0.025,
-  "ignores_entity_armor": false,
-  "renders_invulnerable": false
-}

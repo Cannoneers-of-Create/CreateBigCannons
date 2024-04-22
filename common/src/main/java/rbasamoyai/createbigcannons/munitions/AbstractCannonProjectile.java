@@ -29,18 +29,17 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
-import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
-import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
-import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 import rbasamoyai.ritchiesprojectilelib.PreciseProjectile;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
-public abstract class AbstractCannonProjectile extends Projectile implements PreciseProjectile {
+public abstract class AbstractCannonProjectile<T extends BaseProjectileProperties> extends Projectile
+	implements PreciseProjectile, PropertiesMunitionEntity<T> {
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
@@ -49,9 +48,9 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
-		MunitionProperties properties = this.getProperties();
-		this.damage = (float) properties.entityDamage();
-		this.setProjectileMass((float) properties.durabilityMass());
+		T properties = this.getProperties();
+		this.damage = properties == null ? 0 : properties.entityDamage();
+		this.setProjectileMass(properties == null ? 0 : properties.durabilityMass());
 	}
 
 	@Override
@@ -75,7 +74,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				if (this.shouldFall()) {
 					this.setInGround(false);
 				} else if (!this.level().isClientSide) {
-					this.inGroundTime++;
+					if (!this.canLingerInGround()) this.inGroundTime++;
 
 					if (this.inGroundTime == 400) {
 						this.discard();
@@ -87,7 +86,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 				Vec3 vel = uel;
 				Vec3 oldPos = this.position();
 				Vec3 newPos = oldPos.add(vel);
-				if (!this.isNoGravity()) vel = vel.add(0.0f, this.getGravity(), 0.0f);
+				if (!this.isNoGravity()) vel = vel.add(0.0d, this.getGravity(), 0.0d);
 				vel = vel.scale(this.getDrag());
 				this.setDeltaMovement(vel);
 				Vec3 position = newPos.add(vel.subtract(uel).scale(0.5));
@@ -168,7 +167,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 					double startMass = this.getProjectileMass();
 					double curPom = startMass * mag;
-					double hardness = BlockHardnessHandler.getHardness(state);
+					double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level(), state, bpos, true);
 
 					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level(), bpos) == -1 || curPom < hardness) {
 						this.setInGround(true);
@@ -234,7 +233,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		Vec3 oldVel = this.getDeltaMovement();
 		double momentum = this.getProjectileMass() * oldVel.length();
 		if (bounce == BounceType.DEFLECT) {
-			if (momentum > BlockHardnessHandler.getHardness(state) * 0.5) {
+			if (momentum > BlockArmorPropertiesHandler.getProperties(state).hardness(this.level(), state, result.getBlockPos(), true) * 0.5) {
 				Vec3 spallLoc = this.position().add(oldVel.normalize().scale(2));
 				this.level().explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Level.ExplosionInteraction.NONE);
 			}
@@ -260,10 +259,14 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 	protected void onHitEntity(Entity entity) {
 		if (this.getProjectileMass() <= 0) return;
 		if (!this.level().isClientSide) {
+			T properties = this.getProperties();
 			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
 			DamageSource source = this.getEntityDamage(entity);
+
+			if (properties == null || properties.ignoresEntityArmor()) entity.invulnerableTime = 0;
 			entity.hurt(source, this.damage);
-			if (!CBCConfigs.SERVER.munitions.invulProjectileHurt.get()) entity.invulnerableTime = 0;
+			if (properties == null || !properties.rendersInvulnerable()) entity.invulnerableTime = 0;
+
 			double penalty = entity.isAlive() ? 2 : 0.2;
 			this.setProjectileMass((float) Math.max(this.getProjectileMass() - penalty, 0));
 			this.onImpact(new EntityHitResult(entity), this.getProjectileMass() <= 0);
@@ -274,7 +277,10 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		return this.indirectArtilleryFire();
 	}
 
-	protected float getKnockback(Entity target) { return 2.0f; }
+	protected float getKnockback(Entity target) {
+		T properties = this.getProperties();
+		return properties == null ? 0 : properties.knockback();
+	}
 
 	protected boolean canDeflect(BlockHitResult result) { return false; }
 	protected boolean canBounceOffOf(BlockState state) { return isBounceableOffOf(state); }
@@ -357,7 +363,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		return this.entityData.get(PROJECTILE_MASS);
 	}
 
-	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
+	public static void build(EntityType.Builder<? extends AbstractCannonProjectile<?>> builder) {
 		builder.clientTrackingRange(16)
 				.updateInterval(1)
 				.fireImmune()
@@ -369,13 +375,17 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 		return dimensions.height * 0.5f;
 	}
 
-	protected float getGravity() {
-		float multiplier = (float) DimensionMunitionPropertiesHandler.getProperties(this.level()).gravityMultiplier();
-		return (float) this.getProperties().gravity() * multiplier;
+	protected double getGravity() {
+		T properties = this.getProperties();
+		double val = properties == null ? -0.05d : properties.gravity();
+		double multiplier = DimensionMunitionPropertiesHandler.getProperties(this.level()).gravityMultiplier();
+		return val * multiplier;
 	}
-	protected float getDrag() {
+
+	protected double getDrag() {
+		T properties = this.getProperties();
+		float baseDrag = properties == null ? 0.99f : (float) properties.drag();
 		float scalar = (float) DimensionMunitionPropertiesHandler.getProperties(this.level()).dragMultiplier();
-		float baseDrag = (float) this.getProperties().drag();
 		if (scalar <= 1) return Mth.lerp(scalar, 1, baseDrag);
 		float diff = baseDrag - 1;
 		return (float) Mth.clamp(baseDrag + diff * (scalar - 1), 0.9, baseDrag);
@@ -385,7 +395,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Pre
 
 	@Override public boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
 
-	public MunitionProperties getProperties() { return MunitionPropertiesHandler.getProperties(this); }
+	public boolean canLingerInGround() { return false; }
 
 	public enum BounceType {
 		DEFLECT,

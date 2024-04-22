@@ -1,10 +1,15 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
+import java.util.Collections;
+import java.util.List;
+
+import com.google.common.collect.ImmutableList;
 import com.simibubi.create.foundation.gui.AllIcons;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
 
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -15,6 +20,7 @@ public abstract class AbstractFuzeScreen<T extends AbstractFuzeContainer> extend
 	protected ScrollInput setValue;
 	protected int lastUpdated = -1;
 	protected IconButton confirmButton;
+	protected List<Rect2i> extraAreas = Collections.emptyList();
 
 	protected AbstractFuzeScreen(T container, Inventory inv, Component title) {
 		super(container, inv, title);
@@ -37,6 +43,8 @@ public abstract class AbstractFuzeScreen<T extends AbstractFuzeContainer> extend
 		this.confirmButton = new IconButton(this.leftPos + this.imageWidth - 33, this.topPos + this.imageHeight - 24, AllIcons.I_CONFIRM);
 		this.confirmButton.withCallback(this::onClose);
 		this.addRenderableWidget(this.confirmButton);
+
+		this.extraAreas = ImmutableList.of(new Rect2i(this.leftPos + this.imageWidth, this.topPos + this.imageHeight - 50, 78, 64));
 	}
 
 	@Override
@@ -69,5 +77,7 @@ public abstract class AbstractFuzeScreen<T extends AbstractFuzeContainer> extend
 	}
 
 	public abstract int getUpdateState();
+
+	@Override public List<Rect2i> getExtraAreas() { return this.extraAreas; }
 
 }

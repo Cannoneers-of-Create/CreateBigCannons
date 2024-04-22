@@ -13,18 +13,17 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
+import rbasamoyai.createbigcannons.block_armor_properties.InspectResistanceToolItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
-import rbasamoyai.createbigcannons.manualloading.RamRodItem;
-import rbasamoyai.createbigcannons.manualloading.WormItem;
+import rbasamoyai.createbigcannons.manual_loading.RamRodItem;
+import rbasamoyai.createbigcannons.manual_loading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
-import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonRoundItem;
-import rbasamoyai.createbigcannons.munitions.config.InspectResistanceToolItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
@@ -34,10 +33,18 @@ public class CBCItems {
 
 	static { ModGroup.useModTab(ModGroup.MAIN_TAB_KEY); }
 
-	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new).register();
-	public static final ItemEntry<TimedFuzeItem> TIMED_FUZE = REGISTRATE.item("timed_fuze", TimedFuzeItem::new).register();
-	public static final ItemEntry<ProximityFuzeItem> PROXIMITY_FUZE = REGISTRATE.item("proximity_fuze", ProximityFuzeItem::new).register();
-	public static final ItemEntry<DelayedImpactFuzeItem> DELAYED_IMPACT_FUZE = REGISTRATE.item("delayed_impact_fuze", DelayedImpactFuzeItem::new).register();
+	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new)
+		.tag(CBCTags.CBCItemTags.FUZES)
+		.register();
+	public static final ItemEntry<TimedFuzeItem> TIMED_FUZE = REGISTRATE.item("timed_fuze", TimedFuzeItem::new)
+		.tag(CBCTags.CBCItemTags.FUZES)
+		.register();
+	public static final ItemEntry<ProximityFuzeItem> PROXIMITY_FUZE = REGISTRATE.item("proximity_fuze", ProximityFuzeItem::new)
+		.tag(CBCTags.CBCItemTags.FUZES)
+		.register();
+	public static final ItemEntry<DelayedImpactFuzeItem> DELAYED_IMPACT_FUZE = REGISTRATE.item("delayed_impact_fuze", DelayedImpactFuzeItem::new)
+		.tag(CBCTags.CBCItemTags.FUZES)
+		.register();
 
 	public static final ItemEntry<Item>
 		CAST_IRON_SLIDING_BREECHBLOCK = REGISTRATE.item("cast_iron_sliding_breechblock", Item::new)
@@ -87,8 +94,17 @@ public class CBCItems {
 			.tag(fabricTag("nuggets/cast_iron"))
 			.tag(fabricTag("cast_iron_nuggets"))
 			.register(),
-		NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new).register(),
-		NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new).register(),
+		NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new)
+			.tag(forgeTag("ingots/nethersteel"))
+			.tag(fabricTag("ingots/nethersteel"))
+			.tag(fabricTag("nethersteel_ingots"))
+			.register(),
+		NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new)
+			.tag(forgeTag("nuggets/nethersteel"))
+			.tag(fabricTag("nuggets/nethersteel"))
+			.tag(fabricTag("nethersteel_nuggets"))
+			.register(),
+
 		BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
 			.tag(forgeTag("nuggets/bronze"))
 			.tag(fabricTag("nuggets/bronze"))
@@ -103,6 +119,7 @@ public class CBCItems {
 		AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
 
 	EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
+		.tag(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS)
 		.model((c, p) -> {})
 		.register(),
 
@@ -124,7 +141,9 @@ public class CBCItems {
 	HARDENED_NITRO = REGISTRATE.item("hardened_nitro", Item::new).register(),
 	NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.CBCItemTags.NITROPOWDER).register(),
 
-	EMPTY_MACHINE_GUN_ROUND = REGISTRATE.item("empty_machine_gun_round", Item::new).register(),
+	EMPTY_MACHINE_GUN_ROUND = REGISTRATE.item("empty_machine_gun_round", Item::new)
+		.tag(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS)
+		.register(),
 
 	TRACER_TIP = REGISTRATE.item("tracer_tip", Item::new).register();
 
@@ -158,26 +177,24 @@ public class CBCItems {
 
 	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE
 		.item("autocannon_cartridge", AutocannonCartridgeItem::new)
+		.tag(CBCTags.CBCItemTags.AUTOCANNON_CARTRIDGES)
 		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<APAutocannonRoundItem> AP_AUTOCANNON_ROUND = REGISTRATE
 		.item("ap_autocannon_round", APAutocannonRoundItem::new)
 		.lang("Armor Piercing (AP) Autocannon Round")
+		.tag(CBCTags.CBCItemTags.AUTOCANNON_ROUNDS)
 		.register();
 
 	public static final ItemEntry<FlakAutocannonRoundItem> FLAK_AUTOCANNON_ROUND = REGISTRATE
 		.item("flak_autocannon_round", FlakAutocannonRoundItem::new)
+		.tag(CBCTags.CBCItemTags.AUTOCANNON_ROUNDS)
 		.register();
 
 	public static final ItemEntry<MachineGunRoundItem> MACHINE_GUN_ROUND = REGISTRATE
 		.item("machine_gun_round", MachineGunRoundItem::new)
-		.register();
-
-	public static final ItemEntry<AutocannonAmmoContainerItem> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
-		.item("autocannon_ammo_container", AutocannonAmmoContainerItem::new)
-		.properties(p -> p.stacksTo(1))
-		.model((c, p) -> {})
+		.tag(CBCTags.CBCItemTags.AUTOCANNON_CARTRIDGES)
 		.register();
 
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE
@@ -219,7 +236,7 @@ public class CBCItems {
 	public static void register() {
 	}
 
-	private static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registries.ITEM, loc); }
+	public static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registries.ITEM, loc); }
 	private static TagKey<Item> forgeTag(String loc) { return tag(new ResourceLocation("forge", loc)); }
 	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
 

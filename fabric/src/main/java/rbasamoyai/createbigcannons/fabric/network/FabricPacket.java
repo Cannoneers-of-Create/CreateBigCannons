@@ -25,8 +25,8 @@ public class FabricPacket extends SimplePacketBase {
 
 	@Override
 	public boolean handle(Context context) {
-		context.exec().execute(() -> {
-			this.pkt.handle(context.exec(), context.listener(), context.sender());
+		context.executor().execute(() -> {
+			this.pkt.handle(context.executor(), context.listener(), context.sender());
 		});
 		return true;
 	}

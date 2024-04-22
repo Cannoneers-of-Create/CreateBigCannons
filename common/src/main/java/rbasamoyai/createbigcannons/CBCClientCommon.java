@@ -5,8 +5,11 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+
+import net.minecraft.client.gui.GuiGraphics;
 
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -34,6 +37,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.base.goggles.EntityGoggleOverlayRenderer;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.effects.ShakeEffect;
@@ -82,9 +86,9 @@ public class CBCClientCommon {
 		});
 
 		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("big_cartridge_filled"),
-			(stack, level, player, a) -> {
-				return BigCartridgeBlockItem.getPower(stack);
-			});
+		(stack, level, player, a) -> {
+			return BigCartridgeBlockItem.getPower(stack);
+		});
 	}
 
 	public static void registerKeyMappings(Consumer<KeyMapping> cons) {
@@ -92,6 +96,15 @@ public class CBCClientCommon {
 		cons.accept(FIRE_CONTROLLED_CANNON);
 		KEYS.add(PITCH_MODE);
 		KEYS.add(FIRE_CONTROLLED_CANNON);
+	}
+
+	public static void registerOverlays(BiConsumer<String, CBCGuiOverlay> cons) {
+		cons.accept("entity_goggles_overlay", EntityGoggleOverlayRenderer::renderOverlay);
+	}
+
+	@FunctionalInterface
+	public interface CBCGuiOverlay {
+		void renderOverlay(GuiGraphics graphics, float partialTicks, int windowWidth, int windowHeight);
 	}
 
 	public static void setFogColor(Camera info, SetColorWrapper wrapper) {
@@ -198,23 +211,23 @@ public class CBCClientCommon {
 	}
 
 	public static float onFovModify(Minecraft mc, float oldFov) {
-		if (mc.player == null || !mc.options.getCameraType().isFirstPerson()) return lerpFov(mc, oldFov);
-		return lerpFov(mc, mc.options.keyUse.isDown() && isControllingCannon(mc.player) ? oldFov * 0.5f : oldFov);
-	}
-
-	private static float lerpFov(Minecraft mc, float fov) {
+		float fov = oldFov;
+		if (mc.player != null && mc.getCameraEntity() == mc.player && mc.options.getCameraType().isFirstPerson()
+			&& mc.options.keyUse.isDown() && isControllingCannon(mc.player)) {
+			fov *= 0.5f;
+		}
 		return Mth.lerp(mc.options.fovEffectScale().get().floatValue(), 1.0F, fov);
 	}
 
 	public static void onPlayerRenderPre(PoseStack stack, LivingEntity player, float partialTicks) {
 		if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-			float yaw = 90 - player.getYRot();
-			float pitch = player.getXRot();
-			//float yaw = 90 - Mth.lerp(partialTicks, player.yRotO, player.getYRot());
-			///float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+			player.yBodyRot = player.yHeadRot;
+			player.yBodyRotO = player.yHeadRotO;
+			float yaw = 90 - Mth.lerp(partialTicks, player.yHeadRotO, player.yHeadRot);
+			float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
 
 			Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
-			stack.mulPose(new Quaternionf(new AxisAngle4f(pitch, pitchVec)));
+			stack.mulPose(new Quaternionf(new AxisAngle4f(pitch * Mth.DEG_TO_RAD, pitchVec)));
 			stack.translate(0, -1.25, 0);
 		}
 	}
@@ -290,7 +303,7 @@ public class CBCClientCommon {
 		setYaw.accept(yaw.get() + dy * s);
 		setPitch.accept(pitch.get() + dp * s);
 		setRoll.accept(roll.get() + dr * s);
-		return true;
+		return false;
 	}
 
 	public static void addShakeEffect(ShakeEffect effect) { ACTIVE_SHAKE_EFFECTS.add(effect); }

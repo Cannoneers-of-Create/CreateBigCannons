@@ -1,11 +1,11 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
+import static rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock.writeAndSyncSingleBlockData;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nonnull;
 
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
@@ -22,6 +22,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +37,8 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
@@ -49,13 +52,15 @@ import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRe
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
+import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
 
 public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon {
@@ -63,22 +68,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	private AutocannonMaterial cannonMaterial;
 	private BlockPos recoilSpringPos;
 	private boolean isHandle = false;
-
-	@Override
-	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 45;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return 15;
-		return 0;
-	}
-
-	@Override
-	public float maximumElevation(@Nonnull ControlPitchContraption controller) {
-		BlockState state = controller.getControllerState();
-		if (CBCBlocks.CANNON_MOUNT.has(state)) return 90;
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) return this.isHandle ? 45 : 90;
-		return 0;
-	}
 
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
@@ -258,20 +247,23 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
 		ItemStack ejectStack = round.getSpentItem(foundProjectile);
 		if (!ejectStack.isEmpty()) {
-			ItemStack output = breech.insertOutput(ejectStack);
-			if (!output.isEmpty()) {
-				ItemEntity ejectEntity = new ItemEntity(level, ejectPos.x, ejectPos.y, ejectPos.z, ejectStack);
-				Vec3 eject = ejectPos.subtract(centerPos).normalize();
-				ejectEntity.setDeltaMovement(eject.scale(this.isHandle ? 0.1 : 0.5));
-				ejectEntity.setPickUpDelay(20);
-				level.addFreshEntity(ejectEntity);
-			}
+			//ItemStack output = breech.insertOutput(ejectStack);
+			//if (!output.isEmpty()) {
+			ItemEntity ejectEntity = new ItemEntity(level, ejectPos.x, ejectPos.y, ejectPos.z, ejectStack);
+			Vec3 eject = ejectPos.subtract(centerPos).normalize();
+			ejectEntity.setDeltaMovement(eject.scale(this.isHandle ? 0.1 : 0.5));
+			ejectEntity.setPickUpDelay(20);
+			level.addFreshEntity(ejectEntity);
+			//}
 		}
 
 		AutocannonMaterialProperties properties = this.cannonMaterial.properties();
+		EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> type = round.getEntityType(foundProjectile);
+		AutocannonProjectileProperties roundProperties = (AutocannonProjectileProperties) MunitionPropertiesHandler.getProperties(type);
 
 		float speed = properties.baseSpeed();
 		float spread = properties.baseSpread();
+		boolean canSquib = roundProperties == null || roundProperties.canSquib();
 
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		BlockPos currentPos = this.startPos.relative(this.initialOrientation);
@@ -286,8 +278,9 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					speed += properties.speedIncreasePerBarrel();
 				spread -= properties.spreadReductionPerBarrel();
 				spread = Math.max(spread, 0);
-				if (barrelTravelled > properties.maxBarrelLength()) {
+				if (canSquib && barrelTravelled > properties.maxBarrelLength()) {
 					StructureBlockInfo oldInfo = this.blocks.get(currentPos);
+					if (oldInfo == null) return;
 					behavior.tryLoadingItem(foundProjectile);
 					CompoundTag tag = this.presentBlockEntities.get(currentPos).saveWithFullMetadata();
 					tag.remove("x");
@@ -323,7 +316,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		boolean isTracer = CBCConfigs.SERVER.munitions.allProjectilesAreTracers.get() || round.isTracer(foundProjectile);
 
-		AbstractAutocannonProjectile projectile = round.getAutocannonProjectile(foundProjectile, level);
+		AbstractAutocannonProjectile<?> projectile = round.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {
 			projectile.setPos(spawnPos);
 			projectile.setChargePower(barrelTravelled);
@@ -333,7 +326,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			projectile.xRotO = projectile.getXRot();
 			projectile.yRotO = projectile.getYRot();
 			level.addFreshEntity(projectile);
-			recoilMagnitude += 0.5;
+			if (roundProperties != null) recoilMagnitude += roundProperties.addedRecoil();
 		}
 
 		recoilMagnitude *= CBCConfigs.SERVER.cannons.autocannonRecoilScale.getF();
@@ -380,6 +373,20 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			}
 		}
 
+		if (CBCEntityTypes.CANNON_CARRIAGE.is(entity.getVehicle())) {
+			controller = entity.getVehicle().getControllingPassenger();
+		}
+		if (!level.isClientSide && controller instanceof Player player) {
+			String key = "";
+			ControlPitchContraption controllerBlock = entity.getController();
+			if (controllerBlock != null) {
+				ResourceLocation loc = controllerBlock.getTypeId();
+				if (loc != null) key = "." + loc.getNamespace() + "." + loc.getPath();
+			}
+			player.displayClientMessage(Component.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
+				this.getReferencedFireRate()), true);
+		}
+
 		if (level instanceof ServerLevel slevel && this.canBeFiredOnController(entity.getController()))
 			this.fireShot(slevel, entity);
 
@@ -411,14 +418,19 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 	@Override
 	public void onRedstoneUpdate(ServerLevel level, PitchOrientedContraptionEntity entity, boolean togglePower, int firePower, ControlPitchContraption controller) {
-		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
+		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech) {
 			breech.setFireRate(firePower);
+			writeAndSyncSingleBlockData(breech, this.blocks.get(this.startPos), entity, this);
+		}
 	}
 
 	public void trySettingFireRateCarriage(int fireRateAdjustment) {
 		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech
-			&& (fireRateAdjustment > 0 || breech.getFireRate() > 1)) // Can't turn off carriage autocannon
+			&& (fireRateAdjustment > 0 || breech.getFireRate() > 1)) {
+			// > 0 because can't turn off carriage autocannon
 			breech.setFireRate(breech.getFireRate() + fireRateAdjustment);
+			writeAndSyncSingleBlockData(breech, this.blocks.get(this.startPos), entity, this);
+		}
 	}
 
 	public int getReferencedFireRate() {
@@ -435,7 +447,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos), 1);
 	}
 
-	@Override
+    @Override
+	public ICannonContraptionType getCannonType() {
+		return this.isHandle ? CBCCannonContraptionTypes.HANDLE_AUTOCANNON : CBCCannonContraptionTypes.AUTOCANNON;
+	}
+
+    @Override
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);
 		tag.putString("AutocannonMaterial", this.cannonMaterial == null ? CBCAutocannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());

@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.flak;
 
+import java.util.function.Predicate;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
@@ -7,17 +9,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
-import rbasamoyai.createbigcannons.munitions.config.ShrapnelProperties;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-import java.util.function.Predicate;
-
-public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
+public class FlakAutocannonProjectile extends AbstractAutocannonProjectile<FlakAutocannonProjectileProperties> {
 
 	private ItemStack fuze = ItemStack.EMPTY;
 
@@ -40,13 +39,13 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	@Override
 	protected void onImpact(HitResult result, boolean stopped) {
 		super.onImpact(result, stopped);
-		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped))) this.detonate();
+		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped, false))) this.detonate();
 	}
 
 	@Override
 	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
 		if (super.onClip(ctx, pos)) return true;
-		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, pos, ctx))) {
+		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, pos, ctx, false))) {
 			this.detonate();
 			return true;
 		}
@@ -55,11 +54,14 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
-		this.level().explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		FlakAutocannonProjectileProperties properties = this.getProperties();
+		this.level().explode(null, this.getX(), this.getY(), this.getZ(), properties == null ? 2 : properties.explosionPower(),
+			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
-		ShrapnelProperties properties = this.getProperties().shrapnel();
-		Shrapnel.spawnShrapnelBurst(this.level(), CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(),
-				properties.count(), properties.spread(), (float) properties.damage());
+		if (properties != null) {
+			Shrapnel.spawnShrapnelBurst(this.level(), CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(),
+				properties.shrapnelCount(), properties.shrapnelSpread(), properties.shrapnelDamage());
+		}
 		this.discard();
 	}
 

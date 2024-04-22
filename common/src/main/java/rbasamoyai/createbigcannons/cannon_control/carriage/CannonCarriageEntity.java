@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_control.carriage;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
@@ -23,6 +24,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -46,7 +48,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.goggles.IHaveEntityGoggleInformation;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.ExtendsCannonMount;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.ItemCannon;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
@@ -59,7 +63,7 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.network.ServerboundCarriageWheelPacket;
 
-public class CannonCarriageEntity extends Entity implements ControlPitchContraption {
+public class CannonCarriageEntity extends Entity implements ControlPitchContraption, IHaveEntityGoggleInformation {
 
 	private static final EntityDataAccessor<Integer> DATA_ID_HURT = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> DATA_ID_HURTDIR = SynchedEntityData.defineId(CannonCarriageEntity.class, EntityDataSerializers.INT);
@@ -93,6 +97,10 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	public BlockState getControllerState() {
 		return CBCBlocks.CANNON_CARRIAGE.getDefaultState();
 	}
+
+	@Nullable
+	@Override
+	public ResourceLocation getTypeId() { return CreateBigCannons.resource("cannon_carriage"); }
 
 	@Override
 	protected void defineSynchedData() {
@@ -142,14 +150,6 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		} else {
 			this.setDeltaMovement(Vec3.ZERO);
 		}
-
-		if (!this.level().isClientSide
-			&& this.getControllingPassenger() instanceof Player player
-			&& this.cannonContraption != null
-			&& this.cannonContraption.getContraption() instanceof MountedAutocannonContraption) {
-			player.displayClientMessage(Component.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate", this.getActualFireRate()), true);
-		}
-
 		this.applyRotation();
 	}
 
@@ -357,12 +357,6 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			autocannon.trySettingFireRateCarriage(fireRateAdjustment);
 	}
 
-	public int getActualFireRate() {
-		return this.cannonContraption != null && this.cannonContraption.getContraption() instanceof MountedAutocannonContraption autocannon
-			? autocannon.getReferencedFireRate()
-			: 0;
-	}
-
 	@Override
 	protected void positionRider(Entity entity, Entity.MoveFunction function) {
 		if (!(entity instanceof Player)) {
@@ -414,8 +408,11 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 		Direction dir = this.cannonContraption.getInitialOrientation();
 		boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-		this.cannonContraption.prevPitch = flag ? this.xRotO : -this.xRotO;
-		this.cannonContraption.pitch = flag ? this.getXRot() : -this.getXRot();
+		float sgn = flag ? 1 : -1;
+		float d = -this.cannonContraption.maximumDepression();
+		float e = this.cannonContraption.maximumElevation();
+		this.cannonContraption.prevPitch = Mth.clamp(this.xRotO, d, e) * sgn;
+		this.cannonContraption.pitch = Mth.clamp(this.getXRot(), d, e) * sgn;
 		this.cannonContraption.prevYaw = this.yRotO;
 		this.cannonContraption.yaw = this.getYRot();
 	}
@@ -550,6 +547,12 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	@Override
 	public void onStall() {
+	}
+
+	@Override
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		ExtendsCannonMount.addCannonInfoToTooltip(tooltip, this.cannonContraption);
+		return true;
 	}
 
 }

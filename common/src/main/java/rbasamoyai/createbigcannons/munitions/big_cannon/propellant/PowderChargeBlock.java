@@ -20,7 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 
-public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock {
+public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock<BigCannonPropellantProperties> {
 
 	private static final EnumProperty<Axis> AXIS = RotatedPillarBlock.AXIS;
 
@@ -67,6 +67,8 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 		}
 		return oldState;
 	}
+
+	@Override public Axis getAxis(BlockState state) { return state.getValue(AXIS); }
 
 	@Override
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {

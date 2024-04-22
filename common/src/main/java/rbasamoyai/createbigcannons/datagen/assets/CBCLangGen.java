@@ -1,19 +1,28 @@
 package rbasamoyai.createbigcannons.datagen.assets;
 
+import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
+import static rbasamoyai.createbigcannons.index.CBCItems.tag;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
+
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import rbasamoyai.createbigcannons.CBCTags;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.CreateBigCannons;
-
-import java.util.Iterator;
-
-import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 public class CBCLangGen {
 
@@ -37,6 +46,7 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %ss %s ticks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.distance", "Detonation Distance: %s blocks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.autocannon_ammo_container.tracer_spacing", "Tracer Spacing: Every %s round(s)");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.autocannon_ammo_container.tracer_slot", "Tracer/Secondary Rounds");
 
 		tooltip(CBCBlocks.SOLID_SHOT)
 		.header("SOLID SHOT")
@@ -142,6 +152,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.fireCannon", "_Fires cannon_ on carriage if present. _Repeatedly fires cannon_ if possible.");
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "tooltip.pitchMode", "The forward/backward keys _set pitch_ instead of moving the cannon.");
 		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "hotbar.fireRate", "Rate of fire: %s RPM");
+		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "hotbar.fireRate.createbigcannons.cannon_mount", "Rate of fire: %s RPM (set signal strength on firing side to change)");
+		REGISTRATE.addLang("block", CBCBlocks.CANNON_CARRIAGE.getId(), "hotbar.fireRate.createbigcannons.cannon_carriage", "Rate of fire: %s RPM (scroll to change)");
 
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength", "Push Strength");
 		REGISTRATE.addLang("item", CBCItems.RAM_ROD.getId(), "tooltip.pushStrength.value", "Up to _%s blocks_");
@@ -249,12 +261,10 @@ public class CBCLangGen {
 		}
 
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount_source", "From Cannon Mount");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.not_enough_space", "Not enough space ");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.for_cannon_status", "for Cannon Status");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.no_cannon_present", "No Cannon present");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_pitch", "Cannon Pitch: ");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_yaw", "Cannon Yaw: ");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.degrees", "%s\u00ba");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.yaw", "Cannon Yaw");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.pitch", "Cannon Pitch");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.display_rotation_axis", "Display Rotation Axis");
 
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.click_to_confirm", "Click again to confirm");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.invalid_weld", "Cannot weld these blocks");
@@ -264,8 +274,98 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.success", "Welding blocks...");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".cannon_welder.first_pos", "First position selected");
 
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength", "Cannon Strength: ");
-		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".display_source.cannon_mount.cannon_strength.value", "%s Propellant Stress");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.no_cannon_present", "No Cannon present");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.cannon_strength", "Cannon Strength: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.cannon_strength.value", "%s Propellant Stress");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.pitch", "Cannon Pitch: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.yaw", "Cannon Yaw: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.autocannon_rate_of_fire", "Autocannon Rate of Fire: ");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.autocannon_rate_of_fire.value", "%s RPM");
+
+		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.main_ammo", "x%1$s %2$s");
+		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.tracers", "Tracers: x%1$s %2$s");
+		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.tracer_spacing", "Tracer Spacing: 1 tracer every %s round(s)");
+
+		// TODO: only run if on Fabric env
+		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_AMMO_CONTAINERS);
+		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_CARTRIDGES);
+		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_ROUNDS);
+		createEMITagTranslation(CBCTags.CBCItemTags.BIG_CANNON_CARTRIDGES);
+		createEMITagTranslation(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES);
+		createEMITagTranslation(CBCTags.CBCItemTags.BIG_CANNON_PROPELLANT);
+		createEMITagTranslation(CBCTags.CBCItemTags.BIG_CANNON_PROPELLANT_BAGS);
+		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_BRONZE, "Bronze Blocks");
+		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_CAST_IRON, "Cast Iron Blocks");
+		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL, "Nethersteel Blocks");
+		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_STEEL, "Steel Blocks");
+		createEMITagTranslation(CBCTags.CBCItemTags.DUST_GLOWSTONE, "Glowstone Dusts");
+		createEMITagTranslation(CBCTags.CBCItemTags.DUSTS_REDSTONE, "Redstone Dusts");
+		createEMITagTranslation(CBCTags.CBCItemTags.FUZES);
+		createEMITagTranslation(CBCTags.CBCItemTags.GEMS_QUARTZ, "Quartz Gems");
+		createEMITagTranslation(CBCTags.CBCItemTags.GUNPOWDER);
+		createEMITagTranslation(CBCTags.CBCItemTags.IMPACT_FUZE_HEAD, "Impact Fuze Head Components");
+		createEMITagTranslation(CBCTags.CBCItemTags.INEXPENSIVE_BIG_CARTRIDGE_SHEET, "Inexpensive Big Cartridge Sheets");
+		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_BRASS, "Brass Ingots");
+		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_BRONZE, "Bronze Ingots");
+		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_CAST_IRON, "Cast Iron Ingots");
+		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_IRON, "Iron Ingots");
+		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_NETHERSTEEL, "Nethersteel Ingots");
+		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_STEEL, "Steel Ingots");
+		createEMITagTranslation(CBCTags.CBCItemTags.NITROPOWDER);
+		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_BRONZE, "Bronze Nuggets");
+		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_CAST_IRON, "Cast Iron Nuggets");
+		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_COPPER, "Copper Nuggets");
+		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_IRON, "Iron Nuggets");
+		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_NETHERSTEEL, "Nethersteel Nuggets");
+		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_STEEL, "Steel Nuggets");
+		createEMITagTranslation(CBCTags.CBCItemTags.SHEET_BRASS, "Brass Sheets");
+		createEMITagTranslation(CBCTags.CBCItemTags.SHEET_COPPER, "Copper Sheets");
+		createEMITagTranslation(CBCTags.CBCItemTags.SHEET_IRON, "Iron Sheets");
+		createEMITagTranslation(CBCTags.CBCItemTags.SHEET_STEEL, "Steel Sheets");
+		createEMITagTranslation(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS);
+		createEMITagTranslation(CBCTags.CBCItemTags.STONE);
+		createEMITagTranslation(fabricTag("cast_iron_ingots"));
+		createEMITagTranslation(fabricTag("nethersteel_ingots"));
+		createEMITagTranslation(fabricTag("bronze_nuggets"));
+		createEMITagTranslation(fabricTag("cast_iron_nuggets"));
+		createEMITagTranslation(fabricTag("nethersteel_nuggets"));
+		createEMITagTranslation(fabricTag("steel_nuggets"));
+		createEMITagTranslation(fabricTag("ingots/cast_iron"), "Cast Iron Ingots (Forge Format)");
+		createEMITagTranslation(fabricTag("ingots/nethersteel"), "Nethersteel Ingots (Forge Format)");
+		createEMITagTranslation(fabricTag("nuggets/bronze"), "Bronze Nuggets (Forge Format)");
+		createEMITagTranslation(fabricTag("nuggets/cast_iron"), "Cast Iron Nuggets (Forge Format)");
+		createEMITagTranslation(fabricTag("nuggets/nethersteel"), "Nethersteel Nuggets (Forge Format)");
+		createEMITagTranslation(fabricTag("nuggets/steel"), "Steel Nuggets (Forge Format)");
+
+		createEMICategoryTranslation("melting", "Basin Melting");
+		createEMICategoryTranslation("cannon_casting");
+		createEMICategoryTranslation("built_up_heating", "Cannon Building");
+		createEMICategoryTranslation("drill_boring");
+		createEMICategoryTranslation("incomplete_cannon_blocks");
+	}
+
+	private static void createEMITagTranslation(TagKey<?> tag, String enUS) {
+		ResourceLocation loc = tag.location();
+		//REGISTRATE.addRawLang("tag." + tag.registry().location().getPath() + "." + loc.getNamespace() + "." + loc.getPath().replace('/', '.'), enUS);
+		REGISTRATE.addRawLang("tag." + loc.getNamespace() + "." + loc.getPath().replace('/', '.'), enUS);
+	}
+
+	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
+
+	private static void createEMITagTranslation(TagKey<?> tag) {
+		createEMITagTranslation(tag, capitalizeAll(tag.location().getPath().replace('_', ' ')));
+	}
+
+	private static void createEMICategoryTranslation(String id, String enUS) {
+		REGISTRATE.addRawLang("emi.category." + CreateBigCannons.MOD_ID + "." + id, enUS);
+	}
+
+	private static void createEMICategoryTranslation(String id) {
+		createEMICategoryTranslation(id, capitalizeAll(id.replace('_', ' ')));
+	}
+
+	private static String capitalizeAll(String str) {
+		return Arrays.stream(str.split(" ")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
 	}
 
 	private static class TooltipBuilder {

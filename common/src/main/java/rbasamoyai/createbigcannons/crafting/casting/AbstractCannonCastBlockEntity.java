@@ -69,6 +69,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	protected InvalidCastingError invalidCastingError = null;
 	protected int castDelay = 0;
 	protected boolean updateRecipes;
+	private boolean firstLoadUpdate = true;
 
 	private static final int SYNC_RATE = 8;
 	protected boolean queuedSync;
@@ -186,7 +187,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			this.updateFluids(tag);
 			this.castingTime = Math.max(tag.getInt("CastingTime"), 0);
 			this.startCastingTime = Math.max(tag.getInt("StartCastingTime"), 1);
-			this.updateRecipes = tag.contains("UpdateRecipes");
+			this.updateRecipes = this.firstLoadUpdate || tag.contains("UpdateRecipes");
 
 			this.resultPreview.clear();
 			ListTag preview = tag.getList("Preview", Tag.TAG_COMPOUND);
@@ -232,6 +233,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			this.fluidLevel.chase(this.fluidLevel.getChaseTarget(), 0.125f, Chaser.EXP);
 			this.castLevel.chase(this.castLevel.getChaseTarget(), 0.125f, Chaser.EXP);
 		}
+		this.firstLoadUpdate = false;
 	}
 
 	protected abstract void updateFluids(CompoundTag tag);

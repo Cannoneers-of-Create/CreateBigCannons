@@ -1,11 +1,9 @@
 {
   "type": "createbigcannons:cannon_casting",
   "cast_shape": "createbigcannons:small",
-  "casting_time": 3000,
   "fluid": {
     "amount": 1,
-    "fluid": "createbigcannons:molten_nethersteel",
-    "nbt": {}
+    "fluidTag": "forge:molten_nethersteel"
   },
   "result": "createbigcannons:unbored_small_nethersteel_cannon_layer"
 }

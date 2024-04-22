@@ -14,10 +14,12 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
 public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractAutocannonBreechBlockEntity> {
@@ -58,10 +60,11 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 			boolean flag = facing.getAxis().isVertical();
 			Quaternionf q1;
 			if (flag) {
-				q1 = Axis.ZP.rotationDegrees(180);
-				q1.mul(Axis.YP.rotationDegrees(180));
+				float f = facing == Direction.UP ? 90 : -90;
+				q1 = Axis.ZP.rotationDegrees(f);
+				q1.mul(Axis.XP.rotationDegrees(f));
 			} else {
-				q1 = Axis.YP.rotationDegrees(180);
+				q1 = Axis.YP.rotationDegrees(-90 - facing.toYRot());
 			}
 			Direction offset = flag
 				? facing.getCounterClockWise(Direction.Axis.Z)
@@ -69,7 +72,7 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 			Vector3f normal = facing == Direction.UP ? offset.getOpposite().step() : offset.step();
 			normal.mul(10 / 16f);
 
-			CachedBufferer.partialFacing(getAmmoContainerModel(container), state, facing)
+			CachedBufferer.block(getAmmoContainerModel(container))
 				.translate(normal)
 				.rotateCentered(q1)
 				.light(light)
@@ -85,10 +88,13 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 			: CBCBlockPartials.CAST_IRON_AUTOCANNON_EJECTOR;
 	}
 
-	private static PartialModel getAmmoContainerModel(ItemStack stack) {
-		return stack.getItem() instanceof AutocannonAmmoContainerItem && AutocannonAmmoContainerItem.getTotalAmmoCount(stack) > 0
-			? CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_FILLED
-			: CBCBlockPartials.AUTOCANNON_AMMO_CONTAINER_EMPTY;
+	private static BlockState getAmmoContainerModel(ItemStack stack) {
+		BlockState state = ((BlockItem) stack.getItem()).getBlock().defaultBlockState();
+		if (state.hasProperty(AutocannonAmmoContainerBlock.CONTAINER_STATE)) {
+			state = state.setValue(AutocannonAmmoContainerBlock.CONTAINER_STATE,
+				AutocannonAmmoContainerBlock.State.getFromFilled(AutocannonAmmoContainerItem.getTotalAmmoCount(stack) > 0));
+		}
+		return state;
 	}
 
 }

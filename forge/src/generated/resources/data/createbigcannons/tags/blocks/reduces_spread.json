@@ -1,17 +1,21 @@
 {
   "replace": false,
   "values": [
+    "createbigcannons:log_cannon_chamber",
+    "createbigcannons:wrought_iron_cannon_chamber",
     "createbigcannons:cast_iron_cannon_barrel",
-    "createbigcannons:unbored_cast_iron_cannon_barrel",
+    "createbigcannons:cast_iron_cannon_chamber",
     "createbigcannons:bronze_cannon_barrel",
-    "createbigcannons:unbored_bronze_cannon_barrel",
+    "createbigcannons:bronze_cannon_chamber",
     "createbigcannons:steel_cannon_barrel",
     "createbigcannons:built_up_steel_cannon_barrel",
-    "createbigcannons:unbored_very_small_steel_cannon_layer",
-    "createbigcannons:unbored_small_steel_cannon_layer",
+    "createbigcannons:steel_cannon_chamber",
+    "createbigcannons:built_up_steel_cannon_chamber",
+    "createbigcannons:thick_steel_cannon_chamber",
     "createbigcannons:nethersteel_cannon_barrel",
     "createbigcannons:built_up_nethersteel_cannon_barrel",
-    "createbigcannons:unbored_very_small_nethersteel_cannon_layer",
-    "createbigcannons:unbored_small_nethersteel_cannon_layer"
+    "createbigcannons:nethersteel_cannon_chamber",
+    "createbigcannons:built_up_nethersteel_cannon_chamber",
+    "createbigcannons:thick_nethersteel_cannon_chamber"
   ]
 }

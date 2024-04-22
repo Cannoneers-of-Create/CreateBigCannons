@@ -1,11 +1,13 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
+import javax.annotation.Nullable;
+
 import com.mojang.math.Constants;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,17 +15,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.config.BlockHardnessHandler;
+import rbasamoyai.createbigcannons.munitions.BaseProjectileProperties;
 
-import javax.annotation.Nullable;
-
-public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
+public abstract class AbstractAutocannonProjectile<T extends BaseProjectileProperties> extends AbstractCannonProjectile<T> {
 
 	protected int ageRemaining;
 	@Nullable private Vec3 prevPos = null;
-	private boolean fullyReady = false;
 
 	protected AbstractAutocannonProjectile(EntityType<? extends AbstractAutocannonProjectile> type, Level level) {
 		super(type, level);
@@ -46,17 +46,10 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		}
 	}
 
-	@Override
-	protected float getKnockback(Entity target) {
-		float length = this.getDeltaMovement().lengthSqr() > 1e-4d ? 1 : (float) this.getDeltaMovement().lengthSqr();
-		return 0.5f / length;
-	}
-
 	@Override protected double overPenetrationPower(double hardness, double curPom) { return 0; }
 
 	@Override
 	public void tick() {
-		this.fullyReady = this.prevPos != null;
 		this.prevPos = this.position();
 
 		super.tick();
@@ -68,8 +61,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	}
 
 	@Nullable public Vec3 getPreviousPos() { return this.prevPos; }
-
-	public boolean isFullyReady() { return this.fullyReady; }
 
 	protected void expireProjectile() {
 		this.discard();
@@ -93,7 +84,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 			Vec3 curVel = this.getDeltaMovement();
 			double curPom = this.getProjectileMass() * curVel.length();
-			double hardness = BlockHardnessHandler.getHardness(state) * 10;
+			double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level(), state, pos, true) * 10;
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level());
 
 			if (curPom > hardness) {

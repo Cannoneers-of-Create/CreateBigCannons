@@ -105,6 +105,9 @@ public class CBCTags {
 			NUGGET_STEEL = commonTag("nugget_steel", "nuggets/steel", "steel_nuggets"),
 			INGOT_STEEL = commonTag("ingot_steel", "ingots/steel", "steel_ingots"),
 			BLOCK_STEEL = commonTag("block_steel", "storage_blocks/steel", "steel_blocks"),
+			NUGGET_NETHERSTEEL = commonTag("nugget_nethersteel", "nuggets/nethersteel", "nethersteel_nuggets"),
+			INGOT_NETHERSTEEL = commonTag("ingot_nethersteel", "ingots/nethersteel", "nethersteel_ingots"),
+			BLOCK_NETHERSTEEL = commonTag("block_nethersteel", "blocks/nethersteel", "nethersteel_blocks"),
 
 			// Crafting tags
 			INGOT_IRON = commonTag("ingot_iron", "ingots/iron", "iron_ingots"),
@@ -122,7 +125,16 @@ public class CBCTags {
 			SHEET_STEEL = commonTag("sheet_steel", "plates/steel", "steel_plates"),
 			DUST_GLOWSTONE = commonTag("dust_glowstone", "dusts/glowstone", "glowstone_dusts"),
 			INEXPENSIVE_BIG_CARTRIDGE_SHEET = makeTag("inexpensive_big_cartridge_sheet"),
-			NITROPOWDER = makeTag("nitropowder");
+			NITROPOWDER = makeTag("nitropowder"),
+			BIG_CANNON_PROPELLANT = makeTag("big_cannon_propellant"),
+			BIG_CANNON_PROPELLANT_BAGS = makeTag("big_cannon_propellant_bags"),
+			BIG_CANNON_CARTRIDGES = makeTag("big_cannon_cartridges"),
+			BIG_CANNON_PROJECTILES = makeTag("big_cannon_projectiles"),
+			AUTOCANNON_AMMO_CONTAINERS = makeTag("autocannon_ammo_containers"),
+			FUZES = makeTag("fuzes"),
+			SPENT_AUTOCANNON_CASINGS = makeTag("spent_autocannon_casings"),
+			AUTOCANNON_CARTRIDGES = makeTag("autocannon_cartridges"),
+			AUTOCANNON_ROUNDS = makeTag("autocannon_rounds");
 
 		public static TagKey<Item> makeTag(String loc) {
 			TagKey<Item> tag = TagKey.create(Registries.ITEM, CreateBigCannons.resource(loc));
@@ -189,6 +201,7 @@ public class CBCTags {
 			addIdsToItemTag(BLOCK_STEEL, alloyed("steel_block"));
 			addIdsToItemTag(BLOCK_CAST_IRON, createdeco("cast_iron_block"));
 			addTagsToItemTag(INEXPENSIVE_BIG_CARTRIDGE_SHEET, SHEET_GOLD, SHEET_COPPER);
+			addTagsToItemTag(BIG_CANNON_PROPELLANT, BIG_CANNON_PROPELLANT_BAGS, BIG_CANNON_CARTRIDGES);
 		}
 	}
 

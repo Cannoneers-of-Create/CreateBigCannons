@@ -1,11 +1,9 @@
 {
   "type": "createbigcannons:cannon_casting",
   "cast_shape": "createbigcannons:autocannon_barrel",
-  "casting_time": 1500,
   "fluid": {
     "amount": 1,
-    "fluid": "createbigcannons:molten_steel",
-    "nbt": {}
+    "fluidTag": "forge:molten_steel"
   },
   "result": "createbigcannons:unbored_steel_autocannon_barrel"
 }

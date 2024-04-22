@@ -9,11 +9,13 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
 public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem {
 
@@ -45,14 +47,21 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 
 	@Override
 	@Nullable
-	public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
+    public AbstractAutocannonProjectile<?> getAutocannonProjectile(ItemStack stack, Level level) {
+        ItemStack projectileStack = getProjectileStack(stack);
+        return projectileStack.getItem() instanceof AutocannonRoundItem projectileItem ? projectileItem.getAutocannonProjectile(projectileStack, level) : null;
+    }
+
+	@Nullable
+	@Override
+	public EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> getEntityType(ItemStack stack) {
 		ItemStack projectileStack = getProjectileStack(stack);
-		return projectileStack.getItem() instanceof AutocannonRoundItem projectileItem ? projectileItem.getAutocannonProjectile(projectileStack, level) : null;
+		return projectileStack.getItem() instanceof AutocannonRoundItem projectileItem ? projectileItem.getEntityType(projectileStack) : null;
 	}
 
 	public static ItemStack getProjectileStack(ItemStack stack) {
-		return hasProjectile(stack) ? ItemStack.of(stack.getOrCreateTag().getCompound("Projectile")) : ItemStack.EMPTY;
-	}
+        return hasProjectile(stack) ? ItemStack.of(stack.getOrCreateTag().getCompound("Projectile")) : ItemStack.EMPTY;
+    }
 
 	public static boolean hasProjectile(ItemStack stack) {
 		return stack.getOrCreateTag().contains("Projectile", Tag.TAG_COMPOUND);
@@ -74,7 +83,7 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 		if (!hasProjectile(stack)) return;
 		CompoundTag tag = stack.getOrCreateTag().getCompound("Projectile");
 		if (!tag.contains("tag", Tag.TAG_COMPOUND)) tag.put("tag", new CompoundTag());
-		tag.getCompound("tag").putBoolean("Tracer", true);
+		tag.getCompound("tag").putBoolean("Tracer", value);
 	}
 
 }

@@ -1,11 +1,9 @@
 {
   "type": "createbigcannons:cannon_casting",
   "cast_shape": "createbigcannons:very_small",
-  "casting_time": 1200,
   "fluid": {
     "amount": 1,
-    "fluid": "createbigcannons:molten_cast_iron",
-    "nbt": {}
+    "fluidTag": "c:molten_cast_iron"
   },
   "result": "createbigcannons:unbored_cast_iron_cannon_barrel"
 }

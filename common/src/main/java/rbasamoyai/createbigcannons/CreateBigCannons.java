@@ -11,16 +11,17 @@ import com.simibubi.create.foundation.item.TooltipModifier;
 
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
+import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCChecks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
-import rbasamoyai.createbigcannons.index.CBCDataSerializers;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesSerializers;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
@@ -35,6 +36,7 @@ public class CreateBigCannons {
 	public static void init() {
 		CBCSoundEvents.prepare();
 
+		CBCMunitionPropertiesSerializers.init();
 		ModGroup.register();
 		CBCBlocks.register();
 		CBCItems.register();
@@ -43,6 +45,7 @@ public class CreateBigCannons {
 		CBCMenuTypes.register();
 		CBCFluids.register();
 		CBCRecipeTypes.register();
+		CBCCannonContraptionTypes.register();
 
 		CBCContraptionTypes.prepare();
 		CBCArmInteractionPointTypes.register();
@@ -55,8 +58,6 @@ public class CreateBigCannons {
 	static {
 		REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
 			.andThen(TooltipModifier.mapNull(KineticStats.create(item))));
-
-		CBCDataSerializers.registerSerializers();
 	}
 
 	public static ResourceLocation resource(String path) {
