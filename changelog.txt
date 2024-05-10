@@ -1,5 +1,16 @@
 Changelog
 
+0.5.4.a
+
+Create Big Cannons 0.5.4.a, with a few bug fixes.
+
+Fixed:
+
+
+===
+
+0.5.4
+
 "Now, occasionally you're going to get stuck. It's nothing to get upset about. Don't go hurling your controller at the cat, because it might throw something back, and it'll only escalate, and then, well..."
 - Stephen Fry, LittleBigPlanet (2008)
 
