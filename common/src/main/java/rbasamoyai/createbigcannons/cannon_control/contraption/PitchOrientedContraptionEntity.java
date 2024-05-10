@@ -253,4 +253,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		return super.handlePlayerInteraction(player, localPos, side, interactionHand);
 	}
 
+	@Override
+	public boolean ignoreExplosion() {
+		return true;
+	}
 }
