@@ -8,6 +8,7 @@ Create Big Cannons 0.5.4.a, with a few bug fixes and minor changes.
 
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
+- Fixed cannon loader pushing without head
 
 ===
 

@@ -136,9 +136,10 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 		}
 
 		this.anchor = pos.relative(direction, this.initialExtensionProgress + 2);
+		if (this.loadingHead == LoadingHead.NOTHING) this.anchor = this.anchor.relative(direction, -1);
 		this.initialExtensionProgress = extensionsInFront;
 		this.pistonContraptionHitbox = new AABB(
-			BlockPos.ZERO.relative(direction, this.loadingHead == LoadingHead.NOTHING ? -2 : -1),
+			BlockPos.ZERO.relative(direction, -1),
 			BlockPos.ZERO.relative(direction, -this.extensionLength - 2))
 			.expandTowards(1, 1, 1);
 
@@ -220,6 +221,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 	@Override
 	protected boolean addToInitialFrontier(Level level, BlockPos pos, Direction forcedDirection, Queue<BlockPos> frontier) throws AssemblyException {
 		frontier.clear();
+		if (this.loadingHead == LoadingHead.NOTHING) return true;
 		boolean retracting = forcedDirection != this.orientation;
 		if (retracting != (this.loadingHead == LoadingHead.WORM_HEAD)) return true;
 
@@ -263,7 +265,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 
 	@Override
 	protected boolean customBlockPlacement(LevelAccessor level, BlockPos pos, BlockState state) {
-		BlockPos levelPos = this.anchor.relative(this.orientation, -2);
+		BlockPos levelPos = this.anchor.relative(this.orientation, this.loadingHead == LoadingHead.NOTHING ? -1 : -2);
 		BlockState loaderState = level.getBlockState(levelPos);
 		BlockEntity blockEntity = level.getBlockEntity(levelPos);
 		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
@@ -278,7 +280,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 
 	@Override
 	protected boolean customBlockRemoval(LevelAccessor level, BlockPos pos, BlockState state) {
-		BlockPos loaderPos = this.anchor.relative(this.orientation, -2);
+		BlockPos loaderPos = this.anchor.relative(this.orientation, this.loadingHead == LoadingHead.NOTHING ? -1 : -2);
 		BlockState loaderState = level.getBlockState(loaderPos);
 		if (pos.equals(loaderPos) && CBCBlocks.CANNON_LOADER.has(loaderState)) {
 			level.setBlock(loaderPos, loaderState.setValue(MOVING, true), 66 | 16);
