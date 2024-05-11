@@ -97,12 +97,14 @@ public class CBCLangGen {
 
 		tooltip(CBCItems.IMPACT_FUZE)
 		.header("IMPACT FUZE")
-		.summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact.")
+		.summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._")
 		.conditionAndBehavior("Detonation", "The fuze _may_ detonate on _projectile impact_.");
 
 		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.chance", "Impact Chance");
 		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to detonate.");
-		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.shell_info", "Impact Chance: _%s%%_");
+		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.shell_info.chance", "Impact Chance: _%s%%_");
+		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.durability", "Durability");
+		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.durability.value", "This fuze can break through _%s_ blocks before breaking.");
 
 		tooltip(CBCItems.TIMED_FUZE)
 		.header("TIMED FUZE")
@@ -115,17 +117,19 @@ public class CBCLangGen {
 
 		tooltip(CBCItems.DELAYED_IMPACT_FUZE)
 		.header("DELAYED IMPACT FUZE")
-		.summary("Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer.")
+		.summary("Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._")
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Delayed Impact Fuze_ menu, where the fuze duration can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the set time from when the projectile impacts.");
 
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.chance", "Impact Chance");
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to start ticking.");
-		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.shell_info", "Impact Chance: _%s%%_");
+		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.shell_info.chance", "Impact Chance: _%s%%_");
+		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.durability", "Durability");
+		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.durability.value", "This fuze can break through _%s_ blocks before breaking.");
 
 		tooltip(CBCItems.PROXIMITY_FUZE)
 		.header("PROXIMITY FUZE")
-		.summary("Detonates when it _gets close_ to a block.")
+		.summary("Detonates when it _gets close_ to a block. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._")
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Proximity Fuze_ menu, where the detonation distance can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile gets is within the set range of a block.");
 
