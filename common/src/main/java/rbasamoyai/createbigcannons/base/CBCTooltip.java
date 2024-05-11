@@ -199,12 +199,15 @@ public class CBCTooltip {
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key1 + (WormItem.deployersCanUse() ? ".yes" : ".no")), palette.primary(), palette.highlight(), 1));
 	}
 
-	public static void appendImpactFuzeText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, float detChance) {
+	public static void appendImpactFuzeText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, float detChance, int fuzeDurability) {
 		if (!Screen.hasShiftDown()) return;
 		TooltipHelper.Palette palette = getPalette(level, stack);
-		String key = stack.getDescriptionId() + ".tooltip.chance";
-		tooltip.add(new TextComponent(I18n.get(key)).withStyle(ChatFormatting.GRAY));
-		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", (int) (detChance * 100.0f)), palette.primary(), palette.highlight(), 1));
+		String chanceKey = stack.getDescriptionId() + ".tooltip.chance";
+		tooltip.add(new TextComponent(I18n.get(chanceKey)).withStyle(ChatFormatting.GRAY));
+		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(chanceKey + ".value", (int) (detChance * 100.0f)), palette.primary(), palette.highlight(), 1));
+		String durabilityKey = stack.getDescriptionId() + ".tooltip.durability";
+		tooltip.add(new TextComponent(I18n.get(durabilityKey)).withStyle(ChatFormatting.GRAY));
+		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(durabilityKey + ".value", fuzeDurability), palette.primary(), palette.highlight(), 1));
 	}
 
 	public static void appendCannonCarriageText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag, BlockItem block) {

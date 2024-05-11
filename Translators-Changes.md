@@ -6,6 +6,23 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
+## 0.5.4 → 0.5.4.a
+
+Additions: \
+&plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.durability": "Durability"` \
+&plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."` \
+&plus; `"item.createbigcannons.impact_fuze.tooltip.durability": "Durability"` \
+&plus; `"item.createbigcannons.impact_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."`
+
+Key Changes: \
+`"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \
+`"item.createbigcannons.impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.impact_fuze.tooltip.shell_info.chance"`
+
+Content Changes: \
+`"item.createbigcannons.delayed_impact_fuze.tooltip.summary"`: `"Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer."` → `"Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"` \
+`"item.createbigcannons.impact_fuze.tooltip.summary"`: `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact."` → `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._",` \
+`"item.createbigcannons.proximity_fuze.tooltip.summary"`: `"Detonates when it _gets close_ to a block."` → `"Detonates when it _gets close_ to a block. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"`
+
 ## 0.5.3.b → 0.5.4
 
 Additions: \

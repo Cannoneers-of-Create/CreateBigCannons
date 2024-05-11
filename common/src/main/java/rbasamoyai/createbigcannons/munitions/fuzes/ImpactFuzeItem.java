@@ -28,7 +28,7 @@ public class ImpactFuzeItem extends FuzeItem {
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile<?> projectile, HitResult result, boolean stopped, boolean baseFuze) {
 		if (baseFuze) return false;
 		CompoundTag tag = stack.getOrCreateTag();
-		int damage = tag.contains("Damage") ? tag.getInt("Damage") : CBCConfigs.SERVER.munitions.impactFuzeDurability.get();
+		int damage = tag.contains("Damage") ? tag.getInt("Damage") : this.getFuzeDurability();
 		if (damage > 0) {
 			--damage;
 			tag.putInt("Damage", damage);
@@ -41,18 +41,22 @@ public class ImpactFuzeItem extends FuzeItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		CBCTooltip.appendImpactFuzeText(stack, level, tooltip, flag, this.getDetonateChance());
+		CBCTooltip.appendImpactFuzeText(stack, level, tooltip, flag, this.getDetonateChance(), this.getFuzeDurability());
 	}
 
 	protected float getDetonateChance() {
 		return CBCConfigs.SERVER.munitions.impactFuzeDetonationChance.getF();
 	}
 
+	protected int getFuzeDurability() {
+		return CBCConfigs.SERVER.munitions.impactFuzeDurability.get();
+	}
+
 	@Override
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
 		MutableComponent info = Lang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".impact_fuze.tooltip.shell_info", (int) (this.getDetonateChance() * 100.0f))
+			.translate(CreateBigCannons.MOD_ID + ".impact_fuze.tooltip.shell_info.chance", (int) (this.getDetonateChance() * 100.0f))
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 	}
