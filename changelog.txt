@@ -12,6 +12,7 @@ Added:
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
+- Fixed lag from cannon being tested during explosion, courtesy of Endalion
 
 ===
 
