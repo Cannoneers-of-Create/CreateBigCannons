@@ -2,10 +2,12 @@ Changelog
 
 0.5.4.a
 
-Create Big Cannons 0.5.4.a, with a few bug fixes.
+"messi messi messi immens messi encara messi encara messi encara messi"
+
+Create Big Cannons 0.5.4.a, with a few bug fixes and minor changes.
 
 Fixed:
-
+- Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 
 ===
 
