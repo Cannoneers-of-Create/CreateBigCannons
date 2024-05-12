@@ -261,13 +261,16 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> type = round.getEntityType(foundProjectile);
 		AutocannonProjectileProperties roundProperties = (AutocannonProjectileProperties) MunitionPropertiesHandler.getProperties(type);
 
+		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
+
 		float speed = properties.baseSpeed();
 		float spread = properties.baseSpread();
 		boolean canSquib = roundProperties == null || roundProperties.canSquib();
+		canSquib &= canFail;
 
-		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		BlockPos currentPos = this.startPos.relative(this.initialOrientation);
 		int barrelTravelled = 0;
+		boolean squib = false;
 
 		while (this.presentBlockEntities.get(currentPos) instanceof IAutocannonBlockEntity autocannon) {
 			ItemCannonBehavior behavior = autocannon.cannonBehavior();
@@ -290,7 +293,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					this.blocks.put(currentPos, squibInfo);
 					Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
 					level.playSound(null, squibPos.x, squibPos.y, squibPos.z, oldInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 10.0f, 0.0f);
-					return;
+					squib = true;
+					break;
 				}
 				currentPos = currentPos.relative(this.initialOrientation);
 			} else {
@@ -303,10 +307,16 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 						this.blocks.remove(pos);
 					}
 					if (controller != null) controller.disassemble();
+					return;
 				}
-				return;
 			}
 		}
+		breech.handleFiring();
+		if (squib) return;
+
+		if (this.presentBlockEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring)
+			spring.handleFiring();
+		NetworkPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
 
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec1 = spawnPos.subtract(centerPos).normalize();
@@ -331,11 +341,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		recoilMagnitude *= CBCConfigs.SERVER.cannons.autocannonRecoilScale.getF();
 		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), entity);
-
-		breech.handleFiring();
-		if (this.presentBlockEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring)
-			spring.handleFiring();
-		NetworkPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
 
 		Vec3 particleVel = vec1.scale(1.25);
 		for (ServerPlayer player : level.players()) {

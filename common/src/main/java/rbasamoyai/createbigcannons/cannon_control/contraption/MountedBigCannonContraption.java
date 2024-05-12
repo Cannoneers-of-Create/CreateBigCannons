@@ -295,7 +295,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					if (cannonInfo.state.is(CBCTags.CBCBlockTags.REDUCES_SPREAD)) {
 						propelCtx.spread = Math.max(propelCtx.spread - spreadSub, minimumSpread);
 					}
-					if (projectile.canSquib() && this.cannonMaterial.properties().mayGetStuck(propelCtx.chargesUsed, propelCtx.barrelTravelled) && rollSquib(rand)) {
+					if (canFail && projectile.canSquib() && this.cannonMaterial.properties().mayGetStuck(propelCtx.chargesUsed, propelCtx.barrelTravelled) && rollSquib(rand)) {
 						this.squibBlocks(currentPos, projectileBlocks);
 						Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 						level.playSound(null, squibPos.x, squibPos.y, squibPos.z, cannonInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 10.0f, 0.0f);
@@ -344,8 +344,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				if (projBlock.isComplete(projectileBlocks, this.initialOrientation)) {
 					projectile = projBlock.getProjectile(level, projectileBlocks);
 					propelCtx.chargesUsed += projectile.addedChargePower();
-					if (propelCtx.chargesUsed < projectile.minimumChargePower()) {
-						if (assemblyPos != null) this.squibBlocks(assemblyPos, projectileBlocks);
+					if (canFail && propelCtx.chargesUsed < projectile.minimumChargePower()) {
+						this.squibBlocks(assemblyPos, projectileBlocks);
 						return;
 					}
 				}
@@ -382,7 +382,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					return;
 				}
 				projectileBlocks.add(additionalInfo);
-				if (assemblyPos == null) assemblyPos = currentPos.immutable();
 
 				List<StructureBlockInfo> copy = ImmutableList.copyOf(projectileBlocks);
 				for (ListIterator<StructureBlockInfo> projIter = projectileBlocks.listIterator(); projIter.hasNext(); ) {
@@ -394,11 +393,12 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				}
 				currentPos = currentPos.relative(this.initialOrientation);
 			}
+			assemblyPos = currentPos.immutable().relative(this.initialOrientation.getOpposite());
 			if (projBlock.isComplete(projectileBlocks, this.initialOrientation)) {
 				projectile = projBlock.getProjectile(level, projectileBlocks);
 				propelCtx.chargesUsed += projectile.addedChargePower();
-				if (propelCtx.chargesUsed < projectile.minimumChargePower()) {
-					if (assemblyPos != null) this.squibBlocks(assemblyPos, projectileBlocks);
+				if (canFail && propelCtx.chargesUsed < projectile.minimumChargePower()) {
+					this.squibBlocks(assemblyPos, projectileBlocks);
 					return;
 				}
 			} else if (canFail) {
