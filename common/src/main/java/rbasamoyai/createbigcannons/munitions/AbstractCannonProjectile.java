@@ -7,6 +7,8 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -356,6 +358,8 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 		this.setProjectileMass(tag.getFloat("ProjectileMass"));
 		this.setInGround(tag.getBoolean("InGround"));
 		this.damage = tag.getFloat("Damage");
+		ListTag motionTag = tag.getList("Motion", Tag.TAG_DOUBLE);
+		this.setDeltaMovement(motionTag.getDouble(0), motionTag.getDouble(1), motionTag.getDouble(2));
 	}
 
 	public void setProjectileMass(float power) {
