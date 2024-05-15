@@ -15,6 +15,7 @@ Fixed:
 - Fixed lag from cannon being tested during explosion, courtesy of Endalion
 - Fixed Disable All Failures config option not disabling squibbing
 - Fixed manual autocannons breaking on tick after squib
+- Fixed Create Big Cannons projectiles exceeding 10 m/gt (200 m/gt) losing their velocity when loaded
 
 ===
 
