@@ -927,3 +927,4 @@ bb423629db5cdb85c080525ca5a1bceb324e0636 data/minecraft/tags/blocks/mineable/sho
 b0923846a9033b5bd95649be4a821a4d399720bc data/minecraft/tags/blocks/needs_diamond_tool.json
 670a44be174c18678f90b659f4e29b4ab877470d data/minecraft/tags/blocks/needs_iron_tool.json
 f2067ce2feabda4be12305554b9e229e5cb249c4 data/minecraft/tags/blocks/needs_stone_tool.json
+b4c750499ed144a58bbacf8c99c9556725215d8b data/ritchiesprojectilelib/tags/entity_types/precise_motion.json

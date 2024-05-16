@@ -40,11 +40,9 @@ import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
-import rbasamoyai.ritchiesprojectilelib.PreciseProjectile;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
-public abstract class AbstractCannonProjectile<T extends BaseProjectileProperties> extends Projectile
-	implements PreciseProjectile, PropertiesMunitionEntity<T> {
+public abstract class AbstractCannonProjectile<T extends BaseProjectileProperties> extends Projectile implements PropertiesMunitionEntity<T> {
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
@@ -62,12 +60,6 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 	public void tick() {
 		ChunkPos cpos = new ChunkPos(this.blockPosition());
 		if (this.level.isClientSide || this.level.hasChunk(cpos.x, cpos.z)) {
-			if (this.level instanceof ServerLevel slevel) {
-				if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
-					RitchiesProjectileLib.queueForceLoad(slevel, this, cpos.x, cpos.z, false);
-				}
-			}
-
 			super.tick();
 
 			if (!this.isInGround()) this.clipAndDamage();
@@ -112,18 +104,10 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 			if (this.level instanceof ServerLevel slevel && !this.isRemoved()) {
 				if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
 					ChunkPos cpos1 = new ChunkPos(this.blockPosition());
-					RitchiesProjectileLib.queueForceLoad(slevel, this, cpos1.x, cpos1.z, true);
+					RitchiesProjectileLib.queueForceLoad(slevel, cpos1.x, cpos1.z);
 				}
 			}
 		}
-	}
-
-	@Override
-	public void remove(RemovalReason reason) {
-		if (this.level instanceof ServerLevel slevel) {
-			RitchiesProjectileLib.removeAllForceLoaded(slevel, this);
-		}
-		super.remove(reason);
 	}
 
 	protected void onTickRotate() {}
