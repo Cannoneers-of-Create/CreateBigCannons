@@ -51,6 +51,7 @@ subprojects {
     publishing {
         publications {
             mavenJava(MavenPublication) {
+				artifactId = rootProject.archives_base_name
                 from components.java
             }
         }
