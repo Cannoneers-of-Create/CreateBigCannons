@@ -51,6 +51,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotProj
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeProjectile;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesSerializer;
+import rbasamoyai.ritchiesprojectilelib.RPLTags;
 
 public class CBCEntityTypes {
 
@@ -131,6 +132,7 @@ public class CBCEntityTypes {
 			.entity(id, factory, MobCategory.MISC)
 			.properties(cannonProperties())
 			.renderer(() -> BigCannonProjectileRenderer::new)
+			.tag(RPLTags.PRECISE_MOTION)
 			.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, ser))
 			.register();
 	}
@@ -142,6 +144,7 @@ public class CBCEntityTypes {
 			.properties(cannonProperties())
 			.renderer(() -> BigCannonProjectileRenderer::new)
 			.lang(enUSdiffLang)
+			.tag(RPLTags.PRECISE_MOTION)
 			.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, ser))
 			.register();
 	}
@@ -152,6 +155,7 @@ public class CBCEntityTypes {
 			.entity(id, factory, MobCategory.MISC)
 			.properties(autocannonProperties())
 			.renderer(() -> AutocannonProjectileRenderer::new)
+			.tag(RPLTags.PRECISE_MOTION)
 			.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, ser))
 			.register();
 	}
@@ -163,6 +167,7 @@ public class CBCEntityTypes {
 			.properties(autocannonProperties())
 			.renderer(() -> AutocannonProjectileRenderer::new)
 			.lang(enUSdiffLang)
+			.tag(RPLTags.PRECISE_MOTION)
 			.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, ser))
 			.register();
 	}
