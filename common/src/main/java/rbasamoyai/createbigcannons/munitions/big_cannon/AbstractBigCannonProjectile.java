@@ -1,14 +1,11 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
-import javax.annotation.Nullable;
-
 import com.mojang.math.Constants;
 
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -16,6 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.effects.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 
@@ -23,6 +21,30 @@ public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileP
 
 	protected AbstractBigCannonProjectile(EntityType<? extends AbstractBigCannonProjectile> type, Level level) {
 		super(type, level);
+	}
+
+	@Override
+	public void tick() {
+		ChunkPos cpos = new ChunkPos(this.blockPosition());
+		if (this.level.isClientSide || this.level.hasChunk(cpos.x, cpos.z)) {
+			super.tick();
+			if (!this.isInGround()) {
+				TrailType trailType = CBCConfigs.SERVER.munitions.bigCannonTrailType.get();
+				if (trailType != TrailType.NONE) {
+					int lifetime = trailType == TrailType.SHORT ? 100 : 280 + this.level.random.nextInt(50);
+					for (int i = 0; i < 10; ++i) {
+						double partial = i * 0.1f;
+						double dx = Mth.lerp(partial, this.xOld, this.getX());
+						double dy = Mth.lerp(partial, this.yOld, this.getY());
+						double dz = Mth.lerp(partial, this.zOld, this.getZ());
+						double sx = this.level.random.nextDouble(-0.002d, 0.002d);
+						double sy = this.level.random.nextDouble(-0.002d, 0.002d);
+						double sz = this.level.random.nextDouble(-0.002d, 0.002d);
+						this.level.addAlwaysVisibleParticle(new TrailSmokeParticleData(lifetime), true, dx, dy, dz, sx, sy, sz);
+					}
+				}
+			}
+		}
 	}
 
 	@Override
@@ -43,12 +65,6 @@ public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileP
 	}
 
 	public abstract BlockState getRenderedBlockState();
-
-	@Nullable
-	@Override
-	protected ParticleOptions getTrailParticles() {
-		return ParticleTypes.CAMPFIRE_SIGNAL_SMOKE;
-	}
 
 	@Override
 	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
@@ -97,6 +113,12 @@ public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileP
 	public float addedRecoil() {
 		T properties = this.getProperties();
 		return properties == null ? 1 : properties.addedRecoil();
+	}
+
+	public enum TrailType {
+		NONE,
+		LONG,
+		SHORT
 	}
 
 }

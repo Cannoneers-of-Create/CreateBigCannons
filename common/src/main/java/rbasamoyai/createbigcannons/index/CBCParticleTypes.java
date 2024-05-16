@@ -13,6 +13,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 
@@ -20,13 +21,14 @@ public enum CBCParticleTypes {
 
 	CANNON_PLUME(CannonPlumeParticleData::new),
 	FLUID_BLOB(FluidBlobParticleData::new),
-	CANNON_SMOKE(CannonSmokeParticleData::new);
+	CANNON_SMOKE(CannonSmokeParticleData::new),
+	TRAIL_SMOKE(TrailSmokeParticleData::new);
 
 	private final ParticleEntry<?> entry;
 
 	<D extends ParticleOptions> CBCParticleTypes(Supplier<ICustomParticleData<D>> typeFactory) {
 		String name = Lang.asId(name());
-		entry = new ParticleEntry<>(name, typeFactory);
+		this.entry = new ParticleEntry<>(name, typeFactory);
 	}
 
 	public static void register() {
@@ -41,11 +43,11 @@ public enum CBCParticleTypes {
 	}
 
 	public ParticleType<?> get() {
-		return entry.object;
+		return this.entry.object;
 	}
 
 	public String parameter() {
-		return entry.name;
+		return this.entry.name;
 	}
 
 	private static class ParticleEntry<D extends ParticleOptions> {
@@ -57,14 +59,13 @@ public enum CBCParticleTypes {
 			this.name = name;
 			this.typeFactory = typeFactory;
 
-			object = this.typeFactory.get().createType();
+			this.object = this.typeFactory.get().createType();
 			IndexPlatform.registerDeferredParticleType(this.name, this.object);
 		}
 
 		@Environment(EnvType.CLIENT)
 		public void registerFactory(ParticleEngine particles) {
-			typeFactory.get()
-				.register(object, particles);
+			this.typeFactory.get().register(this.object, particles);
 		}
 	}
 

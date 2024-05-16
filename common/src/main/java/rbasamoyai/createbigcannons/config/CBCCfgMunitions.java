@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.config;
 import com.simibubi.create.foundation.config.ConfigBase;
 
 import net.minecraft.world.level.Explosion.BlockInteraction;
+import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 
 public class CBCCfgMunitions extends ConfigBase {
 
@@ -11,6 +12,7 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat penetrationBonusScale = f(0.1f, 0, "penetrationBonusScale");
 	public final ConfigBool projectilesCanChunkload = b(true, "projectilesCanChunkload");
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
+	public final ConfigEnum<AbstractBigCannonProjectile.TrailType> bigCannonTrailType = e(AbstractBigCannonProjectile.TrailType.SHORT, "trailType");
 
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes");
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
