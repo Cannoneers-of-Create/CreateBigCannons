@@ -6,7 +6,7 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
-## 0.5.4 → 0.5.4.a
+## 0.5.4 → 5.5.0
 
 Additions: \
 &plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.durability": "Durability"` \
