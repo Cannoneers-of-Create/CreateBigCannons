@@ -8,15 +8,6 @@ architectury {
     minecraft = rootProject.minecraft_version
 }
 
-def getGitHash = { ->
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'rev-parse', '--short', 'HEAD'
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
-}
-
 boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
 
 subprojects {
@@ -87,13 +78,14 @@ allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
 
-    archivesBaseName = "${rootProject.archives_base_name}-${project.name}-${minecraft_version}"
+    archivesBaseName = rootProject.archives_base_name
     group = rootProject.group
 
     // Formats the mod version to include the loader, Minecraft version, and build number (if present)
     // example: 1.0.0+fabric-1.18.2-100
 
-    version = ci ? mod_version + "-nightly-" + getGitHash() : mod_version
+	String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
+	version = "${mod_version}+mc.${minecraft_version}-${project.name}${buildNumber ? "-build.${buildNumber}" : ""}"
 
     repositories {
         // Add repositories to retrieve artifacts from in here.

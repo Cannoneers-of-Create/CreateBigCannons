@@ -31,7 +31,7 @@ jobs:
           properties: minecraft_version enabled_platforms mod_version archives_base_name
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: 17
           distribution: temurin
@@ -40,10 +40,10 @@ jobs:
         run: chmod +x gradlew
 
       - name: Validate Gradle wrapper
-        uses: gradle/wrapper-validation-action@9aa31f26bc8e536d1faf4b332bb8365350743a18
+        uses: gradle/actions/validate-gradle-wrapper@v3
 
       - name: Build jar
-        uses: gradle/gradle-build-action@v2.4.0
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: build
           gradle-home-cache-includes: |
@@ -53,7 +53,7 @@ jobs:
       - name: Publish to GitHub Packages
         if: github.event_name == 'push' && github.repository_id == '510859946'
         continue-on-error: true
-        uses: gradle/gradle-build-action@v2.4.0
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: publishMavenJavaPublicationToGitHubPackagesRepository
         env:
@@ -61,7 +61,7 @@ jobs:
 
       - name: Publish to realRobotix Maven
         if: github.event_name == 'push' && github.repository_id == '510859946'
-        uses: gradle/gradle-build-action@v2.4.0
+        uses: gradle/actions/setup-gradle@v3
         with:
           arguments: |
             publishMavenJavaPublicationToRealRobotixMavenRepository
@@ -70,7 +70,7 @@ jobs:
 
       - name: Send building message to discord
         if: github.event_name == 'push' && github.repository_id == '510859946'
-        uses: realRobotix/action-discord-notifier@release-master
+        uses: realRobotix/action-discord-notifier@master
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
@@ -80,7 +80,7 @@ jobs:
         run: |
           EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
           echo "jars<<$EOF" >> $GITHUB_OUTPUT
-          find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}.jar" >> $GITHUB_OUTPUT
+          find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.mod_version }}\+mc\.${{ steps.read_properties.outputs.minecraft_version }}-($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-build\.${{ github.run_number }}\.jar" >> $GITHUB_OUTPUT
           echo "$EOF" >> $GITHUB_OUTPUT
 
       - name: Send built file to discord
@@ -92,7 +92,7 @@ jobs:
           args: ${{ steps.find_jars.outputs.jars }}
 
       - name: Archive Artifacts
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.minecraft_version }}-${{ steps.read_properties.outputs.mod_version }}-nightly-${{ steps.get_hash.outputs.sha_short }}
           path: ${{ steps.find_jars.outputs.jars }}
