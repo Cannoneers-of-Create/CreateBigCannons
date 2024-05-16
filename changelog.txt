@@ -4,7 +4,8 @@ Changelog
 
 "messi messi messi immens messi encara messi encara messi encara messi"
 
-Create Big Cannons 0.5.4.a, with a few bug fixes and minor changes.
+Create Big Cannons 5.5.0, with a few bug fixes and minor changes.
+Comes with version formatting change, but gameplay changes are otherwise not major.
 
 Added:
 - Added some config options to use subheadings in Create config screen
