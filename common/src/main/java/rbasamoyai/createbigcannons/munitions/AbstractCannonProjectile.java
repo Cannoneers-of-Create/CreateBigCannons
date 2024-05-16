@@ -2,10 +2,7 @@ package rbasamoyai.createbigcannons.munitions;
 
 import java.util.Map;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -88,17 +85,8 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 				this.setDeltaMovement(vel);
 				Vec3 position = newPos.add(vel.subtract(uel).scale(0.5));
 				this.setPos(position);
-
-				ParticleOptions particle = this.getTrailParticles();
-				if (particle != null) {
-					for (int i = 0; i < 10; ++i) {
-						double partial = i * 0.1f;
-						double dx = Mth.lerp(partial, this.xOld, this.getX());
-						double dy = Mth.lerp(partial, this.yOld, this.getY());
-						double dz = Mth.lerp(partial, this.zOld, this.getZ());
-						this.level.addParticle(particle, dx, dy, dz, 0.0d, 0.0d, 0.0d);
-					}
-				}
+				this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+				this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
 			}
 
 			if (this.level instanceof ServerLevel slevel && !this.isRemoved()) {
@@ -325,8 +313,6 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 	private boolean shouldFall() {
 		return this.isInGround() && this.level.noCollision(new AABB(this.position(), this.position()).inflate(0.06d));
 	}
-
-	@Nullable protected ParticleOptions getTrailParticles() { return null; }
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {

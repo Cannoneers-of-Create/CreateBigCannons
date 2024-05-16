@@ -9,10 +9,15 @@ Create Big Cannons 0.5.4.a, with a few bug fixes and minor changes.
 Added:
 - Added some config options to use subheadings in Create config screen
 - Added durability and fuze position tooltip to Impact Fuze and Delayed Impact Fuze
+- Added config to switch between cannon trail styles
+- Added cannon trail particle
+ - By default appears the same as campfire smoke
+ - Particle texture definition can be changed
 Changed:
 - Updated Ritchie's Projectile Lib dependency to 2.0.0
  - Improved chunkloading performance
  - Replaced PreciseProjectile interface with tag #ritchiesprojectilelib:precise_motion
+- Changed how cannon trails are done
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
