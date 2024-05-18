@@ -11,8 +11,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
-import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.CannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.CannonSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.SmokeShellSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
@@ -22,6 +23,7 @@ public enum CBCParticleTypes {
 	CANNON_PLUME(CannonPlumeParticleData::new),
 	FLUID_BLOB(FluidBlobParticleData::new),
 	CANNON_SMOKE(CannonSmokeParticleData::new),
+	SMOKE_SHELL_SMOKE(SmokeShellSmokeParticleData::new),
 	TRAIL_SMOKE(TrailSmokeParticleData::new);
 
 	private final ParticleEntry<?> entry;

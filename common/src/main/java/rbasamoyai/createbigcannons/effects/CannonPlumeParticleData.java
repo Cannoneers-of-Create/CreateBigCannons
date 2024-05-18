@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannon_control.effects;
+package rbasamoyai.createbigcannons.effects;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -22,18 +22,18 @@ public class CannonPlumeParticleData implements ParticleOptions, ICustomParticle
 		.apply(i, CannonPlumeParticleData::new));
 
 	@SuppressWarnings("deprecation")
-	public static final Deserializer<CannonPlumeParticleData> DESERIALIZER = new Deserializer<CannonPlumeParticleData>() {
-		@Override
-		public CannonPlumeParticleData fromNetwork(ParticleType<CannonPlumeParticleData> type, FriendlyByteBuf buf) {
-			return new CannonPlumeParticleData(buf.readFloat());
-		}
+	public static final Deserializer<CannonPlumeParticleData> DESERIALIZER = new Deserializer<>() {
+        @Override
+        public CannonPlumeParticleData fromNetwork(ParticleType<CannonPlumeParticleData> type, FriendlyByteBuf buf) {
+            return new CannonPlumeParticleData(buf.readFloat());
+        }
 
-		@Override
-		public CannonPlumeParticleData fromCommand(ParticleType<CannonPlumeParticleData> type, StringReader reader) throws CommandSyntaxException {
-			reader.expect(' ');
-			return new CannonPlumeParticleData(reader.readFloat());
-		}
-	};
+        @Override
+        public CannonPlumeParticleData fromCommand(ParticleType<CannonPlumeParticleData> type, StringReader reader) throws CommandSyntaxException {
+            reader.expect(' ');
+            return new CannonPlumeParticleData(reader.readFloat());
+        }
+    };
 
 	private final float scale;
 
@@ -44,8 +44,6 @@ public class CannonPlumeParticleData implements ParticleOptions, ICustomParticle
 	public CannonPlumeParticleData() {
 		this(0);
 	}
-
-	;
 
 	public float scale() {
 		return this.scale;
