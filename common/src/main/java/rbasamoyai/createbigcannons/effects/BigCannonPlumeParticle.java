@@ -12,18 +12,18 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
-public class CannonPlumeParticle extends NoRenderParticle {
+public class BigCannonPlumeParticle extends NoRenderParticle {
 
 	private final Vec3 direction;
 	private final float scale;
 	private final boolean visible;
 
-	CannonPlumeParticle(ClientLevel level, double x, double y, double z, Vec3 direction, float scale) {
+	BigCannonPlumeParticle(ClientLevel level, double x, double y, double z, Vec3 direction, float scale) {
 		super(level, x, y, z);
 		this.direction = direction;
 		this.scale = scale;
 		Minecraft mc = Minecraft.getInstance();
-		this.visible = mc.options.particles == ParticleStatus.ALL && CBCConfigs.CLIENT.showCannonPlumes.get();
+		this.visible = mc.options.particles == ParticleStatus.ALL && CBCConfigs.CLIENT.showBigCannonPlumes.get();
 
 		this.lifetime = 0;
 
@@ -50,7 +50,7 @@ public class CannonPlumeParticle extends NoRenderParticle {
 				.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * dirPerpScale))
 				.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * dirPerpScale));
 			int shiftTime = 3 + this.random.nextInt(2);
-			int startShiftTime = 5 + Mth.ceil(progress * 5);
+			int startShiftTime = 10 + Mth.ceil(progress * 5);
 			int lifetime = 180 + this.random.nextInt(40);
 			this.level.addParticle(new CannonSmokeParticleData(this.scale, shiftTime, startShiftTime, lifetime, 0.92f - (float) progress * 0.08f),
 				true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
@@ -62,7 +62,7 @@ public class CannonPlumeParticle extends NoRenderParticle {
 				.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * dirPerpScale))
 				.scale(1f);
 			int shiftTime1 = 3 + this.random.nextInt(2);
-			int startShiftTime1 = 1;
+			int startShiftTime1 = 6;
 			int lifetime1 = 180 + this.random.nextInt(40);
 			this.level.addParticle(new CannonSmokeParticleData(this.scale, shiftTime1, startShiftTime1, lifetime1, 0.92f),
 				true, this.x, this.y, this.z, vel1.x, vel1.y, vel1.z);
@@ -79,9 +79,9 @@ public class CannonPlumeParticle extends NoRenderParticle {
 		super.tick();
 	}
 
-	public static class Provider implements ParticleProvider<CannonPlumeParticleData> {
-		public Particle createParticle(CannonPlumeParticleData data, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-			return new CannonPlumeParticle(level, x, y, z, new Vec3(dx, dy, dz), data.scale());
+	public static class Provider implements ParticleProvider<BigCannonPlumeParticleData> {
+		public Particle createParticle(BigCannonPlumeParticleData data, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
+			return new BigCannonPlumeParticle(level, x, y, z, new Vec3(dx, dy, dz), data.scale());
 		}
 	}
 
