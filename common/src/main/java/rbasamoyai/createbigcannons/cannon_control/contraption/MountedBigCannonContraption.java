@@ -51,7 +51,8 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMateria
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-import rbasamoyai.createbigcannons.effects.CannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.BigCannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.DropMortarPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -442,9 +443,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		this.hasFired = true;
 
 		float shakeDistance = propelCtx.chargesUsed * 6;
-		Vec3 plumePos = spawnPos.subtract(vec.scale(0.5));
+		Vec3 plumePos = spawnPos.subtract(vec);
 		for (ServerPlayer player : level.players()) {
-			level.sendParticles(player, new CannonPlumeParticleData(propelCtx.smokeScale * 0.25f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
+			level.sendParticles(player, new BigCannonPlumeParticleData(propelCtx.smokeScale * 0.25f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
 			float dist = player.distanceTo(entity);
 			if (dist < shakeDistance && shakeDistance > 0.1f) {
 				float f = 1 - dist / shakeDistance;
@@ -648,9 +649,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		recoilMagnitude *= CBCConfigs.SERVER.cannons.bigCannonRecoilScale.getF();
 		if (controller != null) controller.onRecoil(vec.scale(-recoilMagnitude), entity);
 
-		Vec3 plumePos = spawnPos.subtract(vec.scale(0.5));
+		Vec3 plumePos = spawnPos.subtract(vec);
 		for (ServerPlayer player : slevel.players()) {
-			slevel.sendParticles(player, new CannonPlumeParticleData(0.2f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
+			slevel.sendParticles(player, new DropMortarPlumeParticleData(1f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
 		}
 		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(slevel, new BlockPos(spawnPos));
 		this.hasFired = true;

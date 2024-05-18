@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
-import rbasamoyai.createbigcannons.effects.CannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
@@ -564,7 +564,7 @@ public class CannonLoadingScenes {
 
 		scene.world.modifyBlock(fireLeverPos, state -> state.setValue(LeverBlock.POWERED, true), false);
 		scene.effects.createRedstoneParticles(fireLeverPos, 0xFF0000, 10);
-		scene.effects.emitParticles(util.vector.of(4, 2.5, 5.1), Emitter.withinBlockSpace(new CannonPlumeParticleData(1), util.vector.of(0d, 0d, 1d)), 1, 10);
+		scene.effects.emitParticles(util.vector.of(4, 2.5, 5.1), Emitter.withinBlockSpace(new BigCannonPlumeParticleData(1), util.vector.of(0d, 0d, 1d)), 1, 10);
 		scene.idle(60);
 
 		scene.rotateCameraY(180.0f);

@@ -4,7 +4,9 @@ public class CBCCfgClient extends CBCConfigBase {
 
 	public final ConfigGroup client = group(0, "client", Comments.client);
 
-	public final ConfigBool showCannonPlumes = b(true, "showCannonPlumes");
+	public final ConfigBool showAutocannonPlumes = b(true, "showAutocannonPlumes");
+	public final ConfigBool showBigCannonPlumes = b(true, "showBigCannonPlumes");
+	public final ConfigBool showDropMortarPlumes = b(true, "showDropMortarPlumes");
 	public final ConfigInt fluidBlobParticleCount = i(20, 0, 1000, "fluidBlobParticleCount", Comments.fluidBlobParticleCount);
 
 	@Override public String getName() { return "client"; }

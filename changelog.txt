@@ -1,6 +1,6 @@
 Changelog
 
-0.5.4.a
+5.5.0
 
 "messi messi messi immens messi encara messi encara messi encara messi"
 
@@ -15,7 +15,7 @@ Added:
  - By default appears the same as campfire smoke
  - Particle texture definition can be changed
 Removed:
-- Removed legacy cannon plume appearance client config, can now only turn plumes on or off
+- Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:
 - Updated Ritchie's Projectile Lib dependency to 2.0.0
  - Improved chunkloading performance
@@ -23,7 +23,9 @@ Changed:
 - Changed how cannon trails are done
 - Separated smoke shell smoke particle (createbigcannons:smoke_shell_smoke) from cannon smoke particle (createbigcannons:cannon_smoke)
  - Both still use the same textures and particle definition by default
-- Changed how cannon plumes look
+- Changed how big cannon plumes look
+- New style for autocannon plumes (createbigcannons:autocannon_plume) and drop mortar plumes (createbigcannons:drop_mortar_plume) separate from big cannon plume (createbigcannons:big_cannon_plume)
+ - Added separate clientside visibility config options for these plumes
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
