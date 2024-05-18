@@ -14,11 +14,16 @@ Added:
 - Added cannon trail particle
  - By default appears the same as campfire smoke
  - Particle texture definition can be changed
+Removed:
+- Removed legacy cannon plume appearance client config, can now only turn plumes on or off
 Changed:
 - Updated Ritchie's Projectile Lib dependency to 2.0.0
  - Improved chunkloading performance
  - Replaced PreciseProjectile interface with tag #ritchiesprojectilelib:precise_motion
 - Changed how cannon trails are done
+- Separated smoke shell smoke particle (createbigcannons:smoke_shell_smoke) from cannon smoke particle (createbigcannons:cannon_smoke)
+ - Both still use the same textures and particle definition by default
+- Changed how cannon plumes look
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head

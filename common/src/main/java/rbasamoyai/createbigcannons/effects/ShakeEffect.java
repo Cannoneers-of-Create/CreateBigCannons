@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannon_control.effects;
+package rbasamoyai.createbigcannons.effects;
 
 import com.google.common.collect.ImmutableList;
 

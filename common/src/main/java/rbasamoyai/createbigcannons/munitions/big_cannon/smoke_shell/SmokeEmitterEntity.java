@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell;
 
-import com.mojang.math.Vector3f;
-
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -12,7 +10,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import rbasamoyai.createbigcannons.cannon_control.effects.CannonSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.SmokeShellSmokeParticleData;
 
 public class SmokeEmitterEntity extends Entity {
 
@@ -74,7 +72,7 @@ public class SmokeEmitterEntity extends Entity {
 	}
 
 	protected ParticleOptions getParticle() {
-		return new CannonSmokeParticleData(4, new Vector3f(0.85f, 0.85f, 0.85f), new Vector3f(0.75f, 0.75f, 0.75f), 60);
+		return new SmokeShellSmokeParticleData(4);
 	}
 
 }
