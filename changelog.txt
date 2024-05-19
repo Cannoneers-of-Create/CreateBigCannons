@@ -22,6 +22,7 @@ Added:
 - Added item tooltips for Smoke Shell
 - Added contained fluid tooltip for Fluid Shell item
 - Added fuze tooltips for fuzed big cannon munitions
+- Added filled Big Cartridge to creative search tab
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:

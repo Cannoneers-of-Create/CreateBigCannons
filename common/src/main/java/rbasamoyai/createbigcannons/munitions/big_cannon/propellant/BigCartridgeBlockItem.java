@@ -1,18 +1,21 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import javax.annotation.Nullable;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-
-import java.util.List;
 
 public class BigCartridgeBlockItem extends BlockItem {
 
@@ -49,6 +52,14 @@ public class BigCartridgeBlockItem extends BlockItem {
 		ItemStack stack = CBCBlocks.BIG_CARTRIDGE.asStack();
 		stack.getOrCreateTag().putInt("Power", power);
 		return stack;
+	}
+
+	@Override
+	public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
+		super.fillItemCategory(category, items);
+		if (category == CreativeModeTab.TAB_SEARCH && this.allowdedIn(category)) {
+			items.add(getWithPower(4));
+		}
 	}
 
 }
