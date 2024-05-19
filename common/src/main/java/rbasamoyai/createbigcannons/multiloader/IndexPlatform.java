@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.multiloader;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -21,6 +22,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -125,5 +127,7 @@ public class IndexPlatform {
 
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { throw new AssertionError(); }
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { throw new AssertionError(); }
+
+	@ExpectPlatform public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) { throw new AssertionError(); }
 
 }

@@ -9,6 +9,10 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 ## 0.5.4 → 5.5.0
 
 Additions: \
+&plus; `"block.createbigcannons.smoke_shell.tooltip": "SMOKE SHELL"` \
+&plus; `"block.createbigcannons.smoke_shell.tooltip.behaviour1": "Releases a _temporary smoke cloud_."` \
+&plus; `"block.createbigcannons.smoke_shell.tooltip.condition1": "On Detonation"` \
+&plus; `"block.createbigcannons.smoke_shell.tooltip.summary": "Covers the battlefield with a _smoke cloud_ that obscures vision."` \
 &plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.durability": "Durability"` \
 &plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."` \
 &plus; `"item.createbigcannons.impact_fuze.tooltip.durability": "Durability"` \
@@ -19,6 +23,10 @@ Key Changes: \
 `"item.createbigcannons.impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.impact_fuze.tooltip.shell_info.chance"`
 
 Content Changes: \
+`"block.createbigcannons.fluid_shell.tooltip.condition3"`: `"Note"` → `Note on Fluid Behavior"` \
+`"createbigcannons.ponder.tag.cannon_crafting.description`: `"How to manufacture big cannons"` → `"How to manufacture cannons of different sizes and calibers"` \
+`"createbigcannons.ponder.tag.munitions.description"`: `"Blocks that make up cannon loads, and what they can do"` → `"Blocks and items used by cannons, and what they can do"` \
+`"createbigcannons.ponder.tag.operating_cannons.description"`: `"How to use big cannons safely and effectively"` → `"How to use cannons safely and effectively"` \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.summary"`: `"Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer."` → `"Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"` \
 `"item.createbigcannons.impact_fuze.tooltip.summary"`: `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact."` → `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._",` \
 `"item.createbigcannons.proximity_fuze.tooltip.summary"`: `"Detonates when it _gets close_ to a block."` → `"Detonates when it _gets close_ to a block. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"`

@@ -69,11 +69,13 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
+import rbasamoyai.createbigcannons.munitions.FuzedProjectileBlockItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlockItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneBlock;
@@ -966,7 +968,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("High Explosive (HE) Shell")
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -978,7 +980,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1016,7 +1018,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("Armor Piercing (AP) Shell")
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1028,7 +1030,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.projectile("projectile/fluid_shell"))
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot(f -> f.copy("FluidContent", "BlockEntityTag.FluidContent")))
-		.item()
+		.item(FluidShellBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1039,7 +1041,7 @@ public class CBCBlocks {
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/smoke_shell"))
 		.loot(CBCBuilderTransformers.shellLoot())
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1079,7 +1081,7 @@ public class CBCBlocks {
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.dropMortarShell())
 		.loot(CBCBuilderTransformers.shellLoot())
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
