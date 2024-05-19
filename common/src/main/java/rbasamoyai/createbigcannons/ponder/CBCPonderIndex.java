@@ -23,11 +23,12 @@ public class CBCPonderIndex {
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.RAM_HEAD, CBCBlocks.WORM_HEAD)
 			.addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons);
 
-		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.POWDER_CHARGE)
+		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.POWDER_CHARGE, CBCBlocks.BIG_CARTRIDGE)
 			.addStoryBoard("munitions/cannon_loads", CannonLoadingScenes::cannonLoads, CBCPonderTags.MUNITIONS);
 
 		HELPER.forComponents(CBCItems.IMPACT_FUZE, CBCItems.TIMED_FUZE, CBCItems.PROXIMITY_FUZE, CBCItems.DELAYED_IMPACT_FUZE,
-				CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL, CBCBlocks.FLUID_SHELL, CBCItems.FLAK_AUTOCANNON_ROUND)
+				CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL, CBCBlocks.FLUID_SHELL, CBCBlocks.SMOKE_SHELL,
+				CBCBlocks.DROP_MORTAR_SHELL, CBCItems.FLAK_AUTOCANNON_ROUND)
 			.addStoryBoard("munitions/fuzing_munitions", CannonLoadingScenes::fuzingMunitions, CBCPonderTags.MUNITIONS);
 
 		HELPER.forComponents(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
@@ -119,9 +120,13 @@ public class CBCPonderIndex {
 
 		PonderRegistry.TAGS.forTag(CBCPonderTags.MUNITIONS)
 			.add(CBCBlocks.POWDER_CHARGE)
+			.add(CBCBlocks.BIG_CARTRIDGE)
 			.add(CBCBlocks.HE_SHELL)
 			.add(CBCBlocks.SHRAPNEL_SHELL)
 			.add(CBCBlocks.AP_SHELL)
+			.add(CBCBlocks.SMOKE_SHELL)
+			.add(CBCBlocks.FLUID_SHELL)
+			.add(CBCBlocks.DROP_MORTAR_SHELL)
 			.add(CBCItems.IMPACT_FUZE)
 			.add(CBCItems.TIMED_FUZE)
 			.add(CBCItems.PROXIMITY_FUZE)

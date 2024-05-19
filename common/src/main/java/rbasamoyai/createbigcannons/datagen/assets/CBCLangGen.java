@@ -88,7 +88,12 @@ public class CBCLangGen {
 		.summary("Spreads the contained fluid all over the targeted area, with _different effects depending on the fluid_.")
 		.conditionAndBehavior("On Detonation", "Releases its contents.")
 		.conditionAndBehavior("Filling", "The shell can only be filled through _the same face that the fuze is placed on._ If a fuze is present, the shell _cannot be filled._")
-		.conditionAndBehavior("Note", "Some fluids may not have any effect on release. Supported fluids include, but may not be limited to, _water, lava, and liquid potions._");
+		.conditionAndBehavior("Note on Fluid Behavior", "Some fluids may not have any effect on release. Supported fluids include, but may not be limited to, _water, lava, and liquid potions._");
+
+		tooltip(CBCBlocks.SMOKE_SHELL)
+		.header("SMOKE SHELL")
+		.summary("Covers the battlefield with a _smoke cloud_ that obscures vision.")
+		.conditionAndBehavior("On Detonation", "Releases a _temporary smoke cloud_.");
 
 		tooltip(CBCBlocks.DROP_MORTAR_SHELL)
 		.header("DROP MORTAR SHELL")

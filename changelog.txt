@@ -14,6 +14,14 @@ Added:
 - Added cannon trail particle
  - By default appears the same as campfire smoke
  - Particle texture definition can be changed
+- Added new style for autocannon plumes (createbigcannons:autocannon_plume) and drop mortar plumes (createbigcannons:drop_mortar_plume) separate from big cannon plume (createbigcannons:big_cannon_plume)
+ - Added separate clientside visibility config options for these plumes
+- Added Drop Mortar Shell and Smoke Shell to "Fuzing Munitions" ponder
+- Added Drop Mortar Shell, Fluid Shell, and Smoke Shell to Munitions ponder tag
+- Added Cannon Loads ponder to Big Cartridge
+- Added item tooltips for Smoke Shell
+- Added contained fluid tooltip for Fluid Shell item
+- Added fuze tooltips for fuzed big cannon munitions
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:
@@ -24,8 +32,7 @@ Changed:
 - Separated smoke shell smoke particle (createbigcannons:smoke_shell_smoke) from cannon smoke particle (createbigcannons:cannon_smoke)
  - Both still use the same textures and particle definition by default
 - Changed how big cannon plumes look
-- New style for autocannon plumes (createbigcannons:autocannon_plume) and drop mortar plumes (createbigcannons:drop_mortar_plume) separate from big cannon plume (createbigcannons:big_cannon_plume)
- - Added separate clientside visibility config options for these plumes
+- Changed description of some ponder categories
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
