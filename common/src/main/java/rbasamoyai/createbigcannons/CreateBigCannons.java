@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
@@ -25,6 +26,8 @@ import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesSerializers;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
+import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
+import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
 
 public class CreateBigCannons {
 
@@ -63,4 +66,11 @@ public class CreateBigCannons {
 	public static ResourceLocation resource(String path) {
 		return new ResourceLocation(MOD_ID, path);
 	}
+
+	public static final ResourceLocation SCREEN_SHAKE_HANDLER_ID = resource("shake_handler");
+
+	public static void shakePlayerScreen(ServerPlayer player, ScreenShakeEffect effect) {
+		RitchiesProjectileLib.shakePlayerScreen(player, SCREEN_SHAKE_HANDLER_ID, effect);
+	}
+
 }

@@ -23,12 +23,14 @@ Added:
 - Added contained fluid tooltip for Fluid Shell item
 - Added fuze tooltips for fuzed big cannon munitions
 - Added filled Big Cartridge to creative search tab
+- Added separate config for screen shake intensity
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:
-- Updated Ritchie's Projectile Lib dependency to 2.0.0
+- Updated Ritchie's Projectile Library dependency to 2.0.0
  - Improved chunkloading performance
  - Replaced PreciseProjectile interface with tag #ritchiesprojectilelib:precise_motion
+ - Changed screen shake to use RPL code rather than CBC code
 - Changed how cannon trails are done
 - Separated smoke shell smoke particle (createbigcannons:smoke_shell_smoke) from cannon smoke particle (createbigcannons:cannon_smoke)
  - Both still use the same textures and particle definition by default

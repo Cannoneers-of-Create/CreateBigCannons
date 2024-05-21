@@ -55,6 +55,9 @@ repositories {
 			includeGroup("com.rbasamoyai")
 		}
 	}
+	flatDir {
+		dir "./libs"
+	}
     mavenCentral()
 }
 
@@ -76,7 +79,7 @@ dependencies {
 
     modImplementation("curse.maven:spark-361579:${spark_forge_file}") // Spark
 
-	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-forge")) { transitive = false } // Ritchie's Projectile Library
+	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-forge-build.${rpl_build}")) { transitive = false } // Ritchie's Projectile Library
 
 	compileOnly("io.github.llamalad7:mixinextras-common:${mixinextras_version}")
 	annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixinextras_version}")))

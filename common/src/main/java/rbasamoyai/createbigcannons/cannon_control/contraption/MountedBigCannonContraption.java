@@ -38,6 +38,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
@@ -56,7 +57,6 @@ import rbasamoyai.createbigcannons.effects.DropMortarPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
-import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarMunition;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarProjectileProperties;
@@ -65,7 +65,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonProp
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.IntegratedPropellantProjectile;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilities;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler;
-import rbasamoyai.createbigcannons.network.ClientboundAddShakeEffectPacket;
+import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
 
 public class MountedBigCannonContraption extends AbstractMountedCannonContraption {
 
@@ -451,7 +451,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				float f = 1 - dist / shakeDistance;
 				float f2 = f * f;
 				float shake = Math.min(45, shakeDistance * f2);
-				NetworkPlatform.sendToClientPlayer(new ClientboundAddShakeEffectPacket(level.random.nextInt(10000), 50, shake), player);
+				CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(50, shake));
 			}
 		}
 		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(level, new BlockPos(spawnPos));

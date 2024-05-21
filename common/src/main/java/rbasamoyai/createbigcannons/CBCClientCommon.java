@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -41,7 +39,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderSelectionHandler;
-import rbasamoyai.createbigcannons.effects.ShakeEffect;
+import rbasamoyai.createbigcannons.effects.CBCScreenShakeHandler;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
@@ -54,6 +52,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
+import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.RPLScreenShakeHandlerClient;
 
 public class CBCClientCommon {
 
@@ -61,8 +60,6 @@ public class CBCClientCommon {
 	public static final KeyMapping PITCH_MODE = IndexPlatform.createSafeKeyMapping(KEY_ROOT + ".pitch_mode", InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_C);
 	public static final KeyMapping FIRE_CONTROLLED_CANNON = IndexPlatform.createSafeKeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT);
 	public static final List<KeyMapping> KEYS = new ArrayList<>();
-
-	private static final List<ShakeEffect> ACTIVE_SHAKE_EFFECTS = new LinkedList<>();
 
 	public static final CannonWelderSelectionHandler CANNON_WELDER_HANDLER = new CannonWelderSelectionHandler();
 
@@ -87,6 +84,8 @@ public class CBCClientCommon {
 		(stack, level, player, a) -> {
 			return BigCartridgeBlockItem.getPower(stack);
 		});
+
+		RPLScreenShakeHandlerClient.registerModScreenShakeHandler(CreateBigCannons.SCREEN_SHAKE_HANDLER_ID, new CBCScreenShakeHandler());
 	}
 
 	public static void registerKeyMappings(Consumer<KeyMapping> cons) {
@@ -161,11 +160,6 @@ public class CBCClientCommon {
 
 	public static void onClientGameTick(Minecraft mc) {
 		if (mc.player == null || mc.level == null) return;
-
-		for (Iterator<ShakeEffect> iter = ACTIVE_SHAKE_EFFECTS.iterator(); iter.hasNext(); ) {
-			ShakeEffect effect = iter.next();
-			if (effect.tick()) iter.remove();
-		}
 
 		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
@@ -267,7 +261,6 @@ public class CBCClientCommon {
 
 		if (player != null && camera.getEntity() == player && player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
 			Direction dir = poce.getInitialOrientation();
-			Vec3 normal = new Vec3(dir.step());
 			Direction up = Direction.UP; // TODO: up and down cases
 
 			Vec3 upNormal = new Vec3(up.step());
@@ -286,29 +279,11 @@ public class CBCClientCommon {
 			setPitch.accept(poce.getViewXRot((float) partialTicks) * sgn);
 			setRoll.accept(0f);
 		}
-
-		float dy = 0;
-		float dp = 0;
-		float dr = 0;
-		for (ShakeEffect shakeEffect : ACTIVE_SHAKE_EFFECTS) {
-			float f = shakeEffect.getProgressNormalized((float) partialTicks);
-			float f1 = f * f;
-			float f2 = shakeEffect.getProgress((float) partialTicks);
-			dy += shakeEffect.magnitude * f1 * shakeEffect.yawNoise.getValue(0, f2, false);
-			dp += shakeEffect.magnitude * f1 * shakeEffect.pitchNoise.getValue(0, f2, false);
-			dr += shakeEffect.magnitude * f1 * shakeEffect.rollNoise.getValue(0, f2, false);
-		}
-		float s = mc.options.screenEffectScale;
-		setYaw.accept(yaw.get() + dy * s);
-		setPitch.accept(pitch.get() + dp * s);
-		setRoll.accept(roll.get() + dr * s);
 		return false;
 	}
 
-	public static void addShakeEffect(ShakeEffect effect) { ACTIVE_SHAKE_EFFECTS.add(effect); }
-
 	public static void onPlayerLogOut(LocalPlayer player) {
-		ACTIVE_SHAKE_EFFECTS.clear();
+		// Keeping this code around in case we ever need it... --ritchie
 	}
 
 }
