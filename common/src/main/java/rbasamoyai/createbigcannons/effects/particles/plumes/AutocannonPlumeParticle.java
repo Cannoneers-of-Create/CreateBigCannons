@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.effects;
+package rbasamoyai.createbigcannons.effects.particles.plumes;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;

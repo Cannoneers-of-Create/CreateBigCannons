@@ -11,12 +11,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import rbasamoyai.createbigcannons.effects.AutocannonPlumeParticleData;
-import rbasamoyai.createbigcannons.effects.BigCannonPlumeParticleData;
-import rbasamoyai.createbigcannons.effects.CannonSmokeParticleData;
-import rbasamoyai.createbigcannons.effects.DropMortarPlumeParticleData;
-import rbasamoyai.createbigcannons.effects.SmokeShellSmokeParticleData;
-import rbasamoyai.createbigcannons.effects.TrailSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.plumes.DropMortarPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.CannonSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.SmokeShellSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 

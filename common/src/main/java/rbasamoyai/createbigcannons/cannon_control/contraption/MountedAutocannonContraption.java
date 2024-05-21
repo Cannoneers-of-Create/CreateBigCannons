@@ -51,7 +51,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMateria
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.effects.AutocannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -324,7 +324,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		float recoilMagnitude = properties.baseRecoil();
 
-		boolean isTracer = CBCConfigs.SERVER.munitions.allProjectilesAreTracers.get() || round.isTracer(foundProjectile);
+		boolean isTracer = CBCConfigs.SERVER.munitions.allAutocannonProjectilesAreTracers.get() || round.isTracer(foundProjectile);
 
 		AbstractAutocannonProjectile<?> projectile = round.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {

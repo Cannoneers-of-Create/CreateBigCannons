@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.effects;
+package rbasamoyai.createbigcannons.effects.particles.plumes;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
@@ -11,6 +11,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.effects.particles.smoke.CannonSmokeParticleData;
 
 public class BigCannonPlumeParticle extends NoRenderParticle {
 

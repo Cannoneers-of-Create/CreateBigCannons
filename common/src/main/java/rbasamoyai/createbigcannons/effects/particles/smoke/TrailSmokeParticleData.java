@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.effects;
+package rbasamoyai.createbigcannons.effects.particles.smoke;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
