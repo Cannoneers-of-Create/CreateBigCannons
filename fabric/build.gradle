@@ -55,6 +55,9 @@ repositories {
 			includeGroup("com.rbasamoyai")
 		}
 	}
+	flatDir {
+		dir "./libs"
+	}
 }
 
 dependencies {
@@ -93,7 +96,7 @@ dependencies {
 
 	annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-fabric:${mixinextras_version}"))) // MixinExtras
 
-	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-fabric")) { transitive = false } // Ritchie's Projectile Library
+	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-fabric-build.${rpl_build}")) { transitive = false } // Ritchie's Projectile Library
 
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam

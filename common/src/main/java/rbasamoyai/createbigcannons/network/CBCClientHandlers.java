@@ -12,10 +12,8 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.effects.ShakeEffect;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
 
 public class CBCClientHandlers {
@@ -61,11 +59,6 @@ public class CBCClientHandlers {
 		if (entity == null) return;
 
 		entity.lerpTo(entity.getX(), entity.getY(), entity.getZ(), pkt.yRot(), pkt.xRot(), 3, false);
-	}
-
-	public static void addShakeEffect(ClientboundAddShakeEffectPacket pkt) {
-		Minecraft mc = Minecraft.getInstance();
-		if (mc.player != null) CBCClientCommon.addShakeEffect(new ShakeEffect(pkt.seed(), pkt.time(), pkt.magnitude()));
 	}
 
 	public static void updateFluidBlob(ClientboundFluidBlobStackSyncPacket pkt) {
