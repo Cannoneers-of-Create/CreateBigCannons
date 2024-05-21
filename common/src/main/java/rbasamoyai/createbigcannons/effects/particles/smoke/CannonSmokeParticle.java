@@ -14,6 +14,7 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 	private final float maxSize;
 	private final int shiftTime;
 	private final int startShiftTime;
+	private float brightness;
 
 	CannonSmokeParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float size, SpriteSet sprites, int shiftTime, int startShiftTime, float friction) {
 		super(level, x, y, z, 0.1f, 0.1f, 0.1f, dx, dy, dz, 1, sprites, 0, 8, -0.05f, true);
@@ -23,6 +24,7 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 		this.lifetime = 200;
 		this.shiftTime = shiftTime;
 		this.maxSize = size;
+		this.brightness = 1.0f;
 	}
 
 	@Override
@@ -45,26 +47,41 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 			this.rCol = 1f;
 			this.gCol = 1f;
 			this.bCol = 0.85f;
+			this.brightness = 1.0f;
 		} else if (progress < 0.3f) {
 			float progress1 = (progress - 0.2f) / 0.1f;
 			this.rCol = 1f; //Mth.lerp(progress1, 1f, 1f);
 			this.gCol = Mth.lerp(progress1, 1f, 0.58f);
 			this.bCol = Mth.lerp(progress1, 0.85f, 0.2f);
+			this.brightness = Mth.lerp(progress1, 1.0f, 0.8f);
 		} else if (progress < 0.8f) {
 			float progress1 = (progress - 0.3f) / 0.5f;
 			this.rCol = Mth.lerp(progress1, 1f, 0.29f);
 			this.gCol = Mth.lerp(progress1, 0.58f, 0.27f);
 			this.bCol = Mth.lerp(progress1, 0.2f, 0.25f);
+			this.brightness = Mth.lerp(progress1, 0.8f, 0);
 		} else {
 			this.rCol = 0.29f;
 			this.gCol = 0.27f;
 			this.bCol = 0.25f;
+			this.brightness = 0;
 		}
 	}
 
 	@Override
 	public ParticleRenderType getRenderType() {
 		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+	}
+
+	@Override
+	public int getLightColor(float partialTick) {
+		int i = super.getLightColor(partialTick);
+		int j = i & 0xFF;
+		int k = i >> 16 & 0xFF;
+		j += (int)(this.brightness * 240f);
+		if (j > 240)
+			j = 240;
+		return j | k << 16;
 	}
 
 	public static class Provider implements ParticleProvider<CannonSmokeParticleData> {
