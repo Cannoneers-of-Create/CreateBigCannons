@@ -125,7 +125,7 @@ public class CBCBlockEntities {
 		.blockEntity("fuzed_block", FuzedBlockEntity::new)
 		.instance(() -> FuzedBlockInstance::new)
 		.renderer(() -> FuzedBlockEntityRenderer::new)
-		.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL)
+		.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL, CBCBlocks.DROP_MORTAR_SHELL, CBCBlocks.SMOKE_SHELL)
 		.register();
 
 	public static final BlockEntityEntry<AbstractFluidShellBlockEntity> FLUID_SHELL = REGISTRATE

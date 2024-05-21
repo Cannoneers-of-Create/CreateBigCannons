@@ -43,6 +43,7 @@ Fixed:
 - Fixed Disable All Failures config option not disabling squibbing
 - Fixed manual autocannons breaking on tick after squib
 - Fixed Create Big Cannons projectiles exceeding 10 m/gt (200 m/gt) losing their velocity when loaded
+- Fixed Smoke Shell and Drop Mortar Shell being invalid blocks for createbigcannons:fuzed_block block entity
 
 ===
 
