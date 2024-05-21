@@ -28,7 +28,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
-import rbasamoyai.createbigcannons.effects.BigCannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
 public class CannonMountScenes {

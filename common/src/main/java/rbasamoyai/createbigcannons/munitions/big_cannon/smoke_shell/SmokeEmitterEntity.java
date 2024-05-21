@@ -10,7 +10,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import rbasamoyai.createbigcannons.effects.SmokeShellSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.SmokeShellSmokeParticleData;
 
 public class SmokeEmitterEntity extends Entity {
 

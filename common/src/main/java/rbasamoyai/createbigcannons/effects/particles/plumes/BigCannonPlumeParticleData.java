@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.effects;
+package rbasamoyai.createbigcannons.effects.particles.plumes;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -14,34 +14,34 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
-public class AutocannonPlumeParticleData implements ParticleOptions, ICustomParticleData<AutocannonPlumeParticleData> {
+public class BigCannonPlumeParticleData implements ParticleOptions, ICustomParticleData<BigCannonPlumeParticleData> {
 
-	public static final Codec<AutocannonPlumeParticleData> CODEC = RecordCodecBuilder.create(i -> i
+	public static final Codec<BigCannonPlumeParticleData> CODEC = RecordCodecBuilder.create(i -> i
 		.group(Codec.FLOAT.fieldOf("scale")
 			.forGetter(data -> data.scale))
-		.apply(i, AutocannonPlumeParticleData::new));
+		.apply(i, BigCannonPlumeParticleData::new));
 
 	@SuppressWarnings("deprecation")
-	public static final Deserializer<AutocannonPlumeParticleData> DESERIALIZER = new Deserializer<>() {
+	public static final Deserializer<BigCannonPlumeParticleData> DESERIALIZER = new Deserializer<>() {
         @Override
-        public AutocannonPlumeParticleData fromNetwork(ParticleType<AutocannonPlumeParticleData> type, FriendlyByteBuf buf) {
-            return new AutocannonPlumeParticleData(buf.readFloat());
+        public BigCannonPlumeParticleData fromNetwork(ParticleType<BigCannonPlumeParticleData> type, FriendlyByteBuf buf) {
+            return new BigCannonPlumeParticleData(buf.readFloat());
         }
 
         @Override
-        public AutocannonPlumeParticleData fromCommand(ParticleType<AutocannonPlumeParticleData> type, StringReader reader) throws CommandSyntaxException {
+        public BigCannonPlumeParticleData fromCommand(ParticleType<BigCannonPlumeParticleData> type, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
-            return new AutocannonPlumeParticleData(reader.readFloat());
+            return new BigCannonPlumeParticleData(reader.readFloat());
         }
     };
 
 	private final float scale;
 
-	public AutocannonPlumeParticleData(float scale) {
+	public BigCannonPlumeParticleData(float scale) {
 		this.scale = scale;
 	}
 
-	public AutocannonPlumeParticleData() {
+	public BigCannonPlumeParticleData() {
 		this(0);
 	}
 
@@ -52,7 +52,7 @@ public class AutocannonPlumeParticleData implements ParticleOptions, ICustomPart
 
 	@Override
 	public ParticleType<?> getType() {
-		return CBCParticleTypes.AUTOCANNON_PLUME.get();
+		return CBCParticleTypes.BIG_CANNON_PLUME.get();
 	}
 
 	@Override
@@ -66,19 +66,19 @@ public class AutocannonPlumeParticleData implements ParticleOptions, ICustomPart
 	}
 
 	@Override
-	public Deserializer<AutocannonPlumeParticleData> getDeserializer() {
+	public Deserializer<BigCannonPlumeParticleData> getDeserializer() {
 		return DESERIALIZER;
 	}
 
 	@Override
-	public Codec<AutocannonPlumeParticleData> getCodec(ParticleType<AutocannonPlumeParticleData> type) {
+	public Codec<BigCannonPlumeParticleData> getCodec(ParticleType<BigCannonPlumeParticleData> type) {
 		return CODEC;
 	}
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public ParticleProvider<AutocannonPlumeParticleData> getFactory() {
-		return new AutocannonPlumeParticle.Provider();
+	public ParticleProvider<BigCannonPlumeParticleData> getFactory() {
+		return new BigCannonPlumeParticle.Provider();
 	}
 
 }

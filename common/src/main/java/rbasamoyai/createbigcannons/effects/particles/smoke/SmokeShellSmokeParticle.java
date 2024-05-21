@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.effects;
+package rbasamoyai.createbigcannons.effects.particles.smoke;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.BaseAshSmokeParticle;

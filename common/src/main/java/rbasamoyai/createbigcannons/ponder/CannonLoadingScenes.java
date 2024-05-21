@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
-import rbasamoyai.createbigcannons.effects.BigCannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;

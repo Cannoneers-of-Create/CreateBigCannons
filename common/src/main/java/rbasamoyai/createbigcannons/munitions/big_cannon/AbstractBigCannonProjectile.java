@@ -13,7 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.effects.TrailSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 

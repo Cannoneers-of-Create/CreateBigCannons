@@ -52,8 +52,8 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMateria
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-import rbasamoyai.createbigcannons.effects.BigCannonPlumeParticleData;
-import rbasamoyai.createbigcannons.effects.DropMortarPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.plumes.DropMortarPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
