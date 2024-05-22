@@ -8,9 +8,8 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
-public class MortarStoneBlock extends ProjectileBlock<MortarStoneProperties> {
+public class MortarStoneBlock extends ProjectileBlock<MortarStoneProperties, MortarStoneProjectile> {
 
     public MortarStoneBlock(Properties properties) {
         super(properties);
@@ -22,7 +21,7 @@ public class MortarStoneBlock extends ProjectileBlock<MortarStoneProperties> {
     }
 
 	@Override
-	public EntityType<? extends PropertiesMunitionEntity<? extends MortarStoneProperties>> getAssociatedEntityType() {
+	public EntityType<? extends MortarStoneProjectile> getAssociatedEntityType() {
 		return CBCEntityTypes.MORTAR_STONE.get();
 	}
 

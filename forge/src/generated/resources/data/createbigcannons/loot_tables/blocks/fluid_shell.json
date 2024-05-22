@@ -17,8 +17,8 @@
               "source": "block_entity",
               "ops": [
                 {
-                  "source": "Fuze",
-                  "target": "BlockEntityTag.Fuze",
+                  "source": "Tracer",
+                  "target": "BlockEntityTag.Tracer",
                   "op": "replace"
                 },
                 {
@@ -29,6 +29,11 @@
                 {
                   "source": "FluidContent",
                   "target": "BlockEntityTag.FluidContent",
+                  "op": "replace"
+                },
+                {
+                  "source": "Fuze",
+                  "target": "BlockEntityTag.Fuze",
                   "op": "replace"
                 }
               ]

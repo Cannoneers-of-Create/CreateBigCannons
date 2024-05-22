@@ -90,6 +90,9 @@ public class CBCPonderIndex {
 		HELPER.forComponents(AllBlocks.PISTON_EXTENSION_POLE)
 			.addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons)
 			.addStoryBoard("cannon_loader/base_contraption_loading", CannonLoadingScenes::baseContraptionLoadingBigCannons);
+
+		HELPER.forComponents(CBCItems.TRACER_TIP)
+			.addStoryBoard("munitions/adding_tracers", CannonLoadingScenes::addingTracers);
 	}
 
 	public static void registerTags() {
@@ -131,6 +134,7 @@ public class CBCPonderIndex {
 			.add(CBCItems.TIMED_FUZE)
 			.add(CBCItems.PROXIMITY_FUZE)
 			.add(CBCItems.DELAYED_IMPACT_FUZE)
+			.add(CBCItems.TRACER_TIP)
 			.add(CBCBlocks.AUTOCANNON_AMMO_CONTAINER)
 			.add(CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER);
 
