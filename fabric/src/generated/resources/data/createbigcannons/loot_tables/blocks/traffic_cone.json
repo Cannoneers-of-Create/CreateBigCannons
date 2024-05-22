@@ -7,12 +7,29 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Tracer",
+                  "target": "BlockEntityTag.Tracer",
+                  "op": "replace"
+                },
+                {
+                  "source": "id",
+                  "target": "BlockEntityTag.id",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
           "name": "createbigcannons:traffic_cone"
-        }
-      ],
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
         }
       ]
     }

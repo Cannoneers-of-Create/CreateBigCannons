@@ -321,7 +321,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					return;
 				}
 				emptyNoProjectile = false;
-			} else if (block instanceof ProjectileBlock<?> projBlock && projectile == null) {
+			} else if (block instanceof ProjectileBlock<?, ?> projBlock && projectile == null) {
 				if (canFail && emptyNoProjectile && rollFailToIgnite(rand)) {
 					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cannonInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
@@ -334,7 +334,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				for (ListIterator<StructureBlockInfo> projIter = projectileBlocks.listIterator(); projIter.hasNext(); ) {
 					int i = projIter.nextIndex();
 					StructureBlockInfo projInfo = projIter.next();
-					if (projInfo.state.getBlock() instanceof ProjectileBlock<?> cproj1 && cproj1.isValidAddition(copy, projInfo, i, this.initialOrientation)) continue;
+					if (projInfo.state.getBlock() instanceof ProjectileBlock<?, ?> cproj1 && cproj1.isValidAddition(copy, projInfo, i, this.initialOrientation)) continue;
 					if (canFail) this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
 					return;
 				}
@@ -367,7 +367,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		}
 		if (projectile == null && !projectileBlocks.isEmpty()) {
 			StructureBlockInfo info = projectileBlocks.get(0);
-			if (!(info.state.getBlock() instanceof ProjectileBlock<?> projBlock)) {
+			if (!(info.state.getBlock() instanceof ProjectileBlock<?, ?> projBlock)) {
 				if (canFail) this.fail(currentPos, level, entity, null, (int) propelCtx.chargesUsed);
 				return;
 			}
@@ -388,7 +388,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				for (ListIterator<StructureBlockInfo> projIter = projectileBlocks.listIterator(); projIter.hasNext(); ) {
 					int j = projIter.nextIndex();
 					StructureBlockInfo projInfo = projIter.next();
-					if (projInfo.state.getBlock() instanceof ProjectileBlock<?> cproj1 && cproj1.isValidAddition(copy, projInfo, j, this.initialOrientation)) continue;
+					if (projInfo.state.getBlock() instanceof ProjectileBlock<?, ?> cproj1 && cproj1.isValidAddition(copy, projInfo, j, this.initialOrientation)) continue;
 					if (canFail) this.fail(currentPos, level, entity, null, (int) propelCtx.chargesUsed);
 					return;
 				}

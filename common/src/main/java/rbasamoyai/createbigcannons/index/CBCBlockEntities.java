@@ -44,6 +44,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntityRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockInstance;
@@ -119,6 +120,11 @@ public class CBCBlockEntities {
 	public static final BlockEntityEntry<CannonCarriageBlockEntity> CANNON_CARRIAGE = REGISTRATE
 		.blockEntity("cannon_carriage", CannonCarriageBlockEntity::new)
 		.validBlock(CBCBlocks.CANNON_CARRIAGE)
+		.register();
+
+	public static final BlockEntityEntry<BigCannonProjectileBlockEntity> PROJECTILE_BLOCK = REGISTRATE
+		.blockEntity("projectile_block", BigCannonProjectileBlockEntity::new)
+		.validBlocks(CBCBlocks.SOLID_SHOT, CBCBlocks.AP_SHOT, CBCBlocks.TRAFFIC_CONE)
 		.register();
 
 	public static final BlockEntityEntry<FuzedBlockEntity> FUZED_BLOCK = REGISTRATE

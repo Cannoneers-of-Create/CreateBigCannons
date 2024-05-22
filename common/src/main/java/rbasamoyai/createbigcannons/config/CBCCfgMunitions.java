@@ -12,7 +12,11 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat penetrationBonusScale = f(0.1f, 0, "penetrationBonusScale");
 	public final ConfigBool projectilesCanChunkload = b(true, "projectilesCanChunkload");
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
+
+	public final ConfigGroup bigCannonMunitions = group(0, "bigCannonMunitions", "Big Cannon Munitions");
 	public final ConfigEnum<AbstractBigCannonProjectile.TrailType> bigCannonTrailType = e(AbstractBigCannonProjectile.TrailType.SHORT, "trailType");
+	public final ConfigBool allBigCannonProjectilesAreTracers = b(false, "allBigCannonProjectilesAreTracers", Comments.allBigCannonProjectilesAreTracers);
+
 
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes");
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
@@ -29,7 +33,7 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat autocannonDeflectChance = f(0.2f, 0, 1, "autocannonProjectileDeflectionChance", Comments.autocannonDeflectChance);
 
 	public final ConfigGroup autocannonMunitions = group(0, "autocannonMunitions", "Autocannon Munitions");
-	public final ConfigBool allProjectilesAreTracers = b(false, "allAutocannonProjectilesAreTracers", Comments.allProjectilesAreTracers);
+	public final ConfigBool allAutocannonProjectilesAreTracers = b(false, "allAutocannonProjectilesAreTracers", Comments.allAutocannonProjectilesAreTracers);
 	public final ConfigInt ammoContainerAutocannonRoundCapacity = i(16, 1, 128, "autocannonAmmoContainerAutocannonRoundCapacity", Comments.ammoContainerAutocannonRoundCapacity);
 	public final ConfigInt ammoContainerMachineGunRoundCapacity = i(64, 1, 128, "autocannonAmmoContainerMachineGunRoundCapacity", Comments.ammoContainerMachineGunRoundCapacity);
 
@@ -51,7 +55,8 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String fluidBlobBlockAffectChance = "The chance of a fluid blob affecting a block in its area of effect (AOE). 0 is 0% (never), 1 is 100% (always).";
 		static String bigCannonDeflectChance = "The chance that a big cannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
 		static String autocannonDeflectChance = "The chance that an autocannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
-		static String allProjectilesAreTracers = "Makes all shot autocannon projectiles tracers regardless if the item had a tracer tip applied. Emulates legacy behavior.";
+		static String allAutocannonProjectilesAreTracers = "Makes all shot autocannon projectiles tracers regardless if the item had a tracer tip applied. Emulates legacy behavior.";
+		static String allBigCannonProjectilesAreTracers = "Makes all shot big cannon projectiles tracers regardless if the item had a tracer tip applied.";
 		static String ammoContainerAutocannonRoundCapacity = "How many autocannon rounds the Autocannon Ammo Container can store.";
 		static String ammoContainerMachineGunRoundCapacity = "How many machine gun rounds the Autocannon Ammo Container can store.";
 		static String minVelocityForPenetrationBonus = "The minimum velocity necessary to activate the penetration bonus.";

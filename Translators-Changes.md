@@ -16,7 +16,12 @@ Additions: \
 &plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.durability": "Durability"` \
 &plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."` \
 &plus; `"item.createbigcannons.impact_fuze.tooltip.durability": "Durability"` \
-&plus; `"item.createbigcannons.impact_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."`
+&plus; `"item.createbigcannons.impact_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.header": "Adding tracers to big cannon projectiles"` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_1": "In addition to autocannon munitions, tracers can also be added to big cannon projectiles."` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_2": "Unlike fuzing, tracer tips can be applied to any side of the projectile block."` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_3": "Right-click the projectile with an empty hand to remove any tracers present."` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_4": "As with fuzing, tracer application can be automated with Deployers."`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \

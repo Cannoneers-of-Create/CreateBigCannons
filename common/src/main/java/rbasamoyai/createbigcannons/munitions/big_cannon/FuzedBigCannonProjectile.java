@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
+import java.util.function.Predicate;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -9,8 +11,6 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-import java.util.function.Predicate;
-
 public abstract class FuzedBigCannonProjectile<T extends FuzedBigCannonProjectileProperties> extends AbstractBigCannonProjectile<T> {
 
 	private ItemStack fuze = ItemStack.EMPTY;
@@ -19,7 +19,7 @@ public abstract class FuzedBigCannonProjectile<T extends FuzedBigCannonProjectil
 		super(type, level);
 	}
 
-	public void setFuze(ItemStack stack) { this.fuze = stack == null ? ItemStack.EMPTY : stack; }
+	public void setFuze(ItemStack stack) { this.fuze = stack == null || stack.isEmpty() ? ItemStack.EMPTY : stack; }
 
 	@Override
 	public void tick() {

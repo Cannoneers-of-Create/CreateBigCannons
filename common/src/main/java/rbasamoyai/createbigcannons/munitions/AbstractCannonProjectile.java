@@ -65,13 +65,14 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 
 			if (this.isInGround()) {
 				this.setDeltaMovement(Vec3.ZERO);
-				if (this.shouldFall()) {
-					this.setInGround(false);
-				} else if (!this.level.isClientSide) {
-					if (!this.canLingerInGround()) this.inGroundTime++;
-
-					if (this.inGroundTime == 400) {
-						this.discard();
+				if (!this.level.isClientSide) {
+					if (this.shouldFall()) {
+						this.setInGround(false);
+					} else if (!this.canLingerInGround()) {
+						this.inGroundTime++;
+						if (this.inGroundTime == 400) {
+							this.discard();
+						}
 					}
 				}
 			} else {

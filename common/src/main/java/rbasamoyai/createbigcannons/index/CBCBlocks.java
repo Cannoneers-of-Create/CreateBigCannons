@@ -71,6 +71,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBl
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.FuzedProjectileBlockItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlockItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellBlock;
@@ -955,7 +956,8 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/solid_shot"))
-		.item()
+		.loot(CBCBuilderTransformers.tracerProjectileLoot())
+		.item(ProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -990,8 +992,9 @@ public class CBCBlocks {
 		.transform(shell(MaterialColor.COLOR_LIGHT_GRAY))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/ap_shot"))
+		.loot(CBCBuilderTransformers.tracerProjectileLoot())
 		.lang("Armor Piercing (AP) Shot")
-		.item()
+		.item(ProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1004,6 +1007,7 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.WOOD))
 		.properties(p -> p.noOcclusion())
 		.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/traffic_cone"))))
+		.loot(CBCBuilderTransformers.tracerProjectileLoot())
 		.item(TrafficConeBlockItem::new)
 		.initialProperties(() -> new Item.Properties().rarity(Rarity.EPIC))
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
