@@ -17,6 +17,7 @@
   "mixins": [
     "ArmorStandMixin",
     "EntityMixin",
+    "LivingEntityMixin",
     "PlayerMixin",
     "ServerEntityMixin",
     "compat.create.AbstractContraptionEntityMixin",

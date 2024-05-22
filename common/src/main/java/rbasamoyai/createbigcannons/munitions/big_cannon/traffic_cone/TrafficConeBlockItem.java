@@ -1,5 +1,9 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -28,12 +32,17 @@ public class TrafficConeBlockItem extends BlockItem implements Wearable {
 			if (!level.isClientSide()) {
 				player.awardStat(Stats.ITEM_USED.get(this));
 			}
-
 			itemStack.shrink(1);
 			return InteractionResultHolder.sidedSuccess(itemStack, level.isClientSide());
 		} else {
 			return InteractionResultHolder.fail(itemStack);
 		}
+	}
+
+	@Nullable
+	@Override
+	public SoundEvent getEquipSound() {
+		return SoundEvents.ARMOR_EQUIP_GENERIC;
 	}
 
 }
