@@ -345,7 +345,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				if (projBlock.isComplete(projectileBlocks, this.initialOrientation)) {
 					projectile = projBlock.getProjectile(level, projectileBlocks);
 					propelCtx.chargesUsed += projectile.addedChargePower();
-					if (canFail && propelCtx.chargesUsed < projectile.minimumChargePower()) {
+					if (propelCtx.chargesUsed < projectile.minimumChargePower()) {
 						this.squibBlocks(assemblyPos, projectileBlocks);
 						return;
 					}
