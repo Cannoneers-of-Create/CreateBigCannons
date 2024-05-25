@@ -39,6 +39,7 @@ Changed:
  - Both still use the same textures and particle definition by default
 - Changed how big cannon plumes look
 - Changed description of some ponder categories
+- Rework cannon plume to use better particles
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
