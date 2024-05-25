@@ -445,7 +445,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		float shakeDistance = propelCtx.chargesUsed * 6;
 		Vec3 plumePos = spawnPos.subtract(vec);
 		for (ServerPlayer player : level.players()) {
-			level.sendParticles(player, new BigCannonPlumeParticleData(propelCtx.smokeScale * 0.25f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
+			level.sendParticles(player, new BigCannonPlumeParticleData(propelCtx.smokeScale, propelCtx.chargesUsed, 10),
+				true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
 			float dist = player.distanceTo(entity);
 			if (dist < shakeDistance && shakeDistance > 0.1f) {
 				float f = 1 - dist / shakeDistance;

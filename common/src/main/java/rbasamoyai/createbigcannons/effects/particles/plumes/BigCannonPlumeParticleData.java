@@ -17,38 +17,50 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 public class BigCannonPlumeParticleData implements ParticleOptions, ICustomParticleData<BigCannonPlumeParticleData> {
 
 	public static final Codec<BigCannonPlumeParticleData> CODEC = RecordCodecBuilder.create(i -> i
-		.group(Codec.FLOAT.fieldOf("scale")
-			.forGetter(data -> data.scale))
+		.group(Codec.FLOAT.fieldOf("size")
+			.forGetter(data -> data.size),
+		Codec.FLOAT.fieldOf("power")
+			.forGetter(data -> data.power),
+		Codec.INT.fieldOf("lifetime")
+			.forGetter(data -> data.lifetime))
 		.apply(i, BigCannonPlumeParticleData::new));
 
 	@SuppressWarnings("deprecation")
 	public static final Deserializer<BigCannonPlumeParticleData> DESERIALIZER = new Deserializer<>() {
         @Override
         public BigCannonPlumeParticleData fromNetwork(ParticleType<BigCannonPlumeParticleData> type, FriendlyByteBuf buf) {
-            return new BigCannonPlumeParticleData(buf.readFloat());
+            return new BigCannonPlumeParticleData(buf.readFloat(), buf.readFloat(), buf.readVarInt());
         }
 
         @Override
         public BigCannonPlumeParticleData fromCommand(ParticleType<BigCannonPlumeParticleData> type, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
-            return new BigCannonPlumeParticleData(reader.readFloat());
+			float size = reader.readFloat();
+            reader.expect(' ');
+			float power = reader.readFloat();
+			reader.expect(' ');
+			int lifetime = reader.readInt();
+            return new BigCannonPlumeParticleData(size, power, lifetime);
         }
     };
 
-	private final float scale;
+	private final float size;
+	private final float power;
+	private final int lifetime;
 
-	public BigCannonPlumeParticleData(float scale) {
-		this.scale = scale;
+	public BigCannonPlumeParticleData(float size, float power, int lifetime) {
+		this.size = size;
+		this.power = power;
+		this.lifetime = lifetime;
 	}
 
-	public BigCannonPlumeParticleData() {
-		this(0);
-	}
+	public BigCannonPlumeParticleData(float size) { this(size, size, 10); }
 
-	public float scale() {
-		return this.scale;
-	}
+	public BigCannonPlumeParticleData() { this(0, 0, 1); }
 
+	public float size() { return this.size; }
+	public float power() { return this.power; }
+	public float lifetime() { return this.lifetime; }
 
 	@Override
 	public ParticleType<?> getType() {
@@ -57,12 +69,14 @@ public class BigCannonPlumeParticleData implements ParticleOptions, ICustomParti
 
 	@Override
 	public void writeToNetwork(FriendlyByteBuf buf) {
-		buf.writeFloat(this.scale);
+		buf.writeFloat(this.size)
+			.writeFloat(this.power);
+		buf.writeVarInt(this.lifetime);
 	}
 
 	@Override
 	public String writeToString() {
-		return String.format("%f", this.scale);
+		return String.format("%f %f %d", this.size, this.power, this.lifetime);
 	}
 
 	@Override

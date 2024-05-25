@@ -9,6 +9,7 @@
     "client.CannonMountDisplaySourceMixin",
     "client.EntityClientMixin",
     "client.EntityRenderDispatcherMixin",
+    "client.GameRendererMixin",
     "client.HumanoidPoseMixin",
     "client.PitchOrientedContraptionEntityMixin",
     "client.PoleContraptionMixin",
