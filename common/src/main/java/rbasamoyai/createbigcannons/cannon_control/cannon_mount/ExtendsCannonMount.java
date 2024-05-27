@@ -11,6 +11,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.Mth;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
@@ -40,10 +41,10 @@ public interface ExtendsCannonMount {
 			String precision = CBCConfigs.CLIENT.cannonMountAngleGoggleTooltipPrecision.get().toString();
 			String format = "%." + precision + "f\u00ba";
 			Lang.builder().add(cannonYawComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Components.literal(String.format(format, mountedContraption.yaw)).withStyle(ChatFormatting.WHITE)))
+					.append(Components.literal(String.format(format, Mth.wrapDegrees(mountedContraption.yaw))).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
 			Lang.builder().add(cannonPitchComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Components.literal(String.format(format, pitch)).withStyle(ChatFormatting.WHITE)))
+					.append(Components.literal(String.format(format, Mth.wrapDegrees(pitch))).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
 			if (cannon instanceof MountedBigCannonContraption bigCannon) {
 				Lang.builder().add(bigCannonStrengthComponent.copy().withStyle(ChatFormatting.GRAY)
