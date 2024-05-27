@@ -33,7 +33,9 @@ Added:
  - Screen shake power (server)
  - Screen shake propagation speed (server)
   - The faster it is, the less delay there is for players at a distance
-- Added cannon mount angle goggle display precision config option, ranges from 0 to 4 digits
+- Added cannon mount angle goggle display config options
+ - Added config for angle precision; ranges from 0 to 4 digits
+ - Added config for yaw display range; can either be -180 to +180 degrees or 0 to +360 degrees, defaults to the latter
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:
