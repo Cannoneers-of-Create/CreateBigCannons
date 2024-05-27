@@ -4,7 +4,7 @@ Changelog
 
 "messi messi messi immens messi encara messi encara messi encara messi"
 
-Create Big Cannons 5.5.0, with a few bug fixes and minor changes.
+Create Big Cannons 5.5.0, with many bug fixes and QoL changes.
 Comes with version formatting change, but gameplay changes are otherwise not major.
 
 Added:
@@ -33,6 +33,7 @@ Added:
  - Screen shake power (server)
  - Screen shake propagation speed (server)
   - The faster it is, the less delay there is for players at a distance
+- Added cannon mount angle goggle display precision config option, ranges from 0 to 4 digits
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:
@@ -46,6 +47,7 @@ Changed:
 - Changed how big cannon plumes look
 - Changed description of some ponder categories
 - Rework cannon plume to use better particles
+- Changed default cannon mount angle goggle display precision from 1 to 2 digits
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head

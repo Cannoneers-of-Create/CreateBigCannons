@@ -16,6 +16,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCan
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public interface ExtendsCannonMount {
 
@@ -36,11 +37,13 @@ public interface ExtendsCannonMount {
 			float pitch = flag ? mountedContraption.pitch : -mountedContraption.pitch;
 			if (Math.abs(pitch) < 1e-1f) pitch = 0;
 
+			String precision = CBCConfigs.CLIENT.cannonMountAngleGoggleTooltipPrecision.get().toString();
+			String format = "%." + precision + "f\u00ba";
 			Lang.builder().add(cannonYawComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Components.literal(String.format("%.1f\u00ba", mountedContraption.yaw)).withStyle(ChatFormatting.WHITE)))
+					.append(Components.literal(String.format(format, mountedContraption.yaw)).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
 			Lang.builder().add(cannonPitchComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Components.literal(String.format("%.1f\u00ba", pitch)).withStyle(ChatFormatting.WHITE)))
+					.append(Components.literal(String.format(format, pitch)).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
 			if (cannon instanceof MountedBigCannonContraption bigCannon) {
 				Lang.builder().add(bigCannonStrengthComponent.copy().withStyle(ChatFormatting.GRAY)
