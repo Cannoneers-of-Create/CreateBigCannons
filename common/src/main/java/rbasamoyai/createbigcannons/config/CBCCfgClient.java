@@ -7,7 +7,9 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigBool showAutocannonPlumes = b(true, "showAutocannonPlumes");
 	public final ConfigBool showDropMortarPlumes = b(true, "showDropMortarPlumes");
 	public final ConfigInt fluidBlobParticleCount = i(20, 0, 1000, "fluidBlobParticleCount", Comments.fluidBlobParticleCount);
-	public final ConfigFloat cannonScreenShakeIntensity = f(1, 0, 1, "cannonScreenShakeIntensity");
+
+	public final ConfigGroup screenShake = group(1, "screenShake", "Screen Shake");
+	public final ConfigFloat cannonScreenShakeIntensity = f(1, 0, 2, "cannonScreenShakeIntensity");
 
 	public final ConfigGroup bigCannonPlumes = group(1, "bigCannonPlumes", "Big Cannon Plumes");
 	public final ConfigBool showBigCannonPlumes = b(true, "showBigCannonPlumes");

@@ -442,7 +442,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		this.hasFired = true;
 
-		float shakeDistance = propelCtx.chargesUsed * 6;
+		float shakeDistance = propelCtx.chargesUsed * CBCConfigs.SERVER.cannons.bigCannonShakeDistanceMultiplier.getF();
+		float shakePower = propelCtx.chargesUsed * CBCConfigs.SERVER.cannons.bigCannonShakePowerMultiplier.getF();
+		int propagationSpeed = CBCConfigs.SERVER.cannons.bigCannonShakePropagationSpeed.get();
 		Vec3 plumePos = spawnPos.subtract(vec);
 		for (ServerPlayer player : level.players()) {
 			level.sendParticles(player, new BigCannonPlumeParticleData(propelCtx.smokeScale, propelCtx.chargesUsed, 10),
@@ -451,8 +453,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			if (dist < shakeDistance && shakeDistance > 0.1f) {
 				float f = 1 - dist / shakeDistance;
 				float f2 = f * f;
-				float shake = Math.min(45, shakeDistance * f2);
-				CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(50, shake));
+				float shake = Math.min(45, shakePower * f2);
+				int delay = propagationSpeed == 0 ? 0 : Mth.floor(dist / propagationSpeed);
+				CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(delay, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1));
 			}
 		}
 		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(level, new BlockPos(spawnPos));

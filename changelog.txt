@@ -27,6 +27,12 @@ Added:
 - Added ability to add Tracer Tips to big cannon projectiles
  - Added config to make all big cannon projectiles have tracers regardless if they have tracers, where applicable
  - Solid Shot and AP Shot now have block entities to allow tracer placement. Blocks missing them may need to be replaced.
+- Added screen shake config options
+ - Screen shake intensity (client)
+ - Screen shake range (server)
+ - Screen shake power (server)
+ - Screen shake propagation speed (server)
+  - The faster it is, the less delay there is for players at a distance
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:
