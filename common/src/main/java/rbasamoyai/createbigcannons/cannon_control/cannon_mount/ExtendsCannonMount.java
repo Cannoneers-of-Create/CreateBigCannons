@@ -39,9 +39,15 @@ public interface ExtendsCannonMount {
 			if (Math.abs(pitch) < 1e-1f) pitch = 0;
 
 			String precision = CBCConfigs.CLIENT.cannonMountAngleGoggleTooltipPrecision.get().toString();
+			float yaw;
+			if (CBCConfigs.CLIENT.use180180RangeForYaw.get()) {
+				yaw = Mth.wrapDegrees(mountedContraption.yaw);
+			} else {
+				yaw = Mth.positiveModulo(mountedContraption.yaw, 360);
+			}
 			String format = "%." + precision + "f\u00ba";
 			Lang.builder().add(cannonYawComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Components.literal(String.format(format, Mth.wrapDegrees(mountedContraption.yaw))).withStyle(ChatFormatting.WHITE)))
+					.append(Components.literal(String.format(format, yaw)).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
 			Lang.builder().add(cannonPitchComponent.copy().withStyle(ChatFormatting.GRAY)
 					.append(Components.literal(String.format(format, Mth.wrapDegrees(pitch))).withStyle(ChatFormatting.WHITE)))
