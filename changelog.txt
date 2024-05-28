@@ -50,6 +50,7 @@ Changed:
 - Changed description of some ponder categories
 - Rework cannon plume to use better particles
 - Changed default cannon mount angle goggle display precision from 1 to 2 digits
+- Improved cannon heating ponder information to clarify layering
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head

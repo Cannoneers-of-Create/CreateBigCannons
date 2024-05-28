@@ -21,7 +21,8 @@ Additions: \
 &plus; `"createbigcannons.ponder.munitions/adding_tracers.text_1": "In addition to autocannon munitions, tracers can also be added to big cannon projectiles."` \
 &plus; `"createbigcannons.ponder.munitions/adding_tracers.text_2": "Unlike fuzing, tracer tips can be applied to any side of the projectile block."` \
 &plus; `"createbigcannons.ponder.munitions/adding_tracers.text_3": "Right-click the projectile with an empty hand to remove any tracers present."` \
-&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_4": "As with fuzing, tracer application can be automated with Deployers."`
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_4": "As with fuzing, tracer application can be automated with Deployers."` \
+&plus; `"createbigcannons.ponder.cannon_crafting/finishing_built_up_cannons.text_4": "It takes a while for the cannon layers to transform into cannon blocks.",`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \
@@ -34,7 +35,8 @@ Content Changes: \
 `"createbigcannons.ponder.tag.operating_cannons.description"`: `"How to use big cannons safely and effectively"` → `"How to use cannons safely and effectively"` \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.summary"`: `"Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer."` → `"Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"` \
 `"item.createbigcannons.impact_fuze.tooltip.summary"`: `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact."` → `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._",` \
-`"item.createbigcannons.proximity_fuze.tooltip.summary"`: `"Detonates when it _gets close_ to a block."` → `"Detonates when it _gets close_ to a block. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"`
+`"item.createbigcannons.proximity_fuze.tooltip.summary"`: `"Detonates when it _gets close_ to a block."` → `"Detonates when it _gets close_ to a block. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"` \
+`"createbigcannons.ponder.cannon_crafting/finishing_built_up_cannons.text_3"`: `"It takes a while for the cannon layers to transform into cannon blocks."` → `"A built-up cannon block must have all the correct layers to be transformed."`
 
 ## 0.5.3.b → 0.5.4
 
