@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.block_armor_properties;
 
-import net.minecraft.network.chat.TranslatableComponent;
+import com.simibubi.create.foundation.utility.Components;
+
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -25,7 +26,7 @@ public class InspectResistanceToolItem extends Item {
 			String key = "debug." + CreateBigCannons.MOD_ID + ".block_resistance";
 			BlockState state = level.getBlockState(ctx.getClickedPos());
 			double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(level, state, ctx.getClickedPos(), true);
-			player.displayClientMessage(new TranslatableComponent(key, String.format("%.2f", hardness)), true);
+			player.displayClientMessage(Components.translatable(key, String.format("%.2f", hardness)), true);
 		}
 		return super.useOn(ctx);
 	}

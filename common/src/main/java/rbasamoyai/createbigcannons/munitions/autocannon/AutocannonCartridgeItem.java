@@ -5,13 +5,13 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.foundation.utility.Components;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -32,12 +32,12 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
         super.appendHoverText(stack, level, tooltip, flag);
         ItemStack round = getProjectileStack(stack);
         if (!round.isEmpty()) {
-            tooltip.add(new TranslatableComponent("item.minecraft.crossbow.projectile").append(" ").append(round.getDisplayName()));
+            tooltip.add(Components.translatable("item.minecraft.crossbow.projectile").append(" ").append(round.getDisplayName()));
             if (round.getItem() instanceof AutocannonRoundItem) {
                 List<Component> subTooltip = new ArrayList<>();
                 round.getItem().appendHoverText(round, level, subTooltip, flag);
                 for (int i = 0; i < subTooltip.size(); ++i) {
-                    subTooltip.set(i, new TextComponent("  ").append(subTooltip.get(i)).withStyle(ChatFormatting.GRAY));
+                    subTooltip.set(i, Components.literal("  ").append(subTooltip.get(i)).withStyle(ChatFormatting.GRAY));
                 }
                 tooltip.addAll(subTooltip);
             }

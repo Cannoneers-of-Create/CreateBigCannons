@@ -1,20 +1,21 @@
 package rbasamoyai.createbigcannons.crafting;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 import com.google.gson.JsonElement;
+import com.simibubi.create.foundation.utility.Components;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
 
 public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 
@@ -25,7 +26,7 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 		public List<ItemStack> getBlockItems() {
 			if (this.ingredient == null) {
 				this.ingredient = new ArrayList<>(1);
-				this.ingredient.add(new ItemStack(Blocks.BARRIER).setHoverName(new TextComponent("Invalid block")));
+				this.ingredient.add(new ItemStack(Blocks.BARRIER).setHoverName(Components.literal("Invalid block")));
 			}
 			return this.ingredient;
 		}
@@ -85,7 +86,7 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 					this.blocks.add(new ItemStack(holder.value()));
 				}
 				if (this.blocks.isEmpty()) {
-					this.blocks.add(new ItemStack(Blocks.BARRIER).setHoverName(new TextComponent("Empty Tag: " + this.tag.location())));
+					this.blocks.add(new ItemStack(Blocks.BARRIER).setHoverName(Components.literal("Empty Tag: " + this.tag.location())));
 				}
 			}
 			return this.blocks;
