@@ -5,12 +5,12 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -33,13 +33,13 @@ public class FuzedProjectileBlockItem extends ProjectileBlockItem {
 		if (!fuze.isEmpty()) {
 			Lang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
-				.add(new TextComponent(" "))
+				.add(Components.literal(" "))
 				.add(fuze.getDisplayName().copy())
 				.addTo(tooltip);
 			if (fuze.getItem() instanceof FuzeItem) {
 				List<Component> subTooltip = new ArrayList<>();
 				fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
-				subTooltip.replaceAll(sibling -> new TextComponent("  ").append(sibling).withStyle(ChatFormatting.GRAY));
+				subTooltip.replaceAll(sibling -> Components.literal("  ").append(sibling).withStyle(ChatFormatting.GRAY));
 				tooltip.addAll(subTooltip);
 			}
 		}

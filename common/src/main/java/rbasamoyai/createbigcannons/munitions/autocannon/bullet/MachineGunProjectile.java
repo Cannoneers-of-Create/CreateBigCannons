@@ -2,8 +2,9 @@ package rbasamoyai.createbigcannons.munitions.autocannon.bullet;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.foundation.utility.Components;
+
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -34,7 +35,7 @@ public class MachineGunProjectile extends AbstractAutocannonProjectile<Autocanno
 		public Component getLocalizedDeathMessage(LivingEntity livingEntity) {
 			String string = "death.attack." + this.msgId;
 			if (livingEntity.isInWater()) string += ".in_water";
-			return new TranslatableComponent(string, livingEntity.getDisplayName());
+			return Components.translatable(string, livingEntity.getDisplayName());
 		}
 	}
 

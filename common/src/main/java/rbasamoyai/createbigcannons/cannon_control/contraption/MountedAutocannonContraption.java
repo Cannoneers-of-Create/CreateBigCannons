@@ -10,12 +10,12 @@ import java.util.Map;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.foundation.utility.Components;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -199,7 +199,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	}
 
 	public static AssemblyException noAutocannonBreech() {
-		return new AssemblyException(new TranslatableComponent("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.noAutocannonBreech"));
+		return new AssemblyException(Components.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.noAutocannonBreech"));
 	}
 
 	@Override
@@ -388,7 +388,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				ResourceLocation loc = controllerBlock.getTypeId();
 				if (loc != null) key = "." + loc.getNamespace() + "." + loc.getPath();
 			}
-			player.displayClientMessage(new TranslatableComponent("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
+			player.displayClientMessage(Components.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
 				this.getReferencedFireRate()), true);
 		}
 

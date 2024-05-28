@@ -1,27 +1,29 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.flak;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
+import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import javax.annotation.Nullable;
-import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class FlakAutocannonRoundItem extends AutocannonRoundItem implements FuzedItemMunition {
 
@@ -47,13 +49,13 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 		if (!fuze.isEmpty()) {
 			Lang.builder("block")
 					.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
-					.add(new TextComponent(" "))
+					.add(Components.literal(" "))
 					.add(fuze.getDisplayName().copy())
 					.addTo(tooltip);
             if (fuze.getItem() instanceof FuzeItem) {
                 List<Component> subTooltip = new ArrayList<>();
                 fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
-				subTooltip.replaceAll(sibling -> new TextComponent("  ").append(sibling).withStyle(ChatFormatting.GRAY));
+				subTooltip.replaceAll(sibling -> Components.literal("  ").append(sibling).withStyle(ChatFormatting.GRAY));
                 tooltip.addAll(subTooltip);
             }
 		}
