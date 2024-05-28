@@ -36,6 +36,7 @@ Added:
 - Added cannon mount angle goggle display config options
  - Added config for angle precision; ranges from 0 to 4 digits
  - Added config for yaw display range; can either be -180 to +180 degrees or 0 to +360 degrees, defaults to the latter
+- Added pick block functionality to Cannon Carriage entity (yields its item)
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:

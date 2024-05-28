@@ -552,4 +552,10 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		return true;
 	}
 
+	@Nullable
+	@Override
+	public ItemStack getPickResult() {
+		return CBCBlocks.CANNON_CARRIAGE.asStack();
+	}
+
 }
