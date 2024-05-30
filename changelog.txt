@@ -63,6 +63,7 @@ Fixed:
 - Fixed Create Big Cannons projectiles exceeding 10 m/gt (200 m/gt) losing their velocity when loaded
 - Fixed Smoke Shell and Drop Mortar Shell being invalid blocks for createbigcannons:fuzed_block block entity
 - Fixed Cannon Carriage rotation info tooltip and syncing
+- Fixed Disable All Failures applying to big cannon projectiles with 0 cannon power
 
 ===
 
