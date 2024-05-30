@@ -422,6 +422,8 @@
   "createbigcannons.ponder.tag.operating_cannons.description": "\u028E\u05DF\u01DD\u028C\u0131\u0287\u0254\u01DD\u025F\u025F\u01DD pu\u0250 \u028E\u05DF\u01DD\u025F\u0250s suouu\u0250\u0254 \u01DDsn o\u0287 \u028DoH",
   "createbigcannons.subtitle.fire_autocannon": "s\u01DD\u0279\u0131\u025F uouu\u0250\u0254o\u0287n\u2C6F",
   "createbigcannons.subtitle.fire_big_cannon": "s\u01DD\u0279\u0131\u025F uouu\u0250\u0254 b\u0131\u15FA",
+  "createbigcannons.subtitle.fire_drop_mortar": "s\u01DD\u0279\u0131\u025F \u0279\u0250\u0287\u0279o\u026F do\u0279\u15E1",
+  "createbigcannons.subtitle.fire_machine_gun": "s\u01DD\u0279\u0131\u025F unb \u01DDu\u0131\u0265\u0254\u0250W",
   "death.attack.createbigcannons.big_cannon_projectile": "puno\u0279 \u0279\u01DDq\u0131\u05DF\u0250\u0254 \u01DDb\u0279\u0250\u05DF \u0250 \u028Eq p\u01DD\u05DF\u05DF\u0131\u029E \u028E\u05DF\u0287\u0254\u01DD\u0279\u0131p s\u0250\u028D %s",
   "death.attack.createbigcannons.cannon_projectile": "\u01DD\u0279\u0131\u025F \u028E\u0279\u01DD\u05DF\u05DF\u0131\u0287\u0279\u0250 \u0265\u0287\u0131\u028D \u0287\u0131\u0265 s\u0250\u028D %s",
   "death.attack.createbigcannons.grapeshot": "\u0287o\u0265s\u01DDd\u0250\u0279b \u028Eq \u0287no u\u028Do\u05DFq s\u0250\u028D %s",

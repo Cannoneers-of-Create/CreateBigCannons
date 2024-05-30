@@ -2,8 +2,8 @@
   "fire_autocannon": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.explode",
-        "type": "event"
+        "name": "createbigcannons:fire_autocannon",
+        "type": "file"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_autocannon"
@@ -11,27 +11,33 @@
   "fire_big_cannon": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.explode",
-        "type": "event"
+        "name": "createbigcannons:fire_big_cannon",
+        "type": "file"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_big_cannon"
   },
-  "fire_big_cannon_compounded_1": {
+  "fire_drop_mortar": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.explode",
-        "type": "event"
+        "name": "createbigcannons:fire_drop_mortar",
+        "type": "file"
+      },
+      {
+        "name": "createbigcannons:fire_drop_mortar1",
+        "type": "file"
       }
-    ]
+    ],
+    "subtitle": "createbigcannons.subtitle.fire_drop_mortar"
   },
-  "fire_big_cannon_compounded_2": {
+  "fire_machine_gun": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.explode",
-        "type": "event"
+        "name": "createbigcannons:fire_machine_gun",
+        "type": "file"
       }
-    ]
+    ],
+    "subtitle": "createbigcannons.subtitle.fire_machine_gun"
   },
   "place_autocannon_ammo_container": {
     "sounds": [
