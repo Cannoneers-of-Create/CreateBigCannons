@@ -11,6 +11,7 @@
     "createbigcannons:fluid_shell",
     "createbigcannons:smoke_shell",
     "createbigcannons:mortar_stone",
+    "createbigcannons:drop_mortar_shell",
     "createbigcannons:ap_autocannon",
     "createbigcannons:flak_autocannon",
     "createbigcannons:machine_gun_bullet"

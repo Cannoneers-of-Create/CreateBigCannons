@@ -80,6 +80,7 @@ public class CBCEntityTypes {
 		.entity("drop_mortar_shell", DropMortarShellProjectile::new, MobCategory.MISC)
 		.properties(cannonProperties())
 		.renderer(() -> DropMortarShellRenderer::new)
+		.tag(RPLTags.PRECISE_MOTION)
 		.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, new DropMortarShellProperties.Serializer()))
 		.register();
 
