@@ -59,6 +59,7 @@ import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
@@ -347,7 +348,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			if (entity.getControllingPassenger() == player) continue;
 			level.sendParticles(player, new AutocannonPlumeParticleData(1f), true, particlePos.x, particlePos.y, particlePos.z, 0, particleVel.x, particleVel.y, particleVel.z, 1.0f);
 		}
-		CBCSoundEvents.FIRE_AUTOCANNON.playOnServer(level, new BlockPos(spawnPos));
+
+		if (round.getType() == AutocannonAmmoType.MACHINE_GUN) {
+			CBCSoundEvents.FIRE_MACHINE_GUN.playOnServer(level, new BlockPos(spawnPos), 6, 0.75f);
+		} else {
+			CBCSoundEvents.FIRE_AUTOCANNON.playOnServer(level, new BlockPos(spawnPos), 8, 1);
+		}
 	}
 
 	@Override

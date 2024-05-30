@@ -458,7 +458,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(delay, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1));
 			}
 		}
-		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(level, new BlockPos(spawnPos));
+		float soundPower = Mth.clamp(propelCtx.chargesUsed / 16f, 0, 1);
+		float tone = 2 + soundPower * -8 + level.random.nextFloat(-0.2f, 0.2f);
+		float pitch = (float) Math.pow(2, tone / 12f);
+		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(level, new BlockPos(spawnPos), 20, pitch);
 	}
 
 	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos) {
@@ -657,7 +660,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		for (ServerPlayer player : slevel.players()) {
 			slevel.sendParticles(player, new DropMortarPlumeParticleData(1f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
 		}
-		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(slevel, new BlockPos(spawnPos));
+		CBCSoundEvents.FIRE_DROP_MORTAR.playOnServer(slevel, new BlockPos(spawnPos), 4, slevel.getRandom().nextFloat(0.97f, 1.02f));
 		this.hasFired = true;
 	}
 

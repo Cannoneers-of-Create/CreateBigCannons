@@ -22,7 +22,9 @@ Additions: \
 &plus; `"createbigcannons.ponder.munitions/adding_tracers.text_2": "Unlike fuzing, tracer tips can be applied to any side of the projectile block."` \
 &plus; `"createbigcannons.ponder.munitions/adding_tracers.text_3": "Right-click the projectile with an empty hand to remove any tracers present."` \
 &plus; `"createbigcannons.ponder.munitions/adding_tracers.text_4": "As with fuzing, tracer application can be automated with Deployers."` \
-&plus; `"createbigcannons.ponder.cannon_crafting/finishing_built_up_cannons.text_4": "It takes a while for the cannon layers to transform into cannon blocks.",`
+&plus; `"createbigcannons.ponder.cannon_crafting/finishing_built_up_cannons.text_4": "It takes a while for the cannon layers to transform into cannon blocks."` \
+&plus; `"createbigcannons.subtitle.fire_drop_mortar": "Drop mortar fires"` \
+&plus; `"createbigcannons.subtitle.fire_machine_gun": "Machine gun fires"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \
