@@ -1,0 +1,65 @@
+name: Pull Request
+
+on:
+    pull_request:
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Get branch name
+              id: get_branch
+              run: echo "branch=${GITHUB_REF#refs/heads/}" >> $GITHUB_OUTPUT
+
+            - name: Get mod version
+              id: get_mod_version
+              run: echo "version=$(git describe --tags --abbrev=0 | grep -oP '(?<=v)\d+\.\d+\.\d+(?:-\w+)?(?=\+)')" >> $GITHUB_OUTPUT
+
+            - name: Get MC version
+              uses: christian-draeger/read-properties@908f99d3334be3802ec7cb528395a69d19914e7b
+              id: read_properties
+              with:
+                  path: gradle.properties
+                  properties: minecraft_version enabled_platforms mod_id
+
+            - name: Set up JDK 17
+              uses: actions/setup-java@v4
+              with:
+                  java-version: 17
+                  distribution: temurin
+
+            - name: Validate Gradle wrapper
+              uses: gradle/actions/wrapper-validation@v3
+
+            - name: Grant execute permission for gradlew
+              run: chmod +x gradlew
+
+            - name: Set up Gradle
+              uses: gradle/actions/setup-gradle@v3
+              with:
+                  cache-read-only: true
+
+            - name: Build jar
+              run: ./gradlew build
+
+            - name: Find jars
+              id: find_jars
+              run: |
+                  EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+                  echo "jars<<$EOF" >> $GITHUB_OUTPUT
+                  find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.mod_id }}-${{ steps.get_mod_version.outputs.version }}\+mc\.${{ steps.read_properties.outputs.minecraft_version }}-($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-build\.${{ github.run_number }}\.jar" >> $GITHUB_OUTPUT
+                  echo "$EOF" >> $GITHUB_OUTPUT
+
+            - name: Archive Artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ${{ steps.read_properties.outputs.mod_id }}-${{ steps.get_mod_version.outputs.version }}+mc.${{ steps.read_properties.outputs.minecraft_version }}-build.${{ github.run_number }}
+                  path: ${{ steps.find_jars.outputs.jars }}
