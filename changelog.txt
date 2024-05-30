@@ -53,6 +53,7 @@ Changed:
 - Changed default cannon mount angle goggle display precision from 1 to 2 digits
 - Improved cannon heating ponder information to clarify layering
 - Improved sound effects of cannon firing
+- Tweaked speed and entity damage attributes of Drop Mortar Shell
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head

@@ -11,9 +11,9 @@
   "can_squib": true,
   "added_recoil": 1.0,
   "base_fuze": false,
-  "entity_damaging_explosion_power": 4,
+  "entity_damaging_explosion_power": 6,
   "block_damaging_explosion_power": 2,
-  "mortar_power": 3,
+  "mortar_power": 6,
   "mortar_spread": 1,
   "mortar_recoil": 0.1
 }
