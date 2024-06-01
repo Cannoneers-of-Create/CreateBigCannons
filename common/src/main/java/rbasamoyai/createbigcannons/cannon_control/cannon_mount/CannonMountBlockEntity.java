@@ -319,10 +319,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		}
 
 		this.running = false;
-
-		if (this.remove) {
-			CBCBlocks.CANNON_MOUNT.get().playerWillDestroy(this.level, this.worldPosition, this.getBlockState(), null);
-		}
 	}
 
 	protected void resetContraptionToOffset() {
