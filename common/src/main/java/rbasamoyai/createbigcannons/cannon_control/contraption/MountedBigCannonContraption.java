@@ -533,7 +533,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(localPos), 1.0f);
 		float failScale = CBCConfigs.SERVER.failure.failureExplosionPower.getF();
 		if (this.cannonMaterial.properties().failureMode() == BigCannonMaterialProperties.FailureMode.RUPTURE) {
-			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2 * failScale + 1, Explosion.BlockInteraction.NONE);
 			int failInt = Mth.ceil(failScale);
 			BlockPos startPos = localPos.relative(this.initialOrientation.getOpposite(), failInt);
 			for (int i = 0; i < failInt * 2 + 1; ++i) {
@@ -541,9 +540,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				this.blocks.remove(pos);
 				this.presentBlockEntities.remove(pos);
 			}
-
 			ControlPitchContraption controller = entity.getController();
 			if (controller != null) controller.disassemble();
+
+			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2 * failScale + 1, Explosion.BlockInteraction.NONE);
 		} else {
 			for (Iterator<Map.Entry<BlockPos, StructureBlockInfo>> iter = this.blocks.entrySet().iterator(); iter.hasNext(); ) {
 				Map.Entry<BlockPos, StructureBlockInfo> entry = iter.next();
