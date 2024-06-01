@@ -43,7 +43,7 @@ Changed:
 - Updated Ritchie's Projectile Library dependency to 2.0.0
  - Improved chunkloading performance
  - Replaced PreciseProjectile interface with tag #ritchiesprojectilelib:precise_motion
- - Changed screen shake to use RPL code rather than CBC code
+ - Changed screen shake to use Ritchies Projectile Library code rather than Create Big Cannons code
 - Changed how cannon trails are done
 - Separated smoke shell smoke particle (createbigcannons:smoke_shell_smoke) from cannon smoke particle (createbigcannons:cannon_smoke)
  - Both still use the same textures and particle definition by default
@@ -65,7 +65,8 @@ Fixed:
 - Fixed Cannon Carriage rotation info tooltip and syncing
 - Fixed Disable All Failures applying to big cannon projectiles with 0 cannon power
 - Fixed schematics not saving data of many blocks by adding #create:safe_nbt
-- Fixed potential crash on cannon failure in Cannon Mount code
+- Fixed potential crash on cannon failure in some Create Big Cannons contraption code
+- Fixed /gamerule doTileDrops false not applying to Create Big Cannons pole contraptions
 
 ===
 

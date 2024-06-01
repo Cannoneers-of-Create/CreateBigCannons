@@ -190,6 +190,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(CannonDrillBlock.STATE, MechanicalPistonBlock.PistonState.EXTENDED), 3 | 16);
 		}
 		super.disassemble();
+		if (this.remove)
+			CannonDrillBlock.destroyExtensionPoles(this.level, this.worldPosition, this.getBlockState(), true);
 	}
 
 	@Override

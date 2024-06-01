@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -49,10 +50,14 @@ public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements I
 
 	@Override
 	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		destroyExtensionPoles(level, pos, state, !player.isCreative());
+		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	public static void destroyExtensionPoles(Level level, BlockPos pos, BlockState state, boolean dropBlocks) {
+		dropBlocks &= level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS);
 		Direction dir = state.getValue(FACING);
 		BlockPos headPos = null;
-		boolean dropBlocks = player == null || !player.isCreative();
-
 		int max = maxAllowedBuilderLength();
 		for (int i = 1; i <= max; ++i) {
 			BlockPos cPos = pos.relative(dir, i);
@@ -68,9 +73,10 @@ public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements I
 		}
 
 		if (headPos != null) {
+			boolean dropBlocks1 = dropBlocks;
 			BlockPos.betweenClosedStream(headPos, pos)
 				.filter(p -> !p.equals(pos))
-				.forEach(p -> level.destroyBlock(p, dropBlocks));
+				.forEach(p -> level.destroyBlock(p, dropBlocks1));
 		}
 
 		for (int i = 1; i <= max; ++i) {
@@ -82,8 +88,6 @@ public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements I
 			}
 			break;
 		}
-
-		super.playerWillDestroy(level, pos, state, player);
 	}
 
 	@Override
