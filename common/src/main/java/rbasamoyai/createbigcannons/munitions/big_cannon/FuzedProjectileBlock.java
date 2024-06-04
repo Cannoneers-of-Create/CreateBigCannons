@@ -60,7 +60,7 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity, S extends
 			int slot;
 			if (!fuzedBlock.getItem(0).isEmpty()) {
 				slot = 0;
-			} else if (result.getDirection() == fuzeFace && fuzedBlock.getItem(1).isEmpty()) {
+			} else if (result.getDirection() == fuzeFace && !fuzedBlock.getItem(1).isEmpty()) {
 				slot = 1;
 			} else {
 				return InteractionResult.PASS;
