@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.config;
 import com.simibubi.create.foundation.config.ConfigBase;
 
 import net.minecraft.world.level.Explosion.BlockInteraction;
+import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 
 public class CBCCfgMunitions extends ConfigBase {
@@ -33,6 +34,7 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat autocannonDeflectChance = f(0.2f, 0, 1, "autocannonProjectileDeflectionChance", Comments.autocannonDeflectChance);
 
 	public final ConfigGroup autocannonMunitions = group(0, "autocannonMunitions", "Autocannon Munitions");
+	public final ConfigEnum<AbstractAutocannonProjectile.TrailType> autocannonTrailType = e(AbstractAutocannonProjectile.TrailType.SHORT, "trailType");
 	public final ConfigBool allAutocannonProjectilesAreTracers = b(false, "allAutocannonProjectilesAreTracers", Comments.allAutocannonProjectilesAreTracers);
 	public final ConfigInt ammoContainerAutocannonRoundCapacity = i(16, 1, 128, "autocannonAmmoContainerAutocannonRoundCapacity", Comments.ammoContainerAutocannonRoundCapacity);
 	public final ConfigInt ammoContainerMachineGunRoundCapacity = i(64, 1, 128, "autocannonAmmoContainerMachineGunRoundCapacity", Comments.ammoContainerMachineGunRoundCapacity);
