@@ -10,7 +10,7 @@
   "minimum_charge_power": 1.0,
   "can_squib": true,
   "added_recoil": 1.0,
-  "grapeshot_entity_damage": 8.0,
-  "grapeshot_spread": 0.05,
+  "grapeshot_entity_damage": 15.0,
+  "grapeshot_spread": 0.15,
   "grapeshot_count": 25
 }
