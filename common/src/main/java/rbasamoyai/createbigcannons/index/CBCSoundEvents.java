@@ -43,10 +43,18 @@ public class CBCSoundEvents {
 			.category(SoundSource.BLOCKS)
 			.build(),
 
+		FLAK_ROUND_EXPLOSION = create("flak_round_explosion").subtitle("Flak round explodes")
+			.category(SoundSource.NEUTRAL)
+			.build(),
+
 		PLACE_AUTOCANNON_AMMO_CONTAINER = create("place_autocannon_ammo_container").noSubtitle()
 				.playExisting(SoundEvents.ARMOR_EQUIP_IRON, 0.25f, 1.0f)
 				.category(SoundSource.BLOCKS)
-				.build();
+				.build(),
+
+		SHRAPNEL_SHELL_EXPLOSION = create("shrapnel_shell_explosion").subtitle("Shrapnel shell explodes")
+			.category(SoundSource.NEUTRAL)
+			.build();
 
 	private static SoundEntryBuilder create(String id) {
 		return new CBCSoundEntryBuilder(CreateBigCannons.resource(id));

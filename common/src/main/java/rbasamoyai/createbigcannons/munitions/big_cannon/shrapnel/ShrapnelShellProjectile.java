@@ -6,6 +6,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -21,10 +22,10 @@ public class ShrapnelShellProjectile extends FuzedBigCannonProjectile<ShrapnelSh
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
 		ShrapnelShellProperties properties = this.getProperties();
-		this.level.explode(null, this.indirectArtilleryFire(), null, this.getX(), this.getY(), this.getZ(),
-			properties == null ? 2.0f : properties.explosionPower(), false,
+		ShrapnelExplosion explosion = new ShrapnelExplosion(this.level, null, this.indirectArtilleryFire(), this.getX(),
+			this.getY(), this.getZ(), properties == null ? 2.0f : properties.explosionPower(),
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
-		this.setDeltaMovement(oldDelta);
+		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 		if (properties != null) {
 			Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), oldDelta,
 				properties.shrapnelCount(), properties.shrapnelSpread(), properties.shrapnelDamage(), 20);

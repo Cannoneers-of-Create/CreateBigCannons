@@ -39,6 +39,15 @@
     ],
     "subtitle": "createbigcannons.subtitle.fire_machine_gun"
   },
+  "flak_round_explosion": {
+    "sounds": [
+      {
+        "name": "createbigcannons:flak_round_explosion",
+        "type": "file"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.flak_round_explosion"
+  },
   "place_autocannon_ammo_container": {
     "sounds": [
       {
@@ -46,5 +55,14 @@
         "type": "event"
       }
     ]
+  },
+  "shrapnel_shell_explosion": {
+    "sounds": [
+      {
+        "name": "createbigcannons:shrapnel_shell_explosion",
+        "type": "file"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.shrapnel_shell_explosion"
   }
 }

@@ -15,6 +15,7 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
+import io.github.fabricators_of_create.porting_lib.event.common.ExplosionEvents;
 import io.github.fabricators_of_create.porting_lib.fake_players.FakePlayer;
 import io.github.fabricators_of_create.porting_lib.util.FluidStack;
 import io.github.fabricators_of_create.porting_lib.util.FluidTextUtil;
@@ -41,6 +42,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -198,6 +201,10 @@ public class IndexPlatformImpl {
 				.style(ChatFormatting.GRAY)
 				.addTo(tooltip);
 		}
+	}
+
+	public static boolean onExplosionStart(Level level, Explosion explosion) {
+		return ExplosionEvents.START.invoker().onExplosionStart(level, explosion);
 	}
 
 }

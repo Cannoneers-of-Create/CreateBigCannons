@@ -18,6 +18,7 @@
   "mixins": [
     "ArmorStandMixin",
     "EntityMixin",
+    "ExplosionMixin",
     "LivingEntityMixin",
     "PlayerMixin",
     "ServerEntityMixin",

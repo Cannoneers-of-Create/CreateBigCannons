@@ -4,7 +4,7 @@ Changelog
 
 "messi messi messi immens messi encara messi encara messi encara messi"
 
-Create Big Cannons 5.5.0, with many bug fixes and QoL changes.
+Create Big Cannons 5.5.0, with many bug fixes and QoL changes, as well as an aesthetic overhaul to many of the visual and sound effects.
 Comes with version formatting change, but gameplay changes are otherwise not major.
 
 Added:
@@ -37,6 +37,10 @@ Added:
  - Added config for angle precision; ranges from 0 to 4 digits
  - Added config for yaw display range; can either be -180 to +180 degrees or 0 to +360 degrees, defaults to the latter
 - Added pick block functionality to Cannon Carriage entity (yields its item)
+- Added flak and shrapnel burst cloud effects
+ - Has appearance and visibility client config options
+ - Amount of particles can also be configured in the shrapnel
+- Added new burst sounds for flak and shrapnel
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:

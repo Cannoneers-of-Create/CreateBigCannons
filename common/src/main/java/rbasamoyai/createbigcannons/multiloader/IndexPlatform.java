@@ -30,6 +30,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -129,5 +131,7 @@ public class IndexPlatform {
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { throw new AssertionError(); }
 
 	@ExpectPlatform public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) { throw new AssertionError(); }
+
+	@ExpectPlatform public static boolean onExplosionStart(Level level, Explosion explosion) { throw new AssertionError(); }
 
 }

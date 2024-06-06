@@ -424,6 +424,8 @@
   "createbigcannons.subtitle.fire_big_cannon": "Big cannon fires",
   "createbigcannons.subtitle.fire_drop_mortar": "Drop mortar fires",
   "createbigcannons.subtitle.fire_machine_gun": "Machine gun fires",
+  "createbigcannons.subtitle.flak_round_explosion": "Flak round explodes",
+  "createbigcannons.subtitle.shrapnel_shell_explosion": "Shrapnel shell explodes",
   "death.attack.createbigcannons.big_cannon_projectile": "%s was directly killed by a large caliber round",
   "death.attack.createbigcannons.cannon_projectile": "%s was hit with artillery fire",
   "death.attack.createbigcannons.grapeshot": "%s was blown out by grapeshot",
