@@ -61,6 +61,7 @@ Changed:
 - Improved sound effects of cannon firing
 - Tweaked speed and entity damage attributes of Drop Mortar Shell
 - Tweaked shrapnel spread and shrapnel damage values of Shrapnel Shell
+- Tweaked grapeshot spread and grapeshot damage values of Bag of Grapeshot
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
