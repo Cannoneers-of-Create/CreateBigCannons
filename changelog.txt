@@ -60,6 +60,7 @@ Changed:
 - Improved cannon heating ponder information to clarify layering
 - Improved sound effects of cannon firing
 - Tweaked speed and entity damage attributes of Drop Mortar Shell
+- Tweaked shrapnel spread and shrapnel damage values of Shrapnel Shell
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
