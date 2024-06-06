@@ -26,6 +26,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.material.Fluid;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
@@ -56,7 +57,7 @@ public class FluidCastingTimeHandler {
 
 				ResourceLocation loc = entry.getKey();
 				if (loc.getPath().startsWith("tags/")) {
-					TagKey<Fluid> tag = TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation(loc.getNamespace(), loc.getPath().substring(5)));
+					TagKey<Fluid> tag = TagKey.create(Registry.FLUID_REGISTRY, CBCUtils.location(loc.getNamespace(), loc.getPath().substring(5)));
 					TAGS_TO_LOAD.put(tag, castingTime);
 				} else {
 					Fluid fluid = Registry.FLUID.getOptional(loc).orElseThrow(() -> {

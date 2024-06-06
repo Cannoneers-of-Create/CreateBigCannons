@@ -10,12 +10,12 @@ import com.simibubi.create.foundation.utility.Components;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 
 public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 
@@ -46,8 +46,8 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 
 	public static BlockRecipeIngredient fromString(String s) {
 		return s.charAt(0) == '/' ? NONE :
-				s.charAt(0) == '#' ? of(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(s.substring(1)))) :
-				Registry.BLOCK.getOptional(new ResourceLocation(s)).map(BlockRecipeIngredient::of).orElse(NONE);
+				s.charAt(0) == '#' ? of(TagKey.create(Registry.BLOCK_REGISTRY, CBCUtils.location(s.substring(1)))) :
+				Registry.BLOCK.getOptional(CBCUtils.location(s)).map(BlockRecipeIngredient::of).orElse(NONE);
 	}
 
 	public abstract List<ItemStack> getBlockItems();

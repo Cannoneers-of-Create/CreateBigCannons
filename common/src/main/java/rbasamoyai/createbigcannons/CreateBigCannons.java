@@ -14,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
@@ -69,7 +70,7 @@ public class CreateBigCannons {
 	}
 
 	public static ResourceLocation resource(String path) {
-		return new ResourceLocation(MOD_ID, path);
+		return CBCUtils.location(MOD_ID, path);
 	}
 
 	public static final ResourceLocation SCREEN_SHAKE_HANDLER_ID = resource("shake_handler");

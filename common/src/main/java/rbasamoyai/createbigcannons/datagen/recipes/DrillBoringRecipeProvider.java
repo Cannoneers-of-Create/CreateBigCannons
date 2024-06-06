@@ -1,17 +1,19 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
+import java.util.function.Consumer;
+
 import com.google.gson.JsonObject;
+
 import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-
-import java.util.function.Consumer;
 
 public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 
@@ -45,7 +47,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 		cons.accept(recipe(CBCBlocks.UNBORED_LARGE_NETHERSTEEL_CANNON_LAYER.get(), CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER.get()));
 		cons.accept(recipe(CBCBlocks.UNBORED_VERY_LARGE_NETHERSTEEL_CANNON_LAYER.get(), CBCBlocks.VERY_LARGE_NETHERSTEEL_CANNON_LAYER.get()));
 		cons.accept(recipe(CBCBlocks.UNBORED_NETHERSTEEL_SCREW_BREECH.get(), CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH.get()));
-		
+
 		cons.accept(recipe(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BARREL.get(), CBCBlocks.CAST_IRON_AUTOCANNON_BARREL.get()));
 		cons.accept(recipe(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_RECOIL_SPRING.get(), CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_RECOIL_SPRING.get()));
 		cons.accept(recipe(CBCBlocks.UNBORED_CAST_IRON_AUTOCANNON_BREECH.get(), CBCBlocks.INCOMPLETE_CAST_IRON_AUTOCANNON_BREECH.get()));
@@ -68,7 +70,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 	}
 
 	protected Result recipe(String path, Block input, Block result, boolean obeyFacing) {
-		return new Result(BlockRecipeIngredient.of(input), result, new ResourceLocation(this.modid, path), obeyFacing);
+		return new Result(BlockRecipeIngredient.of(input), result, CBCUtils.location(this.modid, path), obeyFacing);
 	}
 
 	protected Result recipe(TagKey<Block> input, Block result) {
@@ -80,7 +82,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 	}
 
 	protected Result recipe(String path, TagKey<Block> input, Block result, boolean obeyFacing) {
-		return new Result(BlockRecipeIngredient.of(input), result, new ResourceLocation(this.modid, path), obeyFacing);
+		return new Result(BlockRecipeIngredient.of(input), result, CBCUtils.location(this.modid, path), obeyFacing);
 	}
 
 	private record Result(BlockRecipeIngredient input, Block result, ResourceLocation id, boolean obeyFacing) implements FinishedBlockRecipe {

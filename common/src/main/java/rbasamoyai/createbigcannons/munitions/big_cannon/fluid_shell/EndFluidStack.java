@@ -11,6 +11,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 
 public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 
@@ -32,7 +33,7 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 	}
 
 	public static EndFluidStack readTag(CompoundTag tag) {
-		Fluid fluid = Registry.FLUID.get(new ResourceLocation(tag.getString("Fluid")));
+		Fluid fluid = Registry.FLUID.get(CBCUtils.location(tag.getString("Fluid")));
 		int amount = tag.getInt("FluidAmount");
 		CompoundTag data = tag.getCompound("FluidTag");
 		return new EndFluidStack(fluid, amount, data);

@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 
@@ -79,7 +80,7 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 		FluidData.Builder attributes = this.attributes.get();
 		RegistryEntry<Block> block = getOwner().getOptional(this.sourceName, Registry.BLOCK_REGISTRY);
 		this.attributesCallback.accept(attributes);
-		attributes.translationKey(Util.makeDescriptionId("fluid", new ResourceLocation(getOwner().getModid(), this.sourceName)));
+		attributes.translationKey(Util.makeDescriptionId("fluid", CBCUtils.location(getOwner().getModid(), this.sourceName)));
 		return super.makeProperties();
 	}
 

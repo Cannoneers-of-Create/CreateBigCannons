@@ -29,7 +29,6 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -43,6 +42,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
@@ -169,14 +169,14 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		BlockPos controllerBefore = this.controllerPos;
 		int prevHeight = this.getControllerBE() == null ? 0 : this.getControllerBE().height;
 
-		this.castShape = tag.contains("Size") ? CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(tag.getString("Size"))) : null;
+		this.castShape = tag.contains("Size") ? CBCRegistries.CANNON_CAST_SHAPES.get(CBCUtils.location(tag.getString("Size"))) : null;
 		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
 
 		this.structure.clear();
 		if (tag.contains("Structure")) {
 			ListTag list = tag.getList("Structure", Tag.TAG_STRING);
 			for (int i = 0; i < list.size(); ++i) {
-				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(list.getString(i)));
+				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(CBCUtils.location(list.getString(i)));
 				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL : shape);
 			}
 			this.height = tag.getInt("Height");

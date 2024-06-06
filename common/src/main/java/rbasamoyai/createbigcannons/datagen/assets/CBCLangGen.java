@@ -20,6 +20,7 @@ import net.minecraft.world.item.Item;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -359,7 +360,7 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang("tag." + loc.getNamespace() + "." + loc.getPath().replace('/', '.'), enUS);
 	}
 
-	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
+	private static TagKey<Item> fabricTag(String loc) { return tag(CBCUtils.location("c", loc)); }
 
 	private static void createEMITagTranslation(TagKey<?> tag) {
 		createEMITagTranslation(tag, capitalizeAll(tag.location().getPath().replace('_', ' ')));

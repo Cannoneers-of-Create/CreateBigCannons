@@ -45,7 +45,7 @@ public abstract class CBCJsonResourceReloadListener extends SimplePreparableRelo
 
 		for(ResourceLocation loco : resourceManager.listResources(this.directory, path -> path.endsWith(".json"))) {
 			String string = loco.getPath();
-			ResourceLocation loc2 = new ResourceLocation(loco.getNamespace(), string.substring(i, string.length() - PATH_SUFFIX_LENGTH));
+			ResourceLocation loc2 = CBCUtils.location(loco.getNamespace(), string.substring(i, string.length() - PATH_SUFFIX_LENGTH));
 			try {
 				Resource resource = resourceManager.getResource(loco);
 				try {
