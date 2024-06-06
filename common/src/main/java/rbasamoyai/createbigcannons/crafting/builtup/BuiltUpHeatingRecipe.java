@@ -1,8 +1,13 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
@@ -21,25 +27,21 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 public class BuiltUpHeatingRecipe implements BlockRecipe {
 
 	private final Set<BlockRecipeIngredient> layers;
 	private final Block result;
 	private final ResourceLocation id;
-	
+
 	public BuiltUpHeatingRecipe(Set<BlockRecipeIngredient> requiredLayers, Block result, ResourceLocation id) {
 		this.layers = requiredLayers;
 		this.result = result;
 		this.id = id;
 	}
-	
+
 	public Set<BlockRecipeIngredient> layers() { return this.layers; }
 	public Block result() { return this.result; }
-	
+
 	@Override
 	public boolean matches(Level level, BlockPos pos) {
 		if (!(level.getBlockEntity(pos) instanceof LayeredBigCannonBlockEntity layered)) return false;
@@ -57,7 +59,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 		}
 		return false;
 	}
-	
+
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 
 	@Override
@@ -89,7 +91,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 			if (layerArr != null) {
 				for (JsonElement el : layerArr) layers.add(BlockRecipeIngredient.fromJson(el));
 			}
-			Block result = Registry.BLOCK.get(new ResourceLocation(obj.get("result").getAsString()));
+			Block result = Registry.BLOCK.get(CBCUtils.location(obj.get("result").getAsString()));
 			return new BuiltUpHeatingRecipe(layers, result, id);
 		}
 

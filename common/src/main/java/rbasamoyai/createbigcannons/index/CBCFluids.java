@@ -12,6 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.crafting.foundry.MoltenMetalLiquidBlock;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
@@ -103,11 +104,11 @@ public class CBCFluids {
 	private static <S> S regSelf(AbstractRegistrate<?> reg) { return (S) reg; }
 
 	private static TagKey<Fluid> forgeTag(String path) {
-		return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation("forge", path));
+		return TagKey.create(Registry.FLUID_REGISTRY, CBCUtils.location("forge", path));
 	}
 
 	private static TagKey<Fluid> fabricTag(String path) {
-		return TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation("c", path));
+		return TagKey.create(Registry.FLUID_REGISTRY, CBCUtils.location("c", path));
 	}
 
 }

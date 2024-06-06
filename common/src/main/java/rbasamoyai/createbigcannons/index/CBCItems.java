@@ -13,6 +13,7 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.block_armor_properties.InspectResistanceToolItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
@@ -239,7 +240,7 @@ public class CBCItems {
 	}
 
 	public static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registry.ITEM_REGISTRY, loc); }
-	private static TagKey<Item> forgeTag(String loc) { return tag(new ResourceLocation("forge", loc)); }
-	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
+	private static TagKey<Item> forgeTag(String loc) { return tag(CBCUtils.location("forge", loc)); }
+	private static TagKey<Item> fabricTag(String loc) { return tag(CBCUtils.location("c", loc)); }
 
 }

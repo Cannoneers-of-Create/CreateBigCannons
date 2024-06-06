@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CannonContraptionTypeRegistry;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -65,8 +66,8 @@ public class CannonMountPropertiesHandler {
 				try {
 					ResourceLocation loc = entry.getKey();
 					String[] pathComponents = loc.getPath().split("/");
-					ResourceLocation blockEntityLoc = new ResourceLocation(loc.getNamespace(), pathComponents[0]);
-					ResourceLocation cannonTypeLoc = new ResourceLocation(pathComponents[1], pathComponents[2]);
+					ResourceLocation blockEntityLoc = CBCUtils.location(loc.getNamespace(), pathComponents[0]);
+					ResourceLocation cannonTypeLoc = CBCUtils.location(pathComponents[1], pathComponents[2]);
 					BlockEntityType<?> beType = Registry.BLOCK_ENTITY_TYPE.getOptional(blockEntityLoc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown block entity type '" + blockEntityLoc + "'");
 					});
@@ -101,8 +102,8 @@ public class CannonMountPropertiesHandler {
 				try {
 					ResourceLocation loc = entry.getKey();
 					String[] pathComponents = loc.getPath().split("/");
-					ResourceLocation entityLoc = new ResourceLocation(loc.getNamespace(), pathComponents[0]);
-					ResourceLocation cannonTypeLoc = new ResourceLocation(pathComponents[1], pathComponents[2]);
+					ResourceLocation entityLoc = CBCUtils.location(loc.getNamespace(), pathComponents[0]);
+					ResourceLocation cannonTypeLoc = CBCUtils.location(pathComponents[1], pathComponents[2]);
 					EntityType<?> entityType = Registry.ENTITY_TYPE.getOptional(entityLoc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown entity type '" + entityLoc + "'");
 					});

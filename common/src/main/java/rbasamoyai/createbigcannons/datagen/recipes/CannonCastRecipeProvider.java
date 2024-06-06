@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -234,7 +235,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		private Block result = null;
 
 		private Builder(String name) {
-			this.id = new ResourceLocation(CannonCastRecipeProvider.this.modid, name);
+			this.id = CBCUtils.location(CannonCastRecipeProvider.this.modid, name);
 		}
 
 		public Builder castingShape(CannonCastShape shape) {

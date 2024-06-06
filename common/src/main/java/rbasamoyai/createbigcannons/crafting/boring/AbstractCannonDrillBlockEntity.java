@@ -50,6 +50,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.base.PoleMoverBlockEntity;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
@@ -425,7 +426,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		bearing.notifyUpdate();
 
 		ResourceLocation unboredId = Registry.BLOCK.getKey(latheBlockInfo.state.getBlock());
-		LootTable table = slevel.getServer().getLootTables().get(new ResourceLocation(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
+		LootTable table = slevel.getServer().getLootTables().get(CBCUtils.location(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
 		List<ItemStack> scrap = table.getRandomItems(new LootContext.Builder(slevel)
 			.withRandom(slevel.random)
 			.withParameter(LootContextParams.BLOCK_STATE, latheBlockInfo.state)

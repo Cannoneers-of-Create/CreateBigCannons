@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 
 // Copied from Create's Mods class --ritchie
 public enum CBCModsForge {
@@ -23,7 +24,7 @@ public enum CBCModsForge {
 
 	public String id() { return this.id; }
 
-	public ResourceLocation resource(String path) { return new ResourceLocation(id, path); }
+	public ResourceLocation resource(String path) { return CBCUtils.location(id, path); }
 	public Block getBlock(String id) { return ForgeRegistries.BLOCKS.getValue(this.resource(id)); }
 	public boolean isLoaded() { return ModList.get().isLoaded(this.id); }
 

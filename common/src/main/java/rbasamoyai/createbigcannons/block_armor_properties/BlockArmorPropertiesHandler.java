@@ -28,6 +28,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
@@ -60,7 +61,7 @@ public class BlockArmorPropertiesHandler {
 				try {
 					ResourceLocation loc = entry.getKey();
 					if (loc.getPath().startsWith("tags/")) {
-						ResourceLocation pruned = new ResourceLocation(loc.getNamespace(), loc.getPath().substring(5));
+						ResourceLocation pruned = CBCUtils.location(loc.getNamespace(), loc.getPath().substring(5));
 						TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, pruned);
 						TAGS_TO_EVALUATE.put(tag, SimpleBlockArmorProperties.fromJson(el.getAsJsonObject()));
 					} else {

@@ -22,6 +22,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
@@ -98,7 +99,7 @@ public class BlockRecipesManager {
 				if (el.isJsonObject()) {
 					ResourceLocation id = entry.getKey();
 					JsonObject obj = el.getAsJsonObject();
-					ResourceLocation type = new ResourceLocation(obj.get("type").getAsString());
+					ResourceLocation type = CBCUtils.location(obj.get("type").getAsString());
 					BlockRecipe recipe = CBCRegistries.BLOCK_RECIPE_SERIALIZERS.get(type).fromJson(id, obj);
 					BLOCK_RECIPES_BY_NAME.put(id, recipe);
 					BlockRecipeType<?> recipeType = CBCRegistries.BLOCK_RECIPE_TYPES.get(type);

@@ -9,6 +9,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 
 // Copied from Create's Mods class --ritchie
 public enum CBCModsFabric {
@@ -22,7 +23,7 @@ public enum CBCModsFabric {
 
 	public String id() { return this.id; }
 
-	public ResourceLocation resource(String path) { return new ResourceLocation(this.id, path); }
+	public ResourceLocation resource(String path) { return CBCUtils.location(this.id, path); }
 
 	public Block getBlock(String id) { return Registry.BLOCK.get(resource(id)); }
 

@@ -36,6 +36,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
@@ -476,7 +477,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override
 	public void readNBT(Level level, CompoundTag tag, boolean clientData) {
 		super.readNBT(level, tag, clientData);
-		this.cannonMaterial = AutocannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("AutocannonMaterial")));
+		this.cannonMaterial = AutocannonMaterial.fromNameOrNull(CBCUtils.location(tag.getString("AutocannonMaterial")));
 		if (this.cannonMaterial == null) this.cannonMaterial = CBCAutocannonMaterials.CAST_IRON;
 		this.startPos = tag.contains("StartPos") ? NbtUtils.readBlockPos(tag.getCompound("StartPos")) : null;
 		this.recoilSpringPos = tag.contains("RecoilSpringPos") ? NbtUtils.readBlockPos(tag.getCompound("RecoilSpringPos")) : null;

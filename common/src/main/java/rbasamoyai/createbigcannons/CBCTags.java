@@ -19,6 +19,7 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 
 public class CBCTags {
 
@@ -46,9 +47,9 @@ public class CBCTags {
 		public static TagKey<Block> commonTag(String mainPath, String forgePath, String fabricPath) {
 			TagKey<Block> mainTag = makeTag(mainPath);
 			addOptionalTagsToBlockTag(mainTag, Arrays.asList(
-					new ResourceLocation("forge", forgePath),
-					new ResourceLocation("c", forgePath), // For forge -> fabric ports, e.g. Create
-					new ResourceLocation("c", fabricPath)));
+					CBCUtils.location("forge", forgePath),
+					CBCUtils.location("c", forgePath), // For forge -> fabric ports, e.g. Create
+					CBCUtils.location("c", fabricPath)));
 			return mainTag;
 		}
 
@@ -141,9 +142,9 @@ public class CBCTags {
 		public static TagKey<Item> commonTag(String mainPath, String forgePath, String fabricPath) {
 			TagKey<Item> mainTag = makeTag(mainPath);
 			addOptionalTagsToItemTag(mainTag, Arrays.asList(
-					new ResourceLocation("forge", forgePath),
-					new ResourceLocation("c", forgePath), // For forge -> fabric ports, e.g. Create
-					new ResourceLocation("c", fabricPath)));
+					CBCUtils.location("forge", forgePath),
+					CBCUtils.location("c", forgePath), // For forge -> fabric ports, e.g. Create
+					CBCUtils.location("c", fabricPath)));
 			return mainTag;
 		}
 
@@ -214,7 +215,7 @@ public class CBCTags {
 		CBCItemTags.sectionRegister();
 	}
 
-	private static ResourceLocation alloyed(String path) { return new ResourceLocation("alloyed", path); }
-	private static ResourceLocation createdeco(String path) { return new ResourceLocation("createdeco", path); }
+	private static ResourceLocation alloyed(String path) { return CBCUtils.location("alloyed", path); }
+	private static ResourceLocation createdeco(String path) { return CBCUtils.location("createdeco", path); }
 
 }

@@ -16,6 +16,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 
 public record BigCannonPropellantCompatibilities(Map<Block, Integer> validPropellantCounts) {
 
@@ -32,7 +33,7 @@ public record BigCannonPropellantCompatibilities(Map<Block, Integer> validPropel
 			if (!el.isJsonObject()) continue;
 			JsonObject obj1 = el.getAsJsonObject();
 			if (!obj1.has("type") && !obj1.getAsJsonPrimitive("type").isString()) continue;
-			ResourceLocation loc = new ResourceLocation(obj1.getAsJsonPrimitive("type").getAsString());
+			ResourceLocation loc = CBCUtils.location(obj1.getAsJsonPrimitive("type").getAsString());
 			Block block = Registry.BLOCK.getOptional(loc).orElseThrow(() -> {
 				return new JsonSyntaxException("Unknown block '" + loc + "'");
 			});

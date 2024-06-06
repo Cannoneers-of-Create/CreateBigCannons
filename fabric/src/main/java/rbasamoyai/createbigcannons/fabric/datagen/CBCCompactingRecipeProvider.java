@@ -8,10 +8,10 @@ import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 
 import net.fabricmc.fabric.api.resource.conditions.v1.DefaultResourceConditions;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
@@ -44,12 +44,12 @@ public class CBCCompactingRecipeProvider extends ProcessingRecipeGen {
 	FORGE_BRONZE_INGOT = create(CreateBigCannons.resource("forge_bronze_ingot"), b -> b
 		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.INGOT_BRONZE))
 		.require(AllTags.forgeFluidTag("molten_bronze"), IndexPlatform.convertFluid(90))
-		.output(1, new ResourceLocation("alloyed", "bronze_ingot"), 1)),
+		.output(1, CBCUtils.location("alloyed", "bronze_ingot"), 1)),
 
 	FORGE_STEEL_INGOT = create(CreateBigCannons.resource("forge_steel_ingot"), b -> b
 		.withCondition(DefaultResourceConditions.itemTagsPopulated(CBCTags.CBCItemTags.INGOT_STEEL))
 		.require(AllTags.forgeFluidTag("molten_steel"), IndexPlatform.convertFluid(90))
-		.output(1, new ResourceLocation("alloyed", "steel_ingot"), 1)),
+		.output(1, CBCUtils.location("alloyed", "steel_ingot"), 1)),
 
 	FORGE_NETHERSTEEL_INGOT = create(CreateBigCannons.resource("forge_nethersteel_ingot"), b -> b.require(CBCFluids.MOLTEN_NETHERSTEEL.get(), IndexPlatform.convertFluid(90))
 		.output(CBCItems.NETHERSTEEL_INGOT.get())),

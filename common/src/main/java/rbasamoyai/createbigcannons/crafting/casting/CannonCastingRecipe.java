@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.crafting.casting;
 
 import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
@@ -12,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
@@ -60,9 +62,9 @@ public class CannonCastingRecipe implements BlockRecipe {
 	public static class Serializer implements BlockRecipeSerializer<CannonCastingRecipe> {
 		@Override
 		public CannonCastingRecipe fromJson(ResourceLocation id, JsonObject obj) {
-			CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(obj.get("cast_shape").getAsString()));
+			CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(CBCUtils.location(obj.get("cast_shape").getAsString()));
 			FluidIngredient ingredient = FluidIngredient.deserialize(obj.get("fluid"));
-			Block result = Registry.BLOCK.get(new ResourceLocation(obj.get("result").getAsString()));
+			Block result = Registry.BLOCK.get(CBCUtils.location(obj.get("result").getAsString()));
 			return new CannonCastingRecipe(shape, ingredient, result, id);
 		}
 

@@ -11,9 +11,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.base.CBCUtils;
 
 public record InvalidCastingError(BlockPos pos, Fluid fluid, CannonCastShape shape) {
 
@@ -33,9 +33,9 @@ public record InvalidCastingError(BlockPos pos, Fluid fluid, CannonCastShape sha
 		if (!errorTag.contains("Position", Tag.TAG_COMPOUND)) return null;
 		BlockPos pos = NbtUtils.readBlockPos(errorTag.getCompound("Position"));
 		if (!errorTag.contains("Fluid", Tag.TAG_STRING)) return null;
-		Fluid fluid = Registry.FLUID.get(new ResourceLocation(errorTag.getString("Fluid")));
+		Fluid fluid = Registry.FLUID.get(CBCUtils.location(errorTag.getString("Fluid")));
 		if (!errorTag.contains("CastShape", Tag.TAG_STRING)) return null;
-		CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(errorTag.getString("CastShape")));
+		CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(CBCUtils.location(errorTag.getString("CastShape")));
 		return new InvalidCastingError(pos, fluid, shape);
 	}
 
