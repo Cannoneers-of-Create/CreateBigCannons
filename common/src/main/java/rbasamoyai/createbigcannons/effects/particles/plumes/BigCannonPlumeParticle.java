@@ -16,7 +16,6 @@ import rbasamoyai.createbigcannons.effects.particles.smoke.CannonSmokeParticleDa
 public class BigCannonPlumeParticle extends NoRenderParticle {
 
 	private final Vec3 direction;
-	private final Vec3 origin;
 	private final float size;
 	private final float power;
 
@@ -29,7 +28,6 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 		this.friction = 0.90f;
 		float f = this.power / 4;
 		this.setParticleSpeed(dx * f, dy * f, dz * f);
-		this.origin = new Vec3(x, y, z);
 	}
 
 	@Override
