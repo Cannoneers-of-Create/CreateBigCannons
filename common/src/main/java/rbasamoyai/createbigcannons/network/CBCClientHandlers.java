@@ -10,11 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
+import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelExplosion;
 
 public class CBCClientHandlers {
 
@@ -70,6 +73,18 @@ public class CBCClientHandlers {
 		} else {
 			CreateBigCannons.LOGGER.error("Invalid ClientboundFluidBlobStackSyncPacket for non-fluid blob entity: " + entity);
 		}
+	}
+
+	public static void addExplosionFromServer(ClientboundCBCExplodePacket pkt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null || mc.player == null)
+			return;
+		Explosion explosion = switch (pkt.explosionType()) {
+            case SHRAPNEL -> new ShrapnelExplosion(mc.level, pkt);
+            case FLAK -> new FlakExplosion(mc.level, pkt);
+        };
+		explosion.finalizeExplosion(true);
+		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));
 	}
 
 }

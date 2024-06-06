@@ -11,6 +11,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import rbasamoyai.createbigcannons.effects.particles.explosions.FlakCloudParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.FlakSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.explosions.ShrapnelCloudParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.ShrapnelSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.DropMortarPlumeParticleData;
@@ -26,7 +30,11 @@ public enum CBCParticleTypes {
 	BIG_CANNON_PLUME(BigCannonPlumeParticleData::new),
 	CANNON_SMOKE(CannonSmokeParticleData::new),
 	DROP_MORTAR_PLUME(DropMortarPlumeParticleData::new),
+	FLAK_CLOUD(FlakCloudParticleData::new),
+	FLAK_SMOKE(FlakSmokeParticleData::new),
 	FLUID_BLOB(FluidBlobParticleData::new),
+	SHRAPNEL_CLOUD(ShrapnelCloudParticleData::new),
+	SHRAPNEL_SMOKE(ShrapnelSmokeParticleData::new),
 	SMOKE_SHELL_SMOKE(SmokeShellSmokeParticleData::new),
 	TRAIL_SMOKE(TrailSmokeParticleData::new);
 

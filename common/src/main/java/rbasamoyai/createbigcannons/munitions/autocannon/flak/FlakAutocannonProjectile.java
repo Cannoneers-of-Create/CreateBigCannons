@@ -9,6 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
@@ -55,9 +56,9 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile<FlakA
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
 		FlakAutocannonProjectileProperties properties = this.getProperties();
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), properties == null ? 2 : properties.explosionPower(),
-			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
-		this.setDeltaMovement(oldDelta);
+		FlakExplosion explosion = new FlakExplosion(this.level, null, this.indirectArtilleryFire(), this.getX(), this.getY(), this.getZ(),
+			properties == null ? 2 : properties.explosionPower(), CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 		if (properties != null) {
 			Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), oldDelta,
 				properties.shrapnelCount(), properties.shrapnelSpread(), properties.shrapnelDamage(), 5);

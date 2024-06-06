@@ -20,6 +20,17 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigBool showExtraBigCannonSmoke = b(true, "showExtraSmoke");
 	public final ConfigBool showExtraBigCannonFlames = b(true, "showExtraFlames");
 
+	public final ConfigGroup flakClouds = group(1, "flakClouds", "Flak Clouds");
+	public final ConfigBool showFlakClouds = b(true, "showFlakClouds");
+	public final ConfigBool showExtraFlakCloudFlames = b(true, "showExtraFlames");
+	public final ConfigBool showExtraFlakCloudShockwave = b(true, "showExtraShockwave");
+	public final ConfigBool showExtraFlakTrails = b(true, "showExtraTrails");
+
+	public final ConfigGroup shrapnelClouds = group(1, "shrapnelClouds", "Shrapnel Clouds");
+	public final ConfigBool showShrapnelClouds = b(true, "showShrapnelClouds");
+	public final ConfigBool showExtraShrapnelCloudFlames = b(true, "showExtraFlames");
+	public final ConfigBool showExtraShrapnelCloudShockwave = b(true, "showExtraShockwave");
+
 	@Override public String getName() { return "client"; }
 
 	private static class Comments {
