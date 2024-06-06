@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -17,6 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.BaseProjectileProperties;
 
@@ -51,12 +53,30 @@ public abstract class AbstractAutocannonProjectile<T extends BaseProjectilePrope
 	@Override
 	public void tick() {
 		this.prevPos = this.position();
-
-		super.tick();
-
-		if (!this.level.isClientSide && this.level.hasChunkAt(this.blockPosition())) {
-			this.ageRemaining--;
-			if (this.ageRemaining <= 0) this.expireProjectile();
+		ChunkPos cpos = new ChunkPos(this.blockPosition());
+		if (this.level.isClientSide || this.level.hasChunk(cpos.x, cpos.z)) {
+			super.tick();
+			if (!this.level.isClientSide) {
+				this.ageRemaining--;
+				if (this.ageRemaining <= 0)
+					this.expireProjectile();
+			}
+			if (!this.isInGround()) {
+				TrailType trailType = CBCConfigs.SERVER.munitions.autocannonTrailType.get();
+				if (trailType != TrailType.NONE) {
+					int lifetime = trailType == TrailType.SHORT ? 50 : 100 + this.level.random.nextInt(50);
+					for (int i = 0; i < 10; ++i) {
+						double partial = i * 0.1f;
+						double dx = Mth.lerp(partial, this.xOld, this.getX());
+						double dy = Mth.lerp(partial, this.yOld, this.getY());
+						double dz = Mth.lerp(partial, this.zOld, this.getZ());
+						double sx = this.level.random.nextDouble(-0.002d, 0.002d);
+						double sy = this.level.random.nextDouble(-0.002d, 0.002d);
+						double sz = this.level.random.nextDouble(-0.002d, 0.002d);
+						this.level.addAlwaysVisibleParticle(new TrailSmokeParticleData(lifetime), true, dx, dy, dz, sx, sy, sz);
+					}
+				}
+			}
 		}
 	}
 
@@ -127,6 +147,12 @@ public abstract class AbstractAutocannonProjectile<T extends BaseProjectilePrope
 	@Override
 	protected boolean canBounceOffOf(BlockState state) {
 		return super.canBounceOffOf(state) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.autocannonDeflectChance.getF();
+	}
+
+	public enum TrailType {
+		NONE,
+		LONG,
+		SHORT
 	}
 
 }

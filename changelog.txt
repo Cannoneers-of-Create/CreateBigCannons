@@ -41,6 +41,9 @@ Added:
  - Has appearance and visibility client config options
  - Amount of particles can also be configured in the shrapnel
 - Added new burst sounds for flak and shrapnel
+- Added config for different types of big cannon projectile smoke trail: Long, Short, and No Trail
+- Added smoke trails to autocannon projectiles
+ - Has config for type of trail: Long, Short, and No Trail
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 Changed:
@@ -48,7 +51,6 @@ Changed:
  - Improved chunkloading performance
  - Replaced PreciseProjectile interface with tag #ritchiesprojectilelib:precise_motion
  - Changed screen shake to use Ritchies Projectile Library code rather than Create Big Cannons code
-- Changed how cannon trails are done
 - Separated smoke shell smoke particle (createbigcannons:smoke_shell_smoke) from cannon smoke particle (createbigcannons:cannon_smoke)
  - Both still use the same textures and particle definition by default
 - Changed how big cannon plumes look
