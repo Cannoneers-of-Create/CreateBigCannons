@@ -59,8 +59,8 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile<FlakA
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.setDeltaMovement(oldDelta);
 		if (properties != null) {
-			Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), this.getDeltaMovement(),
-				properties.shrapnelCount(), properties.shrapnelSpread(), properties.shrapnelDamage());
+			Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), oldDelta,
+				properties.shrapnelCount(), properties.shrapnelSpread(), properties.shrapnelDamage(), 5);
 		}
 		this.discard();
 	}

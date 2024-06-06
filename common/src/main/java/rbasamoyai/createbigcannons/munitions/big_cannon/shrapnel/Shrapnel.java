@@ -32,7 +32,7 @@ import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
 public class Shrapnel extends AbstractHurtingProjectile implements PropertiesMunitionEntity<BaseProjectileProperties> {
 
-	private int age;
+	private int age = 20;
 	protected float damage;
 	protected float mass;
 
@@ -45,13 +45,13 @@ public class Shrapnel extends AbstractHurtingProjectile implements PropertiesMun
 	@Override
 	public void tick() {
 		super.tick();
-		++this.age;
+		--this.age;
 
 		if (!this.isNoGravity() && this.getGravity() < 0) {
 			this.setDeltaMovement(this.getDeltaMovement().add(0.0f, this.getGravity(), 0.0f));
 		}
 
-		if (!this.level.isClientSide && this.age > 20) {
+		if (!this.level.isClientSide && this.age <= 0) {
 			this.discard();
 		}
 	}
@@ -72,6 +72,8 @@ public class Shrapnel extends AbstractHurtingProjectile implements PropertiesMun
 
 	public void setDamage(float damage) { this.damage = damage; }
 	public float getDamage() { return this.damage; }
+
+	public void setAge(int age) { this.age = age; }
 
 	@Override
 	protected void onHitBlock(BlockHitResult result) {
@@ -131,8 +133,20 @@ public class Shrapnel extends AbstractHurtingProjectile implements PropertiesMun
 
 	@Override protected boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
 
+	/**
+	 * Use {@link #spawnShrapnelBurst(Level, EntityType, Vec3, Vec3, int, double, float, int)}
+	 *
+	 * <br>Lifetime is set to 20 ticks.
+	 */
+	@Deprecated
 	public static <T extends Shrapnel> List<T> spawnShrapnelBurst(Level level, EntityType<T> type, Vec3 position, Vec3 initialVelocity,
 																  int count, double spread, float damage) {
+		return spawnShrapnelBurst(level, type, position, initialVelocity, count, spread, damage, 20);
+	}
+
+
+	public static <T extends Shrapnel> List<T> spawnShrapnelBurst(Level level, EntityType<T> type, Vec3 position, Vec3 initialVelocity,
+																  int count, double spread, float damage, int lifetime) {
 		Vec3 forward = initialVelocity.normalize();
 		Vec3 right = forward.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = forward.cross(right);
@@ -153,6 +167,7 @@ public class Shrapnel extends AbstractHurtingProjectile implements PropertiesMun
 			shrapnel.setPos(rx, ry, rz);
 			shrapnel.setDeltaMovement(vel);
 			shrapnel.setDamage(damage);
+			shrapnel.setAge(lifetime);
 
 			if (level.addFreshEntity(shrapnel)) list.add(shrapnel);
 		}
