@@ -51,7 +51,8 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile<FluidShellPro
 			int convertCount = IndexPlatform.convertFluid(mbPerBlob);
 			int count = (int) Math.ceil(this.fluidStack.amount() / (double) convertCount);
 			float spread = properties == null ? 1 : properties.fluidBlobSpread();
-			List<FluidBlob> list = Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.FLUID_BLOB.get(), this.position(), this.getDeltaMovement(), count, spread, 0);
+			List<FluidBlob> list = Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.FLUID_BLOB.get(), this.position(),
+				this.getDeltaMovement(), count, spread, 0, 20);
 			for (FluidBlob blob : list) {
 				EndFluidStack copy = this.fluidStack.copy(convertCount);
 				blob.setFluidStack(copy);

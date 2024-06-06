@@ -22,7 +22,7 @@ public class GrapeshotBagProjectile extends DisintegratingBigCannonProjectile<Gr
 		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.GRAPESHOT.get(), this.position(), this.getDeltaMovement(),
 				properties == null ? 0 : properties.grapeshotCount(),
 				properties == null ? 0 : properties.grapeshotSpread(),
-				properties == null ? 0 : properties.grapeshotDamage());
+				properties == null ? 0 : properties.grapeshotDamage(), 20);
 	}
 
 	@Override
