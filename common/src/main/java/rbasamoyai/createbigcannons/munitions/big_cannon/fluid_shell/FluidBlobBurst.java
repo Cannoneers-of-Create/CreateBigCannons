@@ -1,33 +1,31 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
-import com.simibubi.create.foundation.particle.AirParticleData;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
-import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
+import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
+import rbasamoyai.createbigcannons.munitions.fragment_burst.ProjectileBurstProperties;
 import rbasamoyai.createbigcannons.network.ClientboundFluidBlobStackSyncPacket;
 
-public class FluidBlob extends Shrapnel {
-	private static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FluidBlob.class, EntityDataSerializers.BYTE);
+public class FluidBlobBurst extends CBCProjectileBurst<ProjectileBurstProperties> {
 
+	private static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FluidBlobBurst.class, EntityDataSerializers.BYTE);
 	private EndFluidStack fluidStack = EndFluidStack.EMPTY;
 
-	public FluidBlob(EntityType<? extends FluidBlob> type, Level level) {
-		super(type, level);
+	public FluidBlobBurst(EntityType<? extends CBCProjectileBurst<?>> entityType, Level level) { super(entityType, level); }
+
+	public static float getBlockAffectChance() {
+		return CBCConfigs.SERVER.munitions.fluidBlobBlockAffectChance.getF();
 	}
 
 	@Override
@@ -61,6 +59,9 @@ public class FluidBlob extends Shrapnel {
 	public void setFluidStack(EndFluidStack fstack) { this.fluidStack = fstack; }
 	public EndFluidStack getFluidStack() { return this.fluidStack; }
 
+	@Override public double getSubProjectileWidth() { return 0.8; }
+	@Override public double getSubProjectileHeight() { return 0.8; }
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -70,46 +71,41 @@ public class FluidBlob extends Shrapnel {
 				NetworkPlatform.sendToClientTracking(new ClientboundFluidBlobStackSyncPacket(this), this);
 			}
 		}
-		if (!this.getFluidStack().isEmpty()) {
-			Vec3 vel = this.getDeltaMovement();
-			this.level.addParticle(new FluidBlobParticleData(this.getBlobSize() * 0.25f + 1, this.getFluidStack().copy()), this.getX(), this.getY(), this.getZ(), vel.x, vel.y, vel.z);
+		if (this.level.isClientSide) {
+			if (!this.getFluidStack().isEmpty()) {
+				for (SubProjectile subProjectile : this.subProjectiles) {
+					double[] disp = subProjectile.displacement();
+					double[] vel = subProjectile.velocity();
+					this.level.addParticle(new FluidBlobParticleData(this.getBlobSize() * 0.25f + 1, this.getFluidStack().copy()),
+						this.getX() + disp[0], this.getY() + disp[1], this.getZ() + disp[2], vel[0], vel[1], vel[2]);
+				}
+			}
 		}
 	}
 
 	@Override
-	protected void onHitBlock(BlockHitResult result) {
-		if (!this.level.isClientSide) FluidBlobEffectRegistry.effectOnHitBlock(this, result);
-		super.onHitBlock(result);
+	protected void onSubProjectileHit(HitResult result, SubProjectile subProjectile) {
+		if (!this.level.isClientSide)
+			FluidBlobEffectRegistry.effectOnAllHit(this, subProjectile, result);
+		super.onSubProjectileHit(result, subProjectile);
 	}
 
 	@Override
-	protected void onHit(HitResult result) {
-		if (!this.level.isClientSide) FluidBlobEffectRegistry.effectOnAllHit(this, result);
-		super.onHit(result);
+	protected void onSubProjectileHitBlock(BlockHitResult result, SubProjectile subProjectile) {
+		if (!this.level.isClientSide)
+			FluidBlobEffectRegistry.effectOnHitBlock(this, subProjectile, result);
+		super.onSubProjectileHitBlock(result, subProjectile);
 	}
 
 	@Override
-	protected void onHitEntity(EntityHitResult result) {
-		if (result.getEntity().getType() == this.getType()) return;
-		if (!this.level.isClientSide) FluidBlobEffectRegistry.effectOnHitEntity(this, result);
+	protected void onSubProjectileHitEntity(EntityHitResult result, SubProjectile subProjectile) {
+		if (!this.level.isClientSide)
+			FluidBlobEffectRegistry.effectOnHitEntity(this, subProjectile, result);
+		super.onSubProjectileHitEntity(result, subProjectile);
 	}
 
 	public AABB getAreaOfEffect(BlockPos pos) {
 		return new AABB(pos).inflate(this.getBlobSize());
-	}
-
-	public static float getBlockAffectChance() {
-		return CBCConfigs.SERVER.munitions.fluidBlobBlockAffectChance.getF();
-	}
-
-	@Override
-	protected ParticleOptions getTrailParticle() {
-		return new AirParticleData();
-	}
-
-	@Override
-	protected boolean canDestroyBlock(BlockState state) {
-		return false;
 	}
 
 }

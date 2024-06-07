@@ -11,6 +11,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
 
 public class ShrapnelShellProjectile extends FuzedBigCannonProjectile<ShrapnelShellProperties> {
 
@@ -27,8 +28,8 @@ public class ShrapnelShellProjectile extends FuzedBigCannonProjectile<ShrapnelSh
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 		if (properties != null) {
-			Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), oldDelta,
-				properties.shrapnelCount(), properties.shrapnelSpread(), properties.shrapnelDamage(), 20);
+			CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.SHRAPNEL_BURST.get(), this.position(), oldDelta,
+				properties.shrapnelCount(), properties.shrapnelSpread());
 		}
 		this.discard();
 	}

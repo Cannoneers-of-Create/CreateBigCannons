@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
 import com.simibubi.create.AllFluids;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.tags.BlockTags;
@@ -16,9 +17,9 @@ import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnHitBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnHitEntity;
 
 public class DefaultFluidCompat {
 
@@ -35,36 +36,42 @@ public class DefaultFluidCompat {
 		FluidBlobEffectRegistry.registerHitEntity(AllFluids.POTION.get(), DefaultFluidCompat::potionHitEntity);
 	}
 
-	public static void waterHitEntity(EndFluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
-		Entity entity = result.getEntity();
+	public static void waterHitEntity(OnHitEntity.Context context) {
+		Entity entity = context.result().getEntity();
 		entity.clearFire();
-		if (!level.isClientSide) douseFire(entity.blockPosition(), blob, level);
+		if (!context.level().isClientSide)
+			douseFire(entity.blockPosition(), context.burst(), context.level());
 	}
 
-	public static void lavaHitEntity(EndFluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
-		Entity entity = result.getEntity();
+	public static void lavaHitEntity(OnHitEntity.Context context) {
+		Entity entity = context.result().getEntity();
 		entity.setSecondsOnFire(100);
-		if (!level.isClientSide) spawnFire(entity.blockPosition(), blob, level);
+		if (!context.level().isClientSide)
+			spawnFire(entity.blockPosition(), context.burst(), context.level());
 	}
 
-	public static void potionHitEntity(EndFluidStack fstack, FluidBlob blob, Level level, EntityHitResult result) {
-		if (!level.isClientSide) spawnAreaEffectCloud(result.getEntity().blockPosition(), blob, level);
+	public static void potionHitEntity(OnHitEntity.Context context) {
+		if (!context.level().isClientSide)
+			spawnAreaEffectCloud(context.result().getEntity().blockPosition(), context.burst(), context.level());
 	}
 
-	public static void waterHitBlock(EndFluidStack fstack, FluidBlob blob, Level level, BlockHitResult result) {
-		if (!level.isClientSide) douseFire(result.getBlockPos().relative(result.getDirection()), blob, level);
+	public static void waterHitBlock(OnHitBlock.Context context) {
+		if (!context.level().isClientSide)
+			douseFire(context.result().getBlockPos().relative(context.result().getDirection()), context.burst(), context.level());
 	}
 
-	public static void lavaHitBlock(EndFluidStack fstack, FluidBlob blob, Level level, BlockHitResult result) {
-		if (!level.isClientSide) spawnFire(result.getBlockPos().relative(result.getDirection()), blob, level);
+	public static void lavaHitBlock(OnHitBlock.Context context) {
+		if (!context.level().isClientSide)
+			spawnFire(context.result().getBlockPos().relative(context.result().getDirection()), context.burst(), context.level());
 	}
 
-	public static void potionHitBlock(EndFluidStack fstack, FluidBlob blob, Level level, BlockHitResult result) {
-		if (!level.isClientSide) spawnAreaEffectCloud(result.getBlockPos().relative(result.getDirection()), blob, level);
+	public static void potionHitBlock(OnHitBlock.Context context) {
+		if (!context.level().isClientSide)
+			spawnAreaEffectCloud(context.result().getBlockPos().relative(context.result().getDirection()), context.burst(), context.level());
 	}
 
-	public static void douseFire(BlockPos root, FluidBlob blob, Level level) {
-		float chance = FluidBlob.getBlockAffectChance();
+	public static void douseFire(BlockPos root, FluidBlobBurst blob, Level level) {
+		float chance = FluidBlobBurst.getBlockAffectChance();
 		AABB bounds = blob.getAreaOfEffect(root);
 		BlockPos pos1 = new BlockPos(Math.floor(bounds.minX), Math.floor(bounds.minY), Math.floor(bounds.minZ));
 		BlockPos pos2 = new BlockPos(Math.floor(bounds.maxX), Math.floor(bounds.maxY), Math.floor(bounds.maxZ));
@@ -83,8 +90,8 @@ public class DefaultFluidCompat {
 		}
 	}
 
-	public static void spawnFire(BlockPos root, FluidBlob blob, Level level) {
-		float chance = FluidBlob.getBlockAffectChance();
+	public static void spawnFire(BlockPos root, FluidBlobBurst blob, Level level) {
+		float chance = FluidBlobBurst.getBlockAffectChance();
 		AABB bounds = blob.getAreaOfEffect(root);
 		BlockPos pos1 = new BlockPos(Math.floor(bounds.minX), Math.floor(bounds.minY), Math.floor(bounds.minZ));
 		BlockPos pos2 = new BlockPos(Math.floor(bounds.maxX), Math.floor(bounds.maxY), Math.floor(bounds.maxZ));
@@ -95,7 +102,7 @@ public class DefaultFluidCompat {
 		}
 	}
 
-	public static void spawnAreaEffectCloud(BlockPos pos, FluidBlob blob, Level level) {
+	public static void spawnAreaEffectCloud(BlockPos pos, FluidBlobBurst blob, Level level) {
 		CompoundTag tag = blob.getFluidStack().data();
 
 		AreaEffectCloud aec = EntityType.AREA_EFFECT_CLOUD.create(level);

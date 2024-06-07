@@ -46,6 +46,7 @@ Added:
  - Has config for type of trail: Long, Short, and No Trail
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
+- Removed single-projectile shrapnel, grapeshot, and fluid blob entities
 Changed:
 - Updated Ritchie's Projectile Library dependency to 2.0.0
  - Improved chunkloading performance
@@ -62,6 +63,11 @@ Changed:
 - Tweaked speed and entity damage attributes of Drop Mortar Shell
 - Tweaked shrapnel spread and shrapnel damage values of Shrapnel Shell
 - Tweaked grapeshot spread and grapeshot damage values of Bag of Grapeshot
+- Changed all shrapnel projectiles to a single projectile burst entity to reduce entity count
+ - Includes: Shrapnel Shell, Bag of Grapeshot, Fluid Shell, and Flak Autocannon Round
+ - Harder to create chunkbans with new system
+ [Addons, integration] - Fluid Blob effects registry has been changed to work with Fluid Blob bursts rather than single Fluid Blobs. This will break already existing integration.
+- Separated flak burst from shrapnel burst
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head

@@ -16,7 +16,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelExplosion;
 
 public class CBCClientHandlers {
@@ -68,10 +68,10 @@ public class CBCClientHandlers {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null) return;
 		Entity entity = mc.level.getEntity(pkt.entityId());
-		if (entity instanceof FluidBlob blob) {
-			blob.setFluidStack(pkt.fstack());
+		if (entity instanceof FluidBlobBurst blobBurst) {
+			blobBurst.setFluidStack(pkt.fstack());
 		} else {
-			CreateBigCannons.LOGGER.error("Invalid ClientboundFluidBlobStackSyncPacket for non-fluid blob entity: " + entity);
+			CreateBigCannons.LOGGER.error("Invalid ClientboundFluidBlobStackSyncPacket for non-fluid blob burst entity: " + entity);
 		}
 	}
 
