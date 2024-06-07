@@ -22,6 +22,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonPro
 import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonProjectileProperties;
+import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakBurst;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileRenderer;
@@ -30,18 +31,18 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotProjectile
 import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellRenderer;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellProperties;
-import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.Grapeshot;
 import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBagProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBagProperties;
-import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotRenderer;
+import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBurst;
+import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBurstRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneProperties;
-import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
-import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelRenderer;
+import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelBurst;
+import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelBurstRenderer;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell.SmokeEmitterEntity;
@@ -84,25 +85,32 @@ public class CBCEntityTypes {
 		.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, new DropMortarShellProperties.Serializer()))
 		.register();
 
-	public static final EntityEntry<Shrapnel> SHRAPNEL = REGISTRATE
-		.entity("shrapnel", Shrapnel::new, MobCategory.MISC)
+	public static final EntityEntry<ShrapnelBurst> SHRAPNEL_BURST = REGISTRATE
+		.entity("shrapnel_burst", ShrapnelBurst::new, MobCategory.MISC)
 		.properties(shrapnel())
-		.renderer(() -> ShrapnelRenderer::new)
-		.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, CBCMunitionPropertiesSerializers.BASE_PROJECTILE))
+		.renderer(() -> ShrapnelBurstRenderer::new)
+		.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, CBCMunitionPropertiesSerializers.PROJECTILE_BURST))
 		.register();
 
-	public static final EntityEntry<Grapeshot> GRAPESHOT = REGISTRATE
-		.entity("grapeshot", Grapeshot::new, MobCategory.MISC)
+	public static final EntityEntry<FlakBurst> FLAK_BURST = REGISTRATE
+		.entity("flak_burst", FlakBurst::new, MobCategory.MISC)
 		.properties(shrapnel())
-		.renderer(() -> GrapeshotRenderer::new)
-		.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, CBCMunitionPropertiesSerializers.BASE_PROJECTILE))
+		.renderer(() -> ShrapnelBurstRenderer::new)
+		.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, CBCMunitionPropertiesSerializers.PROJECTILE_BURST))
 		.register();
 
-	public static final EntityEntry<FluidBlob> FLUID_BLOB = REGISTRATE
-		.entity("fluid_blob", FluidBlob::new, MobCategory.MISC)
+	public static final EntityEntry<GrapeshotBurst> GRAPESHOT_BURST = REGISTRATE
+		.entity("grapeshot_burst", GrapeshotBurst::new, MobCategory.MISC)
+		.properties(shrapnel())
+		.renderer(() -> GrapeshotBurstRenderer::new)
+		.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, CBCMunitionPropertiesSerializers.PROJECTILE_BURST))
+		.register();
+
+	public static final EntityEntry<FluidBlobBurst> FLUID_BLOB_BURST = REGISTRATE
+		.entity("fluid_blob_burst", FluidBlobBurst::new, MobCategory.MISC)
 		.properties(shrapnel())
 		.renderer(() -> NoopRenderer::new)
-		.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, CBCMunitionPropertiesSerializers.BASE_PROJECTILE))
+		.onRegister(type -> MunitionPropertiesHandler.registerPropertiesSerializer(type, CBCMunitionPropertiesSerializers.PROJECTILE_BURST))
 		.register();
 
 	public static final EntityEntry<SmokeEmitterEntity> SMOKE_EMITTER = REGISTRATE

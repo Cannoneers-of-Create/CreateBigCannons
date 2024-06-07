@@ -1,21 +1,25 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-
-import java.util.HashMap;
-import java.util.Map;
+import rbasamoyai.ritchiesprojectilelib.projectile_burst.ProjectileBurst.SubProjectile;
 
 public class FluidBlobEffectRegistry {
 
 	/**
-	 Fired for all hits of any type.
+	 * Fired for all hits of any type.
 	 */
 	public interface OnHit {
-		void hit(EndFluidStack fstack, FluidBlob projectile, Level level, HitResult result);
+		void hit(Context context);
+
+		record Context(EndFluidStack fstack, FluidBlobBurst burst, SubProjectile subProjectile, Level level, HitResult result) {
+		}
 	}
 
 	private static final Map<Fluid, OnHit> ON_HIT = new HashMap<>();
@@ -29,17 +33,21 @@ public class FluidBlobEffectRegistry {
 		return null;
 	}
 
-	public static void effectOnAllHit(FluidBlob projectile, HitResult result) {
-		EndFluidStack fstack = projectile.getFluidStack();
+	public static void effectOnAllHit(FluidBlobBurst burst, SubProjectile subProjectile, HitResult result) {
+		EndFluidStack fstack = burst.getFluidStack();
 		OnHit cons = getHitEffect(fstack.fluid());
-		if (cons != null) cons.hit(fstack, projectile, projectile.getLevel(), result);
+		if (cons != null)
+			cons.hit(new OnHit.Context(fstack, burst, subProjectile, burst.getLevel(), result));
 	}
 
 	/**
-	 Fired only for block hits.
+	 * Fired only for block hits.
 	 */
 	public interface OnHitBlock {
-		void hit(EndFluidStack fstack, FluidBlob projectile, Level level, BlockHitResult result);
+		void hit(Context context);
+
+		record Context(EndFluidStack fstack, FluidBlobBurst burst, SubProjectile subProjectile, Level level, BlockHitResult result) {
+		}
 	}
 
 	private static final Map<Fluid, OnHitBlock> ON_HIT_BLOCK = new HashMap<>();
@@ -55,17 +63,21 @@ public class FluidBlobEffectRegistry {
 		return null;
 	}
 
-	public static void effectOnHitBlock(FluidBlob projectile, BlockHitResult result) {
-		EndFluidStack fstack = projectile.getFluidStack();
+	public static void effectOnHitBlock(FluidBlobBurst burst, SubProjectile subProjectile, BlockHitResult result) {
+		EndFluidStack fstack = burst.getFluidStack();
 		OnHitBlock cons = getHitBlockEffect(fstack.fluid());
-		if (cons != null) cons.hit(fstack, projectile, projectile.getLevel(), result);
+		if (cons != null)
+			cons.hit(new OnHitBlock.Context(fstack, burst, subProjectile, burst.getLevel(), result));
 	}
 
 	/**
-	 Fired only for entity hits.
+	 * Fired only for entity hits.
 	 */
 	public interface OnHitEntity {
-		void hit(EndFluidStack fstack, FluidBlob projectile, Level level, EntityHitResult result);
+		void hit(Context context);
+
+		record Context(EndFluidStack fstack, FluidBlobBurst burst, SubProjectile subProjectile, Level level, EntityHitResult result) {
+		}
 	}
 
 	private static final Map<Fluid, OnHitEntity> ON_HIT_ENTITY = new HashMap<>();
@@ -81,10 +93,11 @@ public class FluidBlobEffectRegistry {
 		return null;
 	}
 
-	public static void effectOnHitEntity(FluidBlob projectile, EntityHitResult result) {
-		EndFluidStack fstack = projectile.getFluidStack();
+	public static void effectOnHitEntity(FluidBlobBurst burst, SubProjectile subProjectile, EntityHitResult result) {
+		EndFluidStack fstack = burst.getFluidStack();
 		OnHitEntity cons = getHitEntityEffect(fstack.fluid());
-		if (cons != null) cons.hit(fstack, projectile, projectile.getLevel(), result);
+		if (cons != null)
+			cons.hit(new OnHitEntity.Context(fstack, burst, subProjectile, burst.getLevel(), result));
 	}
 
 }

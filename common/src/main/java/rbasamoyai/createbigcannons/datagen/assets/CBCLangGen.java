@@ -37,6 +37,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("casting"), "Cannon cast at [%s, %s, %s] does not have a valid recipe for fluid %s and shape %s");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("flak"), "%s was downed by flak");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("cannon_projectile"), "%s was hit with artillery fire");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("big_cannon_projectile"), "%s was directly killed by a large caliber round");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("machine_gun_fire"), "%s was punctured by machine gun fire");

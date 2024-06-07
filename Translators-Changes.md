@@ -26,7 +26,12 @@ Additions: \
 &plus; `"createbigcannons.subtitle.fire_drop_mortar": "Drop mortar fires"` \
 &plus; `"createbigcannons.subtitle.fire_machine_gun": "Machine gun fires"` \
 &plus; `"createbigcannons.subtitle.flak_round_explosion": "Flak round explodes"` \
-&plus; `"createbigcannons.subtitle.shrapnel_shell_explosion": "Shrapnel shell explodes"`
+&plus; `"createbigcannons.subtitle.shrapnel_shell_explosion": "Shrapnel shell explodes"` \
+&plus; `"death.attack.createbigcannons.flak": "%s was downed by flak"` \
+&plus; `"entity.createbigcannons.flak_burst": "Flak Burst"` \
+&plus; `"entity.createbigcannons.fluid_blob_burst": "Fluid Blob Burst"` \
+&plus; `"entity.createbigcannons.grapeshot_burst": "Grapeshot Burst"` \
+&plus; `"entity.createbigcannons.shrapnel_burst": "Shrapnel Burst"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \
@@ -41,6 +46,11 @@ Content Changes: \
 `"item.createbigcannons.impact_fuze.tooltip.summary"`: `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact."` → `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._",` \
 `"item.createbigcannons.proximity_fuze.tooltip.summary"`: `"Detonates when it _gets close_ to a block."` → `"Detonates when it _gets close_ to a block. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"` \
 `"createbigcannons.ponder.cannon_crafting/finishing_built_up_cannons.text_3"`: `"It takes a while for the cannon layers to transform into cannon blocks."` → `"A built-up cannon block must have all the correct layers to be transformed."`
+
+Removals: \
+&minus; `"entity.createbigcannons.fluid_blob"` \
+&minus; `"entity.createbigcannons.grapeshot"` \
+&minus; `"entity.createbigcannons.shrapnel"`
 
 ## 0.5.3.b → 0.5.4
 

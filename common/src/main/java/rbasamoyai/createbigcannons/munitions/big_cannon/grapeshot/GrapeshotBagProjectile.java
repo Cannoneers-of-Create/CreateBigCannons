@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DisintegratingBigCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
+import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
 
 public class GrapeshotBagProjectile extends DisintegratingBigCannonProjectile<GrapeshotBagProperties> {
 
@@ -19,10 +19,10 @@ public class GrapeshotBagProjectile extends DisintegratingBigCannonProjectile<Gr
 	@Override
 	protected void disintegrate() {
 		GrapeshotBagProperties properties = this.getProperties();
-		Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.GRAPESHOT.get(), this.position(), this.getDeltaMovement(),
-				properties == null ? 0 : properties.grapeshotCount(),
-				properties == null ? 0 : properties.grapeshotSpread(),
-				properties == null ? 0 : properties.grapeshotDamage(), 20);
+		if (properties != null) {
+			CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.GRAPESHOT_BURST.get(), this.position(), this.getDeltaMovement(),
+				properties.grapeshotCount(), properties.grapeshotSpread());
+		}
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
-import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.Shrapnel;
+import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class FlakAutocannonProjectile extends AbstractAutocannonProjectile<FlakAutocannonProjectileProperties> {
@@ -60,8 +60,8 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile<FlakA
 			properties == null ? 2 : properties.explosionPower(), CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 		if (properties != null) {
-			Shrapnel.spawnShrapnelBurst(this.level, CBCEntityTypes.SHRAPNEL.get(), this.position(), oldDelta,
-				properties.shrapnelCount(), properties.shrapnelSpread(), properties.shrapnelDamage(), 5);
+			CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.FLAK_BURST.get(), this.position(), oldDelta,
+				properties.shrapnelCount(), properties.shrapnelSpread());
 		}
 		this.discard();
 	}
