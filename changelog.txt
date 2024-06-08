@@ -68,6 +68,7 @@ Changed:
  - Harder to create chunkbans with new system
  [Addons, integration] - Fluid Blob effects registry has been changed to work with Fluid Blob bursts rather than single Fluid Blobs. This will break already existing integration.
 - Separated flak burst from shrapnel burst
+[Addons, integration] - Added ability to register multiple fluid blob effect handlers for a single fluid type
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
