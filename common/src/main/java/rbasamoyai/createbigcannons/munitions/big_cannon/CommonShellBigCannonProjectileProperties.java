@@ -12,10 +12,10 @@ public class CommonShellBigCannonProjectileProperties extends FuzedBigCannonProj
 	private final float explosivePower;
 
 	public CommonShellBigCannonProjectileProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable,
-													boolean ignoresEntityArmor, double gravity, double drag, float knockback,
+													boolean ignoresEntityArmor, double gravity, double drag, boolean isQuadraticDrag, float knockback,
 													int addedChargePower, float minimumChargePower, boolean canSquib,
 													float addedRecoil, boolean baseFuze, float explosivePower) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil, baseFuze);
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil, baseFuze);
 		this.explosivePower = explosivePower;
 	}
 

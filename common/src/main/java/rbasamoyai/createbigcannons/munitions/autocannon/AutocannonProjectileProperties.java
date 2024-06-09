@@ -14,9 +14,9 @@ public class AutocannonProjectileProperties extends BaseProjectileProperties {
 	private final boolean canSquib;
 
 	public AutocannonProjectileProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable,
-										  boolean ignoresEntityArmor, double gravity, double drag, float knockback,
-										  double addedRecoil, boolean canSquib) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback);
+										  boolean ignoresEntityArmor, double gravity, double drag, boolean isQuadraticDrag,
+										  float knockback, double addedRecoil, boolean canSquib) {
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag, knockback);
 		this.addedRecoil = addedRecoil;
 		this.canSquib = canSquib;
 	}

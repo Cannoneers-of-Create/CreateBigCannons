@@ -16,9 +16,9 @@ public class GrapeshotBagProperties extends BigCannonProjectileProperties {
 	private final int grapeshotCount;
 
 	public GrapeshotBagProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable, boolean ignoresEntityArmor,
-								  double gravity, double drag, float knockback, int addedChargePower, float minimumChargePower,
+								  double gravity, double drag, boolean isQuadraticDrag, float knockback, int addedChargePower, float minimumChargePower,
 								  boolean canSquib, float addedRecoil, double grapeshotSpread, int grapeshotCount) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil);
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil);
 		this.grapeshotSpread = grapeshotSpread;
 		this.grapeshotCount = grapeshotCount;
 	}

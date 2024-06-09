@@ -4,7 +4,8 @@
   "renders_invulnerable": false,
   "ignores_entity_armor": false,
   "gravity": -0.025,
-  "drag": 0.99,
+  "drag": 0.01,
+  "quadratic_drag": false,
   "knockback": 0.5,
   "added_recoil": 1,
   "can_squib": true

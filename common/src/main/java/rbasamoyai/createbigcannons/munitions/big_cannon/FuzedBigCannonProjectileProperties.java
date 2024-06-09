@@ -10,10 +10,10 @@ public class FuzedBigCannonProjectileProperties extends BigCannonProjectilePrope
 	private final boolean baseFuze;
 
 	public FuzedBigCannonProjectileProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable,
-											  boolean ignoresEntityArmor, double gravity, double drag, float knockback,
+											  boolean ignoresEntityArmor, double gravity, double drag, boolean isQuadraticDrag, float knockback,
 											  int addedChargePower, float minimumChargePower, boolean canSquib, float addedRecoil,
 											  boolean baseFuze) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil);
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil);
 		this.baseFuze = baseFuze;
 	}
 

@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell;
 
+import static rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesSerializer.getOrWarn;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -9,17 +11,15 @@ import net.minecraft.util.Mth;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesSerializer;
 
-import static rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesSerializer.getOrWarn;
-
 public class SmokeShellProperties extends FuzedBigCannonProjectileProperties {
 
 	private final float smokeScale;
 	private final int smokeDuration;
 
 	public SmokeShellProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable, boolean ignoresEntityArmor,
-								double gravity, double drag, float knockback, int addedChargePower, float minimumChargePower,
+								double gravity, double drag, boolean isQuadraticDrag, float knockback, int addedChargePower, float minimumChargePower,
 								boolean canSquib, float addedRecoil, boolean baseFuze, float smokeScale, int smokeDuration) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil, baseFuze);
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil, baseFuze);
 		this.smokeScale = smokeScale;
 		this.smokeDuration = smokeDuration;
 	}

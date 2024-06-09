@@ -17,10 +17,10 @@ public class ShrapnelShellProperties extends FuzedBigCannonProjectileProperties 
 	private final float explosionPower;
 
 	public ShrapnelShellProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable, boolean ignoresEntityArmor,
-								   double gravity, double drag, float knockback, int addedChargePower, float minimumChargePower,
+								   double gravity, double drag, boolean isQuadraticDrag, float knockback, int addedChargePower, float minimumChargePower,
 								   boolean canSquib, float addedRecoil, boolean baseFuze, double shrapnelSpread,
 								   int shrapnelCount, float explosionPower) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil, baseFuze);
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil, baseFuze);
 		this.shrapnelSpread = shrapnelSpread;
 		this.shrapnelCount = shrapnelCount;
 		this.explosionPower = explosionPower;

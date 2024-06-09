@@ -10,7 +10,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -77,15 +76,14 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 				}
 			} else {
 				this.inGroundTime = 0;
-				Vec3 uel = this.getDeltaMovement();
-				Vec3 vel = uel;
+				Vec3 oldVel = this.getDeltaMovement();
 				Vec3 oldPos = this.position();
-				Vec3 newPos = oldPos.add(vel);
-				if (!this.isNoGravity()) vel = vel.add(0.0d, this.getGravity(), 0.0d);
-				vel = vel.scale(this.getDrag());
-				this.setDeltaMovement(vel);
-				Vec3 position = newPos.add(vel.subtract(uel).scale(0.5));
-				this.setPos(position);
+				Vec3 accel = oldVel.normalize().scale(-this.getDragForce())
+					.add(0.0d, this.getGravity(), 0.0d);
+				Vec3 newPos = oldPos.add(oldVel).add(accel.scale(0.5));
+				this.setPos(newPos);
+				this.setDeltaMovement(oldVel.add(accel));
+
 				this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
 				this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
 			}
@@ -354,18 +352,23 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 	}
 
 	protected double getGravity() {
+		if (this.isNoGravity())
+			return 0;
 		T properties = this.getProperties();
 		double val = properties == null ? -0.05d : properties.gravity();
 		double multiplier = DimensionMunitionPropertiesHandler.getProperties(this.level).gravityMultiplier();
 		return val * multiplier;
 	}
-	protected double getDrag() {
+
+	protected double getDragForce() {
 		T properties = this.getProperties();
-		float baseDrag = properties == null ? 0.99f : (float) properties.drag();
-		float scalar = (float) DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier();
-		if (scalar <= 1) return Mth.lerp(scalar, 1, baseDrag);
-		float diff = baseDrag - 1;
-		return (float) Mth.clamp(baseDrag + diff * (scalar - 1), 0.9, baseDrag);
+		if (properties == null)
+			return 0;
+		double magnitude = this.getDeltaMovement().length();
+		double drag = properties.drag() * DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier() * magnitude;
+		if (properties.isQuadraticDrag())
+			drag *= magnitude;
+		return Math.min(drag, magnitude);
 	}
 
 	public void setChargePower(float power) {}

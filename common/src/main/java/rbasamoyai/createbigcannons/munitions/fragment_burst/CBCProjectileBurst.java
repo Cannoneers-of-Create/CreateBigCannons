@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
@@ -24,12 +23,12 @@ public abstract class CBCProjectileBurst<T extends ProjectileBurstProperties> ex
 
 	@Override
 	protected void applyForces(double[] velocity) {
-		double drag = this.getDrag();
-		double gravity = this.getGravity();
-		velocity[0] *= drag;
-		velocity[1] *= drag;
-		velocity[2] *= drag;
-		velocity[1] += gravity;
+		double length = Math.sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1] + velocity[2] * velocity[2]);
+		double drag = length < 1e-2d ? 1 : this.getDragCoefficient(length) / length;
+		velocity[0] -= velocity[0] * drag;
+		velocity[1] -= velocity[1] * drag;
+		velocity[2] -= velocity[2] * drag;
+		velocity[1] += this.getGravity();
 	}
 
 	@Override
@@ -49,14 +48,14 @@ public abstract class CBCProjectileBurst<T extends ProjectileBurstProperties> ex
 		}
 	}
 
-	protected double getDrag() {
+	protected double getDragCoefficient(double magnitude) {
 		T properties = this.getProperties();
-		double baseDrag = properties == null ? 0.99 : properties.drag();
-		double scalar = DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier();
-		if (scalar <= 1)
-			return Mth.lerp(scalar, 1, baseDrag);
-		double diff = baseDrag - 1;
-		return Mth.clamp(baseDrag + diff * (scalar - 1), 0.9, baseDrag);
+		if (properties == null)
+			return 0;
+		double drag = properties.drag() * DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier() * magnitude;
+		if (properties.isQuadraticDrag())
+			drag *= magnitude;
+		return Math.min(drag, magnitude);
 	}
 
 	protected double getGravity() {

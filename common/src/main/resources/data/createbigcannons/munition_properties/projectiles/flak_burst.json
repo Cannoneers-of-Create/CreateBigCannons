@@ -4,7 +4,7 @@
   "renders_invulnerable": false,
   "ignores_entity_armor": true,
   "gravity": -0.025,
-  "drag": 1.0,
+  "drag": 0,
   "knockback": 0.025,
   "lifetime": 5
 }
