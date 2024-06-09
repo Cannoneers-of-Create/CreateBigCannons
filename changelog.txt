@@ -68,6 +68,12 @@ Changed:
  - Harder to create chunkbans with new system
  [Addons, integration] - Fluid Blob effects registry has been changed to work with Fluid Blob bursts rather than single Fluid Blobs. This will break already existing integration.
 - Separated flak burst from shrapnel burst
+- Rework drag kinematics to ease factoring in dimensional density
+ - All projectiles are affected
+ - Previously, the drag equation was { vel' = vel * drag * dimensional density }
+ - The drag equation is now { vel' = vel - vel * vel * drag * dimensional density }
+ - Changed default drag values of big cannon and autocannon projectiles to 0.001 by default
+ - Changed default drag values of projectile burst sub-projectiles to 0 by default
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head

@@ -17,10 +17,11 @@ public class FlakAutocannonProjectileProperties extends AutocannonProjectileProp
 	private final float explosionPower;
 
 	public FlakAutocannonProjectileProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable,
-											  boolean ignoresEntityArmor, double gravity, double drag, float knockback,
-											  double addedRecoil, boolean canSquib, double shrapnelSpread, int shrapnelCount,
-											  float explosionPower) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback, addedRecoil, canSquib);
+											  boolean ignoresEntityArmor, double gravity, double drag, boolean isQuadraticDrag,
+											  float knockback, double addedRecoil, boolean canSquib, double shrapnelSpread,
+											  int shrapnelCount, float explosionPower) {
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag,
+			knockback, addedRecoil, canSquib);
 		this.shrapnelSpread = shrapnelSpread;
 		this.shrapnelCount = shrapnelCount;
 		this.explosionPower = explosionPower;

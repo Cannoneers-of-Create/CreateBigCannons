@@ -16,9 +16,10 @@ public class MortarStoneProperties extends BigCannonProjectileProperties {
 	private final float maxCharges;
 
 	public MortarStoneProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable, boolean ignoresEntityArmor,
-								 double gravity, double drag, float knockback, int addedChargePower, float minimumChargePower,
-								 boolean canSquib, float addedRecoil, float explosivePower, float maxCharges) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil);
+								 double gravity, double drag, boolean isQuadraticDrag, float knockback, int addedChargePower,
+								 float minimumChargePower, boolean canSquib, float addedRecoil, float explosivePower, float maxCharges) {
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag,
+			knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil);
 		this.explosivePower = explosivePower;
 		this.maxCharges = maxCharges;
 	}

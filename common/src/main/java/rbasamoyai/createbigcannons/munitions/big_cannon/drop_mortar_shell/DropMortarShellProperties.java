@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell;
 
+import static rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesSerializer.getOrWarn;
+
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -9,8 +11,6 @@ import net.minecraft.util.GsonHelper;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesSerializer;
-
-import static rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesSerializer.getOrWarn;
 
 public class DropMortarShellProperties extends FuzedBigCannonProjectileProperties implements DropMortarProjectileProperties {
 
@@ -22,10 +22,10 @@ public class DropMortarShellProperties extends FuzedBigCannonProjectilePropertie
 	private final float mortarSpread;
 
 	public DropMortarShellProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable, boolean ignoresEntityArmor,
-									 double gravity, double drag, float knockback, int addedChargePower, float minimumChargePower,
+									 double gravity, double drag, boolean isQuadraticDrag, float knockback, int addedChargePower, float minimumChargePower,
 									 boolean canSquib, float addedRecoil, boolean baseFuze, float entityDamagingExplosionPower,
 									 float blockDamagingExplosionPower, float mortarPower, float mortarRecoil, float mortarSpread) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil, baseFuze);
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag, knockback, addedChargePower, minimumChargePower, canSquib, addedRecoil, baseFuze);
 		this.entityDamagingExplosionPower = entityDamagingExplosionPower;
 		this.blockDamagingExplosionPower = blockDamagingExplosionPower;
 		this.mortarPower = mortarPower;

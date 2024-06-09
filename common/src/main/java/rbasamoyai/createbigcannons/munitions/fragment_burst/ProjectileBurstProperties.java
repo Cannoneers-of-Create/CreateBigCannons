@@ -13,8 +13,8 @@ public class ProjectileBurstProperties extends BaseProjectileProperties {
 	private final int lifetime;
 
 	public ProjectileBurstProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable, boolean ignoresEntityArmor,
-									 double gravity, double drag, float knockback, int lifetime) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback);
+									 double gravity, double drag, boolean isQuadraticDrag, float knockback, int lifetime) {
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag, knockback);
 		this.lifetime = lifetime;
 	}
 

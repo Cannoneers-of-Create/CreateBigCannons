@@ -8,7 +8,6 @@ import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.util.Mth;
 import rbasamoyai.createbigcannons.munitions.config.MunitionProperties;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesSerializer;
 
@@ -20,17 +19,20 @@ public class BaseProjectileProperties implements MunitionProperties {
 	private final boolean ignoresEntityArmor;
 	private final double gravity;
 	private final double drag;
+	private final boolean isQuadraticDrag;
 	private final float knockback;
 
 	public BaseProjectileProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable,
-									boolean ignoresEntityArmor, double gravity, double drag, float knockback) {
+                                    boolean ignoresEntityArmor, double gravity, double drag, boolean isQuadraticDrag,
+									float knockback) {
 		this.entityDamage = entityDamage;
 		this.durabilityMass = durabilityMass;
 		this.rendersInvulnerable = rendersInvulnerable;
 		this.ignoresEntityArmor = ignoresEntityArmor;
 		this.gravity = gravity;
 		this.drag = drag;
-		this.knockback = knockback;
+        this.isQuadraticDrag = isQuadraticDrag;
+        this.knockback = knockback;
 	}
 
 	public BaseProjectileProperties(String id, JsonObject obj) {
@@ -39,7 +41,8 @@ public class BaseProjectileProperties implements MunitionProperties {
 		this.rendersInvulnerable = !obj.has("renders_invulnerable") || obj.get("renders_invulnerable").getAsBoolean();
 		this.ignoresEntityArmor = obj.has("ignores_entity_armor") && obj.get("ignores_entity_armor").getAsBoolean();
 		this.gravity = Math.min(0, GsonHelper.getAsDouble(obj, "gravity", -0.05d));
-		this.drag = Mth.clamp(GsonHelper.getAsDouble(obj, "drag", 0.99d), 0.9d, 1d);
+		this.drag = Math.max(0, GsonHelper.getAsDouble(obj, "drag", 0.0d));
+		this.isQuadraticDrag = GsonHelper.getAsBoolean(obj, "quadratic_drag", false);
 		this.knockback = Math.max(0, GsonHelper.getAsFloat(obj, "knockback", 2.0f));
 	}
 
@@ -50,6 +53,7 @@ public class BaseProjectileProperties implements MunitionProperties {
 		this.ignoresEntityArmor = buf.readBoolean();
 		this.gravity = buf.readDouble();
 		this.drag = buf.readDouble();
+		this.isQuadraticDrag = buf.readBoolean();
 		this.knockback = buf.readFloat();
 	}
 
@@ -61,6 +65,7 @@ public class BaseProjectileProperties implements MunitionProperties {
 			.writeBoolean(this.ignoresEntityArmor)
 			.writeDouble(this.gravity)
 			.writeDouble(this.drag)
+			.writeBoolean(this.isQuadraticDrag)
 			.writeFloat(this.knockback);
 	}
 
@@ -70,6 +75,7 @@ public class BaseProjectileProperties implements MunitionProperties {
 	public boolean ignoresEntityArmor() { return this.ignoresEntityArmor; }
 	public double gravity() { return this.gravity; }
 	public double drag() { return this.drag; }
+	public boolean isQuadraticDrag() { return this.isQuadraticDrag; }
 	public float knockback() { return this.knockback; }
 
 	public static class Serializer implements MunitionPropertiesSerializer<BaseProjectileProperties> {

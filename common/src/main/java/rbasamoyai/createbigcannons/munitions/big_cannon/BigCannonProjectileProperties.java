@@ -16,9 +16,10 @@ public class BigCannonProjectileProperties extends BaseProjectileProperties {
 	private final float addedRecoil;
 
 	public BigCannonProjectileProperties(float entityDamage, float durabilityMass, boolean rendersInvulnerable,
-										 boolean ignoresEntityArmor, double gravity, double drag, float knockback,
-										 int addedChargePower, float minimumChargePower, boolean canSquib, float addedRecoil) {
-		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, knockback);
+										 boolean ignoresEntityArmor, double gravity, double drag, boolean isQuadraticDrag,
+										 float knockback, int addedChargePower, float minimumChargePower, boolean canSquib,
+										 float addedRecoil) {
+		super(entityDamage, durabilityMass, rendersInvulnerable, ignoresEntityArmor, gravity, drag, isQuadraticDrag, knockback);
 		this.addedChargePower = addedChargePower;
 		this.minimumChargePower = minimumChargePower;
 		this.canSquib = canSquib;
