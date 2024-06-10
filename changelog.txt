@@ -84,6 +84,7 @@ Changed:
  - The drag equation is now { vel' = vel - vel * vel * drag * dimensional density }
  - Changed default drag values of big cannon and autocannon projectiles to 0.001 by default
  - Changed default drag values of projectile burst sub-projectiles to 0 by default
+- Tweaked Mortar Stone to be able to handle equivalent of 3 Powder Charges, up from 1 Powder Charge
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
