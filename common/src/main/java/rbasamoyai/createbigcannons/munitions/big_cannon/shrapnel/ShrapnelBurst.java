@@ -18,10 +18,10 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
+import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
-import rbasamoyai.createbigcannons.munitions.fragment_burst.ProjectileBurstProperties;
 
-public class ShrapnelBurst extends CBCProjectileBurst<ProjectileBurstProperties> {
+public class ShrapnelBurst extends CBCProjectileBurst {
 
 	public ShrapnelBurst(EntityType<? extends ShrapnelBurst> entityType, Level level) { super(entityType, level); }
 
@@ -41,9 +41,9 @@ public class ShrapnelBurst extends CBCProjectileBurst<ProjectileBurstProperties>
 
 	@Override
 	protected void onSubProjectileHitEntity(EntityHitResult result, SubProjectile subProjectile) {
-		ProjectileBurstProperties properties = this.getProperties();
+		EntityDamagePropertiesComponent properties = this.getProperties().damage();
 		Entity entity = result.getEntity();
-		if (properties == null || properties.ignoresEntityArmor())
+		if (properties == null || properties.ignoresInvulnerability())
 			entity.invulnerableTime = 0;
 		float damage = properties == null ? 0 : properties.entityDamage();
 		entity.hurt(this.getDamageSource(), damage);
@@ -59,8 +59,7 @@ public class ShrapnelBurst extends CBCProjectileBurst<ProjectileBurstProperties>
 		BlockState state = this.level.getChunk(pos).getBlockState(pos);
 		if (!this.level.isClientSide && state.getDestroySpeed(this.level, pos) != -1 && this.canDestroyBlock(state)) {
 			Vec3 curVel = new Vec3(subProjectile.velocity()[0], subProjectile.velocity()[1], subProjectile.velocity()[2]);
-			ProjectileBurstProperties properties = this.getProperties();
-			double curPom = properties == null ? 0 : properties.durabilityMass() * curVel.length();
+			double curPom = this.getProperties().ballistics().durabilityMass() * curVel.length();
 			double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, pos, true) * 10;
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
 
@@ -78,7 +77,7 @@ public class ShrapnelBurst extends CBCProjectileBurst<ProjectileBurstProperties>
 	@Override public double getSubProjectileHeight() { return 0.8; }
 
 	protected DamageSource getDamageSource() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".shrapnel", this, null);
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".shrapnel", this, null, this.getProperties().damage().ignoresEntityArmor());
 	}
 
 }

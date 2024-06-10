@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -12,9 +14,13 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 
-public class MortarStoneProjectile extends AbstractBigCannonProjectile<MortarStoneProperties> {
+public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 
     private boolean tooManyCharges = false;
 
@@ -41,10 +47,9 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile<MortarSto
         super.onImpact(result, stopped);
         if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
-			MortarStoneProperties properties = this.getProperties();
             this.level.explode(null, this.indirectArtilleryFire(), null, hitLoc.x, hitLoc.y, hitLoc.z,
-                    properties == null ? 4 : properties.explosionPower(), false,
-                    CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+				this.getAllProperties().explosion().explosivePower(), false,
+				CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
             this.tooManyCharges = true;
         }
     }
@@ -68,9 +73,30 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile<MortarSto
 
     @Override
     public void setChargePower(float power) {
-		MortarStoneProperties properties = this.getProperties();
-        float maxCharges = properties == null ? 2f : properties.maxCharges();
+        float maxCharges = this.getAllProperties().maxCharges();
         this.tooManyCharges = maxCharges >= 0 && power > maxCharges;
     }
+
+	@Nonnull
+	@Override
+	public EntityDamagePropertiesComponent getDamageProperties() {
+		return this.getAllProperties().damage();
+	}
+
+	@Nonnull
+	@Override
+	protected BigCannonProjectilePropertiesComponent getBigCannonProjectileProperties() {
+		return this.getAllProperties().bigCannonProperties();
+	}
+
+	@Nonnull
+	@Override
+	protected BallisticPropertiesComponent getBallisticProperties() {
+		return this.getAllProperties().ballistics();
+	}
+
+	protected MortarStoneProperties getAllProperties() {
+		return CBCMunitionPropertiesHandlers.MORTAR_STONE.getPropertiesOf(this);
+	}
 
 }

@@ -19,19 +19,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity, S extends FuzedBigCannonProjectileProperties, E extends FuzedBigCannonProjectile<S>>
-	extends ProjectileBlock<S, E> implements IBE<T> {
+public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity, ENTITY extends FuzedBigCannonProjectile>
+	extends ProjectileBlock<ENTITY> implements IBE<BLOCK_ENTITY> {
 
 	protected FuzedProjectileBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
-		FuzedBigCannonProjectile<?> projectile = this.getAssociatedEntityType().create(level);
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+		FuzedBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
 		projectile.setTracer(getTracer(projectileBlocks));
 		projectile.setFuze(getFuze(projectileBlocks));
 		return projectile;
@@ -100,9 +99,6 @@ public abstract class FuzedProjectileBlock<T extends FuzedBlockEntity, S extends
 		}
 	}
 
-	public boolean isBaseFuze() {
-		FuzedBigCannonProjectileProperties properties = (FuzedBigCannonProjectileProperties) MunitionPropertiesHandler.getProperties(this.getAssociatedEntityType());
-		return properties == null || properties.baseFuze();
-	}
+	public abstract boolean isBaseFuze();
 
 }

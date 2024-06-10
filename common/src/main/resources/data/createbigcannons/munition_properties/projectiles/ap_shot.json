@@ -2,6 +2,7 @@
   "entity_damage": 50.0,
   "durability_mass": 30.0,
   "renders_invulnerable": false,
+  "ignores_invulnerability": true,
   "ignores_entity_armor": true,
   "gravity": -0.05,
   "drag": 0.01,

@@ -14,15 +14,14 @@ import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
-import rbasamoyai.createbigcannons.munitions.fragment_burst.ProjectileBurstProperties;
 import rbasamoyai.createbigcannons.network.ClientboundFluidBlobStackSyncPacket;
 
-public class FluidBlobBurst extends CBCProjectileBurst<ProjectileBurstProperties> {
+public class FluidBlobBurst extends CBCProjectileBurst {
 
 	private static final EntityDataAccessor<Byte> BLOB_SIZE = SynchedEntityData.defineId(FluidBlobBurst.class, EntityDataSerializers.BYTE);
 	private EndFluidStack fluidStack = EndFluidStack.EMPTY;
 
-	public FluidBlobBurst(EntityType<? extends CBCProjectileBurst<?>> entityType, Level level) { super(entityType, level); }
+	public FluidBlobBurst(EntityType<? extends FluidBlobBurst> entityType, Level level) { super(entityType, level); }
 
 	public static float getBlockAffectChance() {
 		return CBCConfigs.SERVER.munitions.fluidBlobBlockAffectChance.getF();

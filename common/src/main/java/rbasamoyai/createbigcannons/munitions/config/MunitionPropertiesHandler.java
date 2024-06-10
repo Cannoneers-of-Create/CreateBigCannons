@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
-import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
@@ -20,28 +19,19 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class MunitionPropertiesHandler {
 
-	private static final Map<EntityType<?>, MunitionPropertiesSerializer<?>> ENTITY_TYPE_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
-    private static final Map<EntityType<?>, MunitionProperties> PROJECTILES = new Reference2ObjectOpenHashMap<>();
-
-	private static final Map<Block, MunitionPropertiesSerializer<?>> BLOCK_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
-	private static final Map<Block, MunitionProperties> BLOCK_PROPELLANT = new Reference2ObjectOpenHashMap<>();
-
-	private static final Map<Item, MunitionPropertiesSerializer<?>> ITEM_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
-	private static final Map<Item, MunitionProperties> ITEM_PROPELLANT = new Reference2ObjectOpenHashMap<>();
+	private static final Map<EntityType<?>, PropertiesTypeHandler<EntityType<?>, ?>> PROJECTILES = new Reference2ReferenceOpenHashMap<>();
+	private static final Map<Block, PropertiesTypeHandler<Block, ?>> BLOCK_PROPELLANT = new Reference2ReferenceOpenHashMap<>();
+	private static final Map<Item, PropertiesTypeHandler<Item, ?>> ITEM_PROPELLANT = new Reference2ReferenceOpenHashMap<>();
 
     public static class ReloadListenerProjectiles extends SimpleJsonResourceReloadListener {
-
         private static final Gson GSON = new Gson();
 
         public static final ReloadListenerProjectiles INSTANCE = new ReloadListenerProjectiles();
@@ -52,22 +42,20 @@ public class MunitionPropertiesHandler {
 
         @Override
         protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resourceManager, ProfilerFiller profiler) {
-            PROJECTILES.clear();
+            PROJECTILES.values().forEach(PropertiesTypeHandler::clearForReload);
 
             for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
                 JsonElement element = entry.getValue();
                 if (!element.isJsonObject()) continue;
 				try {
 					ResourceLocation loc = entry.getKey();
-
 					EntityType<?> type = Registry.ENTITY_TYPE.getOptional(loc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown entity type '" + loc + "'");
 					});
-					MunitionPropertiesSerializer<?> ser = ENTITY_TYPE_SERIALIZERS.get(type);
-					if (ser == null)
+					PropertiesTypeHandler<EntityType<?>, ?> handler = PROJECTILES.get(type);
+					if (handler == null)
 						throw new JsonSyntaxException("No configuration for entity type '" + loc + "' present");
-					MunitionProperties properties = ser.fromJson(loc, element.getAsJsonObject());
-					PROJECTILES.put(type, properties);
+					handler.loadFromJson(type, loc, element.getAsJsonObject());
 				} catch (Exception e) {
 
 				}
@@ -87,22 +75,20 @@ public class MunitionPropertiesHandler {
 
 		@Override
 		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resourceManager, ProfilerFiller profiler) {
-			BLOCK_PROPELLANT.clear();
+			BLOCK_PROPELLANT.values().forEach(PropertiesTypeHandler::clearForReload);
 
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 				JsonElement element = entry.getValue();
 				if (!element.isJsonObject()) continue;
 				try {
 					ResourceLocation loc = entry.getKey();
-
 					Block block = Registry.BLOCK.getOptional(loc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown block '" + loc + "'");
 					});
-					MunitionPropertiesSerializer<?> ser = BLOCK_SERIALIZERS.get(block);
-					if (ser == null)
+					PropertiesTypeHandler<Block, ?> handler = BLOCK_PROPELLANT.get(block);
+					if (handler == null)
 						throw new JsonSyntaxException("No configuration for block '" + loc + "' present");
-					MunitionProperties properties = ser.fromJson(loc, element.getAsJsonObject());
-					BLOCK_PROPELLANT.put(block, properties);
+					handler.loadFromJson(block, loc, element.getAsJsonObject());
 				} catch (Exception e) {
 
 				}
@@ -122,22 +108,20 @@ public class MunitionPropertiesHandler {
 
 		@Override
 		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resourceManager, ProfilerFiller profiler) {
-			ITEM_PROPELLANT.clear();
+			ITEM_PROPELLANT.values().forEach(PropertiesTypeHandler::clearForReload);
 
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 				JsonElement element = entry.getValue();
 				if (!element.isJsonObject()) continue;
 				try {
 					ResourceLocation loc = entry.getKey();
-
 					Item item = Registry.ITEM.getOptional(loc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown item '" + loc + "'");
 					});
-					MunitionPropertiesSerializer<?> ser = ITEM_SERIALIZERS.get(item);
-					if (ser == null)
+					PropertiesTypeHandler<Item, ?> handler = ITEM_PROPELLANT.get(item);
+					if (handler == null)
 						throw new JsonSyntaxException("No configuration for item '" + loc + "' present");
-					MunitionProperties properties = ser.fromJson(loc, element.getAsJsonObject());
-					ITEM_PROPELLANT.put(item, properties);
+					handler.loadFromJson(item, loc, element.getAsJsonObject());
 				} catch (Exception e) {
 
 				}
@@ -145,93 +129,51 @@ public class MunitionPropertiesHandler {
 		}
 	}
 
-	public static <T extends MunitionProperties> void registerPropertiesSerializer(EntityType<? extends PropertiesMunitionEntity<T>> type, MunitionPropertiesSerializer<T> ser) {
-		if (ENTITY_TYPE_SERIALIZERS.containsKey(type))
-			throw new IllegalStateException("Serializer for entity type " + Registry.ENTITY_TYPE.getKey(type) + " already registered");
-		ENTITY_TYPE_SERIALIZERS.put(type, ser);
+	public static void registerProjectileHandler(EntityType<?> type, PropertiesTypeHandler<EntityType<?>, ?> handler) {
+		if (PROJECTILES.containsKey(type))
+			throw new IllegalStateException("Handler for entity type " + Registry.ENTITY_TYPE.getKey(type) + " already registered");
+		PROJECTILES.put(type, handler);
 	}
 
-	public static <T extends MunitionProperties, B extends Block & PropertiesMunitionBlock<T>> void registerPropertiesSerializer(B block, MunitionPropertiesSerializer<T> ser) {
-		if (BLOCK_SERIALIZERS.containsKey(block))
-			throw new IllegalStateException("Serializer for block " + Registry.BLOCK.getKey(block) + " already registered");
-		BLOCK_SERIALIZERS.put(block, ser);
+	public static void registerBlockPropellantHandler(Block block, PropertiesTypeHandler<Block, ?> handler) {
+		if (BLOCK_PROPELLANT.containsKey(block))
+			throw new IllegalStateException("Handler for block " + Registry.BLOCK.getKey(block) + " already registered");
+		BLOCK_PROPELLANT.put(block, handler);
 	}
 
-	public static <T extends MunitionProperties, I extends Item & PropertiesMunitionItem<T>> void registerPropertiesSerializer(I item, MunitionPropertiesSerializer<T> ser) {
-		if (ITEM_SERIALIZERS.containsKey(item))
-			throw new IllegalStateException("Serializer for item " + Registry.ITEM.getKey(item) + " already registered");
-		ITEM_SERIALIZERS.put(item, ser);
+	public static void registerItemPropellantHandler(Item item, PropertiesTypeHandler<Item, ?> handler) {
+		if (ITEM_PROPELLANT.containsKey(item))
+			throw new IllegalStateException("Handler for item " + Registry.ITEM.getKey(item) + " already registered");
+		ITEM_PROPELLANT.put(item, handler);
 	}
-
-	@Nullable public static MunitionProperties getProperties(EntityType<?> type) { return PROJECTILES.get(type); }
-    @Nullable public static MunitionProperties getProperties(Entity entity) { return getProperties(entity.getType()); }
-
-	@Nullable public static MunitionProperties getProperties(Block block) { return BLOCK_PROPELLANT.get(block); }
-	@Nullable public static MunitionProperties getProperties(BlockState state) { return getProperties(state.getBlock()); }
-
-	@Nullable public static MunitionProperties getProperties(Item item) { return ITEM_PROPELLANT.get(item); }
-	@Nullable public static MunitionProperties getProperties(ItemStack stack) { return getProperties(stack.getItem()); }
 
 	public static void writeBuf(FriendlyByteBuf buf) {
-		buf.writeVarInt(PROJECTILES.size());
-		for (Map.Entry<EntityType<?>, MunitionProperties> entry : PROJECTILES.entrySet()) {
-			toNetworkCasted(buf, entry.getKey(), entry.getValue());
-		}
-		buf.writeVarInt(BLOCK_PROPELLANT.size());
-		for (Map.Entry<Block, MunitionProperties> entry : BLOCK_PROPELLANT.entrySet()) {
-			toNetworkCasted(buf, entry.getKey(), entry.getValue());
-		}
-		buf.writeVarInt(ITEM_PROPELLANT.size());
-		for (Map.Entry<Item, MunitionProperties> entry : ITEM_PROPELLANT.entrySet()) {
-			toNetworkCasted(buf, entry.getKey(), entry.getValue());
-		}
+		writeToNetwork(buf, PROJECTILES, Registry.ENTITY_TYPE);
+		writeToNetwork(buf, BLOCK_PROPELLANT, Registry.BLOCK);
+		writeToNetwork(buf, ITEM_PROPELLANT, Registry.ITEM);
 	}
 
-	@SuppressWarnings("unchecked")
-	private static <T extends MunitionProperties> void toNetworkCasted(FriendlyByteBuf buf, EntityType<?> type, T properties) {
-		buf.writeResourceLocation(Registry.ENTITY_TYPE.getKey(type));
-		MunitionPropertiesSerializer<T> ser = (MunitionPropertiesSerializer<T>) ENTITY_TYPE_SERIALIZERS.get(type);
-		ser.toNetwork(buf, properties);
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T extends MunitionProperties> void toNetworkCasted(FriendlyByteBuf buf, Block block, T properties) {
-		buf.writeResourceLocation(Registry.BLOCK.getKey(block));
-		MunitionPropertiesSerializer<T> ser = (MunitionPropertiesSerializer<T>) BLOCK_SERIALIZERS.get(block);
-		ser.toNetwork(buf, properties);
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <T extends MunitionProperties> void toNetworkCasted(FriendlyByteBuf buf, Item item, T properties) {
-		buf.writeResourceLocation(Registry.ITEM.getKey(item));
-		MunitionPropertiesSerializer<T> ser = (MunitionPropertiesSerializer<T>) ITEM_SERIALIZERS.get(item);
-		ser.toNetwork(buf, properties);
+	private static <TYPE> void writeToNetwork(FriendlyByteBuf buf, Map<TYPE, PropertiesTypeHandler<TYPE, ?>> handlers, Registry<TYPE> registry) {
+		buf.writeVarInt(handlers.size());
+		for (Map.Entry<TYPE, PropertiesTypeHandler<TYPE, ?>> entry : handlers.entrySet()) {
+			TYPE type = entry.getKey();
+			buf.writeResourceLocation(registry.getKey(type));
+			entry.getValue().writeToNetwork(type, buf);
+		}
 	}
 
 	public static void readBuf(FriendlyByteBuf buf) {
-		PROJECTILES.clear();
-		int szProj = buf.readVarInt();
-		for (int i = 0; i < szProj; ++i) {
-			ResourceLocation loc = buf.readResourceLocation();
-			EntityType<?> type = Registry.ENTITY_TYPE.get(loc);
-			MunitionPropertiesSerializer<?> ser = ENTITY_TYPE_SERIALIZERS.get(type);
-			PROJECTILES.put(type, ser.fromNetwork(loc, buf));
-		}
-		BLOCK_PROPELLANT.clear();
-		int szBlock = buf.readVarInt();
-		for (int i = 0; i < szBlock; ++i) {
-			ResourceLocation loc = buf.readResourceLocation();
-			Block block = Registry.BLOCK.get(loc);
-			MunitionPropertiesSerializer<?> ser = BLOCK_SERIALIZERS.get(block);
-			BLOCK_PROPELLANT.put(block, ser.fromNetwork(loc, buf));
-		}
-		ITEM_PROPELLANT.clear();
-		int szItem = buf.readVarInt();
-		for (int i = 0; i < szItem; ++i) {
-			ResourceLocation loc = buf.readResourceLocation();
-			Item item = Registry.ITEM.get(loc);
-			MunitionPropertiesSerializer<?> ser = ITEM_SERIALIZERS.get(item);
-			ITEM_PROPELLANT.put(item, ser.fromNetwork(loc, buf));
+		readFromNetwork(buf, PROJECTILES, Registry.ENTITY_TYPE);
+		readFromNetwork(buf, BLOCK_PROPELLANT, Registry.BLOCK);
+		readFromNetwork(buf, ITEM_PROPELLANT, Registry.ITEM);
+	}
+
+	private static <TYPE> void readFromNetwork(FriendlyByteBuf buf, Map<TYPE, PropertiesTypeHandler<TYPE, ?>> map, Registry<TYPE> registry) {
+		map.values().forEach(PropertiesTypeHandler::clearForReload);
+		int size = buf.readVarInt();
+		for (int i = 0; i < size; ++i) {
+			TYPE type = registry.get(buf.readResourceLocation());
+			map.get(type).loadFromNetwork(type, buf);
 		}
 	}
 

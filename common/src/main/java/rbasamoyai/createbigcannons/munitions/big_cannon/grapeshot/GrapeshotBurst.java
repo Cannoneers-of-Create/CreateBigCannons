@@ -13,7 +13,7 @@ public class GrapeshotBurst extends ShrapnelBurst {
 
 	@Override
 	protected DamageSource getDamageSource() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".grapeshot", this, null);
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".grapeshot", this, null, this.getProperties().damage().ignoresEntityArmor());
 	}
 
 }

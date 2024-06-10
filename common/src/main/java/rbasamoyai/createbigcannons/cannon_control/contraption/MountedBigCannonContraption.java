@@ -59,8 +59,9 @@ import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarMunition;
-import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarProjectileProperties;
+import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.config.DropMortarProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.IntegratedPropellantProjectile;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilities;
@@ -268,7 +269,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		PropellantContext propelCtx = new PropellantContext();
 
 		List<StructureBlockInfo> projectileBlocks = new ArrayList<>();
-		AbstractBigCannonProjectile<?> projectile = null;
+		AbstractBigCannonProjectile projectile = null;
 		BlockPos assemblyPos = null;
 
 		float minimumSpread = this.cannonMaterial.properties().minimumSpread();
@@ -303,7 +304,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 						return;
 					}
 				}
-			} else if (block instanceof BigCannonPropellantBlock<?> cpropel && !(block instanceof ProjectileBlock)) {
+			} else if (block instanceof BigCannonPropellantBlock cpropel && !(block instanceof ProjectileBlock)) {
 				if (!cpropel.canBeIgnited(containedBlockInfo, this.initialOrientation)) return;
 				if (!propelCtx.addPropellant(cpropel, containedBlockInfo, this.initialOrientation) && canFail) {
 					this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
@@ -321,7 +322,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					return;
 				}
 				emptyNoProjectile = false;
-			} else if (block instanceof ProjectileBlock<?, ?> projBlock && projectile == null) {
+			} else if (block instanceof ProjectileBlock<?> projBlock && projectile == null) {
 				if (canFail && emptyNoProjectile && rollFailToIgnite(rand)) {
 					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cannonInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
@@ -334,7 +335,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				for (ListIterator<StructureBlockInfo> projIter = projectileBlocks.listIterator(); projIter.hasNext(); ) {
 					int i = projIter.nextIndex();
 					StructureBlockInfo projInfo = projIter.next();
-					if (projInfo.state.getBlock() instanceof ProjectileBlock<?, ?> cproj1 && cproj1.isValidAddition(copy, projInfo, i, this.initialOrientation)) continue;
+					if (projInfo.state.getBlock() instanceof ProjectileBlock<?> cproj1 && cproj1.isValidAddition(copy, projInfo, i, this.initialOrientation)) continue;
 					if (canFail) this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
 					return;
 				}
@@ -367,7 +368,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		}
 		if (projectile == null && !projectileBlocks.isEmpty()) {
 			StructureBlockInfo info = projectileBlocks.get(0);
-			if (!(info.state.getBlock() instanceof ProjectileBlock<?, ?> projBlock)) {
+			if (!(info.state.getBlock() instanceof ProjectileBlock<?> projBlock)) {
 				if (canFail) this.fail(currentPos, level, entity, null, (int) propelCtx.chargesUsed);
 				return;
 			}
@@ -388,7 +389,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				for (ListIterator<StructureBlockInfo> projIter = projectileBlocks.listIterator(); projIter.hasNext(); ) {
 					int j = projIter.nextIndex();
 					StructureBlockInfo projInfo = projIter.next();
-					if (projInfo.state.getBlock() instanceof ProjectileBlock<?, ?> cproj1 && cproj1.isValidAddition(copy, projInfo, j, this.initialOrientation)) continue;
+					if (projInfo.state.getBlock() instanceof ProjectileBlock<?> cproj1 && cproj1.isValidAddition(copy, projInfo, j, this.initialOrientation)) continue;
 					if (canFail) this.fail(currentPos, level, entity, null, (int) propelCtx.chargesUsed);
 					return;
 				}
@@ -626,10 +627,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		if (!(this.entity instanceof PitchOrientedContraptionEntity poce) || !(poce.level instanceof ServerLevel slevel)) return;
 		ItemStack stack = this.cachedMortarRound;
 		this.cachedMortarRound = ItemStack.EMPTY;
-		if (!(Block.byItem(stack.getItem()) instanceof DropMortarMunition munition)) return;
+		if (!(Block.byItem(stack.getItem()) instanceof DropMortarMunition<?> munition)) return;
 
 		ControlPitchContraption controller = poce.getController();
-		AbstractBigCannonProjectile<? extends DropMortarProjectileProperties> projectile = munition.getProjectile(slevel, stack);
+		AbstractBigCannonProjectile projectile = munition.getDropMortarProjectile(slevel, stack);
 
 		BlockPos currentPos = this.startPos.immutable();
 		while (this.presentBlockEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
@@ -638,10 +639,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			currentPos = currentPos.relative(this.initialOrientation);
 		}
 
-		DropMortarProjectileProperties properties = projectile.getProperties();
-		float recoilMagnitude = properties == null ? 1 : properties.mortarRecoil();
-		float power = properties == null ? 3 : properties.mortarPower();
-		float spread = properties == null ? 0.1f : properties.mortarSpread();
+		DropMortarProjectilePropertiesComponent properties = ((DropMortarProjectile) projectile).getDropMortarProperties().dropMortarProperties();
+		float recoilMagnitude = properties.mortarRecoil();
+		float power = properties.mortarPower();
+		float spread = properties.mortarSpread();
 
 		Vec3 spawnPos = this.entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(this.entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
@@ -673,7 +674,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		public float spread = 0.0f;
 		public List<StructureBlockInfo> propellantBlocks = new ArrayList<>();
 
-		public boolean addPropellant(BigCannonPropellantBlock<?> propellant, StructureBlockInfo info, Direction initialOrientation) {
+		public boolean addPropellant(BigCannonPropellantBlock propellant, StructureBlockInfo info, Direction initialOrientation) {
 			this.propellantBlocks.add(info);
 			if (!safeLoad(ImmutableList.copyOf(this.propellantBlocks), initialOrientation)) return false;
 			float power = Math.max(0, propellant.getChargePower(info));
@@ -704,7 +705,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				StructureBlockInfo info = iter.next();
 
 				Block block = info.state.getBlock();
-				if (!(block instanceof BigCannonPropellantBlock<?> cpropel) || !(cpropel.isValidAddition(info, index, orientation))) return false;
+				if (!(block instanceof BigCannonPropellantBlock cpropel) || !(cpropel.isValidAddition(info, index, orientation))) return false;
 				if (actualCounts.containsKey(block)) {
 					actualCounts.put(block, actualCounts.get(block) + 1);
 				} else {

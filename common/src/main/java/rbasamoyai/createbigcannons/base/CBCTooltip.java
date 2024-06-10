@@ -32,13 +32,13 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.manual_loading.RamRodItem;
 import rbasamoyai.createbigcannons.manual_loading.WormItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
-import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 public class CBCTooltip {
 	private static Style primary = TooltipHelper.Palette.GRAY_AND_WHITE.primary();
@@ -161,8 +161,8 @@ public class CBCTooltip {
 		TooltipHelper.Palette palette = getPalette(level, stack);
 		String key = stack.getDescriptionId() + ".tooltip.maximumCharges";
 		tooltip.add(Components.translatable(key).withStyle(ChatFormatting.GRAY));
-		MortarStoneProperties properties = (MortarStoneProperties) MunitionPropertiesHandler.getProperties(CBCEntityTypes.MORTAR_STONE.get());
-		String value = String.format("%.2f", (properties == null ? 2f : properties.maxCharges()) * 20f);
+		MortarStoneProperties properties = CBCMunitionPropertiesHandlers.MORTAR_STONE.getPropertiesOf(CBCEntityTypes.MORTAR_STONE.get());
+		String value = String.format("%.2f", properties.maxCharges() * 20f);
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", value), palette.primary(), palette.highlight(), 1));
 	}
 
@@ -243,14 +243,14 @@ public class CBCTooltip {
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", s), palette.primary(), palette.highlight(), 1));
 	}
 
-	public static void appendPropellantPowerText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag,
-												 BigCannonPropellantBlock propellant) {
+	public static void appendBigCartridgePropellantPowerText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag,
+															 BigCartridgeBlock propellant) {
 		if (!Screen.hasShiftDown()) return;
 		TooltipHelper.Palette palette = getPalette(level, stack);
 		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.power";
 		tooltip.add(Components.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		int min = BigCartridgeBlockItem.getPower(stack);
-		int max = BigCartridgeBlock.getMaximumPowerLevels();
+		int max = propellant.getMaximumPowerLevels();
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(key + ".value", min, max), palette.primary(), palette.highlight(), 1));
 	}
 

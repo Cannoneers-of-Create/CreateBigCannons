@@ -28,7 +28,7 @@ public abstract class ArmorStandMixin extends LivingEntity {
 			cancellable = true)
 	private void createbigcannons$hurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
 		Entity directEntity = source.getDirectEntity();
-		if (!(directEntity instanceof ShrapnelBurst) && !(directEntity instanceof AbstractCannonProjectile<?>)) return;
+		if (!(directEntity instanceof ShrapnelBurst) && !(directEntity instanceof AbstractCannonProjectile)) return;
 		this.playBrokenSound();
 		this.showBreakingParticles();
 		this.kill();

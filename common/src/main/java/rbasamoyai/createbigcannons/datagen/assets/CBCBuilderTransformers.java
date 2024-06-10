@@ -452,7 +452,7 @@ public class CBCBuilderTransformers {
 			.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().getExistingFile(baseLoc)));
 	}
 
-	public static <T extends Block & BigCannonPropellantBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> bigCartridge() {
+	public static <T extends BigCartridgeBlock & BigCannonPropellantBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> bigCartridge() {
 		ResourceLocation filledLoc = CreateBigCannons.resource("block/big_cartridge_filled");
 		ResourceLocation emptyLoc = CreateBigCannons.resource("block/big_cartridge_empty");
 		return b -> b.properties(p -> p.noOcclusion())

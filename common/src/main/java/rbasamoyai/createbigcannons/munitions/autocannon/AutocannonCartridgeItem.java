@@ -19,7 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
+import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 
 public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem {
 
@@ -50,16 +50,23 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 
 	@Override
 	@Nullable
-    public AbstractAutocannonProjectile<?> getAutocannonProjectile(ItemStack stack, Level level) {
+    public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
         ItemStack projectileStack = getProjectileStack(stack);
         return projectileStack.getItem() instanceof AutocannonRoundItem projectileItem ? projectileItem.getAutocannonProjectile(projectileStack, level) : null;
     }
 
 	@Nullable
 	@Override
-	public EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> getEntityType(ItemStack stack) {
+	public EntityType<?> getEntityType(ItemStack stack) {
 		ItemStack projectileStack = getProjectileStack(stack);
 		return projectileStack.getItem() instanceof AutocannonRoundItem projectileItem ? projectileItem.getEntityType(projectileStack) : null;
+	}
+
+	@Override
+	public AutocannonProjectilePropertiesComponent getAutocannonProperties(ItemStack itemStack) {
+		ItemStack projectileStack = getProjectileStack(itemStack);
+		return projectileStack.getItem() instanceof AutocannonRoundItem roundItem ? roundItem.getAutocannonProperties(itemStack) :
+			AutocannonProjectilePropertiesComponent.DEFAULT;
 	}
 
 	public static ItemStack getProjectileStack(ItemStack stack) {

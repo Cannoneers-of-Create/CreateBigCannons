@@ -13,7 +13,7 @@ public class FlakBurst extends ShrapnelBurst {
 
 	@Override
 	protected DamageSource getDamageSource() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".flak", this, null);
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".flak", this, null, this.getProperties().damage().ignoresEntityArmor());
 	}
 
 }

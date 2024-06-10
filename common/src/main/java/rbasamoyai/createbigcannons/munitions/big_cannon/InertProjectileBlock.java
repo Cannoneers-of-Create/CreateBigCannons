@@ -20,15 +20,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
-public abstract class InertProjectileBlock extends ProjectileBlock<BigCannonProjectileProperties, AbstractBigCannonProjectile<?>> implements IBE<BigCannonProjectileBlockEntity> {
+public abstract class InertProjectileBlock extends ProjectileBlock<AbstractBigCannonProjectile> implements IBE<BigCannonProjectileBlockEntity> {
 
 	protected InertProjectileBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureTemplate.StructureBlockInfo> projectileBlocks) {
-		AbstractBigCannonProjectile<?> projectile = this.getAssociatedEntityType().create(level);
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureTemplate.StructureBlockInfo> projectileBlocks) {
+		AbstractBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
 		projectile.setTracer(getTracer(projectileBlocks));
 		return projectile;
 	}

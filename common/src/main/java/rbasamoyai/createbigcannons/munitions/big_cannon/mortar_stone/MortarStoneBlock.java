@@ -9,14 +9,14 @@ import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
-public class MortarStoneBlock extends ProjectileBlock<MortarStoneProperties, MortarStoneProjectile> {
+public class MortarStoneBlock extends ProjectileBlock<MortarStoneProjectile> {
 
     public MortarStoneBlock(Properties properties) {
         super(properties);
     }
 
     @Override
-    public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+    public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
         return CBCEntityTypes.MORTAR_STONE.create(level);
     }
 

@@ -44,6 +44,9 @@ Added:
 - Added config for different types of big cannon projectile smoke trail: Long, Short, and No Trail
 - Added smoke trails to autocannon projectiles
  - Has config for type of trail: Long, Short, and No Trail
+- Added "ignores_invulnerability" field to projectiles, ignoring projectile invulnerability
+ - The old "ignores_entity_armor" field now only affects if entity armor is bypassed, not invulnerability
+ - By default, all CBC projectiles ignore invulnerability, but differ in if they bypass armor
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities
@@ -68,6 +71,11 @@ Changed:
  - Harder to create chunkbans with new system
  [Addons, integration] - Fluid Blob effects registry has been changed to work with Fluid Blob bursts rather than single Fluid Blobs. This will break already existing integration.
 - Separated flak burst from shrapnel burst
+- Refactor projectile properties to be less inheritance-based (BREAKING)
+ - New approach involves projectile-specific serializers that projectiles must reference instead of getting wildcard
+ - This will break existing serializers and retrieval of properties
+ - Some config files will be broken
+  - All fields that are either "explosion_power" or "explosive_power" are now "explosive_power"
 - Rework drag kinematics to ease factoring in dimensional density
  - All projectiles are affected
  - Previously, the drag equation was { vel' = vel * drag * dimensional density }
