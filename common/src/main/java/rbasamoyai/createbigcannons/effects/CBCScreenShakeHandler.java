@@ -41,4 +41,7 @@ public class CBCScreenShakeHandler extends ModScreenShakeHandler.Impl {
 		}
 	}
 
+	@Override protected double getRestitution() { return CBCConfigs.CLIENT.cannonScreenShakeSpringiness.getF(); }
+	@Override protected double getDrag() { return CBCConfigs.CLIENT.cannonScreenShakeDecay.getF(); }
+
 }
