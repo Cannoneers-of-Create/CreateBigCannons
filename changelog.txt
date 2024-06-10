@@ -73,6 +73,7 @@ Changed:
  - Harder to create chunkbans with new system
  [Addons, integration] - Fluid Blob effects registry has been changed to work with Fluid Blob bursts rather than single Fluid Blobs. This will break already existing integration.
 - Separated flak burst from shrapnel burst
+[Addons, integration] - Added ability to register multiple fluid blob effect handlers for a single fluid type
 - Refactor projectile properties to be less inheritance-based (BREAKING)
  - New approach involves projectile-specific serializers that projectiles must reference instead of getting wildcard
  - This will break existing serializers and retrieval of properties
