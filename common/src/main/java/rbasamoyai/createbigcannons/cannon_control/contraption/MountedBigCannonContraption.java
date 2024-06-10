@@ -447,6 +447,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		float shakePower = propelCtx.chargesUsed * CBCConfigs.SERVER.cannons.bigCannonShakePowerMultiplier.getF();
 		int propagationSpeed = CBCConfigs.SERVER.cannons.bigCannonShakePropagationSpeed.get();
 		Vec3 plumePos = spawnPos.subtract(vec);
+		propelCtx.smokeScale = Math.max(1, propelCtx.smokeScale);
 		for (ServerPlayer player : level.players()) {
 			level.sendParticles(player, new BigCannonPlumeParticleData(propelCtx.smokeScale, propelCtx.chargesUsed, 10),
 				true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);

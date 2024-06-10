@@ -95,6 +95,7 @@ Fixed:
 - Fixed schematics not saving data of many blocks by adding #create:safe_nbt
 - Fixed potential crash on cannon failure in some Create Big Cannons contraption code
 - Fixed /gamerule doTileDrops false not applying to Create Big Cannons pole contraptions
+- Fixed small charge projectiles not emitting cannon smoke
 
 ===
 
