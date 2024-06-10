@@ -4,17 +4,25 @@ import com.simibubi.create.AllFluids;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.CampfireBlock;
+import net.minecraft.world.level.block.CandleBlock;
+import net.minecraft.world.level.block.CandleCakeBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -39,20 +47,24 @@ public class DefaultFluidCompat {
 	public static void waterHitEntity(OnHitEntity.Context context) {
 		Entity entity = context.result().getEntity();
 		entity.clearFire();
-		if (!context.level().isClientSide)
-			douseFire(entity.blockPosition(), context.burst(), context.level());
 	}
 
 	public static void lavaHitEntity(OnHitEntity.Context context) {
 		Entity entity = context.result().getEntity();
+		if (entity.fireImmune())
+			return;
 		entity.setSecondsOnFire(100);
-		if (!context.level().isClientSide)
-			spawnFire(entity.blockPosition(), context.burst(), context.level());
+		if (entity.hurt(DamageSource.ON_FIRE, 4.0F))
+			entity.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + entity.level.random.nextFloat() * 0.4F);
 	}
 
 	public static void potionHitEntity(OnHitEntity.Context context) {
-		if (!context.level().isClientSide)
-			spawnAreaEffectCloud(context.result().getEntity().blockPosition(), context.burst(), context.level());
+		Entity entity = context.result().getEntity();
+		if (!(entity instanceof LivingEntity living))
+			return;
+		CompoundTag tag = context.burst().getFluidStack().data();
+		for (MobEffectInstance effect : PotionUtils.getAllEffects(tag))
+			living.addEffect(new MobEffectInstance(effect));
 	}
 
 	public static void waterHitBlock(OnHitBlock.Context context) {
@@ -72,11 +84,13 @@ public class DefaultFluidCompat {
 
 	public static void douseFire(BlockPos root, FluidBlobBurst blob, Level level) {
 		float chance = FluidBlobBurst.getBlockAffectChance();
+		if (chance == 0)
+			return;
 		AABB bounds = blob.getAreaOfEffect(root);
 		BlockPos pos1 = new BlockPos(Math.floor(bounds.minX), Math.floor(bounds.minY), Math.floor(bounds.minZ));
 		BlockPos pos2 = new BlockPos(Math.floor(bounds.maxX), Math.floor(bounds.maxY), Math.floor(bounds.maxZ));
 		for (BlockPos pos : BlockPos.betweenClosed(pos1, pos2)) {
-			if (chance == 0 || level.getRandom().nextFloat() > chance) continue;
+			if (level.getRandom().nextFloat() > chance) continue;
 			BlockState state = level.getBlockState(pos);
 			if (state.is(BlockTags.FIRE)) {
 				level.removeBlock(pos, false);
@@ -86,18 +100,29 @@ public class DefaultFluidCompat {
 				level.levelEvent(null, 1009, pos, 0);
 				CampfireBlock.dowse(blob.getOwner(), level, pos, state);
 				level.setBlockAndUpdate(pos, state.setValue(CampfireBlock.LIT, false));
+			} else if (CandleCakeBlock.isLit(state)) {
+				AbstractCandleBlock.extinguish(null, state, level, pos);
 			}
 		}
 	}
 
 	public static void spawnFire(BlockPos root, FluidBlobBurst blob, Level level) {
 		float chance = FluidBlobBurst.getBlockAffectChance();
+		if (chance == 0)
+			return;
 		AABB bounds = blob.getAreaOfEffect(root);
 		BlockPos pos1 = new BlockPos(Math.floor(bounds.minX), Math.floor(bounds.minY), Math.floor(bounds.minZ));
 		BlockPos pos2 = new BlockPos(Math.floor(bounds.maxX), Math.floor(bounds.maxY), Math.floor(bounds.maxZ));
 		for (BlockPos pos : BlockPos.betweenClosed(pos1, pos2)) {
-			if (chance > 0 && level.getRandom().nextFloat() <= chance && level.isEmptyBlock(pos)) {
+			if (level.getRandom().nextFloat() > chance)
+				continue;
+			BlockState state = level.getBlockState(pos);
+			if (level.isEmptyBlock(pos)) {
 				level.setBlockAndUpdate(pos, BaseFireBlock.getState(level, pos));
+			} else if (CandleBlock.canLight(state) || CampfireBlock.canLight(state) || CandleCakeBlock.canLight(state)) {
+				level.playSound(null, pos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, level.getRandom().nextFloat() * 0.4F + 0.8F);
+				level.setBlock(pos, state.setValue(BlockStateProperties.LIT, true), 11);
+				level.gameEvent(null, GameEvent.BLOCK_PLACE, pos);
 			}
 		}
 	}
