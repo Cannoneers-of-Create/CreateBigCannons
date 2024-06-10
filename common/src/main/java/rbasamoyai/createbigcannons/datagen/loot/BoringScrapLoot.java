@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.datagen.loot;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -15,9 +14,10 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BoringScrapLoot implements Consumer<BiConsumer<ResourceLocation, LootTable.Builder>> {
 
@@ -65,7 +65,7 @@ public class BoringScrapLoot implements Consumer<BiConsumer<ResourceLocation, Lo
 	}
 
 	protected static ResourceLocation loc(Block block) {
-		ResourceLocation id = Registry.BLOCK.getKey(block);
+		ResourceLocation id = CBCRegistryUtils.getBlockLocation(block);
 		return CBCUtils.location(id.getNamespace(), "boring_scrap/" + id.getPath());
 	}
 

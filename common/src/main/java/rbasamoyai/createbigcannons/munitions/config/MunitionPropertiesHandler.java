@@ -24,6 +24,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class MunitionPropertiesHandler {
 
@@ -49,7 +50,7 @@ public class MunitionPropertiesHandler {
                 if (!element.isJsonObject()) continue;
 				try {
 					ResourceLocation loc = entry.getKey();
-					EntityType<?> type = Registry.ENTITY_TYPE.getOptional(loc).orElseThrow(() -> {
+					EntityType<?> type = CBCRegistryUtils.getOptionalEntityType(loc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown entity type '" + loc + "'");
 					});
 					PropertiesTypeHandler<EntityType<?>, ?> handler = PROJECTILES.get(type);
@@ -82,7 +83,7 @@ public class MunitionPropertiesHandler {
 				if (!element.isJsonObject()) continue;
 				try {
 					ResourceLocation loc = entry.getKey();
-					Block block = Registry.BLOCK.getOptional(loc).orElseThrow(() -> {
+					Block block = CBCRegistryUtils.getOptionalBlock(loc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown block '" + loc + "'");
 					});
 					PropertiesTypeHandler<Block, ?> handler = BLOCK_PROPELLANT.get(block);
@@ -115,7 +116,7 @@ public class MunitionPropertiesHandler {
 				if (!element.isJsonObject()) continue;
 				try {
 					ResourceLocation loc = entry.getKey();
-					Item item = Registry.ITEM.getOptional(loc).orElseThrow(() -> {
+					Item item = CBCRegistryUtils.getOptionalItem(loc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown item '" + loc + "'");
 					});
 					PropertiesTypeHandler<Item, ?> handler = ITEM_PROPELLANT.get(item);
@@ -131,26 +132,26 @@ public class MunitionPropertiesHandler {
 
 	public static void registerProjectileHandler(EntityType<?> type, PropertiesTypeHandler<EntityType<?>, ?> handler) {
 		if (PROJECTILES.containsKey(type))
-			throw new IllegalStateException("Handler for entity type " + Registry.ENTITY_TYPE.getKey(type) + " already registered");
+			throw new IllegalStateException("Handler for entity type " + CBCRegistryUtils.getEntityTypeLocation(type) + " already registered");
 		PROJECTILES.put(type, handler);
 	}
 
 	public static void registerBlockPropellantHandler(Block block, PropertiesTypeHandler<Block, ?> handler) {
 		if (BLOCK_PROPELLANT.containsKey(block))
-			throw new IllegalStateException("Handler for block " + Registry.BLOCK.getKey(block) + " already registered");
+			throw new IllegalStateException("Handler for block " + CBCRegistryUtils.getBlockLocation(block) + " already registered");
 		BLOCK_PROPELLANT.put(block, handler);
 	}
 
 	public static void registerItemPropellantHandler(Item item, PropertiesTypeHandler<Item, ?> handler) {
 		if (ITEM_PROPELLANT.containsKey(item))
-			throw new IllegalStateException("Handler for item " + Registry.ITEM.getKey(item) + " already registered");
+			throw new IllegalStateException("Handler for item " + CBCRegistryUtils.getItemLocation(item) + " already registered");
 		ITEM_PROPELLANT.put(item, handler);
 	}
 
 	public static void writeBuf(FriendlyByteBuf buf) {
-		writeToNetwork(buf, PROJECTILES, Registry.ENTITY_TYPE);
-		writeToNetwork(buf, BLOCK_PROPELLANT, Registry.BLOCK);
-		writeToNetwork(buf, ITEM_PROPELLANT, Registry.ITEM);
+		writeToNetwork(buf, PROJECTILES, CBCRegistryUtils.getEntityTypeRegistry());
+		writeToNetwork(buf, BLOCK_PROPELLANT, CBCRegistryUtils.getBlockRegistry());
+		writeToNetwork(buf, ITEM_PROPELLANT, CBCRegistryUtils.getItemRegistry());
 	}
 
 	private static <TYPE> void writeToNetwork(FriendlyByteBuf buf, Map<TYPE, PropertiesTypeHandler<TYPE, ?>> handlers, Registry<TYPE> registry) {
@@ -163,9 +164,9 @@ public class MunitionPropertiesHandler {
 	}
 
 	public static void readBuf(FriendlyByteBuf buf) {
-		readFromNetwork(buf, PROJECTILES, Registry.ENTITY_TYPE);
-		readFromNetwork(buf, BLOCK_PROPELLANT, Registry.BLOCK);
-		readFromNetwork(buf, ITEM_PROPELLANT, Registry.ITEM);
+		readFromNetwork(buf, PROJECTILES, CBCRegistryUtils.getEntityTypeRegistry());
+		readFromNetwork(buf, BLOCK_PROPELLANT, CBCRegistryUtils.getBlockRegistry());
+		readFromNetwork(buf, ITEM_PROPELLANT, CBCRegistryUtils.getItemRegistry());
 	}
 
 	private static <TYPE> void readFromNetwork(FriendlyByteBuf buf, Map<TYPE, PropertiesTypeHandler<TYPE, ?>> map, Registry<TYPE> registry) {

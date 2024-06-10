@@ -7,7 +7,7 @@ import com.simibubi.create.foundation.gui.element.ScreenElement;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.CBCUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public enum CBCGuiTextures implements ScreenElement {
 	// JEI Icons

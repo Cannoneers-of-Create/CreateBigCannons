@@ -42,13 +42,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity implements WandActionable, IMultiBlockEntityContainer, IHaveHoveringInformation {
 

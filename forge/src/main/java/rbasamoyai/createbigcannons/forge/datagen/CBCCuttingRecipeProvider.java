@@ -4,7 +4,6 @@ import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 
-import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
@@ -15,6 +14,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 
@@ -67,7 +67,7 @@ public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 	}
 
 	private GeneratedRecipe castMould(ItemLike item) {
-		return create(Registry.ITEM.getKey(item.asItem()), b -> b.require(ItemTags.LOGS)
+		return create(CBCRegistryUtils.getItemLocation(item.asItem()), b -> b.require(ItemTags.LOGS)
 			.output(item));
 	}
 

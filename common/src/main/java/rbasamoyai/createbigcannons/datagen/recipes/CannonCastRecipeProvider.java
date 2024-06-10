@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import com.simibubi.create.AllTags;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
-import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -15,11 +14,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CannonCastRecipeProvider extends BlockRecipeProvider {
 
@@ -283,7 +283,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		public void serializeRecipeData(JsonObject obj) {
 			obj.addProperty("cast_shape", CBCRegistries.CANNON_CAST_SHAPES.getKey(this.shape).toString());
 			obj.add("fluid", this.ingredient.serialize());
-			obj.addProperty("result", Registry.BLOCK.getKey(this.result).toString());
+			obj.addProperty("result", CBCRegistryUtils.getBlockLocation(this.result).toString());
 		}
 
 		@Override public ResourceLocation id() { return this.id; }

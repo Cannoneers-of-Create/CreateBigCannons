@@ -8,6 +8,7 @@ import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 /**
  * Avoiding concurrency issues in config from accessing BlockStressDefaults, also simplified to leave out generators

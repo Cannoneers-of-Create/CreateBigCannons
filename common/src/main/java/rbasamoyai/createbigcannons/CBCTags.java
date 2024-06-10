@@ -8,7 +8,6 @@ import java.util.function.Supplier;
 
 import com.tterrag.registrate.providers.ProviderType;
 
-import net.minecraft.core.Registry;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +18,8 @@ import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluid;
-import rbasamoyai.createbigcannons.base.CBCUtils;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCTags {
 
@@ -39,7 +39,7 @@ public class CBCTags {
 			NETHERRACK = commonTag("netherrack", "netherrack", "netherrack");
 
 		public static TagKey<Block> makeTag(String path) {
-			TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, CreateBigCannons.resource(path));
+			TagKey<Block> tag = TagKey.create(CBCRegistryUtils.getBlockRegistryKey(), CreateBigCannons.resource(path));
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> ((TagsProvider<Block>) prov).tag(tag));
 			return tag;
 		}
@@ -134,7 +134,7 @@ public class CBCTags {
 			AUTOCANNON_ROUNDS = makeTag("autocannon_rounds");
 
 		public static TagKey<Item> makeTag(String loc) {
-			TagKey<Item> tag = TagKey.create(Registry.ITEM_REGISTRY, CreateBigCannons.resource(loc));
+			TagKey<Item> tag = CBCRegistryUtils.createItemTag(CreateBigCannons.resource(loc));
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> ((TagsProvider<Item>) prov).tag(tag));
 			return tag;
 		}
@@ -204,7 +204,7 @@ public class CBCTags {
 			MOLTEN_METAL = makeTag("molten_metal");
 
 		public static TagKey<Fluid> makeTag(String loc) {
-			TagKey<Fluid> tag = TagKey.create(Registry.FLUID_REGISTRY, CreateBigCannons.resource(loc));
+			TagKey<Fluid> tag = TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), CreateBigCannons.resource(loc));
 			REGISTRATE.addDataGenerator(ProviderType.FLUID_TAGS, prov -> ((TagsProvider<Fluid>) prov).tag(tag));
 			return tag;
 		}

@@ -14,7 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
-import rbasamoyai.createbigcannons.base.CBCUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class FinishedCannonCastBlockEntity extends SmartBlockEntity {
 
