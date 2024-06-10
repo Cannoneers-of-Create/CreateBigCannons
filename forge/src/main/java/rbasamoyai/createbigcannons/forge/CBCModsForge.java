@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.registries.ForgeRegistries;
-import rbasamoyai.createbigcannons.base.CBCUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 // Copied from Create's Mods class --ritchie
 public enum CBCModsForge {

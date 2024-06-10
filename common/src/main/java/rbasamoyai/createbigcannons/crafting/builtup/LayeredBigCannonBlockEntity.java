@@ -25,7 +25,6 @@ import com.simibubi.create.foundation.utility.Iterate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -44,7 +43,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -58,6 +56,8 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBigCannonBlockEntity, WandActionable {
 
@@ -348,7 +348,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		for (Map.Entry<CannonCastShape, Block> e : this.layeredBlocks.entrySet()) {
 			CompoundTag entryTag = new CompoundTag();
 			entryTag.putString("Shape", CBCRegistries.CANNON_CAST_SHAPES.getKey(e.getKey()).toString());
-			entryTag.putString("Block", Registry.BLOCK.getKey(e.getValue()).toString());
+			entryTag.putString("Block", CBCRegistryUtils.getBlockLocation(e.getValue()).toString());
 			layerTag.add(entryTag);
 		}
 		tag.put("Layers", layerTag);
@@ -397,7 +397,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		for (int i = 0; i < layers.size(); ++i) {
 			CompoundTag entry = layers.getCompound(i);
 			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get(CBCUtils.location(entry.getString("Shape"))),
-				Registry.BLOCK.get(CBCUtils.location(entry.getString("Block"))));
+				CBCRegistryUtils.getBlock(CBCUtils.location(entry.getString("Block"))));
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;
 		this.completionProgress = tag.getInt("Progress");

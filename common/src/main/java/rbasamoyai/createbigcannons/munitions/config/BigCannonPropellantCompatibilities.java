@@ -11,12 +11,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.block.Block;
-import rbasamoyai.createbigcannons.base.CBCUtils;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public record BigCannonPropellantCompatibilities(Map<Block, Integer> validPropellantCounts) {
 
@@ -34,7 +34,7 @@ public record BigCannonPropellantCompatibilities(Map<Block, Integer> validPropel
 			JsonObject obj1 = el.getAsJsonObject();
 			if (!obj1.has("type") && !obj1.getAsJsonPrimitive("type").isString()) continue;
 			ResourceLocation loc = CBCUtils.location(obj1.getAsJsonPrimitive("type").getAsString());
-			Block block = Registry.BLOCK.getOptional(loc).orElseThrow(() -> {
+			Block block = CBCRegistryUtils.getOptionalBlock(loc).orElseThrow(() -> {
 				return new JsonSyntaxException("Unknown block '" + loc + "'");
 			});
 			int maxCount = Math.max(-1, GsonHelper.getAsInt(obj1, "maximum_amount", -1));
@@ -48,7 +48,7 @@ public record BigCannonPropellantCompatibilities(Map<Block, Integer> validPropel
 		JsonArray propellants = new JsonArray();
 		for (Map.Entry<Block, Integer> e : this.validPropellantCounts.entrySet()) {
 			JsonObject obj1 = new JsonObject();
-			obj1.addProperty("type", Registry.BLOCK.getKey(e.getKey()).toString());
+			obj1.addProperty("type", CBCRegistryUtils.getBlockLocation(e.getKey()).toString());
 			obj1.addProperty("maximum_amount", e.getValue());
 		}
 		obj.add("propellant", propellants);
@@ -58,7 +58,7 @@ public record BigCannonPropellantCompatibilities(Map<Block, Integer> validPropel
 	public void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(this.validPropellantCounts.size());
 		for (Map.Entry<Block, Integer> e : this.validPropellantCounts.entrySet()) {
-			buf.writeResourceLocation(Registry.BLOCK.getKey(e.getKey())).writeVarInt(e.getValue());
+			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(e.getKey())).writeVarInt(e.getValue());
 		}
 	}
 
@@ -66,7 +66,7 @@ public record BigCannonPropellantCompatibilities(Map<Block, Integer> validPropel
 		int sz = buf.readVarInt();
 		ImmutableMap.Builder<Block, Integer> builder = ImmutableMap.builder();
 		for (int i = 0; i < sz; ++i) {
-			Optional<Block> block = Registry.BLOCK.getOptional(buf.readResourceLocation());
+			Optional<Block> block = CBCRegistryUtils.getOptionalBlock(buf.readResourceLocation());
 			if (block.isEmpty()) continue;
 			int count = buf.readVarInt();
 			builder.put(block.get(), count);

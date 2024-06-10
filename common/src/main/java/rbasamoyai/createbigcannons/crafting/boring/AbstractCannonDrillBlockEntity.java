@@ -21,7 +21,6 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -50,7 +49,6 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.base.PoleMoverBlockEntity;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
@@ -62,6 +60,8 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntity {
 
@@ -425,7 +425,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		lathe.getBlocks().put(boringOffset, newInfo);
 		bearing.notifyUpdate();
 
-		ResourceLocation unboredId = Registry.BLOCK.getKey(latheBlockInfo.state.getBlock());
+		ResourceLocation unboredId = CBCRegistryUtils.getBlockLocation(latheBlockInfo.state.getBlock());
 		LootTable table = slevel.getServer().getLootTables().get(CBCUtils.location(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
 		List<ItemStack> scrap = table.getRandomItems(new LootContext.Builder(slevel)
 			.withRandom(slevel.random)

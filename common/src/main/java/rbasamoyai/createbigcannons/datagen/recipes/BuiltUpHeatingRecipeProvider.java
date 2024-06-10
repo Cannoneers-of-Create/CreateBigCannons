@@ -8,16 +8,16 @@ import java.util.function.Consumer;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import net.minecraft.core.Registry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BuiltUpHeatingRecipeProvider extends BlockRecipeProvider {
 
@@ -147,7 +147,7 @@ public class BuiltUpHeatingRecipeProvider extends BlockRecipeProvider {
 					.map(BlockRecipeIngredient::stringForSerialization)
 					.forEach(layersArr::add);
 			obj.add("layers", layersArr);
-			obj.addProperty("result", Registry.BLOCK.getKey(this.result).toString());
+			obj.addProperty("result", CBCRegistryUtils.getBlockLocation(this.result).toString());
 		}
 
 		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.BUILT_UP_HEATING; }

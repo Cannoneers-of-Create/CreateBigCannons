@@ -20,7 +20,6 @@ import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BucketItem;
@@ -31,9 +30,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.base.LazySupplier;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 /**
  * Copy of {@link com.tterrag.registrate.builders.FluidBuilder} to work with multiloader fluid impl
@@ -66,7 +66,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 
 	protected FluidBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
 						   NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
-		super(owner, parent, "flowing_" + name, callback, Registry.FLUID_REGISTRY);
+		super(owner, parent, "flowing_" + name, callback, CBCRegistryUtils.getFluidRegistryKey());
 		this.stillTexture = stillTexture;
 		this.flowingTexture = flowingTexture;
 		this.sourceName = name;
@@ -74,8 +74,8 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		this.factory = factory;
 
 		String bucketName = this.bucketName;
-		this.properties = p -> p.bucket(() -> owner.get(bucketName, Registry.ITEM_REGISTRY).get())
-				.block(() -> owner.<Block, LiquidBlock>get(name, Registry.BLOCK_REGISTRY).get());
+		this.properties = p -> p.bucket(() -> owner.get(bucketName, CBCRegistryUtils.getItemRegistryKey()).get())
+				.block(() -> owner.<Block, LiquidBlock>get(name, CBCRegistryUtils.getBlockRegistryKey()).get());
 	}
 
 	public FluidBuilder<T, P> properties(NonNullConsumer<CBCFlowingFluid.Properties> cons) {

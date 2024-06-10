@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.base;
+package rbasamoyai.createbigcannons.utils;
 
 import net.minecraft.resources.ResourceLocation;
 

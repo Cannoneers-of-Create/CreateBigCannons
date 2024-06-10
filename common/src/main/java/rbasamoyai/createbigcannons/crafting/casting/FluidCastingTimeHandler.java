@@ -14,7 +14,6 @@ import com.google.gson.JsonSyntaxException;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -26,9 +25,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.material.Fluid;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class FluidCastingTimeHandler {
 
@@ -57,10 +57,10 @@ public class FluidCastingTimeHandler {
 
 				ResourceLocation loc = entry.getKey();
 				if (loc.getPath().startsWith("tags/")) {
-					TagKey<Fluid> tag = TagKey.create(Registry.FLUID_REGISTRY, CBCUtils.location(loc.getNamespace(), loc.getPath().substring(5)));
+					TagKey<Fluid> tag = TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), CBCUtils.location(loc.getNamespace(), loc.getPath().substring(5)));
 					TAGS_TO_LOAD.put(tag, castingTime);
 				} else {
-					Fluid fluid = Registry.FLUID.getOptional(loc).orElseThrow(() -> {
+					Fluid fluid = CBCRegistryUtils.getOptionalFluid(loc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown fluid type '" + loc + "'");
 					});
 					FLUID_MAP.put(fluid, castingTime);
@@ -79,7 +79,7 @@ public class FluidCastingTimeHandler {
 		TAG_MAP.clear();
 		for (Map.Entry<TagKey<Fluid>, Integer> entry : TAGS_TO_LOAD.entrySet()) {
 			Integer hardness = entry.getValue();
-			for (Holder<Fluid> holder : Registry.FLUID.getTagOrEmpty(entry.getKey())) {
+			for (Holder<Fluid> holder : CBCRegistryUtils.getFluidTagEntries(entry.getKey())) {
 				TAG_MAP.put(holder.value(), hardness);
 			}
 		}
@@ -95,11 +95,11 @@ public class FluidCastingTimeHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(FLUID_MAP.size());
 		for (Map.Entry<Fluid, Integer> entry : FLUID_MAP.entrySet()) {
-			buf.writeResourceLocation(Registry.FLUID.getKey(entry.getKey())).writeVarInt(entry.getValue());
+			buf.writeResourceLocation(CBCRegistryUtils.getFluidLocation(entry.getKey())).writeVarInt(entry.getValue());
 		}
 		buf.writeVarInt(TAG_MAP.size());
 		for (Map.Entry<Fluid, Integer> entry : TAG_MAP.entrySet()) {
-			buf.writeResourceLocation(Registry.FLUID.getKey(entry.getKey())).writeVarInt(entry.getValue());
+			buf.writeResourceLocation(CBCRegistryUtils.getFluidLocation(entry.getKey())).writeVarInt(entry.getValue());
 		}
 	}
 
@@ -109,7 +109,7 @@ public class FluidCastingTimeHandler {
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation id = buf.readResourceLocation();
 			int castingTime = buf.readVarInt();
-			Optional<Fluid> op = Registry.FLUID.getOptional(id);
+			Optional<Fluid> op = CBCRegistryUtils.getOptionalFluid(id);
 			if (op.isEmpty()) continue;
 			FLUID_MAP.put(op.get(), castingTime);
 		}
@@ -117,7 +117,7 @@ public class FluidCastingTimeHandler {
 		for (int i = 0; i < sz1; ++i) {
 			ResourceLocation id = buf.readResourceLocation();
 			int castingTime = buf.readVarInt();
-			Optional<Fluid> op = Registry.FLUID.getOptional(id);
+			Optional<Fluid> op = CBCRegistryUtils.getOptionalFluid(id);
 			if (op.isEmpty()) continue;
 			TAG_MAP.put(op.get(), castingTime);
 		}

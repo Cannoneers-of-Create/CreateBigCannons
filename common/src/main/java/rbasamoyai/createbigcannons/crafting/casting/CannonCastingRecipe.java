@@ -5,7 +5,6 @@ import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -13,10 +12,11 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CannonCastingRecipe implements BlockRecipe {
 
@@ -64,14 +64,14 @@ public class CannonCastingRecipe implements BlockRecipe {
 		public CannonCastingRecipe fromJson(ResourceLocation id, JsonObject obj) {
 			CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(CBCUtils.location(obj.get("cast_shape").getAsString()));
 			FluidIngredient ingredient = FluidIngredient.deserialize(obj.get("fluid"));
-			Block result = Registry.BLOCK.get(CBCUtils.location(obj.get("result").getAsString()));
+			Block result = CBCRegistryUtils.getBlock(CBCUtils.location(obj.get("result").getAsString()));
 			return new CannonCastingRecipe(shape, ingredient, result, id);
 		}
 
 		@Override
 		public CannonCastingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
 			CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.byId(buf.readVarInt());
-			Block result = Registry.BLOCK.byId(buf.readVarInt());
+			Block result = CBCRegistryUtils.getBlock(buf.readVarInt());
 			FluidIngredient ingredient = FluidIngredient.read(buf);
 			return new CannonCastingRecipe(shape, ingredient, result, id);
 		}
@@ -79,7 +79,7 @@ public class CannonCastingRecipe implements BlockRecipe {
 		@Override
 		public void toNetwork(FriendlyByteBuf buf, CannonCastingRecipe recipe) {
 			buf.writeVarInt(CBCRegistries.CANNON_CAST_SHAPES.getId(recipe.shape()))
-			.writeVarInt(Registry.BLOCK.getId(recipe.getResultBlock()));
+			.writeVarInt(CBCRegistryUtils.getBlockNumericId(recipe.getResultBlock()));
 			recipe.ingredient().write(buf);
 		}
 	}

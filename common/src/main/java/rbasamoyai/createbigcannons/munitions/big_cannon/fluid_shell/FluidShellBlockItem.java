@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -16,6 +15,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.FuzedProjectileBlockItem;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class FluidShellBlockItem extends FuzedProjectileBlockItem {
 
@@ -30,7 +30,7 @@ public class FluidShellBlockItem extends FuzedProjectileBlockItem {
 		CompoundTag beTag = tag.getCompound("BlockEntityTag");
 		CompoundTag fluidTag = beTag.getCompound("FluidContent");
 		ResourceLocation fluidId = ResourceLocation.tryParse(fluidTag.getString("FluidName"));
-		Fluid fluid = fluidId == null ? Fluids.EMPTY : Registry.FLUID.get(fluidId);
+		Fluid fluid = fluidId == null ? Fluids.EMPTY : CBCRegistryUtils.getFluid(fluidId);
 		long count = fluidTag.getLong("Amount");
 		IndexPlatform.addFluidShellComponents(fluid, count, tooltip);
 	}

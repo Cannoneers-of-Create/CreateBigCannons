@@ -5,7 +5,6 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -13,7 +12,6 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
-import rbasamoyai.createbigcannons.base.CBCUtils;
 import rbasamoyai.createbigcannons.block_armor_properties.InspectResistanceToolItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
@@ -29,6 +27,8 @@ import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCItems {
 
@@ -239,7 +239,7 @@ public class CBCItems {
 	public static void register() {
 	}
 
-	public static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registry.ITEM_REGISTRY, loc); }
+	public static TagKey<Item> tag(ResourceLocation loc) { return CBCRegistryUtils.createItemTag(loc); }
 	private static TagKey<Item> forgeTag(String loc) { return tag(CBCUtils.location("forge", loc)); }
 	private static TagKey<Item> fabricTag(String loc) { return tag(CBCUtils.location("c", loc)); }
 

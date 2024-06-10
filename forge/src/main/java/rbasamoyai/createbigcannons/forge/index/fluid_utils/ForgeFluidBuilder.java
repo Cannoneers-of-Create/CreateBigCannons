@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.forge.index.fluid_utils;
 
+import java.util.Arrays;
+
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -7,16 +9,15 @@ import com.tterrag.registrate.providers.ProviderType;
 import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
+
 import net.minecraft.Util;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
-
-import java.util.Arrays;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilder<T, P> {
 
@@ -51,7 +52,7 @@ public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilde
 	}
 
 	private String makeDescriptionId(T fluid) {
-		return Util.makeDescriptionId("fluid", Registry.FLUID.getKey(fluid.getSource()));
+		return Util.makeDescriptionId("fluid", CBCRegistryUtils.getFluidLocation(fluid.getSource()));
 	}
 
 }

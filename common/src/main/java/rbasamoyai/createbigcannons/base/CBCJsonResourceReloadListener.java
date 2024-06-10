@@ -22,6 +22,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 /**
  * Copied from SimpleJsonResourceReloadListener, with some tweaks to support Multimap; using similar to tag loading
