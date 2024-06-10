@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.math.Constants;
 
 import net.minecraft.nbt.CompoundTag;
@@ -22,8 +24,9 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
+import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
 
-public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileProperties> extends AbstractCannonProjectile<T> {
+public abstract class AbstractBigCannonProjectile extends AbstractCannonProjectile {
 
 	private static final EntityDataAccessor<ItemStack> TRACER = SynchedEntityData.defineId(AbstractBigCannonProjectile.class, EntityDataSerializers.ITEM_STACK);
 
@@ -129,28 +132,15 @@ public abstract class AbstractBigCannonProjectile<T extends BigCannonProjectileP
 
 	@Override
 	protected DamageSource getEntityDamage() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".big_cannon_projectile", this, null);
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".big_cannon_projectile", this, null, this.getDamageProperties().ignoresEntityArmor());
 	}
 
-	public float addedChargePower() {
-		T properties = this.getProperties();
-		return properties == null ? 0 : properties.addedChargePower();
-	}
+	public float addedChargePower() { return this.getBigCannonProjectileProperties().addedChargePower(); }
+	public float minimumChargePower() { return this.getBigCannonProjectileProperties().minimumChargePower(); }
+	public boolean canSquib() { return this.getBigCannonProjectileProperties().canSquib(); }
+	public float addedRecoil() { return this.getBigCannonProjectileProperties().addedRecoil(); }
 
-	public float minimumChargePower() {
-		T properties = this.getProperties();
-		return properties == null ? 1 : properties.minimumChargePower();
-	}
-
-	public boolean canSquib() {
-		T properties = this.getProperties();
-		return properties == null || properties.canSquib();
-	}
-
-	public float addedRecoil() {
-		T properties = this.getProperties();
-		return properties == null ? 1 : properties.addedRecoil();
-	}
+	@Nonnull protected abstract BigCannonProjectilePropertiesComponent getBigCannonProjectileProperties();
 
 	public enum TrailType {
 		NONE,

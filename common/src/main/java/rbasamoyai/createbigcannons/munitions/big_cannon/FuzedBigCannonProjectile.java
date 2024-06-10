@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 
 import java.util.function.Predicate;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -9,9 +11,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
+import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonFuzePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-public abstract class FuzedBigCannonProjectile<T extends FuzedBigCannonProjectileProperties> extends AbstractBigCannonProjectile<T> {
+public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjectile {
 
 	private ItemStack fuze = ItemStack.EMPTY;
 
@@ -30,8 +33,7 @@ public abstract class FuzedBigCannonProjectile<T extends FuzedBigCannonProjectil
 	@Override
 	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
 		if (super.onClip(ctx, pos)) return true;
-		T properties = this.getProperties();
-		boolean baseFuze = properties != null && properties.baseFuze();
+		boolean baseFuze = this.getFuzeProperties().baseFuze();
 		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, pos, ctx, baseFuze))) {
 			this.detonate();
 			return true;
@@ -42,10 +44,11 @@ public abstract class FuzedBigCannonProjectile<T extends FuzedBigCannonProjectil
 	@Override
 	protected void onImpact(HitResult result, boolean stopped) {
 		super.onHit(result);
-		T properties = this.getProperties();
-		boolean baseFuze = properties != null && properties.baseFuze();
+		boolean baseFuze = this.getFuzeProperties().baseFuze();
 		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped, baseFuze))) this.detonate();
 	}
+
+	@Nonnull protected abstract BigCannonFuzePropertiesComponent getFuzeProperties();
 
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {

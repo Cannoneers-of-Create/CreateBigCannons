@@ -1,17 +1,8 @@
 {
-  "entity_damage": 0.0,
-  "durability_mass": 1.0,
-  "renders_invulnerable": true,
-  "ignores_entity_armor": false,
-  "gravity": -0.05,
-  "drag": 0.01,
-  "quadratic_drag": false,
-  "knockback": 2,
   "added_charge_power": 0,
   "minimum_charge_power": 1.0,
   "can_squib": true,
   "added_recoil": 1.0,
-  "grapeshot_entity_damage": 15.0,
   "grapeshot_spread": 0.15,
   "grapeshot_count": 25
 }

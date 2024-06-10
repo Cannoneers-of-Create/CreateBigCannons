@@ -26,7 +26,7 @@ public class FuzedBlockEntityRenderer extends SafeBlockEntityRenderer<FuzedBlock
 
 		BlockState state = blockEntity.getBlockState();
 		Direction facing = state.getValue(BlockStateProperties.FACING);
-		if (state.getBlock() instanceof FuzedProjectileBlock<?, ?, ?> fuzed && fuzed.isBaseFuze()) facing = facing.getOpposite();
+		if (state.getBlock() instanceof FuzedProjectileBlock<?, ?> fuzed && fuzed.isBaseFuze()) facing = facing.getOpposite();
 		if (blockEntity.hasFuze()) {
 			SuperByteBuffer fuzeRender = CachedBufferer.partialFacing(CBCBlockPartials.FUZE, blockEntity.getBlockState(), facing);
 			fuzeRender.renderInto(posestack, buffers.getBuffer(RenderType.cutout()));

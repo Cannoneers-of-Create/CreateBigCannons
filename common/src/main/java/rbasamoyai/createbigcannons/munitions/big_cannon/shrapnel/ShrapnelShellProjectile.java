@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -10,10 +12,15 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonFuzePropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
 
-public class ShrapnelShellProjectile extends FuzedBigCannonProjectile<ShrapnelShellProperties> {
+public class ShrapnelShellProjectile extends FuzedBigCannonProjectile {
 
 	public ShrapnelShellProjectile(EntityType<? extends ShrapnelShellProjectile> type, Level level) {
 		super(type, level);
@@ -22,21 +29,47 @@ public class ShrapnelShellProjectile extends FuzedBigCannonProjectile<ShrapnelSh
 	@Override
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
-		ShrapnelShellProperties properties = this.getProperties();
+		ShrapnelShellProperties properties = this.getAllProperties();
 		ShrapnelExplosion explosion = new ShrapnelExplosion(this.level, null, this.indirectArtilleryFire(), this.getX(),
-			this.getY(), this.getZ(), properties == null ? 2.0f : properties.explosionPower(),
+			this.getY(), this.getZ(), properties.explosion().explosivePower(),
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
-		if (properties != null) {
-			CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.SHRAPNEL_BURST.get(), this.position(), oldDelta,
-				properties.shrapnelCount(), properties.shrapnelSpread());
-		}
+		CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.SHRAPNEL_BURST.get(), this.position(), oldDelta,
+			properties.shrapnelBurst().burstProjectileCount(), properties.shrapnelBurst().burstSpread());
 		this.discard();
 	}
 
 	@Override
 	public BlockState getRenderedBlockState() {
 		return CBCBlocks.SHRAPNEL_SHELL.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);
+	}
+
+	@Nonnull
+	@Override
+	protected BigCannonFuzePropertiesComponent getFuzeProperties() {
+		return this.getAllProperties().fuze();
+	}
+
+	@Nonnull
+	@Override
+	protected BigCannonProjectilePropertiesComponent getBigCannonProjectileProperties() {
+		return this.getAllProperties().bigCannonProperties();
+	}
+
+	@Nonnull
+	@Override
+	public EntityDamagePropertiesComponent getDamageProperties() {
+		return this.getAllProperties().damage();
+	}
+
+	@Nonnull
+	@Override
+	protected BallisticPropertiesComponent getBallisticProperties() {
+		return this.getAllProperties().ballistics();
+	}
+
+	protected ShrapnelShellProperties getAllProperties() {
+		return CBCMunitionPropertiesHandlers.SHRAPNEL_SHELL.getPropertiesOf(this);
 	}
 
 }

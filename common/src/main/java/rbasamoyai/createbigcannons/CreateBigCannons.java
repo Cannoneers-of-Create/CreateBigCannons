@@ -26,7 +26,7 @@ import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
-import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesSerializers;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
@@ -45,7 +45,7 @@ public class CreateBigCannons {
 	public static void init() {
 		CBCSoundEvents.prepare();
 
-		CBCMunitionPropertiesSerializers.init();
+		CBCMunitionPropertiesHandlers.init();
 		ModGroup.register();
 		CBCBlocks.register();
 		CBCItems.register();

@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.munitions;
 
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -35,10 +37,11 @@ import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHa
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
+import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
-public abstract class AbstractCannonProjectile<T extends BaseProjectileProperties> extends Projectile implements PropertiesMunitionEntity<T> {
+public abstract class AbstractCannonProjectile extends Projectile {
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
@@ -47,10 +50,11 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
-		T properties = this.getProperties();
-		this.damage = properties == null ? 0 : properties.entityDamage();
-		this.setProjectileMass(properties == null ? 0 : properties.durabilityMass());
+		this.damage = this.getDamageProperties().entityDamage();
+		this.setProjectileMass(this.getBallisticProperties().durabilityMass());
 	}
+
+	@Nonnull public abstract EntityDamagePropertiesComponent getDamageProperties();
 
 	@Override
 	public void tick() {
@@ -235,11 +239,11 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 	protected void onHitEntity(Entity entity) {
 		if (this.getProjectileMass() <= 0) return;
 		if (!this.level.isClientSide) {
-			T properties = this.getProperties();
+			EntityDamagePropertiesComponent properties = this.getDamageProperties();
 			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
 			DamageSource source = this.getEntityDamage();
 
-			if (properties == null || properties.ignoresEntityArmor()) entity.invulnerableTime = 0;
+			if (properties == null || properties.ignoresInvulnerability()) entity.invulnerableTime = 0;
 			entity.hurt(source, this.damage);
 			if (properties == null || !properties.rendersInvulnerable()) entity.invulnerableTime = 0;
 
@@ -250,12 +254,11 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 	}
 
 	protected DamageSource getEntityDamage() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile", this, null);
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile", this, null, this.getDamageProperties().ignoresEntityArmor());
 	}
 
 	protected float getKnockback(Entity target) {
-		T properties = this.getProperties();
-		return properties == null ? 0 : properties.knockback();
+		return this.getDamageProperties().knockback();
 	}
 
 	protected boolean canDeflect(BlockHitResult result) { return false; }
@@ -339,7 +342,7 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 		return this.entityData.get(PROJECTILE_MASS);
 	}
 
-	public static void build(EntityType.Builder<? extends AbstractCannonProjectile<?>> builder) {
+	public static void build(EntityType.Builder<? extends AbstractCannonProjectile> builder) {
 		builder.clientTrackingRange(16)
 				.updateInterval(1)
 				.fireImmune()
@@ -352,24 +355,21 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 	}
 
 	protected double getGravity() {
-		if (this.isNoGravity())
-			return 0;
-		T properties = this.getProperties();
-		double val = properties == null ? -0.05d : properties.gravity();
-		double multiplier = DimensionMunitionPropertiesHandler.getProperties(this.level).gravityMultiplier();
-		return val * multiplier;
+		return this.isNoGravity() ? 0 : this.getBallisticProperties().gravity() * DimensionMunitionPropertiesHandler
+			.getProperties(this.level).gravityMultiplier();
 	}
 
 	protected double getDragForce() {
-		T properties = this.getProperties();
-		if (properties == null)
-			return 0;
+		BallisticPropertiesComponent properties = this.getBallisticProperties();
 		double magnitude = this.getDeltaMovement().length();
 		double drag = properties.drag() * DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier() * magnitude;
 		if (properties.isQuadraticDrag())
 			drag *= magnitude;
 		return Math.min(drag, magnitude);
 	}
+
+	@Nonnull
+	protected abstract BallisticPropertiesComponent getBallisticProperties();
 
 	public void setChargePower(float power) {}
 
@@ -384,7 +384,7 @@ public abstract class AbstractCannonProjectile<T extends BaseProjectilePropertie
 	}
 
 	public DamageSource indirectArtilleryFire() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile", this, null).setScalesWithDifficulty().setExplosion();
+		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".cannon_projectile", this, null, false).setScalesWithDifficulty().setExplosion();
 	}
 
 }

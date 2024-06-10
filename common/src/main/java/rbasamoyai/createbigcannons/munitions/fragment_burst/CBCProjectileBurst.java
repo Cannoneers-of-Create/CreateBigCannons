@@ -11,15 +11,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
+import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 import rbasamoyai.ritchiesprojectilelib.projectile_burst.ProjectileBurst;
 
-public abstract class CBCProjectileBurst<T extends ProjectileBurstProperties> extends ProjectileBurst implements PropertiesMunitionEntity<T> {
+public abstract class CBCProjectileBurst extends ProjectileBurst {
 
-	protected CBCProjectileBurst(EntityType<? extends CBCProjectileBurst<?>> entityType, Level level) { super(entityType, level); }
+	protected CBCProjectileBurst(EntityType<? extends CBCProjectileBurst> entityType, Level level) { super(entityType, level); }
 
 	@Override
 	protected void applyForces(double[] velocity) {
@@ -29,12 +30,6 @@ public abstract class CBCProjectileBurst<T extends ProjectileBurstProperties> ex
 		velocity[1] -= velocity[1] * drag;
 		velocity[2] -= velocity[2] * drag;
 		velocity[1] += this.getGravity();
-	}
-
-	@Override
-	protected int getLifetime() {
-		T properties = this.getProperties();
-		return properties == null ? 0 : properties.lifetime();
 	}
 
 	@Override
@@ -49,9 +44,7 @@ public abstract class CBCProjectileBurst<T extends ProjectileBurstProperties> ex
 	}
 
 	protected double getDragCoefficient(double magnitude) {
-		T properties = this.getProperties();
-		if (properties == null)
-			return 0;
+		BallisticPropertiesComponent properties = this.getProperties().ballistics();
 		double drag = properties.drag() * DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier() * magnitude;
 		if (properties.isQuadraticDrag())
 			drag *= magnitude;
@@ -59,14 +52,12 @@ public abstract class CBCProjectileBurst<T extends ProjectileBurstProperties> ex
 	}
 
 	protected double getGravity() {
-		T properties = this.getProperties();
-		double val = properties == null ? -0.05 : properties.gravity();
-		double multiplier = DimensionMunitionPropertiesHandler.getProperties(this.level).gravityMultiplier();
-		return val * multiplier;
+		BallisticPropertiesComponent properties = this.getProperties().ballistics();
+		return properties.gravity() * DimensionMunitionPropertiesHandler.getProperties(this.level).gravityMultiplier();
 	}
 
 	public boolean canHitEntity(Entity target) {
-		if (target instanceof AbstractCannonProjectile<?>) // TODO: better check
+		if (target instanceof AbstractCannonProjectile) // TODO: better check
 			return false;
 		return super.canHitEntity(target);
 	}
@@ -97,6 +88,12 @@ public abstract class CBCProjectileBurst<T extends ProjectileBurstProperties> ex
 		}
 		level.addFreshEntity(burst);
 		return burst;
+	}
+
+	@Override protected int getLifetime() { return this.getProperties().lifetime(); }
+
+	protected ProjectileBurstProperties getProperties() {
+		return CBCMunitionPropertiesHandlers.PROJECTILE_BURST.getPropertiesOf(this);
 	}
 
 }

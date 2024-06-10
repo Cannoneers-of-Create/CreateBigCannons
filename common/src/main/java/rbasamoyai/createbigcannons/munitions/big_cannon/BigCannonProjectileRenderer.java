@@ -21,8 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-
-public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile<?>> extends EntityRenderer<T> {
+public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> extends EntityRenderer<T> {
 
 	public BigCannonProjectileRenderer(EntityRendererProvider.Context context) {
 		super(context);

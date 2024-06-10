@@ -17,10 +17,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
 
-public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBlockEntity, FluidShellProperties, FluidShellProjectile> {
+public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBlockEntity, FluidShellProjectile> {
 
 	public FluidShellBlock(Properties properties) {
 		super(properties);
@@ -37,7 +38,7 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 	}
 
 	@Override
-	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		FluidShellProjectile projectile = CBCEntityTypes.FLUID_SHELL.create(level);
 		projectile.setFuze(getFuze(projectileBlocks));
 		projectile.setTracer(getTracer(projectileBlocks));
@@ -71,6 +72,11 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 			}
 			return super.use(state, level, pos, player, hand, hit);
 		});
+	}
+
+	@Override
+	public boolean isBaseFuze() {
+		return CBCMunitionPropertiesHandlers.FLUID_SHELL.getPropertiesOf(this.getAssociatedEntityType()).fuze().baseFuze();
 	}
 
 }

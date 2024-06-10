@@ -1,16 +1,23 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
-import rbasamoyai.createbigcannons.munitions.big_cannon.CommonShellBigCannonProjectileProperties;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonCommonShellProperties;
+import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonFuzePropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 
-public class APShellProjectile extends FuzedBigCannonProjectile<CommonShellBigCannonProjectileProperties> {
+public class APShellProjectile extends FuzedBigCannonProjectile {
 
 	public APShellProjectile(EntityType<? extends APShellProjectile> type, Level level) {
 		super(type, level);
@@ -18,9 +25,8 @@ public class APShellProjectile extends FuzedBigCannonProjectile<CommonShellBigCa
 
 	@Override
 	protected void detonate() {
-		CommonShellBigCannonProjectileProperties properties = this.getProperties();
-		this.level.explode(null, this.indirectArtilleryFire(), null, this.getX(), this.getY(),
-			this.getZ(), properties == null ? 0 : properties.explosivePower(), false,
+		this.level.explode(null, this.indirectArtilleryFire(), null, this.getX(), this.getY(), this.getZ(),
+			this.getAllProperties().explosion().explosivePower(), false,
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		this.discard();
 	}
@@ -28,6 +34,34 @@ public class APShellProjectile extends FuzedBigCannonProjectile<CommonShellBigCa
 	@Override
 	public BlockState getRenderedBlockState() {
 		return CBCBlocks.AP_SHELL.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);
+	}
+
+	@Nonnull
+	@Override
+	protected BigCannonFuzePropertiesComponent getFuzeProperties() {
+		return this.getAllProperties().fuze();
+	}
+
+	@Nonnull
+	@Override
+	protected BigCannonProjectilePropertiesComponent getBigCannonProjectileProperties() {
+		return this.getAllProperties().bigCannonProperties();
+	}
+
+	@Nonnull
+	@Override
+	public EntityDamagePropertiesComponent getDamageProperties() {
+		return this.getAllProperties().damage();
+	}
+
+	@Nonnull
+	@Override
+	protected BallisticPropertiesComponent getBallisticProperties() {
+		return this.getAllProperties().ballistics();
+	}
+
+	protected BigCannonCommonShellProperties getAllProperties() {
+		return CBCMunitionPropertiesHandlers.COMMON_SHELL_BIG_CANNON_PROJECTILE.getPropertiesOf(this);
 	}
 
 }

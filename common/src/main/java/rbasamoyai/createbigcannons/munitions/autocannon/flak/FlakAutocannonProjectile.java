@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.munitions.autocannon.flak;
 
 import java.util.function.Predicate;
 
+import javax.annotation.Nonnull;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
@@ -12,12 +14,15 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
+import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-public class FlakAutocannonProjectile extends AbstractAutocannonProjectile<FlakAutocannonProjectileProperties> {
+public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 
 	private ItemStack fuze = ItemStack.EMPTY;
 
@@ -55,14 +60,12 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile<FlakA
 
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
-		FlakAutocannonProjectileProperties properties = this.getProperties();
+		FlakAutocannonProjectileProperties properties = this.getAllProperties();
 		FlakExplosion explosion = new FlakExplosion(this.level, null, this.indirectArtilleryFire(), this.getX(), this.getY(), this.getZ(),
-			properties == null ? 2 : properties.explosionPower(), CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+			properties.explosion().explosivePower(), CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
-		if (properties != null) {
-			CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.FLAK_BURST.get(), this.position(), oldDelta,
-				properties.shrapnelCount(), properties.shrapnelSpread());
-		}
+		CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.FLAK_BURST.get(), this.position(), oldDelta,
+			properties.flakBurst().burstProjectileCount(), properties.flakBurst().burstSpread());
 		this.discard();
 	}
 
@@ -82,6 +85,22 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile<FlakA
 
 	protected final boolean canDetonate(Predicate<FuzeItem> cons) {
 		return !this.level.isClientSide && this.level.hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
+	}
+
+	@Nonnull
+	@Override
+	public EntityDamagePropertiesComponent getDamageProperties() {
+		return this.getAllProperties().damage();
+	}
+
+	@Nonnull
+	@Override
+	protected BallisticPropertiesComponent getBallisticProperties() {
+		return this.getAllProperties().ballistics();
+	}
+
+	protected FlakAutocannonProjectileProperties getAllProperties() {
+		return CBCMunitionPropertiesHandlers.FLAK_AUTOCANNON.getPropertiesOf(this);
 	}
 
 }

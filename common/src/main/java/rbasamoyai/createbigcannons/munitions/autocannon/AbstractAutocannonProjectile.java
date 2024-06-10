@@ -20,9 +20,8 @@ import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHa
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.BaseProjectileProperties;
 
-public abstract class AbstractAutocannonProjectile<T extends BaseProjectileProperties> extends AbstractCannonProjectile<T> {
+public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
 
 	protected int ageRemaining;
 	@Nullable private Vec3 prevPos = null;

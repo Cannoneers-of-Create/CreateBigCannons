@@ -9,14 +9,14 @@ import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
-public class GrapeshotBlock extends ProjectileBlock<GrapeshotBagProperties, GrapeshotBagProjectile> {
+public class GrapeshotBlock extends ProjectileBlock<GrapeshotBagProjectile> {
 
 	public GrapeshotBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		return CBCEntityTypes.BAG_OF_GRAPESHOT.create(level);
 	}
 

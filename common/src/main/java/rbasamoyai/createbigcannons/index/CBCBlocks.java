@@ -82,7 +82,6 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
-import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
@@ -1103,7 +1102,7 @@ public class CBCBlocks {
 		.item(PowderChargeItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROPELLANT_BAGS)
 		.build()
-		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, CBCMunitionPropertiesSerializers.BASE_BIG_CANNON_PROPELLANT))
+		.onRegister(block -> MunitionPropertiesHandler.registerBlockPropellantHandler(block, CBCMunitionPropertiesHandlers.POWDER_CHARGE))
 		.register();
 
 	public static final BlockEntry<BigCartridgeBlock> BIG_CARTRIDGE = REGISTRATE
@@ -1111,7 +1110,7 @@ public class CBCBlocks {
 		.initialProperties(() -> Blocks.TNT)
 		.properties(p -> p.sound(SoundType.METAL))
 		.transform(CBCBuilderTransformers.bigCartridge())
-		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, new BigCartridgeProperties.Serializer()))
+		.onRegister(block -> MunitionPropertiesHandler.registerBlockPropellantHandler(block, CBCMunitionPropertiesHandlers.BIG_CARTRIDGE))
 		.register();
 
 	//////// Autocannon Ammo Container Blocks ////////

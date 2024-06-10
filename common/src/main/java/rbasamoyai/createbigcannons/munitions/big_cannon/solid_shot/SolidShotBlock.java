@@ -12,7 +12,7 @@ public class SolidShotBlock extends InertProjectileBlock {
 	}
 
 	@Override
-	public EntityType<? extends AbstractBigCannonProjectile<?>> getAssociatedEntityType() {
+	public EntityType<? extends AbstractBigCannonProjectile> getAssociatedEntityType() {
 		return CBCEntityTypes.SHOT.get();
 	}
 

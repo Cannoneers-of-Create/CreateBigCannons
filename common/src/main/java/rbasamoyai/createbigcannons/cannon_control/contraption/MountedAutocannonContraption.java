@@ -61,9 +61,7 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
-import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
+import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
 
 public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon {
@@ -260,8 +258,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		AutocannonMaterialProperties properties = this.cannonMaterial.properties();
-		EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> type = round.getEntityType(foundProjectile);
-		AutocannonProjectileProperties roundProperties = (AutocannonProjectileProperties) MunitionPropertiesHandler.getProperties(type);
+		EntityType<?> type = round.getEntityType(foundProjectile);
+		AutocannonProjectilePropertiesComponent roundProperties = round.getAutocannonProperties(foundProjectile);
 
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 
@@ -328,7 +326,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		boolean isTracer = CBCConfigs.SERVER.munitions.allAutocannonProjectilesAreTracers.get() || round.isTracer(foundProjectile);
 
-		AbstractAutocannonProjectile<?> projectile = round.getAutocannonProjectile(foundProjectile, level);
+		AbstractAutocannonProjectile projectile = round.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {
 			projectile.setPos(spawnPos);
 			projectile.setChargePower(barrelTravelled);

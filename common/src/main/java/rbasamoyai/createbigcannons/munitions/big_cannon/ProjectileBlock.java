@@ -29,7 +29,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 
-public abstract class ProjectileBlock<T extends BigCannonProjectileProperties, E extends AbstractBigCannonProjectile<? extends T>> extends DirectionalBlock implements IWrenchable, BigCannonMunitionBlock {
+public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile> extends DirectionalBlock implements IWrenchable, BigCannonMunitionBlock {
 
 	private final VoxelShaper shapes;
 
@@ -80,7 +80,7 @@ public abstract class ProjectileBlock<T extends BigCannonProjectileProperties, E
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 
-	public abstract AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
+	public abstract AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
 
 	@Override
 	public PushReaction getPistonPushReaction(BlockState state) {
@@ -124,7 +124,7 @@ public abstract class ProjectileBlock<T extends BigCannonProjectileProperties, E
 		return stack;
 	}
 
-	public abstract EntityType<? extends E> getAssociatedEntityType();
+	public abstract EntityType<? extends ENTITY> getAssociatedEntityType();
 
 	public boolean isValidAddition(List<StructureBlockInfo> total, StructureBlockInfo data, int index, Direction dir) {
 		return total.size() == 1 && total.get(0) == data;

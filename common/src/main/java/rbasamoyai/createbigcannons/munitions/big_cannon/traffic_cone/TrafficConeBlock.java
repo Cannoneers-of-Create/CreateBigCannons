@@ -23,7 +23,7 @@ public class TrafficConeBlock extends InertProjectileBlock {
 	}
 
 	@Override
-	public EntityType<? extends AbstractBigCannonProjectile<?>> getAssociatedEntityType() {
+	public EntityType<? extends AbstractBigCannonProjectile> getAssociatedEntityType() {
 		return CBCEntityTypes.TRAFFIC_CONE.get();
 	}
 

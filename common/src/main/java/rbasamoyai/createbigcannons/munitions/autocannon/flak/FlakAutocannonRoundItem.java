@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.autocannon.flak;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.utility.Components;
@@ -18,11 +19,11 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
+import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class FlakAutocannonRoundItem extends AutocannonRoundItem implements FuzedItemMunition {
@@ -32,7 +33,7 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 	}
 
 	@Override
-	public AbstractAutocannonProjectile<?> getAutocannonProjectile(ItemStack stack, Level level) {
+	public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
 		FlakAutocannonProjectile projectile = CBCEntityTypes.FLAK_AUTOCANNON.create(level);
 		CompoundTag tag = stack.getOrCreateTag();
 		if (tag.contains("Fuze", Tag.TAG_COMPOUND)) {
@@ -61,8 +62,14 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 		}
 	}
 
+	@Nonnull
 	@Override
-	public EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> getEntityType(ItemStack stack) {
+	public AutocannonProjectilePropertiesComponent getAutocannonProperties(ItemStack itemStack) {
+		return CBCMunitionPropertiesHandlers.FLAK_AUTOCANNON.getPropertiesOf(this.getEntityType(itemStack)).autocannonProperties();
+	}
+
+	@Override
+	public EntityType<?> getEntityType(ItemStack stack) {
 		return CBCEntityTypes.FLAK_AUTOCANNON.get();
 	}
 

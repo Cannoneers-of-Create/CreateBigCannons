@@ -256,7 +256,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 
 	private boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos) {
 		Direction.Axis axis = this.orientation.getAxis();
-		if (state.getBlock() instanceof BigCannonPropellantBlock<?> propellant) return propellant.canBeLoaded(state, axis);
+		if (state.getBlock() instanceof BigCannonPropellantBlock propellant) return propellant.canBeLoaded(state, axis);
 		if (state.getBlock() instanceof ProjectileBlock) {
 			return state.getValue(FACING).getAxis() == axis;
 		}
