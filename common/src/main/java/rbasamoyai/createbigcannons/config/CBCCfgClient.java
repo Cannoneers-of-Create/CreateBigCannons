@@ -13,7 +13,9 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigBool use180180RangeForYaw = b(false, "use180_180RangeForYaw", Comments.use180180RangeForYaw);
 
 	public final ConfigGroup screenShake = group(1, "screenShake", "Screen Shake");
-	public final ConfigFloat cannonScreenShakeIntensity = f(1, 0, 2, "cannonScreenShakeIntensity");
+	public final ConfigFloat cannonScreenShakeIntensity = f(1.3f, 0, 2, "cannonScreenShakeIntensity");
+	public final ConfigFloat cannonScreenShakeSpringiness = f(0.08f, 0.01f, 2f, "cannonScreenShakeSpringiness");
+	public final ConfigFloat cannonScreenShakeDecay = f(0.3f, 0.01f, 2f, "cannonScreenShakeDecay");
 
 	public final ConfigGroup bigCannonPlumes = group(1, "bigCannonPlumes", "Big Cannon Plumes");
 	public final ConfigBool showBigCannonPlumes = b(true, "showBigCannonPlumes");

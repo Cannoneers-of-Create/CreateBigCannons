@@ -29,6 +29,8 @@ Added:
  - Solid Shot and AP Shot now have block entities to allow tracer placement. Blocks missing them may need to be replaced.
 - Added screen shake config options
  - Screen shake intensity (client)
+ - Screen shake restitution (client)
+ - Screen shake decay (client)
  - Screen shake range (server)
  - Screen shake power (server)
  - Screen shake propagation speed (server)
