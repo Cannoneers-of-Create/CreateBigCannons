@@ -27,16 +27,16 @@ public class CBCSoundEvents {
 
 	public static final SoundEntry
 		FIRE_BIG_CANNON = create("fire_big_cannon").subtitle("Big cannon fires")
-				.category(SoundSource.BLOCKS)
-				.build(),
+			.category(SoundSource.BLOCKS)
+			.build(),
 
 		FIRE_AUTOCANNON = create("fire_autocannon").subtitle("Autocannon fires")
-				.category(SoundSource.BLOCKS)
-				.build(),
+			.category(SoundSource.BLOCKS)
+			.build(),
 
 		FIRE_MACHINE_GUN = create("fire_machine_gun").subtitle("Machine gun fires")
-				.category(SoundSource.BLOCKS)
-				.build(),
+			.category(SoundSource.BLOCKS)
+			.build(),
 
 		FIRE_DROP_MORTAR = create("fire_drop_mortar").subtitle("Drop mortar fires")
 			.addVariant("fire_drop_mortar1")

@@ -17,6 +17,8 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigGroup bigCannonMunitions = group(0, "bigCannonMunitions", "Big Cannon Munitions");
 	public final ConfigEnum<AbstractBigCannonProjectile.TrailType> bigCannonTrailType = e(AbstractBigCannonProjectile.TrailType.SHORT, "trailType");
 	public final ConfigBool allBigCannonProjectilesAreTracers = b(false, "allBigCannonProjectilesAreTracers", Comments.allBigCannonProjectilesAreTracers);
+	public final ConfigInt quickFiringBreechItemPickupDelay = i(20, 0, 100, "quickFiringBreechItemPickupDelay", "[in Ticks]");
+	public final ConfigBool quickFiringBreechItemGoesToInventory = b(false, "quickFiringBreechItemGoesToInventory");
 
 
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes");
