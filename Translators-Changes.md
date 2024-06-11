@@ -31,7 +31,8 @@ Additions: \
 &plus; `"entity.createbigcannons.flak_burst": "Flak Burst"` \
 &plus; `"entity.createbigcannons.fluid_blob_burst": "Fluid Blob Burst"` \
 &plus; `"entity.createbigcannons.grapeshot_burst": "Grapeshot Burst"` \
-&plus; `"entity.createbigcannons.shrapnel_burst": "Shrapnel Burst"`
+&plus; `"entity.createbigcannons.shrapnel_burst": "Shrapnel Burst"` \
+&plus; `"createbigcannons.subtitle.fluid_shell_explosion": "Fluid shell explodes"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \

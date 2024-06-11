@@ -18,7 +18,7 @@ public class ShrapnelCloudParticle extends NoRenderParticle {
 
 	@Override
 	public void tick() {
-		if (!CBCConfigs.CLIENT.showShrapnelClouds.get()) {
+		if (!this.shouldShow()) {
 			this.remove();
 			return;
 		}
@@ -39,7 +39,7 @@ public class ShrapnelCloudParticle extends NoRenderParticle {
 			this.level.addParticle(new ShrapnelSmokeParticleData(lifetime), true, this.x + rx * 0.25,
 				this.y + ry * 0.25, this.z + rz * 0.25, dx * 0.7, dy * 0.7, dz * 0.7);
 		}
-		if (status == ParticleStatus.ALL && CBCConfigs.CLIENT.showExtraShrapnelCloudFlames.get()) {
+		if (status == ParticleStatus.ALL && this.flamesVisible()) {
 			for (int i = 0; i < 20; ++i) {
 				double dx = this.random.nextDouble() - this.random.nextDouble();
 				double dy = this.random.nextDouble() - this.random.nextDouble();
@@ -51,11 +51,15 @@ public class ShrapnelCloudParticle extends NoRenderParticle {
 					this.y + ry * 0.25, this.z + rz * 0.25, dx * 0.45, dy * 0.45, dz * 0.45);
 			}
 		}
-		if (status == ParticleStatus.ALL && CBCConfigs.CLIENT.showExtraShrapnelCloudShockwave.get()) {
+		if (status == ParticleStatus.ALL && this.shockwaveVisible()) {
 			this.level.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 0, 0, 0);
 		}
 		super.tick();
 	}
+
+	protected boolean shouldShow() { return CBCConfigs.CLIENT.showShrapnelClouds.get(); }
+	protected boolean flamesVisible() { return CBCConfigs.CLIENT.showExtraShrapnelCloudFlames.get(); }
+	protected boolean shockwaveVisible() { return CBCConfigs.CLIENT.showExtraShrapnelCloudShockwave.get(); }
 
 	public static class Provider implements ParticleProvider<ShrapnelCloudParticleData> {
 		@Override

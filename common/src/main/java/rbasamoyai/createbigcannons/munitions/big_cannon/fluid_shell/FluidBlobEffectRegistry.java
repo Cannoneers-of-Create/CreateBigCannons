@@ -70,12 +70,28 @@ public class FluidBlobEffectRegistry {
 		ON_HIT_ENTITY.run(fstack.fluid(), new OnHitEntity.Context(fstack, burst, subProjectile, burst.getLevel(), result));
 	}
 
-	private static class FluidBlobEffectTypeHandler<C, T extends Consumer<C>> {
-		private final Map<Fluid, List<T>> handlers = new Reference2ReferenceOpenHashMap<>();
+	/**
+	 * Fired when the Fluid Shell explodes.
+	 */
+	public interface OnFluidShellExplode extends Consumer<OnFluidShellExplode.Context> {
+		record Context(Fluid fluid, Level level, double x, double y, double z, float radius) {
+		}
+	}
+
+	private static final FluidBlobEffectTypeHandler<OnFluidShellExplode.Context, OnFluidShellExplode> ON_FLUID_SHELL_EXPLODE = new FluidBlobEffectTypeHandler<>();
+
+	public static void registerFluidShellExplosionEffect(Fluid fluid, OnFluidShellExplode handler) { ON_FLUID_SHELL_EXPLODE.registerHandler(fluid, handler); }
+
+	public static boolean effectOnFluidShellExplode(Fluid fluid, Level level, double x, double y, double z, float radius) {
+		return ON_FLUID_SHELL_EXPLODE.run(fluid, new OnFluidShellExplode.Context(fluid, level, x, y, z, radius));
+	}
+
+	private static class FluidBlobEffectTypeHandler<CONTEXT, CONSUMER extends Consumer<CONTEXT>> {
+		private final Map<Fluid, List<CONSUMER>> handlers = new Reference2ReferenceOpenHashMap<>();
 		private final Set<Fluid> fluidsWithNoHandlers = new ReferenceOpenHashSet<>();
 
-		public void registerHandler(Fluid fluid, T handler) {
-			List<T> alreadyExisting = this.getMatchingHandlerCollection(fluid);
+		public void registerHandler(Fluid fluid, CONSUMER handler) {
+			List<CONSUMER> alreadyExisting = this.getMatchingHandlerCollection(fluid);
 			if (alreadyExisting == null)
 				this.handlers.put(fluid, alreadyExisting = new ObjectArrayList<>());
 			alreadyExisting.add(handler);
@@ -83,25 +99,26 @@ public class FluidBlobEffectRegistry {
 			this.fluidsWithNoHandlers.remove(fluid);
 		}
 
-		private void run(Fluid fluid, C context) {
+		private boolean run(Fluid fluid, CONTEXT context) {
 			if (this.fluidsWithNoHandlers.contains(fluid))
-				return;
-			List<T> alreadyExisting = this.getMatchingHandlerCollection(fluid);
+				return false;
+			List<CONSUMER> alreadyExisting = this.getMatchingHandlerCollection(fluid);
 			if (alreadyExisting == null) {
 				this.fluidsWithNoHandlers.add(fluid);
-				return;
+				return false;
 			}
 			if (!this.handlers.containsKey(fluid))
 				this.handlers.put(fluid, alreadyExisting);
-			for (T handler : alreadyExisting)
+			for (CONSUMER handler : alreadyExisting)
 				handler.accept(context);
+			return true;
 		}
 
 		@Nullable
-		private List<T> getMatchingHandlerCollection(Fluid fluid) {
+		private List<CONSUMER> getMatchingHandlerCollection(Fluid fluid) {
 			if (this.handlers.containsKey(fluid))
 				return this.handlers.get(fluid);
-			for (Map.Entry<Fluid, List<T>> entry : this.handlers.entrySet()) {
+			for (Map.Entry<Fluid, List<CONSUMER>> entry : this.handlers.entrySet()) {
 				if (entry.getKey().isSame(fluid))
 					return entry.getValue();
 			}

@@ -49,6 +49,9 @@ Added:
 - Added "ignores_invulnerability" field to projectiles, ignoring projectile invulnerability
  - The old "ignores_entity_armor" field now only affects if entity armor is bypassed, not invulnerability
  - By default, all CBC projectiles ignore invulnerability, but differ in if they bypass armor
+- Added custom fluid-based explosion effects to Fluid Shell
+ - Added registry for fluid shell explosion sound and visual effects based on fluid
+ - If no effect is registered, defaults to regular explosion and sound effect
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities

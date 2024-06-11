@@ -26,6 +26,9 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.effects.particles.explosions.FluidCloudParticleData;
+import rbasamoyai.createbigcannons.index.CBCSoundEvents;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnFluidShellExplode;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnHitBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnHitEntity;
 
@@ -37,11 +40,15 @@ public class DefaultFluidCompat {
 
 		FluidBlobEffectRegistry.registerHitBlock(Fluids.WATER, DefaultFluidCompat::waterHitBlock);
 		FluidBlobEffectRegistry.registerHitBlock(Fluids.LAVA, DefaultFluidCompat::lavaHitBlock);
+
+		FluidBlobEffectRegistry.registerFluidShellExplosionEffect(Fluids.WATER, DefaultFluidCompat::waterFluidShellExplode);
+		FluidBlobEffectRegistry.registerFluidShellExplosionEffect(Fluids.LAVA, DefaultFluidCompat::lavaFluidShellExplode);
 	}
 
 	public static void registerCreateBlobEffects() {
 		FluidBlobEffectRegistry.registerHitBlock(AllFluids.POTION.get(), DefaultFluidCompat::potionHitBlock);
 		FluidBlobEffectRegistry.registerHitEntity(AllFluids.POTION.get(), DefaultFluidCompat::potionHitEntity);
+		FluidBlobEffectRegistry.registerFluidShellExplosionEffect(AllFluids.POTION.get(), DefaultFluidCompat::potionFluidShellExplode);
 	}
 
 	public static void waterHitEntity(OnHitEntity.Context context) {
@@ -80,6 +87,36 @@ public class DefaultFluidCompat {
 	public static void potionHitBlock(OnHitBlock.Context context) {
 		if (!context.level().isClientSide)
 			spawnAreaEffectCloud(context.result().getBlockPos().relative(context.result().getDirection()), context.burst(), context.level());
+	}
+
+	public static void waterFluidShellExplode(OnFluidShellExplode.Context context) {
+		Level level = context.level();
+		double x = context.x();
+		double y = context.y();
+		double z = context.z();
+		CBCSoundEvents.WATER_FLUID_RELEASE.playAt(level, x, y, z, 2.5f, 0.15f + level.random.nextFloat(0.3f), false);
+		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
+		level.addParticle(new FluidCloudParticleData(), x, y, z, 0, 0, 0);
+	}
+
+	public static void lavaFluidShellExplode(OnFluidShellExplode.Context context) {
+		Level level = context.level();
+		double x = context.x();
+		double y = context.y();
+		double z = context.z();
+		CBCSoundEvents.LAVA_FLUID_RELEASE.playAt(level, x, y, z, 2.25f, 1.0f + level.random.nextFloat(0.1f), false);
+		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
+		level.addParticle(new FluidCloudParticleData(), x, y, z, 0, 0, 0);
+	}
+
+	public static void potionFluidShellExplode(OnFluidShellExplode.Context context) {
+		Level level = context.level();
+		double x = context.x();
+		double y = context.y();
+		double z = context.z();
+		CBCSoundEvents.POTION_FLUID_RELEASE.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
+		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
+		level.addParticle(new FluidCloudParticleData(), x, y, z, 0, 0, 0);
 	}
 
 	public static void douseFire(BlockPos root, FluidBlobBurst blob, Level level) {

@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -46,7 +47,10 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 	@Override
 	protected void detonate() {
 		Vec3 oldDelta = this.getDeltaMovement();
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2.0f, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		FluidExplosion explosion = new FluidExplosion(this.level, null, this.indirectArtilleryFire(), this.getX(),
+			this.getY(), this.getZ(), this.getAllProperties().explosion().explosivePower(),
+			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction(), this.fluidStack.fluid());
+		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 
 		if (!this.fluidStack.isEmpty()) {
 			FluidShellProperties properties = this.getAllProperties();
