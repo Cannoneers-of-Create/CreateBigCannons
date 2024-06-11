@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.remix;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -7,8 +9,6 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.network.ClientboundCBCExplodePacket;
-
-import javax.annotation.Nullable;
 
 public interface CustomExplosion {
 
@@ -22,7 +22,7 @@ public interface CustomExplosion {
 		protected final double y;
 		protected final double z;
 		protected final float size;
-		private final BlockInteraction interaction;
+		protected final BlockInteraction interaction;
 
 		public Impl(Level level, @Nullable Entity source, @Nullable DamageSource damageSource,
 					@Nullable ExplosionDamageCalculator calculator, double toBlowX, double toBlowY, double toBlowZ, float radius,

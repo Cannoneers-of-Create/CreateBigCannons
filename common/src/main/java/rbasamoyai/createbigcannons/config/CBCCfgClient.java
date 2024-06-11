@@ -33,6 +33,11 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigBool showExtraShrapnelCloudFlames = b(true, "showExtraFlames");
 	public final ConfigBool showExtraShrapnelCloudShockwave = b(true, "showExtraShockwave");
 
+	public final ConfigGroup fluidShellClouds = group(1, "fluidShellClouds", "Fluid Shell Clouds");
+	public final ConfigBool showFluidShellClouds = b(true, "showFluidShellClouds");
+	public final ConfigBool showExtraFluidShellCloudFlames = b(true, "showExtraFlames");
+	public final ConfigBool showExtraFluidShellCloudShockwave = b(true, "showExtraShockwave");
+
 	@Override public String getName() { return "client"; }
 
 	private static class Comments {

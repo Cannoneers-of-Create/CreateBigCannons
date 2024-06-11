@@ -12,13 +12,14 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FlakCloudParticleData;
-import rbasamoyai.createbigcannons.effects.particles.smoke.FlakSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.explosions.FluidCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.ShrapnelCloudParticleData;
-import rbasamoyai.createbigcannons.effects.particles.smoke.ShrapnelSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.DropMortarPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.CannonSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.FlakSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.ShrapnelSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.SmokeShellSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
@@ -33,6 +34,7 @@ public enum CBCParticleTypes {
 	FLAK_CLOUD(FlakCloudParticleData::new),
 	FLAK_SMOKE(FlakSmokeParticleData::new),
 	FLUID_BLOB(FluidBlobParticleData::new),
+	FLUID_CLOUD(FluidCloudParticleData::new),
 	SHRAPNEL_CLOUD(ShrapnelCloudParticleData::new),
 	SHRAPNEL_SMOKE(ShrapnelSmokeParticleData::new),
 	SMOKE_SHELL_SMOKE(SmokeShellSmokeParticleData::new),

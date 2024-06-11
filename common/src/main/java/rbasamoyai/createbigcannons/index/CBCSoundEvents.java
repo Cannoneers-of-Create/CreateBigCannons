@@ -47,12 +47,31 @@ public class CBCSoundEvents {
 			.category(SoundSource.NEUTRAL)
 			.build(),
 
+		FLUID_SHELL_EXPLOSION = create("fluid_shell_explosion").subtitle("Fluid shell explodes")
+			.category(SoundSource.NEUTRAL)
+			.build(),
+
+		LAVA_FLUID_RELEASE = create("lava_fluid_release").noSubtitle()
+			.playExisting(SoundEvents.FIRECHARGE_USE)
+			.category(SoundSource.NEUTRAL)
+			.build(),
+
 		PLACE_AUTOCANNON_AMMO_CONTAINER = create("place_autocannon_ammo_container").noSubtitle()
-				.playExisting(SoundEvents.ARMOR_EQUIP_IRON, 0.25f, 1.0f)
-				.category(SoundSource.BLOCKS)
-				.build(),
+			.playExisting(SoundEvents.ARMOR_EQUIP_IRON, 0.25f, 1.0f)
+			.category(SoundSource.BLOCKS)
+			.build(),
+
+		POTION_FLUID_RELEASE = create("potion_fluid_release").noSubtitle()
+			.playExisting(SoundEvents.GENERIC_EXTINGUISH_FIRE)
+			.category(SoundSource.NEUTRAL)
+			.build(),
 
 		SHRAPNEL_SHELL_EXPLOSION = create("shrapnel_shell_explosion").subtitle("Shrapnel shell explodes")
+			.category(SoundSource.NEUTRAL)
+			.build(),
+
+		WATER_FLUID_RELEASE = create("water_fluid_release").noSubtitle()
+			.playExisting(SoundEvents.BUCKET_EMPTY)
 			.category(SoundSource.NEUTRAL)
 			.build();
 

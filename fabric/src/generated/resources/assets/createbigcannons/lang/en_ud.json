@@ -425,6 +425,7 @@
   "createbigcannons.subtitle.fire_drop_mortar": "s\u01DD\u0279\u0131\u025F \u0279\u0250\u0287\u0279o\u026F do\u0279\u15E1",
   "createbigcannons.subtitle.fire_machine_gun": "s\u01DD\u0279\u0131\u025F unb \u01DDu\u0131\u0265\u0254\u0250W",
   "createbigcannons.subtitle.flak_round_explosion": "s\u01DDpo\u05DFdx\u01DD puno\u0279 \u029E\u0250\u05DF\u2132",
+  "createbigcannons.subtitle.fluid_shell_explosion": "s\u01DDpo\u05DFdx\u01DD \u05DF\u05DF\u01DD\u0265s p\u0131n\u05DF\u2132",
   "createbigcannons.subtitle.shrapnel_shell_explosion": "s\u01DDpo\u05DFdx\u01DD \u05DF\u05DF\u01DD\u0265s \u05DF\u01DDud\u0250\u0279\u0265S",
   "death.attack.createbigcannons.big_cannon_projectile": "puno\u0279 \u0279\u01DDq\u0131\u05DF\u0250\u0254 \u01DDb\u0279\u0250\u05DF \u0250 \u028Eq p\u01DD\u05DF\u05DF\u0131\u029E \u028E\u05DF\u0287\u0254\u01DD\u0279\u0131p s\u0250\u028D %s",
   "death.attack.createbigcannons.cannon_projectile": "\u01DD\u0279\u0131\u025F \u028E\u0279\u01DD\u05DF\u05DF\u0131\u0287\u0279\u0250 \u0265\u0287\u0131\u028D \u0287\u0131\u0265 s\u0250\u028D %s",

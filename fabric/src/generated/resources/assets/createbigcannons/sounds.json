@@ -48,10 +48,35 @@
     ],
     "subtitle": "createbigcannons.subtitle.flak_round_explosion"
   },
+  "fluid_shell_explosion": {
+    "sounds": [
+      {
+        "name": "createbigcannons:fluid_shell_explosion",
+        "type": "file"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.fluid_shell_explosion"
+  },
+  "lava_fluid_release": {
+    "sounds": [
+      {
+        "name": "minecraft:item.firecharge.use",
+        "type": "event"
+      }
+    ]
+  },
   "place_autocannon_ammo_container": {
     "sounds": [
       {
         "name": "minecraft:item.armor.equip_iron",
+        "type": "event"
+      }
+    ]
+  },
+  "potion_fluid_release": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.extinguish_fire",
         "type": "event"
       }
     ]
@@ -64,5 +89,13 @@
       }
     ],
     "subtitle": "createbigcannons.subtitle.shrapnel_shell_explosion"
+  },
+  "water_fluid_release": {
+    "sounds": [
+      {
+        "name": "minecraft:item.bucket.empty",
+        "type": "event"
+      }
+    ]
   }
 }

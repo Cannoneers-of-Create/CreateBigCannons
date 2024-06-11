@@ -13,6 +13,7 @@
   "can_squib": true,
   "added_recoil": 1.0,
   "base_fuze": false,
+  "explosive_power": 2.0,
   "fluid_shell_capacity": 2000,
   "millibuckets_per_fluid_blob": 500,
   "millibuckets_per_area_of_effect_radius": 125,

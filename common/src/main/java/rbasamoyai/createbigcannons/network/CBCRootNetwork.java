@@ -25,7 +25,7 @@ public class CBCRootNetwork {
 	private static final Int2ObjectMap<Function<FriendlyByteBuf, ? extends RootPacket>> ID_TO_CONSTRUCTOR = new Int2ObjectOpenHashMap<>();
 	private static final Object2IntMap<Class<? extends RootPacket>> TYPE_TO_ID = new Object2IntOpenHashMap<>();
 
-	public static final String VERSION = "5.0.0";
+	public static final String VERSION = "6.0.0";
 
 	public static void init() {
 		int id = 0;
@@ -51,6 +51,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ClientboundSyncBlockArmorPropertiesPacket.class, ClientboundSyncBlockArmorPropertiesPacket::copyOf);
 		addMsg(id++, ClientboundSyncDimensionMunitionPropertiesPacket.class, ClientboundSyncDimensionMunitionPropertiesPacket::copyOf);
 		addMsg(id++, ClientboundCBCExplodePacket.class, ClientboundCBCExplodePacket::new);
+		addMsg(id++, ClientboundFluidExplodePacket.class, ClientboundFluidExplodePacket::new);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {

@@ -17,6 +17,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelExplosion;
 
 public class CBCClientHandlers {
@@ -83,6 +84,15 @@ public class CBCClientHandlers {
             case SHRAPNEL -> new ShrapnelExplosion(mc.level, pkt);
             case FLAK -> new FlakExplosion(mc.level, pkt);
         };
+		explosion.finalizeExplosion(true);
+		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));
+	}
+
+	public static void addFluidExplosionFromServer(ClientboundFluidExplodePacket pkt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null || mc.player == null)
+			return;
+		Explosion explosion = new FluidExplosion(mc.level, pkt);
 		explosion.finalizeExplosion(true);
 		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));
 	}
