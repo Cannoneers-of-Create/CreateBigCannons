@@ -98,6 +98,7 @@ Changed:
  - Add more particles on opening and give them a bit of velocity
  - Add a short pickup delay for ejected items, can be configured on server
  - Can configure between item going directly into inventory and dropping item, default latter
+- Improved smoke shell detonation sound
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head

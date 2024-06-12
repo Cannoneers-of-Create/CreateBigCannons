@@ -427,6 +427,7 @@
   "createbigcannons.subtitle.flak_round_explosion": "Flak round explodes",
   "createbigcannons.subtitle.fluid_shell_explosion": "Fluid shell explodes",
   "createbigcannons.subtitle.shrapnel_shell_explosion": "Shrapnel shell explodes",
+  "createbigcannons.subtitle.smoke_shell_detonate": "Smoke shell bursts",
   "death.attack.createbigcannons.big_cannon_projectile": "%s was directly killed by a large caliber round",
   "death.attack.createbigcannons.cannon_projectile": "%s was hit with artillery fire",
   "death.attack.createbigcannons.flak": "%s was downed by flak",

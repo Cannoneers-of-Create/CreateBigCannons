@@ -70,6 +70,11 @@ public class CBCSoundEvents {
 			.category(SoundSource.NEUTRAL)
 			.build(),
 
+		SMOKE_SHELL_DETONATE = create("smoke_shell_detonate").subtitle("Smoke shell bursts")
+			.playExisting(SoundEvents.GENERIC_EXTINGUISH_FIRE)
+			.category(SoundSource.NEUTRAL)
+			.build(),
+
 		WATER_FLUID_RELEASE = create("water_fluid_release").noSubtitle()
 			.playExisting(SoundEvents.BUCKET_EMPTY)
 			.category(SoundSource.NEUTRAL)
