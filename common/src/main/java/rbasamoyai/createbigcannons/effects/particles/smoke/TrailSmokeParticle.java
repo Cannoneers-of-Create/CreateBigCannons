@@ -12,6 +12,7 @@ public class TrailSmokeParticle extends TextureSheetParticle {
 	TrailSmokeParticle(ClientLevel level, double x, double y, double z, double xd, double yd, double zd) {
 		super(level, x, y, z);
 		this.gravity = 3.0E-6F;
+		this.friction = 1f;
 		this.xd = xd;
 		this.yd = yd + this.random.nextDouble() / 500d;
 		this.zd = zd;
@@ -23,6 +24,9 @@ public class TrailSmokeParticle extends TextureSheetParticle {
 		this.yo = this.y;
 		this.zo = this.z;
 		if (this.age++ < this.lifetime && !(this.alpha <= 0.0F)) {
+			this.xd *= this.friction;
+			this.yd *= this.friction;
+			this.zd *= this.friction;
 			this.xd += this.random.nextFloat() / 5000f * (this.random.nextBoolean() ? 1 : -1);
 			this.zd += this.random.nextFloat() / 5000f * (this.random.nextBoolean() ? 1 : -1);
 			this.yd -= this.gravity;

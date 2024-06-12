@@ -33,7 +33,8 @@ Additions: \
 &plus; `"entity.createbigcannons.grapeshot_burst": "Grapeshot Burst"` \
 &plus; `"entity.createbigcannons.shrapnel_burst": "Shrapnel Burst"` \
 &plus; `"createbigcannons.subtitle.fluid_shell_explosion": "Fluid shell explodes"` \
-&plus; `"createbigcannons.subtitle.smoke_shell_detonate": "Smoke shell bursts"`
+&plus; `"createbigcannons.subtitle.smoke_shell_detonate": "Smoke shell bursts"` \
+&plus; `"createbigcannons.subtitle.mortar_stone_explode": "Mortar stone explodes"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \

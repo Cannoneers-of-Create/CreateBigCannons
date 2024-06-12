@@ -56,6 +56,12 @@ public class CBCSoundEvents {
 			.category(SoundSource.NEUTRAL)
 			.build(),
 
+		MORTAR_STONE_EXPLODE = create("mortar_stone_explode").subtitle("Mortar stone explodes")
+			.addVariant("mortar_stone_explode1")
+			.addVariant("mortar_stone_explode2")
+			.category(SoundSource.NEUTRAL)
+			.build(),
+
 		PLACE_AUTOCANNON_AMMO_CONTAINER = create("place_autocannon_ammo_container").noSubtitle()
 			.playExisting(SoundEvents.ARMOR_EQUIP_IRON, 0.25f, 1.0f)
 			.category(SoundSource.BLOCKS)

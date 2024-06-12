@@ -100,6 +100,8 @@ Changed:
  - Can configure between item going directly into inventory and dropping item, default latter
 - Improved smoke shell detonation sound
 - Made shrapnel, grapeshot, and flak impact effect louder and added more particles
+- Improved explosion effect for Mortar Stone
+ - Added sound, particles, and screen shake
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
