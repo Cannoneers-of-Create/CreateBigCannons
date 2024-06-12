@@ -3,8 +3,11 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -62,10 +65,15 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 			double curPom = this.getProperties().ballistics().durabilityMass() * curVel.length();
 			double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, pos, true) * 10;
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
-
-			SoundType type = state.getSoundType();
-			this.level.playSound(null, pos, type.getBreakSound(), SoundSource.NEUTRAL, type.getVolume() * 0.25f, type.getPitch());
-			this.discard();
+		}
+		SoundType type = state.getSoundType();
+		this.level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), type.getBreakSound(), SoundSource.NEUTRAL,
+			type.getVolume() * 2, type.getPitch(), false);
+		if (this.level instanceof ServerLevel slevel) {
+			ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);
+			for (ServerPlayer player : slevel.players()) {
+				slevel.sendParticles(player, options, true, pos.getX(), pos.getY(), pos.getZ(), 20, 0.4, 2, 0.4, 1);
+			}
 		}
 	}
 
