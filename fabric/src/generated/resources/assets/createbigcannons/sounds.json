@@ -65,6 +65,23 @@
       }
     ]
   },
+  "mortar_stone_explode": {
+    "sounds": [
+      {
+        "name": "createbigcannons:mortar_stone_explode",
+        "type": "file"
+      },
+      {
+        "name": "createbigcannons:mortar_stone_explode1",
+        "type": "file"
+      },
+      {
+        "name": "createbigcannons:mortar_stone_explode2",
+        "type": "file"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.mortar_stone_explode"
+  },
   "place_autocannon_ammo_container": {
     "sounds": [
       {

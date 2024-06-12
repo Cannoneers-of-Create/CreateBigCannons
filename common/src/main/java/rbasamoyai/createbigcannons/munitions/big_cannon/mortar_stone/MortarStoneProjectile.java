@@ -12,6 +12,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
@@ -47,14 +48,17 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
         super.onImpact(result, stopped);
         if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
-            this.level.explode(null, this.indirectArtilleryFire(), null, hitLoc.x, hitLoc.y, hitLoc.z,
-				this.getAllProperties().explosion().explosivePower(), false,
+			MortarStoneExplosion explosion = new MortarStoneExplosion(this.level, null, this.indirectArtilleryFire(),
+				hitLoc.x, hitLoc.y, hitLoc.z, this.getAllProperties().explosion().explosivePower(),
 				CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+			CreateBigCannons.handleCustomExplosion(this.level, explosion);
             this.tooManyCharges = true;
         }
     }
 
-    @Override
+	@Override protected double overPenetrationPower(double hardness, double curPom) { return 0; }
+
+	@Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         this.tooManyCharges = tag.getBoolean("TooManyCharges");

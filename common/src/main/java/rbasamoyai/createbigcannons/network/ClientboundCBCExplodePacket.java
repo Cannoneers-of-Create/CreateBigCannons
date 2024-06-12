@@ -52,7 +52,8 @@ public record ClientboundCBCExplodePacket(double x, double y, double z, float po
 	public enum ExplosionType {
 		SHRAPNEL,
 		FLAK,
-		SMOKE
+		SMOKE,
+		MORTAR_STONE
 	}
 
 }
