@@ -90,6 +90,15 @@
     ],
     "subtitle": "createbigcannons.subtitle.shrapnel_shell_explosion"
   },
+  "smoke_shell_detonate": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.generic.extinguish_fire",
+        "type": "event"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.smoke_shell_detonate"
+  },
   "water_fluid_release": {
     "sounds": [
       {

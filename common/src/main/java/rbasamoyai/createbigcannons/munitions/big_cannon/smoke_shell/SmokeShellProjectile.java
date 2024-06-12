@@ -8,6 +8,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
@@ -26,7 +27,9 @@ public class SmokeShellProjectile extends FuzedBigCannonProjectile {
 	@Override
 	protected void detonate() {
 		SmokeShellProperties properties = this.getAllProperties();
-		this.level.explode(null, this.getX(), this.getY(), this.getZ(), 2, Explosion.BlockInteraction.NONE);
+		SmokeExplosion explosion = new SmokeExplosion(this.level, null, this.getX(), this.getY(), this.getZ(), 2,
+			Explosion.BlockInteraction.NONE);
+		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 		SmokeEmitterEntity smoke = CBCEntityTypes.SMOKE_EMITTER.create(this.level);
 		smoke.setPos(this.position());
 		smoke.setDuration(properties.smokeDuration());

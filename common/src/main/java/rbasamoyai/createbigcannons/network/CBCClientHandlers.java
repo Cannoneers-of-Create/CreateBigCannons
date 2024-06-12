@@ -19,6 +19,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelExplosion;
+import rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell.SmokeExplosion;
 
 public class CBCClientHandlers {
 
@@ -83,6 +84,7 @@ public class CBCClientHandlers {
 		Explosion explosion = switch (pkt.explosionType()) {
             case SHRAPNEL -> new ShrapnelExplosion(mc.level, pkt);
             case FLAK -> new FlakExplosion(mc.level, pkt);
+			case SMOKE -> new SmokeExplosion(mc.level, pkt);
         };
 		explosion.finalizeExplosion(true);
 		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));
