@@ -441,7 +441,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		if (this.canRenderCastModel() && this.castShape != null) {
 			this.onDestroyCenterCast();
 		} else if (this.level.getBlockEntity(this.getCenterBlock()) instanceof AbstractCannonCastBlockEntity otherCast) {
-			otherCast.destroyCastMultiblockAtLayer();
+			if (otherCast.canRenderCastModel() && otherCast.castShape != null)
+				otherCast.destroyCastMultiblockAtLayer();
 		}
 	}
 
