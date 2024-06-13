@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
@@ -29,13 +28,15 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
     @Override
     public void render(T entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffers, int packedLight) {
 		if (entity.isTracer()) {
-			Vec3 previous = entity.getPreviousPos();
-			Vec3 current = entity.position();
-			Vec3 dir = previous == null ? Vec3.ZERO : current.subtract(previous);
-			boolean flag = dir.lengthSqr() < 1e-4d;
+			Vec3 previous = new Vec3(entity.xOld, entity.yOld, entity.zOld);
+			Vec3 diff = entity.position().subtract(previous);
+			double dlSqr = diff.lengthSqr();
+			boolean isFastButNotTeleported = 1e-4d <= dlSqr && dlSqr <= entity.getDeltaMovement().lengthSqr() * 4;
+			double diffLength = isFastButNotTeleported ? diff.length() : 0;
+			double displacement = entity.getTotalDisplacement() - diffLength * (1 - partialTicks);
 
-			float yaw = flag ? entity.getViewYRot(partialTicks) : (float) Math.atan2(dir.x, dir.z) * Mth.RAD_TO_DEG;
-			float pitch = flag ? entity.getViewXRot(partialTicks) : (float) Math.atan2(dir.y, dir.horizontalDistance()) * Mth.RAD_TO_DEG;
+			float yaw = entity.getViewYRot(partialTicks);
+			float pitch = entity.getViewXRot(partialTicks);
 			Quaternion q = Vector3f.YP.rotationDegrees(yaw + 180.0f);
 			Quaternion q1 = Vector3f.XP.rotationDegrees(pitch);
 			q.mul(q1);
@@ -44,22 +45,24 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 			poseStack.mulPose(q);
 			poseStack.translate(0, entity.getBbHeight() / 2, 0);
 
-			float len = (float) dir.length();
+			float length = (float) Math.min(diffLength, displacement);
 			PoseStack.Pose lastPose = poseStack.last();
 			Matrix4f pose = lastPose.pose();
 			Matrix3f normal = lastPose.normal();
 
 			// TODO: config tracer color per projectile?
 			VertexConsumer vcons = buffers.getBuffer(RenderType.entityCutout(CreateBigCannons.resource("textures/entity/tracer.png")));
-			renderBox(vcons, pose, normal, 255, 216, 0, len, 1 / 32f);
-			renderBoxInverted(vcons, pose, normal, 255, 80, 0, len, 1.5f / 32f);
+			float thickness = entity.getAutocannonRoundType() == AutocannonAmmoType.MACHINE_GUN ? 1 / 32f : 2 / 32f;
+			renderBox(vcons, pose, normal, 255, 216, 0, length, thickness);
+			renderBoxInverted(vcons, pose, normal, 255, 80, 0, length, thickness * 1.5f);
 
 			poseStack.popPose();
 		} else {
 			poseStack.pushPose();
 			poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
 			poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0f));
-			poseStack.scale(0.5f, 0.5f, 0.5f);
+			float scale = entity.getAutocannonRoundType() == AutocannonAmmoType.MACHINE_GUN ? 0.5f : 1f;
+			poseStack.scale(scale, scale, scale);
 
 			PoseStack.Pose lastPose = poseStack.last();
 			Matrix4f pose = lastPose.pose();

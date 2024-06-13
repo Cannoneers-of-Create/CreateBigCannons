@@ -22,7 +22,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -258,7 +257,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		AutocannonMaterialProperties properties = this.cannonMaterial.properties();
-		EntityType<?> type = round.getEntityType(foundProjectile);
 		AutocannonProjectilePropertiesComponent roundProperties = round.getAutocannonProperties(foundProjectile);
 
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
@@ -320,7 +318,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec1 = spawnPos.subtract(centerPos).normalize();
-		Vec3 particlePos = spawnPos.subtract(vec1.scale(1.5));
+		spawnPos = spawnPos.subtract(vec1.scale(1.5));
+		Vec3 particlePos = spawnPos;
 
 		float recoilMagnitude = properties.baseRecoil();
 

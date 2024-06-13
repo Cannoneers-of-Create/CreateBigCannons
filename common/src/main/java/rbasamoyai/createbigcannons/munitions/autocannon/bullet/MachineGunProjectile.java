@@ -15,6 +15,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 import rbasamoyai.createbigcannons.munitions.autocannon.config.InertAutocannonProjectileProperties;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
@@ -45,6 +46,8 @@ public class MachineGunProjectile extends AbstractAutocannonProjectile {
 	protected InertAutocannonProjectileProperties getAllProperties() {
 		return CBCMunitionPropertiesHandlers.INERT_AUTOCANNON_PROJECTILE.getPropertiesOf(this);
 	}
+
+	@Override public AutocannonAmmoType getAutocannonRoundType() { return AutocannonAmmoType.MACHINE_GUN; }
 
 	public static class MachineGunDamageSource extends CannonDamageSource {
 		public MachineGunDamageSource(String id, Entity entity, @Nullable Entity owner, boolean bypassArmor) {

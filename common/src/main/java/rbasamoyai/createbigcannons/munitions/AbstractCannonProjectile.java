@@ -120,6 +120,13 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			.add(0.0d, this.getGravity(), 0.0d);
 	}
 
+	@Override
+	public void lerpTo(double x, double y, double z, float yRot, float xRot, int lerpSteps, boolean teleport) {
+		if (this.tickCount < 2)
+			return;
+		super.lerpTo(x, y, z, yRot, xRot, lerpSteps, teleport);
+	}
+
 	protected void clipAndDamage() {
 		ProjectileContext projCtx = new ProjectileContext(this, CBCConfigs.SERVER.munitions.damageRestriction.get());
 

@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
-import javax.annotation.Nullable;
-
 import com.mojang.math.Constants;
 
 import net.minecraft.core.BlockPos;
@@ -23,8 +21,8 @@ import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
 
+	protected double displacement = 0;
 	protected int ageRemaining;
-	@Nullable private Vec3 prevPos = null;
 
 	protected AbstractAutocannonProjectile(EntityType<? extends AbstractAutocannonProjectile> type, Level level) {
 		super(type, level);
@@ -51,10 +49,11 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	@Override
 	public void tick() {
-		this.prevPos = this.position();
+		Vec3 prevPos = this.position();
 		ChunkPos cpos = new ChunkPos(this.blockPosition());
 		if (this.level.isClientSide || this.level.hasChunk(cpos.x, cpos.z)) {
 			super.tick();
+			this.displacement += this.position().distanceTo(prevPos);
 			if (!this.level.isClientSide) {
 				this.ageRemaining--;
 				if (this.ageRemaining <= 0)
@@ -78,8 +77,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			}
 		}
 	}
-
-	@Nullable public Vec3 getPreviousPos() { return this.prevPos; }
 
 	protected void expireProjectile() {
 		this.discard();
@@ -124,11 +121,15 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
 
+	public double getTotalDisplacement() { return this.displacement; }
+	public void setTotalDisplacement(double value) { this.displacement = value; }
+
     @Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putBoolean("Tracer", this.isTracer());
 		tag.putInt("Age", this.ageRemaining);
+		tag.putDouble("Displacement", this.displacement);
 	}
 
 	@Override
@@ -136,6 +137,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		super.readAdditionalSaveData(tag);
 		this.setTracer(tag.getBoolean("Tracer"));
 		this.ageRemaining = tag.getInt("Age");
+		this.displacement = tag.getFloat("Displacement");
 	}
 
 	@Override
@@ -147,6 +149,8 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	protected boolean canBounceOffOf(BlockState state) {
 		return super.canBounceOffOf(state) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.autocannonDeflectChance.getF();
 	}
+
+	public AutocannonAmmoType getAutocannonRoundType() { return AutocannonAmmoType.AUTOCANNON; }
 
 	public enum TrailType {
 		NONE,
