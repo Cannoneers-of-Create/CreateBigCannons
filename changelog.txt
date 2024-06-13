@@ -102,6 +102,7 @@ Changed:
 - Made shrapnel, grapeshot, and flak impact effect louder and added more particles
 - Improved explosion effect for Mortar Stone
  - Added sound, particles, and screen shake
+- Autocannon rounds are now visually larger than machine gun rounds in flight
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
@@ -118,6 +119,7 @@ Fixed:
 - Fixed small charge projectiles not emitting cannon smoke
 - Fixed Cannon Cast crashing game through stack overflow
 - Fixed projectile ballistics not being accurate on client
+- Fixed autocannon tracer rendering intersecting with barrel
 
 ===
 

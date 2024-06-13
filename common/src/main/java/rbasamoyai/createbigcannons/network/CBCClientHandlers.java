@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidExplosion;
@@ -99,6 +100,13 @@ public class CBCClientHandlers {
 		Explosion explosion = new FluidExplosion(mc.level, pkt);
 		explosion.finalizeExplosion(true);
 		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));
+	}
+
+	public static void setAutocannonRoundDisplacement(ClientboundSetAutocannonRoundDisplacementPacket pkt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null || !(mc.level.getEntity(pkt.entityId()) instanceof AbstractAutocannonProjectile round))
+			return;
+		round.setTotalDisplacement(pkt.displacement());
 	}
 
 }
