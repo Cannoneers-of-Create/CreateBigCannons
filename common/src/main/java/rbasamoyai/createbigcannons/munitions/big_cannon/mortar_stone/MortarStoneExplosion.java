@@ -29,7 +29,7 @@ public class MortarStoneExplosion extends CustomExplosion.Impl {
 
 	@Override
 	public void playLocalSound(Level level, double x, double y, double z) {
-		CBCSoundEvents.MORTAR_STONE_EXPLODE.playAt(level, x, y, z, 3f, 0.95f + level.random.nextFloat() * 0.1f, false);
+		CBCSoundEvents.MORTAR_STONE_EXPLODE.playAt(level, x, y, z, 3f, 0.8f + level.random.nextFloat() * 0.4f, false);
 	}
 
 	@Override
