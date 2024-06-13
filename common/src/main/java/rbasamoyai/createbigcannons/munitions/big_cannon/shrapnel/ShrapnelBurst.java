@@ -64,17 +64,19 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 			Vec3 curVel = new Vec3(subProjectile.velocity()[0], subProjectile.velocity()[1], subProjectile.velocity()[2]);
 			double curPom = this.getProperties().ballistics().durabilityMass() * curVel.length();
 			double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, pos, true) * 10;
-			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
+			BlockPos pos1 = pos.immutable();
+			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (int) Math.min(curPom, hardness), state, this.level);
+			if (!this.level.getBlockState(pos1).isAir() && this.level instanceof ServerLevel slevel) {
+				ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);
+				for (ServerPlayer player : slevel.players()) {
+					if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 1024d)
+						slevel.sendParticles(player, options, true, pos.getX(), pos.getY(), pos.getZ(), 20, 0.4, 2, 0.4, 1);
+				}
+			}
 		}
 		SoundType type = state.getSoundType();
 		this.level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), type.getBreakSound(), SoundSource.NEUTRAL,
 			type.getVolume() * 2, type.getPitch(), false);
-		if (this.level instanceof ServerLevel slevel) {
-			ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);
-			for (ServerPlayer player : slevel.players()) {
-				slevel.sendParticles(player, options, true, pos.getX(), pos.getY(), pos.getZ(), 20, 0.4, 2, 0.4, 1);
-			}
-		}
 	}
 
 	protected boolean canDestroyBlock(BlockState state) { return true; }
