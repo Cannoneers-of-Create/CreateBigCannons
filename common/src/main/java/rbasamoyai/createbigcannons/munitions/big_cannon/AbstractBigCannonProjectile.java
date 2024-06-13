@@ -4,6 +4,7 @@ import javax.annotation.Nonnull;
 
 import com.mojang.math.Constants;
 
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -49,6 +50,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 				TrailType trailType = CBCConfigs.SERVER.munitions.bigCannonTrailType.get();
 				if (trailType != TrailType.NONE) {
 					int lifetime = trailType == TrailType.SHORT ? 100 : 280 + this.level.random.nextInt(50);
+					ParticleOptions options = new TrailSmokeParticleData(lifetime);
 					for (int i = 0; i < 10; ++i) {
 						double partial = i * 0.1f;
 						double dx = Mth.lerp(partial, this.xOld, this.getX());
@@ -57,7 +59,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 						double sx = this.level.random.nextDouble(-0.002d, 0.002d);
 						double sy = this.level.random.nextDouble(-0.002d, 0.002d);
 						double sz = this.level.random.nextDouble(-0.002d, 0.002d);
-						this.level.addAlwaysVisibleParticle(new TrailSmokeParticleData(lifetime), true, dx, dy, dz, sx, sy, sz);
+						this.level.addAlwaysVisibleParticle(options, true, dx, dy, dz, sx, sy, sz);
 					}
 				}
 			}
@@ -109,7 +111,8 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	@Override
 	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
 		double mass = this.getProjectileMass();
-		Vec3 curVel = this.getDeltaMovement();
+		Vec3 accel = this.getForces(this.position(), this.getDeltaMovement());
+		Vec3 curVel = this.getDeltaMovement().add(accel);
 		double mag = curVel.length();
 		double bonus = 1 + Math.max(0, (mag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
 			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
@@ -117,7 +120,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, result.getBlockPos(), true) / bonus;
 		this.setProjectileMass((float) Math.max(mass - hardness, 0));
 
-		if (!level.isClientSide()) this.level.destroyBlock(result.getBlockPos(), false);
+		if (!this.level.isClientSide()) this.level.destroyBlock(result.getBlockPos(), false);
 	}
 
 	@Override

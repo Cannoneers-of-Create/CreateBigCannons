@@ -19,7 +19,7 @@ public class ServerEntityMixin {
 	@Shadow @Final private Entity entity;
 
 	@Inject(method = "sendChanges", at = @At("HEAD"))
-	private void createbigcannons$sendChanges1(CallbackInfo ci) {
+	private void createbigcannons$sendChanges(CallbackInfo ci) {
 		if (this.entity instanceof PitchOrientedContraptionEntity poce) {
 			if (poce.getControllingPassenger() == null) {
 				NetworkPlatform.sendToClientTracking(new ClientboundPreciseRotationSyncPacket(this.entity.getId(), this.entity.getYRot(), this.entity.getXRot()), this.entity);

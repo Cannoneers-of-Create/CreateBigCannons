@@ -117,6 +117,7 @@ Fixed:
 - Fixed /gamerule doTileDrops false not applying to Create Big Cannons pole contraptions
 - Fixed small charge projectiles not emitting cannon smoke
 - Fixed Cannon Cast crashing game through stack overflow
+- Fixed projectile ballistics not being accurate on client
 
 ===
 
