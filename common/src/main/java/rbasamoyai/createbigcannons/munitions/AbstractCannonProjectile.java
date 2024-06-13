@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -47,6 +48,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
 	protected int inGroundTime = 0;
 	protected float damage;
+	@Nullable protected Vec3 nextVelocity = null;
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
@@ -61,6 +63,13 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		ChunkPos cpos = new ChunkPos(this.blockPosition());
 		if (this.level.isClientSide || this.level.hasChunk(cpos.x, cpos.z)) {
 			super.tick();
+
+			if (this.nextVelocity != null) {
+				this.setDeltaMovement(this.nextVelocity);
+				if (this.nextVelocity.lengthSqr() < 1e-4d)
+					this.setInGround(true);
+				this.nextVelocity = null;
+			}
 
 			if (!this.isInGround()) this.clipAndDamage();
 
@@ -82,12 +91,15 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.inGroundTime = 0;
 				Vec3 oldVel = this.getDeltaMovement();
 				Vec3 oldPos = this.position();
-				Vec3 accel = oldVel.normalize().scale(-this.getDragForce())
-					.add(0.0d, this.getGravity(), 0.0d);
-				Vec3 newPos = oldPos.add(oldVel).add(accel.scale(0.5));
-				this.setPos(newPos);
-				this.setDeltaMovement(oldVel.add(accel));
-
+				if (this.nextVelocity != null) {
+					Vec3 newPos = oldPos.add(oldVel);
+					this.setPos(newPos);
+				} else {
+					Vec3 accel = this.getForces(oldPos, oldVel);
+					Vec3 newPos = oldPos.add(oldVel).add(accel.scale(0.5));
+					this.setPos(newPos);
+					this.setDeltaMovement(oldVel.add(accel));
+				}
 				this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
 				this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
 			}
@@ -103,6 +115,11 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 	protected void onTickRotate() {}
 
+	protected Vec3 getForces(Vec3 position, Vec3 velocity) {
+		return velocity.normalize().scale(-this.getDragForce())
+			.add(0.0d, this.getGravity(), 0.0d);
+	}
+
 	protected void clipAndDamage() {
 		ProjectileContext projCtx = new ProjectileContext(this, CBCConfigs.SERVER.munitions.damageRestriction.get());
 
@@ -112,12 +129,15 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 		double t = 1;
 		int MAX_ITER = 100;
+		Vec3 accel = this.getForces(pos, this.getDeltaMovement());
+		Vec3 vel = this.getDeltaMovement().add(accel);
+		double velMag = vel.length();
 		for (int p = 0; p < MAX_ITER; ++p) {
 			boolean breakEarly = false;
-			Vec3 vel = this.getDeltaMovement().scale(t);
-			if (vel.lengthSqr() < 1e-4d) break;
+			Vec3 vel1 = vel.scale(t);
+			if (vel1.lengthSqr() < 1e-4d) break;
 
-			Vec3 end = start.add(vel);
+			Vec3 end = start.add(vel1);
 			BlockHitResult bResult = this.level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
 			if (bResult.getType() != HitResult.Type.MISS) end = bResult.getLocation();
 
@@ -135,23 +155,24 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			}
 
 			Vec3 hitLoc = end;
+			Vec3 disp = hitLoc.subtract(start);
+			t -= disp.length() / vel1.length();
+			start = hitLoc;
 			if (bResult.getType() != HitResult.Type.MISS) {
 				BlockPos bpos = bResult.getBlockPos().immutable();
 				BlockState state = this.level.getChunkAt(bpos).getBlockState(bpos);
 
-				Vec3 curVel = this.getDeltaMovement();
-				double mag = curVel.length();
 				boolean flag1 = projCtx.getLastState().isAir();
 				if (!flag1 || !this.tryBounceOffBlock(state, bResult)) {
 					projCtx.setLastState(state);
 
 					double startMass = this.getProjectileMass();
-					double curPom = startMass * mag;
+					double curPom = startMass * velMag;
 					double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, bpos, true);
 
 					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, bpos) == -1 || curPom < hardness) {
-						this.setInGround(true);
-						this.setDeltaMovement(Vec3.ZERO);
+						this.nextVelocity = Vec3.ZERO;
+						this.setDeltaMovement(vel.scale(1 - t));
 						this.onImpact(bResult, true);
 						breakEarly = true;
 					} else {
@@ -173,12 +194,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 					}
 				}
 			}
-			Vec3 disp = hitLoc.subtract(start);
-			start = hitLoc;
-			if (this.onClip(projCtx, start)) break;
-			if (breakEarly) break;
-			t -= disp.length() / vel.length();
-			if (t < 0) break;
+			if (this.onClip(projCtx, start) || breakEarly || t < 0)
+				break;
 		}
 
 		for (Entity e : projCtx.hitEntities()) this.onHitEntity(e);
@@ -322,6 +339,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		tag.putFloat("ProjectileMass", this.getProjectileMass());
 		tag.putBoolean("InGround", this.isInGround());
 		tag.putFloat("Damage", this.damage);
+		if (this.nextVelocity != null)
+			tag.put("NextMotion", this.newDoubleList(this.nextVelocity.x, this.nextVelocity.y, this.nextVelocity.z));
 	}
 
 	@Override
@@ -332,6 +351,12 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		this.damage = tag.getFloat("Damage");
 		ListTag motionTag = tag.getList("Motion", Tag.TAG_DOUBLE);
 		this.setDeltaMovement(motionTag.getDouble(0), motionTag.getDouble(1), motionTag.getDouble(2));
+		if (tag.contains("NextMotion", Tag.TAG_LIST)) {
+			ListTag nextMotion = tag.getList("NextMotion", Tag.TAG_DOUBLE);
+			this.nextVelocity = nextMotion.size() == 3 ? new Vec3(nextMotion.getDouble(0), nextMotion.getDouble(1), nextMotion.getDouble(2)) : null;
+		} else {
+			this.nextVelocity = null;
+		}
 	}
 
 	public void setProjectileMass(float power) {
