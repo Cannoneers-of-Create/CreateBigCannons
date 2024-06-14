@@ -84,7 +84,9 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
-		ShapedRecipeBuilder.shaped(CBCItems.BIG_CARTRIDGE_SHEET.get(), 2)
+		nineBlockStorageRecipesWithCustomPacking(cons, CBCItems.GUNPOWDER_PINCH.get(), Items.GUNPOWDER, "gunpowder_from_pinches", "gunpowder");
+
+		ShapedRecipeBuilder.shaped(CBCItems.BIG_CARTRIDGE_SHEET.get(), 4)
 			.define('S', CBCTags.CBCItemTags.SHEET_BRASS)
 			.pattern("SS")
 			.pattern("SS")
@@ -115,7 +117,7 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.MACHINE_GUN_ROUND.get())
-			.define('C', CBCItems.EMPTY_MACHINE_GUN_ROUND.get()).define('P', CBCTags.CBCItemTags.GUNPOWDER)
+			.define('C', CBCItems.EMPTY_MACHINE_GUN_ROUND.get()).define('P', CBCTags.CBCItemTags.GUNPOWDER_PINCH)
 			.define('B', CBCTags.CBCItemTags.NUGGET_COPPER)
 			.pattern("B")
 			.pattern("P")

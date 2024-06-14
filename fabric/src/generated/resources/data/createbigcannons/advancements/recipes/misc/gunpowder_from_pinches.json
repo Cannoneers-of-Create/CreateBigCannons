@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "minecraft:gunpowder_from_pinches"
+    ]
+  },
+  "criteria": {
+    "has_gunpowder_pinch": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "createbigcannons:gunpowder_pinch"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "minecraft:gunpowder_from_pinches"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_gunpowder_pinch",
+      "has_the_recipe"
+    ]
+  ]
+}
