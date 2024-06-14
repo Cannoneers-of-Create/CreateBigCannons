@@ -52,6 +52,9 @@ Added:
 - Added custom fluid-based explosion effects to Fluid Shell
  - Added registry for fluid shell explosion sound and visual effects based on fluid
  - If no effect is registered, defaults to regular explosion and sound effect
+- Added Pinch of Gunpowder for cheaper machine gun rounds, made in the Crafting Table
+ - By default, 1 Gunpowder makes 9 Pinches of Gunpowder
+ - Added item tag #createbigcannons:gunpowder_pinch
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities
@@ -103,6 +106,9 @@ Changed:
 - Improved explosion effect for Mortar Stone
  - Added sound, particles, and screen shake
 - Autocannon rounds are now visually larger than machine gun rounds in flight
+- x2 Big Cartridge Sheets (Brass only)
+- +2 Autocannon Cartridge sheets
+- Reduced Gunpowder cost of Filled Autocannon Cartridge from 3 to 1
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head

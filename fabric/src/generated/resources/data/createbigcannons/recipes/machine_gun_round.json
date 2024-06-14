@@ -10,7 +10,7 @@
       "item": "createbigcannons:empty_machine_gun_round"
     },
     "P": {
-      "tag": "createbigcannons:gunpowder"
+      "tag": "createbigcannons:gunpowder_pinch"
     },
     "B": {
       "tag": "createbigcannons:nugget_copper"

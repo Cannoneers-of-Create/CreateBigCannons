@@ -161,6 +161,7 @@ public class ModGroup {
 				CBCBlocks.BASIN_FOUNDRY_LID.asStack(),
 
 				CBCItems.PACKED_GUNPOWDER.asStack(),
+				CBCItems.GUNPOWDER_PINCH.asStack(),
 				CBCItems.EMPTY_POWDER_CHARGE.asStack(),
 				CBCItems.CAST_IRON_NUGGET.asStack(),
 				CBCItems.CAST_IRON_INGOT.asStack(),

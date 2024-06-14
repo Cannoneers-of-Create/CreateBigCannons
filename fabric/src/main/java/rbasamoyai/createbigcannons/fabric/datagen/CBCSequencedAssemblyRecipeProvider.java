@@ -30,7 +30,7 @@ public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 
 	FILLING_AUTOCANNON_CARTRIDGE = create("filling_autocannon_cartridge", b -> b.require(CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.get())
 		.transitionTo(CBCItems.PARTIALLY_FILLED_AUTOCANNON_CARTRIDGE.get())
-		.loops(3)
+		.loops(1)
 		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCItemTags.GUNPOWDER))
 		.addOutput(CBCItems.FILLED_AUTOCANNON_CARTRIDGE.get(), 1)),
 
@@ -43,7 +43,7 @@ public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
 	ASSEMBLING_MACHINE_GUN_ROUND = create("assembling_machine_gun_round", b -> b.require(CBCItems.EMPTY_MACHINE_GUN_ROUND.get())
 		.transitionTo(CBCItems.PARTIALLY_ASSEMBLED_MACHINE_GUN_ROUND.get())
 		.loops(1)
-		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCItemTags.GUNPOWDER))
+		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCItemTags.GUNPOWDER_PINCH))
 		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCItemTags.NUGGET_COPPER))
 		.addOutput(CBCItems.MACHINE_GUN_ROUND.get(), 1)),
 

@@ -86,40 +86,45 @@ public class CBCItems {
 		.register(),
 
 	PACKED_GUNPOWDER = REGISTRATE.item("packed_gunpowder", Item::new).register(),
-		EMPTY_POWDER_CHARGE = REGISTRATE.item("empty_powder_charge", Item::new).register(),
-		CAST_IRON_INGOT = REGISTRATE.item("cast_iron_ingot", Item::new)
-			.tag(forgeTag("ingots/cast_iron"))
-			.tag(fabricTag("ingots/cast_iron"))
-			.tag(fabricTag("cast_iron_ingots"))
-			.register(),
-		CAST_IRON_NUGGET = REGISTRATE.item("cast_iron_nugget", Item::new)
-			.tag(forgeTag("nuggets/cast_iron"))
-			.tag(fabricTag("nuggets/cast_iron"))
-			.tag(fabricTag("cast_iron_nuggets"))
-			.register(),
-		NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new)
-			.tag(forgeTag("ingots/nethersteel"))
-			.tag(fabricTag("ingots/nethersteel"))
-			.tag(fabricTag("nethersteel_ingots"))
-			.register(),
-		NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new)
-			.tag(forgeTag("nuggets/nethersteel"))
-			.tag(fabricTag("nuggets/nethersteel"))
-			.tag(fabricTag("nethersteel_nuggets"))
-			.register(),
+	GUNPOWDER_PINCH = REGISTRATE.item("gunpowder_pinch", Item::new)
+		.lang("Pinch of Gunpowder")
+		.tag(CBCTags.CBCItemTags.GUNPOWDER_PINCH)
+		.register(),
 
-		BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
-			.tag(forgeTag("nuggets/bronze"))
-			.tag(fabricTag("nuggets/bronze"))
-			.tag(fabricTag("bronze_nuggets"))
-			.register(),
-		STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new)
-			.tag(forgeTag("nuggets/steel"))
-			.tag(fabricTag("nuggets/steel"))
-			.tag(fabricTag("steel_nuggets"))
-			.register(),
-		SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register(),
-		AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
+	EMPTY_POWDER_CHARGE = REGISTRATE.item("empty_powder_charge", Item::new).register(),
+	CAST_IRON_INGOT = REGISTRATE.item("cast_iron_ingot", Item::new)
+		.tag(forgeTag("ingots/cast_iron"))
+		.tag(fabricTag("ingots/cast_iron"))
+		.tag(fabricTag("cast_iron_ingots"))
+		.register(),
+	CAST_IRON_NUGGET = REGISTRATE.item("cast_iron_nugget", Item::new)
+		.tag(forgeTag("nuggets/cast_iron"))
+		.tag(fabricTag("nuggets/cast_iron"))
+		.tag(fabricTag("cast_iron_nuggets"))
+		.register(),
+	NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new)
+		.tag(forgeTag("ingots/nethersteel"))
+		.tag(fabricTag("ingots/nethersteel"))
+		.tag(fabricTag("nethersteel_ingots"))
+		.register(),
+	NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new)
+		.tag(forgeTag("nuggets/nethersteel"))
+		.tag(fabricTag("nuggets/nethersteel"))
+		.tag(fabricTag("nethersteel_nuggets"))
+		.register(),
+
+	BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
+		.tag(forgeTag("nuggets/bronze"))
+		.tag(fabricTag("nuggets/bronze"))
+		.tag(fabricTag("bronze_nuggets"))
+		.register(),
+	STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new)
+		.tag(forgeTag("nuggets/steel"))
+		.tag(fabricTag("nuggets/steel"))
+		.tag(fabricTag("steel_nuggets"))
+		.register(),
+	SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register(),
+	AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
 
 	EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
 		.tag(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS)

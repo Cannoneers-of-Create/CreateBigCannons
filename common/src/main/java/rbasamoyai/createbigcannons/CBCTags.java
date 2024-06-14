@@ -131,7 +131,8 @@ public class CBCTags {
 			FUZES = makeTag("fuzes"),
 			SPENT_AUTOCANNON_CASINGS = makeTag("spent_autocannon_casings"),
 			AUTOCANNON_CARTRIDGES = makeTag("autocannon_cartridges"),
-			AUTOCANNON_ROUNDS = makeTag("autocannon_rounds");
+			AUTOCANNON_ROUNDS = makeTag("autocannon_rounds"),
+			GUNPOWDER_PINCH = makeTag("gunpowder_pinch");
 
 		public static TagKey<Item> makeTag(String loc) {
 			TagKey<Item> tag = CBCRegistryUtils.createItemTag(CreateBigCannons.resource(loc));

@@ -314,6 +314,7 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.FUZES);
 		createEMITagTranslation(CBCTags.CBCItemTags.GEMS_QUARTZ, "Quartz Gems");
 		createEMITagTranslation(CBCTags.CBCItemTags.GUNPOWDER);
+		createEMITagTranslation(CBCTags.CBCItemTags.GUNPOWDER_PINCH, "Pinches of Gunpowder");
 		createEMITagTranslation(CBCTags.CBCItemTags.IMPACT_FUZE_HEAD, "Impact Fuze Head Components");
 		createEMITagTranslation(CBCTags.CBCItemTags.INEXPENSIVE_BIG_CARTRIDGE_SHEET, "Inexpensive Big Cartridge Sheets");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_BRASS, "Brass Ingots");
