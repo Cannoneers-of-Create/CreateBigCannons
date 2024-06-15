@@ -30,7 +30,6 @@
     "compat.create.ContraptionMixin",
     "compat.create.FilterItemMixin",
     "compat.create.GantryContraptionMixin",
-    "compat.create.LinearActuatorBlockEntityMixin",
     "compat.create.MechanicalBearingBlockEntityMixin",
     "compat.create.MechanicalPistonBlockMixin",
     "compat.create.PistonContraptionMixin",
