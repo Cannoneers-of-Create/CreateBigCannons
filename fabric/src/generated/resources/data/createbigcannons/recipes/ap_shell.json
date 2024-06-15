@@ -14,7 +14,7 @@
       "tag": "createbigcannons:ingot_cast_iron"
     },
     "T": {
-      "item": "minecraft:tnt"
+      "tag": "createbigcannons:high_explosive_materials"
     },
     "S": {
       "tag": "minecraft:wooden_slabs"

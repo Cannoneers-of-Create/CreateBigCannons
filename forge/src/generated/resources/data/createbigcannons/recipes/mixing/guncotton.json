@@ -1,0 +1,25 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:can_be_nitrated"
+    },
+    {
+      "tag": "createbigcannons:gunpowder"
+    },
+    {
+      "tag": "createbigcannons:nitro_acidifiers"
+    },
+    {
+      "fluid": "minecraft:water",
+      "nbt": {},
+      "amount": 200
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:guncotton"
+    }
+  ],
+  "processingTime": 300
+}

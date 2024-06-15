@@ -132,7 +132,12 @@ public class CBCTags {
 			SPENT_AUTOCANNON_CASINGS = makeTag("spent_autocannon_casings"),
 			AUTOCANNON_CARTRIDGES = makeTag("autocannon_cartridges"),
 			AUTOCANNON_ROUNDS = makeTag("autocannon_rounds"),
-			GUNPOWDER_PINCH = makeTag("gunpowder_pinch");
+			GUNPOWDER_PINCH = makeTag("gunpowder_pinch"),
+			GUNCOTTON = makeTag("guncotton"),
+			CAN_BE_NITRATED = makeTag("can_be_nitrated"),
+			HIGH_EXPLOSIVE_MATERIALS = makeTag("high_explosive_materials"),
+			NITRO_ACIDIFIERS = makeTag("nitro_acidifiers"),
+			GELATINIZERS = makeTag("gelatinizers");
 
 		public static TagKey<Item> makeTag(String loc) {
 			TagKey<Item> tag = CBCRegistryUtils.createItemTag(CreateBigCannons.resource(loc));
@@ -197,6 +202,9 @@ public class CBCTags {
 			addIdsToItemTag(BLOCK_CAST_IRON, createdeco("cast_iron_block"));
 			addTagsToItemTag(INEXPENSIVE_BIG_CARTRIDGE_SHEET, SHEET_GOLD, SHEET_COPPER);
 			addTagsToItemTag(BIG_CANNON_PROPELLANT, BIG_CANNON_PROPELLANT_BAGS, BIG_CANNON_CARTRIDGES);
+			addItemsToItemTag(CAN_BE_NITRATED, Items.PAPER);
+			addItemsToItemTag(GELATINIZERS, Items.SLIME_BALL);
+			addTagsToItemTag(NITRO_ACIDIFIERS, DUSTS_REDSTONE);
 		}
 	}
 

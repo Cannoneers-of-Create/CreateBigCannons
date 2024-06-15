@@ -309,12 +309,16 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_CAST_IRON, "Cast Iron Blocks");
 		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL, "Nethersteel Blocks");
 		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_STEEL, "Steel Blocks");
+		createEMITagTranslation(CBCTags.CBCItemTags.CAN_BE_NITRATED, "Can be Nitrated");
 		createEMITagTranslation(CBCTags.CBCItemTags.DUST_GLOWSTONE, "Glowstone Dusts");
 		createEMITagTranslation(CBCTags.CBCItemTags.DUSTS_REDSTONE, "Redstone Dusts");
 		createEMITagTranslation(CBCTags.CBCItemTags.FUZES);
+		createEMITagTranslation(CBCTags.CBCItemTags.GELATINIZERS);
 		createEMITagTranslation(CBCTags.CBCItemTags.GEMS_QUARTZ, "Quartz Gems");
+		createEMITagTranslation(CBCTags.CBCItemTags.GUNCOTTON);
 		createEMITagTranslation(CBCTags.CBCItemTags.GUNPOWDER);
 		createEMITagTranslation(CBCTags.CBCItemTags.GUNPOWDER_PINCH, "Pinches of Gunpowder");
+		createEMITagTranslation(CBCTags.CBCItemTags.HIGH_EXPLOSIVE_MATERIALS);
 		createEMITagTranslation(CBCTags.CBCItemTags.IMPACT_FUZE_HEAD, "Impact Fuze Head Components");
 		createEMITagTranslation(CBCTags.CBCItemTags.INEXPENSIVE_BIG_CARTRIDGE_SHEET, "Inexpensive Big Cartridge Sheets");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_BRASS, "Brass Ingots");
@@ -324,6 +328,7 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_NETHERSTEEL, "Nethersteel Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_STEEL, "Steel Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.NITROPOWDER);
+		createEMITagTranslation(CBCTags.CBCItemTags.NITRO_ACIDIFIERS);
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_BRONZE, "Bronze Nuggets");
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_CAST_IRON, "Cast Iron Nuggets");
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_COPPER, "Copper Nuggets");

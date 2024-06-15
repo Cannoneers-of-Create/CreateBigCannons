@@ -55,6 +55,17 @@ Added:
 - Added Pinch of Gunpowder for cheaper machine gun rounds, made in the Crafting Table
  - By default, 1 Gunpowder makes 9 Pinches of Gunpowder
  - Added item tag #createbigcannons:gunpowder_pinch
+- Added Guncotton
+ - Recipe: Mix Paper + Gunpowder + Water + Redstone
+ - Added pre-Nether recipe pathway for Congealed Nitro: Mix Guncotton + Slimeball + Water + Redstone
+ - Added Packed Guncotton, can be crafted by compressing 3 pieces of Guncotton
+ - HE and AP Shells now use Packed Guncotton instead of TNT for their explosive
+ - Added item tags
+  - #createbigcannons:guncotton - Guncotton
+  - #createbigcannons:can_be_nitrated - Paper
+  - #createbigcannons:high_explosive_materials - Packed Guncotton
+  - #createbigcannons:nitro_acidifiers - Redstone
+  - #createbigcannons:gelatinizers - Slimeball
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities

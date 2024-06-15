@@ -36,7 +36,14 @@ Additions: \
 &plus; `"createbigcannons.subtitle.smoke_shell_detonate": "Smoke shell bursts"` \
 &plus; `"createbigcannons.subtitle.mortar_stone_explode": "Mortar stone explodes"` \
 &plus; `"item.createbigcannons.gunpowder_pinch": "Pinch of Gunpowder"` \
-&plus; `"tag.createbigcannons.gunpowder_pinch": "Pinches of Gunpowder"`
+&plus; `"tag.createbigcannons.gunpowder_pinch": "Pinches of Gunpowder"` \
+&plus; `"item.createbigcannons.guncotton": "Guncotton"` \
+&plus; `"item.createbigcannons.packed_guncotton": "Packed Guncotton"` \
+&plus; `"tag.createbigcannons.can_be_nitrated": "Can be Nitrated"` \
+&plus; `"tag.createbigcannons.gelatinizers": "Gelatinizers"` \
+&plus; `"tag.createbigcannons.guncotton": "Guncotton"` \
+&plus; `"tag.createbigcannons.high_explosive_materials": "High Explosive Materials"` \
+&plus; `"tag.createbigcannons.nitro_acidifiers": "Nitro Acidifiers"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \
