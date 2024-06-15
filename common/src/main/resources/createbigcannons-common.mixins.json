@@ -22,6 +22,7 @@
     "LivingEntityMixin",
     "PlayerMixin",
     "ServerEntityMixin",
+    "ServerLevelMixin",
     "compat.create.AbstractContraptionEntityMixin",
     "compat.create.AllSoundEventsMixin",
     "compat.create.BeltMovementHandlerMixin",
