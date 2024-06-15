@@ -35,5 +35,6 @@
       "count": 8
     }
   ],
+  "processingTime": 100,
   "heatRequirement": "superheated"
 }

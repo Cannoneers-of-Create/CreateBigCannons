@@ -1,0 +1,25 @@
+{
+  "type": "create:mixing",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:guncotton"
+    },
+    {
+      "tag": "createbigcannons:gelatinizers"
+    },
+    {
+      "tag": "createbigcannons:nitro_acidifiers"
+    },
+    {
+      "fluid": "minecraft:water",
+      "nbt": {},
+      "amount": 150
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:congealed_nitro"
+    }
+  ],
+  "processingTime": 200
+}

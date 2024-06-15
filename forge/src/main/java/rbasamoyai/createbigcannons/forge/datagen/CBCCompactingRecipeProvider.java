@@ -68,7 +68,10 @@ public class CBCCompactingRecipeProvider extends ProcessingRecipeGen {
 
 	IRON_TO_CAST_IRON_BLOCK = create(CreateBigCannons.resource("iron_to_cast_iron_block"), b -> b.require(Items.IRON_BLOCK)
 		.requiresHeat(HeatCondition.HEATED)
-		.output(CBCBlocks.CAST_IRON_BLOCK.get()));
+		.output(CBCBlocks.CAST_IRON_BLOCK.get())),
+
+	PACKED_GUNCOTTON = create(CreateBigCannons.resource("packed_guncotton"), b -> b.require(CBCTags.CBCItemTags.GUNCOTTON)
+		.output(CBCItems.PACKED_GUNCOTTON.get()));
 
 	private static ICondition tagPopulated(TagKey<Item> tag) {
 		return new NotCondition(new TagEmptyCondition(tag.location()));

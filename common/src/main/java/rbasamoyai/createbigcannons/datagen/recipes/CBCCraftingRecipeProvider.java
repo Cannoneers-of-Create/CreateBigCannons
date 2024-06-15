@@ -182,7 +182,8 @@ public class CBCCraftingRecipeProvider {
 			.build(cons);
 
 		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.HE_SHELL.get())
-			.key('I', CBCTags.CBCItemTags.INGOT_IRON).key('T', Items.TNT).key('S', ItemTags.WOODEN_SLABS)
+			.key('I', CBCTags.CBCItemTags.INGOT_IRON).key('T', CBCTags.CBCItemTags.HIGH_EXPLOSIVE_MATERIALS)
+			.key('S', ItemTags.WOODEN_SLABS)
 			.patternLine(" I ")
 			.patternLine("ITI")
 			.patternLine("ITI")
@@ -190,7 +191,8 @@ public class CBCCraftingRecipeProvider {
 			.build(cons);
 
 		MechanicalCraftingRecipeBuilder.shapedRecipe(CBCBlocks.AP_SHELL.get())
-			.key('I', CBCTags.CBCItemTags.INGOT_IRON).key('C', CBCTags.CBCItemTags.INGOT_CAST_IRON).key('T', Items.TNT).key('S', ItemTags.WOODEN_SLABS)
+			.key('I', CBCTags.CBCItemTags.INGOT_IRON).key('C', CBCTags.CBCItemTags.INGOT_CAST_IRON)
+			.key('T', CBCTags.CBCItemTags.HIGH_EXPLOSIVE_MATERIALS).key('S', ItemTags.WOODEN_SLABS)
 			.patternLine(" C ")
 			.patternLine("ICI")
 			.patternLine("ITI")
@@ -214,11 +216,12 @@ public class CBCCraftingRecipeProvider {
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCBlocks.DROP_MORTAR_SHELL.get())
-			.define('X', Items.TNT).define('I', CBCTags.CBCItemTags.SHEET_IRON).define('S', AllBlocks.SHAFT.get()).define('C', CBCBlocks.POWDER_CHARGE.get())
+			.define('X', CBCTags.CBCItemTags.HIGH_EXPLOSIVE_MATERIALS).define('I', CBCTags.CBCItemTags.SHEET_IRON)
+			.define('S', AllBlocks.SHAFT.get()).define('C', CBCBlocks.POWDER_CHARGE.get())
 			.pattern(" X ")
 			.pattern("ISI")
 			.pattern(" C ")
-			.unlockedBy(getHasName(Items.TNT), has(Items.TNT))
+			.unlockedBy("has_high_explosives", has(CBCTags.CBCItemTags.HIGH_EXPLOSIVE_MATERIALS))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(CBCItems.AP_AUTOCANNON_ROUND.get(), 4)

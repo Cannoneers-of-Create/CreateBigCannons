@@ -145,6 +145,12 @@ public class CBCItems {
 		.model((c, p) -> {})
 		.register(),
 
+	GUNCOTTON = REGISTRATE.item("guncotton", Item::new)
+		.tag(CBCTags.CBCItemTags.GUNCOTTON)
+		.register(),
+	PACKED_GUNCOTTON = REGISTRATE.item("packed_guncotton", Item::new)
+		.tag(CBCTags.CBCItemTags.HIGH_EXPLOSIVE_MATERIALS)
+		.register(),
 	CONGEALED_NITRO = REGISTRATE.item("congealed_nitro", Item::new).register(),
 	HARDENED_NITRO = REGISTRATE.item("hardened_nitro", Item::new).register(),
 	NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.CBCItemTags.NITROPOWDER).register(),
