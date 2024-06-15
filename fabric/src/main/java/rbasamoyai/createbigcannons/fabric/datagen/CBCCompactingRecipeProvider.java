@@ -67,6 +67,8 @@ public class CBCCompactingRecipeProvider extends ProcessingRecipeGen {
 		.output(CBCBlocks.CAST_IRON_BLOCK.get())),
 
 	PACKED_GUNCOTTON = create(CreateBigCannons.resource("packed_guncotton"), b -> b.require(CBCTags.CBCItemTags.GUNCOTTON)
+		.require(CBCTags.CBCItemTags.GUNCOTTON)
+		.require(CBCTags.CBCItemTags.GUNCOTTON)
 		.output(CBCItems.PACKED_GUNCOTTON.get()));
 
 }
