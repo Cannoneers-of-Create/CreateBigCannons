@@ -80,7 +80,6 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	public void tick() {
 		super.tick();
 		this.allTick(this.level);
-		this.firingCooldown = 0;
 	}
 
 	@Override
