@@ -137,6 +137,7 @@ Fixed:
 - Fixed Cannon Cast crashing game through stack overflow
 - Fixed projectile ballistics not being accurate on client
 - Fixed autocannon tracer rendering intersecting with barrel
+- Fixed intersection loading occurring when disabled by using pistons and pulleys
 
 ===
 

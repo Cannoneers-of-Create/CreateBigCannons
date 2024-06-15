@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.cannon_loading;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -36,8 +38,9 @@ import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.remix.ContraptionRemix;
+import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 
-public class CannonLoadingContraption extends PoleContraption implements CanLoadBigCannon {
+public class CannonLoadingContraption extends PoleContraption implements CanLoadBigCannon, HasFragileContraption {
 
 	protected LoadingHead loadingHead = LoadingHead.NOTHING;
 
@@ -47,6 +50,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 	private boolean brokenDisassembly = false;
 	private final Set<BlockPos> fragileBlocks = new HashSet<>();
 	private final Set<BlockPos> colliderBlocks = new HashSet<>();
+	private final Map<BlockPos, BlockState> encounteredBlocks = new HashMap<>();
 
 	public CannonLoadingContraption() {
 	}
@@ -323,6 +327,8 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 	public ContraptionType getType() {
 		return CBCContraptionTypes.CANNON_LOADER;
 	}
+
+	@Override public Map<BlockPos, BlockState> createbigcannons$getEncounteredBlocks() { return this.encounteredBlocks; }
 
 	public enum LoadingHead {
 		RAM_HEAD,

@@ -66,7 +66,11 @@ public class ContraptionRemix {
 			BlockEntity blockEntity1 = levelAccessor.getBlockEntity(pos);
 			BlockState intersectState = levelAccessor.getBlockState(pos);
 
-			if (loader.createbigcannons$isBrokenDisassembly() && !intersectState.isAir() && blockInfo != null && !blockInfo.state.isAir()) {
+			boolean isBrokenDisassembly = loader.createbigcannons$isBrokenDisassembly();
+			if (!isBrokenDisassembly && contraption instanceof HasFragileContraption hfc && !CanLoadBigCannon.intersectionLoadingEnabled())
+				isBrokenDisassembly = CanLoadBigCannon.checkForIntersectingBlocks(contraption.entity.level, contraption.entity,
+					hfc.createbigcannons$getEncounteredBlocks());
+			if (isBrokenDisassembly && !intersectState.isAir() && blockInfo != null && !blockInfo.state.isAir()) {
 				BlockEntity contraptionBE = blockInfo.nbt == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state, blockInfo.nbt);
 				Block.dropResources(blockInfo.state, contraption.entity.level, pos, contraptionBE, null, ItemStack.EMPTY);
 				levelAccessor.levelEvent(2001, pos, Block.getId(blockInfo.state));

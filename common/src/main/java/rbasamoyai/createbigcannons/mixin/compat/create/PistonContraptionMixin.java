@@ -1,6 +1,8 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -29,12 +31,14 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.remix.ContraptionRemix;
+import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 
 @Mixin(PistonContraption.class)
-public abstract class PistonContraptionMixin extends TranslatingContraption implements CanLoadBigCannon {
+public abstract class PistonContraptionMixin extends TranslatingContraption implements CanLoadBigCannon, HasFragileContraption {
 
 	@Unique private final Set<BlockPos> fragileBlocks = new HashSet<>();
 	@Unique private final Set<BlockPos> colliderBlocks = new HashSet<>();
+	@Unique private final Map<BlockPos, BlockState> encounteredBlocks = new HashMap<>();
 	@Unique private boolean brokenDisassembly = false;
 
 	@Shadow private boolean retract;
@@ -57,6 +61,8 @@ public abstract class PistonContraptionMixin extends TranslatingContraption impl
 
     @Override public void createbigcannons$setBrokenDisassembly(boolean flag) { this.brokenDisassembly = flag; }
 	@Override public boolean createbigcannons$isBrokenDisassembly() { return this.brokenDisassembly; }
+
+	@Override public Map<BlockPos, BlockState> createbigcannons$getEncounteredBlocks() { return this.encounteredBlocks; }
 
 	@Inject(method = "addToInitialFrontier",
 			at = @At(value = "INVOKE", target = "Ljava/util/Queue;add(Ljava/lang/Object;)Z", shift = At.Shift.BEFORE),
