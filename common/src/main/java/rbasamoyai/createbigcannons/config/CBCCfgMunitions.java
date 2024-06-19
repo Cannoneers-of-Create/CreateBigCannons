@@ -13,6 +13,7 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat penetrationBonusScale = f(0.1f, 0, "penetrationBonusScale");
 	public final ConfigBool projectilesCanChunkload = b(true, "projectilesCanChunkload");
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
+	public final ConfigBool projectilesChangeSurroundings = b(true, "projectilesChangeSurroundings");
 
 	public final ConfigGroup bigCannonMunitions = group(0, "bigCannonMunitions", "Big Cannon Munitions");
 	public final ConfigEnum<AbstractBigCannonProjectile.TrailType> bigCannonTrailType = e(AbstractBigCannonProjectile.TrailType.SHORT, "trailType");

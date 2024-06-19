@@ -38,6 +38,7 @@ import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
+import rbasamoyai.createbigcannons.effects.particles.impacts.CBCBlockParticle;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
@@ -133,5 +134,9 @@ public class IndexPlatform {
 	@ExpectPlatform public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) { throw new AssertionError(); }
 
 	@ExpectPlatform public static boolean onExplosionStart(Level level, Explosion explosion) { throw new AssertionError(); }
+
+	@Environment(EnvType.CLIENT)
+	@ExpectPlatform
+	public static void updateSprite(CBCBlockParticle particle, BlockState state, BlockPos pos) { throw new AssertionError(); }
 
 }

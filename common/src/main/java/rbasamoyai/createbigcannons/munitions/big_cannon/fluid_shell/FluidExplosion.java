@@ -34,8 +34,6 @@ public class FluidExplosion extends CustomExplosion.Impl {
 		this.radius = packet.power();
 	}
 
-	@Override protected void spawnParticles() {} // Unused, particle effects done in registered OnFluidShellExplode in playLocalSound
-
 	@Override
 	public void playLocalSound(Level level, double x, double y, double z) {
 		if (FluidBlobEffectRegistry.effectOnFluidShellExplode(this.fluid, level, x, y, z, this.radius))

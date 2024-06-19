@@ -57,6 +57,15 @@
     ],
     "subtitle": "createbigcannons.subtitle.fluid_shell_explosion"
   },
+  "hot_projectile_splash": {
+    "sounds": [
+      {
+        "name": "minecraft:item.bucket.empty",
+        "type": "event"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.hot_projectile_splash"
+  },
   "lava_fluid_release": {
     "sounds": [
       {
@@ -97,6 +106,28 @@
         "type": "event"
       }
     ]
+  },
+  "projectile_impact": {
+    "sounds": [
+      {
+        "name": "createbigcannons:mortar_stone_explode",
+        "type": "event"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.projectile_impact"
+  },
+  "projectile_splash": {
+    "sounds": [
+      {
+        "name": "createbigcannons:projectile_splash",
+        "type": "file"
+      },
+      {
+        "name": "createbigcannons:projectile_splash1",
+        "type": "file"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.projectile_splash"
   },
   "shrapnel_shell_explosion": {
     "sounds": [

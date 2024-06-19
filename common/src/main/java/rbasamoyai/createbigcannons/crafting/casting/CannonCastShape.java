@@ -9,9 +9,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.Property;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.base.PropertySetter;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
@@ -99,24 +99,6 @@ public class CannonCastShape {
 	@Override
 	public String toString() {
 		return "CannonCastShape[" + CBCRegistries.CANNON_CAST_SHAPES.getKey(this) + ",fluidSize=" + this.fluidSize + ",diameter=" + this.diameter + "]";
-	}
-
-	public static class PropertySetter<T extends Comparable<T>> {
-		private final Property<T> property;
-		private final T value;
-
-		public PropertySetter(Property<T> property, T value) {
-			this.property = property;
-			this.value = value;
-		}
-
-		public BlockState applyTo(BlockState state) {
-			return state.hasProperty(this.property) ? state.setValue(this.property, this.value) : state;
-		}
-
-		public static <T extends Comparable<T>> PropertySetter<T> of(Property<T> property, T value) {
-			return new PropertySetter<>(property, value);
-		}
 	}
 
 	public static void register() {

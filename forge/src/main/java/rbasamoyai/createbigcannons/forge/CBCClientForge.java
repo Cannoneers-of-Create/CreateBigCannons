@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraftforge.api.distmarker.Dist;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -10,16 +10,16 @@ import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import rbasamoyai.createbigcannons.CBCClientCommon;
@@ -42,6 +42,8 @@ public class CBCClientForge {
 		modEventBus.addListener(CBCClientForge::onClientSetup);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
 		modEventBus.addListener(CBCClientForge::onTextureStitchAtlasPre);
+		modEventBus.addListener(CBCClientForge::onLoadComplete);
+		modEventBus.addListener(CBCClientForge::onRegisterClientReloadListeners);
 
 		forgeEventBus.addListener(CBCClientForge::getFogColor);
 		forgeEventBus.addListener(CBCClientForge::getFogDensity);
@@ -52,6 +54,7 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
 		forgeEventBus.addListener(CBCClientForge::onPlayerLogOut);
 		forgeEventBus.addListener(CBCClientForge::onClickMouse);
+		forgeEventBus.addListener(CBCClientForge::onLoadClientLevel);
 	}
 
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
@@ -117,19 +120,27 @@ public class CBCClientForge {
 		}
 	}
 
+	public static void onLoadClientLevel(WorldEvent.Load evt) {
+		LevelAccessor level = evt.getWorld();
+		if (!level.isClientSide())
+			return;
+		CBCClientCommon.onLoadClientLevel(level);
+	}
+
 	public static void onPlayerLogOut(ClientPlayerNetworkEvent.LoggedOutEvent evt) {
 		CBCClientCommon.onPlayerLogOut(evt.getPlayer());
 	}
 
-	@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-	public static abstract class ClientModBusEvents {
-		@SubscribeEvent
-		static void onLoadComplete(FMLLoadCompleteEvent event) {
-			ModContainer container = ModList.get()
-				.getModContainerById(CreateBigCannons.MOD_ID)
-				.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
-			container.registerExtensionPoint(ConfigGuiFactory.class,
-				() -> new ConfigGuiFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));
-		}
+	public static void onLoadComplete(FMLLoadCompleteEvent evt) {
+		ModContainer container = ModList.get()
+			.getModContainerById(CreateBigCannons.MOD_ID)
+			.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
+		container.registerExtensionPoint(ConfigGuiFactory.class,
+			() -> new ConfigGuiFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));
 	}
+
+	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent evt) {
+		CBCClientCommon.registerClientReloadListeners((listener, id) -> evt.registerReloadListener(listener));
+	}
+
 }

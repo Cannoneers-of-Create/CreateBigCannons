@@ -23,17 +23,25 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.goggles.EntityGoggleOverlayRenderer;
+import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffect;
+import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffectsHandler;
+import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffect;
+import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffectsHandler;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -282,8 +290,27 @@ public class CBCClientCommon {
 		return false;
 	}
 
+	public static void onLoadClientLevel(LevelAccessor level) {
+		BlockHitEffectsHandler.loadTags();
+	}
+
 	public static void onPlayerLogOut(LocalPlayer player) {
-		// Keeping this code around in case we ever need it... --ritchie
+		BlockHitEffectsHandler.cleanUpTags();
+	}
+
+	public static void playCustomSound(BlockHitEffect.HitSound sound, Level level, double x, double y, double z, double dx,
+									   double dy, double dz, ProjectileHitEffect projectileEffect) {
+		float basePitch = Mth.clamp(projectileEffect.getPitch(sound.basePitch()), 0, 2);
+		float pitch = Mth.clamp(basePitch + level.random.nextFloat() * sound.pitchVariation(), 0, 2);
+		Minecraft minecraft = Minecraft.getInstance();
+		minecraft.getSoundManager().play(new SimpleSoundInstance(sound.location(), sound.source(), projectileEffect.volume(),
+			pitch, false, 0, SoundInstance.Attenuation.LINEAR, x, y, z, false));
+	}
+
+	public static void registerClientReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
+		cons.accept(BlockHitEffectsHandler.ReloadListener.BLOCKS_INSTANCE, CreateBigCannons.resource("block_hit_effects_block_handler"));
+		cons.accept(BlockHitEffectsHandler.ReloadListener.FLUIDS_INSTANCE, CreateBigCannons.resource("block_hit_effects_fluid_handler"));
+		cons.accept(ProjectileHitEffectsHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("projectile_hit_effects_handler"));
 	}
 
 }

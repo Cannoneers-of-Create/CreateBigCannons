@@ -47,6 +47,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
+import rbasamoyai.createbigcannons.effects.particles.impacts.CBCBlockParticle;
 import rbasamoyai.createbigcannons.forge.CreateBigCannonsForge;
 import rbasamoyai.createbigcannons.forge.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.forge.crafting.CannonCastBlockEntity;
@@ -188,5 +189,9 @@ public class IndexPlatformImpl {
 		return ForgeEventFactory.onExplosionStart(level, explosion);
 	}
 
+	@OnlyIn(Dist.CLIENT)
+	public static void updateSprite(CBCBlockParticle particle, BlockState state, BlockPos pos) {
+		particle.updateSprite(state, pos);
+	}
 
 }

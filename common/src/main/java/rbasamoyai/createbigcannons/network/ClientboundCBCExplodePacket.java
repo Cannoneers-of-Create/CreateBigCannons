@@ -53,7 +53,8 @@ public record ClientboundCBCExplodePacket(double x, double y, double z, float po
 		SHRAPNEL,
 		FLAK,
 		SMOKE,
-		MORTAR_STONE
+		MORTAR_STONE,
+		IMPACT
 	}
 
 }

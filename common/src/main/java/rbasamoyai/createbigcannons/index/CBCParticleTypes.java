@@ -14,6 +14,9 @@ import net.minecraft.core.particles.ParticleType;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FlakCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FluidCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.ShrapnelCloudParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.CBCBlockParticleOption;
+import rbasamoyai.createbigcannons.effects.particles.impacts.DebrisMatterParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.DebrisSmokeBurstParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.DropMortarPlumeParticleData;
@@ -24,6 +27,8 @@ import rbasamoyai.createbigcannons.effects.particles.smoke.QuickFiringBreechSmok
 import rbasamoyai.createbigcannons.effects.particles.smoke.ShrapnelSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.SmokeShellSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.splashes.ProjectileSplashParticleData;
+import rbasamoyai.createbigcannons.effects.particles.splashes.SplashSprayParticleData;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobParticleData;
 
@@ -31,17 +36,22 @@ public enum CBCParticleTypes {
 
 	AUTOCANNON_PLUME(AutocannonPlumeParticleData::new),
 	BIG_CANNON_PLUME(BigCannonPlumeParticleData::new),
+	BLOCK(CBCBlockParticleOption::new),
 	CANNON_SMOKE(CannonSmokeParticleData::new),
+	DEBRIS_MATTER(DebrisMatterParticleData::new),
 	DEBRIS_SMOKE(DebrisSmokeParticleData::new),
+	DEBRIS_SMOKE_BURST(DebrisSmokeBurstParticleData::new),
 	DROP_MORTAR_PLUME(DropMortarPlumeParticleData::new),
 	FLAK_CLOUD(FlakCloudParticleData::new),
 	FLAK_SMOKE(FlakSmokeParticleData::new),
 	FLUID_BLOB(FluidBlobParticleData::new),
 	FLUID_CLOUD(FluidCloudParticleData::new),
+	PROJECTILE_SPLASH(ProjectileSplashParticleData::new),
 	QUICK_FIRING_BREECH_SMOKE(QuickFiringBreechSmokeParticleData::new),
 	SHRAPNEL_CLOUD(ShrapnelCloudParticleData::new),
 	SHRAPNEL_SMOKE(ShrapnelSmokeParticleData::new),
 	SMOKE_SHELL_SMOKE(SmokeShellSmokeParticleData::new),
+	SPLASH_SPRAY(SplashSprayParticleData::new),
 	TRAIL_SMOKE(TrailSmokeParticleData::new);
 
 	private final ParticleEntry<?> entry;

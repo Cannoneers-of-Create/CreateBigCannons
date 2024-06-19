@@ -52,6 +52,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
+import rbasamoyai.createbigcannons.effects.particles.impacts.CBCBlockParticle;
 import rbasamoyai.createbigcannons.fabric.CreateBigCannonsFabric;
 import rbasamoyai.createbigcannons.fabric.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
@@ -205,6 +206,11 @@ public class IndexPlatformImpl {
 
 	public static boolean onExplosionStart(Level level, Explosion explosion) {
 		return ExplosionEvents.START.invoker().onExplosionStart(level, explosion);
+	}
+
+	@Environment(EnvType.CLIENT)
+	public static void updateSprite(CBCBlockParticle particle, BlockState state, BlockPos pos) {
+		particle.updateSprite(state, pos);
 	}
 
 }

@@ -2,13 +2,18 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.block_hit_effects.BlockImpactTransformationHandler;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.DebrisSmokeParticleData;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -28,6 +33,14 @@ public class MortarStoneExplosion extends CustomExplosion.Impl {
 	}
 
 	@Override
+	public void editBlock(Level level, BlockPos pos, BlockState blockState, FluidState fluidState, float power) {
+		if (!CBCConfigs.SERVER.munitions.projectilesChangeSurroundings.get())
+			return;
+		BlockState transformed = BlockImpactTransformationHandler.transformBlock(blockState);
+		level.setBlock(pos, transformed, 11);
+	}
+
+	@Override
 	public void playLocalSound(Level level, double x, double y, double z) {
 		CBCSoundEvents.MORTAR_STONE_EXPLODE.playAt(level, x, y, z, 3f, 0.8f + level.random.nextFloat() * 0.4f, false);
 	}
@@ -41,7 +54,7 @@ public class MortarStoneExplosion extends CustomExplosion.Impl {
 			double ry = this.y + (this.level.random.nextDouble() - this.level.random.nextDouble()) * 0.1f;
 			double rz = this.z + (this.level.random.nextDouble() - this.level.random.nextDouble()) * 0.1f;
 			double dx = (this.level.random.nextDouble() - this.level.random.nextDouble()) * f1;
-			double dy = (this.level.random.nextDouble() - this.level.random.nextDouble()) * f1;
+			double dy = (this.level.random.nextDouble() - this.level.random.nextDouble() + 0.5) * f1;
 			double dz = (this.level.random.nextDouble() - this.level.random.nextDouble()) * f1;
 			this.level.addParticle(options, true, rx, ry, rz, dx, dy, dz);
 		}

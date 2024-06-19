@@ -23,6 +23,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -37,9 +38,11 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
+import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
 public abstract class AbstractCannonProjectile extends Projectile {
@@ -48,6 +51,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
 	protected int inGroundTime = 0;
 	protected float damage;
+	protected int inFluidTime = 0;
 	@Nullable protected Vec3 nextVelocity = null;
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
@@ -104,6 +108,9 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
 			}
 
+			if (this.inFluidTime > 0)
+				--this.inFluidTime;
+
 			if (this.level instanceof ServerLevel slevel && !this.isRemoved()) {
 				if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
 					ChunkPos cpos1 = new ChunkPos(this.blockPosition());
@@ -138,30 +145,35 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		int MAX_ITER = 100;
 		Vec3 accel = this.getForces(pos, this.getDeltaMovement());
 		Vec3 vel = this.getDeltaMovement().add(accel);
+		Vec3 finalEnd = start.add(vel);
 		double velMag = vel.length();
+
+		Vec3 fluidExplosionPos = null;
+		BlockState fluidExplosionState = null;
+
 		for (int p = 0; p < MAX_ITER; ++p) {
 			boolean breakEarly = false;
 			Vec3 vel1 = vel.scale(t);
 			if (vel1.lengthSqr() < 1e-4d) break;
 
-			Vec3 end = start.add(vel1);
-			BlockHitResult bResult = this.level.clip(new ClipContext(start, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-			if (bResult.getType() != HitResult.Type.MISS) end = bResult.getLocation();
+			Vec3 currentEnd = start.add(vel1);
+			BlockHitResult bResult = this.level.clip(new ClipContext(start, currentEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
+			if (bResult.getType() != HitResult.Type.MISS) currentEnd = bResult.getLocation();
 
-			AABB currentMovementRegion = this.getBoundingBox().expandTowards(end.subtract(start)).inflate(1).move(start.subtract(pos));
+			AABB currentMovementRegion = this.getBoundingBox().expandTowards(currentEnd.subtract(start)).inflate(1).move(start.subtract(pos));
 
-			Vec3 finalStart = start;
-			Vec3 finalEnd = end;
+			Vec3 endStart = start;
+			Vec3 endCopy = currentEnd;
 			AABB thisBB = this.getBoundingBox();
 			for (Entity target : this.level.getEntities(this, currentMovementRegion, e -> {
 				if (projCtx.hasHitEntity(e) || !this.canHitEntity(e)) return false;
 				AABB bb = e.getBoundingBox();
-				return bb.intersects(thisBB) || bb.inflate(reach).clip(finalStart, finalEnd).isPresent();
+				return bb.intersects(thisBB) || bb.inflate(reach).clip(endStart, endCopy).isPresent();
 			})) {
 				projCtx.addEntity(target);
 			}
 
-			Vec3 hitLoc = end;
+			Vec3 hitLoc = currentEnd;
 			Vec3 disp = hitLoc.subtract(start);
 			t -= disp.length() / vel1.length();
 			start = hitLoc;
@@ -170,13 +182,24 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				BlockState state = this.level.getChunkAt(bpos).getBlockState(bpos);
 
 				boolean flag1 = projCtx.getLastState().isAir();
-				if (!flag1 || !this.tryBounceOffBlock(state, bResult)) {
+				if (flag1 && this.tryBounceOffBlock(state, bResult)) {
+					this.setDeltaMovement(vel.scale(1 - t));
+					breakEarly = true;
+				} else {
 					projCtx.setLastState(state);
 
 					double startMass = this.getProjectileMass();
 					double curPom = startMass * velMag;
 					double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, bpos, true);
 
+					if (!this.level.isClientSide) {
+						Vec3 vel2 = this.getDeltaMovement();
+						Vec3 effectNormal = vel2.reverse();
+						ClientboundPlayBlockHitEffectPacket packet = new ClientboundPlayBlockHitEffectPacket(state,
+							this.getType(), false, false, currentEnd.x, currentEnd.y, currentEnd.z, (float) effectNormal.x,
+							(float) effectNormal.y, (float) effectNormal.z);
+						NetworkPlatform.sendToClientTracking(packet, this);
+					}
 					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, bpos) == -1 || curPom < hardness) {
 						this.nextVelocity = Vec3.ZERO;
 						this.setDeltaMovement(vel.scale(1 - t));
@@ -201,20 +224,45 @@ public abstract class AbstractCannonProjectile extends Projectile {
 					}
 				}
 			}
-			if (this.onClip(projCtx, start) || breakEarly || t < 0)
+			if (this.onClip(projCtx, start) || breakEarly || t < 0) {
+				finalEnd = currentEnd;
 				break;
+			}
+		}
+
+		BlockHitResult fluidResult = this.level.clip(new ClipContext(pos, finalEnd, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this));
+		if (fluidResult.getType() != HitResult.Type.MISS) {
+			BlockPos bPos = fluidResult.getBlockPos();
+			BlockState state = this.level.getBlockState(bPos);
+			if (state.getBlock() instanceof LiquidBlock) {
+				fluidExplosionPos = fluidResult.getLocation();
+				fluidExplosionState = state;
+			}
 		}
 
 		for (Entity e : projCtx.hitEntities()) this.onHitEntity(e);
 
+		Vec3 oldVel = this.getDeltaMovement();
 		if (!this.level.isClientSide && projCtx.griefState() != GriefState.NO_DAMAGE) {
-			Vec3 oldVel = this.getDeltaMovement();
-			for (Map.Entry<BlockPos, Float> explosion : projCtx.getQueuedExplosions().entrySet()) {
-				BlockPos bpos = explosion.getKey();
-				this.level.explode(this, bpos.getX() + 0.5, bpos.getY() + 0.5, bpos.getZ() + 0.5, explosion.getValue(), Explosion.BlockInteraction.DESTROY);
+			for (Map.Entry<BlockPos, Float> queued : projCtx.getQueuedExplosions().entrySet()) {
+				BlockPos bpos = queued.getKey();
+				ImpactExplosion explosion = new ImpactExplosion(this.level, this, this.indirectArtilleryFire(), bpos.getX() + 0.5,
+					bpos.getY() + 0.5, bpos.getZ() + 0.5, queued.getValue(), Explosion.BlockInteraction.DESTROY);
+				CreateBigCannons.handleCustomExplosion(this.level, explosion);
 			}
-			this.setDeltaMovement(oldVel);
 		}
+		if (!this.level.isClientSide && fluidExplosionPos != null && fluidExplosionState != null) {
+			if (this.inFluidTime <= 0) {
+				Vec3 vel1 = this.getDeltaMovement();
+				Vec3 effectNormal = vel1.reverse();
+				ClientboundPlayBlockHitEffectPacket packet = new ClientboundPlayBlockHitEffectPacket(fluidExplosionState,
+					this.getType(), true, false, fluidExplosionPos.x, fluidExplosionPos.y, fluidExplosionPos.z, (float) effectNormal.x,
+					(float) effectNormal.y, (float) effectNormal.z);
+				NetworkPlatform.sendToClientTracking(packet, this);
+			}
+			this.inFluidTime = 5;
+		}
+		this.setDeltaMovement(oldVel);
 	}
 
 	/**
@@ -238,7 +286,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		double momentum = this.getProjectileMass() * oldVel.length();
 		if (bounce == BounceType.DEFLECT) {
 			if (momentum > BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, result.getBlockPos(), true) * 0.5) {
-				Vec3 spallLoc = this.position().add(oldVel.normalize().scale(2));
+				Vec3 spallLoc = result.getLocation().add(oldVel.normalize().scale(2));
 				this.level.explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Explosion.BlockInteraction.NONE);
 			}
 			SoundType sound = state.getSoundType();
@@ -246,7 +294,14 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		}
 		Vec3 normal = new Vec3(result.getDirection().step());
 		double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
-		this.setDeltaMovement(oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity)));
+		this.nextVelocity = oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity));
+		if (!this.level.isClientSide) {
+			Vec3 pos = result.getLocation();
+			Vec3 effectNormal = bounce == BounceType.RICOCHET ? this.nextVelocity : oldVel;
+			ClientboundPlayBlockHitEffectPacket packet = new ClientboundPlayBlockHitEffectPacket(state, this.getType(),
+				true, false, pos.x, pos.y, pos.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z);
+			NetworkPlatform.sendToClientTracking(packet, this);
+		}
 		return true;
 	}
 

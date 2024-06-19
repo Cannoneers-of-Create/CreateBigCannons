@@ -1,0 +1,6 @@
+{
+  "transform_chance": 0.67,
+  "transforms": [
+    { "transform": { "block": "minecraft:coarse_dirt" } }
+  ]
+}

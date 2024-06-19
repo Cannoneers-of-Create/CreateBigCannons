@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
+import rbasamoyai.createbigcannons.block_hit_effects.BlockImpactTransformationHandler;
 import rbasamoyai.createbigcannons.cannon_control.config.CannonMountPropertiesHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
@@ -51,12 +52,14 @@ import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationD
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
+import rbasamoyai.createbigcannons.network.ClientboundNotifyTagReloadPacket;
 import rbasamoyai.createbigcannons.remix.ContraptionRemix;
 
 public class CBCCommonEvents {
@@ -206,10 +209,12 @@ public class CBCCommonEvents {
 	public static void loadTags() {
 		BlockArmorPropertiesHandler.loadTags();
 		FluidCastingTimeHandler.loadTags();
+		BlockImpactTransformationHandler.loadTags();
 	}
 
 	public static void onDatapackReload(MinecraftServer server) {
 		loadTags();
+		NetworkPlatform.sendToClientAll(new ClientboundNotifyTagReloadPacket(), server);
 
 		BlockArmorPropertiesHandler.syncToAll(server);
 		BlockRecipesManager.syncToAll(server);
@@ -250,6 +255,7 @@ public class CBCCommonEvents {
 		cons.accept(BigCannonPropellantCompatibilityHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_propellant_compatibility_handler"));
 		cons.accept(CannonMountPropertiesHandler.BlockEntityReloadListener.INSTANCE, CreateBigCannons.resource("block_entity_cannon_mounts_config_handler"));
 		cons.accept(CannonMountPropertiesHandler.EntityReloadListener.INSTANCE, CreateBigCannons.resource("entity_cannon_mounts_config_handler"));
+		cons.accept(BlockImpactTransformationHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("block_impact_transformation_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
