@@ -2,17 +2,25 @@ package rbasamoyai.createbigcannons.remix;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.ExplosionDamageCalculator;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import rbasamoyai.createbigcannons.network.ClientboundCBCExplodePacket;
 
 public interface CustomExplosion {
 
-	void playLocalSound(Level level, double x, double y, double z);
+	default void playLocalSound(Level level, double x, double y, double z) {
+	}
+
+	default void editBlock(Level level, BlockPos pos, BlockState blockState, FluidState fluidState, float power) {
+	}
+
 	void sendExplosionToClient(ServerPlayer player);
 	Explosion.BlockInteraction getBlockInteraction();
 
@@ -54,7 +62,8 @@ public interface CustomExplosion {
 				this.spawnParticles();
 		}
 
-		protected abstract void spawnParticles();
+		protected void spawnParticles() {
+		}
 
 		@Override public BlockInteraction getBlockInteraction() { return this.interaction; }
 	}

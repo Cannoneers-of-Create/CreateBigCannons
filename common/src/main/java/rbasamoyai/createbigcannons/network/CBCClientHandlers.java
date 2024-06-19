@@ -11,10 +11,20 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.block_hit_effects.BackupBlockHitEffects;
+import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffect;
+import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffectsHandler;
+import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffect;
+import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffectsHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.munitions.ImpactExplosion;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
@@ -88,6 +98,7 @@ public class CBCClientHandlers {
             case FLAK -> new FlakExplosion(mc.level, pkt);
 			case SMOKE -> new SmokeExplosion(mc.level, pkt);
             case MORTAR_STONE -> new MortarStoneExplosion(mc.level, pkt);
+			case IMPACT -> new ImpactExplosion(mc.level, pkt);
         };
 		explosion.finalizeExplosion(true);
 		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));
@@ -107,6 +118,37 @@ public class CBCClientHandlers {
 		if (mc.level == null || !(mc.level.getEntity(pkt.entityId()) instanceof AbstractAutocannonProjectile round))
 			return;
 		round.setTotalDisplacement(pkt.displacement());
+	}
+
+	public static void reloadTagDependentClientResources(ClientboundNotifyTagReloadPacket pkt) {
+		BlockHitEffectsHandler.loadTags();
+	}
+
+	public static void playBlockHitEffect(ClientboundPlayBlockHitEffectPacket pkt) {
+		BlockState blockState = pkt.blockState();
+		boolean isLiquid = blockState.getBlock() instanceof LiquidBlock;
+		if (isLiquid && !CBCConfigs.CLIENT.showProjectileSplashes.get() || !isLiquid && !CBCConfigs.CLIENT.showProjectileImpacts.get())
+			return;
+		Minecraft minecraft = Minecraft.getInstance();
+		if (minecraft.level == null)
+			return;
+		BlockHitEffect blockEffect = isLiquid ? BlockHitEffectsHandler.getFluidProperties(blockState)
+			: BlockHitEffectsHandler.getBlockProperties(blockState);
+		ProjectileHitEffect projectileEffect = ProjectileHitEffectsHandler.getProperties(pkt.entityType());
+		Vec3 vel = new Vec3(pkt.dx(), pkt.dy(), pkt.dz());
+		double magnitude = projectileEffect.getMagnitude(vel);
+		vel = vel.normalize().scale(magnitude);
+		if (blockEffect == null) {
+			if (isLiquid) {
+				BackupBlockHitEffects.backupFluidEffect(minecraft.level, pkt.blockState(), pkt.deflect(), pkt.forceDisplay(), pkt.x(), pkt.y(),
+					pkt.z(), vel.x, vel.y, vel.z, projectileEffect);
+			} else {
+				BackupBlockHitEffects.backupSolidEffect(minecraft.level, pkt.blockState(), pkt.deflect(), pkt.forceDisplay(), pkt.x(), pkt.y(),
+					pkt.z(), vel.x, vel.y, vel.z, projectileEffect);
+			}
+		} else {
+			blockEffect.playEffect(minecraft.level, pkt.deflect(), pkt.forceDisplay(), pkt.x(), pkt.y(), pkt.z(), vel.x, vel.y, vel.z, projectileEffect);
+		}
 	}
 
 }

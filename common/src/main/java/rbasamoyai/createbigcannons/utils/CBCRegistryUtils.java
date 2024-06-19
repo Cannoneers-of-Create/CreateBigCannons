@@ -5,6 +5,7 @@ import java.util.stream.Stream;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -80,6 +81,7 @@ public class CBCRegistryUtils {
 
 	//////// Less-used registry access aliases ////////
 	public static ResourceKey<Registry<Level>> getDimensionRegistryKey() { return Registry.DIMENSION_REGISTRY; }
+	public static Optional<ParticleType<?>> getOptionalParticleType(ResourceLocation id) { return Registry.PARTICLE_TYPE.getOptional(id); }
 
 	private CBCRegistryUtils() {}
 

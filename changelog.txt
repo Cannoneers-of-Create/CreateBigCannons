@@ -66,6 +66,14 @@ Added:
   - #createbigcannons:high_explosive_materials - Packed Guncotton
   - #createbigcannons:nitro_acidifiers - Redstone
   - #createbigcannons:gelatinizers - Slimeball
+- Added resource pack system for custom effects by block, supports blocks and tags (assets/block_hit_effects)
+ - Default effect on contact with fluid blocks creates splashes
+  - Supported fluids: water, lava, honey, chocolate, all Create Big Cannons molten metals
+ - Default effect on contact with solid blocks creates particles
+ - Effect visibility can be configured in the client config menu
+- Added resource pack system for effect scale by entity type (assets/projectile_hit_effects)
+- Impacts now transform their surroundings
+ - Can be configured in data pack: data/block_impact_transforms
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities

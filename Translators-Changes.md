@@ -43,7 +43,10 @@ Additions: \
 &plus; `"tag.createbigcannons.gelatinizers": "Gelatinizers"` \
 &plus; `"tag.createbigcannons.guncotton": "Guncotton"` \
 &plus; `"tag.createbigcannons.high_explosive_materials": "High Explosive Materials"` \
-&plus; `"tag.createbigcannons.nitro_acidifiers": "Nitro Acidifiers"`
+&plus; `"tag.createbigcannons.nitro_acidifiers": "Nitro Acidifiers"` \
+&plus; `"createbigcannons.subtitle.hot_projectile_splash": "Projectile splashes"` \
+&plus; `"createbigcannons.subtitle.projectile_splash": "Projectile splashes"` \
+&plus; `"createbigcannons.subtitle.projectile_impact": "Projectile impacts"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \

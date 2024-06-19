@@ -51,6 +51,10 @@ public class CBCSoundEvents {
 			.category(SoundSource.NEUTRAL)
 			.build(),
 
+		HOT_PROJECTILE_SPLASH = create("hot_projectile_splash").subtitle("Projectile splashes")
+			.playExisting(SoundEvents.BUCKET_EMPTY)
+			.build(),
+
 		LAVA_FLUID_RELEASE = create("lava_fluid_release").noSubtitle()
 			.playExisting(SoundEvents.FIRECHARGE_USE)
 			.category(SoundSource.NEUTRAL)
@@ -70,6 +74,16 @@ public class CBCSoundEvents {
 		POTION_FLUID_RELEASE = create("potion_fluid_release").noSubtitle()
 			.playExisting(SoundEvents.GENERIC_EXTINGUISH_FIRE)
 			.category(SoundSource.NEUTRAL)
+			.build(),
+
+		PROJECTILE_IMPACT = create("projectile_impact").subtitle("Projectile impacts")
+			.playExisting(MORTAR_STONE_EXPLODE::getMainEvent, 1, 1)
+			.category(SoundSource.BLOCKS)
+			.build(),
+
+		PROJECTILE_SPLASH = create("projectile_splash").subtitle("Projectile splashes")
+			.addVariant("projectile_splash1")
+			.category(SoundSource.BLOCKS)
 			.build(),
 
 		SHRAPNEL_SHELL_EXPLOSION = create("shrapnel_shell_explosion").subtitle("Shrapnel shell explodes")

@@ -1,33 +1,51 @@
 package rbasamoyai.createbigcannons.fabric;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.function.Consumer;
+
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
-import io.github.fabricators_of_create.porting_lib.event.client.*;
+
+import io.github.fabricators_of_create.porting_lib.event.client.CameraSetupCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.ClientWorldEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.FOVModifierCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.FogEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.LivingEntityRenderEvents;
+import io.github.fabricators_of_create.porting_lib.event.client.MouseButtonCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.MouseScrolledCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.ParticleManagerRegistrationCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.TextureStitchCallback;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
-
-import java.util.function.Consumer;
 
 public class CBCClientFabric implements ClientModInitializer {
 	@Override
@@ -40,6 +58,7 @@ public class CBCClientFabric implements ClientModInitializer {
 				overlay.renderOverlay(stack, partialTicks, window.getGuiScaledWidth(), window.getGuiScaledHeight());
 			});
 		});
+		onRegisterClientReloadListeners();
 
 		CBCNetworkFabric.INSTANCE.initClientListener();
 
@@ -55,6 +74,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		CameraSetupCallback.EVENT.register(CBCClientFabric::onSetupCamera);
 		ClientLoginConnectionEvents.DISCONNECT.register(CBCClientFabric::onPlayerLogOut);
 		MouseButtonCallback.EVENT.register(CBCClientFabric::onClickMouse);
+		ClientWorldEvents.LOAD.register(CBCClientFabric::onLoadClientLevel);
 	}
 
 	public static void onParticleRegistry() {
@@ -139,8 +159,29 @@ public class CBCClientFabric implements ClientModInitializer {
 			y -> info.yaw = y, p -> info.pitch = p, r -> info.roll = r);
 	}
 
+	public static void onLoadClientLevel(Minecraft minecraft, ClientLevel level) {
+		CBCClientCommon.onLoadClientLevel(level);
+	}
+
 	public static void onPlayerLogOut(ClientHandshakePacketListenerImpl impl, Minecraft client) {
 		CBCClientCommon.onPlayerLogOut(client.player);
+	}
+
+	public static void onRegisterClientReloadListeners() {
+		CBCClientCommon.registerClientReloadListeners(CBCClientFabric::wrapAndRegisterReloadListener);
+	}
+
+	public static void wrapAndRegisterReloadListener(PreparableReloadListener base, ResourceLocation location) {
+		IdentifiableResourceReloadListener listener = new IdentifiableResourceReloadListener() {
+			@Override public ResourceLocation getFabricId() { return location; }
+
+			@Override
+			public CompletableFuture<Void> reload(PreparationBarrier preparationBarrier, ResourceManager resourceManager, ProfilerFiller preparationsProfiler, ProfilerFiller reloadProfiler, Executor backgroundExecutor, Executor gameExecutor) {
+				return base.reload(preparationBarrier, resourceManager, preparationsProfiler, reloadProfiler, backgroundExecutor, gameExecutor);
+			}
+		};
+
+		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(listener);
 	}
 
 }

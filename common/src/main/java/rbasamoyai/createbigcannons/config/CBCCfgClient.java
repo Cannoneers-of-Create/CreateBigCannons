@@ -38,6 +38,12 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigBool showExtraFluidShellCloudFlames = b(true, "showExtraFlames");
 	public final ConfigBool showExtraFluidShellCloudShockwave = b(true, "showExtraShockwave");
 
+	public final ConfigGroup projectileSplashes = group(1, "projectileSplashes", "Projectile Splashes");
+	public final ConfigBool showProjectileSplashes = b(true, "showProjectileSplashes");
+
+	public final ConfigGroup projectileImpacts = group(1, "projectileImpacts", "Projectile Impacts");
+	public final ConfigBool showProjectileImpacts = b(true, "showProjectileImpacts");
+
 	@Override public String getName() { return "client"; }
 
 	private static class Comments {
