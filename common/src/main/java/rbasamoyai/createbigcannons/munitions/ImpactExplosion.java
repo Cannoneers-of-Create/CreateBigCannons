@@ -18,7 +18,12 @@ import rbasamoyai.createbigcannons.network.ClientboundCBCExplodePacket;
 import rbasamoyai.createbigcannons.remix.CustomExplosion;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ImpactExplosion extends CustomExplosion.Impl {
+
+	private final Set<BlockPos> changedBlocks = new HashSet<>();
 
 	public ImpactExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
 						   double toBlowY, double toBlowZ, float radius, BlockInteraction interaction) {
@@ -31,10 +36,11 @@ public class ImpactExplosion extends CustomExplosion.Impl {
 
 	@Override
 	public void editBlock(Level level, BlockPos pos, BlockState blockState, FluidState fluidState, float power) {
-		if (!CBCConfigs.SERVER.munitions.projectilesChangeSurroundings.get())
+		if (!CBCConfigs.SERVER.munitions.projectilesChangeSurroundings.get() || this.changedBlocks.contains(pos))
 			return;
 		BlockState transformed = BlockImpactTransformationHandler.transformBlock(blockState);
 		level.setBlock(pos, transformed, 11);
+		this.changedBlocks.add(pos);
 	}
 
 	@Override
