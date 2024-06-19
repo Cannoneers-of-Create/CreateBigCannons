@@ -6,6 +6,7 @@ public class CBCCfgClient extends CBCConfigBase {
 
 	public final ConfigBool showAutocannonPlumes = b(true, "showAutocannonPlumes");
 	public final ConfigBool showDropMortarPlumes = b(true, "showDropMortarPlumes");
+	public final ConfigBool showMortarStoneClouds = b(true, "showMortarStoneClouds");
 	public final ConfigInt fluidBlobParticleCount = i(20, 0, 1000, "fluidBlobParticleCount", Comments.fluidBlobParticleCount);
 
 	public final ConfigGroup cannonMountGoggleTooltip = group(1, "cannonMountGoggleTooltip", "Cannon Mount Goggle Tooltip");
