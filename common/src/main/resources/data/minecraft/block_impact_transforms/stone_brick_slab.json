@@ -1,0 +1,7 @@
+{
+  "transform_chance": 0.8,
+  "transforms": [
+    { "transform": { "block": "minecraft:stone_slab", "copy_properties": true }, "weight": 2 },
+    { "transform": { "block": "minecraft:cobblestone_slab", "copy_properties": true }, "weight": 1 }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "transform_chance": 0.8,
+  "transforms": [
+    { "transform": { "block": "minecraft:cracked_polished_blackstone_bricks" }, "weight": 2 },
+    { "transform": { "block": "minecraft:blackstone" }, "weight": 1 }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "transform_chance": 0.8,
+  "transforms": [
+    { "transform": { "block": "minecraft:deepslate" }, "weight": 1 },
+    { "transform": { "block": "minecraft:cobbled_deepslate" }, "weight": 0.5 }
+  ]
+}
