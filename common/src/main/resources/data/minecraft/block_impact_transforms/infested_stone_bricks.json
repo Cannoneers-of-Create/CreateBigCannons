@@ -1,0 +1,8 @@
+{
+  "transform_chance": 0.8,
+  "transforms": [
+    { "transform": { "block": "minecraft:infested_cracked_stone_bricks" }, "weight": 4 },
+    { "transform": { "block": "minecraft:infested_stone" }, "weight": 2 },
+    { "transform": { "block": "minecraft:infested_cobblestone" }, "weight": 1 }
+  ]
+}
