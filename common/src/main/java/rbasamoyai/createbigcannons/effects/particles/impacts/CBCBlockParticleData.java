@@ -17,29 +17,29 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
-public record CBCBlockParticleOption(BlockState state) implements ParticleOptions, ICustomParticleData<CBCBlockParticleOption> {
+public record CBCBlockParticleData(BlockState state) implements ParticleOptions, ICustomParticleData<CBCBlockParticleData> {
 
-	private static final ParticleOptions.Deserializer<CBCBlockParticleOption> DESERIALIZER = new ParticleOptions.Deserializer<>() {
-        public CBCBlockParticleOption fromCommand(ParticleType<CBCBlockParticleOption> particleType, StringReader reader) throws CommandSyntaxException {
+	private static final ParticleOptions.Deserializer<CBCBlockParticleData> DESERIALIZER = new ParticleOptions.Deserializer<>() {
+        public CBCBlockParticleData fromCommand(ParticleType<CBCBlockParticleData> particleType, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
-            return new CBCBlockParticleOption(new BlockStateParser(reader, false).parse(false).getState());
+            return new CBCBlockParticleData(new BlockStateParser(reader, false).parse(false).getState());
         }
 
-        public CBCBlockParticleOption fromNetwork(ParticleType<CBCBlockParticleOption> particleType, FriendlyByteBuf buffer) {
-            return new CBCBlockParticleOption(Block.stateById(buffer.readVarInt()));
+        public CBCBlockParticleData fromNetwork(ParticleType<CBCBlockParticleData> particleType, FriendlyByteBuf buffer) {
+            return new CBCBlockParticleData(Block.stateById(buffer.readVarInt()));
         }
     };
 
-	private static final Codec<CBCBlockParticleOption> CODEC = BlockState.CODEC.xmap(CBCBlockParticleOption::new, arg -> arg.state);
+	private static final Codec<CBCBlockParticleData> CODEC = BlockState.CODEC.xmap(CBCBlockParticleData::new, arg -> arg.state);
 
-	public CBCBlockParticleOption() { this(Blocks.AIR.defaultBlockState()); }
+	public CBCBlockParticleData() { this(Blocks.AIR.defaultBlockState()); }
 
-	@Override public Deserializer<CBCBlockParticleOption> getDeserializer() { return DESERIALIZER; }
-	@Override public Codec<CBCBlockParticleOption> getCodec(ParticleType<CBCBlockParticleOption> type) { return CODEC; }
+	@Override public Deserializer<CBCBlockParticleData> getDeserializer() { return DESERIALIZER; }
+	@Override public Codec<CBCBlockParticleData> getCodec(ParticleType<CBCBlockParticleData> type) { return CODEC; }
 
 	@Environment(EnvType.CLIENT)
 	@Override
-	public ParticleProvider<CBCBlockParticleOption> getFactory() {
+	public ParticleProvider<CBCBlockParticleData> getFactory() {
 		return new CBCBlockParticle.Provider();
 	}
 

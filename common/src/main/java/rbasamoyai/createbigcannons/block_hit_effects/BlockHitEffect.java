@@ -1,7 +1,11 @@
 package rbasamoyai.createbigcannons.block_hit_effects;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -16,7 +20,9 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
@@ -60,18 +66,28 @@ public record BlockHitEffect(List<ParticleOptions> impactParticles, List<Particl
 	}
 
 	public void playEffect(Level level, boolean deflect, boolean forceDisplay, double x, double y, double z, double dx,
-						   double dy, double dz, ProjectileHitEffect projectileEffect) {
+						   double dy, double dz, EntityType<?> entityType, BlockState blockState, ProjectileHitEffect projectileEffect) {
 		List<ParticleOptions> particles = deflect ? this.deflectParticles : this.impactParticles;
-		for (ParticleOptions option : particles)
+		for (ParticleOptions option : particles) {
+			option = ProjectileParticleEffectModifiers.applyEffects(option, entityType, blockState, projectileEffect);
 			level.addParticle(option, forceDisplay, x, y, z, dx, dy, dz);
+		}
 		BlockHitEffect.HitSound sound = deflect ? this.deflectSound : this.impactSound;
 		sound.playSound(level, x, y, z, dx, dy, dz, projectileEffect);
 	}
 
 	public record HitSound(ResourceLocation location, SoundSource source, float basePitch, float pitchVariation) {
-		public static HitSound fromJson(JsonObject obj) {
+		private static final Map<String, SoundSource> BY_NAME = Arrays.stream(SoundSource.values())
+			.collect(Collectors.toMap(SoundSource::getName, Function.identity()));
+
+		public static HitSound fromJson(JsonObject obj) throws JsonParseException {
 			ResourceLocation id = CBCUtils.location(GsonHelper.getAsString(obj, "sound"));
-			SoundSource source = SoundSource.valueOf(GsonHelper.getAsString(obj, "source", SoundSource.MASTER.getName()));
+			String sourceName = GsonHelper.getAsString(obj, "source", SoundSource.BLOCKS.getName());
+			SoundSource source = BY_NAME.get(sourceName);
+			if (source == null) {
+				String types = '\'' + String.join("', '", BY_NAME.keySet()) + '\'';
+				throw new JsonParseException("Invalid sound type '" + sourceName + "', should either be absent or one of " + types);
+			}
 			float pitch = GsonHelper.getAsFloat(obj, "pitch", 1);
 			float pitchVariation = GsonHelper.getAsFloat(obj, "pitch_variation", 0);
 			return new HitSound(id, source, pitch, pitchVariation);

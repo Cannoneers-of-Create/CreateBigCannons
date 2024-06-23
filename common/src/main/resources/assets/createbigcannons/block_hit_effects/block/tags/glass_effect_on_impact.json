@@ -1,0 +1,6 @@
+{
+  "impact_particle": "createbigcannons:glass_burst minecraft:air 40",
+  "deflect_particle": "createbigcannons:glass_burst minecraft:air 40",
+  "impact_sound": { "sound": "minecraft:block.glass.break", "pitch": 0.95, "pitch_variation": 0.1 },
+  "deflect_sound": { "sound": "minecraft:block.glass.break", "pitch": 0.95, "pitch_variation": 0.1 }
+}

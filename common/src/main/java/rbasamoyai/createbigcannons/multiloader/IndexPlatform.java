@@ -15,6 +15,7 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
@@ -38,7 +39,6 @@ import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
-import rbasamoyai.createbigcannons.effects.particles.impacts.CBCBlockParticle;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
@@ -137,6 +137,6 @@ public class IndexPlatform {
 
 	@Environment(EnvType.CLIENT)
 	@ExpectPlatform
-	public static void updateSprite(CBCBlockParticle particle, BlockState state, BlockPos pos) { throw new AssertionError(); }
+	public static void updateSprite(TerrainParticle particle, BlockState state, BlockPos pos) { throw new AssertionError(); }
 
 }

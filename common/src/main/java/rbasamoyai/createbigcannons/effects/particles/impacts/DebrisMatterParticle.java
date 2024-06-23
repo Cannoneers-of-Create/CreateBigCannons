@@ -29,7 +29,7 @@ public class DebrisMatterParticle extends NoRenderParticle {
 		double velScale = this.deflect ? 0.25 : 0.15;
 		double offsetScale = this.deflect ? 0.15 : 0.35;
 		int count = this.deflect ? 20 : 40;
-		ParticleOptions particle = new CBCBlockParticleOption(this.blockState);
+		ParticleOptions particle = new CBCBlockParticleData(this.blockState);
 		for (int i = 0; i < count; ++i) {
 			double rx = this.x + (this.level.random.nextDouble() - this.level.random.nextDouble()) * 1.5;
 			double ry = this.y + (this.level.random.nextDouble() - this.level.random.nextDouble()) * 1.5;

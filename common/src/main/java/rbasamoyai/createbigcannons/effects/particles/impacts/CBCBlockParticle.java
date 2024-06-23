@@ -18,9 +18,9 @@ public class CBCBlockParticle extends TerrainParticle {
 		this.zd = zSpeed;
 	}
 
-	public static class Provider implements ParticleProvider<CBCBlockParticleOption> {
+	public static class Provider implements ParticleProvider<CBCBlockParticleData> {
 		@Override
-		public Particle createParticle(CBCBlockParticleOption type, ClientLevel level, double x, double y, double z,
+		public Particle createParticle(CBCBlockParticleData type, ClientLevel level, double x, double y, double z,
 									   double xSpeed, double ySpeed, double zSpeed) {
 			BlockState blockstate = type.state();
 			if (blockstate.isAir() || blockstate.is(Blocks.MOVING_PISTON))

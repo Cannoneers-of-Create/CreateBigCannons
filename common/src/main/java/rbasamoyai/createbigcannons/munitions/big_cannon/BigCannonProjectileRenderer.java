@@ -4,8 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
@@ -20,7 +18,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
+
 public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> extends EntityRenderer<T> {
 
 	public BigCannonProjectileRenderer(EntityRendererProvider.Context context) {
@@ -32,14 +33,18 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 		boolean isTracer = entity.hasTracer();
 		BlockState blockState = entity.getRenderedBlockState();
 		if (blockState.getRenderShape() == RenderShape.MODEL) {
+			Vec3 vel = entity.getOrientation();
+
 			poseStack.pushPose();
+			//poseStack.translate(0.0d, 0.4d, 0.0d);
+			poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize(), new Vec3(0, 1, 0)));
+			//poseStack.translate(0.0d, 0.4d, 0.0d);
 
-			Quaternion q = Vector3f.YP.rotationDegrees(entity.getViewYRot(partialTicks) + 180.0f);
-			Quaternion q1 = Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks) - 90.0f);
-			q.mul(q1);
-
-			poseStack.translate(0.0d, 0.4d, 0.0d);
-			poseStack.mulPose(q);
+//			Quaternion q = Vector3f.YP.rotationDegrees(entity.getViewYRot(partialTicks) + 180.0f);
+//			Quaternion q1 = Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks) - 90.0f);
+//			q.mul(q1);
+//
+//			poseStack.mulPose(q);
 
 			Minecraft.getInstance().getItemRenderer()
 					.renderStatic(new ItemStack(blockState.getBlock()), ItemTransforms.TransformType.NONE, isTracer ? LightTexture.FULL_BRIGHT : packedLight,
@@ -54,7 +59,6 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 
 			poseStack.pushPose();
 			poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-			poseStack.mulPose(Vector3f.YP.rotationDegrees(180.0f));
 			poseStack.scale(1.5f, 1.5f, 1.5f);
 
 			PoseStack.Pose lastPose = poseStack.last();
@@ -63,9 +67,9 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 			VertexConsumer builder = buffers.getBuffer(renderType);
 
 			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 0.0f, 0, 0, 1);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 1.0f, 0, 1, 1);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 1.0f, 1, 1, 0);
 			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 0.0f, 1, 0, 0);
+			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 1.0f, 1, 1, 0);
+			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 1.0f, 0, 1, 1);
 
 			poseStack.popPose();
 		}

@@ -20,6 +20,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
@@ -30,6 +31,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientHandshakePacketListenerImpl;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
@@ -72,9 +74,10 @@ public class CBCClientFabric implements ClientModInitializer {
 		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
 		TextureStitchCallback.PRE.register(CBCClientFabric::onTextureAtlasStitchPre);
 		CameraSetupCallback.EVENT.register(CBCClientFabric::onSetupCamera);
-		ClientLoginConnectionEvents.DISCONNECT.register(CBCClientFabric::onPlayerLogOut);
+		ClientPlayConnectionEvents.DISCONNECT.register(CBCClientFabric::onPlayerLogOut);
 		MouseButtonCallback.EVENT.register(CBCClientFabric::onClickMouse);
 		ClientWorldEvents.LOAD.register(CBCClientFabric::onLoadClientLevel);
+		ClientLoginConnectionEvents.INIT.register(CBCClientFabric::onPlayerLogIn);
 	}
 
 	public static void onParticleRegistry() {
@@ -163,8 +166,12 @@ public class CBCClientFabric implements ClientModInitializer {
 		CBCClientCommon.onLoadClientLevel(level);
 	}
 
-	public static void onPlayerLogOut(ClientHandshakePacketListenerImpl impl, Minecraft client) {
+	public static void onPlayerLogOut(ClientPacketListener impl, Minecraft client) {
 		CBCClientCommon.onPlayerLogOut(client.player);
+	}
+
+	public static void onPlayerLogIn(ClientHandshakePacketListenerImpl impl, Minecraft client) {
+		CBCClientCommon.onPlayerLogIn(client.player);
 	}
 
 	public static void onRegisterClientReloadListeners() {

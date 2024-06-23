@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.SyncsExtraDataOnAdd;
 import rbasamoyai.createbigcannons.block_hit_effects.BackupBlockHitEffects;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffectsHandler;
@@ -25,7 +26,6 @@ import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffectsHandler
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.ImpactExplosion;
-import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidExplosion;
@@ -113,13 +113,6 @@ public class CBCClientHandlers {
 		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));
 	}
 
-	public static void setAutocannonRoundDisplacement(ClientboundSetAutocannonRoundDisplacementPacket pkt) {
-		Minecraft mc = Minecraft.getInstance();
-		if (mc.level == null || !(mc.level.getEntity(pkt.entityId()) instanceof AbstractAutocannonProjectile round))
-			return;
-		round.setTotalDisplacement(pkt.displacement());
-	}
-
 	public static void reloadTagDependentClientResources(ClientboundNotifyTagReloadPacket pkt) {
 		BlockHitEffectsHandler.loadTags();
 	}
@@ -140,15 +133,23 @@ public class CBCClientHandlers {
 		vel = vel.normalize().scale(magnitude);
 		if (blockEffect == null) {
 			if (isLiquid) {
-				BackupBlockHitEffects.backupFluidEffect(minecraft.level, pkt.blockState(), pkt.deflect(), pkt.forceDisplay(), pkt.x(), pkt.y(),
-					pkt.z(), vel.x, vel.y, vel.z, projectileEffect);
+				BackupBlockHitEffects.backupFluidEffect(minecraft.level, pkt.blockState(), pkt.deflect(), pkt.forceDisplay(),
+					pkt.x(), pkt.y(), pkt.z(), vel.x, vel.y, vel.z, projectileEffect);
 			} else {
-				BackupBlockHitEffects.backupSolidEffect(minecraft.level, pkt.blockState(), pkt.deflect(), pkt.forceDisplay(), pkt.x(), pkt.y(),
-					pkt.z(), vel.x, vel.y, vel.z, projectileEffect);
+				BackupBlockHitEffects.backupSolidEffect(minecraft.level, pkt.blockState(), pkt.deflect(), pkt.forceDisplay(),
+					pkt.x(), pkt.y(), pkt.z(), vel.x, vel.y, vel.z, projectileEffect);
 			}
 		} else {
-			blockEffect.playEffect(minecraft.level, pkt.deflect(), pkt.forceDisplay(), pkt.x(), pkt.y(), pkt.z(), vel.x, vel.y, vel.z, projectileEffect);
+			blockEffect.playEffect(minecraft.level, pkt.deflect(), pkt.forceDisplay(), pkt.x(), pkt.y(), pkt.z(), vel.x,
+				vel.y, vel.z, pkt.entityType(), pkt.blockState(), projectileEffect);
 		}
+	}
+
+	public static void syncExtraEntityData(ClientboundSyncExtraEntityDataPacket pkt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null || !(mc.level.getEntity(pkt.entityId()) instanceof SyncsExtraDataOnAdd round))
+			return;
+		round.readExtraSyncData(pkt.data());
 	}
 
 }

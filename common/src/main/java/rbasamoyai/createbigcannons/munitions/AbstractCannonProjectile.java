@@ -35,6 +35,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.SyncsExtraDataOnAdd;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -45,7 +46,7 @@ import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePrope
 import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
-public abstract class AbstractCannonProjectile extends Projectile {
+public abstract class AbstractCannonProjectile extends Projectile implements SyncsExtraDataOnAdd {
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
@@ -53,6 +54,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	protected float damage;
 	protected int inFluidTime = 0;
 	@Nullable protected Vec3 nextVelocity = null;
+	@Nullable protected Vec3 orientation = null;
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
@@ -75,7 +77,10 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				this.nextVelocity = null;
 			}
 
-			if (!this.isInGround()) this.clipAndDamage();
+			if (!this.isInGround()) {
+				this.clipAndDamage();
+				this.orientation = this.getDeltaMovement();
+			}
 
 			this.onTickRotate();
 
@@ -127,6 +132,10 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			.add(0.0d, this.getGravity(), 0.0d);
 	}
 
+	public Vec3 getOrientation() {
+		return this.orientation == null ? this.getDeltaMovement() : this.orientation;
+	}
+
 	@Override
 	public void lerpTo(double x, double y, double z, float yRot, float xRot, int lerpSteps, boolean teleport) {
 		if (this.tickCount < 2)
@@ -158,7 +167,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 			Vec3 currentEnd = start.add(vel1);
 			BlockHitResult bResult = this.level.clip(new ClipContext(start, currentEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-			if (bResult.getType() != HitResult.Type.MISS) currentEnd = bResult.getLocation();
+			if (bResult.getType() != HitResult.Type.MISS)
+				currentEnd = bResult.getLocation();
 
 			AABB currentMovementRegion = this.getBoundingBox().expandTowards(currentEnd.subtract(start)).inflate(1).move(start.subtract(pos));
 
@@ -175,7 +185,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 			Vec3 hitLoc = currentEnd;
 			Vec3 disp = hitLoc.subtract(start);
-			t -= disp.length() / vel1.length();
+			t -= disp.length() / velMag;
 			start = hitLoc;
 			if (bResult.getType() != HitResult.Type.MISS) {
 				BlockPos bpos = bResult.getBlockPos().immutable();
@@ -196,7 +206,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 						Vec3 vel2 = this.getDeltaMovement();
 						Vec3 effectNormal = vel2.reverse();
 						ClientboundPlayBlockHitEffectPacket packet = new ClientboundPlayBlockHitEffectPacket(state,
-							this.getType(), false, false, currentEnd.x, currentEnd.y, currentEnd.z, (float) effectNormal.x,
+							this.getType(), false, true, currentEnd.x, currentEnd.y, currentEnd.z, (float) effectNormal.x,
 							(float) effectNormal.y, (float) effectNormal.z);
 						NetworkPlatform.sendToClientTracking(packet, this);
 					}
@@ -224,7 +234,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 					}
 				}
 			}
-			if (this.onClip(projCtx, start) || breakEarly || t < 0) {
+			if (this.onClip(projCtx, start) || breakEarly || t <= 0) {
 				finalEnd = currentEnd;
 				break;
 			}
@@ -299,7 +309,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			Vec3 pos = result.getLocation();
 			Vec3 effectNormal = bounce == BounceType.RICOCHET ? this.nextVelocity : oldVel;
 			ClientboundPlayBlockHitEffectPacket packet = new ClientboundPlayBlockHitEffectPacket(state, this.getType(),
-				true, false, pos.x, pos.y, pos.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z);
+				true, true, pos.x, pos.y, pos.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z);
 			NetworkPlatform.sendToClientTracking(packet, this);
 		}
 		return true;
@@ -403,6 +413,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		tag.putFloat("Damage", this.damage);
 		if (this.nextVelocity != null)
 			tag.put("NextMotion", this.newDoubleList(this.nextVelocity.x, this.nextVelocity.y, this.nextVelocity.z));
+		if (this.orientation != null)
+			tag.put("Orientation", this.newDoubleList(this.orientation.x, this.orientation.y, this.orientation.z));
 	}
 
 	@Override
@@ -418,6 +430,30 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			this.nextVelocity = nextMotion.size() == 3 ? new Vec3(nextMotion.getDouble(0), nextMotion.getDouble(1), nextMotion.getDouble(2)) : null;
 		} else {
 			this.nextVelocity = null;
+		}
+		if (tag.contains("Orientation", Tag.TAG_LIST)) {
+			ListTag nextMotion = tag.getList("Orientation", Tag.TAG_DOUBLE);
+			this.orientation = nextMotion.size() == 3 ? new Vec3(nextMotion.getDouble(0), nextMotion.getDouble(1), nextMotion.getDouble(2)) : null;
+		} else {
+			this.orientation = this.getDeltaMovement();
+		}
+	}
+
+	@Override
+	public CompoundTag addExtraSyncData() {
+		CompoundTag tag = new CompoundTag();
+		if (this.orientation != null)
+			tag.put("Orientation", this.newDoubleList(this.orientation.x, this.orientation.y, this.orientation.z));
+		return tag;
+	}
+
+	@Override
+	public void readExtraSyncData(CompoundTag tag) {
+		if (tag.contains("Orientation", Tag.TAG_LIST)) {
+			ListTag nextMotion = tag.getList("Orientation", Tag.TAG_DOUBLE);
+			this.orientation = nextMotion.size() == 3 ? new Vec3(nextMotion.getDouble(0), nextMotion.getDouble(1), nextMotion.getDouble(2)) : null;
+		} else {
+			this.orientation = this.getDeltaMovement();
 		}
 	}
 

@@ -141,6 +141,19 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	}
 
 	@Override
+	public CompoundTag addExtraSyncData() {
+		CompoundTag tag = super.addExtraSyncData();
+		tag.putDouble("Displacement", this.displacement);
+		return tag;
+	}
+
+	@Override
+	public void readExtraSyncData(CompoundTag tag) {
+		super.readExtraSyncData(tag);
+		this.displacement = tag.getDouble("Displacement");
+	}
+
+	@Override
 	protected boolean canDeflect(BlockHitResult result) {
 		return super.canDeflect(result) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.autocannonDeflectChance.getF();
 	}
