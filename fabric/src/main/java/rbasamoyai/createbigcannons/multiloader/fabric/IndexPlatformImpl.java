@@ -26,6 +26,7 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -52,7 +53,6 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
-import rbasamoyai.createbigcannons.effects.particles.impacts.CBCBlockParticle;
 import rbasamoyai.createbigcannons.fabric.CreateBigCannonsFabric;
 import rbasamoyai.createbigcannons.fabric.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.fabric.crafting.CannonCastBlockEntity;
@@ -209,7 +209,7 @@ public class IndexPlatformImpl {
 	}
 
 	@Environment(EnvType.CLIENT)
-	public static void updateSprite(CBCBlockParticle particle, BlockState state, BlockPos pos) {
+	public static void updateSprite(TerrainParticle particle, BlockState state, BlockPos pos) {
 		particle.updateSprite(state, pos);
 	}
 

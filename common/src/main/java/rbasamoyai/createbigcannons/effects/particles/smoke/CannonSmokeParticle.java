@@ -5,7 +5,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
@@ -23,7 +22,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCRenderTypes;
-import rbasamoyai.createbigcannons.index.CBCRenderingParts;
 
 public class CannonSmokeParticle extends BaseAshSmokeParticle {
 
@@ -35,10 +33,9 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 			RenderSystem.depthMask(true);
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-			RenderSystem.setShader(CBCRenderTypes.CANNON_SMOKE_PARTICLE::getShaderInstance);
 			RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 			RenderSystem.setShaderTexture(3, GRADIENT_LOCATION);
-			builder.begin(VertexFormat.Mode.QUADS, CBCRenderingParts.CANNON_SMOKE_PARTICLE_INPUT);
+			CBCRenderTypes.CANNON_SMOKE_PARTICLE.setRenderTypeForBuilder(builder);
 		}
 
 		@Override

@@ -16,6 +16,7 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModContainer;
@@ -55,6 +56,8 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onPlayerLogOut);
 		forgeEventBus.addListener(CBCClientForge::onClickMouse);
 		forgeEventBus.addListener(CBCClientForge::onLoadClientLevel);
+		forgeEventBus.addListener(CBCClientForge::onPlayerLogIn);
+		forgeEventBus.addListener(CBCClientForge::onPlayerChangeDimension);
 	}
 
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
@@ -129,6 +132,14 @@ public class CBCClientForge {
 
 	public static void onPlayerLogOut(ClientPlayerNetworkEvent.LoggedOutEvent evt) {
 		CBCClientCommon.onPlayerLogOut(evt.getPlayer());
+	}
+
+	public static void onPlayerLogIn(ClientPlayerNetworkEvent.LoggedInEvent evt) {
+		CBCClientCommon.onPlayerLogIn(evt.getPlayer());
+	}
+
+	public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent evt) {
+		CBCClientCommon.onChangeDimension(evt.getPlayer());
 	}
 
 	public static void onLoadComplete(FMLLoadCompleteEvent evt) {

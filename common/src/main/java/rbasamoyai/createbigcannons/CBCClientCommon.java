@@ -31,6 +31,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,6 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.goggles.EntityGoggleOverlayRenderer;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffectsHandler;
+import rbasamoyai.createbigcannons.block_hit_effects.DefaultParticleModifiers;
 import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffectsHandler;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
@@ -60,6 +62,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
+import rbasamoyai.createbigcannons.remix.LightingRemix;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.RPLScreenShakeHandlerClient;
 
 public class CBCClientCommon {
@@ -71,8 +74,14 @@ public class CBCClientCommon {
 
 	public static final CannonWelderSelectionHandler CANNON_WELDER_HANDLER = new CannonWelderSelectionHandler();
 
+	private static boolean PARTICLES_REGISTERED = false;
+
 	public static void onRegisterParticleFactories(Minecraft mc, ParticleEngine engine) {
+		if (PARTICLES_REGISTERED)
+			return;
 		CBCParticleTypes.registerFactories();
+		DefaultParticleModifiers.register();
+		PARTICLES_REGISTERED = true;
 	}
 
 	public static void onClientSetup() {
@@ -296,6 +305,15 @@ public class CBCClientCommon {
 
 	public static void onPlayerLogOut(LocalPlayer player) {
 		BlockHitEffectsHandler.cleanUpTags();
+		LightingRemix.clearCache();
+	}
+
+	public static void onPlayerLogIn(LocalPlayer player) {
+		LightingRemix.clearCache();
+	}
+
+	public static void onChangeDimension(Player player) {
+		LightingRemix.clearCache();
 	}
 
 	public static void playCustomSound(BlockHitEffect.HitSound sound, Level level, double x, double y, double z, double dx,

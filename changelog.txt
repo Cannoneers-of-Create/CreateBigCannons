@@ -74,6 +74,11 @@ Added:
 - Added resource pack system for effect scale by entity type (assets/projectile_hit_effects)
 - Impacts now transform their surroundings
  - Can be configured in data pack: data/block_impact_transforms
+- Added special visual impact effects for various blocks
+ - Blocks that produce sparks, mainly metals, are marked with #createbigcannons:spark_effect_on_impact
+ - Blocks that produce splinters, mainly woods, are marked with #createbigcannons:splinter_effect_on_impact
+ - Blocks that produce shards, mainly glass, are marked with #createbigcannons:glass_effect_on_impact
+ - Blocks tagged #minecraft:leaves produce leaves
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities

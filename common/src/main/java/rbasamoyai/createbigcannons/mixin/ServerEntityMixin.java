@@ -10,11 +10,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import rbasamoyai.createbigcannons.base.SyncsExtraDataOnAdd;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
-import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.network.ClientboundPreciseRotationSyncPacket;
-import rbasamoyai.createbigcannons.network.ClientboundSetAutocannonRoundDisplacementPacket;
+import rbasamoyai.createbigcannons.network.ClientboundSyncExtraEntityDataPacket;
 
 @Mixin(ServerEntity.class)
 public class ServerEntityMixin {
@@ -34,8 +34,8 @@ public class ServerEntityMixin {
 	@Inject(method = "addPairing",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerEntity;sendPairingData(Ljava/util/function/Consumer;)V", shift = At.Shift.AFTER))
 	private void createbigcannons$addPairing(ServerPlayer player, CallbackInfo ci) {
-		if (this.entity instanceof AbstractAutocannonProjectile projectile)
-			NetworkPlatform.sendToClientPlayer(new ClientboundSetAutocannonRoundDisplacementPacket(projectile), player);
+		if (this.entity instanceof SyncsExtraDataOnAdd sync)
+			NetworkPlatform.sendToClientPlayer(new ClientboundSyncExtraEntityDataPacket(this.entity.getId(), sync.addExtraSyncData()), player);
 	}
 
 }

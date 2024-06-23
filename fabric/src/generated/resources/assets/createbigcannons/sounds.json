@@ -154,5 +154,25 @@
         "type": "event"
       }
     ]
+  },
+  "wood_splinters": {
+    "sounds": [
+      {
+        "name": "createbigcannons:wood_splinters",
+        "type": "file"
+      },
+      {
+        "name": "createbigcannons:wood_splinters1",
+        "type": "file"
+      },
+      {
+        "name": "createbigcannons:wood_splinters2",
+        "type": "file"
+      },
+      {
+        "name": "createbigcannons:wood_splinters3",
+        "type": "file"
+      }
+    ]
   }
 }

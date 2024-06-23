@@ -98,6 +98,13 @@ public class CBCSoundEvents {
 		WATER_FLUID_RELEASE = create("water_fluid_release").noSubtitle()
 			.playExisting(SoundEvents.BUCKET_EMPTY)
 			.category(SoundSource.NEUTRAL)
+			.build(),
+
+		WOOD_SPLINTERS = create("wood_splinters").noSubtitle()
+			.addVariant("wood_splinters1")
+			.addVariant("wood_splinters2")
+			.addVariant("wood_splinters3")
+			.category(SoundSource.BLOCKS)
 			.build();
 
 	private static SoundEntryBuilder create(String id) {

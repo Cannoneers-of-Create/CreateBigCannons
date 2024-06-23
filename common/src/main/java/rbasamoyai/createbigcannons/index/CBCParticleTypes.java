@@ -14,9 +14,17 @@ import net.minecraft.core.particles.ParticleType;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FlakCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FluidCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.ShrapnelCloudParticleData;
-import rbasamoyai.createbigcannons.effects.particles.impacts.CBCBlockParticleOption;
+import rbasamoyai.createbigcannons.effects.particles.impacts.CBCBlockParticleData;
 import rbasamoyai.createbigcannons.effects.particles.impacts.DebrisMatterParticleData;
 import rbasamoyai.createbigcannons.effects.particles.impacts.DebrisSmokeBurstParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.GlassBurstParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.GlassShardParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.LeafBurstParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.LeafParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.SparkBurstParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.SparkParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.SplinterBurstParticleData;
+import rbasamoyai.createbigcannons.effects.particles.impacts.SplinterParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.DropMortarPlumeParticleData;
@@ -36,7 +44,7 @@ public enum CBCParticleTypes {
 
 	AUTOCANNON_PLUME(AutocannonPlumeParticleData::new),
 	BIG_CANNON_PLUME(BigCannonPlumeParticleData::new),
-	BLOCK(CBCBlockParticleOption::new),
+	BLOCK(CBCBlockParticleData::new),
 	CANNON_SMOKE(CannonSmokeParticleData::new),
 	DEBRIS_MATTER(DebrisMatterParticleData::new),
 	DEBRIS_SMOKE(DebrisSmokeParticleData::new),
@@ -46,12 +54,20 @@ public enum CBCParticleTypes {
 	FLAK_SMOKE(FlakSmokeParticleData::new),
 	FLUID_BLOB(FluidBlobParticleData::new),
 	FLUID_CLOUD(FluidCloudParticleData::new),
+	GLASS_BURST(GlassBurstParticleData::new),
+	GLASS_SHARD(GlassShardParticleData::new),
+	LEAF(LeafParticleData::new),
+	LEAF_BURST(LeafBurstParticleData::new),
 	PROJECTILE_SPLASH(ProjectileSplashParticleData::new),
 	QUICK_FIRING_BREECH_SMOKE(QuickFiringBreechSmokeParticleData::new),
 	SHRAPNEL_CLOUD(ShrapnelCloudParticleData::new),
 	SHRAPNEL_SMOKE(ShrapnelSmokeParticleData::new),
 	SMOKE_SHELL_SMOKE(SmokeShellSmokeParticleData::new),
+	SPARK(SparkParticleData::new),
+	SPARK_BURST(SparkBurstParticleData::new),
 	SPLASH_SPRAY(SplashSprayParticleData::new),
+	SPLINTER(SplinterParticleData::new),
+	SPLINTER_BURST(SplinterBurstParticleData::new),
 	TRAIL_SMOKE(TrailSmokeParticleData::new);
 
 	private final ParticleEntry<?> entry;
