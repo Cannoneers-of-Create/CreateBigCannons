@@ -1,10 +1,10 @@
 package rbasamoyai.createbigcannons.base;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import com.simibubi.create.foundation.utility.NBTHelper;
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
@@ -21,7 +21,7 @@ public class PartialBlockDamageSaveData extends SavedData {
 
 	private static final int MAX_DAMAGES_PER_DIMENSION = 32768;
 
-	private Map<ResourceKey<Level>, Map<BlockPos, Integer>> blockDamage = new HashMap<>();
+	private final Map<ResourceKey<Level>, Map<BlockPos, Integer>> blockDamage = new Object2ObjectLinkedOpenHashMap<>();
 
 	private PartialBlockDamageSaveData() {}
 
@@ -49,7 +49,7 @@ public class PartialBlockDamageSaveData extends SavedData {
 		for (String key : values.getAllKeys()) {
 			ResourceKey<Level> dimensionKey = ResourceKey.create(Registry.DIMENSION_REGISTRY, CBCUtils.location(key));
 			ListTag damagesTag = values.getList(key, Tag.TAG_COMPOUND);
-			Map<BlockPos, Integer> damages = new HashMap<>(damagesTag.size());
+			Map<BlockPos, Integer> damages = new Object2ObjectLinkedOpenHashMap<>(damagesTag.size());
 
 			int len = Math.min(damagesTag.size(), MAX_DAMAGES_PER_DIMENSION);
 			for (int i = 0; i < len; ++i) {

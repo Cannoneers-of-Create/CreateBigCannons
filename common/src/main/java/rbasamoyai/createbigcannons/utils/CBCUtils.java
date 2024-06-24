@@ -5,10 +5,16 @@ import javax.annotation.Nonnull;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.mixin.Matrix3fAccessor;
 import rbasamoyai.createbigcannons.mixin.Matrix4fAccessor;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
+import rbasamoyai.createbigcannons.network.ClientboundSendCustomBreakProgressPacket;
 
 public class CBCUtils {
 
@@ -195,6 +201,20 @@ public class CBCUtils {
 		Matrix4f second = mat4x4fFacing(dest); // (0, 0, 1) -> dest
 		second.multiply(first);
 		return second;
+	}
+
+	public static void sendCustomBlockDamage(Level level, BlockPos pos, int damage) {
+		if (!(level instanceof ServerLevel slevel))
+			return;
+
+		ClientboundSendCustomBreakProgressPacket pkt = new ClientboundSendCustomBreakProgressPacket(pos, damage);
+		for (ServerPlayer splayer : slevel.players()) {
+			double d = (double) pos.getX() - splayer.getX();
+			double e = (double) pos.getY() - splayer.getY();
+			double f = (double) pos.getZ() - splayer.getZ();
+			if (d * d + e * e + f * f < 1024.0)
+				NetworkPlatform.sendToClientPlayer(pkt, splayer);
+		}
 	}
 
 	private CBCUtils() {}
