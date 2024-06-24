@@ -19,6 +19,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
@@ -65,13 +66,13 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 			double curPom = this.getProperties().ballistics().durabilityMass() * curVel.length();
 			double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, pos, true) * 10;
 			BlockPos pos1 = pos.immutable();
-			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (int) Math.min(curPom, hardness), state, this.level);
-			if (!this.level.getBlockState(pos1).isAir() && this.level instanceof ServerLevel slevel) {
-				ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);
-				for (ServerPlayer player : slevel.players()) {
-					if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 1024d)
-						slevel.sendParticles(player, options, true, pos.getX(), pos.getY(), pos.getZ(), 20, 0.4, 2, 0.4, 1);
-				}
+			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (int) Math.min(curPom, hardness), state, this.level, PartialBlockDamageManager::voidBlock);
+		}
+		if (this.level instanceof ServerLevel slevel) {
+			ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);
+			for (ServerPlayer player : slevel.players()) {
+				if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 1024d)
+					slevel.sendParticles(player, options, true, pos.getX(), pos.getY(), pos.getZ(), 20, 0.4, 2, 0.4, 1);
 			}
 		}
 		SoundType type = state.getSoundType();

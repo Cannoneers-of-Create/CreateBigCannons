@@ -16,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -120,7 +121,8 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, result.getBlockPos(), true) / bonus;
 		this.setProjectileMass((float) Math.max(mass - hardness, 0));
 
-		if (!this.level.isClientSide()) this.level.destroyBlock(result.getBlockPos(), false);
+		if (!this.level.isClientSide())
+			this.level.setBlock(result.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
 	}
 
 	@Override

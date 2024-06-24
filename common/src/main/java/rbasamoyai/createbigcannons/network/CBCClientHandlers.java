@@ -25,6 +25,7 @@ import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffectsHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.mixin.client.ClientLevelAccessor;
 import rbasamoyai.createbigcannons.munitions.ImpactExplosion;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
@@ -32,6 +33,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidExplosi
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell.SmokeExplosion;
+import rbasamoyai.createbigcannons.remix.CustomBlockDamageDisplay;
 
 public class CBCClientHandlers {
 
@@ -150,6 +152,14 @@ public class CBCClientHandlers {
 		if (mc.level == null || !(mc.level.getEntity(pkt.entityId()) instanceof SyncsExtraDataOnAdd round))
 			return;
 		round.readExtraSyncData(pkt.data());
+	}
+
+	public static void setCustomBlockDamage(ClientboundSendCustomBreakProgressPacket pkt) {
+		Minecraft mc = Minecraft.getInstance();
+		if (mc.level == null)
+			return;
+		ClientLevelAccessor clAccessor = (ClientLevelAccessor) mc.level;
+		((CustomBlockDamageDisplay) clAccessor.getLevelRenderer()).createbigcannons$trackCustomProgress(pkt.pos(), pkt.damage());
 	}
 
 }
