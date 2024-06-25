@@ -330,6 +330,27 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 
 	@Override public Map<BlockPos, BlockState> createbigcannons$getEncounteredBlocks() { return this.encounteredBlocks; }
 
+	@Override
+	public boolean createbigcannons$blockBreaksDisassembly(Level level, BlockPos pos, BlockState newState) {
+		BlockPos loaderPos = this.anchor.relative(this.orientation, this.loadingHead == LoadingHead.NOTHING ? -1 : -2);
+		BlockState loaderState = level.getBlockState(loaderPos);
+		if (pos.equals(loaderPos) && CBCBlocks.CANNON_LOADER.has(loaderState))
+			return false;
+		return HasFragileContraption.defaultBlockBreaksAssembly(level, pos, newState, this);
+	}
+
+	@Override public boolean createbigcannons$shouldCheckFragility() { return HasFragileContraption.defaultShouldCheck(); }
+
+	@Override
+	public void createbigcannons$fragileDisassemble() {
+		BlockPos loaderPos = this.anchor.relative(this.orientation, -1);
+		if (this.world.getBlockEntity(loaderPos) instanceof CannonLoaderBlockEntity loaderBE) {
+			loaderBE.disassemble();
+		} else {
+			this.entity.disassemble();
+		}
+	}
+
 	public enum LoadingHead {
 		RAM_HEAD,
 		WORM_HEAD,

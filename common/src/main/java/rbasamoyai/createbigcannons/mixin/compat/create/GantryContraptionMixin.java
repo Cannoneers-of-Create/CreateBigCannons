@@ -60,4 +60,13 @@ public abstract class GantryContraptionMixin extends TranslatingContraption impl
 
 	@Override public Map<BlockPos, BlockState> createbigcannons$getEncounteredBlocks() { return this.encounteredBlocks; }
 
+	@Override
+	public boolean createbigcannons$blockBreaksDisassembly(Level level, BlockPos pos, BlockState newState) {
+		return HasFragileContraption.defaultBlockBreaksAssembly(level, pos, newState, this);
+	}
+
+	@Override public boolean createbigcannons$shouldCheckFragility() { return HasFragileContraption.defaultShouldCheck(); }
+
+	@Override public void createbigcannons$fragileDisassemble() { this.entity.disassemble(); }
+
 }

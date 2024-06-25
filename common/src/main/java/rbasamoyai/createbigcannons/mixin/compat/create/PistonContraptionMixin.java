@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
 
+import static com.simibubi.create.content.contraptions.piston.MechanicalPistonBlock.isPiston;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,6 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
+import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlockEntity;
 import com.simibubi.create.content.contraptions.piston.PistonContraption;
 
 import net.minecraft.core.BlockPos;
@@ -92,6 +95,26 @@ public abstract class PistonContraptionMixin extends TranslatingContraption impl
 	private BlockState createbigcannons$collectExtensions$1(Level instance, BlockPos pos, @Local Direction direction, @Local(ordinal = 0) BlockPos posArg) {
 		BlockState state = instance.getBlockState(pos);
 		return pos.equals(posArg) ? state : ContraptionRemix.getInnerCannonState(instance, state, pos, direction);
+	}
+
+	@Override
+	public boolean createbigcannons$blockBreaksDisassembly(Level level, BlockPos pos, BlockState newState) {
+		BlockPos pistonPos = this.anchor.relative(this.orientation, -1);
+		if (pos.equals(pistonPos) && isPiston(level.getBlockState(pos)))
+			return false;
+		return HasFragileContraption.defaultBlockBreaksAssembly(level, pos, newState, this);
+	}
+
+	@Override public boolean createbigcannons$shouldCheckFragility() { return HasFragileContraption.defaultShouldCheck(); }
+
+	@Override
+	public void createbigcannons$fragileDisassemble() {
+		BlockPos pistonPos = this.anchor.relative(this.orientation, -1);
+		if (this.world.getBlockEntity(pistonPos) instanceof MechanicalPistonBlockEntity pistonBE) {
+			pistonBE.disassemble();
+		} else {
+			this.entity.disassemble();
+		}
 	}
 
 }

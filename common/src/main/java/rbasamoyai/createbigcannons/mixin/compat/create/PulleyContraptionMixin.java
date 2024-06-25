@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 import com.simibubi.create.content.contraptions.pulley.PulleyBlockEntity;
 import com.simibubi.create.content.contraptions.pulley.PulleyContraption;
@@ -49,5 +50,25 @@ public abstract class PulleyContraptionMixin extends TranslatingContraption impl
     @Override public Set<BlockPos> createbigcannons$getCannonLoadingColliders() { return this.colliderBlocks; }
 
 	@Override public Map<BlockPos, BlockState> createbigcannons$getEncounteredBlocks() { return this.encounteredBlocks; }
+
+	@Override
+	public boolean createbigcannons$blockBreaksDisassembly(Level level, BlockPos pos, BlockState newState) {
+		BlockPos pos1 = this.anchor.above(((PulleyContraption) (Object) this).getInitialOffset() + 1);
+		if (pos.equals(pos1) && AllBlocks.ROPE_PULLEY.has(level.getBlockState(pos1)))
+			return false;
+		return HasFragileContraption.defaultBlockBreaksAssembly(level, pos, newState, this);
+	}
+
+	@Override public boolean createbigcannons$shouldCheckFragility() { return HasFragileContraption.defaultShouldCheck(); }
+
+	@Override
+	public void createbigcannons$fragileDisassemble() {
+		BlockPos pulleyPos = this.anchor.above(((PulleyContraption) (Object) this).getInitialOffset() + 1);
+		if (this.world.getBlockEntity(pulleyPos) instanceof PulleyBlockEntity pulleyBE) {
+			pulleyBE.disassemble();
+		} else {
+			this.entity.disassemble();
+		}
+	}
 
 }
