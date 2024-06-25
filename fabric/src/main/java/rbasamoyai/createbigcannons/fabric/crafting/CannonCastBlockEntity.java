@@ -95,7 +95,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 
 	@Override
 	protected void leakContents() {
-		FluidStack fstack = TransferUtil.extractAnyFluid(this.fluid, 20);
+		FluidStack fstack = TransferUtil.extractAnyFluid(this.fluid, 1620);
 		if (!fstack.isEmpty()) {
 			if (this.leakage.isEmpty()) {
 				this.leakage = fstack;
@@ -103,10 +103,10 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 				this.leakage.setAmount(this.leakage.getAmount() + fstack.getAmount());
 			}
 		}
-		if (this.leakage.getAmount() >= 1250) {
+		if (this.leakage.getAmount() >= 121500) {
 			net.minecraft.world.level.material.Fluid leakFluid = this.leakage.getFluid();
 			this.level.setBlock(this.worldPosition.below(), leakFluid.defaultFluidState().createLegacyBlock(), 11);
-			this.leakage.setAmount(this.leakage.getAmount() - 1000);
+			this.leakage.setAmount(this.leakage.getAmount() - 121500);
 		}
 	}
 
