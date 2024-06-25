@@ -132,10 +132,10 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 				this.leakage.setAmount(this.leakage.getAmount() + fstack.getAmount());
 			}
 		}
-		if (this.leakage.getAmount() >= 1250) {
+		if (this.leakage.getAmount() >= 1500) {
 			net.minecraft.world.level.material.Fluid leakFluid = this.leakage.getFluid();
 			this.level.setBlock(this.worldPosition.below(), leakFluid.defaultFluidState().createLegacyBlock(), 11);
-			this.leakage.setAmount(this.leakage.getAmount() - 1000);
+			this.leakage.setAmount(this.leakage.getAmount() - 1500);
 		}
 	}
 

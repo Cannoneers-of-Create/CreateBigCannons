@@ -153,6 +153,7 @@ Fixed:
 - Fixed intersection loading occurring when disabled by using pistons and pulleys
 - Fixed cooldown loading involving rapidly disassembling quick-fire big cannons and autocannons
 - Fixed partial block damage display
+- Fixed cannon cast leakage duplication
 
 ===
 
