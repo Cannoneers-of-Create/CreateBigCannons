@@ -28,7 +28,6 @@ public class APShellProjectile extends FuzedBigCannonProjectile {
 		this.level.explode(null, this.indirectArtilleryFire(), null, this.getX(), this.getY(), this.getZ(),
 			this.getAllProperties().explosion().explosivePower(), false,
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
-		this.discard();
 	}
 
 	@Override

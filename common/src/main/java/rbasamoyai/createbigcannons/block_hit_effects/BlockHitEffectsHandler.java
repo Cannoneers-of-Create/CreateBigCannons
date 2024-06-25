@@ -16,23 +16,23 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.BlockDataHolder;
+import rbasamoyai.createbigcannons.base.tag_utils.TypeAndTagDataHolder;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BlockHitEffectsHandler {
 
-	private static final BlockDataHolder<BlockHitEffect> BLOCKS = new BlockDataHolder<>();
-	private static final BlockDataHolder<BlockHitEffect> FLUIDS = new BlockDataHolder<>();
+	private static final TypeAndTagDataHolder<Block, BlockHitEffect> BLOCKS = new TypeAndTagDataHolder<>(CBCRegistryUtils.getBlockRegistry());
+	private static final TypeAndTagDataHolder<Block, BlockHitEffect> FLUIDS = new TypeAndTagDataHolder<>(CBCRegistryUtils.getBlockRegistry());
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
 		public static final ReloadListener BLOCKS_INSTANCE = new ReloadListener("block", BLOCKS);
 		public static final ReloadListener FLUIDS_INSTANCE = new ReloadListener("fluid", FLUIDS);
 
-		private final BlockDataHolder<BlockHitEffect> holder;
+		private final TypeAndTagDataHolder<Block, BlockHitEffect> holder;
 
-		ReloadListener(String suffix, BlockDataHolder<BlockHitEffect> holder) {
+		ReloadListener(String suffix, TypeAndTagDataHolder<Block, BlockHitEffect> holder) {
 			super(GSON, "block_hit_effects/" + suffix);
 			this.holder = holder;
 		}
@@ -54,7 +54,7 @@ public class BlockHitEffectsHandler {
 						Block block = CBCRegistryUtils.getOptionalBlock(loc).orElseThrow(() -> {
 							return new JsonSyntaxException("Unknown block '" + loc + "'");
 						});
-						this.holder.addBlockData(block, BlockHitEffect.fromJson(el.getAsJsonObject()));
+						this.holder.addData(block, BlockHitEffect.fromJson(el.getAsJsonObject()));
 					}
 				} catch (Exception e) {
 					CreateBigCannons.LOGGER.warn("Exception loading block hit effects: {}", e.getMessage());

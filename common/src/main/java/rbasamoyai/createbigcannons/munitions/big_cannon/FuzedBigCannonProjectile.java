@@ -42,10 +42,15 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	}
 
 	@Override
-	protected void onImpact(HitResult result, boolean stopped) {
+	protected boolean onImpact(HitResult result, boolean stopped) {
 		super.onHit(result);
 		boolean baseFuze = this.getFuzeProperties().baseFuze();
-		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped, baseFuze))) this.detonate();
+		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped, baseFuze))) {
+			this.detonate();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Nonnull protected abstract BigCannonFuzePropertiesComponent getFuzeProperties();

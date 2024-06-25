@@ -43,9 +43,14 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	}
 
 	@Override
-	protected void onImpact(HitResult result, boolean stopped) {
+	protected boolean onImpact(HitResult result, boolean stopped) {
 		super.onImpact(result, stopped);
-		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped, false))) this.detonate();
+		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped, false))) {
+			this.detonate();
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	@Override
@@ -66,7 +71,6 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 		CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.FLAK_BURST.get(), this.position(), oldDelta,
 			properties.flakBurst().burstProjectileCount(), properties.flakBurst().burstSpread());
-		this.discard();
 	}
 
 	public void setFuze(ItemStack fuze) { this.fuze = fuze; }

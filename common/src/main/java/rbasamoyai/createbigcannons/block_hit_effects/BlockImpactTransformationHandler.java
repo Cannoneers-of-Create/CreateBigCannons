@@ -14,13 +14,13 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.BlockDataHolder;
+import rbasamoyai.createbigcannons.base.tag_utils.TypeAndTagDataHolder;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BlockImpactTransformationHandler {
 
-	private static final BlockDataHolder<BlockTransformation> TRANSFORMS = new BlockDataHolder<>();
+	private static final TypeAndTagDataHolder<Block, BlockTransformation> TRANSFORMS = new TypeAndTagDataHolder<>(CBCRegistryUtils.getBlockRegistry());
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
@@ -45,17 +45,16 @@ public class BlockImpactTransformationHandler {
 						Block block = CBCRegistryUtils.getOptionalBlock(loc).orElseThrow(() -> {
 							return new JsonSyntaxException("Unknown block '" + loc + "'");
 						});
-						TRANSFORMS.addBlockData(block, BlockTransformation.fromJson(el.getAsJsonObject()));
+						TRANSFORMS.addData(block, BlockTransformation.fromJson(el.getAsJsonObject()));
 					}
 				} catch (Exception e) {
 					CreateBigCannons.LOGGER.warn("Exception loading block impact transforms: {}", e.getMessage());
 				}
 			}
-			int x = 0;
 		}
 	}
 
-	public static void loadTags() { TRANSFORMS.loadTags(true); }
+	public static void loadTags() { TRANSFORMS.loadTags(); }
 
 	public static BlockState transformBlock(BlockState blockState) {
 		BlockTransformation transform = TRANSFORMS.getData(blockState.getBlock());

@@ -4,7 +4,6 @@ import com.mojang.math.Constants;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
@@ -93,30 +92,36 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	public void setLifetime(int lifetime) { this.ageRemaining = lifetime; }
 
 	@Override
-	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
-		if (this.level instanceof ServerLevel) {
-			BlockPos pos = result.getBlockPos();
-			if (state.getDestroySpeed(this.level, pos) == -1) return;
+	protected boolean onDestroyBlock(BlockState state, BlockHitResult result) {
+		BlockPos pos = result.getBlockPos();
+		if (state.getDestroySpeed(this.level, pos) == -1)
+			return true;
 
-			Vec3 curVel = this.getDeltaMovement();
-			double curPom = this.getProjectileMass() * curVel.length();
-			double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, pos, true) * 10;
+		Vec3 curVel = this.getDeltaMovement();
+		double velMag = curVel.length();
+		double curPom = this.getProjectileMass() * velMag;
+		double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, pos, true) * 10;
+		if (!this.level.isClientSide)
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
 
-			if (curPom > hardness) {
-				double startMass = this.getProjectileMass();
-				this.setDeltaMovement(curVel.normalize().scale(Math.max(curPom - hardness, 0) / startMass));
+		if (curPom > hardness) {
+			float newMass = (float) Math.max(curPom - hardness, 0) / (float) velMag;
+			if (Float.isFinite(newMass)) {
+				this.setProjectileMass(newMass);
+				return false;
 			} else {
-				this.onImpact(result, false);
-				this.discard();
+				return true;
 			}
+		} else {
+			this.onImpact(result, false);
+			return true;
 		}
 	}
 
 	@Override
-	protected void onImpact(HitResult result, boolean stopped) {
+	protected boolean onImpact(HitResult result, boolean stopped) {
 		super.onImpact(result, stopped);
-		if (stopped && !this.isRemoved()) this.discard();
+		return stopped;
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }

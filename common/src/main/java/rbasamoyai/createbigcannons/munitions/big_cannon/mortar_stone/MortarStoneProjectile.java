@@ -44,7 +44,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
     }
 
     @Override
-    protected void onImpact(HitResult result, boolean stopped) {
+    protected boolean onImpact(HitResult result, boolean stopped) {
         super.onImpact(result, stopped);
         if (!this.level.isClientSide) {
             Vec3 hitLoc = result.getLocation();
@@ -52,8 +52,8 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 				hitLoc.x, hitLoc.y, hitLoc.z, this.getAllProperties().explosion().explosivePower(),
 				CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 			CreateBigCannons.handleCustomExplosion(this.level, explosion);
-            this.tooManyCharges = true;
         }
+		return true;
     }
 
 	@Override protected double overPenetrationPower(double hardness, double curPom) { return 0; }

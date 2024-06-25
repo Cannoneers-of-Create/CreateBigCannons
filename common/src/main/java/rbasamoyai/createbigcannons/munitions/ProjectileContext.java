@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.munitions;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,6 +13,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
+import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
 
 public class ProjectileContext {
 
@@ -19,6 +22,7 @@ public class ProjectileContext {
 	private final Set<Entity> hitEntities = new LinkedHashSet<>();
 	private final CBCCfgMunitions.GriefState griefState;
 	private final Map<BlockPos, Float> queuedExplosions = new HashMap<>();
+	private final List<ClientboundPlayBlockHitEffectPacket> effects = new LinkedList<>();
 
 	public ProjectileContext(AbstractCannonProjectile projectile, CBCCfgMunitions.GriefState griefState) {
 		this.collisionContext = CollisionContext.of(projectile);
@@ -36,5 +40,8 @@ public class ProjectileContext {
 
 	public void queueExplosion(BlockPos pos, float power) { this.queuedExplosions.put(pos, power); }
 	public Map<BlockPos, Float> getQueuedExplosions() { return this.queuedExplosions; }
+
+	public void addPlayedEffect(ClientboundPlayBlockHitEffectPacket packet) { this.effects.add(packet); }
+	public List<ClientboundPlayBlockHitEffectPacket> getPlayedEffects() { return this.effects; }
 
 }

@@ -53,6 +53,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	protected int inGroundTime = 0;
 	protected float damage;
 	protected int inFluidTime = 0;
+	protected int penetrationTime = 0;
 	@Nullable protected Vec3 nextVelocity = null;
 	@Nullable protected Vec3 orientation = null;
 
@@ -115,6 +116,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 			if (this.inFluidTime > 0)
 				--this.inFluidTime;
+			if (this.penetrationTime > 0)
+				--this.penetrationTime;
 
 			if (this.level instanceof ServerLevel slevel && !this.isRemoved()) {
 				if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
@@ -147,94 +150,86 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		ProjectileContext projCtx = new ProjectileContext(this, CBCConfigs.SERVER.munitions.damageRestriction.get());
 
 		Vec3 pos = this.position();
-		Vec3 start = pos;
+		Vec3 currentStart = pos;
 		double reach = Math.max(this.getBbWidth(), this.getBbHeight()) * 0.5;
 
 		double t = 1;
 		int MAX_ITER = 100;
-		Vec3 accel = this.getForces(pos, this.getDeltaMovement());
-		Vec3 vel = this.getDeltaMovement().add(accel);
-		Vec3 finalEnd = start.add(vel);
-		double velMag = vel.length();
+		Vec3 originalVel = this.getDeltaMovement();
+		Vec3 accel = this.getForces(pos, originalVel);
+		Vec3 trajectory = originalVel.add(accel);
+		Vec3 finalEnd = pos.add(trajectory);
+		double velMag = trajectory.length();
+		double vmRecip = 1 / velMag;
 
-		Vec3 fluidExplosionPos = null;
-		BlockState fluidExplosionState = null;
+		boolean shouldRemove = false;
+		boolean stopped = false;
+		boolean bounced = false;
 
 		for (int p = 0; p < MAX_ITER; ++p) {
-			boolean breakEarly = false;
-			Vec3 vel1 = vel.scale(t);
-			if (vel1.lengthSqr() < 1e-4d) break;
+			if (velMag * t < 1e-2d)
+				break;
 
-			Vec3 currentEnd = start.add(vel1);
-			BlockHitResult bResult = this.level.clip(new ClipContext(start, currentEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this));
-			if (bResult.getType() != HitResult.Type.MISS)
-				currentEnd = bResult.getLocation();
+			Vec3 currentEnd = currentStart.add(trajectory.scale(t));
+			BlockHitResult blockResult = this.level.clip(new ClipContext(currentStart, currentEnd, ClipContext.Block.COLLIDER,
+				ClipContext.Fluid.NONE, this));
+			if (blockResult.getType() != HitResult.Type.MISS)
+				currentEnd = blockResult.getLocation();
+			Vec3 disp = currentEnd.subtract(currentStart);
 
-			AABB currentMovementRegion = this.getBoundingBox().expandTowards(currentEnd.subtract(start)).inflate(1).move(start.subtract(pos));
+			AABB currentMovementRegion = this.getBoundingBox().expandTowards(disp).inflate(1).move(currentStart.subtract(pos));
 
-			Vec3 endStart = start;
+			Vec3 endStart = currentStart;
 			Vec3 endCopy = currentEnd;
 			AABB thisBB = this.getBoundingBox();
-			for (Entity target : this.level.getEntities(this, currentMovementRegion, e -> {
-				if (projCtx.hasHitEntity(e) || !this.canHitEntity(e)) return false;
-				AABB bb = e.getBoundingBox();
-				return bb.intersects(thisBB) || bb.inflate(reach).clip(endStart, endCopy).isPresent();
-			})) {
-				projCtx.addEntity(target);
+			for (Entity target : this.level.getEntities(this, currentMovementRegion)) {
+				if (projCtx.hasHitEntity(target) || !this.canHitEntity(target))
+					continue;
+				AABB targetBB = target.getBoundingBox();
+				if (targetBB.intersects(thisBB) || targetBB.inflate(reach).clip(endStart, endCopy).isPresent())
+					projCtx.addEntity(target);
 			}
 
-			Vec3 hitLoc = currentEnd;
-			Vec3 disp = hitLoc.subtract(start);
-			t -= disp.length() / velMag;
-			start = hitLoc;
-			if (bResult.getType() != HitResult.Type.MISS) {
-				BlockPos bpos = bResult.getBlockPos().immutable();
+			currentStart = currentEnd;
+			t -= disp.length() * vmRecip;
+			if (blockResult.getType() != HitResult.Type.MISS) {
+				BlockPos bpos = blockResult.getBlockPos().immutable();
 				BlockState state = this.level.getChunkAt(bpos).getBlockState(bpos);
 
-				boolean flag1 = projCtx.getLastState().isAir();
-				if (flag1 && this.tryBounceOffBlock(state, bResult)) {
-					this.setDeltaMovement(vel.scale(1 - t));
-					breakEarly = true;
-				} else {
+				boolean hittingSurface = projCtx.getLastState().isAir() && this.penetrationTime == 0;
+				bounced = hittingSurface && this.tryBounceOffBlock(state, blockResult);
+				if (!this.level.isClientSide) {
+					Vec3 effectNormal = bounced && this.nextVelocity != null ? this.nextVelocity : originalVel.reverse();
+					projCtx.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state, this.getType(), bounced, true,
+						currentEnd.x, currentEnd.y, currentEnd.z, (float) effectNormal.x, (float) effectNormal.y,
+						(float) effectNormal.z));
+				}
+				if (!bounced) {
 					projCtx.setLastState(state);
 
 					double startMass = this.getProjectileMass();
 					double curPom = startMass * velMag;
 					double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, bpos, true);
-
-					if (!this.level.isClientSide) {
-						Vec3 vel2 = this.getDeltaMovement();
-						Vec3 effectNormal = vel2.reverse();
-						ClientboundPlayBlockHitEffectPacket packet = new ClientboundPlayBlockHitEffectPacket(state,
-							this.getType(), false, true, currentEnd.x, currentEnd.y, currentEnd.z, (float) effectNormal.x,
-							(float) effectNormal.y, (float) effectNormal.z);
-						NetworkPlatform.sendToClientTracking(packet, this);
-					}
 					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, bpos) == -1 || curPom < hardness) {
 						this.nextVelocity = Vec3.ZERO;
-						this.setDeltaMovement(vel.scale(1 - t));
-						this.onImpact(bResult, true);
-						breakEarly = true;
+						shouldRemove = this.onImpact(blockResult, true);
+						stopped = true;
 					} else {
-						state.onProjectileHit(this.level, state, bResult, this);
-						this.onDestroyBlock(state, bResult);
-						if (this.isRemoved()) {
-							breakEarly = true;
+						state.onProjectileHit(this.level, state, blockResult, this);
+						if (this.onDestroyBlock(state, blockResult) || this.onImpact(blockResult, false)) {
+							shouldRemove = true;
 						} else {
-							this.onImpact(bResult, false);
-							if (this.isRemoved()) {
-								breakEarly = true;
-							} else {
-								double f = this.overPenetrationPower(hardness, curPom);
-								if (flag1 && f > 0) {
-									projCtx.queueExplosion(bpos, (float) f);
-								}
-							}
+							double f = this.overPenetrationPower(hardness, curPom);
+							if (hittingSurface && f > 0)
+								projCtx.queueExplosion(bpos, (float) f);
 						}
 					}
+					if (!state.isAir())
+						this.penetrationTime = 2;
 				}
 			}
-			if (this.onClip(projCtx, start) || breakEarly || t <= 0) {
+			shouldRemove |= this.onClip(projCtx, currentStart);
+			if (shouldRemove || stopped || t <= 0) {
 				finalEnd = currentEnd;
 				break;
 			}
@@ -242,43 +237,47 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 		BlockHitResult fluidResult = this.level.clip(new ClipContext(pos, finalEnd, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this));
 		if (fluidResult.getType() != HitResult.Type.MISS) {
-			BlockPos bPos = fluidResult.getBlockPos();
-			BlockState state = this.level.getBlockState(bPos);
+			BlockPos fluidPos = fluidResult.getBlockPos();
+			BlockState state = this.level.getBlockState(fluidPos);
 			if (state.getBlock() instanceof LiquidBlock) {
-				fluidExplosionPos = fluidResult.getLocation();
-				fluidExplosionState = state;
+				if (this.inFluidTime <= 0) {
+					Vec3 effectNormal = originalVel.reverse();
+					Vec3 fluidExplosionPos = fluidResult.getLocation();
+					projCtx.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state, this.getType(), true, false,
+						fluidExplosionPos.x, fluidExplosionPos.y, fluidExplosionPos.z, (float) effectNormal.x,
+						(float) effectNormal.y, (float) effectNormal.z));
+				}
+				this.inFluidTime = 5;
 			}
 		}
 
-		for (Entity e : projCtx.hitEntities()) this.onHitEntity(e);
+		for (Entity e : projCtx.hitEntities())
+			this.onHitEntity(e);
 
-		Vec3 oldVel = this.getDeltaMovement();
-		if (!this.level.isClientSide && projCtx.griefState() != GriefState.NO_DAMAGE) {
-			for (Map.Entry<BlockPos, Float> queued : projCtx.getQueuedExplosions().entrySet()) {
-				BlockPos bpos = queued.getKey();
-				ImpactExplosion explosion = new ImpactExplosion(this.level, this, this.indirectArtilleryFire(), bpos.getX() + 0.5,
-					bpos.getY() + 0.5, bpos.getZ() + 0.5, queued.getValue(), Explosion.BlockInteraction.DESTROY);
-				CreateBigCannons.handleCustomExplosion(this.level, explosion);
+		if (!this.level.isClientSide) {
+			if (projCtx.griefState() != GriefState.NO_DAMAGE) {
+				Vec3 oldVel = this.getDeltaMovement();
+				for (Map.Entry<BlockPos, Float> queued : projCtx.getQueuedExplosions().entrySet()) {
+					BlockPos bpos = queued.getKey();
+					ImpactExplosion explosion = new ImpactExplosion(this.level, this, this.indirectArtilleryFire(), bpos.getX() + 0.5,
+						bpos.getY() + 0.5, bpos.getZ() + 0.5, queued.getValue(), Explosion.BlockInteraction.DESTROY);
+					CreateBigCannons.handleCustomExplosion(this.level, explosion);
+				}
+				this.setDeltaMovement(oldVel);
 			}
+			for (ClientboundPlayBlockHitEffectPacket pkt : projCtx.getPlayedEffects())
+				NetworkPlatform.sendToClientTracking(pkt, this);
 		}
-		if (!this.level.isClientSide && fluidExplosionPos != null && fluidExplosionState != null) {
-			if (this.inFluidTime <= 0) {
-				Vec3 vel1 = this.getDeltaMovement();
-				Vec3 effectNormal = vel1.reverse();
-				ClientboundPlayBlockHitEffectPacket packet = new ClientboundPlayBlockHitEffectPacket(fluidExplosionState,
-					this.getType(), true, false, fluidExplosionPos.x, fluidExplosionPos.y, fluidExplosionPos.z, (float) effectNormal.x,
-					(float) effectNormal.y, (float) effectNormal.z);
-				NetworkPlatform.sendToClientTracking(packet, this);
-			}
-			this.inFluidTime = 5;
-		}
-		this.setDeltaMovement(oldVel);
+		if (stopped || bounced)
+			this.setDeltaMovement(trajectory.scale(1 - t));
+		if (shouldRemove)
+			this.discard();
 	}
 
 	/**
 	 * @param ctx
 	 * @param pos
-	 * @return true to stop iterating, false otherwise
+	 * @return true to remove the entity, false otherwise
 	 */
 	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
 		return false;
@@ -305,25 +304,26 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		Vec3 normal = new Vec3(result.getDirection().step());
 		double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
 		this.nextVelocity = oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity));
-		if (!this.level.isClientSide) {
-			Vec3 pos = result.getLocation();
-			Vec3 effectNormal = bounce == BounceType.RICOCHET ? this.nextVelocity : oldVel;
-			ClientboundPlayBlockHitEffectPacket packet = new ClientboundPlayBlockHitEffectPacket(state, this.getType(),
-				true, true, pos.x, pos.y, pos.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z);
-			NetworkPlatform.sendToClientTracking(packet, this);
-		}
 		return true;
 	}
 
-	/** Use for fuzes and any other effects */
-	protected void onImpact(HitResult result, boolean stopped) {
+	/**
+	 * Use for fuzes and any other effects
+	 *
+	 * @return true if the entity should be discarded
+	 */
+	protected boolean onImpact(HitResult result, boolean stopped) {
 		if (result.getType() == HitResult.Type.BLOCK) {
 			BlockState state = this.level.getBlockState(((BlockHitResult) result).getBlockPos());
 			state.onProjectileHit(this.level, state, (BlockHitResult) result, this);
 		}
+		return false;
 	}
 
-	protected abstract void onDestroyBlock(BlockState state, BlockHitResult result);
+	/**
+	 * @return true if the entity should be discarded
+	 */
+	protected abstract boolean onDestroyBlock(BlockState state, BlockHitResult result);
 
 	protected void onHitEntity(Entity entity) {
 		if (this.getProjectileMass() <= 0) return;

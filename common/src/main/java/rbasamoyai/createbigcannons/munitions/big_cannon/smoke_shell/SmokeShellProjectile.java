@@ -35,7 +35,6 @@ public class SmokeShellProjectile extends FuzedBigCannonProjectile {
 		smoke.setDuration(properties.smokeDuration());
 		smoke.setSize(properties.smokeScale());
 		this.level.addFreshEntity(smoke);
-		this.discard();
 	}
 
 	@Override

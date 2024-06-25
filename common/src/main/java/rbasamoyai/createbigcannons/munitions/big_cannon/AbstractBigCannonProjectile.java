@@ -110,7 +110,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	public abstract BlockState getRenderedBlockState();
 
 	@Override
-	protected void onDestroyBlock(BlockState state, BlockHitResult result) {
+	protected boolean onDestroyBlock(BlockState state, BlockHitResult result) {
 		double mass = this.getProjectileMass();
 		Vec3 accel = this.getForces(this.position(), this.getDeltaMovement());
 		Vec3 curVel = this.getDeltaMovement().add(accel);
@@ -123,6 +123,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 
 		if (!this.level.isClientSide())
 			this.level.setBlock(result.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+		return false;
 	}
 
 	@Override
