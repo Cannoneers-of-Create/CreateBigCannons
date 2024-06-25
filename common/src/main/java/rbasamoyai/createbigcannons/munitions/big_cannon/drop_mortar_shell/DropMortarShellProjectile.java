@@ -34,7 +34,6 @@ public class DropMortarShellProjectile extends FuzedBigCannonProjectile implemen
 			false, Explosion.BlockInteraction.NONE);
 		this.level.explode(null, this.indirectArtilleryFire(), null, pos.x, pos.y, pos.z, properties.blockDamagingExplosivePower(),
 			false, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
-		this.discard();
 	}
 
 	@Nonnull

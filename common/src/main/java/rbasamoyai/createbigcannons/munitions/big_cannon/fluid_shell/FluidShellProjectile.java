@@ -63,7 +63,6 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 			burst.setFluidStack(this.fluidStack.copy(convertCount));
 			burst.setBlobSize(blobSize);
 		}
-		this.discard();
 	}
 
 	@Override

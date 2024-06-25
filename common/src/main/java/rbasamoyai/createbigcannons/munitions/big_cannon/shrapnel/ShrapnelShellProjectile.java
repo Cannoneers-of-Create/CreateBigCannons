@@ -36,7 +36,6 @@ public class ShrapnelShellProjectile extends FuzedBigCannonProjectile {
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 		CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.SHRAPNEL_BURST.get(), this.position(), oldDelta,
 			properties.shrapnelBurst().burstProjectileCount(), properties.shrapnelBurst().burstSpread());
-		this.discard();
 	}
 
 	@Override
