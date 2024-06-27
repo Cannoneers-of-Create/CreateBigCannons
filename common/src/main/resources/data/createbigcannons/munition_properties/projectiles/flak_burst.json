@@ -7,5 +7,8 @@
   "gravity": -0.025,
   "drag": 0,
   "knockback": 0.025,
-  "lifetime": 5
+  "lifetime": 5,
+  "penetration": 0,
+  "toughness": 0,
+  "deflection": 0
 }

@@ -16,6 +16,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
+import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
@@ -44,10 +45,10 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
     }
 
     @Override
-    protected boolean onImpact(HitResult result, boolean stopped) {
-        super.onImpact(result, stopped);
+    protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
+        super.onImpact(hitResult, impactResult, projectileContext);
         if (!this.level.isClientSide) {
-            Vec3 hitLoc = result.getLocation();
+            Vec3 hitLoc = hitResult.getLocation();
 			MortarStoneExplosion explosion = new MortarStoneExplosion(this.level, null, this.indirectArtilleryFire(),
 				hitLoc.x, hitLoc.y, hitLoc.z, this.getAllProperties().explosion().explosivePower(),
 				CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
@@ -55,8 +56,6 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
         }
 		return true;
     }
-
-	@Override protected double overPenetrationPower(double hardness, double curPom) { return 0; }
 
 	@Override
     public void readAdditionalSaveData(CompoundTag tag) {

@@ -4,29 +4,43 @@ import javax.annotation.Nonnull;
 
 import com.mojang.math.Constants;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesProvider;
+import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
+import rbasamoyai.createbigcannons.munitions.ImpactExplosion;
+import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
+import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class AbstractBigCannonProjectile extends AbstractCannonProjectile {
 
@@ -110,30 +124,99 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	public abstract BlockState getRenderedBlockState();
 
 	@Override
-	protected boolean onDestroyBlock(BlockState state, BlockHitResult result) {
-		double mass = this.getProjectileMass();
+	protected ImpactResult calculateBlockPenetration(ProjectileContext projectileContext, BlockState state, BlockHitResult blockHitResult) {
+		BlockPos pos = blockHitResult.getBlockPos();
+		Vec3 hitLoc = blockHitResult.getLocation();
+
+		BallisticPropertiesComponent ballistics = this.getBallisticProperties();
+		BlockArmorPropertiesProvider blockArmor = BlockArmorPropertiesHandler.getProperties(state);
+		boolean unbreakable = projectileContext.griefState() == CBCCfgMunitions.GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, pos) == -1;
+
 		Vec3 accel = this.getForces(this.position(), this.getDeltaMovement());
 		Vec3 curVel = this.getDeltaMovement().add(accel);
-		double mag = curVel.length();
-		double bonus = 1 + Math.max(0, (mag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
+
+		Vec3 normal = CBCUtils.getSurfaceNormalVector(this.level, blockHitResult);
+		double incidence = Math.max(0, curVel.normalize().dot(normal.reverse()));
+		double velMag = curVel.length();
+		double mass = this.getProjectileMass();
+		double bonusMomentum = 1 + Math.max(0, (velMag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
 			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
+		double incidentVel = velMag * incidence;
+		double momentum = mass * incidentVel * bonusMomentum;
 
-		double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, result.getBlockPos(), true) / bonus;
-		this.setProjectileMass((float) Math.max(mass - hardness, 0));
+		double toughness = blockArmor.toughness(this.level, state, pos, true);
+		double toughnessPenalty = toughness - momentum;
+		double hardnessPenalty = blockArmor.hardness(this.level, state, pos, true) - ballistics.penetration();
 
-		if (!this.level.isClientSide())
-			this.level.setBlock(result.getBlockPos(), Blocks.AIR.defaultBlockState(), 3);
+		double projectileDeflection = ballistics.deflection();
+		double baseChance = CBCConfigs.SERVER.munitions.baseProjectileBounceChance.getF();
+		double bounceChance = projectileDeflection < 1e-2d || incidence > projectileDeflection ? 0 : Math.max(baseChance, 1 - incidence / projectileDeflection);
+
+		boolean surfaceImpact = this.canHitSurface();
+		boolean canBounce = CBCConfigs.SERVER.munitions.projectilesCanBounce.get();
+		boolean blockBroken = toughnessPenalty < 1e-2d && !unbreakable;
+		ImpactResult.KinematicOutcome outcome;
+		if (surfaceImpact && canBounce && this.level.getRandom().nextDouble() < bounceChance) {
+			outcome = ImpactResult.KinematicOutcome.BOUNCE;
+		} else if (blockBroken) {
+			outcome = ImpactResult.KinematicOutcome.PENETRATE;
+		} else {
+			outcome = ImpactResult.KinematicOutcome.STOP;
+		}
+		boolean shatter = surfaceImpact && outcome != ImpactResult.KinematicOutcome.BOUNCE && hardnessPenalty > ballistics.toughness();
+		float durabilityPenalty = ((float) Math.max(0, hardnessPenalty) + 1) * (float) toughness / (float) incidentVel;
+
+		state.onProjectileHit(this.level, state, blockHitResult, this);
+		if (blockBroken) {
+			this.setProjectileMass(incidentVel < 1e-4d ? 0 : Math.max(this.getProjectileMass() - durabilityPenalty, 0));
+			this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+			if (surfaceImpact) {
+				float f = (float) toughness / (float) momentum;
+				float overPenetrationPower = f < 0.15f ? 2 - 2 * f : 0;
+				if (overPenetrationPower > 0 && outcome == ImpactResult.KinematicOutcome.PENETRATE)
+					projectileContext.queueExplosion(pos, overPenetrationPower);
+			}
+		} else {
+			if (outcome == ImpactResult.KinematicOutcome.STOP) {
+				this.setProjectileMass(0);
+			} else {
+				this.setProjectileMass(incidentVel < 1e-4d ? 0 : Math.max(this.getProjectileMass() - durabilityPenalty / 2f, 0));
+			}
+			Vec3 spallLoc = hitLoc.add(curVel.normalize().scale(2));
+			if (!this.level.isClientSide) {
+				ImpactExplosion explosion = new ImpactExplosion(this.level, this, this.indirectArtilleryFire(), spallLoc.x, spallLoc.y, spallLoc.z, 2, Explosion.BlockInteraction.NONE);
+				CreateBigCannons.handleCustomExplosion(this.level, explosion);
+			}
+			SoundType sound = state.getSoundType();
+			if (!this.level.isClientSide)
+				this.level.playSound(null, spallLoc.x, spallLoc.y, spallLoc.z, sound.getBreakSound(), SoundSource.BLOCKS,
+					sound.getVolume(), sound.getPitch());
+		}
+		if (!this.level.isClientSide) {
+			boolean bounced = outcome == ImpactResult.KinematicOutcome.BOUNCE;
+			Vec3 effectNormal;
+			if (bounced) {
+				double elasticity = 1.7f;
+				effectNormal = curVel.subtract(normal.scale(normal.dot(curVel) * elasticity));
+			} else {
+				effectNormal = curVel.reverse();
+			}
+			projectileContext.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state, this.getType(), bounced, true,
+				hitLoc.x, hitLoc.y, hitLoc.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z));
+		}
+		shatter |= this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
+		return new ImpactResult(outcome, shatter);
+	}
+
+	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
 		return false;
 	}
 
 	@Override
-	protected boolean canDeflect(BlockHitResult result) {
-		return super.canDeflect(result) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.bigCannonDeflectChance.getF();
-	}
-
-	@Override
-	protected boolean canBounceOffOf(BlockState state) {
-		return super.canBounceOffOf(state) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.bigCannonDeflectChance.getF();
+	protected void onHitEntity(Entity entity, ProjectileContext projectileContext) {
+		super.onHitEntity(entity, projectileContext);
+		this.onImpact(new EntityHitResult(entity), new ImpactResult(ImpactResult.KinematicOutcome.PENETRATE, this.getProjectileMass() <= 0),
+			projectileContext);
 	}
 
 	@Override

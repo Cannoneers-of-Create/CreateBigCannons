@@ -14,5 +14,8 @@
   "added_recoil": 1.0,
   "base_fuze": false,
   "smoke_scale": 10,
-  "smoke_duration": 300
+  "smoke_duration": 300,
+  "penetration": 0.5,
+  "toughness": 0.25,
+  "deflection": 0.70
 }

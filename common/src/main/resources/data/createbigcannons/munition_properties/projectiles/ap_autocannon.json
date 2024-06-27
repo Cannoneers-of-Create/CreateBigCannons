@@ -9,5 +9,8 @@
   "quadratic_drag": false,
   "knockback": 0.5,
   "added_recoil": 1,
-  "can_squib": true
+  "can_squib": true,
+  "penetration": 2,
+  "toughness": 0.67,
+  "deflection": 0.70
 }

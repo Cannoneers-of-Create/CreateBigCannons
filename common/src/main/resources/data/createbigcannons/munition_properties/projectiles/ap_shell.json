@@ -13,5 +13,8 @@
   "can_squib": true,
   "added_recoil": 1.0,
   "base_fuze": true,
-  "explosive_power": 5.0
+  "explosive_power": 5.0,
+  "penetration": 2,
+  "toughness": 0.67,
+  "deflection": 0.70
 }

@@ -14,5 +14,8 @@
   "base_fuze": false,
   "shrapnel_spread": 0.6,
   "shrapnel_count": 50,
-  "explosive_power": 2
+  "explosive_power": 2,
+  "penetration": 0.5,
+  "toughness": 0.25,
+  "deflection": 0.70
 }

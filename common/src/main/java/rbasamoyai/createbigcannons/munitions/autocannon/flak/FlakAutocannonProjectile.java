@@ -43,9 +43,9 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	}
 
 	@Override
-	protected boolean onImpact(HitResult result, boolean stopped) {
-		super.onImpact(result, stopped);
-		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped, false))) {
+	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
+		super.onImpact(hitResult, impactResult, projectileContext);
+		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, hitResult, impactResult, false))) {
 			this.detonate();
 			return true;
 		} else {
@@ -54,9 +54,9 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	}
 
 	@Override
-	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
-		if (super.onClip(ctx, pos)) return true;
-		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, pos, ctx, false))) {
+	protected boolean onClip(ProjectileContext ctx, Vec3 start, Vec3 end) {
+		if (super.onClip(ctx, start, end)) return true;
+		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, start, ctx, false))) {
 			this.detonate();
 			return true;
 		}

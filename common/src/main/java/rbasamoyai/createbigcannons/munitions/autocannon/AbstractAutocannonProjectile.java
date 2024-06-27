@@ -14,9 +14,15 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesProvider;
+import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.ProjectileContext;
+import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
+import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class AbstractAutocannonProjectile extends AbstractCannonProjectile {
 
@@ -43,8 +49,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			this.setXRot(this.getXRot());
 		}
 	}
-
-	@Override protected double overPenetrationPower(double hardness, double curPom) { return 0; }
 
 	@Override
 	public void tick() {
@@ -92,36 +96,68 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	public void setLifetime(int lifetime) { this.ageRemaining = lifetime; }
 
 	@Override
-	protected boolean onDestroyBlock(BlockState state, BlockHitResult result) {
-		BlockPos pos = result.getBlockPos();
-		if (state.getDestroySpeed(this.level, pos) == -1)
-			return true;
+	protected ImpactResult calculateBlockPenetration(ProjectileContext projectileContext, BlockState state, BlockHitResult blockHitResult) {
+		BlockPos pos = blockHitResult.getBlockPos();
+		Vec3 hitLoc = blockHitResult.getLocation();
 
-		Vec3 curVel = this.getDeltaMovement();
+		BallisticPropertiesComponent ballistics = this.getBallisticProperties();
+		BlockArmorPropertiesProvider blockArmor = BlockArmorPropertiesHandler.getProperties(state);
+		boolean unbreakable = projectileContext.griefState() == CBCCfgMunitions.GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, pos) == -1;
+
+		Vec3 accel = this.getForces(this.position(), this.getDeltaMovement());
+		Vec3 curVel = this.getDeltaMovement().add(accel);
+
+		Vec3 normal = CBCUtils.getSurfaceNormalVector(this.level, blockHitResult);
+		double incidence = Math.max(0, curVel.normalize().dot(normal.reverse()));
 		double velMag = curVel.length();
-		double curPom = this.getProjectileMass() * velMag;
-		double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, pos, true) * 10;
-		if (!this.level.isClientSide)
-			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), (int) Math.min(curPom, hardness), state, this.level);
+		double mass = this.getProjectileMass();
+		double bonusMomentum = 1 + Math.max(0, (velMag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
+			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
+		double momentum = mass * velMag * incidence * bonusMomentum;
 
-		if (curPom > hardness) {
-			float newMass = (float) Math.max(curPom - hardness, 0) / (float) velMag;
-			if (Float.isFinite(newMass)) {
-				this.setProjectileMass(newMass);
-				return false;
-			} else {
-				return true;
-			}
+		double hardnessPenalty = Math.max(blockArmor.hardness(this.level, state, pos, true) - ballistics.penetration(), 0);
+
+		double projectileDeflection = ballistics.deflection();
+		double baseChance = CBCConfigs.SERVER.munitions.baseProjectileBounceChance.getF();
+		double bounceChance = projectileDeflection < 1e-2d || incidence > projectileDeflection ? 0 : Math.max(baseChance, 1 - incidence / projectileDeflection);
+
+		boolean surfaceImpact = this.lastPenetratedBlock.isAir();
+		boolean canBounce = CBCConfigs.SERVER.munitions.projectilesCanBounce.get();
+		ImpactResult.KinematicOutcome outcome;
+		if (surfaceImpact && canBounce && this.level.getRandom().nextDouble() < bounceChance) {
+			outcome = ImpactResult.KinematicOutcome.BOUNCE;
 		} else {
-			this.onImpact(result, false);
-			return true;
+			outcome = ImpactResult.KinematicOutcome.STOP;
 		}
+		boolean shatter = surfaceImpact && outcome != ImpactResult.KinematicOutcome.BOUNCE && hardnessPenalty > ballistics.toughness();
+
+		if (!this.level.isClientSide) {
+			if (hardnessPenalty > 1e-2d) {
+				if (ballistics.toughness() < 1e-2d){
+					momentum = 0;
+				} else{
+					momentum *= Math.max(0.25, 1 - hardnessPenalty / ballistics.toughness());
+				}
+			}
+			if (!unbreakable)
+				CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), Math.max(Mth.ceil(momentum - hardnessPenalty), 0), state, this.level);
+			boolean bounced = outcome == ImpactResult.KinematicOutcome.BOUNCE;
+			Vec3 effectNormal;
+			if (bounced) {
+				double elasticity = 1.7f;
+				effectNormal = curVel.subtract(normal.scale(normal.dot(curVel) * elasticity));
+			} else {
+				effectNormal = curVel.reverse();
+			}
+			projectileContext.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state, this.getType(), bounced, true,
+				hitLoc.x, hitLoc.y, hitLoc.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z));
+		}
+		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
+		return new ImpactResult(outcome, true);
 	}
 
-	@Override
-	protected boolean onImpact(HitResult result, boolean stopped) {
-		super.onImpact(result, stopped);
-		return stopped;
+	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
+		return false;
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
@@ -156,16 +192,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	public void readExtraSyncData(CompoundTag tag) {
 		super.readExtraSyncData(tag);
 		this.displacement = tag.getDouble("Displacement");
-	}
-
-	@Override
-	protected boolean canDeflect(BlockHitResult result) {
-		return super.canDeflect(result) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.autocannonDeflectChance.getF();
-	}
-
-	@Override
-	protected boolean canBounceOffOf(BlockState state) {
-		return super.canBounceOffOf(state) && this.random.nextFloat() < CBCConfigs.SERVER.munitions.autocannonDeflectChance.getF();
 	}
 
 	public AutocannonAmmoType getAutocannonRoundType() { return AutocannonAmmoType.AUTOCANNON; }

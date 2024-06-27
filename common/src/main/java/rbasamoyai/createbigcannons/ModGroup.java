@@ -231,7 +231,7 @@ public class ModGroup {
 
 				CBCItems.SPRING_WIRE.asStack(),
 
-				CBCItems.RESISTANCE_INSPECTION_TOOL.asStack()));
+				CBCItems.BLOCK_ARMOR_INSPECTION_TOOL.asStack()));
 		}
 	};
 

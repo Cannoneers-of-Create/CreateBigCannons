@@ -39,10 +39,11 @@ public class BlockArmorPropertiesHandler {
 	private static final Map<TagKey<Block>, SimpleBlockArmorProperties> TAGS_TO_EVALUATE = new Object2ObjectLinkedOpenHashMap<>();
 
 	private static final Map<Block, BlockArmorPropertiesSerializer<?>> CUSTOM_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
-	private static final VariantBlockArmorProperties FALLBACK_PROPERTIES = new VariantBlockArmorProperties(new SimpleBlockArmorProperties(0), new Reference2ObjectOpenHashMap<>());
+	private static final VariantBlockArmorProperties FALLBACK_PROPERTIES = new VariantBlockArmorProperties(new SimpleBlockArmorProperties(0, 0), new Reference2ObjectOpenHashMap<>());
 
 	private static final BlockArmorPropertiesProvider FALLBACK_PROVIDER = new BlockArmorPropertiesProvider() {
-		@Override public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) { return state.getBlock().getExplosionResistance(); }
+		@Override public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) { return 1; }
+		@Override public double toughness(Level level, BlockState state, BlockPos pos, boolean recurse) { return state.getBlock().getExplosionResistance(); }
 	};
 
 	public static class BlockReloadListener extends SimpleJsonResourceReloadListener {

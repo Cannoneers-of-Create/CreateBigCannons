@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
@@ -25,11 +24,6 @@ public class SolidShotProjectile extends AbstractBigCannonProjectile {
 	@Override
 	public BlockState getRenderedBlockState() {
 		return CBCBlocks.SOLID_SHOT.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH);
-	}
-
-	@Override
-	protected boolean canDeflect(BlockHitResult result) {
-		return super.canDeflect(result) && isDeflector(this.level.getBlockState(result.getBlockPos()));
 	}
 
 	@Nonnull

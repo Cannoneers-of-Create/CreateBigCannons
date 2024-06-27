@@ -25,13 +25,24 @@ public abstract class AbstractMimickingBlockArmorProperties implements BlockArmo
         this.unitsByState = unitsByState;
     }
 
-    @Override
+	@Override
 	public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) {
 		MimickingBlockArmorUnit properties = this.unitsByState.getOrDefault(state, this.defaultUnit);
 		BlockState copiedState = this.getCopiedState(level, state, pos);
-		if (copiedState.getDestroySpeed(level, pos) == -1) return copiedState.getBlock().getExplosionResistance();
+		if (copiedState.getDestroySpeed(level, pos) == -1)
+			return 1;
 		return !recurse || this.isEmptyState(level, copiedState, state, pos) ? properties.emptyHardness()
 			: BlockArmorPropertiesHandler.getProperties(copiedState).hardness(level, copiedState, pos, false) * properties.materialHardnessMultiplier();
+	}
+
+	@Override
+	public double toughness(Level level, BlockState state, BlockPos pos, boolean recurse) {
+		MimickingBlockArmorUnit properties = this.unitsByState.getOrDefault(state, this.defaultUnit);
+		BlockState copiedState = this.getCopiedState(level, state, pos);
+		if (copiedState.getDestroySpeed(level, pos) == -1)
+			return copiedState.getBlock().getExplosionResistance();
+		return !recurse || this.isEmptyState(level, copiedState, state, pos) ? properties.emptyToughness()
+			: BlockArmorPropertiesHandler.getProperties(copiedState).toughness(level, copiedState, pos, false) * properties.materialToughnessMultiplier();
 	}
 
 	protected abstract BlockState getCopiedState(Level level, BlockState state, BlockPos pos);

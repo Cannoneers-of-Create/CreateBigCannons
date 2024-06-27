@@ -46,7 +46,7 @@ public class EntityGoggleOverlayRenderer {
 		boolean shiftKey = mc.player.isShiftKeyDown();
 
 		boolean hasGoggleInformation = entity instanceof IHaveEntityGoggleInformation;
-		boolean hasHoveringInformation = entity instanceof IHaveEntityHoverInformation hte;
+		boolean hasHoveringInformation = entity instanceof IHaveEntityHoverInformation;
 
 		boolean goggleAddedInformation = false;
 		boolean hoverAddedInformation = false;

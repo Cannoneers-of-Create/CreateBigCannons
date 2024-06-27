@@ -9,6 +9,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProject
 public class CBCCfgMunitions extends ConfigBase {
 
 	public final ConfigBool projectilesCanBounce = b(true, "projectilesCanBounce", Comments.projectilesCanBounce);
+	public final ConfigFloat baseProjectileBounceChance = f(0.33f, 0, 1, "baseProjectileBounceChance");
 	public final ConfigFloat minVelocityForPenetrationBonus = f(1, 0, "minimumVelocityForPenetrationBonus", "[in Meters per Tick]", Comments.minVelocityForPenetrationBonus);
 	public final ConfigFloat penetrationBonusScale = f(0.1f, 0, "penetrationBonusScale");
 	public final ConfigBool projectilesCanChunkload = b(true, "projectilesCanChunkload");
@@ -32,10 +33,6 @@ public class CBCCfgMunitions extends ConfigBase {
 
 	public final ConfigGroup propellant = group(0, "propellant", "Propellant");
 
-	public final ConfigGroup deflectChances = group(0, "deflectChances", "Deflection");
-	public final ConfigFloat bigCannonDeflectChance = f(0.9f, 0, 1, "bigCannonProjectileDeflectionChance", Comments.bigCannonDeflectChance);
-	public final ConfigFloat autocannonDeflectChance = f(0.2f, 0, 1, "autocannonProjectileDeflectionChance", Comments.autocannonDeflectChance);
-
 	public final ConfigGroup autocannonMunitions = group(0, "autocannonMunitions", "Autocannon Munitions");
 	public final ConfigEnum<AbstractAutocannonProjectile.TrailType> autocannonTrailType = e(AbstractAutocannonProjectile.TrailType.SHORT, "trailType");
 	public final ConfigBool allAutocannonProjectilesAreTracers = b(false, "allAutocannonProjectilesAreTracers", Comments.allAutocannonProjectilesAreTracers);
@@ -58,8 +55,6 @@ public class CBCCfgMunitions extends ConfigBase {
 				"Time it takes for a proximity fuze to arm itself.",
 				"After the fuze has been in the air for the specified arming time, it will detonate when it gets close enough to a block or entity." };
 		static String fluidBlobBlockAffectChance = "The chance of a fluid blob affecting a block in its area of effect (AOE). 0 is 0% (never), 1 is 100% (always).";
-		static String bigCannonDeflectChance = "The chance that a big cannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
-		static String autocannonDeflectChance = "The chance that an autocannon projectile deflects. 0 is 0% (never), 1 is 100% (always).";
 		static String allAutocannonProjectilesAreTracers = "Makes all shot autocannon projectiles tracers regardless if the item had a tracer tip applied. Emulates legacy behavior.";
 		static String allBigCannonProjectilesAreTracers = "Makes all shot big cannon projectiles tracers regardless if the item had a tracer tip applied.";
 		static String ammoContainerAutocannonRoundCapacity = "How many autocannon rounds the Autocannon Ammo Container can store.";

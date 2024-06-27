@@ -4,6 +4,7 @@
   "package": "rbasamoyai.createbigcannons.forge.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "client.GoggleOverlayRendererMixin"
   ],
   "mixins": [
     "AbstractCannonProjectileMixin",

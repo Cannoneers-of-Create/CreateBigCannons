@@ -17,5 +17,8 @@
   "block_damaging_explosive_power": 2,
   "mortar_power": 6,
   "mortar_spread": 1,
-  "mortar_recoil": 0.1
+  "mortar_recoil": 0.1,
+  "penetration": 0.5,
+  "toughness": 0.25,
+  "deflection": 0.70
 }

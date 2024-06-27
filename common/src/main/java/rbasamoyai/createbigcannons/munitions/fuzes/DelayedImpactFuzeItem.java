@@ -26,6 +26,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile.ImpactResult;
 
 public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 
@@ -63,8 +64,8 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result, boolean stopped, boolean baseFuze) {
-		if (baseFuze) return false;
+	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, ImpactResult impactResult, boolean baseFuze) {
+		if (baseFuze || impactResult.shouldRemove()) return false;
 		CompoundTag tag = stack.getOrCreateTag();
 		int damage = tag.contains("Damage") ? tag.getInt("Damage") : this.getFuzeDurability();
 		if (damage > 0 && !tag.contains("Activated")) {

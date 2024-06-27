@@ -64,9 +64,9 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 		if (!this.level.isClientSide && state.getDestroySpeed(this.level, pos) != -1 && this.canDestroyBlock(state)) {
 			Vec3 curVel = new Vec3(subProjectile.velocity()[0], subProjectile.velocity()[1], subProjectile.velocity()[2]);
 			double curPom = this.getProperties().ballistics().durabilityMass() * curVel.length();
-			double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, pos, true) * 10;
+			double toughness = BlockArmorPropertiesHandler.getProperties(state).toughness(this.level, state, pos, true);
 			BlockPos pos1 = pos.immutable();
-			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (int) Math.min(curPom, hardness), state, this.level, PartialBlockDamageManager::voidBlock);
+			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (int) Math.min(curPom, toughness), state, this.level, PartialBlockDamageManager::voidBlock);
 		}
 		if (this.level instanceof ServerLevel slevel) {
 			ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);

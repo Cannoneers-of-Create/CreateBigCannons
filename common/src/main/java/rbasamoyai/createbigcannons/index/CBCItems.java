@@ -12,7 +12,7 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
-import rbasamoyai.createbigcannons.block_armor_properties.InspectResistanceToolItem;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionToolItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
@@ -241,8 +241,8 @@ public class CBCItems {
 		.model((c, p) -> {})
 		.register();
 
-	public static final ItemEntry<InspectResistanceToolItem> RESISTANCE_INSPECTION_TOOL = REGISTRATE
-		.item("resistance_inspection_tool", InspectResistanceToolItem::new)
+	public static final ItemEntry<BlockArmorInspectionToolItem> BLOCK_ARMOR_INSPECTION_TOOL = REGISTRATE
+		.item("block_armor_inspection_tool", BlockArmorInspectionToolItem::new)
 		.properties(p -> p.stacksTo(1))
 		.properties(p -> p.rarity(Rarity.EPIC))
 		.register();

@@ -46,7 +46,11 @@ Additions: \
 &plus; `"tag.createbigcannons.nitro_acidifiers": "Nitro Acidifiers"` \
 &plus; `"createbigcannons.subtitle.hot_projectile_splash": "Projectile splashes"` \
 &plus; `"createbigcannons.subtitle.projectile_splash": "Projectile splashes"` \
-&plus; `"createbigcannons.subtitle.projectile_impact": "Projectile impacts"`
+&plus; `"createbigcannons.subtitle.projectile_impact": "Projectile impacts"` \
+&plus; `"debug.createbigcannons.block_armor_info": "Block Armor Info:"` \
+&plus; `"debug.createbigcannons.block_hardness": "Block Hardness: "` \
+&plus; `"debug.createbigcannons.block_toughness": "Block Toughness: "` \
+&plus; `"item.createbigcannons.block_armor_inspection_tool": "Block Armor Inspection Tool"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \
@@ -65,7 +69,9 @@ Content Changes: \
 Removals: \
 &minus; `"entity.createbigcannons.fluid_blob"` \
 &minus; `"entity.createbigcannons.grapeshot"` \
-&minus; `"entity.createbigcannons.shrapnel"`
+&minus; `"entity.createbigcannons.shrapnel"` \
+&minus; `"debug.createbigcannons.block_resistance"` \
+&minus; `"item.createbigcannons.resistance_inspection_tool"`
 
 ## 0.5.3.b → 0.5.4
 
