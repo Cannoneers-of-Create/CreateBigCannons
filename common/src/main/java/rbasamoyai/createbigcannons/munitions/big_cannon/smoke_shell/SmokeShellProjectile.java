@@ -3,11 +3,13 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell;
 import javax.annotation.Nonnull;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -25,13 +27,13 @@ public class SmokeShellProjectile extends FuzedBigCannonProjectile {
 	}
 
 	@Override
-	protected void detonate() {
+	protected void detonate(Position position) {
 		SmokeShellProperties properties = this.getAllProperties();
-		SmokeExplosion explosion = new SmokeExplosion(this.level, null, this.getX(), this.getY(), this.getZ(), 2,
+		SmokeExplosion explosion = new SmokeExplosion(this.level, null, position.x(), position.y(), position.z(), 2,
 			Explosion.BlockInteraction.NONE);
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 		SmokeEmitterEntity smoke = CBCEntityTypes.SMOKE_EMITTER.create(this.level);
-		smoke.setPos(this.position());
+		smoke.setPos(new Vec3(position.x(), position.y(), position.z()));
 		smoke.setDuration(properties.smokeDuration());
 		smoke.setSize(properties.smokeScale());
 		this.level.addFreshEntity(smoke);

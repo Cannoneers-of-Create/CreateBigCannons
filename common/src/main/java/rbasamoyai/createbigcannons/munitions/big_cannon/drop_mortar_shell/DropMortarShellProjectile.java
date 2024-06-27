@@ -2,12 +2,12 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.core.Position;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarProjectile;
@@ -27,12 +27,11 @@ public class DropMortarShellProjectile extends FuzedBigCannonProjectile implemen
 	@Override public BlockState getRenderedBlockState() { return Blocks.AIR.defaultBlockState(); }
 
 	@Override
-	protected void detonate() {
+	protected void detonate(Position position) {
 		DropMortarShellProperties properties = this.getAllProperties();
-		Vec3 pos = this.position();
-		this.level.explode(null, this.indirectArtilleryFire(), null, pos.x, pos.y, pos.z, properties.entityDamagingExplosivePower(),
+		this.level.explode(null, this.indirectArtilleryFire(), null, position.x(), position.y(), position.z(), properties.entityDamagingExplosivePower(),
 			false, Explosion.BlockInteraction.NONE);
-		this.level.explode(null, this.indirectArtilleryFire(), null, pos.x, pos.y, pos.z, properties.blockDamagingExplosivePower(),
+		this.level.explode(null, this.indirectArtilleryFire(), null, position.x(), position.y(), position.z(), properties.blockDamagingExplosivePower(),
 			false, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 	}
 

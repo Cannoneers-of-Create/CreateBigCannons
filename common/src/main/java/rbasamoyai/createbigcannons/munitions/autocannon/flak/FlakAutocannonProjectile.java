@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.core.Position;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
@@ -33,12 +34,14 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.canDetonate(fz -> fz.onProjectileTick(this.fuze, this))) this.detonate();
+		if (this.canDetonate(fz -> fz.onProjectileTick(this.fuze, this)))
+			this.detonate(this.position());
 	}
 
 	@Override
 	protected void expireProjectile() {
-		if (this.fuze.getItem() instanceof FuzeItem fuzeItem && fuzeItem.onProjectileExpiry(this.fuze, this)) this.detonate();
+		if (this.fuze.getItem() instanceof FuzeItem fuzeItem && fuzeItem.onProjectileExpiry(this.fuze, this))
+			this.detonate(this.position());
 		super.expireProjectile();
 	}
 
@@ -46,7 +49,7 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
 		super.onImpact(hitResult, impactResult, projectileContext);
 		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, hitResult, impactResult, false))) {
-			this.detonate();
+			this.detonate(hitResult.getLocation());
 			return true;
 		} else {
 			return false;
@@ -56,21 +59,21 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	@Override
 	protected boolean onClip(ProjectileContext ctx, Vec3 start, Vec3 end) {
 		if (super.onClip(ctx, start, end)) return true;
-		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, start, ctx, false))) {
-			this.detonate();
+		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, start, end, ctx, false))) {
+			this.detonate(start);
 			return true;
 		}
 		return false;
 	}
 
-	protected void detonate() {
+	protected void detonate(Position position) {
 		Vec3 oldDelta = this.getDeltaMovement();
 		FlakAutocannonProjectileProperties properties = this.getAllProperties();
-		FlakExplosion explosion = new FlakExplosion(this.level, null, this.indirectArtilleryFire(), this.getX(), this.getY(), this.getZ(),
+		FlakExplosion explosion = new FlakExplosion(this.level, null, this.indirectArtilleryFire(), position.x(), position.y(), position.z(),
 			properties.explosion().explosivePower(), CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
-		CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.FLAK_BURST.get(), this.position(), oldDelta,
-			properties.flakBurst().burstProjectileCount(), properties.flakBurst().burstSpread());
+		CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.FLAK_BURST.get(), new Vec3(position.x(), position.y(), position.z()),
+			oldDelta, properties.flakBurst().burstProjectileCount(), properties.flakBurst().burstSpread());
 	}
 
 	public void setFuze(ItemStack fuze) { this.fuze = fuze; }
