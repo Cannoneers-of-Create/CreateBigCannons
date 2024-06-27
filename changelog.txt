@@ -240,5 +240,6 @@ Fixes:
 - Fixed cannon casting not working on relog
 - Fixed incorrect display value for Mortar Stone tooltip
 - Fixed motion of Cannon Loader, Cannon Drill, and Cannon Builder
+- Fixed tracer tip crafting in table
 
 *May have issues with contraption-modifying mods such as Create: Interactive
