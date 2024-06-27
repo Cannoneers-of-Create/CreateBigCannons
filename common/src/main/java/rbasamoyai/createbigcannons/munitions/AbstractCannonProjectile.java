@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -23,20 +24,15 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.SyncsExtraDataOnAdd;
-import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -44,6 +40,7 @@ import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesH
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
 public abstract class AbstractCannonProjectile extends Projectile implements SyncsExtraDataOnAdd {
@@ -56,6 +53,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	protected int penetrationTime = 0;
 	@Nullable protected Vec3 nextVelocity = null;
 	@Nullable protected Vec3 orientation = null;
+	protected BlockState lastPenetratedBlock = Blocks.AIR.defaultBlockState();
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
@@ -163,20 +161,25 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		double vmRecip = 1 / velMag;
 
 		boolean shouldRemove = false;
-		boolean stopped = false;
-		boolean bounced = false;
+		boolean stop = false;
 
 		for (int p = 0; p < MAX_ITER; ++p) {
-			if (velMag * t < 1e-2d)
+			if (velMag * t < 1e-2d) {
+				this.lastPenetratedBlock = Blocks.AIR.defaultBlockState();
 				break;
+			}
 
 			Vec3 currentEnd = currentStart.add(trajectory.scale(t));
 			BlockHitResult blockResult = this.level.clip(new ClipContext(currentStart, currentEnd, ClipContext.Block.COLLIDER,
 				ClipContext.Fluid.NONE, this));
 			if (blockResult.getType() != HitResult.Type.MISS)
 				currentEnd = blockResult.getLocation();
-			Vec3 disp = currentEnd.subtract(currentStart);
+			if (this.onClip(projCtx, currentStart, currentEnd)) {
+				shouldRemove = true;
+				break;
+			}
 
+			Vec3 disp = currentEnd.subtract(currentStart);
 			AABB currentMovementRegion = this.getBoundingBox().expandTowards(disp).inflate(1).move(currentStart.subtract(pos));
 
 			Vec3 endStart = currentStart;
@@ -196,43 +199,31 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 				BlockPos bpos = blockResult.getBlockPos().immutable();
 				BlockState state = this.level.getChunkAt(bpos).getBlockState(bpos);
 
-				boolean hittingSurface = projCtx.getLastState().isAir() && this.penetrationTime == 0;
-				bounced = hittingSurface && this.tryBounceOffBlock(state, blockResult);
-				if (!this.level.isClientSide) {
-					Vec3 effectNormal = bounced && this.nextVelocity != null ? this.nextVelocity : originalVel.reverse();
-					projCtx.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state, this.getType(), bounced, true,
-						currentEnd.x, currentEnd.y, currentEnd.z, (float) effectNormal.x, (float) effectNormal.y,
-						(float) effectNormal.z));
-				}
-				if (!bounced) {
-					projCtx.setLastState(state);
-
-					double startMass = this.getProjectileMass();
-					double curPom = startMass * velMag;
-					double hardness = BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, bpos, true);
-					if (projCtx.griefState() == GriefState.NO_DAMAGE || state.getDestroySpeed(this.level, bpos) == -1 || curPom < hardness) {
-						this.nextVelocity = Vec3.ZERO;
-						shouldRemove = this.onImpact(blockResult, true);
-						stopped = true;
-					} else {
-						state.onProjectileHit(this.level, state, blockResult, this);
-						if (this.onDestroyBlock(state, blockResult) || this.onImpact(blockResult, false)) {
-							shouldRemove = true;
-						} else {
-							double f = this.overPenetrationPower(hardness, curPom);
-							if (hittingSurface && f > 0)
-								projCtx.queueExplosion(bpos, (float) f);
-						}
-					}
-					if (!state.isAir())
+				ImpactResult result = this.calculateBlockPenetration(projCtx, state, blockResult);
+				switch (result.kinematics) {
+					case PENETRATE -> {
+						this.lastPenetratedBlock = state;
 						this.penetrationTime = 2;
+					}
+					case BOUNCE -> {
+						this.setDeltaMovement(trajectory.scale(1 - t));
+						Vec3 normal = CBCUtils.getSurfaceNormalVector(this.level, blockResult);
+						double elasticity = 1.7f;
+						this.nextVelocity = originalVel.subtract(normal.scale(normal.dot(originalVel) * elasticity));
+						stop = true;
+					}
+					case STOP -> {
+						this.setDeltaMovement(trajectory.scale(1 - t));
+						this.nextVelocity = Vec3.ZERO;
+						this.lastPenetratedBlock = state;
+						this.penetrationTime = 2;
+						stop = true;
+					}
 				}
+				shouldRemove |= result.shouldRemove;
 			}
-			shouldRemove |= this.onClip(projCtx, currentStart);
-			if (shouldRemove || stopped || t <= 0) {
-				finalEnd = currentEnd;
+			if (shouldRemove || stop || t <= 0)
 				break;
-			}
 		}
 
 		BlockHitResult fluidResult = this.level.clip(new ClipContext(pos, finalEnd, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this));
@@ -252,7 +243,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		}
 
 		for (Entity e : projCtx.hitEntities())
-			this.onHitEntity(e);
+			this.onHitEntity(e, projCtx);
 
 		if (!this.level.isClientSide) {
 			if (projCtx.griefState() != GriefState.NO_DAMAGE) {
@@ -268,64 +259,35 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			for (ClientboundPlayBlockHitEffectPacket pkt : projCtx.getPlayedEffects())
 				NetworkPlatform.sendToClientTracking(pkt, this);
 		}
-		if (stopped || bounced)
-			this.setDeltaMovement(trajectory.scale(1 - t));
 		if (shouldRemove)
 			this.discard();
 	}
 
+	protected boolean canHitSurface() {
+		return this.lastPenetratedBlock.isAir() && this.penetrationTime == 0;
+	}
+
 	/**
 	 * @param ctx
-	 * @param pos
+	 * @param start
+	 * @param end
 	 * @return true to remove the entity, false otherwise
 	 */
-	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
+	protected boolean onClip(ProjectileContext ctx, Vec3 start, Vec3 end) {
 		return false;
 	}
 
-	protected double overPenetrationPower(double hardness, double curPom) {
-		double f = hardness / curPom;
-		return f <= 0.15 ? 2 - 2 * f : 0;
-	}
-
-	protected boolean tryBounceOffBlock(BlockState state, BlockHitResult result) {
-		BounceType bounce = this.canBounce(state, result);
-		if (bounce == BounceType.NO_BOUNCE) return false;
-		Vec3 oldVel = this.getDeltaMovement();
-		double momentum = this.getProjectileMass() * oldVel.length();
-		if (bounce == BounceType.DEFLECT) {
-			if (momentum > BlockArmorPropertiesHandler.getProperties(state).hardness(this.level, state, result.getBlockPos(), true) * 0.5) {
-				Vec3 spallLoc = result.getLocation().add(oldVel.normalize().scale(2));
-				this.level.explode(null, spallLoc.x, spallLoc.y, spallLoc.z, 2, Explosion.BlockInteraction.NONE);
-			}
-			SoundType sound = state.getSoundType();
-			this.playSound(sound.getBreakSound(), sound.getVolume(), sound.getPitch());
-		}
-		Vec3 normal = new Vec3(result.getDirection().step());
-		double elasticity = bounce == BounceType.RICOCHET ? 1.5d : 1.9d;
-		this.nextVelocity = oldVel.subtract(normal.scale(normal.dot(oldVel) * elasticity));
-		return true;
-	}
-
 	/**
-	 * Use for fuzes and any other effects
+	 * Damage the impacted block.
 	 *
-	 * @return true if the entity should be discarded
+	 * @param projectileContext
+	 * @param state
+	 * @param blockHitResult
+	 * @return
 	 */
-	protected boolean onImpact(HitResult result, boolean stopped) {
-		if (result.getType() == HitResult.Type.BLOCK) {
-			BlockState state = this.level.getBlockState(((BlockHitResult) result).getBlockPos());
-			state.onProjectileHit(this.level, state, (BlockHitResult) result, this);
-		}
-		return false;
-	}
+	protected abstract ImpactResult calculateBlockPenetration(ProjectileContext projectileContext, BlockState state, BlockHitResult blockHitResult);
 
-	/**
-	 * @return true if the entity should be discarded
-	 */
-	protected abstract boolean onDestroyBlock(BlockState state, BlockHitResult result);
-
-	protected void onHitEntity(Entity entity) {
+	protected void onHitEntity(Entity entity, ProjectileContext projectileContext) {
 		if (this.getProjectileMass() <= 0) return;
 		if (!this.level.isClientSide) {
 			EntityDamagePropertiesComponent properties = this.getDamageProperties();
@@ -336,9 +298,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			entity.hurt(source, this.damage);
 			if (properties == null || !properties.rendersInvulnerable()) entity.invulnerableTime = 0;
 
-			double penalty = entity.isAlive() ? 2 : 0.2;
-			this.setProjectileMass((float) Math.max(this.getProjectileMass() - penalty, 0));
-			this.onImpact(new EntityHitResult(entity), this.getProjectileMass() <= 0);
+			float penalty = entity.isAlive() ? 2f : 0.2f;
+			this.setProjectileMass(Math.max(this.getProjectileMass() - penalty, 0));
 		}
 	}
 
@@ -348,37 +309,6 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 	protected float getKnockback(Entity target) {
 		return this.getDamageProperties().knockback();
-	}
-
-	protected boolean canDeflect(BlockHitResult result) { return false; }
-	protected boolean canBounceOffOf(BlockState state) { return isBounceableOffOf(state); }
-
-	public static boolean isDeflector(BlockState state) {
-		if (state.is(CBCTags.CBCBlockTags.DEFLECTS_SHOTS)) return true;
-		if (state.is(CBCTags.CBCBlockTags.DOESNT_DEFLECT_SHOTS)) return false;
-		Material material = state.getMaterial();
-		return material == Material.METAL || material == Material.HEAVY_METAL;
-	}
-
-	public static boolean isBounceableOffOf(BlockState state) {
-		if (state.is(CBCTags.CBCBlockTags.DOESNT_BOUNCE_SHOTS)) return false;
-		if (state.is(CBCTags.CBCBlockTags.BOUNCES_SHOTS)) return true;
-		Material material = state.getMaterial();
-		return material.isSolidBlocking() && material.getPushReaction() != PushReaction.DESTROY;
-	}
-
-	protected BounceType canBounce(BlockState state, BlockHitResult result) {
-		if (!CBCConfigs.SERVER.munitions.projectilesCanBounce.get() || this.getProjectileMass() <= 0) return BounceType.NO_BOUNCE;
-
-		if (!this.canBounceOffOf(state)) return BounceType.NO_BOUNCE;
-
-		Vec3 oldVel = this.getDeltaMovement();
-		double mag = oldVel.length();
-		if (mag < 0.2) return BounceType.NO_BOUNCE;
-		Vec3 normal = new Vec3(result.getDirection().step());
-		double fc = normal.dot(oldVel) / mag;
-		if (this.canDeflect(result) && -1 <= fc && fc <= -0.5) return BounceType.DEFLECT; // cos 180 <= fc <= cos 120
-		return -0.5 <= fc && fc <= 0 ? BounceType.RICOCHET : BounceType.NO_BOUNCE; // cos 120 <= fc <= cos 90
 	}
 
 	@Override public boolean hurt(DamageSource source, float damage) { return false; }
@@ -415,6 +345,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			tag.put("NextMotion", this.newDoubleList(this.nextVelocity.x, this.nextVelocity.y, this.nextVelocity.z));
 		if (this.orientation != null)
 			tag.put("Orientation", this.newDoubleList(this.orientation.x, this.orientation.y, this.orientation.z));
+		tag.put("LastPenetration", NbtUtils.writeBlockState(this.lastPenetratedBlock));
 	}
 
 	@Override
@@ -437,6 +368,9 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		} else {
 			this.orientation = this.getDeltaMovement();
 		}
+		this.lastPenetratedBlock = tag.contains("LastPenetration", Tag.TAG_COMPOUND)
+			? NbtUtils.readBlockState(tag.getCompound("LastPenetration"))
+			: Blocks.AIR.defaultBlockState();
 	}
 
 	@Override
@@ -500,10 +434,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 	public boolean canLingerInGround() { return false; }
 
-	public enum BounceType {
-		DEFLECT,
-		RICOCHET,
-		NO_BOUNCE
+	public record ImpactResult(KinematicOutcome kinematics, boolean shouldRemove) {
+		public enum KinematicOutcome { PENETRATE, STOP, BOUNCE }
 	}
 
 	public DamageSource indirectArtilleryFire() {

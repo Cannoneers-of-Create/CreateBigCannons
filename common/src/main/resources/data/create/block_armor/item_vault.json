@@ -1,3 +1,4 @@
 {
-  "block_hardness": 6.0
+  "toughness": 6.0,
+  "hardness": 1.5
 }

@@ -6,10 +6,12 @@ import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.mixin.Matrix3fAccessor;
 import rbasamoyai.createbigcannons.mixin.Matrix4fAccessor;
@@ -215,6 +217,28 @@ public class CBCUtils {
 			if (d * d + e * e + f * f < 1024.0)
 				NetworkPlatform.sendToClientPlayer(pkt, splayer);
 		}
+	}
+
+	/**
+	 * Mixin point for mods such as Valkyrien Skies and Landlord to transform impact vectors. Used for penetration
+	 * calculations.
+	 *
+	 * @param level
+	 * @param hitPos
+	 * @param normal the untransformed normal
+	 * @return the transformed normal vector
+	 */
+	public static Vec3 getSurfaceNormalVector(Level level, BlockPos hitPos, Vec3 normal) {
+		return normal;
+	}
+
+	/**
+	 * Version of {@link #getSurfaceNormalVector(Level, BlockPos, Vec3)} that takes in a {@link net.minecraft.world.phys.BlockHitResult}.
+	 * This calls {@link #getSurfaceNormalVector(Level, BlockPos, Vec3)}; apply mixins to that method instead.
+	 */
+	public static Vec3 getSurfaceNormalVector(Level level, BlockHitResult hitResult) {
+		Direction dir = hitResult.getDirection();
+		return getSurfaceNormalVector(level, hitResult.getBlockPos(), new Vec3(dir.getStepX(), dir.getStepY(), dir.getStepZ()));
 	}
 
 	private CBCUtils() {}

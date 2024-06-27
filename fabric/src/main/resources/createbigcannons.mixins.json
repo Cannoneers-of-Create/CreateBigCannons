@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.FabricFluidBuilderClientMixin",
+    "client.GoggleOverlayRendererMixin",
     "client.KeyboardHandlerMixin",
     "client.KeyMappingAccessor",
     "client.MouseHandlerMixin"

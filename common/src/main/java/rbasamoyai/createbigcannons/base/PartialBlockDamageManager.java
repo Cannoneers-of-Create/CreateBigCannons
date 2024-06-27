@@ -98,9 +98,9 @@ public class PartialBlockDamageManager {
 				} else {
 					newSet.put(entry.getKey(), newProgress);
 				}
-				double hardnessRec = 1 / BlockArmorPropertiesHandler.getProperties(state).hardness(level, state, pos, true);
-				int oldPart = (int) Math.floor(oldProgress * hardnessRec);
-				int newPart = (int) Math.floor(newProgress * hardnessRec);
+				double toughnessRec = 1 / BlockArmorPropertiesHandler.getProperties(state).toughness(level, state, pos, true);
+				int oldPart = (int) Math.floor(oldProgress * toughnessRec);
+				int newPart = (int) Math.floor(newProgress * toughnessRec);
 				if (oldPart - newPart > 0)
 					CBCUtils.sendCustomBlockDamage(level, pos, newPart);
 			}
@@ -116,8 +116,8 @@ public class PartialBlockDamageManager {
 		if (this.savedata != null) this.savedata.setDirty();
 	}
 
-	public void damageBlock(BlockPos pos, int added, BlockState state, Level level) {
-		this.damageBlock(pos, added, state, level, PartialBlockDamageManager::destroyBlockDefault);
+	public boolean damageBlock(BlockPos pos, int added, BlockState state, Level level) {
+		return this.damageBlock(pos, added, state, level, PartialBlockDamageManager::destroyBlockDefault);
 	}
 
 	public static void voidBlock(Level level, BlockPos pos) {
@@ -128,17 +128,17 @@ public class PartialBlockDamageManager {
 		level.destroyBlock(pos, false);
 	}
 
-	public void damageBlock(BlockPos pos, int added, BlockState state, Level level, BiConsumer<Level, BlockPos> onDestroy) {
+	public boolean damageBlock(BlockPos pos, int added, BlockState state, Level level, BiConsumer<Level, BlockPos> onDestroy) {
 		Map<BlockPos, Integer> levelSet = this.blockDamage.computeIfAbsent(level.dimension(), k -> new Object2ObjectLinkedOpenHashMap<>());
-
 
 		int oldProgress = levelSet.getOrDefault(pos, 0);
 		levelSet.merge(pos, added, Integer::sum);
 
-		double hardnessRec = 1 / BlockArmorPropertiesHandler.getProperties(state).hardness(level, state, pos, true);
-		int oldPart = (int) Math.floor(oldProgress * hardnessRec);
-		int newPart = (int) Math.floor(levelSet.get(pos) * hardnessRec);
+		double toughnessRec = 1 / BlockArmorPropertiesHandler.getProperties(state).toughness(level, state, pos, true);
+		int oldPart = (int) Math.floor(oldProgress * toughnessRec);
+		int newPart = (int) Math.floor(levelSet.get(pos) * toughnessRec);
 
+		boolean destroyed = false;
 		if (newPart >= 10) {
 			if (!level.isClientSide())
 				onDestroy.accept(level, pos);
@@ -147,10 +147,12 @@ public class PartialBlockDamageManager {
 			if (stateSet != null)
 				stateSet.remove(pos);
 			CBCUtils.sendCustomBlockDamage(level, pos, -1);
+			destroyed = true;
 		} else if (newPart - oldPart > 0) {
 			CBCUtils.sendCustomBlockDamage(level, pos, newPart);
 		}
 		this.markDirty();
+		return destroyed;
 	}
 
 }

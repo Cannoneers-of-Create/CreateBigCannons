@@ -9,15 +9,12 @@ import java.util.Set;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
 
 public class ProjectileContext {
 
-	private BlockState lastState = Blocks.AIR.defaultBlockState();
 	private final CollisionContext collisionContext;
 	private final Set<Entity> hitEntities = new LinkedHashSet<>();
 	private final CBCCfgMunitions.GriefState griefState;
@@ -29,8 +26,6 @@ public class ProjectileContext {
 		this.griefState = griefState;
 	}
 
-	public void setLastState(BlockState state) { this.lastState = state; }
-	public BlockState getLastState() { return this.lastState; }
 	public CollisionContext collisionContext() { return this.collisionContext; }
 	public CBCCfgMunitions.GriefState griefState() { return this.griefState; }
 

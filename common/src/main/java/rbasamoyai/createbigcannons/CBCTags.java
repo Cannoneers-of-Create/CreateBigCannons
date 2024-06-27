@@ -37,10 +37,6 @@ public class CBCTags {
 			THICK_TUBING = makeTag("thick_tubing"),
 			REDUCES_SPREAD = makeTag("reduces_spread"),
 			DRILL_CAN_PASS_THROUGH = makeTag("drill_can_pass_through"),
-			DEFLECTS_SHOTS = makeTag("deflects_shots"),
-			DOESNT_DEFLECT_SHOTS = makeTag("doesnt_deflect_shots"),
-			BOUNCES_SHOTS = makeTag("bounces_shots"),
-			DOESNT_BOUNCE_SHOTS = makeTag("doesnt_bounce_shots"),
 			// Datagen tags
 			OBSIDIAN = commonTag("obsidian", "obsidian", "obsidian" /* No Fabric c: tag */),
 			SANDSTONE = commonTag("sandstone", "sandstone", "sandstone"),

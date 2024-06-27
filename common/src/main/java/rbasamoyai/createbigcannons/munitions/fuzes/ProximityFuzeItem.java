@@ -41,7 +41,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult result, boolean stopped, boolean baseFuze) {
+	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, boolean baseFuze) {
 		return !baseFuze;
 	}
 

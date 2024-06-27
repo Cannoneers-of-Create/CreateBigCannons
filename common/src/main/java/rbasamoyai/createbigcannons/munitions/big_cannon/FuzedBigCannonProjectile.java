@@ -31,10 +31,10 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	}
 
 	@Override
-	protected boolean onClip(ProjectileContext ctx, Vec3 pos) {
-		if (super.onClip(ctx, pos)) return true;
+	protected boolean onClip(ProjectileContext ctx, Vec3 start, Vec3 end) {
+		if (super.onClip(ctx, start, end)) return true;
 		boolean baseFuze = this.getFuzeProperties().baseFuze();
-		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, pos, ctx, baseFuze))) {
+		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, start, ctx, baseFuze))) {
 			this.detonate();
 			return true;
 		}
@@ -42,10 +42,10 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	}
 
 	@Override
-	protected boolean onImpact(HitResult result, boolean stopped) {
-		super.onHit(result);
+	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
+		super.onImpact(hitResult, impactResult, projectileContext);
 		boolean baseFuze = this.getFuzeProperties().baseFuze();
-		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, result, stopped, baseFuze))) {
+		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, hitResult, impactResult, baseFuze))) {
 			this.detonate();
 			return true;
 		} else {
