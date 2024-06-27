@@ -17,7 +17,7 @@ public class FuzeItem extends Item {
 	}
 
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) { return false; }
-	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile projectile, Vec3 location, ProjectileContext ctx, boolean baseFuze) { return false; }
+	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile projectile, Vec3 start, Vec3 end, ProjectileContext ctx, boolean baseFuze) { return false; }
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, boolean baseFuze) { return false; }
 	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) { return false; }
 	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile projectile) { return false; }

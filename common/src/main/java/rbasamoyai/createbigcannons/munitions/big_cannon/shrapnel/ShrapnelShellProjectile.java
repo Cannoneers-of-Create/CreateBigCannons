@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel;
 import javax.annotation.Nonnull;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,15 +28,15 @@ public class ShrapnelShellProjectile extends FuzedBigCannonProjectile {
 	}
 
 	@Override
-	protected void detonate() {
+	protected void detonate(Position position) {
 		Vec3 oldDelta = this.getDeltaMovement();
 		ShrapnelShellProperties properties = this.getAllProperties();
-		ShrapnelExplosion explosion = new ShrapnelExplosion(this.level, null, this.indirectArtilleryFire(), this.getX(),
-			this.getY(), this.getZ(), properties.explosion().explosivePower(),
+		ShrapnelExplosion explosion = new ShrapnelExplosion(this.level, null, this.indirectArtilleryFire(), position.x(),
+			position.y(), position.z(), properties.explosion().explosivePower(),
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
-		CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.SHRAPNEL_BURST.get(), this.position(), oldDelta,
-			properties.shrapnelBurst().burstProjectileCount(), properties.shrapnelBurst().burstSpread());
+		CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.SHRAPNEL_BURST.get(), new Vec3(position.x(), position.y(), position.z()),
+			oldDelta, properties.shrapnelBurst().burstProjectileCount(), properties.shrapnelBurst().burstSpread());
 	}
 
 	@Override

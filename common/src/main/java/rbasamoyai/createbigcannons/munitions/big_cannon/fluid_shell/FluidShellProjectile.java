@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 import javax.annotation.Nonnull;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -45,10 +46,10 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 	public void setFluidStack(EndFluidStack fstack) { this.fluidStack = fstack; }
 
 	@Override
-	protected void detonate() {
+	protected void detonate(Position position) {
 		Vec3 oldDelta = this.getDeltaMovement();
-		FluidExplosion explosion = new FluidExplosion(this.level, null, this.indirectArtilleryFire(), this.getX(),
-			this.getY(), this.getZ(), this.getAllProperties().explosion().explosivePower(),
+		FluidExplosion explosion = new FluidExplosion(this.level, null, this.indirectArtilleryFire(), position.x(),
+			position.y(), position.z(), this.getAllProperties().explosion().explosivePower(),
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction(), this.fluidStack.fluid());
 		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 
@@ -59,7 +60,7 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 			int convertCount = IndexPlatform.convertFluid(mbPerBlob);
 			int count = (int) Math.ceil(this.fluidStack.amount() / (double) convertCount);
 			FluidBlobBurst burst = CBCProjectileBurst.spawnConeBurst(this.level, CBCEntityTypes.FLUID_BLOB_BURST.get(),
-				this.position(), oldDelta, count, properties.fluidBlobSpread());
+				new Vec3(position.x(), position.y(), position.z()), oldDelta, count, properties.fluidBlobSpread());
 			burst.setFluidStack(this.fluidStack.copy(convertCount));
 			burst.setBlobSize(blobSize);
 		}

@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
+import net.minecraft.core.Position;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
@@ -27,15 +28,16 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.canDetonate(fz -> fz.onProjectileTick(this.fuze, this))) this.detonate();
+		if (this.canDetonate(fz -> fz.onProjectileTick(this.fuze, this)))
+			this.detonate(this.position());
 	}
 
 	@Override
 	protected boolean onClip(ProjectileContext ctx, Vec3 start, Vec3 end) {
 		if (super.onClip(ctx, start, end)) return true;
 		boolean baseFuze = this.getFuzeProperties().baseFuze();
-		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, start, ctx, baseFuze))) {
-			this.detonate();
+		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, start, end, ctx, baseFuze))) {
+			this.detonate(start);
 			return true;
 		}
 		return false;
@@ -46,7 +48,7 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 		super.onImpact(hitResult, impactResult, projectileContext);
 		boolean baseFuze = this.getFuzeProperties().baseFuze();
 		if (this.canDetonate(fz -> fz.onProjectileImpact(this.fuze, this, hitResult, impactResult, baseFuze))) {
-			this.detonate();
+			this.detonate(hitResult.getLocation());
 			return true;
 		} else {
 			return false;
@@ -71,7 +73,13 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 		return !this.level.isClientSide && this.level.hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
 	}
 
-	protected abstract void detonate();
+	/**
+	 * Use {@link #detonate(Position)}
+	 */
+	@Deprecated
+	protected void detonate() { this.detonate(this.position()); }
+
+	protected abstract void detonate(Position position);
 
 	@Override
 	public boolean canLingerInGround() {

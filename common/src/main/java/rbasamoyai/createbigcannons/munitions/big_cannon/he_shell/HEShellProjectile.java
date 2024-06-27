@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.he_shell;
 import javax.annotation.Nonnull;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.Position;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,9 +25,9 @@ public class HEShellProjectile extends FuzedBigCannonProjectile {
 	}
 
 	@Override
-	protected void detonate() {
-		this.level.explode(null, this.indirectArtilleryFire(), null, this.getX(), this.getY(),
-			this.getZ(), this.getAllProperties().explosion().explosivePower(), false,
+	protected void detonate(Position position) {
+		this.level.explode(null, this.indirectArtilleryFire(), null, position.x(), position.y(), position.z(),
+			this.getAllProperties().explosion().explosivePower(), false,
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
 	}
 
