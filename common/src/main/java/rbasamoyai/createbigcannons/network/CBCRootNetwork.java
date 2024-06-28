@@ -18,6 +18,7 @@ import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler.Clie
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler.ClientboundBigCannonPropellantPropertiesPacket;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler.ClientboundSyncDimensionMunitionPropertiesPacket;
+import rbasamoyai.createbigcannons.munitions.config.FluidDragHandler.ClientboundFluidDragPacket;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler.ClientboundMunitionPropertiesPacket;
 
 public class CBCRootNetwork {
@@ -25,7 +26,7 @@ public class CBCRootNetwork {
 	private static final Int2ObjectMap<Function<FriendlyByteBuf, ? extends RootPacket>> ID_TO_CONSTRUCTOR = new Int2ObjectOpenHashMap<>();
 	private static final Object2IntMap<Class<? extends RootPacket>> TYPE_TO_ID = new Object2IntOpenHashMap<>();
 
-	public static final String VERSION = "10.0.0";
+	public static final String VERSION = "11.0.0";
 
 	public static void init() {
 		int id = 0;
@@ -56,6 +57,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ClientboundPlayBlockHitEffectPacket.class, ClientboundPlayBlockHitEffectPacket::new);
 		addMsg(id++, ClientboundSyncExtraEntityDataPacket.class, ClientboundSyncExtraEntityDataPacket::new);
 		addMsg(id++, ClientboundSendCustomBreakProgressPacket.class, ClientboundSendCustomBreakProgressPacket::new);
+		addMsg(id++, ClientboundFluidDragPacket.class, ClientboundFluidDragPacket::copyOf);
 	}
 
 	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {
