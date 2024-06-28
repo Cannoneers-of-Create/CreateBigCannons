@@ -54,6 +54,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	@Nullable protected Vec3 nextVelocity = null;
 	@Nullable protected Vec3 orientation = null;
 	protected BlockState lastPenetratedBlock = Blocks.AIR.defaultBlockState();
+	protected boolean removeNextTick = false;
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
@@ -65,6 +66,10 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 	@Override
 	public void tick() {
+		if (this.removeNextTick) {
+			this.discard();
+			return;
+		}
 		ChunkPos cpos = new ChunkPos(this.blockPosition());
 		if (this.level.isClientSide || this.level.hasChunk(cpos.x, cpos.z)) {
 			super.tick();
@@ -260,7 +265,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 				NetworkPlatform.sendToClientTracking(pkt, this);
 		}
 		if (shouldRemove)
-			this.discard();
+			this.removeNextTick = true;
 	}
 
 	protected boolean canHitSurface() {
@@ -346,6 +351,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		if (this.orientation != null)
 			tag.put("Orientation", this.newDoubleList(this.orientation.x, this.orientation.y, this.orientation.z));
 		tag.put("LastPenetration", NbtUtils.writeBlockState(this.lastPenetratedBlock));
+		if (this.removeNextTick)
+			tag.putBoolean("RemoveNextTick", true);
 	}
 
 	@Override
@@ -371,6 +378,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		this.lastPenetratedBlock = tag.contains("LastPenetration", Tag.TAG_COMPOUND)
 			? NbtUtils.readBlockState(tag.getCompound("LastPenetration"))
 			: Blocks.AIR.defaultBlockState();
+		this.removeNextTick = tag.contains("RemoveNextTick");
 	}
 
 	@Override
