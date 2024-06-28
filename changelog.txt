@@ -166,6 +166,7 @@ Fixed:
 - Fixed cooldown loading involving rapidly disassembling quick-fire big cannons and autocannons
 - Fixed partial block damage display
 - Fixed cannon cast leakage duplication
+- Fixed ghost Yaw Controller effect
 
 ===
 
