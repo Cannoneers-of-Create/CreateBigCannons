@@ -57,6 +57,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.FluidDragHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 import rbasamoyai.createbigcannons.network.ClientboundNotifyTagReloadPacket;
@@ -210,6 +211,7 @@ public class CBCCommonEvents {
 		BlockArmorPropertiesHandler.loadTags();
 		FluidCastingTimeHandler.loadTags();
 		BlockImpactTransformationHandler.loadTags();
+		FluidDragHandler.loadTags();
 	}
 
 	public static void onDatapackReload(MinecraftServer server) {
@@ -225,6 +227,7 @@ public class CBCCommonEvents {
 		FluidCastingTimeHandler.syncToAll(server);
 		CannonMountPropertiesHandler.syncToAll(server);
 		DimensionMunitionPropertiesHandler.syncToAll(server);
+		FluidDragHandler.syncToAll(server);
 	}
 
 	public static void onDatapackSync(ServerPlayer player) {
@@ -238,6 +241,7 @@ public class CBCCommonEvents {
 		BigCannonPropellantCompatibilityHandler.syncTo(player);
 		CannonMountPropertiesHandler.syncTo(player);
 		DimensionMunitionPropertiesHandler.syncTo(player);
+		FluidDragHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
@@ -256,6 +260,7 @@ public class CBCCommonEvents {
 		cons.accept(CannonMountPropertiesHandler.BlockEntityReloadListener.INSTANCE, CreateBigCannons.resource("block_entity_cannon_mounts_config_handler"));
 		cons.accept(CannonMountPropertiesHandler.EntityReloadListener.INSTANCE, CreateBigCannons.resource("entity_cannon_mounts_config_handler"));
 		cons.accept(BlockImpactTransformationHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("block_impact_transformation_handler"));
+		cons.accept(FluidDragHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("fluid_drag_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,

@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -37,6 +38,7 @@ import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.FluidDragHandler;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
@@ -426,11 +428,16 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 	protected double getDragForce() {
 		BallisticPropertiesComponent properties = this.getBallisticProperties();
-		double magnitude = this.getDeltaMovement().length();
-		double drag = properties.drag() * DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier() * magnitude;
+		double vel = this.getDeltaMovement().length();
+		double formDrag = properties.drag();
+		double density = DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier();
+		FluidState fluidState = this.level.getFluidState(this.blockPosition());
+		if (!fluidState.isEmpty())
+			density += FluidDragHandler.getFluidDrag(fluidState);
+		double drag = formDrag * density * vel;
 		if (properties.isQuadraticDrag())
-			drag *= magnitude;
-		return Math.min(drag, magnitude);
+			drag *= vel;
+		return Math.min(drag, vel);
 	}
 
 	@Nonnull

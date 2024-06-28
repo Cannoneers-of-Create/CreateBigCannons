@@ -15,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 
 public class TypeAndTagDataHolder<TYPE, VALUE> {
+
 	protected final Map<TYPE, VALUE> tagData = new Reference2ObjectOpenHashMap<>();
 	protected final Map<TYPE, VALUE> typeData = new Reference2ObjectOpenHashMap<>();
 	protected final Map<TagKey<TYPE>, VALUE> tagsToEvaluate = new Object2ObjectLinkedOpenHashMap<>();
