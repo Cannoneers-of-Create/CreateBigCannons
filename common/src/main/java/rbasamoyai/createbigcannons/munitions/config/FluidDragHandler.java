@@ -64,7 +64,9 @@ public class FluidDragHandler {
 
 	public static void loadTags() { FLUID_DRAG.loadTags(); }
 
-	public static double getFluidDrag(FluidState fluidState) { return getFluidDrag(fluidState.getType()); }
+	public static double getFluidDrag(FluidState fluidState) {
+		return fluidState.isEmpty() ? 0 : getFluidDrag(fluidState.getType());
+	}
 
 	public static double getFluidDrag(Fluid fluid) {
 		Double value = FLUID_DRAG.getData(fluid);
