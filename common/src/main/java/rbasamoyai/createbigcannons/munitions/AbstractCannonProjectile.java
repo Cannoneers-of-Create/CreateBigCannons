@@ -181,6 +181,22 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 				ClipContext.Fluid.NONE, this));
 			if (blockResult.getType() != HitResult.Type.MISS)
 				currentEnd = blockResult.getLocation();
+			if (p == 0) {
+				BlockHitResult fluidResult = this.level.clip(new ClipContext(currentStart, currentEnd, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this));
+				if (fluidResult.getType() != HitResult.Type.MISS) {
+					BlockPos fluidPos = fluidResult.getBlockPos();
+					BlockState state = this.level.getBlockState(fluidPos);
+					if (state.getBlock() instanceof LiquidBlock) {
+						if (this.inFluidTime <= 0) {
+							stop = this.onImpactFluid(projCtx, state, this.level.getFluidState(fluidPos), fluidResult.getLocation(), fluidResult);
+							if (stop)
+								currentEnd = blockResult.getLocation();
+						}
+						this.inFluidTime = 2;
+					}
+				}
+			}
+
 			if (this.onClip(projCtx, currentStart, currentEnd)) {
 				shouldRemove = true;
 				break;
@@ -199,6 +215,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 				if (targetBB.intersects(thisBB) || targetBB.inflate(reach).clip(endStart, endCopy).isPresent())
 					projCtx.addEntity(target);
 			}
+			if (stop)
+				break;
 
 			currentStart = currentEnd;
 			t -= disp.length() * vmRecip;
@@ -216,7 +234,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 						this.setDeltaMovement(trajectory.scale(1 - t));
 						Vec3 normal = CBCUtils.getSurfaceNormalVector(this.level, blockResult);
 						double elasticity = 1.7f;
-						this.nextVelocity = originalVel.subtract(normal.scale(normal.dot(originalVel) * elasticity));
+						this.nextVelocity = trajectory.subtract(normal.scale(normal.dot(trajectory) * elasticity));
 						stop = true;
 					}
 					case STOP -> {
@@ -231,22 +249,6 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			}
 			if (shouldRemove || stop || t <= 0)
 				break;
-		}
-
-		BlockHitResult fluidResult = this.level.clip(new ClipContext(pos, finalEnd, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this));
-		if (fluidResult.getType() != HitResult.Type.MISS) {
-			BlockPos fluidPos = fluidResult.getBlockPos();
-			BlockState state = this.level.getBlockState(fluidPos);
-			if (state.getBlock() instanceof LiquidBlock) {
-				if (this.inFluidTime <= 0) {
-					Vec3 effectNormal = originalVel.reverse();
-					Vec3 fluidExplosionPos = fluidResult.getLocation();
-					projCtx.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state, this.getType(), true, false,
-						fluidExplosionPos.x, fluidExplosionPos.y, fluidExplosionPos.z, (float) effectNormal.x,
-						(float) effectNormal.y, (float) effectNormal.z));
-				}
-				this.inFluidTime = 5;
-			}
 		}
 
 		for (Entity e : projCtx.hitEntities())
@@ -293,6 +295,53 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	 * @return
 	 */
 	protected abstract ImpactResult calculateBlockPenetration(ProjectileContext projectileContext, BlockState state, BlockHitResult blockHitResult);
+
+	/**
+	 * Used for calculating projectile skipping and effects.
+	 *
+	 * @param fluidHitResult
+	 * @return if projectile clipping should only go up to on impact with the fluid.
+	 */
+	protected boolean onImpactFluid(ProjectileContext projectileContext, BlockState blockState, FluidState fluidState,
+									Vec3 impactPos, BlockHitResult fluidHitResult) {
+		Vec3 pos = this.position();
+		Vec3 accel = this.getForces(this.position(), this.getDeltaMovement());
+		Vec3 curVel = this.getDeltaMovement().add(accel);
+
+		Vec3 normal = CBCUtils.getSurfaceNormalVector(this.level, fluidHitResult);
+		double incidence = Math.max(0, curVel.normalize().dot(normal.reverse()));
+		double velMag = curVel.length();
+		double mass = this.getProjectileMass();
+		double incidentVel = velMag * incidence;
+		double momentum = mass * incidentVel;
+
+		double projectileDeflection = this.getBallisticProperties().deflection();
+		double fluidDensity = FluidDragHandler.getFluidDrag(fluidState);
+
+		boolean canBounce = CBCConfigs.SERVER.munitions.projectilesCanBounce.get();
+		double baseChance = CBCConfigs.SERVER.munitions.baseProjectileBounceChance.getF();
+		boolean criticalAngle = projectileDeflection > 1e-2d && incidence <= projectileDeflection;
+		boolean buoyant = fluidDensity > 1e-2d && momentum < fluidDensity;
+
+		double incidenceFactor = criticalAngle ? Math.max(0, 1 - incidence / projectileDeflection) : 0;
+		double massFactor = buoyant ? 0 : Math.max(0, 1 - momentum / fluidDensity);
+		double chance = Math.max(baseChance, incidenceFactor * massFactor);
+
+		boolean bounced = canBounce && criticalAngle && buoyant && this.level.getRandom().nextDouble() < chance;
+		if (bounced) {
+			this.setDeltaMovement(fluidHitResult.getLocation().subtract(pos));
+			double elasticity = 1.7f;
+			this.nextVelocity = curVel.subtract(normal.scale(normal.dot(curVel) * elasticity));
+		}
+		if (!this.level.isClientSide) {
+			Vec3 effectNormal = bounced ? normal.scale(incidentVel) : curVel.reverse();
+			Vec3 fluidExplosionPos = fluidHitResult.getLocation();
+			projectileContext.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(blockState, this.getType(), bounced, true,
+				fluidExplosionPos.x, fluidExplosionPos.y, fluidExplosionPos.z, (float) effectNormal.x,
+				(float) effectNormal.y, (float) effectNormal.z));
+		}
+		return bounced;
+	}
 
 	protected void onHitEntity(Entity entity, ProjectileContext projectileContext) {
 		if (this.getProjectileMass() <= 0) return;
