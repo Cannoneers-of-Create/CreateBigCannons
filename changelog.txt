@@ -169,6 +169,7 @@ Fixed:
 - Fixed partial block damage display
 - Fixed cannon cast leakage duplication
 - Fixed ghost Yaw Controller effect
+- Fixed autocannons being able to assemble with two breeches
 
 ===
 

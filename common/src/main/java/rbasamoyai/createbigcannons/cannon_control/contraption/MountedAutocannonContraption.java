@@ -88,6 +88,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		AutocannonMaterial material = startCannon.getAutocannonMaterial();
+		boolean isStartBreech = startCannon.isBreechMechanism(startState);
 
 		List<StructureBlockInfo> cannonBlocks = new ArrayList<>();
 		cannonBlocks.add(new StructureBlockInfo(pos, startState, this.getBlockEntityNBT(level, pos)));
@@ -109,6 +110,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
 			cannonLength++;
 			positiveBreech = cBlock.isBreechMechanism(nextState);
+			if (positiveBreech && isStartBreech)
+				throw invalidCannon();
 			nextState = level.getBlockState(start.relative(positive));
 			if (cannonLength > getMaxCannonLength()) throw cannonTooLarge();
 			if (positiveBreech) break;
@@ -125,6 +128,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
 			cannonLength++;
 			negativeBreech = cBlock.isBreechMechanism(nextState);
+			if (negativeBreech && isStartBreech)
+				throw invalidCannon();
 			nextState = level.getBlockState(start.relative(negative));
 			if (cannonLength > getMaxCannonLength()) throw cannonTooLarge();
 			if (negativeBreech) break;
