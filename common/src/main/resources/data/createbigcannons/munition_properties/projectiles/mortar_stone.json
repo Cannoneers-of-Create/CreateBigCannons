@@ -16,5 +16,5 @@
   "max_charges": 6,
   "penetration": 0,
   "toughness": 0,
-  "deflection": 0
+  "deflection": 0.86
 }
