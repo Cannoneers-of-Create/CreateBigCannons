@@ -10,6 +10,7 @@ public class CBCCfgMunitions extends ConfigBase {
 
 	public final ConfigBool projectilesCanBounce = b(true, "projectilesCanBounce", Comments.projectilesCanBounce);
 	public final ConfigFloat baseProjectileBounceChance = f(0.33f, 0, 1, "baseProjectileBounceChance");
+	public final ConfigFloat baseProjectileFluidBounceChance = f(0.9f, 0, 1, "baseProjectileFluidBounceChance");
 	public final ConfigFloat minVelocityForPenetrationBonus = f(1, 0, "minimumVelocityForPenetrationBonus", "[in Meters per Tick]", Comments.minVelocityForPenetrationBonus);
 	public final ConfigFloat penetrationBonusScale = f(0.1f, 0, "penetrationBonusScale");
 	public final ConfigBool projectilesCanChunkload = b(true, "projectilesCanChunkload");

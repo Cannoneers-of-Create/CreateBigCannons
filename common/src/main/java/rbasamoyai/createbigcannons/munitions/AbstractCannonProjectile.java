@@ -319,7 +319,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		double fluidDensity = FluidDragHandler.getFluidDrag(fluidState);
 
 		boolean canBounce = CBCConfigs.SERVER.munitions.projectilesCanBounce.get();
-		double baseChance = CBCConfigs.SERVER.munitions.baseProjectileBounceChance.getF();
+		double baseChance = CBCConfigs.SERVER.munitions.baseProjectileFluidBounceChance.getF();
 		boolean criticalAngle = projectileDeflection > 1e-2d && incidence <= projectileDeflection;
 		boolean buoyant = fluidDensity > 1e-2d && momentum < fluidDensity;
 
