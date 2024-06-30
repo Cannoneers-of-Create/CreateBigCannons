@@ -8,6 +8,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -82,6 +83,9 @@ public class CBCRegistryUtils {
 	//////// Less-used registry access aliases ////////
 	public static ResourceKey<Registry<Level>> getDimensionRegistryKey() { return Registry.DIMENSION_REGISTRY; }
 	public static Optional<ParticleType<?>> getOptionalParticleType(ResourceLocation id) { return Registry.PARTICLE_TYPE.getOptional(id); }
+
+	public static int getSoundEventId(SoundEvent event) { return Registry.SOUND_EVENT.getId(event); }
+	public static SoundEvent getSoundEvent(int id) { return Registry.SOUND_EVENT.byId(id); }
 
 	private CBCRegistryUtils() {}
 

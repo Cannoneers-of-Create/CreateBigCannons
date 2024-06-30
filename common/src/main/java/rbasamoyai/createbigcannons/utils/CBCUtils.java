@@ -10,12 +10,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.mixin.Matrix3fAccessor;
 import rbasamoyai.createbigcannons.mixin.Matrix4fAccessor;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
+import rbasamoyai.createbigcannons.network.ClientboundBlastSoundPacket;
 import rbasamoyai.createbigcannons.network.ClientboundSendCustomBreakProgressPacket;
 
 public class CBCUtils {
@@ -239,6 +242,17 @@ public class CBCUtils {
 	public static Vec3 getSurfaceNormalVector(Level level, BlockHitResult hitResult) {
 		Direction dir = hitResult.getDirection();
 		return getSurfaceNormalVector(level, hitResult.getBlockPos(), new Vec3(dir.getStepX(), dir.getStepY(), dir.getStepZ()));
+	}
+
+	public static void playBlastLikeSoundOnServer(ServerLevel level, double x, double y, double z, SoundEvent soundEvent,
+												  SoundSource soundSource, float volume, float pitch, float airAbsorption) {
+		double radius = volume > 1 ? 16 * volume : 16;
+		double radSqr = radius * radius;
+		ClientboundBlastSoundPacket packet = new ClientboundBlastSoundPacket(soundEvent, soundSource, x, y, z, volume, pitch, airAbsorption);
+		for (ServerPlayer player : level.players()) {
+			if (player.distanceToSqr(x, y, z) < radSqr)
+				NetworkPlatform.sendToClientPlayer(packet, player);
+		}
 	}
 
 	private CBCUtils() {}

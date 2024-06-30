@@ -9,6 +9,7 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigBool showMortarStoneClouds = b(true, "showMortarStoneClouds");
 	public final ConfigInt fluidBlobParticleCount = i(20, 0, 1000, "fluidBlobParticleCount", Comments.fluidBlobParticleCount);
 	public final ConfigInt blockArmorTooltipPrecision = i(2, 0, 4, "blockArmorInfoPrecision", Comments.blockArmorTooltipPrecision);
+	public final ConfigFloat blastEffectDelaySpeed = f(320, 0, 1000, "blastEffectDelaySpeed", "[in Meters per Second]");
 
 	public final ConfigGroup cannonMountGoggleTooltip = group(1, "cannonMountGoggleTooltip", "Cannon Mount Goggle Tooltip");
 	public final ConfigInt cannonMountAngleGoggleTooltipPrecision = i(2, 0, 4, "anglePrecision", Comments.cannonMountAngleTooltipPrecision);
@@ -45,6 +46,13 @@ public class CBCCfgClient extends CBCConfigBase {
 
 	public final ConfigGroup projectileImpacts = group(1, "projectileImpacts", "Projectile Impacts");
 	public final ConfigBool showProjectileImpacts = b(true, "showProjectileImpacts");
+
+	public final ConfigGroup sounds = group(1, "sounds", "Sounds");
+	public final ConfigBool blastSoundAirAbsorption = b(true, "blastSoundAirAbsorption");
+
+	public boolean isInstantaneousBlastEffect() {
+		return this.blastEffectDelaySpeed.getF() < 1e-2d;
+	}
 
 	@Override public String getName() { return "client"; }
 

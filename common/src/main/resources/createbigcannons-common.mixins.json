@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.AbstractMountedCannonContraptionMixin",
+    "client.Blaze3DAudioChannelAccessor",
     "client.CameraAccessor",
     "client.CannonMountDisplaySourceMixin",
     "client.ClientLevelAccessor",
@@ -16,7 +17,8 @@
     "client.LightingMixin",
     "client.PitchOrientedContraptionEntityMixin",
     "client.PoleContraptionMixin",
-    "client.PonderRegistryMixin"
+    "client.PonderRegistryMixin",
+    "client.SoundEngineMixin"
   ],
   "mixins": [
     "ArmorStandMixin",

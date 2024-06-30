@@ -353,9 +353,11 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		if (round.getType() == AutocannonAmmoType.MACHINE_GUN) {
-			CBCSoundEvents.FIRE_MACHINE_GUN.playOnServer(level, new BlockPos(spawnPos), 6, 0.75f);
+			CBCUtils.playBlastLikeSoundOnServer(level, spawnPos.x, spawnPos.y, spawnPos.z, CBCSoundEvents.FIRE_MACHINE_GUN.getMainEvent(),
+				SoundSource.BLOCKS, 10, 0.75f, 3f);
 		} else {
-			CBCSoundEvents.FIRE_AUTOCANNON.playOnServer(level, new BlockPos(spawnPos), 8, 1);
+			CBCUtils.playBlastLikeSoundOnServer(level, spawnPos.x, spawnPos.y, spawnPos.z, CBCSoundEvents.FIRE_AUTOCANNON.getMainEvent(),
+				SoundSource.BLOCKS, 12, 1, 5f);
 		}
 	}
 
