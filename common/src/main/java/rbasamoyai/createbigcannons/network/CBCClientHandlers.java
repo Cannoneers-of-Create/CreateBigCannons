@@ -7,8 +7,11 @@ import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.foundation.utility.Components;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -25,6 +28,7 @@ import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffectsHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.effects.sounds.AirAbsorptionWrapper;
 import rbasamoyai.createbigcannons.mixin.client.ClientLevelAccessor;
 import rbasamoyai.createbigcannons.munitions.ImpactExplosion;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
@@ -160,6 +164,20 @@ public class CBCClientHandlers {
 			return;
 		ClientLevelAccessor clAccessor = (ClientLevelAccessor) mc.level;
 		((CustomBlockDamageDisplay) clAccessor.getLevelRenderer()).createbigcannons$trackCustomProgress(pkt.pos(), pkt.damage());
+	}
+
+	public static void playBlastSound(ClientboundBlastSoundPacket pkt) {
+		Minecraft mc = Minecraft.getInstance();
+		SoundInstance sound = new SimpleSoundInstance(pkt.sound(), pkt.source(), pkt.volume(), pkt.pitch(), pkt.x(), pkt.y(), pkt.z());
+		if (CBCConfigs.CLIENT.blastSoundAirAbsorption.get())
+			sound = new AirAbsorptionWrapper(sound, pkt.airAbsorption());
+		if (!CBCConfigs.CLIENT.isInstantaneousBlastEffect() && mc.player != null) {
+			double distSqr = mc.player.distanceToSqr(pkt.x(), pkt.y(), pkt.z());
+			double timeInSec = Math.sqrt(distSqr) / CBCConfigs.CLIENT.blastEffectDelaySpeed.getF();
+			mc.getSoundManager().playDelayed(sound, Mth.floor(timeInSec * 20));
+		} else {
+			mc.getSoundManager().play(sound);
+		}
 	}
 
 }

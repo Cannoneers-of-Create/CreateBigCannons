@@ -79,6 +79,8 @@ Added:
  - Blocks that produce splinters, mainly woods, are marked with #createbigcannons:splinter_effect_on_impact
  - Blocks that produce shards, mainly glass, are marked with #createbigcannons:glass_effect_on_impact
  - Blocks tagged #minecraft:leaves produce leaves
+- Added air absorption and delay to cannon sounds
+ - Delay is configurable
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities

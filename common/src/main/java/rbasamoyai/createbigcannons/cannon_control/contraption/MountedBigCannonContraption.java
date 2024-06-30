@@ -463,7 +463,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		float soundPower = Mth.clamp(propelCtx.chargesUsed / 16f, 0, 1);
 		float tone = 2 + soundPower * -8 + level.random.nextFloat(-2f, 2f);
 		float pitch = (float) Mth.clamp(Math.pow(2, tone / 12f), 0, 2);
-		CBCSoundEvents.FIRE_BIG_CANNON.playOnServer(level, new BlockPos(spawnPos), 20, pitch);
+		float volume = 10 + soundPower * 30;
+		CBCUtils.playBlastLikeSoundOnServer(level, spawnPos.x, spawnPos.y, spawnPos.z, CBCSoundEvents.FIRE_BIG_CANNON.getMainEvent(),
+			SoundSource.BLOCKS, volume, pitch, 2f);
 	}
 
 	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos) {
