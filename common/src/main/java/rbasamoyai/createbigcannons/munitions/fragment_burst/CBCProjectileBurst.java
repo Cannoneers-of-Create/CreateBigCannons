@@ -23,7 +23,7 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 	protected CBCProjectileBurst(EntityType<? extends CBCProjectileBurst> entityType, Level level) { super(entityType, level); }
 
 	@Override
-	protected void applyForces(double[] velocity) {
+	protected void applyForces(double[] velocity, double[] displacement) {
 		double length = Math.sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1] + velocity[2] * velocity[2]);
 		double drag = length < 1e-2d ? 1 : this.getDragCoefficient(length) / length;
 		velocity[0] -= velocity[0] * drag;

@@ -1,5 +1,8 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -20,9 +23,6 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundCBCExplodePacket;
 import rbasamoyai.createbigcannons.remix.CustomExplosion;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class MortarStoneExplosion extends CustomExplosion.Impl {
 
@@ -75,7 +75,7 @@ public class MortarStoneExplosion extends CustomExplosion.Impl {
 			float f = Math.max(1f - (float) distSqr / 625f, 0);
 			float f1 = this.size * f;
 			float shake = Math.min(45, f1 * 2f);
-			CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(0, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1));
+			CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(0, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1, this.x, this.y, this.z));
 
 			Vec3 knockback = this.getHitPlayers().getOrDefault(player, Vec3.ZERO);
 			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.size, this.getToBlow(),

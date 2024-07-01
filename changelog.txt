@@ -110,6 +110,7 @@ Changed:
  - Currently supports water, lava, honey, and chocolate
 - Added projectile skipping on fluids
  - Added separate fluid bounce chance config
+- Changed screen shake delay to be on client
 [Addons, integration] - Added ability to register multiple fluid blob effect handlers for a single fluid type
 - Refactor projectile properties to be less inheritance-based (BREAKING)
  - New approach involves projectile-specific serializers that projectiles must reference instead of getting wildcard

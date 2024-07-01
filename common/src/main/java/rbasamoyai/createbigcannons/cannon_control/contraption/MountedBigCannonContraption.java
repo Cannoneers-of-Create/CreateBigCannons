@@ -445,7 +445,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		float shakeDistance = propelCtx.chargesUsed * CBCConfigs.SERVER.cannons.bigCannonShakeDistanceMultiplier.getF();
 		float shakePower = propelCtx.chargesUsed * CBCConfigs.SERVER.cannons.bigCannonShakePowerMultiplier.getF();
-		int propagationSpeed = CBCConfigs.SERVER.cannons.bigCannonShakePropagationSpeed.get();
 		Vec3 plumePos = spawnPos.subtract(vec);
 		propelCtx.smokeScale = Math.max(1, propelCtx.smokeScale);
 		for (ServerPlayer player : level.players()) {
@@ -456,8 +455,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				float f = 1 - dist / shakeDistance;
 				float f2 = f * f;
 				float shake = Math.min(45, shakePower * f2);
-				int delay = propagationSpeed == 0 ? 0 : Mth.floor(dist / propagationSpeed);
-				CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(delay, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1));
+				CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(-1, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1,
+					entity.getX(), entity.getY(), entity.getZ()));
 			}
 		}
 		float soundPower = Mth.clamp(propelCtx.chargesUsed / 16f, 0, 1);
