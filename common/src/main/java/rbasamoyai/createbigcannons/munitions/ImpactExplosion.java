@@ -1,5 +1,8 @@
 package rbasamoyai.createbigcannons.munitions;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
@@ -17,9 +20,6 @@ import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundCBCExplodePacket;
 import rbasamoyai.createbigcannons.remix.CustomExplosion;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class ImpactExplosion extends CustomExplosion.Impl {
 
@@ -50,7 +50,7 @@ public class ImpactExplosion extends CustomExplosion.Impl {
 			float f = Math.max(1f - (float) distSqr / 100f, 0);
 			float f1 = this.size * f;
 			float shake = Math.min(45, f1 * 4f);
-			CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(0, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1));
+			CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(0, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1, this.x, this.y, this.z));
 			Vec3 knockback = this.getHitPlayers().getOrDefault(player, Vec3.ZERO);
 			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.size, this.getToBlow(),
 				(float) knockback.x, (float) knockback.y, (float) knockback.z, ClientboundCBCExplodePacket.ExplosionType.IMPACT), player);

@@ -34,7 +34,6 @@ public class CBCCfgCannons extends ConfigBase {
 	public final ConfigGroup bigCannonScreenShake = group(0, "bigCannonScreenShake", "Big Cannon Screen Shake");
 	public final ConfigFloat bigCannonShakeDistanceMultiplier = f(8, 0, "screenShakeDistanceMultiplier");
 	public final ConfigFloat bigCannonShakePowerMultiplier = f(6, 0, "screenShakePowerMultiplier");
-	public final ConfigInt bigCannonShakePropagationSpeed = i(40, 0, "screenShakePropagationSpeed");
 
 	public CBCCfgCannons() {
 		super();

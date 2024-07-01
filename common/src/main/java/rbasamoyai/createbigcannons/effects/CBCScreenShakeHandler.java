@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.effects;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ModScreenShakeHandler;
@@ -7,20 +9,35 @@ import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
 
 public class CBCScreenShakeHandler extends ModScreenShakeHandler.Impl {
 
-	private static final ScreenShakeEffect ZERO_SHAKE = new ScreenShakeEffect(1, 0, 1);
+	@Override
+	public void addEffect(ScreenShakeEffect effect) {
+		Minecraft mc = Minecraft.getInstance();
+		if (effect.duration == -1) {
+			int ticks = 0;
+			if (!CBCConfigs.CLIENT.isInstantaneousBlastEffect() && mc.player != null) {
+				double distSqr = mc.player.distanceToSqr(effect.posX, effect. posY, effect.posZ);
+				double timeInSec = Math.sqrt(distSqr) / CBCConfigs.CLIENT.blastEffectDelaySpeed.getF();
+				ticks = Mth.floor(timeInSec * 20);
+			}
+			effect = new ScreenShakeEffect(ticks, effect.yawMagnitude, effect.pitchMagnitude, effect.rollMagnitude,
+				effect.yawJitter, effect.pitchJitter, effect.rollJitter, effect.posX, effect.posY, effect.posZ);
+		}
+		super.addEffect(effect);
+	}
 
 	@Override
 	public ScreenShakeEffect modifyScreenShake(ScreenShakeEffect effect) {
 		float shakeScale = CBCConfigs.CLIENT.cannonScreenShakeIntensity.getF();
-		if (shakeScale == 0)
-			return ZERO_SHAKE;
 		return shakeScale == 1 ? effect : effect.copyWithProgressAndDuration(
 			effect.yawMagnitude * shakeScale,
 			effect.pitchMagnitude * shakeScale,
 			effect.rollMagnitude * shakeScale,
 			effect.yawJitter,
 			effect.pitchJitter,
-			effect.rollJitter);
+			effect.rollJitter,
+			effect.posX,
+			effect.posY,
+			effect.posZ);
 	}
 
 	@Override
