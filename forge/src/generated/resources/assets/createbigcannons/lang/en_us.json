@@ -430,6 +430,7 @@
   "createbigcannons.subtitle.mortar_stone_explode": "Mortar stone explodes",
   "createbigcannons.subtitle.projectile_impact": "Projectile impacts",
   "createbigcannons.subtitle.projectile_splash": "Projectile splashes",
+  "createbigcannons.subtitle.shell_flying": "Incoming artillery shell",
   "createbigcannons.subtitle.shrapnel_shell_explosion": "Shrapnel shell explodes",
   "createbigcannons.subtitle.smoke_shell_detonate": "Smoke shell bursts",
   "death.attack.createbigcannons.big_cannon_projectile": "%s was directly killed by a large caliber round",

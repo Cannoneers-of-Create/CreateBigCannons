@@ -129,6 +129,16 @@
     ],
     "subtitle": "createbigcannons.subtitle.projectile_splash"
   },
+  "shell_flying": {
+    "sounds": [
+      {
+        "name": "createbigcannons:shell_flying",
+        "type": "file",
+        "attenuation_distance": 256
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.shell_flying"
+  },
   "shrapnel_shell_explosion": {
     "sounds": [
       {

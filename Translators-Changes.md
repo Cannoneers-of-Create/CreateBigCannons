@@ -50,7 +50,8 @@ Additions: \
 &plus; `"debug.createbigcannons.block_armor_info": "Block Armor Info:"` \
 &plus; `"debug.createbigcannons.block_hardness": "Block Hardness: "` \
 &plus; `"debug.createbigcannons.block_toughness": "Block Toughness: "` \
-&plus; `"item.createbigcannons.block_armor_inspection_tool": "Block Armor Inspection Tool"`
+&plus; `"item.createbigcannons.block_armor_inspection_tool": "Block Armor Inspection Tool"` \
+&plus; `"createbigcannons.subtitle.shell_flying": "Incoming artillery shell"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \

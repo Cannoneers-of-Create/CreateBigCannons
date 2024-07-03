@@ -57,6 +57,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	@Nullable protected Vec3 orientation = null;
 	protected BlockState lastPenetratedBlock = Blocks.AIR.defaultBlockState();
 	protected boolean removeNextTick = false;
+	protected int localSoundCooldown;
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
@@ -78,7 +79,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 			if (this.nextVelocity != null) {
 				this.setDeltaMovement(this.nextVelocity);
-				if (this.nextVelocity.lengthSqr() < 1e-4d)
+				if (this.nextVelocity.lengthSqr() < 1e-4d && !this.level.isClientSide)
 					this.setInGround(true);
 				this.nextVelocity = null;
 			}
@@ -123,6 +124,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 				--this.inFluidTime;
 			if (this.penetrationTime > 0)
 				--this.penetrationTime;
+			if (this.localSoundCooldown > 0)
+				--this.localSoundCooldown;
 
 			if (this.level instanceof ServerLevel slevel && !this.isRemoved()) {
 				if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
@@ -150,6 +153,16 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			return;
 		super.lerpTo(x, y, z, yRot, xRot, lerpSteps, teleport);
 	}
+
+	/**
+	 * Utility control for local sound cooldown, e.g. flyby sounds.
+	 *
+	 * @param value 0 to allow flyby sounds
+	 *              <br>Less than 0 to mark as running local sounds
+	 *              <br>Greater than 0 to stop playing local sounds
+	 */
+	public void setLocalSoundCooldown(int value) { this.localSoundCooldown = value; }
+	public int getLocalSoundCooldown() { return this.localSoundCooldown; }
 
 	protected void clipAndDamage() {
 		ProjectileContext projCtx = new ProjectileContext(this, CBCConfigs.SERVER.munitions.damageRestriction.get());
@@ -235,6 +248,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 						Vec3 normal = CBCUtils.getSurfaceNormalVector(this.level, blockResult);
 						double elasticity = 1.7f;
 						this.nextVelocity = trajectory.subtract(normal.scale(normal.dot(trajectory) * elasticity));
+						this.setLocalSoundCooldown(3);
 						stop = true;
 					}
 					case STOP -> {
@@ -242,6 +256,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 						this.nextVelocity = Vec3.ZERO;
 						this.lastPenetratedBlock = state;
 						this.penetrationTime = 2;
+						this.setLocalSoundCooldown(3);
 						stop = true;
 					}
 				}
