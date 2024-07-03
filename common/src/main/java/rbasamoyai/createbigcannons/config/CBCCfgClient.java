@@ -11,6 +11,9 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigInt blockArmorTooltipPrecision = i(2, 0, 4, "blockArmorInfoPrecision", Comments.blockArmorTooltipPrecision);
 	public final ConfigFloat blastEffectDelaySpeed = f(320, 0, 1000, "blastEffectDelaySpeed", "[in Meters per Second]");
 
+	public final ConfigGroup projectileFlybySounds = group(1, "projectileFlybySounds", "Projectile Flyby Sounds");
+	public final ConfigBool enableBigCannonFlybySounds = b(true, "enableBigCannonFlybySounds");
+
 	public final ConfigGroup cannonMountGoggleTooltip = group(1, "cannonMountGoggleTooltip", "Cannon Mount Goggle Tooltip");
 	public final ConfigInt cannonMountAngleGoggleTooltipPrecision = i(2, 0, 4, "anglePrecision", Comments.cannonMountAngleTooltipPrecision);
 	public final ConfigBool use180180RangeForYaw = b(false, "use180_180RangeForYaw", Comments.use180180RangeForYaw);

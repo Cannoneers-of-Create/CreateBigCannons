@@ -27,12 +27,15 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesProvider;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
+import rbasamoyai.createbigcannons.index.CBCSoundEvents;
+import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.ImpactExplosion;
@@ -60,6 +63,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	public void tick() {
 		ChunkPos cpos = new ChunkPos(this.blockPosition());
 		if (this.level.isClientSide || this.level.hasChunk(cpos.x, cpos.z)) {
+			Vec3 oldPos = this.position();
 			super.tick();
 			if (!this.isInGround()) {
 				TrailType trailType = CBCConfigs.SERVER.munitions.bigCannonTrailType.get();
@@ -77,9 +81,26 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 						this.level.addAlwaysVisibleParticle(options, true, dx, dy, dz, sx, sy, sz);
 					}
 				}
+				Vec3 newPos = this.position();
+				if (this.level.isClientSide && this.localSoundCooldown == 0) {
+					Vec3 displacement = newPos.subtract(oldPos);
+					double dispLen = displacement.length();
+					Vec3 originPos = newPos.subtract(displacement.scale(0.5));
+					double radius = Math.min(200, dispLen * 30);
+					EnvExecute.executeOnClient(() -> () -> CBCClientCommon.playShellFlyingSoundOnClient(this,
+						CBCSoundEvents.SHELL_FLYING.getMainEvent(), player -> {
+							if (!CBCConfigs.CLIENT.enableBigCannonFlybySounds.get())
+								return false;
+							if (player.distanceToSqr(originPos) > radius * radius)
+								return false;
+							Vec3 diff = player.position().subtract(originPos);
+							return displacement.normalize().dot(diff.normalize()) >= 0;
+						}, radius));
+				}
 			}
 		}
 	}
+
 
 	public boolean hasTracer() {
 		return (!this.getTracer().isEmpty() || CBCConfigs.SERVER.munitions.allBigCannonProjectilesAreTracers.get()) && !this.isInGround();

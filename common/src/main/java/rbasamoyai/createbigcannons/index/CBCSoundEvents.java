@@ -86,6 +86,11 @@ public class CBCSoundEvents {
 			.category(SoundSource.BLOCKS)
 			.build(),
 
+		SHELL_FLYING = create("shell_flying").subtitle("Incoming artillery shell")
+			.category(SoundSource.NEUTRAL)
+			.attenuationDistance(256)
+			.build(),
+
 		SHRAPNEL_SHELL_EXPLOSION = create("shrapnel_shell_explosion").subtitle("Shrapnel shell explodes")
 			.category(SoundSource.NEUTRAL)
 			.build(),
