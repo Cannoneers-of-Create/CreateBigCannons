@@ -26,6 +26,10 @@ public class CBCSoundEvents {
 	public static final Map<ResourceLocation, SoundEntry> ALL = new HashMap<>();
 
 	public static final SoundEntry
+		AUTOCANNON_ROUND_FLYBY = create("autocannon_round_flyby").subtitle("Autocannon round flies by")
+			.category(SoundSource.NEUTRAL)
+			.build(),
+
 		FIRE_BIG_CANNON = create("fire_big_cannon").subtitle("Big cannon fires")
 			.category(SoundSource.BLOCKS)
 			.build(),
@@ -57,6 +61,10 @@ public class CBCSoundEvents {
 
 		LAVA_FLUID_RELEASE = create("lava_fluid_release").noSubtitle()
 			.playExisting(SoundEvents.FIRECHARGE_USE)
+			.category(SoundSource.NEUTRAL)
+			.build(),
+
+		MACHINE_GUN_ROUND_FLYBY = create("machine_gun_round_flyby").subtitle("Machine gun round flies by")
 			.category(SoundSource.NEUTRAL)
 			.build(),
 
