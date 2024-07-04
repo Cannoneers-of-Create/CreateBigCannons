@@ -20,6 +20,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
@@ -37,7 +39,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
@@ -51,6 +52,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMateria
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.effects.particles.explosions.CannonBlastWaveEffectParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.DropMortarPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
@@ -66,7 +68,6 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.IntegratedPro
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilities;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
-import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
 
 public class MountedBigCannonContraption extends AbstractMountedCannonContraption {
 
@@ -443,28 +444,25 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		this.hasFired = true;
 
-		float shakeDistance = propelCtx.chargesUsed * CBCConfigs.SERVER.cannons.bigCannonShakeDistanceMultiplier.getF();
-		float shakePower = propelCtx.chargesUsed * CBCConfigs.SERVER.cannons.bigCannonShakePowerMultiplier.getF();
-		Vec3 plumePos = spawnPos.subtract(vec);
-		propelCtx.smokeScale = Math.max(1, propelCtx.smokeScale);
-		for (ServerPlayer player : level.players()) {
-			level.sendParticles(player, new BigCannonPlumeParticleData(propelCtx.smokeScale, propelCtx.chargesUsed, 10),
-				true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
-			float dist = player.distanceTo(entity);
-			if (dist < shakeDistance && shakeDistance > 0.1f) {
-				float f = 1 - dist / shakeDistance;
-				float f2 = f * f;
-				float shake = Math.min(45, shakePower * f2);
-				CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(-1, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1,
-					entity.getX(), entity.getY(), entity.getZ()));
-			}
-		}
 		float soundPower = Mth.clamp(propelCtx.chargesUsed / 16f, 0, 1);
 		float tone = 2 + soundPower * -8 + level.random.nextFloat(-2f, 2f);
 		float pitch = (float) Mth.clamp(Math.pow(2, tone / 12f), 0, 2);
+		double shakeDistance = propelCtx.chargesUsed * CBCConfigs.SERVER.cannons.bigCannonBlastDistanceMultiplier.getF();
 		float volume = 10 + soundPower * 30;
-		CBCUtils.playBlastLikeSoundOnServer(level, spawnPos.x, spawnPos.y, spawnPos.z, CBCSoundEvents.FIRE_BIG_CANNON.getMainEvent(),
-			SoundSource.BLOCKS, volume, pitch, 2f);
+		Vec3 plumePos = spawnPos.subtract(vec);
+		propelCtx.smokeScale = Math.max(1, propelCtx.smokeScale);
+
+		BigCannonPlumeParticleData plumeParticle = new BigCannonPlumeParticleData(propelCtx.smokeScale, propelCtx.chargesUsed, 10);
+		CannonBlastWaveEffectParticleData blastEffect = new CannonBlastWaveEffectParticleData(shakeDistance,
+			CBCSoundEvents.FIRE_BIG_CANNON.getMainEvent(), SoundSource.BLOCKS, volume, pitch, 2, propelCtx.chargesUsed);
+		Packet<?> blastWavePacket = new ClientboundLevelParticlesPacket(blastEffect, true, plumePos.x, plumePos.y, plumePos.z, 0, 0, 0, 1, 0);
+
+		double blastDistSqr = volume * volume * 256 * 1.21;
+		for (ServerPlayer player : level.players()) {
+			level.sendParticles(player, plumeParticle, true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
+			if (player.distanceToSqr(plumePos.x, plumePos.y, plumePos.z) < blastDistSqr)
+				player.connection.send(blastWavePacket);
+		}
 	}
 
 	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos) {

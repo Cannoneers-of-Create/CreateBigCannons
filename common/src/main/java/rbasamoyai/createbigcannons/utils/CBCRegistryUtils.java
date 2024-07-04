@@ -80,12 +80,17 @@ public class CBCRegistryUtils {
 	public static TagKey<EntityType<?>> createEntityTypeTag(ResourceLocation id) { return TagKey.create(getEntityTypeRegistryKey(), id); }
 	public static Iterable<Holder<EntityType<?>>> getEntityTypeTagEntries(TagKey<EntityType<?>> tag) { return getEntityTypeRegistry().getTagOrEmpty(tag); }
 
+	//////// Sound event registry access aliases ////////
+
+	public static Registry<SoundEvent> getSoundEventRegistry() { return Registry.SOUND_EVENT; }
+	public static ResourceLocation getSoundEventLocation(SoundEvent soundEvent) { return getSoundEventRegistry().getKey(soundEvent); }
+	public static int getSoundEventNumericId(SoundEvent soundEvent) { return getSoundEventRegistry().getId(soundEvent); }
+	public static SoundEvent getSoundEvent(ResourceLocation id) { return getSoundEventRegistry().get(id); }
+	public static SoundEvent getSoundEvent(int id) { return getSoundEventRegistry().byId(id); }
+
 	//////// Less-used registry access aliases ////////
 	public static ResourceKey<Registry<Level>> getDimensionRegistryKey() { return Registry.DIMENSION_REGISTRY; }
 	public static Optional<ParticleType<?>> getOptionalParticleType(ResourceLocation id) { return Registry.PARTICLE_TYPE.getOptional(id); }
-
-	public static int getSoundEventId(SoundEvent event) { return Registry.SOUND_EVENT.getId(event); }
-	public static SoundEvent getSoundEvent(int id) { return Registry.SOUND_EVENT.byId(id); }
 
 	private CBCRegistryUtils() {}
 

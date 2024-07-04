@@ -22,7 +22,7 @@ public record ClientboundBlastSoundPacket(SoundEvent sound, SoundSource source, 
 
 	@Override
 	public void rootEncode(FriendlyByteBuf buf) {
-		buf.writeVarInt(CBCRegistryUtils.getSoundEventId(this.sound))
+		buf.writeVarInt(CBCRegistryUtils.getSoundEventNumericId(this.sound))
 			.writeEnum(this.source)
 			.writeDouble(this.x)
 			.writeDouble(this.y)

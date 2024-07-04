@@ -152,6 +152,7 @@ Changed:
  - Block Armor Inspection Tool now displays info in a more elegant form similar to goggles
  - Block Armor Inspection Tool also displays information on hovered blocks in the inventory
 - Improved terminal projectile trajectory appearance on clientside
+- Improved blast propagation for big cannon blast to take current player position into account
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head

@@ -1,9 +1,18 @@
 package rbasamoyai.createbigcannons.utils;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
+import com.mojang.serialization.Codec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +21,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -22,6 +33,15 @@ import rbasamoyai.createbigcannons.network.ClientboundBlastSoundPacket;
 import rbasamoyai.createbigcannons.network.ClientboundSendCustomBreakProgressPacket;
 
 public class CBCUtils {
+
+	private static final Map<String, SoundSource> SOURCE_BY_NAME = Arrays.stream(SoundSource.values())
+		.collect(Collectors.toMap(SoundSource::getName, Function.identity()));
+
+	@Nullable public static SoundSource soundSourceFromName(String name) { return SOURCE_BY_NAME.get(name); }
+	public static Set<String> getSoundSourceNames() { return SOURCE_BY_NAME.keySet(); }
+
+	public static final Codec<SoundSource> SOUND_SOURCE_CODEC =
+		CBCUtils.fromEnumWithStringFunction(SoundSource::values, SoundSource::getName, CBCUtils::soundSourceFromName);
 
 	/**
 	 * Alias method for easier porting to 1.21+.
@@ -253,6 +273,24 @@ public class CBCUtils {
 			if (player.distanceToSqr(x, y, z) < radSqr)
 				NetworkPlatform.sendToClientPlayer(packet, player);
 		}
+	}
+
+	/**
+	 * Adapted from {@link StringRepresentable#fromEnum(Supplier, Function)}
+	 *
+	 * @param elementSupplier
+	 * @param strFunc
+	 * @param namingFunction
+	 * @return
+	 * @param <E>
+	 */
+	public static <E extends Enum<E>> Codec<E> fromEnumWithStringFunction(Supplier<E[]> elementSupplier, Function<E, String> strFunc,
+																		  Function<String, E> namingFunction) {
+		E[] enums = elementSupplier.get();
+		return ExtraCodecs.orCompressed(
+			ExtraCodecs.stringResolverCodec(strFunc, namingFunction),
+			ExtraCodecs.idResolverCodec(Enum::ordinal, i -> i >= 0 && i < enums.length ? enums[i] : null, -1)
+		);
 	}
 
 	private CBCUtils() {}

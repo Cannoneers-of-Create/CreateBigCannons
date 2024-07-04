@@ -68,6 +68,7 @@ import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
 import rbasamoyai.createbigcannons.remix.LightingRemix;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.RPLScreenShakeHandlerClient;
+import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
 
 public class CBCClientCommon {
 
@@ -341,6 +342,10 @@ public class CBCClientCommon {
 			return;
 		minecraft.getSoundManager().play(new ShellFlyingSoundInstance(sound, minecraft.player, projectile, radius));
 		projectile.setLocalSoundCooldown(-1);
+	}
+
+	public static void shakeScreenOnClient(ScreenShakeEffect effect) {
+		RPLScreenShakeHandlerClient.addShakeEffect(CreateBigCannons.SCREEN_SHAKE_HANDLER_ID, effect);
 	}
 
 }
