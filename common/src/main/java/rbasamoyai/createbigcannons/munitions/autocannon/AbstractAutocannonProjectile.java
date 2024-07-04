@@ -1,14 +1,23 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import com.mojang.math.Constants;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -18,6 +27,7 @@ import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesPr
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
+import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
@@ -28,6 +38,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	protected double displacement = 0;
 	protected int ageRemaining;
+	protected final Map<Player, Integer> whooshedPlayers = new HashMap<>();
 
 	protected AbstractAutocannonProjectile(EntityType<? extends AbstractAutocannonProjectile> type, Level level) {
 		super(type, level);
@@ -75,6 +86,37 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 						double sy = this.level.random.nextDouble(-0.002d, 0.002d);
 						double sz = this.level.random.nextDouble(-0.002d, 0.002d);
 						this.level.addAlwaysVisibleParticle(new TrailSmokeParticleData(lifetime), true, dx, dy, dz, sx, sy, sz);
+					}
+				}
+				if (this.level.isClientSide) {
+					for (Iterator<Map.Entry<Player, Integer>> iter = this.whooshedPlayers.entrySet().iterator(); iter.hasNext(); ) {
+						Map.Entry<Player, Integer> entry = iter.next();
+						if (entry.getKey().isRemoved() || !entry.getKey().isAlive()) {
+							iter.remove();
+							continue;
+						}
+						int v = entry.getValue();
+						if (v <= 0) {
+							iter.remove();
+						} else {
+							entry.setValue(v - 1);
+						}
+					}
+					SoundEvent soundEvent = this.getAutocannonRoundType() == AutocannonAmmoType.MACHINE_GUN
+						? CBCSoundEvents.MACHINE_GUN_ROUND_FLYBY.getMainEvent()
+						: CBCSoundEvents.AUTOCANNON_ROUND_FLYBY.getMainEvent();
+					Vec3 curPos = this.position();
+					Vec3 displacementVec = curPos.subtract(prevPos);
+					AABB path = this.getBoundingBox().expandTowards(displacementVec.reverse()).inflate(3);
+					for (Player player : this.level.getNearbyPlayers(TargetingConditions.forNonCombat(), null, path)) {
+						Vec3 diff = player.position().subtract(prevPos);
+						boolean flag = this.whooshedPlayers.containsKey(player);
+						this.whooshedPlayers.put(player, 3);
+						if (flag)
+							continue;
+						float volume = displacementVec.dot(diff) < 0 ? 0.25f : 1f;
+						float pitch = 0.95f + this.random.nextFloat() * 0.2f;
+						this.level.playSound(player,this.getX(), this.getY(), this.getZ(), soundEvent, SoundSource.NEUTRAL, volume, pitch);
 					}
 				}
 			}

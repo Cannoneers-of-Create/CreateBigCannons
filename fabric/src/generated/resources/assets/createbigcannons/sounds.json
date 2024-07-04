@@ -1,4 +1,13 @@
 {
+  "autocannon_round_flyby": {
+    "sounds": [
+      {
+        "name": "createbigcannons:autocannon_round_flyby",
+        "type": "file"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.autocannon_round_flyby"
+  },
   "fire_autocannon": {
     "sounds": [
       {
@@ -73,6 +82,15 @@
         "type": "event"
       }
     ]
+  },
+  "machine_gun_round_flyby": {
+    "sounds": [
+      {
+        "name": "createbigcannons:machine_gun_round_flyby",
+        "type": "file"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.machine_gun_round_flyby"
   },
   "mortar_stone_explode": {
     "sounds": [
