@@ -1,11 +1,7 @@
 package rbasamoyai.createbigcannons.block_hit_effects;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -77,15 +73,13 @@ public record BlockHitEffect(List<ParticleOptions> impactParticles, List<Particl
 	}
 
 	public record HitSound(ResourceLocation location, SoundSource source, float basePitch, float pitchVariation) {
-		private static final Map<String, SoundSource> BY_NAME = Arrays.stream(SoundSource.values())
-			.collect(Collectors.toMap(SoundSource::getName, Function.identity()));
 
 		public static HitSound fromJson(JsonObject obj) throws JsonParseException {
 			ResourceLocation id = CBCUtils.location(GsonHelper.getAsString(obj, "sound"));
 			String sourceName = GsonHelper.getAsString(obj, "source", SoundSource.BLOCKS.getName());
-			SoundSource source = BY_NAME.get(sourceName);
+			SoundSource source = CBCUtils.soundSourceFromName(sourceName);
 			if (source == null) {
-				String types = '\'' + String.join("', '", BY_NAME.keySet()) + '\'';
+				String types = '\'' + String.join("', '", CBCUtils.getSoundSourceNames()) + '\'';
 				throw new JsonParseException("Invalid sound type '" + sourceName + "', should either be absent or one of " + types);
 			}
 			float pitch = GsonHelper.getAsFloat(obj, "pitch", 1);

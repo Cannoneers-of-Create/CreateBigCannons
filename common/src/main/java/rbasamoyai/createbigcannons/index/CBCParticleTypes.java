@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import rbasamoyai.createbigcannons.effects.particles.explosions.CannonBlastWaveEffectParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FlakCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FluidCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.ShrapnelCloudParticleData;
@@ -45,6 +46,7 @@ public enum CBCParticleTypes {
 	AUTOCANNON_PLUME(AutocannonPlumeParticleData::new),
 	BIG_CANNON_PLUME(BigCannonPlumeParticleData::new),
 	BLOCK(CBCBlockParticleData::new),
+	CANNON_BLAST_WAVE(CannonBlastWaveEffectParticleData::new),
 	CANNON_SMOKE(CannonSmokeParticleData::new),
 	DEBRIS_MATTER(DebrisMatterParticleData::new),
 	DEBRIS_SMOKE(DebrisSmokeParticleData::new),

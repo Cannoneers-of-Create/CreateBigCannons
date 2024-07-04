@@ -31,9 +31,8 @@ public class CBCCfgCannons extends ConfigBase {
 	public final ConfigBool shouldDisplayCannonRotation = b(true, "shouldDisplayCannonRotation");
 	public final ConfigBool shouldDisplayContainedMunitions = b(true, "shouldDisplayContainedMunitions");
 
-	public final ConfigGroup bigCannonScreenShake = group(0, "bigCannonScreenShake", "Big Cannon Screen Shake");
-	public final ConfigFloat bigCannonShakeDistanceMultiplier = f(8, 0, "screenShakeDistanceMultiplier");
-	public final ConfigFloat bigCannonShakePowerMultiplier = f(6, 0, "screenShakePowerMultiplier");
+	public final ConfigGroup bigCannonBlast = group(0, "bigCannonScreenShake", "Big Cannon Screen Shake");
+	public final ConfigFloat bigCannonBlastDistanceMultiplier = f(8, 0, "blastDistanceMultiplier");
 
 	public CBCCfgCannons() {
 		super();

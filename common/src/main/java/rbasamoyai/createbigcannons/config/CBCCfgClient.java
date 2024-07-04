@@ -9,6 +9,10 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigBool showMortarStoneClouds = b(true, "showMortarStoneClouds");
 	public final ConfigInt fluidBlobParticleCount = i(20, 0, 1000, "fluidBlobParticleCount", Comments.fluidBlobParticleCount);
 	public final ConfigInt blockArmorTooltipPrecision = i(2, 0, 4, "blockArmorInfoPrecision", Comments.blockArmorTooltipPrecision);
+
+	/**
+	 * In meters per second; divide by 20 to get meters per tick
+	 */
 	public final ConfigFloat blastEffectDelaySpeed = f(320, 0, 1000, "blastEffectDelaySpeed", "[in Meters per Second]");
 
 	public final ConfigGroup projectileFlybySounds = group(1, "projectileFlybySounds", "Projectile Flyby Sounds");
@@ -23,10 +27,12 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigFloat cannonScreenShakeSpringiness = f(0.08f, 0.01f, 2f, "cannonScreenShakeSpringiness");
 	public final ConfigFloat cannonScreenShakeDecay = f(0.3f, 0.01f, 2f, "cannonScreenShakeDecay");
 
-	public final ConfigGroup bigCannonPlumes = group(1, "bigCannonPlumes", "Big Cannon Plumes");
+	public final ConfigGroup bigCannonBlast = group(1, "bigCannonBlast", "Big Cannon Blast");
 	public final ConfigBool showBigCannonPlumes = b(true, "showBigCannonPlumes");
 	public final ConfigBool showExtraBigCannonSmoke = b(true, "showExtraSmoke");
 	public final ConfigBool showExtraBigCannonFlames = b(true, "showExtraFlames");
+	public final ConfigFloat bigCannonShakePowerMultiplier = f(6, 0, "screenShakePowerMultiplier");
+	public final ConfigFloat bigCannonShakePowerLimit = f(45, 0, 90, "bigCannonShakePowerLimit", "[in Degrees]");
 
 	public final ConfigGroup flakClouds = group(1, "flakClouds", "Flak Clouds");
 	public final ConfigBool showFlakClouds = b(true, "showFlakClouds");

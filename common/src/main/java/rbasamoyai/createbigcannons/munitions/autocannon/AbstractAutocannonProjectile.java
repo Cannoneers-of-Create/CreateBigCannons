@@ -127,6 +127,12 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		this.discard();
 	}
 
+	@Override
+	public void remove(RemovalReason reason) {
+		super.remove(reason);
+		this.whooshedPlayers.clear();
+	}
+
 	public void setTracer(boolean tracer) {
 		if (tracer) {
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) | 2));
