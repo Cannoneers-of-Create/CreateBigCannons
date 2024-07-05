@@ -88,7 +88,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 						this.level.addAlwaysVisibleParticle(new TrailSmokeParticleData(lifetime), true, dx, dy, dz, sx, sy, sz);
 					}
 				}
-				if (this.level.isClientSide) {
+				if (this.level.isClientSide && CBCConfigs.CLIENT.enableAutocannonFlybySounds.get()) {
 					for (Iterator<Map.Entry<Player, Integer>> iter = this.whooshedPlayers.entrySet().iterator(); iter.hasNext(); ) {
 						Map.Entry<Player, Integer> entry = iter.next();
 						if (entry.getKey().isRemoved() || !entry.getKey().isAlive()) {
