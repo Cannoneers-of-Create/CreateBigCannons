@@ -66,6 +66,10 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigFloat shellShakePowerMultiplier = f(6, 0, "screenShakePowerMultiplier");
 	public final ConfigFloat shellShakePowerLimit = f(45, 0, 90, "screenShakePowerLimit", "[in Degrees]");
 
+	public final ConfigGroup particleWindEffect = group(1, "particleWindEffect", "Particle Wind Effect");
+	public final ConfigFloat maximumWindSpeed = f(1.25f, 0, 10, "maximumWindSpeed", "[in Meters per second]");
+	public final ConfigFloat maxWindBearingChangeSpeed = f(8, 0, 90, "maximumWindBearingChangeSpeed", "[in Degrees per tick]");
+
 	public boolean isInstantaneousBlastEffect() {
 		return this.blastEffectDelaySpeed.getF() < 1e-2d;
 	}
@@ -78,6 +82,7 @@ public class CBCCfgClient extends CBCConfigBase {
 		static String blockArmorTooltipPrecision = "How many digits are after the angle decimal point on a block armor info tooltip.";
 		static String cannonMountAngleTooltipPrecision = "How many digits are after the angle decimal point on a cannon mount goggle tooltip.";
 		static String use180180RangeForYaw = "If true, the yaw angle on goggles ranges from +180 to -180\u00ba. If false, it ranges from 0 to +360\u00ba.";
+		static String windFluctuationSpeed = "How fast the wind's direction and strength fluctuates. 1 is normal speed.";
 	}
 
 }

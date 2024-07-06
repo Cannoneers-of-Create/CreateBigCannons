@@ -44,7 +44,7 @@ public class ShellExplosion extends CustomExplosion.Impl {
 	@Override
 	protected void spawnParticles() {
 		ShellBlastWaveEffectParticleData blastWave = new ShellBlastWaveEffectParticleData(this.size * 12,
-			CBCSoundEvents.SHELL_EXPLOSION.getMainEvent(), SoundSource.BLOCKS, this.size * 2,
+			CBCSoundEvents.SHELL_EXPLOSION.getMainEvent(), SoundSource.BLOCKS, Math.max(this.size * 2, 16),
 			0.8f + level.random.nextFloat() * 0.4f, 2f, this.size);
 		ShellExplosionCloudParticleData explosionCloud = new ShellExplosionCloudParticleData(this.size, this.isPlume);
 		this.level.addParticle(blastWave, true, this.x, this.y, this.z, 0, 0, 0);
@@ -63,7 +63,7 @@ public class ShellExplosion extends CustomExplosion.Impl {
 	@Override
 	public void sendExplosionToClient(ServerPlayer player) {
 		double distSqr = player.distanceToSqr(this.x, this.y, this.z);
-		if (distSqr < this.size * this.size * 256 * 4) {
+		if (distSqr < 263000d) {
 			Vec3 knockback = this.getHitPlayers().getOrDefault(player, Vec3.ZERO);
 			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.size, this.getToBlow(),
 				(float) knockback.x, (float) knockback.y, (float) knockback.z, ClientboundCBCExplodePacket.ExplosionType.SHELL), player);

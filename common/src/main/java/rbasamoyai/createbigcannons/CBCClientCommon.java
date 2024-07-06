@@ -52,6 +52,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderSelectionHandler;
 import rbasamoyai.createbigcannons.effects.CBCScreenShakeHandler;
+import rbasamoyai.createbigcannons.effects.particles.ParticleWindHandler;
 import rbasamoyai.createbigcannons.effects.sounds.ShellFlyingSoundInstance;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -196,6 +197,7 @@ public class CBCClientCommon {
 		}
 
 		CANNON_WELDER_HANDLER.tick();
+		ParticleWindHandler.updateWind();
 	}
 
 	public static boolean onClickMouse(KeyMapping mapping) {
@@ -306,6 +308,7 @@ public class CBCClientCommon {
 
 	public static void onLoadClientLevel(LevelAccessor level) {
 		BlockHitEffectsHandler.loadTags();
+		ParticleWindHandler.refreshNoise(level.getRandom().nextLong());
 	}
 
 	public static void onPlayerLogOut(LocalPlayer player) {
