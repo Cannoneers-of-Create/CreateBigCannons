@@ -13,9 +13,9 @@ public class CannonBlastWaveEffectParticleData extends AbstractBlastWaveEffectPa
 	private static final Deserializer<CannonBlastWaveEffectParticleData> DESERIALIZER = createDeserializer(CannonBlastWaveEffectParticleData::new);
 	private static final Codec<CannonBlastWaveEffectParticleData> CODEC = createCodec(CannonBlastWaveEffectParticleData::new);
 
-	public CannonBlastWaveEffectParticleData(double radius, SoundEvent soundEvent, SoundSource soundSource, float volume,
-											 float pitch, float airAbsorption, float power) {
-		super(radius, soundEvent, soundSource, volume, pitch, airAbsorption, power);
+	public CannonBlastWaveEffectParticleData(double blastRAdius, SoundEvent soundEvent, SoundSource soundSource,
+											 float volume, float pitch, float airAbsorption, float power) {
+		super(blastRAdius, soundEvent, soundSource, volume, pitch, airAbsorption, power);
 	}
 
 	public CannonBlastWaveEffectParticleData() { super(); }

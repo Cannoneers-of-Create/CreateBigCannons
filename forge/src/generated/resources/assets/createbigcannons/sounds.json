@@ -147,6 +147,23 @@
     ],
     "subtitle": "createbigcannons.subtitle.projectile_splash"
   },
+  "shell_explosion": {
+    "sounds": [
+      {
+        "name": "createbigcannons:shell_explosion",
+        "type": "file"
+      },
+      {
+        "name": "createbigcannons:shell_explosion1",
+        "type": "file"
+      },
+      {
+        "name": "createbigcannons:shell_explosion2",
+        "type": "file"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.shell_explosion"
+  },
   "shell_flying": {
     "sounds": [
       {

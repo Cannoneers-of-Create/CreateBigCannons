@@ -1,5 +1,9 @@
 package rbasamoyai.createbigcannons.effects.particles.explosions;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -10,10 +14,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.FlakSmokeParticleData;
-
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 public class FlakCloudParticle extends NoRenderParticle {
 
@@ -104,7 +104,7 @@ public class FlakCloudParticle extends NoRenderParticle {
 					double rz = this.random.nextDouble() - this.random.nextDouble();
 					int lifetime = 20 + this.random.nextInt(5);
 					this.level.addParticle(new FlakSmokeParticleData(lifetime, 1), true, pos.x + rx * 0.25,
-						pos.y + ry * 0.25, pos.z + rz * 0.01, dx * 0.01, dy * 0.01, dz * 0.01);
+						pos.y + ry * 0.25, pos.z + rz * 0.25, dx * 0.01, dy * 0.01, dz * 0.01);
 				}
 			}
 		}

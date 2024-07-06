@@ -33,7 +33,7 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigBool showExtraBigCannonSmoke = b(true, "showExtraSmoke");
 	public final ConfigBool showExtraBigCannonFlames = b(true, "showExtraFlames");
 	public final ConfigFloat bigCannonShakePowerMultiplier = f(6, 0, "screenShakePowerMultiplier");
-	public final ConfigFloat bigCannonShakePowerLimit = f(45, 0, 90, "bigCannonShakePowerLimit", "[in Degrees]");
+	public final ConfigFloat bigCannonShakePowerLimit = f(45, 0, 90, "screenShakePowerLimit", "[in Degrees]");
 
 	public final ConfigGroup flakClouds = group(1, "flakClouds", "Flak Clouds");
 	public final ConfigBool showFlakClouds = b(true, "showFlakClouds");
@@ -59,6 +59,12 @@ public class CBCCfgClient extends CBCConfigBase {
 
 	public final ConfigGroup sounds = group(1, "sounds", "Sounds");
 	public final ConfigBool blastSoundAirAbsorption = b(true, "blastSoundAirAbsorption");
+
+	public final ConfigGroup shellExplosions = group(1, "shellExplosions", "Shell Explosions");
+	public final ConfigBool showShellExplosionClouds = b(true, "showShellExplosionClouds");
+	public final ConfigBool showExtraShellExplosionTrails = b(true, "showExtraTrails");
+	public final ConfigFloat shellShakePowerMultiplier = f(6, 0, "screenShakePowerMultiplier");
+	public final ConfigFloat shellShakePowerLimit = f(45, 0, 90, "screenShakePowerLimit", "[in Degrees]");
 
 	public boolean isInstantaneousBlastEffect() {
 		return this.blastEffectDelaySpeed.getF() < 1e-2d;

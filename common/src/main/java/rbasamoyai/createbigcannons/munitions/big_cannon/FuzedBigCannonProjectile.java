@@ -28,8 +28,10 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.canDetonate(fz -> fz.onProjectileTick(this.fuze, this)))
+		if (this.canDetonate(fz -> fz.onProjectileTick(this.fuze, this))) {
 			this.detonate(this.position());
+			this.removeNextTick = true;
+		}
 	}
 
 	@Override
@@ -70,7 +72,8 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	}
 
 	protected final boolean canDetonate(Predicate<FuzeItem> cons) {
-		return !this.level.isClientSide && this.level.hasChunkAt(this.blockPosition()) && this.fuze.getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
+		return !this.level.isClientSide && this.level.hasChunkAt(this.blockPosition()) && !this.isRemoved()
+			&& this.fuze.getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
 	}
 
 	/**
