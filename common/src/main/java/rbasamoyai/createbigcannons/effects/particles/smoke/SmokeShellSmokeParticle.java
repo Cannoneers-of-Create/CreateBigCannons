@@ -7,11 +7,14 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.effects.particles.ParticleWindHandler;
 
 public class SmokeShellSmokeParticle extends BaseAshSmokeParticle {
 
     private float baseGrowth = 0.5f;
 	private final float maxSize;
+	private final Vec3 wind = ParticleWindHandler.getWindForce(0);
 
 	SmokeShellSmokeParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float size, SpriteSet sprites) {
 		super(level, x, y, z, 0.1f, 0.1f, 0.1f, dx, dy, dz, 1, sprites, 0, 8, -0.05f, true);
@@ -24,6 +27,8 @@ public class SmokeShellSmokeParticle extends BaseAshSmokeParticle {
 	@Override
 	public void tick() {
 		super.tick();
+		float f = this.onGround ? 1 : 0.5f;
+		this.move(this.wind.x * f, this.wind.y, this.wind.z * f);
 
 		this.alpha = this.lifetime == 0 || this.age >= this.lifetime ? 0 : 1 - (float) this.age / (float) this.lifetime;
 

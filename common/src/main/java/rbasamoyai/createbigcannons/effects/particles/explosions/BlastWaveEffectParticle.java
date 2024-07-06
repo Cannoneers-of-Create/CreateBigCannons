@@ -63,7 +63,7 @@ public class BlastWaveEffectParticle extends NoRenderParticle {
 		double newRadius = instant ? this.functionalRadius : Math.min(this.currentRadius + speed, this.functionalRadius);
 
 		double dist = Math.sqrt(minecraft.player.distanceToSqr(this.x, this.y, this.z));
-		if (this.currentRadius <= dist && dist < newRadius) {
+		if (this.currentRadius <= dist && dist <= newRadius) {
 			if (dist < this.blastRadius && this.blastRadius > 0.1) {
 				float f = 1 - (float)(dist / this.blastRadius);
 				float f2 = f * f;

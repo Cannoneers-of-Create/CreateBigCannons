@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.effects.particles.ParticleWindHandler;
 import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
 public class CannonSmokeParticle extends BaseAshSmokeParticle {
@@ -47,6 +48,7 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 	};
 
 	private final float power;
+	private final Vec3 wind = ParticleWindHandler.getWindForce(0);
 
 	CannonSmokeParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, SpriteSet sprites, float power) {
 		super(level, x, y, z, 0.1f, 0.1f, 0.1f, dx, dy, dz, 1, sprites, 1, 8, -0.05f, true);
@@ -59,6 +61,8 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 	@Override
 	public void tick() {
 		super.tick();
+		float f = this.onGround ? 1 : 0.5f;
+		this.move(this.wind.x * f, this.wind.y, this.wind.z * f);
 		float progress = Mth.clamp((float) this.age / (float) this.lifetime, 0, 1);
 		this.alpha = this.lifetime == 0 || this.age >= this.lifetime ? 0 : 1 - progress * progress;
 	}
