@@ -8,8 +8,10 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
+import rbasamoyai.createbigcannons.munitions.ShellExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonFuzePropertiesComponent;
@@ -31,8 +33,9 @@ public class DropMortarShellProjectile extends FuzedBigCannonProjectile implemen
 		DropMortarShellProperties properties = this.getAllProperties();
 		this.level.explode(null, this.indirectArtilleryFire(), null, position.x(), position.y(), position.z(), properties.entityDamagingExplosivePower(),
 			false, Explosion.BlockInteraction.NONE);
-		this.level.explode(null, this.indirectArtilleryFire(), null, position.x(), position.y(), position.z(), properties.blockDamagingExplosivePower(),
-			false, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		ShellExplosion shellExplosion = new ShellExplosion(this.level, this, this.indirectArtilleryFire(), position.x(),
+			position.y(), position.z(), properties.blockDamagingExplosivePower(), false, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		CreateBigCannons.handleCustomExplosion(this.level, shellExplosion);
 	}
 
 	@Nonnull

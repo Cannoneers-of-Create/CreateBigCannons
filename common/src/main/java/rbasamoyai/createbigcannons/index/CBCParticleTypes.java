@@ -14,6 +14,8 @@ import net.minecraft.core.particles.ParticleType;
 import rbasamoyai.createbigcannons.effects.particles.explosions.CannonBlastWaveEffectParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FlakCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FluidCloudParticleData;
+import rbasamoyai.createbigcannons.effects.particles.explosions.ShellBlastWaveEffectParticleData;
+import rbasamoyai.createbigcannons.effects.particles.explosions.ShellExplosionCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.ShrapnelCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.impacts.CBCBlockParticleData;
 import rbasamoyai.createbigcannons.effects.particles.impacts.DebrisMatterParticleData;
@@ -33,6 +35,7 @@ import rbasamoyai.createbigcannons.effects.particles.smoke.CannonSmokeParticleDa
 import rbasamoyai.createbigcannons.effects.particles.smoke.DebrisSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.FlakSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.QuickFiringBreechSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.ShellExplosionSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.ShrapnelSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.SmokeShellSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
@@ -62,6 +65,9 @@ public enum CBCParticleTypes {
 	LEAF_BURST(LeafBurstParticleData::new),
 	PROJECTILE_SPLASH(ProjectileSplashParticleData::new),
 	QUICK_FIRING_BREECH_SMOKE(QuickFiringBreechSmokeParticleData::new),
+	SHELL_BLAST_WAVE(ShellBlastWaveEffectParticleData::new),
+	SHELL_EXPLOSION_CLOUD(ShellExplosionCloudParticleData::new),
+	SHELL_EXPLOSION_SMOKE(ShellExplosionSmokeParticleData::new),
 	SHRAPNEL_CLOUD(ShrapnelCloudParticleData::new),
 	SHRAPNEL_SMOKE(ShrapnelSmokeParticleData::new),
 	SMOKE_SHELL_SMOKE(SmokeShellSmokeParticleData::new),

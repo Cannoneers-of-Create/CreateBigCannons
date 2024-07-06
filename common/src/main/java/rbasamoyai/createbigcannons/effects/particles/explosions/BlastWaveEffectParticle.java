@@ -101,4 +101,16 @@ public class BlastWaveEffectParticle extends NoRenderParticle {
 		}
 	}
 
+	public static class ShellBlastProvider implements ParticleProvider<ShellBlastWaveEffectParticleData> {
+		@Override
+		public Particle createParticle(ShellBlastWaveEffectParticleData type, ClientLevel level, double x, double y, double z,
+									   double xSpeed, double ySpeed, double zSpeed) {
+			float power = type.power() * CBCConfigs.CLIENT.shellShakePowerMultiplier.getF();
+			BlastWaveEffectParticle particle = new BlastWaveEffectParticle(level, x, y, z, type.blastRadius(), type.soundEvent(),
+				type.soundSource(), type.volume(), type.pitch(), type.airAbsorption(), power, CBCConfigs.CLIENT.shellShakePowerLimit.getF());
+			particle.setLifetime(100); // Timeout
+			return particle;
+		}
+	}
+
 }

@@ -31,6 +31,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.sounds.AirAbsorptionWrapper;
 import rbasamoyai.createbigcannons.mixin.client.ClientLevelAccessor;
 import rbasamoyai.createbigcannons.munitions.ImpactExplosion;
+import rbasamoyai.createbigcannons.munitions.ShellExplosion;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidExplosion;
@@ -105,6 +106,7 @@ public class CBCClientHandlers {
 			case SMOKE -> new SmokeExplosion(mc.level, pkt);
             case MORTAR_STONE -> new MortarStoneExplosion(mc.level, pkt);
 			case IMPACT -> new ImpactExplosion(mc.level, pkt);
+            case SHELL -> new ShellExplosion(mc.level, pkt);
         };
 		explosion.finalizeExplosion(true);
 		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));

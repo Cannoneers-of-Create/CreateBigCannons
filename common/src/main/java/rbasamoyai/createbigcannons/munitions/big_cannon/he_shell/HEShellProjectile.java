@@ -8,9 +8,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
+import rbasamoyai.createbigcannons.munitions.ShellExplosion;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonCommonShellProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonFuzePropertiesComponent;
@@ -26,9 +28,10 @@ public class HEShellProjectile extends FuzedBigCannonProjectile {
 
 	@Override
 	protected void detonate(Position position) {
-		this.level.explode(null, this.indirectArtilleryFire(), null, position.x(), position.y(), position.z(),
-			this.getAllProperties().explosion().explosivePower(), false,
+		ShellExplosion explosion = new ShellExplosion(this.level, this, this.indirectArtilleryFire(), position.x(),
+			position.y(), position.z(), this.getAllProperties().explosion().explosivePower(), false,
 			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+		CreateBigCannons.handleCustomExplosion(this.level, explosion);
 	}
 
 	@Override
