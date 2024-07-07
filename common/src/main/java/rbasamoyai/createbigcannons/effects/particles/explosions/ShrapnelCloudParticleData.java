@@ -4,6 +4,8 @@ import com.mojang.brigadier.StringReader;
 import com.mojang.serialization.Codec;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -29,6 +31,7 @@ public class ShrapnelCloudParticleData implements ParticleOptions, ICustomPartic
 	@Override public Deserializer<ShrapnelCloudParticleData> getDeserializer() { return DESERIALIZER; }
 	@Override public Codec<ShrapnelCloudParticleData> getCodec(ParticleType<ShrapnelCloudParticleData> type) { return CODEC; }
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public ParticleProvider<ShrapnelCloudParticleData> getFactory() {
 		return new ShrapnelCloudParticle.Provider();

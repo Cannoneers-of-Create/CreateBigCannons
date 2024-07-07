@@ -6,6 +6,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -60,6 +62,7 @@ public record SplashSprayParticleData(float r, float g, float b, float size, flo
 	@Override public Deserializer<SplashSprayParticleData> getDeserializer() { return DESERIALIZER; }
 	@Override public Codec<SplashSprayParticleData> getCodec(ParticleType<SplashSprayParticleData> type) { return CODEC; }
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public ParticleEngine.SpriteParticleRegistration<SplashSprayParticleData> getMetaFactory() {
 		return SplashSprayParticle.Provider::new;

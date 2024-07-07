@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.effects.particles.explosions;
 
 import com.mojang.serialization.Codec;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.sounds.SoundEvent;
@@ -23,6 +25,7 @@ public class CannonBlastWaveEffectParticleData extends AbstractBlastWaveEffectPa
 	@Override public Deserializer<CannonBlastWaveEffectParticleData> getDeserializer() { return DESERIALIZER; }
 	@Override public Codec<CannonBlastWaveEffectParticleData> getCodec(ParticleType<CannonBlastWaveEffectParticleData> type) { return CODEC; }
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public ParticleProvider<CannonBlastWaveEffectParticleData> getFactory() {
 		return new BlastWaveEffectParticle.CannonBlastProvider();
