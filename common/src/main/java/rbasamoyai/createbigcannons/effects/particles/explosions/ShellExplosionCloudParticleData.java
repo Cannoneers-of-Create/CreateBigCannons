@@ -6,6 +6,8 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -41,6 +43,7 @@ public record ShellExplosionCloudParticleData(float scale, boolean isPlume) impl
 	@Override public Deserializer<ShellExplosionCloudParticleData> getDeserializer() { return DESERIALIZER; }
 	@Override public Codec<ShellExplosionCloudParticleData> getCodec(ParticleType<ShellExplosionCloudParticleData> type) { return CODEC; }
 
+	@Environment(EnvType.CLIENT)
 	@Override
 	public ParticleProvider<ShellExplosionCloudParticleData> getFactory() {
 		return new ShellExplosionCloudParticle.Provider();
