@@ -88,6 +88,10 @@ dependencies {
 	//modImplementation("curse.maven:free-cam-557076:${freecam_forge_file}") // Freecam
 	modImplementation("curse.maven:copycats-968398:${copycats_forge_file}")
 	modImplementation("curse.maven:framedblocks-441647:${framedblocks_forge_file}")
+
+	// Curios
+	modRuntimeOnly("top.theillusivec4.curios:curios-forge:${curios_forge_version}")
+	modCompileOnly("top.theillusivec4.curios:curios-forge:${curios_forge_version}:api")
 }
 
 processResources {
