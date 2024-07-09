@@ -41,7 +41,7 @@ repositories {
     // mavens for Fabric-exclusives
     maven { url = "https://mvn.devos.one/#/" }
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
-    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
+    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, EMI, Trinkets
     maven { url = "https://mvn.devos.one/snapshots/" }
     // Create Fabric, Forge Tags, Milk Lib, Registrate Fabric
 	maven { url = "https://mvn.devos.one/releases" } // Porting Lib Releases
@@ -49,6 +49,7 @@ repositories {
     maven { url = "https://maven.cafeteria.dev/releases" } // Fake Player API
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
     maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
+	maven { url = "https://maven.ladysnake.org/releases" } // Trinkets
 	maven { // Ritchie's Projectile Library
 		url = "https://maven.realrobotix.me/master/"
 		content {
@@ -99,6 +100,7 @@ dependencies {
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
 	modImplementation("curse.maven:copycats-968398:${copycats_fabric_file}")
+	modImplementation("dev.emi:trinkets:${trinkets_fabric_version}") // Trinkets
 }
 
 processResources {
