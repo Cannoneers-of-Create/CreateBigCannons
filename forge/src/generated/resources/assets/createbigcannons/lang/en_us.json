@@ -464,6 +464,7 @@
   "entity.createbigcannons.flak_burst": "Flak Burst",
   "entity.createbigcannons.fluid_blob_burst": "Fluid Blob Burst",
   "entity.createbigcannons.fluid_shell": "Fluid Shell",
+  "entity.createbigcannons.gas_cloud": "Gas Cloud",
   "entity.createbigcannons.grapeshot_burst": "Grapeshot Burst",
   "entity.createbigcannons.he_shell": "High Explosive (HE) Shell",
   "entity.createbigcannons.machine_gun_bullet": "Machine Gun Bullet",

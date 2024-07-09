@@ -16,6 +16,7 @@ import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageRenderer;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.multiloader.EntityTypeConfigurator;
+import rbasamoyai.createbigcannons.munitions.GasCloudEntity;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileRenderer;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonProjectile;
@@ -107,8 +108,15 @@ public class CBCEntityTypes {
 
 	public static final EntityEntry<SmokeEmitterEntity> SMOKE_EMITTER = REGISTRATE
 		.entity("smoke_emitter", SmokeEmitterEntity::new, MobCategory.MISC)
-		.properties(configure(c -> c.trackingRange(4)
-			.fireImmune()
+		.properties(configure(c -> c.fireImmune()
+			.trackingRange(16)
+			.size(0, 0)))
+		.renderer(() -> NoopRenderer::new)
+		.register();
+
+	public static final EntityEntry<GasCloudEntity> GAS_CLOUD = REGISTRATE
+		.entity("gas_cloud", GasCloudEntity::new, MobCategory.MISC)
+		.properties(configure(c -> c.fireImmune()
 			.trackingRange(16)
 			.size(0, 0)))
 		.renderer(() -> NoopRenderer::new)
