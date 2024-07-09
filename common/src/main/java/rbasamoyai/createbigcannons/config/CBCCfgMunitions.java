@@ -13,9 +13,13 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigFloat baseProjectileFluidBounceChance = f(0.9f, 0, 1, "baseProjectileFluidBounceChance");
 	public final ConfigFloat minVelocityForPenetrationBonus = f(1, 0, "minimumVelocityForPenetrationBonus", "[in Meters per Tick]", Comments.minVelocityForPenetrationBonus);
 	public final ConfigFloat penetrationBonusScale = f(0.1f, 0, "penetrationBonusScale");
-	public final ConfigBool projectilesCanChunkload = b(true, "projectilesCanChunkload");
+
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
 	public final ConfigBool projectilesChangeSurroundings = b(true, "projectilesChangeSurroundings");
+
+	public final ConfigGroup chunkloading = group(0, "chunkloading", "Chunkloading");
+	public final ConfigBool projectilesCanChunkload = b(true, "projectilesCanChunkload");
+	public final ConfigBool smokeCloudsCanChunkload = b(true, "smokeCloudsCanChunkload");
 
 	public final ConfigGroup bigCannonMunitions = group(0, "bigCannonMunitions", "Big Cannon Munitions");
 	public final ConfigEnum<AbstractBigCannonProjectile.TrailType> bigCannonTrailType = e(AbstractBigCannonProjectile.TrailType.SHORT, "trailType");
