@@ -54,7 +54,8 @@ Additions: \
 &plus; `"createbigcannons.subtitle.shell_flying": "Incoming artillery shell"` \
 &plus; `"createbigcannons.subtitle.autocannon_round_flyby": "Autocannon round flies by"` \
 &plus; `"createbigcannons.subtitle.machine_gun_round_flyby": "Machine gun round flies by"` \
-&plus; `"createbigcannons.subtitle.shell_explosion": "Artillery shell explodes"`
+&plus; `"createbigcannons.subtitle.shell_explosion": "Artillery shell explodes"` \
+&plus; `"entity.createbigcannons.gas_cloud": "Gas Cloud"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \

@@ -9,9 +9,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
@@ -27,7 +25,9 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FluidCloudParticleData;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
+import rbasamoyai.createbigcannons.munitions.GasCloudEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnFluidShellExplode;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnHitBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnHitEntity;
@@ -86,7 +86,7 @@ public class DefaultFluidCompat {
 
 	public static void potionHitBlock(OnHitBlock.Context context) {
 		if (!context.level().isClientSide)
-			spawnAreaEffectCloud(context.result().getBlockPos().relative(context.result().getDirection()), context.burst(), context.level());
+			spawnGasCloud(context.result().getBlockPos().relative(context.result().getDirection()), context.burst(), context.level());
 	}
 
 	public static void waterFluidShellExplode(OnFluidShellExplode.Context context) {
@@ -164,23 +164,21 @@ public class DefaultFluidCompat {
 		}
 	}
 
-	public static void spawnAreaEffectCloud(BlockPos pos, FluidBlobBurst blob, Level level) {
+	public static void spawnGasCloud(BlockPos pos, FluidBlobBurst blob, Level level) {
 		CompoundTag tag = blob.getFluidStack().data();
 
-		AreaEffectCloud aec = EntityType.AREA_EFFECT_CLOUD.create(level);
-		aec.setPos(Vec3.atCenterOf(pos));
-		aec.setRadius(blob.getBlobSize() * 2);
-		aec.setRadiusOnUse(-0.5f);
-		aec.setWaitTime(10);
-		aec.setRadiusPerTick(-aec.getRadius() / (float) aec.getDuration());
-		aec.setPotion(PotionUtils.getPotion(tag));
+		GasCloudEntity gasCloud = CBCEntityTypes.GAS_CLOUD.create(level);
+		gasCloud.setPos(Vec3.atCenterOf(pos));
+		gasCloud.setWaitTime(10);
+		gasCloud.setSize(blob.getBlobSize());
+		gasCloud.setDuration(300);
+		gasCloud.setPotion(PotionUtils.getPotion(tag));
 
-		for (MobEffectInstance effect : PotionUtils.getAllEffects(tag)) {
-			aec.addEffect(new MobEffectInstance(effect));
-		}
+		for (MobEffectInstance effect : PotionUtils.getAllEffects(tag))
+			gasCloud.addEffect(new MobEffectInstance(effect));
 
-		aec.setFixedColor(PotionUtils.getColor(PotionUtils.getAllEffects(tag)) | 0xff000000);
-		level.addFreshEntity(aec);
+		gasCloud.setFixedColor(PotionUtils.getColor(PotionUtils.getAllEffects(tag)) | 0xff000000);
+		level.addFreshEntity(gasCloud);
 	}
 
 }

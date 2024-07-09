@@ -464,6 +464,7 @@
   "entity.createbigcannons.flak_burst": "\u0287s\u0279n\u15FA \u029E\u0250\u05DF\u2132",
   "entity.createbigcannons.fluid_blob_burst": "\u0287s\u0279n\u15FA qo\u05DF\u15FA p\u0131n\u05DF\u2132",
   "entity.createbigcannons.fluid_shell": "\u05DF\u05DF\u01DD\u0265S p\u0131n\u05DF\u2132",
+  "entity.createbigcannons.gas_cloud": "pno\u05DF\u0186 s\u0250\u2141",
   "entity.createbigcannons.grapeshot_burst": "\u0287s\u0279n\u15FA \u0287o\u0265s\u01DDd\u0250\u0279\u2141",
   "entity.createbigcannons.he_shell": "\u05DF\u05DF\u01DD\u0265S )\u018EH( \u01DD\u028C\u0131so\u05DFdx\u018E \u0265b\u0131H",
   "entity.createbigcannons.machine_gun_bullet": "\u0287\u01DD\u05DF\u05DFn\u15FA un\u2141 \u01DDu\u0131\u0265\u0254\u0250W",

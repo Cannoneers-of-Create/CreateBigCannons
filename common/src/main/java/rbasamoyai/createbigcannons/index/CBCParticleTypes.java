@@ -34,6 +34,7 @@ import rbasamoyai.createbigcannons.effects.particles.plumes.DropMortarPlumeParti
 import rbasamoyai.createbigcannons.effects.particles.smoke.CannonSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.DebrisSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.FlakSmokeParticleData;
+import rbasamoyai.createbigcannons.effects.particles.smoke.GasCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.QuickFiringBreechSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.ShellExplosionSmokeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.smoke.ShrapnelSmokeParticleData;
@@ -59,6 +60,7 @@ public enum CBCParticleTypes {
 	FLAK_SMOKE(FlakSmokeParticleData::new),
 	FLUID_BLOB(FluidBlobParticleData::new),
 	FLUID_CLOUD(FluidCloudParticleData::new),
+	GAS_CLOUD(GasCloudParticleData::new),
 	GLASS_BURST(GlassBurstParticleData::new),
 	GLASS_SHARD(GlassShardParticleData::new),
 	LEAF(LeafParticleData::new),

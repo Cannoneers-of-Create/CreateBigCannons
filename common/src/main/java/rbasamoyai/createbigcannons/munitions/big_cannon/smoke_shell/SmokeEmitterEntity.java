@@ -27,9 +27,10 @@ public class SmokeEmitterEntity extends Entity {
 	private static final EntityDataAccessor<Float> SMOKE_SIZE_Y = SynchedEntityData.defineId(SmokeEmitterEntity.class, EntityDataSerializers.FLOAT);
 	private static final EntityDataAccessor<Float> SMOKE_SIZE_Z = SynchedEntityData.defineId(SmokeEmitterEntity.class, EntityDataSerializers.FLOAT);
 
-	private int duration;
+	protected int duration;
+	protected int age;
 
-	public SmokeEmitterEntity(EntityType<?> type, Level level) {
+	public SmokeEmitterEntity(EntityType<? extends SmokeEmitterEntity> type, Level level) {
 		super(type, level);
 	}
 
@@ -48,6 +49,7 @@ public class SmokeEmitterEntity extends Entity {
 	@Override
 	protected void addAdditionalSaveData(CompoundTag tag) {
 		tag.putInt("Duration", this.duration);
+		tag.putInt("Age", this.age);
 		tag.put("Size", this.newDoubleList(this.getSizeX(), this.getSizeY(), this.getSizeZ()));
 	}
 
@@ -105,9 +107,9 @@ public class SmokeEmitterEntity extends Entity {
 
 	@Override
 	public void tick() {
-		boolean doStuff = (this.level.getGameTime() + this.getId()) % 5 == 0;
+		boolean doStuff = this.canDoStuff();
 		if (this.level.isClientSide) {
-			if (this.firstTick || doStuff) {
+			if (doStuff) {
 				double sizeX = this.getSizeX();
 				double sizeY = this.getSizeY();
 				double sizeZ = this.getSizeZ();
@@ -149,7 +151,7 @@ public class SmokeEmitterEntity extends Entity {
 						Math.max(bounding.maxX, otherBounding.maxX),
 						Math.max(bounding.maxY, otherBounding.maxY),
 						Math.max(bounding.maxZ, otherBounding.maxZ));
-					this.duration = Mth.ceil((this.duration + other.duration) / 2d) + 10;
+					this.mergeWith(other);
 					other.discard();
 				}
 				this.setSizeX((float) bounding.getXsize());
@@ -157,26 +159,34 @@ public class SmokeEmitterEntity extends Entity {
 				this.setSizeZ((float) bounding.getZsize());
 				this.setPos(bounding.getCenter());
 			}
-			--this.duration;
-			if (this.duration <= 0)
+			++this.age;
+			if (this.age >= this.getLifetime()) {
 				this.discard();
-		}
-		if (this.level instanceof ServerLevel slevel && !this.isRemoved()) {
-			if (this.canChunkLoad()) {
-				ChunkPos cpos = new ChunkPos(this.blockPosition());
-				RitchiesProjectileLib.queueForceLoad(slevel, cpos.x, cpos.z);
+				return;
+			}
+			if (this.level instanceof ServerLevel slevel && !this.isRemoved()) {
+				if (this.canChunkLoad()) {
+					ChunkPos cpos = new ChunkPos(this.blockPosition());
+					RitchiesProjectileLib.queueForceLoad(slevel, cpos.x, cpos.z);
+				}
 			}
 		}
-		this.checkOutOfWorld();
-		this.firstTick = false;
+		super.tick();
 	}
 
-	protected boolean canChunkLoad() {
-		return CBCConfigs.SERVER.munitions.smokeCloudsCanChunkload.get();
+	protected boolean canDoStuff() { return this.firstTick || (this.level.getGameTime() + this.getId()) % 5 == 0; }
+
+	protected int getLifetime() { return this.duration; }
+
+	protected boolean canChunkLoad() { return CBCConfigs.SERVER.munitions.smokeCloudsCanChunkload.get(); }
+
+	public boolean canMergeWithOther(SmokeEmitterEntity other) {
+		return this != other && other.getType() == this.getType();
 	}
 
-	public boolean canMergeWithOther(SmokeEmitterEntity entity) {
-		return this != entity && entity.getType() == this.getType();
+	public void mergeWith(SmokeEmitterEntity other) {
+		this.duration = Mth.ceil((this.duration + other.duration) / 2d) + 10;
+		this.age = Math.max(Mth.ceil((this.age + other.age) / 2d) - 10, 0);
 	}
 
 	@Override

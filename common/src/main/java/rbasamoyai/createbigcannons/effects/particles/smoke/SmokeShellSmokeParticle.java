@@ -14,7 +14,7 @@ public class SmokeShellSmokeParticle extends BaseAshSmokeParticle {
 
     private float baseGrowth = 0.5f;
 	private final float maxSize;
-	private final Vec3 wind = ParticleWindHandler.getWindForce(0);
+	private final Vec3 wind;
 
 	SmokeShellSmokeParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float size, SpriteSet sprites) {
 		super(level, x, y, z, 0.1f, 0.1f, 0.1f, dx, dy, dz, 1, sprites, 0, 8, -0.05f, true);
@@ -22,6 +22,7 @@ public class SmokeShellSmokeParticle extends BaseAshSmokeParticle {
 		this.gravity = 0;
 		this.lifetime = 200;
 		this.maxSize = size;
+		this.wind = this.createWind();
 	}
 
 	@Override
@@ -29,12 +30,24 @@ public class SmokeShellSmokeParticle extends BaseAshSmokeParticle {
 		super.tick();
 		float f = this.onGround ? 1 : 0.5f;
 		this.move(this.wind.x * f, this.wind.y, this.wind.z * f);
-
-		this.alpha = this.lifetime == 0 || this.age >= this.lifetime ? 0 : 1 - (float) this.age / (float) this.lifetime;
-
-		if (this.quadSize < this.maxSize) this.quadSize *= 1 + this.baseGrowth;
+		int FADE_OUT_TIME = 10;
+		if (this.age > this.lifetime - FADE_OUT_TIME) {
+			this.quadSize = Math.max(0, this.quadSize - this.maxSize / (float) FADE_OUT_TIME);
+		} else if (this.quadSize < this.maxSize) {
+			this.quadSize *= 1 + this.baseGrowth;
+		}
         this.baseGrowth *= 0.95f;
+		this.tickColors();
+	}
 
+	@Override
+	public float getQuadSize(float scaleFactor) {
+		return super.getQuadSize(scaleFactor);
+	}
+
+	protected Vec3 createWind() { return ParticleWindHandler.getWindForce(0); }
+
+	protected void tickColors() {
 		float progress = this.age >= 60 ? 1 : (float) this.age / 60f;
 		this.rCol = Mth.lerp(progress, 0.85f, 0.75f);
 		this.gCol = Mth.lerp(progress, 0.85f, 0.75f);
