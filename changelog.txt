@@ -90,6 +90,9 @@ Added:
 - Added flyby sounds for autocannon and machine gun projectiles
 - Added new shell explosion visual and sound effects
 - Added global wind for projectile explosion and Smoke Shell effects
+- Added smoke cloud merging to reduce entity count
+- Added chunkloading option for smoke clouds to reduce entity lingering
+ - Can be configured
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities
