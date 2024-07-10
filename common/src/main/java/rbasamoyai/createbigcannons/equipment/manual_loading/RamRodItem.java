@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.manual_loading;
+package rbasamoyai.createbigcannons.equipment.manual_loading;
 
 import java.util.ArrayList;
 import java.util.HashSet;

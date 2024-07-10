@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.manual_loading;
+package rbasamoyai.createbigcannons.equipment.manual_loading;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

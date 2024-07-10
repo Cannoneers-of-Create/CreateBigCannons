@@ -17,8 +17,8 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
-import rbasamoyai.createbigcannons.manual_loading.RamRodItem;
-import rbasamoyai.createbigcannons.manual_loading.WormItem;
+import rbasamoyai.createbigcannons.equipment.manual_loading.RamRodItem;
+import rbasamoyai.createbigcannons.equipment.manual_loading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunRoundItem;
