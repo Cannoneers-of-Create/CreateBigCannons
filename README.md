@@ -38,3 +38,21 @@
 <p>No. Porting is allowed; see <a href=https://github.com/Cannoneers-of-Create/CreateBigCannons/blob/1.18.2/dev/LICENSE.md>the license</a> for more info.</p>
 <br>
 <p>An rbasamoyai mod.</p>
+
+### Licensing
+
+---
+
+Parts of Create Big Cannons' source and assets are licensed under the MIT license,
+while others are licensed under the CC BY-NC-SA license. See [LICENSE.md](LICENSE.md)
+for details.
+
+Create Big Cannons copies some code from Create, which is licensed under the MIT
+license. See [Create's LICENSE](https://github.com/Creators-of-Create/Create/blob/mc1.18/dev/LICENSE)
+for details.
+
+Create Big Cannons depends on code from Ritchie's Projectile Library, which is
+licensed under the MIT license. See [RPL's LICENSE](https://github.com/Wagers-of-Industrial-Warfare/RitchiesProjectileLib/blob/1.18.2/dev/LICENSE)
+for details.
+
+Create Big Cannons derives some of its textures from Create.
