@@ -96,7 +96,7 @@ public class DefaultFluidCompat {
 		double z = context.z();
 		CBCSoundEvents.WATER_FLUID_RELEASE.playAt(level, x, y, z, 2.5f, 0.15f + level.random.nextFloat(0.3f), false);
 		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
-		level.addParticle(new FluidCloudParticleData(), x, y, z, 0, 0, 0);
+		level.addParticle(new FluidCloudParticleData(), true, x, y, z, 0, 0, 0);
 	}
 
 	public static void lavaFluidShellExplode(OnFluidShellExplode.Context context) {
@@ -106,7 +106,7 @@ public class DefaultFluidCompat {
 		double z = context.z();
 		CBCSoundEvents.LAVA_FLUID_RELEASE.playAt(level, x, y, z, 2.25f, 1.0f + level.random.nextFloat(0.1f), false);
 		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
-		level.addParticle(new FluidCloudParticleData(), x, y, z, 0, 0, 0);
+		level.addParticle(new FluidCloudParticleData(), true, x, y, z, 0, 0, 0);
 	}
 
 	public static void potionFluidShellExplode(OnFluidShellExplode.Context context) {
@@ -116,7 +116,7 @@ public class DefaultFluidCompat {
 		double z = context.z();
 		CBCSoundEvents.POTION_FLUID_RELEASE.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
 		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
-		level.addParticle(new FluidCloudParticleData(), x, y, z, 0, 0, 0);
+		level.addParticle(new FluidCloudParticleData(), true, x, y, z, 0, 0, 0);
 	}
 
 	public static void douseFire(BlockPos root, FluidBlobBurst blob, Level level) {
