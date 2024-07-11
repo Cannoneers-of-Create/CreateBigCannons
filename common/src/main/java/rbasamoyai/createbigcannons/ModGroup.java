@@ -172,6 +172,8 @@ public class ModGroup {
 				CBCItems.NETHERSTEEL_INGOT.asStack(),
 				CBCBlocks.NETHERSTEEL_BLOCK.asStack(),
 
+				CBCItems.GAS_MASK.asStack(),
+
 				CBCItems.RAM_ROD.asStack(),
 				CBCItems.WORM.asStack(),
 				CBCBlocks.CANNON_CARRIAGE.asStack(),

@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.index;
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.resources.ResourceLocation;
@@ -17,6 +18,8 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
+import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
+import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskModel;
 import rbasamoyai.createbigcannons.equipment.manual_loading.RamRodItem;
 import rbasamoyai.createbigcannons.equipment.manual_loading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
@@ -245,6 +248,13 @@ public class CBCItems {
 		.item("block_armor_inspection_tool", BlockArmorInspectionToolItem::new)
 		.properties(p -> p.stacksTo(1))
 		.properties(p -> p.rarity(Rarity.EPIC))
+		.register();
+
+	public static final ItemEntry<GasMaskItem> GAS_MASK = REGISTRATE
+		.item("gas_mask", GasMaskItem::new)
+		.properties(p -> p.stacksTo(1))
+		.onRegister(CreateRegistrate.itemModel(() -> GasMaskModel::new))
+		.tag(CBCTags.CBCItemTags.GAS_MASKS)
 		.register();
 
 	public static void register() {

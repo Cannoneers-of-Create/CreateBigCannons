@@ -4,6 +4,7 @@
   "package": "rbasamoyai.createbigcannons.forge.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "client.GasMaskModelMixin",
     "client.GoggleOverlayRendererMixin"
   ],
   "mixins": [
@@ -13,6 +14,7 @@
     "CannonMountPointMixin",
     "CBCFlowingFluidMixin",
     "CBCLiquidBlockMixin",
+    "GasMaskItemMixin",
     "MountedAutocannonContraptionMixin",
     "PitchOrientedContraptionEntityMixin"
   ],

@@ -55,7 +55,11 @@ Additions: \
 &plus; `"createbigcannons.subtitle.autocannon_round_flyby": "Autocannon round flies by"` \
 &plus; `"createbigcannons.subtitle.machine_gun_round_flyby": "Machine gun round flies by"` \
 &plus; `"createbigcannons.subtitle.shell_explosion": "Artillery shell explodes"` \
-&plus; `"entity.createbigcannons.gas_cloud": "Gas Cloud"`
+&plus; `"entity.createbigcannons.gas_cloud": "Gas Cloud"` \
+&plus; `"item.createbigcannons.gas_mask": "Gas Mask"` \
+&plus; `"item.createbigcannons.gas_mask.tooltip": "GAS MASK"` \
+&plus; `"item.createbigcannons.gas_mask.tooltip.summary": "_Protects against gas clouds_ when worn on the head. _Does not protect_ against _lingering potions_, _dragon's breath_, or _potion fluid blobs_."` \
+&plus; `"tag.createbigcannons.gas_masks": "Gas Masks"`
 
 Key Changes: \
 `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \

@@ -14,6 +14,7 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
+import net.minecraftforge.client.gui.IIngameOverlay;
 import net.minecraftforge.client.gui.OverlayRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -25,6 +26,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.compat.curios.CBCCuriosRenderers;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
@@ -33,12 +35,8 @@ public class CBCClientForge {
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
 
-		CBCClientCommon.registerOverlays((id, overlay) -> {
-			// TODO: more flexible but concise method specified in common
-			OverlayRegistry.registerOverlayAbove(ForgeIngameGui.HOTBAR_ELEMENT, id, (gui, stack, partialTicks, width, height) -> {
-				overlay.renderOverlay(stack, partialTicks, width, height);
-			});
-		});
+		CBCClientCommon.registerOverlays("hotbar", (id, overlay) -> wrapOverlay(id, overlay, ForgeIngameGui.HOTBAR_ELEMENT));
+		CBCClientCommon.registerOverlays("helmet", (id, overlay) -> wrapOverlay(id, overlay, ForgeIngameGui.HELMET_ELEMENT));
 
 		modEventBus.addListener(CBCClientForge::onClientSetup);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
@@ -58,6 +56,14 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onLoadClientLevel);
 		forgeEventBus.addListener(CBCClientForge::onPlayerLogIn);
 		forgeEventBus.addListener(CBCClientForge::onPlayerChangeDimension);
+
+		CBCModsForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosRenderers.register(modEventBus, forgeEventBus));
+	}
+
+	private static void wrapOverlay(String id, CBCClientCommon.CBCGuiOverlay overlay, IIngameOverlay renderOver) {
+		OverlayRegistry.registerOverlayAbove(renderOver, id, (gui, stack, partialTicks, width, height) -> {
+			overlay.renderOverlay(stack, partialTicks, width, height);
+		});
 	}
 
 	public static void onRegisterParticleFactories(ParticleFactoryRegisterEvent event) {
