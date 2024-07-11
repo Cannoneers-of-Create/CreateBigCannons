@@ -100,7 +100,11 @@ dependencies {
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
 	modImplementation("curse.maven:copycats-968398:${copycats_fabric_file}")
-	modImplementation("dev.emi:trinkets:${trinkets_fabric_version}") // Trinkets
+	// Trinkets and CCA
+	modLocalRuntime("dev.emi:trinkets:${trinkets_fabric_version}")
+	modCompileOnly("dev.emi:trinkets:${trinkets_fabric_version}") { exclude(group: "com.terraformersmc") }
+	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_fabric_version}")
+	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_fabric_version}")
 }
 
 processResources {

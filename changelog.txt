@@ -94,6 +94,8 @@ Added:
 - Added chunkloading option for smoke clouds to reduce entity lingering
  - Can be configured
 - Added gas cloud to optimize potion fluid shell effect instead of spawning multiple area effect clouds
+- Added Gas Mask
+ - Comes with Curios and Trinkets compat
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities

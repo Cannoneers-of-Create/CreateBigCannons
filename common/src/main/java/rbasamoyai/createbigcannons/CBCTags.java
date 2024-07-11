@@ -208,7 +208,8 @@ public class CBCTags {
 			CAN_BE_NITRATED = makeTag("can_be_nitrated"),
 			HIGH_EXPLOSIVE_MATERIALS = makeTag("high_explosive_materials"),
 			NITRO_ACIDIFIERS = makeTag("nitro_acidifiers"),
-			GELATINIZERS = makeTag("gelatinizers");
+			GELATINIZERS = makeTag("gelatinizers"),
+			GAS_MASKS = makeTag("gas_masks");
 
 		public static TagKey<Item> makeTag(String loc) {
 			TagKey<Item> tag = CBCRegistryUtils.createItemTag(CreateBigCannons.resource(loc));

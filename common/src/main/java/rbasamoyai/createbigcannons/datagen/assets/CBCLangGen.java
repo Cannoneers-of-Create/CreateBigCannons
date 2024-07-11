@@ -299,6 +299,10 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.tracers", "Tracers: x%1$s %2$s");
 		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.tracer_spacing", "Tracer Spacing: 1 tracer every %s round(s)");
 
+		tooltip(CBCItems.GAS_MASK)
+		.header("GAS MASK")
+		.summary("_Protects against gas clouds_ when worn on the head. _Does not protect_ against _lingering potions_, _dragon's breath_, or _potion fluid blobs_.");
+
 		// TODO: only run if on Fabric env
 		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_AMMO_CONTAINERS);
 		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_CARTRIDGES);
@@ -343,6 +347,7 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.SHEET_STEEL, "Steel Sheets");
 		createEMITagTranslation(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS);
 		createEMITagTranslation(CBCTags.CBCItemTags.STONE);
+		createEMITagTranslation(CBCTags.CBCItemTags.GAS_MASKS);
 		createEMITagTranslation(fabricTag("cast_iron_ingots"));
 		createEMITagTranslation(fabricTag("nethersteel_ingots"));
 		createEMITagTranslation(fabricTag("bronze_nuggets"));

@@ -54,6 +54,7 @@ import rbasamoyai.createbigcannons.crafting.welding.CannonWelderSelectionHandler
 import rbasamoyai.createbigcannons.effects.CBCScreenShakeHandler;
 import rbasamoyai.createbigcannons.effects.particles.ParticleWindHandler;
 import rbasamoyai.createbigcannons.effects.sounds.ShellFlyingSoundInstance;
+import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskOverlay;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
@@ -118,8 +119,13 @@ public class CBCClientCommon {
 		KEYS.add(FIRE_CONTROLLED_CANNON);
 	}
 
-	public static void registerOverlays(BiConsumer<String, CBCGuiOverlay> cons) {
-		cons.accept("Create Big Cannons' Entity Goggles Overlay", EntityGoggleOverlayRenderer::renderOverlay);
+	public static void registerOverlays(String type, BiConsumer<String, CBCGuiOverlay> cons) {
+		if (type.equals("hotbar")) {
+			cons.accept("Create Big Cannons' Entity Goggles Overlay", EntityGoggleOverlayRenderer::renderOverlay);
+		}
+		if (type.equals("helmet")) {
+			cons.accept("Create Big Cannons' Gas Mask Overlay", GasMaskOverlay::renderOverlay);
+		}
 	}
 
 	@FunctionalInterface

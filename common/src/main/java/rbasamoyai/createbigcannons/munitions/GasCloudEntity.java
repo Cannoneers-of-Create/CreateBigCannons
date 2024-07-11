@@ -23,6 +23,7 @@ import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.effects.particles.smoke.GasCloudParticleData;
+import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell.SmokeEmitterEntity;
 
 public class GasCloudEntity extends SmokeEmitterEntity {
@@ -100,7 +101,7 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 				this.victims.clear();
 			} else {
 				for (LivingEntity target : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
-					if (this.victims.containsKey(target) || !target.isAffectedByPotions())
+					if (this.victims.containsKey(target) || !target.isAffectedByPotions() || this.isBlockedBy(target))
 						continue;
 					this.victims.put(target, this.tickCount + this.reapplicationDelay);
 					for (MobEffectInstance appliedEffect : toApply) {
@@ -186,5 +187,9 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 	}
 
 	@Override protected int getLifetime() { return super.getLifetime() + this.waitTime; }
+
+	public boolean isBlockedBy(LivingEntity target) {
+		return GasMaskItem.isWearingWorkingMask(target);
+	}
 
 }

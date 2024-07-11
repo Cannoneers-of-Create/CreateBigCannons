@@ -16,7 +16,9 @@ import io.github.fabricators_of_create.porting_lib.event.client.MouseButtonCallb
 import io.github.fabricators_of_create.porting_lib.event.client.MouseScrolledCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.ParticleManagerRegistrationCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.TextureStitchCallback;
+import io.github.fabricators_of_create.porting_lib.event.common.ModsLoadedCallback;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
@@ -46,6 +48,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
+import rbasamoyai.createbigcannons.compat.trinkets.CBCTrinketsClient;
 import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
 
@@ -54,12 +57,7 @@ public class CBCClientFabric implements ClientModInitializer {
 	public void onInitializeClient() {
 		CBCClientCommon.onClientSetup();
 		CBCClientCommon.registerKeyMappings(KeyBindingHelper::registerKeyBinding);
-		CBCClientCommon.registerOverlays((id, overlay) -> {
-			HudRenderCallback.EVENT.register((stack, partialTicks) -> {
-				Window window = Minecraft.getInstance().getWindow();
-				overlay.renderOverlay(stack, partialTicks, window.getGuiScaledWidth(), window.getGuiScaledHeight());
-			});
-		});
+		CBCClientCommon.registerOverlays("hotbar", CBCClientFabric::wrapOverlay);
 		onRegisterClientReloadListeners();
 
 		CBCNetworkFabric.INSTANCE.initClientListener();
@@ -78,6 +76,20 @@ public class CBCClientFabric implements ClientModInitializer {
 		MouseButtonCallback.EVENT.register(CBCClientFabric::onClickMouse);
 		ClientWorldEvents.LOAD.register(CBCClientFabric::onLoadClientLevel);
 		ClientLoginConnectionEvents.INIT.register(CBCClientFabric::onPlayerLogIn);
+		ModsLoadedCallback.EVENT.register(CBCClientFabric::onModsLoaded);
+	}
+
+	private static void wrapOverlay(String id, CBCClientCommon.CBCGuiOverlay overlay) {
+		HudRenderCallback.EVENT.register((stack, partialTicks) -> {
+			Window window = Minecraft.getInstance().getWindow();
+			overlay.renderOverlay(stack, partialTicks, window.getGuiScaledWidth(), window.getGuiScaledHeight());
+		});
+	}
+
+	public static void onModsLoaded(EnvType envType) {
+		if (envType != EnvType.CLIENT)
+			return;
+		CBCTrinketsClient.initClient();
 	}
 
 	public static void onParticleRegistry() {
