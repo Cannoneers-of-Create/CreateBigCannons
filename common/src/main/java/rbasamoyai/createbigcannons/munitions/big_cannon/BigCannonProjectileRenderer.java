@@ -34,6 +34,8 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 		BlockState blockState = entity.getRenderedBlockState();
 		if (blockState.getRenderShape() == RenderShape.MODEL) {
 			Vec3 vel = entity.getOrientation();
+			if (vel.lengthSqr() < 1e-4d)
+				vel = new Vec3(0, -1, 0);
 
 			poseStack.pushPose();
 			//poseStack.translate(0.0d, 0.4d, 0.0d);
