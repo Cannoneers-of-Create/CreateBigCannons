@@ -490,7 +490,19 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 	@Override
 	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return dimensions.height * 0.5f;
+		return 0;
+	}
+
+	@Override
+	protected AABB makeBoundingBox() {
+		AABB box = super.makeBoundingBox();
+		return box.move(0, -box.getYsize() * 0.5d, 0);
+	}
+
+	@Override
+	public Vec3 getLightProbePosition(float partialTicks) {
+		Vec3 eyePos = super.getLightProbePosition(partialTicks);
+		return this.isInGround() && this.orientation != null ? eyePos.subtract(this.orientation.normalize().scale(0.1)) : eyePos;
 	}
 
 	protected double getGravity() {

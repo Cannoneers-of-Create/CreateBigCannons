@@ -38,15 +38,7 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 				vel = new Vec3(0, -1, 0);
 
 			poseStack.pushPose();
-			//poseStack.translate(0.0d, 0.4d, 0.0d);
 			poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize(), new Vec3(0, 1, 0)));
-			//poseStack.translate(0.0d, 0.4d, 0.0d);
-
-//			Quaternion q = Vector3f.YP.rotationDegrees(entity.getViewYRot(partialTicks) + 180.0f);
-//			Quaternion q1 = Vector3f.XP.rotationDegrees(entity.getViewXRot(partialTicks) - 90.0f);
-//			q.mul(q1);
-//
-//			poseStack.mulPose(q);
 
 			Minecraft.getInstance().getItemRenderer()
 					.renderStatic(new ItemStack(blockState.getBlock()), ItemTransforms.TransformType.NONE, isTracer ? LightTexture.FULL_BRIGHT : packedLight,
