@@ -78,16 +78,16 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			super.tick();
 
 			if (this.nextVelocity != null) {
-				this.setDeltaMovement(this.nextVelocity);
-				if (this.nextVelocity.lengthSqr() < 1e-4d && !this.level.isClientSide)
-					this.setInGround(true);
+				if (!this.level.isClientSide) {
+					if (this.nextVelocity.lengthSqr() < 1e-4d)
+						this.setInGround(true);
+					this.setDeltaMovement(this.nextVelocity);
+				}
 				this.nextVelocity = null;
 			}
 
-			if (!this.isInGround()) {
+			if (!this.isInGround())
 				this.clipAndDamage();
-				this.orientation = this.getDeltaMovement();
-			}
 
 			this.onTickRotate();
 
@@ -283,6 +283,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			for (ClientboundPlayBlockHitEffectPacket pkt : projCtx.getPlayedEffects())
 				NetworkPlatform.sendToClientTracking(pkt, this);
 		}
+		if (!this.level.isClientSide || !stop)
+			this.orientation = trajectory;
 		if (shouldRemove)
 			this.removeNextTick = true;
 	}
@@ -396,10 +398,16 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		} else {
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) & 0b11111110));
 		}
+		this.onGround = inGround;
 	}
 
 	public boolean isInGround() {
 		return (this.entityData.get(ID_FLAGS) & 1) != 0;
+	}
+
+	@Override
+	public void setOnGround(boolean onGround) {
+		this.setInGround(onGround);
 	}
 
 	private boolean shouldFall() {
