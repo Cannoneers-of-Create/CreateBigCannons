@@ -29,6 +29,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -68,6 +69,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.IntegratedPro
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilities;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
+import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
 public class MountedBigCannonContraption extends AbstractMountedCannonContraption {
 
@@ -462,6 +464,11 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			level.sendParticles(player, plumeParticle, true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
 			if (player.distanceToSqr(plumePos.x, plumePos.y, plumePos.z) < blastDistSqr)
 				player.connection.send(blastWavePacket);
+		}
+
+		if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+			ChunkPos cpos1 = new ChunkPos(new BlockPos(spawnPos));
+			RitchiesProjectileLib.queueForceLoad(level, cpos1.x, cpos1.z);
 		}
 	}
 

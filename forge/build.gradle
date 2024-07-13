@@ -79,7 +79,12 @@ dependencies {
 
     modImplementation("curse.maven:spark-361579:${spark_forge_file}") // Spark
 
-	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-forge-build.${rpl_build}")) { transitive = false } // Ritchie's Projectile Library
+	// Ritchie's Projectile Library
+	if (Boolean.valueOf(use_local_rpl_build)) {
+		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-forge") { transitive = false }
+	} else {
+		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-forge-build.${rpl_build}") { transitive = false }
+	}
 
 	compileOnly("io.github.llamalad7:mixinextras-common:${mixinextras_version}")
 	annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixinextras_version}")))
