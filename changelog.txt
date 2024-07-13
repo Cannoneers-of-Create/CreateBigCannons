@@ -185,6 +185,7 @@ Fixed:
 - Fixed ghost Yaw Controller effect
 - Fixed autocannons being able to assemble with two breeches
 - Fixed projectile hitbox not centered on visual projectile
+- Fixed projectiles not chunkloading on world load and on spawn
 
 ===
 

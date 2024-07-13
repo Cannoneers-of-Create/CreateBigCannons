@@ -25,6 +25,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -62,6 +63,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
+import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
 public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon {
 
@@ -358,6 +360,11 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		} else {
 			CBCUtils.playBlastLikeSoundOnServer(level, spawnPos.x, spawnPos.y, spawnPos.z, CBCSoundEvents.FIRE_AUTOCANNON.getMainEvent(),
 				SoundSource.BLOCKS, 12, 1, 5f);
+		}
+
+		if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+			ChunkPos cpos1 = new ChunkPos(new BlockPos(spawnPos));
+			RitchiesProjectileLib.queueForceLoad(level, cpos1.x, cpos1.z);
 		}
 	}
 
