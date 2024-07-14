@@ -38,6 +38,7 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 				case DECREASED -> 6 + this.random.nextInt(3);
 				case MINIMAL -> 4;
 			};
+			double gravity = this.isPlume ? -0.5 : -0.1;
 			for (int i = 0; i < secondaryCount; ++i) {
 				double rx = this.random.nextDouble() - this.random.nextDouble();
 				double ry = this.random.nextDouble() - this.random.nextDouble();
@@ -49,7 +50,7 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 				double dz1 = this.random.nextDouble() - this.random.nextDouble();
 				int lifetime = 5;
 				this.trails.add(new TrailSubparticle(new Vec3(rx, ry, rz).scale(2.5),
-					new Vec3(dx1, dy1, dz1).scale(secondaryVelScale), 0.85, -0.5, lifetime));
+					new Vec3(dx1, dy1, dz1).scale(secondaryVelScale), 0.85, gravity, lifetime));
 			}
 		}
 	}

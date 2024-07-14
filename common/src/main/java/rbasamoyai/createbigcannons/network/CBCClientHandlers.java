@@ -106,7 +106,7 @@ public class CBCClientHandlers {
 			case SMOKE -> new SmokeExplosion(mc.level, pkt);
             case MORTAR_STONE -> new MortarStoneExplosion(mc.level, pkt);
 			case IMPACT -> new ImpactExplosion(mc.level, pkt);
-            case SHELL -> new ShellExplosion(mc.level, pkt);
+			case SHELL, SHELL_NO_EFFECTS -> new ShellExplosion(mc.level, pkt);
         };
 		explosion.finalizeExplosion(true);
 		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));

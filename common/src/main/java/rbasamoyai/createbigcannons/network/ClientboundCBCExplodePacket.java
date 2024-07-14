@@ -55,7 +55,8 @@ public record ClientboundCBCExplodePacket(double x, double y, double z, float po
 		SMOKE,
 		MORTAR_STONE,
 		IMPACT,
-		SHELL
+		SHELL,
+		SHELL_NO_EFFECTS
 	}
 
 }
