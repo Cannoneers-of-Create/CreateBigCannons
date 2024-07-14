@@ -78,8 +78,10 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			super.tick();
 
 			if (this.nextVelocity != null) {
-				if (!this.level.isClientSide) {
-					if (this.nextVelocity.lengthSqr() < 1e-4d)
+				boolean stop = this.nextVelocity.lengthSqr() < 1e-4d;
+				// Bouncing is stochastic
+				if (!this.level.isClientSide || stop) {
+					if (stop)
 						this.setInGround(true);
 					this.setDeltaMovement(this.nextVelocity);
 				}

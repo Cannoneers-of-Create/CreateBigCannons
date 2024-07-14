@@ -180,7 +180,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		ImpactResult.KinematicOutcome outcome;
 		if (surfaceImpact && canBounce && this.level.getRandom().nextDouble() < bounceChance) {
 			outcome = ImpactResult.KinematicOutcome.BOUNCE;
-		} else if (blockBroken) {
+		} else if (blockBroken && !this.level.isClientSide) {
 			outcome = ImpactResult.KinematicOutcome.PENETRATE;
 		} else {
 			outcome = ImpactResult.KinematicOutcome.STOP;
@@ -191,7 +191,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		state.onProjectileHit(this.level, state, blockHitResult, this);
 		if (blockBroken) {
 			this.setProjectileMass(incidentVel < 1e-4d ? 0 : Math.max(this.getProjectileMass() - durabilityPenalty, 0));
-			this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+			this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), ProjectileBlock.UPDATE_ALL_IMMEDIATE);
 			if (surfaceImpact) {
 				float f = (float) toughness / (float) momentum;
 				float overPenetrationPower = f < 0.15f ? 2 - 2 * f : 0;
