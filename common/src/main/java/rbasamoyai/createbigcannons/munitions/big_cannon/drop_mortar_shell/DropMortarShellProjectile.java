@@ -31,10 +31,12 @@ public class DropMortarShellProjectile extends FuzedBigCannonProjectile implemen
 	@Override
 	protected void detonate(Position position) {
 		DropMortarShellProperties properties = this.getAllProperties();
-		this.level.explode(null, this.indirectArtilleryFire(), null, position.x(), position.y(), position.z(), properties.entityDamagingExplosivePower(),
-			false, Explosion.BlockInteraction.NONE);
+		ShellExplosion entityDamage = new ShellExplosion(this.level, this, this.indirectArtilleryFire(), position.x(),
+			position.y(), position.z(), properties.entityDamagingExplosivePower(), false, Explosion.BlockInteraction.NONE, true);
+		CreateBigCannons.handleCustomExplosion(this.level, entityDamage);
 		ShellExplosion shellExplosion = new ShellExplosion(this.level, this, this.indirectArtilleryFire(), position.x(),
-			position.y(), position.z(), properties.blockDamagingExplosivePower(), false, CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+			position.y(), position.z(), properties.blockDamagingExplosivePower(), false,
+			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction(), false);
 		CreateBigCannons.handleCustomExplosion(this.level, shellExplosion);
 	}
 
