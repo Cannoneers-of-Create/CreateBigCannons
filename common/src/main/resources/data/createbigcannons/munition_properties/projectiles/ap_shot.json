@@ -1,6 +1,6 @@
 {
   "entity_damage": 50.0,
-  "durability_mass": 30.0,
+  "durability_mass": 8.0,
   "renders_invulnerable": false,
   "ignores_invulnerability": true,
   "ignores_entity_armor": true,
@@ -13,6 +13,6 @@
   "can_squib": true,
   "added_recoil": 1.0,
   "penetration": 2,
-  "toughness": 0.67,
+  "toughness": 1,
   "deflection": 0.70
 }

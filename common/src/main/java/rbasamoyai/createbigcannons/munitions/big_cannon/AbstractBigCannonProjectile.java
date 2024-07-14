@@ -168,10 +168,11 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		double toughness = blockArmor.toughness(this.level, state, pos, true);
 		double toughnessPenalty = toughness - momentum;
 		double hardnessPenalty = blockArmor.hardness(this.level, state, pos, true) - ballistics.penetration();
+		double bounceBonus = Math.max(1 - hardnessPenalty, 0);
 
 		double projectileDeflection = ballistics.deflection();
 		double baseChance = CBCConfigs.SERVER.munitions.baseProjectileBounceChance.getF();
-		double bounceChance = projectileDeflection < 1e-2d || incidence > projectileDeflection ? 0 : Math.max(baseChance, 1 - incidence / projectileDeflection);
+		double bounceChance = projectileDeflection < 1e-2d || incidence > projectileDeflection ? 0 : Math.max(baseChance, 1 - incidence / projectileDeflection) * bounceBonus;
 
 		boolean surfaceImpact = this.canHitSurface();
 		boolean canBounce = CBCConfigs.SERVER.munitions.projectilesCanBounce.get();

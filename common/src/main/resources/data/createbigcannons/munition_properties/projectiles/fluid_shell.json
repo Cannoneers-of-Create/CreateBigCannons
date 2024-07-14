@@ -1,6 +1,6 @@
 {
   "entity_damage": 30.0,
-  "durability_mass": 8.0,
+  "durability_mass": 2.0,
   "renders_invulnerable": false,
   "ignores_invulnerability": true,
   "ignores_entity_armor": true,
@@ -18,7 +18,7 @@
   "millibuckets_per_fluid_blob": 500,
   "millibuckets_per_area_of_effect_radius": 125,
   "fluid_blob_spread": 1,
-  "penetration": 0.5,
-  "toughness": 0.25,
+  "penetration": 1,
+  "toughness": 1,
   "deflection": 0.70
 }

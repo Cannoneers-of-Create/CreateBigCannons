@@ -14,7 +14,7 @@
   "shrapnel_spread": 0.25,
   "shrapnel_count": 15,
   "explosive_power": 2.0,
-  "penetration": 0.5,
-  "toughness": 0.25,
+  "penetration": 1,
+  "toughness": 0.5,
   "deflection": 0.70
 }
