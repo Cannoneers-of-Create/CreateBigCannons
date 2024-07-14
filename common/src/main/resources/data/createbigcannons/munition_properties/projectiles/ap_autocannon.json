@@ -11,6 +11,6 @@
   "added_recoil": 1,
   "can_squib": true,
   "penetration": 2,
-  "toughness": 0.67,
+  "toughness": 1,
   "deflection": 0.70
 }
