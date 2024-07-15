@@ -19,6 +19,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
@@ -81,6 +82,10 @@ public class CBCClientCommon {
 	public static final CannonWelderSelectionHandler CANNON_WELDER_HANDLER = new CannonWelderSelectionHandler();
 
 	private static boolean PARTICLES_REGISTERED = false;
+
+	public static ParticleStatus getParticleStatus() {
+		return Minecraft.getInstance().options.particles;
+	}
 
 	public static void onRegisterParticleFactories(Minecraft mc, ParticleEngine engine) {
 		if (PARTICLES_REGISTERED)

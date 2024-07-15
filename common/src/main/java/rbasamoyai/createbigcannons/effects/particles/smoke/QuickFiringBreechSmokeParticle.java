@@ -2,12 +2,12 @@ package rbasamoyai.createbigcannons.effects.particles.smoke;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleTypes;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 
 public class QuickFiringBreechSmokeParticle extends NoRenderParticle {
 
@@ -27,8 +27,7 @@ public class QuickFiringBreechSmokeParticle extends NoRenderParticle {
 
 	@Override
 	public void tick() {
-		Minecraft minecraft = Minecraft.getInstance();
-		int count = switch (minecraft.options.particles().get()) {
+		int count = switch (CBCClientCommon.getParticleStatus()) {
             case ALL -> 10;
             case DECREASED -> 2;
             case MINIMAL -> 0;

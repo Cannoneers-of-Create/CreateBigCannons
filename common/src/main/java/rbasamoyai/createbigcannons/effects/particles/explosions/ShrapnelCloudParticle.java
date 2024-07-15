@@ -1,12 +1,12 @@
 package rbasamoyai.createbigcannons.effects.particles.explosions;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleTypes;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.ShrapnelSmokeParticleData;
 
@@ -22,7 +22,7 @@ public class ShrapnelCloudParticle extends NoRenderParticle {
 			this.remove();
 			return;
 		}
-		ParticleStatus status = Minecraft.getInstance().options.particles().get();
+		ParticleStatus status = CBCClientCommon.getParticleStatus();
 		int count = switch (status) {
             case ALL -> 20;
             case DECREASED -> 10;

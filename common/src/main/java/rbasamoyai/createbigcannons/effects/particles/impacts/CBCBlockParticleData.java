@@ -16,14 +16,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
-import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public record CBCBlockParticleData(BlockState state) implements ParticleOptions, ICustomParticleData<CBCBlockParticleData> {
 
 	private static final ParticleOptions.Deserializer<CBCBlockParticleData> DESERIALIZER = new ParticleOptions.Deserializer<>() {
         public CBCBlockParticleData fromCommand(ParticleType<CBCBlockParticleData> particleType, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
-            return new CBCBlockParticleData(BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry(), reader, false).blockState());
+            return new CBCBlockParticleData(CBCUtils.parseBlockState(reader));
         }
 
         public CBCBlockParticleData fromNetwork(ParticleType<CBCBlockParticleData> particleType, FriendlyByteBuf buffer) {

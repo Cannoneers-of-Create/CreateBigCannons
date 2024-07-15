@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
-import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public record SplinterBurstParticleData(BlockState blockState, int count) implements ParticleOptions,
 	ICustomParticleData<SplinterBurstParticleData> {
@@ -26,7 +26,7 @@ public record SplinterBurstParticleData(BlockState blockState, int count) implem
         @Override
         public SplinterBurstParticleData fromCommand(ParticleType<SplinterBurstParticleData> particleType, StringReader reader) throws CommandSyntaxException {
 			reader.expect(' ');
-			BlockState blockState = BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry(), reader, false).blockState();
+			BlockState blockState = CBCUtils.parseBlockState(reader);
 			reader.expect(' ');
 			int count = reader.readInt();
             return new SplinterBurstParticleData(blockState, count);

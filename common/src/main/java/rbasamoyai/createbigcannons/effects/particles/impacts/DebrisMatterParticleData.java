@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
-import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public record DebrisMatterParticleData(boolean deflect, boolean forceDisplay, BlockState blockState) implements ParticleOptions,
 	ICustomParticleData<DebrisMatterParticleData> {
@@ -30,7 +30,7 @@ public record DebrisMatterParticleData(boolean deflect, boolean forceDisplay, Bl
 			reader.expect(' ');
 			boolean forceDisplay = reader.readBoolean();
 			reader.expect(' ');
-            return new DebrisMatterParticleData(deflect, forceDisplay, BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry(), reader, false).blockState());
+            return new DebrisMatterParticleData(deflect, forceDisplay, CBCUtils.parseBlockState(reader));
         }
 
         @Override

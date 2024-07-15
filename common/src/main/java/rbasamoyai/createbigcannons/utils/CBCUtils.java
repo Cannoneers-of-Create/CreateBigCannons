@@ -10,10 +10,13 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.mojang.brigadier.StringReader;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.serialization.Codec;
 
+import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -24,6 +27,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.mixin.Matrix3fAccessor;
@@ -291,6 +295,17 @@ public class CBCUtils {
 			ExtraCodecs.stringResolverCodec(strFunc, namingFunction),
 			ExtraCodecs.idResolverCodec(Enum::ordinal, i -> i >= 0 && i < enums.length ? enums[i] : null, -1)
 		);
+	}
+
+	/**
+	 * Alias method for easier porting to 1.19+.
+	 *
+	 * @param reader the string reader
+	 * @return the block state represented by the string reader
+	 * @throws CommandSyntaxException thrown by BlockStateParser
+	 */
+	public static BlockState parseBlockState(StringReader reader) throws CommandSyntaxException {
+		return new BlockStateParser(reader, false).parse(false).getState();
 	}
 
 	private CBCUtils() {}

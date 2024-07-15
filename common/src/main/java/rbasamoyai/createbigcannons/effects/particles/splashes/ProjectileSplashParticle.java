@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.splashes;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
@@ -8,6 +7,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 
 public class ProjectileSplashParticle extends NoRenderParticle {
 
@@ -29,8 +29,7 @@ public class ProjectileSplashParticle extends NoRenderParticle {
 
 	@Override
 	public void tick() {
-		Minecraft minecraft = Minecraft.getInstance();
-		int particleCount = switch (minecraft.options.particles().get()) {
+		int particleCount = switch (CBCClientCommon.getParticleStatus()) {
             case ALL -> 10;
             case DECREASED -> 5;
             case MINIMAL -> 2;
