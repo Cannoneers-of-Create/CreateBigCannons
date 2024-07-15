@@ -9,18 +9,101 @@ public class CBCBigCannonMaterials {
 
 	public static final BigCannonMaterial
 		INCOMPLETE_LAYERED = BigCannonMaterial.register(CreateBigCannons.resource("incomplete_layered"),
-			new BigCannonMaterialProperties(-1d, 1.0f, 0, FailureMode.FRAGMENT, false, false, 0, 0, 0f, 0f)),
+			BigCannonMaterialProperties.builder()
+				.minimumVelocityPerBarrel(-1d)
+				.weight(1.0f)
+				.maxSafePropellantStress(0)
+				.failureMode(FailureMode.FRAGMENT)
+				.connectsInSurvival(true)
+				.isWeldable(false)
+				.weldDamage(0)
+				.weldStressPenalty(0)
+				.minimumSpread(0)
+				.spreadReductionPerBarrel(0)
+				.build()),
+
 		LOG = BigCannonMaterial.register(CreateBigCannons.resource("log"),
-			new BigCannonMaterialProperties(-1d, 1.0f, 0, FailureMode.FRAGMENT, true, false, 0, 0, 1.5f, 1f)),
+			BigCannonMaterialProperties.builder()
+				.minimumVelocityPerBarrel(-1d)
+				.weight(1.0f)
+				.maxSafePropellantStress(0)
+				.failureMode(FailureMode.FRAGMENT)
+				.connectsInSurvival(true)
+				.isWeldable(false)
+				.weldDamage(0)
+				.weldStressPenalty(0)
+				.minimumSpread(1.5f)
+				.spreadReductionPerBarrel(1f)
+				.build()),
+
 		WROUGHT_IRON = BigCannonMaterial.register(CreateBigCannons.resource("wrought_iron"),
-			new BigCannonMaterialProperties(2d, 2.0f, 1, FailureMode.RUPTURE, true, false, 0, 0, 1.5f, 1f)),
+			BigCannonMaterialProperties.builder()
+				.minimumVelocityPerBarrel(2d)
+				.weight(2.0f)
+				.maxSafePropellantStress(1)
+				.failureMode(FailureMode.RUPTURE)
+				.connectsInSurvival(true)
+				.isWeldable(false)
+				.weldDamage(0)
+				.weldStressPenalty(0)
+				.minimumSpread(1.5f)
+				.spreadReductionPerBarrel(1f)
+				.build()),
+
 		CAST_IRON = BigCannonMaterial.register(CreateBigCannons.resource("cast_iron"),
-			new BigCannonMaterialProperties(2d, 3.0f, 2, FailureMode.FRAGMENT, false, true, 1, 1, 1.25f, 1f)),
+			BigCannonMaterialProperties.builder()
+				.minimumVelocityPerBarrel(2d)
+				.weight(3.0f)
+				.maxSafePropellantStress(2)
+				.failureMode(FailureMode.FRAGMENT)
+				.connectsInSurvival(false)
+				.isWeldable(true)
+				.weldDamage(1)
+				.weldStressPenalty(1)
+				.minimumSpread(1.25f)
+				.spreadReductionPerBarrel(1f)
+				.build()),
+
 		BRONZE = BigCannonMaterial.register(CreateBigCannons.resource("bronze"),
-			new BigCannonMaterialProperties(4d / 3d, 2.0f, 4, FailureMode.RUPTURE, false, true, 1, 0, 1.0f, 1f)),
+			BigCannonMaterialProperties.builder()
+				.minimumVelocityPerBarrel(4d / 3d)
+				.weight(2.0f)
+				.maxSafePropellantStress(4)
+				.failureMode(FailureMode.RUPTURE)
+				.connectsInSurvival(false)
+				.isWeldable(true)
+				.weldDamage(1)
+				.weldStressPenalty(0)
+				.minimumSpread(1.0f)
+				.spreadReductionPerBarrel(1f)
+				.build()),
+
 		STEEL = BigCannonMaterial.register(CreateBigCannons.resource("steel"),
-			new BigCannonMaterialProperties(1d, 5.0f, 6, FailureMode.FRAGMENT, false, true, 2, 2, 0.5f, 1f)),
+			BigCannonMaterialProperties.builder()
+				.minimumVelocityPerBarrel(1d)
+				.weight(5.0f)
+				.maxSafePropellantStress(6)
+				.failureMode(FailureMode.FRAGMENT)
+				.connectsInSurvival(false)
+				.isWeldable(true)
+				.weldDamage(2)
+				.weldStressPenalty(2)
+				.minimumSpread(0.5f)
+				.spreadReductionPerBarrel(1f)
+				.build()),
+
 		NETHERSTEEL = BigCannonMaterial.register(CreateBigCannons.resource("nethersteel"),
-			new BigCannonMaterialProperties(2d / 3d, 6.0f, 8, FailureMode.FRAGMENT, false, false, 0, 0, 0.1f, 1f));
+			BigCannonMaterialProperties.builder()
+				.minimumVelocityPerBarrel(2d / 3d)
+				.weight(6.0f)
+				.maxSafePropellantStress(8)
+				.failureMode(FailureMode.FRAGMENT)
+				.connectsInSurvival(false)
+				.isWeldable(false)
+				.weldDamage(0)
+				.weldStressPenalty(0)
+				.minimumSpread(0.1f)
+				.spreadReductionPerBarrel(1f)
+				.build());
 
 }
