@@ -180,15 +180,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		boolean shatter = surfaceImpact && outcome != ImpactResult.KinematicOutcome.BOUNCE && hardnessPenalty > ballistics.toughness();
 
 		if (!this.level.isClientSide) {
-			if (hardnessPenalty > 1e-2d) {
-				if (ballistics.toughness() < 1e-2d){
-					momentum = 0;
-				} else{
-					momentum *= Math.max(0.25, 1 - hardnessPenalty / ballistics.toughness());
-				}
-			}
-			if (!unbreakable)
-				CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), Math.max(Mth.ceil(momentum - hardnessPenalty), 0), state, this.level);
 			boolean bounced = outcome == ImpactResult.KinematicOutcome.BOUNCE;
 			Vec3 effectNormal;
 			if (bounced) {
@@ -197,8 +188,19 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			} else {
 				effectNormal = curVel.reverse();
 			}
-			projectileContext.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state, this.getType(), bounced, true,
-				hitLoc.x, hitLoc.y, hitLoc.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z));
+			for (BlockState state1 : blockArmor.containedBlockStates(this.level, state, pos.immutable(), true)) {
+				projectileContext.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state1, this.getType(), bounced, true,
+					hitLoc.x, hitLoc.y, hitLoc.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z));
+			}
+			if (hardnessPenalty > 1e-2d) {
+				if (ballistics.toughness() < 1e-2d){
+					momentum = 0;
+				} else{
+					momentum *= Math.max(0.25, 1 - hardnessPenalty / ballistics.toughness());
+				}
+			}
+			if (!unbreakable)
+				CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), Math.max(Mth.ceil(momentum), 0), state, this.level);
 		}
 		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
 		return new ImpactResult(outcome, true);
