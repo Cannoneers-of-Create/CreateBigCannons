@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
@@ -12,6 +11,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.FlakSmokeParticleData;
 
@@ -21,9 +21,8 @@ public class FlakCloudParticle extends NoRenderParticle {
 
 	FlakCloudParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
 		super(level, x, y, z, dx, dy, dz);
-		ParticleStatus status = Minecraft.getInstance().options.particles;
 		if (CBCConfigs.CLIENT.showExtraFlakTrails.get()) {
-			int count = switch (status) {
+			int count = switch (CBCClientCommon.getParticleStatus()) {
 				case ALL -> 12 + level.random.nextInt(5);
 				case DECREASED -> 4 + level.random.nextInt(3);
 				case MINIMAL -> 0;
@@ -50,7 +49,7 @@ public class FlakCloudParticle extends NoRenderParticle {
 			this.remove();
 			return;
 		}
-		ParticleStatus status = Minecraft.getInstance().options.particles;
+		ParticleStatus status = CBCClientCommon.getParticleStatus();
 		int count = switch (status) {
             case ALL -> 30;
             case DECREASED -> 20;

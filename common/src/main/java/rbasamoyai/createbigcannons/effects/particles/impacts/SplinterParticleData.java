@@ -16,13 +16,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public record SplinterParticleData(BlockState state) implements ParticleOptions, ICustomParticleDataWithSprite<SplinterParticleData> {
 
 	private static final Deserializer<SplinterParticleData> DESERIALIZER = new Deserializer<>() {
         public SplinterParticleData fromCommand(ParticleType<SplinterParticleData> particleType, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
-            return new SplinterParticleData(new BlockStateParser(reader, false).parse(false).getState());
+            return new SplinterParticleData(CBCUtils.parseBlockState(reader));
         }
 
         public SplinterParticleData fromNetwork(ParticleType<SplinterParticleData> particleType, FriendlyByteBuf buffer) {

@@ -16,13 +16,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public record LeafParticleData(BlockState state) implements ParticleOptions, ICustomParticleDataWithSprite<LeafParticleData> {
 
 	private static final Deserializer<LeafParticleData> DESERIALIZER = new Deserializer<>() {
         public LeafParticleData fromCommand(ParticleType<LeafParticleData> particleType, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
-            return new LeafParticleData(new BlockStateParser(reader, false).parse(false).getState());
+            return new LeafParticleData(CBCUtils.parseBlockState(reader));
         }
 
         public LeafParticleData fromNetwork(ParticleType<LeafParticleData> particleType, FriendlyByteBuf buffer) {

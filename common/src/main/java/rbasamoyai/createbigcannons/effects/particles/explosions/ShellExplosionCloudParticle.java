@@ -6,13 +6,13 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.ShellExplosionSmokeParticleData;
 
@@ -30,10 +30,9 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 		this.power = power;
 		this.isPlume = isPlume;
 
-		Minecraft minecraft = Minecraft.getInstance();
 		if (CBCConfigs.CLIENT.showExtraShellExplosionTrails.get()) {
 			double secondaryVelScale = this.power * 0.35;
-			int secondaryCount = switch(minecraft.options.particles) {
+			int secondaryCount = switch(CBCClientCommon.getParticleStatus()) {
 				case ALL -> 12 + this.random.nextInt(6);
 				case DECREASED -> 6 + this.random.nextInt(3);
 				case MINIMAL -> 4;
@@ -57,11 +56,10 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 
 	@Override
 	public void tick() {
-		Minecraft minecraft = Minecraft.getInstance();
 		int PLUME_AGE = 5;
 		if (this.age < PLUME_AGE) {
 			float primaryScale = this.power * 2f;
-			int plumes = switch (minecraft.options.particles) {
+			int plumes = switch (CBCClientCommon.getParticleStatus()) {
 				case ALL -> 20;
 				case DECREASED -> 10;
 				case MINIMAL -> 5;
@@ -87,7 +85,7 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 				this.level.addParticle(new ShellExplosionSmokeParticleData(lifetime, primaryScale), true, rx, ry, rz, dx, dy, dz);
 			}
 		}
-		int trailSteps = minecraft.options.particles == ParticleStatus.ALL ? 2 : 1;
+		int trailSteps = CBCClientCommon.getParticleStatus() == ParticleStatus.ALL ? 2 : 1;
 		float secondaryScale = this.power * 0.75f;
 		for (Iterator<TrailSubparticle> iter = this.trails.iterator(); iter.hasNext(); ) {
 			TrailSubparticle trail = iter.next();

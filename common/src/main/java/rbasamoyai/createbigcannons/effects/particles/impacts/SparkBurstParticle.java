@@ -2,13 +2,13 @@ package rbasamoyai.createbigcannons.effects.particles.impacts;
 
 import com.mojang.math.Vector3f;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 
 public class SparkBurstParticle extends NoRenderParticle {
 
@@ -39,8 +39,7 @@ public class SparkBurstParticle extends NoRenderParticle {
 		Vec3 up = forward.cross(vec31);
 		Vec3 right = forward.cross(up);
 
-		Minecraft minecraft = Minecraft.getInstance();
-		int count = switch (minecraft.options.particles) {
+		int count = switch (CBCClientCommon.getParticleStatus()) {
             case ALL -> this.count;
             case DECREASED -> this.count / 2;
             case MINIMAL -> this.count / 4;
