@@ -46,7 +46,7 @@ public class CBCBigCannonMaterials {
 				.isWeldable(false)
 				.weldDamage(0)
 				.weldStressPenalty(0)
-				.minimumSpread(1.5f)
+				.minimumSpread(0.1f)
 				.spreadReductionPerBarrel(1f)
 				.build()),
 
@@ -60,8 +60,8 @@ public class CBCBigCannonMaterials {
 				.isWeldable(true)
 				.weldDamage(1)
 				.weldStressPenalty(1)
-				.minimumSpread(1.25f)
-				.spreadReductionPerBarrel(1f)
+				.minimumSpread(0.05f)
+				.spreadReductionPerBarrel(2f)
 				.build()),
 
 		BRONZE = BigCannonMaterial.register(CreateBigCannons.resource("bronze"),
@@ -74,8 +74,8 @@ public class CBCBigCannonMaterials {
 				.isWeldable(true)
 				.weldDamage(1)
 				.weldStressPenalty(0)
-				.minimumSpread(1.0f)
-				.spreadReductionPerBarrel(1f)
+				.minimumSpread(0.03f)
+				.spreadReductionPerBarrel(1.4f)
 				.build()),
 
 		STEEL = BigCannonMaterial.register(CreateBigCannons.resource("steel"),
@@ -88,8 +88,8 @@ public class CBCBigCannonMaterials {
 				.isWeldable(true)
 				.weldDamage(2)
 				.weldStressPenalty(2)
-				.minimumSpread(0.5f)
-				.spreadReductionPerBarrel(1f)
+				.minimumSpread(0.025f)
+				.spreadReductionPerBarrel(1.4f)
 				.build()),
 
 		NETHERSTEEL = BigCannonMaterial.register(CreateBigCannons.resource("nethersteel"),
@@ -102,8 +102,8 @@ public class CBCBigCannonMaterials {
 				.isWeldable(false)
 				.weldDamage(0)
 				.weldStressPenalty(0)
-				.minimumSpread(0.1f)
-				.spreadReductionPerBarrel(1f)
+				.minimumSpread(0.02f)
+				.spreadReductionPerBarrel(1.15f)
 				.build());
 
 }
