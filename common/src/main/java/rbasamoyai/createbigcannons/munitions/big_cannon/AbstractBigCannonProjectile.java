@@ -189,6 +189,20 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		float durabilityPenalty = ((float) Math.max(0, hardnessPenalty) + 1) * (float) toughness / (float) incidentVel;
 
 		state.onProjectileHit(this.level, state, blockHitResult, this);
+		if (!this.level.isClientSide) {
+			boolean bounced = outcome == ImpactResult.KinematicOutcome.BOUNCE;
+			Vec3 effectNormal;
+			if (bounced) {
+				double elasticity = 1.7f;
+				effectNormal = curVel.subtract(normal.scale(normal.dot(curVel) * elasticity));
+			} else {
+				effectNormal = curVel.reverse();
+			}
+			for (BlockState state1 : blockArmor.containedBlockStates(this.level, state, pos.immutable(), true)) {
+				projectileContext.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state1, this.getType(), bounced, true,
+					hitLoc.x, hitLoc.y, hitLoc.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z));
+			}
+		}
 		if (blockBroken) {
 			this.setProjectileMass(incidentVel < 1e-4d ? 0 : Math.max(this.getProjectileMass() - durabilityPenalty, 0));
 			this.level.setBlock(pos, Blocks.AIR.defaultBlockState(), ProjectileBlock.UPDATE_ALL_IMMEDIATE);
@@ -213,18 +227,6 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 			if (!this.level.isClientSide)
 				this.level.playSound(null, spallLoc.x, spallLoc.y, spallLoc.z, sound.getBreakSound(), SoundSource.BLOCKS,
 					sound.getVolume(), sound.getPitch());
-		}
-		if (!this.level.isClientSide) {
-			boolean bounced = outcome == ImpactResult.KinematicOutcome.BOUNCE;
-			Vec3 effectNormal;
-			if (bounced) {
-				double elasticity = 1.7f;
-				effectNormal = curVel.subtract(normal.scale(normal.dot(curVel) * elasticity));
-			} else {
-				effectNormal = curVel.reverse();
-			}
-			projectileContext.addPlayedEffect(new ClientboundPlayBlockHitEffectPacket(state, this.getType(), bounced, true,
-				hitLoc.x, hitLoc.y, hitLoc.z, (float) effectNormal.x, (float) effectNormal.y, (float) effectNormal.z));
 		}
 		shatter |= this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
 		return new ImpactResult(outcome, shatter);

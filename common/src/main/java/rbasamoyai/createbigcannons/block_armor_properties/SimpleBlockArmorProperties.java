@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.block_armor_properties;
 
+import java.util.List;
+
 import com.google.gson.JsonObject;
 
 import net.minecraft.core.BlockPos;
@@ -20,7 +22,12 @@ public record SimpleBlockArmorProperties(double hardness, double toughness) impl
 		return this.toughness;
 	}
 
-	public static SimpleBlockArmorProperties fromJson(JsonObject obj) {
+    @Override
+    public List<BlockState> containedBlockStates(Level level, BlockState state, BlockPos pos, boolean recurse) {
+        return List.of(state);
+    }
+
+    public static SimpleBlockArmorProperties fromJson(JsonObject obj) {
 		double hardness = Math.max(GsonHelper.getAsDouble(obj, "hardness", 1), 0);
 		double toughness = Math.max(GsonHelper.getAsDouble(obj, "toughness", 1), 0);
 		return new SimpleBlockArmorProperties(hardness, toughness);

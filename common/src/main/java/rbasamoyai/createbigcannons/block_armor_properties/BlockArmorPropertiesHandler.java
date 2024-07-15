@@ -1,10 +1,12 @@
 package rbasamoyai.createbigcannons.block_armor_properties;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
@@ -44,7 +46,8 @@ public class BlockArmorPropertiesHandler {
 	private static final BlockArmorPropertiesProvider FALLBACK_PROVIDER = new BlockArmorPropertiesProvider() {
 		@Override public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) { return 1; }
 		@Override public double toughness(Level level, BlockState state, BlockPos pos, boolean recurse) { return state.getBlock().getExplosionResistance(); }
-	};
+        @Override public List<BlockState> containedBlockStates(Level level, BlockState state, BlockPos pos, boolean recurse) { return Lists.newArrayList(state); }
+    };
 
 	public static class BlockReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();

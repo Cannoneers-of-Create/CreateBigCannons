@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks;
 
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 
+import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
@@ -43,6 +45,11 @@ public abstract class AbstractMimickingBlockArmorProperties implements BlockArmo
 			return copiedState.getBlock().getExplosionResistance();
 		return !recurse || this.isEmptyState(level, copiedState, state, pos) ? properties.emptyToughness()
 			: BlockArmorPropertiesHandler.getProperties(copiedState).toughness(level, copiedState, pos, false) * properties.materialToughnessMultiplier();
+	}
+
+	@Override
+	public List<BlockState> containedBlockStates(Level level, BlockState state, BlockPos pos, boolean recurse) {
+		return Lists.newArrayList(this.getCopiedState(level, state, pos));
 	}
 
 	protected abstract BlockState getCopiedState(Level level, BlockState state, BlockPos pos);

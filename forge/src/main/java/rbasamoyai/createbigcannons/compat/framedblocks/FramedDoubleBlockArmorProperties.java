@@ -1,6 +1,9 @@
 package rbasamoyai.createbigcannons.compat.framedblocks;
 
+import java.util.List;
 import java.util.Map;
+
+import com.google.common.collect.Lists;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -74,7 +77,18 @@ public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesPro
 		return primaryPart + secondaryPart;
 	}
 
-	public MimickingBlockArmorUnit getPrimaryDefaultProperties() { return this.defaultPropertiesPrimary; }
+    @Override
+    public List<BlockState> containedBlockStates(Level level, BlockState state, BlockPos pos, boolean recurse) {
+		BlockState primaryState = Blocks.AIR.defaultBlockState();
+		BlockState secondaryState = Blocks.AIR.defaultBlockState();
+		if (level.getBlockEntity(pos) instanceof FramedDoubleBlockEntity fbe) {
+			primaryState = fbe.getCamoState();
+			secondaryState = fbe.getCamoStateTwo();
+		}
+        return Lists.newArrayList(primaryState, secondaryState);
+    }
+
+    public MimickingBlockArmorUnit getPrimaryDefaultProperties() { return this.defaultPropertiesPrimary; }
 	public MimickingBlockArmorUnit getSecondaryDefaultProperties() { return this.defaultPropertiesSecondary; }
 
 	public Map<BlockState, MimickingBlockArmorUnit> getPrimaryPropertiesByState() { return this.primaryPropertiesByState; }
