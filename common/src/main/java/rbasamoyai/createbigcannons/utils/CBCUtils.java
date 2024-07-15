@@ -280,7 +280,7 @@ public class CBCUtils {
 	}
 
 	/**
-	 * Adapted from {@link StringRepresentable#fromEnum(Supplier, Function)}
+	 * Adapted from {@link StringRepresentable#fromEnum(Supplier)}
 	 *
 	 * @param elementSupplier
 	 * @param strFunc
@@ -305,7 +305,7 @@ public class CBCUtils {
 	 * @throws CommandSyntaxException thrown by BlockStateParser
 	 */
 	public static BlockState parseBlockState(StringReader reader) throws CommandSyntaxException {
-		return new BlockStateParser(reader, false).parse(false).getState();
+		return BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry(), reader, false).blockState();
 	}
 
 	private CBCUtils() {}
