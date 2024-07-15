@@ -7,12 +7,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.effects.particles.explosions.FlakCloudParticleData;
 import rbasamoyai.createbigcannons.effects.particles.explosions.ShrapnelCloudParticleData;
-import rbasamoyai.createbigcannons.remix.CustomExplosion;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundCBCExplodePacket;
+import rbasamoyai.createbigcannons.remix.CustomExplosion;
 
 public class ShrapnelExplosion extends CustomExplosion.Impl {
 

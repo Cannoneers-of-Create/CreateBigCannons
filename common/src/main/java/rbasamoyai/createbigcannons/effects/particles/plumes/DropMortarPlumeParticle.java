@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.plumes;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
@@ -10,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public class DropMortarPlumeParticle extends NoRenderParticle {
@@ -22,8 +22,7 @@ public class DropMortarPlumeParticle extends NoRenderParticle {
 		super(level, x, y, z);
 		this.direction = direction;
 		this.scale = scale;
-		Minecraft mc = Minecraft.getInstance();
-		this.visible = mc.options.particles == ParticleStatus.ALL && CBCConfigs.CLIENT.showDropMortarPlumes.get();
+		this.visible = CBCClientCommon.getParticleStatus() == ParticleStatus.ALL && CBCConfigs.CLIENT.showDropMortarPlumes.get();
 
 		this.lifetime = 0;
 
