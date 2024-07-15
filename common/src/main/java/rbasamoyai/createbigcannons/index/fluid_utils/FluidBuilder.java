@@ -1,5 +1,11 @@
 package rbasamoyai.createbigcannons.index.fluid_utils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.google.common.annotations.Beta;
 import com.google.common.base.Preconditions;
 import com.tterrag.registrate.AbstractRegistrate;
@@ -14,8 +20,6 @@ import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
-import net.minecraft.Util;
-import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.BucketItem;
@@ -26,13 +30,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
-import javax.annotation.Nullable;
 import rbasamoyai.createbigcannons.base.LazySupplier;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 /**
  * Copy of {@link com.tterrag.registrate.builders.FluidBuilder} to work with multiloader fluid impl
@@ -63,8 +64,8 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 	protected List<TagKey<Fluid>> tags = new ArrayList<>();
 
 	protected FluidBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
-	                       NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
-		super(owner, parent, "flowing_" + name, callback, Registry.FLUID_REGISTRY);
+						   NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
+		super(owner, parent, "flowing_" + name, callback, CBCRegistryUtils.getFluidRegistryKey());
 		this.stillTexture = stillTexture;
 		this.flowingTexture = flowingTexture;
 		this.sourceName = name;
@@ -72,8 +73,8 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		this.factory = factory;
 
 		String bucketName = this.bucketName;
-		this.properties = p -> p.bucket(() -> owner.get(bucketName, Registry.ITEM_REGISTRY).get())
-			.block(() -> owner.<Block, LiquidBlock>get(name, Registry.BLOCK_REGISTRY).get());
+		this.properties = p -> p.bucket(() -> owner.get(bucketName, CBCRegistryUtils.getItemRegistryKey()).get())
+				.block(() -> owner.<Block, LiquidBlock>get(name, CBCRegistryUtils.getBlockRegistryKey()).get());
 	}
 
 	public FluidBuilder<T, P> properties(NonNullConsumer<CBCFlowingFluid.Properties> cons) {
@@ -153,7 +154,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		}
 		return getOwner().<I, FluidBuilder<T, P>>item(this, bucketName, p -> ((NonNullBiFunction<CBCFlowingFluid, Item.Properties, ? extends I>) factory).apply(this.source.get(), p))
 				.properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
-				.model((ctx, prov) -> prov.generated(ctx, new ResourceLocation(getOwner().getModid(), "item/" + bucketName)));
+				.model((ctx, prov) -> prov.generated(ctx, CBCUtils.location(getOwner().getModid(), "item/" + bucketName)));
 	}
 
 	@Beta

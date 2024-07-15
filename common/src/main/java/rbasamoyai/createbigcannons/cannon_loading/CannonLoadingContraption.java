@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.cannon_loading;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -36,8 +38,9 @@ import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.remix.ContraptionRemix;
+import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 
-public class CannonLoadingContraption extends PoleContraption implements CanLoadBigCannon {
+public class CannonLoadingContraption extends PoleContraption implements CanLoadBigCannon, HasFragileContraption {
 
 	protected LoadingHead loadingHead = LoadingHead.NOTHING;
 
@@ -47,6 +50,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 	private boolean brokenDisassembly = false;
 	private final Set<BlockPos> fragileBlocks = new HashSet<>();
 	private final Set<BlockPos> colliderBlocks = new HashSet<>();
+	private final Map<BlockPos, BlockState> encounteredBlocks = new HashMap<>();
 
 	public CannonLoadingContraption() {
 	}
@@ -136,9 +140,10 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 		}
 
 		this.anchor = pos.relative(direction, this.initialExtensionProgress + 2);
+		if (this.loadingHead == LoadingHead.NOTHING) this.anchor = this.anchor.relative(direction, -1);
 		this.initialExtensionProgress = extensionsInFront;
 		this.pistonContraptionHitbox = new AABB(
-			BlockPos.ZERO.relative(direction, this.loadingHead == LoadingHead.NOTHING ? -2 : -1),
+			BlockPos.ZERO.relative(direction, -1),
 			BlockPos.ZERO.relative(direction, -this.extensionLength - 2))
 			.expandTowards(1, 1, 1);
 
@@ -220,6 +225,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 	@Override
 	protected boolean addToInitialFrontier(Level level, BlockPos pos, Direction forcedDirection, Queue<BlockPos> frontier) throws AssemblyException {
 		frontier.clear();
+		if (this.loadingHead == LoadingHead.NOTHING) return true;
 		boolean retracting = forcedDirection != this.orientation;
 		if (retracting != (this.loadingHead == LoadingHead.WORM_HEAD)) return true;
 
@@ -254,7 +260,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 
 	private boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos) {
 		Direction.Axis axis = this.orientation.getAxis();
-		if (state.getBlock() instanceof BigCannonPropellantBlock<?> propellant) return propellant.canBeLoaded(state, axis);
+		if (state.getBlock() instanceof BigCannonPropellantBlock propellant) return propellant.canBeLoaded(state, axis);
 		if (state.getBlock() instanceof ProjectileBlock) {
 			return state.getValue(FACING).getAxis() == axis;
 		}
@@ -263,7 +269,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 
 	@Override
 	protected boolean customBlockPlacement(LevelAccessor level, BlockPos pos, BlockState state) {
-		BlockPos levelPos = this.anchor.relative(this.orientation, -2);
+		BlockPos levelPos = this.anchor.relative(this.orientation, this.loadingHead == LoadingHead.NOTHING ? -1 : -2);
 		BlockState loaderState = level.getBlockState(levelPos);
 		BlockEntity blockEntity = level.getBlockEntity(levelPos);
 		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
@@ -278,7 +284,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 
 	@Override
 	protected boolean customBlockRemoval(LevelAccessor level, BlockPos pos, BlockState state) {
-		BlockPos loaderPos = this.anchor.relative(this.orientation, -2);
+		BlockPos loaderPos = this.anchor.relative(this.orientation, this.loadingHead == LoadingHead.NOTHING ? -1 : -2);
 		BlockState loaderState = level.getBlockState(loaderPos);
 		if (pos.equals(loaderPos) && CBCBlocks.CANNON_LOADER.has(loaderState)) {
 			level.setBlock(loaderPos, loaderState.setValue(MOVING, true), 66 | 16);
@@ -320,6 +326,29 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 	@Override
 	public ContraptionType getType() {
 		return CBCContraptionTypes.CANNON_LOADER;
+	}
+
+	@Override public Map<BlockPos, BlockState> createbigcannons$getEncounteredBlocks() { return this.encounteredBlocks; }
+
+	@Override
+	public boolean createbigcannons$blockBreaksDisassembly(Level level, BlockPos pos, BlockState newState) {
+		BlockPos loaderPos = this.anchor.relative(this.orientation, this.loadingHead == LoadingHead.NOTHING ? -1 : -2);
+		BlockState loaderState = level.getBlockState(loaderPos);
+		if (pos.equals(loaderPos) && CBCBlocks.CANNON_LOADER.has(loaderState))
+			return false;
+		return HasFragileContraption.defaultBlockBreaksAssembly(level, pos, newState, this);
+	}
+
+	@Override public boolean createbigcannons$shouldCheckFragility() { return HasFragileContraption.defaultShouldCheck(); }
+
+	@Override
+	public void createbigcannons$fragileDisassemble() {
+		BlockPos loaderPos = this.anchor.relative(this.orientation, -1);
+		if (this.world.getBlockEntity(loaderPos) instanceof CannonLoaderBlockEntity loaderBE) {
+			loaderBE.disassemble();
+		} else {
+			this.entity.disassemble();
+		}
 	}
 
 	public enum LoadingHead {

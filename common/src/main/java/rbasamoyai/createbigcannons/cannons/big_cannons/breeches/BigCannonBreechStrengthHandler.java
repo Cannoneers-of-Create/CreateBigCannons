@@ -10,7 +10,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +22,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class BigCannonBreechStrengthHandler {
 
@@ -42,7 +42,7 @@ public class BigCannonBreechStrengthHandler {
 				JsonElement el = entry.getValue();
 				if (!el.isJsonObject()) continue;
 				try {
-					Block block = Registry.BLOCK.getOptional(entry.getKey()).orElseThrow(() -> {
+					Block block = CBCRegistryUtils.getOptionalBlock(entry.getKey()).orElseThrow(() -> {
 						return new JsonSyntaxException("Could not find big cannon breech block '" + entry.getKey() + "'");
 					});
 					int strength = Math.max(0, GsonHelper.getAsInt(el.getAsJsonObject(), "breech_strength"));
@@ -59,7 +59,7 @@ public class BigCannonBreechStrengthHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(BREECH_STRENGTHS.size());
 		for (Map.Entry<Block, Integer> entry : BREECH_STRENGTHS.entrySet()) {
-			buf.writeResourceLocation(Registry.BLOCK.getKey(entry.getKey()))
+			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()))
 				.writeVarInt(entry.getValue());
 		}
 	}
@@ -69,7 +69,7 @@ public class BigCannonBreechStrengthHandler {
 		int sz = buf.readVarInt();
 
 		for (int i = 0; i < sz; ++i) {
-			BREECH_STRENGTHS.put(Registry.BLOCK.get(buf.readResourceLocation()), buf.readVarInt());
+			BREECH_STRENGTHS.put(CBCRegistryUtils.getBlock(buf.readResourceLocation()), buf.readVarInt());
 		}
 	}
 

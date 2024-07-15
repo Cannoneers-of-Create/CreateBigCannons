@@ -1,10 +1,12 @@
 package rbasamoyai.createbigcannons.block_armor_properties;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
@@ -14,7 +16,6 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -30,6 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BlockArmorPropertiesHandler {
 
@@ -38,11 +41,13 @@ public class BlockArmorPropertiesHandler {
 	private static final Map<TagKey<Block>, SimpleBlockArmorProperties> TAGS_TO_EVALUATE = new Object2ObjectLinkedOpenHashMap<>();
 
 	private static final Map<Block, BlockArmorPropertiesSerializer<?>> CUSTOM_SERIALIZERS = new Reference2ReferenceOpenHashMap<>();
-	private static final VariantBlockArmorProperties FALLBACK_PROPERTIES = new VariantBlockArmorProperties(new SimpleBlockArmorProperties(0), new Reference2ObjectOpenHashMap<>());
+	private static final VariantBlockArmorProperties FALLBACK_PROPERTIES = new VariantBlockArmorProperties(new SimpleBlockArmorProperties(0, 0), new Reference2ObjectOpenHashMap<>());
 
 	private static final BlockArmorPropertiesProvider FALLBACK_PROVIDER = new BlockArmorPropertiesProvider() {
-		@Override public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) { return state.getBlock().getExplosionResistance(); }
-	};
+		@Override public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) { return 1; }
+		@Override public double toughness(Level level, BlockState state, BlockPos pos, boolean recurse) { return state.getBlock().getExplosionResistance(); }
+        @Override public List<BlockState> containedBlockStates(Level level, BlockState state, BlockPos pos, boolean recurse) { return Lists.newArrayList(state); }
+    };
 
 	public static class BlockReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
@@ -60,11 +65,11 @@ public class BlockArmorPropertiesHandler {
 				try {
 					ResourceLocation loc = entry.getKey();
 					if (loc.getPath().startsWith("tags/")) {
-						ResourceLocation pruned = new ResourceLocation(loc.getNamespace(), loc.getPath().substring(5));
-						TagKey<Block> tag = TagKey.create(Registry.BLOCK_REGISTRY, pruned);
+						ResourceLocation pruned = CBCUtils.location(loc.getNamespace(), loc.getPath().substring(5));
+						TagKey<Block> tag = TagKey.create(CBCRegistryUtils.getBlockRegistryKey(), pruned);
 						TAGS_TO_EVALUATE.put(tag, SimpleBlockArmorProperties.fromJson(el.getAsJsonObject()));
 					} else {
-						Block block = Registry.BLOCK.getOptional(loc).orElseThrow(() -> {
+						Block block = CBCRegistryUtils.getOptionalBlock(loc).orElseThrow(() -> {
 							return new JsonSyntaxException("Unknown block '" + loc + "'");
 						});
 						if (CUSTOM_SERIALIZERS.containsKey(block)) {
@@ -85,7 +90,7 @@ public class BlockArmorPropertiesHandler {
 		TAG_MAP.clear();
 		for (Map.Entry<TagKey<Block>, SimpleBlockArmorProperties> entry : TAGS_TO_EVALUATE.entrySet()) {
 			SimpleBlockArmorProperties properties = entry.getValue();
-			for (Holder<Block> holder : Registry.BLOCK.getTagOrEmpty(entry.getKey())) {
+			for (Holder<Block> holder : CBCRegistryUtils.getBlockTagEntries(entry.getKey())) {
 				TAG_MAP.put(holder.value(), properties);
 			}
 		}
@@ -116,7 +121,7 @@ public class BlockArmorPropertiesHandler {
 
 	public static <T extends BlockArmorPropertiesSerializer<?>> T registerCustomSerializer(Block block, T ser) {
 		if (CUSTOM_SERIALIZERS.containsKey(block)) {
-			throw new IllegalStateException("Serializer for block " + Registry.BLOCK.getKey(block) + " already registered");
+			throw new IllegalStateException("Serializer for block " + CBCRegistryUtils.getBlockLocation(block) + " already registered");
 		}
 		CUSTOM_SERIALIZERS.put(block, ser);
 		return ser;
@@ -125,12 +130,12 @@ public class BlockArmorPropertiesHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(TAG_MAP.size());
 		for (Map.Entry<Block, SimpleBlockArmorProperties> entry : TAG_MAP.entrySet()) {
-			buf.writeResourceLocation(Registry.BLOCK.getKey(entry.getKey()));
+			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()));
 			entry.getValue().toNetwork(buf);
 		}
 		buf.writeVarInt(BLOCK_MAP.size());
 		for (Map.Entry<Block, BlockArmorPropertiesProvider> entry : BLOCK_MAP.entrySet()) {
-			buf.writeResourceLocation(Registry.BLOCK.getKey(entry.getKey()));
+			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()));
 			toNetworkCasted(entry.getKey(), entry.getValue(), buf);
 		}
 	}
@@ -152,14 +157,14 @@ public class BlockArmorPropertiesHandler {
 		TAG_MAP.clear();
 		int tagSz = buf.readVarInt();
 		for (int i = 0; i < tagSz; ++i) {
-			Block block = Registry.BLOCK.get(buf.readResourceLocation());
+			Block block = CBCRegistryUtils.getBlock(buf.readResourceLocation());
 			SimpleBlockArmorProperties properties = SimpleBlockArmorProperties.fromNetwork(buf);
 			TAG_MAP.put(block, properties);
 		}
 		BLOCK_MAP.clear();
 		int blockSz = buf.readVarInt();
 		for (int i = 0; i < blockSz; ++i) {
-			Block block = Registry.BLOCK.get(buf.readResourceLocation());
+			Block block = CBCRegistryUtils.getBlock(buf.readResourceLocation());
 			BlockArmorPropertiesSerializer<?> ser = CUSTOM_SERIALIZERS.get(block);
 			BLOCK_MAP.put(block, ser == null ? VariantBlockArmorProperties.fromNetwork(buf) : ser.fromNetwork(buf));
 		}

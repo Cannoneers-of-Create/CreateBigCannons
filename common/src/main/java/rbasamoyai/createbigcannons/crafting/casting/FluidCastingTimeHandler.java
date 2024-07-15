@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
@@ -11,10 +10,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 
-import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
-import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -26,14 +21,15 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.material.Fluid;
+import rbasamoyai.createbigcannons.base.tag_utils.FluidTypeDataHolder;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class FluidCastingTimeHandler {
 
-	public static final Map<TagKey<Fluid>, Integer> TAGS_TO_LOAD = new Object2ObjectLinkedOpenHashMap<>();
-	public static final Map<Fluid, Integer> FLUID_MAP = new Reference2ObjectOpenHashMap<>();
-	public static final Map<Fluid, Integer> TAG_MAP = new Reference2ObjectOpenHashMap<>();
+	private static final FluidTypeDataHolder<Integer> CASTING_TIME = new FluidTypeDataHolder<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
@@ -56,70 +52,33 @@ public class FluidCastingTimeHandler {
 
 				ResourceLocation loc = entry.getKey();
 				if (loc.getPath().startsWith("tags/")) {
-					TagKey<Fluid> tag = TagKey.create(Registry.FLUID_REGISTRY, new ResourceLocation(loc.getNamespace(), loc.getPath().substring(5)));
-					TAGS_TO_LOAD.put(tag, castingTime);
+					TagKey<Fluid> tag = TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), CBCUtils.location(loc.getNamespace(), loc.getPath().substring(5)));
+					CASTING_TIME.addTagData(tag, castingTime);
 				} else {
-					Fluid fluid = Registry.FLUID.getOptional(loc).orElseThrow(() -> {
+					Fluid fluid = CBCRegistryUtils.getOptionalFluid(loc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown fluid type '" + loc + "'");
 					});
-					FLUID_MAP.put(fluid, castingTime);
+					CASTING_TIME.addData(fluid, castingTime);
 				}
 			}
 		}
 	}
 
-	public static void clear() {
-		FLUID_MAP.clear();
-		TAG_MAP.clear();
-		TAGS_TO_LOAD.clear();
-	}
+	public static void clear() { CASTING_TIME.cleanUp(); }
 
-	public static void loadTags() {
-		TAG_MAP.clear();
-		for (Map.Entry<TagKey<Fluid>, Integer> entry : TAGS_TO_LOAD.entrySet()) {
-			Integer hardness = entry.getValue();
-			for (Holder<Fluid> holder : Registry.FLUID.getTagOrEmpty(entry.getKey())) {
-				TAG_MAP.put(holder.value(), hardness);
-			}
-		}
-		TAGS_TO_LOAD.clear();
-	}
+	public static void loadTags() { CASTING_TIME.loadTags(); }
 
 	public static int getCastingTime(Fluid fluid) {
-		if (FLUID_MAP.containsKey(fluid)) return FLUID_MAP.get(fluid);
-		if (TAG_MAP.containsKey(fluid)) return TAG_MAP.get(fluid);
-		return 1000;
+		Integer castingTime = CASTING_TIME.getData(fluid);
+		return castingTime == null ? 1000 : castingTime;
 	}
 
 	public static void writeBuf(FriendlyByteBuf buf) {
-		buf.writeVarInt(FLUID_MAP.size());
-		for (Map.Entry<Fluid, Integer> entry : FLUID_MAP.entrySet()) {
-			buf.writeResourceLocation(Registry.FLUID.getKey(entry.getKey())).writeVarInt(entry.getValue());
-		}
-		buf.writeVarInt(TAG_MAP.size());
-		for (Map.Entry<Fluid, Integer> entry : TAG_MAP.entrySet()) {
-			buf.writeResourceLocation(Registry.FLUID.getKey(entry.getKey())).writeVarInt(entry.getValue());
-		}
+		CASTING_TIME.writeToNetwork(buf, FriendlyByteBuf::writeVarInt);
 	}
 
 	public static void readBuf(FriendlyByteBuf buf) {
-		clear();
-		int sz = buf.readVarInt();
-		for (int i = 0; i < sz; ++i) {
-			ResourceLocation id = buf.readResourceLocation();
-			int castingTime = buf.readVarInt();
-			Optional<Fluid> op = Registry.FLUID.getOptional(id);
-			if (op.isEmpty()) continue;
-			FLUID_MAP.put(op.get(), castingTime);
-		}
-		int sz1 = buf.readVarInt();
-		for (int i = 0; i < sz1; ++i) {
-			ResourceLocation id = buf.readResourceLocation();
-			int castingTime = buf.readVarInt();
-			Optional<Fluid> op = Registry.FLUID.getOptional(id);
-			if (op.isEmpty()) continue;
-			TAG_MAP.put(op.get(), castingTime);
-		}
+		CASTING_TIME.readFromNetwork(buf, FriendlyByteBuf::readVarInt);
 	}
 
 	public static void syncTo(ServerPlayer player) {

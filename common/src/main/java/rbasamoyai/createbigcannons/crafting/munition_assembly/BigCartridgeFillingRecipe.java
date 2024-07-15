@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
-import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 
 public class BigCartridgeFillingRecipe extends CustomRecipe {
 
@@ -40,14 +40,16 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 	@Override
 	public ItemStack assemble(CraftingContainer container) {
 		ItemStack cartridge = ItemStack.EMPTY;
+		BigCartridgeBlockItem cartridgeItem = null;
 		int powderCount = 0;
 
 		for (int i = 0; i < container.getContainerSize(); ++i) {
 			ItemStack stack = container.getItem(i);
 			if (stack.isEmpty()) continue;
-			if (CBCBlocks.BIG_CARTRIDGE.is(stack.getItem())) {
+			if (stack.getItem() instanceof BigCartridgeBlockItem foundCartridge) {
 				if (!cartridge.isEmpty()) return ItemStack.EMPTY;
 				cartridge = stack;
+				cartridgeItem = foundCartridge;
 			} else if (stack.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 				++powderCount;
 			} else {
@@ -55,13 +57,13 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 			}
 		}
 
-		if (cartridge.isEmpty() || powderCount == 0) return ItemStack.EMPTY;
+		if (cartridge.isEmpty() || cartridgeItem == null || powderCount == 0) return ItemStack.EMPTY;
 
 		ItemStack result = cartridge.copy();
 		result.setCount(1);
 		CompoundTag tag = result.getOrCreateTag();
 		int oldPower = tag.getInt("Power");
-		int newPower = Math.min(BigCartridgeBlock.getMaximumPowerLevels(), oldPower + powderCount);
+		int newPower = Math.min(cartridgeItem.getMaximumPowerLevels(), oldPower + powderCount);
 		tag.putInt("Power", newPower);
 		return result;
 	}
@@ -69,23 +71,25 @@ public class BigCartridgeFillingRecipe extends CustomRecipe {
 	@Override
 	public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
 		NonNullList<ItemStack> result = super.getRemainingItems(container);
+		BigCartridgeBlockItem cartridgeItem = null;
 		int sz = container.getContainerSize();
 		int powderCount = 0;
 
 		ItemStack oldCartridge = ItemStack.EMPTY;
 		for (int i = 0; i < sz; ++i) {
 			ItemStack stack = container.getItem(i);
-			if (CBCBlocks.BIG_CARTRIDGE.is(stack.getItem())) {
+			if (stack.getItem() instanceof BigCartridgeBlockItem foundCartridge) {
 				oldCartridge = stack;
+				cartridgeItem = foundCartridge;
 			} else if (stack.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 				++powderCount;
 			}
 		}
 
-		if (oldCartridge.isEmpty()) return result;
+		if (oldCartridge.isEmpty() || cartridgeItem == null) return result;
 
 		int oldPower = oldCartridge.getOrCreateTag().getInt("Power");
-		int newPower = Math.min(BigCartridgeBlock.getMaximumPowerLevels(), oldPower + powderCount);
+		int newPower = Math.min(cartridgeItem.getMaximumPowerLevels(), oldPower + powderCount);
 		int consumed = newPower - oldPower;
 
 		for (int i = 0; i < sz; ++i) {

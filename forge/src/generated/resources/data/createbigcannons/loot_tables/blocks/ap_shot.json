@@ -2,19 +2,36 @@
   "type": "minecraft:block",
   "pools": [
     {
+      "rolls": 1.0,
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "source": "block_entity",
+              "ops": [
+                {
+                  "source": "Tracer",
+                  "target": "BlockEntityTag.Tracer",
+                  "op": "replace"
+                },
+                {
+                  "source": "id",
+                  "target": "BlockEntityTag.id",
+                  "op": "replace"
+                }
+              ]
+            }
+          ],
           "name": "createbigcannons:ap_shot"
         }
-      ],
-      "rolls": 1.0
+      ]
     }
   ]
 }

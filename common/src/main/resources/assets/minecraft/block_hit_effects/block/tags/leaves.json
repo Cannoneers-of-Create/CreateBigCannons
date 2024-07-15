@@ -1,0 +1,6 @@
+{
+  "impact_particle": "createbigcannons:leaf_burst minecraft:air 30",
+  "deflect_particle": "createbigcannons:leaf_burst minecraft:air 30",
+  "impact_sound": { "sound": "minecraft:block.grass.break", "pitch": 1.0, "pitch_variation": 0.2 },
+  "deflect_sound": { "sound": "minecraft:block.grass.break", "pitch": 0.95, "pitch_variation": 0.1 }
+}

@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.material;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,12 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public record BigCannonMaterialProperties(double minimumVelocityPerBarrel, float weight, int maxSafePropellantStress,
 										  FailureMode failureMode, boolean connectsInSurvival, boolean isWeldable,
-										  int weldDamage, int weldStressPenalty, float minimumSpread, float spreadReductionPerBarrel) {
+										  int weldDamage, int weldStressPenalty, float minimumSpread,
+										  float spreadReductionPerBarrel) {
+
+	public BigCannonMaterialProperties {
+		Objects.requireNonNull(failureMode, "property :failureMode is required");
+	}
 
 	public boolean mayGetStuck(float chargesUsed, int barrelTravelled) {
 		if (this.minimumVelocityPerBarrel < 0) return true;
@@ -117,8 +123,93 @@ public record BigCannonMaterialProperties(double minimumVelocityPerBarrel, float
 			this.name = this.name().toLowerCase(Locale.ROOT);
 		}
 
-		@Override public String getSerializedName() { return this.name; }
-		public static FailureMode byId(String id) { return BY_ID.getOrDefault(id, RUPTURE); }
+		@Override
+		public String getSerializedName() {
+			return this.name;
+		}
+
+		public static FailureMode byId(String id) {
+			return BY_ID.getOrDefault(id, RUPTURE);
+		}
 	}
 
+	public static Builder builder() {
+		return new Builder();
+	}
+
+	public static final class Builder {
+		private double minimumVelocityPerBarrel;
+		private float weight;
+		private int maxSafePropellantStress;
+		private FailureMode failureMode = FailureMode.FRAGMENT;
+		private boolean connectsInSurvival;
+		private boolean isWeldable;
+		private int weldDamage;
+		private int weldStressPenalty;
+		private float minimumSpread;
+		private float spreadReductionPerBarrel;
+
+		private Builder() {
+		}
+
+		public Builder minimumVelocityPerBarrel(double minimumVelocityPerBarrel) {
+			this.minimumVelocityPerBarrel = minimumVelocityPerBarrel;
+			return this;
+		}
+
+		public Builder weight(float weight) {
+			this.weight = weight;
+			return this;
+		}
+
+		public Builder maxSafePropellantStress(int maxSafePropellantStress) {
+			this.maxSafePropellantStress = maxSafePropellantStress;
+			return this;
+		}
+
+		public Builder failureMode(
+			FailureMode failureMode) {
+			this.failureMode = Objects.requireNonNull(failureMode, "Null failureMode");
+			return this;
+		}
+
+		public Builder connectsInSurvival(boolean connectsInSurvival) {
+			this.connectsInSurvival = connectsInSurvival;
+			return this;
+		}
+
+		public Builder isWeldable(boolean isWeldable) {
+			this.isWeldable = isWeldable;
+			return this;
+		}
+
+		public Builder weldDamage(int weldDamage) {
+			this.weldDamage = weldDamage;
+			return this;
+		}
+
+		public Builder weldStressPenalty(int weldStressPenalty) {
+			this.weldStressPenalty = weldStressPenalty;
+			return this;
+		}
+
+		public Builder minimumSpread(float minimumSpread) {
+			this.minimumSpread = minimumSpread;
+			return this;
+		}
+
+		public Builder spreadReductionPerBarrel(float spreadReductionPerBarrel) {
+			this.spreadReductionPerBarrel = spreadReductionPerBarrel;
+			return this;
+		}
+
+		public BigCannonMaterialProperties build() {
+			if (this.failureMode == null) {
+				throw new IllegalStateException("Missing required property: failureMode");
+			}
+			return new BigCannonMaterialProperties(this.minimumVelocityPerBarrel, this.weight,
+				this.maxSafePropellantStress, this.failureMode, this.connectsInSurvival, this.isWeldable,
+				this.weldDamage, this.weldStressPenalty, this.minimumSpread, this.spreadReductionPerBarrel);
+		}
+	}
 }

@@ -41,7 +41,7 @@ repositories {
     // mavens for Fabric-exclusives
     maven { url = "https://mvn.devos.one/#/" }
     maven { url = "https://api.modrinth.com/maven" } // LazyDFU
-    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu
+    maven { url = "https://maven.terraformersmc.com/releases/" } // Mod Menu, EMI, Trinkets
     maven { url = "https://mvn.devos.one/snapshots/" }
     // Create Fabric, Forge Tags, Milk Lib, Registrate Fabric
 	maven { url = "https://mvn.devos.one/releases" } // Porting Lib Releases
@@ -49,11 +49,15 @@ repositories {
     maven { url = "https://maven.cafeteria.dev/releases" } // Fake Player API
     maven { url = "https://maven.jamieswhiteshirt.com/libs-release" } // Reach Entity Attributes
     maven { url = "https://jitpack.io/" } // Mixin Extras, Fabric ASM
+	maven { url = "https://maven.ladysnake.org/releases" } // Trinkets
 	maven { // Ritchie's Projectile Library
 		url = "https://maven.realrobotix.me/master/"
 		content {
 			includeGroup("com.rbasamoyai")
 		}
+	}
+	flatDir {
+		dir "./libs"
 	}
 }
 
@@ -91,13 +95,21 @@ dependencies {
 
     modLocalRuntime("curse.maven:spark-361579:${spark_fabric_file}") // Spark
 
-	annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-fabric:${mixinextras_version}"))) // MixinExtras
-
-	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-fabric")) { transitive = false } // Ritchie's Projectile Library
+	// Ritchie's Projectile Library
+	if (Boolean.valueOf(use_local_rpl_build)) {
+		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-fabric") { transitive = false }
+	} else {
+		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-fabric-build.${rpl_build}") { transitive = false }
+	}
 
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
 	modImplementation("curse.maven:copycats-968398:${copycats_fabric_file}")
+	// Trinkets and CCA
+	modLocalRuntime("dev.emi:trinkets:${trinkets_fabric_version}")
+	modCompileOnly("dev.emi:trinkets:${trinkets_fabric_version}") { exclude(group: "com.terraformersmc") }
+	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${cca_fabric_version}")
+	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${cca_fabric_version}")
 }
 
 processResources {

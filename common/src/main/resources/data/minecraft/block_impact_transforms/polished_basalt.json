@@ -1,0 +1,6 @@
+{
+  "transform_chance": 0.8,
+  "transforms": [
+    { "transform": { "block": "minecraft:basalt", "copy_properties": true } }
+  ]
+}

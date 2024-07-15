@@ -1,10 +1,14 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -20,26 +24,24 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BuiltUpHeatingRecipe implements BlockRecipe {
 
 	private final Set<BlockRecipeIngredient> layers;
 	private final Block result;
 	private final ResourceLocation id;
-	
+
 	public BuiltUpHeatingRecipe(Set<BlockRecipeIngredient> requiredLayers, Block result, ResourceLocation id) {
 		this.layers = requiredLayers;
 		this.result = result;
 		this.id = id;
 	}
-	
+
 	public Set<BlockRecipeIngredient> layers() { return this.layers; }
 	public Block result() { return this.result; }
-	
+
 	@Override
 	public boolean matches(Level level, BlockPos pos) {
 		if (!(level.getBlockEntity(pos) instanceof LayeredBigCannonBlockEntity layered)) return false;
@@ -57,7 +59,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 		}
 		return false;
 	}
-	
+
 	private static final DirectionProperty FACING = BlockStateProperties.FACING;
 
 	@Override
@@ -89,7 +91,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 			if (layerArr != null) {
 				for (JsonElement el : layerArr) layers.add(BlockRecipeIngredient.fromJson(el));
 			}
-			Block result = Registry.BLOCK.get(new ResourceLocation(obj.get("result").getAsString()));
+			Block result = CBCRegistryUtils.getBlock(CBCUtils.location(obj.get("result").getAsString()));
 			return new BuiltUpHeatingRecipe(layers, result, id);
 		}
 
@@ -98,7 +100,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 			int sz = buf.readVarInt();
 			Set<BlockRecipeIngredient> layers = sz == 0 ? null : new HashSet<>();
 			for (int i = 0; i < sz; ++i) layers.add(BlockRecipeIngredient.fromNetwork(buf));
-			Block result = Registry.BLOCK.get(buf.readResourceLocation());
+			Block result = CBCRegistryUtils.getBlock(buf.readResourceLocation());
 			return new BuiltUpHeatingRecipe(layers, result, id);
 		}
 
@@ -108,7 +110,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 			if (recipe.layers != null && !recipe.layers.isEmpty()) {
 				recipe.layers.forEach(p -> p.toNetwork(buf));
 			}
-			buf.writeResourceLocation(Registry.BLOCK.getKey(recipe.result));
+			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(recipe.result));
 		}
 	}
 

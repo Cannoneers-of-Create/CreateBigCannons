@@ -22,7 +22,6 @@ import com.simibubi.create.foundation.utility.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -41,6 +40,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CannonBuildingContraption extends PoleContraption {
 
@@ -416,7 +416,7 @@ public class CannonBuildingContraption extends PoleContraption {
 		super.readNBT(level, tag, spawnData);
 		this.isActivated = tag.getBoolean("Activated");
 
-		this.material = BigCannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("Material")));
+		this.material = BigCannonMaterial.fromNameOrNull(CBCUtils.location(tag.getString("Material")));
 		if (this.material == null) this.material = CBCBigCannonMaterials.STEEL;
 	}
 

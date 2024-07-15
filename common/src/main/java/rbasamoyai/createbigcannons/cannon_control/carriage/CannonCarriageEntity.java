@@ -424,8 +424,8 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 			this.xRotO = flag ? this.cannonContraption.prevPitch : -this.cannonContraption.prevPitch;
 			this.setXRot(flag ? this.cannonContraption.pitch : -this.cannonContraption.pitch);
-			this.yRotO = this.cannonContraption.prevYaw;
-			this.setYRot(this.cannonContraption.yaw);
+			this.yRotO = this.yRotO + Mth.degreesDifference(this.yRotO, this.cannonContraption.prevYaw);
+			this.setYRot(this.getYRot() + Mth.degreesDifference(this.getYRot(), this.cannonContraption.yaw));
 		}
 	}
 
@@ -550,6 +550,12 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		ExtendsCannonMount.addCannonInfoToTooltip(tooltip, this.cannonContraption);
 		return true;
+	}
+
+	@Nullable
+	@Override
+	public ItemStack getPickResult() {
+		return CBCBlocks.CANNON_CARRIAGE.asStack();
 	}
 
 }

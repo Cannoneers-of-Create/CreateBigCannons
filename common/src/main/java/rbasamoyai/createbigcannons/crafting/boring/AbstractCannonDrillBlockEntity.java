@@ -21,7 +21,6 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -61,6 +60,8 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntity {
 
@@ -190,6 +191,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(CannonDrillBlock.STATE, MechanicalPistonBlock.PistonState.EXTENDED), 3 | 16);
 		}
 		super.disassemble();
+		if (this.remove)
+			CannonDrillBlock.destroyExtensionPoles(this.level, this.worldPosition, this.getBlockState(), true);
 	}
 
 	@Override
@@ -422,8 +425,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		lathe.getBlocks().put(boringOffset, newInfo);
 		bearing.notifyUpdate();
 
-		ResourceLocation unboredId = Registry.BLOCK.getKey(latheBlockInfo.state.getBlock());
-		LootTable table = slevel.getServer().getLootTables().get(new ResourceLocation(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
+		ResourceLocation unboredId = CBCRegistryUtils.getBlockLocation(latheBlockInfo.state.getBlock());
+		LootTable table = slevel.getServer().getLootTables().get(CBCUtils.location(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
 		List<ItemStack> scrap = table.getRandomItems(new LootContext.Builder(slevel)
 			.withRandom(slevel.random)
 			.withParameter(LootContextParams.BLOCK_STATE, latheBlockInfo.state)

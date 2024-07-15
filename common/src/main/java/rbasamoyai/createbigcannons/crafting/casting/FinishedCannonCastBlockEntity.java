@@ -8,13 +8,13 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class FinishedCannonCastBlockEntity extends SmartBlockEntity {
 
@@ -104,7 +104,7 @@ public class FinishedCannonCastBlockEntity extends SmartBlockEntity {
 		this.rootBlock = tag.contains("RootBlock") ? NbtUtils.readBlockPos(tag.getCompound("RootBlock")) : this.worldPosition;
 		this.height = tag.getInt("Height");
 		this.renderedShape = tag.contains("RenderedShape")
-			? CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(tag.getString("RenderedShape")))
+			? CBCRegistries.CANNON_CAST_SHAPES.get(CBCUtils.location(tag.getString("RenderedShape")))
 			: CannonCastShape.VERY_SMALL;
 	}
 

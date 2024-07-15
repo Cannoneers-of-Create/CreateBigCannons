@@ -1,16 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SS",
+    "SS"
+  ],
   "key": {
     "S": {
       "tag": "createbigcannons:sheet_brass"
     }
   },
-  "pattern": [
-    "SS",
-    "SS"
-  ],
   "result": {
-    "count": 2,
-    "item": "createbigcannons:big_cartridge_sheet"
+    "item": "createbigcannons:big_cartridge_sheet",
+    "count": 4
   }
 }

@@ -8,16 +8,17 @@ architectury {
     minecraft = rootProject.minecraft_version
 }
 
-def getGitHash = { ->
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'rev-parse', '--short', 'HEAD'
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
-}
-
 boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
+boolean nightly = ci && (System.getenv("RELEASE") != null ? !System.getenv("RELEASE").toBoolean() : true)
+
+def getGitTag = { ->
+	def stdout = new ByteArrayOutputStream()
+	exec {
+		commandLine "git", "describe", "--tags", "--abbrev=0"
+		standardOutput = stdout
+	}
+	return stdout.toString().trim().takeBetween("v", "+")
+}
 
 subprojects {
     apply plugin: "dev.architectury.loom"
@@ -57,11 +58,14 @@ subprojects {
             it.officialMojangMappings { nameSyntheticMembers = false }
         })
     }
+
+	String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
+	version = "${getGitTag()}+mc.${minecraft_version}-${project.name}${nightly ? "-build.${buildNumber}" : ""}"
+
     publishing {
         publications {
             mavenJava(MavenPublication) {
-                artifactId = rootProject.archives_base_name + "-" + project.name + "-" + minecraft_version
-                version = ci ? mod_version + "-nightly-" + getGitHash() : mod_version
+				artifactId = rootProject.archives_base_name
                 from components.java
             }
         }
@@ -87,13 +91,11 @@ allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
 
-    archivesBaseName = "${rootProject.archives_base_name}-${project.name}-${minecraft_version}"
+    archivesBaseName = rootProject.archives_base_name
     group = rootProject.group
 
     // Formats the mod version to include the loader, Minecraft version, and build number (if present)
     // example: 1.0.0+fabric-1.18.2-100
-
-    version = ci ? mod_version + "-nightly-" + getGitHash() : mod_version
 
     repositories {
         // Add repositories to retrieve artifacts from in here.
@@ -103,7 +105,7 @@ allprojects {
         // for more information about repositories.
     }
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
     }
 

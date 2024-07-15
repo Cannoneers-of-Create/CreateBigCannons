@@ -3,12 +3,9 @@
   "ingredient": {
     "item": "createbigcannons:empty_autocannon_cartridge"
   },
-  "loops": 3,
-  "results": [
-    {
-      "item": "createbigcannons:filled_autocannon_cartridge"
-    }
-  ],
+  "transitionalItem": {
+    "item": "createbigcannons:partially_filled_autocannon_cartridge"
+  },
   "sequence": [
     {
       "type": "create:deploying",
@@ -27,7 +24,10 @@
       ]
     }
   ],
-  "transitionalItem": {
-    "item": "createbigcannons:partially_filled_autocannon_cartridge"
-  }
+  "results": [
+    {
+      "item": "createbigcannons:filled_autocannon_cartridge"
+    }
+  ],
+  "loops": 1
 }
