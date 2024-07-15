@@ -35,7 +35,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 		if (!CBCConfigs.CLIENT.showBigCannonPlumes.get()) {
 			return;
 		}
-		ParticleStatus status = Minecraft.getInstance().options.particles;
+		ParticleStatus status = Minecraft.getInstance().options.particles().get();
 		Vec3 right = this.direction.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = this.direction.cross(right);
 		double progress = this.lifetime == 0 ? 1 : Mth.clamp((float) this.age / (float) this.lifetime, 0, 1);

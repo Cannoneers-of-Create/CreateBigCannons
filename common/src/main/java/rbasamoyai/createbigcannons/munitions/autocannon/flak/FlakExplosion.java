@@ -27,7 +27,7 @@ public class FlakExplosion extends CustomExplosion.Impl {
 
 	@Override
 	public void playLocalSound(Level level, double x, double y, double z) {
-		float pitch = 1.4f + this.level.random.nextFloat(-0.2f, 0.2f);
+		float pitch = 1.4f + this.level.random.nextFloat() * 0.4f - 0.2f;
 		CBCSoundEvents.FLAK_ROUND_EXPLOSION.playAt(this.level, this.x, this.y, this.z, 4.0f, pitch, false);
 	}
 

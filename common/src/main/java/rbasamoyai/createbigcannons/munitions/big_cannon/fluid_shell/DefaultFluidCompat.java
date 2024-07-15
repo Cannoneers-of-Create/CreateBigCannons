@@ -94,8 +94,8 @@ public class DefaultFluidCompat {
 		double x = context.x();
 		double y = context.y();
 		double z = context.z();
-		CBCSoundEvents.WATER_FLUID_RELEASE.playAt(level, x, y, z, 2.5f, 0.15f + level.random.nextFloat(0.3f), false);
-		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
+		CBCSoundEvents.WATER_FLUID_RELEASE.playAt(level, x, y, z, 2.5f, 0.15f + level.random.nextFloat() * 0.3f, false);
+		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat() * 0.1f, false);
 		level.addParticle(new FluidCloudParticleData(), true, x, y, z, 0, 0, 0);
 	}
 
@@ -104,8 +104,8 @@ public class DefaultFluidCompat {
 		double x = context.x();
 		double y = context.y();
 		double z = context.z();
-		CBCSoundEvents.LAVA_FLUID_RELEASE.playAt(level, x, y, z, 2.25f, 1.0f + level.random.nextFloat(0.1f), false);
-		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
+		CBCSoundEvents.LAVA_FLUID_RELEASE.playAt(level, x, y, z, 2.25f, 1.0f + level.random.nextFloat() * 0.1f, false);
+		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat() * 0.1f, false);
 		level.addParticle(new FluidCloudParticleData(), true, x, y, z, 0, 0, 0);
 	}
 
@@ -114,8 +114,8 @@ public class DefaultFluidCompat {
 		double x = context.x();
 		double y = context.y();
 		double z = context.z();
-		CBCSoundEvents.POTION_FLUID_RELEASE.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
-		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat(0.1f), false);
+		CBCSoundEvents.POTION_FLUID_RELEASE.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat() * 0.1f, false);
+		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat() * 0.1f, false);
 		level.addParticle(new FluidCloudParticleData(), true, x, y, z, 0, 0, 0);
 	}
 

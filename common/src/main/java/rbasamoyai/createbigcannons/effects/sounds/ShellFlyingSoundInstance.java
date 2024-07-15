@@ -5,6 +5,7 @@ import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
@@ -17,8 +18,8 @@ public class ShellFlyingSoundInstance extends AbstractTickableSoundInstance {
 	private int timeout;
 	private float basePitch;
 
-	public ShellFlyingSoundInstance(SoundEvent event, LocalPlayer player, AbstractCannonProjectile entity, double radius) {
-		super(event, SoundSource.NEUTRAL);
+	public ShellFlyingSoundInstance(SoundEvent event, RandomSource randomSource, LocalPlayer player, AbstractCannonProjectile entity, double radius) {
+		super(event, SoundSource.NEUTRAL, randomSource);
 		this.player = player;
 		this.entity = entity;
 		this.radius = radius;

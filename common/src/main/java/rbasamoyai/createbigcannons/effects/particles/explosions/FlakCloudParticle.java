@@ -21,7 +21,7 @@ public class FlakCloudParticle extends NoRenderParticle {
 
 	FlakCloudParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
 		super(level, x, y, z, dx, dy, dz);
-		ParticleStatus status = Minecraft.getInstance().options.particles;
+		ParticleStatus status = Minecraft.getInstance().options.particles().get();
 		if (CBCConfigs.CLIENT.showExtraFlakTrails.get()) {
 			int count = switch (status) {
 				case ALL -> 12 + level.random.nextInt(5);
@@ -50,7 +50,7 @@ public class FlakCloudParticle extends NoRenderParticle {
 			this.remove();
 			return;
 		}
-		ParticleStatus status = Minecraft.getInstance().options.particles;
+		ParticleStatus status = Minecraft.getInstance().options.particles().get();
 		int count = switch (status) {
             case ALL -> 30;
             case DECREASED -> 20;

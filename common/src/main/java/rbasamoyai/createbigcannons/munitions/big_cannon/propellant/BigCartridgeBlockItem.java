@@ -64,7 +64,7 @@ public class BigCartridgeBlockItem extends BlockItem {
 	@Override
 	public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
 		super.fillItemCategory(category, items);
-		if (category == CreativeModeTab.TAB_SEARCH && this.allowdedIn(category)) {
+		if (category == CreativeModeTab.TAB_SEARCH && this.allowedIn(category)) {
 			items.add(getWithPower(4));
 		}
 	}

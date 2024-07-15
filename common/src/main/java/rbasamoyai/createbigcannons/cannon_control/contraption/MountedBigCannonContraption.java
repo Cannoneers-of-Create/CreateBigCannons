@@ -447,7 +447,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		this.hasFired = true;
 
 		float soundPower = Mth.clamp(propelCtx.chargesUsed / 16f, 0, 1);
-		float tone = 2 + soundPower * -8 + level.random.nextFloat(-2f, 2f);
+		float tone = 2 + soundPower * -8 + level.random.nextFloat() * 4f - 2f;
 		float pitch = (float) Mth.clamp(Math.pow(2, tone / 12f), 0, 2);
 		double shakeDistance = propelCtx.chargesUsed * CBCConfigs.SERVER.cannons.bigCannonBlastDistanceMultiplier.getF();
 		float volume = 10 + soundPower * 30;
@@ -668,7 +668,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		for (ServerPlayer player : slevel.players()) {
 			slevel.sendParticles(player, new DropMortarPlumeParticleData(1f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
 		}
-		CBCSoundEvents.FIRE_DROP_MORTAR.playOnServer(slevel, new BlockPos(spawnPos), 4, slevel.getRandom().nextFloat(0.97f, 1.02f));
+		CBCSoundEvents.FIRE_DROP_MORTAR.playOnServer(slevel, new BlockPos(spawnPos), 4, slevel.getRandom().nextFloat() * 0.05f + 0.97f);
 		this.hasFired = true;
 	}
 

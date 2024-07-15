@@ -170,7 +170,9 @@ public class CBCClientHandlers {
 
 	public static void playBlastSound(ClientboundBlastSoundPacket pkt) {
 		Minecraft mc = Minecraft.getInstance();
-		SoundInstance sound = new SimpleSoundInstance(pkt.sound(), pkt.source(), pkt.volume(), pkt.pitch(), pkt.x(), pkt.y(), pkt.z());
+		if (mc.level == null)
+			return;
+		SoundInstance sound = new SimpleSoundInstance(pkt.sound(), pkt.source(), pkt.volume(), pkt.pitch(), mc.level.random, pkt.x(), pkt.y(), pkt.z());
 		if (CBCConfigs.CLIENT.blastSoundAirAbsorption.get())
 			sound = new AirAbsorptionWrapper(sound, pkt.airAbsorption());
 		if (!CBCConfigs.CLIENT.isInstantaneousBlastEffect() && mc.player != null) {

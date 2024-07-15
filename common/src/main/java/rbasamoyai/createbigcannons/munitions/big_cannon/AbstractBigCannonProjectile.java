@@ -75,9 +75,9 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 						double dx = Mth.lerp(partial, this.xOld, this.getX());
 						double dy = Mth.lerp(partial, this.yOld, this.getY());
 						double dz = Mth.lerp(partial, this.zOld, this.getZ());
-						double sx = this.level.random.nextDouble(-0.002d, 0.002d);
-						double sy = this.level.random.nextDouble(-0.002d, 0.002d);
-						double sz = this.level.random.nextDouble(-0.002d, 0.002d);
+						double sx = this.level.random.nextDouble() * 0.004d - 0.002d;
+						double sy = this.level.random.nextDouble() * 0.004d - 0.002d;
+						double sz = this.level.random.nextDouble() * 0.004d - 0.002d;
 						this.level.addAlwaysVisibleParticle(options, true, dx, dy, dz, sx, sy, sz);
 					}
 				}

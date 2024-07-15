@@ -58,8 +58,8 @@ public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesPro
 		BlockState primaryState = Blocks.AIR.defaultBlockState();
 		BlockState secondaryState = Blocks.AIR.defaultBlockState();
 		if (level.getBlockEntity(pos) instanceof FramedDoubleBlockEntity fbe) {
-			primaryState = fbe.getCamoState();
-			secondaryState = fbe.getCamoStateTwo();
+			primaryState = fbe.getCamo().getState();
+			secondaryState = fbe.getCamoTwo().getState();
 		}
 
 		boolean secondaryUnbreakable = secondaryState.getDestroySpeed(level, pos) == -1;
@@ -82,8 +82,8 @@ public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesPro
 		BlockState primaryState = Blocks.AIR.defaultBlockState();
 		BlockState secondaryState = Blocks.AIR.defaultBlockState();
 		if (level.getBlockEntity(pos) instanceof FramedDoubleBlockEntity fbe) {
-			primaryState = fbe.getCamoState();
-			secondaryState = fbe.getCamoStateTwo();
+			primaryState = fbe.getCamo().getState();
+			secondaryState = fbe.getCamoTwo().getState();
 		}
         return Lists.newArrayList(primaryState, secondaryState);
     }

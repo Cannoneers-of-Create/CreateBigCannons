@@ -1,9 +1,8 @@
 package rbasamoyai.createbigcannons.munitions.fragment_burst;
 
-import java.util.Random;
-
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.ChunkPos;
@@ -71,7 +70,7 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 		Vec3 right = forward.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = forward.cross(right);
 		double length = initialVelocity.length();
-		Random random = level.getRandom();
+		RandomSource random = level.getRandom();
 		for (int i = 0; i < count; ++i) {
 			double velScale = length * (1.4d + 0.2d * random.nextDouble());
 			double rx = (random.nextDouble() - random.nextDouble()) * 0.0625d;

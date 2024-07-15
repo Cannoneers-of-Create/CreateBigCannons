@@ -24,7 +24,7 @@ public class SmokeExplosion extends CustomExplosion.Impl {
 
 	@Override
 	public void playLocalSound(Level level, double x, double y, double z) {
-		CBCSoundEvents.SMOKE_SHELL_DETONATE.playAt(level, x, y, z, 2, 1.5f + level.random.nextFloat(0.1f), false);
+		CBCSoundEvents.SMOKE_SHELL_DETONATE.playAt(level, x, y, z, 2, 1.5f + level.random.nextFloat() * 0.1f, false);
 	}
 
 	@Override

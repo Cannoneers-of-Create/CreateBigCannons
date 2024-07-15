@@ -308,22 +308,6 @@ public class CBCClientCommon {
 			setPitch.accept(poce.getViewXRot((float) partialTicks) * sgn);
 			setRoll.accept(0f);
 		}
-
-		float dy = 0;
-		float dp = 0;
-		float dr = 0;
-		for (ShakeEffect shakeEffect : ACTIVE_SHAKE_EFFECTS) {
-			float f = shakeEffect.getProgressNormalized((float) partialTicks);
-			float f1 = f * f;
-			float f2 = shakeEffect.getProgress((float) partialTicks);
-			dy += shakeEffect.magnitude * f1 * shakeEffect.yawNoise.getValue(0, f2, false);
-			dp += shakeEffect.magnitude * f1 * shakeEffect.pitchNoise.getValue(0, f2, false);
-			dr += shakeEffect.magnitude * f1 * shakeEffect.rollNoise.getValue(0, f2, false);
-		}
-		float s = mc.options.screenEffectScale().get().floatValue();
-		setYaw.accept(yaw.get() + dy * s);
-		setPitch.accept(pitch.get() + dp * s);
-		setRoll.accept(roll.get() + dr * s);
 		return false;
 	}
 
@@ -351,7 +335,7 @@ public class CBCClientCommon {
 		float pitch = Mth.clamp(basePitch + level.random.nextFloat() * sound.pitchVariation(), 0, 2);
 		Minecraft minecraft = Minecraft.getInstance();
 		minecraft.getSoundManager().play(new SimpleSoundInstance(sound.location(), sound.source(), projectileEffect.volume(),
-			pitch, false, 0, SoundInstance.Attenuation.LINEAR, x, y, z, false));
+			pitch, level.getRandom(), false, 0, SoundInstance.Attenuation.LINEAR, x, y, z, false));
 	}
 
 	public static void registerClientReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
@@ -364,7 +348,7 @@ public class CBCClientCommon {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.player == null || !playerTest.test(minecraft.player))
 			return;
-		minecraft.getSoundManager().play(new ShellFlyingSoundInstance(sound, minecraft.player, projectile, radius));
+		minecraft.getSoundManager().play(new ShellFlyingSoundInstance(sound, minecraft.player.level.random, minecraft.player, projectile, radius));
 		projectile.setLocalSoundCooldown(-1);
 	}
 

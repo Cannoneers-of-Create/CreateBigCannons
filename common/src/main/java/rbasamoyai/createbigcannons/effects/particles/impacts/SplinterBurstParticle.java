@@ -25,7 +25,7 @@ public class SplinterBurstParticle extends NoRenderParticle {
 	@Override
 	public void tick() {
 		Minecraft minecraft = Minecraft.getInstance();
-		int actualCount = switch (minecraft.options.particles) {
+		int actualCount = switch (minecraft.options.particles().get()) {
             case ALL -> this.count;
             case DECREASED -> this.count / 2;
             case MINIMAL -> this.count / 4;

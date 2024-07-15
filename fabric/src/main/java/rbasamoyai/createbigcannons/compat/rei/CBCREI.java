@@ -71,7 +71,7 @@ public class CBCREI implements REIClientPlugin {
 		meltingCatalysts.add(AllBlocks.BASIN::asStack);
 		CreateRecipeCategory.Info<BasinRecipe> meltingInfo = new CreateRecipeCategory.Info<>(
 			CategoryIdentifier.of(CreateBigCannons.resource("melting")),
-			Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
+			Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
 			new EmptyBackground(177, 103),
 			new DoubleItemIcon(AllBlocks.BASIN::asStack, CBCBlocks.BASIN_FOUNDRY_LID::asStack),
 			meltingSupplier, meltingCatalysts,

@@ -16,10 +16,10 @@ public class GasMaskModelMixin extends GogglesModel {
 	GasMaskModelMixin(BakedModel template) { super(template); }
 
 	@Override
-	public BakedModel handlePerspective(ItemTransforms.TransformType cameraTransformType, PoseStack matrices) {
+	public BakedModel applyTransform(ItemTransforms.TransformType cameraTransformType, PoseStack matrices, boolean lefthanded) {
 		if (cameraTransformType == ItemTransforms.TransformType.HEAD)
-			return CBCBlockPartials.GAS_MASK.get().handlePerspective(cameraTransformType, matrices);
-		return super.handlePerspective(cameraTransformType, matrices);
+			return CBCBlockPartials.GAS_MASK.get().applyTransform(cameraTransformType, matrices, lefthanded);
+		return super.applyTransform(cameraTransformType, matrices, lefthanded);
 	}
 
 }

@@ -30,7 +30,7 @@ public class ProjectileSplashParticle extends NoRenderParticle {
 	@Override
 	public void tick() {
 		Minecraft minecraft = Minecraft.getInstance();
-		int particleCount = switch (minecraft.options.particles) {
+		int particleCount = switch (minecraft.options.particles().get()) {
             case ALL -> 10;
             case DECREASED -> 5;
             case MINIMAL -> 2;

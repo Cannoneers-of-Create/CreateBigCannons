@@ -22,7 +22,7 @@ public class ShrapnelCloudParticle extends NoRenderParticle {
 			this.remove();
 			return;
 		}
-		ParticleStatus status = Minecraft.getInstance().options.particles;
+		ParticleStatus status = Minecraft.getInstance().options.particles().get();
 		int count = switch (status) {
             case ALL -> 20;
             case DECREASED -> 10;

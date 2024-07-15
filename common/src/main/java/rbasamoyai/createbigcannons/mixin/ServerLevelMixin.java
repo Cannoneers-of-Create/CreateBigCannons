@@ -22,8 +22,8 @@ import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 public abstract class ServerLevelMixin extends Level {
 
 	ServerLevelMixin(WritableLevelData levelData, ResourceKey<Level> dimension, Holder<DimensionType> dimensionTypeRegistration,
-					 Supplier<ProfilerFiller> profiler, boolean isClientSide, boolean isDebug, long biomeZoomSeed) {
-		super(levelData, dimension, dimensionTypeRegistration, profiler, isClientSide, isDebug, biomeZoomSeed);
+					 Supplier<ProfilerFiller> profiler, boolean isClientSide, boolean isDebug, long biomeZoomSeed, int maxChainedNeighborUpdates) {
+		super(levelData, dimension, dimensionTypeRegistration, profiler, isClientSide, isDebug, biomeZoomSeed, maxChainedNeighborUpdates);
 	}
 
 	@ModifyReturnValue(method = "addFreshEntity", at = @At("RETURN"))

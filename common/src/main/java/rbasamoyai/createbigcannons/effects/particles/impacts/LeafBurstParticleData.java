@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public record LeafBurstParticleData(BlockState blockState, int count) implements ParticleOptions,
 	ICustomParticleData<LeafBurstParticleData> {
@@ -25,7 +26,7 @@ public record LeafBurstParticleData(BlockState blockState, int count) implements
         @Override
         public LeafBurstParticleData fromCommand(ParticleType<LeafBurstParticleData> particleType, StringReader reader) throws CommandSyntaxException {
 			reader.expect(' ');
-			BlockState blockState = new BlockStateParser(reader, false).parse(false).getState();
+			BlockState blockState = BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry(), reader, false).blockState();
 			reader.expect(' ');
 			int count = reader.readInt();
             return new LeafBurstParticleData(blockState, count);

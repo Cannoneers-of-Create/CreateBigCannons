@@ -33,7 +33,7 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (CBCConfigs.CLIENT.showExtraShellExplosionTrails.get()) {
 			double secondaryVelScale = this.power * 0.35;
-			int secondaryCount = switch(minecraft.options.particles) {
+			int secondaryCount = switch(minecraft.options.particles().get()) {
 				case ALL -> 12 + this.random.nextInt(6);
 				case DECREASED -> 6 + this.random.nextInt(3);
 				case MINIMAL -> 4;
@@ -59,9 +59,10 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 	public void tick() {
 		Minecraft minecraft = Minecraft.getInstance();
 		int PLUME_AGE = 5;
+		ParticleStatus particleStatus = minecraft.options.particles().get();
 		if (this.age < PLUME_AGE) {
 			float primaryScale = this.power * 2f;
-			int plumes = switch (minecraft.options.particles) {
+			int plumes = switch (particleStatus) {
 				case ALL -> 20;
 				case DECREASED -> 10;
 				case MINIMAL -> 5;
@@ -87,7 +88,7 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 				this.level.addParticle(new ShellExplosionSmokeParticleData(lifetime, primaryScale), true, rx, ry, rz, dx, dy, dz);
 			}
 		}
-		int trailSteps = minecraft.options.particles == ParticleStatus.ALL ? 2 : 1;
+		int trailSteps = particleStatus == ParticleStatus.ALL ? 2 : 1;
 		float secondaryScale = this.power * 0.75f;
 		for (Iterator<TrailSubparticle> iter = this.trails.iterator(); iter.hasNext(); ) {
 			TrailSubparticle trail = iter.next();

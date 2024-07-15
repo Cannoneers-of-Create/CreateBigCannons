@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public record GlassBurstParticleData(BlockState blockState, int count) implements ParticleOptions,
 	ICustomParticleData<GlassBurstParticleData> {
@@ -25,7 +26,7 @@ public record GlassBurstParticleData(BlockState blockState, int count) implement
         @Override
         public GlassBurstParticleData fromCommand(ParticleType<GlassBurstParticleData> particleType, StringReader reader) throws CommandSyntaxException {
 			reader.expect(' ');
-			BlockState blockState = new BlockStateParser(reader, false).parse(false).getState();
+			BlockState blockState = BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry(), reader, false).blockState();
 			reader.expect(' ');
 			int count = reader.readInt();
             return new GlassBurstParticleData(blockState, count);

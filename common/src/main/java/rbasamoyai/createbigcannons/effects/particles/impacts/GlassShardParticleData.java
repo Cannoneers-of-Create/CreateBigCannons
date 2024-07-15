@@ -16,13 +16,14 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public record GlassShardParticleData(BlockState state) implements ParticleOptions, ICustomParticleDataWithSprite<GlassShardParticleData> {
 
 	private static final Deserializer<GlassShardParticleData> DESERIALIZER = new Deserializer<>() {
         public GlassShardParticleData fromCommand(ParticleType<GlassShardParticleData> particleType, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
-            return new GlassShardParticleData(new BlockStateParser(reader, false).parse(false).getState());
+            return new GlassShardParticleData(BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry(), reader, false).blockState());
         }
 
         public GlassShardParticleData fromNetwork(ParticleType<GlassShardParticleData> particleType, FriendlyByteBuf buffer) {

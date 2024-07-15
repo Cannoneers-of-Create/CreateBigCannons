@@ -23,7 +23,7 @@ public class AutocannonPlumeParticle extends NoRenderParticle {
 		this.direction = direction;
 		this.scale = scale;
 		Minecraft mc = Minecraft.getInstance();
-		this.visible = mc.options.particles == ParticleStatus.ALL && CBCConfigs.CLIENT.showAutocannonPlumes.get();
+		this.visible = mc.options.particles().get() == ParticleStatus.ALL && CBCConfigs.CLIENT.showAutocannonPlumes.get();
 
 		this.lifetime = 5;
 

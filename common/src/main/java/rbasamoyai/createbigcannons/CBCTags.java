@@ -16,7 +16,8 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.Tag;
+import net.minecraft.tags.TagBuilder;
+import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -301,8 +302,8 @@ public class CBCTags {
 
 	private static <T> void addTag(TagAppender<T> app, TagKey<T> tag) {
 		TagAppenderAccessor accessor = (TagAppenderAccessor) app;
-		Tag.Builder builder = accessor.getBuilder();
-		builder.add(new ForcedTagEntry(new Tag.TagEntry(tag.location())), accessor.getSource());
+		TagBuilder builder = accessor.getBuilder();
+		builder.add(new ForcedTagEntry(TagEntry.tag(tag.location())));
 	}
 
 }

@@ -28,7 +28,7 @@ public class QuickFiringBreechSmokeParticle extends NoRenderParticle {
 	@Override
 	public void tick() {
 		Minecraft minecraft = Minecraft.getInstance();
-		int count = switch (minecraft.options.particles) {
+		int count = switch (minecraft.options.particles().get()) {
             case ALL -> 10;
             case DECREASED -> 2;
             case MINIMAL -> 0;

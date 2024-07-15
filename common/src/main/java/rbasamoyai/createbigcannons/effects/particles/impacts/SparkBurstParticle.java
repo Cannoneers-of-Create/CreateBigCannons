@@ -40,7 +40,7 @@ public class SparkBurstParticle extends NoRenderParticle {
 		Vec3 right = forward.cross(up);
 
 		Minecraft minecraft = Minecraft.getInstance();
-		int count = switch (minecraft.options.particles) {
+		int count = switch (minecraft.options.particles().get()) {
             case ALL -> this.count;
             case DECREASED -> this.count / 2;
             case MINIMAL -> this.count / 4;
