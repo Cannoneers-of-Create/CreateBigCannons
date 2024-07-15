@@ -164,8 +164,9 @@ Changed:
 - Rebalanced projectiles
 - Rebalanced some block armor values
 - Rebalanced autocannons to be more accurate
-
-
+- Rebalanced big cannon materials to be more accurate with shorter barrels for stronger materials
+ - Around 25% reduction in barrel size for steel (12 -> 9 for max charge)
+ - Almost 50% reduction in barrel size for nethersteel (24 -> 14 for max charge)
 Fixed:
 - Fixed invalid cannon propellant combinations due to spelling mistake in data pack folder name
 - Fixed cannon loader pushing without head
