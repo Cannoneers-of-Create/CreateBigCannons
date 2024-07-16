@@ -44,6 +44,7 @@ import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePrope
 import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
+import rbasamoyai.ritchiesprojectilelib.network.ClientboundPreciseMotionSyncPacket;
 
 public abstract class AbstractCannonProjectile extends Projectile implements SyncsExtraDataOnAdd {
 
@@ -414,6 +415,10 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 	private boolean shouldFall() {
 		return this.isInGround() && this.level.noCollision(new AABB(this.position(), this.position()).inflate(0.06d));
+	}
+
+	public void updateKinematics(ClientboundPreciseMotionSyncPacket packet) {
+		this.orientation = this.getDeltaMovement();
 	}
 
 	@Override

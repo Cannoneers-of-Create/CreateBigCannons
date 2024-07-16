@@ -7,6 +7,7 @@ import java.util.Map;
 import com.mojang.math.Constants;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -65,6 +66,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	public void tick() {
 		Vec3 prevPos = this.position();
 		ChunkPos cpos = new ChunkPos(this.blockPosition());
+		Vec3 nextVelocity = this.nextVelocity;
 		if (this.level.isClientSide || this.level.hasChunk(cpos.x, cpos.z)) {
 			super.tick();
 			this.displacement += this.position().distanceTo(prevPos);
@@ -77,6 +79,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 				TrailType trailType = CBCConfigs.SERVER.munitions.autocannonTrailType.get();
 				if (trailType != TrailType.NONE) {
 					int lifetime = trailType == TrailType.SHORT ? 50 : 100 + this.level.random.nextInt(50);
+					ParticleOptions options = new TrailSmokeParticleData(lifetime);
 					for (int i = 0; i < 10; ++i) {
 						double partial = i * 0.1f;
 						double dx = Mth.lerp(partial, this.xOld, this.getX());
@@ -85,7 +88,21 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 						double sx = this.level.random.nextDouble(-0.002d, 0.002d);
 						double sy = this.level.random.nextDouble(-0.002d, 0.002d);
 						double sz = this.level.random.nextDouble(-0.002d, 0.002d);
-						this.level.addAlwaysVisibleParticle(new TrailSmokeParticleData(lifetime), true, dx, dy, dz, sx, sy, sz);
+						this.level.addAlwaysVisibleParticle(options, true, dx, dy, dz, sx, sy, sz);
+					}
+					if (nextVelocity != null) {
+						ParticleOptions options1 = new TrailSmokeParticleData(lifetime - 1);
+						Vec3 nextPos = this.position().add(nextVelocity);
+						for (int i = 0; i < 20; ++i) {
+							double partial = i * 0.1f;
+							double dx = Mth.lerp(partial, this.getX(), nextPos.x);
+							double dy = Mth.lerp(partial, this.getY(), nextPos.y);
+							double dz = Mth.lerp(partial, this.getZ(), nextPos.z);
+							double sx = this.level.random.nextDouble(-0.002d, 0.002d);
+							double sy = this.level.random.nextDouble(-0.002d, 0.002d);
+							double sz = this.level.random.nextDouble(-0.002d, 0.002d);
+							this.level.addAlwaysVisibleParticle(options1, true, dx, dy, dz, sx, sy, sz);
+						}
 					}
 				}
 				if (this.level.isClientSide && CBCConfigs.CLIENT.enableAutocannonFlybySounds.get()) {
@@ -203,7 +220,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 				CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), Math.max(Mth.ceil(momentum), 0), state, this.level);
 		}
 		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
-		return new ImpactResult(outcome, true);
+		return new ImpactResult(outcome, !this.level.isClientSide && (shatter || outcome != ImpactResult.KinematicOutcome.BOUNCE));
 	}
 
 	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
