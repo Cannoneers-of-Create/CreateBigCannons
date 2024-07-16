@@ -83,6 +83,7 @@ jobs:
                   echo "$EOF" >> $GITHUB_OUTPUT
 
             - name: Send building message to discord
+              continue-on-error: true
               env:
                   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
               if: env.DISCORD_WEBHOOK != ''
