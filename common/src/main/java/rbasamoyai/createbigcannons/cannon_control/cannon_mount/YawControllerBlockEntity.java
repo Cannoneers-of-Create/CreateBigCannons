@@ -1,5 +1,9 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.transmission.sequencer.SequencerInstructions;
 
@@ -8,10 +12,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import javax.annotation.Nullable;
-
-import java.util.List;
 
 public class YawControllerBlockEntity extends KineticBlockEntity implements ExtendsCannonMount {
 
@@ -61,6 +61,14 @@ public class YawControllerBlockEntity extends KineticBlockEntity implements Exte
 		CannonMountBlockEntity mount = this.getCannonMount();
 		if (mount != null) ExtendsCannonMount.addCannonInfoToTooltip(tooltip, mount.mountedContraption);
 		return true;
+	}
+
+	@Override
+	public void remove() {
+		super.remove();
+		CannonMountBlockEntity mount = this.getCannonMount();
+		if (mount != null)
+			mount.yawSpeed = 0;
 	}
 
 }

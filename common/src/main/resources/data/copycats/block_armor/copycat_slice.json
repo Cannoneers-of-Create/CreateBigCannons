@@ -1,35 +1,51 @@
 {
   "variants": {
     "layers=1": {
-      "default_block_hardness": 0.25,
-      "material_hardness_multiplier": 0.25
+      "default_toughness": 0.25,
+      "material_toughness_multiplier": 0.25,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
     },
     "layers=2": {
-      "default_block_hardness": 0.25,
-      "material_hardness_multiplier": 0.25
+      "default_toughness": 0.25,
+      "material_toughness_multiplier": 0.25,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
     },
     "layers=3": {
-      "default_block_hardness": 0.5,
-      "material_hardness_multiplier": 0.5
+      "default_toughness": 0.5,
+      "material_toughness_multiplier": 0.5,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
     },
     "layers=4": {
-      "default_block_hardness": 0.5,
-      "material_hardness_multiplier": 0.5
+      "default_toughness": 0.5,
+      "material_toughness_multiplier": 0.5,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
     },
     "layers=5": {
-      "default_block_hardness": 0.75,
-      "material_hardness_multiplier": 0.75
+      "default_toughness": 0.75,
+      "material_toughness_multiplier": 0.75,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
     },
     "layers=6": {
-      "default_block_hardness": 0.75,
-      "material_hardness_multiplier": 0.75
+      "default_toughness": 0.75,
+      "material_toughness_multiplier": 0.75,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
     },
     "layers=7": {
-      "default_block_hardness": 1,
+      "default_toughness": 1,
+      "material_toughness_multiplier": 1,
+      "default_hardness": 1,
       "material_hardness_multiplier": 1
     },
     "layers=8": {
-      "default_block_hardness": 1,
+      "default_toughness": 1,
+      "material_toughness_multiplier": 1,
+      "default_hardness": 1,
       "material_hardness_multiplier": 1
     }
   }

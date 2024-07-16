@@ -1,5 +1,9 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.bullet;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.network.chat.Component;
@@ -11,15 +15,11 @@ import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
-
-import javax.annotation.Nullable;
-
-import java.util.List;
+import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 
 public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 
@@ -30,13 +30,13 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 
 	@Override
 	@Nullable
-	public AbstractAutocannonProjectile<?> getAutocannonProjectile(ItemStack stack, Level level) {
+	public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
 		return CBCEntityTypes.MACHINE_GUN_BULLET.create(level);
 	}
 
 	@Nullable
 	@Override
-	public EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> getEntityType(ItemStack stack) {
+	public EntityType<?> getEntityType(ItemStack stack) {
 		return CBCEntityTypes.MACHINE_GUN_BULLET.get();
 	}
 
@@ -57,6 +57,11 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 		if (stack.getOrCreateTag().getBoolean("Tracer")) {
 			Lang.builder("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);
 		}
+	}
+
+	@Override
+	public AutocannonProjectilePropertiesComponent getAutocannonProperties(ItemStack itemStack) {
+		return CBCMunitionPropertiesHandlers.INERT_AUTOCANNON_PROJECTILE.getPropertiesOf(this.getEntityType(itemStack)).autocannonProperties();
 	}
 
 }

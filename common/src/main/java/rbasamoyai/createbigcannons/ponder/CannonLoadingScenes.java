@@ -25,12 +25,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
+import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 
@@ -564,7 +565,7 @@ public class CannonLoadingScenes {
 
 		scene.world.modifyBlock(fireLeverPos, state -> state.setValue(LeverBlock.POWERED, true), false);
 		scene.effects.createRedstoneParticles(fireLeverPos, 0xFF0000, 10);
-		scene.effects.emitParticles(util.vector.of(4, 2.5, 5.1), Emitter.withinBlockSpace(new CannonPlumeParticleData(1), util.vector.of(0d, 0d, 1d)), 1, 10);
+		scene.effects.emitParticles(util.vector.of(4, 2.5, 5.1), Emitter.withinBlockSpace(new BigCannonPlumeParticleData(1), util.vector.of(0d, 0d, 1d)), 1, 10);
 		scene.idle(60);
 
 		scene.rotateCameraY(180.0f);
@@ -1046,6 +1047,72 @@ public class CannonLoadingScenes {
 		scene.world.modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
 			tag.put("Magazine", emptyContainer.save(new CompoundTag()));
 		});
+
+		scene.markAsFinished();
+	}
+
+	public static void addingTracers(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("munitions/adding_tracers", "Adding tracers to big cannon projectiles");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		BlockPos munitionPos = util.grid.at(2, 1, 3);
+		Selection munitionSel = util.select.position(munitionPos);
+		scene.idle(20);
+		scene.world.showSection(munitionSel, Direction.NORTH);
+		scene.idle(30);
+
+		scene.overlay.showText(80)
+			.text("In addition to autocannon munitions, tracers can also be added to big cannon projectiles.")
+			.pointAt(util.vector.centerOf(2, 1, 3));
+		scene.idle(40);
+
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN)
+			.rightClick()
+			.withItem(CBCItems.TRACER_TIP.asStack()), 60);
+		scene.idle(20);
+		// Not actually visible for now
+		scene.world.modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> tag
+			.put("Tracer", CBCItems.TRACER_TIP.asStack().save(new CompoundTag())));
+		scene.idle(55);
+
+		scene.overlay.showText(50)
+			.text("Unlike fuzing, tracer tips can be applied to any side of the projectile block.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(65);
+
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("Right-click the projectile with an empty hand to remove any tracers present.")
+			.pointAt(util.vector.centerOf(2, 1, 3));
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN).rightClick(), 60);
+		scene.idle(20);
+		scene.world.modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> tag.remove("Tracer"));
+		scene.idle(60);
+
+		Selection kineticSel = util.select.fromTo(2, 1, 1, 5, 1, 1);
+		Selection largeCog = util.select.position(5, 0, 2);
+		scene.world.showSection(kineticSel, Direction.WEST);
+		scene.world.showSection(largeCog, Direction.WEST);
+
+		BlockPos deployerPos = util.grid.at(2, 1, 1);
+		scene.world.modifyBlockEntityNBT(util.select.position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", CBCItems.TRACER_TIP.asStack().save(new CompoundTag())));
+
+		scene.world.setKineticSpeed(kineticSel, 32.0f);
+		scene.world.setKineticSpeed(largeCog, -16.0f);
+
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("As with fuzing, tracer application can be automated with Deployers.")
+			.pointAt(util.vector.centerOf(deployerPos));
+		scene.idle(90);
+		scene.world.moveDeployer(deployerPos, 1, 25);
+		scene.idle(26);
+		scene.world.modifyBlockEntityNBT(util.select.position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(new CompoundTag())));
+		scene.world.modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> tag.put("Tracer", CBCItems.TRACER_TIP.asStack().save(new CompoundTag())));
+		scene.world.moveDeployer(deployerPos, -1, 25);
+		scene.idle(46);
 
 		scene.markAsFinished();
 	}

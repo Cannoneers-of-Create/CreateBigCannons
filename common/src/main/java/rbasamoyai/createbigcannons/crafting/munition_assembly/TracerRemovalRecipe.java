@@ -35,7 +35,7 @@ public class TracerRemovalRecipe extends CustomRecipe {
 				if (!stack.getOrCreateTag().getBoolean("Tracer")) return false;
 				target = stack;
 			} else if (stack.getItem() instanceof AutocannonAmmoItem item) {
-				if (item.isTracer(stack)) return false;
+				if (!item.isTracer(stack)) return false;
 				target = stack;
 			} else {
 				return false;
@@ -64,6 +64,7 @@ public class TracerRemovalRecipe extends CustomRecipe {
 			if (stack.getItem() instanceof AutocannonRoundItem) {
 				if (stack.getOrCreateTag().getBoolean("Tracer")) {
 					ItemStack copy = stack.copy();
+					copy.setCount(1);
 					copy.getOrCreateTag().remove("Tracer");
 					if (isCartridge) {
 						ItemStack cartridge = new ItemStack(originalStack.getItem());
@@ -77,6 +78,7 @@ public class TracerRemovalRecipe extends CustomRecipe {
 			} else if (stack.getItem() instanceof AutocannonAmmoItem item) {
 				if (item.isTracer(stack)) {
 					ItemStack copy = stack.copy();
+					copy.setCount(1);
 					item.setTracer(copy, false);
 					if (isCartridge) {
 						ItemStack cartridge = new ItemStack(originalStack.getItem());

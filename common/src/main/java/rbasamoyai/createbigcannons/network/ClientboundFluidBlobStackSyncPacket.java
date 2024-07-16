@@ -9,7 +9,7 @@ import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlob;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBurst;
 
 public record ClientboundFluidBlobStackSyncPacket(EndFluidStack fstack, int entityId) implements RootPacket {
 
@@ -17,8 +17,8 @@ public record ClientboundFluidBlobStackSyncPacket(EndFluidStack fstack, int enti
 		this(EndFluidStack.readBuf(buf), buf.readVarInt());
 	}
 
-	public ClientboundFluidBlobStackSyncPacket(FluidBlob blob) {
-		this(blob.getFluidStack(), blob.getId());
+	public ClientboundFluidBlobStackSyncPacket(FluidBlobBurst blobBurst) {
+		this(blobBurst.getFluidStack(), blobBurst.getId());
 	}
 
 	@Override

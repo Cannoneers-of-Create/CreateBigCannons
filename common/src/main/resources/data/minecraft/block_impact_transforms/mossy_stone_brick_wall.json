@@ -1,0 +1,7 @@
+{
+  "transform_chance": 0.8,
+  "transforms": [
+    { "transform": { "block": "minecraft:cobblestone_wall", "copy_properties": true }, "weight": 1 },
+    { "transform": { "block": "minecraft:mossy_cobblestone_wall", "copy_properties": true }, "weight": 0.5 }
+  ]
+}

@@ -30,6 +30,7 @@
       "tag": "createbigcannons:ingot_cast_iron"
     }
   ],
+  "processingTime": 100,
   "results": [
     {
       "count": 8,

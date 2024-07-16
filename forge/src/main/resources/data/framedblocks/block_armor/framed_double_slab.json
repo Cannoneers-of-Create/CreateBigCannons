@@ -1,10 +1,14 @@
 {
   "primary": {
-    "default_block_hardness": 0.5,
-    "material_hardness_multiplier": 0.5
+    "default_toughness": 0.5,
+    "material_toughness_multiplier": 0.5,
+    "default_hardness": 1,
+    "material_hardness_multiplier": 1
   },
   "secondary": {
-    "default_block_hardness": 0.5,
-    "material_hardness_multiplier": 0.5
+    "default_toughness": 0.5,
+    "material_toughness_multiplier": 0.5,
+    "default_hardness": 1,
+    "material_hardness_multiplier": 1
   }
 }

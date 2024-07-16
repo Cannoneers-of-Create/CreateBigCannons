@@ -8,10 +8,10 @@ public class CBCCfgCrafting extends ConfigBase {
 	public final ConfigInt maxCannonDrillLength = i(32, 1, "maxCannonDrillLength", Comments.maxCannonDrillLength);
 	public final ConfigInt maxCannonBuilderLength = i(32, 1, "maxCannonBuilderLength", Comments.maxCannonBuilderLength);
 	public final ConfigInt maxCannonBuilderRange = i(32, 2, "maxCannonBuilderRange", Comments.maxCannonBuilderRange);
-	public final ConfigInt builtUpCannonHeatingTime = i(6000, 0, "builtUpCannonHeatingTime", Comments.builtUpCannonHeatingTime);
-	
+	public final ConfigInt builtUpCannonHeatingTime = i(6000, 0, "builtUpCannonHeatingTime", "[in Ticks]", Comments.builtUpCannonHeatingTime);
+
 	@Override public String getName() { return "crafting"; }
-	
+
 	private static class Comments {
 		static String maxCannonCastHeight = "Maximum height of a single cannon cast that can be built.";
 		static String maxCannonDrillLength = "Maximum length of a Cannon Drill that can be built.";

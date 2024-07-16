@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.crafting.builtup;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.AssemblyException;
-
 import com.simibubi.create.content.contraptions.ContraptionCollider;
 
 import net.minecraft.core.BlockPos;
@@ -42,6 +41,8 @@ public class CannonBuilderBlockEntity extends PoleMoverBlockEntity {
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonBuilderBlock.STATE, BuilderState.EXTENDED), 3 | 16);
 		}
 		super.disassemble();
+		if (this.remove)
+			CannonBuilderBlock.destroyExtensionPoles(this.level, this.worldPosition, this.getBlockState(), true);
 	}
 
 	public BlockState updateBlockstatesOnPowered(BlockState state) {

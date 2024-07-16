@@ -1,0 +1,6 @@
+{
+  "impact_particle": "createbigcannons:splinter_burst minecraft:air 40",
+  "deflect_particle": "createbigcannons:splinter_burst minecraft:air 40",
+  "impact_sound": { "sound": "createbigcannons:wood_splinters", "pitch": 1.4, "pitch_variation": 0.2 },
+  "deflect_sound": { "sound": "minecraft:block.wood.break", "pitch": 0.95, "pitch_variation": 0.1 }
+}

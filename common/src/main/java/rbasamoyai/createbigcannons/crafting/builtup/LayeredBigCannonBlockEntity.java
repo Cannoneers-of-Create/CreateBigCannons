@@ -25,7 +25,6 @@ import com.simibubi.create.foundation.utility.Iterate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -57,6 +56,8 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBigCannonBlockEntity, WandActionable {
 
@@ -347,7 +348,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		for (Map.Entry<CannonCastShape, Block> e : this.layeredBlocks.entrySet()) {
 			CompoundTag entryTag = new CompoundTag();
 			entryTag.putString("Shape", CBCRegistries.CANNON_CAST_SHAPES.getKey(e.getKey()).toString());
-			entryTag.putString("Block", Registry.BLOCK.getKey(e.getValue()).toString());
+			entryTag.putString("Block", CBCRegistryUtils.getBlockLocation(e.getValue()).toString());
 			layerTag.add(entryTag);
 		}
 		tag.put("Layers", layerTag);
@@ -379,7 +380,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 			if (!layerConnectionTag.contains(dir.getSerializedName())) continue;
 			ListTag connections = layerConnectionTag.getList(dir.getSerializedName(), Tag.TAG_STRING);
 			for (int i = 0; i < connections.size(); ++i) {
-				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(connections.getString(i)));
+				CannonCastShape shape = CBCRegistries.CANNON_CAST_SHAPES.get(CBCUtils.location(connections.getString(i)));
 				if (shape != null) this.layersConnectedTowards.put(dir, shape);
 			}
 		}
@@ -389,14 +390,14 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 			return;
 		}
 
-		this.baseMaterial = tag.contains("Material") ? BigCannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("Material"))) : null;
+		this.baseMaterial = tag.contains("Material") ? BigCannonMaterial.fromNameOrNull(CBCUtils.location(tag.getString("Material"))) : null;
 		if (this.baseMaterial == null) this.baseMaterial = CBCBigCannonMaterials.STEEL;
 		this.layeredBlocks.clear();
 		ListTag layers = tag.getList("Layers", Tag.TAG_COMPOUND);
 		for (int i = 0; i < layers.size(); ++i) {
 			CompoundTag entry = layers.getCompound(i);
-			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get(new ResourceLocation(entry.getString("Shape"))),
-				Registry.BLOCK.get(new ResourceLocation(entry.getString("Block"))));
+			this.layeredBlocks.put(CBCRegistries.CANNON_CAST_SHAPES.get(CBCUtils.location(entry.getString("Shape"))),
+				CBCRegistryUtils.getBlock(CBCUtils.location(entry.getString("Block"))));
 		}
 		this.currentFacing = tag.contains("Facing") ? Direction.byName(tag.getString("Facing")) : null;
 		this.completionProgress = tag.getInt("Progress");

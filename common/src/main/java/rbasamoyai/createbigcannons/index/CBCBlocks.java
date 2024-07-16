@@ -69,17 +69,19 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
+import rbasamoyai.createbigcannons.munitions.FuzedProjectileBlockItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlockItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shot.APShotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell.DropMortarShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidShellBlockItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot.GrapeshotBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.he_shell.HEShellBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.mortar_stone.MortarStoneItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
-import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeProperties;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PowderChargeItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.shrapnel.ShrapnelShellBlock;
@@ -953,7 +955,9 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/solid_shot"))
-		.item()
+		.transform(CBCBuilderTransformers.safeNbt())
+		.loot(CBCBuilderTransformers.tracerProjectileLoot())
+		.item(ProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -966,7 +970,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("High Explosive (HE) Shell")
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -978,7 +982,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.projectile("projectile/shrapnel_shell"))
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -988,8 +992,10 @@ public class CBCBlocks {
 		.transform(shell(MaterialColor.COLOR_LIGHT_GRAY))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/ap_shot"))
+		.transform(CBCBuilderTransformers.safeNbt())
+		.loot(CBCBuilderTransformers.tracerProjectileLoot())
 		.lang("Armor Piercing (AP) Shot")
-		.item()
+		.item(ProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1002,6 +1008,8 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.WOOD))
 		.properties(p -> p.noOcclusion())
 		.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/traffic_cone"))))
+		.transform(CBCBuilderTransformers.safeNbt())
+		.loot(CBCBuilderTransformers.tracerProjectileLoot())
 		.item(TrafficConeBlockItem::new)
 		.initialProperties(() -> new Item.Properties().rarity(Rarity.EPIC))
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
@@ -1016,7 +1024,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("Armor Piercing (AP) Shell")
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1028,7 +1036,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.projectile("projectile/fluid_shell"))
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot(f -> f.copy("FluidContent", "BlockEntityTag.FluidContent")))
-		.item()
+		.item(FluidShellBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1038,8 +1046,9 @@ public class CBCBlocks {
 		.transform(shell(MaterialColor.COLOR_LIGHT_BLUE))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/smoke_shell"))
+		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1078,8 +1087,9 @@ public class CBCBlocks {
 		.transform(shell(MaterialColor.COLOR_RED))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.dropMortarShell())
+		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
-		.item()
+		.item(FuzedProjectileBlockItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1092,7 +1102,7 @@ public class CBCBlocks {
 		.item(PowderChargeItem::new)
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROPELLANT_BAGS)
 		.build()
-		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, CBCMunitionPropertiesSerializers.BASE_BIG_CANNON_PROPELLANT))
+		.onRegister(block -> MunitionPropertiesHandler.registerBlockPropellantHandler(block, CBCMunitionPropertiesHandlers.POWDER_CHARGE))
 		.register();
 
 	public static final BlockEntry<BigCartridgeBlock> BIG_CARTRIDGE = REGISTRATE
@@ -1100,7 +1110,7 @@ public class CBCBlocks {
 		.initialProperties(() -> Blocks.TNT)
 		.properties(p -> p.sound(SoundType.METAL))
 		.transform(CBCBuilderTransformers.bigCartridge())
-		.onRegister(block -> MunitionPropertiesHandler.registerPropertiesSerializer(block, new BigCartridgeProperties.Serializer()))
+		.onRegister(block -> MunitionPropertiesHandler.registerBlockPropellantHandler(block, CBCMunitionPropertiesHandlers.BIG_CARTRIDGE))
 		.register();
 
 	//////// Autocannon Ammo Container Blocks ////////

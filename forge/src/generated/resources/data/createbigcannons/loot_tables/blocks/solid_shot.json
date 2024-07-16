@@ -3,14 +3,31 @@
   "pools": [
     {
       "bonus_rolls": 0.0,
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "Tracer",
+                  "target": "BlockEntityTag.Tracer"
+                },
+                {
+                  "op": "replace",
+                  "source": "id",
+                  "target": "BlockEntityTag.id"
+                }
+              ],
+              "source": "block_entity"
+            }
+          ],
           "name": "createbigcannons:solid_shot"
         }
       ],

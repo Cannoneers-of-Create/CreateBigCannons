@@ -18,23 +18,29 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import rbasamoyai.createbigcannons.base.BlockStatePredicateHelper;
 
-public record MimickingBlockArmorUnit(double emptyHardness, double materialHardnessMultiplier) {
+public record MimickingBlockArmorUnit(double emptyHardness, double materialHardnessMultiplier, double emptyToughness, double materialToughnessMultiplier) {
 
 	public static MimickingBlockArmorUnit fromJson(JsonObject obj) {
-		double emptyHardness = Math.max(GsonHelper.getAsDouble(obj, "default_block_hardness", 1d), 0d);
+		double emptyHardness = Math.max(GsonHelper.getAsDouble(obj, "default_hardness", 1d), 0d);
 		double materialHardnessMultiplier = Math.max(GsonHelper.getAsDouble(obj, "material_hardness_multiplier", 1d), 0d);
-		return new MimickingBlockArmorUnit(emptyHardness, materialHardnessMultiplier);
+		double emptyToughness = Math.max(GsonHelper.getAsDouble(obj, "default_toughness", 1d), 0d);
+		double materialToughnessMultiplier = Math.max(GsonHelper.getAsDouble(obj, "material_toughness_multiplier", 1d), 0d);
+		return new MimickingBlockArmorUnit(emptyHardness, materialHardnessMultiplier, emptyToughness, materialToughnessMultiplier);
 	}
 
 	public void toNetwork(FriendlyByteBuf buf) {
 		buf.writeDouble(this.emptyHardness)
-			.writeDouble(this.materialHardnessMultiplier);
+			.writeDouble(this.materialHardnessMultiplier)
+			.writeDouble(this.emptyToughness)
+			.writeDouble(this.materialToughnessMultiplier);
 	}
 
 	public static MimickingBlockArmorUnit fromNetwork(FriendlyByteBuf buf) {
 		double emptyHardness = buf.readDouble();
 		double materialHardnessMultiplier = buf.readDouble();
-		return new MimickingBlockArmorUnit(emptyHardness, materialHardnessMultiplier);
+		double emptyToughness = buf.readDouble();
+		double materialToughnessMultiplier = buf.readDouble();
+		return new MimickingBlockArmorUnit(emptyHardness, materialHardnessMultiplier, emptyToughness, materialToughnessMultiplier);
 	}
 
 	public static Map<BlockState, MimickingBlockArmorUnit> readAllProperties(Block block, JsonObject obj) {

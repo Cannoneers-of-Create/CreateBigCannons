@@ -12,7 +12,6 @@ import com.google.gson.JsonSyntaxException;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceLocation;
@@ -31,6 +30,8 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_types.CannonContraption
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CannonMountPropertiesHandler {
 
@@ -65,9 +66,9 @@ public class CannonMountPropertiesHandler {
 				try {
 					ResourceLocation loc = entry.getKey();
 					String[] pathComponents = loc.getPath().split("/");
-					ResourceLocation blockEntityLoc = new ResourceLocation(loc.getNamespace(), pathComponents[0]);
-					ResourceLocation cannonTypeLoc = new ResourceLocation(pathComponents[1], pathComponents[2]);
-					BlockEntityType<?> beType = Registry.BLOCK_ENTITY_TYPE.getOptional(blockEntityLoc).orElseThrow(() -> {
+					ResourceLocation blockEntityLoc = CBCUtils.location(loc.getNamespace(), pathComponents[0]);
+					ResourceLocation cannonTypeLoc = CBCUtils.location(pathComponents[1], pathComponents[2]);
+					BlockEntityType<?> beType = CBCRegistryUtils.getOptionalBlockEntityType(blockEntityLoc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown block entity type '" + blockEntityLoc + "'");
 					});
 					ICannonContraptionType contraptionType = CannonContraptionTypeRegistry.getOptional(cannonTypeLoc).orElseThrow(() -> {
@@ -101,9 +102,9 @@ public class CannonMountPropertiesHandler {
 				try {
 					ResourceLocation loc = entry.getKey();
 					String[] pathComponents = loc.getPath().split("/");
-					ResourceLocation entityLoc = new ResourceLocation(loc.getNamespace(), pathComponents[0]);
-					ResourceLocation cannonTypeLoc = new ResourceLocation(pathComponents[1], pathComponents[2]);
-					EntityType<?> entityType = Registry.ENTITY_TYPE.getOptional(entityLoc).orElseThrow(() -> {
+					ResourceLocation entityLoc = CBCUtils.location(loc.getNamespace(), pathComponents[0]);
+					ResourceLocation cannonTypeLoc = CBCUtils.location(pathComponents[1], pathComponents[2]);
+					EntityType<?> entityType = CBCRegistryUtils.getOptionalEntityType(entityLoc).orElseThrow(() -> {
 						return new JsonSyntaxException("Unknown entity type '" + entityLoc + "'");
 					});
 					ICannonContraptionType contraptionType = CannonContraptionTypeRegistry.getOptional(cannonTypeLoc).orElseThrow(() -> {
@@ -124,7 +125,7 @@ public class CannonMountPropertiesHandler {
 
 	public static <T extends CannonMountBlockPropertiesSerializer<?>> T registerBlockMountSerializer(BlockEntityType<?> type, T ser) {
 		if (BLOCK_MOUNT_SERIALIZERS.containsKey(type)) {
-			throw new IllegalStateException("Serializer for block entity " + Registry.BLOCK_ENTITY_TYPE.getKey(type) + " already registered");
+			throw new IllegalStateException("Serializer for block entity " + CBCRegistryUtils.getBlockEntityTypeLocation(type) + " already registered");
 		}
 		BLOCK_MOUNT_SERIALIZERS.put(type, ser);
 		return ser;
@@ -132,7 +133,7 @@ public class CannonMountPropertiesHandler {
 
 	public static <T extends CannonMountEntityPropertiesSerializer> T registerEntityMountSerializer(EntityType<?> type, T ser) {
 		if (ENTITY_MOUNT_SERIALIZERS.containsKey(type)) {
-			throw new IllegalStateException("Serializer for block entity " + Registry.ENTITY_TYPE.getKey(type) + " already registered");
+			throw new IllegalStateException("Serializer for block entity " + CBCRegistryUtils.getEntityTypeLocation(type) + " already registered");
 		}
 		ENTITY_MOUNT_SERIALIZERS.put(type, ser);
 		return ser;
@@ -157,7 +158,7 @@ public class CannonMountPropertiesHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(BLOCK_MOUNT_PROPERTIES.size());
 		for (Map.Entry<BlockEntityType<?>, Map<ICannonContraptionType, CannonMountBlockPropertiesProvider>> entry : BLOCK_MOUNT_PROPERTIES.entrySet()) {
-			buf.writeResourceLocation(Registry.BLOCK_ENTITY_TYPE.getKey(entry.getKey()));
+			buf.writeResourceLocation(CBCRegistryUtils.getBlockEntityTypeLocation(entry.getKey()));
 			Map<ICannonContraptionType, CannonMountBlockPropertiesProvider> map = entry.getValue();
 			buf.writeVarInt(map.size());
 			for (Map.Entry<ICannonContraptionType, CannonMountBlockPropertiesProvider> entry1 : map.entrySet()) {
@@ -167,7 +168,7 @@ public class CannonMountPropertiesHandler {
 		}
 		buf.writeVarInt(ENTITY_MOUNT_PROPERTIES.size());
 		for (Map.Entry<EntityType<?>, Map<ICannonContraptionType, CannonMountEntityPropertiesProvider>> entry : ENTITY_MOUNT_PROPERTIES.entrySet()) {
-			buf.writeResourceLocation(Registry.ENTITY_TYPE.getKey(entry.getKey()));
+			buf.writeResourceLocation(CBCRegistryUtils.getEntityTypeLocation(entry.getKey()));
 			Map<ICannonContraptionType, CannonMountEntityPropertiesProvider> map = entry.getValue();
 			buf.writeVarInt(map.size());
 			for (Map.Entry<ICannonContraptionType, CannonMountEntityPropertiesProvider> entry1 : map.entrySet()) {
@@ -194,7 +195,7 @@ public class CannonMountPropertiesHandler {
 		int blockSz = buf.readVarInt();
 		for (int i = 0; i < blockSz; ++i) {
 			ResourceLocation beTypeLoc = buf.readResourceLocation();
-			BlockEntityType<?> beType = Registry.BLOCK_ENTITY_TYPE.get(beTypeLoc);
+			BlockEntityType<?> beType = CBCRegistryUtils.getBlockEntityType(beTypeLoc);
 			CannonMountBlockPropertiesSerializer<?> ser = BLOCK_MOUNT_SERIALIZERS.get(beType);
 
 			int mapSz = buf.readVarInt();
@@ -210,7 +211,7 @@ public class CannonMountPropertiesHandler {
 		int entitySz = buf.readVarInt();
 		for (int i = 0; i < entitySz; ++i) {
 			ResourceLocation entityTypeLoc = buf.readResourceLocation();
-			EntityType<?> entityType = Registry.ENTITY_TYPE.get(entityTypeLoc);
+			EntityType<?> entityType = CBCRegistryUtils.getEntityType(entityTypeLoc);
 			CannonMountEntityPropertiesSerializer<?> ser = ENTITY_MOUNT_SERIALIZERS.get(entityType);
 
 			int mapSz = buf.readVarInt();

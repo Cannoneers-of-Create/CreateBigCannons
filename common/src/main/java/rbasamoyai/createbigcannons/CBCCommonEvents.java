@@ -28,6 +28,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
+import rbasamoyai.createbigcannons.block_hit_effects.BlockImpactTransformationHandler;
 import rbasamoyai.createbigcannons.cannon_control.config.CannonMountPropertiesHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
@@ -51,13 +52,15 @@ import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationD
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
-import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.munitions.config.FluidDragHandler;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
+import rbasamoyai.createbigcannons.network.ClientboundNotifyTagReloadPacket;
 import rbasamoyai.createbigcannons.remix.ContraptionRemix;
 
 public class CBCCommonEvents {
@@ -207,10 +210,13 @@ public class CBCCommonEvents {
 	public static void loadTags() {
 		BlockArmorPropertiesHandler.loadTags();
 		FluidCastingTimeHandler.loadTags();
+		BlockImpactTransformationHandler.loadTags();
+		FluidDragHandler.loadTags();
 	}
 
 	public static void onDatapackReload(MinecraftServer server) {
 		loadTags();
+		NetworkPlatform.sendToClientAll(new ClientboundNotifyTagReloadPacket(), server);
 
 		BlockArmorPropertiesHandler.syncToAll(server);
 		BlockRecipesManager.syncToAll(server);
@@ -221,6 +227,7 @@ public class CBCCommonEvents {
 		FluidCastingTimeHandler.syncToAll(server);
 		CannonMountPropertiesHandler.syncToAll(server);
 		DimensionMunitionPropertiesHandler.syncToAll(server);
+		FluidDragHandler.syncToAll(server);
 	}
 
 	public static void onDatapackSync(ServerPlayer player) {
@@ -234,6 +241,7 @@ public class CBCCommonEvents {
 		BigCannonPropellantCompatibilityHandler.syncTo(player);
 		CannonMountPropertiesHandler.syncTo(player);
 		DimensionMunitionPropertiesHandler.syncTo(player);
+		FluidDragHandler.syncTo(player);
 	}
 
 	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
@@ -251,6 +259,8 @@ public class CBCCommonEvents {
 		cons.accept(BigCannonPropellantCompatibilityHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("big_cannon_propellant_compatibility_handler"));
 		cons.accept(CannonMountPropertiesHandler.BlockEntityReloadListener.INSTANCE, CreateBigCannons.resource("block_entity_cannon_mounts_config_handler"));
 		cons.accept(CannonMountPropertiesHandler.EntityReloadListener.INSTANCE, CreateBigCannons.resource("entity_cannon_mounts_config_handler"));
+		cons.accept(BlockImpactTransformationHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("block_impact_transformation_handler"));
+		cons.accept(FluidDragHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("fluid_drag_handler"));
 	}
 
 	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
@@ -258,9 +268,9 @@ public class CBCCommonEvents {
 		ItemStack containerItem = container.getItem(0);
 		ItemStack deployerItem = container.getItem(1);
 
-		if (CBCBlocks.BIG_CARTRIDGE.isIn(containerItem) && deployerItem.is(CBCTags.CBCItemTags.NITROPOWDER)) {
+		if (containerItem.getItem() instanceof BigCartridgeBlockItem cartridge && deployerItem.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 			int power = BigCartridgeBlockItem.getPower(containerItem);
-			if (power < BigCartridgeBlock.getMaximumPowerLevels()) {
+			if (power < cartridge.getMaximumPowerLevels()) {
 				cons.accept(() -> Optional.of(new BigCartridgeFillingDeployerRecipe(power, power + 1)), 25);
 			}
 		}

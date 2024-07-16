@@ -55,6 +55,9 @@ repositories {
 			includeGroup("com.rbasamoyai")
 		}
 	}
+	flatDir {
+		dir "./libs"
+	}
     mavenCentral()
 }
 
@@ -78,7 +81,12 @@ dependencies {
 
     modImplementation("curse.maven:spark-361579:${spark_forge_file}") // Spark
 
-	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+${minecraft_version}-forge")) { transitive = false } // Ritchie's Projectile Library
+	// Ritchie's Projectile Library
+	if (Boolean.valueOf(use_local_rpl_build)) {
+		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-forge") { transitive = false }
+	} else {
+		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-forge-build.${rpl_build}") { transitive = false }
+	}
 
 	compileOnly("io.github.llamalad7:mixinextras-common:${mixinextras_version}")
 	annotationProcessor(implementation(include("io.github.llamalad7:mixinextras-forge:${mixinextras_version}")))
@@ -88,6 +96,10 @@ dependencies {
 	modImplementation("curse.maven:copycats-968398:${copycats_forge_file}")
 	modImplementation("curse.maven:framedblocks-441647:${framedblocks_forge_file}")
 	forgeRuntimeLibrary("com.github.ben-manes.caffeine:caffeine:3.1.1") // For FramedBlocks
+
+	// Curios
+	modRuntimeOnly("top.theillusivec4.curios:curios-forge:${curios_forge_version}")
+	modCompileOnly("top.theillusivec4.curios:curios-forge:${curios_forge_version}:api")
 }
 
 processResources {

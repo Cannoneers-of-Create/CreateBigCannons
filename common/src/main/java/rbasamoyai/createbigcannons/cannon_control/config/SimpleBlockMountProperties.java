@@ -12,7 +12,6 @@ import com.google.gson.JsonSyntaxException;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import rbasamoyai.createbigcannons.base.BlockStatePredicateHelper;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public record SimpleBlockMountProperties(GeneralMountProperties defaultProperties, Map<BlockState, GeneralMountProperties> propertiesByState)
 	implements CannonMountBlockPropertiesProvider {
@@ -42,7 +42,7 @@ public record SimpleBlockMountProperties(GeneralMountProperties defaultPropertie
 			Map<BlockState, GeneralMountProperties> propertiesByState = new Reference2ObjectOpenHashMap<>();
 
 			for (Block block : beType.validBlocks) {
-				ResourceLocation blockLoc = Registry.BLOCK.getKey(block);
+				ResourceLocation blockLoc = CBCRegistryUtils.getBlockLocation(block);
 				String blockKey = blockLoc.toString();
 				if (!obj.has(blockKey) && !obj.get(blockKey).isJsonObject()) continue;
 

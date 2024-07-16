@@ -1,9 +1,18 @@
 {
+  "autocannon_round_flyby": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:autocannon_round_flyby"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.autocannon_round_flyby"
+  },
   "fire_autocannon": {
     "sounds": [
       {
-        "type": "event",
-        "name": "minecraft:entity.generic.explode"
+        "type": "file",
+        "name": "createbigcannons:fire_autocannon"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_autocannon"
@@ -11,33 +20,203 @@
   "fire_big_cannon": {
     "sounds": [
       {
-        "type": "event",
-        "name": "minecraft:entity.generic.explode"
+        "type": "file",
+        "name": "createbigcannons:fire_big_cannon"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_big_cannon"
   },
-  "fire_big_cannon_compounded_1": {
+  "fire_drop_mortar": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:fire_drop_mortar"
+      },
+      {
+        "type": "file",
+        "name": "createbigcannons:fire_drop_mortar1"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.fire_drop_mortar"
+  },
+  "fire_machine_gun": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:fire_machine_gun"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.fire_machine_gun"
+  },
+  "flak_round_explosion": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:flak_round_explosion"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.flak_round_explosion"
+  },
+  "fluid_shell_explosion": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:fluid_shell_explosion"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.fluid_shell_explosion"
+  },
+  "hot_projectile_splash": {
     "sounds": [
       {
         "type": "event",
-        "name": "minecraft:entity.generic.explode"
+        "name": "minecraft:item.bucket.empty"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.hot_projectile_splash"
+  },
+  "lava_fluid_release": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:item.firecharge.use"
       }
     ]
   },
-  "fire_big_cannon_compounded_2": {
+  "machine_gun_round_flyby": {
     "sounds": [
       {
-        "type": "event",
-        "name": "minecraft:entity.generic.explode"
+        "type": "file",
+        "name": "createbigcannons:machine_gun_round_flyby"
       }
-    ]
+    ],
+    "subtitle": "createbigcannons.subtitle.machine_gun_round_flyby"
+  },
+  "mortar_stone_explode": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:mortar_stone_explode"
+      },
+      {
+        "type": "file",
+        "name": "createbigcannons:mortar_stone_explode1"
+      },
+      {
+        "type": "file",
+        "name": "createbigcannons:mortar_stone_explode2"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.mortar_stone_explode"
   },
   "place_autocannon_ammo_container": {
     "sounds": [
       {
         "type": "event",
         "name": "minecraft:item.armor.equip_iron"
+      }
+    ]
+  },
+  "potion_fluid_release": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.generic.extinguish_fire"
+      }
+    ]
+  },
+  "projectile_impact": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "createbigcannons:mortar_stone_explode"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.projectile_impact"
+  },
+  "projectile_splash": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:projectile_splash"
+      },
+      {
+        "type": "file",
+        "name": "createbigcannons:projectile_splash1"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.projectile_splash"
+  },
+  "shell_explosion": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:shell_explosion"
+      },
+      {
+        "type": "file",
+        "name": "createbigcannons:shell_explosion1"
+      },
+      {
+        "type": "file",
+        "name": "createbigcannons:shell_explosion2"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.shell_explosion"
+  },
+  "shell_flying": {
+    "sounds": [
+      {
+        "type": "file",
+        "attenuation_distance": 256,
+        "name": "createbigcannons:shell_flying"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.shell_flying"
+  },
+  "shrapnel_shell_explosion": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:shrapnel_shell_explosion"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.shrapnel_shell_explosion"
+  },
+  "smoke_shell_detonate": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:entity.generic.extinguish_fire"
+      }
+    ],
+    "subtitle": "createbigcannons.subtitle.smoke_shell_detonate"
+  },
+  "water_fluid_release": {
+    "sounds": [
+      {
+        "type": "event",
+        "name": "minecraft:item.bucket.empty"
+      }
+    ]
+  },
+  "wood_splinters": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createbigcannons:wood_splinters"
+      },
+      {
+        "type": "file",
+        "name": "createbigcannons:wood_splinters1"
+      },
+      {
+        "type": "file",
+        "name": "createbigcannons:wood_splinters2"
+      },
+      {
+        "type": "file",
+        "name": "createbigcannons:wood_splinters3"
       }
     ]
   }

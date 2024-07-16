@@ -1,17 +1,22 @@
 package rbasamoyai.createbigcannons.multiloader.forge;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
+import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.LangBuilder;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemProperties;
@@ -20,18 +25,23 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -152,6 +162,38 @@ public class IndexPlatformImpl {
 
 	public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) {
 		return FluidIngredient.fromTag(fluid, amount);
+	}
+
+	public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) {
+		int capacity = AbstractFluidShellBlockEntity.getFluidShellCapacity();
+		LangBuilder mb = Lang.translate("generic.unit.millibuckets");
+		if (fluid != Fluids.EMPTY && amount > 0) {
+			Lang.translate("gui.goggles.fluid_container").addTo(tooltip);
+			Lang.text(" ")
+				.add(Lang.fluidName(new FluidStack(fluid, 1)).style(ChatFormatting.GRAY))
+				.addTo(tooltip);
+
+			Lang.text(" ")
+				.add(Lang.builder()
+					.add(Lang.number(amount).add(mb).style(ChatFormatting.GOLD))
+					.text(ChatFormatting.GRAY, " / ")
+					.add(Lang.number(capacity).add(mb).style(ChatFormatting.DARK_GRAY)))
+				.addTo(tooltip);
+		} else {
+			Lang.translate("gui.goggles.fluid_container.capacity")
+				.add(Lang.number(capacity).add(mb).style(ChatFormatting.GOLD))
+				.style(ChatFormatting.GRAY)
+				.addTo(tooltip);
+		}
+	}
+
+	public static boolean onExplosionStart(Level level, Explosion explosion) {
+		return ForgeEventFactory.onExplosionStart(level, explosion);
+	}
+
+	@OnlyIn(Dist.CLIENT)
+	public static void updateSprite(TerrainParticle particle, BlockState state, BlockPos pos) {
+		particle.updateSprite(state, pos);
 	}
 
 }

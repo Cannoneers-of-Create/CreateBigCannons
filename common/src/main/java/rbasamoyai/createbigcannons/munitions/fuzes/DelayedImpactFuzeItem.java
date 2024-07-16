@@ -26,6 +26,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile.ImpactResult;
 
 public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 
@@ -63,10 +64,10 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile<?> projectile, HitResult result, boolean stopped, boolean baseFuze) {
-		if (baseFuze) return false;
+	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, ImpactResult impactResult, boolean baseFuze) {
+		if (baseFuze || impactResult.shouldRemove()) return false;
 		CompoundTag tag = stack.getOrCreateTag();
-		int damage = tag.contains("Damage") ? tag.getInt("Damage") : CBCConfigs.SERVER.munitions.impactFuzeDurability.get();
+		int damage = tag.contains("Damage") ? tag.getInt("Damage") : this.getFuzeDurability();
 		if (damage > 0 && !tag.contains("Activated")) {
 			--damage;
 			tag.putInt("Damage", damage);
@@ -79,7 +80,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile<?> projectile) {
+	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
 		CompoundTag tag = stack.getOrCreateTag();
 		if (!tag.contains("Activated")) return false;
 		if (!tag.contains("FuzeTimer")) return true;
@@ -90,14 +91,14 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile<?> projectile) {
+	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) {
 		return true;
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, level, tooltip, flag);
-		CBCTooltip.appendImpactFuzeText(stack, level, tooltip, flag, this.getDetonateChance());
+		CBCTooltip.appendImpactFuzeText(stack, level, tooltip, flag, this.getDetonateChance(), this.getFuzeDurability());
 
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;
@@ -111,8 +112,12 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 		return CBCConfigs.SERVER.munitions.impactFuzeDetonationChance.getF();
 	}
 
+	protected int getFuzeDurability() {
+		return CBCConfigs.SERVER.munitions.impactFuzeDurability.get();
+	}
+
 	@Override
-	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile<?> projectile) {
+	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile projectile) {
 		return stack.getOrCreateTag().contains("Activated");
 	}
 
@@ -120,7 +125,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
 		MutableComponent info = Lang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".impact_fuze.tooltip.shell_info", (int) (this.getDetonateChance() * 100.0f))
+			.translate(CreateBigCannons.MOD_ID + ".delayed_impact_fuze.tooltip.shell_info.chance", (int) (this.getDetonateChance() * 100.0f))
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 

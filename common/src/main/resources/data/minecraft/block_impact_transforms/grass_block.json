@@ -1,0 +1,7 @@
+{
+  "transform_chance": 0.67,
+  "transforms": [
+    { "transform": { "block": "minecraft:coarse_dirt" }, "weight": 1 },
+    { "transform": { "block": "minecraft:podzol" }, "weight": 2 }
+  ]
+}

@@ -4,7 +4,10 @@ accessible class net/minecraft/client/particle/ParticleEngine$SpriteParticleRegi
 
 accessible method net/minecraft/client/particle/ParticleEngine register (Lnet/minecraft/core/particles/ParticleType;Lnet/minecraft/client/particle/ParticleEngine$SpriteParticleRegistration;)V
 accessible method net/minecraft/world/entity/projectile/Projectile <init> (Lnet/minecraft/world/entity/EntityType;Lnet/minecraft/world/level/Level;)V
+accessible method net/minecraft/tags/TagEntry <init> (Lnet/minecraft/resources/ResourceLocation;ZZ)V
 accessible method net/minecraft/data/tags/TagsProvider tag (Lnet/minecraft/tags/TagKey;)Lnet/minecraft/data/tags/TagsProvider$TagAppender;
 
 accessible field net/minecraft/client/player/LocalPlayer handsBusy Z
 accessible field net/minecraft/world/level/block/entity/BlockEntityType validBlocks Ljava/util/Set;
+accessible field net/minecraft/tags/TagEntry id Lnet/minecraft/resources/ResourceLocation;
+accessible field net/minecraft/tags/TagEntry required Z

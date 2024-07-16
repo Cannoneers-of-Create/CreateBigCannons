@@ -1,20 +1,21 @@
 package rbasamoyai.createbigcannons.crafting;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+
 import com.google.gson.JsonElement;
+import com.simibubi.create.foundation.utility.Components;
+
 import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 
@@ -25,7 +26,7 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 		public List<ItemStack> getBlockItems() {
 			if (this.ingredient == null) {
 				this.ingredient = new ArrayList<>(1);
-				this.ingredient.add(new ItemStack(Blocks.BARRIER).setHoverName(Component.translatable("Invalid block")));
+				this.ingredient.add(new ItemStack(Blocks.BARRIER).setHoverName(Components.literal("Invalid block")));
 			}
 			return this.ingredient;
 		}
@@ -45,8 +46,8 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 
 	public static BlockRecipeIngredient fromString(String s) {
 		return s.charAt(0) == '/' ? NONE :
-				s.charAt(0) == '#' ? of(TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(s.substring(1)))) :
-				Registry.BLOCK.getOptional(new ResourceLocation(s)).map(BlockRecipeIngredient::of).orElse(NONE);
+				s.charAt(0) == '#' ? of(TagKey.create(CBCRegistryUtils.getBlockRegistryKey(), CBCUtils.location(s.substring(1)))) :
+					CBCRegistryUtils.getOptionalBlock(CBCUtils.location(s)).map(BlockRecipeIngredient::of).orElse(NONE);
 	}
 
 	public abstract List<ItemStack> getBlockItems();
@@ -64,7 +65,7 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 
 		@Override public boolean test(BlockState blockState) { return blockState.is(this.block); }
 		@Override public List<ItemStack> getBlockItems() { return this.blocks; }
-		@Override public String stringForSerialization() { return Registry.BLOCK.getKey(this.block).toString(); }
+		@Override public String stringForSerialization() { return CBCRegistryUtils.getBlockLocation(this.block).toString(); }
 	}
 
 	public static class TagIngredient extends BlockRecipeIngredient {
@@ -81,11 +82,11 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 		public List<ItemStack> getBlockItems() {
 			if (this.blocks == null) {
 				this.blocks = new ArrayList<>();
-				for (Holder<Block> holder : Registry.BLOCK.getTagOrEmpty(this.tag)) {
+				for (Holder<Block> holder : CBCRegistryUtils.getBlockTagEntries(this.tag)) {
 					this.blocks.add(new ItemStack(holder.value()));
 				}
 				if (this.blocks.isEmpty()) {
-					this.blocks.add(new ItemStack(Blocks.BARRIER).setHoverName(Component.literal("Empty Tag: " + this.tag.location())));
+					this.blocks.add(new ItemStack(Blocks.BARRIER).setHoverName(Components.literal("Empty Tag: " + this.tag.location())));
 				}
 			}
 			return this.blocks;

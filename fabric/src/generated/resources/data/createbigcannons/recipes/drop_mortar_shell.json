@@ -11,7 +11,7 @@
       "item": "create:shaft"
     },
     "X": {
-      "item": "minecraft:tnt"
+      "tag": "createbigcannons:high_explosive_materials"
     }
   },
   "pattern": [

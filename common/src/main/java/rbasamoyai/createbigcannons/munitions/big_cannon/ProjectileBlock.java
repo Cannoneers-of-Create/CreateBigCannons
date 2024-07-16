@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
+import java.util.List;
+
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.utility.VoxelShaper;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,11 +28,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
-import java.util.List;
-
-public abstract class ProjectileBlock<T extends BigCannonProjectileProperties> extends DirectionalBlock implements IWrenchable, BigCannonMunitionBlock {
+public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile> extends DirectionalBlock implements IWrenchable, BigCannonMunitionBlock {
 
 	private final VoxelShaper shapes;
 
@@ -80,7 +80,7 @@ public abstract class ProjectileBlock<T extends BigCannonProjectileProperties> e
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 
-	public abstract AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
+	public abstract AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
 
 	@Override
 	public PushReaction getPistonPushReaction(BlockState state) {
@@ -124,7 +124,7 @@ public abstract class ProjectileBlock<T extends BigCannonProjectileProperties> e
 		return stack;
 	}
 
-	public abstract EntityType<? extends PropertiesMunitionEntity<? extends T>> getAssociatedEntityType();
+	public abstract EntityType<? extends ENTITY> getAssociatedEntityType();
 
 	public boolean isValidAddition(List<StructureBlockInfo> total, StructureBlockInfo data, int index, Direction dir) {
 		return total.size() == 1 && total.get(0) == data;
@@ -137,5 +137,15 @@ public abstract class ProjectileBlock<T extends BigCannonProjectileProperties> e
 	}
 
 	@Override public Direction.Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
+
+	public static ItemStack getTracer(List<StructureBlockInfo> blocks) {
+		if (blocks.isEmpty())
+			return ItemStack.EMPTY;
+		StructureBlockInfo info = blocks.get(0);
+		if (info.nbt == null)
+			return ItemStack.EMPTY;
+		BlockEntity load = BlockEntity.loadStatic(info.pos, info.state, info.nbt);
+		return load instanceof BigCannonProjectileBlockEntity projectile ? projectile.getItem(0) : ItemStack.EMPTY;
+	}
 
 }

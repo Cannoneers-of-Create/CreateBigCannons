@@ -19,6 +19,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 /**
  * Copied from SimpleJsonResourceReloadListener, with some tweaks to support Multimap; using similar to tag loading
@@ -43,7 +44,7 @@ public abstract class CBCJsonResourceReloadListener extends SimplePreparableRelo
 		for(Map.Entry<ResourceLocation, Resource> entry : resourceManager.listResources(this.directory, path -> path.getPath().endsWith(".json")).entrySet()) {
 			ResourceLocation loco = entry.getKey();
 			String string = loco.getPath();
-			ResourceLocation loc2 = new ResourceLocation(loco.getNamespace(), string.substring(i, string.length() - PATH_SUFFIX_LENGTH));
+			ResourceLocation loc2 = CBCUtils.location(loco.getNamespace(), string.substring(i, string.length() - PATH_SUFFIX_LENGTH));
 			try {
 				Reader reader = entry.getValue().openAsReader();
 				try {

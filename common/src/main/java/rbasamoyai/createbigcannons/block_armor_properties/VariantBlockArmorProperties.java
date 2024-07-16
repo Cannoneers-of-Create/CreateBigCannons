@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.block_armor_properties;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -27,7 +28,17 @@ public record VariantBlockArmorProperties(SimpleBlockArmorProperties defaultProp
 		return this.propertiesByState.getOrDefault(state, this.defaultProperties).hardness(level, state, pos, recurse);
 	}
 
-	public static VariantBlockArmorProperties fromJson(Block block, JsonObject obj) {
+	@Override
+	public double toughness(Level level, BlockState state, BlockPos pos, boolean recurse) {
+		return this.propertiesByState.getOrDefault(state, this.defaultProperties).toughness(level, state, pos, recurse);
+	}
+
+    @Override
+    public List<BlockState> containedBlockStates(Level level, BlockState state, BlockPos pos, boolean recurse) {
+        return List.of(state);
+    }
+
+    public static VariantBlockArmorProperties fromJson(Block block, JsonObject obj) {
 		StateDefinition<Block, BlockState> definition = block.getStateDefinition();
 		Set<BlockState> states = new HashSet<>(definition.getPossibleStates());
 		Map<BlockState, SimpleBlockArmorProperties> propertiesByState = new Reference2ObjectOpenHashMap<>();
