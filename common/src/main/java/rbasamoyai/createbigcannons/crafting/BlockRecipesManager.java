@@ -25,6 +25,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BlockRecipesManager {
 
@@ -105,8 +106,8 @@ public class BlockRecipesManager {
 				if (el.isJsonObject()) {
 					ResourceLocation id = entry.getKey();
 					JsonObject obj = el.getAsJsonObject();
-					ResourceLocation type = new ResourceLocation(obj.get("type").getAsString());
-					BlockRecipe recipe = serializersRegistry.get(type).fromJson(id, obj);
+					ResourceLocation type = CBCUtils.location(obj.get("type").getAsString());
+					BlockRecipe recipe = CBCRegistries.blockRecipeSerializers().get(type).fromJson(id, obj);
 					BLOCK_RECIPES_BY_NAME.put(id, recipe);
 					BlockRecipeType<?> recipeType = typeRegistry.get(type);
 					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType)) {

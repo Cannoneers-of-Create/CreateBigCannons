@@ -1,14 +1,16 @@
 package rbasamoyai.createbigcannons.crafting.incomplete;
 
+import java.util.List;
+
+import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Lang;
 import com.simibubi.create.foundation.utility.LangBuilder;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-
-import java.util.List;
 
 public class IncompleteCannonBlockTooltip {
 
@@ -17,17 +19,17 @@ public class IncompleteCannonBlockTooltip {
 				.translate(CreateBigCannons.MOD_ID + ".incomplete_block.tooltip.requiredParts")
 				.style(ChatFormatting.GOLD)
 				.forGoggles(tooltip);
-		
+
 		List<ItemLike> required = incomplete.requiredItems();
 		int currentState = incomplete.progress(state);
 		for (int i = 0; i < required.size(); ++i) {
 			LangBuilder lb = Lang.builder();
 			lb.text(i == currentState ? "> " : "")
-			.add(Component.translatable(required.get(i).asItem().getDescriptionId()))
+			.add(Components.translatable(required.get(i).asItem().getDescriptionId()))
 			.style(i == currentState ? ChatFormatting.WHITE : ChatFormatting.DARK_GRAY);
 			if (i < currentState) lb.style(ChatFormatting.STRIKETHROUGH);
 			lb.forGoggles(tooltip, 1);
 		}
 	}
-	
+
 }

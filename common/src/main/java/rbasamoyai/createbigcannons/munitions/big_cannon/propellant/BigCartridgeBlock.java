@@ -29,10 +29,11 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
-import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.config.BigCartridgeProperties;
 
-public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock<BigCartridgeProperties>, IBE<BigCartridgeBlockEntity> {
+public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock, IBE<BigCartridgeBlockEntity> {
 
 	public static final BooleanProperty FILLED = BooleanProperty.create("filled");
 
@@ -93,32 +94,32 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 
 	@Override
 	public float getChargePower(StructureBlockInfo data) {
-		return getPowerFromData(data) * BigCannonPropellantBlock.super.getChargePower(data);
+		return getPowerFromData(data) * this.getProperties().propellantProperties().strength();
 	}
 
 	@Override
 	public float getChargePower(ItemStack stack) {
-		return BigCartridgeBlockItem.getPower(stack) * BigCannonPropellantBlock.super.getChargePower(stack);
+		return BigCartridgeBlockItem.getPower(stack) * this.getProperties().propellantProperties().strength();
 	}
 
 	@Override
 	public float getStressOnCannon(StructureBlockInfo data) {
-		return getPowerFromData(data) * BigCannonPropellantBlock.super.getStressOnCannon(data);
+		return getPowerFromData(data) * this.getProperties().propellantProperties().addedStress();
 	}
 
 	@Override
 	public float getStressOnCannon(ItemStack stack) {
-		return BigCartridgeBlockItem.getPower(stack) * BigCannonPropellantBlock.super.getStressOnCannon(stack);
+		return BigCartridgeBlockItem.getPower(stack) * this.getProperties().propellantProperties().addedStress();
 	}
 
 	@Override
 	public float getSpread(StructureBlockInfo data) {
-		return getPowerFromData(data) * BigCannonPropellantBlock.super.getSpread(data);
+		return getPowerFromData(data) * this.getProperties().propellantProperties().addedSpread();
 	}
 
 	@Override
 	public float getRecoil(StructureBlockInfo data) {
-		return getPowerFromData(data) * BigCannonPropellantBlock.super.getRecoil(data);
+		return getPowerFromData(data) * this.getProperties().propellantProperties().addedRecoil();
 	}
 
 	@Override
@@ -184,9 +185,12 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		return stack;
 	}
 
-	public static int getMaximumPowerLevels() { // For createbigcannons:big_cartridge only
-		BigCartridgeProperties properties = CBCBlocks.BIG_CARTRIDGE.get().getProperties();
-		return properties == null ? 4 : properties.maxPowerLevels();
+	protected BigCartridgeProperties getProperties() {
+		return CBCMunitionPropertiesHandlers.BIG_CARTRIDGE.getPropertiesOf(this);
+	}
+
+	public int getMaximumPowerLevels() {
+		return CBCMunitionPropertiesHandlers.BIG_CARTRIDGE.getPropertiesOf(this).maxPowerLevels();
 	}
 
 }

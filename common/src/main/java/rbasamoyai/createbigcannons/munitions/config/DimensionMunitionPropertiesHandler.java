@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.resources.ResourceKey;
@@ -22,6 +21,7 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class DimensionMunitionPropertiesHandler {
 
@@ -47,7 +47,7 @@ public class DimensionMunitionPropertiesHandler {
                 if (!element.isJsonObject()) continue;
 				try {
 					ResourceLocation entityLoc = entry.getKey();
-					ResourceKey<Level> dimension = ResourceKey.create(Registries.DIMENSION, entry.getKey());
+					ResourceKey<Level> dimension = ResourceKey.create(CBCRegistryUtils.getDimensionRegistryKey(), entry.getKey());
 					DimensionMunitionProperties properties = DimensionMunitionProperties.fromJson(element.getAsJsonObject(), entityLoc.toString());
 					DIMENSIONS.put(dimension, properties);
 				} catch (Exception e) {
@@ -73,7 +73,7 @@ public class DimensionMunitionPropertiesHandler {
 		int sz = buf.readVarInt();
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation loc = buf.readResourceLocation();
-			ResourceKey<Level> key = ResourceKey.create(Registries.DIMENSION, loc);
+			ResourceKey<Level> key = ResourceKey.create(CBCRegistryUtils.getDimensionRegistryKey(), loc);
 			DimensionMunitionProperties properties = DimensionMunitionProperties.fromNetwork(buf);
 			DIMENSIONS.put(key, properties);
 		}

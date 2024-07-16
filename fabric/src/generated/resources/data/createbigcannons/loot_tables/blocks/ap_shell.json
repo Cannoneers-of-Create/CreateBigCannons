@@ -16,13 +16,18 @@
               "ops": [
                 {
                   "op": "replace",
-                  "source": "Fuze",
-                  "target": "BlockEntityTag.Fuze"
+                  "source": "Tracer",
+                  "target": "BlockEntityTag.Tracer"
                 },
                 {
                   "op": "replace",
                   "source": "id",
                   "target": "BlockEntityTag.id"
+                },
+                {
+                  "op": "replace",
+                  "source": "Fuze",
+                  "target": "BlockEntityTag.Fuze"
                 }
               ],
               "source": "block_entity"
@@ -33,6 +38,5 @@
       ],
       "rolls": 1.0
     }
-  ],
-  "random_sequence": "createbigcannons:blocks/ap_shell"
+  ]
 }

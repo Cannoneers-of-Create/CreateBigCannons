@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.block_armor_properties;
 
+import java.util.List;
+
 import com.google.gson.JsonObject;
 
 import net.minecraft.core.BlockPos;
@@ -8,25 +10,38 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-public record SimpleBlockArmorProperties(double hardness) implements BlockArmorPropertiesProvider {
+public record SimpleBlockArmorProperties(double hardness, double toughness) implements BlockArmorPropertiesProvider {
 
 	@Override
 	public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) {
 		return this.hardness;
 	}
 
-	public static SimpleBlockArmorProperties fromJson(JsonObject obj) {
-		double hardness = Math.max(GsonHelper.getAsDouble(obj, "block_hardness", 1), 0);
-		return new SimpleBlockArmorProperties(hardness);
+	@Override
+	public double toughness(Level level, BlockState state, BlockPos pos, boolean recurse) {
+		return this.toughness;
+	}
+
+    @Override
+    public List<BlockState> containedBlockStates(Level level, BlockState state, BlockPos pos, boolean recurse) {
+        return List.of(state);
+    }
+
+    public static SimpleBlockArmorProperties fromJson(JsonObject obj) {
+		double hardness = Math.max(GsonHelper.getAsDouble(obj, "hardness", 1), 0);
+		double toughness = Math.max(GsonHelper.getAsDouble(obj, "toughness", 1), 0);
+		return new SimpleBlockArmorProperties(hardness, toughness);
 	}
 
 	public void toNetwork(FriendlyByteBuf buf) {
-		buf.writeDouble(this.hardness);
+		buf.writeDouble(this.hardness)
+			.writeDouble(this.toughness);
 	}
 
 	public static SimpleBlockArmorProperties fromNetwork(FriendlyByteBuf buf) {
 		double hardness = buf.readDouble();
-		return new SimpleBlockArmorProperties(hardness);
+		double toughness = buf.readDouble();
+		return new SimpleBlockArmorProperties(hardness, toughness);
 	}
 
 }

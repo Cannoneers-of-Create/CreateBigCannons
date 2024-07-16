@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.foundation.utility.Components;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -154,15 +156,15 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 		ItemStack mainAmmo = getMainAmmoStack(stack);
 		if (!mainAmmo.isEmpty()) {
 			String mainValue = this.isCreative() ? infinity : Integer.toString(mainAmmo.getCount());
-			tooltipComponents.add(Component.translatable("block.createbigcannons.autocannon_ammo_container.tooltip.main_ammo", mainValue, mainAmmo.getDisplayName()));
+			tooltipComponents.add(Components.translatable("block.createbigcannons.autocannon_ammo_container.tooltip.main_ammo", mainValue, mainAmmo.getDisplayName()));
 		}
 		ItemStack tracerAmmo = getTracerAmmoStack(stack);
 		if (!tracerAmmo.isEmpty()) {
 			String tracerValue = this.isCreative() ? infinity : Integer.toString(tracerAmmo.getCount());
-			tooltipComponents.add(Component.translatable("block.createbigcannons.autocannon_ammo_container.tooltip.tracers", tracerValue, tracerAmmo.getDisplayName()));
+			tooltipComponents.add(Components.translatable("block.createbigcannons.autocannon_ammo_container.tooltip.tracers", tracerValue, tracerAmmo.getDisplayName()));
 		}
 		int spacingValue = getTracerSpacing(stack);
-		tooltipComponents.add(Component.translatable("block.createbigcannons.autocannon_ammo_container.tooltip.tracer_spacing", spacingValue));
+		tooltipComponents.add(Components.translatable("block.createbigcannons.autocannon_ammo_container.tooltip.tracer_spacing", spacingValue));
 	}
 
 	public boolean isCreative() { return CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.is(this); }

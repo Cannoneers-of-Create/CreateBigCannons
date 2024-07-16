@@ -3,9 +3,9 @@ package rbasamoyai.createbigcannons.index;
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
+import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -13,13 +13,15 @@ import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
-import rbasamoyai.createbigcannons.block_armor_properties.InspectResistanceToolItem;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionToolItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
-import rbasamoyai.createbigcannons.manual_loading.RamRodItem;
-import rbasamoyai.createbigcannons.manual_loading.WormItem;
+import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
+import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskModel;
+import rbasamoyai.createbigcannons.equipment.manual_loading.RamRodItem;
+import rbasamoyai.createbigcannons.equipment.manual_loading.WormItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunRoundItem;
@@ -28,6 +30,8 @@ import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCItems {
 
@@ -83,40 +87,45 @@ public class CBCItems {
 		.register(),
 
 	PACKED_GUNPOWDER = REGISTRATE.item("packed_gunpowder", Item::new).register(),
-		EMPTY_POWDER_CHARGE = REGISTRATE.item("empty_powder_charge", Item::new).register(),
-		CAST_IRON_INGOT = REGISTRATE.item("cast_iron_ingot", Item::new)
-			.tag(forgeTag("ingots/cast_iron"))
-			.tag(fabricTag("ingots/cast_iron"))
-			.tag(fabricTag("cast_iron_ingots"))
-			.register(),
-		CAST_IRON_NUGGET = REGISTRATE.item("cast_iron_nugget", Item::new)
-			.tag(forgeTag("nuggets/cast_iron"))
-			.tag(fabricTag("nuggets/cast_iron"))
-			.tag(fabricTag("cast_iron_nuggets"))
-			.register(),
-		NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new)
-			.tag(forgeTag("ingots/nethersteel"))
-			.tag(fabricTag("ingots/nethersteel"))
-			.tag(fabricTag("nethersteel_ingots"))
-			.register(),
-		NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new)
-			.tag(forgeTag("nuggets/nethersteel"))
-			.tag(fabricTag("nuggets/nethersteel"))
-			.tag(fabricTag("nethersteel_nuggets"))
-			.register(),
+	GUNPOWDER_PINCH = REGISTRATE.item("gunpowder_pinch", Item::new)
+		.lang("Pinch of Gunpowder")
+		.tag(CBCTags.CBCItemTags.GUNPOWDER_PINCH)
+		.register(),
 
-		BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
-			.tag(forgeTag("nuggets/bronze"))
-			.tag(fabricTag("nuggets/bronze"))
-			.tag(fabricTag("bronze_nuggets"))
-			.register(),
-		STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new)
-			.tag(forgeTag("nuggets/steel"))
-			.tag(fabricTag("nuggets/steel"))
-			.tag(fabricTag("steel_nuggets"))
-			.register(),
-		SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register(),
-		AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
+	EMPTY_POWDER_CHARGE = REGISTRATE.item("empty_powder_charge", Item::new).register(),
+	CAST_IRON_INGOT = REGISTRATE.item("cast_iron_ingot", Item::new)
+		.tag(forgeTag("ingots/cast_iron"))
+		.tag(fabricTag("ingots/cast_iron"))
+		.tag(fabricTag("cast_iron_ingots"))
+		.register(),
+	CAST_IRON_NUGGET = REGISTRATE.item("cast_iron_nugget", Item::new)
+		.tag(forgeTag("nuggets/cast_iron"))
+		.tag(fabricTag("nuggets/cast_iron"))
+		.tag(fabricTag("cast_iron_nuggets"))
+		.register(),
+	NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new)
+		.tag(forgeTag("ingots/nethersteel"))
+		.tag(fabricTag("ingots/nethersteel"))
+		.tag(fabricTag("nethersteel_ingots"))
+		.register(),
+	NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new)
+		.tag(forgeTag("nuggets/nethersteel"))
+		.tag(fabricTag("nuggets/nethersteel"))
+		.tag(fabricTag("nethersteel_nuggets"))
+		.register(),
+
+	BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
+		.tag(forgeTag("nuggets/bronze"))
+		.tag(fabricTag("nuggets/bronze"))
+		.tag(fabricTag("bronze_nuggets"))
+		.register(),
+	STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new)
+		.tag(forgeTag("nuggets/steel"))
+		.tag(fabricTag("nuggets/steel"))
+		.tag(fabricTag("steel_nuggets"))
+		.register(),
+	SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register(),
+	AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
 
 	EMPTY_AUTOCANNON_CARTRIDGE = REGISTRATE.item("empty_autocannon_cartridge", Item::new)
 		.tag(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS)
@@ -137,6 +146,12 @@ public class CBCItems {
 		.model((c, p) -> {})
 		.register(),
 
+	GUNCOTTON = REGISTRATE.item("guncotton", Item::new)
+		.tag(CBCTags.CBCItemTags.GUNCOTTON)
+		.register(),
+	PACKED_GUNCOTTON = REGISTRATE.item("packed_guncotton", Item::new)
+		.tag(CBCTags.CBCItemTags.HIGH_EXPLOSIVE_MATERIALS)
+		.register(),
 	CONGEALED_NITRO = REGISTRATE.item("congealed_nitro", Item::new).register(),
 	HARDENED_NITRO = REGISTRATE.item("hardened_nitro", Item::new).register(),
 	NITROPOWDER = REGISTRATE.item("nitropowder", Item::new).tag(CBCTags.CBCItemTags.NITROPOWDER).register(),
@@ -227,17 +242,24 @@ public class CBCItems {
 		.model((c, p) -> {})
 		.register();
 
-	public static final ItemEntry<InspectResistanceToolItem> RESISTANCE_INSPECTION_TOOL = REGISTRATE
-		.item("resistance_inspection_tool", InspectResistanceToolItem::new)
+	public static final ItemEntry<BlockArmorInspectionToolItem> BLOCK_ARMOR_INSPECTION_TOOL = REGISTRATE
+		.item("block_armor_inspection_tool", BlockArmorInspectionToolItem::new)
 		.properties(p -> p.stacksTo(1))
 		.properties(p -> p.rarity(Rarity.EPIC))
+		.register();
+
+	public static final ItemEntry<GasMaskItem> GAS_MASK = REGISTRATE
+		.item("gas_mask", GasMaskItem::new)
+		.properties(p -> p.stacksTo(1))
+		.onRegister(CreateRegistrate.itemModel(() -> GasMaskModel::new))
+		.tag(CBCTags.CBCItemTags.GAS_MASKS)
 		.register();
 
 	public static void register() {
 	}
 
-	public static TagKey<Item> tag(ResourceLocation loc) { return TagKey.create(Registries.ITEM, loc); }
-	private static TagKey<Item> forgeTag(String loc) { return tag(new ResourceLocation("forge", loc)); }
-	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
+	public static TagKey<Item> tag(ResourceLocation loc) { return CBCRegistryUtils.createItemTag(loc); }
+	private static TagKey<Item> forgeTag(String loc) { return tag(CBCUtils.location("forge", loc)); }
+	private static TagKey<Item> fabricTag(String loc) { return tag(CBCUtils.location("c", loc)); }
 
 }

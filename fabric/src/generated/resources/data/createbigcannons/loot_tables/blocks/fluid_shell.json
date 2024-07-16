@@ -16,8 +16,8 @@
               "ops": [
                 {
                   "op": "replace",
-                  "source": "Fuze",
-                  "target": "BlockEntityTag.Fuze"
+                  "source": "Tracer",
+                  "target": "BlockEntityTag.Tracer"
                 },
                 {
                   "op": "replace",
@@ -28,6 +28,11 @@
                   "op": "replace",
                   "source": "FluidContent",
                   "target": "BlockEntityTag.FluidContent"
+                },
+                {
+                  "op": "replace",
+                  "source": "Fuze",
+                  "target": "BlockEntityTag.Fuze"
                 }
               ],
               "source": "block_entity"
@@ -38,6 +43,5 @@
       ],
       "rolls": 1.0
     }
-  ],
-  "random_sequence": "createbigcannons:blocks/fluid_shell"
+  ]
 }

@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -20,6 +19,8 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.datagen.CBCDatagenCommon;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CannonCastRecipeProvider extends BlockRecipeProvider {
 
@@ -233,7 +234,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		private Block result = null;
 
 		private Builder(String name) {
-			this.id = new ResourceLocation(CannonCastRecipeProvider.this.modid, name);
+			this.id = CBCUtils.location(CannonCastRecipeProvider.this.modid, name);
 		}
 
 		public Builder castingShape(CannonCastShape shape) {
@@ -281,7 +282,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		public void serializeRecipeData(JsonObject obj) {
 			obj.addProperty("cast_shape", CBCRegistries.cannonCastShapes().getKey(this.shape).toString());
 			obj.add("fluid", this.ingredient.serialize());
-			obj.addProperty("result", BuiltInRegistries.BLOCK.getKey(this.result).toString());
+			obj.addProperty("result", CBCRegistryUtils.getBlockLocation(this.result).toString());
 		}
 
 		@Override public ResourceLocation id() { return this.id; }

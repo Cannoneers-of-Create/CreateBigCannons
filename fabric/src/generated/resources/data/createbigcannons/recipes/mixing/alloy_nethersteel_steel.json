@@ -18,6 +18,7 @@
       "tag": "createbigcannons:ingot_steel"
     }
   ],
+  "processingTime": 100,
   "results": [
     {
       "count": 8,

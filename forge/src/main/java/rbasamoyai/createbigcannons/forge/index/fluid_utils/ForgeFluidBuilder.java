@@ -13,7 +13,6 @@ import com.tterrag.registrate.providers.RegistrateLangProvider;
 import com.tterrag.registrate.providers.RegistrateTagsProvider;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -22,6 +21,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilder<T, P> {
 
@@ -34,7 +34,7 @@ public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilde
 		FluidBuilder<T, P> ret = this.tag(ProviderType.FLUID_TAGS, tags);
 		if (this.tags.isEmpty()) {
 			ret.getOwner().<RegistrateTagsProvider<Fluid>, Fluid>setDataGenerator(ret.sourceName, getRegistryKey(), ProviderType.FLUID_TAGS,
-					prov -> this.tags.stream().map(prov::addTag).forEach(p -> p.add(BuiltInRegistries.FLUID.getResourceKey(this.getSource()).orElseThrow())));
+					prov -> this.tags.stream().map(prov::addTag).forEach(p -> p.add(CBCRegistryUtils.getFluidRegistry().getResourceKey(this.getSource()).orElseThrow())));
 		}
 		this.tags.addAll(Arrays.asList(tags));
 		return ret;

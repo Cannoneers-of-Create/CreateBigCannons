@@ -5,7 +5,6 @@ import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -14,6 +13,7 @@ import rbasamoyai.createbigcannons.CBCTags.CBCItemTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 
@@ -31,14 +31,13 @@ public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 		SPRING_WIRE_IRON = springWire("iron", CBCItemTags.SHEET_IRON, 1),
 		SPRING_WIRE_STEEL = springWire("steel", CBCItemTags.SHEET_STEEL, 3),
 
-	AUTOCANNON_CARTRIDGE_SHEET_IRON = autocannonCartridgeSheet("iron", CBCItemTags.SHEET_IRON, 1),
-		AUTOCANNON_CARTRIDGE_SHEET_COPPER = autocannonCartridgeSheet("copper", CBCItemTags.SHEET_COPPER, 1),
-		AUTOCANNON_CARTRIDGE_SHEET_BRASS = autocannonCartridgeSheet("brass", CBCItemTags.SHEET_BRASS, 4),
+	AUTOCANNON_CARTRIDGE_SHEET_IRON = autocannonCartridgeSheet("iron", CBCItemTags.SHEET_IRON, 3),
+		AUTOCANNON_CARTRIDGE_SHEET_COPPER = autocannonCartridgeSheet("copper", CBCItemTags.SHEET_COPPER, 3),
+		AUTOCANNON_CARTRIDGE_SHEET_BRASS = autocannonCartridgeSheet("brass", CBCItemTags.SHEET_BRASS, 6),
 		AUTOCANNON_CARTRIDGE_SHEET_GOLD = create(CreateBigCannons.resource("autocannon_cartridge_sheet_gold"), b -> b
 			.require(CBCItemTags.SHEET_GOLD)
-			.output(CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get())
-			.output(0.125f, CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get(), 1)
-			.output(0.125f, CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get(), 1)),
+			.output(CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get(), 3)
+			.output(0.25f, CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get(), 2)),
 
 	EMPTY_MACHINE_GUN_ROUND = create(CreateBigCannons.resource("empty_machine_gun_round"), b -> b.require(CBCItems.AUTOCANNON_CARTRIDGE_SHEET.get())
 		.output(CBCItems.EMPTY_MACHINE_GUN_ROUND.get(), 4)),
@@ -66,7 +65,7 @@ public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 	}
 
 	private GeneratedRecipe castMould(ItemLike item) {
-		return create(BuiltInRegistries.ITEM.getKey(item.asItem()), b -> b.require(ItemTags.LOGS)
+		return create(CBCRegistryUtils.getItemLocation(item.asItem()), b -> b.require(ItemTags.LOGS)
 			.output(item));
 	}
 

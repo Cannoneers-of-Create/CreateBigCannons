@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
-import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 
 @Mixin(PulleyBlockEntity.class)
 public abstract class PulleyBlockEntityMixin extends LinearActuatorBlockEntity {
@@ -75,13 +74,6 @@ public abstract class PulleyBlockEntityMixin extends LinearActuatorBlockEntity {
 			return true;
 		}
 		return instance.setBlock(pos, state, flag);
-	}
-
-	@Inject(method = "disassemble",
-			at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/pulley/PulleyBlockEntity;sendData()V", shift = At.Shift.BEFORE),
-			remap = false)
-	private void createbigcannons$disassemble$3(CallbackInfo ci) {
-		((HasFragileContraption) this).createbigcannons$getEncounteredBlocks().clear();
 	}
 
 	@Inject(method = "visitNewPosition",

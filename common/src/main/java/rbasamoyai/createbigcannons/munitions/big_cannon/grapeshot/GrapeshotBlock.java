@@ -8,21 +8,20 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
-public class GrapeshotBlock extends ProjectileBlock<GrapeshotBagProperties> {
+public class GrapeshotBlock extends ProjectileBlock<GrapeshotBagProjectile> {
 
 	public GrapeshotBlock(Properties properties) {
 		super(properties);
 	}
 
 	@Override
-	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		return CBCEntityTypes.BAG_OF_GRAPESHOT.create(level);
 	}
 
 	@Override
-	public EntityType<? extends PropertiesMunitionEntity<? extends GrapeshotBagProperties>> getAssociatedEntityType() {
+	public EntityType<? extends GrapeshotBagProjectile> getAssociatedEntityType() {
 		return CBCEntityTypes.BAG_OF_GRAPESHOT.get();
 	}
 

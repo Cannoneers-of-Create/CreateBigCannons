@@ -61,6 +61,8 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntity {
 
@@ -190,6 +192,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonDrillBlock.STATE, MechanicalPistonBlock.PistonState.EXTENDED), 3 | 16);
 		}
 		super.disassemble();
+		if (this.remove)
+			CannonDrillBlock.destroyExtensionPoles(this.level, this.worldPosition, this.getBlockState(), true);
 	}
 
 	@Override
@@ -422,8 +426,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		lathe.getBlocks().put(boringOffset, newInfo);
 		bearing.notifyUpdate();
 
-		ResourceLocation unboredId = BuiltInRegistries.BLOCK.getKey(latheBlockInfo.state().getBlock());
-		LootTable table = slevel.getServer().getLootData().getLootTable(new ResourceLocation(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
+		ResourceLocation unboredId = CBCRegistryUtils.getBlockLocation(latheBlockInfo.state().getBlock());
+		LootTable table = slevel.getServer().getLootData().getLootTable(CBCUtils.location(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
 		List<ItemStack> scrap = table.getRandomItems(new LootParams.Builder(slevel)
 			.withParameter(LootContextParams.BLOCK_STATE, latheBlockInfo.state())
 			.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.boringPos))

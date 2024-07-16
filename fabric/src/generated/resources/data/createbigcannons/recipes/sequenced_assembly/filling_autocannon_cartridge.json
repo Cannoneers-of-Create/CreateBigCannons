@@ -3,7 +3,7 @@
   "ingredient": {
     "item": "createbigcannons:empty_autocannon_cartridge"
   },
-  "loops": 3,
+  "loops": 1,
   "results": [
     {
       "item": "createbigcannons:filled_autocannon_cartridge"

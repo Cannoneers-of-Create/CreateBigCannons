@@ -35,9 +35,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCCommonEvents;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionToolItem;
 import rbasamoyai.createbigcannons.cannon_control.config.DefaultCannonMountPropertiesSerializers;
 import rbasamoyai.createbigcannons.compat.copycats.CopycatsCompat;
 import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
+import rbasamoyai.createbigcannons.compat.trinkets.CBCTrinketsIntegration;
+import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 
 import javax.annotation.Nullable;
 
@@ -59,9 +62,12 @@ public class CBCCommonFabricEvents {
 	}
 
 	public static void onModsLoaded(EnvType type) {
+		BlockArmorInspectionToolItem.registerDefaultHandlers();
+		GasMaskItem.registerDefaultHandlers();
 		DefaultCreateCompat.init();
 		DefaultCannonMountPropertiesSerializers.init();
 		CBCModsFabric.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init());
+		CBCModsFabric.TRINKETS.executeIfInstalled(() -> () -> CBCTrinketsIntegration.init());
 	}
 
 	public static void onServerLevelTick(ServerLevel level) {

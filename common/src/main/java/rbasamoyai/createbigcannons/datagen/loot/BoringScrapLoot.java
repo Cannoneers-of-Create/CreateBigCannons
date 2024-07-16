@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.datagen.loot;
 
 import java.util.function.BiConsumer;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -17,6 +16,8 @@ import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BoringScrapLoot implements LootTableSubProvider {
 
@@ -64,8 +65,8 @@ public class BoringScrapLoot implements LootTableSubProvider {
 	}
 
 	protected static ResourceLocation loc(Block block) {
-		ResourceLocation id = BuiltInRegistries.BLOCK.getKey(block);
-		return new ResourceLocation(id.getNamespace(), "boring_scrap/" + id.getPath());
+		ResourceLocation id = CBCRegistryUtils.getBlockLocation(block);
+		return CBCUtils.location(id.getNamespace(), "boring_scrap/" + id.getPath());
 	}
 
 	protected static LootTable.Builder dropAmount(ItemLike drop, int min, int max) {

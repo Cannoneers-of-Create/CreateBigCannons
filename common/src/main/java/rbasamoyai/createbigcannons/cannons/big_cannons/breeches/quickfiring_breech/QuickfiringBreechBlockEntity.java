@@ -66,7 +66,6 @@ public class QuickfiringBreechBlockEntity extends SmartBlockEntity implements IB
 		if (!this.inPonder) { // Don't reset when ponder, can't use level due to Ponder's having levels.
 			if (this.openProgress != 0) this.openProgress = 0;
 			if (this.openDirection != 0) this.openDirection = 0;
-			if (this.loadingCooldown != 0) this.loadingCooldown = 0;
 		}
 	}
 

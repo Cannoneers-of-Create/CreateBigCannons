@@ -1,9 +1,0 @@
-{
-  "entity_damage": 5.0,
-  "durability_mass": 2.0,
-  "renders_invulnerable": false,
-  "ignores_entity_armor": true,
-  "gravity": -0.025,
-  "drag": 1.0,
-  "knockback": 0.025
-}

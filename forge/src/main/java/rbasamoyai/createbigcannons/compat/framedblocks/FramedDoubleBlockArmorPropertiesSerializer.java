@@ -13,7 +13,7 @@ import rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks.Mimic
 
 public class FramedDoubleBlockArmorPropertiesSerializer implements BlockArmorPropertiesSerializer<FramedDoubleBlockArmorProperties> {
 
-	private static final MimickingBlockArmorUnit FALLBACK = new MimickingBlockArmorUnit(0.5d, 0.5d);
+	private static final MimickingBlockArmorUnit FALLBACK = new MimickingBlockArmorUnit(0.5d, 0.5d, 0.5d, 0.5d);
 
 	@Override
 	public FramedDoubleBlockArmorProperties loadBlockArmorPropertiesFromJson(Block block, JsonObject obj) {
