@@ -45,11 +45,8 @@ dependencies {
 	annotationProcessor(implementation("io.github.llamalad7:mixinextras-common:${mixinextras_version}")) // MixinExtras
 
 	// Ritchie's Projectile Library
-	if (Boolean.valueOf(use_local_rpl_build)) {
-		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-common") { transitive = false }
-	} else {
-		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-common-build.${rpl_build}") { transitive = false }
-	}
+	String rplSuffix = Boolean.valueOf(use_local_rpl_build) ? "" : "-build.${rpl_build}";
+	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-common" + rplSuffix) { transitive = false }
 
 	modImplementation("curse.maven:copycats-968398:${copycats_fabric_file}")
 }
