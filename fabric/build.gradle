@@ -96,11 +96,8 @@ dependencies {
     modLocalRuntime("curse.maven:spark-361579:${spark_fabric_file}") // Spark
 
 	// Ritchie's Projectile Library
-	if (Boolean.valueOf(use_local_rpl_build)) {
-		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-fabric") { transitive = false }
-	} else {
-		modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-fabric-build.${rpl_build}") { transitive = false }
-	}
+	String rplSuffix = Boolean.valueOf(use_local_rpl_build) ? "" : "-build.${rpl_build}";
+	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-fabric" + rplSuffix)) { transitive = false }
 
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
