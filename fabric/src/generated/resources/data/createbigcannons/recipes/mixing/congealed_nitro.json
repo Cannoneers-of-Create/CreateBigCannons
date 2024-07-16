@@ -14,11 +14,11 @@
       "tag": "createbigcannons:gunpowder"
     }
   ],
+  "processingTime": 200,
   "results": [
     {
       "count": 2,
       "item": "createbigcannons:congealed_nitro"
     }
-  ],
-  "processingTime": 200
+  ]
 }

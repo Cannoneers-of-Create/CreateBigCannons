@@ -11,15 +11,15 @@
       "tag": "createbigcannons:nitro_acidifiers"
     },
     {
+      "amount": 200,
       "fluid": "minecraft:water",
-      "nbt": {},
-      "amount": 200
+      "nbt": {}
     }
   ],
+  "processingTime": 300,
   "results": [
     {
       "item": "createbigcannons:guncotton"
     }
-  ],
-  "processingTime": 300
+  ]
 }

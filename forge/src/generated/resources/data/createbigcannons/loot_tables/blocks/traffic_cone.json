@@ -2,7 +2,6 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
         {
@@ -14,24 +13,25 @@
             },
             {
               "function": "minecraft:copy_nbt",
-              "source": "block_entity",
               "ops": [
                 {
+                  "op": "replace",
                   "source": "Tracer",
-                  "target": "BlockEntityTag.Tracer",
-                  "op": "replace"
+                  "target": "BlockEntityTag.Tracer"
                 },
                 {
+                  "op": "replace",
                   "source": "id",
-                  "target": "BlockEntityTag.id",
-                  "op": "replace"
+                  "target": "BlockEntityTag.id"
                 }
-              ]
+              ],
+              "source": "block_entity"
             }
           ],
           "name": "createbigcannons:traffic_cone"
         }
-      ]
+      ],
+      "rolls": 1.0
     }
   ]
 }

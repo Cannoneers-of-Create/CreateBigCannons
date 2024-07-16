@@ -2,8 +2,8 @@
   "autocannon_round_flyby": {
     "sounds": [
       {
-        "name": "createbigcannons:autocannon_round_flyby",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:autocannon_round_flyby"
       }
     ],
     "subtitle": "createbigcannons.subtitle.autocannon_round_flyby"
@@ -11,8 +11,8 @@
   "fire_autocannon": {
     "sounds": [
       {
-        "name": "createbigcannons:fire_autocannon",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:fire_autocannon"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_autocannon"
@@ -20,8 +20,8 @@
   "fire_big_cannon": {
     "sounds": [
       {
-        "name": "createbigcannons:fire_big_cannon",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:fire_big_cannon"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_big_cannon"
@@ -29,12 +29,12 @@
   "fire_drop_mortar": {
     "sounds": [
       {
-        "name": "createbigcannons:fire_drop_mortar",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:fire_drop_mortar"
       },
       {
-        "name": "createbigcannons:fire_drop_mortar1",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:fire_drop_mortar1"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_drop_mortar"
@@ -42,8 +42,8 @@
   "fire_machine_gun": {
     "sounds": [
       {
-        "name": "createbigcannons:fire_machine_gun",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:fire_machine_gun"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fire_machine_gun"
@@ -51,8 +51,8 @@
   "flak_round_explosion": {
     "sounds": [
       {
-        "name": "createbigcannons:flak_round_explosion",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:flak_round_explosion"
       }
     ],
     "subtitle": "createbigcannons.subtitle.flak_round_explosion"
@@ -60,8 +60,8 @@
   "fluid_shell_explosion": {
     "sounds": [
       {
-        "name": "createbigcannons:fluid_shell_explosion",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:fluid_shell_explosion"
       }
     ],
     "subtitle": "createbigcannons.subtitle.fluid_shell_explosion"
@@ -69,8 +69,8 @@
   "hot_projectile_splash": {
     "sounds": [
       {
-        "name": "minecraft:item.bucket.empty",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:item.bucket.empty"
       }
     ],
     "subtitle": "createbigcannons.subtitle.hot_projectile_splash"
@@ -78,16 +78,16 @@
   "lava_fluid_release": {
     "sounds": [
       {
-        "name": "minecraft:item.firecharge.use",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:item.firecharge.use"
       }
     ]
   },
   "machine_gun_round_flyby": {
     "sounds": [
       {
-        "name": "createbigcannons:machine_gun_round_flyby",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:machine_gun_round_flyby"
       }
     ],
     "subtitle": "createbigcannons.subtitle.machine_gun_round_flyby"
@@ -95,16 +95,16 @@
   "mortar_stone_explode": {
     "sounds": [
       {
-        "name": "createbigcannons:mortar_stone_explode",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:mortar_stone_explode"
       },
       {
-        "name": "createbigcannons:mortar_stone_explode1",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:mortar_stone_explode1"
       },
       {
-        "name": "createbigcannons:mortar_stone_explode2",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:mortar_stone_explode2"
       }
     ],
     "subtitle": "createbigcannons.subtitle.mortar_stone_explode"
@@ -112,24 +112,24 @@
   "place_autocannon_ammo_container": {
     "sounds": [
       {
-        "name": "minecraft:item.armor.equip_iron",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:item.armor.equip_iron"
       }
     ]
   },
   "potion_fluid_release": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.extinguish_fire",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:entity.generic.extinguish_fire"
       }
     ]
   },
   "projectile_impact": {
     "sounds": [
       {
-        "name": "createbigcannons:mortar_stone_explode",
-        "type": "event"
+        "type": "event",
+        "name": "createbigcannons:mortar_stone_explode"
       }
     ],
     "subtitle": "createbigcannons.subtitle.projectile_impact"
@@ -137,12 +137,12 @@
   "projectile_splash": {
     "sounds": [
       {
-        "name": "createbigcannons:projectile_splash",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:projectile_splash"
       },
       {
-        "name": "createbigcannons:projectile_splash1",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:projectile_splash1"
       }
     ],
     "subtitle": "createbigcannons.subtitle.projectile_splash"
@@ -150,16 +150,16 @@
   "shell_explosion": {
     "sounds": [
       {
-        "name": "createbigcannons:shell_explosion",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:shell_explosion"
       },
       {
-        "name": "createbigcannons:shell_explosion1",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:shell_explosion1"
       },
       {
-        "name": "createbigcannons:shell_explosion2",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:shell_explosion2"
       }
     ],
     "subtitle": "createbigcannons.subtitle.shell_explosion"
@@ -167,9 +167,9 @@
   "shell_flying": {
     "sounds": [
       {
-        "name": "createbigcannons:shell_flying",
         "type": "file",
-        "attenuation_distance": 256
+        "attenuation_distance": 256,
+        "name": "createbigcannons:shell_flying"
       }
     ],
     "subtitle": "createbigcannons.subtitle.shell_flying"
@@ -177,8 +177,8 @@
   "shrapnel_shell_explosion": {
     "sounds": [
       {
-        "name": "createbigcannons:shrapnel_shell_explosion",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:shrapnel_shell_explosion"
       }
     ],
     "subtitle": "createbigcannons.subtitle.shrapnel_shell_explosion"
@@ -186,8 +186,8 @@
   "smoke_shell_detonate": {
     "sounds": [
       {
-        "name": "minecraft:entity.generic.extinguish_fire",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:entity.generic.extinguish_fire"
       }
     ],
     "subtitle": "createbigcannons.subtitle.smoke_shell_detonate"
@@ -195,28 +195,28 @@
   "water_fluid_release": {
     "sounds": [
       {
-        "name": "minecraft:item.bucket.empty",
-        "type": "event"
+        "type": "event",
+        "name": "minecraft:item.bucket.empty"
       }
     ]
   },
   "wood_splinters": {
     "sounds": [
       {
-        "name": "createbigcannons:wood_splinters",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:wood_splinters"
       },
       {
-        "name": "createbigcannons:wood_splinters1",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:wood_splinters1"
       },
       {
-        "name": "createbigcannons:wood_splinters2",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:wood_splinters2"
       },
       {
-        "name": "createbigcannons:wood_splinters3",
-        "type": "file"
+        "type": "file",
+        "name": "createbigcannons:wood_splinters3"
       }
     ]
   }

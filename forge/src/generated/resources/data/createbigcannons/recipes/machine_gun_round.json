@@ -1,21 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "B",
-    "P",
-    "C"
-  ],
   "key": {
+    "B": {
+      "tag": "createbigcannons:nugget_copper"
+    },
     "C": {
       "item": "createbigcannons:empty_machine_gun_round"
     },
     "P": {
       "tag": "createbigcannons:gunpowder_pinch"
-    },
-    "B": {
-      "tag": "createbigcannons:nugget_copper"
     }
   },
+  "pattern": [
+    "B",
+    "P",
+    "C"
+  ],
   "result": {
     "item": "createbigcannons:machine_gun_round"
   }

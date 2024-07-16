@@ -11,15 +11,15 @@
       "tag": "createbigcannons:nitro_acidifiers"
     },
     {
+      "amount": 12150,
       "fluid": "minecraft:water",
-      "nbt": {},
-      "amount": 12150
+      "nbt": {}
     }
   ],
+  "processingTime": 200,
   "results": [
     {
       "item": "createbigcannons:congealed_nitro"
     }
-  ],
-  "processingTime": 200
+  ]
 }
