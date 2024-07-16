@@ -84,7 +84,7 @@ public class CBCClientCommon {
 	private static boolean PARTICLES_REGISTERED = false;
 
 	public static ParticleStatus getParticleStatus() {
-		return Minecraft.getInstance().options.particles;
+		return Minecraft.getInstance().options.particles().get();
 	}
 
 	public static void onRegisterParticleFactories(Minecraft mc, ParticleEngine engine) {
