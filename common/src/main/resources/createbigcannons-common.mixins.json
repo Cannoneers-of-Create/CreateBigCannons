@@ -18,6 +18,7 @@
     "client.PitchOrientedContraptionEntityMixin",
     "client.PoleContraptionMixin",
     "client.PonderRegistryMixin",
+    "client.RPLClientHandlersMixin",
     "client.SoundEngineMixin"
   ],
   "mixins": [
