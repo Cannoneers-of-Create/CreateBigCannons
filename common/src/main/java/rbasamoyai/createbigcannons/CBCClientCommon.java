@@ -125,10 +125,10 @@ public class CBCClientCommon {
 
 	public static void registerOverlays(String type, BiConsumer<String, CBCGuiOverlay> cons) {
 		if (type.equals("hotbar")) {
-			cons.accept("Create Big Cannons' Entity Goggles Overlay", EntityGoggleOverlayRenderer::renderOverlay);
+			cons.accept("entity_goggles_overlay", EntityGoggleOverlayRenderer::renderOverlay);
 		}
 		if (type.equals("helmet")) {
-			cons.accept("Create Big Cannons' Gas Mask Overlay", GasMaskOverlay::renderOverlay);
+			cons.accept("gas_mask_overlay", GasMaskOverlay::renderOverlay);
 		}
 	}
 
