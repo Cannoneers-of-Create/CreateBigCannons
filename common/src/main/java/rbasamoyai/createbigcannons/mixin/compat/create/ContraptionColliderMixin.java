@@ -46,7 +46,7 @@ public abstract class ContraptionColliderMixin {
 				if (contraption.presentBlockEntities.get(pos) instanceof LayeredBigCannonBlockEntity layered1)
 					return flag || !layered.isCollidingWith(blockInfo, layered1, movementDirection);
 			}
-			return !flag;
+			return flag;
 		}
 		return false;
 	}
