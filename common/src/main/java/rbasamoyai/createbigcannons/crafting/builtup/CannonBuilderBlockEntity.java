@@ -6,9 +6,11 @@ import com.simibubi.create.content.contraptions.ContraptionCollider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.gameevent.GameEvent;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.base.PoleMoverBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderState;
@@ -41,8 +43,11 @@ public class CannonBuilderBlockEntity extends PoleMoverBlockEntity {
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonBuilderBlock.STATE, BuilderState.EXTENDED), 3 | 16);
 		}
 		super.disassemble();
-		if (this.remove)
+		if (this.remove) {
+			this.level.levelEvent(2001, this.worldPosition, Block.getId(this.getBlockState()));
+			this.level.gameEvent(GameEvent.BLOCK_DESTROY, this.worldPosition);
 			CannonBuilderBlock.destroyExtensionPoles(this.level, this.worldPosition, this.getBlockState(), true);
+		}
 	}
 
 	public BlockState updateBlockstatesOnPowered(BlockState state) {

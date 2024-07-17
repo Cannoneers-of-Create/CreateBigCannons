@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -222,7 +221,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		newLayer.baseMaterial = this.baseMaterial;
 		newLayer.currentFacing = this.currentFacing;
 		for (CannonCastShape layer : layers) {
-			if (!this.layeredBlocks.containsKey(layer) || from != null && !this.isLayerConnectedTo(from, layer) && !forced)
+			if (!this.layeredBlocks.containsKey(layer) || !forced && from != null && !this.isLayerConnectedTo(from, layer))
 				continue;
 			newLayer.setLayer(layer, this.getLayer(layer));
 			for (Direction dir : Iterate.directions) {
@@ -237,7 +236,22 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 	}
 
 	public LayeredBigCannonBlockEntity getSplitBlockEntity(CannonCastShape fullShape, Direction from, @Nullable Direction movementDirection) {
-		return this.getSplitBlockEntity(Arrays.asList(fullShape), from, movementDirection);
+		boolean forced = movementDirection != null && from == movementDirection.getOpposite();
+		LayeredBigCannonBlockEntity newLayer = new LayeredBigCannonBlockEntity(CBCBlockEntities.LAYERED_CANNON.get(), this.worldPosition, this.getBlockState());
+		newLayer.baseMaterial = this.baseMaterial;
+		newLayer.currentFacing = this.currentFacing;
+		for (CannonCastShape layer : this.layeredBlocks.keySet()) {
+			if (layer.diameter() > fullShape.diameter() || !forced && from != null && !this.isLayerConnectedTo(from, layer))
+				continue;
+			newLayer.setLayer(layer, this.getLayer(layer));
+			for (Direction dir : Iterate.directions)
+				newLayer.setLayerConnectedTo(dir, layer, this.isLayerConnectedTo(dir, layer));
+		}
+		for (Direction dir : Iterate.directions) {
+			boolean connect = this.cannonBehavior.isConnectedTo(dir);
+			newLayer.cannonBehavior.setConnectedFace(dir, connect);
+		}
+		return newLayer;
 	}
 
 	public void removeLayersOfOther(LayeredBigCannonBlockEntity other) {
