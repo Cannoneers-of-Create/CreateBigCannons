@@ -7,17 +7,17 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.remix.CustomExplosion;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FlakCloudParticleData;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundCBCExplodePacket;
+import rbasamoyai.createbigcannons.remix.CustomExplosion;
 
 public class FlakExplosion extends CustomExplosion.Impl {
 
 
 	public FlakExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						 double toBlowY, double toBlowZ, float radius, BlockInteraction interaction) {
+						 double toBlowY, double toBlowZ, float radius, Level.ExplosionInteraction interaction) {
 		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
 	}
 

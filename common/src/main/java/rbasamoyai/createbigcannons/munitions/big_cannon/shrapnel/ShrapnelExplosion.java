@@ -17,7 +17,7 @@ public class ShrapnelExplosion extends CustomExplosion.Impl {
 
 
 	public ShrapnelExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-							 double toBlowY, double toBlowZ, float radius, BlockInteraction interaction) {
+							 double toBlowY, double toBlowZ, float radius, Level.ExplosionInteraction interaction) {
 		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
 	}
 

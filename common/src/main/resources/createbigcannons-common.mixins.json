@@ -26,8 +26,6 @@
     "EntityMixin",
     "ExplosionMixin",
     "LivingEntityMixin",
-    "Matrix3fAccessor",
-    "Matrix4fAccessor",
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",

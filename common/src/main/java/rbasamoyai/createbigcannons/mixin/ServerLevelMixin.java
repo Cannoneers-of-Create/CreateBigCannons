@@ -9,6 +9,7 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -21,9 +22,11 @@ import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 @Mixin(ServerLevel.class)
 public abstract class ServerLevelMixin extends Level {
 
-	ServerLevelMixin(WritableLevelData levelData, ResourceKey<Level> dimension, Holder<DimensionType> dimensionTypeRegistration,
-					 Supplier<ProfilerFiller> profiler, boolean isClientSide, boolean isDebug, long biomeZoomSeed, int maxChainedNeighborUpdates) {
-		super(levelData, dimension, dimensionTypeRegistration, profiler, isClientSide, isDebug, biomeZoomSeed, maxChainedNeighborUpdates);
+	ServerLevelMixin(WritableLevelData levelData, ResourceKey<Level> dimension, RegistryAccess registryAccess,
+					 Holder<DimensionType> dimensionTypeRegistration, Supplier<ProfilerFiller> profiler, boolean isClientSide,
+					 boolean isDebug, long biomeZoomSeed, int maxChainedNeighborUpdates) {
+		super(levelData, dimension, registryAccess, dimensionTypeRegistration, profiler, isClientSide, isDebug, biomeZoomSeed,
+			maxChainedNeighborUpdates);
 	}
 
 	@ModifyReturnValue(method = "addFreshEntity", at = @At("RETURN"))

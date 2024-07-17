@@ -8,7 +8,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.Vec3;
@@ -22,7 +21,7 @@ public class FluidExplosion extends CustomExplosion.Impl {
 	private final float radius;
 
 	public FluidExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						  double toBlowY, double toBlowZ, float radius, BlockInteraction interaction, Fluid fluid) {
+						  double toBlowY, double toBlowZ, float radius, Level.ExplosionInteraction interaction, Fluid fluid) {
 		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
 		this.fluid = fluid;
 		this.radius = radius;
@@ -40,7 +39,7 @@ public class FluidExplosion extends CustomExplosion.Impl {
 			return;
 		level.playLocalSound(x, y, z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F,
 			(1.0F + (level.random.nextFloat() - level.random.nextFloat()) * 0.2F) * 0.7F, false);
-		if (this.radius >= 2.0F && this.interaction != Explosion.BlockInteraction.NONE) {
+		if (this.radius >= 2.0F && this.interactsWithBlocks()) {
 			level.addParticle(ParticleTypes.EXPLOSION_EMITTER, x, y, z, 1.0, 0.0, 0.0);
 		} else {
 			level.addParticle(ParticleTypes.EXPLOSION, x, y, z, 1.0, 0.0, 0.0);

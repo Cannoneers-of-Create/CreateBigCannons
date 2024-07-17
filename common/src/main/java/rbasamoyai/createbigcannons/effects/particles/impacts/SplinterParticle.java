@@ -1,11 +1,13 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
@@ -63,7 +65,7 @@ public class SplinterParticle extends CBCBlockParticle {
 		this.quadSize = 0.3f + this.random.nextFloat() * 0.1f;
 		this.setSize(0.1f, 0.1f);
 		this.setLifetime(30 + this.random.nextInt(8));
-		int i = Minecraft.getInstance().getBlockColors().getColor(state, level, new BlockPos(x, y, z), 0);
+		int i = Minecraft.getInstance().getBlockColors().getColor(state, level, BlockPos.containing(x, y, z), 0);
 		this.rCol = (float)(i >> 16 & 0xFF) / 255.0F;
 		this.gCol = (float)(i >> 8 & 0xFF) / 255.0F;
 		this.bCol = (float)(i & 0xFF) / 255.0F;
@@ -82,17 +84,17 @@ public class SplinterParticle extends CBCBlockParticle {
 		float y1 = (float)(this.yo + partialTicks * (this.y - this.yo) - vec3.y());
 		float z1 = (float)(this.zo + partialTicks * (this.z - this.zo) - vec3.z());
 
-		Quaternion quaternion = Vector3f.ZP.rotation(this.roll);
-		quaternion.mul(Vector3f.YP.rotation(this.yaw));
-		quaternion.mul(Vector3f.XP.rotation(this.pitch));
+		Quaternionf quaternion = Axis.ZP.rotation(this.roll);
+		quaternion.mul(Axis.YP.rotation(this.yaw), quaternion);
+		quaternion.mul(Axis.XP.rotation(this.pitch), quaternion);
 		Vec3 vec31 = new Vec3(this.xd, this.yd, this.zd).normalize();
 		Vec3 vec32 = new Vec3(1, 0, 0);
 		double dot = vec32.dot(vec31);
 		if (Math.abs(dot + 1) < 1e-4d) { // anti-parallel
-			quaternion.mul(Vector3f.YP.rotation(Mth.PI));
+			quaternion.mul(Axis.YP.rotation(Mth.PI));
 		} else {
 			Vec3 cross = vec32.cross(vec31);
-			quaternion.mul(new Quaternion((float) cross.x, (float) cross.y, (float) cross.z, 1f + (float) dot));
+			quaternion.mul(new Quaternionf((float) cross.x, (float) cross.y, (float) cross.z, 1f + (float) dot));
 		}
 		quaternion.normalize();
 
@@ -104,12 +106,11 @@ public class SplinterParticle extends CBCBlockParticle {
 
 		for(int k = 0; k < 4; ++k) {
 			Vector3f vector3f2 = vector3fs[k];
-			vector3f2.transform(quaternion);
+			quaternion.transform(vector3f2);
 			vector3f2.mul(j);
 			vector3f2.add(x1, y1, z1);
 		}
-		Vector3f normal = new Vector3f(0, 0, -1);
-		normal.transform(quaternion);
+		Vector3f normal = quaternion.transform(new Vector3f(0, 0, -1));
 
 		float blockU0 = this.sprite.getU0();
 		float blockU1 = this.sprite.getU1();
@@ -210,7 +211,7 @@ public class SplinterParticle extends CBCBlockParticle {
 			if (blockstate.isAir() || blockstate.is(Blocks.MOVING_PISTON))
 				return null;
 			SplinterParticle particle = new SplinterParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, blockstate);
-			IndexPlatform.updateSprite(particle, blockstate, new BlockPos(x, y, z));
+			IndexPlatform.updateSprite(particle, blockstate, BlockPos.containing(x, y, z));
 			particle.setSecondarySprite(this.sprites.get(level.getRandom()));
 			return particle;
 		}

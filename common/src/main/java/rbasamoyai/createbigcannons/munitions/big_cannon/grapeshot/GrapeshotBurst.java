@@ -13,7 +13,7 @@ public class GrapeshotBurst extends ShrapnelBurst {
 
 	@Override
 	protected DamageSource getDamageSource() {
-		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.GRAPESHOT), this, this.getProperties().damage().ignoresEntityArmor());
+		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.GRAPESHOT), this.getProperties().damage().ignoresEntityArmor());
 	}
 
 }

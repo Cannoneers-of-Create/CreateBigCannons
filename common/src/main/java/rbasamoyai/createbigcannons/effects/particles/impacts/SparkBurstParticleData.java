@@ -1,8 +1,9 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
+import org.joml.Vector3f;
+
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.math.Vector3f;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
@@ -13,6 +14,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public record SparkBurstParticleData(Vector3f color, boolean deflect, int count) implements ParticleOptions,
@@ -41,7 +43,7 @@ public record SparkBurstParticleData(Vector3f color, boolean deflect, int count)
     };
 
 	private static final Codec<SparkBurstParticleData> CODEC = RecordCodecBuilder.create(i -> i
-		.group(Vector3f.CODEC.fieldOf("color")
+		.group(ExtraCodecs.VECTOR3F.fieldOf("color")
 			.forGetter(data -> data.color),
 		Codec.BOOL.fieldOf("deflect")
 			.forGetter(data -> data.deflect),

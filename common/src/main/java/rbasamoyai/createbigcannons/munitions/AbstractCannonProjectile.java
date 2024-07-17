@@ -545,7 +545,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	}
 
 	public DamageSource indirectArtilleryFire(boolean bypassArmor) {
-		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.CANNON_PROJECTILE), this, bypassArmor);
+		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.CANNON_PROJECTILE), bypassArmor);
 	}
 
 }

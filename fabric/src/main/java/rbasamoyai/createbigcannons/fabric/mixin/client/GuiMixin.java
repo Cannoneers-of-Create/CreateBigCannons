@@ -7,10 +7,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskOverlay;
@@ -23,12 +22,12 @@ public abstract class GuiMixin {
 	private Minecraft minecraft;
 
 	@Shadow
-	protected abstract void renderTextureOverlay(ResourceLocation textureLocation, float alpha);
+	protected abstract void renderTextureOverlay(GuiGraphics graphics, ResourceLocation textureLocation, float alpha);
 
 	@Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;getArmor(I)Lnet/minecraft/world/item/ItemStack;"))
-	private void createbigcannons$render(PoseStack poseStack, float partialTick, CallbackInfo ci) {
+	private void createbigcannons$render(GuiGraphics graphics, float partialTick, CallbackInfo ci) {
 		if (GasMaskItem.canShowGasMaskOverlay(this.minecraft.player))
-			this.renderTextureOverlay(GasMaskOverlay.GAS_MASK_OVERLAY, 1);
+			this.renderTextureOverlay(graphics, GasMaskOverlay.GAS_MASK_OVERLAY, 1);
 	}
 
 }

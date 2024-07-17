@@ -7,7 +7,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -61,8 +60,8 @@ public class DefaultFluidCompat {
 		if (entity.fireImmune())
 			return;
 		entity.setSecondsOnFire(10);
-		if (entity.hurt(DamageSource.ON_FIRE, 4.0F))
-			entity.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + entity.level.random.nextFloat() * 0.4F);
+		if (entity.hurt(context.level().damageSources().onFire(), 4.0F))
+			entity.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + entity.level().random.nextFloat() * 0.4F);
 	}
 
 	public static void potionHitEntity(OnHitEntity.Context context) {

@@ -15,7 +15,7 @@ import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceProvider;
 import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
 @Mixin(GameRenderer.class)
@@ -24,10 +24,10 @@ public class GameRendererMixin {
 	@Inject(method = "reloadShaders",
 			at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 53),
 			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void reloadShaders(ResourceManager resourceManager, CallbackInfo ci, List<Program> programs,
+	private void reloadShaders(ResourceProvider resourceProvider, CallbackInfo ci, List<Program> programs,
 							   List<Pair<ShaderInstance, Consumer<ShaderInstance>>> shaderInstances) throws IOException {
 		for (CBCRenderTypes renderType : CBCRenderTypes.values())
-			shaderInstances.add(Pair.of(new ShaderInstance(resourceManager, renderType.id(), renderType.renderType().format()),
+			shaderInstances.add(Pair.of(new ShaderInstance(resourceProvider, renderType.id(), renderType.renderType().format()),
 				renderType::setShaderInstance));
 	}
 

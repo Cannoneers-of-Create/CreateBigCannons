@@ -1,11 +1,12 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
+import org.joml.Matrix3f;
+import org.joml.Vector3f;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Vector3f;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -73,7 +74,7 @@ public class SparkParticle extends Particle {
 
 		for(int vert = 0; vert < 16; ++vert) {
 			Vector3f vector3f2 = vector3fs[vert];
-			vector3f2.transform(orient);
+			orient.transform(vector3f2);
 			buffer.vertex(vector3f2.x() + x1, vector3f2.y() + y1, vector3f2.z() + z1)
 				.color(this.rCol, this.gCol, this.bCol, this.alpha)
 				.uv2(p)

@@ -33,7 +33,7 @@ public class FluidBlobEffectRegistry {
 
 	public static void effectOnAllHit(FluidBlobBurst burst, SubProjectile subProjectile, HitResult result) {
 		EndFluidStack fstack = burst.getFluidStack();
-		ON_HIT.run(fstack.fluid(), new OnHit.Context(fstack, burst, subProjectile, burst.getLevel(), result));
+		ON_HIT.run(fstack.fluid(), new OnHit.Context(fstack, burst, subProjectile, burst.level(), result));
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class FluidBlobEffectRegistry {
 
 	public static void effectOnHitBlock(FluidBlobBurst burst, SubProjectile subProjectile, BlockHitResult result) {
 		EndFluidStack fstack = burst.getFluidStack();
-		ON_HIT_BLOCK.run(fstack.fluid(), new OnHitBlock.Context(fstack, burst, subProjectile, burst.getLevel(), result));
+		ON_HIT_BLOCK.run(fstack.fluid(), new OnHitBlock.Context(fstack, burst, subProjectile, burst.level(), result));
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class FluidBlobEffectRegistry {
 
 	public static void effectOnHitEntity(FluidBlobBurst burst, SubProjectile subProjectile, EntityHitResult result) {
 		EndFluidStack fstack = burst.getFluidStack();
-		ON_HIT_ENTITY.run(fstack.fluid(), new OnHitEntity.Context(fstack, burst, subProjectile, burst.getLevel(), result));
+		ON_HIT_ENTITY.run(fstack.fluid(), new OnHitEntity.Context(fstack, burst, subProjectile, burst.level(), result));
 	}
 
 	/**

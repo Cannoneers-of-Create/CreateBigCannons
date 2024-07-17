@@ -1,8 +1,9 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
+import org.joml.Vector3f;
+
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.math.Vector3f;
 import com.mojang.serialization.Codec;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
@@ -12,6 +13,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.util.ExtraCodecs;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public record SparkParticleData(Vector3f color) implements ParticleOptions, ICustomParticleData<SparkParticleData> {
@@ -34,7 +36,7 @@ public record SparkParticleData(Vector3f color) implements ParticleOptions, ICus
         }
     };
 
-	private static final Codec<SparkParticleData> CODEC = Vector3f.CODEC.xmap(SparkParticleData::new, data -> data.color);
+	private static final Codec<SparkParticleData> CODEC = ExtraCodecs.VECTOR3F.xmap(SparkParticleData::new, data -> data.color);
 
 	public SparkParticleData(float r, float g, float b) { this(new Vector3f(r, g, b)); }
 	public SparkParticleData() { this(0, 0, 0); }

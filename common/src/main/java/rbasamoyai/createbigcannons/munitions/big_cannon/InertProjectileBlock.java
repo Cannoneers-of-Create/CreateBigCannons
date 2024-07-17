@@ -51,7 +51,7 @@ public abstract class InertProjectileBlock extends ProjectileBlock<AbstractBigCa
 					ItemEntity item = player.drop(resultStack, false);
 					if (item != null) {
 						item.setNoPickUpDelay();
-						item.setOwner(player.getUUID());
+						item.setTarget(player.getUUID());
 					}
 				}
 				projectileBlock.notifyUpdate();

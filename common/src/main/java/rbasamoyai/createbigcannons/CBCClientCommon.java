@@ -8,8 +8,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.minecraft.client.gui.GuiGraphics;
-
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -24,9 +22,9 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
@@ -36,8 +34,8 @@ import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -356,7 +354,7 @@ public class CBCClientCommon {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.player == null || !playerTest.test(minecraft.player))
 			return;
-		minecraft.getSoundManager().play(new ShellFlyingSoundInstance(sound, minecraft.player.level.random, minecraft.player, projectile, radius));
+		minecraft.getSoundManager().play(new ShellFlyingSoundInstance(sound, minecraft.player.level().random, minecraft.player, projectile, radius));
 		projectile.setLocalSoundCooldown(-1);
 	}
 

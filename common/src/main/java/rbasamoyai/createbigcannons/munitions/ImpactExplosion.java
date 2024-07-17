@@ -26,7 +26,7 @@ public class ImpactExplosion extends CustomExplosion.Impl {
 	private final Set<BlockPos> changedBlocks = new HashSet<>();
 
 	public ImpactExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						   double toBlowY, double toBlowZ, float radius, BlockInteraction interaction) {
+						   double toBlowY, double toBlowZ, float radius, Level.ExplosionInteraction interaction) {
 		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
 	}
 

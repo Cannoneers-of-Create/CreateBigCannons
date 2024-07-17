@@ -44,7 +44,7 @@ public class MachineGunProjectile extends AbstractAutocannonProjectile {
 	@Override
 	protected DamageSource getEntityDamage(Entity entity) {
 		ResourceKey<DamageType> type = entity.isInWater() ? CBCDamageTypes.MACHINE_GUN_FIRE_IN_WATER : CBCDamageTypes.MACHINE_GUN_FIRE;
-		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(type), this);
+		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(type), this.getDamageProperties().ignoresEntityArmor());
 	}
 
 }

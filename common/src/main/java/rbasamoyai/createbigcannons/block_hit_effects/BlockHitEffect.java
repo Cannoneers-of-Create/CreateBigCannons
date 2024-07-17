@@ -13,6 +13,7 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
 import net.minecraft.commands.arguments.ParticleArgument;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.GsonHelper;
@@ -29,13 +30,13 @@ public record BlockHitEffect(List<ParticleOptions> impactParticles, List<Particl
 		List<ParticleOptions> impactParticles = new ArrayList<>();
 		if (GsonHelper.isStringValue(obj, "impact_particle")) {
 			String particle = GsonHelper.getAsString(obj, "impact_particle");
-			ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle));
+			ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle), BuiltInRegistries.PARTICLE_TYPE.asLookup());
 			impactParticles.add(options);
 		} else if (GsonHelper.isArrayNode(obj, "impact_particles")) {
 			JsonArray arr = GsonHelper.getAsJsonArray(obj, "impact_particles");
 			for (JsonElement el : arr) {
 				String particle = el.getAsString();
-				ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle));
+				ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle), BuiltInRegistries.PARTICLE_TYPE.asLookup());
 				impactParticles.add(options);
 			}
 		} else {
@@ -44,13 +45,13 @@ public record BlockHitEffect(List<ParticleOptions> impactParticles, List<Particl
 		List<ParticleOptions> deflectParticles = new ArrayList<>();
 		if (GsonHelper.isStringValue(obj, "deflect_particle")) {
 			String particle = GsonHelper.getAsString(obj, "deflect_particle");
-			ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle));
+			ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle), BuiltInRegistries.PARTICLE_TYPE.asLookup());
 			deflectParticles.add(options);
 		} else if (GsonHelper.isArrayNode(obj, "deflect_particles")) {
 			JsonArray arr = GsonHelper.getAsJsonArray(obj, "deflect_particles");
 			for (JsonElement el : arr) {
 				String particle = el.getAsString();
-				ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle));
+				ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle), BuiltInRegistries.PARTICLE_TYPE.asLookup());
 				deflectParticles.add(options);
 			}
 		} else {

@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -30,21 +31,21 @@ public class ShellExplosion extends CustomExplosion.Impl {
 	private final boolean noEffects;
 
 	public ShellExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						  double toBlowY, double toBlowZ, float radius, boolean fire, BlockInteraction interaction, boolean noEffects) {
+						  double toBlowY, double toBlowZ, float radius, boolean fire,  Level.ExplosionInteraction  interaction, boolean noEffects) {
 		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, fire, interaction);
-		BlockPos pos = new BlockPos(this.x, this.y, this.z);
+		BlockPos pos = BlockPos.containing(this.x, this.y, this.z);
 		this.isPlume = this.level.getBlockState(pos.above()).isAir() && !this.level.getBlockState(pos.below()).isAir();
 		this.noEffects = noEffects;
 	}
 
 	public ShellExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						  double toBlowY, double toBlowZ, float radius, boolean fire, BlockInteraction interaction) {
+						  double toBlowY, double toBlowZ, float radius, boolean fire, Level.ExplosionInteraction interaction) {
 		this(level, source, damageSource, toBlowX, toBlowY, toBlowZ, radius, fire, interaction, false);
 	}
 
 	public ShellExplosion(Level level, ClientboundCBCExplodePacket packet) {
 		super(level, packet);
-		BlockPos pos = new BlockPos(this.x, this.y, this.z);
+		BlockPos pos = BlockPos.containing(this.x, this.y, this.z);
 		this.isPlume = this.level.getBlockState(pos.above()).isAir() && !this.level.getBlockState(pos.below()).isAir();
 		this.noEffects = packet.explosionType() == ClientboundCBCExplodePacket.ExplosionType.SHELL_NO_EFFECTS;
 	}
@@ -54,8 +55,8 @@ public class ShellExplosion extends CustomExplosion.Impl {
 		if (this.noEffects)
 			return;
 		ShellBlastWaveEffectParticleData blastWave = new ShellBlastWaveEffectParticleData(this.size * 12,
-			CBCSoundEvents.SHELL_EXPLOSION.getMainEvent(), SoundSource.BLOCKS, Math.max(this.size * 2, 16),
-			0.8f + level.random.nextFloat() * 0.4f, 2f, this.size);
+			BuiltInRegistries.SOUND_EVENT.wrapAsHolder(CBCSoundEvents.SHELL_EXPLOSION.getMainEvent()), SoundSource.BLOCKS,
+			Math.max(this.size * 2, 16), 0.8f + level.random.nextFloat() * 0.4f, 2f, this.size);
 		ShellExplosionCloudParticleData explosionCloud = new ShellExplosionCloudParticleData(this.size, this.isPlume);
 		this.level.addParticle(blastWave, true, this.x, this.y, this.z, 0, 0, 0);
 		this.level.addParticle(explosionCloud, true, this.x, this.y, this.z, 0, 0, 0);

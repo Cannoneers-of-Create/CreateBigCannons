@@ -6,8 +6,8 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
-import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -82,7 +82,7 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 	@Override
 	public void tick() {
 		super.tick();
-		if (!this.level.isClientSide && this.age >= this.waitTime && this.canDoStuff()) {
+		if (!this.level().isClientSide && this.age >= this.waitTime && this.canDoStuff()) {
 			// Adapted from AreaEffectCloud
 			this.victims.entrySet().removeIf(entry -> this.tickCount >= entry.getValue());
 			List<MobEffectInstance> toApply = new ArrayList<>();
@@ -100,7 +100,7 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 			if (toApply.isEmpty()) {
 				this.victims.clear();
 			} else {
-				for (LivingEntity target : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
+				for (LivingEntity target : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
 					if (this.victims.containsKey(target) || !target.isAffectedByPotions() || this.isBlockedBy(target))
 						continue;
 					this.victims.put(target, this.tickCount + this.reapplicationDelay);
@@ -145,7 +145,7 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 		if (this.fixedColor)
 			tag.putInt("Color", this.getColor());
 		if (this.potion != Potions.EMPTY)
-			tag.putString("Potion", Registry.POTION.getKey(this.potion).toString());
+			tag.putString("Potion", BuiltInRegistries.POTION.getKey(this.potion).toString());
 
 		if (!this.effects.isEmpty()) {
 			ListTag listTag = new ListTag();

@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -42,7 +43,7 @@ public class SmokeEmitterEntity extends Entity {
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return new ClientboundAddEntityPacket(this);
 	}
 
@@ -108,7 +109,7 @@ public class SmokeEmitterEntity extends Entity {
 	@Override
 	public void tick() {
 		boolean doStuff = this.canDoStuff();
-		if (this.level.isClientSide) {
+		if (this.level().isClientSide) {
 			if (doStuff) {
 				double sizeX = this.getSizeX();
 				double sizeY = this.getSizeY();
@@ -125,7 +126,7 @@ public class SmokeEmitterEntity extends Entity {
 					double dx = this.random.nextGaussian() * 0.05;
 					double dy = this.random.nextGaussian() * 0.02;
 					double dz = this.random.nextGaussian() * 0.05;
-					this.level.addParticle(particle, true, rx, ry, rz, dx, dy, dz);
+					this.level().addParticle(particle, true, rx, ry, rz, dx, dy, dz);
 				}
 			}
 		} else {
@@ -135,7 +136,7 @@ public class SmokeEmitterEntity extends Entity {
 				double sizeZ = this.getSizeZ();
 				AABB bounding = this.getBoundingBox();
 				AABB queryBounding = bounding.inflate(8);
-				for (SmokeEmitterEntity other : this.level.getEntitiesOfClass(SmokeEmitterEntity.class, queryBounding, this::canMergeWithOther)) {
+				for (SmokeEmitterEntity other : this.level().getEntitiesOfClass(SmokeEmitterEntity.class, queryBounding, this::canMergeWithOther)) {
 					double otherSizeX = other.getSizeX();
 					double otherSizeY = other.getSizeY();
 					double otherSizeZ = other.getSizeZ();
@@ -164,7 +165,7 @@ public class SmokeEmitterEntity extends Entity {
 				this.discard();
 				return;
 			}
-			if (this.level instanceof ServerLevel slevel && !this.isRemoved()) {
+			if (this.level() instanceof ServerLevel slevel && !this.isRemoved()) {
 				if (this.canChunkLoad()) {
 					ChunkPos cpos = new ChunkPos(this.blockPosition());
 					RitchiesProjectileLib.queueForceLoad(slevel, cpos.x, cpos.z);
@@ -174,7 +175,7 @@ public class SmokeEmitterEntity extends Entity {
 		super.tick();
 	}
 
-	protected boolean canDoStuff() { return this.firstTick || (this.level.getGameTime() + this.getId()) % 5 == 0; }
+	protected boolean canDoStuff() { return this.firstTick || (this.level().getGameTime() + this.getId()) % 5 == 0; }
 
 	protected int getLifetime() { return this.duration; }
 

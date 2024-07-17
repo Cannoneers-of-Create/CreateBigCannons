@@ -31,7 +31,7 @@ public class ShellFlyingSoundInstance extends AbstractTickableSoundInstance {
 		this.x = (float) soundPos.x;
 		this.y = (float) soundPos.y;
 		this.z = (float) soundPos.z;
-		this.basePitch = 0.95f + this.entity.level.random.nextFloat() * 0.3f;
+		this.basePitch = 0.95f + this.entity.level().random.nextFloat() * 0.3f;
 	}
 
 	@Override

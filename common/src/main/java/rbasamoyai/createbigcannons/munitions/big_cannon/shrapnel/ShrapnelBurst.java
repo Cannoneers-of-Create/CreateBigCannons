@@ -21,6 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
+import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
@@ -32,11 +33,11 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.level.isClientSide) {
+		if (this.level().isClientSide) {
 			ParticleOptions trailParticle = this.getTrailParticle();
 			if (trailParticle != null) {
 				for (SubProjectile subProjectile : this.subProjectiles) {
-					this.level.addParticle(trailParticle, this.getX() + subProjectile.displacement()[0],
+					this.level().addParticle(trailParticle, this.getX() + subProjectile.displacement()[0],
 						this.getY() + subProjectile.displacement()[1], this.getZ() + subProjectile.displacement()[2], 0, 0, 0);
 				}
 			}
@@ -60,15 +61,15 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 		super.onSubProjectileHitBlock(result, subProjectile);
 
 		BlockPos pos = result.getBlockPos();
-		BlockState state = this.level.getChunk(pos).getBlockState(pos);
-		if (!this.level.isClientSide && state.getDestroySpeed(this.level, pos) != -1 && this.canDestroyBlock(state)) {
+		BlockState state = this.level().getChunk(pos).getBlockState(pos);
+		if (!this.level().isClientSide && state.getDestroySpeed(this.level(), pos) != -1 && this.canDestroyBlock(state)) {
 			Vec3 curVel = new Vec3(subProjectile.velocity()[0], subProjectile.velocity()[1], subProjectile.velocity()[2]);
 			double curPom = this.getProperties().ballistics().durabilityMass() * curVel.length();
-			double toughness = BlockArmorPropertiesHandler.getProperties(state).toughness(this.level, state, pos, true);
+			double toughness = BlockArmorPropertiesHandler.getProperties(state).toughness(this.level(), state, pos, true);
 			BlockPos pos1 = pos.immutable();
-			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (int) Math.min(curPom, toughness), state, this.level, PartialBlockDamageManager::voidBlock);
+			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (int) Math.min(curPom, toughness), state, this.level(), PartialBlockDamageManager::voidBlock);
 		}
-		if (this.level instanceof ServerLevel slevel) {
+		if (this.level() instanceof ServerLevel slevel) {
 			ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);
 			for (ServerPlayer player : slevel.players()) {
 				if (player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) < 1024d)
@@ -76,7 +77,7 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 			}
 		}
 		SoundType type = state.getSoundType();
-		this.level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), type.getBreakSound(), SoundSource.NEUTRAL,
+		this.level().playLocalSound(pos.getX(), pos.getY(), pos.getZ(), type.getBreakSound(), SoundSource.NEUTRAL,
 			type.getVolume() * 2, type.getPitch(), false);
 	}
 
@@ -88,7 +89,8 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 	@Override public double getSubProjectileHeight() { return 0.8; }
 
 	protected DamageSource getDamageSource() {
-		return new CannonDamageSource(CreateBigCannons.MOD_ID + ".shrapnel", this, null, this.getProperties().damage().ignoresEntityArmor());
+		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.SHRAPNEL),
+			this.getProperties().damage().ignoresEntityArmor());
 	}
 
 }

@@ -5,6 +5,7 @@ import com.mojang.serialization.Codec;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -15,7 +16,7 @@ public class CannonBlastWaveEffectParticleData extends AbstractBlastWaveEffectPa
 	private static final Deserializer<CannonBlastWaveEffectParticleData> DESERIALIZER = createDeserializer(CannonBlastWaveEffectParticleData::new);
 	private static final Codec<CannonBlastWaveEffectParticleData> CODEC = createCodec(CannonBlastWaveEffectParticleData::new);
 
-	public CannonBlastWaveEffectParticleData(double blastRAdius, SoundEvent soundEvent, SoundSource soundSource,
+	public CannonBlastWaveEffectParticleData(double blastRAdius, Holder<SoundEvent> soundEvent, SoundSource soundSource,
 											 float volume, float pitch, float airAbsorption, float power) {
 		super(blastRAdius, soundEvent, soundSource, volume, pitch, airAbsorption, power);
 	}

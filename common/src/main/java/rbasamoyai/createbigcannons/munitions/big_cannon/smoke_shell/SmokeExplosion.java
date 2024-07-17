@@ -14,7 +14,7 @@ import rbasamoyai.createbigcannons.remix.CustomExplosion;
 public class SmokeExplosion extends CustomExplosion.Impl {
 
 	public SmokeExplosion(Level level, @Nullable Entity source, double toBlowX, double toBlowY, double toBlowZ,
-						  float radius, BlockInteraction interaction) {
+						  float radius, Level.ExplosionInteraction interaction) {
 		super(level, source, null, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
 	}
 

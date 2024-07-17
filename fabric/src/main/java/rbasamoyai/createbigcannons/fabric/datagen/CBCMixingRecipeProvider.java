@@ -14,6 +14,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.CBCTags.CBCItemTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.datagen.CBCDatagenCommon;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
 public class CBCMixingRecipeProvider extends ProcessingRecipeGen {
@@ -42,14 +43,14 @@ public class CBCMixingRecipeProvider extends ProcessingRecipeGen {
 
 	CONGEALED_NITRO_NO_NETHER = create(CreateBigCannons.resource("congealed_nitro_no_nether"), b -> b.require(CBCItemTags.GUNCOTTON)
 		.require(CBCItemTags.GELATINIZERS)
-		.require(Fluids.WATER, IndexPlatform.convertFluid(150))
+		.require(Fluids.WATER, 150 * CBCDatagenCommon.FLUID_MULTIPLIER)
 		.require(CBCItemTags.NITRO_ACIDIFIERS)
 		.output(CBCItems.CONGEALED_NITRO.get())
 		.duration(200)),
 
 	GUNCOTTON = create(CreateBigCannons.resource("guncotton"), b -> b.require(CBCItemTags.CAN_BE_NITRATED)
 		.require(CBCItemTags.GUNPOWDER)
-		.require(Fluids.WATER, IndexPlatform.convertFluid(200))
+		.require(Fluids.WATER, 200 * CBCDatagenCommon.FLUID_MULTIPLIER)
 		.require(CBCItemTags.NITRO_ACIDIFIERS)
 		.output(CBCItems.GUNCOTTON.get())
 		.duration(300));

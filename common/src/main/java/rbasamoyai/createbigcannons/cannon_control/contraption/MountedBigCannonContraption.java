@@ -17,6 +17,7 @@ import com.simibubi.create.content.contraptions.StructureTransform;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
@@ -30,7 +31,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -456,7 +456,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		BigCannonPlumeParticleData plumeParticle = new BigCannonPlumeParticleData(propelCtx.smokeScale, propelCtx.chargesUsed, 10);
 		CannonBlastWaveEffectParticleData blastEffect = new CannonBlastWaveEffectParticleData(shakeDistance,
-			CBCSoundEvents.FIRE_BIG_CANNON.getMainEvent(), SoundSource.BLOCKS, volume, pitch, 2, propelCtx.chargesUsed);
+			BuiltInRegistries.SOUND_EVENT.wrapAsHolder(CBCSoundEvents.FIRE_BIG_CANNON.getMainEvent()), SoundSource.BLOCKS,
+			volume, pitch, 2, propelCtx.chargesUsed);
 		Packet<?> blastWavePacket = new ClientboundLevelParticlesPacket(blastEffect, true, plumePos.x, plumePos.y, plumePos.z, 0, 0, 0, 1, 0);
 
 		double blastDistSqr = volume * volume * 256 * 1.21;
@@ -467,7 +468,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		}
 
 		if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
-			ChunkPos cpos1 = new ChunkPos(new BlockPos(spawnPos));
+			ChunkPos cpos1 = new ChunkPos(BlockPos.containing(spawnPos));
 			RitchiesProjectileLib.queueForceLoad(level, cpos1.x, cpos1.z);
 		}
 	}
@@ -551,7 +552,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			ControlPitchContraption controller = entity.getController();
 			if (controller != null) controller.disassemble();
 
-			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2 * failScale + 1, Explosion.BlockInteraction.NONE);
+			level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2 * failScale + 1, Level.ExplosionInteraction.NONE);
 		} else {
 			for (Iterator<Map.Entry<BlockPos, StructureBlockInfo>> iter = this.blocks.entrySet().iterator(); iter.hasNext(); ) {
 				Map.Entry<BlockPos, StructureBlockInfo> entry = iter.next();

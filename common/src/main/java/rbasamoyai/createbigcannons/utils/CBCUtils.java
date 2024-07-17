@@ -10,10 +10,13 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.joml.Matrix3f;
+import org.joml.Matrix3fc;
+import org.joml.Matrix4f;
+import org.joml.Matrix4fc;
+
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
@@ -30,8 +33,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.mixin.Matrix3fAccessor;
-import rbasamoyai.createbigcannons.mixin.Matrix4fAccessor;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundBlastSoundPacket;
 import rbasamoyai.createbigcannons.network.ClientboundSendCustomBreakProgressPacket;
@@ -70,58 +71,30 @@ public class CBCUtils {
 
 	/**
 	 * Constructor for {@link Matrix3f} with the ability to set individual values.
+	 * 1.20+: simply an alias for the more accessible JOML version.
 	 */
 	public static Matrix3f mat3x3f(float m00, float m01, float m02,
-								   float m10, float m11, float m12,
-								   float m20, float m21, float m22) {
-		Matrix3f mat3x3f = new Matrix3f();
-		Matrix3fAccessor acc = (Matrix3fAccessor) (Object) mat3x3f;
-		acc.setM00(m00);
-		acc.setM01(m01);
-		acc.setM02(m02);
-		acc.setM10(m10);
-		acc.setM11(m11);
-		acc.setM12(m12);
-		acc.setM20(m20);
-		acc.setM21(m21);
-		acc.setM22(m22);
-		return mat3x3f;
+									float m10, float m11, float m12,
+									float m20, float m21, float m22) {
+		return new Matrix3f(m00, m01, m02, m10, m11, m12, m20, m21, m22);
 	}
 
 	/**
 	 * Constructor for {@link Matrix4f} with the ability to set individual values.
+	 * 1.20+: simply an alias for the more accessible JOML version.
 	 */
 	public static Matrix4f mat4x4f(float m00, float m01, float m02, float m03,
-								   float m10, float m11, float m12, float m13,
-								   float m20, float m21, float m22, float m23,
-								   float m30, float m31, float m32, float m33) {
-		Matrix4f mat4x4f = new Matrix4f();
-		Matrix4fAccessor acc = (Matrix4fAccessor) (Object) mat4x4f;
-		acc.setM00(m00);
-		acc.setM01(m01);
-		acc.setM02(m02);
-		acc.setM03(m03);
-		acc.setM10(m10);
-		acc.setM11(m11);
-		acc.setM12(m12);
-		acc.setM13(m13);
-		acc.setM20(m20);
-		acc.setM21(m21);
-		acc.setM22(m22);
-		acc.setM23(m23);
-		acc.setM30(m30);
-		acc.setM31(m31);
-		acc.setM32(m32);
-		acc.setM33(m33);
-		return mat4x4f;
+									float m10, float m11, float m12, float m13,
+									float m20, float m21, float m22, float m23,
+									float m30, float m31, float m32, float m33) {
+		return new Matrix4f(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
 	}
 
 	public static Matrix4f mat4x4f(@Nonnull Matrix3f mat3x3f) {
-		Matrix3fAccessor m = (Matrix3fAccessor) (Object) mat3x3f;
-		return mat4x4f(m.getM00(), m.getM01(), m.getM02(), 0,
-			           m.getM10(), m.getM11(), m.getM12(), 0,
-			           m.getM20(), m.getM21(), m.getM22(), 0,
-			           0,          0,          0,          1);
+		return mat4x4f(mat3x3f.m00, mat3x3f.m01, mat3x3f.m02, 0,
+			           mat3x3f.m10, mat3x3f.m11, mat3x3f.m12, 0,
+			           mat3x3f.m20, mat3x3f.m21, mat3x3f.m22, 0,
+			           0,           0,           0,           1);
 	}
 
 	/**
@@ -154,7 +127,7 @@ public class CBCUtils {
 	 * @param source Normalized vector pointing in a direction
 	 * @return {@link Matrix4f} rotating vectors to orient in the specified direction
 	 */
-	public static Matrix3f mat3x3fFacing(Vec3 dest, Vec3 source) {
+	public static Matrix3fc mat3x3fFacing(Vec3 dest, Vec3 source) {
 		Vec3 c = source.cross(dest);
 		float cx = (float) c.x;
 		float cy = (float) c.y;
@@ -170,9 +143,9 @@ public class CBCUtils {
 				            0, -1,  0,
 				            0,  0, -1);
 		Matrix3f first = mat3x3fFacing(source); // (0, 0, 1) -> source
-		first.transpose(); // source -> (0, 0, 1)
+		first.transpose(first); // source -> (0, 0, 1)
 		Matrix3f second = mat3x3fFacing(dest); // (0, 0, 1) -> dest
-		second.mul(first);
+		second.mul(first, second);
 		return second;
 	}
 
@@ -225,11 +198,13 @@ public class CBCUtils {
 				            0, -1,  0,  0,
 				            0,  0, -1,  0,
 				            0,  0,  0,  1);
-		Matrix4f first = mat4x4fFacing(source); // (0, 0, 1) -> source
-		first.transpose(); // source -> (0, 0, 1)
-		Matrix4f second = mat4x4fFacing(dest); // (0, 0, 1) -> dest
-		second.multiply(first);
-		return second;
+		Matrix4fc first = mat4x4fFacing(source); // (0, 0, 1) -> source
+		Matrix4f firstD = new Matrix4f();
+		first.transpose(firstD); // source -> (0, 0, 1)
+		Matrix4fc second = mat4x4fFacing(dest); // (0, 0, 1) -> dest
+		Matrix4f result = new Matrix4f();
+		second.mul(first, result);
+		return result;
 	}
 
 	public static void sendCustomBlockDamage(Level level, BlockPos pos, int damage) {
@@ -305,7 +280,7 @@ public class CBCUtils {
 	 * @throws CommandSyntaxException thrown by BlockStateParser
 	 */
 	public static BlockState parseBlockState(StringReader reader) throws CommandSyntaxException {
-		return BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry(), reader, false).blockState();
+		return BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry().asLookup(), reader, false).blockState();
 	}
 
 	private CBCUtils() {}

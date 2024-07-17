@@ -34,7 +34,7 @@ public interface HasFragileContraption {
 	static boolean checkForIntersectingBlocks(Level level, AbstractContraptionEntity movedContraption, HasFragileContraption fragile) {
 		if (!fragile.createbigcannons$shouldCheckFragility())
 			return false;
-		BlockPos anchor = new BlockPos(movedContraption.getAnchorVec());
+		BlockPos anchor = BlockPos.containing(movedContraption.getAnchorVec());
 		Map<BlockPos, BlockState> encounteredBlocks = fragile.createbigcannons$getEncounteredBlocks();
 		Set<BlockPos> fragileBlocks = fragile.createbigcannons$getFragileBlockPositions();
 

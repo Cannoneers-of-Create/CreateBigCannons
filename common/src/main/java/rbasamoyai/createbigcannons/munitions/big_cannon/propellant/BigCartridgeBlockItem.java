@@ -4,11 +4,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -59,14 +57,6 @@ public class BigCartridgeBlockItem extends BlockItem {
 		ItemStack stack = CBCBlocks.BIG_CARTRIDGE.asStack();
 		stack.getOrCreateTag().putInt("Power", power);
 		return stack;
-	}
-
-	@Override
-	public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
-		super.fillItemCategory(category, items);
-		if (category == CreativeModeTab.TAB_SEARCH && this.allowedIn(category)) {
-			items.add(getWithPower(4));
-		}
 	}
 
 }

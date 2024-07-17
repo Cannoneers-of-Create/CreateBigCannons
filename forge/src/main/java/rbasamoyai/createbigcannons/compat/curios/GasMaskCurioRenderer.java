@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.compat.curios;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -13,10 +13,10 @@ import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import top.theillusivec4.curios.api.SlotContext;
@@ -45,17 +45,18 @@ public class GasMaskCurioRenderer implements ICurioRenderer {
 		// Translate and rotate with our head
 		matrixStack.pushPose();
 		matrixStack.translate(this.model.head.x / 16.0, this.model.head.y / 16.0, this.model.head.z / 16.0);
-		matrixStack.mulPose(Vector3f.YP.rotation(this.model.head.yRot));
-		matrixStack.mulPose(Vector3f.XP.rotation(this.model.head.xRot));
+		matrixStack.mulPose(Axis.YP.rotation(this.model.head.yRot));
+		matrixStack.mulPose(Axis.XP.rotation(this.model.head.xRot));
 
 		// Translate and scale to our head
 		matrixStack.translate(0, -0.25, 0);
-		matrixStack.mulPose(Vector3f.ZP.rotationDegrees(180.0f));
+		matrixStack.mulPose(Axis.ZP.rotationDegrees(180.0f));
 		matrixStack.scale(0.625f, 0.625f, 0.625f);
 
 		// Render
-		Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemTransforms.TransformType.HEAD, light,
-			OverlayTexture.NO_OVERLAY, matrixStack, renderTypeBuffer, 0);
+		Minecraft minecraft = Minecraft.getInstance();
+		minecraft.getItemRenderer().renderStatic(stack, ItemDisplayContext.HEAD, light, OverlayTexture.NO_OVERLAY,
+			matrixStack, renderTypeBuffer, minecraft.level, 0);
 		matrixStack.popPose();
 	}
 

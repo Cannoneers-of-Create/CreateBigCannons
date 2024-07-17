@@ -26,7 +26,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -364,7 +363,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
-			ChunkPos cpos1 = new ChunkPos(new BlockPos(spawnPos));
+			ChunkPos cpos1 = new ChunkPos(BlockPos.containing(spawnPos));
 			RitchiesProjectileLib.queueForceLoad(level, cpos1.x, cpos1.z);
 		}
 	}

@@ -137,9 +137,9 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 		if (blocks.isEmpty())
 			return ItemStack.EMPTY;
 		StructureBlockInfo info = blocks.get(0);
-		if (info.nbt == null)
+		if (info.nbt() == null)
 			return ItemStack.EMPTY;
-		BlockEntity load = BlockEntity.loadStatic(info.pos, info.state, info.nbt);
+		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt());
 		return load instanceof BigCannonProjectileBlockEntity projectile ? projectile.getItem(0) : ItemStack.EMPTY;
 	}
 

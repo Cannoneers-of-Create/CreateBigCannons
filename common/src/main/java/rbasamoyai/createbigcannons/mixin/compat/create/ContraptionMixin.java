@@ -77,7 +77,7 @@ public abstract class ContraptionMixin {
 		if (this.disassembled || !(this.self instanceof HasFragileContraption fragile))
 			return;
 		if (!fragile.createbigcannons$isBrokenDisassembly())
-			fragile.createbigcannons$setBrokenDisassembly(HasFragileContraption.checkForIntersectingBlocks(this.self.entity.level, this.self.entity, fragile));
+			fragile.createbigcannons$setBrokenDisassembly(HasFragileContraption.checkForIntersectingBlocks(this.self.entity.level(), this.self.entity, fragile));
 	}
 
 	@ModifyExpressionValue(method = "addBlocksToWorld", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/Contraption;customBlockPlacement(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"))

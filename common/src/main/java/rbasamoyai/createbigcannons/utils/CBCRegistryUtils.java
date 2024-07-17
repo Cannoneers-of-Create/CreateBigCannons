@@ -6,6 +6,8 @@ import java.util.stream.Stream;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -23,8 +25,8 @@ import net.minecraft.world.level.material.Fluid;
 public class CBCRegistryUtils {
 
 	//////// Block registry access aliases ////////
-	public static Registry<Block> getBlockRegistry() { return Registry.BLOCK; }
-	public static ResourceKey<Registry<Block>> getBlockRegistryKey() { return Registry.BLOCK_REGISTRY; }
+	public static Registry<Block> getBlockRegistry() { return BuiltInRegistries.BLOCK; }
+	public static ResourceKey<Registry<Block>> getBlockRegistryKey() { return Registries.BLOCK; }
 	public static Stream<Block> streamAllBlocks() { return getBlockRegistry().stream(); }
 	public static ResourceLocation getBlockLocation(Block block) { return getBlockRegistry().getKey(block); }
 	public static int getBlockNumericId(Block block) { return getBlockRegistry().getId(block); }
@@ -35,8 +37,8 @@ public class CBCRegistryUtils {
 	public static Iterable<Holder<Block>> getBlockTagEntries(TagKey<Block> tag) { return getBlockRegistry().getTagOrEmpty(tag); }
 
 	//////// Item registry access aliases ////////
-	public static Registry<Item> getItemRegistry() { return Registry.ITEM; }
-	public static ResourceKey<Registry<Item>> getItemRegistryKey() { return Registry.ITEM_REGISTRY; }
+	public static Registry<Item> getItemRegistry() { return BuiltInRegistries.ITEM; }
+	public static ResourceKey<Registry<Item>> getItemRegistryKey() { return Registries.ITEM; }
 	public static Stream<Item> streamAllItems() { return getItemRegistry().stream(); }
 	public static ResourceLocation getItemLocation(Item item) { return getItemRegistry().getKey(item); }
 	public static int getItemNumericId(Item item) { return getItemRegistry().getId(item); }
@@ -47,8 +49,8 @@ public class CBCRegistryUtils {
 	public static Iterable<Holder<Item>> getItemTagEntries(TagKey<Item> tag) { return getItemRegistry().getTagOrEmpty(tag); }
 
 	//////// Fluid registry access aliases ////////
-	public static Registry<Fluid> getFluidRegistry() { return Registry.FLUID; }
-	public static ResourceKey<Registry<Fluid>> getFluidRegistryKey() { return Registry.FLUID_REGISTRY; }
+	public static Registry<Fluid> getFluidRegistry() { return BuiltInRegistries.FLUID; }
+	public static ResourceKey<Registry<Fluid>> getFluidRegistryKey() { return Registries.FLUID; }
 	public static Stream<Fluid> streamAllFluids() { return getFluidRegistry().stream(); }
 	public static ResourceLocation getFluidLocation(Fluid fluid) { return getFluidRegistry().getKey(fluid); }
 	public static int getFluidNumericId(Fluid fluid) { return getFluidRegistry().getId(fluid); }
@@ -59,8 +61,8 @@ public class CBCRegistryUtils {
 	public static Iterable<Holder<Fluid>> getFluidTagEntries(TagKey<Fluid> tag) { return getFluidRegistry().getTagOrEmpty(tag); }
 
 	//////// Block entity type registry access aliases ////////
-	public static Registry<BlockEntityType<?>> getBlockEntityTypeRegistry() { return Registry.BLOCK_ENTITY_TYPE; }
-	public static ResourceKey<Registry<BlockEntityType<?>>> getBlockEntityTypeRegistryKey() { return Registry.BLOCK_ENTITY_TYPE_REGISTRY; }
+	public static Registry<BlockEntityType<?>> getBlockEntityTypeRegistry() { return BuiltInRegistries.BLOCK_ENTITY_TYPE; }
+	public static ResourceKey<Registry<BlockEntityType<?>>> getBlockEntityTypeRegistryKey() { return Registries.BLOCK_ENTITY_TYPE; }
 	public static Stream<BlockEntityType<?>> streamAllBlockEntityTypes() { return getBlockEntityTypeRegistry().stream(); }
 	public static ResourceLocation getBlockEntityTypeLocation(BlockEntityType<?> beType) { return getBlockEntityTypeRegistry().getKey(beType); }
 	public static int getBlockEntityTypeNumericId(BlockEntityType<?> beType) { return getBlockEntityTypeRegistry().getId(beType); }
@@ -69,8 +71,8 @@ public class CBCRegistryUtils {
 	public static Optional<BlockEntityType<?>> getOptionalBlockEntityType(ResourceLocation id) { return getBlockEntityTypeRegistry().getOptional(id); }
 
 	//////// Entity type registry access aliases ////////
-	public static Registry<EntityType<?>> getEntityTypeRegistry() { return Registry.ENTITY_TYPE; }
-	public static ResourceKey<Registry<EntityType<?>>> getEntityTypeRegistryKey() { return Registry.ENTITY_TYPE_REGISTRY; }
+	public static Registry<EntityType<?>> getEntityTypeRegistry() { return BuiltInRegistries.ENTITY_TYPE; }
+	public static ResourceKey<Registry<EntityType<?>>> getEntityTypeRegistryKey() { return Registries.ENTITY_TYPE; }
 	public static Stream<EntityType<?>> streamAllEntityTypes() { return getEntityTypeRegistry().stream(); }
 	public static ResourceLocation getEntityTypeLocation(EntityType<?> entityType) { return getEntityTypeRegistry().getKey(entityType); }
 	public static int getEntityTypeNumericId(EntityType<?> entityType) { return getEntityTypeRegistry().getId(entityType); }
@@ -82,15 +84,15 @@ public class CBCRegistryUtils {
 
 	//////// Sound event registry access aliases ////////
 
-	public static Registry<SoundEvent> getSoundEventRegistry() { return Registry.SOUND_EVENT; }
+	public static Registry<SoundEvent> getSoundEventRegistry() { return BuiltInRegistries.SOUND_EVENT; }
 	public static ResourceLocation getSoundEventLocation(SoundEvent soundEvent) { return getSoundEventRegistry().getKey(soundEvent); }
 	public static int getSoundEventNumericId(SoundEvent soundEvent) { return getSoundEventRegistry().getId(soundEvent); }
 	public static SoundEvent getSoundEvent(ResourceLocation id) { return getSoundEventRegistry().get(id); }
 	public static SoundEvent getSoundEvent(int id) { return getSoundEventRegistry().byId(id); }
 
 	//////// Less-used registry access aliases ////////
-	public static ResourceKey<Registry<Level>> getDimensionRegistryKey() { return Registry.DIMENSION_REGISTRY; }
-	public static Optional<ParticleType<?>> getOptionalParticleType(ResourceLocation id) { return Registry.PARTICLE_TYPE.getOptional(id); }
+	public static ResourceKey<Registry<Level>> getDimensionRegistryKey() { return Registries.DIMENSION; }
+	public static Optional<ParticleType<?>> getOptionalParticleType(ResourceLocation id) { return BuiltInRegistries.PARTICLE_TYPE.getOptional(id); }
 
 	private CBCRegistryUtils() {}
 

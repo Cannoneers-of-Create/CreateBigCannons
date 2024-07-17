@@ -34,7 +34,7 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 	@Override
 	public void tick() {
 		super.tick();
-		if (this.level instanceof ServerLevel slevel) {
+		if (this.level() instanceof ServerLevel slevel) {
 			if (!this.isRemoved() && CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
 				ChunkPos cpos1 = new ChunkPos(this.blockPosition());
 				RitchiesProjectileLib.queueForceLoad(slevel, cpos1.x, cpos1.z);
@@ -44,7 +44,7 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 
 	protected double getDragCoefficient(double magnitude) {
 		BallisticPropertiesComponent properties = this.getProperties().ballistics();
-		double drag = properties.drag() * DimensionMunitionPropertiesHandler.getProperties(this.level).dragMultiplier() * magnitude;
+		double drag = properties.drag() * DimensionMunitionPropertiesHandler.getProperties(this.level()).dragMultiplier() * magnitude;
 		if (properties.isQuadraticDrag())
 			drag *= magnitude;
 		return Math.min(drag, magnitude);
@@ -52,7 +52,7 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 
 	protected double getGravity() {
 		BallisticPropertiesComponent properties = this.getProperties().ballistics();
-		return properties.gravity() * DimensionMunitionPropertiesHandler.getProperties(this.level).gravityMultiplier();
+		return properties.gravity() * DimensionMunitionPropertiesHandler.getProperties(this.level()).gravityMultiplier();
 	}
 
 	public boolean canHitEntity(Entity target) {

@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.equipment.goggles.GoggleOverlayRenderer;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -23,7 +23,7 @@ public class GoggleOverlayRendererMixin {
 
 	@Inject(method = "renderOverlay",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;", ordinal = 0))
-	private static void createbigcannons$renderOverlay(PoseStack poseStack, float partialTicks, Window window, CallbackInfo ci,
+	private static void createbigcannons$renderOverlay(GuiGraphics graphics, float partialTicks, Window window, CallbackInfo ci,
 													   @Local List<Component> tooltip, @Local ClientLevel level, @Local BlockPos pos) {
 		Minecraft minecraft = Minecraft.getInstance();
 		if (!BlockArmorInspectionToolItem.isHoldingTool(minecraft.player))

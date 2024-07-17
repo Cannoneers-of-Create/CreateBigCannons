@@ -76,17 +76,17 @@ public class FluidBlobBurst extends CBCProjectileBurst {
 		this.clippedThisTick.clear();
 		super.tick();
 
-		if (!this.level.isClientSide) {
-			if (this.level.getGameTime() % 3 == 0) {
+		if (!this.level().isClientSide) {
+			if (this.level().getGameTime() % 3 == 0) {
 				NetworkPlatform.sendToClientTracking(new ClientboundFluidBlobStackSyncPacket(this), this);
 			}
 		}
-		if (this.level.isClientSide) {
+		if (this.level().isClientSide) {
 			if (!this.getFluidStack().isEmpty()) {
 				for (SubProjectile subProjectile : this.subProjectiles) {
 					double[] disp = subProjectile.displacement();
 					double[] vel = subProjectile.velocity();
-					this.level.addParticle(new FluidBlobParticleData(this.getBlobSize() * 0.25f + 1, this.getFluidStack().copy()),
+					this.level().addParticle(new FluidBlobParticleData(this.getBlobSize() * 0.25f + 1, this.getFluidStack().copy()),
 						this.getX() + disp[0], this.getY() + disp[1], this.getZ() + disp[2], vel[0], vel[1], vel[2]);
 				}
 			}
@@ -99,7 +99,7 @@ public class FluidBlobBurst extends CBCProjectileBurst {
 		Vec3 end = start.add(vel);
 		double halfHeight = this.getSubProjectileHeight() / 2d;
 		double halfWidth = this.getSubProjectileWidth() / 2d;
-		HitResult hitResult = this.level.clip(new ProjectileBurstClipContext(start, end, ClipContext.Block.COLLIDER,
+		HitResult hitResult = this.level().clip(new ProjectileBurstClipContext(start, end, ClipContext.Block.COLLIDER,
 			ClipContext.Fluid.NONE, this, start.y - halfHeight));
 		if (hitResult.getType() != HitResult.Type.MISS)
 			end = hitResult.getLocation();
@@ -111,7 +111,7 @@ public class FluidBlobBurst extends CBCProjectileBurst {
 
 	private void clipEntities(Vec3 startVec, Vec3 endVec, AABB boundingBox, SubProjectile subProjectile) {
 		float inflate = this.getBlobSize() + 0.3f;
-		for (Entity entity : this.level.getEntities(this, boundingBox, this::canHitEntity)) {
+		for (Entity entity : this.level().getEntities(this, boundingBox, this::canHitEntity)) {
 			AABB entityBB = entity.getBoundingBox().inflate(inflate);
 			Optional<Vec3> optional = entityBB.clip(startVec, endVec);
 			if (optional.isPresent())
@@ -126,14 +126,14 @@ public class FluidBlobBurst extends CBCProjectileBurst {
 
 	@Override
 	protected void onSubProjectileHit(HitResult result, SubProjectile subProjectile) {
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 			FluidBlobEffectRegistry.effectOnAllHit(this, subProjectile, result);
 		super.onSubProjectileHit(result, subProjectile);
 	}
 
 	@Override
 	protected void onSubProjectileHitBlock(BlockHitResult result, SubProjectile subProjectile) {
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 			FluidBlobEffectRegistry.effectOnHitBlock(this, subProjectile, result);
 		super.onSubProjectileHitBlock(result, subProjectile);
 	}
@@ -141,7 +141,7 @@ public class FluidBlobBurst extends CBCProjectileBurst {
 	@Override
 	protected void onSubProjectileHitEntity(EntityHitResult result, SubProjectile subProjectile) {
 		this.clippedThisTick.add(result.getEntity());
-		if (!this.level.isClientSide)
+		if (!this.level().isClientSide)
 			FluidBlobEffectRegistry.effectOnHitEntity(this, subProjectile, result);
 		super.onSubProjectileHitEntity(result, subProjectile);
 	}

@@ -18,7 +18,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -34,9 +33,9 @@ import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesPr
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.TrailSmokeParticleData;
+import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
-import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.ImpactExplosion;
@@ -246,7 +245,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 
 	@Override
 	protected DamageSource getEntityDamage(Entity entity) {
-		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.BIG_CANNON_PROJECTILE), this, this.getDamageProperties().ignoresEntityArmor());
+		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(CBCDamageTypes.BIG_CANNON_PROJECTILE), this.getDamageProperties().ignoresEntityArmor());
 	}
 
 	public float addedChargePower() { return this.getBigCannonProjectileProperties().addedChargePower(); }

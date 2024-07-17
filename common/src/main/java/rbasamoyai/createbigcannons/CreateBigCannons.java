@@ -86,7 +86,7 @@ public class CreateBigCannons {
 		explosion.finalizeExplosion(level.isClientSide);
 		if (!(level instanceof ServerLevel slevel))
 			return;
-		if (explosion.getBlockInteraction() == Explosion.BlockInteraction.NONE)
+		if (!explosion.interactsWithBlocks())
 			explosion.clearToBlow();
 		for (ServerPlayer player : slevel.players())
 			explosion.sendExplosionToClient(player);
