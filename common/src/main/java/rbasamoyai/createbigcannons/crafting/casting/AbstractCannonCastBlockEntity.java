@@ -30,7 +30,6 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -50,6 +49,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeFinder;
 import rbasamoyai.createbigcannons.crafting.WandActionable;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity implements WandActionable, IMultiBlockEntityContainer, IHaveHoveringInformation {
 
@@ -173,14 +173,14 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		BlockPos controllerBefore = this.controllerPos;
 		int prevHeight = this.getControllerBE() == null ? 0 : this.getControllerBE().height;
 
-		this.castShape = tag.contains("Size") ? shapeRegistry.get(new ResourceLocation(tag.getString("Size"))) : null;
+		this.castShape = tag.contains("Size") ? shapeRegistry.get(CBCUtils.location(tag.getString("Size"))) : null;
 		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
 
 		this.structure.clear();
 		if (tag.contains("Structure")) {
 			ListTag list = tag.getList("Structure", Tag.TAG_STRING);
 			for (int i = 0; i < list.size(); ++i) {
-				CannonCastShape shape = shapeRegistry.get(new ResourceLocation(list.getString(i)));
+				CannonCastShape shape = shapeRegistry.get(CBCUtils.location(list.getString(i)));
 				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL : shape);
 			}
 			this.height = tag.getInt("Height");
@@ -445,7 +445,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		if (this.canRenderCastModel() && this.castShape != null) {
 			this.onDestroyCenterCast();
 		} else if (this.getLevel().getBlockEntity(this.getCenterBlock()) instanceof AbstractCannonCastBlockEntity otherCast) {
-			otherCast.destroyCastMultiblockAtLayer();
+			if (otherCast.canRenderCastModel() && otherCast.castShape != null)
+				otherCast.destroyCastMultiblockAtLayer();
 		}
 	}
 

@@ -1,11 +1,14 @@
 package rbasamoyai.createbigcannons.crafting.builtup;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -21,10 +24,8 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BuiltUpHeatingRecipe implements BlockRecipe {
 
@@ -90,7 +91,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 			if (layerArr != null) {
 				for (JsonElement el : layerArr) layers.add(BlockRecipeIngredient.fromJson(el));
 			}
-			Block result = BuiltInRegistries.BLOCK.get(new ResourceLocation(obj.get("result").getAsString()));
+			Block result = CBCRegistryUtils.getBlock(CBCUtils.location(obj.get("result").getAsString()));
 			return new BuiltUpHeatingRecipe(layers, result, id);
 		}
 
@@ -99,7 +100,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 			int sz = buf.readVarInt();
 			Set<BlockRecipeIngredient> layers = sz == 0 ? null : new HashSet<>();
 			for (int i = 0; i < sz; ++i) layers.add(BlockRecipeIngredient.fromNetwork(buf));
-			Block result = BuiltInRegistries.BLOCK.get(buf.readResourceLocation());
+			Block result = CBCRegistryUtils.getBlock(buf.readResourceLocation());
 			return new BuiltUpHeatingRecipe(layers, result, id);
 		}
 
@@ -109,7 +110,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 			if (recipe.layers != null && !recipe.layers.isEmpty()) {
 				recipe.layers.forEach(p -> p.toNetwork(buf));
 			}
-			buf.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(recipe.result));
+			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(recipe.result));
 		}
 	}
 

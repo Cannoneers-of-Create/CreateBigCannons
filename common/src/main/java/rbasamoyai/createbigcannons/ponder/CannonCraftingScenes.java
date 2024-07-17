@@ -600,8 +600,24 @@ public class CannonCraftingScenes {
 			.text("The process works similar to bulk blasting of items, using a fan blowing into a lava block to produce a heating current.")
 			.pointAt(util.vector.blockSurface(util.grid.at(4, 2, 2), Direction.WEST));
 		scene.idle(100);
+		scene.overlay.showText(50)
+			.attachKeyFrame()
+			.text("A built-up cannon block must have all the correct layers to be transformed.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(20);
+		BlockPos pos = util.grid.at(0, 1, 2);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(pos, Direction.UP), Pointing.DOWN)
+			.withItem(CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER.asStack()), 30);
+		scene.idle(45);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(pos, Direction.UP), Pointing.DOWN)
+			.withItem(CBCBlocks.SMALL_STEEL_CANNON_LAYER.asStack()), 30);
+		scene.idle(45);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(pos, Direction.UP), Pointing.DOWN)
+			.withItem(CBCBlocks.MEDIUM_STEEL_CANNON_LAYER.asStack()), 30);
+		scene.idle(45);
 
 		scene.overlay.showText(60)
+			.attachKeyFrame()
 			.text("It takes a while for the cannon layers to transform into cannon blocks.");
 		scene.idle(40);
 

@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.base.CBCJsonResourceReloadListener;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class BigCannonPropellantCompatibilityHandler {
 
@@ -41,7 +42,7 @@ public class BigCannonPropellantCompatibilityHandler {
 
 			for (Map.Entry<ResourceLocation, JsonElement> e : object.entries()) {
 				ResourceLocation loc = e.getKey();
-				Block block = BuiltInRegistries.BLOCK.getOptional(loc).orElseThrow(() -> {
+				Block block = CBCRegistryUtils.getOptionalBlock(loc).orElseThrow(() -> {
 					return new JsonSyntaxException("Unknown block '" + loc + "'");
 				});
 				JsonElement el = e.getValue();
@@ -62,7 +63,7 @@ public class BigCannonPropellantCompatibilityHandler {
 	public static void writeBuf(FriendlyByteBuf buf) {
 		buf.writeVarInt(PROPERTIES_MAP.size());
 		for (Map.Entry<Block, BigCannonPropellantCompatibilities> entry : PROPERTIES_MAP.entrySet()) {
-			buf.writeResourceLocation(BuiltInRegistries.BLOCK.getKey(entry.getKey()));
+			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()));
 			entry.getValue().writeBuf(buf);
 		}
 	}
@@ -72,7 +73,7 @@ public class BigCannonPropellantCompatibilityHandler {
 		int sz = buf.readVarInt();
 
 		for (int i = 0; i < sz; ++i) {
-			PROPERTIES_MAP.put(BuiltInRegistries.BLOCK.get(buf.readResourceLocation()), BigCannonPropellantCompatibilities.readBuf(buf));
+			PROPERTIES_MAP.put(CBCRegistryUtils.getBlock(buf.readResourceLocation()), BigCannonPropellantCompatibilities.readBuf(buf));
 		}
 	}
 

@@ -12,9 +12,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
-import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 public abstract class AbstractFluidShellBlockEntity extends FuzedBlockEntity {
 
@@ -37,8 +37,8 @@ public abstract class AbstractFluidShellBlockEntity extends FuzedBlockEntity {
 	public abstract boolean tryFillItemFromTE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
 
 	public static int getFluidShellCapacity() {
-		FluidShellProperties properties = (FluidShellProperties) MunitionPropertiesHandler.getProperties(CBCEntityTypes.FLUID_SHELL.get());
-		return IndexPlatform.convertFluid(properties == null ? 2000 : properties.fluidShellCapacity());
+		FluidShellProperties properties = CBCMunitionPropertiesHandlers.FLUID_SHELL.getPropertiesOf(CBCEntityTypes.FLUID_SHELL.get());
+		return IndexPlatform.convertFluid(properties.fluidShellCapacity());
 	}
 
 }

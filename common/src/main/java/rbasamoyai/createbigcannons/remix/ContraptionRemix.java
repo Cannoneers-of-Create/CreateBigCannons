@@ -58,7 +58,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 public class ContraptionRemix {
 
 	public static boolean customBlockPlacement(Contraption contraption, LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
-		if (contraption instanceof CanLoadBigCannon loader && contraption.entity != null) {
+		if (contraption instanceof CanLoadBigCannon && contraption.entity != null) {
 			BlockPos entityAnchor = BlockPos.containing(contraption.entity.getAnchorVec().add(0.5d, 0.5d, 0.5d));
 
 			BlockPos blockPos = pos.subtract(entityAnchor);
@@ -66,12 +66,15 @@ public class ContraptionRemix {
 			BlockEntity blockEntity1 = levelAccessor.getBlockEntity(pos);
 			BlockState intersectState = levelAccessor.getBlockState(pos);
 
-			if (loader.createbigcannons$isBrokenDisassembly() && !intersectState.isAir() && blockInfo != null && !blockInfo.state().isAir()) {
-				BlockEntity contraptionBE = blockInfo.nbt() == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state(), blockInfo.nbt());
-				Block.dropResources(blockInfo.state(), contraption.entity.level(), pos, contraptionBE, null, ItemStack.EMPTY);
-				levelAccessor.levelEvent(2001, pos, Block.getId(blockInfo.state()));
-				levelAccessor.gameEvent(contraption.entity, GameEvent.BLOCK_DESTROY, pos);
-				return true;
+			if (contraption instanceof HasFragileContraption fragile) {
+				boolean isBrokenDisassembly = fragile.createbigcannons$isBrokenDisassembly();
+				if (isBrokenDisassembly && !intersectState.isAir() && blockInfo != null && !blockInfo.state().isAir()) {
+					BlockEntity contraptionBE = blockInfo.nbt() == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state(), blockInfo.nbt());
+					Block.dropResources(blockInfo.state(), contraption.entity.level(), pos, contraptionBE, null, ItemStack.EMPTY);
+					levelAccessor.levelEvent(2001, pos, Block.getId(blockInfo.state()));
+					levelAccessor.gameEvent(contraption.entity, GameEvent.BLOCK_DESTROY, pos);
+					return true;
+				}
 			}
 			if (blockEntity1 instanceof IBigCannonBlockEntity cannon) {
 				if (cannon.cannonBehavior().tryLoadingBlock(blockInfo)) {
@@ -561,7 +564,7 @@ public class ContraptionRemix {
 			&& cbe.cannonBehavior().canLoadBlock(blockInfo);
 	}
 
-	public static <T extends Contraption & CanLoadBigCannon> void markFragileBlocks(T contraption) {
+	public static <T extends Contraption & HasFragileContraption> void markFragileBlocks(T contraption) {
 		Set<BlockPos> fragileBlocks = contraption.createbigcannons$getFragileBlockPositions();
 		fragileBlocks.clear();
 		for (Map.Entry<BlockPos, StructureBlockInfo> info : contraption.getBlocks().entrySet()) {
@@ -569,33 +572,35 @@ public class ContraptionRemix {
 		}
 	}
 
-	public static <T extends Contraption & CanLoadBigCannon> void writeCannonLoaderData(T contraption, CompoundTag tag) {
-		Set<BlockPos> fragileBlocks = contraption.createbigcannons$getFragileBlockPositions();
+	public static <T extends Contraption & HasFragileContraption> void writeFragileBlocks(T contraption, CompoundTag tag) {
 		ListTag fragileList = new ListTag();
-		for (BlockPos p : fragileBlocks) {
+		for (BlockPos p : contraption.createbigcannons$getFragileBlockPositions())
 			fragileList.add(LongTag.valueOf(p.asLong()));
-		}
 		tag.put("createbigcannons:fragile_blocks", fragileList);
-		Set<BlockPos> colliderBlocks = contraption.createbigcannons$getCannonLoadingColliders();
+	}
+
+	public static <T extends Contraption & CanLoadBigCannon> void writeCannonLoaderData(T contraption, CompoundTag tag) {
 		ListTag cannonColliderList = new ListTag();
-		for (BlockPos p : colliderBlocks) {
-			fragileList.add(LongTag.valueOf(p.asLong()));
-		}
+		for (BlockPos p : contraption.createbigcannons$getCannonLoadingColliders())
+			cannonColliderList.add(LongTag.valueOf(p.asLong()));
 		tag.put("createbigcannons:cannon_loading_colliders", cannonColliderList);
 	}
 
-	public static <T extends Contraption & CanLoadBigCannon> void readCannonLoaderData(T contraption, CompoundTag tag) {
+	public static <T extends Contraption & HasFragileContraption> void readFragileBlocks(T contraption, CompoundTag tag) {
 		Set<BlockPos> fragileBlocks = contraption.createbigcannons$getFragileBlockPositions();
 		fragileBlocks.clear();
-		ListTag fragileList = tag.getList("createbigcannons:fragile_blocks", Tag.TAG_LONG);
-		for (Tag t : fragileList) {
-			if (t.getType() == LongTag.TYPE) fragileBlocks.add(BlockPos.of(((LongTag) t).getAsLong()));
+		for (Tag t : tag.getList("createbigcannons:fragile_blocks", Tag.TAG_LONG)) {
+			if (t.getType() == LongTag.TYPE)
+				fragileBlocks.add(BlockPos.of(((LongTag) t).getAsLong()));
 		}
+	}
+
+	public static <T extends Contraption & CanLoadBigCannon> void readCannonLoaderData(T contraption, CompoundTag tag) {
 		Set<BlockPos> cannonColliders = contraption.createbigcannons$getCannonLoadingColliders();
 		cannonColliders.clear();
-		ListTag cannonColliderList = tag.getList("createbigcannons:fragile_blocks", Tag.TAG_LONG);
-		for (Tag t : cannonColliderList) {
-			if (t.getType() == LongTag.TYPE) fragileBlocks.add(BlockPos.of(((LongTag) t).getAsLong()));
+		for (Tag t : tag.getList("createbigcannons:cannon_loading_colliders", Tag.TAG_LONG)) {
+			if (t.getType() == LongTag.TYPE)
+				cannonColliders.add(BlockPos.of(((LongTag) t).getAsLong()));
 		}
 	}
 

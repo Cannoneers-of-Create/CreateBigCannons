@@ -22,6 +22,7 @@ import com.simibubi.create.compat.rei.display.BasinDisplay;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
+import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CRecipes;
 
@@ -32,7 +33,6 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.plugin.common.BuiltinPlugin;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -71,7 +71,7 @@ public class CBCREI implements REIClientPlugin {
 		meltingCatalysts.add(AllBlocks.BASIN::asStack);
 		CreateRecipeCategory.Info<BasinRecipe> meltingInfo = new CreateRecipeCategory.Info<>(
 			CategoryIdentifier.of(CreateBigCannons.resource("melting")),
-			Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
+			Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
 			new EmptyBackground(177, 103),
 			new DoubleItemIcon(AllBlocks.BASIN::asStack, CBCBlocks.BASIN_FOUNDRY_LID::asStack),
 			meltingSupplier, meltingCatalysts,
@@ -278,7 +278,7 @@ public class CBCREI implements REIClientPlugin {
 
 			CBCBlockRecipeCategory.Info<T> info = new CBCBlockRecipeCategory.Info<>(
 				CategoryIdentifier.of(CreateBigCannons.resource(name)),
-				Component.translatable("recipe." + CreateBigCannons.MOD_ID + "." + name),
+				Components.translatable("recipe." + CreateBigCannons.MOD_ID + "." + name),
 				this.background,
 				this.icon,
 				recipesSupplier,

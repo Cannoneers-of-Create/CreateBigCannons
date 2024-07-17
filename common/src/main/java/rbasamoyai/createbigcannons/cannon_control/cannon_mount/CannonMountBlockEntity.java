@@ -12,6 +12,7 @@ import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.transmission.sequencer.SequencerInstructions;
 import com.simibubi.create.foundation.utility.AngleHelper;
+import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
 import net.minecraft.core.BlockPos;
@@ -318,10 +319,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		}
 
 		this.running = false;
-
-		if (this.remove) {
-			CBCBlocks.CANNON_MOUNT.get().playerWillDestroy(this.getLevel(), this.worldPosition, this.getBlockState(), null);
-		}
 	}
 
 	protected void resetContraptionToOffset() {
@@ -431,7 +428,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	public static AssemblyException cannonBlockOutsideOfWorld(BlockPos pos) {
-		return new AssemblyException(Component.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
+		return new AssemblyException(Components.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
 	}
 
 	public Vec3 getInteractionLocation() {

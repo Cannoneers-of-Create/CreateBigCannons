@@ -1,0 +1,109 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "createbigcannons:block/gas_mask",
+		"particle": "createbigcannons:block/gas_mask"
+	},
+	"elements": [
+		{
+			"from": [4, 8, 4],
+			"to": [12, 8, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, 4]},
+			"faces": {
+				"up": {"uv": [4, 0, 8, 4], "texture": "#0"},
+				"down": {"uv": [4, 4, 8, 0], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 0, 4],
+			"to": [12, 8, 4],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, 4]},
+			"faces": {
+				"north": {"uv": [4, 4, 8, 8], "texture": "#0"},
+				"south": {"uv": [8, 4, 4, 8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 0, 12],
+			"to": [12, 8, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, 4]},
+			"faces": {
+				"north": {"uv": [16, 4, 12, 8], "texture": "#0"},
+				"south": {"uv": [12, 4, 16, 8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 0, 4],
+			"to": [4, 8, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, 4]},
+			"faces": {
+				"east": {"uv": [12, 4, 8, 8], "texture": "#0"},
+				"west": {"uv": [8, 4, 12, 8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [12, 0, 4],
+			"to": [12, 8, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, 4]},
+			"faces": {
+				"east": {"uv": [0, 4, 4, 8], "texture": "#0"},
+				"west": {"uv": [4, 4, 0, 8], "texture": "#0"}
+			}
+		},
+		{
+			"from": [4, 0, 4],
+			"to": [12, 0, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 0, 4]},
+			"faces": {
+				"up": {"uv": [8, 4, 12, 0], "texture": "#0"},
+				"down": {"uv": [8, 0, 12, 4], "texture": "#0"}
+			}
+		},
+		{
+			"from": [6, -1.25, 1],
+			"to": [10, 2.75, 4],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 0, 4]},
+			"faces": {
+				"north": {"uv": [7.5, 8.5, 9.5, 10.5], "texture": "#0"},
+				"east": {"uv": [7.5, 11, 9.5, 12.5], "rotation": 90, "texture": "#0"},
+				"south": {"uv": [10, 8.5, 12, 10.5], "texture": "#0"},
+				"west": {"uv": [5, 8.5, 7, 10], "rotation": 270, "texture": "#0"},
+				"up": {"uv": [5, 10.5, 7, 12], "texture": "#0"},
+				"down": {"uv": [5, 12.5, 7, 14], "rotation": 180, "texture": "#0"}
+			}
+		},
+		{
+			"from": [6.5, -0.75, 4],
+			"to": [9.5, 2.25, 6],
+			"rotation": {"angle": -22.5, "axis": "x", "origin": [8, 0, 4]},
+			"faces": {
+				"east": {"uv": [10, 11, 11, 12.5], "rotation": 180, "texture": "#0"},
+				"west": {"uv": [3.5, 8.5, 4.5, 10], "texture": "#0"},
+				"up": {"uv": [3.5, 12.5, 4.5, 14], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [3.5, 10.5, 4.5, 12], "rotation": 270, "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"head": {
+			"translation": [0, 7.5, 0],
+			"scale": [1.88, 1.88, 1.88]
+		}
+	},
+	"groups": [
+		0,
+		1,
+		2,
+		3,
+		4,
+		5,
+		{
+			"name": "respirator",
+			"origin": [8, 0, 4],
+			"color": 0,
+			"children": [6, 7]
+		}
+	]
+}

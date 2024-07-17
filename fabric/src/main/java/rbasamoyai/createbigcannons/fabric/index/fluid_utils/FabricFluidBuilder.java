@@ -19,7 +19,6 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.Util;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -29,6 +28,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilder<T, P> {
 
@@ -90,9 +91,9 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 	@Override
 	protected CBCFlowingFluid.Properties makeProperties() {
 		CBCFluidData.Builder attributes = this.attributes.get();
-		RegistryEntry<Block> block = getOwner().getOptional(this.sourceName, Registries.BLOCK);
+		RegistryEntry<Block> block = getOwner().getOptional(this.sourceName, CBCRegistryUtils.getBlockRegistryKey());
 		this.attributesCallback.accept(attributes);
-		attributes.translationKey(Util.makeDescriptionId("fluid", new ResourceLocation(getOwner().getModid(), this.sourceName)));
+		attributes.translationKey(Util.makeDescriptionId("fluid", CBCUtils.location(getOwner().getModid(), this.sourceName)));
 		return super.makeProperties();
 	}
 

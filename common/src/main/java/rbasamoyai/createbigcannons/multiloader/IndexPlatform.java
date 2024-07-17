@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.multiloader;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -13,12 +14,14 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -26,6 +29,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -115,5 +120,13 @@ public class IndexPlatform {
 
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { throw new AssertionError(); }
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { throw new AssertionError(); }
+
+	@ExpectPlatform public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) { throw new AssertionError(); }
+
+	@ExpectPlatform public static boolean onExplosionStart(Level level, Explosion explosion) { throw new AssertionError(); }
+
+	@Environment(EnvType.CLIENT)
+	@ExpectPlatform
+	public static void updateSprite(TerrainParticle particle, BlockState state, BlockPos pos) { throw new AssertionError(); }
 
 }

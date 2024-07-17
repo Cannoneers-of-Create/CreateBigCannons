@@ -1,11 +1,11 @@
 package rbasamoyai.createbigcannons.forge.network;
 
+import java.util.function.Supplier;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 import rbasamoyai.createbigcannons.network.RootPacket;
-
-import java.util.function.Supplier;
 
 public class ForgeClientPacket {
 
@@ -24,7 +24,7 @@ public class ForgeClientPacket {
 	public void handle(Supplier<NetworkEvent.Context> sup) {
 		NetworkEvent.Context ctx = sup.get();
 		ctx.enqueueWork(() -> {
-			this.pkt.handle(null, ctx.getNetworkManager().getPacketListener(), null);
+			this.pkt.handle(ctx::enqueueWork, ctx.getNetworkManager().getPacketListener(), null);
 		});
 		ctx.setPacketHandled(true);
 	}

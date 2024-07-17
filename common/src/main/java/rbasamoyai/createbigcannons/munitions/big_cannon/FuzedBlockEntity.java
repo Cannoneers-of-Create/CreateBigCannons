@@ -2,8 +2,6 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 
 import java.util.List;
 
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
-import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.ChatFormatting;
@@ -11,15 +9,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-public class FuzedBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container {
+public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 
 	protected ItemStack fuze = ItemStack.EMPTY;
 
@@ -43,6 +39,7 @@ public class FuzedBlockEntity extends SyncedBlockEntity implements IHaveGoggleIn
 
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		Lang.builder("block")
 			.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
 			.style(ChatFormatting.YELLOW)
@@ -64,17 +61,17 @@ public class FuzedBlockEntity extends SyncedBlockEntity implements IHaveGoggleIn
 
 	@Override
 	public int getContainerSize() {
-		return 1;
+		return 2;
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return this.fuze.isEmpty();
+		return super.isEmpty() && this.fuze.isEmpty();
 	}
 
 	@Override
 	public ItemStack getItem(int slot) {
-		return slot == 0 ? this.fuze : ItemStack.EMPTY;
+		return slot == 1 ? this.fuze : super.getItem(slot);
 	}
 
 	public boolean hasFuze() {
@@ -83,39 +80,39 @@ public class FuzedBlockEntity extends SyncedBlockEntity implements IHaveGoggleIn
 
 	@Override
 	public ItemStack removeItem(int slot, int amount) {
-		if (this.isEmpty() || slot != 0 || amount < 1) return ItemStack.EMPTY;
-		return this.getItem(slot).split(amount);
+		if (slot == 1 && amount > 0)
+			return this.getItem(slot).split(amount);
+		return super.removeItem(slot, amount);
 	}
 
 	@Override
 	public ItemStack removeItemNoUpdate(int slot) {
-		if (this.isEmpty() || slot != 0) return ItemStack.EMPTY;
-		ItemStack result = this.fuze;
-		this.fuze = ItemStack.EMPTY;
-		return result;
+		if (slot == 1) {
+			if (this.fuze.isEmpty())
+				return ItemStack.EMPTY;
+			ItemStack result = this.fuze;
+			this.fuze = ItemStack.EMPTY;
+			return result;
+		}
+		return super.removeItemNoUpdate(slot);
 	}
 
 	@Override
 	public void setItem(int slot, ItemStack stack) {
-		if (slot != 0) return;
-		this.fuze = stack;
-		if (stack.getCount() > this.getMaxStackSize()) stack.setCount(this.getMaxStackSize());
-		this.setChanged();
-	}
-
-	@Override
-	public int getMaxStackSize() {
-		return 1;
-	}
-
-	@Override
-	public boolean stillValid(Player player) {
-		return false;
+		if (slot == 1) {
+			this.fuze = stack;
+			if (stack.getCount() > this.getMaxStackSize())
+				stack.setCount(this.getMaxStackSize());
+			this.setChanged();
+			return;
+		}
+		super.setItem(slot, stack);
 	}
 
 	@Override
 	public void clearContent() {
 		this.fuze = ItemStack.EMPTY;
+		super.clearContent();
 	}
 
 }

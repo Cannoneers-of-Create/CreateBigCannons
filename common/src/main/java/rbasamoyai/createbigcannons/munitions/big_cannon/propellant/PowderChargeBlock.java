@@ -19,8 +19,10 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
+import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.config.PowderChargeProperties;
 
-public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock<BigCannonPropellantProperties> {
+public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock {
 
 	private static final EnumProperty<Axis> AXIS = RotatedPillarBlock.AXIS;
 
@@ -45,6 +47,16 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	public boolean canBeLoaded(BlockState state, Direction.Axis axis) {
 		return axis == state.getValue(AXIS);
 	}
+
+	@Override public float getChargePower(StructureBlockInfo data) { return this.getProperties().propellantProperties().strength(); }
+	@Override public float getChargePower(ItemStack stack) { return this.getProperties().propellantProperties().strength(); }
+
+	@Override public float getStressOnCannon(StructureBlockInfo data) { return this.getProperties().propellantProperties().addedStress(); }
+	@Override public float getStressOnCannon(ItemStack stack) { return this.getProperties().propellantProperties().addedStress(); }
+
+	@Override public float getSpread(StructureBlockInfo data) { return this.getProperties().propellantProperties().addedSpread(); }
+
+	@Override public float getRecoil(StructureBlockInfo data) { return this.getProperties().propellantProperties().addedRecoil(); }
 
 	@Override
 	public void consumePropellant(BigCannonBehavior behavior) {
@@ -79,6 +91,10 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	@Override
 	public ItemStack getExtractedItem(StructureBlockInfo info) {
 		return new ItemStack(this);
+	}
+
+	protected PowderChargeProperties getProperties() {
+		return CBCMunitionPropertiesHandlers.POWDER_CHARGE.getPropertiesOf(this);
 	}
 
 }

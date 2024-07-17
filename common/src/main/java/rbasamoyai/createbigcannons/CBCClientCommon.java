@@ -2,14 +2,11 @@ package rbasamoyai.createbigcannons;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import net.minecraft.client.gui.GuiGraphics;
 
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
@@ -24,26 +21,42 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.ParticleStatus;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.goggles.EntityGoggleOverlayRenderer;
+import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffect;
+import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffectsHandler;
+import rbasamoyai.createbigcannons.block_hit_effects.DefaultParticleModifiers;
+import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffect;
+import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffectsHandler;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
-import rbasamoyai.createbigcannons.cannon_control.effects.ShakeEffect;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderSelectionHandler;
+import rbasamoyai.createbigcannons.effects.CBCScreenShakeHandler;
+import rbasamoyai.createbigcannons.effects.particles.ParticleWindHandler;
+import rbasamoyai.createbigcannons.effects.sounds.ShellFlyingSoundInstance;
+import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskOverlay;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
@@ -52,10 +65,14 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.mixin.client.CameraAccessor;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
+import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
+import rbasamoyai.createbigcannons.remix.LightingRemix;
+import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.RPLScreenShakeHandlerClient;
+import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
 
 public class CBCClientCommon {
 
@@ -64,12 +81,20 @@ public class CBCClientCommon {
 	public static final KeyMapping FIRE_CONTROLLED_CANNON = IndexPlatform.createSafeKeyMapping(KEY_ROOT + ".fire_controlled_cannon", InputConstants.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT);
 	public static final List<KeyMapping> KEYS = new ArrayList<>();
 
-	private static final List<ShakeEffect> ACTIVE_SHAKE_EFFECTS = new LinkedList<>();
-
 	public static final CannonWelderSelectionHandler CANNON_WELDER_HANDLER = new CannonWelderSelectionHandler();
 
+	private static boolean PARTICLES_REGISTERED = false;
+
+	public static ParticleStatus getParticleStatus() {
+		return Minecraft.getInstance().options.particles().get();
+	}
+
 	public static void onRegisterParticleFactories(Minecraft mc, ParticleEngine engine) {
+		if (PARTICLES_REGISTERED)
+			return;
 		CBCParticleTypes.registerFactories();
+		DefaultParticleModifiers.register();
+		PARTICLES_REGISTERED = true;
 	}
 
 	public static void onClientSetup() {
@@ -89,6 +114,8 @@ public class CBCClientCommon {
 		(stack, level, player, a) -> {
 			return BigCartridgeBlockItem.getPower(stack);
 		});
+
+		RPLScreenShakeHandlerClient.registerModScreenShakeHandler(CreateBigCannons.SCREEN_SHAKE_HANDLER_ID, new CBCScreenShakeHandler());
 	}
 
 	public static void registerKeyMappings(Consumer<KeyMapping> cons) {
@@ -98,8 +125,13 @@ public class CBCClientCommon {
 		KEYS.add(FIRE_CONTROLLED_CANNON);
 	}
 
-	public static void registerOverlays(BiConsumer<String, CBCGuiOverlay> cons) {
-		cons.accept("entity_goggles_overlay", EntityGoggleOverlayRenderer::renderOverlay);
+	public static void registerOverlays(String type, BiConsumer<String, CBCGuiOverlay> cons) {
+		if (type.equals("hotbar")) {
+			cons.accept("entity_goggles_overlay", EntityGoggleOverlayRenderer::renderOverlay);
+		}
+		if (type.equals("helmet")) {
+			cons.accept("gas_mask_overlay", GasMaskOverlay::renderOverlay);
+		}
 	}
 
 	@FunctionalInterface
@@ -164,11 +196,6 @@ public class CBCClientCommon {
 	public static void onClientGameTick(Minecraft mc) {
 		if (mc.player == null || mc.level == null) return;
 
-		for (Iterator<ShakeEffect> iter = ACTIVE_SHAKE_EFFECTS.iterator(); iter.hasNext(); ) {
-			ShakeEffect effect = iter.next();
-			if (effect.tick()) iter.remove();
-		}
-
 		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
 			boolean isPitching = CBCClientCommon.PITCH_MODE.isDown();
@@ -182,6 +209,7 @@ public class CBCClientCommon {
 		}
 
 		CANNON_WELDER_HANDLER.tick();
+		ParticleWindHandler.updateWind();
 	}
 
 	public static boolean onClickMouse(KeyMapping mapping) {
@@ -268,7 +296,6 @@ public class CBCClientCommon {
 
 		if (player != null && camera.getEntity() == player && player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
 			Direction dir = poce.getInitialOrientation();
-			Vec3 normal = new Vec3(dir.step());
 			Direction up = Direction.UP; // TODO: up and down cases
 
 			Vec3 upNormal = new Vec3(up.step());
@@ -287,29 +314,52 @@ public class CBCClientCommon {
 			setPitch.accept(poce.getViewXRot((float) partialTicks) * sgn);
 			setRoll.accept(0f);
 		}
-
-		float dy = 0;
-		float dp = 0;
-		float dr = 0;
-		for (ShakeEffect shakeEffect : ACTIVE_SHAKE_EFFECTS) {
-			float f = shakeEffect.getProgressNormalized((float) partialTicks);
-			float f1 = f * f;
-			float f2 = shakeEffect.getProgress((float) partialTicks);
-			dy += shakeEffect.magnitude * f1 * shakeEffect.yawNoise.getValue(0, f2, false);
-			dp += shakeEffect.magnitude * f1 * shakeEffect.pitchNoise.getValue(0, f2, false);
-			dr += shakeEffect.magnitude * f1 * shakeEffect.rollNoise.getValue(0, f2, false);
-		}
-		float s = mc.options.screenEffectScale().get().floatValue();
-		setYaw.accept(yaw.get() + dy * s);
-		setPitch.accept(pitch.get() + dp * s);
-		setRoll.accept(roll.get() + dr * s);
 		return false;
 	}
 
-	public static void addShakeEffect(ShakeEffect effect) { ACTIVE_SHAKE_EFFECTS.add(effect); }
+	public static void onLoadClientLevel(LevelAccessor level) {
+		BlockHitEffectsHandler.loadTags();
+		ParticleWindHandler.refreshNoise(level.getRandom().nextLong());
+	}
 
 	public static void onPlayerLogOut(LocalPlayer player) {
-		ACTIVE_SHAKE_EFFECTS.clear();
+		BlockHitEffectsHandler.cleanUpTags();
+		LightingRemix.clearCache();
+	}
+
+	public static void onPlayerLogIn(LocalPlayer player) {
+		LightingRemix.clearCache();
+	}
+
+	public static void onChangeDimension(Player player) {
+		LightingRemix.clearCache();
+	}
+
+	public static void playCustomSound(BlockHitEffect.HitSound sound, Level level, double x, double y, double z, double dx,
+									   double dy, double dz, ProjectileHitEffect projectileEffect) {
+		float basePitch = Mth.clamp(projectileEffect.getPitch(sound.basePitch()), 0, 2);
+		float pitch = Mth.clamp(basePitch + level.random.nextFloat() * sound.pitchVariation(), 0, 2);
+		Minecraft minecraft = Minecraft.getInstance();
+		minecraft.getSoundManager().play(new SimpleSoundInstance(sound.location(), sound.source(), projectileEffect.volume(),
+			pitch, level.getRandom(), false, 0, SoundInstance.Attenuation.LINEAR, x, y, z, false));
+	}
+
+	public static void registerClientReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
+		cons.accept(BlockHitEffectsHandler.ReloadListener.BLOCKS_INSTANCE, CreateBigCannons.resource("block_hit_effects_block_handler"));
+		cons.accept(BlockHitEffectsHandler.ReloadListener.FLUIDS_INSTANCE, CreateBigCannons.resource("block_hit_effects_fluid_handler"));
+		cons.accept(ProjectileHitEffectsHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("projectile_hit_effects_handler"));
+	}
+
+	public static void playShellFlyingSoundOnClient(AbstractCannonProjectile projectile, SoundEvent sound, Predicate<Player> playerTest, double radius) {
+		Minecraft minecraft = Minecraft.getInstance();
+		if (minecraft.player == null || !playerTest.test(minecraft.player))
+			return;
+		minecraft.getSoundManager().play(new ShellFlyingSoundInstance(sound, minecraft.player.level().random, minecraft.player, projectile, radius));
+		projectile.setLocalSoundCooldown(-1);
+	}
+
+	public static void shakeScreenOnClient(ScreenShakeEffect effect) {
+		RPLScreenShakeHandlerClient.addShakeEffect(CreateBigCannons.SCREEN_SHAKE_HANDLER_ID, effect);
 	}
 
 }

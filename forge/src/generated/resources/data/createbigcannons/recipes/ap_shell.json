@@ -12,7 +12,7 @@
       "tag": "minecraft:wooden_slabs"
     },
     "T": {
-      "item": "minecraft:tnt"
+      "tag": "createbigcannons:high_explosive_materials"
     }
   },
   "pattern": [

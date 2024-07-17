@@ -1,11 +1,12 @@
 package rbasamoyai.createbigcannons.forge;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.ComputeFovModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -13,15 +14,16 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.compat.curios.CBCCuriosRenderers;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
@@ -33,6 +35,8 @@ public class CBCClientForge {
 		modEventBus.addListener(CBCClientForge::onClientSetup);
 		modEventBus.addListener(CBCClientForge::onRegisterKeyMappings);
 		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
+		modEventBus.addListener(CBCClientForge::onLoadComplete);
+		modEventBus.addListener(CBCClientForge::onRegisterClientReloadListeners);
 		modEventBus.addListener(CBCClientForge::onRegisterGuiOverlays);
 
 		forgeEventBus.addListener(CBCClientForge::getFogColor);
@@ -44,6 +48,18 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
 		forgeEventBus.addListener(CBCClientForge::onPlayerLogOut);
 		forgeEventBus.addListener(CBCClientForge::onClickMouse);
+		forgeEventBus.addListener(CBCClientForge::onLoadClientLevel);
+		forgeEventBus.addListener(CBCClientForge::onPlayerLogIn);
+		forgeEventBus.addListener(CBCClientForge::onPlayerChangeDimension);
+
+		CBCModsForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosRenderers.register(modEventBus, forgeEventBus));
+	}
+
+	private static void wrapOverlay(String id, CBCClientCommon.CBCGuiOverlay overlay, VanillaGuiOverlay renderOver,
+									RegisterGuiOverlaysEvent event) {
+		event.registerAbove(renderOver.id(), id, (gui, stack, partialTicks, width, height) -> {
+			overlay.renderOverlay(stack, partialTicks, width, height);
+		});
 	}
 
 	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
@@ -106,28 +122,40 @@ public class CBCClientForge {
 		}
 	}
 
+	public static void onLoadClientLevel(LevelEvent.Load evt) {
+		LevelAccessor level = evt.getLevel();
+		if (!level.isClientSide())
+			return;
+		CBCClientCommon.onLoadClientLevel(level);
+	}
+
 	public static void onPlayerLogOut(ClientPlayerNetworkEvent.LoggingOut evt) {
 		CBCClientCommon.onPlayerLogOut(evt.getPlayer());
 	}
 
-	public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent evt) {
-		CBCClientCommon.registerOverlays((id, overlay) -> {
-			// TODO: more flexible but concise method specified in common
-			evt.registerAbove(VanillaGuiOverlay.HOTBAR.id(), id, (gui, graphics, partialTicks, width, height) -> {
-				overlay.renderOverlay(graphics, partialTicks, width, height);
-			});
-		});
+	public static void onPlayerLogIn(ClientPlayerNetworkEvent.LoggingIn evt) {
+		CBCClientCommon.onPlayerLogIn(evt.getPlayer());
 	}
 
-	@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-	public static abstract class ClientModBusEvents {
-		@SubscribeEvent
-		static void onLoadComplete(FMLLoadCompleteEvent event) {
-			ModContainer container = ModList.get()
-				.getModContainerById(CreateBigCannons.MOD_ID)
-				.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
-			container.registerExtensionPoint(ConfigScreenFactory.class,
-				() -> new ConfigScreenFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));
-		}
+	public static void onPlayerChangeDimension(PlayerEvent.PlayerChangedDimensionEvent evt) {
+		CBCClientCommon.onChangeDimension(evt.getEntity());
 	}
+
+	public static void onLoadComplete(FMLLoadCompleteEvent evt) {
+		ModContainer container = ModList.get()
+			.getModContainerById(CreateBigCannons.MOD_ID)
+			.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
+		container.registerExtensionPoint(ConfigScreenFactory.class,
+			() -> new ConfigScreenFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));
+	}
+
+	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent evt) {
+		CBCClientCommon.registerClientReloadListeners((listener, id) -> evt.registerReloadListener(listener));
+	}
+
+	public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent evt) {
+		CBCClientCommon.registerOverlays("hotbar", (id, overlay) -> wrapOverlay(id, overlay, VanillaGuiOverlay.HOTBAR, evt));
+		CBCClientCommon.registerOverlays("helmet", (id, overlay) -> wrapOverlay(id, overlay, VanillaGuiOverlay.HELMET, evt));
+	}
+
 }

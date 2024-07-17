@@ -39,6 +39,7 @@ import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.remix.ContraptionRemix;
+import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 
 @Mixin(Contraption.class)
 public abstract class ContraptionMixin {
@@ -47,10 +48,11 @@ public abstract class ContraptionMixin {
 
 	@Shadow private Set<SuperGlueEntity> glueToRemove;
 
-	@Shadow protected abstract Pair<StructureBlockInfo, BlockEntity> capture(Level world, BlockPos pos);
-
 	@Shadow
 	protected abstract BlockPos toLocalPos(BlockPos globalPos);
+
+	@Shadow
+	public boolean disassembled;
 
 	@Inject(method = "searchMovedStructure",
 			at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z", shift = At.Shift.BEFORE))
@@ -68,6 +70,14 @@ public abstract class ContraptionMixin {
 																	CallbackInfoReturnable<Boolean> cir, Queue<BlockPos> frontier) {
 		if (this.self instanceof PulleyContraption pulley)
 			ContraptionRemix.pulleyChecks(pulley, level, pos, forcedDirection, frontier);
+	}
+
+	@Inject(method = "addBlocksToWorld", at = @At("HEAD"))
+	private void createbigcannons$addBlocksToWorld(Level world, StructureTransform transform, CallbackInfo ci) {
+		if (this.disassembled || !(this.self instanceof HasFragileContraption fragile))
+			return;
+		if (!fragile.createbigcannons$isBrokenDisassembly())
+			fragile.createbigcannons$setBrokenDisassembly(HasFragileContraption.checkForIntersectingBlocks(this.self.entity.level(), this.self.entity, fragile));
 	}
 
 	@ModifyExpressionValue(method = "addBlocksToWorld", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/Contraption;customBlockPlacement(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"))
@@ -236,19 +246,24 @@ public abstract class ContraptionMixin {
 	@Inject(method = "searchMovedStructure", at = @At(value = "RETURN", ordinal = 1), remap = false)
 	private void createbigcannons$searchMovedStructure(Level level, BlockPos pos, Direction forcedDirection, CallbackInfoReturnable<Boolean> cir) throws AssemblyException {
 		ContraptionRemix.validateCannonRope(this.self, level, forcedDirection, this::toLocalPos);
-		if (this.self instanceof CanLoadBigCannon) {
-			ContraptionRemix.markFragileBlocks((Contraption & CanLoadBigCannon) this.self);
-		}
+		if (this.self instanceof HasFragileContraption)
+			ContraptionRemix.markFragileBlocks((Contraption & HasFragileContraption) this.self);
 	}
 
 	@Inject(method = "readNBT", at = @At("TAIL"), remap = false)
 	private void createbigcannons$readNBT(Level level, CompoundTag nbt, boolean spawnData, CallbackInfo ci) {
-		if (this.self instanceof CanLoadBigCannon) ContraptionRemix.readCannonLoaderData((Contraption & CanLoadBigCannon) this.self, nbt);
+		if (this.self instanceof CanLoadBigCannon)
+			ContraptionRemix.readCannonLoaderData((Contraption & CanLoadBigCannon) this.self, nbt);
+		if (this.self instanceof HasFragileContraption)
+			ContraptionRemix.readFragileBlocks((Contraption & HasFragileContraption) this.self, nbt);
 	}
 
 	@Inject(method = "writeNBT", at = @At("TAIL"), locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
 	private void createbigcannons$writeNBT(boolean spawnPacket, CallbackInfoReturnable<CompoundTag> cir, CompoundTag nbt) {
-		if (this.self instanceof CanLoadBigCannon) ContraptionRemix.writeCannonLoaderData((Contraption & CanLoadBigCannon) this.self, nbt);
+		if (this.self instanceof CanLoadBigCannon)
+			ContraptionRemix.writeCannonLoaderData((Contraption & CanLoadBigCannon) this.self, nbt);
+		if (this.self instanceof HasFragileContraption)
+			ContraptionRemix.writeFragileBlocks((Contraption & HasFragileContraption) this.self, nbt);
 	}
 
 }

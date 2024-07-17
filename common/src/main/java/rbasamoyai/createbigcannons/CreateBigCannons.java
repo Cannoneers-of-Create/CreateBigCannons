@@ -10,6 +10,10 @@ import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
@@ -21,10 +25,15 @@ import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
-import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesSerializers;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
+import rbasamoyai.createbigcannons.remix.CustomExplosion;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
+import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
+import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
 
 public class CreateBigCannons {
 
@@ -36,7 +45,7 @@ public class CreateBigCannons {
 	public static void init() {
 		CBCSoundEvents.prepare();
 
-		CBCMunitionPropertiesSerializers.init();
+		CBCMunitionPropertiesHandlers.init();
 		ModGroup.register();
 		CBCBlocks.register();
 		CBCItems.register();
@@ -61,6 +70,26 @@ public class CreateBigCannons {
 	}
 
 	public static ResourceLocation resource(String path) {
-		return new ResourceLocation(MOD_ID, path);
+		return CBCUtils.location(MOD_ID, path);
 	}
+
+	public static final ResourceLocation SCREEN_SHAKE_HANDLER_ID = resource("shake_handler");
+
+	public static void shakePlayerScreen(ServerPlayer player, ScreenShakeEffect effect) {
+		RitchiesProjectileLib.shakePlayerScreen(player, SCREEN_SHAKE_HANDLER_ID, effect);
+	}
+
+	public static <T extends Explosion & CustomExplosion> void handleCustomExplosion(Level level, T explosion) {
+		if (IndexPlatform.onExplosionStart(level, explosion))
+			return;
+		explosion.explode();
+		explosion.finalizeExplosion(level.isClientSide);
+		if (!(level instanceof ServerLevel slevel))
+			return;
+		if (!explosion.interactsWithBlocks())
+			explosion.clearToBlow();
+		for (ServerPlayer player : slevel.players())
+			explosion.sendExplosionToClient(player);
+	}
+
 }

@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -62,9 +63,14 @@ public class CannonLoaderBlock extends DirectionalAxisKineticBlock implements IB
 	// Copied and adapted from MechanicalPistonBlock#playerWillDestroy
 	@Override
 	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+		destroyExtensionPoles(level, pos, state, !player.isCreative());
+		super.playerWillDestroy(level, pos, state, player);
+	}
+
+	public static void destroyExtensionPoles(Level level, BlockPos pos, BlockState state, boolean dropBlocks) {
+		dropBlocks &= level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS);
 		Direction direction = state.getValue(FACING);
 		BlockPos loaderHead = null;
-		boolean dropBlocks = player == null || !player.isCreative();
 
 		int maxPoles = maxAllowedLoaderLength();
 		for (int offset = 1; offset < maxPoles; offset++) {
@@ -81,11 +87,12 @@ public class CannonLoaderBlock extends DirectionalAxisKineticBlock implements IB
 		}
 
 		if (loaderHead != null) {
+			boolean dropBlocks1 = dropBlocks;
 			BlockPos.betweenClosedStream(pos, loaderHead)
 				.filter(p -> !p.equals(pos))
 				.forEach(p -> {
-					if (!ContraptionRemix.removeCannonContentsOnBreak(level, p, dropBlocks))
-						level.destroyBlock(p, dropBlocks);
+					if (!ContraptionRemix.removeCannonContentsOnBreak(level, p, dropBlocks1))
+						level.destroyBlock(p, dropBlocks1);
 				});
 		}
 
@@ -100,7 +107,6 @@ public class CannonLoaderBlock extends DirectionalAxisKineticBlock implements IB
 			}
 			break;
 		}
-		super.playerWillDestroy(level, pos, state, player);
 	}
 
 	public static boolean isLoaderHead(BlockState state) {
