@@ -27,7 +27,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -39,6 +38,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -191,8 +191,11 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			this.level.setBlock(this.worldPosition, this.getBlockState().setValue(CannonDrillBlock.STATE, MechanicalPistonBlock.PistonState.EXTENDED), 3 | 16);
 		}
 		super.disassemble();
-		if (this.remove)
+		if (this.remove) {
+			this.level.levelEvent(2001, this.worldPosition, Block.getId(this.getBlockState()));
+			this.level.gameEvent(null, GameEvent.BLOCK_DESTROY, this.worldPosition);
 			CannonDrillBlock.destroyExtensionPoles(this.level, this.worldPosition, this.getBlockState(), true);
+		}
 	}
 
 	@Override
@@ -226,6 +229,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		this.boreSpeed = 0;
 		this.addedStressImpact = 0;
 		this.latheEntity = null;
+		this.failureReason = FailureReason.NONE;
 	}
 
 	public boolean collideWithContraptionToBore(ControlledContraptionEntity other, boolean collide) {
@@ -312,11 +316,13 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			if (Math.abs(bearing.getSpeed()) > Math.abs(this.getSpeed())) {
 				this.failureReason = FailureReason.TOO_WEAK;
 			} else if (this.drainLubricant(drainSpeed)) {
-				if (this.level instanceof ServerLevel slevel) {
-					Vec3 particlePos = Vec3.atCenterOf(globalPos);
-					slevel.sendParticles(ParticleTypes.SMOKE, particlePos.x, particlePos.y, particlePos.z, 10, 0.0d, 1.0d, 0.0d, 0.1d);
+				boolean start = this.failureReason == FailureReason.NONE;
+				if (start)
+					this.level.playSound(null, globalPos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0f, 2f);
+				if ((start || this.level.getGameTime() % 3 == 0) && this.level instanceof ServerLevel slevel) {
+					Vec3 particlePos = Vec3.atCenterOf(globalPos).subtract(facing.getStepX() * 0.5, facing.getStepY() * 0.5, facing.getStepZ() * 0.5);
+					slevel.sendParticles(ParticleTypes.SMOKE, particlePos.x, particlePos.y, particlePos.z, 10, 0.0d, 0.0d, 0.0d, 0.02d);
 				}
-				this.level.playSound(null, globalPos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0f, 2f);
 				this.failureReason = FailureReason.DRY_BORE;
 			}
 

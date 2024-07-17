@@ -272,10 +272,10 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 		BlockPos levelPos = this.anchor.relative(this.orientation, this.loadingHead == LoadingHead.NOTHING ? -1 : -2);
 		BlockState loaderState = level.getBlockState(levelPos);
 		BlockEntity blockEntity = level.getBlockEntity(levelPos);
-		if (!(blockEntity instanceof CannonLoaderBlockEntity) || blockEntity.isRemoved()) return true;
 
 		if (pos.equals(levelPos)) {
-			level.setBlock(levelPos, loaderState.setValue(MOVING, false), 3 | 16);
+			if (blockEntity instanceof CannonLoaderBlockEntity && !blockEntity.isRemoved())
+				level.setBlock(levelPos, loaderState.setValue(MOVING, false), 3 | 16);
 			return true;
 		}
 		// Loading code moved to ContraptionMixin and ContraptionRemix
