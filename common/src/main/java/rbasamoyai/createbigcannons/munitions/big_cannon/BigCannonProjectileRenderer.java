@@ -9,13 +9,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -38,11 +36,17 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 				vel = new Vec3(0, -1, 0);
 
 			poseStack.pushPose();
-			poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize(), new Vec3(0, 1, 0)));
+			if (vel.horizontalDistanceSqr() > 1e-4d) {
+				Vec3 horizontal = new Vec3(vel.x, 0, vel.z).normalize();
+				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize(), horizontal));
+				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(horizontal, new Vec3(0, 0, -1)));
+			} else {
+				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize(), new Vec3(0, 0, -1)));
+			}
+			poseStack.translate(-0.5, -0.5, -0.5);
 
-			Minecraft.getInstance().getItemRenderer()
-					.renderStatic(new ItemStack(blockState.getBlock()), ItemTransforms.TransformType.NONE, isTracer ? LightTexture.FULL_BRIGHT : packedLight,
-							OverlayTexture.NO_OVERLAY, poseStack, buffers, 0);
+			Minecraft.getInstance().getBlockRenderer().renderSingleBlock(blockState, poseStack, buffers,
+				isTracer ? LightTexture.FULL_BRIGHT : packedLight, OverlayTexture.NO_OVERLAY);
 
 			poseStack.popPose();
 		}
@@ -60,10 +64,10 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 			Matrix3f normal = lastPose.normal();
 			VertexConsumer builder = buffers.getBuffer(renderType);
 
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 0.0f, 0, 0, 1);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 0.0f, 1, 0, 0);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 1.0f, 1, 1, 0);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 1.0f, 0, 1, 1);
+			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, -0.5f, -0.5f, 0, 1);
+			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, -0.5f,  0.5f, 0, 0);
+			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT,  0.5f,  0.5f, 1, 0);
+			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT,  0.5f, -0.5f, 1, 1);
 
 			poseStack.popPose();
 		}
@@ -77,8 +81,8 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 		return entity.hasTracer() || super.shouldRender(entity, camera, camX, camY, camZ);
 	}
 
-	private static void vertex(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int packedLight, float x, int y, int u, int v) {
-		builder.vertex(pose, x - 0.5f, (float) y - 0.25f, 0.0f)
+	private static void vertex(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int packedLight, float x, float y, int u, int v) {
+		builder.vertex(pose, x, y, 0.0f)
 			.color(255, 255, 255, 255)
 			.uv((float) u, (float) v)
 			.overlayCoords(OverlayTexture.NO_OVERLAY)
