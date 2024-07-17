@@ -41,7 +41,7 @@ public class CannonLoaderBlockEntity extends PoleMoverBlockEntity {
 		super.disassemble();
 		if (this.remove) {
 			this.level.levelEvent(2001, this.worldPosition, Block.getId(this.getBlockState()));
-			this.level.gameEvent(GameEvent.BLOCK_DESTROY, this.worldPosition);
+			this.level.gameEvent(null, GameEvent.BLOCK_DESTROY, this.worldPosition);
 			CannonLoaderBlock.destroyExtensionPoles(this.level, this.worldPosition, this.getBlockState(), true);
 		}
 	}

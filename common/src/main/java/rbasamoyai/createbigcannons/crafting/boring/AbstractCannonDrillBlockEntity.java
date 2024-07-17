@@ -27,7 +27,6 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -194,7 +193,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		super.disassemble();
 		if (this.remove) {
 			this.level.levelEvent(2001, this.worldPosition, Block.getId(this.getBlockState()));
-			this.level.gameEvent(GameEvent.BLOCK_DESTROY, this.worldPosition);
+			this.level.gameEvent(null, GameEvent.BLOCK_DESTROY, this.worldPosition);
 			CannonDrillBlock.destroyExtensionPoles(this.level, this.worldPosition, this.getBlockState(), true);
 		}
 	}
