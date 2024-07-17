@@ -43,5 +43,6 @@
       ],
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "createbigcannons:blocks/fluid_shell"
 }

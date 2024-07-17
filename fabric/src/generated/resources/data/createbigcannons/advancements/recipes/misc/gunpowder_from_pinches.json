@@ -30,5 +30,6 @@
     "recipes": [
       "minecraft:gunpowder_from_pinches"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }

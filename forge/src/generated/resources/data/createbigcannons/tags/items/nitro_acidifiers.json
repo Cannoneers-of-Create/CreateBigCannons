@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "#createbigcannons:dusts_redstone"
   ]
