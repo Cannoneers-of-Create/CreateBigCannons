@@ -192,6 +192,7 @@ Fixed:
 - Fixed autocannons being able to assemble with two breeches
 - Fixed projectile hitbox not centered on visual projectile
 - Fixed projectiles not chunkloading on world load and on spawn
+[1.20.1] - Fixed issue with drill boring scrap loot in 1.20.1
 
 ===
 

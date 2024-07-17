@@ -418,7 +418,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	}
 
 	public void updateKinematics(ClientboundPreciseMotionSyncPacket packet) {
-		this.orientation = this.getDeltaMovement();
+		if (this.getDeltaMovement().lengthSqr() > 1e-4d)
+			this.orientation = this.getDeltaMovement();
 	}
 
 	@Override

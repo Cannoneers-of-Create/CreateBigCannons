@@ -38,9 +38,17 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 			double displacement = entity.getTotalDisplacement() - diffLength * (1 - partialTicks);
 			float length = (float) Math.min(diffLength, displacement);
 
+			Vec3 vel = entity.getOrientation();
+			if (vel.lengthSqr() < 1e-4d)
+				vel = new Vec3(0, -1, 0);
 			poseStack.pushPose();
-			poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(entity.getOrientation().normalize()));
-			poseStack.translate(0, entity.getBbHeight() / 2, 0);
+			if (vel.horizontalDistanceSqr() > 1e-4d) {
+				Vec3 horizontal = new Vec3(vel.x, 0, vel.z).normalize();
+				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize(), horizontal));
+				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(horizontal));
+			} else {
+				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize()));
+			}
 
 			PoseStack.Pose lastPose = poseStack.last();
 			Matrix4f pose = lastPose.pose();
@@ -65,10 +73,10 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 			Matrix3f normal = lastPose.normal();
 			VertexConsumer builder = buffers.getBuffer(RENDER_TYPE);
 
-			vertexShrapnel(builder, pose, normal, packedLight, 0.0f, 0, 0, 1);
-			vertexShrapnel(builder, pose, normal, packedLight, 1.0f, 0, 1, 1);
-			vertexShrapnel(builder, pose, normal, packedLight, 1.0f, 1, 1, 0);
-			vertexShrapnel(builder, pose, normal, packedLight, 0.0f, 1, 0, 0);
+			vertexShrapnel(builder, pose, normal, packedLight, -0.5f, -0.5f, 0, 1);
+			vertexShrapnel(builder, pose, normal, packedLight,  0.5f, -0.5f, 1, 1);
+			vertexShrapnel(builder, pose, normal, packedLight,  0.5f,  0.5f, 1, 0);
+			vertexShrapnel(builder, pose, normal, packedLight, -0.5f,  0.5f, 0, 0);
 
 			poseStack.popPose();
 		}
@@ -179,8 +187,8 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
             .endVertex();
     }
 
-	private static void vertexShrapnel(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int packedLight, float x, int y, int u, int v) {
-		builder.vertex(pose, x - 0.5f, (float) y - 0.25f, 0.0f)
+	private static void vertexShrapnel(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int packedLight, float x, float y, int u, int v) {
+		builder.vertex(pose, x, y, 0.0f)
 			.color(255, 255, 255, 255)
 			.uv((float) u, (float) v)
 			.overlayCoords(OverlayTexture.NO_OVERLAY)
