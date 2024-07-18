@@ -1,9 +1,6 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell;
 
-import org.joml.Quaternionf;
-
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.simibubi.create.foundation.render.CachedBufferer;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -13,8 +10,10 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class DropMortarShellRenderer extends EntityRenderer<DropMortarShellProjectile> {
 
@@ -23,14 +22,18 @@ public class DropMortarShellRenderer extends EntityRenderer<DropMortarShellProje
 	@Override
 	public void render(DropMortarShellProjectile entity, float entityYaw, float partialTicks, PoseStack poseStack,
 					   MultiBufferSource buffers, int packedLight) {
+		Vec3 vel = entity.getOrientation();
+		if (vel.lengthSqr() < 1e-4d)
+			vel = new Vec3(0, -1, 0);
+
 		poseStack.pushPose();
-
-		Quaternionf q = Axis.YP.rotationDegrees(entity.getViewYRot(partialTicks) + 180.0f);
-		Quaternionf q1 = Axis.XP.rotationDegrees(entity.getViewXRot(partialTicks) - 90.0f);
-		q.mul(q1);
-
-		poseStack.translate(0.0d, 0.4d, 0.0d);
-		poseStack.mulPose(q);
+		if (vel.horizontalDistanceSqr() > 1e-4d && Math.abs(vel.y) > 1e-2d) {
+			Vec3 horizontal = new Vec3(vel.x, 0, vel.z).normalize();
+			poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize().reverse(), horizontal));
+			poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(horizontal));
+		} else {
+			poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize()));
+		}
 
 		CachedBufferer.partial(CBCBlockPartials.DROP_MORTAR_SHELL_FLYING, CBCBlocks.DROP_MORTAR_SHELL.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH))
 			.light(packedLight)

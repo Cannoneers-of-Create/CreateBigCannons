@@ -142,6 +142,15 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		}
 	}
 
+	/**
+	 * Return the rendered block state. It is recommended that the block state
+	 * should face {@link net.minecraft.core.Direction#NORTH}, or equivalent to
+	 * facing towards (0, 0, -1).
+	 * <br>If your projectile uses a custom renderer other than {@link BigCannonProjectileRenderer}
+	 * that does not use this method then the output is ignored.
+	 *
+	 * @return the block state to render
+	 */
 	public abstract BlockState getRenderedBlockState();
 
 	@Override

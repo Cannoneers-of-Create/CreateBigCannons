@@ -402,6 +402,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		} else {
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) & 0b11111110));
 		}
+		super.setOnGround(inGround);
 	}
 
 	public boolean isInGround() {
@@ -418,7 +419,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	}
 
 	public void updateKinematics(ClientboundPreciseMotionSyncPacket packet) {
-		this.orientation = this.getDeltaMovement();
+		if (this.getDeltaMovement().lengthSqr() > 1e-4d)
+			this.orientation = this.getDeltaMovement();
 	}
 
 	@Override

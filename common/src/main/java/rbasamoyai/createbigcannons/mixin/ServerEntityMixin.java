@@ -32,7 +32,7 @@ public class ServerEntityMixin {
 	}
 
 	@Inject(method = "addPairing",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerEntity;sendPairingData(Lnet/minecraft/server/level/ServerPlayer;Ljava/util/function/Consumer;)V", shift = At.Shift.AFTER))
+			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;startSeenByPlayer(Lnet/minecraft/server/level/ServerPlayer;)V", shift = At.Shift.AFTER))
 	private void createbigcannons$addPairing(ServerPlayer player, CallbackInfo ci) {
 		if (this.entity instanceof SyncsExtraDataOnAdd sync)
 			NetworkPlatform.sendToClientPlayer(new ClientboundSyncExtraEntityDataPacket(this.entity.getId(), sync.addExtraSyncData()), player);
