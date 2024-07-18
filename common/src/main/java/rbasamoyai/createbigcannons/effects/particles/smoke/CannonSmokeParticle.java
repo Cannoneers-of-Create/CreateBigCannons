@@ -21,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.ParticleWindHandler;
 import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
@@ -166,6 +167,10 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 
 		@Override
 		public Particle createParticle(CannonSmokeParticleData data, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
+			if (CBCConfigs.CLIENT.useShaderCompatibleGraphics.get()) {
+				level.addParticle(new FallbackCannonSmokeParticleData(data), true, x, y, z, dx, dy, dz);
+				return null;
+			}
 			CannonSmokeParticle particle = new CannonSmokeParticle(level, x, y, z, dx, dy, dz, this.sprites, data.power());
 			particle.quadSize = data.size();
 			particle.friction = data.friction();

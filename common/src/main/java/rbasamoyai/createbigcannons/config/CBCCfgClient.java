@@ -9,6 +9,7 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigBool showMortarStoneClouds = b(true, "showMortarStoneClouds");
 	public final ConfigInt fluidBlobParticleCount = i(20, 0, 1000, "fluidBlobParticleCount", Comments.fluidBlobParticleCount);
 	public final ConfigInt blockArmorTooltipPrecision = i(2, 0, 4, "blockArmorInfoPrecision", Comments.blockArmorTooltipPrecision);
+	public final ConfigBool useShaderCompatibleGraphics = b(false, "useShaderCompatibleGraphics", Comments.useShaderCompatibleGraphics);
 
 	/**
 	 * In meters per second; divide by 20 to get meters per tick
@@ -82,7 +83,10 @@ public class CBCCfgClient extends CBCConfigBase {
 		static String blockArmorTooltipPrecision = "How many digits are after the angle decimal point on a block armor info tooltip.";
 		static String cannonMountAngleTooltipPrecision = "How many digits are after the angle decimal point on a cannon mount goggle tooltip.";
 		static String use180180RangeForYaw = "If true, the yaw angle on goggles ranges from +180 to -180\u00ba. If false, it ranges from 0 to +360\u00ba.";
-		static String windFluctuationSpeed = "How fast the wind's direction and strength fluctuates. 1 is normal speed.";
+		static String[] useShaderCompatibleGraphics = new String[]{ "If true, some graphics will be changed to support shaders, such as those loaded with Iris/Oculus.",
+			"NOTE: This may entail some visual downgrades. Affected graphics include:",
+			"- Cannon smoke",
+			"- Adaptive debris particles (splinters, leaves, glass shards)" };
 	}
 
 }
