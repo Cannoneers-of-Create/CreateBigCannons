@@ -37,12 +37,12 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 				vel = new Vec3(0, -1, 0);
 
 			poseStack.pushPose();
-			if (vel.horizontalDistanceSqr() > 1e-4d) {
+			if (vel.horizontalDistanceSqr() > 1e-4d && Math.abs(vel.y) > 1e-2d) {
 				Vec3 horizontal = new Vec3(vel.x, 0, vel.z).normalize();
-				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize(), horizontal));
-				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(horizontal, new Vec3(0, 0, -1)));
+				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize().reverse(), horizontal));
+				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(horizontal));
 			} else {
-				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize(), new Vec3(0, 0, -1)));
+				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize()));
 			}
 			poseStack.translate(-0.5, -0.5, -0.5);
 

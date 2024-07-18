@@ -108,7 +108,7 @@ public class CBCUtils {
 		// (0, 0, 1) x norm
 		float cx = (float) -normalized.y;
 		float cy = (float) normalized.x;
-		float cos = (float) normalized.z; // (0, 0, 1) . norm
+		float cos = (float) -normalized.z; // (0, 0, 1) . norm
 		float k = 1f / (1f + cos);
 		if (Float.isFinite(k))
 			return mat3x3f( cx*cx*k+cos, cy*cx*k,      cy,
@@ -132,7 +132,7 @@ public class CBCUtils {
 		float cx = (float) c.x;
 		float cy = (float) c.y;
 		float cz = (float) c.z;
-		float cos = (float) source.dot(dest);
+		float cos = (float) -source.dot(dest);
 		float k = 1f / (1f + cos);
 		if (Float.isFinite(k))
 			return mat3x3f(cx*cx*k+cos, cy*cx*k-cz,  cz*cx*k+cy,
@@ -160,7 +160,7 @@ public class CBCUtils {
 		// (0, 0, 1) x norm
 		float cx = (float) -normalized.y;
 		float cy = (float) normalized.x;
-		float cos = (float) normalized.z; // (0, 0, 1) . norm
+		float cos = (float) -normalized.z; // (0, 0, 1) . norm
 		float k = 1f / (1f + cos);
 		if (Float.isFinite(k))
 			return mat4x4f( cx*cx*k+cos, cy*cx*k,      cy,  0,
@@ -186,7 +186,7 @@ public class CBCUtils {
 		float cx = (float) c.x;
 		float cy = (float) c.y;
 		float cz = (float) c.z;
-		float cos = (float) source.dot(dest);
+		float cos = (float) -source.dot(dest);
 		float k = 1f / (1f + cos);
 		if (Float.isFinite(k))
 			return mat4x4f(cx*cx*k+cos, cy*cx*k-cz,  cz*cx*k+cy,  0,
