@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class LeafParticle extends SplinterParticle {
@@ -30,6 +31,10 @@ public class LeafParticle extends SplinterParticle {
 			BlockState blockstate = type.state();
 			if (blockstate.isAir() || blockstate.is(Blocks.MOVING_PISTON))
 				return null;
+			if (CBCConfigs.CLIENT.useShaderCompatibleGraphics.get()) {
+				level.addParticle(new CBCBlockParticleData(blockstate), x, y, z, xSpeed, ySpeed, zSpeed);
+				return null;
+			}
 			LeafParticle particle = new LeafParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, blockstate);
 			IndexPlatform.updateSprite(particle, blockstate, new BlockPos(x, y, z));
 			particle.setSecondarySprite(this.sprites.get(level.getRandom()));

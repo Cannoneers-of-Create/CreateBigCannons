@@ -96,6 +96,10 @@ Added:
 - Added gas cloud to optimize potion fluid shell effect instead of spawning multiple area effect clouds
 - Added Gas Mask
  - Comes with Curios and Trinkets compat
+- Added fallback graphics for certain objects affected by Iris/Oculus shaders
+ - Cannon smoke falls back to default textures
+ - Splinters, glass shards, and leaves use regular block particles
+ - Emissive textures are not supported by the mod, please make your own resource pack if you want that.
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities
