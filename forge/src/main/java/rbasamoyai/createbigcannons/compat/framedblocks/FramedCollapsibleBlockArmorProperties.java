@@ -15,8 +15,8 @@ public class FramedCollapsibleBlockArmorProperties extends SingleFramedBlockArmo
 	}
 
 	@Override
-	public double hardness(Level level, BlockState state, BlockPos pos, boolean recurse) {
-		return super.hardness(level, state, pos, recurse) * this.getCollapsibleMultiplier(level, state, pos);
+	public double toughness(Level level, BlockState state, BlockPos pos, boolean recurse) {
+		return super.toughness(level, state, pos, recurse) * this.getCollapsibleMultiplier(level, state, pos);
 	}
 
 	public double getCollapsibleMultiplier(Level level, BlockState state, BlockPos pos) {
