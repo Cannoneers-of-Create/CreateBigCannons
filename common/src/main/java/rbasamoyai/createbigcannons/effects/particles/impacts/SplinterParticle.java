@@ -24,6 +24,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.remix.LightingRemix;
@@ -210,6 +211,10 @@ public class SplinterParticle extends CBCBlockParticle {
 			BlockState blockstate = type.state();
 			if (blockstate.isAir() || blockstate.is(Blocks.MOVING_PISTON))
 				return null;
+			if (CBCConfigs.CLIENT.useShaderCompatibleGraphics.get()) {
+				level.addParticle(new CBCBlockParticleData(blockstate), x, y, z, xSpeed, ySpeed, zSpeed);
+				return null;
+			}
 			SplinterParticle particle = new SplinterParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, blockstate);
 			IndexPlatform.updateSprite(particle, blockstate, BlockPos.containing(x, y, z));
 			particle.setSecondarySprite(this.sprites.get(level.getRandom()));

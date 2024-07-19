@@ -7,6 +7,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class GlassShardParticle extends SplinterParticle {
@@ -26,6 +27,10 @@ public class GlassShardParticle extends SplinterParticle {
 			BlockState blockstate = type.state();
 			if (blockstate.isAir() || blockstate.is(Blocks.MOVING_PISTON))
 				return null;
+			if (CBCConfigs.CLIENT.useShaderCompatibleGraphics.get()) {
+				level.addParticle(new CBCBlockParticleData(blockstate), x, y, z, xSpeed, ySpeed, zSpeed);
+				return null;
+			}
 			GlassShardParticle particle = new GlassShardParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, blockstate);
 			IndexPlatform.updateSprite(particle, blockstate, BlockPos.containing(x, y, z));
 			particle.setSecondarySprite(this.sprites.get(level.getRandom()));

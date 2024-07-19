@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.block_armor_properties;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.google.gson.JsonSyntaxException;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.FriendlyByteBuf;
@@ -59,6 +61,7 @@ public class BlockArmorPropertiesHandler {
 		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
 			cleanUp();
 
+			Set<Block> missingSerializers = new ReferenceOpenHashSet<>(CUSTOM_SERIALIZERS.keySet());
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 				JsonElement el = entry.getValue();
 				if (!el.isJsonObject()) continue;
@@ -74,6 +77,7 @@ public class BlockArmorPropertiesHandler {
 						});
 						if (CUSTOM_SERIALIZERS.containsKey(block)) {
 							BLOCK_MAP.put(block, CUSTOM_SERIALIZERS.get(block).loadBlockArmorPropertiesFromJson(block, el.getAsJsonObject()));
+							missingSerializers.remove(block);
 						} else {
 							BLOCK_MAP.put(block, VariantBlockArmorProperties.fromJson(block, el.getAsJsonObject()));
 						}
@@ -83,6 +87,8 @@ public class BlockArmorPropertiesHandler {
 					//Commented out for silent "optional" loading if a bit silly
 				}
 			}
+			for (Block missing : missingSerializers)
+				CreateBigCannons.LOGGER.warn("Missing custom armor properties entry for block {}", CBCRegistryUtils.getBlockLocation(missing));
 		}
 	}
 
