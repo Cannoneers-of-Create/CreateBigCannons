@@ -16,7 +16,8 @@
     "CBCLiquidBlockMixin",
     "GasMaskItemMixin",
     "MountedAutocannonContraptionMixin",
-    "PitchOrientedContraptionEntityMixin"
+    "PitchOrientedContraptionEntityMixin",
+    "compat.FramedAdjustableDoubleBlockEntityAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

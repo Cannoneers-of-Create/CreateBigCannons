@@ -16,10 +16,10 @@ import xfacthd.framedblocks.common.blockentity.FramedDoubleBlockEntity;
 
 public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesProvider {
 
-	private final MimickingBlockArmorUnit defaultPropertiesPrimary;
-	private final MimickingBlockArmorUnit defaultPropertiesSecondary;
-	private final Map<BlockState, MimickingBlockArmorUnit> primaryPropertiesByState;
-	private final Map<BlockState, MimickingBlockArmorUnit> secondaryPropertiesByState;
+	protected final MimickingBlockArmorUnit defaultPropertiesPrimary;
+	protected final MimickingBlockArmorUnit defaultPropertiesSecondary;
+	protected final Map<BlockState, MimickingBlockArmorUnit> primaryPropertiesByState;
+	protected final Map<BlockState, MimickingBlockArmorUnit> secondaryPropertiesByState;
 
     public FramedDoubleBlockArmorProperties(MimickingBlockArmorUnit defaultPropertiesPrimary, MimickingBlockArmorUnit defaultPropertiesSecondary,
 											Map<BlockState, MimickingBlockArmorUnit> primaryPropertiesByState,

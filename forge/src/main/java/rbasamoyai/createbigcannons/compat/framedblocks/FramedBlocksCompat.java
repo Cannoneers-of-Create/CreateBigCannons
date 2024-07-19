@@ -12,6 +12,10 @@ public class FramedBlocksCompat {
 		for (BlockType type : BlockType.values()) {
 			if (type == BlockType.FRAMED_COLLAPSIBLE_BLOCK) {
 				BlockArmorPropertiesHandler.registerCustomSerializer(FBContent.byType(type), createMimicrySerializer(FramedCollapsibleBlockArmorProperties::new));
+			} else if (type == BlockType.FRAMED_COLLAPSIBLE_COPYCAT_BLOCK) {
+				BlockArmorPropertiesHandler.registerCustomSerializer(FBContent.byType(type), createMimicrySerializer(FramedCollapsibleCopycatBlockArmorProperties::new));
+			} else if (type == BlockType.FRAMED_ADJ_DOUBLE_COPYCAT_PANEL || type == BlockType.FRAMED_ADJ_DOUBLE_COPYCAT_SLAB) {
+				BlockArmorPropertiesHandler.registerCustomSerializer(FBContent.byType(type), new FramedAdjustibleDoubleBlockArmorPropertiesSerializer());
 			} else if (type.isDoubleBlock()) {
 				registerDoubleFramedBlockSerializer(type);
 			} else {
