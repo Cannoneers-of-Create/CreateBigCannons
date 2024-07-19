@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.minecraft.client.renderer.RenderType;
@@ -16,7 +15,6 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public enum CBCRenderTypes {
 	CANNON_SMOKE_PARTICLE(CBCRenderingParts.CANNON_SMOKE_PARTICLE_INPUT, VertexFormat.Mode.QUADS, CBCRenderingParts.CANNON_SMOKE_PARTICLE_STATE),
-	COLOR(DefaultVertexFormat.POSITION_COLOR_LIGHTMAP, VertexFormat.Mode.QUADS, CBCRenderingParts.COLOR_STATE),
 	SPLINTER_PARTICLE(type -> RenderType.create(type.id, CBCRenderingParts.SPLINTER_PARTICLE_INPUT, VertexFormat.Mode.QUADS,
 		512, false, false, CBCRenderingParts.SPLINTER_PARTICLE_STATE.apply(type)));
 

@@ -33,6 +33,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 	@Override
 	public void tick() {
 		if (!CBCConfigs.CLIENT.showBigCannonPlumes.get()) {
+			this.remove();
 			return;
 		}
 		ParticleStatus status = CBCClientCommon.getParticleStatus();
