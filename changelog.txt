@@ -100,6 +100,7 @@ Added:
  - Cannon smoke falls back to default textures
  - Splinters, glass shards, and leaves use regular block particles
  - Emissive textures are not supported by the mod, please make your own resource pack if you want that.
+[Integration] - Added integration with FramedBlocks content added in 1.19.2 and 1.20.1
 Removed:
 - Removed legacy cannon plume appearance client config, can now only turn plumes on or off in clientside config
 - Removed single-projectile shrapnel, grapeshot, and fluid blob entities
