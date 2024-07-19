@@ -13,13 +13,20 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
-import rbasamoyai.createbigcannons.index.CBCRenderTypes;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class SparkParticle extends Particle {
+
+	private static final ResourceLocation COLOR_LOCATION = CreateBigCannons.resource("textures/entity/color.png");
+	private static final RenderType COLOR = RenderType.entityTranslucentCull(COLOR_LOCATION);
 
 	SparkParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float r, float g, float b) {
 		super(level, x, y, z);
@@ -38,7 +45,9 @@ public class SparkParticle extends Particle {
 		public void begin(BufferBuilder builder, TextureManager textureManager) {
 			RenderSystem.depthMask(true);
 			RenderSystem.disableBlend();
-			CBCRenderTypes.COLOR.setRenderTypeForBuilder(builder);
+			RenderSystem.setShader(GameRenderer::getRendertypeEntityTranslucentCullShader);
+			COLOR.setupRenderState();
+			builder.begin(COLOR.mode(), COLOR.format());
 		}
 
 		@Override
@@ -77,7 +86,10 @@ public class SparkParticle extends Particle {
 			orient.transform(vector3f2);
 			buffer.vertex(vector3f2.x() + x1, vector3f2.y() + y1, vector3f2.z() + z1)
 				.color(this.rCol, this.gCol, this.bCol, this.alpha)
+				.uv(0, 0)
+				.overlayCoords(OverlayTexture.NO_OVERLAY)
 				.uv2(p)
+				.normal(0, 1, 0)
 				.endVertex();
 		}
 	}

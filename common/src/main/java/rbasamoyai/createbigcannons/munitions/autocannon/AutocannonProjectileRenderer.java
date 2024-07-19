@@ -17,13 +17,14 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile> extends EntityRenderer<T> {
 
-	private static final ResourceLocation TEXTURE_LOCATION = CreateBigCannons.resource("textures/entity/shrapnel.png");
-	private static final RenderType RENDER_TYPE = RenderType.entityCutoutNoCull(TEXTURE_LOCATION);
+	private static final ResourceLocation SHRAPNEL_LOCATION = CreateBigCannons.resource("textures/entity/shrapnel.png");
+	private static final ResourceLocation COLOR_LOCATION = CreateBigCannons.resource("textures/entity/color.png");
+	private static final RenderType SHRAPNEL = RenderType.entityCutoutNoCull(SHRAPNEL_LOCATION);
+	private static final RenderType COLOR = RenderType.entityTranslucentCull(COLOR_LOCATION);
 
     public AutocannonProjectileRenderer(EntityRendererProvider.Context context) { super(context); }
 
@@ -55,10 +56,10 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 			Matrix3f normal = lastPose.normal();
 
 			// TODO: config tracer color per projectile?
-			VertexConsumer vcons = buffers.getBuffer(CBCRenderTypes.COLOR.renderType());
+			VertexConsumer vcons = buffers.getBuffer(COLOR);
 			float thickness = entity.getAutocannonRoundType() == AutocannonAmmoType.MACHINE_GUN ? 1 / 32f : 2 / 32f;
 			renderBox(vcons, pose, 255, 216, 0, length, thickness);
-			renderBoxInverted(vcons, pose, normal, 255, 80, 0, length, thickness * 1.5f);
+			renderBoxInverted(vcons, pose, 255, 80, 0, length, thickness * 1.5f);
 
 			poseStack.popPose();
 		} else {
@@ -71,7 +72,7 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 			PoseStack.Pose lastPose = poseStack.last();
 			Matrix4f pose = lastPose.pose();
 			Matrix3f normal = lastPose.normal();
-			VertexConsumer builder = buffers.getBuffer(RENDER_TYPE);
+			VertexConsumer builder = buffers.getBuffer(SHRAPNEL);
 
 			vertexShrapnel(builder, pose, normal, packedLight, -0.5f, -0.5f, 0, 1);
 			vertexShrapnel(builder, pose, normal, packedLight,  0.5f, -0.5f, 1, 1);
@@ -133,8 +134,7 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 		vertex(builder, pose, r, g, b, x2, y2, z1);
 	}
 
-	private static void renderBoxInverted(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int r, int g,
-								  int b, float length, float thickness) {
+	private static void renderBoxInverted(VertexConsumer builder, Matrix4f pose, int r, int g, int b, float length, float thickness) {
 		float x1 = -thickness;
 		float y1 = -thickness;
 		float z1 = -thickness - length;
@@ -179,11 +179,13 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 		vertex(builder, pose, r, g, b, x1, y2, z2);
 	}
 
-    private static void vertex(VertexConsumer builder, Matrix4f pose, int r, int g, int b,
-							   float x, float y, float z) {
+    private static void vertex(VertexConsumer builder, Matrix4f pose, int r, int g, int b, float x, float y, float z) {
         builder.vertex(pose, x, y, z)
 			.color(r, g, b, 255)
+			.uv(0, 0)
+			.overlayCoords(OverlayTexture.NO_OVERLAY)
 			.uv2(LightTexture.FULL_BRIGHT)
+			.normal(0, 1, 0)
             .endVertex();
     }
 
