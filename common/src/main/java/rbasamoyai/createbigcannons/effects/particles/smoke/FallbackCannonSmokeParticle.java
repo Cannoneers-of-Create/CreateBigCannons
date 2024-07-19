@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.effects.particles.smoke;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -27,13 +29,13 @@ public class FallbackCannonSmokeParticle extends CannonSmokeParticle {
 		float f = (float)(Mth.lerp(partialTicks, this.xo, this.x) - vec3.x());
 		float g = (float)(Mth.lerp(partialTicks, this.yo, this.y) - vec3.y());
 		float h = (float)(Mth.lerp(partialTicks, this.zo, this.z) - vec3.z());
-		Quaternion quaternion;
+		Quaternionf quaternion;
 		if (this.roll == 0.0F) {
 			quaternion = renderInfo.rotation();
 		} else {
-			quaternion = new Quaternion(renderInfo.rotation());
+			quaternion = new Quaternionf(renderInfo.rotation());
 			float i = Mth.lerp(partialTicks, this.oRoll, this.roll);
-			quaternion.mul(Vector3f.ZP.rotation(i));
+			quaternion.mul(Axis.ZP.rotation(i));
 		}
 
 		Vector3f[] vector3fs = new Vector3f[]{
@@ -43,7 +45,7 @@ public class FallbackCannonSmokeParticle extends CannonSmokeParticle {
 
 		for(int k = 0; k < 4; ++k) {
 			Vector3f vector3f2 = vector3fs[k];
-			vector3f2.transform(quaternion);
+			quaternion.transform(vector3f2);
 			vector3f2.mul(j);
 			vector3f2.add(f, g, h);
 		}
