@@ -1,4 +1,4 @@
-// 1.19.2	2024-07-16T14:11:28.257685	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2024-07-22T18:25:46.6058327	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 7ddc90e7893c143c68d55b3c04522d7b0198a497 assets/createbigcannons/blockstates/ap_shell.json
 31c7ed6e131abf69528863a9b54c94765f722d68 assets/createbigcannons/blockstates/ap_shot.json
 c930cf0d992bd8327dbcd3fef56c52ba477336f2 assets/createbigcannons/blockstates/autocannon_ammo_container.json
@@ -460,6 +460,7 @@ e6b33dd25f24c6861a5b40cd1f6979be4d7c6e91 data/createbigcannons/advancements/reci
 47514135f54ef33b588be6840262c22765faf838 data/createbigcannons/advancements/recipes/createbigcannons/drop_mortar_shell.json
 5118a4fac12bb3d771406658cb4b72a14ea0bddf data/createbigcannons/advancements/recipes/createbigcannons/empty_powder_charge.json
 fd9b7d82a5443f6259295cf2ed409fd64959ffc6 data/createbigcannons/advancements/recipes/createbigcannons/flak_autocannon_round.json
+ad3556b9f2cf4da2426ba9eb91ab8c2a23e0e8c0 data/createbigcannons/advancements/recipes/createbigcannons/gas_mask.json
 4e2bcdfef6953fe058b3ffc082997c99ce85b995 data/createbigcannons/advancements/recipes/createbigcannons/hardened_nitro.json
 4a325cf8b8b2c89ac511aa93d727cf29bdedd007 data/createbigcannons/advancements/recipes/createbigcannons/impact_fuze.json
 5cc66562d0e0e2b8bc36d9720d2db5d7f3b32ce4 data/createbigcannons/advancements/recipes/createbigcannons/log_cannon_chamber.json
@@ -638,6 +639,7 @@ b36368442be37266eff4ea35c284911df410948c data/createbigcannons/recipes/cast_iron
 4ec221e14c9a3a177db0187a1261110825470bf6 data/createbigcannons/recipes/empty_powder_charge.json
 dfb8dc46f641d2537d53b4bdd5dd4d829ec67be0 data/createbigcannons/recipes/flak_autocannon_round.json
 3413fc6204c48f8be107fde54d3c7669817dc03e data/createbigcannons/recipes/fluid_shell.json
+3f3ed9ae939e023977c81a6abcb70480d6115339 data/createbigcannons/recipes/gas_mask.json
 3740c426494f60fc0886f21ea7ff20d5cc8f70e1 data/createbigcannons/recipes/hardened_nitro.json
 0ef70944e03fb0f6dda0fc4927af528fcbe14bda data/createbigcannons/recipes/he_shell.json
 559835ff8fe395c4ced8a7771802a19d788ca039 data/createbigcannons/recipes/impact_fuze.json
@@ -695,6 +697,7 @@ a8f730504793ba1beb04a35ce42705144322da8a data/createbigcannons/tags/items/big_ca
 951270bac33c335dac2e47c743f2e9bd85657d3b data/createbigcannons/tags/items/gas_masks.json
 105727dc444ddc319293c250e6c64f197b4ba151 data/createbigcannons/tags/items/gelatinizers.json
 c4b961ab7a28957ba3a66a6d70bf105737c6c0f9 data/createbigcannons/tags/items/gems_quartz.json
+fbf6ac3a98f534a6b24c099fa4008bef58d5b8cb data/createbigcannons/tags/items/glass.json
 1538edf9bd92ba51c1584f08887ae7ec600e4e5c data/createbigcannons/tags/items/guncotton.json
 d781bf03e255ee2bc114ba9ace7532a2896313b6 data/createbigcannons/tags/items/gunpowder.json
 d3424eecd917e3d46bb902b3c359663068bae6dd data/createbigcannons/tags/items/gunpowder_pinch.json
