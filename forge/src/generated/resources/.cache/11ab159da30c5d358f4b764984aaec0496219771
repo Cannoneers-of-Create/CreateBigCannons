@@ -1,7 +1,7 @@
-// 1.20.1	2024-07-17T14:41:31.1112255	Create Big Cannons/Create's Processing Recipes: cutting
+// 1.20.1	2024-07-22T18:30:06.6128628	Create Big Cannons/Create's Processing Recipes: cutting
 79cee9dca21b4bdd8eb419d1ca79aad3ff6414fd data\createbigcannons\recipes\cutting\autocannon_breech_cast_mould.json
-631c8a0ec5f4c9c46b1a7187408611a2fe2c610a data\createbigcannons\recipes\cutting\autocannon_cartridge_sheet_copper.json
 f02c091627f866e19d2a7a03dba519bcd6decb2e data\createbigcannons\recipes\cutting\cannon_end_cast_mould.json
+631c8a0ec5f4c9c46b1a7187408611a2fe2c610a data\createbigcannons\recipes\cutting\autocannon_cartridge_sheet_copper.json
 ed812c5716fb20b5a9aba9025e579408adfcf113 data\createbigcannons\recipes\cutting\autocannon_cartridge_sheet_gold.json
 745cab6674f8ee853f2f188dda1e1faa363d9fa6 data\createbigcannons\recipes\cutting\small_cast_mould.json
 cc2966c504f7465fbb67e2139d9e3bf525b34bd7 data\createbigcannons\recipes\cutting\autocannon_cartridge_sheet_brass.json

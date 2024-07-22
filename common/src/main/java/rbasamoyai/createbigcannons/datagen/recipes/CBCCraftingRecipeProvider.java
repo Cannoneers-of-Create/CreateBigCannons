@@ -22,7 +22,6 @@ import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -443,7 +442,7 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy(getHasName(AllBlocks.BLAZE_BURNER.get()), has(AllBlocks.BLAZE_BURNER.get()))
 			.save(cons, "cannon_welder_mirrored");
 
-		ShapedRecipeBuilder.shaped(CBCItems.GAS_MASK.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCItems.GAS_MASK.get())
 			.define('L', Items.LEATHER).define('G', CBCTags.CBCItemTags.GLASS).define('W', ItemTags.WOOL)
 			.pattern(" L ")
 			.pattern("LGL")

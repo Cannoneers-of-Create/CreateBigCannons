@@ -28,5 +28,6 @@
     "recipes": [
       "createbigcannons:gas_mask"
     ]
-  }
+  },
+  "sends_telemetry_event": false
 }
