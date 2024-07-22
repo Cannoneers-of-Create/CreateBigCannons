@@ -443,6 +443,14 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy(getHasName(AllBlocks.BLAZE_BURNER.get()), has(AllBlocks.BLAZE_BURNER.get()))
 			.save(cons, "cannon_welder_mirrored");
 
+		ShapedRecipeBuilder.shaped(CBCItems.GAS_MASK.get())
+			.define('L', Items.LEATHER).define('G', CBCTags.CBCItemTags.GLASS).define('W', ItemTags.WOOL)
+			.pattern(" L ")
+			.pattern("LGL")
+			.pattern(" W ")
+			.unlockedBy("has_wool", has(ItemTags.WOOL))
+			.save(cons);
+
 		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING.getSerializer()).save(cons, "munition_fuzing");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY.getSerializer()).save(cons, "cartridge_assembly");
 		SpecialRecipeBuilder.special(CBCRecipeTypes.BIG_CARTRIDGE_FILLING.getSerializer()).save(cons, "big_cartridge_filling");
