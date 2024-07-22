@@ -193,6 +193,7 @@ public class CBCTags {
 			SHEET_GOLD = commonTag("sheet_copper", "plates/gold", "gold_plates"),
 			SHEET_STEEL = commonTag("sheet_steel", "plates/steel", "steel_plates"),
 			DUST_GLOWSTONE = commonTag("dust_glowstone", "dusts/glowstone", "glowstone_dusts"),
+			GLASS = commonTag("glass", "glass", "glass"),
 			INEXPENSIVE_BIG_CARTRIDGE_SHEET = makeTag("inexpensive_big_cartridge_sheet"),
 			NITROPOWDER = makeTag("nitropowder"),
 			BIG_CANNON_PROPELLANT = makeTag("big_cannon_propellant"),
