@@ -1,4 +1,4 @@
-// 1.19.2	2024-07-16T14:12:01.8802508	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
+// 1.19.2	2024-07-22T18:25:26.6973819	Registrate Provider for createbigcannons [Recipes, Advancements, Loot tables, Tags (blocks), Tags (items), Tags (fluids), Tags (entity_types), Blockstates, Item models, Lang (en_us/en_ud)]
 ae63090c29bc848a0d9f25201cd7ed80eb253b2c data\createbigcannons\tags\items\gelatinizers.json
 1c98a716399e46641c9e50ded501fae545237796 data\c\tags\items\nethersteel_nuggets.json
 94cfc4617ea3de3e60cec71b1437181535c502c4 assets\createbigcannons\models\block\built_up_steel_cannon_chamber.json
@@ -173,6 +173,7 @@ dd8c1f1a635971e67c1142e27e9f0ef1bc1f58c4 data\createbigcannons\loot_tables\block
 ad17885bc4c4e2187715b8cdbfc91eae057dd820 assets\createbigcannons\blockstates\unbored_small_nethersteel_cannon_layer.json
 582e7a7906146221ecaaee39ab66c6396c2e45a4 data\createbigcannons\tags\items\ingot_steel.json
 b8381f0c6c8e37bb47de5a6e866fac968d6d239f assets\createbigcannons\models\item\worm_head.json
+3f3ed9ae939e023977c81a6abcb70480d6115339 data\createbigcannons\recipes\gas_mask.json
 13477853f0ef5a6aa8d4408d89c1c30fdc0cd722 data\createbigcannons\loot_tables\blocks\medium_steel_cannon_layer.json
 81100043a503b362a20246dd2db1a8bfa0bfe978 assets\createbigcannons\blockstates\bronze_autocannon_breech.json
 d29e546613c167ed43a12ef638d57d288e70d8ac assets\createbigcannons\models\item\unbored_steel_autocannon_barrel.json
@@ -330,6 +331,7 @@ baae3d3253d0c21cf8dc76d0a5d23e3480ee908a data\createbigcannons\tags\items\block_
 8f5adfe72b742025dcc205d59d60877068f9f9bc data\createbigcannons\advancements\recipes\createbigcannons\quickfiring_mechanism.json
 435439a6d97f72afc208963b4a6529dc4cf9b6a5 assets\createbigcannons\models\block\ap_shot.json
 337b7c085efe5d7c1647dfb7033180d3c1afa7a5 assets\createbigcannons\blockstates\steel_quickfiring_breech.json
+003cadf9460a08255be3b8c564daebbb5d8db5a6 data\createbigcannons\tags\items\glass.json
 014449b0f4f57b9b1b5de0dfd35b045b13668022 assets\createbigcannons\models\block\incomplete_cast_iron_sliding_breech_axis_rotated.json
 4beb02f0d3952cac8cff2d3e2819c7f29b0f5491 assets\createbigcannons\models\block\unbored_steel_sliding_breech.json
 ccd825da6268bc70a6d6ea5f9fcc369b581cf721 assets\createbigcannons\models\item\ap_shell.json
@@ -674,6 +676,7 @@ bbd19a9c6f70f680433d3c259087bedd66b6d772 assets\createbigcannons\blockstates\sol
 e8cdf168e364b76ad7f38019f0f1e09b4b81c94b data\createbigcannons\loot_tables\blocks\big_cartridge.json
 24aa84d1121373c31b77318253bf9a0ab9851aa7 assets\createbigcannons\blockstates\powder_charge.json
 6a67a02eae507d0f1ee79b76ddab01f7effaf080 data\createbigcannons\recipes\delayed_impact_fuze.json
+ad3556b9f2cf4da2426ba9eb91ab8c2a23e0e8c0 data\createbigcannons\advancements\recipes\createbigcannons\gas_mask.json
 9649ed3d9275c33992ff97bbbaf6268cec28ade6 assets\createbigcannons\models\item\small_steel_cannon_layer.json
 1f5242d4c9f30046e8f5aaae4b2c1c6804a78f87 data\createbigcannons\advancements\recipes\createbigcannons\nethersteel_ingot_from_block.json
 412df28ce85f7533ff7d8b72fb0e69510934cf60 data\createbigcannons\loot_tables\blocks\incomplete_steel_autocannon_breech.json
