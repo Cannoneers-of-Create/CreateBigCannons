@@ -84,7 +84,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
 		if (!this.collectCannonBlocks(level, pos)) return false;
 		this.bounds = new AABB(BlockPos.ZERO);
-		this.bounds = this.bounds.inflate(Math.ceil(Math.sqrt(getRadius(this.getBlocks().keySet(), Direction.Axis.Y))));
+		Direction.Axis inflateAxis = this.initialOrientation.getAxis() == Direction.Axis.Y ? Direction.Axis.X : Direction.Axis.Y;
+		this.bounds = this.bounds.inflate(Math.ceil(Math.sqrt(getRadius(this.getBlocks().keySet(), inflateAxis))));
 		return !this.blocks.isEmpty();
 	}
 
