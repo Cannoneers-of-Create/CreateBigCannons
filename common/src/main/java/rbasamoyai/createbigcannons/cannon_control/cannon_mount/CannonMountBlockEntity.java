@@ -232,6 +232,10 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		this.cannonPitch = pitch;
 	}
 
+	public float getPitch() {
+		return this.cannonPitch;
+	}
+
 	public float getYawSpeed() {
 		return this.overStressed ? 0 : this.getTheoreticalYawSpeed();
 	}
@@ -264,6 +268,10 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		this.cannonYaw = yaw;
 	}
 
+	public float getYaw() {
+		return this.cannonYaw;
+	}
+
 	public Direction getContraptionDirection() {
 		return this.mountedContraption == null ? Direction.NORTH : ((AbstractMountedCannonContraption) this.mountedContraption.getContraption()).initialOrientation();
 	}
@@ -280,7 +288,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		return speed;
 	}
 
-	protected void assemble() throws AssemblyException {
+	public void assemble() throws AssemblyException {
 		if (!CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) return;
 		BlockPos assemblyPos = this.worldPosition.above(2);
 		if (this.level.isOutsideBuildHeight(assemblyPos)) {

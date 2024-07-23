@@ -34,6 +34,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.CBCCommonEvents;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionToolItem;
 import rbasamoyai.createbigcannons.cannon_control.config.DefaultCannonMountPropertiesSerializers;
+import rbasamoyai.createbigcannons.compat.computercraft.computercraft.ComputerCraftCompat;
 import rbasamoyai.createbigcannons.compat.copycats.CopycatsCompat;
 import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 import rbasamoyai.createbigcannons.compat.trinkets.CBCTrinketsIntegration;
@@ -63,6 +64,7 @@ public class CBCCommonFabricEvents {
 		DefaultCannonMountPropertiesSerializers.init();
 		CBCModsFabric.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init());
 		CBCModsFabric.TRINKETS.executeIfInstalled(() -> () -> CBCTrinketsIntegration.init());
+		CBCModsFabric.COMPUTERCRAFT.executeIfInstalled(() -> () -> ComputerCraftCompat.init());
 	}
 
 	public static void onServerLevelTick(ServerLevel level) {

@@ -102,6 +102,7 @@ dependencies {
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
 	modImplementation("curse.maven:copycats-968398:${copycats_fabric_file}")
+	modImplementation("curse.maven:cc-restitched-462672:${cc_restitched_file}")
 	// Trinkets and CCA
 	modLocalRuntime("dev.emi:trinkets:${trinkets_fabric_version}")
 	modCompileOnly("dev.emi:trinkets:${trinkets_fabric_version}") { exclude(group: "com.terraformersmc") }

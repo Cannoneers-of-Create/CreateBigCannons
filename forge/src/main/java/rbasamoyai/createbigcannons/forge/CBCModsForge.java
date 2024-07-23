@@ -15,7 +15,8 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 public enum CBCModsForge {
 	COPYCATS,
 	CURIOS,
-	FRAMEDBLOCKS;
+	FRAMEDBLOCKS,
+	COMPUTERCRAFT;
 
 	private final String id;
 

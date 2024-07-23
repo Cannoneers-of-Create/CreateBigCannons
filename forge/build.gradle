@@ -94,6 +94,7 @@ dependencies {
 	// Curios
 	modRuntimeOnly("top.theillusivec4.curios:curios-forge:${curios_forge_version}")
 	modCompileOnly("top.theillusivec4.curios:curios-forge:${curios_forge_version}:api")
+	modImplementation("curse.maven:cc-tweaked-282001:${cc_tweaked_file}")
 }
 
 processResources {

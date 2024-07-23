@@ -49,4 +49,6 @@ dependencies {
 	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-common" + rplSuffix) { transitive = false }
 
 	modImplementation("curse.maven:copycats-968398:${copycats_fabric_file}")
+
+	modImplementation("curse.maven:cc-restitched-462672:${cc_restitched_file}")
 }
