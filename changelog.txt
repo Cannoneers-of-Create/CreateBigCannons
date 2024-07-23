@@ -1,5 +1,12 @@
 Changelog
 
+5.5.1
+
+Create Big Cannons 5.5.1. A few critical fixes for 5.5.0.
+
+Fixes:
+- Fixed Trinkets compat crashing
+
 5.5.0
 
 "messi messi messi immens messi encara messi encara messi encara messi"
