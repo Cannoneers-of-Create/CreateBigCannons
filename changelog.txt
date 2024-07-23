@@ -6,6 +6,7 @@ Create Big Cannons 5.5.1. A few critical fixes for 5.5.0.
 
 Fixes:
 - Fixed Trinkets compat crashing
+- Fixed gas mask overlay rendering as solid color when holding Just Enough Guns firearm
 
 5.5.0
 
