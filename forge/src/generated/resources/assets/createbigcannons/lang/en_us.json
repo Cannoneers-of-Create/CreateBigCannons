@@ -484,6 +484,7 @@
   "exception.createbigcannons.cannon_mount.cannonLoaderInsideDuringAssembly": "Cannon block at [%s, %s, %s] contains a cannon loader part",
   "exception.createbigcannons.cannon_mount.cannonTooLarge": "Cannon is longer than the maximum length of %s",
   "exception.createbigcannons.cannon_mount.hasIncompleteCannonBlocks": "Cannon block at [%s, %s, %s] has not finished the crafting process",
+  "exception.createbigcannons.cannon_mount.incorrectBreechDirection": "Cannon block at [%s, %s, %s] should be reversed",
   "exception.createbigcannons.cannon_mount.invalidCannon": "A cannon must have one and only one opening and one and only one closed end",
   "exception.createbigcannons.cannon_mount.noAutocannonBreech": "This cannon requires an autocannon breech to fire",
   "exception.createbigcannons.casting": "Cannon cast at [%s, %s, %s] does not have a valid recipe for fluid %s and shape %s",

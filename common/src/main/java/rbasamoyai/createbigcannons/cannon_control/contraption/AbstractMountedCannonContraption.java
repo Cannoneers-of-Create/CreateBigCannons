@@ -183,4 +183,8 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 		return new AssemblyException(Components.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.hasIncompleteCannonBlocks", pos.getX(), pos.getY(), pos.getZ()));
 	}
 
+	public static AssemblyException incorrectBreechDirection(BlockPos pos) {
+		return new AssemblyException(Components.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.incorrectBreechDirection", pos.getX(), pos.getY(), pos.getZ()));
+	}
+
 }
