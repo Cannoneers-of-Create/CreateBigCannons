@@ -2,10 +2,11 @@ Changelog
 
 5.5.1
 
-Create Big Cannons 5.5.1. A few critical fixes for 5.5.0.
+Create Big Cannons 5.5.1. A few critical fixes for 5.5.0 as well as some code changes.
 
 Changes:
 - Optimized entity bounds for big cannons and autocannons to optimize lighting
+- Changed impact explosion queueing to better allow compatibility with Valkyrien Skies
 Fixes:
 - Fixed Trinkets compat crashing
 - Fixed gas mask overlay rendering as solid color when holding Just Enough Guns firearm
