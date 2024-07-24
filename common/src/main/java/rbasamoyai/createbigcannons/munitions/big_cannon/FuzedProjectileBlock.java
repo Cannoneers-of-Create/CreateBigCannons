@@ -28,15 +28,27 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 		super(properties);
 	}
 
+	public static ItemStack getFuzeFromItemStack(ItemStack stack) {
+		return ItemStack.of(stack.getOrCreateTag().getCompound("BlockEntityTag").getCompound("Fuze"));
+	}
+
 	@Override
 	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		FuzedBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
-		projectile.setTracer(getTracer(projectileBlocks));
-		projectile.setFuze(getFuze(projectileBlocks));
+		projectile.setTracer(getTracerFromBlocks(projectileBlocks));
+		projectile.setFuze(getFuzeFromBlocks(projectileBlocks));
 		return projectile;
 	}
 
-	protected static ItemStack getFuze(List<StructureBlockInfo> blocks) {
+	@Override
+	public AbstractBigCannonProjectile getProjectile(Level level, ItemStack itemStack) {
+		FuzedBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
+		projectile.setTracer(getTracerFromItemStack(itemStack));
+		projectile.setFuze(getFuzeFromItemStack(itemStack));
+		return projectile;
+	}
+
+	protected static ItemStack getFuzeFromBlocks(List<StructureBlockInfo> blocks) {
 		if (blocks.isEmpty()) return ItemStack.EMPTY;
 		StructureBlockInfo info = blocks.get(0);
 		if (info.nbt() == null) return ItemStack.EMPTY;

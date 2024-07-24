@@ -484,6 +484,7 @@
   "exception.createbigcannons.cannon_mount.cannonLoaderInsideDuringAssembly": "ʇɹɐd ɹǝpɐoן uouuɐɔ ɐ suıɐʇuoɔ ]%s '%s '%s[ ʇɐ ʞɔoןq uouuɐƆ",
   "exception.createbigcannons.cannon_mount.cannonTooLarge": "%s ɟo ɥʇbuǝן ɯnɯıxɐɯ ǝɥʇ uɐɥʇ ɹǝbuoן sı uouuɐƆ",
   "exception.createbigcannons.cannon_mount.hasIncompleteCannonBlocks": "ssǝɔoɹd buıʇɟɐɹɔ ǝɥʇ pǝɥsıuıɟ ʇou sɐɥ ]%s '%s '%s[ ʇɐ ʞɔoןq uouuɐƆ",
+  "exception.createbigcannons.cannon_mount.incorrectBreechDirection": "pǝsɹǝʌǝɹ ǝq pןnoɥs ]%s '%s '%s[ ʇɐ ʞɔoןq uouuɐƆ",
   "exception.createbigcannons.cannon_mount.invalidCannon": "puǝ pǝsoןɔ ǝuo ʎןuo puɐ ǝuo puɐ buıuǝdo ǝuo ʎןuo puɐ ǝuo ǝʌɐɥ ʇsnɯ uouuɐɔ Ɐ",
   "exception.createbigcannons.cannon_mount.noAutocannonBreech": "ǝɹıɟ oʇ ɥɔǝǝɹq uouuɐɔoʇnɐ uɐ sǝɹınbǝɹ uouuɐɔ sıɥ⟘",
   "exception.createbigcannons.casting": "%s ǝdɐɥs puɐ %s pınןɟ ɹoɟ ǝdıɔǝɹ pıןɐʌ ɐ ǝʌɐɥ ʇou sǝop ]%s '%s '%s[ ʇɐ ʇsɐɔ uouuɐƆ",

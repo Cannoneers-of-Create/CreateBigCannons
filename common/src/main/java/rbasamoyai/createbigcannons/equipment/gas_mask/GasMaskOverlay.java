@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.equipment.gas_mask;
 
+import org.lwjgl.opengl.GL11;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.CameraType;
@@ -17,6 +19,10 @@ public class GasMaskOverlay {
 		if (minecraft.player == null || minecraft.options.getCameraType() != CameraType.FIRST_PERSON
 			|| !GasMaskItem.canShowGasMaskOverlay(minecraft.player))
 			return;
+		// FIX FOR JUST ENOUGH GUNS OR ANY ODD INVOCATIONS OF RenderSystem#enableBlend/RenderSystem#disableBlend...
+		boolean previousBlendState = GL11.glGetBoolean(GL11.GL_BLEND);
+		RenderSystem.enableBlend();
+
 		// Adapted from Gui#renderTextureOverlay
 		RenderSystem.disableDepthTest();
 		RenderSystem.depthMask(false);
@@ -25,6 +31,9 @@ public class GasMaskOverlay {
 		RenderSystem.depthMask(true);
 		RenderSystem.enableDepthTest();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+
+		if (!previousBlendState)
+			RenderSystem.disableBlend();
 	}
 
 }
