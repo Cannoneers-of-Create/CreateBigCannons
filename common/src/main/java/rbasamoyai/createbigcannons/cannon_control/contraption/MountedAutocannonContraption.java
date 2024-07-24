@@ -113,6 +113,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			positiveBreech = cBlock.isBreechMechanism(nextState);
 			if (positiveBreech && isStartBreech)
 				throw invalidCannon();
+			if (positiveBreech && cBlock.getFacing(nextState) != negative)
+				throw incorrectBreechDirection(start);
 			nextState = level.getBlockState(start.relative(positive));
 			if (cannonLength > getMaxCannonLength()) throw cannonTooLarge();
 			if (positiveBreech) break;
@@ -132,6 +134,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			negativeBreech = cBlock.isBreechMechanism(nextState);
 			if (negativeBreech && isStartBreech)
 				throw invalidCannon();
+			if (negativeBreech && cBlock.getFacing(nextState) != positive)
+				throw incorrectBreechDirection(start);
 			nextState = level.getBlockState(start.relative(negative));
 			if (cannonLength > getMaxCannonLength()) throw cannonTooLarge();
 			if (negativeBreech) break;

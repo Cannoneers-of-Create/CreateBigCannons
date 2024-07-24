@@ -34,6 +34,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonLoaderInsideDuringAssembly", "Cannon block at [%s, %s, %s] contains a cannon loader part");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "hasIncompleteCannonBlocks", "Cannon block at [%s, %s, %s] has not finished the crafting process");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "noAutocannonBreech", "This cannon requires an autocannon breech to fire");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "incorrectBreechDirection", "Cannon block at [%s, %s, %s] should be reversed");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("casting"), "Cannon cast at [%s, %s, %s] does not have a valid recipe for fluid %s and shape %s");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
