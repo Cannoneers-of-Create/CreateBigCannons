@@ -39,6 +39,10 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 		this.shapes = this.makeShapes();
 	}
 
+	public static ItemStack getTracerFromItemStack(ItemStack stack) {
+		return ItemStack.of(stack.getOrCreateTag().getCompound("BlockEntityTag").getCompound("Tracer"));
+	}
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
@@ -81,6 +85,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	}
 
 	public abstract AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
+	public abstract AbstractBigCannonProjectile getProjectile(Level level, ItemStack itemStack);
 
 	@Override
 	public PushReaction getPistonPushReaction(BlockState state) {
@@ -138,7 +143,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 
 	@Override public Direction.Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
 
-	public static ItemStack getTracer(List<StructureBlockInfo> blocks) {
+	public static ItemStack getTracerFromBlocks(List<StructureBlockInfo> blocks) {
 		if (blocks.isEmpty())
 			return ItemStack.EMPTY;
 		StructureBlockInfo info = blocks.get(0);
