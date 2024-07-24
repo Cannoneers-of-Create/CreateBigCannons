@@ -414,6 +414,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 		Vec3 vec = spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0)).normalize();
+		spawnPos = spawnPos.subtract(vec.scale(2));
 
 		if (propelCtx.chargesUsed < minimumSpread) propelCtx.chargesUsed = minimumSpread;
 
@@ -653,6 +654,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		Vec3 spawnPos = this.entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(this.entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
+		spawnPos = spawnPos.subtract(vec.scale(2));
 
 		projectile.setPos(spawnPos);
 		projectile.setChargePower(power);
