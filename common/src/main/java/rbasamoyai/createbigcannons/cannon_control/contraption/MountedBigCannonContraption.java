@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
@@ -83,9 +82,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
 		if (!this.collectCannonBlocks(level, pos)) return false;
-		this.bounds = new AABB(BlockPos.ZERO);
-		Direction.Axis inflateAxis = this.initialOrientation.getAxis() == Direction.Axis.Y ? Direction.Axis.X : Direction.Axis.Y;
-		this.bounds = this.bounds.inflate(Math.ceil(Math.sqrt(getRadius(this.getBlocks().keySet(), inflateAxis))));
+		this.bounds = this.createBoundsFromExtensionLengths();
 		return !this.blocks.isEmpty();
 	}
 
@@ -126,6 +123,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			}
 
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
+			this.frontExtensionLength++;
 			cannonLength++;
 
 			positiveEnd = ((BigCannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);
@@ -155,6 +153,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			}
 
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
+			this.backExtensionLength++;
 			cannonLength++;
 
 			negativeEnd = ((BigCannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);

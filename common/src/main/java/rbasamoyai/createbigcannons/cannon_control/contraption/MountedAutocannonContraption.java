@@ -33,7 +33,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
@@ -74,9 +73,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
 		if (!this.collectCannonBlocks(level, pos)) return false;
-		this.bounds = new AABB(BlockPos.ZERO);
-		Direction.Axis inflateAxis = this.initialOrientation.getAxis() == Direction.Axis.Y ? Direction.Axis.X : Direction.Axis.Y;
-		this.bounds = this.bounds.inflate(Math.ceil(Math.sqrt(getRadius(this.getBlocks().keySet(), inflateAxis))));
+		this.bounds = this.createBoundsFromExtensionLengths();
 		return !this.blocks.isEmpty();
 	}
 
@@ -111,6 +108,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			start = start.relative(positive);
 			if (!cBlock.isComplete(nextState)) throw hasIncompleteCannonBlocks(start);
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
+			this.frontExtensionLength++;
 			cannonLength++;
 			positiveBreech = cBlock.isBreechMechanism(nextState);
 			if (positiveBreech && isStartBreech)
@@ -129,6 +127,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			start = start.relative(negative);
 			if (!cBlock.isComplete(nextState)) throw hasIncompleteCannonBlocks(start);
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
+			this.backExtensionLength++;
 			cannonLength++;
 			negativeBreech = cBlock.isBreechMechanism(nextState);
 			if (negativeBreech && isStartBreech)
