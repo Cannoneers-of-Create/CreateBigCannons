@@ -24,7 +24,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMateria
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
-public class AutocannonBarrelBlock extends AutocannonBaseBlock implements IBE<AutocannonBlockEntity>, IWrenchable {
+public class AutocannonBarrelBlock extends AutocannonBaseBlock implements IBE<AutocannonBlockEntity>, IWrenchable, MovesWithAutocannonRecoilSpring{
 
 	public static final BooleanProperty ASSEMBLED = BooleanProperty.create("assembled");
 	public static final EnumProperty<AutocannonBarrelEnd> BARREL_END = EnumProperty.create("end", AutocannonBarrelEnd.class);
@@ -105,6 +105,9 @@ public class AutocannonBarrelBlock extends AutocannonBaseBlock implements IBE<Au
 	public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
 		return InteractionResult.PASS;
 	}
+
+	@Override public BlockState getMovingState(BlockState original) { return original.setValue(ASSEMBLED, false); }
+	@Override public BlockState getStationaryState(BlockState original) { return original.setValue(ASSEMBLED, true); }
 
 	public enum AutocannonBarrelEnd implements StringRepresentable {
 		NOTHING("nothing"),

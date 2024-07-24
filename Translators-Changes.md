@@ -6,6 +6,11 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
+## 5.5.0 → 5.5.1
+
+Additions: \
+&plus; `"exception.createbigcannons.cannon_mount.incorrectBreechDirection": "Cannon block at [%s, %s, %s] should be reversed"`
+
 ## 0.5.4 → 5.5.0
 
 Additions: \

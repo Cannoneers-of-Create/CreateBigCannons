@@ -15,6 +15,7 @@
     "client.HumanoidPoseMixin",
     "client.LevelRendererMixin",
     "client.LightingMixin",
+    "client.LightVolumeAccessor",
     "client.PitchOrientedContraptionEntityMixin",
     "client.PoleContraptionMixin",
     "client.PonderRegistryMixin",
