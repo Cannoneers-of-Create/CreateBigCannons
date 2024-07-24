@@ -277,9 +277,9 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			if (projCtx.griefState() != GriefState.NO_DAMAGE) {
 				Vec3 oldVel = this.getDeltaMovement();
 				for (Map.Entry<BlockPos, Float> queued : projCtx.getQueuedExplosions().entrySet()) {
-					BlockPos bpos = queued.getKey();
-					ImpactExplosion explosion = new ImpactExplosion(this.level(), this, this.indirectArtilleryFire(false), bpos.getX() + 0.5,
-						bpos.getY() + 0.5, bpos.getZ() + 0.5, queued.getValue(), Level.ExplosionInteraction.BLOCK);
+					Vec3 impactPos = Vec3.atCenterOf(queued.getKey());
+					ImpactExplosion explosion = new ImpactExplosion(this.level(), this, this.indirectArtilleryFire(false),
+						impactPos.x, impactPos.y, impactPos.z, queued.getValue(), Level.ExplosionInteraction.BLOCK);
 					CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 				}
 				this.setDeltaMovement(oldVel);

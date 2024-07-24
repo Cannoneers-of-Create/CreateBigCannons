@@ -211,7 +211,7 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 
 		ItemStack stack = player.getItemInHand(interactionHand);
 		ItemStack container = breech.getMagazine();
-		Vec3 globalPos = entity.toGlobalVector(Vec3.atCenterOf(localPos), 1);
+		Vec3 globalPos = entity.toGlobalVector(Vec3.atCenterOf(localPos), 0);
 
 		boolean insertingContainer = stack.getItem() instanceof AutocannonAmmoContainerItem;
 		boolean canRemove = insertingContainer || stack.isEmpty() && (AutocannonAmmoContainerItem.getTotalAmmoCount(container) == 0 || player.isShiftKeyDown());

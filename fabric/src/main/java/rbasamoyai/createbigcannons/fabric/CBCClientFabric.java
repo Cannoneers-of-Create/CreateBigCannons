@@ -82,7 +82,7 @@ public class CBCClientFabric implements ClientModInitializer {
 	public static void onModsLoaded(EnvType envType) {
 		if (envType != EnvType.CLIENT)
 			return;
-		CBCTrinketsClient.initClient();
+		CBCModsFabric.TRINKETS.executeIfInstalled(() -> () -> CBCTrinketsClient.initClient());
 	}
 
 	public static void onParticleRegistry() {
