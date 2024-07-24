@@ -13,6 +13,7 @@ Fixes:
 - Fixed entity culling for big cannons and autocannons
 - Fixed entity lighting
 - Fixed contraption vector transforms
+- Fixed big cannon projectiles spawning too far from barrel
 
 ===
 
