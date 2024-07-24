@@ -249,8 +249,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		if (!(foundProjectile.getItem() instanceof AutocannonAmmoItem round)) return;
 		ControlPitchContraption controller = entity.getController();
 
-		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? Direction.DOWN : this.initialOrientation.getOpposite())), 1.0f);
-		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
+		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? Direction.DOWN : this.initialOrientation.getOpposite())), 0);
+		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0);
 		ItemStack ejectStack = round.getSpentItem(foundProjectile);
 		if (!ejectStack.isEmpty()) {
 			//ItemStack output = breech.insertOutput(ejectStack);
@@ -296,7 +296,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					tag.remove("z");
 					StructureBlockInfo squibInfo = new StructureBlockInfo(currentPos, oldInfo.state, tag);
 					this.blocks.put(currentPos, squibInfo);
-					Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
+					Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 0);
 					level.playSound(null, squibPos.x, squibPos.y, squibPos.z, oldInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 10.0f, 0.0f);
 					squib = true;
 					break;
@@ -305,7 +305,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			} else {
 				behavior.removeItem();
 				if (canFail) {
-					Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
+					Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 0);
 					level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2, Explosion.BlockInteraction.NONE);
 					for (int i = 0; i < 10; ++i) {
 						BlockPos pos = currentPos.relative(this.initialOrientation, i);
@@ -323,7 +323,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			spring.handleFiring();
 		NetworkPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
 
-		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 		Vec3 vec1 = spawnPos.subtract(centerPos).normalize();
 		spawnPos = spawnPos.subtract(vec1.scale(1.5));
 		Vec3 particlePos = spawnPos;
@@ -467,7 +467,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 	@Override
 	public Vec3 getInteractionVec(PitchOrientedContraptionEntity poce) {
-		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos), 1);
+		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos), 0);
 	}
 
     @Override

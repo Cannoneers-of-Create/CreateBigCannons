@@ -12,6 +12,7 @@ Fixes:
 - Fixed gas mask overlay rendering as solid color when holding Just Enough Guns firearm
 - Fixed entity culling for big cannons and autocannons
 - Fixed entity lighting
+- Fixed contraption vector transforms
 
 ===
 
