@@ -7,6 +7,8 @@ Create Big Cannons 5.5.1. A few critical fixes for 5.5.0 as well as some code ch
 Changes:
 - Optimized entity bounds for big cannons and autocannons to optimize lighting
 - Changed impact explosion queueing to better allow compatibility with Valkyrien Skies
+- All Autocannon Recoil Springs on an autocannon now play the firing animation
+ - Format for storing Autocannon Recoil Spring positions has changed, reassemble autocannons to fix any issues
 Fixes:
 - Fixed Trinkets compat crashing
 - Fixed gas mask overlay rendering as solid color when holding Just Enough Guns firearm

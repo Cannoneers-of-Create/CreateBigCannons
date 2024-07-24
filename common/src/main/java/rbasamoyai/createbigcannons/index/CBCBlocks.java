@@ -14,6 +14,7 @@ import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
@@ -655,7 +656,7 @@ public class CBCBlocks {
 		.register();
 
 	public static final BlockEntry<AutocannonRecoilSpringBlock> CAST_IRON_AUTOCANNON_RECOIL_SPRING = REGISTRATE
-		.block("cast_iron_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, CBCAutocannonMaterials.CAST_IRON))
+		.block("cast_iron_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, CBCAutocannonMaterials.CAST_IRON, CBCBlocks::castIronAutocannonBarrel))
 		.transform(cannonBlock(false))
 		.loot(CBCBuilderTransformers.castIronScrapLoot(3))
 		.transform(CBCBuilderTransformers.autocannonRecoilSpring("autocannon/cast_iron", true))
@@ -715,7 +716,7 @@ public class CBCBlocks {
 		.register();
 
 	public static final BlockEntry<AutocannonRecoilSpringBlock> BRONZE_AUTOCANNON_RECOIL_SPRING = REGISTRATE
-		.block("bronze_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, CBCAutocannonMaterials.BRONZE))
+		.block("bronze_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, CBCAutocannonMaterials.BRONZE, CBCBlocks::bronzeAutocannonBarrel))
 		.transform(cannonBlock(false))
 		.loot(CBCBuilderTransformers.bronzeScrapLoot(3))
 		.transform(CBCBuilderTransformers.autocannonRecoilSpring("autocannon/bronze", true))
@@ -775,7 +776,7 @@ public class CBCBlocks {
 		.register();
 
 	public static final BlockEntry<AutocannonRecoilSpringBlock> STEEL_AUTOCANNON_RECOIL_SPRING = REGISTRATE
-		.block("steel_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, CBCAutocannonMaterials.STEEL))
+		.block("steel_autocannon_recoil_spring", p -> new AutocannonRecoilSpringBlock(p, CBCAutocannonMaterials.STEEL, CBCBlocks::steelAutocannonBarrel))
 		.transform(cannonBlock(false))
 		.loot(CBCBuilderTransformers.steelScrapLoot(3))
 		.transform(CBCBuilderTransformers.autocannonRecoilSpring("autocannon/steel", true))
@@ -1275,6 +1276,18 @@ public class CBCBlocks {
 
 	private static boolean never(BlockState state, BlockGetter blockGetter, BlockPos pos) {
 		return false;
+	}
+
+	private static BlockState castIronAutocannonBarrel(Direction facing) {
+		return CAST_IRON_AUTOCANNON_BARREL.getDefaultState().setValue(AutocannonBarrelBlock.FACING, facing);
+	}
+
+	private static BlockState bronzeAutocannonBarrel(Direction facing) {
+		return BRONZE_AUTOCANNON_BARREL.getDefaultState().setValue(AutocannonBarrelBlock.FACING, facing);
+	}
+
+	private static BlockState steelAutocannonBarrel(Direction facing) {
+		return STEEL_AUTOCANNON_BARREL.getDefaultState().setValue(AutocannonBarrelBlock.FACING, facing);
 	}
 
 	public static void register() {
