@@ -7,12 +7,4 @@ public interface DropMortarMunition<PROJECTILE extends AbstractBigCannonProjecti
 
 	PROJECTILE getDropMortarProjectile(Level level, ItemStack stack);
 
-	static ItemStack getFuze(ItemStack stack) {
-		return ItemStack.of(stack.getOrCreateTag().getCompound("BlockEntityTag").getCompound("Fuze"));
-	}
-
-	static ItemStack getTracer(ItemStack stack) {
-		return ItemStack.of(stack.getOrCreateTag().getCompound("BlockEntityTag").getCompound("Tracer"));
-	}
-
 }
