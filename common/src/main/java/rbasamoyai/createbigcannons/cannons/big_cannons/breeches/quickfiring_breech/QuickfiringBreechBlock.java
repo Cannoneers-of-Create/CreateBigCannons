@@ -124,10 +124,10 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 						StructureBlockInfo info1 = cbe1.cannonBehavior().block();
 						ItemStack extract = info1.state.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
 						Vec3 normal = new Vec3(side.step());
-						Vec3 dir = contraption.entity.applyRotation(normal, 1);
+						Vec3 dir = contraption.entity.applyRotation(normal, 0);
 						if (!extract.isEmpty()) {
 							Vec3 ejectPos = Vec3.atCenterOf(localPos).add(normal.scale(1.1));
-							Vec3 globalPos = entity.toGlobalVector(ejectPos, 1);
+							Vec3 globalPos = entity.toGlobalVector(ejectPos, 0);
 							if (CBCConfigs.SERVER.munitions.quickFiringBreechItemGoesToInventory.get()) {
 								if (!player.addItem(extract) && !player.isCreative()) {
 									ItemEntity item = player.drop(extract, false);
@@ -147,7 +147,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 						changed.add(nextPos);
 						if (cannon.hasFired) {
 							Vec3 smokePos = Vec3.atCenterOf(localPos).add(normal.scale(0.6));
-							Vec3 globalPos = entity.toGlobalVector(smokePos, 1);
+							Vec3 globalPos = entity.toGlobalVector(smokePos, 0);
 							Vec3 vel = dir.scale(0.075);
 							slevel.sendParticles(new QuickFiringBreechSmokeParticleData(), globalPos.x, globalPos.y, globalPos.z, 0, vel.x, vel.y, vel.z, 1);
 							cannon.hasFired = false;
