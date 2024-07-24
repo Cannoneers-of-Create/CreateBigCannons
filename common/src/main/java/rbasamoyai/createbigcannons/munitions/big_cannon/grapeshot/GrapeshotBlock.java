@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.grapeshot;
 import java.util.List;
 
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -17,6 +18,11 @@ public class GrapeshotBlock extends ProjectileBlock<GrapeshotBagProjectile> {
 
 	@Override
 	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+		return CBCEntityTypes.BAG_OF_GRAPESHOT.create(level);
+	}
+
+	@Override
+	public AbstractBigCannonProjectile getProjectile(Level level, ItemStack itemStack) {
 		return CBCEntityTypes.BAG_OF_GRAPESHOT.create(level);
 	}
 

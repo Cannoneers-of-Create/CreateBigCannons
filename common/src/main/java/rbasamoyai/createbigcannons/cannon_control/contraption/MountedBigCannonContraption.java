@@ -37,7 +37,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
@@ -83,8 +82,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
 		if (!this.collectCannonBlocks(level, pos)) return false;
-		this.bounds = new AABB(BlockPos.ZERO);
-		this.bounds = this.bounds.inflate(Math.ceil(Math.sqrt(getRadius(this.getBlocks().keySet(), Direction.Axis.Y))));
+		this.bounds = this.createBoundsFromExtensionLengths();
 		return !this.blocks.isEmpty();
 	}
 
@@ -125,6 +123,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			}
 
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
+			this.frontExtensionLength++;
 			cannonLength++;
 
 			positiveEnd = ((BigCannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);
@@ -154,6 +153,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			}
 
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
+			this.backExtensionLength++;
 			cannonLength++;
 
 			negativeEnd = ((BigCannonBlock) nextState.getBlock()).getOpeningType(level, nextState, start);
@@ -302,7 +302,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					}
 					if (canFail && projectile.canSquib() && this.cannonMaterial.properties().mayGetStuck(propelCtx.chargesUsed, propelCtx.barrelTravelled) && rollSquib(rand)) {
 						this.squibBlocks(currentPos, projectileBlocks);
-						Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+						Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 						level.playSound(null, squibPos.x, squibPos.y, squibPos.z, cannonInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 10.0f, 0.0f);
 						return;
 					}
@@ -320,14 +320,14 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					return;
 				}
 				if (emptyNoProjectile && canFail && rollFailToIgnite(rand)) {
-					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cannonInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
 					return;
 				}
 				emptyNoProjectile = false;
 			} else if (block instanceof ProjectileBlock<?> projBlock && projectile == null) {
 				if (canFail && emptyNoProjectile && rollFailToIgnite(rand)) {
-					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cannonInfo.state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
 					return;
 				}
@@ -412,8 +412,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			}
 		}
 
-		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
-		Vec3 vec = spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
+		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
+		Vec3 vec = spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0)).normalize();
+		spawnPos = spawnPos.subtract(vec.scale(2));
 
 		if (propelCtx.chargesUsed < minimumSpread) propelCtx.chargesUsed = minimumSpread;
 
@@ -653,6 +654,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		Vec3 spawnPos = this.entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
 		Vec3 vec = spawnPos.subtract(this.entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
+		spawnPos = spawnPos.subtract(vec.scale(2));
 
 		projectile.setPos(spawnPos);
 		projectile.setChargePower(power);
