@@ -8,9 +8,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.mojang.blaze3d.shaders.Program;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.client.renderer.GameRenderer;
@@ -21,11 +20,9 @@ import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
 
-	@Inject(method = "reloadShaders",
-			at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 53),
-			locals = LocalCapture.CAPTURE_FAILHARD)
-	private void reloadShaders(ResourceManager resourceManager, CallbackInfo ci, List<Program> programs,
-							   List<Pair<ShaderInstance, Consumer<ShaderInstance>>> shaderInstances) throws IOException {
+	@Inject(method = "reloadShaders", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 53))
+	private void reloadShaders(ResourceManager resourceManager, CallbackInfo ci,
+							   @Local(ordinal = 1) List<Pair<ShaderInstance, Consumer<ShaderInstance>>> shaderInstances) throws IOException {
 		for (CBCRenderTypes renderType : CBCRenderTypes.values())
 			shaderInstances.add(Pair.of(new ShaderInstance(resourceManager, renderType.id(), renderType.renderType().format()),
 				renderType::setShaderInstance));
