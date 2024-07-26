@@ -21,6 +21,7 @@ Fixed:
 - Fixed autocannon assembly shooting projectiles the wrong way
  - Added assembly failure message
 - Fixed Fluid Shell item filling
+- Fixed tracer not rendering for Drop Mortar Shell
 
 ===
 
