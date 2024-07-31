@@ -190,7 +190,7 @@ public class CannonBuildingContraption extends PoleContraption {
 					}
 					fullShape = null;
 				} else {
-					CannonCastShape shape = cBlock.getShapeInLevel(level, state, currentPos);
+					CannonCastShape shape = cBlock.getCannonShapeInLevel(level, state, currentPos);
 					if (fullShape == null && !isConnected(connectedShapes, shape)) {
 						if (firstBlock) {
 							connectedShapes.add(shape);
@@ -281,7 +281,7 @@ public class CannonBuildingContraption extends PoleContraption {
 												 BlockPos pos, Direction dir, Direction forcedMovement) {
 		boolean pushing = dir == forcedMovement;
 		if (cBlock.getFacing(state).getAxis() != dir.getAxis()
-			|| cBlock.getShapeInLevel(level, state, pos) != shape
+			|| cBlock.getCannonShapeInLevel(level, state, pos) != shape
 			|| !(level.getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe)
 			|| !cbe.cannonBehavior().isConnectedTo(dir) && !pushing) return false;
 

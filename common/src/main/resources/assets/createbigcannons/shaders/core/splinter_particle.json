@@ -4,8 +4,8 @@
     "srcrgb": "srcalpha",
     "dstrgb": "1-srcalpha"
   },
-  "vertex": "createbigcannons_splinter_particle",
-  "fragment": "createbigcannons_splinter_particle",
+  "vertex": "createbigcannons:splinter_particle",
+  "fragment": "createbigcannons:splinter_particle",
   "attributes": [
     "Position",
     "UV0",

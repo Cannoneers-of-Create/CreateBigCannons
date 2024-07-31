@@ -374,8 +374,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				SoundSource.BLOCKS, 12, 1, 5f);
 		}
 
-		if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
-			ChunkPos cpos1 = new ChunkPos(new BlockPos(spawnPos));
+		if (projectile != null && CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+			ChunkPos cpos1 = new ChunkPos(new BlockPos(projectile.position()));
 			RitchiesProjectileLib.queueForceLoad(level, cpos1.x, cpos1.z);
 		}
 	}

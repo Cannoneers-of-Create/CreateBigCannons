@@ -45,7 +45,11 @@
     "minecraft": "${minecraft_version}",
     "fabricloader": ">=${fabric_loader_version}",
     "fabric-api": ">=${fabric_api_version}",
-    "create": "*"
+    "create": "${create_version}"
+  },
+  "breaks": {
+    "copycats": "${copycats_breaks}",
+    "trinkets": "${trinkets_breaks}"
   },
   "custom": {
     "modmenu": {

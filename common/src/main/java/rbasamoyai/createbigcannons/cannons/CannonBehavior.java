@@ -143,4 +143,9 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 	public boolean isWelded() { return !this.weldedTowards.isEmpty(); }
 	public boolean isWeldedOn(Direction dir) { return this.weldedTowards.contains(dir); }
 
+	public boolean canConnectToSide(Direction face) {
+		BlockState state = this.blockEntity.getBlockState();
+		return state.getBlock() instanceof CannonContraptionProviderBlock cBlock && cBlock.canConnectToSide(state, face);
+	}
+
 }
