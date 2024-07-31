@@ -99,10 +99,13 @@ dependencies {
 processResources {
     // set up properties for filling into metadata
     Map<String, String> properties = Map.of(
-            "version", version,
-            "forge_version", forge_version.split("\\.")[0], // only specify major version of forge
-            "minecraft_version", minecraft_version,
-            "create_version", create_forge_version.split("-")[0] // cut off build number
+        "version", version,
+        "forge_version", forge_version.split("\\.")[0], // only specify major version of forge
+        "minecraft_version", minecraft_version,
+        "create_version", create_forge_version.split("-")[0], // cut off build number
+		"copycats_requirement", copycats_requirement_forge,
+		"framedblocks_requirement", framedblocks_requirement_forge,
+		"curios_requirement", curios_requirement_forge
     )
     properties.forEach((k, v) -> inputs.property(k, v))
 
