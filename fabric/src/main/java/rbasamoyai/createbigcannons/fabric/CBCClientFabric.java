@@ -1,11 +1,13 @@
 package rbasamoyai.createbigcannons.fabric;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexFormat;
 
 import io.github.fabricators_of_create.porting_lib.event.client.CameraSetupCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.ClientWorldEvents;
@@ -15,6 +17,7 @@ import io.github.fabricators_of_create.porting_lib.event.client.LivingEntityRend
 import io.github.fabricators_of_create.porting_lib.event.client.MouseButtonCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.MouseScrolledCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.ParticleManagerRegistrationCallback;
+import io.github.fabricators_of_create.porting_lib.event.client.RegisterShadersCallback;
 import io.github.fabricators_of_create.porting_lib.event.client.TextureStitchCallback;
 import io.github.fabricators_of_create.porting_lib.event.common.ModsLoadedCallback;
 import net.fabricmc.api.ClientModInitializer;
@@ -36,6 +39,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
@@ -51,6 +55,7 @@ import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.compat.trinkets.CBCTrinketsClient;
 import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
+import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
 public class CBCClientFabric implements ClientModInitializer {
 	@Override
@@ -77,6 +82,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		ClientWorldEvents.LOAD.register(CBCClientFabric::onLoadClientLevel);
 		ClientLoginConnectionEvents.INIT.register(CBCClientFabric::onPlayerLogIn);
 		ModsLoadedCallback.EVENT.register(CBCClientFabric::onModsLoaded);
+		RegisterShadersCallback.EVENT.register(CBCClientFabric::onShaderReload);
 	}
 
 	private static void wrapOverlay(String id, CBCClientCommon.CBCGuiOverlay overlay) {
@@ -201,6 +207,14 @@ public class CBCClientFabric implements ClientModInitializer {
 		};
 
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(listener);
+	}
+
+	public static void onShaderReload(ResourceManager resourceManager, RegisterShadersCallback.ShaderRegistry registry) throws IOException {
+		CBCRenderTypes.registerAllShaders(registry::registerShader, CBCClientFabric::createShader, resourceManager);
+	}
+
+	private static ShaderInstance createShader(ResourceManager manager, ResourceLocation loc, VertexFormat format) throws IOException {
+		return new ShaderInstance(manager, loc.toString(), format);
 	}
 
 }

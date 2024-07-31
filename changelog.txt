@@ -12,6 +12,7 @@ Changed:
 - Changed impact explosion queueing to better allow compatibility with Valkyrien Skies
 - All Autocannon Recoil Springs on an autocannon now play the firing animation
  - Format for storing Autocannon Recoil Spring positions has changed, reassemble autocannons to fix any issues
+- Registered custom shaders properly so that Create Big Cannons shaders don't cause logspam on crash
 Fixed:
 - Fixed Trinkets compat crashing
 - Fixed gas mask overlay rendering as solid color when holding Just Enough Guns firearm
