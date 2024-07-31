@@ -467,8 +467,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				player.connection.send(blastWavePacket);
 		}
 
-		if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
-			ChunkPos cpos1 = new ChunkPos(new BlockPos(spawnPos));
+		if (projectile != null && CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+			ChunkPos cpos1 = new ChunkPos(new BlockPos(projectile.position()));
 			RitchiesProjectileLib.queueForceLoad(level, cpos1.x, cpos1.z);
 		}
 	}
