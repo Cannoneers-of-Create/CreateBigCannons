@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.forge;
 
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.ConfigGuiHandler.ConfigGuiFactory;
@@ -11,6 +14,7 @@ import net.minecraftforge.client.event.FOVModifierEvent;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.ParticleFactoryRegisterEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.gui.ForgeIngameGui;
@@ -29,6 +33,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.compat.curios.CBCCuriosRenderers;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
 public class CBCClientForge {
 
@@ -43,6 +48,7 @@ public class CBCClientForge {
 		modEventBus.addListener(CBCClientForge::onTextureStitchAtlasPre);
 		modEventBus.addListener(CBCClientForge::onLoadComplete);
 		modEventBus.addListener(CBCClientForge::onRegisterClientReloadListeners);
+		modEventBus.addListener(CBCClientForge::onRegisterShaders);
 
 		forgeEventBus.addListener(CBCClientForge::getFogColor);
 		forgeEventBus.addListener(CBCClientForge::getFogDensity);
@@ -158,6 +164,14 @@ public class CBCClientForge {
 
 	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent evt) {
 		CBCClientCommon.registerClientReloadListeners((listener, id) -> evt.registerReloadListener(listener));
+	}
+
+	public static void onRegisterShaders(RegisterShadersEvent evt) {
+		try {
+			CBCRenderTypes.registerAllShaders(evt::registerShader, ShaderInstance::new, evt.getResourceManager());
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to reload Create Big Cannons shaders: ", e);
+		}
 	}
 
 }
