@@ -103,7 +103,8 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
         BlockState state1 = level.getBlockState(pos1);
         BlockEntity be1 = level.getBlockEntity(pos1);
 
-        if (state1.getBlock() instanceof AutocannonBlock cBlock1
+        if (cBlock.canConnectToSide(state, facing)
+				&& state1.getBlock() instanceof AutocannonBlock cBlock1
                 && cBlock1.getAutocannonMaterialInLevel(level, state1, pos1) == material
                 && cBlock1.canConnectToSide(state1, opposite)) {
             if (state1.hasProperty(AutocannonBarrelBlock.BARREL_END)) {
@@ -122,7 +123,8 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
         BlockState state2 = level.getBlockState(pos2);
         BlockEntity be2 = level.getBlockEntity(pos2);
 
-        if (state2.getBlock() instanceof AutocannonBlock cBlock2
+        if (cBlock.canConnectToSide(state, opposite)
+				&& state2.getBlock() instanceof AutocannonBlock cBlock2
                 && cBlock2.getAutocannonMaterialInLevel(level, state2, pos2) == material
                 && cBlock2.canConnectToSide(state2, facing)) {
             if (state2.hasProperty(AutocannonBarrelBlock.BARREL_END)) {
