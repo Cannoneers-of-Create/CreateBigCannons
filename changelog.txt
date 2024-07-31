@@ -22,6 +22,7 @@ Fixed:
  - Added assembly failure message
 - Fixed Fluid Shell item filling
 - Fixed tracer not rendering for Drop Mortar Shell
+- Fixed initial projectile chunkloading breaking Valkyrien Skies Quick-Firing Breeches
 
 ===
 
