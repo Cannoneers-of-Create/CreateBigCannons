@@ -48,8 +48,6 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 
 	BigCannonMaterial getCannonMaterial();
 
-	CannonCastShape getCannonShape();
-
 	Direction getFacing(BlockState state);
 
 	default BigCannonEnd getOpeningType(@Nullable Level level, BlockState state, BlockPos pos) {
@@ -62,19 +60,11 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 
 	BigCannonEnd getDefaultOpeningType();
 
-	boolean isComplete(BlockState state);
-
 	default BigCannonMaterial getCannonMaterialInLevel(LevelAccessor level, BlockState state, BlockPos pos) {
 		return this.getCannonMaterial();
 	}
 
-	default CannonCastShape getShapeInLevel(LevelAccessor level, BlockState state, BlockPos pos) {
-		return this.getCannonShape();
-	}
-
-	default boolean canConnectToSide(BlockState state, Direction dir) { return this.getFacing(state).getAxis() == dir.getAxis(); }
-
-	default boolean isImmovable(BlockState state) {
+    default boolean isImmovable(BlockState state) {
 		return false;
 	}
 
