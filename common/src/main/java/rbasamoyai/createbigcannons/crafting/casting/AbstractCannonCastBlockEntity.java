@@ -365,7 +365,11 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			}
 			recipe.assembleInWorld(this.getLevel(), pos);
 
-			if (y > 0 && this.getLevel().getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe && this.getLevel().getBlockEntity(pos.below()) instanceof ICannonBlockEntity<?> cbe1) {
+			if (y > 0
+				&& this.getLevel().getBlockEntity(pos) instanceof ICannonBlockEntity<?> cbe
+				&& cbe.cannonBehavior().canConnectToSide(Direction.DOWN)
+				&& this.getLevel().getBlockEntity(pos.below()) instanceof ICannonBlockEntity<?> cbe1
+				&& cbe1.cannonBehavior().canConnectToSide(Direction.UP)) {
 				cbe.cannonBehavior().setConnectedFace(Direction.DOWN, true);
 				cbe1.cannonBehavior().setConnectedFace(Direction.UP, true);
 			}
