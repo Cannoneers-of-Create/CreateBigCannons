@@ -5,6 +5,7 @@ Changelog
 Create Big Cannons 5.5.1. A few critical fixes for 5.5.0 as well as some code changes.
 
 Added:
+- Added version checks for compat mods on 1.18.2
 [Development] - Added ability to get big cannon projectile from all big cannon projectile item stacks
 Changed:
 - Optimized entity bounds for big cannons and autocannons to optimize lighting
