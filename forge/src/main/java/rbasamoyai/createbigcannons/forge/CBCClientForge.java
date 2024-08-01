@@ -1,6 +1,9 @@
 package rbasamoyai.createbigcannons.forge;
 
+import java.io.IOException;
+
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -10,6 +13,7 @@ import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -26,6 +30,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.compat.curios.CBCCuriosRenderers;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
+import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
 public class CBCClientForge {
 
@@ -38,6 +43,7 @@ public class CBCClientForge {
 		modEventBus.addListener(CBCClientForge::onLoadComplete);
 		modEventBus.addListener(CBCClientForge::onRegisterClientReloadListeners);
 		modEventBus.addListener(CBCClientForge::onRegisterGuiOverlays);
+		modEventBus.addListener(CBCClientForge::onRegisterShaders);
 
 		forgeEventBus.addListener(CBCClientForge::getFogColor);
 		forgeEventBus.addListener(CBCClientForge::getFogDensity);
@@ -156,6 +162,14 @@ public class CBCClientForge {
 	public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent evt) {
 		CBCClientCommon.registerOverlays("hotbar", (id, overlay) -> wrapOverlay(id, overlay, VanillaGuiOverlay.HOTBAR, evt));
 		CBCClientCommon.registerOverlays("helmet", (id, overlay) -> wrapOverlay(id, overlay, VanillaGuiOverlay.HELMET, evt));
+	}
+
+	public static void onRegisterShaders(RegisterShadersEvent evt) {
+		try {
+			CBCRenderTypes.registerAllShaders(evt::registerShader, ShaderInstance::new, evt.getResourceProvider());
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to reload Create Big Cannons shaders: ", e);
+		}
 	}
 
 }

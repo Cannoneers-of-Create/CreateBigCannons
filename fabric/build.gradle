@@ -131,11 +131,13 @@ dependencies {
 processResources {
     // set up properties for filling into metadata
     def properties = [
-            version: version,
-            fabric_loader_version: fabric_loader_version,
-            fabric_api_version: fabric_api_version,
-            minecraft_version: minecraft_version,
-            create_version: create_fabric_version // on fabric, use the entire version, unlike forge
+        version: version,
+        fabric_loader_version: fabric_loader_version,
+        fabric_api_version: fabric_api_version,
+        minecraft_version: minecraft_version,
+        create_version: create_fabric_version, // on fabric, use the entire version, unlike forge
+		copycats_breaks: copycats_breaks_fabric,
+		trinkets_breaks: trinkets_breaks_fabric
     ]
     inputs.properties properties
 

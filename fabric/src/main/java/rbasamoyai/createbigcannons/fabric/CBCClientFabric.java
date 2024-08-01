@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.fabric;
 
+import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
@@ -20,6 +21,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientLoginConnectionEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.CoreShaderRegistrationCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
@@ -45,6 +47,7 @@ import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.compat.trinkets.CBCTrinketsClient;
 import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
+import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
 public class CBCClientFabric implements ClientModInitializer {
 	@Override
@@ -70,6 +73,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		ClientWorldEvents.LOAD.register(CBCClientFabric::onLoadClientLevel);
 		ClientLoginConnectionEvents.INIT.register(CBCClientFabric::onPlayerLogIn);
 		ModsLoadedCallback.EVENT.register(CBCClientFabric::onModsLoaded);
+		CoreShaderRegistrationCallback.EVENT.register(CBCClientFabric::onShaderReload);
 	}
 
 	private static void wrapOverlay(String id, CBCClientCommon.CBCGuiOverlay overlay) {
@@ -189,6 +193,11 @@ public class CBCClientFabric implements ClientModInitializer {
 		};
 
 		ResourceManagerHelper.get(PackType.CLIENT_RESOURCES).registerReloadListener(listener);
+	}
+
+	public static void onShaderReload(CoreShaderRegistrationCallback.RegistrationContext context) throws IOException {
+		for (CBCRenderTypes renderType : CBCRenderTypes.values())
+			context.register(renderType.id(), renderType.renderType().format(), renderType::setShaderInstance);
 	}
 
 }
