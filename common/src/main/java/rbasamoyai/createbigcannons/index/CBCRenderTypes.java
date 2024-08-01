@@ -15,7 +15,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.server.packs.resources.ResourceProvider;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public enum CBCRenderTypes {
@@ -46,13 +46,13 @@ public enum CBCRenderTypes {
 	}
 
 	public static void registerAllShaders(BiConsumer<ShaderInstance, Consumer<ShaderInstance>> cons,
-										  CreateShaderInstance shaderCreator, ResourceManager resourceManager) throws IOException {
+										  CreateShaderInstance shaderCreator, ResourceProvider resourceManager) throws IOException {
 		for (CBCRenderTypes renderType : values())
 			cons.accept(shaderCreator.create(resourceManager, renderType.id, renderType.renderType().format()), renderType::setShaderInstance);
 	}
 
 	public interface CreateShaderInstance {
-		ShaderInstance create(ResourceManager manager, ResourceLocation location, VertexFormat format) throws IOException;
+		ShaderInstance create(ResourceProvider manager, ResourceLocation location, VertexFormat format) throws IOException;
 	}
 
 }
