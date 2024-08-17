@@ -78,14 +78,14 @@ jobs:
                   find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.get_mod_version.outputs.version }}\+mc\.${{ steps.read_properties.outputs.minecraft_version }}-($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-build\.${{ github.run_number }}\.jar" >> $GITHUB_OUTPUT
                   echo "$EOF" >> $GITHUB_OUTPUT
 
-#            - name: Send building message to discord
-#              env:
-#                  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-#              if: env.DISCORD_WEBHOOK != ''
-#              uses: realRobotix/action-discord-notifier@master
-#              with:
-#                  webhook: ${{ secrets.DISCORD_WEBHOOK }}
-#                  message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
+            - name: Send building message to discord
+              env:
+                  DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+              if: env.DISCORD_WEBHOOK != ''
+              uses: realRobotix/action-discord-notifier@master
+              with:
+                  webhook: ${{ secrets.DISCORD_WEBHOOK }}
+                  message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
 
             - name: Send built file to discord
               env:
