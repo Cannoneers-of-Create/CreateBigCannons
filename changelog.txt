@@ -9,6 +9,7 @@ Changed:
 - Updated Ukrainian translation courtesy of kyryloborsch
 Fixed:
 - Fixed cannon carriages being broken by projectiles
+- Fixed first-person handle autocannon carriage movement jitter
 
 5.5.1
 
