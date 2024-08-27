@@ -6,6 +6,7 @@ Create Big Cannons 5.6.0. Now supports Create 0.5.1 patch G.
 Comes with a few fixes and updates.
 
 Changed:
+- Updated Create Big Cannons logo to new style
 - Updated Ukrainian translation courtesy of kyryloborsch
 Fixed:
 - Fixed cannon carriages being broken by projectiles
