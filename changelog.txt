@@ -1,5 +1,13 @@
 Changelog
 
+5.6.0
+
+Create Big Cannons 5.6.0. Now supports Create 0.5.1 patch G.
+Comes with a few fixes and updates.
+
+Changed:
+- Updated Ukrainian translation courtesy of kyryloborsch
+
 5.5.1
 
 Create Big Cannons 5.5.1. A few critical fixes for 5.5.0 as well as some code changes.
