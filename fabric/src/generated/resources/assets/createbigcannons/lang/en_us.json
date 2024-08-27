@@ -389,7 +389,7 @@
   "createbigcannons.ponder.munitions/cannon_loads.text_11": "...loading too many Powder Charges...",
   "createbigcannons.ponder.munitions/cannon_loads.text_12": "...allowing a fired projectile to collide with another object in the barrel...",
   "createbigcannons.ponder.munitions/cannon_loads.text_13": "...can cause catastrophic failure and pose a major threat to the surrounding environment.",
-  "createbigcannons.ponder.munitions/cannon_loads.text_2": "A cannon's material has two main factors that can cause the cannon to fail; its main factor and its strength.",
+  "createbigcannons.ponder.munitions/cannon_loads.text_2": "A cannon's material has two main factors that can cause the cannon to fail; its minimum projectile velocity per barrel and its strength.",
   "createbigcannons.ponder.munitions/cannon_loads.text_3": "The minimum projectile velocity per barrel determines how much power a projectile should have to not get stuck in a cannon.",
   "createbigcannons.ponder.munitions/cannon_loads.text_4": "For example, the default minimum projectile velocity of cast iron is equivalent to 1 Powder Charge for every barrel.",
   "createbigcannons.ponder.munitions/cannon_loads.text_5": "The barrel that the loaded projectile is in is also counted towards the barrels travelled.",

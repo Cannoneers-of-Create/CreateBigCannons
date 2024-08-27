@@ -353,6 +353,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			projectile.shoot(vec1.x, vec1.y, vec1.z, speed, spread);
 			projectile.xRotO = projectile.getXRot();
 			projectile.yRotO = projectile.getYRot();
+
+			projectile.addUntouchableEntity(entity, 1);
+			Entity vehicle = entity.getVehicle();
+			if (vehicle != null && CBCEntityTypes.CANNON_CARRIAGE.is(vehicle))
+				projectile.addUntouchableEntity(vehicle, 1);
+
 			level.addFreshEntity(projectile);
 			if (roundProperties != null) recoilMagnitude += roundProperties.addedRecoil();
 		}
