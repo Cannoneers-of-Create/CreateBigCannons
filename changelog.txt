@@ -10,6 +10,7 @@ Changed:
 Fixed:
 - Fixed cannon carriages being broken by projectiles
 - Fixed first-person handle autocannon carriage movement jitter
+- Fixed incorrect big cannon failure ponder text
 
 5.5.1
 

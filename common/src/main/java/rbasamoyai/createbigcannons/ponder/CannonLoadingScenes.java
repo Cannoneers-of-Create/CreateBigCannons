@@ -280,7 +280,7 @@ public class CannonLoadingScenes {
 		scene.overlay.showText(100).text("When loading a cannon, care must be taken to ensure that cannon loads are safe and effective.");
 		scene.idle(110);
 
-		scene.overlay.showText(80).text("A cannon's material has two main factors that can cause the cannon to fail; its main factor and its strength.").colored(PonderPalette.RED);
+		scene.overlay.showText(80).text("A cannon's material has two main factors that can cause the cannon to fail; its minimum projectile velocity per barrel and its strength.").colored(PonderPalette.RED);
 		scene.idle(90);
 
 		scene.overlay.showText(80)
