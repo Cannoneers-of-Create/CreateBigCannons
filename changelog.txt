@@ -7,6 +7,8 @@ Comes with a few fixes and updates.
 
 Changed:
 - Updated Ukrainian translation courtesy of kyryloborsch
+Fixed:
+- Fixed cannon carriages being broken by projectiles
 
 5.5.1
 
