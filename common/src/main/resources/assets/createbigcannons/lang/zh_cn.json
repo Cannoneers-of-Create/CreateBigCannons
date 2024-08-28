@@ -389,7 +389,7 @@
   "createbigcannons.ponder.munitions/cannon_loads.text_11": "…太多的发射药…",
   "createbigcannons.ponder.munitions/cannon_loads.text_12": "…或者让发射物与筒内的其他物体相互碰撞…",
   "createbigcannons.ponder.munitions/cannon_loads.text_13": "…就可能会导致毁灭性的失败，甚至对周围环境构成巨大的威胁",
-  "createbigcannons.ponder.munitions/cannon_loads.text_2": "火炮材料有两个因素可能会导致发射失败；除了发射剂外，材料强度是另一方面",
+  "createbigcannons.ponder.munitions/cannon_loads.text_2": "火炮材料有两个因素可能会导致发射失败：每炮管的最小发射速度和材料强度",
   "createbigcannons.ponder.munitions/cannon_loads.text_3": "每格炮管的最小发射速度决定了炮弹必须具有多少能量才能不被卡在火炮中",
   "createbigcannons.ponder.munitions/cannon_loads.text_4": "例如，生铁材料的默认最小发射速度等同于每格炮管对应一份发射药",
   "createbigcannons.ponder.munitions/cannon_loads.text_5": "装载的炮弹所在位置的炮管方块也计算在内",
