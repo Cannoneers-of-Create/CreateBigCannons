@@ -8,6 +8,7 @@ Comes with a few fixes and updates.
 Changed:
 - Updated Create Big Cannons logo to new style
 - Updated Ukrainian translation courtesy of kyryloborsch
+- Updated Chinese (Simplified) translation courtesy of Yizhouuu
 Fixed:
 - Fixed cannon carriages being broken by projectiles
 - Fixed first-person handle autocannon carriage movement jitter
