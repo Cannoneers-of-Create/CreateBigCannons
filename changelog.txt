@@ -13,6 +13,8 @@ Fixed:
 - Fixed cannon carriages being broken by projectiles
 - Fixed first-person handle autocannon carriage movement jitter
 - Fixed incorrect big cannon failure ponder text
+- Fixed impact fuzes not being activated by entity impact
+  - This fix involves code changes that may break Create Big Cannon addons.
 
 5.5.1
 

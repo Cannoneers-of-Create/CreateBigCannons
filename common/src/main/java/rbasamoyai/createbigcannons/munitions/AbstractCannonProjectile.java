@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -282,7 +283,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		}
 
 		for (Entity e : projCtx.hitEntities())
-			this.onHitEntity(e, projCtx);
+			shouldRemove |= this.onHitEntity(e, projCtx);
 
 		if (!this.level.isClientSide) {
 			if (projCtx.griefState() != GriefState.NO_DAMAGE) {
@@ -375,8 +376,9 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		return bounced;
 	}
 
-	protected void onHitEntity(Entity entity, ProjectileContext projectileContext) {
-		if (this.getProjectileMass() <= 0) return;
+	protected boolean onHitEntity(Entity entity, ProjectileContext projectileContext) {
+		if (this.getProjectileMass() <= 0)
+			return false;
 		if (!this.level.isClientSide) {
 			EntityDamagePropertiesComponent properties = this.getDamageProperties();
 			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
@@ -389,6 +391,11 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			float penalty = entity.isAlive() ? 2f : 0.2f;
 			this.setProjectileMass(Math.max(this.getProjectileMass() - penalty, 0));
 		}
+		return this.onImpact(new EntityHitResult(entity), new ImpactResult(ImpactResult.KinematicOutcome.PENETRATE, false), projectileContext);
+	}
+
+	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
+		return false;
 	}
 
 	protected DamageSource getEntityDamage() {
