@@ -139,7 +139,8 @@ public class RamRodItem extends Item implements HandloadingTool {
 				level.setBlock(pos2, info.state(), Block.UPDATE_MOVE_BY_PISTON | Block.UPDATE_ALL);
 				BlockEntity be2 = level.getBlockEntity(pos2);
 				CompoundTag tag = info.nbt();
-				if (be2 != null) tag = NBTProcessors.process(be2, tag, false);
+				if (be2 != null)
+					tag = NBTProcessors.process(info.state(), be2, tag, false);
 				if (be2 != null && tag != null) {
 					tag.putInt("x", pos2.getX());
 					tag.putInt("y", pos2.getY());

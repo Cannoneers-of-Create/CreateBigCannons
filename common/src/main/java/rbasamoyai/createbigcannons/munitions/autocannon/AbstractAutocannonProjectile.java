@@ -20,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
@@ -221,10 +220,6 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		}
 		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
 		return new ImpactResult(outcome, !this.level().isClientSide && (shatter || outcome != ImpactResult.KinematicOutcome.BOUNCE));
-	}
-
-	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
-		return false;
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }

@@ -66,7 +66,7 @@ dependencies {
     modImplementation("curse.maven:spark-361579:${spark_forge_file}") // Spark
 
 	// Ritchie's Projectile Library
-	String rplSuffix = Boolean.valueOf(use_local_rpl_build) ? "" : "-build.${rpl_build}";
+	String rplSuffix = Boolean.valueOf(use_local_rpl_build) ? "" : "-build.${rpl_build}"
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-forge" + rplSuffix)) { transitive = false }
 
 	compileOnly("io.github.llamalad7:mixinextras-common:${mixinextras_version}")
@@ -89,7 +89,7 @@ processResources {
         "version", version as String,
         "forge_version", forge_version.split("\\.")[0], // only specify major version of forge
         "minecraft_version", minecraft_version,
-        "create_version", create_forge_version.split("-")[0], // cut off build number
+        "create_version", create_forge_version,
 		"copycats_requirement", copycats_requirement_forge,
 		"framedblocks_requirement", framedblocks_requirement_forge,
 		"curios_requirement", curios_requirement_forge
