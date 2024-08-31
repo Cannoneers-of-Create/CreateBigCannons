@@ -1,6 +1,8 @@
 package rbasamoyai.createbigcannons.munitions;
 
+import java.util.Iterator;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,6 +31,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -60,6 +63,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	protected BlockState lastPenetratedBlock = Blocks.AIR.defaultBlockState();
 	protected boolean removeNextTick = false;
 	protected int localSoundCooldown;
+	protected WeakHashMap<Entity, Integer> untouchableEntities = new WeakHashMap<>();
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
@@ -122,6 +126,15 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 				}
 				this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
 				this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
+			}
+
+			for (Iterator<Map.Entry<Entity, Integer>> iter = this.untouchableEntities.entrySet().iterator(); iter.hasNext(); ) {
+				Map.Entry<Entity, Integer> entry = iter.next();
+				if (entry.getKey().isRemoved() || entry.getValue() > 0 && entry.getValue() - 1 == 0) {
+					iter.remove();
+				} else if (entry.getValue() > 0) {
+					entry.setValue(entry.getValue() - 1);
+				}
 			}
 
 			if (this.inFluidTime > 0)
@@ -271,7 +284,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		}
 
 		for (Entity e : projCtx.hitEntities())
-			this.onHitEntity(e, projCtx);
+			shouldRemove |= this.onHitEntity(e, projCtx);
 
 		if (!this.level().isClientSide) {
 			if (projCtx.griefState() != GriefState.NO_DAMAGE) {
@@ -364,8 +377,9 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		return bounced;
 	}
 
-	protected void onHitEntity(Entity entity, ProjectileContext projectileContext) {
-		if (this.getProjectileMass() <= 0) return;
+	protected boolean onHitEntity(Entity entity, ProjectileContext projectileContext) {
+		if (this.getProjectileMass() <= 0)
+			return false;
 		if (!this.level().isClientSide) {
 			EntityDamagePropertiesComponent properties = this.getDamageProperties();
 			entity.setDeltaMovement(this.getDeltaMovement().scale(this.getKnockback(entity)));
@@ -378,6 +392,11 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			float penalty = entity.isAlive() ? 2f : 0.2f;
 			this.setProjectileMass(Math.max(this.getProjectileMass() - penalty, 0));
 		}
+		return this.onImpact(new EntityHitResult(entity), new ImpactResult(ImpactResult.KinematicOutcome.PENETRATE, false), projectileContext);
+	}
+
+	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
+		return false;
 	}
 
 	protected DamageSource getEntityDamage(Entity entity) {
@@ -538,7 +557,25 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 
 	public void setChargePower(float power) {}
 
-	@Override public boolean canHitEntity(Entity entity) { return super.canHitEntity(entity) && !(entity instanceof Projectile); }
+	@Override
+	public boolean canHitEntity(Entity entity) {
+		if (!super.canHitEntity(entity))
+			return false;
+		if (entity instanceof Projectile)
+			return false; // TODO better detection for interception?
+		return !this.untouchableEntities.containsKey(entity);
+	}
+
+	public void addUntouchableEntity(Entity entity, int duration) {
+		if (entity.isRemoved())
+			return;
+		if (duration < 1)
+			throw new IllegalArgumentException("Use #addAlwaysUntouchableEntity when duration < 1 (was " + duration + ")");
+		this.untouchableEntities.put(entity, duration);
+	}
+
+	public void addAlwaysUntouchableEntity(Entity entity) { this.untouchableEntities.put(entity, -1); }
+	public void removeUntouchableEntity(Entity entity) { this.untouchableEntities.remove(entity); }
 
 	public boolean canLingerInGround() { return false; }
 

@@ -25,14 +25,14 @@ side = "BOTH"
 [[dependencies.createbigcannons]]
 modId = "minecraft"
 mandatory = true
-versionRange = "${minecraft_version}"
+versionRange = "[${minecraft_version}]"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "create"
 mandatory = true
-versionRange="${create_version}"
+versionRange="[${create_version}]"
 ordering = "BEFORE"
 side = "BOTH"
 

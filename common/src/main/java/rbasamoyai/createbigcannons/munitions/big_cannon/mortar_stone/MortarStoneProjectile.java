@@ -47,6 +47,8 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
     @Override
     protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
         super.onImpact(hitResult, impactResult, projectileContext);
+		if (hitResult.getType() != HitResult.Type.BLOCK)
+			return false;
         if (!this.level().isClientSide) {
             Vec3 hitLoc = hitResult.getLocation();
 			MortarStoneExplosion explosion = new MortarStoneExplosion(this.level(), null, this.indirectArtilleryFire(false),

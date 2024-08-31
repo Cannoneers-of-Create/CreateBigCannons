@@ -19,7 +19,8 @@ import net.minecraft.network.chat.Component;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionToolItem;
 
 @Mixin(GoggleOverlayRenderer.class)
-public class GoggleOverlayRendererMixin {
+public class
+GoggleOverlayRendererMixin {
 
 	@Inject(method = "renderOverlay",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientLevel;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;", ordinal = 0))

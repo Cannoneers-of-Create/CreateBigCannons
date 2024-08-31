@@ -57,6 +57,7 @@ import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumePartic
 import rbasamoyai.createbigcannons.effects.particles.plumes.DropMortarPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.DropMortarMunition;
@@ -437,6 +438,12 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			projectile.shoot(vec.x, vec.y, vec.z, propelCtx.chargesUsed, propelCtx.spread);
 			projectile.xRotO = projectile.getXRot();
 			projectile.yRotO = projectile.getYRot();
+
+			projectile.addUntouchableEntity(entity, 1);
+			Entity vehicle = entity.getVehicle();
+			if (vehicle != null && CBCEntityTypes.CANNON_CARRIAGE.is(vehicle))
+				projectile.addUntouchableEntity(vehicle, 1);
+
 			level.addFreshEntity(projectile);
 			recoilMagnitude += projectile.addedRecoil();
 		}
@@ -662,6 +669,12 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		projectile.shoot(vec.x, vec.y, vec.z, power, spread);
 		projectile.xRotO = projectile.getXRot();
 		projectile.yRotO = projectile.getYRot();
+
+		projectile.addUntouchableEntity(entity, 1);
+		Entity vehicle = entity.getVehicle();
+		if (vehicle != null && CBCEntityTypes.CANNON_CARRIAGE.is(vehicle))
+			projectile.addUntouchableEntity(vehicle, 1);
+
 		slevel.addFreshEntity(projectile);
 
 		recoilMagnitude *= CBCConfigs.SERVER.cannons.bigCannonRecoilScale.getF();

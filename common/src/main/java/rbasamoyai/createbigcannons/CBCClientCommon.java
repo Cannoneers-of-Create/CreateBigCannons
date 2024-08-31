@@ -8,6 +8,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import com.simibubi.create.foundation.utility.VecHelper;
+
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -302,7 +304,12 @@ public class CBCClientCommon {
 			Vec3 localPos = Vec3.atCenterOf(poce.getSeatPos(player));
 			if (mc.options.getCameraType() == CameraType.FIRST_PERSON) {
 				localPos = localPos.add(upNormal.scale(0.35));
-				Vec3 camPos = poce.toGlobalVector(localPos, (float) partialTicks);
+				Vec3 rotationOffset = VecHelper.getCenterOf(BlockPos.ZERO);
+				Vec3 anchor = poce.getPrevAnchorVec().lerp(poce.getAnchorVec(), partialTicks);
+
+				Vec3 camPos = localPos.subtract(rotationOffset);
+				camPos = poce.applyRotation(camPos, (float) partialTicks);
+				camPos = camPos.add(anchor).add(rotationOffset);
 				camAccess.callSetPosition(camPos);
 			}
 
