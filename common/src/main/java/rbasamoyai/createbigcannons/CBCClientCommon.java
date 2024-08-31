@@ -14,6 +14,7 @@ import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import com.simibubi.create.foundation.utility.VecHelper;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
@@ -301,7 +302,12 @@ public class CBCClientCommon {
 			Vec3 localPos = Vec3.atCenterOf(poce.getSeatPos(player));
 			if (mc.options.getCameraType() == CameraType.FIRST_PERSON) {
 				localPos = localPos.add(upNormal.scale(0.35));
-				Vec3 camPos = poce.toGlobalVector(localPos, (float) partialTicks);
+				Vec3 rotationOffset = VecHelper.getCenterOf(BlockPos.ZERO);
+				Vec3 anchor = poce.getPrevAnchorVec().lerp(poce.getAnchorVec(), partialTicks);
+
+				Vec3 camPos = localPos.subtract(rotationOffset);
+				camPos = poce.applyRotation(camPos, (float) partialTicks);
+				camPos = camPos.add(anchor).add(rotationOffset);
 				camAccess.callSetPosition(camPos);
 			}
 

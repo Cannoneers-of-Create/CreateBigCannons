@@ -6,6 +6,10 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
+## 5.5.1 → 5.6.0
+Content Changes:
+`"createbigcannons.ponder.munitions/cannon_loads.text_2"`: `"A cannon's material has two main factors that can cause the cannon to fail; its main factor and its strength."` → `"A cannon's material has two main factors that can cause the cannon to fail; its minimum projectile velocity per barrel and its strength."`
+
 ## 5.5.0 → 5.5.1
 
 Additions: \
