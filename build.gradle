@@ -11,15 +11,6 @@ architectury {
 boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
 boolean nightly = ci && (System.getenv("RELEASE") != null ? !System.getenv("RELEASE").toBoolean() : true)
 
-def getGitTag = { ->
-	def stdout = new ByteArrayOutputStream()
-	exec {
-		commandLine "git", "describe", "--tags", "--abbrev=0"
-		standardOutput = stdout
-	}
-	return stdout.toString().trim().takeBetween("v", "+")
-}
-
 subprojects {
     apply plugin: "dev.architectury.loom"
     apply plugin: "maven-publish"
@@ -60,7 +51,7 @@ subprojects {
     }
 
 	String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
-	version = "${getGitTag()}+mc.${minecraft_version}-${project.name}${nightly ? "-build.${buildNumber}" : ""}"
+	version = "${mod_version}+mc.${minecraft_version}-${project.name}${nightly ? "-build.${buildNumber}" : ""}"
 
     publishing {
         publications {

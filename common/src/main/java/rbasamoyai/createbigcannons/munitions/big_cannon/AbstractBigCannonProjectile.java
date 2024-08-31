@@ -14,7 +14,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
@@ -24,8 +23,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -239,17 +236,6 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		}
 		shatter |= this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
 		return new ImpactResult(outcome, shatter);
-	}
-
-	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
-		return false;
-	}
-
-	@Override
-	protected void onHitEntity(Entity entity, ProjectileContext projectileContext) {
-		super.onHitEntity(entity, projectileContext);
-		this.onImpact(new EntityHitResult(entity), new ImpactResult(ImpactResult.KinematicOutcome.PENETRATE, this.getProjectileMass() <= 0),
-			projectileContext);
 	}
 
 	@Override
