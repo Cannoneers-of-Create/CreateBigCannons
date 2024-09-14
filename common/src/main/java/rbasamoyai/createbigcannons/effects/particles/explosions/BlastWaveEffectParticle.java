@@ -9,6 +9,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.sounds.AirAbsorptionWrapper;
@@ -73,7 +74,7 @@ public class BlastWaveEffectParticle extends NoRenderParticle {
 			double volumeDist = this.volume * 16;
 			if (dist < volumeDist) {
 				SoundInstance sound = new SimpleSoundInstance(this.soundEvent, this.soundSource, this.volume, this.pitch,
-					this.level.random, this.x, this.y, this.z);
+					RandomSource.create(this.level.random.nextLong()), this.x, this.y, this.z);
 				if (CBCConfigs.CLIENT.blastSoundAirAbsorption.get())
 					sound = new AirAbsorptionWrapper(sound, this.airAbsorption);
 				minecraft.getSoundManager().play(sound);
