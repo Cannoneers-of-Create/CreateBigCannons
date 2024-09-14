@@ -2,9 +2,11 @@ Changelog
 
 5.6.0
 
-Create Big Cannons 5.6.0. Now supports Create 0.5.1 patch G.
+Create Big Cannons 5.6.0. Now supports Create 0.5.1 patch H.
 Comes with a few fixes and updates.
 
+Added:
+[1.19.2, 1.20.1] - Added Create: Unify as a required dependency for obtaining bronze and steel
 Changed:
 - Updated Create Big Cannons logo to new style
 - Updated Ukrainian translation courtesy of kyryloborsch
@@ -15,6 +17,7 @@ Fixed:
 - Fixed incorrect big cannon failure ponder text
 - Fixed impact fuzes not being activated by entity impact
   - This fix involves code changes that may break Create Big Cannon addons.
+[1.19.2, 1.20.1] - Fixed blast wave effect relying on thread-unsafe level random
 
 5.5.1
 
