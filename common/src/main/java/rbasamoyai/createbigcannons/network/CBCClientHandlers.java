@@ -12,6 +12,7 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -172,7 +173,8 @@ public class CBCClientHandlers {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null)
 			return;
-		SoundInstance sound = new SimpleSoundInstance(pkt.sound(), pkt.source(), pkt.volume(), pkt.pitch(), mc.level.random, pkt.x(), pkt.y(), pkt.z());
+		SoundInstance sound = new SimpleSoundInstance(pkt.sound(), pkt.source(), pkt.volume(), pkt.pitch(),
+			RandomSource.create(mc.level.random.nextLong()), pkt.x(), pkt.y(), pkt.z());
 		if (CBCConfigs.CLIENT.blastSoundAirAbsorption.get())
 			sound = new AirAbsorptionWrapper(sound, pkt.airAbsorption());
 		if (!CBCConfigs.CLIENT.isInstantaneousBlastEffect() && mc.player != null) {
