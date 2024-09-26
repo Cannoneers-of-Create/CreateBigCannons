@@ -102,7 +102,7 @@ processResources {
         "version", version,
         "forge_version", forge_version.split("\\.")[0], // only specify major version of forge
         "minecraft_version", minecraft_version,
-        "create_version", create_forge_version,
+        "create_version", create_forge_version.takeBefore("-"),
 		"copycats_requirement", copycats_requirement_forge,
 		"framedblocks_requirement", framedblocks_requirement_forge,
 		"curios_requirement", curios_requirement_forge
