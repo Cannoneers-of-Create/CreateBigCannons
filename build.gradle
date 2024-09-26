@@ -9,7 +9,8 @@ architectury {
 }
 
 boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
-boolean nightly = ci && (System.getenv("RELEASE") != null ? !System.getenv("RELEASE").toBoolean() : true)
+boolean release = System.getenv("RELEASE") != null ? System.getenv("RELEASE").toBoolean() : false
+boolean nightly = ci && !release
 
 subprojects {
     apply plugin: "dev.architectury.loom"
@@ -51,7 +52,7 @@ subprojects {
     }
 
 	String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
-	version = "${mod_version}+mc.${minecraft_version}-${project.name}${nightly ? "-build.${buildNumber}" : ""}"
+	version = "${mod_version}${release ? "" : "-dev"}+mc.${minecraft_version}-${project.name}${nightly ? "-build.${buildNumber}" : ""}"
 
     publishing {
         publications {
