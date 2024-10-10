@@ -38,9 +38,9 @@ side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "unify"
-mandatory = true
+mandatory = false
 versionRange = "[${unify_version},)"
-ordering = "BEFORE"
+ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
