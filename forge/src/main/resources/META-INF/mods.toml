@@ -32,15 +32,15 @@ side = "BOTH"
 [[dependencies.createbigcannons]]
 modId = "create"
 mandatory = true
-versionRange="[${create_version}]"
-ordering = "BEFORE"
+versionRange="[${create_version},)"
+ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "unify"
-mandatory = true
+mandatory = false
 versionRange = "[${unify_version},)"
-ordering = "BEFORE"
+ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
