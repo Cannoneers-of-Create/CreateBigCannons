@@ -51,7 +51,7 @@ jobs:
               run: |
                   EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
                   echo "jars<<$EOF" >> $GITHUB_OUTPUT
-                  find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.mod_version }}\+mc\.${{ steps.read_properties.outputs.minecraft_version }}-($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-build\.${{ github.run_number }}\.jar" >> $GITHUB_OUTPUT
+                  find . -regextype posix-extended -regex "\.\/($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))\/build\/libs\/${{ steps.read_properties.outputs.archives_base_name }}-${{ steps.read_properties.outputs.mod_version }}-dev\+mc\.${{ steps.read_properties.outputs.minecraft_version }}-($(tr "," "|" <<< ${{ steps.read_properties.outputs.enabled_platforms }}))-build\.${{ github.run_number }}\.jar" >> $GITHUB_OUTPUT
                   echo "$EOF" >> $GITHUB_OUTPUT
 
             - name: Archive Artifacts
