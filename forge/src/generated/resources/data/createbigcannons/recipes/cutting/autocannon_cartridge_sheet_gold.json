@@ -7,14 +7,12 @@
   ],
   "results": [
     {
+      "count": 3,
       "item": "createbigcannons:autocannon_cartridge_sheet"
     },
     {
-      "chance": 0.125,
-      "item": "createbigcannons:autocannon_cartridge_sheet"
-    },
-    {
-      "chance": 0.125,
+      "chance": 0.25,
+      "count": 2,
       "item": "createbigcannons:autocannon_cartridge_sheet"
     }
   ]

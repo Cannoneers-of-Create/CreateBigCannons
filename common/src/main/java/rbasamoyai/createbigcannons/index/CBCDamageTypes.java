@@ -15,7 +15,8 @@ public class CBCDamageTypes {
 		MACHINE_GUN_FIRE_IN_WATER = register("machine_gun_fire_in_water"),
 		TRAFFIC_CONE = register("traffic_cone"),
 		SHRAPNEL = register("shrapnel"),
-		GRAPESHOT = register("grapeshot");
+		GRAPESHOT = register("grapeshot"),
+		FLAK = register("flak");
 
 	public static void init() {}
 

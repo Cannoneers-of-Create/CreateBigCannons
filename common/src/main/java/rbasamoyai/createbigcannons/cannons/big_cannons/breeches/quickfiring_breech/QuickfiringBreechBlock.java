@@ -14,7 +14,6 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -44,10 +43,12 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.effects.particles.smoke.QuickFiringBreechSmokeParticleData;
+import rbasamoyai.createbigcannons.equipment.manual_loading.HandloadingTool;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.manual_loading.HandloadingTool;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
 public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<QuickfiringBreechBlockEntity>, ITransformableBlock, IWrenchable {
@@ -122,22 +123,33 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 					if (be1 instanceof IBigCannonBlockEntity cbe1) {
 						StructureBlockInfo info1 = cbe1.cannonBehavior().block();
 						ItemStack extract = info1.state().getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
-						if (!player.addItem(extract) && !player.isCreative()) {
-							ItemEntity item = player.drop(extract, false);
-							if (item != null) {
-								item.setNoPickUpDelay();
-								item.setTarget(player.getUUID());
+						Vec3 normal = new Vec3(side.step());
+						Vec3 dir = contraption.entity.applyRotation(normal, 0);
+						if (!extract.isEmpty()) {
+							Vec3 ejectPos = Vec3.atCenterOf(localPos).add(normal.scale(1.1));
+							Vec3 globalPos = entity.toGlobalVector(ejectPos, 0);
+							if (CBCConfigs.SERVER.munitions.quickFiringBreechItemGoesToInventory.get()) {
+								if (!player.addItem(extract) && !player.isCreative()) {
+									ItemEntity item = player.drop(extract, false);
+									if (item != null) {
+										item.setNoPickUpDelay();
+										item.setTarget(player.getUUID());
+									}
+								}
+							} else {
+								Vec3 vel = dir.scale(0.075);
+								ItemEntity item = new ItemEntity(level, globalPos.x, globalPos.y, globalPos.z, extract, vel.x, vel.y, vel.z);
+								item.setPickUpDelay(CBCConfigs.SERVER.munitions.quickFiringBreechItemPickupDelay.get());
+								level.addFreshEntity(item);
 							}
 						}
 						cbe1.cannonBehavior().removeBlock();
 						changed.add(nextPos);
 						if (cannon.hasFired) {
-							Vec3 normal = new Vec3(side.step());
 							Vec3 smokePos = Vec3.atCenterOf(localPos).add(normal.scale(0.6));
-							Vec3 globalPos = entity.toGlobalVector(smokePos, 1);
-
-							slevel.sendParticles(ParticleTypes.POOF, globalPos.x, globalPos.y, globalPos.z, 10, 0.1, 0.1, 0.1, 0.01);
-
+							Vec3 globalPos = entity.toGlobalVector(smokePos, 0);
+							Vec3 vel = dir.scale(0.075);
+							slevel.sendParticles(new QuickFiringBreechSmokeParticleData(), globalPos.x, globalPos.y, globalPos.z, 0, vel.x, vel.y, vel.z, 1);
 							cannon.hasFired = false;
 						}
 					}

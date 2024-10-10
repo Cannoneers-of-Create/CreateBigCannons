@@ -41,17 +41,17 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile<?> projectile, HitResult result, boolean stopped, boolean baseFuze) {
+	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, boolean baseFuze) {
 		return !baseFuze;
 	}
 
 	@Override
-	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile<?> projectile) {
+	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) {
 		return true;
 	}
 
 	@Override
-	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile<?> projectile) {
+	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
 		CompoundTag tag = stack.getOrCreateTag();
 		int airTime = tag.getInt("AirTime");
 		if (airTime > CBCConfigs.SERVER.munitions.proximityFuzeArmingTime.get()) tag.putBoolean("Armed", true);
@@ -60,7 +60,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile<?> projectile, Vec3 location, ProjectileContext ctx, boolean baseFuze) {
+	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile projectile, Vec3 start, Vec3 end, ProjectileContext ctx, boolean baseFuze) {
 		if (baseFuze) return false;
 		CompoundTag tag = stack.getOrCreateTag();
 		if (!tag.contains("Armed")) return false;
@@ -75,7 +75,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		AABB currentMovementRegion = projectile.getBoundingBox()
 			.expandTowards(dir.scale(1.75))
 			.inflate(1)
-			.move(location.subtract(projectile.position()));
+			.move(start.subtract(projectile.position()));
 		List<Entity> entities = projectile.level().getEntities(projectile, currentMovementRegion, projectile::canHitEntity);
 
 		int radius = 2;
@@ -83,20 +83,20 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		for (int i = -radius; i <= radius; ++i) {
 			for (int j = -radius; j <= radius; ++j) {
 				Vec3 ray = dir.add(right.scale(i * scale)).add(up.scale(j * scale));
-				Vec3 rayEnd = location.add(ray);
+				Vec3 rayEnd = start.add(ray);
 
-				if (projectile.level().clip(new ClipContext(location, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile)).getType() != HitResult.Type.MISS) {
+				if (projectile.level().clip(new ClipContext(start, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile)).getType() != HitResult.Type.MISS) {
 					return true;
 				}
 
 				for (Entity target : entities) {
 					AABB targetBox = target.getBoundingBox().inflate(reach);
-					if (targetBox.clip(location, rayEnd).isPresent()) return true;
+					if (targetBox.clip(start, rayEnd).isPresent()) return true;
 				}
 			}
 		}
 
-		return super.onProjectileClip(stack, projectile, location, ctx, false);
+		return super.onProjectileClip(stack, projectile, start, end, ctx, false);
 	}
 
 	@Override

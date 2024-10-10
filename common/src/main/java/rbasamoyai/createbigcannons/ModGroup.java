@@ -75,6 +75,11 @@ public class ModGroup {
 				CBCItems.CONGEALED_NITRO.asStack(),
 				CBCItems.HARDENED_NITRO.asStack(),
 				CBCItems.NITROPOWDER.asStack(),
+				CBCItems.PACKED_GUNPOWDER.asStack(),
+				CBCItems.GUNPOWDER_PINCH.asStack(),
+				CBCItems.GUNCOTTON.asStack(),
+				CBCItems.PACKED_GUNCOTTON.asStack(),
+				CBCItems.EMPTY_POWDER_CHARGE.asStack(),
 
 				CBCBlocks.SOLID_SHOT.asStack(),
 				CBCBlocks.AP_SHOT.asStack(),
@@ -161,14 +166,14 @@ public class ModGroup {
 
 				CBCBlocks.BASIN_FOUNDRY_LID.asStack(),
 
-				CBCItems.PACKED_GUNPOWDER.asStack(),
-				CBCItems.EMPTY_POWDER_CHARGE.asStack(),
 				CBCItems.CAST_IRON_NUGGET.asStack(),
 				CBCItems.CAST_IRON_INGOT.asStack(),
 				CBCBlocks.CAST_IRON_BLOCK.asStack(),
 				CBCItems.NETHERSTEEL_NUGGET.asStack(),
 				CBCItems.NETHERSTEEL_INGOT.asStack(),
 				CBCBlocks.NETHERSTEEL_BLOCK.asStack(),
+
+				CBCItems.GAS_MASK.asStack(),
 
 				CBCItems.RAM_ROD.asStack(),
 				CBCItems.WORM.asStack(),
@@ -229,7 +234,7 @@ public class ModGroup {
 
 				CBCItems.SPRING_WIRE.asStack(),
 
-				CBCItems.RESISTANCE_INSPECTION_TOOL.asStack()));
+				CBCItems.BLOCK_ARMOR_INSPECTION_TOOL.asStack()));
 		})
 		.build());
 

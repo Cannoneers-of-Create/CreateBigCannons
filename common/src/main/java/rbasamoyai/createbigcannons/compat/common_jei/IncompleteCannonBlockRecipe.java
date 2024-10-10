@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteWithItemsCannonBlock;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class IncompleteCannonBlockRecipe extends HardcodedBlockRecipe {
 
@@ -25,8 +25,7 @@ public class IncompleteCannonBlockRecipe extends HardcodedBlockRecipe {
 	@Override public List<ItemStack> ingredients() { return this.ingredients; }
 
 	public static Collection<IncompleteCannonBlockRecipe> makeAllIncompleteRecipes() {
-		return BuiltInRegistries.BLOCK
-		.stream()
+		return CBCRegistryUtils.streamAllBlocks()
 		.filter(IncompleteWithItemsCannonBlock.class::isInstance)
 		.map(b -> new IncompleteCannonBlockRecipe(null, ((IncompleteWithItemsCannonBlock) b).getCompleteBlockState(b.defaultBlockState()).getBlock(), b))
 		.toList();

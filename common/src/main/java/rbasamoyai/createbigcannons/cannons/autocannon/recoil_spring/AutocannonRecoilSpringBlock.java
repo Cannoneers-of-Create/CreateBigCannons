@@ -2,22 +2,28 @@ package rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBaseBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.MovesWithAutocannonRecoilSpring;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
-public class AutocannonRecoilSpringBlock extends AutocannonBaseBlock implements IBE<AutocannonRecoilSpringBlockEntity> {
+public class AutocannonRecoilSpringBlock extends AutocannonBaseBlock implements IBE<AutocannonRecoilSpringBlockEntity>, MovesWithAutocannonRecoilSpring {
 
-	public AutocannonRecoilSpringBlock(Properties properties, AutocannonMaterial material) {
+	private final NonNullFunction<Direction, BlockState> movingBlockFunction;
+
+	public AutocannonRecoilSpringBlock(Properties properties, AutocannonMaterial material, NonNullFunction<Direction, BlockState> movingBlockFunction) {
 		super(properties, material);
+		this.movingBlockFunction = movingBlockFunction;
 	}
 
 	@Override
@@ -49,5 +55,12 @@ public class AutocannonRecoilSpringBlock extends AutocannonBaseBlock implements 
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return AllShapes.SIX_VOXEL_POLE.get(this.getFacing(state).getAxis());
 	}
+
+	@Override
+	public BlockState getMovingState(BlockState original) {
+		return this.movingBlockFunction.apply(this.getFacing(original));
+	}
+
+	@Override public BlockState getStationaryState(BlockState original) { return original; }
 
 }

@@ -39,7 +39,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.welding.WeldableBlock;
-import rbasamoyai.createbigcannons.manual_loading.HandloadingTool;
+import rbasamoyai.createbigcannons.equipment.manual_loading.HandloadingTool;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
@@ -47,8 +47,6 @@ import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
 public interface BigCannonBlock extends WeldableBlock, CannonContraptionProviderBlock, InteractableCannonBlock {
 
 	BigCannonMaterial getCannonMaterial();
-
-	CannonCastShape getCannonShape();
 
 	Direction getFacing(BlockState state);
 
@@ -62,19 +60,11 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 
 	BigCannonEnd getDefaultOpeningType();
 
-	boolean isComplete(BlockState state);
-
 	default BigCannonMaterial getCannonMaterialInLevel(LevelAccessor level, BlockState state, BlockPos pos) {
 		return this.getCannonMaterial();
 	}
 
-	default CannonCastShape getShapeInLevel(LevelAccessor level, BlockState state, BlockPos pos) {
-		return this.getCannonShape();
-	}
-
-	default boolean canConnectToSide(BlockState state, Direction dir) { return this.getFacing(state).getAxis() == dir.getAxis(); }
-
-	default boolean isImmovable(BlockState state) {
+    default boolean isImmovable(BlockState state) {
 		return false;
 	}
 

@@ -36,6 +36,9 @@ public class CBCDataFabric implements DataGeneratorEntrypoint {
 		ExistingFileHelper helper = new ExistingFileHelper(
 			Set.of(cbcResources), Set.of("create"), false, null, null
 		);
+		CreateBigCannons.REGISTRATE.addDataGenerator(ProviderType.LOOT, prov -> {
+			prov.addLootAction(LootContextParamSets.BLOCK, new BoringScrapLoot()::generate);
+		});
 		CreateBigCannons.REGISTRATE.setupDatagen(generator.createPack(), helper);
 		CBCDatagenCommon.init();
 
@@ -59,9 +62,6 @@ public class CBCDataFabric implements DataGeneratorEntrypoint {
 		modDatapack.addProvider(CBCMillingRecipeProvider::new);
 		modDatapack.addProvider(CBCSequencedAssemblyRecipeProvider::new);
 		modDatapack.addProvider(CBCCuttingRecipeProvider::new);
-		CreateBigCannons.REGISTRATE.addDataGenerator(ProviderType.LOOT, prov -> {
-			prov.addLootAction(LootContextParamSets.BLOCK, new BoringScrapLoot()::generate);
-		});
 	}
 
 }

@@ -24,11 +24,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
-import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
+import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
 public class CannonMountScenes {
@@ -223,7 +223,7 @@ public class CannonMountScenes {
 		scene.idle(30);
 		scene.world.modifyBlock(fireLeverPos, setStateValue(LeverBlock.POWERED, true), false);
 		scene.effects.createRedstoneParticles(fireLeverPos, 0xFF0000, 10);
-		scene.effects.emitParticles(util.vector.of(-0.2d, 6.25d, 2.5), Emitter.withinBlockSpace(new CannonPlumeParticleData(2), util.vector.of(-0.87d, 0.5d, 0.0d)), 1, 10);
+		scene.effects.emitParticles(util.vector.of(-0.2d, 6.25d, 2.5), Emitter.withinBlockSpace(new BigCannonPlumeParticleData(2), util.vector.of(-0.87d, 0.5d, 0.0d)), 1, 10);
 		scene.idle(60);
 
 		scene.rotateCameraY(180.0f);
@@ -314,7 +314,7 @@ public class CannonMountScenes {
 		Selection spring = util.select.position(2, 5, 2);
 
 		Vec3 emitPos = util.vector.of(-0.2d, 5.5d, 2.5);
-		Emitter emitter = Emitter.withinBlockSpace(new CannonPlumeParticleData(0.1f), util.vector.of(-1d, 0.0d, 0.0d));
+		Emitter emitter = Emitter.withinBlockSpace(new BigCannonPlumeParticleData(0.1f), util.vector.of(-1d, 0.0d, 0.0d));
 
 		for (int i = 0; i < 5; ++i) {
 			scene.effects.emitParticles(emitPos, emitter, 1, 10);

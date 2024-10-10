@@ -80,10 +80,6 @@ public abstract class PoleMoverBlockEntity extends LinearActuatorBlockEntity {
 		this.running = false;
 		this.movedContraption = null;
 		this.sendData();
-
-		if (this.remove) {
-			this.getBlockState().getBlock().playerWillDestroy(this.getLevel(), this.worldPosition, this.getBlockState(), null);
-		}
 	}
 
 	@Override

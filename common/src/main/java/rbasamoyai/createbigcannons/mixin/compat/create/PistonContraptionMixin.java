@@ -1,6 +1,10 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
 
+import static com.simibubi.create.content.contraptions.piston.MechanicalPistonBlock.isPiston;
+
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 
@@ -11,12 +15,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
+import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlockEntity;
 import com.simibubi.create.content.contraptions.piston.PistonContraption;
 
 import net.minecraft.core.BlockPos;
@@ -29,13 +34,15 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.remix.ContraptionRemix;
+import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 
 @Mixin(PistonContraption.class)
-public abstract class PistonContraptionMixin extends TranslatingContraption implements CanLoadBigCannon {
+public abstract class PistonContraptionMixin extends TranslatingContraption implements CanLoadBigCannon, HasFragileContraption {
 
-	@Unique private final Set<BlockPos> fragileBlocks = new HashSet<>();
-	@Unique private final Set<BlockPos> colliderBlocks = new HashSet<>();
-	@Unique private boolean brokenDisassembly = false;
+	@Unique private final Set<BlockPos> createbigcannons$fragileBlocks = new HashSet<>();
+	@Unique private final Set<BlockPos> createbigcannons$colliderBlocks = new HashSet<>();
+	@Unique private final Map<BlockPos, BlockState> createbigcannons$encounteredBlocks = new HashMap<>();
+	@Unique private boolean createbigcannons$brokenDisassembly = false;
 
 	@Shadow private boolean retract;
 	@Shadow protected Direction orientation;
@@ -51,21 +58,22 @@ public abstract class PistonContraptionMixin extends TranslatingContraption impl
 
 	@Override public BlockPos createbigcannons$toLocalPos(BlockPos globalPos) { return this.toLocalPos(globalPos); }
 
-	@Override public Set<BlockPos> createbigcannons$getFragileBlockPositions() { return this.fragileBlocks; }
+	@Override public Set<BlockPos> createbigcannons$getFragileBlockPositions() { return this.createbigcannons$fragileBlocks; }
 
-    @Override public Set<BlockPos> createbigcannons$getCannonLoadingColliders() { return this.colliderBlocks; }
+    @Override public Set<BlockPos> createbigcannons$getCannonLoadingColliders() { return this.createbigcannons$colliderBlocks; }
 
-    @Override public void createbigcannons$setBrokenDisassembly(boolean flag) { this.brokenDisassembly = flag; }
-	@Override public boolean createbigcannons$isBrokenDisassembly() { return this.brokenDisassembly; }
+    @Override public void createbigcannons$setBrokenDisassembly(boolean flag) { this.createbigcannons$brokenDisassembly = flag; }
+	@Override public boolean createbigcannons$isBrokenDisassembly() { return this.createbigcannons$brokenDisassembly; }
+
+	@Override public Map<BlockPos, BlockState> createbigcannons$getEncounteredBlocks() { return this.createbigcannons$encounteredBlocks; }
 
 	@Inject(method = "addToInitialFrontier",
 			at = @At(value = "INVOKE", target = "Ljava/util/Queue;add(Ljava/lang/Object;)Z", shift = At.Shift.BEFORE),
-			locals = LocalCapture.CAPTURE_FAILHARD,
 			remap = false,
 			cancellable = true)
 	private void createbigcannons$addToInitialFrontier$1(Level level, BlockPos pos, Direction direction, Queue<BlockPos> frontier,
-														 CallbackInfoReturnable<Boolean> cir, boolean sticky, boolean retracting,
-														 int offset, BlockPos currentPos, BlockState state) {
+														 CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) boolean retracting,
+														 @Local(ordinal = 1) BlockPos currentPos, @Local BlockState state) {
 		BlockPos offsetPos = currentPos.relative(direction.getOpposite());
 		BlockState offsetState = level.getBlockState(offsetPos);
 
@@ -81,11 +89,33 @@ public abstract class PistonContraptionMixin extends TranslatingContraption impl
 		}
 	}
 
-	@Redirect(method = "collectExtensions",
+	@WrapOperation(method = "collectExtensions",
 		at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getBlockState(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/state/BlockState;"))
-	private BlockState createbigcannons$collectExtensions$1(Level instance, BlockPos pos, @Local Direction direction, @Local(ordinal = 0) BlockPos posArg) {
-		BlockState state = instance.getBlockState(pos);
+	private BlockState createbigcannons$collectExtensions$1(Level instance, BlockPos pos, Operation<BlockState> original,
+															@Local(argsOnly = true) Direction direction,
+															@Local(ordinal = 0, argsOnly = true) BlockPos posArg) {
+		BlockState state = original.call(instance, pos);
 		return pos.equals(posArg) ? state : ContraptionRemix.getInnerCannonState(instance, state, pos, direction);
+	}
+
+	@Override
+	public boolean createbigcannons$blockBreaksDisassembly(Level level, BlockPos pos, BlockState newState) {
+		BlockPos pistonPos = this.anchor.relative(this.orientation, -1);
+		if (pos.equals(pistonPos) && isPiston(level.getBlockState(pos)))
+			return false;
+		return HasFragileContraption.defaultBlockBreaksAssembly(level, pos, newState, this);
+	}
+
+	@Override public boolean createbigcannons$shouldCheckFragility() { return HasFragileContraption.defaultShouldCheck(); }
+
+	@Override
+	public void createbigcannons$fragileDisassemble() {
+		BlockPos pistonPos = this.anchor.relative(this.orientation, -1);
+		if (this.world.getBlockEntity(pistonPos) instanceof MechanicalPistonBlockEntity pistonBE) {
+			pistonBE.disassemble();
+		} else {
+			this.entity.disassemble();
+		}
 	}
 
 }

@@ -22,14 +22,17 @@ import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryBuilder;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionToolItem;
 import rbasamoyai.createbigcannons.cannon_control.config.DefaultCannonMountPropertiesSerializers;
 import rbasamoyai.createbigcannons.compat.copycats.CopycatsCompat;
 import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
+import rbasamoyai.createbigcannons.compat.curios.CBCCuriosIntegration;
 import rbasamoyai.createbigcannons.compat.framedblocks.FramedBlocksCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
+import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -65,11 +68,15 @@ public class CreateBigCannonsForge {
 
         CBCCommonForgeEvents.register(forgeEventBus);
 
+		CBCModsForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosIntegration.init(modEventBus, forgeEventBus));
+
         DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CBCClientForge.prepareClient(modEventBus, forgeEventBus));
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
         CBCNetworkForge.init();
+		BlockArmorInspectionToolItem.registerDefaultHandlers();
+		GasMaskItem.registerDefaultHandlers();
         DefaultFluidCompat.registerMinecraftBlobEffects();
         DefaultFluidCompat.registerCreateBlobEffects();
 

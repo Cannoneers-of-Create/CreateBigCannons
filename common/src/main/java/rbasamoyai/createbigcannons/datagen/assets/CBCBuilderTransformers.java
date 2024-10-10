@@ -106,4 +106,8 @@ public class CBCBuilderTransformers {
 
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> autocannonAmmoContainer(boolean isCreative) { throw new AssertionError(); }
 
+	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> tracerProjectileLoot() { return tracerProjectileLoot(t -> t); }
+
+	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> tracerProjectileLoot(NonNullFunction<CopyNbtFunction.Builder, CopyNbtFunction.Builder> additionalCopyData) { throw new AssertionError(); }
+
 }

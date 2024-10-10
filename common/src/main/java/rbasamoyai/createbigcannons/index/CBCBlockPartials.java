@@ -83,7 +83,9 @@ public class CBCBlockPartials {
 		AUTOCANNON_SEAT_BROWN = autocannonSeatPartial(DyeColor.BROWN, "autocannon/seat_brown"),
 		AUTOCANNON_SEAT_GREEN = autocannonSeatPartial(DyeColor.GREEN, "autocannon/seat_green"),
 		AUTOCANNON_SEAT_RED = autocannonSeatPartial(DyeColor.RED, "autocannon/seat_red"),
-		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_black");
+		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_black"),
+
+		GAS_MASK = block("gas_mask");
 
 
 	private static PartialModel block(String path) {

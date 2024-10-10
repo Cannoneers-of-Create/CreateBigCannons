@@ -40,6 +40,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -61,6 +62,8 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundUpdateContraptionPacket;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntity {
 
@@ -190,6 +193,11 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonDrillBlock.STATE, MechanicalPistonBlock.PistonState.EXTENDED), 3 | 16);
 		}
 		super.disassemble();
+		if (this.remove) {
+			this.level.levelEvent(2001, this.worldPosition, Block.getId(this.getBlockState()));
+			this.level.gameEvent(null, GameEvent.BLOCK_DESTROY, this.worldPosition);
+			CannonDrillBlock.destroyExtensionPoles(this.level, this.worldPosition, this.getBlockState(), true);
+		}
 	}
 
 	@Override
@@ -223,6 +231,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		this.boreSpeed = 0;
 		this.addedStressImpact = 0;
 		this.latheEntity = null;
+		this.failureReason = FailureReason.NONE;
 	}
 
 	public boolean collideWithContraptionToBore(ControlledContraptionEntity other, boolean collide) {
@@ -309,11 +318,13 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 			if (Math.abs(bearing.getSpeed()) > Math.abs(this.getSpeed())) {
 				this.failureReason = FailureReason.TOO_WEAK;
 			} else if (this.drainLubricant(drainSpeed)) {
-				if (this.getLevel() instanceof ServerLevel slevel) {
-					Vec3 particlePos = Vec3.atCenterOf(globalPos);
-					slevel.sendParticles(ParticleTypes.SMOKE, particlePos.x, particlePos.y, particlePos.z, 10, 0.0d, 1.0d, 0.0d, 0.1d);
+				boolean start = this.failureReason == FailureReason.NONE;
+				if (start)
+					this.getLevel().playSound(null, globalPos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0f, 2f);
+				if ((start || this.getLevel().getGameTime() % 3 == 0) && this.getLevel() instanceof ServerLevel slevel) {
+					Vec3 particlePos = Vec3.atCenterOf(globalPos).subtract(facing.getStepX() * 0.5, facing.getStepY() * 0.5, facing.getStepZ() * 0.5);
+					slevel.sendParticles(ParticleTypes.SMOKE, particlePos.x, particlePos.y, particlePos.z, 10, 0.0d, 0.0d, 0.0d, 0.02d);
 				}
-				this.getLevel().playSound(null, globalPos, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 1.0f, 2f);
 				this.failureReason = FailureReason.DRY_BORE;
 			}
 
@@ -422,8 +433,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		lathe.getBlocks().put(boringOffset, newInfo);
 		bearing.notifyUpdate();
 
-		ResourceLocation unboredId = BuiltInRegistries.BLOCK.getKey(latheBlockInfo.state().getBlock());
-		LootTable table = slevel.getServer().getLootData().getLootTable(new ResourceLocation(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
+		ResourceLocation unboredId = CBCRegistryUtils.getBlockLocation(latheBlockInfo.state().getBlock());
+		LootTable table = slevel.getServer().getLootData().getLootTable(CBCUtils.location(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
 		List<ItemStack> scrap = table.getRandomItems(new LootParams.Builder(slevel)
 			.withParameter(LootContextParams.BLOCK_STATE, latheBlockInfo.state())
 			.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.boringPos))

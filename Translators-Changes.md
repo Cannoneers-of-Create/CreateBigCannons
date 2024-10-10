@@ -6,6 +6,91 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
+## 5.5.1 → 5.6.0
+Content Changes:
+`"createbigcannons.ponder.munitions/cannon_loads.text_2"`: `"A cannon's material has two main factors that can cause the cannon to fail; its main factor and its strength."` → `"A cannon's material has two main factors that can cause the cannon to fail; its minimum projectile velocity per barrel and its strength."`
+
+## 5.5.0 → 5.5.1
+
+Additions: \
+&plus; `"exception.createbigcannons.cannon_mount.incorrectBreechDirection": "Cannon block at [%s, %s, %s] should be reversed"`
+
+## 0.5.4 → 5.5.0
+
+Additions: \
+&plus; `"block.createbigcannons.smoke_shell.tooltip": "SMOKE SHELL"` \
+&plus; `"block.createbigcannons.smoke_shell.tooltip.behaviour1": "Releases a _temporary smoke cloud_."` \
+&plus; `"block.createbigcannons.smoke_shell.tooltip.condition1": "On Detonation"` \
+&plus; `"block.createbigcannons.smoke_shell.tooltip.summary": "Covers the battlefield with a _smoke cloud_ that obscures vision."` \
+&plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.durability": "Durability"` \
+&plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."` \
+&plus; `"item.createbigcannons.impact_fuze.tooltip.durability": "Durability"` \
+&plus; `"item.createbigcannons.impact_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.header": "Adding tracers to big cannon projectiles"` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_1": "In addition to autocannon munitions, tracers can also be added to big cannon projectiles."` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_2": "Unlike fuzing, tracer tips can be applied to any side of the projectile block."` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_3": "Right-click the projectile with an empty hand to remove any tracers present."` \
+&plus; `"createbigcannons.ponder.munitions/adding_tracers.text_4": "As with fuzing, tracer application can be automated with Deployers."` \
+&plus; `"createbigcannons.ponder.cannon_crafting/finishing_built_up_cannons.text_4": "It takes a while for the cannon layers to transform into cannon blocks."` \
+&plus; `"createbigcannons.subtitle.fire_drop_mortar": "Drop mortar fires"` \
+&plus; `"createbigcannons.subtitle.fire_machine_gun": "Machine gun fires"` \
+&plus; `"createbigcannons.subtitle.flak_round_explosion": "Flak round explodes"` \
+&plus; `"createbigcannons.subtitle.shrapnel_shell_explosion": "Shrapnel shell explodes"` \
+&plus; `"death.attack.createbigcannons.flak": "%s was downed by flak"` \
+&plus; `"entity.createbigcannons.flak_burst": "Flak Burst"` \
+&plus; `"entity.createbigcannons.fluid_blob_burst": "Fluid Blob Burst"` \
+&plus; `"entity.createbigcannons.grapeshot_burst": "Grapeshot Burst"` \
+&plus; `"entity.createbigcannons.shrapnel_burst": "Shrapnel Burst"` \
+&plus; `"createbigcannons.subtitle.fluid_shell_explosion": "Fluid shell explodes"` \
+&plus; `"createbigcannons.subtitle.smoke_shell_detonate": "Smoke shell bursts"` \
+&plus; `"createbigcannons.subtitle.mortar_stone_explode": "Mortar stone explodes"` \
+&plus; `"item.createbigcannons.gunpowder_pinch": "Pinch of Gunpowder"` \
+&plus; `"tag.createbigcannons.gunpowder_pinch": "Pinches of Gunpowder"` \
+&plus; `"item.createbigcannons.guncotton": "Guncotton"` \
+&plus; `"item.createbigcannons.packed_guncotton": "Packed Guncotton"` \
+&plus; `"tag.createbigcannons.can_be_nitrated": "Can be Nitrated"` \
+&plus; `"tag.createbigcannons.gelatinizers": "Gelatinizers"` \
+&plus; `"tag.createbigcannons.guncotton": "Guncotton"` \
+&plus; `"tag.createbigcannons.high_explosive_materials": "High Explosive Materials"` \
+&plus; `"tag.createbigcannons.nitro_acidifiers": "Nitro Acidifiers"` \
+&plus; `"createbigcannons.subtitle.hot_projectile_splash": "Projectile splashes"` \
+&plus; `"createbigcannons.subtitle.projectile_splash": "Projectile splashes"` \
+&plus; `"createbigcannons.subtitle.projectile_impact": "Projectile impacts"` \
+&plus; `"debug.createbigcannons.block_armor_info": "Block Armor Info:"` \
+&plus; `"debug.createbigcannons.block_hardness": "Block Hardness: "` \
+&plus; `"debug.createbigcannons.block_toughness": "Block Toughness: "` \
+&plus; `"item.createbigcannons.block_armor_inspection_tool": "Block Armor Inspection Tool"` \
+&plus; `"createbigcannons.subtitle.shell_flying": "Incoming artillery shell"` \
+&plus; `"createbigcannons.subtitle.autocannon_round_flyby": "Autocannon round flies by"` \
+&plus; `"createbigcannons.subtitle.machine_gun_round_flyby": "Machine gun round flies by"` \
+&plus; `"createbigcannons.subtitle.shell_explosion": "Artillery shell explodes"` \
+&plus; `"entity.createbigcannons.gas_cloud": "Gas Cloud"` \
+&plus; `"item.createbigcannons.gas_mask": "Gas Mask"` \
+&plus; `"item.createbigcannons.gas_mask.tooltip": "GAS MASK"` \
+&plus; `"item.createbigcannons.gas_mask.tooltip.summary": "_Protects against gas clouds_ when worn on the head. _Does not protect_ against _lingering potions_, _dragon's breath_, or _potion fluid blobs_."` \
+&plus; `"tag.createbigcannons.gas_masks": "Gas Masks"`
+
+Key Changes: \
+`"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.chance"` \
+`"item.createbigcannons.impact_fuze.tooltip.shell_info"` → `"item.createbigcannons.impact_fuze.tooltip.shell_info.chance"`
+
+Content Changes: \
+`"block.createbigcannons.fluid_shell.tooltip.condition3"`: `"Note"` → `Note on Fluid Behavior"` \
+`"createbigcannons.ponder.tag.cannon_crafting.description`: `"How to manufacture big cannons"` → `"How to manufacture cannons of different sizes and calibers"` \
+`"createbigcannons.ponder.tag.munitions.description"`: `"Blocks that make up cannon loads, and what they can do"` → `"Blocks and items used by cannons, and what they can do"` \
+`"createbigcannons.ponder.tag.operating_cannons.description"`: `"How to use big cannons safely and effectively"` → `"How to use cannons safely and effectively"` \
+`"item.createbigcannons.delayed_impact_fuze.tooltip.summary"`: `"Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer."` → `"Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"` \
+`"item.createbigcannons.impact_fuze.tooltip.summary"`: `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact."` → `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._",` \
+`"item.createbigcannons.proximity_fuze.tooltip.summary"`: `"Detonates when it _gets close_ to a block."` → `"Detonates when it _gets close_ to a block. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"` \
+`"createbigcannons.ponder.cannon_crafting/finishing_built_up_cannons.text_3"`: `"It takes a while for the cannon layers to transform into cannon blocks."` → `"A built-up cannon block must have all the correct layers to be transformed."`
+
+Removals: \
+&minus; `"entity.createbigcannons.fluid_blob"` \
+&minus; `"entity.createbigcannons.grapeshot"` \
+&minus; `"entity.createbigcannons.shrapnel"` \
+&minus; `"debug.createbigcannons.block_resistance"` \
+&minus; `"item.createbigcannons.resistance_inspection_tool"`
+
 ## 0.5.3.b → 0.5.4
 
 Additions: \

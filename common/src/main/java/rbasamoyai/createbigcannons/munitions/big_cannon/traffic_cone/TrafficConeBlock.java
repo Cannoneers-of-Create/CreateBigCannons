@@ -1,30 +1,19 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone;
 
-import java.util.List;
-
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.utility.VoxelShaper;
 
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
-import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileProperties;
-import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.InertProjectileBlock;
 
-public class TrafficConeBlock extends ProjectileBlock<BigCannonProjectileProperties> {
+public class TrafficConeBlock extends InertProjectileBlock {
 
 	public TrafficConeBlock(Properties properties) {
 		super(properties);
-	}
-
-	@Override
-	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
-		return CBCEntityTypes.TRAFFIC_CONE.create(level);
 	}
 
 	@Override
@@ -34,7 +23,7 @@ public class TrafficConeBlock extends ProjectileBlock<BigCannonProjectilePropert
 	}
 
 	@Override
-	public EntityType<? extends PropertiesMunitionEntity<? extends BigCannonProjectileProperties>> getAssociatedEntityType() {
+	public EntityType<? extends AbstractBigCannonProjectile> getAssociatedEntityType() {
 		return CBCEntityTypes.TRAFFIC_CONE.get();
 	}
 

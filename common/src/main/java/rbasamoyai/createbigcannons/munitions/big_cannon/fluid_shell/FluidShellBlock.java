@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -17,11 +18,11 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
 
-public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBlockEntity, FluidShellProperties> {
+public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBlockEntity, FluidShellProjectile> {
 
 	public FluidShellBlock(Properties properties) {
 		super(properties);
@@ -38,9 +39,10 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 	}
 
 	@Override
-	public AbstractBigCannonProjectile<?> getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		FluidShellProjectile projectile = CBCEntityTypes.FLUID_SHELL.create(level);
-		projectile.setFuze(getFuze(projectileBlocks));
+		projectile.setFuze(getFuzeFromBlocks(projectileBlocks));
+		projectile.setTracer(getTracerFromBlocks(projectileBlocks));
 		if (!projectileBlocks.isEmpty()) {
 			StructureBlockInfo info = projectileBlocks.get(0);
 			if (info.nbt() != null) {
@@ -48,28 +50,46 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 				if (load instanceof AbstractFluidShellBlockEntity shell) shell.setFluidShellStack(projectile);
 			}
 		}
-
 		return projectile;
 	}
 
-	@Override
-	public EntityType<? extends PropertiesMunitionEntity<? extends FluidShellProperties>> getAssociatedEntityType() {
+    @Override
+    public AbstractBigCannonProjectile getProjectile(Level level, ItemStack itemStack) {
+		FluidShellProjectile projectile = CBCEntityTypes.FLUID_SHELL.create(level);
+		projectile.setFuze(getFuzeFromItemStack(itemStack));
+		projectile.setTracer(getTracerFromItemStack(itemStack));
+		CompoundTag tag = itemStack.getOrCreateTag();
+		CompoundTag fluidTag = tag.getCompound("BlockEntityTag").getCompound("FluidContent");
+		projectile.setFluidStack(EndFluidStack.readTag(fluidTag));
+		return projectile;
+    }
+
+    @Override
+	public EntityType<? extends FluidShellProjectile> getAssociatedEntityType() {
 		return CBCEntityTypes.FLUID_SHELL.get();
 	}
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (hand == InteractionHand.OFF_HAND)
+			return InteractionResult.PASS;
 		ItemStack stack = player.getItemInHand(hand);
 		Direction facing = hit.getDirection();
-		if (facing != state.getValue(FACING) || hand == InteractionHand.OFF_HAND) return InteractionResult.PASS;
+		Direction targetDir = this.isBaseFuze() ? state.getValue(FACING).getOpposite() : state.getValue(FACING);
+		boolean correctOrientation = facing == targetDir;
 
 		return this.onBlockEntityUse(level, pos, shell -> {
-			if (!stack.isEmpty()) {
+			if (!stack.isEmpty() && correctOrientation) {
 				if (shell.tryEmptyItemIntoTE(level, player, hand, stack, facing)) return InteractionResult.SUCCESS;
 				if (shell.tryFillItemFromTE(level, player, hand, stack, facing)) return InteractionResult.SUCCESS;
 			}
 			return super.use(state, level, pos, player, hand, hit);
 		});
+	}
+
+	@Override
+	public boolean isBaseFuze() {
+		return CBCMunitionPropertiesHandlers.FLUID_SHELL.getPropertiesOf(this.getAssociatedEntityType()).fuze().baseFuze();
 	}
 
 }

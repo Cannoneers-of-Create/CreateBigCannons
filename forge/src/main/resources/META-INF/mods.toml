@@ -25,13 +25,41 @@ side = "BOTH"
 [[dependencies.createbigcannons]]
 modId = "minecraft"
 mandatory = true
-versionRange = "${minecraft_version}"
+versionRange = "[${minecraft_version}]"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
-modId="create"
-mandatory=true
-versionRange="${create_version}"
-ordering="NONE"
-side="BOTH"
+modId = "create"
+mandatory = true
+versionRange="[${create_version}]"
+ordering = "BEFORE"
+side = "BOTH"
+
+[[dependencies.createbigcannons]]
+modId = "unify"
+mandatory = true
+versionRange = "[${unify_version},)"
+ordering = "BEFORE"
+side = "BOTH"
+
+[[dependencies.createbigcannons]]
+modId = "copycats"
+mandatory = false
+versionRange = "${copycats_requirement}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.createbigcannons]]
+modId = "framedblocks"
+mandatory = false
+versionRange = "${framedblocks_requirement}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.createbigcannons]]
+modId = "curios"
+mandatory = false
+versionRange = "${curios_requirement}"
+ordering = "NONE"
+side = "BOTH"

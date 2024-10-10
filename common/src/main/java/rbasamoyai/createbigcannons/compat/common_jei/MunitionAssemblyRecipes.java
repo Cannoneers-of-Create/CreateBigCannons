@@ -8,7 +8,6 @@ import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -29,6 +28,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class MunitionAssemblyRecipes {
 
@@ -36,7 +36,7 @@ public class MunitionAssemblyRecipes {
 		List<Item> fuzes = new ArrayList<>();
 		List<Item> munitions = new ArrayList<>();
 
-		BuiltInRegistries.ITEM.stream()
+		CBCRegistryUtils.streamAllItems()
 		.forEach(i -> {
 			if (i instanceof FuzeItem) fuzes.add(i);
 			else if (i instanceof FuzedItemMunition) munitions.add(i);
@@ -78,7 +78,7 @@ public class MunitionAssemblyRecipes {
 		List<Item> fuzes = new ArrayList<>();
 		List<AutocannonRoundItem> munitions = new ArrayList<>();
 
-		BuiltInRegistries.ITEM.stream()
+		CBCRegistryUtils.streamAllItems()
 		.forEach(i -> {
 			if (i instanceof FuzeItem) fuzes.add(i);
 			else if (i instanceof AutocannonRoundItem acr) munitions.add(acr);
@@ -127,7 +127,7 @@ public class MunitionAssemblyRecipes {
 	public static List<CraftingRecipe> getTracerRecipes() {
 		List<Item> munitions = new ArrayList<>();
 
-		BuiltInRegistries.ITEM.stream()
+		CBCRegistryUtils.streamAllItems()
 		.forEach(i -> {
 			if (i instanceof AutocannonRoundItem || CBCItems.MACHINE_GUN_ROUND.is(i)) munitions.add(i);
 		});
@@ -159,7 +159,7 @@ public class MunitionAssemblyRecipes {
 		List<Item> fuzes = new ArrayList<>();
 		List<Item> munitions = new ArrayList<>();
 
-		BuiltInRegistries.ITEM.stream()
+		CBCRegistryUtils.streamAllItems()
 			.forEach(i -> {
 				if (i instanceof FuzeItem) fuzes.add(i);
 				else if (i instanceof FuzedItemMunition) munitions.add(i);
@@ -207,7 +207,7 @@ public class MunitionAssemblyRecipes {
 
 		List<AutocannonRoundItem> munitions = new ArrayList<>();
 
-		BuiltInRegistries.ITEM.stream()
+		CBCRegistryUtils.streamAllItems()
 		.forEach(i -> {
 			if (i instanceof AutocannonRoundItem acr) munitions.add(acr);
 		});
@@ -247,7 +247,7 @@ public class MunitionAssemblyRecipes {
 	public static List<DeployerApplicationRecipe> getTracerDeployerRecipes() {
 		List<Item> munitions = new ArrayList<>();
 
-		BuiltInRegistries.ITEM.stream()
+		CBCRegistryUtils.streamAllItems()
 		.forEach(i -> {
 			if (i instanceof AutocannonRoundItem || CBCItems.MACHINE_GUN_ROUND.is(i)) munitions.add(i);
 		});
@@ -287,7 +287,7 @@ public class MunitionAssemblyRecipes {
 		List<Item> fuzes = new ArrayList<>();
 		List<Item> munitions = new ArrayList<>();
 
-		BuiltInRegistries.ITEM.stream()
+		CBCRegistryUtils.streamAllItems()
 		.forEach(i -> {
 			if (i instanceof FuzeItem) fuzes.add(i);
 			else if (i instanceof FuzedItemMunition) munitions.add(i);
@@ -323,7 +323,7 @@ public class MunitionAssemblyRecipes {
 
 	public static List<CraftingRecipe> getTracerRemovalRecipes() {
 		List<Item> munitions = new ArrayList<>();
-		BuiltInRegistries.ITEM.stream()
+		CBCRegistryUtils.streamAllItems()
 		.forEach(i -> {
 			if (i instanceof AutocannonRoundItem || CBCItems.MACHINE_GUN_ROUND.is(i)) munitions.add(i);
 		});

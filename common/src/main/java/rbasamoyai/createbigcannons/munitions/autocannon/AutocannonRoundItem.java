@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.munitions.autocannon;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.utility.Lang;
@@ -14,7 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
+import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 
 public abstract class AutocannonRoundItem extends Item {
 
@@ -22,8 +23,10 @@ public abstract class AutocannonRoundItem extends Item {
         super(properties);
     }
 
-    public abstract AbstractAutocannonProjectile<?> getAutocannonProjectile(ItemStack stack, Level level);
-	public abstract EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> getEntityType(ItemStack stack);
+    public abstract AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level);
+	public abstract EntityType<?> getEntityType(ItemStack stack);
+
+	@Nonnull public abstract AutocannonProjectilePropertiesComponent getAutocannonProperties(ItemStack itemStack);
 
     public ItemStack getCreativeTabCartridgeItem() {
         ItemStack stack = CBCItems.AUTOCANNON_CARTRIDGE.asStack();

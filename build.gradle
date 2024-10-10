@@ -1,6 +1,6 @@
 plugins {
 	id "architectury-plugin" version "3.4-SNAPSHOT"
-	id "dev.architectury.loom" version "1.5-SNAPSHOT" apply false
+	id "dev.architectury.loom" version "1.6-SNAPSHOT" apply false
 	id "io.github.p03w.machete" version "1.+" // automatic jar compressing on build
 }
 
@@ -8,16 +8,9 @@ architectury {
     minecraft = rootProject.minecraft_version
 }
 
-def getGitHash = { ->
-    def stdout = new ByteArrayOutputStream()
-    exec {
-        commandLine 'git', 'rev-parse', '--short', 'HEAD'
-        standardOutput = stdout
-    }
-    return stdout.toString().trim()
-}
-
 boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
+boolean release = System.getenv("RELEASE") != null ? System.getenv("RELEASE").toBoolean() : false
+boolean nightly = ci && !release
 
 subprojects {
     apply plugin: "dev.architectury.loom"
@@ -41,6 +34,17 @@ subprojects {
             }
         }
         maven { url = "https://cursemaven.com" } // Cursemaven
+		exclusiveContent {
+			forRepository {
+				maven {
+					name = "Modrinth"
+					url = "https://api.modrinth.com/maven"
+				}
+			}
+			filter {
+				includeGroup "maven.modrinth"
+			}
+		}
     }
 
     dependencies {
@@ -52,11 +56,14 @@ subprojects {
             it.officialMojangMappings { nameSyntheticMembers = false }
         })
     }
+
+	String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
+	version = "${mod_version}${release ? "" : "-dev"}+mc.${minecraft_version}-${project.name}${nightly ? "-build.${buildNumber}" : ""}"
+
     publishing {
         publications {
             mavenJava(MavenPublication) {
-                artifactId = rootProject.archives_base_name + "-" + project.name + "-" + minecraft_version
-                version = ci ? mod_version + "-nightly-" + getGitHash() : mod_version
+				artifactId = rootProject.archives_base_name
                 from components.java
             }
         }
@@ -82,13 +89,11 @@ allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
 
-    archivesBaseName = "${rootProject.archives_base_name}-${project.name}-${minecraft_version}"
+    archivesBaseName = rootProject.archives_base_name
     group = rootProject.group
 
     // Formats the mod version to include the loader, Minecraft version, and build number (if present)
     // example: 1.0.0+fabric-1.18.2-100
-
-    version = ci ? mod_version + "-nightly-" + getGitHash() : mod_version
 
     repositories {
         // Add repositories to retrieve artifacts from in here.
@@ -98,7 +103,7 @@ allprojects {
         // for more information about repositories.
     }
 
-    tasks.withType(JavaCompile) {
+    tasks.withType(JavaCompile).configureEach {
         options.encoding = "UTF-8"
     }
 

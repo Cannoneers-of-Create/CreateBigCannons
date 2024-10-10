@@ -6,20 +6,30 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.decoration.palettes.AllPaletteBlocks;
+import com.simibubi.create.foundation.block.CopperBlockSet;
+import com.simibubi.create.foundation.utility.Iterate;
 import com.tterrag.registrate.providers.ProviderType;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagBuilder;
+import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.material.Fluid;
+import rbasamoyai.createbigcannons.base.tag_utils.ForcedTagEntry;
+import rbasamoyai.createbigcannons.mixin.TagAppenderAccessor;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCTags {
 
@@ -28,18 +38,17 @@ public class CBCTags {
 			THICK_TUBING = makeTag("thick_tubing"),
 			REDUCES_SPREAD = makeTag("reduces_spread"),
 			DRILL_CAN_PASS_THROUGH = makeTag("drill_can_pass_through"),
-			DEFLECTS_SHOTS = makeTag("deflects_shots"),
-			DOESNT_DEFLECT_SHOTS = makeTag("doesnt_deflect_shots"),
-			BOUNCES_SHOTS = makeTag("bounces_shots"),
-			DOESNT_BOUNCE_SHOTS = makeTag("doesnt_bounce_shots"),
 			// Datagen tags
 			OBSIDIAN = commonTag("obsidian", "obsidian", "obsidian" /* No Fabric c: tag */),
 			SANDSTONE = commonTag("sandstone", "sandstone", "sandstone"),
 			CONCRETE = commonTag("concrete", "concrete", "concrete"),
-			NETHERRACK = commonTag("netherrack", "netherrack", "netherrack");
+			NETHERRACK = commonTag("netherrack", "netherrack", "netherrack"),
+			SPARK_EFFECT_ON_IMPACT = makeTag("spark_effect_on_impact"),
+			SPLINTER_EFFECT_ON_IMPACT = makeTag("splinter_effect_on_impact"),
+			GLASS_EFFECT_ON_IMPACT = makeTag("glass_effect_on_impact");
 
 		public static TagKey<Block> makeTag(String path) {
-			TagKey<Block> tag = TagKey.create(Registries.BLOCK, CreateBigCannons.resource(path));
+			TagKey<Block> tag = TagKey.create(CBCRegistryUtils.getBlockRegistryKey(), CreateBigCannons.resource(path));
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> ((TagsProvider<Block>) prov).tag(tag));
 			return tag;
 		}
@@ -47,9 +56,9 @@ public class CBCTags {
 		public static TagKey<Block> commonTag(String mainPath, String forgePath, String fabricPath) {
 			TagKey<Block> mainTag = makeTag(mainPath);
 			addOptionalTagsToBlockTag(mainTag, Arrays.asList(
-					new ResourceLocation("forge", forgePath),
-					new ResourceLocation("c", forgePath), // For forge -> fabric ports, e.g. Create
-					new ResourceLocation("c", fabricPath)));
+					CBCUtils.location("forge", forgePath),
+					CBCUtils.location("c", forgePath), // For forge -> fabric ports, e.g. Create
+					CBCUtils.location("c", fabricPath)));
 			return mainTag;
 		}
 
@@ -57,7 +66,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
 				for (Block block : blocks) {
-					BuiltInRegistries.BLOCK.getResourceKey(block).ifPresent(app::add);
+					CBCRegistryUtils.getBlockRegistry().getResourceKey(block).ifPresent(app::add);
 				}
 			});
 		}
@@ -66,8 +75,17 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
 				for (Block b : blocks.get()) {
-					BuiltInRegistries.BLOCK.getResourceKey(b).ifPresent(app::add);
+					CBCRegistryUtils.getBlockRegistry().getResourceKey(b).ifPresent(app::add);
 				}
+			});
+		}
+
+		@SafeVarargs
+		public static void addBlocksToBlockTag(TagKey<Block> tag, Supplier<? extends Block>... blocks) {
+			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
+				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
+				for (Supplier<? extends Block> b : blocks)
+					CBCRegistryUtils.getBlockRegistry().getResourceKey(b.get()).ifPresent(app::add);
 			});
 		}
 
@@ -75,9 +93,8 @@ public class CBCTags {
 		public static void addTagsToBlockTag(TagKey<Block> tag, TagKey<Block>... tags) {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
-				for (TagKey<Block> t : tags) {
-					app.addTag(t);
-				}
+				for (TagKey<Block> t : tags)
+					addTag(app, t);
 			});
 		}
 
@@ -88,8 +105,63 @@ public class CBCTags {
 			});
 		}
 
+		public static void addOptionalTagsToBlockTag(TagKey<Block> tag, ResourceLocation... ops) {
+			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
+				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
+				for (ResourceLocation op : ops)
+					app.addOptionalTag(op);
+			});
+		}
+
 		public static void sectionRegister() {
 			addBlocksToBlockTag(CONCRETE, Blocks.WHITE_CONCRETE, Blocks.ORANGE_CONCRETE, Blocks.MAGENTA_CONCRETE, Blocks.LIGHT_BLUE_CONCRETE, Blocks.YELLOW_CONCRETE, Blocks.LIME_CONCRETE, Blocks.PINK_CONCRETE, Blocks.GRAY_CONCRETE, Blocks.LIGHT_GRAY_CONCRETE, Blocks.CYAN_CONCRETE, Blocks.PURPLE_CONCRETE, Blocks.BLUE_CONCRETE, Blocks.BROWN_CONCRETE, Blocks.GREEN_CONCRETE, Blocks.RED_CONCRETE, Blocks.BLACK_CONCRETE);
+			addBlocksToBlockTag(SPARK_EFFECT_ON_IMPACT, Blocks.IRON_BLOCK, Blocks.IRON_DOOR, Blocks.IRON_BARS, Blocks.IRON_TRAPDOOR,
+				Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE, Blocks.RAW_IRON_BLOCK, Blocks.GOLD_BLOCK, Blocks.RAW_GOLD_BLOCK,
+				Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE, Blocks.NETHERITE_BLOCK, Blocks.ANCIENT_DEBRIS, Blocks.RAW_COPPER_BLOCK,
+				Blocks.COPPER_BLOCK, Blocks.EXPOSED_COPPER, Blocks.WEATHERED_COPPER, Blocks.OXIDIZED_COPPER,
+				Blocks.CUT_COPPER, Blocks.EXPOSED_CUT_COPPER, Blocks.WEATHERED_CUT_COPPER, Blocks.OXIDIZED_CUT_COPPER,
+				Blocks.CUT_COPPER_STAIRS, Blocks.EXPOSED_CUT_COPPER_STAIRS, Blocks.WEATHERED_CUT_COPPER_STAIRS, Blocks.OXIDIZED_CUT_COPPER_STAIRS,
+				Blocks.CUT_COPPER_SLAB, Blocks.EXPOSED_CUT_COPPER_SLAB, Blocks.WEATHERED_CUT_COPPER_SLAB, Blocks.OXIDIZED_CUT_COPPER_SLAB,
+				Blocks.WAXED_COPPER_BLOCK, Blocks.WAXED_EXPOSED_COPPER, Blocks.WAXED_WEATHERED_COPPER, Blocks.WAXED_OXIDIZED_COPPER,
+				Blocks.WAXED_CUT_COPPER, Blocks.WAXED_EXPOSED_CUT_COPPER, Blocks.WAXED_WEATHERED_CUT_COPPER, Blocks.WAXED_OXIDIZED_CUT_COPPER,
+				Blocks.WAXED_CUT_COPPER_STAIRS, Blocks.WAXED_EXPOSED_CUT_COPPER_STAIRS, Blocks.WAXED_WEATHERED_CUT_COPPER_STAIRS, Blocks.WAXED_OXIDIZED_CUT_COPPER_STAIRS,
+				Blocks.WAXED_CUT_COPPER_SLAB, Blocks.WAXED_EXPOSED_CUT_COPPER_SLAB, Blocks.WAXED_WEATHERED_CUT_COPPER_SLAB, Blocks.WAXED_OXIDIZED_CUT_COPPER_SLAB);
+			addBlocksToBlockTag(SPARK_EFFECT_ON_IMPACT, AllBlocks.ZINC_BLOCK, AllBlocks.ANDESITE_ALLOY_BLOCK,
+				AllBlocks.INDUSTRIAL_IRON_BLOCK, AllBlocks.RAILWAY_CASING, AllBlocks.BRASS_BLOCK, AllBlocks.ANDESITE_BARS,
+				AllBlocks.BRASS_BARS, AllBlocks.COPPER_BARS, AllBlocks.METAL_GIRDER, AllBlocks.METAL_GIRDER_ENCASED_SHAFT,
+				AllBlocks.ITEM_VAULT, AllBlocks.FLUID_TANK, AllBlocks.FLUID_PIPE, AllBlocks.FLUID_VALVE, AllBlocks.MECHANICAL_PUMP);
+			iterateOverCopperSet(AllBlocks.COPPER_SHINGLES, SPARK_EFFECT_ON_IMPACT);
+			iterateOverCopperSet(AllBlocks.COPPER_TILES, SPARK_EFFECT_ON_IMPACT);
+
+			addTagsToBlockTag(SPLINTER_EFFECT_ON_IMPACT, BlockTags.PLANKS, BlockTags.LOGS, BlockTags.WOODEN_STAIRS,
+				BlockTags.WOODEN_SLABS, BlockTags.WOODEN_DOORS, BlockTags.WOODEN_TRAPDOORS, BlockTags.WOODEN_FENCES,
+				BlockTags.FENCE_GATES, BlockTags.WOODEN_PRESSURE_PLATES, BlockTags.WOODEN_BUTTONS);
+			addBlocksToBlockTag(SPLINTER_EFFECT_ON_IMPACT, AllBlocks.ANDESITE_CASING, AllBlocks.COPPER_CASING, AllBlocks.BRASS_CASING,
+				AllBlocks.ANDESITE_ENCASED_SHAFT, AllBlocks.ANDESITE_ENCASED_COGWHEEL, AllBlocks.ANDESITE_ENCASED_LARGE_COGWHEEL,
+				AllBlocks.BRASS_ENCASED_SHAFT, AllBlocks.BRASS_ENCASED_COGWHEEL, AllBlocks.BRASS_ENCASED_LARGE_COGWHEEL,
+				AllBlocks.ENCASED_FLUID_PIPE, AllBlocks.ENCASED_CHAIN_DRIVE, AllBlocks.ADJUSTABLE_CHAIN_GEARSHIFT,
+				AllBlocks.COGWHEEL, AllBlocks.LARGE_COGWHEEL, AllBlocks.WATER_WHEEL, AllBlocks.LARGE_WATER_WHEEL,
+				AllBlocks.WATER_WHEEL_STRUCTURAL, AllBlocks.LINEAR_CHASSIS, AllBlocks.SECONDARY_LINEAR_CHASSIS,
+				AllBlocks.RADIAL_CHASSIS, AllBlocks.ANDESITE_DOOR, AllBlocks.COPPER_DOOR, AllBlocks.BRASS_DOOR);
+
+			addOptionalTagsToBlockTag(GLASS_EFFECT_ON_IMPACT, CBCUtils.location("c", "glass"), CBCUtils.location("forge", "glass"),
+				CBCUtils.location("c", "glass_panes"), CBCUtils.location("forge", "glass_panes"));
+			addBlocksToBlockTag(GLASS_EFFECT_ON_IMPACT, AllBlocks.FRAMED_GLASS_DOOR, AllBlocks.FRAMED_GLASS_TRAPDOOR,
+				AllPaletteBlocks.OAK_WINDOW, AllPaletteBlocks.OAK_WINDOW_PANE, AllPaletteBlocks.SPRUCE_WINDOW, AllPaletteBlocks.SPRUCE_WINDOW_PANE,
+				AllPaletteBlocks.BIRCH_WINDOW, AllPaletteBlocks.BIRCH_WINDOW_PANE, AllPaletteBlocks.JUNGLE_WINDOW, AllPaletteBlocks.JUNGLE_WINDOW_PANE,
+				AllPaletteBlocks.DARK_OAK_WINDOW, AllPaletteBlocks.DARK_OAK_WINDOW_PANE, AllPaletteBlocks.ACACIA_WINDOW, AllPaletteBlocks.ACACIA_WINDOW_PANE,
+				AllPaletteBlocks.WARPED_WINDOW, AllPaletteBlocks.WARPED_WINDOW_PANE, AllPaletteBlocks.CRIMSON_WINDOW, AllPaletteBlocks.CRIMSON_WINDOW_PANE,
+				AllPaletteBlocks.ORNATE_IRON_WINDOW, AllPaletteBlocks.ORNATE_IRON_WINDOW_PANE);
+		}
+
+		private static void iterateOverCopperSet(CopperBlockSet set, TagKey<Block> tag) {
+			for (boolean waxed : Iterate.falseAndTrue) {
+				for (CopperBlockSet.Variant<?> variant : set.getVariants()) {
+					for (WeatherState weathering : WeatherState.values()) {
+						addBlocksToBlockTag(tag, set.get(variant, weathering, waxed));
+					}
+				}
+			}
 		}
 	}
 
@@ -124,6 +196,7 @@ public class CBCTags {
 			SHEET_GOLD = commonTag("sheet_copper", "plates/gold", "gold_plates"),
 			SHEET_STEEL = commonTag("sheet_steel", "plates/steel", "steel_plates"),
 			DUST_GLOWSTONE = commonTag("dust_glowstone", "dusts/glowstone", "glowstone_dusts"),
+			GLASS = commonTag("glass", "glass", "glass"),
 			INEXPENSIVE_BIG_CARTRIDGE_SHEET = makeTag("inexpensive_big_cartridge_sheet"),
 			NITROPOWDER = makeTag("nitropowder"),
 			BIG_CANNON_PROPELLANT = makeTag("big_cannon_propellant"),
@@ -134,10 +207,17 @@ public class CBCTags {
 			FUZES = makeTag("fuzes"),
 			SPENT_AUTOCANNON_CASINGS = makeTag("spent_autocannon_casings"),
 			AUTOCANNON_CARTRIDGES = makeTag("autocannon_cartridges"),
-			AUTOCANNON_ROUNDS = makeTag("autocannon_rounds");
+			AUTOCANNON_ROUNDS = makeTag("autocannon_rounds"),
+			GUNPOWDER_PINCH = makeTag("gunpowder_pinch"),
+			GUNCOTTON = makeTag("guncotton"),
+			CAN_BE_NITRATED = makeTag("can_be_nitrated"),
+			HIGH_EXPLOSIVE_MATERIALS = makeTag("high_explosive_materials"),
+			NITRO_ACIDIFIERS = makeTag("nitro_acidifiers"),
+			GELATINIZERS = makeTag("gelatinizers"),
+			GAS_MASKS = makeTag("gas_masks");
 
 		public static TagKey<Item> makeTag(String loc) {
-			TagKey<Item> tag = TagKey.create(Registries.ITEM, CreateBigCannons.resource(loc));
+			TagKey<Item> tag = CBCRegistryUtils.createItemTag(CreateBigCannons.resource(loc));
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> ((TagsProvider<Item>) prov).tag(tag));
 			return tag;
 		}
@@ -145,9 +225,9 @@ public class CBCTags {
 		public static TagKey<Item> commonTag(String mainPath, String forgePath, String fabricPath) {
 			TagKey<Item> mainTag = makeTag(mainPath);
 			addOptionalTagsToItemTag(mainTag, Arrays.asList(
-					new ResourceLocation("forge", forgePath),
-					new ResourceLocation("c", forgePath), // For forge -> fabric ports, e.g. Create
-					new ResourceLocation("c", fabricPath)));
+					CBCUtils.location("forge", forgePath),
+					CBCUtils.location("c", forgePath), // For forge -> fabric ports, e.g. Create
+					CBCUtils.location("c", fabricPath)));
 			return mainTag;
 		}
 
@@ -155,7 +235,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
 				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				for (Item item : items) {
-					BuiltInRegistries.ITEM.getResourceKey(item).ifPresent(app::add);
+					CBCRegistryUtils.getItemRegistry().getResourceKey(item).ifPresent(app::add);
 				}
 			});
 		}
@@ -164,7 +244,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
 				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				for (ItemLike bp : items) {
-					BuiltInRegistries.ITEM.getResourceKey(bp.asItem()).ifPresent(app::add);
+					CBCRegistryUtils.getItemRegistry().getResourceKey(bp.asItem()).ifPresent(app::add);
 				}
 			});
 		}
@@ -174,7 +254,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
 				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				for(TagKey<Item> t : tags) {
-					app.addTag(t);
+					addTag(app, t);
 				}
 			});
 		}
@@ -202,6 +282,9 @@ public class CBCTags {
 			addIdsToItemTag(BLOCK_CAST_IRON, createdeco("cast_iron_block"));
 			addTagsToItemTag(INEXPENSIVE_BIG_CARTRIDGE_SHEET, SHEET_GOLD, SHEET_COPPER);
 			addTagsToItemTag(BIG_CANNON_PROPELLANT, BIG_CANNON_PROPELLANT_BAGS, BIG_CANNON_CARTRIDGES);
+			addItemsToItemTag(CAN_BE_NITRATED, Items.PAPER);
+			addItemsToItemTag(GELATINIZERS, Items.SLIME_BALL);
+			addTagsToItemTag(NITRO_ACIDIFIERS, DUSTS_REDSTONE);
 		}
 	}
 
@@ -210,7 +293,7 @@ public class CBCTags {
 			MOLTEN_METAL = makeTag("molten_metal");
 
 		public static TagKey<Fluid> makeTag(String loc) {
-			TagKey<Fluid> tag = TagKey.create(Registries.FLUID, CreateBigCannons.resource(loc));
+			TagKey<Fluid> tag = TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), CreateBigCannons.resource(loc));
 			REGISTRATE.addDataGenerator(ProviderType.FLUID_TAGS, prov -> ((TagsProvider<Fluid>) prov).tag(tag));
 			return tag;
 		}
@@ -221,7 +304,13 @@ public class CBCTags {
 		CBCItemTags.sectionRegister();
 	}
 
-	private static ResourceLocation alloyed(String path) { return new ResourceLocation("alloyed", path); }
-	private static ResourceLocation createdeco(String path) { return new ResourceLocation("createdeco", path); }
+	private static ResourceLocation alloyed(String path) { return CBCUtils.location("alloyed", path); }
+	private static ResourceLocation createdeco(String path) { return CBCUtils.location("createdeco", path); }
+
+	private static <T> void addTag(TagAppender<T> app, TagKey<T> tag) {
+		TagAppenderAccessor accessor = (TagAppenderAccessor) app;
+		TagBuilder builder = accessor.getBuilder();
+		builder.add(new ForcedTagEntry(TagEntry.tag(tag.location())));
+	}
 
 }

@@ -4,46 +4,49 @@ import static rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock.wri
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.foundation.utility.Components;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.chat.Component;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.ICannonContraptionType;
-import rbasamoyai.createbigcannons.cannon_control.effects.CannonPlumeParticleData;
 import rbasamoyai.createbigcannons.cannons.ItemCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
+import rbasamoyai.createbigcannons.cannons.autocannon.MovesWithAutocannonRecoilSpring;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
@@ -51,6 +54,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMateria
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -58,22 +62,22 @@ import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
-import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonProjectileProperties;
-import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
-import rbasamoyai.createbigcannons.munitions.config.PropertiesMunitionEntity;
+import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
+import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
+import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
 public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon {
 
 	private AutocannonMaterial cannonMaterial;
-	private BlockPos recoilSpringPos;
+	private final Set<BlockPos> recoilSpringPositions = new LinkedHashSet<>();
 	private boolean isHandle = false;
 
 	@Override
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
 		if (!this.collectCannonBlocks(level, pos)) return false;
-		this.bounds = new AABB(BlockPos.ZERO);
-		this.bounds = this.bounds.inflate(Math.ceil(Math.sqrt(getRadius(this.getBlocks().keySet(), Direction.Axis.Y))));
+		this.bounds = this.createBoundsFromExtensionLengths();
 		return !this.blocks.isEmpty();
 	}
 
@@ -88,6 +92,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		AutocannonMaterial material = startCannon.getAutocannonMaterial();
+		boolean isStartBreech = startCannon.isBreechMechanism(startState);
 
 		List<StructureBlockInfo> cannonBlocks = new ArrayList<>();
 		cannonBlocks.add(new StructureBlockInfo(pos, startState, this.getBlockEntityNBT(level, pos)));
@@ -107,8 +112,13 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			start = start.relative(positive);
 			if (!cBlock.isComplete(nextState)) throw hasIncompleteCannonBlocks(start);
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
+			this.frontExtensionLength++;
 			cannonLength++;
 			positiveBreech = cBlock.isBreechMechanism(nextState);
+			if (positiveBreech && isStartBreech)
+				throw invalidCannon();
+			if (positiveBreech && cBlock.getFacing(nextState) != negative)
+				throw incorrectBreechDirection(start);
 			nextState = level.getBlockState(start.relative(positive));
 			if (cannonLength > getMaxCannonLength()) throw cannonTooLarge();
 			if (positiveBreech) break;
@@ -123,8 +133,13 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			start = start.relative(negative);
 			if (!cBlock.isComplete(nextState)) throw hasIncompleteCannonBlocks(start);
 			cannonBlocks.add(new StructureBlockInfo(start, nextState, this.getBlockEntityNBT(level, start)));
+			this.backExtensionLength++;
 			cannonLength++;
 			negativeBreech = cBlock.isBreechMechanism(nextState);
+			if (negativeBreech && isStartBreech)
+				throw invalidCannon();
+			if (negativeBreech && cBlock.getFacing(nextState) != positive)
+				throw incorrectBreechDirection(start);
 			nextState = level.getBlockState(start.relative(negative));
 			if (cannonLength > getMaxCannonLength()) throw cannonTooLarge();
 			if (negativeBreech) break;
@@ -150,6 +165,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			if (blockInfo.nbt() == null) continue;
 			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state(), blockInfo.nbt());
 			this.presentBlockEntities.put(localPos, be);
+			if (blockInfo.state().getBlock() instanceof AutocannonRecoilSpringBlock)
+				this.recoilSpringPositions.add(localPos);
 		}
 
 		StructureBlockInfo startInfo = this.blocks.get(this.startPos);
@@ -164,22 +181,21 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		if (possibleSpring != null
 			&& possibleSpring.state().getBlock() instanceof AutocannonRecoilSpringBlock springBlock
 			&& springBlock.getFacing(possibleSpring.state()) == this.initialOrientation) {
-			this.recoilSpringPos = this.startPos.relative(this.initialOrientation).immutable();
-			if (this.presentBlockEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity springBE) {
-				for (int i = 2; i < cannonLength; ++i) {
+			BlockPos mainRecoilSpringPos = this.startPos.relative(this.initialOrientation).immutable();
+			if (this.presentBlockEntities.get(mainRecoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity springBE) {
+				for (int i = 1; i < cannonLength; ++i) {
 					BlockPos pos1 = this.startPos.relative(this.initialOrientation, i);
 					StructureBlockInfo blockInfo = this.blocks.get(pos1);
-					if (blockInfo == null) continue;
-					springBE.toAnimate.put(pos1.subtract(this.recoilSpringPos), blockInfo.state());
-					if (blockInfo.state().hasProperty(AutocannonBarrelBlock.ASSEMBLED)) {
-						this.blocks.put(pos1, new StructureBlockInfo(pos1, blockInfo.state().setValue(AutocannonBarrelBlock.ASSEMBLED, true), blockInfo.nbt()));
-					}
+					if (blockInfo == null || !(blockInfo.state().getBlock() instanceof MovesWithAutocannonRecoilSpring springed))
+						continue;
+					springBE.toAnimate.put(pos1.subtract(mainRecoilSpringPos), springed.getMovingState(blockInfo.state()));
+					this.blocks.put(pos1, new StructureBlockInfo(pos1, springed.getStationaryState(blockInfo.state()), blockInfo.nbt()));
 				}
 				CompoundTag newTag = springBE.saveWithFullMetadata();
 				newTag.remove("x");
 				newTag.remove("y");
 				newTag.remove("z");
-				this.blocks.put(this.recoilSpringPos, new StructureBlockInfo(this.recoilSpringPos, possibleSpring.state(), newTag));
+				this.blocks.put(mainRecoilSpringPos, new StructureBlockInfo(mainRecoilSpringPos, possibleSpring.state(), newTag));
 			}
 		}
 
@@ -198,7 +214,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	}
 
 	public static AssemblyException noAutocannonBreech() {
-		return new AssemblyException(Component.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.noAutocannonBreech"));
+		return new AssemblyException(Components.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.noAutocannonBreech"));
 	}
 
 	@Override
@@ -243,8 +259,8 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		if (!(foundProjectile.getItem() instanceof AutocannonAmmoItem round)) return;
 		ControlPitchContraption controller = entity.getController();
 
-		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? Direction.DOWN : this.initialOrientation.getOpposite())), 1.0f);
-		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
+		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? Direction.DOWN : this.initialOrientation.getOpposite())), 0);
+		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0);
 		ItemStack ejectStack = round.getSpentItem(foundProjectile);
 		if (!ejectStack.isEmpty()) {
 			//ItemStack output = breech.insertOutput(ejectStack);
@@ -258,16 +274,18 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		AutocannonMaterialProperties properties = this.cannonMaterial.properties();
-		EntityType<? extends PropertiesMunitionEntity<? extends AutocannonProjectileProperties>> type = round.getEntityType(foundProjectile);
-		AutocannonProjectileProperties roundProperties = (AutocannonProjectileProperties) MunitionPropertiesHandler.getProperties(type);
+		AutocannonProjectilePropertiesComponent roundProperties = round.getAutocannonProperties(foundProjectile);
+
+		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 
 		float speed = properties.baseSpeed();
 		float spread = properties.baseSpread();
 		boolean canSquib = roundProperties == null || roundProperties.canSquib();
+		canSquib &= canFail;
 
-		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		BlockPos currentPos = this.startPos.relative(this.initialOrientation);
 		int barrelTravelled = 0;
+		boolean squib = false;
 
 		while (this.presentBlockEntities.get(currentPos) instanceof IAutocannonBlockEntity autocannon) {
 			ItemCannonBehavior behavior = autocannon.cannonBehavior();
@@ -288,35 +306,45 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					tag.remove("z");
 					StructureBlockInfo squibInfo = new StructureBlockInfo(currentPos, oldInfo.state(), tag);
 					this.blocks.put(currentPos, squibInfo);
-					Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
+					Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 0);
 					level.playSound(null, squibPos.x, squibPos.y, squibPos.z, oldInfo.state().getSoundType().getBreakSound(), SoundSource.BLOCKS, 10.0f, 0.0f);
-					return;
+					squib = true;
+					break;
 				}
 				currentPos = currentPos.relative(this.initialOrientation);
 			} else {
 				behavior.removeItem();
 				if (canFail) {
-					Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 1.0f);
+					Vec3 failurePoint = entity.toGlobalVector(Vec3.atCenterOf(currentPos), 0);
 					level.explode(null, failurePoint.x, failurePoint.y, failurePoint.z, 2, Level.ExplosionInteraction.NONE);
 					for (int i = 0; i < 10; ++i) {
 						BlockPos pos = currentPos.relative(this.initialOrientation, i);
 						this.blocks.remove(pos);
 					}
 					if (controller != null) controller.disassemble();
+					return;
 				}
-				return;
 			}
 		}
+		breech.handleFiring();
+		if (squib) return;
 
-		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
+		for (BlockPos pos : this.recoilSpringPositions) {
+			if (this.presentBlockEntities.get(pos) instanceof AutocannonRecoilSpringBlockEntity spring)
+				spring.handleFiring();
+		}
+		NetworkPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
+
+		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 		Vec3 vec1 = spawnPos.subtract(centerPos).normalize();
-		Vec3 particlePos = spawnPos.subtract(vec1.scale(1.5));
+		spawnPos = spawnPos.subtract(vec1.scale(1.5));
+		Vec3 particlePos = spawnPos;
 
 		float recoilMagnitude = properties.baseRecoil();
 
-		boolean isTracer = CBCConfigs.SERVER.munitions.allProjectilesAreTracers.get() || round.isTracer(foundProjectile);
+		boolean isTracer = CBCConfigs.SERVER.munitions.allAutocannonProjectilesAreTracers.get() || round.isTracer(foundProjectile);
 
-		AbstractAutocannonProjectile<?> projectile = round.getAutocannonProjectile(foundProjectile, level);
+		AbstractAutocannonProjectile projectile = round.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {
 			projectile.setPos(spawnPos);
 			projectile.setChargePower(barrelTravelled);
@@ -325,6 +353,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			projectile.shoot(vec1.x, vec1.y, vec1.z, speed, spread);
 			projectile.xRotO = projectile.getXRot();
 			projectile.yRotO = projectile.getYRot();
+
+			projectile.addUntouchableEntity(entity, 1);
+			Entity vehicle = entity.getVehicle();
+			if (vehicle != null && CBCEntityTypes.CANNON_CARRIAGE.is(vehicle))
+				projectile.addUntouchableEntity(vehicle, 1);
+
 			level.addFreshEntity(projectile);
 			if (roundProperties != null) recoilMagnitude += roundProperties.addedRecoil();
 		}
@@ -332,17 +366,24 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		recoilMagnitude *= CBCConfigs.SERVER.cannons.autocannonRecoilScale.getF();
 		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), entity);
 
-		breech.handleFiring();
-		if (this.presentBlockEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring)
-			spring.handleFiring();
-		NetworkPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
-
 		Vec3 particleVel = vec1.scale(1.25);
 		for (ServerPlayer player : level.players()) {
 			if (entity.getControllingPassenger() == player) continue;
-			level.sendParticles(player, new CannonPlumeParticleData(0.1f), true, particlePos.x, particlePos.y, particlePos.z, 0, particleVel.x, particleVel.y, particleVel.z, 1.0f);
+			level.sendParticles(player, new AutocannonPlumeParticleData(1f), true, particlePos.x, particlePos.y, particlePos.z, 0, particleVel.x, particleVel.y, particleVel.z, 1.0f);
 		}
-		CBCSoundEvents.FIRE_AUTOCANNON.playOnServer(level, BlockPos.containing(spawnPos));
+
+		if (round.getType() == AutocannonAmmoType.MACHINE_GUN) {
+			CBCUtils.playBlastLikeSoundOnServer(level, spawnPos.x, spawnPos.y, spawnPos.z, CBCSoundEvents.FIRE_MACHINE_GUN.getMainEvent(),
+				SoundSource.BLOCKS, 10, 0.75f, 3f);
+		} else {
+			CBCUtils.playBlastLikeSoundOnServer(level, spawnPos.x, spawnPos.y, spawnPos.z, CBCSoundEvents.FIRE_AUTOCANNON.getMainEvent(),
+				SoundSource.BLOCKS, 12, 1, 5f);
+		}
+
+		if (projectile != null && CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+			ChunkPos cpos1 = new ChunkPos(BlockPos.containing(projectile.position()));
+			RitchiesProjectileLib.queueForceLoad(level, cpos1.x, cpos1.z);
+		}
 	}
 
 	@Override
@@ -350,8 +391,10 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		super.animate();
 		if (this.presentBlockEntities.get(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
 			breech.handleFiring();
-		if (this.presentBlockEntities.get(this.recoilSpringPos) instanceof AutocannonRecoilSpringBlockEntity spring)
-			spring.handleFiring();
+		for (BlockPos pos : this.recoilSpringPositions) {
+			if (this.presentBlockEntities.get(pos) instanceof AutocannonRecoilSpringBlockEntity spring)
+				spring.handleFiring();
+		}
 	}
 
 	@Override
@@ -383,7 +426,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				ResourceLocation loc = controllerBlock.getTypeId();
 				if (loc != null) key = "." + loc.getNamespace() + "." + loc.getPath();
 			}
-			player.displayClientMessage(Component.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
+			player.displayClientMessage(Components.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
 				this.getReferencedFireRate()), true);
 		}
 
@@ -444,7 +487,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 	@Override
 	public Vec3 getInteractionVec(PitchOrientedContraptionEntity poce) {
-		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos), 1);
+		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos), 0);
 	}
 
     @Override
@@ -457,7 +500,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		CompoundTag tag = super.writeNBT(clientData);
 		tag.putString("AutocannonMaterial", this.cannonMaterial == null ? CBCAutocannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
 		if (this.startPos != null) tag.put("StartPos", NbtUtils.writeBlockPos(this.startPos));
-		if (this.recoilSpringPos != null) tag.put("RecoilSpringPos", NbtUtils.writeBlockPos(this.recoilSpringPos));
+		if (!this.recoilSpringPositions.isEmpty()) {
+			ListTag positionsTag = new ListTag();
+			for (BlockPos pos : this.recoilSpringPositions)
+				positionsTag.add(NbtUtils.writeBlockPos(pos));
+			tag.put("RecoilSpringPositions", positionsTag);
+		}
 		tag.putBoolean("IsHandle", this.isHandle);
 		return tag;
 	}
@@ -465,10 +513,16 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	@Override
 	public void readNBT(Level level, CompoundTag tag, boolean clientData) {
 		super.readNBT(level, tag, clientData);
-		this.cannonMaterial = AutocannonMaterial.fromNameOrNull(new ResourceLocation(tag.getString("AutocannonMaterial")));
+		this.cannonMaterial = AutocannonMaterial.fromNameOrNull(CBCUtils.location(tag.getString("AutocannonMaterial")));
 		if (this.cannonMaterial == null) this.cannonMaterial = CBCAutocannonMaterials.CAST_IRON;
 		this.startPos = tag.contains("StartPos") ? NbtUtils.readBlockPos(tag.getCompound("StartPos")) : null;
-		this.recoilSpringPos = tag.contains("RecoilSpringPos") ? NbtUtils.readBlockPos(tag.getCompound("RecoilSpringPos")) : null;
+		this.recoilSpringPositions.clear();
+		if (tag.contains("RecoilSpringPositions")) {
+			ListTag positionTags = tag.getList("RecoilSpringPositions", Tag.TAG_COMPOUND);
+			int sz = positionTags.size();
+			for (int i = 0; i < sz; ++i)
+				this.recoilSpringPositions.add(NbtUtils.readBlockPos(positionTags.getCompound(i)));
+		}
 		this.isHandle = tag.getBoolean("IsHandle");
 	}
 

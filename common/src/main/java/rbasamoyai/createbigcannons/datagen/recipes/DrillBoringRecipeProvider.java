@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import com.google.gson.JsonObject;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -13,6 +12,8 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 
@@ -61,7 +62,7 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 	}
 
 	protected Result recipe(Block input, Block result) {
-		return recipe(BuiltInRegistries.BLOCK.getKey(result).getPath(), input, result);
+		return recipe(CBCRegistryUtils.getBlockLocation(result).getPath(), input, result);
 	}
 
 	protected Result recipe(String path, Block input, Block result) {
@@ -69,11 +70,11 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 	}
 
 	protected Result recipe(String path, Block input, Block result, boolean obeyFacing) {
-		return new Result(BlockRecipeIngredient.of(input), result, new ResourceLocation(this.modid, path), obeyFacing);
+		return new Result(BlockRecipeIngredient.of(input), result, CBCUtils.location(this.modid, path), obeyFacing);
 	}
 
 	protected Result recipe(TagKey<Block> input, Block result) {
-		return recipe(BuiltInRegistries.BLOCK.getKey(result).getPath(), input, result);
+		return recipe(CBCRegistryUtils.getBlockLocation(result).getPath(), input, result);
 	}
 
 	protected Result recipe(String path, TagKey<Block> input, Block result) {
@@ -81,14 +82,14 @@ public class DrillBoringRecipeProvider extends BlockRecipeProvider {
 	}
 
 	protected Result recipe(String path, TagKey<Block> input, Block result, boolean obeyFacing) {
-		return new Result(BlockRecipeIngredient.of(input), result, new ResourceLocation(this.modid, path), obeyFacing);
+		return new Result(BlockRecipeIngredient.of(input), result, CBCUtils.location(this.modid, path), obeyFacing);
 	}
 
 	private record Result(BlockRecipeIngredient input, Block result, ResourceLocation id, boolean obeyFacing) implements FinishedBlockRecipe {
 		@Override
 		public void serializeRecipeData(JsonObject obj) {
 			obj.addProperty("input", this.input.stringForSerialization());
-			obj.addProperty("result", BuiltInRegistries.BLOCK.getKey(this.result).toString());
+			obj.addProperty("result", CBCRegistryUtils.getBlockLocation(this.result).toString());
 			obj.addProperty("obey_facing_or_axis", this.obeyFacing);
 		}
 

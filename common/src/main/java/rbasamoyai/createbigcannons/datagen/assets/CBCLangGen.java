@@ -23,6 +23,7 @@ import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCLangGen {
 
@@ -33,9 +34,11 @@ public class CBCLangGen {
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "cannonLoaderInsideDuringAssembly", "Cannon block at [%s, %s, %s] contains a cannon loader part");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "hasIncompleteCannonBlocks", "Cannon block at [%s, %s, %s] has not finished the crafting process");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "noAutocannonBreech", "This cannon requires an autocannon breech to fire");
+		REGISTRATE.addLang("exception", CreateBigCannons.resource("cannon_mount"), "incorrectBreechDirection", "Cannon block at [%s, %s, %s] should be reversed");
 		REGISTRATE.addLang("exception", CreateBigCannons.resource("casting"), "Cannon cast at [%s, %s, %s] does not have a valid recipe for fluid %s and shape %s");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("shrapnel"), "%s was ripped up by shrapnel");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("grapeshot"), "%s was blown out by grapeshot");
+		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("flak"), "%s was downed by flak");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("cannon_projectile"), "%s was hit with artillery fire");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("big_cannon_projectile"), "%s was directly killed by a large caliber round");
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("machine_gun_fire"), "%s was punctured by machine gun fire");
@@ -88,7 +91,12 @@ public class CBCLangGen {
 		.summary("Spreads the contained fluid all over the targeted area, with _different effects depending on the fluid_.")
 		.conditionAndBehavior("On Detonation", "Releases its contents.")
 		.conditionAndBehavior("Filling", "The shell can only be filled through _the same face that the fuze is placed on._ If a fuze is present, the shell _cannot be filled._")
-		.conditionAndBehavior("Note", "Some fluids may not have any effect on release. Supported fluids include, but may not be limited to, _water, lava, and liquid potions._");
+		.conditionAndBehavior("Note on Fluid Behavior", "Some fluids may not have any effect on release. Supported fluids include, but may not be limited to, _water, lava, and liquid potions._");
+
+		tooltip(CBCBlocks.SMOKE_SHELL)
+		.header("SMOKE SHELL")
+		.summary("Covers the battlefield with a _smoke cloud_ that obscures vision.")
+		.conditionAndBehavior("On Detonation", "Releases a _temporary smoke cloud_.");
 
 		tooltip(CBCBlocks.DROP_MORTAR_SHELL)
 		.header("DROP MORTAR SHELL")
@@ -97,12 +105,14 @@ public class CBCLangGen {
 
 		tooltip(CBCItems.IMPACT_FUZE)
 		.header("IMPACT FUZE")
-		.summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact.")
+		.summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._")
 		.conditionAndBehavior("Detonation", "The fuze _may_ detonate on _projectile impact_.");
 
 		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.chance", "Impact Chance");
 		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to detonate.");
-		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.shell_info", "Impact Chance: _%s%%_");
+		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.shell_info.chance", "Impact Chance: _%s%%_");
+		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.durability", "Durability");
+		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.durability.value", "This fuze can break through _%s_ blocks before breaking.");
 
 		tooltip(CBCItems.TIMED_FUZE)
 		.header("TIMED FUZE")
@@ -115,17 +125,19 @@ public class CBCLangGen {
 
 		tooltip(CBCItems.DELAYED_IMPACT_FUZE)
 		.header("DELAYED IMPACT FUZE")
-		.summary("Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer.")
+		.summary("Detonates a _short time_ after _hitting_ something. Due to its _simple trigger mechanism_, it does not always trigger the timer. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._")
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Delayed Impact Fuze_ menu, where the fuze duration can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the set time from when the projectile impacts.");
 
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.chance", "Impact Chance");
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to start ticking.");
-		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.shell_info", "Impact Chance: _%s%%_");
+		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.shell_info.chance", "Impact Chance: _%s%%_");
+		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.durability", "Durability");
+		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.durability.value", "This fuze can break through _%s_ blocks before breaking.");
 
 		tooltip(CBCItems.PROXIMITY_FUZE)
 		.header("PROXIMITY FUZE")
-		.summary("Detonates when it _gets close_ to a block.")
+		.summary("Detonates when it _gets close_ to a block. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._")
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Proximity Fuze_ menu, where the detonation distance can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile gets is within the set range of a block.");
 
@@ -237,7 +249,9 @@ public class CBCLangGen {
 		REGISTRATE.addLang("key", CreateBigCannons.resource("pitch_mode"), "Change Carriage Mode");
 		REGISTRATE.addLang("key", CreateBigCannons.resource("fire_controlled_cannon"), "Fire Controlled Cannon");
 
-		REGISTRATE.addLang("debug", CreateBigCannons.resource("block_resistance"), "Block Resistance: %s");
+		REGISTRATE.addLang("debug", CreateBigCannons.resource("block_armor_info"), "Block Armor Info:");
+		REGISTRATE.addLang("debug", CreateBigCannons.resource("block_toughness"), "Block Toughness: ");
+		REGISTRATE.addLang("debug", CreateBigCannons.resource("block_hardness"), "Block Hardness: ");
 
 		tooltip(CBCBlocks.POWDER_CHARGE)
 		.header("POWDER CHARGE")
@@ -286,6 +300,10 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.tracers", "Tracers: x%1$s %2$s");
 		REGISTRATE.addLang("block", CBCBlocks.AUTOCANNON_AMMO_CONTAINER.getId(), "tooltip.tracer_spacing", "Tracer Spacing: 1 tracer every %s round(s)");
 
+		tooltip(CBCItems.GAS_MASK)
+		.header("GAS MASK")
+		.summary("_Protects against gas clouds_ when worn on the head. _Does not protect_ against _lingering potions_, _dragon's breath_, or _potion fluid blobs_.");
+
 		// TODO: only run if on Fabric env
 		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_AMMO_CONTAINERS);
 		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_CARTRIDGES);
@@ -298,11 +316,16 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_CAST_IRON, "Cast Iron Blocks");
 		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL, "Nethersteel Blocks");
 		createEMITagTranslation(CBCTags.CBCItemTags.BLOCK_STEEL, "Steel Blocks");
+		createEMITagTranslation(CBCTags.CBCItemTags.CAN_BE_NITRATED, "Can be Nitrated");
 		createEMITagTranslation(CBCTags.CBCItemTags.DUST_GLOWSTONE, "Glowstone Dusts");
 		createEMITagTranslation(CBCTags.CBCItemTags.DUSTS_REDSTONE, "Redstone Dusts");
 		createEMITagTranslation(CBCTags.CBCItemTags.FUZES);
+		createEMITagTranslation(CBCTags.CBCItemTags.GELATINIZERS);
 		createEMITagTranslation(CBCTags.CBCItemTags.GEMS_QUARTZ, "Quartz Gems");
+		createEMITagTranslation(CBCTags.CBCItemTags.GUNCOTTON);
 		createEMITagTranslation(CBCTags.CBCItemTags.GUNPOWDER);
+		createEMITagTranslation(CBCTags.CBCItemTags.GUNPOWDER_PINCH, "Pinches of Gunpowder");
+		createEMITagTranslation(CBCTags.CBCItemTags.HIGH_EXPLOSIVE_MATERIALS);
 		createEMITagTranslation(CBCTags.CBCItemTags.IMPACT_FUZE_HEAD, "Impact Fuze Head Components");
 		createEMITagTranslation(CBCTags.CBCItemTags.INEXPENSIVE_BIG_CARTRIDGE_SHEET, "Inexpensive Big Cartridge Sheets");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_BRASS, "Brass Ingots");
@@ -312,6 +335,7 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_NETHERSTEEL, "Nethersteel Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_STEEL, "Steel Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.NITROPOWDER);
+		createEMITagTranslation(CBCTags.CBCItemTags.NITRO_ACIDIFIERS);
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_BRONZE, "Bronze Nuggets");
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_CAST_IRON, "Cast Iron Nuggets");
 		createEMITagTranslation(CBCTags.CBCItemTags.NUGGET_COPPER, "Copper Nuggets");
@@ -324,6 +348,7 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.SHEET_STEEL, "Steel Sheets");
 		createEMITagTranslation(CBCTags.CBCItemTags.SPENT_AUTOCANNON_CASINGS);
 		createEMITagTranslation(CBCTags.CBCItemTags.STONE);
+		createEMITagTranslation(CBCTags.CBCItemTags.GAS_MASKS);
 		createEMITagTranslation(fabricTag("cast_iron_ingots"));
 		createEMITagTranslation(fabricTag("nethersteel_ingots"));
 		createEMITagTranslation(fabricTag("bronze_nuggets"));
@@ -350,7 +375,7 @@ public class CBCLangGen {
 		REGISTRATE.addRawLang("tag." + loc.getNamespace() + "." + loc.getPath().replace('/', '.'), enUS);
 	}
 
-	private static TagKey<Item> fabricTag(String loc) { return tag(new ResourceLocation("c", loc)); }
+	private static TagKey<Item> fabricTag(String loc) { return tag(CBCUtils.location("c", loc)); }
 
 	private static void createEMITagTranslation(TagKey<?> tag) {
 		createEMITagTranslation(tag, capitalizeAll(tag.location().getPath().replace('_', ' ')));
