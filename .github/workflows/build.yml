@@ -77,7 +77,7 @@ jobs:
             - name: Send building message to discord
               env:
                   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-              if: env.DISCORD_WEBHOOK != ''
+              if: env.DISCORD_WEBHOOK != '' && github.event_name == 'push'
               uses: realRobotix/action-discord-notifier@master
               with:
                   webhook: ${{ secrets.DISCORD_WEBHOOK }}
