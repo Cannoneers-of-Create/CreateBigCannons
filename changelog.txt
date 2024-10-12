@@ -7,6 +7,7 @@ Comes with a few fixes and updates.
 
 Added:
 - Added Create: Unify as a required dependency for obtaining bronze and steel
+- Added Finnish translation courtesy of Apinoita
 Changed:
 - Updated Create Big Cannons logo to new style
 - Updated Ukrainian translation courtesy of kyryloborsch
