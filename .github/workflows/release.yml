@@ -82,10 +82,8 @@ jobs:
               env:
                   DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
               if: env.DISCORD_WEBHOOK != ''
-              uses: realRobotix/action-discord-notifier@master
-              with:
-                  webhook: ${{ secrets.DISCORD_WEBHOOK }}
-                  message-title: Building mod from branch ${{ steps.get_branch.outputs.branch }}
+              run: |
+                  curl -H "Content-Type: application/json" -X POST -d '{"content": null, "embeds": [{"title": "Building new release: ${{ steps.read_properties.outputs.mod_version }} for MC ${{ steps.read_properties.outputs.minecraft_version }}", "color": null}], "attachments": []}' $DISCORD_WEBHOOK
 
             - name: Send built file to discord
               env:
