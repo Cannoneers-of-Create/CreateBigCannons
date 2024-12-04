@@ -55,6 +55,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
 	protected int inGroundTime = 0;
+	@Nullable protected Vec3 inGroundPos = null;
 	protected float damage;
 	protected int inFluidTime = 0;
 	protected int penetrationTime = 0;
@@ -87,8 +88,10 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 				boolean stop = this.nextVelocity.lengthSqr() < 1e-4d;
 				// Bouncing is stochastic
 				if (!this.level().isClientSide || stop) {
-					if (stop)
+					if (stop) {
 						this.setInGround(true);
+						this.setGroundPos(this.position());
+					}
 					this.setDeltaMovement(this.nextVelocity);
 				}
 				this.nextVelocity = null;
@@ -104,6 +107,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 				if (!this.level().isClientSide) {
 					if (this.shouldFall()) {
 						this.setInGround(false);
+						this.setGroundPos(null);
 					} else if (!this.canLingerInGround()) {
 						this.inGroundTime++;
 						if (this.inGroundTime == 400) {
@@ -428,13 +432,16 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		return (this.entityData.get(ID_FLAGS) & 1) != 0;
 	}
 
+	public void setGroundPos(@Nullable Vec3 groundPos) { this.inGroundPos = groundPos; }
+	@Nullable public Vec3 getGroundPos() { return this.inGroundPos; }
+
 	@Override
 	public void setOnGround(boolean onGround) {
 		this.setInGround(onGround);
 	}
 
 	private boolean shouldFall() {
-		return this.isInGround() && this.level().noCollision(new AABB(this.position(), this.position()).inflate(0.06d));
+		return this.isInGround() && this.inGroundPos != null && this.level().noCollision(new AABB(this.inGroundPos, this.inGroundPos).inflate(0.06d));
 	}
 
 	public void updateKinematics(ClientboundPreciseMotionSyncPacket packet) {
@@ -447,6 +454,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		super.addAdditionalSaveData(tag);
 		tag.putFloat("ProjectileMass", this.getProjectileMass());
 		tag.putBoolean("InGround", this.isInGround());
+		if (this.inGroundPos != null)
+			tag.put("InGroundPos", this.newDoubleList(this.inGroundPos.x, this.inGroundPos.y, this.inGroundPos.z));
 		tag.putFloat("Damage", this.damage);
 		if (this.nextVelocity != null)
 			tag.put("NextMotion", this.newDoubleList(this.nextVelocity.x, this.nextVelocity.y, this.nextVelocity.z));
@@ -476,6 +485,12 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			this.orientation = nextMotion.size() == 3 ? new Vec3(nextMotion.getDouble(0), nextMotion.getDouble(1), nextMotion.getDouble(2)) : null;
 		} else {
 			this.orientation = this.getDeltaMovement();
+		}
+		if (tag.contains("InGroundPos", Tag.TAG_LIST)) {
+			ListTag nextMotion = tag.getList("InGroundPos", Tag.TAG_DOUBLE);
+			this.inGroundPos = nextMotion.size() == 3 ? new Vec3(nextMotion.getDouble(0), nextMotion.getDouble(1), nextMotion.getDouble(2)) : null;
+		} else {
+			this.inGroundPos = null;
 		}
 		this.lastPenetratedBlock = tag.contains("LastPenetration", Tag.TAG_COMPOUND)
 			? NbtUtils.readBlockState(this.level().holderLookup(CBCRegistryUtils.getBlockRegistryKey()), tag.getCompound("LastPenetration"))

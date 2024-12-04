@@ -7,6 +7,7 @@ Only 1.20.1 is supported, as Create 0.5.1.j only supports that version. Mod vers
 
 Fixed:
 - Fixed autocannon round duplication glitch
+- Fixed projectile ground tracking
 
 5.6.0
 
