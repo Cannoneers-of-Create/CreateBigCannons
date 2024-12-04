@@ -8,6 +8,7 @@ Only 1.20.1 is supported, as Create 0.5.1.j only supports that version. Mod vers
 Fixed:
 - Fixed autocannon round duplication glitch
 - Fixed projectile ground tracking
+- Fixed strength attributes for incomplete and unbored sliding breeches to be consistent with complete sliding breeches
 
 5.6.0
 
