@@ -5,25 +5,25 @@ import net.minecraft.world.item.ItemStack;
 
 public class ItemStackServerData implements ContainerData {
 	private final ItemStack stack;
-	private final String tag;
+	private final String[] tags;
 
-	public ItemStackServerData(ItemStack stack, String tag) {
+	public ItemStackServerData(ItemStack stack, String... tags) {
 		this.stack = stack;
-		this.tag = tag;
+		this.tags = tags;
 	}
 
 	@Override
 	public int get(int index) {
-		return index == 0 ? this.stack.getOrCreateTag().getInt(this.tag) : 1;
+		return this.stack.getOrCreateTag().getInt(this.tags[index]);
 	}
 
 	@Override
 	public void set(int index, int value) {
-		if (index == 0) this.stack.getOrCreateTag().putInt(this.tag, value);
+		this.stack.getOrCreateTag().putInt(this.tags[index], value);
 	}
 
 	@Override
 	public int getCount() {
-		return 1;
+		return tags.length;
 	}
 }

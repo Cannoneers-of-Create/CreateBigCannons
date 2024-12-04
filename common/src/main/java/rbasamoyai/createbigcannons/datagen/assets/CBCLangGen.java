@@ -48,6 +48,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("death.attack", CreateBigCannons.resource("molten_metal"), "player", "%s burned in molten metal");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_timed_fuze.time", "Fuze Time: %ss %s ticks");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.distance", "Detonation Distance: %s blocks");
+		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.set_proximity_fuze.degrees", "Detonation Angle: %s degrees");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.autocannon_ammo_container.tracer_spacing", "Tracer Spacing: Every %s round(s)");
 		REGISTRATE.addRawLang(CreateBigCannons.MOD_ID + ".gui.autocannon_ammo_container.tracer_slot", "Tracer/Secondary Rounds");
 
@@ -141,8 +142,8 @@ public class CBCLangGen {
 		.conditionAndBehavior("When R-Clicked", "Opens the _Set Proximity Fuze_ menu, where the detonation distance can be set.")
 		.conditionAndBehavior("Detonation", "The fuze detonates after the projectile gets is within the set range of a block.");
 
-		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info", "Detonation Distance: _%s blocks_");
-		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info.item", "Detonation Distance: %s blocks");
+		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info", "Detonation Distance: _%s blocks_\nDetonation Angle: _%s degrees_");
+		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info.item", "Detonation Distance: %s blocks\nDetonation Angle: %s degrees");
 
 		tooltip(CBCItems.CANNON_CRAFTING_WAND)
 		.header("CANNON CRAFTING WAND")
