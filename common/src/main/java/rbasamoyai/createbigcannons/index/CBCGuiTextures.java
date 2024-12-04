@@ -18,7 +18,7 @@ public enum CBCGuiTextures implements ScreenElement {
 	TIMED_FUZE_SELECTOR("backgrounds1", 179, 0, 7, 26),
 
 	PROXIMITY_FUZE_BG("backgrounds1", 0, 84, 179, 83),
-	PROXIMITY_FUZE_SELECTOR("backgrounds1", 179, 84, 9, 26),
+	PROXIMITY_FUZE_SELECTOR("backgrounds1", 179, 84, 9, 20),
 
 	AUTOCANNON_AMMO_CONTAINER_BG("backgrounds1", 0, 168, 179, 83),
 	AUTOCANNON_AMMO_CONTAINER_SELECTOR("backgrounds1", 179, 168, 9, 14),

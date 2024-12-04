@@ -25,7 +25,7 @@ public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContain
 	@Override
 	protected void init() {
 		super.init();
-		AngleScroll = new ScrollInput(this.leftPos + 36, this.topPos + 60, 102, 18)
+		AngleScroll = new ScrollInput(this.leftPos + 36, this.topPos + 39, 102, 12)
 			.withRange(0, 91)
 			.calling(state -> {
 				this.lastUpdated = 0;
@@ -67,7 +67,7 @@ public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContain
 
 	@Override
 	protected ScrollInput getScrollInput() {
-		return new ScrollInput(this.leftPos + 36, this.topPos + 29, 102, 18)
+		return new ScrollInput(this.leftPos + 36, this.topPos + 21, 102, 12)
 				.withRange(1, 33)
 				.calling(state -> {
 					this.lastUpdated = 0;
@@ -88,13 +88,13 @@ public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContain
 		double s = 100.0d / (double)(top - 1);
 		int offsX = this.setValue.getState();
 		offsX = offsX == top ? 100 : (int) Math.ceil((double) offsX * s - s);
-		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(graphics, this.leftPos + 32 + offsX, this.topPos + 21);
+		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(graphics, this.leftPos + 32 + offsX, this.topPos + 13);
 
 		int top2 = 90;
 		double s2 = 100.0d / (double)(top2);
 		int offsX2 = AngleScroll.getState();
 		offsX2 = offsX2 == top2? 100 : (int) Math.ceil((double) offsX2 * s2 - s2);
-		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(graphics, this.leftPos + 32 + offsX2, this.topPos + 52);
+		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(graphics, this.leftPos + 32 + offsX2, this.topPos + 31);
 
 		GuiGameElement.of(this.menu.getStackToRender())
 			.<GuiGameElement.GuiItemRenderBuilder>at(this.leftPos + 185, this.topPos + 26, -200)
