@@ -6,7 +6,7 @@ Create Big Cannon 5.7.0. Now supports Create 0.5.1 patch J on Forge/NeoForge and
 Only 1.20.1 is supported, as Create 0.5.1.j only supports that version. Mod versions on Minecraft 1.18.2 and 1.19.2 will no longer receive support.
 
 Fixed:
-- Updated GoggleOverlayRenderMixin (Fabric)
+- Fixed autocannon round duplication glitch
 
 5.6.0
 

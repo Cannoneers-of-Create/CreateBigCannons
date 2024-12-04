@@ -74,6 +74,7 @@ public class FuzeRemovalRecipe extends CustomRecipe {
 				if (stack.getOrCreateTag().contains("Fuze", Tag.TAG_COMPOUND)) {
 					ItemStack copy = stack.copy();
 					copy.getOrCreateTag().remove("Fuze");
+					copy.setCount(1);
 					result.set(i, copy);
 				}
 				break;
@@ -82,6 +83,7 @@ public class FuzeRemovalRecipe extends CustomRecipe {
 				if (cartridgeRound.getItem() instanceof FuzedItemMunition && cartridgeRound.getOrCreateTag().contains("Fuze", Tag.TAG_COMPOUND)) {
 					ItemStack copyRound = cartridgeRound.copy();
 					copyRound.getOrCreateTag().remove("Fuze");
+					copyRound.setCount(1);
 					ItemStack newStack = new ItemStack(stack.getItem());
 					AutocannonCartridgeItem.writeProjectile(copyRound, newStack);
 					result.set(i, newStack);
