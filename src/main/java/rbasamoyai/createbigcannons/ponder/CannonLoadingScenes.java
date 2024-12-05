@@ -392,15 +392,15 @@ public class CannonLoadingScenes {
 		scene.world.modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.IMPACT_FUZE.asStack().save(new CompoundTag())));
 		scene.idle(50);
 
-		scene.overlay.showText(80)
+		scene.overlay.showText(100)
 			.attachKeyFrame()
-			.text("Right-click the projectile head with an empty hand to remove any fuzes present.")
+			.text("Right-click the projectile head with an empty hand to remove any fuzes present. Some shells are fuzed on the base instead.")
 			.pointAt(util.vector.centerOf(2, 1, 3));
 		scene.idle(20);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN).rightClick(), 60);
 		scene.idle(20);
 		scene.world.modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.remove("Fuze"));
-		scene.idle(60);
+		scene.idle(80);
 
 		Selection kineticSel = util.select.fromTo(2, 1, 1, 5, 1, 1);
 		Selection largeCog = util.select.position(5, 0, 2);

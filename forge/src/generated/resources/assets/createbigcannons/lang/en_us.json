@@ -405,7 +405,7 @@
   "createbigcannons.ponder.munitions/filling_autocannon_ammo_container.text_5": "Ammo with tracers will go in the tracer slot, otherwise it will go in the main slot.",
   "createbigcannons.ponder.munitions/fuzing_munitions.header": "Fuzing Munitions",
   "createbigcannons.ponder.munitions/fuzing_munitions.text_1": "Fuzes can be attached to certain projectiles to detonate them under certain conditions.",
-  "createbigcannons.ponder.munitions/fuzing_munitions.text_2": "Right-click the projectile head with an empty hand to remove any fuzes present.",
+  "createbigcannons.ponder.munitions/fuzing_munitions.text_2": "Right-click the projectile head with an empty hand to remove any fuzes present. Some shells are fuzed on the base instead.",
   "createbigcannons.ponder.munitions/fuzing_munitions.text_3": "Fuzing projectiles can be automated with Deployers.",
   "createbigcannons.ponder.munitions/using_autocannon_ammo_container.header": "Using the Autocannon Ammo Container",
   "createbigcannons.ponder.munitions/using_autocannon_ammo_container.text_1": "Autocannon Ammo Containers are a convenient way to store autocannon ammo and to load autocannons.",

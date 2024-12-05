@@ -8,8 +8,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import com.simibubi.create.foundation.utility.VecHelper;
-
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -18,6 +16,7 @@ import org.lwjgl.glfw.GLFW;
 import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.foundation.utility.VecHelper;
 
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
@@ -69,6 +68,7 @@ import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
+import rbasamoyai.createbigcannons.munitions.fuzes.FuzeSelectionHandler;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
@@ -84,6 +84,7 @@ public class CBCClientCommon {
 	public static final List<KeyMapping> KEYS = new ArrayList<>();
 
 	public static final CannonWelderSelectionHandler CANNON_WELDER_HANDLER = new CannonWelderSelectionHandler();
+	public static final FuzeSelectionHandler FUZE_GUIDE_HANDLER = new FuzeSelectionHandler();
 
 	private static boolean PARTICLES_REGISTERED = false;
 
@@ -211,6 +212,7 @@ public class CBCClientCommon {
 		}
 
 		CANNON_WELDER_HANDLER.tick();
+		FUZE_GUIDE_HANDLER.tick();
 		ParticleWindHandler.updateWind();
 	}
 
