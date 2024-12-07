@@ -16,6 +16,7 @@ import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
+import rbasamoyai.createbigcannons.cannon_loading.CBCModifiedContraptionRegistry;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -90,6 +91,10 @@ public class CreateBigCannons {
 			explosion.clearToBlow();
 		for (ServerPlayer player : slevel.players())
 			explosion.sendExplosionToClient(player);
+	}
+
+	public static void onCommonSetup() {
+		CBCModifiedContraptionRegistry.registerDefaults();
 	}
 
 }

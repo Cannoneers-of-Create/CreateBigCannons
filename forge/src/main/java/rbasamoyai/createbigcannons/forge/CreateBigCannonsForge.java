@@ -80,6 +80,7 @@ public class CreateBigCannonsForge {
         DefaultFluidCompat.registerMinecraftBlobEffects();
         DefaultFluidCompat.registerCreateBlobEffects();
 
+		CreateBigCannons.onCommonSetup();
 		DefaultCreateCompat.init();
 		DefaultCannonMountPropertiesSerializers.init();
 		CBCModsForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init());
