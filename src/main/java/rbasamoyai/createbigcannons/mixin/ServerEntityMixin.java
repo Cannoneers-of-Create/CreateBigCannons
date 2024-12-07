@@ -8,13 +8,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.server.level.ServerEntity;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import rbasamoyai.createbigcannons.base.SyncsExtraDataOnAdd;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundPreciseRotationSyncPacket;
-import rbasamoyai.createbigcannons.network.ClientboundSyncExtraEntityDataPacket;
 
 @Mixin(ServerEntity.class)
 public class ServerEntityMixin {
@@ -29,13 +26,6 @@ public class ServerEntityMixin {
 			}
 			this.entity.hasImpulse = false;
 		}
-	}
-
-	@Inject(method = "addPairing",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;startSeenByPlayer(Lnet/minecraft/server/level/ServerPlayer;)V", shift = At.Shift.AFTER))
-	private void createbigcannons$addPairing(ServerPlayer player, CallbackInfo ci) {
-		if (this.entity instanceof SyncsExtraDataOnAdd sync)
-			NetworkPlatform.sendToClientPlayer(new ClientboundSyncExtraEntityDataPacket(this.entity.getId(), sync.addExtraSyncData()), player);
 	}
 
 }

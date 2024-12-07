@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -35,7 +36,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.SyncsExtraDataOnAdd;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
@@ -50,7 +50,7 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 import rbasamoyai.ritchiesprojectilelib.network.ClientboundPreciseMotionSyncPacket;
 
-public abstract class AbstractCannonProjectile extends Projectile implements SyncsExtraDataOnAdd {
+public abstract class AbstractCannonProjectile extends Projectile {
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
@@ -481,14 +481,14 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 			this.nextVelocity = null;
 		}
 		if (tag.contains("Orientation", Tag.TAG_LIST)) {
-			ListTag nextMotion = tag.getList("Orientation", Tag.TAG_DOUBLE);
-			this.orientation = nextMotion.size() == 3 ? new Vec3(nextMotion.getDouble(0), nextMotion.getDouble(1), nextMotion.getDouble(2)) : null;
+			ListTag orientationTag = tag.getList("Orientation", Tag.TAG_DOUBLE);
+			this.orientation = orientationTag.size() == 3 ? new Vec3(orientationTag.getDouble(0), orientationTag.getDouble(1), orientationTag.getDouble(2)) : null;
 		} else {
 			this.orientation = this.getDeltaMovement();
 		}
 		if (tag.contains("InGroundPos", Tag.TAG_LIST)) {
-			ListTag nextMotion = tag.getList("InGroundPos", Tag.TAG_DOUBLE);
-			this.inGroundPos = nextMotion.size() == 3 ? new Vec3(nextMotion.getDouble(0), nextMotion.getDouble(1), nextMotion.getDouble(2)) : null;
+			ListTag posTag = tag.getList("InGroundPos", Tag.TAG_DOUBLE);
+			this.inGroundPos = posTag.size() == 3 ? new Vec3(posTag.getDouble(0), posTag.getDouble(1), posTag.getDouble(2)) : null;
 		} else {
 			this.inGroundPos = null;
 		}
@@ -498,22 +498,24 @@ public abstract class AbstractCannonProjectile extends Projectile implements Syn
 		this.removeNextTick = tag.contains("RemoveNextTick");
 	}
 
-	@Override
-	public CompoundTag addExtraSyncData() {
-		CompoundTag tag = new CompoundTag();
-		if (this.orientation != null)
-			tag.put("Orientation", this.newDoubleList(this.orientation.x, this.orientation.y, this.orientation.z));
-		return tag;
+	public void baseWriteSpawnData(FriendlyByteBuf buf) {
+		Vec3 vel = this.getDeltaMovement();
+		Vec3 orientation = this.orientation == null ? vel : this.orientation;
+		buf.writeFloat(this.getXRot())
+			.writeFloat(this.getYRot())
+			.writeDouble(vel.x)
+			.writeDouble(vel.y)
+			.writeDouble(vel.z)
+			.writeDouble(orientation.x)
+			.writeDouble(orientation.y)
+			.writeDouble(orientation.z);
 	}
 
-	@Override
-	public void readExtraSyncData(CompoundTag tag) {
-		if (tag.contains("Orientation", Tag.TAG_LIST)) {
-			ListTag nextMotion = tag.getList("Orientation", Tag.TAG_DOUBLE);
-			this.orientation = nextMotion.size() == 3 ? new Vec3(nextMotion.getDouble(0), nextMotion.getDouble(1), nextMotion.getDouble(2)) : null;
-		} else {
-			this.orientation = this.getDeltaMovement();
-		}
+	public void baseReadSpawnData(FriendlyByteBuf buf) {
+		this.setXRot(buf.readFloat());
+		this.setYRot(buf.readFloat());
+		this.setDeltaMovement(buf.readDouble(), buf.readDouble(), buf.readDouble());
+		this.orientation = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
 	}
 
 	public void setProjectileMass(float power) {

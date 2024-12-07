@@ -9,6 +9,7 @@ import com.mojang.math.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -244,16 +245,15 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	}
 
 	@Override
-	public CompoundTag addExtraSyncData() {
-		CompoundTag tag = super.addExtraSyncData();
-		tag.putDouble("Displacement", this.displacement);
-		return tag;
+	public void baseWriteSpawnData(FriendlyByteBuf buf) {
+		super.baseWriteSpawnData(buf);
+		buf.writeDouble(this.displacement);
 	}
 
 	@Override
-	public void readExtraSyncData(CompoundTag tag) {
-		super.readExtraSyncData(tag);
-		this.displacement = tag.getDouble("Displacement");
+	public void baseReadSpawnData(FriendlyByteBuf buf) {
+		super.baseReadSpawnData(buf);
+		this.displacement = buf.readDouble();
 	}
 
 	public AutocannonAmmoType getAutocannonRoundType() { return AutocannonAmmoType.AUTOCANNON; }

@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.base.SyncsExtraDataOnAdd;
 import rbasamoyai.createbigcannons.block_hit_effects.BackupBlockHitEffects;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffectsHandler;
@@ -152,13 +151,6 @@ public class CBCClientHandlers {
 			blockEffect.playEffect(minecraft.level, pkt.deflect(), pkt.forceDisplay(), pkt.x(), pkt.y(), pkt.z(), vel.x,
 				vel.y, vel.z, pkt.entityType(), pkt.blockState(), projectileEffect);
 		}
-	}
-
-	public static void syncExtraEntityData(ClientboundSyncExtraEntityDataPacket pkt) {
-		Minecraft mc = Minecraft.getInstance();
-		if (mc.level == null || !(mc.level.getEntity(pkt.entityId()) instanceof SyncsExtraDataOnAdd round))
-			return;
-		round.readExtraSyncData(pkt.data());
 	}
 
 	public static void setCustomBlockDamage(ClientboundSendCustomBreakProgressPacket pkt) {
