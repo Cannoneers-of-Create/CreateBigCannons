@@ -15,6 +15,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
 
@@ -25,6 +26,8 @@ public class FuzeSelectionHandler {
 	private Object bbOutlineSlot = new Object();
 
 	public void tick() {
+		if (!CBCConfigs.CLIENT.highlightFuzeInputOnShellBlocks.get())
+			return;
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
 		ClientLevel level = mc.level;

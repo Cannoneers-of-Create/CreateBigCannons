@@ -15,6 +15,7 @@ public class CBCCfgClient extends CBCConfigBase {
 	 * In meters per second; divide by 20 to get meters per tick
 	 */
 	public final ConfigFloat blastEffectDelaySpeed = f(320, 0, 1000, "blastEffectDelaySpeed", "[in Meters per Second]");
+	public final ConfigBool highlightFuzeInputOnShellBlocks = b(true, "highlightFuzeInputOnShellBlocks");
 
 	public final ConfigGroup projectileFlybySounds = group(1, "projectileFlybySounds", "Projectile Flyby Sounds");
 	public final ConfigBool enableBigCannonFlybySounds = b(true, "enableBigCannonProjectileFlybySounds");
