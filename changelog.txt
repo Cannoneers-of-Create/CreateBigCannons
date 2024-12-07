@@ -13,6 +13,7 @@ Changed:
 - Updated Polish translation courtesy of KarolOfGutovo
 - Changed AP Shell texture to better show base fuze location
 - Changed wording on some tooltips
+- Made the Quick-Firing Breech openable using the side lever
 Fixed:
 - Fixed autocannon round duplication glitch
 - Fixed projectile ground tracking
