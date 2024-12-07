@@ -967,6 +967,7 @@ public class CBCBlocks {
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("High Explosive (HE) Shell")
 		.item(FuzedProjectileBlockItem::new)
+		.transform(CBCBuilderTransformers.fuzedProjectileItem("projectile/he_shell"))
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -979,6 +980,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.item(FuzedProjectileBlockItem::new)
+		.transform(CBCBuilderTransformers.fuzedProjectileItem("projectile/shrapnel_shell"))
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1021,6 +1023,7 @@ public class CBCBlocks {
 		.loot(CBCBuilderTransformers.shellLoot())
 		.lang("Armor Piercing (AP) Shell")
 		.item(FuzedProjectileBlockItem::new)
+		.transform(CBCBuilderTransformers.fuzedProjectileItem("projectile/ap_shell"))
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1033,6 +1036,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot(f -> f.copy("FluidContent", "BlockEntityTag.FluidContent")))
 		.item(FluidShellBlockItem::new)
+		.transform(CBCBuilderTransformers.fuzedProjectileItem("projectile/fluid_shell"))
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1045,6 +1049,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.item(FuzedProjectileBlockItem::new)
+		.transform(CBCBuilderTransformers.fuzedProjectileItem("projectile/smoke_shell"))
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();
@@ -1086,6 +1091,7 @@ public class CBCBlocks {
 		.transform(CBCBuilderTransformers.safeNbt())
 		.loot(CBCBuilderTransformers.shellLoot())
 		.item(FuzedProjectileBlockItem::new)
+		.transform(CBCBuilderTransformers.dropMortarShellItem())
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)
 		.build()
 		.register();

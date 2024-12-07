@@ -7,6 +7,7 @@ Only 1.20.1 is supported, as Create 0.5.1.j only supports that version. Mod vers
 
 Added:
 - Added highlighting and documentation for base fuzes
+- Added fuzed models for big cannon shell items
 Changed:
 - Updated Polish translation courtesy of KarolOfGutovo
 - Changed AP Shell texture to better show base fuze location

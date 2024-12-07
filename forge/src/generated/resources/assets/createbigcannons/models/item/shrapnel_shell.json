@@ -1,3 +1,17 @@
 {
-  "parent": "createbigcannons:block/shrapnel_shell"
+  "parent": "createbigcannons:block/shrapnel_shell",
+  "overrides": [
+    {
+      "model": "createbigcannons:item/shrapnel_shell_head_fuze",
+      "predicate": {
+        "createbigcannons:fuze_state": 1.0
+      }
+    },
+    {
+      "model": "createbigcannons:item/shrapnel_shell_base_fuze",
+      "predicate": {
+        "createbigcannons:fuze_state": 2.0
+      }
+    }
+  ]
 }

@@ -1,3 +1,17 @@
 {
-  "parent": "createbigcannons:block/fluid_shell"
+  "parent": "createbigcannons:block/fluid_shell",
+  "overrides": [
+    {
+      "model": "createbigcannons:item/fluid_shell_head_fuze",
+      "predicate": {
+        "createbigcannons:fuze_state": 1.0
+      }
+    },
+    {
+      "model": "createbigcannons:item/fluid_shell_base_fuze",
+      "predicate": {
+        "createbigcannons:fuze_state": 2.0
+      }
+    }
+  ]
 }

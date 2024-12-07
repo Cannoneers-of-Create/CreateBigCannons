@@ -131,6 +131,11 @@ public class IndexPlatformImpl {
 		ItemProperties.register(item, loc, func::call);
 	}
 
+	@Environment(EnvType.CLIENT)
+	public static <T extends ItemPropertyFunction> void registerGenericClampedItemProperty(ResourceLocation loc, T func) {
+		ItemProperties.registerGeneric(loc, func::call);
+	}
+
 	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {
 		RecipeSerializer<?> ret = Registry.register(BuiltInRegistries.RECIPE_SERIALIZER, id, sup.get());
 		return () -> ret;

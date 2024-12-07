@@ -105,6 +105,12 @@ public class IndexPlatform {
 		throw new AssertionError();
 	}
 
+	@Environment(EnvType.CLIENT)
+	@ExpectPlatform
+	public static <T extends ItemPropertyFunction> void registerGenericClampedItemProperty(ResourceLocation loc, T func) {
+		throw new AssertionError();
+	}
+
 	@ExpectPlatform
 	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {
 		throw new AssertionError();

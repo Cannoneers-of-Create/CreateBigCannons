@@ -30,6 +30,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.sounds.SoundEvent;
@@ -37,6 +38,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -67,6 +69,8 @@ import rbasamoyai.createbigcannons.mixin.client.CameraAccessor;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.FuzedProjectileBlockItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeSelectionHandler;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
@@ -116,6 +120,16 @@ public class CBCClientCommon {
 		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("big_cartridge_filled"),
 		(stack, level, player, a) -> {
 			return BigCartridgeBlockItem.getPower(stack);
+		});
+
+		IndexPlatform.registerGenericClampedItemProperty(CreateBigCannons.resource("fuze_state"), (stack, level, player, a) -> {
+			if (!(stack.getItem() instanceof FuzedProjectileBlockItem fuzedItem) || !(fuzedItem.getBlock() instanceof FuzedProjectileBlock<?,?> fuzedBlock))
+				return 0;
+			CompoundTag tag = stack.getOrCreateTag();
+			ItemStack fuze = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Fuze"));
+			if (fuze.isEmpty())
+				return 0;
+			return fuzedBlock.isBaseFuze() ? 2 : 1;
 		});
 
 		RPLScreenShakeHandlerClient.registerModScreenShakeHandler(CreateBigCannons.SCREEN_SHAKE_HANDLER_ID, new CBCScreenShakeHandler());

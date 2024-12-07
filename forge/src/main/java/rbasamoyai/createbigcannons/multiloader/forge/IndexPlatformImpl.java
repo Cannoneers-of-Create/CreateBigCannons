@@ -117,6 +117,11 @@ public class IndexPlatformImpl {
 		ItemProperties.register(item, loc, func);
 	}
 
+	@OnlyIn(Dist.CLIENT)
+	public static <T extends ItemPropertyFunction> void registerGenericClampedItemProperty(ResourceLocation loc, T func) {
+		ItemProperties.registerGeneric(loc, func);
+	}
+
 	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {
 		return CreateBigCannonsForge.RECIPE_SERIALIZER_REGISTER.register(id.getPath(), sup);
 	}

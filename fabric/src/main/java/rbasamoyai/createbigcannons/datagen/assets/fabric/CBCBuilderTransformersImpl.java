@@ -444,6 +444,29 @@ public class CBCBuilderTransformersImpl {
 			});
 	}
 
+	public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> fuzedProjectileItem(String pathAndMaterial) {
+		ResourceLocation headFuzeLoc = CreateBigCannons.resource("block/projectile_block_fuze_head");
+		ResourceLocation baseFuzeLoc = CreateBigCannons.resource("block/projectile_block_fuze_base");
+		ResourceLocation sideLoc = CreateBigCannons.resource("block/" + pathAndMaterial);
+		ResourceLocation topLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_top");
+		ResourceLocation bottomLoc = CreateBigCannons.resource("block/" + pathAndMaterial + "_bottom");
+		return b -> b.model((c, p) -> {
+			var headFuzeModel = p.withExistingParent(c.getName() + "_head_fuze", headFuzeLoc)
+				.texture("side", sideLoc)
+				.texture("top", topLoc)
+				.texture("bottom", bottomLoc)
+				.texture("particle", topLoc);
+			var baseFuzeModel = p.withExistingParent(c.getName() + "_base_fuze", baseFuzeLoc)
+				.texture("side", sideLoc)
+				.texture("top", topLoc)
+				.texture("bottom", bottomLoc)
+				.texture("particle", topLoc);
+			p.blockItem(c)
+				.override().model(headFuzeModel).predicate(CreateBigCannons.resource("fuze_state"), 1).end()
+				.override().model(baseFuzeModel).predicate(CreateBigCannons.resource("fuze_state"), 2).end();
+		});
+	}
+
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> powderCharge() {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/powder_charge");
 		return b -> b.properties(p -> p.noOcclusion())
@@ -659,6 +682,14 @@ public class CBCBuilderTransformersImpl {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutout)
 			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(CreateBigCannons.resource("block/drop_mortar_shell"))));
+	}
+
+	public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> dropMortarShellItem() {
+		ResourceLocation headFuzeLoc = CreateBigCannons.resource("block/drop_mortar_shell_head_fuze");
+		ResourceLocation baseFuzeLoc = CreateBigCannons.resource("block/drop_mortar_shell_base_fuze");
+		return b -> b.model((c, p) -> p.blockItem(c)
+			.override().model(p.getExistingFile(headFuzeLoc)).predicate(CreateBigCannons.resource("fuze_state"), 1).end()
+			.override().model(p.getExistingFile(baseFuzeLoc)).predicate(CreateBigCannons.resource("fuze_state"), 2).end());
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> safeNbt() {

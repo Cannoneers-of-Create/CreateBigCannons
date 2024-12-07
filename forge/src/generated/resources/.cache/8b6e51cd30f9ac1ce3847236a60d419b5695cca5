@@ -1,9 +1,9 @@
-// 1.20.1	2024-12-05T14:37:26.4559914	Create Big Cannons/Create's Processing Recipes: melting
+// 1.20.1	2024-12-07T00:18:23.9125102	Create Big Cannons/Create's Processing Recipes: melting
 73fdcd6e3f04703fc47aa5743cdd807178a4b8ad data\createbigcannons\recipes\melting\melt_nethersteel_block.json
 e2e30ceeb0bb270dcd96d21cd7cabf3221f67e7b data\createbigcannons\recipes\melting\melt_nethersteel_ingot.json
 a996b5654426a896a51d66948108db4e2abedff3 data\createbigcannons\recipes\melting\melt_steel_ingot.json
-4a440f65b82b7d3fd54e61338c6c7fcf6d079975 data\createbigcannons\recipes\melting\melt_steel_block.json
 ad71faded84a27a88bd3483318f8570c7619cd0e data\createbigcannons\recipes\melting\melt_bronze_ingot.json
+4a440f65b82b7d3fd54e61338c6c7fcf6d079975 data\createbigcannons\recipes\melting\melt_steel_block.json
 85b1c57f072e9100c1d2383524c9dfb9e927a8f4 data\createbigcannons\recipes\melting\melt_steel_nugget.json
 42c94489392fd2ccb4edc767ec68676d5b94c25e data\createbigcannons\recipes\melting\melt_nethersteel_nugget.json
 1d8106846c192a46127c628581c9872a79b062c3 data\createbigcannons\recipes\melting\melt_cast_iron_ingot.json

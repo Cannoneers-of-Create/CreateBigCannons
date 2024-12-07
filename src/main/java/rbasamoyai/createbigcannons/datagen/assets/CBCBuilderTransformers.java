@@ -79,7 +79,9 @@ public class CBCBuilderTransformers {
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonBuilderHead() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> projectileLegacy(String pathAndMaterial) { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> projectile(String pathAndMaterial) { throw new AssertionError(); }
-	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> projectile(String pathAndMaterial, boolean useStandardModel) { throw new AssertionError(); }	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> powderCharge() { throw new AssertionError(); }
+	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> projectile(String pathAndMaterial, boolean useStandardModel) { throw new AssertionError(); }
+	@ExpectPlatform public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> fuzedProjectileItem(String pathAndMaterial) { throw new AssertionError(); }
+	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> powderCharge() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block & BigCannonPropellantBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> bigCartridge() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonMount() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> yawController() { throw new AssertionError(); }
@@ -100,6 +102,7 @@ public class CBCBuilderTransformers {
 	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> trafficCone() { throw new AssertionError(); }
 
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarShell() { throw new AssertionError(); }
+	@ExpectPlatform public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> dropMortarShellItem() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarEnd(String pathAndMaterial) { throw new AssertionError(); }
 
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> safeNbt() { throw new AssertionError(); }
