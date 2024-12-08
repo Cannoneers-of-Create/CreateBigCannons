@@ -72,7 +72,7 @@ public abstract class PistonContraptionMixin extends TranslatingContraption impl
 			remap = false,
 			cancellable = true)
 	private void createbigcannons$addToInitialFrontier$1(Level level, BlockPos pos, Direction direction, Queue<BlockPos> frontier,
-														 CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 0) boolean retracting,
+														 CallbackInfoReturnable<Boolean> cir, @Local(ordinal = 1) boolean retracting,
 														 @Local(ordinal = 1) BlockPos currentPos, @Local BlockState state) {
 		BlockPos offsetPos = currentPos.relative(direction.getOpposite());
 		BlockState offsetState = level.getBlockState(offsetPos);
