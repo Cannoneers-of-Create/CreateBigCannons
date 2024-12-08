@@ -3,6 +3,8 @@ package rbasamoyai.createbigcannons.fabric;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 
+import javax.annotation.Nullable;
+
 import com.simibubi.create.content.kinetics.deployer.DeployerRecipeSearchEvent;
 
 import io.github.fabricators_of_create.porting_lib.event.common.ModsLoadedCallback;
@@ -42,8 +44,6 @@ import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 import rbasamoyai.createbigcannons.compat.trinkets.CBCTrinketsIntegration;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 
-import javax.annotation.Nullable;
-
 public class CBCCommonFabricEvents {
 
 	public static void register() {
@@ -66,7 +66,7 @@ public class CBCCommonFabricEvents {
 		GasMaskItem.registerDefaultHandlers();
 		DefaultCreateCompat.init();
 		DefaultCannonMountPropertiesSerializers.init();
-		CBCModsFabric.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init());
+		CBCModsFabric.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsFabric.COPYCATS::getBlock));
 		CBCModsFabric.TRINKETS.executeIfInstalled(() -> () -> CBCTrinketsIntegration.init());
 	}
 

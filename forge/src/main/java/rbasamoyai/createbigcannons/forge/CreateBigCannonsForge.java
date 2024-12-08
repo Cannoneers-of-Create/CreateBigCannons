@@ -83,7 +83,7 @@ public class CreateBigCannonsForge {
 		CreateBigCannons.onCommonSetup();
 		DefaultCreateCompat.init();
 		DefaultCannonMountPropertiesSerializers.init();
-		CBCModsForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init());
+		CBCModsForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsForge.COPYCATS::getBlock));
 		CBCModsForge.FRAMEDBLOCKS.executeIfInstalled(() -> () -> FramedBlocksCompat.init());
     }
 

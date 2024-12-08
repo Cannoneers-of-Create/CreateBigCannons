@@ -2,7 +2,9 @@ package rbasamoyai.createbigcannons.compat.copycats;
 
 import static rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks.AbstractMimickingBlockArmorProperties.createMimicrySerializer;
 
-import com.copycatsplus.copycats.CCBlocks;
+import java.util.function.Function;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
@@ -10,42 +12,47 @@ import rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks.Copyc
 
 public class CopycatsCompat {
 
-	public static void init() {
-		registerCopycatSerializer(CCBlocks.COPYCAT_BLOCK.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_BEAM.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_BOARD.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_WOODEN_BUTTON.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_STONE_BUTTON.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_BYTE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_FENCE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_FENCE_GATE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_HALF_LAYER.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_HALF_PANEL.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_LADDER.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_LAYER.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_WOODEN_PRESSURE_PLATE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_STONE_PRESSURE_PLATE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_HEAVY_WEIGHTED_PRESSURE_PLATE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_LIGHT_WEIGHTED_PRESSURE_PLATE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_SLAB.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_SLICE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_STAIRS.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_VERTICAL_STAIRS.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_TRAPDOOR.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_IRON_TRAPDOOR.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_VERTICAL_SLICE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_VERTICAL_STEP.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_WALL.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_SLOPE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_VERTICAL_SLOPE.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_SLOPE_LAYER.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_DOOR.get());
-		registerCopycatSerializer(CCBlocks.COPYCAT_IRON_DOOR.get());
-
+	public static void init(Function<String, Block> blockGetter) {
+		registerCopycatSerializer(blockGetter.apply("copycat_block"));
+		registerCopycatSerializer(blockGetter.apply("copycat_beam"));
+		registerCopycatSerializer(blockGetter.apply("copycat_board"));
+		registerCopycatSerializer(blockGetter.apply("copycat_wooden_button"));
+		registerCopycatSerializer(blockGetter.apply("copycat_stone_button"));
+		registerCopycatSerializer(blockGetter.apply("copycat_byte"));
+		registerCopycatSerializer(blockGetter.apply("copycat_fence"));
+		registerCopycatSerializer(blockGetter.apply("copycat_fence_gate"));
+		registerCopycatSerializer(blockGetter.apply("copycat_half_layer"));
+		registerCopycatSerializer(blockGetter.apply("copycat_half_panel"));
+		registerCopycatSerializer(blockGetter.apply("copycat_ladder"));
+		registerCopycatSerializer(blockGetter.apply("copycat_layer"));
+		registerCopycatSerializer(blockGetter.apply("copycat_wooden_pressure_plate"));
+		registerCopycatSerializer(blockGetter.apply("copycat_stone_pressure_plate"));
+		registerCopycatSerializer(blockGetter.apply("copycat_heavy_weighted_pressure_plate"));
+		registerCopycatSerializer(blockGetter.apply("copycat_light_weighted_pressure_plate"));
+		registerCopycatSerializer(blockGetter.apply("copycat_slab"));
+		registerCopycatSerializer(blockGetter.apply("copycat_slice"));
+		registerCopycatSerializer(blockGetter.apply("copycat_stairs"));
+		registerCopycatSerializer(blockGetter.apply("copycat_vertical_stairs"));
+		registerCopycatSerializer(blockGetter.apply("copycat_trapdoor"));
+		registerCopycatSerializer(blockGetter.apply("copycat_iron_trapdoor"));
+		registerCopycatSerializer(blockGetter.apply("copycat_vertical_slice"));
+		registerCopycatSerializer(blockGetter.apply("copycat_vertical_step"));
+		registerCopycatSerializer(blockGetter.apply("copycat_wall"));
+		registerCopycatSerializer(blockGetter.apply("copycat_slope"));
+		registerCopycatSerializer(blockGetter.apply("copycat_vertical_slope"));
+		registerCopycatSerializer(blockGetter.apply("copycat_slope_layer"));
+		registerCopycatSerializer(blockGetter.apply("copycat_door"));
+		registerCopycatSerializer(blockGetter.apply("copycat_iron_door"));
+		registerCopycatSerializer(blockGetter.apply("copycat_fluid_pipe"));
+		registerCopycatSerializer(blockGetter.apply("copycat_glass_fluid_pipe"));
+		registerCopycatSerializer(blockGetter.apply("copycat_shaft"));
+		registerCopycatSerializer(blockGetter.apply("copycat_cogwheel"));
+		registerCopycatSerializer(blockGetter.apply("copycat_large_cogwheel"));
 	}
 
-	private static void registerCopycatSerializer(Block block) {
-		BlockArmorPropertiesHandler.registerCustomSerializer(block, createMimicrySerializer(CopycatBlockArmorProperties::new));
+	private static void registerCopycatSerializer(@Nullable Block block) {
+		if (block != null)
+			BlockArmorPropertiesHandler.registerCustomSerializer(block, createMimicrySerializer(CopycatBlockArmorProperties::new));
 	}
 
 }
