@@ -1,9 +1,10 @@
 Changelog
 
-5.7.0
+5.7.1
 
-Create Big Cannon 5.7.0. Now supports Create 0.5.1 patch J on Forge/NeoForge and Fabric/Quilt.
+Create Big Cannons 5.7.1. Now supports Create 0.5.1 patch J on Forge/NeoForge and Fabric/Quilt.
 Only 1.20.1 is supported, as Create 0.5.1.j only supports that version. Mod versions on Minecraft 1.18.2 and 1.19.2 will no longer receive support.
+5.7.0 was initially released but has been bypassed due to critical fixes required.
 
 Added:
 - Added highlighting and documentation for base fuzes
@@ -23,6 +24,7 @@ Fixed:
 - Fixed strength attributes for incomplete and unbored sliding breeches to be consistent with complete sliding breeches
 - Fixed elevator assembly issue
 - Fixed sticky piston loading
+- Fixed pulley sync
 
 5.6.0
 

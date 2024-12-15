@@ -17,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.storage.WritableLevelData;
+import rbasamoyai.createbigcannons.cannon_loading.CBCModifiedContraptionRegistry;
 import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 
 @Mixin(ServerLevel.class)
@@ -32,8 +33,8 @@ public abstract class ServerLevelMixin extends Level {
 	@ModifyReturnValue(method = "addFreshEntity", at = @At("RETURN"))
 	private boolean createbigcannons$addFreshEntity(boolean original, Entity entity) {
 		// Lazy check but whatever
-		if (original && entity instanceof AbstractContraptionEntity ace && ace.getContraption() instanceof HasFragileContraption fragile)
-			HasFragileContraption.checkForIntersectingBlocks(this, ace, fragile);
+		if (original && entity instanceof AbstractContraptionEntity ace && CBCModifiedContraptionRegistry.isFragileContraption(ace.getContraption()))
+			HasFragileContraption.checkForIntersectingBlocks(this, ace, (HasFragileContraption) ace.getContraption());
 		return original;
 	}
 

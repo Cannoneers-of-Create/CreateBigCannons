@@ -311,6 +311,12 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 		return this.orientation != null && this.retract ? this.orientation.getOpposite() : this.orientation;
 	}
 
+	@Nullable
+	@Override
+	public Direction createbigcannons$getOriginalForcedDirection(Level level) {
+		return this.orientation != null && this.retract ? this.orientation.getOpposite() : this.orientation;
+	}
+
 	@Override
 	public void readNBT(Level level, CompoundTag tag, boolean spawnData) {
 		super.readNBT(level, tag, spawnData);

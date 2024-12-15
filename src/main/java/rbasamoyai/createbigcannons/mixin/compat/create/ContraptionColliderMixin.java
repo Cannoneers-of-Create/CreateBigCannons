@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import rbasamoyai.createbigcannons.cannon_loading.CBCModifiedContraptionRegistry;
 import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuildingContraption;
 import rbasamoyai.createbigcannons.crafting.builtup.LayeredBigCannonBlockEntity;
@@ -30,8 +31,8 @@ public abstract class ContraptionColliderMixin {
 																 @Local BlockState collidedState,
 																 @Local StructureBlockInfo blockInfo) {
 		if (original) return true;
-		if (contraption instanceof CanLoadBigCannon loader) {
-			boolean specialCollider = loader.createbigcannons$getCannonLoadingColliders().contains(pos);
+		if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption)) {
+			boolean specialCollider = ((CanLoadBigCannon) contraption).createbigcannons$getCannonLoadingColliders().contains(pos);
 			BlockPos offsetPos = pos.relative(movementDirection);
 			if (contraption.entity != null || !contraption.getBlocks().containsKey(offsetPos))
 				return ContraptionRemix.isLoadingCannon(level, colliderPos, movementDirection, collidedState, blockInfo) && !specialCollider;

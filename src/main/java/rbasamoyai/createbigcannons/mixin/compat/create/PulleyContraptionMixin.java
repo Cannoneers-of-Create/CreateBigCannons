@@ -43,7 +43,13 @@ public abstract class PulleyContraptionMixin extends TranslatingContraption impl
 		return null;
 	}
 
-    @Override public BlockPos createbigcannons$toLocalPos(BlockPos globalPos) { return this.toLocalPos(globalPos); }
+	@Nullable
+	@Override
+	public Direction createbigcannons$getOriginalForcedDirection(Level level) {
+		return null;
+	}
+
+	@Override public BlockPos createbigcannons$toLocalPos(BlockPos globalPos) { return this.toLocalPos(globalPos); }
 
     @Override public Set<BlockPos> createbigcannons$getFragileBlockPositions() { return this.fragileBlocks; }
 

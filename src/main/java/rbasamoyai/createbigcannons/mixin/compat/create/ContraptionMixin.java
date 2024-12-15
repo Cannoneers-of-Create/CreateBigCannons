@@ -113,6 +113,21 @@ public abstract class ContraptionMixin {
 			ContraptionRemix.stickerMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, level, attached, offset, forcedDirection);
 	}
 
+	@ModifyExpressionValue(method = "moveBlock",
+		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/Contraption;movementAllowed(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Z", ordinal = 1))
+	private boolean createbigcannons$moveBlock$bypassMovementError(boolean original,
+																   @Local(argsOnly = true) Level level,
+																   @Local(argsOnly = true) Direction forcedDirection,
+																   @Local(ordinal = 1) LocalRef<Direction> offset) {
+		if (original || !CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
+			return original;
+		Direction offsetVal = offset.get();
+		Direction originalForcedDir = ((CanLoadBigCannon) this.createbigcannons$self).createbigcannons$getOriginalForcedDirection(level);
+		if (offsetVal != originalForcedDir && originalForcedDir != forcedDirection)
+			offset.set(offsetVal.getOpposite());
+		return false;
+	}
+
 	@Inject(method = "moveChassis", at = @At(value = "TAIL", shift = At.Shift.BEFORE), remap = false)
 	private void createbigcannons$moveChassis(Level level, BlockPos pos, Direction movementDirection, Queue<BlockPos> frontier,
 											  Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir,

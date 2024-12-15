@@ -56,7 +56,13 @@ public abstract class PistonContraptionMixin extends TranslatingContraption impl
 		return this.orientation != null && this.retract ? this.orientation.getOpposite() : this.orientation;
 	}
 
-	@Override public BlockPos createbigcannons$toLocalPos(BlockPos globalPos) { return this.toLocalPos(globalPos); }
+    @Nullable
+    @Override
+    public Direction createbigcannons$getOriginalForcedDirection(Level level) {
+		return this.orientation != null && this.retract ? this.orientation.getOpposite() : this.orientation;
+    }
+
+    @Override public BlockPos createbigcannons$toLocalPos(BlockPos globalPos) { return this.toLocalPos(globalPos); }
 
 	@Override public Set<BlockPos> createbigcannons$getFragileBlockPositions() { return this.createbigcannons$fragileBlocks; }
 

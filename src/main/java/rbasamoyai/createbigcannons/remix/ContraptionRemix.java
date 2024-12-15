@@ -47,6 +47,7 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.material.PushReaction;
+import rbasamoyai.createbigcannons.cannon_loading.CBCModifiedContraptionRegistry;
 import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
@@ -58,7 +59,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 public class ContraptionRemix {
 
 	public static boolean customBlockPlacement(Contraption contraption, LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
-		if (contraption instanceof CanLoadBigCannon && contraption.entity != null) {
+		if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption) && contraption.entity != null) {
 			BlockPos entityAnchor = BlockPos.containing(contraption.entity.getAnchorVec().add(0.5d, 0.5d, 0.5d));
 
 			BlockPos blockPos = pos.subtract(entityAnchor);
@@ -66,8 +67,8 @@ public class ContraptionRemix {
 			BlockEntity blockEntity1 = levelAccessor.getBlockEntity(pos);
 			BlockState intersectState = levelAccessor.getBlockState(pos);
 
-			if (contraption instanceof HasFragileContraption fragile) {
-				boolean isBrokenDisassembly = fragile.createbigcannons$isBrokenDisassembly();
+			if (CBCModifiedContraptionRegistry.isFragileContraption(contraption)) {
+				boolean isBrokenDisassembly = ((HasFragileContraption) contraption).createbigcannons$isBrokenDisassembly();
 				if (isBrokenDisassembly && !intersectState.isAir() && blockInfo != null && !blockInfo.state().isAir()) {
 					BlockEntity contraptionBE = blockInfo.nbt() == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state(), blockInfo.nbt());
 					Block.dropResources(blockInfo.state(), contraption.entity.level(), pos, contraptionBE, null, ItemStack.EMPTY);
@@ -88,7 +89,7 @@ public class ContraptionRemix {
 	}
 
 	public static boolean customBlockRemoval(Contraption contraption, LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
-		if (contraption instanceof CanLoadBigCannon) {
+		if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption)) {
 			BlockState intersectState = levelAccessor.getBlockState(pos);
 			if (intersectState.getBlock() instanceof BigCannonBlock
 				&& levelAccessor.getBlockEntity(pos) instanceof IBigCannonBlockEntity cannon
@@ -112,7 +113,7 @@ public class ContraptionRemix {
 			if (!(state1.getBlock() instanceof CannonContraptionProviderBlock provider)) return;
 			Direction facing = provider.getFacing(state1);
 			if (facing.getAxis().isVertical() || facing.getAxis() == mountFacing.getAxis()) {
-				if (contraption instanceof CanLoadBigCannon)
+				if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption))
 					simpleMarking((Contraption & CanLoadBigCannon) contraption, level, assemblyPos, Direction.DOWN, forcedDirection);
 				frontier.add(assemblyPos);
 				return;
@@ -683,7 +684,7 @@ public class ContraptionRemix {
 
 	public static void validateCannonRope(Contraption contraption, Level level, @Nullable Direction direction,
 										  Function<BlockPos, BlockPos> toLocalPos) throws AssemblyException {
-		if (contraption instanceof CanLoadBigCannon && (direction == null || direction.getAxis().isVertical())) return;
+		if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption) && (direction == null || direction.getAxis().isVertical())) return;
 		BlockPos diff = toLocalPos.apply(BlockPos.ZERO).multiply(-1);
 
 		Set<BlockPos> blocksToCheck = new HashSet<>();

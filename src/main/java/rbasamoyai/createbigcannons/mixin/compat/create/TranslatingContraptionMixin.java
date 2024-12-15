@@ -18,6 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import rbasamoyai.createbigcannons.cannon_loading.CBCModifiedContraptionRegistry;
 import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 
@@ -29,7 +30,7 @@ public abstract class TranslatingContraptionMixin extends Contraption {
 	private boolean createbigcannons$createColliders$0(boolean original, Level level, Direction movementDirection,
 													   @Local StructureBlockInfo info, @Local BlockPos offsetPos) {
 		if (original) return true;
-		if (!(this instanceof CanLoadBigCannon)) return false;
+		if (!(CBCModifiedContraptionRegistry.canLoadBigCannon(this))) return false;
 		StructureBlockInfo offsetInfo = this.blocks.get(offsetPos);
 		Direction.Axis axis = movementDirection.getAxis();
 		if (info.state().getBlock() == AllBlocks.MECHANICAL_PISTON_HEAD.get()
@@ -39,9 +40,9 @@ public abstract class TranslatingContraptionMixin extends Contraption {
 
 	@Inject(method = "createColliders", at = @At("TAIL"), remap = false, cancellable = true)
 	private void createbigcannons$createColliders$1(Level level, Direction movementDirection, CallbackInfoReturnable<Set<BlockPos>> cir) {
-		if (!(this instanceof CanLoadBigCannon loader)) return;
+		if (!(CBCModifiedContraptionRegistry.canLoadBigCannon(this))) return;
 		Set<BlockPos> original = cir.getReturnValue();
-		original.addAll(loader.createbigcannons$getCannonLoadingColliders());
+		original.addAll(((CanLoadBigCannon) this).createbigcannons$getCannonLoadingColliders());
 		cir.setReturnValue(original); // Not sure if unnecessary but might as well --ritchie
 	}
 

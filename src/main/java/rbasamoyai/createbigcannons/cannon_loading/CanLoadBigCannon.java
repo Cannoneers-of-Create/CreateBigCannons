@@ -13,6 +13,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 public interface CanLoadBigCannon {
 
 	@Nullable Direction createbigcannons$getAssemblyMovementDirection(Level level);
+	@Nullable Direction createbigcannons$getOriginalForcedDirection(Level level);
 
 	BlockPos createbigcannons$toLocalPos(BlockPos globalPos);
 

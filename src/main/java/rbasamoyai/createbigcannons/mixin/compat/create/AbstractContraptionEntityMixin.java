@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_loading.CBCModifiedContraptionRegistry;
 import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 
 @Mixin(AbstractContraptionEntity.class)
@@ -32,7 +33,8 @@ public abstract class AbstractContraptionEntityMixin extends Entity {
 
 	@Inject(method = "tick", at = @At("TAIL"))
 	private void createbigcannons$tick(CallbackInfo ci) {
-		if (this.contraption instanceof HasFragileContraption fragile) {
+		if (CBCModifiedContraptionRegistry.isFragileContraption(this.contraption)) {
+			HasFragileContraption fragile = (HasFragileContraption) this.contraption;
 			if (this.level() != null
 				&& !this.level().isClientSide
 				&& HasFragileContraption.checkForIntersectingBlocks(this.level(), this.self, fragile)) {

@@ -52,6 +52,12 @@ public abstract class GantryContraptionMixin extends TranslatingContraption impl
 		return shaftBE.getPinionMovementSpeed() < 0 ? movementDirection.getOpposite() : movementDirection;
 	}
 
+	@Nullable
+	@Override
+	public Direction createbigcannons$getOriginalForcedDirection(Level level) {
+		return null;
+	}
+
 	@Override public BlockPos createbigcannons$toLocalPos(BlockPos globalPos) { return this.toLocalPos(globalPos); }
 
     @Override public Set<BlockPos> createbigcannons$getFragileBlockPositions() { return this.fragileBlocks; }
