@@ -1,5 +1,9 @@
 Changelog
 
+5.8.0
+
+Create Big Cannons 5.8.0. Comes with a few overhauls to cannon mounts.
+
 5.7.2
 
 Create Big Cannons 5.7.2. Critical patch for Copycats+ compat.
