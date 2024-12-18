@@ -7,6 +7,7 @@ import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks.CopycatBlockArmorProperties;
 
@@ -51,7 +52,7 @@ public class CopycatsCompat {
 	}
 
 	private static void registerCopycatSerializer(@Nullable Block block) {
-		if (block != null)
+		if (block != null && block != Blocks.AIR)
 			BlockArmorPropertiesHandler.registerCustomSerializer(block, createMimicrySerializer(CopycatBlockArmorProperties::new));
 	}
 

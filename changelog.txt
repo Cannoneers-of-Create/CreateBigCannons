@@ -1,5 +1,12 @@
 Changelog
 
+5.7.2
+
+Create Big Cannons 5.7.2. Critical patch for Copycats+ compat.
+
+Fixed:
+- Fixed Copycats+ compat
+
 5.7.1
 
 Create Big Cannons 5.7.1. Now supports Create 0.5.1 patch J on Forge/NeoForge and Fabric/Quilt.
