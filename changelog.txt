@@ -4,6 +4,11 @@ Changelog
 
 Create Big Cannons 5.8.0. Comes with a few overhauls to cannon mounts.
 
+Changed:
+- Cannon Mount can now be turned around both axes without the Yaw Controller
+- Cannon Mount now disassembles on rotation with wrench
+- Updated Cannon Mount and Yaw Controller yaw shaft texture to no longer use the special black shaft texture
+
 5.7.2
 
 Create Big Cannons 5.7.2. Critical patch for Copycats+ compat.

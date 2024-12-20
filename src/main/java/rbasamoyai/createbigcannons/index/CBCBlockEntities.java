@@ -10,8 +10,6 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockE
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountInstance;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntity;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntityRenderer;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerInstance;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEntity;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
@@ -112,8 +110,8 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<YawControllerBlockEntity> YAW_CONTROLLER = REGISTRATE
 		.blockEntity("yaw_controller", YawControllerBlockEntity::new)
-		.instance(() -> YawControllerInstance::new)
-		.renderer(() -> YawControllerBlockEntityRenderer::new)
+		.instance(() -> ShaftInstance::new)
+		.renderer(() -> ShaftRenderer::new)
 		.validBlock(CBCBlocks.YAW_CONTROLLER)
 		.register();
 

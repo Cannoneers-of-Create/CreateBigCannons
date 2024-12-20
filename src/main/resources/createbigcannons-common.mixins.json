@@ -45,7 +45,10 @@
     "compat.create.PulleyBlockMixin",
     "compat.create.PulleyContraptionMixin",
     "compat.create.RopeBlockBaseMixin",
-    "compat.create.TranslatingContraptionMixin"
+    "compat.create.TranslatingContraptionMixin",
+    "compat.create.rotation_propagation.KineticBlockAccessor",
+    "compat.create.rotation_propagation.KineticBlockEntityMixin",
+    "compat.create.rotation_propagation.RotationPropagatorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

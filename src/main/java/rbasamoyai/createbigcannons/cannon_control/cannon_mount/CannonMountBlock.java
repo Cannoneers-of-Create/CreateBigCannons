@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
 import com.simibubi.create.content.kinetics.base.KineticBlock;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
@@ -8,8 +9,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -54,7 +58,9 @@ public class CannonMountBlock extends KineticBlock implements IBE<CannonMountBlo
 
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-		return face.getAxis() == this.getRotationAxis(state);
+		//return false;
+		//return face.getAxis() == this.getRotationAxis(state);
+		return face.getAxis() == this.getRotationAxis(state) || face == Direction.DOWN;
 	}
 
 	@Override
@@ -107,6 +113,36 @@ public class CannonMountBlock extends KineticBlock implements IBE<CannonMountBlo
 			return level.getSignal(pos.relative(assemblyDirection), assemblyDirection) > 0;
 		}
 		return false;
+	}
+
+	@Override
+	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+		super.onPlace(state, level, pos, oldState, isMoving);
+		// Adapted from super
+		if (level.getBlockEntity(pos) instanceof CannonMountBlockEntity mount) {
+			for (KineticBlockEntity kbe : mount.getAllKineticBlockEntities()) {
+				kbe.preventSpeedUpdate = 0;
+				if (oldState.getBlock() == state.getBlock() && state.hasBlockEntity() == oldState.hasBlockEntity()
+					&& this.areStatesKineticallyEquivalent(oldState, state))
+					kbe.preventSpeedUpdate = 2;
+			}
+		}
+	}
+
+	@Override
+	public void updateIndirectNeighbourShapes(BlockState stateIn, LevelAccessor level, BlockPos pos, int flags, int count) {
+		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof CannonMountBlockEntity mount)
+			mount.tryUpdatingSpeed();
+	}
+
+	@Override
+	public InteractionResult onWrenched(BlockState state, UseOnContext context) {
+		InteractionResult resultType = super.onWrenched(state, context);
+		if (!context.getLevel().isClientSide && resultType.consumesAction()
+			&& context.getLevel().getBlockEntity(context.getClickedPos()) instanceof CannonMountBlockEntity mount) {
+			mount.disassemble();
+		}
+		return resultType;
 	}
 
 }

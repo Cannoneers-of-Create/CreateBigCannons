@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 
 import org.spongepowered.asm.mixin.Mixin;
 
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 
 import dev.architectury.patchedmixin.staticmixin.spongepowered.asm.mixin.Shadow;
 import net.minecraft.core.BlockPos;
@@ -19,7 +19,7 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockE
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 
 @Mixin(CannonMountBlockEntity.class)
-public abstract class CannonMountMixin extends KineticBlockEntity {
+public abstract class CannonMountMixin extends SmartBlockEntity {
 
 	CannonMountMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);

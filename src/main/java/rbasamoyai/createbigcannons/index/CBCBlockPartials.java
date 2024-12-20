@@ -51,7 +51,6 @@ public class CBCBlockPartials {
 		AUTOCANNON_BARREL_CAST = cannonCastPartial(() -> CannonCastShape.AUTOCANNON_BARREL, "cannon_cast/autocannon_barrel_cast"),
 
 		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
-		YAW_SHAFT = block("cannon_mount/yaw_axis"),
 		FUZE = block("fuze"),
 		DROP_MORTAR_SHELL_FLYING = new PartialModel(CreateBigCannons.resource("block/drop_mortar_shell_flying")),
 
