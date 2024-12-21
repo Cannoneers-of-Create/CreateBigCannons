@@ -3,7 +3,7 @@
 	"textures": {
 		"1": "createbigcannons:block/cannon_mount/cannon_mount_side_shaft",
 		"3": "createbigcannons:block/cannon_mount/cannon_mount_top",
-		"4": "createbigcannons:block/pole_contraption_nook",
+		"4": "createbigcannons:block/cannon_mount/cannon_loader_nook",
 		"5": "createbigcannons:block/cannon_mount/cannon_mount_firing",
 		"6": "createbigcannons:block/cannon_mount/cannon_mount_toggle",
 		"7": "createbigcannons:block/cannon_mount/rotating_mount_plate",
@@ -182,29 +182,27 @@
 			}
 		},
 		{
-			"from": [6, 22, -3],
-			"to": [10, 26, 5],
+			"from": [6, 22, -4],
+			"to": [10, 26, 8],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 24, 8]},
 			"faces": {
 				"north": {"uv": [6, 6, 10, 10], "texture": "#12"},
-				"east": {"uv": [6, 8, 10, 16], "rotation": 90, "texture": "#11"},
-				"south": {"uv": [6, 6, 10, 10], "rotation": 180, "texture": "#12"},
-				"west": {"uv": [6, 8, 10, 16], "rotation": 270, "texture": "#11"},
-				"up": {"uv": [6, 8, 10, 16], "texture": "#11"},
-				"down": {"uv": [6, 8, 10, 16], "rotation": 180, "texture": "#11"}
+				"east": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#11"},
+				"west": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#11"},
+				"up": {"uv": [6, 0, 10, 12], "rotation": 180, "texture": "#11"},
+				"down": {"uv": [6, 0, 10, 12], "texture": "#11"}
 			}
 		},
 		{
-			"from": [6, 22, 11],
-			"to": [10, 26, 19],
+			"from": [6, 22, 8],
+			"to": [10, 26, 20],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 24, 8]},
 			"faces": {
-				"north": {"uv": [6, 6, 10, 10], "texture": "#12"},
-				"east": {"uv": [6, 8, 10, 16], "rotation": 90, "texture": "#11"},
-				"south": {"uv": [6, 6, 10, 10], "rotation": 180, "texture": "#12"},
-				"west": {"uv": [6, 8, 10, 16], "rotation": 270, "texture": "#11"},
-				"up": {"uv": [6, 8, 10, 16], "texture": "#11"},
-				"down": {"uv": [6, 8, 10, 16], "rotation": 180, "texture": "#11"}
+				"east": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#11"},
+				"south": {"uv": [6, 6, 10, 10], "texture": "#12"},
+				"west": {"uv": [6, 0, 10, 12], "rotation": 90, "texture": "#11"},
+				"up": {"uv": [6, 0, 10, 12], "texture": "#11"},
+				"down": {"uv": [6, 0, 10, 12], "texture": "#11"}
 			}
 		},
 		{

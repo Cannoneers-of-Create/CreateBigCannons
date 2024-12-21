@@ -19,6 +19,7 @@ Changed:
 - Updated movement checks for mounts and mount extensions
 - Cannon Mounts can now be placed upside-down
  - Cannon Mounts can also be flipped by using the wrench
+- Changed Cannon Mount item model to be more consistent with in-world appearance
 Fixed:
 - Fixed rendering of pitch shaft for down-facing cannons
 
