@@ -27,7 +27,7 @@ public class ModGroup {
 		.displayItems((param, output) -> {
 			output.acceptAll(Arrays.asList(
 				CBCBlocks.CANNON_MOUNT.asStack(),
-				CBCBlocks.YAW_CONTROLLER.asStack(),
+				CBCBlocks.CANNON_MOUNT_EXTENSION.asStack(),
 
 				CBCBlocks.LOG_CANNON_END.asStack(),
 				CBCBlocks.LOG_CANNON_CHAMBER.asStack(),

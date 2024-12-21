@@ -346,7 +346,7 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
-		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCBlocks.YAW_CONTROLLER.get())
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCBlocks.CANNON_MOUNT_EXTENSION.get())
 			.define('S', AllBlocks.SHAFT.get()).define('C', AllBlocks.ANDESITE_CASING.get()).define('G', CBCTags.CBCItemTags.GUNPOWDER)
 			.pattern(" S ")
 			.pattern("GCG")

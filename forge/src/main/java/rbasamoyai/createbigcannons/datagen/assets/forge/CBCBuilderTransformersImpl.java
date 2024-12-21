@@ -562,6 +562,17 @@ public class CBCBuilderTransformersImpl {
 			.build();
 	}
 
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonMountExtension() {
+		ResourceLocation baseLoc = CreateBigCannons.resource("block/cannon_mount/cannon_mount_extension");
+		return b -> b.properties(p -> p.noOcclusion())
+			.addLayer(() -> RenderType::cutoutMipped)
+			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().getExistingFile(baseLoc)))
+			.tag(AllBlockTags.SAFE_NBT.tag)
+			.item()
+			.model((c, p) -> {})
+			.build();
+	}
+
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonCarriage() {
 		ResourceLocation blockLoc = CreateBigCannons.resource("block/cannon_carriage/block");
 		ResourceLocation saddleLoc = CreateBigCannons.resource("block/cannon_carriage/block_saddle");

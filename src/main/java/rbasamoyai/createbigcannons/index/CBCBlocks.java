@@ -32,6 +32,7 @@ import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.base.CBCDefaultStress;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountDisplaySource;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtensionBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
@@ -861,6 +862,14 @@ public class CBCBlocks {
 		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.yawController())
+		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
+		.register();
+
+	public static final BlockEntry<CannonMountExtensionBlock> CANNON_MOUNT_EXTENSION = REGISTRATE
+		.block("cannon_mount_extension", CannonMountExtensionBlock::new)
+		.transform(cbcMachine())
+		.transform(axeOrPickaxe())
+		.transform(CBCBuilderTransformers.cannonMountExtension())
 		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
 		.register();
 

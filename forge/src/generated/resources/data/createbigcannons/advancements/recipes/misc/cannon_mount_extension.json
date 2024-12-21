@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "createbigcannons:yaw_controller"
+        "recipe": "createbigcannons:cannon_mount_extension"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "createbigcannons:yaw_controller"
+      "createbigcannons:cannon_mount_extension"
     ]
   },
   "sends_telemetry_event": false

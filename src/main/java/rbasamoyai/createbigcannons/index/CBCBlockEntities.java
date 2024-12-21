@@ -8,6 +8,7 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntityRenderer;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtensionBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountInstance;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEntity;
@@ -113,6 +114,13 @@ public class CBCBlockEntities {
 		.instance(() -> ShaftInstance::new)
 		.renderer(() -> ShaftRenderer::new)
 		.validBlock(CBCBlocks.YAW_CONTROLLER)
+		.register();
+
+	public static final BlockEntityEntry<CannonMountExtensionBlockEntity> CANNON_MOUNT_EXTENSION = REGISTRATE
+		.blockEntity("cannon_mount_extension", CannonMountExtensionBlockEntity::new)
+		.instance(() -> ShaftInstance::new)
+		.renderer(() -> ShaftRenderer::new)
+		.validBlock(CBCBlocks.CANNON_MOUNT_EXTENSION)
 		.register();
 
 	public static final BlockEntityEntry<CannonCarriageBlockEntity> CANNON_CARRIAGE = REGISTRATE

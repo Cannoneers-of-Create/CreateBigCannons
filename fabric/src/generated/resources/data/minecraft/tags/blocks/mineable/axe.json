@@ -8,6 +8,7 @@
     "createbigcannons:worm_head",
     "createbigcannons:cannon_mount",
     "createbigcannons:yaw_controller",
+    "createbigcannons:cannon_mount_extension",
     "createbigcannons:cannon_carriage",
     "createbigcannons:cannon_drill",
     "createbigcannons:cannon_drill_bit",

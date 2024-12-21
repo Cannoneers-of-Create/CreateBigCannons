@@ -13,9 +13,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class YawControllerBlockEntity extends KineticBlockEntity implements ExtendsCannonMount {
+public class CannonMountExtensionBlockEntity extends KineticBlockEntity implements ExtendsCannonMount {
 
-	public YawControllerBlockEntity(BlockEntityType<? extends YawControllerBlockEntity> type, BlockPos pos, BlockState state) {
+	public CannonMountExtensionBlockEntity(BlockEntityType<? extends CannonMountExtensionBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
@@ -24,7 +24,7 @@ public class YawControllerBlockEntity extends KineticBlockEntity implements Exte
 	public CannonMountBlockEntity getCannonMount() {
 		if (this.level == null)
 			return null;
-		Direction dir = Direction.UP;
+		Direction dir = this.getBlockState().getValue(CannonMountExtensionBlock.FACING);
 		BlockPos pos = this.worldPosition.relative(dir);
 		BlockState attachedTo = this.level.getBlockState(pos);
 		if (!(attachedTo.getBlock() instanceof IRotate rotate) || !rotate.hasShaftTowards(this.level, pos, attachedTo, dir.getOpposite()))

@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.ExtendsCannonMount;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
@@ -94,16 +95,23 @@ public class CBCChecks {
 	}
 
 	private static BlockMovementChecks.CheckResult unmovableCannonMount(BlockState state, Level level, BlockPos pos) {
-		return level.getBlockEntity(pos) instanceof CannonMountBlockEntity mount ? mount.isRunning() ? BlockMovementChecks.CheckResult.FAIL : BlockMovementChecks.CheckResult.PASS : BlockMovementChecks.CheckResult.PASS;
+		if (!(level.getBlockEntity(pos) instanceof ExtendsCannonMount extension))
+			return BlockMovementChecks.CheckResult.PASS;
+		CannonMountBlockEntity mount = extension.getCannonMount();
+		return mount != null && mount.isRunning() ? BlockMovementChecks.CheckResult.FAIL : BlockMovementChecks.CheckResult.PASS;
 	}
 
 	private static BlockMovementChecks.CheckResult attachedMountBlocks(BlockState state, Level level, BlockPos pos, Direction attached) {
-		BlockState attachedTo = level.getBlockState(pos.relative(attached));
-		if (CBCBlocks.CANNON_MOUNT.has(state) && CBCBlocks.YAW_CONTROLLER.has(attachedTo)) {
-			return attached == Direction.DOWN ? BlockMovementChecks.CheckResult.SUCCESS : BlockMovementChecks.CheckResult.PASS;
+		// TODO: upside down cannon mount
+		BlockPos attachedPos = pos.relative(attached);
+		BlockState attachedTo = level.getBlockState(attachedPos);
+		if (CBCBlocks.CANNON_MOUNT.has(state) && level.getBlockEntity(attachedPos) instanceof ExtendsCannonMount extension) {
+			CannonMountBlockEntity mount = extension.getCannonMount();
+			return mount != null && mount.getBlockPos().equals(pos) ? BlockMovementChecks.CheckResult.SUCCESS : BlockMovementChecks.CheckResult.PASS;
 		}
-		if (CBCBlocks.CANNON_MOUNT.has(attachedTo) && CBCBlocks.YAW_CONTROLLER.has(state)) {
-			return attached == Direction.UP ? BlockMovementChecks.CheckResult.SUCCESS : BlockMovementChecks.CheckResult.PASS;
+		if (CBCBlocks.CANNON_MOUNT.has(attachedTo) && level.getBlockEntity(pos) instanceof ExtendsCannonMount extension) {
+			CannonMountBlockEntity mount = extension.getCannonMount();
+			return mount != null && mount.getBlockPos().equals(attachedPos) ? BlockMovementChecks.CheckResult.SUCCESS : BlockMovementChecks.CheckResult.PASS;
 		}
 		return BlockMovementChecks.CheckResult.PASS;
 	}
@@ -122,24 +130,11 @@ public class CBCChecks {
 		return BlockMovementChecks.CheckResult.of(result);
 	}
 
-	private static BlockMovementChecks.CheckResult attachedCheckMounts(BlockState state, Level level, BlockPos pos, Direction attached) {
-		BlockPos otherPos = pos.relative(attached);
-		BlockState attachedState = level.getBlockState(otherPos);
-		if (CBCBlocks.CANNON_MOUNT.has(state)) {
-			return CBCBlocks.YAW_CONTROLLER.has(attachedState) && attached == Direction.DOWN ? BlockMovementChecks.CheckResult.SUCCESS : BlockMovementChecks.CheckResult.PASS;
-		}
-		if (CBCBlocks.YAW_CONTROLLER.has(state)) {
-			return CBCBlocks.CANNON_MOUNT.has(attachedState) && attached == Direction.UP ? BlockMovementChecks.CheckResult.SUCCESS : BlockMovementChecks.CheckResult.PASS;
-		}
-		return BlockMovementChecks.CheckResult.PASS;
-	}
-
 	public static void register() {
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckCannons);
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckCannonLoader);
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedMountBlocks);
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckAutocannons);
-		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckMounts);
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::overridePushReactionCheck);
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::unmovableCannonMount);
 	}
