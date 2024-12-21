@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.UnaryOperator;
 
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllItems;
 import com.simibubi.create.content.redstone.analogLever.AnalogLeverBlockEntity;
 import com.simibubi.create.foundation.ponder.ElementLink;
 import com.simibubi.create.foundation.ponder.PonderPalette;
@@ -21,6 +23,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
@@ -28,6 +31,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
+import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
 import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
@@ -124,7 +128,7 @@ public class CannonMountScenes {
 
 		scene.overlay.showText(80)
 			.attachKeyFrame()
-			.text("Power the Cannon Mount to aim the cannon up and down.")
+			.text("Power the Cannon Mount to aim the cannon up and down...")
 			.pointAt(util.vector.blockSurface(util.grid.at(2, 3, 2), Direction.SOUTH));
 		scene.idle(40);
 		scene.world.setKineticSpeed(util.select.position(1, 2, 2), 0.0f);
@@ -141,7 +145,7 @@ public class CannonMountScenes {
 		scene.world.setKineticSpeed(util.select.position(2, 1, 2), 8.0f);
 		scene.world.setKineticSpeed(util.select.position(1, 2, 1), -16.0f);
 
-		scene.world.setKineticSpeed(util.select.position(2, 2, 2), -8.0f);
+		scene.world.setKineticSpeed(util.select.position(2, 2, 2), 8.0f);
 		scene.world.modifyBlockEntityNBT(cannonMount, CannonMountBlockEntity.class, tag -> {
 			tag.putFloat("YawSpeed", -8.0f);
 		});
@@ -152,7 +156,7 @@ public class CannonMountScenes {
 
 		scene.overlay.showText(80)
 			.attachKeyFrame()
-			.text("A Yaw Controller is needed to aim the cannon left and right.")
+			.text("...or side to side.")
 			.pointAt(util.vector.blockSurface(util.grid.at(2, 2, 2), Direction.NORTH));
 
 		scene.idle(30);
@@ -223,7 +227,8 @@ public class CannonMountScenes {
 		scene.idle(30);
 		scene.world.modifyBlock(fireLeverPos, setStateValue(LeverBlock.POWERED, true), false);
 		scene.effects.createRedstoneParticles(fireLeverPos, 0xFF0000, 10);
-		scene.effects.emitParticles(util.vector.of(-0.2d, 6.25d, 2.5), Emitter.withinBlockSpace(new BigCannonPlumeParticleData(2), util.vector.of(-0.87d, 0.5d, 0.0d)), 1, 10);
+		scene.effects.emitParticles(util.vector.of(-0.2d, 6.25d, 2.5),
+			Emitter.withinBlockSpace(new BigCannonPlumeParticleData(4), util.vector.of(-0.87d, 0.5d, 0.0d).scale(0.5)), 1, 1);
 		scene.idle(60);
 
 		scene.rotateCameraY(180.0f);
@@ -245,6 +250,68 @@ public class CannonMountScenes {
 			.pointAt(util.vector.blockSurface(util.grid.at(2, 4, 2), Direction.WEST));
 		scene.idle(100);
 
+		scene.markAsFinished();
+	}
+
+	public static void upsideDownCannonMounts(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_mount/upside_down_cannon_mounts", "Placing Cannon Mounts upside down");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		scene.world.modifyBlockEntityNBT(util.select.position(2, 3, 2), CannonMountBlockEntity.class, tag -> {
+			tag.putFloat("CannonYaw", Direction.WEST.toYRot());
+			tag.putFloat("CannonPitch", 0);
+		});
+
+		scene.idle(20);
+		scene.world.showSection(util.select.position(2, 3, 2), Direction.DOWN);
+		scene.idle(30);
+		scene.overlay.showText(80)
+			.text("Cannon Mounts can be rotated to face downwards by clicking their sides with a wrench.");
+		scene.idle(30);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 3, 2), Direction.WEST), Pointing.LEFT)
+			.withItem(AllItems.WRENCH.asStack()).rightClick(), 40);
+		scene.idle(30);
+		scene.world.modifyBlock(util.grid.at(2, 3, 2), setStateValue(BlockStateProperties.VERTICAL_DIRECTION, Direction.UP), false);
+		scene.idle(30);
+		scene.world.showSection(util.select.fromTo(1, 1, 2, 3, 1, 2), Direction.WEST);
+		scene.overlay.showText(50)
+			.text("Cannon Mounts can also be placed upside-down on the bottom of blocks.")
+			.colored(PonderPalette.BLUE);
+
+		scene.idle(30);
+		scene.markAsFinished();
+	}
+
+	public static void usingExtensions(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_mount/using_extensions", "Using Cannon Mount Extensions");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		scene.world.showSection(util.select.fromTo(0, 3, 2, 3, 5, 2), Direction.DOWN);
+		scene.idle(30);
+		scene.world.showSection(util.select.fromTo(2, 1, 2, 4, 2, 3), Direction.WEST);
+		scene.world.showSection(util.select.position(5, 0, 2), Direction.WEST);
+		scene.idle(10);
+		scene.world.showSection(util.select.fromTo(2, 3, 3, 2, 3, 4), Direction.WEST);
+		scene.world.showSection(util.select.fromTo(2, 3, 5, 3, 0, 5), Direction.WEST);
+		scene.idle(30);
+
+		scene.overlay.showText(120)
+			.text("Cannon Mount Extensions provide extra interface areas for blocks.");
+		scene.idle(20);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 2, 2), Direction.WEST), Pointing.LEFT)
+			.withItem(AllBlocks.DISPLAY_LINK.asStack()), 40);
+		scene.idle(65);
+		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(util.grid.at(2, 3, 3), Direction.WEST), Pointing.LEFT)
+			.withItem(AllBlocks.BRASS_FUNNEL.asStack()), 40);
+		scene.idle(65);
+		scene.overlay.showText(50)
+			.attachKeyFrame()
+			.text("They extend the mount they point into, as indicated by the arrow on their sides.")
+			.pointAt(util.vector.blockSurface(util.grid.at(2, 3, 3), Direction.WEST));
+
+		scene.idle(65);
 		scene.markAsFinished();
 	}
 
@@ -283,9 +350,9 @@ public class CannonMountScenes {
 			.withItem(CBCItems.AUTOCANNON_CARTRIDGE.asStack()), 70);
 		scene.idle(85);
 		scene.overlay.showText(60)
-			.text("The Yaw Controller does not accept input.")
+			.text("Spent ammunition is ejected from the breech.")
 			.colored(PonderPalette.RED)
-			.pointAt(util.vector.blockSurface(util.grid.at(2, 2, 2), Direction.WEST));
+			.pointAt(util.vector.blockSurface(util.grid.at(3, 4, 2), Direction.UP));
 		scene.idle(75);
 
 		scene.addKeyframe();
@@ -314,10 +381,10 @@ public class CannonMountScenes {
 		Selection spring = util.select.position(2, 5, 2);
 
 		Vec3 emitPos = util.vector.of(-0.2d, 5.5d, 2.5);
-		Emitter emitter = Emitter.withinBlockSpace(new BigCannonPlumeParticleData(0.1f), util.vector.of(-1d, 0.0d, 0.0d));
+		Emitter emitter = Emitter.withinBlockSpace(new AutocannonPlumeParticleData(1f), util.vector.of(-1d, 0.0d, 0.0d));
 
 		for (int i = 0; i < 5; ++i) {
-			scene.effects.emitParticles(emitPos, emitter, 1, 10);
+			scene.effects.emitParticles(emitPos, emitter, 1, 1);
 			scene.world.moveSection(autocannonBarrel, util.vector.of(0.5, 0, 0), 1);
 			scene.world.modifyBlockEntityNBT(breech, AbstractAutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimateTicks", 0));
 			scene.world.modifyBlockEntityNBT(spring, AutocannonRecoilSpringBlockEntity.class, tag -> tag.putInt("AnimateTicks", 0));
@@ -342,7 +409,7 @@ public class CannonMountScenes {
 		}
 
 		for (int i = 0; i < 20; ++i) {
-			scene.effects.emitParticles(emitPos, emitter, 1, 10);
+			scene.effects.emitParticles(emitPos, emitter, 1, 1);
 			scene.world.moveSection(autocannonBarrel, util.vector.of(0.5, 0, 0), 1);
 			scene.world.modifyBlockEntityNBT(breech, AbstractAutocannonBreechBlockEntity.class, tag -> tag.putInt("AnimateTicks", 0));
 			scene.world.modifyBlockEntityNBT(spring, AutocannonRecoilSpringBlockEntity.class, tag -> tag.putInt("AnimateTicks", 0));

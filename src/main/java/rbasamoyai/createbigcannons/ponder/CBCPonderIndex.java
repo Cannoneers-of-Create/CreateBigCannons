@@ -14,9 +14,11 @@ public class CBCPonderIndex {
 	private static final PonderRegistrationHelper HELPER = new PonderRegistrationHelper(CreateBigCannons.MOD_ID);
 
 	public static void register() {
-		HELPER.forComponents(CBCBlocks.CANNON_MOUNT, CBCBlocks.YAW_CONTROLLER)
+		HELPER.forComponents(CBCBlocks.CANNON_MOUNT, CBCBlocks.YAW_CONTROLLER, CBCBlocks.CANNON_MOUNT_EXTENSION)
 			.addStoryBoard("cannon_mount/assembly_and_use", CannonMountScenes::assemblyAndUse)
 			.addStoryBoard("cannon_mount/firing_big_cannons", CannonMountScenes::firingBigCannons)
+			.addStoryBoard("cannon_mount/upside_down_cannon_mounts", CannonMountScenes::upsideDownCannonMounts)
+			.addStoryBoard("cannon_mount/using_cannon_mount_extensions", CannonMountScenes::usingExtensions)
 			.addStoryBoard("cannon_mount/using_autocannons", CannonMountScenes::usingAutocannons)
 			.addStoryBoard("cannon_mount/customizing_autocannons", CannonMountScenes::customizingAutocannons);
 
@@ -98,7 +100,7 @@ public class CBCPonderIndex {
 	public static void registerTags() {
 		PonderRegistry.TAGS.forTag(CBCPonderTags.OPERATING_CANNONS)
 			.add(CBCBlocks.CANNON_MOUNT)
-			.add(CBCBlocks.YAW_CONTROLLER)
+			.add(CBCBlocks.CANNON_MOUNT_EXTENSION)
 			.add(CBCBlocks.CANNON_LOADER)
 			.add(CBCBlocks.RAM_HEAD)
 			.add(CBCBlocks.WORM_HEAD)

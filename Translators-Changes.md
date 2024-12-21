@@ -6,8 +6,28 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
+## 5.7.2 → 5.8.0
+Additions: \
+&plus; `"block.createbigcannons.cannon_mount_extension": "Cannon Mount Extension"` \
+&plus; `"createbigcannons.ponder.cannon_mount/upside_down_cannon_mounts.header": "Placing Cannon Mounts upside down"` \
+&plus; `"createbigcannons.ponder.cannon_mount/upside_down_cannon_mounts.text_1": "Cannon Mounts can be rotated to face downwards by clicking their sides with a wrench."` \
+&plus; `"createbigcannons.ponder.cannon_mount/upside_down_cannon_mounts.text_2": "Cannon Mounts can also be placed upside-down on the bottom of blocks."` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_extensions.header": "Using Cannon Mount Extensions"` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_extensions.text_1": "Cannon Mount Extensions provide extra interface areas for blocks."` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_extensions.text_2": "They extend the mount they point into, as indicated by the arrow on their sides."`
+
+Content Changes: \
+`"createbigcannons.ponder.cannon_mount/assembly_and_use.text_3"`: `"Power the Cannon Mount to aim the cannon up and down."` → `"Power the Cannon Mount to aim the cannon up and down..."` \
+`"createbigcannons.ponder.cannon_mount/assembly_and_use.text_4"`: `"A Yaw Controller is needed to aim the cannon left and right."` → `"...or side to side."` \
+`"createbigcannons.ponder.cannon_mount/using_autocannons.text_3"`: `"The Yaw Controller does not accept input."` → `"Spent ammunition is ejected from the breech."`
+
+## 5.6.0 → 5.7.0/5.7.1/5.7.2
+Content Changes: \
+`"exception.createbigcannons.cannon_mount.invalidCannon"`: `"A cannon must have one and only one opening and one and only one closed end"` → `"Cannon must have exactly one opening and exactly one closed end"` \
+`"createbigcannons.ponder.munitions/fuzing_munitions.text_2"`: `"Right-click the projectile head with an empty hand to remove any fuzes present."` → `"Right-click the projectile head with an empty hand to remove any fuzes present. Some shells are fuzed on the base instead."`
+
 ## 5.5.1 → 5.6.0
-Content Changes:
+Content Changes: \
 `"createbigcannons.ponder.munitions/cannon_loads.text_2"`: `"A cannon's material has two main factors that can cause the cannon to fail; its main factor and its strength."` → `"A cannon's material has two main factors that can cause the cannon to fail; its minimum projectile velocity per barrel and its strength."`
 
 ## 5.5.0 → 5.5.1

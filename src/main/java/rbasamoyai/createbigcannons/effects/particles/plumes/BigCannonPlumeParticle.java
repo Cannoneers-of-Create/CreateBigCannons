@@ -1,5 +1,8 @@
 package rbasamoyai.createbigcannons.effects.particles.plumes;
 
+import com.simibubi.create.foundation.ponder.PonderWorld;
+import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
+
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
@@ -19,6 +22,9 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 	private final float size;
 	private final float power;
 
+	// TODO: remove once Create #7232 is fixed
+	private final boolean isPonderWorld;
+
 	BigCannonPlumeParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float size, float power) {
 		super(level, x, y, z);
 		this.direction = new Vec3(dx, dy, dz);
@@ -28,6 +34,9 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 		this.friction = 0.90f;
 		float f = this.power / 4;
 		this.setParticleSpeed(dx * f, dy * f, dz * f);
+
+		// TODO remove once Create #7232 is fixed
+		this.isPonderWorld = level instanceof WrappedClientWorld wrapped && wrapped.getWrappedWorld() instanceof PonderWorld;
 	}
 
 	@Override
@@ -55,8 +64,17 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 				.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * dirPerpScale))
 				.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * dirPerpScale));
 			int lifetime = 30 + this.random.nextInt(10) + Mth.ceil(10 * progress) + (int) Math.ceil(this.power * this.power) / 2;
-			this.level.addParticle(new CannonSmokeParticleData(this.power, smallScale, lifetime, 0.95f),
-				true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+
+			// TODO revert when Create #7232 is fixed
+//			this.level.addParticle(new CannonSmokeParticleData(this.power, smallScale, lifetime, 0.95f),
+//				true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+			if (this.isPonderWorld) {
+				this.level.addParticle(new CannonSmokeParticleData(this.power, smallScale, lifetime, 0.95f), this.x, this.y, this.z, vel.x, vel.y, vel.z);
+			} else {
+				this.level.addParticle(new CannonSmokeParticleData(this.power, smallScale, lifetime, 0.95f),
+					true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+			}
+			// TODO revert when Create #7232 is fixed
 		}
 
 		if (this.age == 0 && status == ParticleStatus.ALL && CBCConfigs.CLIENT.showExtraBigCannonSmoke.get()) {
@@ -67,7 +85,14 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 				Vec3 vel = this.direction.scale(0.5)
 					.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * scale2))
 					.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * scale2));
-				this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+				// TODO revert when Create #7232 is fixed
+//				this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+				if (this.isPonderWorld) {
+					this.level.addParticle(ParticleTypes.CLOUD, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+				} else {
+					this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+				}
+				// TODO revert when Create #7232 is fixed
 			}
 		}
 		if (this.age < 5 && status == ParticleStatus.ALL && CBCConfigs.CLIENT.showExtraBigCannonFlames.get()) {
@@ -77,7 +102,14 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 				Vec3 vel1 = this.direction.scale(0.05 + 0.2 * this.random.nextDouble())
 					.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * scale2))
 					.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * scale2));
-				this.level.addParticle(ParticleTypes.FLAME, false, this.x, this.y, this.z, vel1.x, vel1.y, vel1.z);
+				// TODO revert when Create #7232 is fixed
+//				this.level.addParticle(ParticleTypes.FLAME, false, this.x, this.y, this.z, vel1.x, vel1.y, vel1.z);
+				if (this.isPonderWorld) {
+					this.level.addParticle(ParticleTypes.FLAME, this.x, this.y, this.z, vel1.x, vel1.y, vel1.z);
+				} else {
+					this.level.addParticle(ParticleTypes.FLAME, false, this.x, this.y, this.z, vel1.x, vel1.y, vel1.z);
+				}
+				// TODO revert when Create #7232 is fixed
 			}
 		}
 		super.tick();

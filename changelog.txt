@@ -22,6 +22,7 @@ Changed:
 - Changed Cannon Mount item model to be more consistent with in-world appearance
 Fixed:
 - Fixed rendering of pitch shaft for down-facing cannons
+- Fixed display on some ponders
 
 5.7.2
 

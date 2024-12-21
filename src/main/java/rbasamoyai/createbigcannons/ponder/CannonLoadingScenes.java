@@ -845,7 +845,7 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 		scene.overlay.showControls(new InputWindowElement(util.vector.blockSurface(depot, Direction.UP), Pointing.DOWN)
 			.rightClick(), 30);
-		scene.idle(25);
+		scene.idle(55);
 		scene.overlay.showText(60)
 			.text("You can also configure tracer spacing in the menu.");
 		scene.idle(75);

@@ -1,5 +1,8 @@
 package rbasamoyai.createbigcannons.effects.particles.plumes;
 
+import com.simibubi.create.foundation.ponder.PonderWorld;
+import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
+
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
@@ -18,6 +21,9 @@ public class DropMortarPlumeParticle extends NoRenderParticle {
 	private final float scale;
 	private final boolean visible;
 
+	// TODO: remove once Create #7232 is fixed
+	private final boolean isPonderWorld;
+
 	DropMortarPlumeParticle(ClientLevel level, double x, double y, double z, Vec3 direction, float scale) {
 		super(level, x, y, z);
 		this.direction = direction;
@@ -28,6 +34,9 @@ public class DropMortarPlumeParticle extends NoRenderParticle {
 
 		this.gravity = 0;
 		this.setParticleSpeed(0, 0, 0);
+
+		// TODO remove once Create #7232 is fixed
+		this.isPonderWorld = level instanceof WrappedClientWorld wrapped && wrapped.getWrappedWorld() instanceof PonderWorld;
 	}
 
 	@Override
@@ -47,7 +56,13 @@ public class DropMortarPlumeParticle extends NoRenderParticle {
 				.add(right.scale((this.random.nextDouble() - this.random.nextDouble()) * dirPerpScale))
 				.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * dirPerpScale))
 				.add(0, 0.025, 0);
-			this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+			// TODO revert when Create #7232 is fixed
+//			this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+			if (this.isPonderWorld) {
+				this.level.addParticle(ParticleTypes.CLOUD, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+			} else {
+				this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
+			}
 		}
 		super.tick();
 	}
