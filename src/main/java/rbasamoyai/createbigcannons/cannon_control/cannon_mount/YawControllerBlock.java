@@ -23,7 +23,7 @@ public class YawControllerBlock extends KineticBlock implements IBE<YawControlle
 
 	@Override
 	public boolean hasShaftTowards(LevelReader level, BlockPos pos, BlockState state, Direction face) {
-		return face == Direction.DOWN;
+		return face.getAxis() == Direction.Axis.Y;
 	}
 
 	@Override

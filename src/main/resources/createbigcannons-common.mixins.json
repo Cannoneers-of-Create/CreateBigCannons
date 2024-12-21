@@ -48,6 +48,7 @@
     "compat.create.TranslatingContraptionMixin",
     "compat.create.rotation_propagation.KineticBlockAccessor",
     "compat.create.rotation_propagation.KineticBlockEntityMixin",
+    "compat.create.rotation_propagation.KineticNetworkMixin",
     "compat.create.rotation_propagation.RotationPropagatorMixin"
   ],
   "injectors": {

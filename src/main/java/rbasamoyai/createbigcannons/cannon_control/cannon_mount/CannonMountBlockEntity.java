@@ -384,8 +384,13 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 		this.cannonPitch = tag.getFloat("CannonPitch");
 		this.lastException = AssemblyException.read(tag);
 
-		this.pitchInterface.load(tag.getCompound("PitchInterface"));
-		this.yawInterface.load(tag.getCompound("YawInterface"));
+		if (clientPacket) {
+			this.pitchInterface.readClient(tag.getCompound("PitchInterface"));
+			this.yawInterface.readClient(tag.getCompound("YawInterface"));
+		} else {
+			this.pitchInterface.load(tag.getCompound("PitchInterface"));
+			this.yawInterface.load(tag.getCompound("YawInterface"));
+		}
 
 		if (!clientPacket) return;
 
