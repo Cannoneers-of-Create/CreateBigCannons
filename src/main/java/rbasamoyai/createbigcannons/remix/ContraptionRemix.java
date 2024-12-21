@@ -107,7 +107,8 @@ public class ContraptionRemix {
 									CallbackInfoReturnable<Boolean> cir) {
 		if (CBCBlocks.CANNON_MOUNT.has(state)) {
 			Direction mountFacing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-			BlockPos assemblyPos = pos.above(2);
+			Direction vertical = state.getValue(BlockStateProperties.VERTICAL_DIRECTION);
+			BlockPos assemblyPos = pos.relative(vertical, -2);
 			if (level.isOutsideBuildHeight(assemblyPos)) return;
 			BlockState state1 = level.getBlockState(assemblyPos);
 			if (!(state1.getBlock() instanceof CannonContraptionProviderBlock provider)) return;

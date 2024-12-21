@@ -1,63 +1,123 @@
 {
   "variants": {
-    "assembly_powered=false,facing=east,fire_powered=false": {
+    "assembly_powered=false,facing=east,fire_powered=false,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 270
     },
-    "assembly_powered=false,facing=east,fire_powered=true": {
+    "assembly_powered=false,facing=east,fire_powered=false,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 270
+    },
+    "assembly_powered=false,facing=east,fire_powered=true,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 270
     },
-    "assembly_powered=false,facing=north,fire_powered=false": {
+    "assembly_powered=false,facing=east,fire_powered=true,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 270
+    },
+    "assembly_powered=false,facing=north,fire_powered=false,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 180
     },
-    "assembly_powered=false,facing=north,fire_powered=true": {
+    "assembly_powered=false,facing=north,fire_powered=false,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 180
+    },
+    "assembly_powered=false,facing=north,fire_powered=true,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 180
     },
-    "assembly_powered=false,facing=south,fire_powered=false": {
+    "assembly_powered=false,facing=north,fire_powered=true,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 180
+    },
+    "assembly_powered=false,facing=south,fire_powered=false,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount"
     },
-    "assembly_powered=false,facing=south,fire_powered=true": {
+    "assembly_powered=false,facing=south,fire_powered=false,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped"
+    },
+    "assembly_powered=false,facing=south,fire_powered=true,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount"
     },
-    "assembly_powered=false,facing=west,fire_powered=false": {
+    "assembly_powered=false,facing=south,fire_powered=true,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped"
+    },
+    "assembly_powered=false,facing=west,fire_powered=false,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 90
     },
-    "assembly_powered=false,facing=west,fire_powered=true": {
+    "assembly_powered=false,facing=west,fire_powered=false,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 90
+    },
+    "assembly_powered=false,facing=west,fire_powered=true,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 90
     },
-    "assembly_powered=true,facing=east,fire_powered=false": {
+    "assembly_powered=false,facing=west,fire_powered=true,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 90
+    },
+    "assembly_powered=true,facing=east,fire_powered=false,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 270
     },
-    "assembly_powered=true,facing=east,fire_powered=true": {
+    "assembly_powered=true,facing=east,fire_powered=false,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 270
+    },
+    "assembly_powered=true,facing=east,fire_powered=true,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 270
     },
-    "assembly_powered=true,facing=north,fire_powered=false": {
+    "assembly_powered=true,facing=east,fire_powered=true,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 270
+    },
+    "assembly_powered=true,facing=north,fire_powered=false,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 180
     },
-    "assembly_powered=true,facing=north,fire_powered=true": {
+    "assembly_powered=true,facing=north,fire_powered=false,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 180
+    },
+    "assembly_powered=true,facing=north,fire_powered=true,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 180
     },
-    "assembly_powered=true,facing=south,fire_powered=false": {
+    "assembly_powered=true,facing=north,fire_powered=true,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 180
+    },
+    "assembly_powered=true,facing=south,fire_powered=false,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount"
     },
-    "assembly_powered=true,facing=south,fire_powered=true": {
+    "assembly_powered=true,facing=south,fire_powered=false,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped"
+    },
+    "assembly_powered=true,facing=south,fire_powered=true,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount"
     },
-    "assembly_powered=true,facing=west,fire_powered=false": {
+    "assembly_powered=true,facing=south,fire_powered=true,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped"
+    },
+    "assembly_powered=true,facing=west,fire_powered=false,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
       "y": 90
     },
-    "assembly_powered=true,facing=west,fire_powered=true": {
+    "assembly_powered=true,facing=west,fire_powered=false,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
+      "y": 90
+    },
+    "assembly_powered=true,facing=west,fire_powered=true,vertical_direction=down": {
       "model": "createbigcannons:block/cannon_mount/cannon_mount",
+      "y": 90
+    },
+    "assembly_powered=true,facing=west,fire_powered=true,vertical_direction=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_flipped",
       "y": 90
     }
   }

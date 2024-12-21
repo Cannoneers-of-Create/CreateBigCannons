@@ -31,24 +31,28 @@ public class CannonMountBlock extends KineticBlock implements IBE<CannonMountBlo
 	public static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 	public static final BooleanProperty ASSEMBLY_POWERED = BooleanProperty.create("assembly_powered");
 	public static final BooleanProperty FIRE_POWERED = BooleanProperty.create("fire_powered");
+	public static final DirectionProperty VERTICAL_DIRECTION = BlockStateProperties.VERTICAL_DIRECTION;
 
 	public CannonMountBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.stateDefinition.any()
 			.setValue(HORIZONTAL_FACING, Direction.NORTH)
 			.setValue(ASSEMBLY_POWERED, false)
-			.setValue(FIRE_POWERED, false));
+			.setValue(FIRE_POWERED, false)
+			.setValue(VERTICAL_DIRECTION, Direction.DOWN));
 	}
 
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(HORIZONTAL_FACING, ASSEMBLY_POWERED, FIRE_POWERED);
+		builder.add(HORIZONTAL_FACING, ASSEMBLY_POWERED, FIRE_POWERED, VERTICAL_DIRECTION);
 	}
 
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(HORIZONTAL_FACING, context.getHorizontalDirection());
+		return this.defaultBlockState()
+			.setValue(HORIZONTAL_FACING, context.getHorizontalDirection())
+			.setValue(VERTICAL_DIRECTION, context.getNearestLookingVerticalDirection());
 	}
 
 	@Override
@@ -58,9 +62,7 @@ public class CannonMountBlock extends KineticBlock implements IBE<CannonMountBlo
 
 	@Override
 	public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-		//return false;
-		//return face.getAxis() == this.getRotationAxis(state);
-		return face.getAxis() == this.getRotationAxis(state) || face == Direction.DOWN;
+		return face.getAxis() == this.getRotationAxis(state) || face == state.getValue(VERTICAL_DIRECTION);
 	}
 
 	@Override

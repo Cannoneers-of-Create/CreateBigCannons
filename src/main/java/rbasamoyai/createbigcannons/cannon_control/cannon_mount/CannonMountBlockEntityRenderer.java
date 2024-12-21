@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
 import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.getAngleForTe;
-import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.getRotationOffsetForPosition;
 import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.kineticRotationTransform;
 import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.shaft;
 
@@ -11,7 +10,6 @@ import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
-import com.mojang.math.Constants;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -25,6 +23,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<CannonMountBlockEntity> {
@@ -36,12 +35,14 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 		if (Backend.canUseInstancing(be.getLevel())) return;
 
 		BlockState state = be.getBlockState();
+		Direction vertical = state.getValue(BlockStateProperties.VERTICAL_DIRECTION);
+		boolean upsideDown = vertical == Direction.UP;
 
 		VertexConsumer solidBuf = buffer.getBuffer(RenderType.solid());
 
 		ms.pushPose();
 
-		SuperByteBuffer yawShaft = CachedBufferer.partialFacing(AllPartialModels.SHAFT_HALF, state, Direction.DOWN);
+		SuperByteBuffer yawShaft = CachedBufferer.partialFacing(AllPartialModels.SHAFT_HALF, state, vertical);
 		KineticBlockEntity yawInterface = be.getYawInterface();
 		kineticRotationTransform(yawShaft, yawInterface, Direction.Axis.Y, getAngleForTe(yawInterface, be.getBlockPos(), Direction.Axis.Y), light)
 			.renderInto(ms, solidBuf);
@@ -53,20 +54,20 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 			.renderInto(ms, solidBuf);
 
 		float yaw = getMountYaw(be);
-		Quaternionf qyaw = Axis.YN.rotation(yaw);
+		Quaternionf qyaw = upsideDown ? Axis.ZP.rotationDegrees(180).mul(Axis.YP.rotationDegrees(yaw)) : Axis.YP.rotationDegrees(-yaw);
 		CachedBufferer.partial(CBCBlockPartials.ROTATING_MOUNT, state)
-			.translate(0.0d, 1.0d, 0.0d)
+			.translate(0.0d, upsideDown ? -1.0d : 1.0d, 0.0d)
 			.light(light)
 			.rotateCentered(qyaw)
 			.renderInto(ms, solidBuf);
 
 		float pitch = be.getPitchOffset(partialTicks);
-		Quaternionf qpitch = Axis.XP.rotationDegrees(-pitch);
+		Quaternionf qpitch = upsideDown ? Axis.XP.rotationDegrees(pitch) : Axis.XP.rotationDegrees(-pitch);
 		Quaternionf qyaw1 = new Quaternionf(qyaw);
 		qyaw1.mul(qpitch);
 
 		CachedBufferer.partialFacing(CBCBlockPartials.CANNON_CARRIAGE_AXLE, state, Direction.NORTH)
-			.translate(0, 2.0d, 0)
+			.translate(0, upsideDown ? -2.0d : 2.0d, 0)
 			.rotateCentered(qyaw1)
 			.light(light)
 			.renderInto(ms, solidBuf);
@@ -74,21 +75,9 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 		ms.popPose();
 	}
 
-	private static float getYawAngle(CannonMountBlockEntity cmbe) {
-		float time = AnimationTickHolder.getRenderTime(cmbe.getLevel());
-		float offset = getRotationOffsetForPosition(cmbe.getYawInterface(), cmbe.getBlockPos(), Direction.Axis.Y);
-		float angle = ((time * cmbe.getYawSpeed() * 3.0f / 10 + offset) % 360) / 180 * (float) Math.PI;
-		return angle + getRotationOffsetForPosition(cmbe.getYawInterface(), cmbe.getBlockPos(), Direction.Axis.Y);
-	}
-
 	private static float getMountYaw(CannonMountBlockEntity cmbe) {
 		float time = AnimationTickHolder.getPartialTicks(cmbe.getLevel());
-		return cmbe.getYawOffset(time) * Constants.DEG_TO_RAD;
+		return cmbe.getYawOffset(time);
 	}
-
-//	@Override
-//	protected BlockState getRenderedBlockState(CannonMountBlockEntity be) {
-//		return shaft(getRotationAxisOf(be));
-//	}
 
 }

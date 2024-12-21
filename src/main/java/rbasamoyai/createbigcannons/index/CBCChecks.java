@@ -102,7 +102,6 @@ public class CBCChecks {
 	}
 
 	private static BlockMovementChecks.CheckResult attachedMountBlocks(BlockState state, Level level, BlockPos pos, Direction attached) {
-		// TODO: upside down cannon mount
 		BlockPos attachedPos = pos.relative(attached);
 		BlockState attachedTo = level.getBlockState(attachedPos);
 		if (CBCBlocks.CANNON_MOUNT.has(state) && level.getBlockEntity(attachedPos) instanceof ExtendsCannonMount extension) {

@@ -4,10 +4,16 @@
     "maximum_elevation": 0
   },
   "createbigcannons:cannon_mount": {
-    "": {
+    "vertical_direction=down": {
       "pitch_range": {
         "maximum_depression": -15,
         "maximum_elevation": 85
+      }
+    },
+    "vertical_direction=up": {
+      "pitch_range": {
+        "maximum_depression": 90,
+        "maximum_elevation": 15
       }
     }
   }

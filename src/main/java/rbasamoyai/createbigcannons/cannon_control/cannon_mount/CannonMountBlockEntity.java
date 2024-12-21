@@ -93,8 +93,8 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 
 	@Override
 	protected AABB createRenderBoundingBox() {
-		// TODO: based on state for things like upside down mounts
-		return new AABB(this.getBlockPos()).expandTowards(0, 2, 0);
+		boolean upsideDown = this.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION) == Direction.UP;
+		return new AABB(this.getBlockPos()).expandTowards(0, upsideDown ? -2 : 2, 0);
 	}
 
 	@Override
@@ -221,18 +221,19 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 	}
 
 	public float getPitchOffset(float partialTicks) {
+		float modifier = this.mountedContraption != null && this.mountedContraption.getInitialOrientation() == Direction.DOWN ? -1 : 1;
 		if (this.isVirtual())
-			return Mth.lerp(partialTicks + 0.5f, this.prevPitch, this.cannonPitch);
+			return Mth.lerp(partialTicks + 0.5f, this.prevPitch, this.cannonPitch) * modifier;
 		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
 			partialTicks = 0;
 		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this)) {
 			Direction facing = this.getContraptionDirection();
 			boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
 			float sgn = flag ? 1 : -1;
-			return this.mountedContraption.getViewXRot(partialTicks) * sgn;
+			return this.mountedContraption.getViewXRot(partialTicks) * sgn * modifier;
 		}
 		float aSpeed = this.getAngularSpeed(this.pitchInterface.getSpeed(), this.clientPitchDiff);
-		return Mth.lerp(partialTicks, this.cannonPitch, this.cannonPitch + aSpeed);
+		return Mth.lerp(partialTicks, this.cannonPitch, this.cannonPitch + aSpeed) * modifier;
 	}
 
 	public void setPitch(float pitch) {
@@ -287,7 +288,8 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 
 	protected void assemble() throws AssemblyException {
 		if (!CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) return;
-		BlockPos assemblyPos = this.worldPosition.above(2);
+		Direction vertical = this.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION);
+		BlockPos assemblyPos = this.worldPosition.relative(vertical, -2);
 		if (this.getLevel().isOutsideBuildHeight(assemblyPos)) {
 			throw cannonBlockOutsideOfWorld(assemblyPos);
 		}
@@ -343,7 +345,8 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 		this.mountedContraption.xRotO = this.mountedContraption.getXRot();
 		this.mountedContraption.yRotO = this.mountedContraption.getYRot();
 
-		Vec3 vec = Vec3.atBottomCenterOf((this.worldPosition.above(2)));
+		Direction vertical = this.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION);
+		Vec3 vec = Vec3.atBottomCenterOf((this.worldPosition.relative(vertical, -2)));
 		this.mountedContraption.setPos(vec);
 	}
 
@@ -435,7 +438,8 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 
 	@Override
 	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
-		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).above();
+		Direction vertical = this.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION);
+		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).relative(vertical.getOpposite());
 	}
 
 	@Override
@@ -495,8 +499,8 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 	@Nullable
 	@Override
 	public KineticBlockEntity getInterfacingBlockEntity(BlockPos from) {
-		// TODO: upside down cannon mount
-		if (from.equals(new BlockPos(0, -1, 0)))
+		boolean upsideDown = this.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION) == Direction.UP;
+		if (from.equals(new BlockPos(0, upsideDown ? 1 : -1, 0)))
 			return this.yawInterface;
 		BlockState state = this.getBlockState();
 		Direction.Axis axis = ((CannonMountBlock) state.getBlock()).getRotationAxis(state);

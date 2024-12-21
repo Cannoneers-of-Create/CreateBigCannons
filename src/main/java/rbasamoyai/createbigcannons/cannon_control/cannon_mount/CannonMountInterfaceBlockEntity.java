@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public abstract class CannonMountInterfaceBlockEntity extends KineticBlockEntity {
 
@@ -72,8 +73,8 @@ public abstract class CannonMountInterfaceBlockEntity extends KineticBlockEntity
 
 		@Override
 		public List<BlockPos> addPropagationLocations(IRotate block, BlockState state, List<BlockPos> neighbours) {
-			// TODO upside down cannon mount
-			return List.of(this.worldPosition.below());
+			Direction vertical = state.getValue(BlockStateProperties.VERTICAL_DIRECTION);
+			return List.of(this.worldPosition.relative(vertical));
 		}
 	}
 

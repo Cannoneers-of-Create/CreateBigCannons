@@ -37,6 +37,7 @@ import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockItem;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderGen;
@@ -541,9 +542,13 @@ public class CBCBuilderTransformersImpl {
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonMount() {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/cannon_mount/cannon_mount");
+		ResourceLocation flipLoc = CreateBigCannons.resource("block/cannon_mount/cannon_mount_flipped");
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate((c, p) -> p.horizontalBlock(c.get(), p.models().getExistingFile(baseLoc), 0))
+			.blockstate((c, p) -> p.horizontalBlock(c.get(), state -> {
+				ResourceLocation loc = state.getValue(CannonMountBlock.VERTICAL_DIRECTION) == Direction.DOWN ? baseLoc : flipLoc;
+				return p.models().getExistingFile(loc);
+			}, 0))
 			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item()
 			.model((c, p) -> {})

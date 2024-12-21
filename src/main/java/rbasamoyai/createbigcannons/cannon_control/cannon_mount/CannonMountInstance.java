@@ -40,26 +40,26 @@ public class CannonMountInstance extends BlockEntityInstance<CannonMountBlockEnt
 		int blockLight = this.world.getBrightness(LightLayer.BLOCK, this.pos);
 		int skyLight = this.world.getBrightness(LightLayer.SKY, this.pos);
 
+		Direction vertical = this.blockState.getValue(BlockStateProperties.VERTICAL_DIRECTION);
 		Direction facing = this.blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
 		Direction.Axis pitchAxis = facing.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
 
 		Material<RotatingData> rotatingMaterial = this.materialManager.defaultSolid().material(AllMaterialSpecs.ROTATING);
 		Instancer<RotatingData> shaftInstance = rotatingMaterial.getModel(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, pitchAxis));
-		// TODO: upside down mount
-		Instancer<RotatingData> halfShaftInstance = rotatingMaterial.getModel(AllPartialModels.SHAFT_HALF, this.blockState, Direction.DOWN);
+		Instancer<RotatingData> halfShaftInstance = rotatingMaterial.getModel(AllPartialModels.SHAFT_HALF, this.blockState, vertical);
 
 		this.rotatingMount = this.materialManager.defaultCutout()
 			.material(Materials.ORIENTED)
 			.getModel(CBCBlockPartials.ROTATING_MOUNT, this.blockState)
 			.createInstance();
-		this.rotatingMount.setPosition(this.getInstancePosition().above());
+		this.rotatingMount.setPosition(this.getInstancePosition().relative(vertical.getOpposite()));
 
 		this.rotatingMountShaft = this.materialManager.defaultCutout()
 			.material(Materials.ORIENTED)
 			.getModel(CBCBlockPartials.CANNON_CARRIAGE_AXLE, this.blockState, Direction.NORTH)
 			.createInstance();
 
-		this.rotatingMountShaft.setPosition(this.getInstancePosition().above(2));
+		this.rotatingMountShaft.setPosition(this.getInstancePosition().relative(vertical, -2));
 
 		this.pitchShaft = shaftInstance.createInstance();
 		this.pitchShaft
@@ -122,12 +122,13 @@ public class CannonMountInstance extends BlockEntityInstance<CannonMountBlockEnt
 	public void beginFrame() {
 		this.transformModels();
 		float partialTicks = AnimationTickHolder.getPartialTicks();
+		boolean upsideDown = this.blockState.getValue(BlockStateProperties.VERTICAL_DIRECTION) == Direction.UP;
 
 		float yaw = this.blockEntity.getYawOffset(partialTicks);
-		Quaternionf qyaw = Axis.YN.rotationDegrees(yaw);
+		Quaternionf qyaw = upsideDown ? Axis.ZP.rotationDegrees(180).mul(Axis.YP.rotationDegrees(yaw)) : Axis.YP.rotationDegrees(-yaw);
 		this.rotatingMount.setRotation(qyaw);
 		float pitch = this.blockEntity.getPitchOffset(partialTicks);
-		Quaternionf qpitch = Axis.XP.rotationDegrees(-pitch);
+		Quaternionf qpitch = upsideDown ? Axis.XP.rotationDegrees(pitch) : Axis.XP.rotationDegrees(-pitch);
 		Quaternionf qyaw1 = new Quaternionf(qyaw);
 		qyaw1.mul(qpitch);
 		this.rotatingMountShaft.setRotation(qyaw1);
