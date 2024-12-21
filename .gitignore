@@ -19,4 +19,6 @@ classes/
 *.launch
 .architectury-transformer/
 
+*.cache/
+
 thetextvicdontsaythe.txt
