@@ -46,13 +46,15 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity {
 															   Operation<Boolean> original,
 															   @Local(ordinal = 1) BlockState currentState,
 															   @Local BlockEntity blockEntity) {
-		if (!(blockEntity instanceof HasMultipleKineticInterfaces hasMultiple))
+		if (!(blockEntity instanceof HasMultipleKineticInterfaces hasMultiple) || !(state.getBlock() instanceof KineticBlock)) {
+			original.call(instance, pos, state, flags);
 			return false;
-		if (!(state.getBlock() instanceof KineticBlock))
-			return false;
+		}
 		KineticBlockAccessor accessor = (KineticBlockAccessor) state.getBlock();
-		if (accessor.callAreStatesKineticallyEquivalent(currentState, state))
+		if (accessor.callAreStatesKineticallyEquivalent(currentState, state)) {
+			original.call(instance, pos, state, flags);
 			return false;
+		}
 		for (KineticBlockEntity kbe : hasMultiple.getAllKineticBlockEntities()) {
 			if (kbe.hasNetwork())
 				kbe.getOrCreateNetwork().remove(kbe);

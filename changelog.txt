@@ -18,6 +18,7 @@ Changed:
  - Has not been removed from the mod to preserve already existing builds
 - Updated movement checks for mounts and mount extensions
 - Cannon Mounts can now be placed upside-down
+ - Cannon Mounts can also be flipped by using the wrench
 Fixed:
 - Fixed rendering of pitch shaft for down-facing cannons
 

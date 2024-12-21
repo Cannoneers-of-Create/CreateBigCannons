@@ -147,4 +147,14 @@ public class CannonMountBlock extends KineticBlock implements IBE<CannonMountBlo
 		return resultType;
 	}
 
+	@Override
+	public BlockState getRotatedBlockState(BlockState originalState, Direction targetedFace) {
+		BlockState newState = super.getRotatedBlockState(originalState, targetedFace);
+		if (newState != originalState)
+			return newState;
+		if (targetedFace.getAxis().isHorizontal())
+			return originalState.cycle(VERTICAL_DIRECTION);
+		return originalState;
+	}
+
 }
