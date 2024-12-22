@@ -137,8 +137,9 @@ public class CannonMountInstance extends BlockEntityInstance<CannonMountBlockEnt
 	@Override
 	public void updateLight() {
 		super.updateLight();
-		this.relight(this.pos.relative(Direction.UP), this.rotatingMount);
-		this.relight(this.pos.relative(Direction.UP, 2), this.rotatingMountShaft);
+		Direction vertical = this.blockState.getValue(BlockStateProperties.VERTICAL_DIRECTION).getOpposite();
+		this.relight(this.pos.relative(vertical), this.rotatingMount);
+		this.relight(this.pos.relative(vertical, 2), this.rotatingMountShaft);
 		this.relight(this.pos, this.pitchShaft);
 		this.relight(this.pos, this.yawShaft);
 	}
