@@ -19,7 +19,8 @@
     "client.PoleContraptionMixin",
     "client.PonderRegistryMixin",
     "client.RPLClientHandlersMixin",
-    "client.SoundEngineMixin"
+    "client.SoundEngineMixin",
+    "client.ValueSettingsClientMixin"
   ],
   "mixins": [
     "ArmorStandMixin",

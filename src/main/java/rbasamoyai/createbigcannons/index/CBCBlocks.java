@@ -35,6 +35,7 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountDispla
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtensionBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannon_loading.RamHeadBlock;
 import rbasamoyai.createbigcannons.cannon_loading.WormHeadBlock;
@@ -870,6 +871,14 @@ public class CBCBlocks {
 		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMountExtension())
+		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
+		.register();
+
+	public static final BlockEntry<FixedCannonMountBlock> FIXED_CANNON_MOUNT = REGISTRATE
+		.block("fixed_cannon_mount", FixedCannonMountBlock::new)
+		.transform(cbcMachine())
+		.transform(axeOrPickaxe())
+		.transform(CBCBuilderTransformers.fixedCannonMount())
 		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
 		.register();
 

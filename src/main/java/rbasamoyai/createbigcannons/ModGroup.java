@@ -28,6 +28,7 @@ public class ModGroup {
 			output.acceptAll(Arrays.asList(
 				CBCBlocks.CANNON_MOUNT.asStack(),
 				CBCBlocks.CANNON_MOUNT_EXTENSION.asStack(),
+				CBCBlocks.FIXED_CANNON_MOUNT.asStack(),
 
 				CBCBlocks.LOG_CANNON_END.asStack(),
 				CBCBlocks.LOG_CANNON_CHAMBER.asStack(),

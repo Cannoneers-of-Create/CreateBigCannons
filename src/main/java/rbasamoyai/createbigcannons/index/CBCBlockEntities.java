@@ -12,6 +12,7 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtens
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountInstance;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
@@ -226,6 +227,11 @@ public class CBCBlockEntities {
 	public static final BlockEntityEntry<AutocannonAmmoContainerBlockEntity> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
 		.blockEntity("autocannon_ammo_container", AutocannonAmmoContainerBlockEntity::new)
 		.validBlocks(CBCBlocks.AUTOCANNON_AMMO_CONTAINER, CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER)
+		.register();
+
+	public static final BlockEntityEntry<FixedCannonMountBlockEntity> FIXED_CANNON_MOUNT = REGISTRATE
+		.blockEntity("fixed_cannon_mount", FixedCannonMountBlockEntity::new)
+		.validBlock(CBCBlocks.FIXED_CANNON_MOUNT)
 		.register();
 
 	public static void register() {

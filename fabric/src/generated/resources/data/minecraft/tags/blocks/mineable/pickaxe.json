@@ -92,6 +92,7 @@
     "createbigcannons:cannon_mount",
     "createbigcannons:yaw_controller",
     "createbigcannons:cannon_mount_extension",
+    "createbigcannons:fixed_cannon_mount",
     "createbigcannons:cannon_drill",
     "createbigcannons:cannon_drill_bit",
     "createbigcannons:cannon_builder",

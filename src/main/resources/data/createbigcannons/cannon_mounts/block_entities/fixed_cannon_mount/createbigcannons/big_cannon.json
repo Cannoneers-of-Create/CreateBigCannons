@@ -1,0 +1,6 @@
+{
+  "pitch_range": {
+    "maximum_depression": 90,
+    "maximum_elevation": 90
+  }
+}

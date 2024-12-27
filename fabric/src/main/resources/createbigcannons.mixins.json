@@ -10,7 +10,8 @@
     "client.GuiMixin",
     "client.KeyboardHandlerMixin",
     "client.KeyMappingAccessor",
-    "client.MouseHandlerMixin"
+    "client.MouseHandlerMixin",
+    "client.ValueSettingsClientMixin"
   ],
   "mixins": [
     "AbstractCannonProjectileMixin",

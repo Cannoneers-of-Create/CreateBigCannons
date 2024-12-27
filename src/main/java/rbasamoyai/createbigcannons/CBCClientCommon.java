@@ -53,6 +53,7 @@ import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffectsHandler;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBoxRenderer;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderSelectionHandler;
@@ -228,6 +229,7 @@ public class CBCClientCommon {
 		CANNON_WELDER_HANDLER.tick();
 		FUZE_GUIDE_HANDLER.tick();
 		ParticleWindHandler.updateWind();
+		FixedCannonMountBoxRenderer.tick();
 	}
 
 	public static boolean onClickMouse(KeyMapping mapping) {

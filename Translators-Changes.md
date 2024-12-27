@@ -9,6 +9,9 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 ## 5.7.2 → 5.8.0
 Additions: \
 &plus; `"block.createbigcannons.cannon_mount_extension": "Cannon Mount Extension"` \
+&plus; `"block.createbigcannons.fixed_cannon_mount": "Fixed Cannon Mount"` \
+&plus; `"createbigcannons.fixed_cannon_mount.angle_pitch": "Pitch Adjustment"` \
+&plus; `"createbigcannons.fixed_cannon_mount.angle_yaw": "Yaw Adjustment"` \
 &plus; `"createbigcannons.ponder.cannon_mount/upside_down_cannon_mounts.header": "Placing Cannon Mounts upside down"` \
 &plus; `"createbigcannons.ponder.cannon_mount/upside_down_cannon_mounts.text_1": "Cannon Mounts can be rotated to face downwards by clicking their sides with a wrench."` \
 &plus; `"createbigcannons.ponder.cannon_mount/upside_down_cannon_mounts.text_2": "Cannon Mounts can also be placed upside-down on the bottom of blocks."` \

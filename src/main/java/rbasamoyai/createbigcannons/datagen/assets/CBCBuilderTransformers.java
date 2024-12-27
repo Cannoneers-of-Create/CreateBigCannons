@@ -86,6 +86,7 @@ public class CBCBuilderTransformers {
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonMount() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> yawController() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonMountExtension() { throw new AssertionError(); }
+	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> fixedCannonMount() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonCarriage() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> invisibleWithParticle(String path) { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> slidingBreechblock(String pathAndMaterial) { throw new AssertionError(); }

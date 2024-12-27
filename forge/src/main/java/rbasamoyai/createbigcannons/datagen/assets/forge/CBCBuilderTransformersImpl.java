@@ -41,6 +41,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockItem;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderGen;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBarrelBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
@@ -575,6 +576,21 @@ public class CBCBuilderTransformersImpl {
 			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item()
 			.model((c, p) -> {})
+			.build();
+	}
+
+	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> fixedCannonMount() {
+		String key = "block/cannon_mount/fixed_cannon_mount_";
+		return b -> b.properties(p -> p.noOcclusion())
+			.addLayer(() -> RenderType::cutoutMipped)
+			.blockstate((c, p) -> p.directionalBlock(c.get(), state -> {
+				Direction rotation = state.getValue(FixedCannonMountBlock.ROTATION);
+				ResourceLocation loc = CreateBigCannons.resource(key + rotation.getName());
+				return p.models().getExistingFile(loc);
+			}))
+			.tag(AllBlockTags.SAFE_NBT.tag)
+			.item()
+			.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource(key + "north")))
 			.build();
 	}
 
