@@ -10,6 +10,8 @@ Added:
  - Can be placed in six directions as opposed to the Yaw Controller
  - The direction affects which block it will interface with
  - Has a range of one block
+- Added Fixed Cannon Mount, a manually-aimed cannon mount variant that cannot be turned with kinetics
+ - Made with use in vehicle mods in mind
 Changed:
 - Cannon Mount can now be turned around both axes without the Yaw Controller
 - Cannon Mount now disassembles on rotation with wrench

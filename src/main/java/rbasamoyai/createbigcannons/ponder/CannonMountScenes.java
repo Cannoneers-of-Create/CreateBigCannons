@@ -526,6 +526,58 @@ public class CannonMountScenes {
 		scene.markAsFinished();
 	}
 
+	public static void usingFixedCannonMounts(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("cannon_mount/using_fixed_cannon_mounts", "Using Fixed Cannon Mounts");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		scene.world.showSection(util.select.position(2, 1, 2), Direction.DOWN);
+		ElementLink<WorldSectionElement> cannon = scene.world.showIndependentSection(util.select.fromTo(0, 2, 2, 4, 2, 2), Direction.DOWN);
+		scene.idle(30);
+		scene.overlay.showText(50)
+			.text("Fixed Cannon Mounts can be used for aiming cannons at the same spot.");
+		scene.idle(65);
+		scene.overlay.showText(50)
+			.text("They do not use kinetic input and must be manually set using the side interfaces.")
+			.pointAt(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.NORTH));
+		scene.overlay.showScrollInput(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.NORTH).add(-0.25, 0, 0), Direction.NORTH, 50);
+		scene.overlay.showScrollInput(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.NORTH).add(0.25, 0, 0), Direction.NORTH, 50);
+		scene.idle(30);
+		scene.world.rotateSection(cannon, 0, 0, -15, 0);
+		scene.idle(35);
+
+		scene.overlay.showText(160)
+			.attachKeyFrame()
+			.text("Interfacing with a Fixed Cannon Mount is similar to a regular Cannon Mount, with the same control faces.");
+		scene.idle(40);
+		scene.overlay.showText(50)
+			.text("Cannon assembly")
+			.pointAt(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.WEST))
+			.colored(PonderPalette.GREEN)
+			.placeNearTarget();
+		scene.idle(55);
+		scene.rotateCameraY(180);
+		scene.overlay.showText(50)
+			.text("Fire cannon")
+			.pointAt(util.vector.blockSurface(util.grid.at(2, 1, 2), Direction.EAST))
+			.colored(PonderPalette.RED)
+			.placeNearTarget();
+		scene.idle(55);
+		scene.rotateCameraY(-180);
+		scene.idle(25);
+
+		scene.overlay.showText(50)
+			.attachKeyFrame()
+			.text("The Fixed Cannon Mount cannot be extended.")
+			.colored(PonderPalette.RED);
+		scene.idle(65);
+		scene.overlay.showText(50)
+			.text("Use a wrench to rotate the Fixed Cannon Mount.");
+		scene.idle(65);
+
+		scene.markAsFinished();
+	}
+
 	private static <T extends Comparable<T>> UnaryOperator<BlockState> setStateValue(Property<T> property, T value) {
 		return state -> state.hasProperty(property) ? state.setValue(property, value) : state;
 	}

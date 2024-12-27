@@ -22,6 +22,9 @@ public class CBCPonderIndex {
 			.addStoryBoard("cannon_mount/using_autocannons", CannonMountScenes::usingAutocannons)
 			.addStoryBoard("cannon_mount/customizing_autocannons", CannonMountScenes::customizingAutocannons);
 
+		HELPER.forComponents(CBCBlocks.FIXED_CANNON_MOUNT)
+			.addStoryBoard("cannon_mount/using_fixed_cannon_mounts", CannonMountScenes::usingFixedCannonMounts);
+
 		HELPER.forComponents(CBCBlocks.CANNON_LOADER, CBCBlocks.RAM_HEAD, CBCBlocks.WORM_HEAD)
 			.addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons);
 
@@ -101,6 +104,7 @@ public class CBCPonderIndex {
 		PonderRegistry.TAGS.forTag(CBCPonderTags.OPERATING_CANNONS)
 			.add(CBCBlocks.CANNON_MOUNT)
 			.add(CBCBlocks.CANNON_MOUNT_EXTENSION)
+			.add(CBCBlocks.FIXED_CANNON_MOUNT)
 			.add(CBCBlocks.CANNON_LOADER)
 			.add(CBCBlocks.RAM_HEAD)
 			.add(CBCBlocks.WORM_HEAD)

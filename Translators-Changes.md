@@ -17,7 +17,15 @@ Additions: \
 &plus; `"createbigcannons.ponder.cannon_mount/upside_down_cannon_mounts.text_2": "Cannon Mounts can also be placed upside-down on the bottom of blocks."` \
 &plus; `"createbigcannons.ponder.cannon_mount/using_extensions.header": "Using Cannon Mount Extensions"` \
 &plus; `"createbigcannons.ponder.cannon_mount/using_extensions.text_1": "Cannon Mount Extensions provide extra interface areas for blocks."` \
-&plus; `"createbigcannons.ponder.cannon_mount/using_extensions.text_2": "They extend the mount they point into, as indicated by the arrow on their sides."`
+&plus; `"createbigcannons.ponder.cannon_mount/using_extensions.text_2": "They extend the mount they point into, as indicated by the arrow on their sides."` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.header": "Using Fixed Cannon Mounts"` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_1": "Fixed Cannon Mounts can be used for aiming cannons at the same spot."` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_2": "They do not use kinetic input and must be manually set using the side interfaces."` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_3": "Interfacing with a Fixed Cannon Mount is similar to a regular Cannon Mount, with the same control faces."` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_4": "Cannon assembly"` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_5": "Fire cannon"` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_6": "The Fixed Cannon Mount cannot be extended."` \
+&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_7": "Use a wrench to rotate the Fixed Cannon Mount."`
 
 Content Changes: \
 `"createbigcannons.ponder.cannon_mount/assembly_and_use.text_3"`: `"Power the Cannon Mount to aim the cannon up and down."` → `"Power the Cannon Mount to aim the cannon up and down..."` \
