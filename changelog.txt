@@ -23,6 +23,7 @@ Changed:
 Fixed:
 - Fixed rendering of pitch shaft for down-facing cannons
 - Fixed display on some ponders
+- Fixed autocannon tracer lighting and non-tracer rendering
 
 5.7.2
 

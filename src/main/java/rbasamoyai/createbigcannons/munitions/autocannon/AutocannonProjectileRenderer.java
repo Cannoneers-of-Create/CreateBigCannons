@@ -58,8 +58,8 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 			// TODO: config tracer color per projectile?
 			VertexConsumer vcons = buffers.getBuffer(COLOR);
 			float thickness = entity.getAutocannonRoundType() == AutocannonAmmoType.MACHINE_GUN ? 1 / 32f : 2 / 32f;
-			renderBox(vcons, pose, 255, 216, 0, length, thickness);
-			renderBoxInverted(vcons, pose, 255, 80, 0, length, thickness * 1.5f);
+			renderBox(vcons, pose, normal, 255, 216, 0, length, thickness);
+			renderBoxInverted(vcons, pose, normal, 255, 80, 0, length, thickness * 1.5f);
 
 			poseStack.popPose();
 		} else {
@@ -86,10 +86,10 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 
     @Override
     public boolean shouldRender(T entity, Frustum frustrum, double x, double y, double z) {
-        return entity.isTracer();
+        return entity.isTracer() || super.shouldRender(entity, frustrum, x, y, z);
     }
 
-	private static void renderBox(VertexConsumer builder, Matrix4f pose, int r, int g, int b, float length, float thickness) {
+	private static void renderBox(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int r, int g, int b, float length, float thickness) {
 		float x1 = -thickness;
 		float y1 = -thickness;
 		float z1 = -thickness - length;
@@ -98,43 +98,43 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 		float z2 = thickness;
 
 		// Front
-		vertex(builder, pose, r, g, b, x1, y1, z1);
-		vertex(builder, pose, r, g, b, x1, y2, z1);
-		vertex(builder, pose, r, g, b, x2, y2, z1);
-		vertex(builder, pose, r, g, b, x2, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z1);
 
 		// Right
-		vertex(builder, pose, r, g, b, x1, y1, z1);
-		vertex(builder, pose, r, g, b, x1, y1, z2);
-		vertex(builder, pose, r, g, b, x1, y2, z2);
-		vertex(builder, pose, r, g, b, x1, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z1);
 
 		// Back
-		vertex(builder, pose, r, g, b, x1, y1, z2);
-		vertex(builder, pose, r, g, b, x2, y1, z2);
-		vertex(builder, pose, r, g, b, x2, y2, z2);
-		vertex(builder, pose, r, g, b, x1, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z2);
 
 		// Left
-		vertex(builder, pose, r, g, b, x2, y1, z1);
-		vertex(builder, pose, r, g, b, x2, y2, z1);
-		vertex(builder, pose, r, g, b, x2, y2, z2);
-		vertex(builder, pose, r, g, b, x2, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z2);
 
 		// Down
-		vertex(builder, pose, r, g, b, x2, y1, z2);
-		vertex(builder, pose, r, g, b, x1, y1, z2);
-		vertex(builder, pose, r, g, b, x1, y1, z1);
-		vertex(builder, pose, r, g, b, x2, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z1);
 
 		// Up
-		vertex(builder, pose, r, g, b, x1, y2, z1);
-		vertex(builder, pose, r, g, b, x1, y2, z2);
-		vertex(builder, pose, r, g, b, x2, y2, z2);
-		vertex(builder, pose, r, g, b, x2, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z1);
 	}
 
-	private static void renderBoxInverted(VertexConsumer builder, Matrix4f pose, int r, int g, int b, float length, float thickness) {
+	private static void renderBoxInverted(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int r, int g, int b, float length, float thickness) {
 		float x1 = -thickness;
 		float y1 = -thickness;
 		float z1 = -thickness - length;
@@ -143,49 +143,49 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 		float z2 = thickness;
 
 		// Front
-		vertex(builder, pose, r, g, b, x1, y1, z1);
-		vertex(builder, pose, r, g, b, x2, y1, z1);
-		vertex(builder, pose, r, g, b, x2, y2, z1);
-		vertex(builder, pose, r, g, b, x1, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z1);
 
 		// Right
-		vertex(builder, pose, r, g, b, x1, y1, z1);
-		vertex(builder, pose, r, g, b, x1, y2, z1);
-		vertex(builder, pose, r, g, b, x1, y2, z2);
-		vertex(builder, pose, r, g, b, x1, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z2);
 
 		// Back
-		vertex(builder, pose, r, g, b, x1, y1, z2);
-		vertex(builder, pose, r, g, b, x1, y2, z2);
-		vertex(builder, pose, r, g, b, x2, y2, z2);
-		vertex(builder, pose, r, g, b, x2, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z2);
 
 		// Left
-		vertex(builder, pose, r, g, b, x2, y1, z1);
-		vertex(builder, pose, r, g, b, x2, y1, z2);
-		vertex(builder, pose, r, g, b, x2, y2, z2);
-		vertex(builder, pose, r, g, b, x2, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z1);
 
 		// Down
-		vertex(builder, pose, r, g, b, x2, y1, z2);
-		vertex(builder, pose, r, g, b, x2, y1, z1);
-		vertex(builder, pose, r, g, b, x1, y1, z1);
-		vertex(builder, pose, r, g, b, x1, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z2);
+		vertex(builder, pose, normal, r, g, b, x2, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z1);
+		vertex(builder, pose, normal, r, g, b, x1, y1, z2);
 
 		// Up
-		vertex(builder, pose, r, g, b, x1, y2, z1);
-		vertex(builder, pose, r, g, b, x2, y2, z1);
-		vertex(builder, pose, r, g, b, x2, y2, z2);
-		vertex(builder, pose, r, g, b, x1, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z1);
+		vertex(builder, pose, normal, r, g, b, x2, y2, z2);
+		vertex(builder, pose, normal, r, g, b, x1, y2, z2);
 	}
 
-    private static void vertex(VertexConsumer builder, Matrix4f pose, int r, int g, int b, float x, float y, float z) {
+    private static void vertex(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int r, int g, int b, float x, float y, float z) {
         builder.vertex(pose, x, y, z)
 			.color(r, g, b, 255)
 			.uv(0, 0)
 			.overlayCoords(OverlayTexture.NO_OVERLAY)
 			.uv2(LightTexture.FULL_BRIGHT)
-			.normal(0, 1, 0)
+			.normal(normal, 0, 1, 0)
             .endVertex();
     }
 
