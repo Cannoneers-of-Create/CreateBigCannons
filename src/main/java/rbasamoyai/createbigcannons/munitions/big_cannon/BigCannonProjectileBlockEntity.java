@@ -46,6 +46,8 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 		return slot == 0 ? this.tracer : ItemStack.EMPTY;
 	}
 
+	public ItemStack getTracer() { return this.tracer; }
+
 	@Override
 	public ItemStack removeItem(int slot, int amount) {
 		if (this.isEmpty() || slot != 0 || amount < 1)

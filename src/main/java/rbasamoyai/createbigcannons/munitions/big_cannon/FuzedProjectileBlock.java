@@ -3,21 +3,27 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 import java.util.List;
 
 import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.utility.Iterate;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
@@ -48,12 +54,24 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 		return projectile;
 	}
 
+	@Override
+	public AbstractBigCannonProjectile getProjectile(Level level, BlockPos pos, BlockState state) {
+		FuzedBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
+		projectile.setTracer(getTracerFromBlock(level, pos, state));
+		projectile.setFuze(getFuzeFromBlock(level, pos, state));
+		return projectile;
+	}
+
 	protected static ItemStack getFuzeFromBlocks(List<StructureBlockInfo> blocks) {
 		if (blocks.isEmpty()) return ItemStack.EMPTY;
 		StructureBlockInfo info = blocks.get(0);
 		if (info.nbt() == null) return ItemStack.EMPTY;
 		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt());
 		return load instanceof FuzedBlockEntity fuzed ? fuzed.getItem(1) : ItemStack.EMPTY;
+	}
+
+	public static ItemStack getFuzeFromBlock(Level level, BlockPos pos, BlockState state) {
+		return level.getBlockEntity(pos) instanceof FuzedBlockEntity projectile ? projectile.getFuze() : ItemStack.EMPTY;
 	}
 
 	@Override
@@ -112,5 +130,43 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 	}
 
 	public abstract boolean isBaseFuze();
+
+	@Override
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean isMoving) {
+		if (!level.isClientSide) {
+			if (!level.getBlockTicks().willTickThisTick(pos, this)) {
+				level.scheduleTick(pos, this, 0);
+			}
+		}
+	}
+
+	@Override
+	public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource rand) {
+		FuzedBlockEntity fuzedBlock = this.getBlockEntity(level, pos);
+		if (fuzedBlock == null)
+			return;
+		ItemStack itemStack = fuzedBlock.getFuze();
+		if (itemStack.getItem() instanceof FuzeItem fuze) {
+			for (Direction dir : Iterate.directions) {
+				int signal = level.getSignal(pos.relative(dir), dir);
+				if (fuze.onRedstoneSignal(itemStack, level, pos, state, signal, dir)) {
+					this.detonateProjectileOnTheSpot(level, pos, state, dir);
+					break;
+				}
+			}
+		}
+	}
+
+	public void detonateProjectileOnTheSpot(Level level, BlockPos pos, BlockState state, Direction dir) {
+		AbstractBigCannonProjectile projectile = this.getProjectile(level, pos, state);
+		level.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+		if (!(projectile instanceof FuzedBigCannonProjectile fuzedProjectile))
+			return;
+
+		Vec3 orientation = new Vec3(dir.step());
+		projectile.setOrientation(orientation);
+		projectile.setPos(Vec3.atCenterOf(pos));
+		fuzedProjectile.detonate(projectile.position());
+	}
 
 }

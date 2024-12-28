@@ -17,6 +17,11 @@ and freedom tastes of reality..."* \
 - Added Fixed Cannon Mount, a manually-aimed cannon mount variant that cannot be turned with kinetics
   - Made with use in vehicle mods in mind
 - Added more config to Proximity Fuze behavior
+- Added Wired Fuze
+  - Unlike other fuzes, it is only activated on shells placed as blocks, powered with redstone, rather than in flight
+  - Only works with big cannon shells in base Create Big Cannons
+  - On detonation, the detonation effect of the fuzed shell is spawned in world
+  - Can be used for improvised explosives
 ### Changed
 - Cannon Mount can now be turned around both axes without the Yaw Controller
 - Cannon Mount now disassembles on rotation with wrench
@@ -28,10 +33,12 @@ and freedom tastes of reality..."* \
   - Cannon Mounts can also be flipped by using the wrench
 - Changed Cannon Mount item model to be more consistent with in-world appearance
 - Reduced default Proximity Fuze arming delay to 5 gameticks
+- [Addons, BREAKING] Added abstract method to get projectiles from in-world blocks
 ### Fixed
 - Fixed rendering of pitch shaft for down-facing cannons
 - Fixed display on some ponders
 - Fixed autocannon tracer lighting and non-tracer rendering
+- Fixed conductivity of certain cannon mount blocks
 
 ## [5.7.2] - 2024-12-18
 

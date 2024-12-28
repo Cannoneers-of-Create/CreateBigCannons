@@ -146,6 +146,11 @@ public class CBCLangGen {
 		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info", "Detonation Distance: _%s blocks_");
 		REGISTRATE.addLang("item", CBCItems.PROXIMITY_FUZE.getId(), "tooltip.shell_info.item", "Detonation Distance: %s blocks");
 
+		tooltip(CBCItems.WIRED_FUZE)
+		.header("WIRED FUZE")
+		.summary("Detonates when the fuzed shell block is _powered by redstone._ Can be used for _improvised explosives._ _Does not explode in flight._")
+		.conditionAndBehavior("Detonation", "The fuze detonates when powered by redstone.");
+
 		tooltip(CBCItems.CANNON_CRAFTING_WAND)
 		.header("CANNON CRAFTING WAND")
 		.summary("Use on various cannon crafting processes such as _casting, boring, assembly,_ and _heating_ to _instantly finish_ the process.");

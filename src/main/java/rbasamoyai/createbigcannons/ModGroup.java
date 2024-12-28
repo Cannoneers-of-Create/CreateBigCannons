@@ -96,6 +96,7 @@ public class ModGroup {
 				TimedFuzeItem.getCreativeTabItem(20),
 				ProximityFuzeItem.getCreativeTabItem(1),
 				DelayedImpactFuzeItem.getCreativeTabItem(20),
+				CBCItems.WIRED_FUZE.asStack(),
 				CBCItems.TRACER_TIP.asStack(),
 
 				CBCItems.CANNON_WELDER.asStack(),

@@ -25,7 +25,13 @@ Additions: \
 &plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_4": "Cannon assembly"` \
 &plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_5": "Fire cannon"` \
 &plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_6": "The Fixed Cannon Mount cannot be extended."` \
-&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_7": "Use a wrench to rotate the Fixed Cannon Mount."`
+&plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_7": "Use a wrench to rotate the Fixed Cannon Mount."` \
+&plus; `"item.createbigcannons.wired_fuze": "Wired Fuze"` \
+&plus; `"item.createbigcannons.wired_fuze.tooltip": "WIRED FUZE"` \
+&plus; `"item.createbigcannons.wired_fuze.tooltip.behaviour1": "The fuze detonates when powered by redstone."` \
+&plus; `"item.createbigcannons.wired_fuze.tooltip.condition1": "Detonation"` \
+&plus; `"item.createbigcannons.wired_fuze.tooltip.summary": "Detonates when the fuzed shell block is _powered by redstone._ Can be used for _improvised explosives._ _Does not explode in flight._"`
+
 
 Content Changes: \
 `"createbigcannons.ponder.cannon_mount/assembly_and_use.text_3"`: `"Power the Cannon Mount to aim the cannon up and down."` → `"Power the Cannon Mount to aim the cannon up and down..."` \

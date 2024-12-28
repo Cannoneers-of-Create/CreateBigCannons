@@ -86,6 +86,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 
 	public abstract AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
 	public abstract AbstractBigCannonProjectile getProjectile(Level level, ItemStack itemStack);
+	public abstract AbstractBigCannonProjectile getProjectile(Level level, BlockPos pos, BlockState state);
 
 	@Override
 	public boolean canBeLoaded(BlockState state, Direction.Axis facing) {
@@ -146,6 +147,10 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 			return ItemStack.EMPTY;
 		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt());
 		return load instanceof BigCannonProjectileBlockEntity projectile ? projectile.getItem(0) : ItemStack.EMPTY;
+	}
+
+	public static ItemStack getTracerFromBlock(Level level, BlockPos pos, BlockState state) {
+		return level.getBlockEntity(pos) instanceof BigCannonProjectileBlockEntity projectile ? projectile.getTracer() : ItemStack.EMPTY;
 	}
 
 }

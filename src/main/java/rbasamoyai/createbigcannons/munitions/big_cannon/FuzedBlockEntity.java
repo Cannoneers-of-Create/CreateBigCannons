@@ -74,6 +74,8 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 		return slot == 1 ? this.fuze : super.getItem(slot);
 	}
 
+	public ItemStack getFuze() { return this.fuze; }
+
 	public boolean hasFuze() {
 		return !this.fuze.isEmpty();
 	}

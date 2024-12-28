@@ -66,7 +66,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		if (!tag.contains("Armed")) return false;
 
 		double l = Math.max(tag.getInt("DetonationDistance"), 1);
-		Vec3 dir = projectile.getDeltaMovement().normalize();
+		Vec3 dir = projectile.getOrientation().normalize();
 		Vec3 right = dir.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = dir.cross(right);
 		dir = dir.scale(l);

@@ -861,6 +861,7 @@ public class CBCBlocks {
 	public static final BlockEntry<YawControllerBlock> YAW_CONTROLLER = REGISTRATE
 		.block("yaw_controller", YawControllerBlock::new)
 		.transform(cbcMachine())
+		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.yawController())
 		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
@@ -869,6 +870,7 @@ public class CBCBlocks {
 	public static final BlockEntry<CannonMountExtensionBlock> CANNON_MOUNT_EXTENSION = REGISTRATE
 		.block("cannon_mount_extension", CannonMountExtensionBlock::new)
 		.transform(cbcMachine())
+		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMountExtension())
 		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
@@ -877,6 +879,7 @@ public class CBCBlocks {
 	public static final BlockEntry<FixedCannonMountBlock> FIXED_CANNON_MOUNT = REGISTRATE
 		.block("fixed_cannon_mount", FixedCannonMountBlock::new)
 		.transform(cbcMachine())
+		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.fixedCannonMount())
 		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))

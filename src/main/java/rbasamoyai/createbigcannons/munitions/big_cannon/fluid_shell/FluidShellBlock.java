@@ -64,6 +64,16 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 		return projectile;
     }
 
+	@Override
+	public AbstractBigCannonProjectile getProjectile(Level level, BlockPos pos, BlockState state) {
+		FluidShellProjectile projectile = this.getAssociatedEntityType().create(level);
+		projectile.setTracer(getTracerFromBlock(level, pos, state));
+		projectile.setFuze(getFuzeFromBlock(level, pos, state));
+		if (level.getBlockEntity(pos) instanceof AbstractFluidShellBlockEntity fluidShell)
+			fluidShell.setFluidShellStack(projectile);
+		return projectile;
+	}
+
     @Override
 	public EntityType<? extends FluidShellProjectile> getAssociatedEntityType() {
 		return CBCEntityTypes.FLUID_SHELL.get();

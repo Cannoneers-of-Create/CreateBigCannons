@@ -168,6 +168,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		return this.orientation == null ? this.getDeltaMovement() : this.orientation;
 	}
 
+	public void setOrientation(Vec3 orientation) { this.orientation = orientation; }
+
 	@Override
 	public void lerpTo(double x, double y, double z, float yRot, float xRot, int lerpSteps, boolean teleport) {
 		if (this.tickCount < 2)

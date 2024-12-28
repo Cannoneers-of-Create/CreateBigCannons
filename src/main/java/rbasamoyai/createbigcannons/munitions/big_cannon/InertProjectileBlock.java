@@ -41,6 +41,13 @@ public abstract class InertProjectileBlock extends ProjectileBlock<AbstractBigCa
 	}
 
 	@Override
+	public AbstractBigCannonProjectile getProjectile(Level level, BlockPos pos, BlockState state) {
+		AbstractBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
+		projectile.setTracer(getTracerFromBlock(level, pos, state));
+		return projectile;
+	}
+
+	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
 		if (hand == InteractionHand.OFF_HAND)
 			return InteractionResult.PASS;

@@ -30,6 +30,7 @@ import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
+import rbasamoyai.createbigcannons.munitions.fuzes.WiredFuzeItem;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
@@ -47,6 +48,9 @@ public class CBCItems {
 		.tag(CBCTags.CBCItemTags.FUZES)
 		.register();
 	public static final ItemEntry<DelayedImpactFuzeItem> DELAYED_IMPACT_FUZE = REGISTRATE.item("delayed_impact_fuze", DelayedImpactFuzeItem::new)
+		.tag(CBCTags.CBCItemTags.FUZES)
+		.register();
+	public static final ItemEntry<WiredFuzeItem> WIRED_FUZE = REGISTRATE.item("wired_fuze", WiredFuzeItem::new)
 		.tag(CBCTags.CBCItemTags.FUZES)
 		.register();
 
