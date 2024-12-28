@@ -11,63 +11,16 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCGuiTextures;
-import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
-import rbasamoyai.createbigcannons.network.ServerBoundSetProximityAnglePacket;
 
 public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContainer> {
-
-	protected ScrollInput AngleScroll;
 
 	public ProximityFuzeScreen(ProximityFuzeContainer menu, Inventory playerInv, Component title) {
 		super(menu, playerInv, title);
 	}
 
 	@Override
-	protected void init() {
-		super.init();
-		AngleScroll = new ScrollInput(this.leftPos + 36, this.topPos + 39, 102, 12)
-			.withRange(0, 91)
-			.calling(state -> {
-				this.lastUpdated = 0;
-				AngleScroll.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.set_proximity_fuze.degrees", state).component());
-			})
-			.setState(Mth.clamp(this.menu.data.get(1), 0, 91));
-		AngleScroll.onChanged();
-		this.addRenderableWidget(AngleScroll);
-	}
-
-	@Override
-	protected void containerTick() {
-		super.containerTick();
-
-		if (this.lastUpdated >= 0) {
-			this.lastUpdated++;
-		}
-		if (this.lastUpdated >= 20) {
-			this.updateServerAngle();
-			this.lastUpdated = -1;
-		}
-	}
-
-	@Override
-	public void removed() {
-		super.removed();
-		this.updateServerAngle();
-	}
-
-	@Override
-	public void onClose() {
-		this.updateServerAngle();
-		super.onClose();
-	}
-
-	private void updateServerAngle() {
-		NetworkPlatform.sendToServer(new ServerBoundSetProximityAnglePacket(this.AngleScroll.getState()));
-	}
-
-	@Override
 	protected ScrollInput getScrollInput() {
-		return new ScrollInput(this.leftPos + 36, this.topPos + 21, 102, 12)
+		return new ScrollInput(this.leftPos + 36, this.topPos + 29, 102, 18)
 				.withRange(1, 33)
 				.calling(state -> {
 					this.lastUpdated = 0;
@@ -88,13 +41,7 @@ public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContain
 		double s = 100.0d / (double)(top - 1);
 		int offsX = this.setValue.getState();
 		offsX = offsX == top ? 100 : (int) Math.ceil((double) offsX * s - s);
-		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(graphics, this.leftPos + 32 + offsX, this.topPos + 13);
-
-		int top2 = 90;
-		double s2 = 100.0d / (double)(top2);
-		int offsX2 = AngleScroll.getState();
-		offsX2 = offsX2 == top2? 100 : (int) Math.ceil((double) offsX2 * s2 - s2);
-		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(graphics, this.leftPos + 32 + offsX2, this.topPos + 31);
+		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(graphics, this.leftPos + 32 + offsX, this.topPos + 21);
 
 		GuiGameElement.of(this.menu.getStackToRender())
 			.<GuiGameElement.GuiItemRenderBuilder>at(this.leftPos + 185, this.topPos + 26, -200)

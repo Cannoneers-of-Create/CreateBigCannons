@@ -39,7 +39,6 @@ public class CBCRootNetwork {
 		addMsg(id++, ServerboundFiringActionPacket.class, ServerboundFiringActionPacket::new);
 		addMsg(id++, ServerboundSetFireRatePacket.class, ServerboundSetFireRatePacket::new);
 		addMsg(id++, ServerboundSetContainerValuePacket.class, ServerboundSetContainerValuePacket::new);
-		addMsg(id++, ServerBoundSetProximityAnglePacket.class, ServerBoundSetProximityAnglePacket::new);
 		addMsg(id++, ClientboundMunitionPropertiesPacket.class, ClientboundMunitionPropertiesPacket::copyOf);
 		addMsg(id++, ClientboundAutocannonMaterialPropertiesPacket.class, ClientboundAutocannonMaterialPropertiesPacket::copyOf);
 		addMsg(id++, ClientboundBigCannonMaterialPropertiesPacket.class, ClientboundBigCannonMaterialPropertiesPacket::copyOf);
