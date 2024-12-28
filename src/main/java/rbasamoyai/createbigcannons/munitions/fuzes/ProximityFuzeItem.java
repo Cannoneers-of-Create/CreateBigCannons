@@ -78,8 +78,8 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 			.move(start.subtract(projectile.position()));
 		List<Entity> entities = projectile.level().getEntities(projectile, currentMovementRegion, projectile::canHitEntity);
 
-		int radius = 2;
-		double scale = 1.5;
+		int radius = CBCConfigs.SERVER.munitions.proximityFuzeScale.get();
+		double scale = CBCConfigs.SERVER.munitions.proximityFuzeSpacing.get();
 		for (int i = -radius; i <= radius; ++i) {
 			for (int j = -radius; j <= radius; ++j) {
 				Vec3 ray = dir.add(right.scale(i * scale)).add(up.scale(j * scale));
@@ -91,7 +91,8 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 				for (Entity target : entities) {
 					AABB targetBox = target.getBoundingBox().inflate(reach);
-					if (targetBox.clip(start, rayEnd).isPresent()) return true;
+					if (targetBox.clip(start, rayEnd).isPresent())
+						return true;
 				}
 			}
 		}

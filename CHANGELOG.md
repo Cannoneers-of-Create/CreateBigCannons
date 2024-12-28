@@ -10,22 +10,24 @@ and freedom tastes of reality..."* \
 
 ### Added
 - Added Cannon Mount Extension
- - Replaces Yaw Controller for cannon interface extension
- - Can be placed in six directions as opposed to the Yaw Controller
- - The direction affects which block it will interface with
- - Has a range of one block
+  - Replaces Yaw Controller for cannon interface extension
+  - Can be placed in six directions as opposed to the Yaw Controller
+  - The direction affects which block it will interface with
+  - Has a range of one block
 - Added Fixed Cannon Mount, a manually-aimed cannon mount variant that cannot be turned with kinetics
- - Made with use in vehicle mods in mind
+  - Made with use in vehicle mods in mind
+- Added more config to Proximity Fuze behavior
 ### Changed
 - Cannon Mount can now be turned around both axes without the Yaw Controller
 - Cannon Mount now disassembles on rotation with wrench
 - Updated Cannon Mount and Yaw Controller yaw shaft texture to no longer use the special black shaft texture
 - The Yaw Controller is no longer obtainable in-game
- - Has not been removed from the mod to preserve already existing builds
+  - Has not been removed from the mod to preserve already existing builds
 - Updated movement checks for mounts and mount extensions
 - Cannon Mounts can now be placed upside-down
- - Cannon Mounts can also be flipped by using the wrench
+  - Cannon Mounts can also be flipped by using the wrench
 - Changed Cannon Mount item model to be more consistent with in-world appearance
+- Reduced default Proximity Fuze arming delay to 5 gameticks
 ### Fixed
 - Fixed rendering of pitch shaft for down-facing cannons
 - Fixed display on some ponders

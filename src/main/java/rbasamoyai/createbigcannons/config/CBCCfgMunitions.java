@@ -31,7 +31,9 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes");
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
 	public final ConfigInt impactFuzeDurability = i(3, -1, "impactFuzeDurability", Comments.impactFuzeDurability);
-	public final ConfigInt proximityFuzeArmingTime = i(20, 0, "proximityFuzeArmingTime", Comments.proximityFuzeArmingTime);
+	public final ConfigInt proximityFuzeArmingTime = i(5, 0, "proximityFuzeArmingTime", Comments.proximityFuzeArmingTime);
+	public final ConfigInt proximityFuzeScale = i(5, 1, 10, "proximityFuzeScale", Comments.proximityFuzeScale);
+	public final ConfigFloat proximityFuzeSpacing = f(1.5f, 0.5f, 2f, "proximityFuzeSpacing", Comments.proximityFuzeSpacing);
 
 	public final ConfigGroup groupedMunitions = group(0, "groupedMunitions", "Grouped Munitions");
 	public final ConfigFloat fluidBlobBlockAffectChance = f(0.5f, 0, 1, "fluidBlobBlockEffectChance", Comments.fluidBlobBlockAffectChance);
@@ -59,6 +61,11 @@ public class CBCCfgMunitions extends ConfigBase {
 				"[in Ticks]",
 				"Time it takes for a proximity fuze to arm itself.",
 				"After the fuze has been in the air for the specified arming time, it will detonate when it gets close enough to a block or entity." };
+		static String proximityFuzeScale = "Scale of the area covered by the Proximity Fuze. Larger number means wider area covered";
+		static String[] proximityFuzeSpacing = new String[] {
+				"[in Blocks]",
+				"Spacing of the detection points of the Proximity Fuze."
+		};
 		static String fluidBlobBlockAffectChance = "The chance of a fluid blob affecting a block in its area of effect (AOE). 0 is 0% (never), 1 is 100% (always).";
 		static String allAutocannonProjectilesAreTracers = "Makes all shot autocannon projectiles tracers regardless if the item had a tracer tip applied. Emulates legacy behavior.";
 		static String allBigCannonProjectilesAreTracers = "Makes all shot big cannon projectiles tracers regardless if the item had a tracer tip applied.";
