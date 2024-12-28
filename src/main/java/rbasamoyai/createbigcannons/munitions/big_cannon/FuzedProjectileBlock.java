@@ -104,6 +104,9 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 					}
 				}
 				fuzedBlock.notifyUpdate();
+				if (!level.getBlockTicks().willTickThisTick(pos, this)) {
+					level.scheduleTick(pos, this, 0);
+				}
 			}
 			level.playSound(player, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
 			return InteractionResult.sidedSuccess(level.isClientSide);
@@ -123,6 +126,9 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 				copy.setCount(1);
 				fuzedBlock.setItem(slot, copy);
 				fuzedBlock.notifyUpdate();
+				if (!level.getBlockTicks().willTickThisTick(pos, this)) {
+					level.scheduleTick(pos, this, 0);
+				}
 			}
 			level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
 			return InteractionResult.sidedSuccess(level.isClientSide);
