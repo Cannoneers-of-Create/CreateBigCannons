@@ -6,7 +6,7 @@
 and freedom tastes of reality..."* \
 &ndash; "I'm Free", The Who (1969)
 
-**Create Big Cannons 5.8.0. Comes with a few overhauls to cannon mounts.**
+**Create Big Cannons 5.8.0. Comes with a few overhauls to cannon mounts, improvised explosives, and fixes.**
 
 ### Added
 - Added Cannon Mount Extension
