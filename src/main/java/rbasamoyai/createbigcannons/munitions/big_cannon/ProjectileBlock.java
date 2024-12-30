@@ -14,28 +14,35 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 
-public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile> extends DirectionalBlock implements IWrenchable, BigCannonMunitionBlock {
+public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile> extends DirectionalBlock
+	implements IWrenchable, BigCannonMunitionBlock, SimpleWaterloggedBlock {
 
 	private final VoxelShaper shapes;
 
 	public ProjectileBlock(Properties properties) {
 		super(properties.pushReaction(PushReaction.NORMAL));
-		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP));
+		this.registerDefaultState(this.getStateDefinition().any().setValue(FACING, Direction.UP).setValue(WATERLOGGED, false));
 		this.shapes = this.makeShapes();
 	}
 
@@ -47,6 +54,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(FACING);
+		builder.add(WATERLOGGED);
 	}
 
 	protected VoxelShaper makeShapes() {
@@ -66,7 +74,13 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 			&& !flag) {
 			facing = facing.getOpposite();
 		}
-		return this.defaultBlockState().setValue(FACING, facing);
+		boolean waterlogged = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
+		return this.defaultBlockState().setValue(FACING, facing).setValue(WATERLOGGED, waterlogged);
+	}
+
+	@Override
+	public FluidState getFluidState(BlockState state) {
+		return state.getValue(BlockStateProperties.WATERLOGGED) ? Fluids.WATER.getSource(false) : Fluids.EMPTY.defaultFluidState();
 	}
 
 	@Override
@@ -84,9 +98,21 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 		return state.setValue(FACING, mirror.mirror(state.getValue(FACING)));
 	}
 
-	public abstract AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks);
-	public abstract AbstractBigCannonProjectile getProjectile(Level level, ItemStack itemStack);
-	public abstract AbstractBigCannonProjectile getProjectile(Level level, BlockPos pos, BlockState state);
+	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
+		return this.getAssociatedEntityType().create(level);
+	}
+
+	public AbstractBigCannonProjectile getProjectile(Level level, ItemStack itemStack) {
+		return this.getAssociatedEntityType().create(level);
+	}
+
+	public AbstractBigCannonProjectile getProjectile(Level level, BlockPos pos, BlockState state) {
+		return this.getAssociatedEntityType().create(level);
+	}
+
+	protected AbstractBigCannonProjectile spawnFromExplosion(Level level, BlockPos pos, BlockState state, Explosion explosion) {
+		return this.getProjectile(level, pos, state);
+	}
 
 	@Override
 	public boolean canBeLoaded(BlockState state, Direction.Axis facing) {
@@ -152,5 +178,20 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	public static ItemStack getTracerFromBlock(Level level, BlockPos pos, BlockState state) {
 		return level.getBlockEntity(pos) instanceof BigCannonProjectileBlockEntity projectile ? projectile.getTracer() : ItemStack.EMPTY;
 	}
+
+	@Override
+	public void createbigcannons$onBlockExplode(Level level, BlockPos pos, BlockState state, Explosion explosion) {
+		if (level.isClientSide || !CBCConfigs.SERVER.munitions.munitionBlocksCanExplode.get())
+			return;
+		Vec3 entityPos = Vec3.atCenterOf(pos);
+		AbstractBigCannonProjectile projectile = this.spawnFromExplosion(level, pos, state, explosion);
+		projectile.setPos(entityPos);
+		// Taken from PrimedTnt#<init>
+		double d = level.random.nextDouble() * (float) (Math.PI * 2);
+		projectile.setDeltaMovement(-Math.sin(d) * 0.02, 0.2F, -Math.cos(d) * 0.02);
+		level.addFreshEntity(projectile);
+	}
+
+	@Override public boolean dropFromExplosion(Explosion explosion) { return false; }
 
 }

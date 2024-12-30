@@ -16,6 +16,7 @@ import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
@@ -31,6 +32,7 @@ import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -59,6 +61,7 @@ import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBl
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
@@ -474,7 +477,21 @@ public class CBCBuilderTransformersImpl {
 		ResourceLocation baseLoc = CreateBigCannons.resource("block/powder_charge");
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::solid)
-			.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().getExistingFile(baseLoc)));
+			.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().getExistingFile(baseLoc)))
+			.loot((t, c) -> {
+				CompoundTag dampTag = new CompoundTag();
+				dampTag.putBoolean("Damp", true);
+				t.add(c, LootTable.lootTable()
+					.withPool(t.applyExplosionCondition(c, LootPool.lootPool())
+						.add(LootItem.lootTableItem(c))
+						.apply(SetNbtFunction.setTag(dampTag))
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(c)
+							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BigCannonMunitionBlock.DAMP, true))))
+					.withPool(t.applyExplosionCondition(c, LootPool.lootPool())
+						.add(LootItem.lootTableItem(c))
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(c)
+							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BigCannonMunitionBlock.DAMP, false)))));
+			});
 	}
 
 	public static <T extends BigCartridgeBlock & BigCannonPropellantBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> bigCartridge() {
@@ -487,11 +504,22 @@ public class CBCBuilderTransformersImpl {
 			}))
 			.tag(AllBlockTags.SAFE_NBT.tag)
 			.loot((t, c) -> {
+				CompoundTag dampTag = new CompoundTag();
+				dampTag.putBoolean("Damp", true);
 				t.add(c, LootTable.lootTable()
 					.withPool(t.applyExplosionCondition(c, LootPool.lootPool()
-						.add(LootItem.lootTableItem(c))
-						.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
-						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Power", "Power")))));
+							.add(LootItem.lootTableItem(c))
+							.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
+							.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Power", "Power")))
+						.apply(SetNbtFunction.setTag(dampTag))
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(c)
+							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BigCannonMunitionBlock.DAMP, true))))
+					.withPool(t.applyExplosionCondition(c, LootPool.lootPool()
+							.add(LootItem.lootTableItem(c))
+							.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
+							.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Power", "Power")))
+						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(c)
+							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BigCannonMunitionBlock.DAMP, false)))));
 			})
 			.item(BigCartridgeBlockItem::new)
 			.tag(CBCTags.CBCItemTags.BIG_CANNON_CARTRIDGES)

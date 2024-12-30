@@ -6,6 +6,57 @@
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "createbigcannons:big_cartridge",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "damp": "true"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createbigcannons:big_cartridge"
+        }
+      ],
+      "functions": [
+        {
+          "add": false,
+          "count": 1.0,
+          "function": "minecraft:set_count"
+        },
+        {
+          "function": "minecraft:copy_nbt",
+          "ops": [
+            {
+              "op": "replace",
+              "source": "Power",
+              "target": "Power"
+            }
+          ],
+          "source": "block_entity"
+        },
+        {
+          "function": "minecraft:set_nbt",
+          "tag": "{Damp:1b}"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "createbigcannons:big_cartridge",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "damp": "false"
+          }
         }
       ],
       "entries": [

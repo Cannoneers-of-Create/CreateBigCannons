@@ -3,5 +3,8 @@
   "added_stress": 0.5,
   "added_recoil": 2,
   "added_spread": 2,
+  "explosion_power": 1.5,
+  "damp_ammo_strength_debuff": 0.5,
+  "damp_ammo_doesnt_ignite_as_starter": true,
   "maximum_power_levels": 4
 }

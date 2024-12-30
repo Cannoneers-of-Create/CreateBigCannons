@@ -274,6 +274,7 @@ public class CBCLangGen {
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.added_stress.value", "_%s_");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power", "Power");
 		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.power.value", "_%s_ / _%s_");
+		REGISTRATE.addLang("block", CreateBigCannons.resource("propellant"), "tooltip.damp", "Damp");
 
 		for (Iterator<CannonCastShape> iter = CBCRegistries.cannonCastShapes().iterator(); iter.hasNext(); ) {
 			ResourceLocation loc = CBCRegistries.cannonCastShapes().getKey(iter.next());

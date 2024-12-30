@@ -2,5 +2,8 @@
   "strength": 2,
   "added_stress": 1,
   "added_recoil": 2,
-  "added_spread": 2
+  "added_spread": 2,
+  "explosion_power": 6,
+  "damp_ammo_strength_debuff": 0.5,
+  "damp_ammo_doesnt_ignite_as_starter": true
 }

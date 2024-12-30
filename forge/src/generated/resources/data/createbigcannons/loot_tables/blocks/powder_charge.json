@@ -6,6 +6,41 @@
       "conditions": [
         {
           "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "createbigcannons:powder_charge",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "damp": "true"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createbigcannons:powder_charge"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:set_nbt",
+          "tag": "{Damp:1b}"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "createbigcannons:powder_charge",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "damp": "false"
+          }
         }
       ],
       "entries": [

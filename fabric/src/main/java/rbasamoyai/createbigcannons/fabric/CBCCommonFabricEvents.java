@@ -16,6 +16,7 @@ import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
+import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.resource.IdentifiableResourceReloadListener;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.BlockPos;
@@ -43,6 +44,7 @@ import rbasamoyai.createbigcannons.compat.copycats.CopycatsCompat;
 import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 import rbasamoyai.createbigcannons.compat.trinkets.CBCTrinketsIntegration;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class CBCCommonFabricEvents {
 
@@ -59,6 +61,10 @@ public class CBCCommonFabricEvents {
 		ModsLoadedCallback.EVENT.register(CBCCommonFabricEvents::onModsLoaded);
 
 		CBCCommonEvents.onAddReloadListeners(CBCCommonFabricEvents::wrapAndRegisterReloadListener);
+
+		FlammableBlockRegistry FLAMMABLE_REGISTRY = FlammableBlockRegistry.getDefaultInstance();
+		FLAMMABLE_REGISTRY.add(CBCBlocks.POWDER_CHARGE.get(), 100, 30);
+		//FLAMMABLE_REGISTRY.add(CBCBlocks.BIG_CARTRIDGE.get(), 100, 8); TODO: if flammable block registry or some other thing for dynamic spread...
 	}
 
 	public static void onModsLoaded(EnvType type) {

@@ -1,53 +1,105 @@
 {
   "variants": {
-    "facing=down,filled=false": {
+    "damp=false,facing=down,filled=false": {
       "model": "createbigcannons:block/big_cartridge_empty",
       "x": 180
     },
-    "facing=down,filled=true": {
+    "damp=false,facing=down,filled=true": {
       "model": "createbigcannons:block/big_cartridge_filled",
       "x": 180
     },
-    "facing=east,filled=false": {
+    "damp=false,facing=east,filled=false": {
       "model": "createbigcannons:block/big_cartridge_empty",
       "x": 90,
       "y": 90
     },
-    "facing=east,filled=true": {
+    "damp=false,facing=east,filled=true": {
       "model": "createbigcannons:block/big_cartridge_filled",
       "x": 90,
       "y": 90
     },
-    "facing=north,filled=false": {
+    "damp=false,facing=north,filled=false": {
       "model": "createbigcannons:block/big_cartridge_empty",
       "x": 90
     },
-    "facing=north,filled=true": {
+    "damp=false,facing=north,filled=true": {
       "model": "createbigcannons:block/big_cartridge_filled",
       "x": 90
     },
-    "facing=south,filled=false": {
+    "damp=false,facing=south,filled=false": {
       "model": "createbigcannons:block/big_cartridge_empty",
       "x": 90,
       "y": 180
     },
-    "facing=south,filled=true": {
+    "damp=false,facing=south,filled=true": {
       "model": "createbigcannons:block/big_cartridge_filled",
       "x": 90,
       "y": 180
     },
-    "facing=up,filled=false": {
+    "damp=false,facing=up,filled=false": {
       "model": "createbigcannons:block/big_cartridge_empty"
     },
-    "facing=up,filled=true": {
+    "damp=false,facing=up,filled=true": {
       "model": "createbigcannons:block/big_cartridge_filled"
     },
-    "facing=west,filled=false": {
+    "damp=false,facing=west,filled=false": {
       "model": "createbigcannons:block/big_cartridge_empty",
       "x": 90,
       "y": 270
     },
-    "facing=west,filled=true": {
+    "damp=false,facing=west,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled",
+      "x": 90,
+      "y": 270
+    },
+    "damp=true,facing=down,filled=false": {
+      "model": "createbigcannons:block/big_cartridge_empty",
+      "x": 180
+    },
+    "damp=true,facing=down,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled",
+      "x": 180
+    },
+    "damp=true,facing=east,filled=false": {
+      "model": "createbigcannons:block/big_cartridge_empty",
+      "x": 90,
+      "y": 90
+    },
+    "damp=true,facing=east,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled",
+      "x": 90,
+      "y": 90
+    },
+    "damp=true,facing=north,filled=false": {
+      "model": "createbigcannons:block/big_cartridge_empty",
+      "x": 90
+    },
+    "damp=true,facing=north,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled",
+      "x": 90
+    },
+    "damp=true,facing=south,filled=false": {
+      "model": "createbigcannons:block/big_cartridge_empty",
+      "x": 90,
+      "y": 180
+    },
+    "damp=true,facing=south,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled",
+      "x": 90,
+      "y": 180
+    },
+    "damp=true,facing=up,filled=false": {
+      "model": "createbigcannons:block/big_cartridge_empty"
+    },
+    "damp=true,facing=up,filled=true": {
+      "model": "createbigcannons:block/big_cartridge_filled"
+    },
+    "damp=true,facing=west,filled=false": {
+      "model": "createbigcannons:block/big_cartridge_empty",
+      "x": 90,
+      "y": 270
+    },
+    "damp=true,facing=west,filled=true": {
       "model": "createbigcannons:block/big_cartridge_filled",
       "x": 90,
       "y": 270

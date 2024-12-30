@@ -25,6 +25,7 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 
 	public BigCannonProjectileRenderer(EntityRendererProvider.Context context) {
 		super(context);
+		this.shadowRadius = 0.5f;
 	}
 
 	@Override

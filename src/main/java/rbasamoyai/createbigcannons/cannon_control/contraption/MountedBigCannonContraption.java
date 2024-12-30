@@ -268,7 +268,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		int maxSafeCharges = this.getMaxSafeCharges();
 		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
 		float spreadSub = this.cannonMaterial.properties().spreadReductionPerBarrel();
-		boolean emptyNoProjectile = false;
+		boolean airGapPresent = false;
 
 		PropellantContext propelCtx = new PropellantContext();
 
@@ -287,12 +287,13 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			Block block = containedBlockInfo.state().getBlock();
 
 			if (containedBlockInfo.state().isAir()) {
-				if (count == 0) return;
+				if (count == 0)
+					return;
 				if (projectile == null) {
 					if (projectileBlocks.isEmpty()) {
-						emptyNoProjectile = true;
+						airGapPresent = true;
 						propelCtx.chargesUsed = Math.max(propelCtx.chargesUsed - 1, 0);
-					} else if (canFail) {
+					} else if (canFail) { // Incomplete projectile
 						this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
 						return;
 					}
@@ -309,7 +310,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					}
 				}
 			} else if (block instanceof BigCannonPropellantBlock cpropel && !(block instanceof ProjectileBlock)) {
-				if (!cpropel.canBeIgnited(containedBlockInfo, this.initialOrientation)) return;
+				// Initial ignition
+				if (count == 0 && !cpropel.canBeIgnited(containedBlockInfo, this.initialOrientation))
+					return;
+				// Incompatible propellant
 				if (!propelCtx.addPropellant(cpropel, containedBlockInfo, this.initialOrientation) && canFail) {
 					this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
 					return;
@@ -320,14 +324,14 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
 					return;
 				}
-				if (emptyNoProjectile && canFail && rollFailToIgnite(rand)) {
+				if (airGapPresent && canFail && rollFailToIgnite(rand)) {
 					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cannonInfo.state().getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
 					return;
 				}
-				emptyNoProjectile = false;
+				airGapPresent = false;
 			} else if (block instanceof ProjectileBlock<?> projBlock && projectile == null) {
-				if (canFail && emptyNoProjectile && rollFailToIgnite(rand)) {
+				if (canFail && airGapPresent && rollFailToIgnite(rand)) {
 					Vec3 failIgnitePos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 					level.playSound(null, failIgnitePos.x, failIgnitePos.y, failIgnitePos.z, cannonInfo.state().getSoundType().getBreakSound(), SoundSource.BLOCKS, 5.0f, 0.0f);
 					return;
@@ -355,7 +359,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 						return;
 					}
 				}
-				emptyNoProjectile = false;
+				airGapPresent = false;
 			} else {
 				if (canFail) {
 					this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
@@ -600,6 +604,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		if (this.hasWeldedPenalty) tag.putBoolean("WeldedCannon", true);
 		if (this.mortarDelay > 0) tag.putInt("MortarDelay", this.mortarDelay);
 		if (this.cachedMortarRound != null && !this.cachedMortarRound.isEmpty()) tag.put("CachedMortarRound", this.cachedMortarRound.save(new CompoundTag()));
+		if (this.hasFired) tag.putBoolean("HasFired", true);
 		return tag;
 	}
 
@@ -611,6 +616,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		if (this.cannonMaterial == null) this.cannonMaterial = CBCBigCannonMaterials.CAST_IRON;
 		this.mortarDelay = Math.max(0, tag.getInt("MortarDelay"));
 		this.cachedMortarRound = tag.contains("CachedMortarRound", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("CachedMortarRound")) : ItemStack.EMPTY;
+		this.hasFired = tag.contains("HasFired");
 	}
 
 	@Override

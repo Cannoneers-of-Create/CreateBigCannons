@@ -118,7 +118,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 		}
 		ItemStack stack = player.getItemInHand(interactionHand);
 
-		Direction pushDirection = side.getOpposite();
+		Direction pushDirection = entity.getInitialOrientation();
 		BlockPos nextPos = localPos.relative(pushDirection);
 
 		if (stack.isEmpty()) {
@@ -136,7 +136,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 					if (be1 instanceof IBigCannonBlockEntity cbe1) {
 						StructureBlockInfo info1 = cbe1.cannonBehavior().block();
 						ItemStack extract = info1.state().getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
-						Vec3 normal = new Vec3(side.step());
+						Vec3 normal = new Vec3(pushDirection.getOpposite().step());
 						Vec3 dir = contraption.entity.applyRotation(normal, 0);
 						if (!extract.isEmpty()) {
 							Vec3 ejectPos = Vec3.atCenterOf(localPos).add(normal.scale(1.1));
@@ -173,7 +173,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 		}
 		if (!breech.isOpen() || breech.onInteractionCooldown()) return false;
 
-		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
+		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition && breechFacing.getAxis() == side.getAxis()) {
 			BlockEntity be1 = contraption.presentBlockEntities.get(nextPos);
 			if (!(be1 instanceof IBigCannonBlockEntity cbe1)) return false;
 

@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.foundation.utility.Components;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
@@ -11,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
@@ -30,6 +34,8 @@ public class BigCartridgeBlockItem extends BlockItem {
 		CBCTooltip.appendBigCartridgePropellantPowerText(stack, level, tooltipComponents, isAdvanced, this.cartridgeBlock);
 		CBCTooltip.appendMuzzleVelocityText(stack, level, tooltipComponents, isAdvanced, this.cartridgeBlock);
 		CBCTooltip.appendPropellantStressText(stack, level, tooltipComponents, isAdvanced, this.cartridgeBlock);
+		if (stack.getOrCreateTag().getBoolean("Damp"))
+			tooltipComponents.add(Components.translatable("block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.damp").withStyle(ChatFormatting.BLUE));
 	}
 
 	@Override

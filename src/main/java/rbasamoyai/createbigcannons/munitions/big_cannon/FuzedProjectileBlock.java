@@ -16,6 +16,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -59,6 +60,15 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 		FuzedBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
 		projectile.setTracer(getTracerFromBlock(level, pos, state));
 		projectile.setFuze(getFuzeFromBlock(level, pos, state));
+		return projectile;
+	}
+
+	@Override
+	protected AbstractBigCannonProjectile spawnFromExplosion(Level level, BlockPos pos, BlockState state, Explosion explosion) {
+		AbstractBigCannonProjectile projectile = super.spawnFromExplosion(level, pos, state, explosion);
+		if (projectile instanceof FuzedBigCannonProjectile fuzedProjectile) {
+			fuzedProjectile.setExplosionCountdown(level.random.nextInt(10) + 5);
+		}
 		return projectile;
 	}
 
@@ -172,6 +182,7 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 		Vec3 orientation = new Vec3(dir.step());
 		projectile.setOrientation(orientation);
 		projectile.setPos(Vec3.atCenterOf(pos));
+		projectile.setDeltaMovement(orientation.scale(0.5)); // Velocity boost for burst shells
 		fuzedProjectile.detonate(projectile.position());
 	}
 

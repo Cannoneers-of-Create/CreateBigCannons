@@ -17,12 +17,16 @@
     "AbstractCannonProjectileMixin",
     "ArmTileEntityMixin",
     "AutocannonAmmoContainerBlockEntityMixin",
+    "BigCartridgeBlockMixin",
     "CannonMountMixin",
     "CannonMountPointMixin",
     "CreateInitMixin",
+    "ExplosionMixin",
+    "FireBlockMixin",
     "GasMaskItemMixin",
     "MountedAutocannonContraptionMixin",
     "PitchOrientedContraptionEntityMixin",
+    "PowderChargeBlockMixin",
     "compat.fabric_api.ItemStorageMixin"
   ],
   "injectors": {

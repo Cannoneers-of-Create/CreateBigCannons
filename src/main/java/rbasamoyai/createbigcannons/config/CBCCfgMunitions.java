@@ -16,6 +16,11 @@ public class CBCCfgMunitions extends ConfigBase {
 
 	public final ConfigEnum<GriefState> damageRestriction = e(GriefState.ALL_DAMAGE, "damageRestriction", Comments.damageRestriction);
 	public final ConfigBool projectilesChangeSurroundings = b(true, "projectilesChangeSurroundings");
+	public final ConfigBool munitionBlocksCanExplode = b(true, "munitionBlocksCanExplode");
+
+	public final ConfigGroup dampBigCannonPropellant = group(0, "dampBigCannonPropellant", "Damp Big Cannon Propellant");
+	public final ConfigBool dampPropellantBlocksStartingIgnition = b(true, "dampPropellantBlocksStartingIgnition");
+	public final ConfigBool dampPropellantWeakensPropellant = b(true, "dampPropellantWeakensPropellant");
 
 	public final ConfigGroup chunkloading = group(0, "chunkloading", "Chunkloading");
 	public final ConfigBool projectilesCanChunkload = b(true, "projectilesCanChunkload");

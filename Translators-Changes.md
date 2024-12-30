@@ -10,6 +10,7 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 Additions: \
 &plus; `"block.createbigcannons.cannon_mount_extension": "Cannon Mount Extension"` \
 &plus; `"block.createbigcannons.fixed_cannon_mount": "Fixed Cannon Mount"` \
+&plus; `"block.createbigcannons.propellant.tooltip.damp": "Damp"` \
 &plus; `"createbigcannons.fixed_cannon_mount.angle_pitch": "Pitch Adjustment"` \
 &plus; `"createbigcannons.fixed_cannon_mount.angle_yaw": "Yaw Adjustment"` \
 &plus; `"createbigcannons.ponder.cannon_mount/upside_down_cannon_mounts.header": "Placing Cannon Mounts upside down"` \
@@ -26,6 +27,14 @@ Additions: \
 &plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_5": "Fire cannon"` \
 &plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_6": "The Fixed Cannon Mount cannot be extended."` \
 &plus; `"createbigcannons.ponder.cannon_mount/using_fixed_cannon_mounts.text_7": "Use a wrench to rotate the Fixed Cannon Mount."` \
+&plus; `"createbigcannons.ponder.munitions/wet_ammo_storage.header": "Protecting Munitions with Waterlogging, and its Side Effects"` \
+&plus; `"createbigcannons.ponder.munitions/wet_ammo_storage.text_1": "Propellant blocks, as well as projectiles, are vulnerable to exploding from fire and other explosions."` \
+&plus; `"createbigcannons.ponder.munitions/wet_ammo_storage.text_2": "Munition blocks can be protected from fire and explosions by waterlogging them."` \
+&plus; `"createbigcannons.ponder.munitions/wet_ammo_storage.text_3": "However, waterlogging causes propellant blocks to become damp."` \
+&plus; `"createbigcannons.ponder.munitions/wet_ammo_storage.text_4": "Damp propellant is weaker and also fails to ignite if it is placed as the first propellant block in a big cannon."` \
+&plus; `"createbigcannons.ponder.munitions/wet_ammo_storage.text_5": "To fix this, damp propellant must be left to dry, and cannot be dried in a furnace like wet sponges."` \
+&plus; `"createbigcannons.ponder.munitions/wet_ammo_storage.text_6": "However, propellant placed in hot places like the Nether will instantly dry, similar to wet sponges."` \
+&plus; `"entity.createbigcannons.primed_propellant": "Primed Propellant"` \
 &plus; `"item.createbigcannons.wired_fuze": "Wired Fuze"` \
 &plus; `"item.createbigcannons.wired_fuze.tooltip": "WIRED FUZE"` \
 &plus; `"item.createbigcannons.wired_fuze.tooltip.behaviour1": "The fuze detonates when powered by redstone."` \

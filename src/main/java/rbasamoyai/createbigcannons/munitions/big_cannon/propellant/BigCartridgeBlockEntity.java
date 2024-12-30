@@ -27,8 +27,7 @@ public class BigCartridgeBlockEntity extends SyncedBlockEntity {
 		this.storedPower = tag.getInt("Power");
 	}
 
-	public void setPower(int power) {
-		this.storedPower = power;
-	}
+	public void setPower(int power) { this.storedPower = power; }
+	public int getPower() { return this.storedPower; }
 
 }

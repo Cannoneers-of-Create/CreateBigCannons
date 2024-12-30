@@ -31,6 +31,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
@@ -365,6 +366,86 @@ public class CannonLoadingScenes {
 		scene.world.hideSection(cannon, null);
 		scene.effects.emitParticles(util.vector.centerOf(2, 1, 2), Emitter.simple(ParticleTypes.EXPLOSION_EMITTER, util.vector.of(0, 0, 0)), 1, 10);
 		scene.idle(80);
+
+		scene.markAsFinished();
+	}
+
+	public static void wetAmmoStorage(SceneBuilder scene, SceneBuildingUtil util) {
+		scene.title("munitions/wet_ammo_storage", "Protecting Munitions with Waterlogging, and its Side Effects");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
+
+		Selection sel = util.select.fromTo(1, 1, 2, 3, 1, 2);
+		scene.idle(15);
+		scene.world.showSection(sel, Direction.DOWN);
+		scene.idle(30);
+		scene.overlay.showText(50)
+			.text("Propellant blocks, as well as projectiles, are vulnerable to exploding from fire and other explosions.");
+		scene.idle(65);
+		scene.overlay.showText(70)
+			.text("Munition blocks can be protected from fire and explosions by waterlogging them.")
+			.pointAt(util.vector.centerOf(2, 1, 2));
+		scene.idle(30);
+		scene.world.modifyBlocks(sel, state -> state.setValue(BigCannonMunitionBlock.WATERLOGGED, true)
+			.setValue(BigCannonMunitionBlock.DAMP, true), false);
+		Emitter splashEmitter = Emitter.simple(ParticleTypes.SPLASH, util.vector.of(0, 0.05, 0));
+		Vec3 blockSurface1 = util.vector.centerOf(util.grid.at(1, 1, 2));
+		Vec3 blockSurface2 = util.vector.centerOf(util.grid.at(2, 1, 2));
+		Vec3 blockSurface3 = util.vector.centerOf(util.grid.at(3, 1, 2));
+		scene.effects.emitParticles(blockSurface1.add(0, 0.5, 0), splashEmitter, 5, 2);
+		scene.effects.emitParticles(blockSurface2.add(0, 0.5, 0), splashEmitter, 5, 2);
+		scene.effects.emitParticles(blockSurface3.add(0, 0.5, 0), splashEmitter, 5, 2);
+		scene.idle(55);
+
+		scene.overlay.showOutline(PonderPalette.RED, new Object(), sel, 80);
+		scene.overlay.showText(80)
+			.attachKeyFrame()
+			.text("However, waterlogging causes propellant blocks to become damp.")
+			.colored(PonderPalette.RED)
+			.pointAt(util.vector.centerOf(2, 1, 2));
+
+		Emitter moisture = Emitter.withinBlockSpace(ParticleTypes.DRIPPING_WATER, util.vector.of(0, 1e-5, 0));
+		for (int i = 0; i < 3; ++i) {
+			scene.idle(30);
+			if (i == 0)
+				scene.world.modifyBlocks(sel, state -> state.setValue(BigCannonMunitionBlock.WATERLOGGED, false), false);
+			scene.effects.emitParticles(blockSurface1, moisture, 3, 2);
+			scene.effects.emitParticles(blockSurface2, moisture, 3, 2);
+			scene.effects.emitParticles(blockSurface3, moisture, 3, 2);
+		}
+
+		scene.idle(5);
+		scene.overlay.showText(50)
+			.attachKeyFrame()
+			.text("Damp propellant is weaker and also fails to ignite if it is placed as the first propellant block in a big cannon.")
+			.colored(PonderPalette.RED);
+		scene.idle(30);
+		scene.effects.emitParticles(blockSurface1, moisture, 3, 2);
+		scene.effects.emitParticles(blockSurface2, moisture, 3, 2);
+		scene.effects.emitParticles(blockSurface3, moisture, 3, 2);
+		scene.idle(35);
+		scene.overlay.showText(50)
+			.text("To fix this, damp propellant must be left to dry, and cannot be dried in a furnace like wet sponges.")
+			.colored(PonderPalette.BLUE);
+		scene.idle(30);
+		scene.effects.emitParticles(blockSurface1, moisture, 3, 2);
+		scene.effects.emitParticles(blockSurface2, moisture, 3, 2);
+		scene.effects.emitParticles(blockSurface3, moisture, 3, 2);
+		scene.idle(35);
+
+		scene.world.modifyBlocks(util.select.fromTo(0, 0, 0, 4, 0, 4), state -> {
+			if (state.getBlock() == Blocks.SNOW_BLOCK)
+				return Blocks.NETHERRACK.defaultBlockState();
+			if (state.getBlock() == Blocks.WHITE_CONCRETE)
+				return Blocks.BLACKSTONE.defaultBlockState();
+			return state;
+		}, true);
+		scene.idle(30);
+		scene.overlay.showText(50)
+			.attachKeyFrame()
+			.text("However, propellant placed in hot places like the Nether will instantly dry, similar to wet sponges.")
+			.colored(PonderPalette.GREEN);
+		scene.idle(65);
 
 		scene.markAsFinished();
 	}
