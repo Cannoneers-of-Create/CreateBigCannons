@@ -56,6 +56,7 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
                     && cBlock1.canConnectToSide(state1, opposite)
                     && be1 instanceof IAutocannonBlockEntity cbe1) {
                 cbe1.cannonBehavior().setConnectedFace(opposite, false);
+                cbe1.cannonBehavior().setWelded(opposite, false);
                 be1.setChanged();
             }
         }
@@ -70,6 +71,7 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
                     && cBlock2.canConnectToSide(state2, facing)
                     && be2 instanceof IAutocannonBlockEntity cbe2) {
                 cbe2.cannonBehavior().setConnectedFace(facing, false);
+                cbe2.cannonBehavior().setWelded(facing, false);
                 be2.setChanged();
             }
         }

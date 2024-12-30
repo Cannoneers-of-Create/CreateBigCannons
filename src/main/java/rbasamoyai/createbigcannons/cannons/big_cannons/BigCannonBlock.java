@@ -84,6 +84,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 			&& be1 instanceof IBigCannonBlockEntity cbe1
 			&& cBlock1.canConnectToSide(state1, opposite)) {
 			cbe1.cannonBehavior().setConnectedFace(opposite, false);
+			cbe1.cannonBehavior().setWelded(opposite, false);
 			if (cbe1 instanceof LayeredBigCannonBlockEntity layered) {
 				for (CannonCastShape layer : layered.getLayers().keySet()) {
 					layered.setLayerConnectedTo(opposite, layer, false);
@@ -101,6 +102,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 			&& be2 instanceof IBigCannonBlockEntity cbe2
 			&& cBlock2.canConnectToSide(state2, facing)) {
 			cbe2.cannonBehavior().setConnectedFace(facing, false);
+			cbe2.cannonBehavior().setWelded(facing, false);
 			if (cbe2 instanceof LayeredBigCannonBlockEntity layered) {
 				for (CannonCastShape layer : layered.getLayers().keySet()) {
 					layered.setLayerConnectedTo(facing, layer, false);
