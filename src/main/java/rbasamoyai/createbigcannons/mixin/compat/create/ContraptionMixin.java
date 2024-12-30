@@ -124,7 +124,7 @@ public abstract class ContraptionMixin {
 		Direction offsetVal = offset.get();
 		Direction originalForcedDir = ((CanLoadBigCannon) this.createbigcannons$self).createbigcannons$getOriginalForcedDirection(level);
 		if (offsetVal != originalForcedDir && originalForcedDir != forcedDirection)
-			offset.set(offsetVal.getOpposite());
+			offset.set(originalForcedDir == null ? null : offsetVal.getOpposite());
 		return false;
 	}
 

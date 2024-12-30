@@ -55,6 +55,7 @@ and freedom tastes of reality..."* \
 - Fixed Quick-Firing Breech side lever not actually ejecting the contents
 - Fixed Quick-Firing Breech accepting input from the sides
 - Fixed some waterloggable blocks not becoming waterlogged when placed in water
+- Fixed Rope Pulley integration making it unmovable in some cases (issue #719)
 
 ## [5.7.2] - 2024-12-18
 
