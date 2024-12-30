@@ -9,15 +9,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.PrimedPropellant;
+import rbasamoyai.createbigcannons.remix.CBCExplodableBlock;
 
 @Mixin(BigCartridgeBlock.class)
-public abstract class BigCartridgeBlockMixin extends DirectionalBlock {
+public abstract class BigCartridgeBlockMixin extends DirectionalBlock implements CBCExplodableBlock {
 
 	BigCartridgeBlockMixin(Properties properties) { super(properties); }
 
@@ -27,6 +29,12 @@ public abstract class BigCartridgeBlockMixin extends DirectionalBlock {
 	public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction direction, @Nullable LivingEntity igniter) {
 		this.spawnPrimedPropellant(level, pos, state);
 		level.removeBlock(pos, false);
+	}
+
+	@Override
+	public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+		this.createbigcannons$onBlockExplode(level, pos, state, explosion);
+		super.onBlockExploded(state, level, pos, explosion);
 	}
 
 	@Override

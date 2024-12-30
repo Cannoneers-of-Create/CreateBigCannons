@@ -22,7 +22,7 @@ public class ValueSettingsClientMixin {
 
 	@Shadow public BlockPos interactHeldPos;
 
-	@WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/foundation/gui/ScreenOpener;open(Lnet/minecraft/client/gui/screens/Screen;)V"), remap = false)
+	@WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/foundation/gui/ScreenOpener;open(Lnet/minecraft/client/gui/screens/Screen;)V"))
 	private void createbigcannons$tick$openScreen(Screen screen, Operation<Void> original, @Local ValueSettingsBehaviour valueSettingBehaviour,
 												  @Local Player player, @Local BlockHitResult blockHitResult) {
 		if (valueSettingBehaviour instanceof FixedCannonMountScrollValueBehaviour fixedMountBehaviour) {
