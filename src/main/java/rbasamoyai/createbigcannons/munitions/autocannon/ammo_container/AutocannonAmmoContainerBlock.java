@@ -63,7 +63,9 @@ public class AutocannonAmmoContainerBlock extends Block implements IWrenchable, 
 	@Override
 	@Nullable
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return this.defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis());
+		boolean waterlogged = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
+		return this.defaultBlockState().setValue(AXIS, context.getHorizontalDirection().getAxis())
+			.setValue(WATERLOGGED, waterlogged);
 	}
 
 	@Override

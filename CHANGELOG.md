@@ -54,6 +54,7 @@ and freedom tastes of reality..."* \
 - Fixed Quick-Firing Breech smoke on assembled cannons not persisting
 - Fixed Quick-Firing Breech side lever not actually ejecting the contents
 - Fixed Quick-Firing Breech accepting input from the sides
+- Fixed some waterloggable blocks not becoming waterlogged when placed in water
 
 ## [5.7.2] - 2024-12-18
 
