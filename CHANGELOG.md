@@ -45,6 +45,7 @@ and freedom tastes of reality..."* \
   - Cannon Mounts can also be flipped by using the wrench
 - Changed Cannon Mount item model to be more consistent with in-world appearance
 - Reduced default Proximity Fuze arming delay to 5 gameticks
+- Updated Finnish translation courtesy of Apinoita
 ### Fixed
 - Fixed rendering of pitch shaft for down-facing cannons
 - Fixed display on some ponders
