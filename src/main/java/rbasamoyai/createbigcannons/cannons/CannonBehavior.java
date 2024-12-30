@@ -113,6 +113,10 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 	public void read(CompoundTag nbt, boolean clientPacket) {
 		this.currentFacing = nbt.contains("Facing") ? Direction.byName(nbt.getString("Facing")) : null;
 
+		boolean updateFlag = false;
+		Set<Direction> oldConnected = EnumSet.noneOf(Direction.class);
+		oldConnected.addAll(this.connectedTowards);
+
 		this.connectedTowards.clear();
 		ListTag connectionTag = nbt.getList("Connections", Tag.TAG_STRING);
 		connectionTag.stream()
@@ -121,6 +125,9 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 			.filter(Objects::nonNull)
 			.forEach(this.connectedTowards::add);
 
+		Set<Direction> oldWelded = EnumSet.noneOf(Direction.class);
+		oldConnected.addAll(this.weldedTowards);
+
 		this.weldedTowards.clear();
 		ListTag weldsTag = nbt.getList("Welds", Tag.TAG_STRING);
 		weldsTag.stream()
@@ -128,6 +135,13 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 			.map(Direction::byName)
 			.filter(Objects::nonNull)
 			.forEach(this.weldedTowards::add);
+
+		if (clientPacket && (!oldConnected.equals(this.connectedTowards) || !oldWelded.equals(this.weldedTowards))) {
+			if (this.getWorld() != null) {
+				BlockState blockState = this.blockEntity.getBlockState();
+				this.getWorld().sendBlockUpdated(this.getPos(), blockState, blockState, 8);
+			}
+		}
 
 		super.read(nbt, clientPacket);
 	}

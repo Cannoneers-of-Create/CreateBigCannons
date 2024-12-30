@@ -90,7 +90,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 					layered.setLayerConnectedTo(opposite, layer, false);
 				}
 			}
-			be1.setChanged();
+			cbe1.cannonBehavior().blockEntity.notifyUpdate();
 		}
 		BlockPos pos2 = pos.relative(opposite);
 		BlockState state2 = level.getBlockState(pos2);
@@ -108,7 +108,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 					layered.setLayerConnectedTo(facing, layer, false);
 				}
 			}
-			be2.setChanged();
+			cbe2.cannonBehavior().blockEntity.notifyUpdate();
 		}
 	}
 
@@ -122,7 +122,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 				Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
 			}
 			cbe.cannonBehavior().removeBlock();
-			be.setChanged();
+			cbe.cannonBehavior().blockEntity.notifyUpdate();
 			if (!innerState.isAir()) {
 				innerState.getBlock().playerWillDestroy(level, pos, innerState, player);
 				SoundType soundtype = innerState.getSoundType();
@@ -179,7 +179,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 							layered.setLayerConnectedTo(opposite, layer, true);
 						}
 					}
-					be1.setChanged();
+					cbe1.cannonBehavior().blockEntity.notifyUpdate();
 					if (level instanceof ServerLevel slevel) {
 						Vec3 particlePos = center.add(offset);
 						slevel.sendParticles(ParticleTypes.CRIT, particlePos.x, particlePos.y, particlePos.z, 10, 0.5d, 0.5d, 0.5d, 0.1d);
@@ -216,13 +216,13 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 							layered.setLayerConnectedTo(facing, layer, true);
 						}
 					}
-					be2.setChanged();
+					cbe2.cannonBehavior().blockEntity.notifyUpdate();
 					if (level instanceof ServerLevel slevel) {
 						Vec3 particlePos = center.add(offset.reverse());
 						slevel.sendParticles(ParticleTypes.CRIT, particlePos.x, particlePos.y, particlePos.z, 10, 0.5d, 0.5d, 0.5d, 0.1d);
 					}
 				}
-				be.setChanged();
+				cbe.cannonBehavior().blockEntity.notifyUpdate();
 			}
 		}
 	}

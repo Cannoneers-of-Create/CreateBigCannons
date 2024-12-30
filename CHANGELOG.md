@@ -57,6 +57,7 @@ and freedom tastes of reality..."* \
 - Fixed some waterloggable blocks not becoming waterlogged when placed in water
 - Fixed Rope Pulley integration making it unmovable in some cases (issue #719)
 - Fixed cannon welds not breaking when block is broken
+- Fixed cannon connected textures updating and appearance when welded
 
 ## [5.7.2] - 2024-12-18
 
