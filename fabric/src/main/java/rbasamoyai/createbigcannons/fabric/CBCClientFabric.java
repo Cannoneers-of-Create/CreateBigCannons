@@ -44,7 +44,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CBCClientCommon;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.compat.trinkets.CBCTrinketsClient;
 import rbasamoyai.createbigcannons.fabric.mixin.client.KeyMappingAccessor;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
@@ -85,7 +84,6 @@ public class CBCClientFabric implements ClientModInitializer {
 	}
 
 	public static void onModsLoaded(EnvType envType) {
-		CreateBigCannons.onCommonSetup();
 		if (envType != EnvType.CLIENT)
 			return;
 		CBCModsFabric.TRINKETS.executeIfInstalled(() -> () -> CBCTrinketsClient.initClient());
