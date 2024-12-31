@@ -11,6 +11,7 @@ and I'm waiting for you to follow me..."* \
 ### Added
 - Added recipes for Fixed Cannon Mount and Wired Fuze (fixes issue #730)
 - Added Mechanical Arm interaction with Fixed Cannon Mount
+- Added contraption connectivity between Fixed Cannon Mount and cannon blocks
 
 ## [5.8.0] - 2024-12-30
 

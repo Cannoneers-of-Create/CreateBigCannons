@@ -105,32 +105,35 @@ public class ContraptionRemix {
 	public static void customChecks(Contraption contraption, Level level, BlockPos pos, BlockState state,
 									@Nullable Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited,
 									CallbackInfoReturnable<Boolean> cir) {
-		if (CBCBlocks.CANNON_MOUNT.has(state)) {
-			Direction mountFacing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-			Direction vertical = state.getValue(BlockStateProperties.VERTICAL_DIRECTION);
-			BlockPos assemblyPos = pos.relative(vertical, -2);
-			if (level.isOutsideBuildHeight(assemblyPos)) return;
+		if (CBCBlocks.CANNON_MOUNT.has(state) || CBCBlocks.FIXED_CANNON_MOUNT.has(state) || CBCBlocks.CANNON_CARRIAGE.has(state)) {
+			BlockPos assemblyPos = null;
+
+			if (CBCBlocks.CANNON_MOUNT.has(state)) {
+				Direction vertical = state.getValue(BlockStateProperties.VERTICAL_DIRECTION);
+				assemblyPos = pos.relative(vertical, -2);
+			} else if (CBCBlocks.FIXED_CANNON_MOUNT.has(state)) {
+				assemblyPos = pos.above();
+			} else if (CBCBlocks.CANNON_CARRIAGE.has(state)) {
+				assemblyPos = pos.above();
+			}
+
+			if (assemblyPos == null || level.isOutsideBuildHeight(assemblyPos))
+				return;
 			BlockState state1 = level.getBlockState(assemblyPos);
-			if (!(state1.getBlock() instanceof CannonContraptionProviderBlock provider)) return;
+			if (!(state1.getBlock() instanceof CannonContraptionProviderBlock provider))
+				return;
+
 			Direction facing = provider.getFacing(state1);
-			if (facing.getAxis().isVertical() || facing.getAxis() == mountFacing.getAxis()) {
-				if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption))
-					simpleMarking((Contraption & CanLoadBigCannon) contraption, level, assemblyPos, Direction.DOWN, forcedDirection);
-				frontier.add(assemblyPos);
+			if (CBCBlocks.CANNON_MOUNT.has(state) && facing.getAxis().isHorizontal()
+				&& facing.getAxis() != state.getValue(BlockStateProperties.HORIZONTAL_FACING).getAxis()) {
+				return;
+			} else if (CBCBlocks.CANNON_CARRIAGE.has(state) && facing.getAxis().isHorizontal()
+				&& facing.getAxis() != state.getValue(BlockStateProperties.HORIZONTAL_FACING).getAxis()) {
 				return;
 			}
-		}
-		if (CBCBlocks.CANNON_CARRIAGE.has(state)) {
-			Direction mountFacing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
-			BlockPos assemblyPos = pos.above();
-			if (level.isOutsideBuildHeight(assemblyPos)) return;
-			BlockState state1 = level.getBlockState(assemblyPos);
-			if (!(state1.getBlock() instanceof CannonContraptionProviderBlock provider)) return;
-			Direction facing = provider.getFacing(state1);
-			if (facing.getAxis().isVertical() || facing.getAxis() == mountFacing.getAxis()) {
-				frontier.add(assemblyPos);
-				return;
-			}
+			if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption))
+				simpleMarking((Contraption & CanLoadBigCannon) contraption, level, assemblyPos, Direction.DOWN, forcedDirection);
+			frontier.add(assemblyPos);
 		}
 	}
 
