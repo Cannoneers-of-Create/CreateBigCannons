@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.8.0] - Unreleased
+## [5.8.0] - 2024-12-30
 
 *"I'm free &ndash; I'm FREE, \
 and freedom tastes of reality..."* \
