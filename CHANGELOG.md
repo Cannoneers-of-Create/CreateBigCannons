@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.8.1] - Unreleased
+## [5.8.1] - 2024-12-31
 
 *"I'm free &ndash; I'm FREE, \
 and I'm waiting for you to follow me..."* \
