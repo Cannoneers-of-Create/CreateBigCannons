@@ -8,6 +8,9 @@ and I'm waiting for you to follow me..."* \
 
 **Create Big Cannons 5.8.1. Comes with a few critical fixes for Create Big Cannons 5.8.0.**
 
+### Added
+- Added recipes for Fixed Cannon Mount and Wired Fuze (fixes issue #730)
+
 ## [5.8.0] - 2024-12-30
 
 *"I'm free &ndash; I'm FREE, \

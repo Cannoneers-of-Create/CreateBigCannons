@@ -6,6 +6,10 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
+## 5.8.0 → 5.8.1
+Additions: \
+&plus; `"tag.createbigcannons.ingot_copper": "Copper Ingots"`
+
 ## 5.7.2 → 5.8.0
 Additions: \
 &plus; `"block.createbigcannons.cannon_mount_extension": "Cannon Mount Extension"` \

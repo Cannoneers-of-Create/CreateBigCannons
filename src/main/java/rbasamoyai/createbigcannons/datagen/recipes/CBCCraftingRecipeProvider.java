@@ -65,6 +65,12 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy(getHasName(CBCItems.IMPACT_FUZE.get()), has(CBCItems.IMPACT_FUZE.get()))
 			.save(cons);
 
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCItems.WIRED_FUZE.get(), 4)
+			.define('I', CBCTags.CBCItemTags.INGOT_COPPER).define('W', CBCTags.CBCItemTags.DUSTS_REDSTONE)
+			.pattern("WIW")
+			.unlockedBy("has_redstone", has(CBCTags.CBCItemTags.DUSTS_REDSTONE))
+			.save(cons);
+
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, CBCItems.TRACER_TIP.get(), 4)
 			.requires(CBCTags.CBCItemTags.DUST_GLOWSTONE).requires(Items.BLAZE_POWDER)
 			.unlockedBy("has_glowstone", has(CBCTags.CBCItemTags.DUST_GLOWSTONE))
@@ -352,6 +358,13 @@ public class CBCCraftingRecipeProvider {
 			.pattern("GCG")
 			.pattern(" S ")
 			.unlockedBy(getHasName(CBCBlocks.CANNON_MOUNT.get()), has(CBCBlocks.CANNON_MOUNT.get()))
+			.save(cons);
+
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCBlocks.FIXED_CANNON_MOUNT.get())
+			.define('C', AllBlocks.ANDESITE_CASING.get()).define('G', CBCTags.CBCItemTags.GUNPOWDER).define('I', CBCTags.CBCItemTags.SHEET_IRON)
+			.pattern(" I ")
+			.pattern("GCG")
+			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCItems.CAST_IRON_SLIDING_BREECHBLOCK.get())

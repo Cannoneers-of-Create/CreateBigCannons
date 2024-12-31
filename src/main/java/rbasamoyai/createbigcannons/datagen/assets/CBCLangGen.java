@@ -339,6 +339,7 @@ public class CBCLangGen {
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_BRASS, "Brass Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_BRONZE, "Bronze Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_CAST_IRON, "Cast Iron Ingots");
+		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_COPPER, "Copper Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_IRON, "Iron Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_NETHERSTEEL, "Nethersteel Ingots");
 		createEMITagTranslation(CBCTags.CBCItemTags.INGOT_STEEL, "Steel Ingots");

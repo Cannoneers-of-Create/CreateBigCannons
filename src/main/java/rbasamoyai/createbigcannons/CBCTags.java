@@ -166,6 +166,7 @@ public class CBCTags {
 	}
 
 	public static class CBCItemTags {
+		// TODO: Update fabric ore tags to use fabric-convention-tags in 1.21
 		public static final TagKey<Item>
 			IMPACT_FUZE_HEAD = makeTag("impact_fuze_head"),
 			NUGGET_CAST_IRON = commonTag("nugget_cast_iron", "nuggets/cast_iron", "cast_iron_nuggets"),
@@ -186,6 +187,7 @@ public class CBCTags {
 			NUGGET_IRON = commonTag("nugget_iron", "nuggets/iron", "iron_nuggets"),
 			SHEET_IRON = commonTag("sheet_iron", "plates/iron", "iron_plates"),
 			NUGGET_COPPER = commonTag("nugget_copper", "nuggets/copper", "copper_nuggets"),
+			INGOT_COPPER = commonTag("ingot_copper", "ingots/copper", "copper_ingots"),
 			GUNPOWDER = commonTag("gunpowder", "gunpowder", "gunpowder" /* No fabric c: tag */),
 			GEMS_QUARTZ = commonTag("gems_quartz", "gems/quartz", "quartz"),
 			DUSTS_REDSTONE = commonTag("dusts_redstone", "dusts/redstone", "redstone_dusts"),
