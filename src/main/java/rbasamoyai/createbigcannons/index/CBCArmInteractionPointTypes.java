@@ -13,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.CannonMountPoint;
 
 public class CBCArmInteractionPointTypes {
@@ -32,7 +33,11 @@ public class CBCArmInteractionPointTypes {
 
 		@Override
 		public boolean canCreatePoint(Level level, BlockPos pos, BlockState state) {
-			return CBCBlocks.CANNON_MOUNT.has(state) && level.getBlockEntity(pos) instanceof CannonMountBlockEntity;
+			if (CBCBlocks.CANNON_MOUNT.has(state))
+				return level.getBlockEntity(pos) instanceof CannonMountBlockEntity;
+			if (CBCBlocks.FIXED_CANNON_MOUNT.has(state))
+				return level.getBlockEntity(pos) instanceof FixedCannonMountBlockEntity;
+			return false;
 		}
 
 		@Nullable

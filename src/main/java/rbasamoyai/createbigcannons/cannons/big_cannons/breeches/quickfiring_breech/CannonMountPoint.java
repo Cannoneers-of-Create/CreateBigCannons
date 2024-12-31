@@ -21,6 +21,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCan
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
@@ -39,7 +40,12 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 
 	@Override
 	protected Vec3 getInteractionPositionVector() {
-		return this.getLevel().getBlockEntity(this.pos) instanceof CannonMountBlockEntity mount ? mount.getInteractionLocation() : super.getInteractionPositionVector();
+		BlockEntity be = this.getLevel().getBlockEntity(this.pos);
+		if (be instanceof CannonMountBlockEntity mount)
+			return mount.getInteractionLocation();
+		if (be instanceof FixedCannonMountBlockEntity mount)
+			return mount.getInteractionLocation();
+		return super.getInteractionPositionVector();
 	}
 
 	public ItemStack getInsertedResultAndDoSomething(ItemStack stack, boolean simulate, AbstractMountedCannonContraption cannon,

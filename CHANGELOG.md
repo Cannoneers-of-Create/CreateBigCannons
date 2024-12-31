@@ -6,10 +6,11 @@
 and I'm waiting for you to follow me..."* \
 &ndash; "I'm Free", The Who (1969)
 
-**Create Big Cannons 5.8.1. Comes with a few critical fixes for Create Big Cannons 5.8.0.**
+**Create Big Cannons 5.8.1. Comes with a few critical fixes and improvements for Create Big Cannons 5.8.0.**
 
 ### Added
 - Added recipes for Fixed Cannon Mount and Wired Fuze (fixes issue #730)
+- Added Mechanical Arm interaction with Fixed Cannon Mount
 
 ## [5.8.0] - 2024-12-30
 

@@ -4,6 +4,8 @@ import static rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMoun
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -252,6 +254,13 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		if (!this.running)
 			this.mountedContraption = null;
 	}
+
+	public Vec3 getInteractionLocation() {
+		return this.mountedContraption != null && this.mountedContraption.getContraption() instanceof AbstractMountedCannonContraption cannon
+			? cannon.getInteractionVec(this.mountedContraption) : Vec3.atCenterOf(this.worldPosition);
+	}
+
+	@Nullable public PitchOrientedContraptionEntity getContraption() { return this.mountedContraption; }
 
 	public static class FixedCannonMountScrollValueBehaviour extends ValveHandleBlockEntity.ValveHandleScrollValueBehaviour {
 		public static final BehaviourType<FixedCannonMountScrollValueBehaviour> PITCH_TYPE = new BehaviourType<>();
