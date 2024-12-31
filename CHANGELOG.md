@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.8.1] - Unreleased
+
+*"I'm free &ndash; I'm FREE, \
+and I'm waiting for you to follow me..."* \
+&ndash; "I'm Free", The Who (1969)
+
+**Create Big Cannons 5.8.1. Comes with a few critical fixes for Create Big Cannons 5.8.0.**
+
 ## [5.8.0] - 2024-12-30
 
 *"I'm free &ndash; I'm FREE, \
