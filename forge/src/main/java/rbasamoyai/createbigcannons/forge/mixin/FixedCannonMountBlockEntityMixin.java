@@ -15,13 +15,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 
-@Mixin(CannonMountBlockEntity.class)
-public abstract class CannonMountMixin extends SmartBlockEntity {
+@Mixin(FixedCannonMountBlockEntity.class)
+public abstract class FixedCannonMountBlockEntityMixin extends SmartBlockEntity {
 
-	CannonMountMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
+	FixedCannonMountBlockEntityMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
 		super(typeIn, pos, state);
 	}
 

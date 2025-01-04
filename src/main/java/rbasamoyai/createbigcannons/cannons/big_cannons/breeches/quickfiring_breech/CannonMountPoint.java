@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.ExtendsCannonMount;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
@@ -41,8 +42,11 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 	@Override
 	protected Vec3 getInteractionPositionVector() {
 		BlockEntity be = this.getLevel().getBlockEntity(this.pos);
-		if (be instanceof CannonMountBlockEntity mount)
-			return mount.getInteractionLocation();
+		if (be instanceof ExtendsCannonMount extendsCannonMount) {
+			CannonMountBlockEntity mount = extendsCannonMount.getCannonMount();
+			if (mount != null)
+				mount.getInteractionLocation();
+		}
 		if (be instanceof FixedCannonMountBlockEntity mount)
 			return mount.getInteractionLocation();
 		return super.getInteractionPositionVector();

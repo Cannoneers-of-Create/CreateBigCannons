@@ -11,6 +11,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.ExtendsCannonMount;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
@@ -28,7 +29,10 @@ public abstract class CannonMountPointMixin extends ArmInteractionPoint {
 		CannonMountPoint self = (CannonMountPoint) (Object) this;
 		BlockEntity be = this.getLevel().getBlockEntity(this.pos);
 		PitchOrientedContraptionEntity poce;
-		if (be instanceof CannonMountBlockEntity mount) {
+		if (be instanceof ExtendsCannonMount extendsMount) {
+			CannonMountBlockEntity mount = extendsMount.getCannonMount();
+			if (mount == null)
+				return stack;
 			poce = mount.getContraption();
 		} else if (be instanceof FixedCannonMountBlockEntity mount) {
 			poce = mount.getContraption();

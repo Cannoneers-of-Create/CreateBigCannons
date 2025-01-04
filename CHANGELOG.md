@@ -4,6 +4,16 @@
 
 **Create Big Cannons 5.8.2. Comes with a few fixes, mainly for missing functionality.**
 
+Added:
+- Added direct item input to Fixed Cannon Mount and Cannon Mount Extension
+  - Also added direct item input to Yaw Controller
+- Added Mechanical Arm support to Cannon Mount Extension
+  - Also added Mechanical Arm support to Yaw Controller
+- Added cannon contraption info tooltip to Fixed Cannon Mount
+- Added tooltip to Fixed Cannon Mount
+Changed:
+- Improved placement of Cannon Mount Extension to prioritize adjacent Cannon Mounts
+
 ## [5.8.1] - 2024-12-31
 
 *"I'm free &ndash; I'm FREE, \

@@ -40,6 +40,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.ExtendsCannonMount;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
@@ -253,6 +254,12 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 
 		if (!this.running)
 			this.mountedContraption = null;
+	}
+
+	@Override
+	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+		ExtendsCannonMount.addCannonInfoToTooltip(tooltip, this.mountedContraption);
+		return true;
 	}
 
 	public Vec3 getInteractionLocation() {

@@ -14,15 +14,13 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 
-@Mixin(CannonMountBlockEntity.class)
-public abstract class CannonMountMixin extends SmartBlockEntity implements SidedStorageBlockEntity {
+@Mixin(FixedCannonMountBlockEntity.class)
+public abstract class FixedCannonMountBlockEntityMixin extends SmartBlockEntity implements SidedStorageBlockEntity {
 
-	CannonMountMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
-		super(typeIn, pos, state);
-	}
+	FixedCannonMountBlockEntityMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) { super(typeIn, pos, state); }
 
 	@Shadow
 	protected PitchOrientedContraptionEntity mountedContraption;

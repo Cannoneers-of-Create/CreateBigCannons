@@ -13,6 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtensionBlockEntity;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.CannonMountPoint;
 
@@ -37,6 +39,10 @@ public class CBCArmInteractionPointTypes {
 				return level.getBlockEntity(pos) instanceof CannonMountBlockEntity;
 			if (CBCBlocks.FIXED_CANNON_MOUNT.has(state))
 				return level.getBlockEntity(pos) instanceof FixedCannonMountBlockEntity;
+			if (CBCBlocks.CANNON_MOUNT_EXTENSION.has(state))
+				return level.getBlockEntity(pos) instanceof CannonMountExtensionBlockEntity;
+			if (CBCBlocks.YAW_CONTROLLER.has(state))
+				return level.getBlockEntity(pos) instanceof YawControllerBlockEntity;
 			return false;
 		}
 
