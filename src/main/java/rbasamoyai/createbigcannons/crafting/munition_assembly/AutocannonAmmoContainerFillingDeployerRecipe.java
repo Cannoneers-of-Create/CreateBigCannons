@@ -11,8 +11,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
-import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
+import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
 public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Container> {
 
@@ -30,7 +30,8 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Cont
 
 	@Override
 	public boolean matches(Container container, Level level) {
-		if (!(this.ammoContainer.getItem() instanceof AutocannonAmmoContainerItem)
+		if (!(this.ammoContainer.getItem() instanceof AutocannonAmmoContainerItem containerItem)
+			|| containerItem.isCreative()
 			|| !(this.insertedAmmo.getItem() instanceof AutocannonAmmoItem ammoItem)) return false;
 		AutocannonAmmoType ammoType = AutocannonAmmoType.of(this.insertedAmmo);
 		AutocannonAmmoType ctType = AutocannonAmmoContainerItem.getTypeOfContainer(this.ammoContainer);

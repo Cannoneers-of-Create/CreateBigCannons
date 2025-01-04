@@ -13,6 +13,8 @@ Added:
 - Added tooltip to Fixed Cannon Mount
 Changed:
 - Improved placement of Cannon Mount Extension to prioritize adjacent Cannon Mounts
+Fixed:
+- Fixed Creative Autocannon Ammo Containers being able to be filled using Deployers
 
 ## [5.8.1] - 2024-12-31
 
