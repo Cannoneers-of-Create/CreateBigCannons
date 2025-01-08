@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.8.2] - Unreleased
+## [5.8.2] - 2025-01-07
 
 **Create Big Cannons 5.8.2. Comes with a few fixes, mainly for missing functionality.**
 
