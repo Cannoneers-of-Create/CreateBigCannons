@@ -4,6 +4,9 @@
 
 **Create Big Cannons 5.8.3. More fixes.**
 
+Fixed:
+- Fixed autocannon seats not displaying properly when rendered using instancing
+
 ## [5.8.2] - 2025-01-07
 
 **Create Big Cannons 5.8.2. Comes with a few fixes, mainly for missing functionality.**

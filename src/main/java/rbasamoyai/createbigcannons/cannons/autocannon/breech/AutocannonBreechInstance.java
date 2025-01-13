@@ -1,5 +1,8 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
 import com.jozufozu.flywheel.api.MaterialManager;
 import com.jozufozu.flywheel.api.instance.DynamicInstance;
 import com.jozufozu.flywheel.backend.instancing.blockentity.BlockEntityInstance;
@@ -9,10 +12,8 @@ import com.jozufozu.flywheel.core.materials.oriented.OrientedData;
 import com.jozufozu.flywheel.util.AnimationTickHolder;
 import com.mojang.math.Axis;
 
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
-
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -28,6 +29,7 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
     private OrientedData ejector;
 	private OrientedData seat;
 	private OrientedData ammoContainer;
+	private DyeColor seatColor;
     //private final OrientedData shell;
 
     private Direction facing;
@@ -51,9 +53,11 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
                 .createInstance();
         this.ejector.setRotation(q);
 
+		this.seatColor = this.blockEntity.getSeatColor();
+
         this.seat = this.materialManager.defaultCutout()
                 .material(Materials.ORIENTED)
-                .getModel(CBCBlockPartials.autocannonSeatFor(this.blockEntity.getSeatColor()), this.blockState, this.facing)
+                .getModel(CBCBlockPartials.autocannonSeatFor(this.seatColor), this.blockState, this.facing)
                 .createInstance();
         this.seat.setRotation(q).setPosition(this.getInstancePosition());
 
@@ -87,7 +91,7 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
     private void updateTransforms() {
         if (this.blockState.getValue(AutocannonBreechBlock.HANDLE)) {
             this.ejector.setColor((byte) 255, (byte) 255, (byte) 255, (byte) 0);
-            this.seat.setColor((byte) 255, (byte) 255, (byte) 255, (byte) (this.blockEntity.getSeatColor() == null ? 0 : 255));
+            this.seat.setColor((byte) 255, (byte) 255, (byte) 255, (byte) (this.seatColor == null ? 0 : 255));
         } else {
             this.seat.setColor((byte) 255, (byte) 255, (byte) 255, (byte) 0);
 
@@ -99,7 +103,7 @@ public class AutocannonBreechInstance extends BlockEntityInstance<AbstractAutoca
 
 		ItemStack container = this.blockEntity.getMagazine();
 		this.ammoContainer.setColor((byte) 255, (byte) 255, (byte) 255, (byte)(container.getItem() instanceof AutocannonAmmoContainerItem ? 255 : 0));
-		if (this.isFilled != this.isFilled() || this.magazineItem != this.getMagazineItem()) {
+		if (this.isFilled != this.isFilled() || this.magazineItem != this.getMagazineItem() || this.seatColor != this.blockEntity.getSeatColor()) {
 			this.remove();
 			this.init();
 			this.updateLight();
