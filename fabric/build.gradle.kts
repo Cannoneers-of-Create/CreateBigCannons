@@ -88,6 +88,7 @@ repositories {
 	maven("https://maven.jamieswhiteshirt.com/libs-release") // Reach Entity Attributes
 	maven("https://jitpack.io/") // Mixin Extras, Fabric ASM
 	maven("https://maven.ladysnake.org/releases") // Trinkets
+	maven("https://maven.squiddev.cc") // CC Tweaked
 }
 
 dependencies {
@@ -141,6 +142,9 @@ dependencies {
 	modCompileOnly("dev.emi:trinkets:${mod.dep("trinkets_fabric_version")}") { exclude(group = "com.terraformersmc") }
 	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${mod.dep("cca_fabric_version")}")
 	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${mod.dep("cca_fabric_version")}")
+
+	modCompileOnly("cc.tweaked:cc-tweaked-${mod.dep("minecraft_version")}-fabric-api:${mod.dep("cc_tweaked_version")}")
+	modLocalRuntime("cc.tweaked:cc-tweaked-${mod.dep("minecraft_version")}-fabric:${mod.dep("cc_tweaked_version")}")
 
 	commonBundle(project(common.path, "namedElements")) { isTransitive = false }
 	shadowBundle(project(common.path, "transformProductionFabric")) { isTransitive = false }

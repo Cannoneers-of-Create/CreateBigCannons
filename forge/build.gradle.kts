@@ -62,6 +62,7 @@ loom {
 
 repositories {
 	maven("https://maven.theillusivec4.top/") // Curios
+	maven("https://maven.squiddev.cc") // CC Tweaked
 }
 
 dependencies {
@@ -108,6 +109,13 @@ dependencies {
 	// Curios
 	modRuntimeOnly("top.theillusivec4.curios:curios-forge:${mod.dep("curios_forge_version")}")
 	modCompileOnly("top.theillusivec4.curios:curios-forge:${mod.dep("curios_forge_version")}:api")
+
+	modCompileOnly("cc.tweaked:cc-tweaked-${mod.dep("minecraft_version")}-forge-api:${mod.dep("cc_tweaked_version")}")
+	modCompileOnly("cc.tweaked:cc-tweaked-${mod.dep("minecraft_version")}-core-api:${mod.dep("cc_tweaked_version")}")
+
+	forgeRuntimeLibrary("cc.tweaked:cobalt:0.9.3")
+
+	modLocalRuntime("cc.tweaked:cc-tweaked-${mod.dep("minecraft_version")}-forge:${mod.dep("cc_tweaked_version")}")
 
 	commonBundle(project(common.path, "namedElements")) { isTransitive = false }
 	shadowBundle(project(common.path, "transformProductionForge")) { isTransitive = false }

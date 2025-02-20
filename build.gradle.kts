@@ -26,6 +26,7 @@ repositories {
 	maven("https://mvn.devos.one/releases/") // Porting Lib
 	maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") // Forge Config API Port
 	maven("https://maven.jamieswhiteshirt.com/libs-release") // Reach Entity Attributes
+	maven("https://maven.squiddev.cc") // CC Tweaked
 }
 
 loom {
@@ -57,6 +58,8 @@ dependencies {
 	}
 
 	modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") {isTransitive=false}
+
+	compileOnly("cc.tweaked:cc-tweaked-${mod.dep("minecraft_version")}-common-api:${mod.dep("cc_tweaked_version")}")
 }
 
 
