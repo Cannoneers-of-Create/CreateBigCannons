@@ -1,20 +1,15 @@
-package rbasamoyai.createbigcannons.compat.computercraft;
+package rbasamoyai.createbigcannons.compat.computercraft.peripherals;
 
-import dan200.computercraft.api.lua.IArguments;
-import dan200.computercraft.api.lua.LuaException;
 import dan200.computercraft.api.lua.LuaFunction;
 import dan200.computercraft.api.peripheral.GenericPeripheral;
-import dan200.computercraft.api.peripheral.PeripheralType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 
 public class CannonMountPeripheral implements GenericPeripheral {
 	@Override
 	public String id() {
-		return new ResourceLocation(CreateBigCannons.MOD_ID, "cannon_mount").toString();
+		return CreateBigCannons.MOD_ID+"cannon_mount";
 	}
 
 	@LuaFunction(mainThread = true)

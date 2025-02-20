@@ -46,7 +46,7 @@ public class BasinFoundryBlockEntity extends BasinOperatingBlockEntity {
 	}
 
 	@Override
-	protected boolean isRunning() {
+	public boolean isRunning() {
 		return this.running;
 	}
 

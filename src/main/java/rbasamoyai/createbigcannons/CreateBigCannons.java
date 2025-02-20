@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons;
 
+import dan200.computercraft.api.ComputerCraftAPI;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -17,6 +19,10 @@ import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
 import rbasamoyai.createbigcannons.cannon_loading.CBCModifiedContraptionRegistry;
+import rbasamoyai.createbigcannons.compat.computercraft.ComputerCraftLoader;
+import rbasamoyai.createbigcannons.compat.computercraft.peripherals.BasinFoundryPeripheral;
+import rbasamoyai.createbigcannons.compat.computercraft.peripherals.CannonCastPeripheral;
+import rbasamoyai.createbigcannons.compat.computercraft.peripherals.CannonMountPeripheral;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -95,6 +101,6 @@ public class CreateBigCannons {
 
 	public static void onCommonSetup() {
 		CBCModifiedContraptionRegistry.registerDefaults();
+		ComputerCraftLoader.loadCommon();
 	}
-
 }
