@@ -532,4 +532,7 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 		this.yawInterface.setBlockState(blockState);
 	}
 
+	public double getYaw() {
+		return this.cannonYaw;
+	}
 }
