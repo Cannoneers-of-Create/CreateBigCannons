@@ -35,5 +35,6 @@ public class FuzedBlockItemDetails extends BasicItemDetailProvider<FuzedProjecti
 			}
 			data.put("fuze", fuzeData);
 		}
+		data.put("tracerName", tag.getCompound("BlockEntityTag").getCompound("Tracer").get("id").getAsString());
 	}
 }

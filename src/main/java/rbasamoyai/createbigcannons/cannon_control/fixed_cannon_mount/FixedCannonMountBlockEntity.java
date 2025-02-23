@@ -356,4 +356,7 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		}
 	}
 
+	public boolean isRunning() {
+		return running;
+	}
 }

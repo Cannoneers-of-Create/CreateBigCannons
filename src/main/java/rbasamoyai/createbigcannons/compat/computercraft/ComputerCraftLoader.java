@@ -7,12 +7,17 @@ import rbasamoyai.createbigcannons.compat.computercraft.details.FuzedBlockItemDe
 import rbasamoyai.createbigcannons.compat.computercraft.peripherals.BasinFoundryPeripheral;
 import rbasamoyai.createbigcannons.compat.computercraft.peripherals.CannonCastPeripheral;
 import rbasamoyai.createbigcannons.compat.computercraft.peripherals.CannonMountPeripheral;
+import rbasamoyai.createbigcannons.compat.computercraft.peripherals.FixedCannonMountPeripheral;
+import rbasamoyai.createbigcannons.compat.computercraft.peripherals.FuzedProjectilePeripheral;
 
 public class ComputerCraftLoader {
 	public static void loadCommon(){
 		ComputerCraftAPI.registerGenericSource(new CannonMountPeripheral());
 		ComputerCraftAPI.registerGenericSource(new CannonCastPeripheral());
 		ComputerCraftAPI.registerGenericSource(new BasinFoundryPeripheral());
+
+		ComputerCraftAPI.registerGenericSource(new FixedCannonMountPeripheral());
+		ComputerCraftAPI.registerGenericSource(new FuzedProjectilePeripheral());
 		addDetails();
 	}
 

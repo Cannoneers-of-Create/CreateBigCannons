@@ -13,11 +13,6 @@ public class CannonCastPeripheral implements GenericPeripheral {
 		return CreateBigCannons.MOD_ID+":cannon_cast";
 	}
 
-	@Override
-	public PeripheralType getType() {
-		return PeripheralType.ofAdditional("fluid_storage");
-	}
-
 	@LuaFunction(mainThread = true)
 	public double getHeight(AbstractCannonCastBlockEntity ent) throws LuaException{
 		AbstractCannonCastBlockEntity cont = ent.getControllerBE();
