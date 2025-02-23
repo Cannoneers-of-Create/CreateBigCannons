@@ -4,6 +4,14 @@
 
 **Create Big Cannons 5.8.3. More fixes.**
 
+Added:
+- Added CC Integration
+  - Added Cannon Mount Peripheral
+  - Added Fixed Cannon Mount Peripheral
+  - Added Cannon Cast Peripheral
+  - Added Basin Foundry Peripheral
+  - Added Details to Fuzes / Fuzed Projectiles
+
 Fixed:
 - Fixed autocannon seats not displaying properly when rendered using instancing
 
