@@ -67,6 +67,6 @@ side = "BOTH"
 [[dependencies.createbigcannons]]
 modId = "computercraft"
 mandatory = false
-versionRange = ">=1.115.0"
+versionRange = "${cc_tweaked_requirement}"
 ordering = "NONE"
 side = "BOTH"

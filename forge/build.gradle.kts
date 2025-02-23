@@ -168,7 +168,8 @@ tasks.processResources {
 		"unify_version" to mod.dep("unify_forge_version"),
 		"copycats_requirement" to mod.dep("copycats_requirement_forge"),
 		"framedblocks_requirement" to mod.dep("framedblocks_requirement_forge"),
-		"curios_requirement" to mod.dep("curios_requirement_forge")
+		"curios_requirement" to mod.dep("curios_requirement_forge"),
+		"cc_tweaked_requirement" to mod.dep("cc_tweaked_requirement")
 	)
 }
 
