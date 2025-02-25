@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
 import com.simibubi.create.AllFluids;
 
+import io.github.tropheusj.milk.Milk;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
@@ -10,6 +11,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
@@ -23,9 +25,11 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.multiloader.CBCMobEffects;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FluidCloudParticleData;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
+import rbasamoyai.createbigcannons.multiloader.FluidPlatform;
 import rbasamoyai.createbigcannons.munitions.GasCloudEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnFluidShellExplode;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobEffectRegistry.OnHitBlock;
@@ -36,12 +40,15 @@ public class DefaultFluidCompat {
 	public static void registerMinecraftBlobEffects() {
 		FluidBlobEffectRegistry.registerHitEntity(Fluids.WATER, DefaultFluidCompat::waterHitEntity);
 		FluidBlobEffectRegistry.registerHitEntity(Fluids.LAVA, DefaultFluidCompat::lavaHitEntity);
+		FluidBlobEffectRegistry.registerHitEntity(FluidPlatform.getMilk(), DefaultFluidCompat::milkHitEntity);
 
 		FluidBlobEffectRegistry.registerHitBlock(Fluids.WATER, DefaultFluidCompat::waterHitBlock);
 		FluidBlobEffectRegistry.registerHitBlock(Fluids.LAVA, DefaultFluidCompat::lavaHitBlock);
+		FluidBlobEffectRegistry.registerHitBlock(FluidPlatform.getMilk(), DefaultFluidCompat::milkHitBlock);
 
 		FluidBlobEffectRegistry.registerFluidShellExplosionEffect(Fluids.WATER, DefaultFluidCompat::waterFluidShellExplode);
 		FluidBlobEffectRegistry.registerFluidShellExplosionEffect(Fluids.LAVA, DefaultFluidCompat::lavaFluidShellExplode);
+		FluidBlobEffectRegistry.registerFluidShellExplosionEffect(FluidPlatform.getMilk(), DefaultFluidCompat::milkFluidShellExplode);
 	}
 
 	public static void registerCreateBlobEffects() {
@@ -73,6 +80,22 @@ public class DefaultFluidCompat {
 			living.addEffect(new MobEffectInstance(effect));
 	}
 
+	public static void milkHitEntity(OnHitEntity.Context context) {
+		Entity entity = context.result().getEntity();
+		if (!(entity instanceof LivingEntity living))
+			return;
+		living.removeAllEffects();
+		living.addEffect(new MobEffectInstance(
+			CBCMobEffects.getMilkSaturatedEffect(),
+			context.burst().getBlobSize()*40,
+			1
+		));
+		if (living instanceof Player p) {
+			p.getFoodData().setSaturation(20);
+			p.getFoodData().setFoodLevel(20);
+		}
+	}
+
 	public static void waterHitBlock(OnHitBlock.Context context) {
 		if (!context.level().isClientSide)
 			douseFire(context.result().getBlockPos().relative(context.result().getDirection()), context.burst(), context.level());
@@ -86,6 +109,15 @@ public class DefaultFluidCompat {
 	public static void potionHitBlock(OnHitBlock.Context context) {
 		if (!context.level().isClientSide)
 			spawnGasCloud(context.result().getBlockPos().relative(context.result().getDirection()), context.burst(), context.level());
+	}
+
+	public static void milkHitBlock(OnHitBlock.Context context) {
+		if (!context.level().isClientSide)
+			spawnMilkGasCloud(
+				context.result().getBlockPos().relative(context.result().getDirection()),
+				context.burst(),
+				context.level()
+			);
 	}
 
 	public static void waterFluidShellExplode(OnFluidShellExplode.Context context) {
@@ -114,6 +146,16 @@ public class DefaultFluidCompat {
 		double y = context.y();
 		double z = context.z();
 		CBCSoundEvents.POTION_FLUID_RELEASE.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat() * 0.1f, false);
+		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat() * 0.1f, false);
+		level.addParticle(new FluidCloudParticleData(), true, x, y, z, 0, 0, 0);
+	}
+
+	public static void milkFluidShellExplode(OnFluidShellExplode.Context context) {
+		Level level = context.level();
+		double x = context.x();
+		double y = context.y();
+		double z = context.z();
+		CBCSoundEvents.MILK_FLUID_RELEASE.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat() * 0.1f, false);
 		CBCSoundEvents.FLUID_SHELL_EXPLOSION.playAt(level, x, y, z, 3, 0.9f + level.random.nextFloat() * 0.1f, false);
 		level.addParticle(new FluidCloudParticleData(), true, x, y, z, 0, 0, 0);
 	}
@@ -177,6 +219,23 @@ public class DefaultFluidCompat {
 			gasCloud.addEffect(new MobEffectInstance(effect));
 
 		gasCloud.setFixedColor(PotionUtils.getColor(PotionUtils.getAllEffects(tag)) | 0xff000000);
+		level.addFreshEntity(gasCloud);
+	}
+
+	public static void spawnMilkGasCloud(BlockPos pos, FluidBlobBurst blob, Level level) {
+		GasCloudEntity gasCloud = CBCEntityTypes.GAS_CLOUD.create(level);
+		gasCloud.setPos(Vec3.atCenterOf(pos));
+		gasCloud.setWaitTime(10);
+		gasCloud.setSize(blob.getBlobSize());
+		gasCloud.setDuration(250);
+
+		gasCloud.addEffect(new MobEffectInstance(
+			CBCMobEffects.getMilkSaturatedEffect(),
+			240,
+			0
+		));
+
+		gasCloud.setFixedColor(0xffffff);
 		level.addFreshEntity(gasCloud);
 	}
 

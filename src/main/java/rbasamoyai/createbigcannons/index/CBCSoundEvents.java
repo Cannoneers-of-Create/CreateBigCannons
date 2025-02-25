@@ -117,6 +117,11 @@ public class CBCSoundEvents {
 			.category(SoundSource.NEUTRAL)
 			.build(),
 
+		MILK_FLUID_RELEASE = create("milk_fluid_release").noSubtitle()
+			.playExisting(SoundEvents.COW_AMBIENT)
+			.category(SoundSource.NEUTRAL)
+			.build(),
+
 		WOOD_SPLINTERS = create("wood_splinters").noSubtitle()
 			.addVariant("wood_splinters1")
 			.addVariant("wood_splinters2")

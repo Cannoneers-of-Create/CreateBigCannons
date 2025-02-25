@@ -36,6 +36,7 @@ import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
+import rbasamoyai.createbigcannons.multiloader.forge.CBCMobEffectsImpl;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
 
 @Mod(CreateBigCannons.MOD_ID)
@@ -58,6 +59,8 @@ public class CreateBigCannonsForge {
 		ModGroupImpl.registerForge(modEventBus);
         CBCParticleTypes.register();
         CBCConfigs.registerConfigs(mlContext::registerConfig);
+
+		CBCMobEffectsImpl.register(modEventBus);
 
         modEventBus.addListener(this::onCommonSetup);
         modEventBus.addListener(this::onNewRegistry);

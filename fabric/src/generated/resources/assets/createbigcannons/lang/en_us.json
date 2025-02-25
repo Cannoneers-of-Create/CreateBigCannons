@@ -724,5 +724,6 @@
   "tag.createbigcannons.stone": "Stone",
   "tooltip.createbigcannons.jei_info.added_fuze": "+ Fuze",
   "tooltip.createbigcannons.jei_info.added_power": "+ Power",
-  "tooltip.createbigcannons.tracer": "+ Tracer"
+  "tooltip.createbigcannons.tracer": "+ Tracer",
+  "effect.createbigcannons.milk_saturated": "Milk Saturation"
 }
