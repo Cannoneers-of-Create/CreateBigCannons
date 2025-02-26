@@ -49,6 +49,11 @@ public class CopycatsCompat {
 		registerCopycatSerializer(blockGetter.apply("copycat_shaft"));
 		registerCopycatSerializer(blockGetter.apply("copycat_cogwheel"));
 		registerCopycatSerializer(blockGetter.apply("copycat_large_cogwheel"));
+		registerCopycatSerializer(blockGetter.apply("copycat_stacked_half_layer"));
+		registerCopycatSerializer(blockGetter.apply("copycat_vertical_half_layer"));
+		registerCopycatSerializer(blockGetter.apply("copycat_pane"));
+		registerCopycatSerializer(blockGetter.apply("copycat_flat_pane"));
+		registerCopycatSerializer(blockGetter.apply("copycat_byte_panel"));
 	}
 
 	private static void registerCopycatSerializer(@Nullable Block block) {
