@@ -8,7 +8,12 @@ plugins {
 	id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 stonecutter active "1.20.1" /* [SC] DO NOT EDIT */
-stonecutter.automaticPlatformConstants = true
+
+//todo: not sure if we even need this
+stonecutter.parameters {
+	val loader = metadata.project.substringAfterLast("-")
+	consts(loader, "fabric", "forge", "neoforge")
+}
 
 stonecutter registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
 	group = "project"
@@ -63,6 +68,7 @@ subprojects {
 		//maven("https://maven.shedaniel.me/")
 		maven("https://maven.blamejared.com/")
 		maven("https://maven.tterrag.com/")
+		maven("https://maven.createmod.net/")
 		exclusiveContent {
 			forRepository {
 				maven {

@@ -4,8 +4,8 @@ import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import com.simibubi.create.foundation.utility.Pair;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat;
+import net.createmod.catnip.data.Pair;
+import net.createmod.catnip.animation.LerpedFloat;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
