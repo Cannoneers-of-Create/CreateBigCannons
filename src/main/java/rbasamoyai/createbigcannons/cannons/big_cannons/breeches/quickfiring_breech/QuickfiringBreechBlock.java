@@ -9,9 +9,9 @@ import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.Iterate;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -93,7 +93,10 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 		return true;
 	}
 
-	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.CLOSED; }
+	@Override
+	public BigCannonEnd getDefaultOpeningType() {
+		return BigCannonEnd.CLOSED;
+	}
 
 	@Override
 	public boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,

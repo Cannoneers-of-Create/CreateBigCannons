@@ -1,18 +1,18 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech;
 
-import com.jozufozu.flywheel.backend.Backend;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
 
+import dev.engine_room.flywheel.backend.Backend;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -47,7 +47,7 @@ public class ScrewBreechBlockEntityRenderer extends KineticBlockEntityRenderer {
 
 		ms.pushPose();
 
-		SuperByteBuffer screwLockRender = CachedBufferer.partialFacing(CBCClientCommon.getScrewBreechForState(blockState), blockState, facing);
+		SuperByteBuffer screwLockRender = CachedBuffers.partialFacing(CBCClientCommon.getScrewBreechForState(blockState), blockState, facing);
 		screwLockRender
 			.translate(height.x(), height.y(), height.z())
 			.rotateCentered(q)
@@ -59,7 +59,7 @@ public class ScrewBreechBlockEntityRenderer extends KineticBlockEntityRenderer {
 
 	@Override
 	protected SuperByteBuffer getRotatedModel(KineticBlockEntity te, BlockState state) {
-		return CachedBufferer.partialFacing(AllPartialModels.SHAFT_HALF, state, state.getValue(BlockStateProperties.FACING));
+		return CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, state, state.getValue(BlockStateProperties.FACING));
 	}
 
 }

@@ -9,7 +9,6 @@ import com.google.gson.JsonObject;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
-import com.simibubi.create.foundation.utility.Lang;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import net.minecraft.network.FriendlyByteBuf;
@@ -90,15 +89,22 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 		};
 	}
 
-	@Override public ResourceLocation getId() { return this.id; }
+	@Override
+	public ResourceLocation getId() {
+		return this.id;
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends RecipeSerializer<?>> T getSerializer() { return (T) this.serializerObject.get(); }
+	public <T extends RecipeSerializer<?>> T getSerializer() {
+		return (T) this.serializerObject.get();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends RecipeType<?>> T getType() { return (T) this.type.get(); }
+	public <T extends RecipeType<?>> T getType() {
+		return (T) this.type.get();
+	}
 
 	public static void register() {
 	}

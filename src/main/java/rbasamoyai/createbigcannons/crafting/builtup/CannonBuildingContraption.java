@@ -14,11 +14,11 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
-import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.piston.PistonExtensionPoleBlock;
-import com.simibubi.create.foundation.utility.Iterate;
 
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -407,7 +407,9 @@ public class CannonBuildingContraption extends PoleContraption {
 		return CBCBlocks.CANNON_BUILDER_HEAD.has(state);
 	}
 
-	public boolean isActivated() { return this.isActivated; }
+	public boolean isActivated() {
+		return this.isActivated;
+	}
 
 	@Override
 	public CompoundTag writeNBT(boolean spawnPacket) {

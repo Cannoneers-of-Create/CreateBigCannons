@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech;
 
-import com.simibubi.create.foundation.utility.Iterate;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
@@ -22,7 +22,9 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
 public class QuickfiringMechanismItem extends Item {
 
-	public QuickfiringMechanismItem(Properties properties) { super(properties) ;}
+	public QuickfiringMechanismItem(Properties properties) {
+		super(properties);
+	}
 
 	@Override
 	public InteractionResult useOn(UseOnContext context) {

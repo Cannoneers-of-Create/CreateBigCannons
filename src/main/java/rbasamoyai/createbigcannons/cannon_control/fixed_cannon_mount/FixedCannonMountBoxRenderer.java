@@ -9,10 +9,9 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBox;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Iterate;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -41,8 +40,10 @@ public class FixedCannonMountBoxRenderer {
 		BlockPos pos = result.getBlockPos();
 		Direction face = result.getDirection();
 
-		Component anglePitch = Lang.builder(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_pitch").component();
-		Component angleYaw = Lang.builder(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_yaw").component();
+		Component anglePitch = CreateLang.
+		(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_pitch").component();
+		Component angleYaw = CreateLang.
+		(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_yaw").component();
 
 		for (boolean pitch : Iterate.trueAndFalse) {
 			BehaviourType<FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour> type = pitch ? FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour.PITCH_TYPE : FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour.YAW_TYPE;
@@ -78,7 +79,7 @@ public class FixedCannonMountBoxRenderer {
 			.contract(0, 0, -.5f)
 			.move(0, 0, -.125f);
 		Component label = behaviour.label;
-		ValueBox box = new ValueBox.TextValueBox(label, bb, pos, Components.literal(behaviour.formatValue()));
+		ValueBox box = new ValueBox.TextValueBox(label, bb, pos, Component.literal(behaviour.formatValue()));
 
 		box.passive(!highlight)
 			.wideOutline();

@@ -5,8 +5,7 @@ import javax.annotation.Nullable;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 
-import com.simibubi.create.foundation.utility.Iterate;
-
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -26,8 +25,8 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
-import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCShapes;
@@ -75,14 +74,20 @@ public class ScrewBreechBlock extends DirectionalKineticBlock implements IBE<Scr
 		return state.getValue(OPEN);
 	}
 
-	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.CLOSED; }
+	@Override
+	public BigCannonEnd getDefaultOpeningType() {
+		return BigCannonEnd.CLOSED;
+	}
 
 	@Override
 	public Axis getRotationAxis(BlockState state) {
 		return state.getValue(FACING).getAxis();
 	}
 
-	@Override public boolean canConnectToSide(BlockState state, Direction dir) { return this.getFacing(state) == dir; }
+	@Override
+	public boolean canConnectToSide(BlockState state, Direction dir) {
+		return this.getFacing(state) == dir;
+	}
 
 	@Override
 	public boolean isComplete(BlockState state) {

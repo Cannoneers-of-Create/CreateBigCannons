@@ -1,15 +1,15 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
-import com.jozufozu.flywheel.backend.Backend;
-import com.jozufozu.flywheel.core.PartialModel;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
-import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
+
+import dev.engine_room.flywheel.backend.Backend;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -40,7 +40,7 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 
 		if (state.getValue(AutocannonBreechBlock.HANDLE)) {
 			if (breech.getSeatColor() != null) {
-				CachedBufferer.partialFacing(CBCBlockPartials.autocannonSeatFor(breech.getSeatColor()), state, facing)
+				CachedBuffers.partialFacing(CBCBlockPartials.autocannonSeatFor(breech.getSeatColor()), state, facing)
 					.rotateCentered(Axis.YP.rotationDegrees(facing.getAxis().isVertical() ? 180 : 0))
 					.light(light)
 					.renderInto(ms, buffer.getBuffer(RenderType.cutoutMipped()));
@@ -48,7 +48,7 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 		} else {
 			Vector3f normal = facing.step();
 			normal.mul(breech.getAnimateOffset(partialTicks) * -0.5f);
-			CachedBufferer.partialFacing(getPartialModelForState(breech), state, facing)
+			CachedBuffers.partialFacing(getPartialModelForState(breech), state, facing)
 				.translate(normal)
 				.rotateCentered(Axis.YP.rotationDegrees(facing.getAxis().isVertical() ? 180 : 0))
 				.light(light)
@@ -72,7 +72,7 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 			Vector3f normal = facing == Direction.UP ? offset.getOpposite().step() : offset.step();
 			normal.mul(10 / 16f);
 
-			CachedBufferer.block(getAmmoContainerModel(container))
+			CachedBuffers.block(getAmmoContainerModel(container))
 				.translate(normal)
 				.rotateCentered(q1)
 				.light(light)

@@ -2,10 +2,9 @@ package rbasamoyai.createbigcannons.crafting.incomplete;
 
 import java.util.List;
 
-import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 
-import com.simibubi.create.foundation.utility.Iterate;
-
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

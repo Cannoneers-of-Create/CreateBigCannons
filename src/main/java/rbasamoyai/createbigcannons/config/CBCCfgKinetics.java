@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.config;
 
-import com.simibubi.create.foundation.config.ConfigBase;
+import net.createmod.catnip.config.ConfigBase;
 
 public class CBCCfgKinetics extends ConfigBase {
 
@@ -8,7 +8,10 @@ public class CBCCfgKinetics extends ConfigBase {
 	public final ConfigBool enableIntersectionLoading = b(false, "enableIntersectionLoading", Comments.enableIntersectionLoading);
 	public final CBCCfgStress stress = nested(1, CBCCfgStress::new, Comments.stress);
 
-	@Override public String getName() { return "kinetics"; }
+	@Override
+	public String getName() {
+		return "kinetics";
+	}
 
 	private static class Comments {
 		static String maxLoaderLength = "Maximum length of cannon loaders that can be built.";

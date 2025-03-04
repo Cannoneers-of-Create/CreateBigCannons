@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 
 import java.util.List;
 
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -40,18 +40,18 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		Lang.builder("block")
+		CreateLang. ("block")
 			.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
 			.style(ChatFormatting.YELLOW)
 			.forGoggles(tooltip);
 		if (!this.fuze.isEmpty() && this.fuze.getItem() instanceof FuzeItem fuzeItem) {
-			Lang.builder()
+			CreateLang. ()
 				.add(fuzeItem.getDescription().copy())
 				.style(ChatFormatting.GREEN)
 				.forGoggles(tooltip, 1);
 			fuzeItem.addExtraInfo(tooltip, isPlayerSneaking, this.fuze);
 		} else {
-			Lang.builder("block")
+			CreateLang. ("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze.none")
 				.style(ChatFormatting.DARK_GRAY)
 				.forGoggles(tooltip, 1);
@@ -74,7 +74,9 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 		return slot == 1 ? this.fuze : super.getItem(slot);
 	}
 
-	public ItemStack getFuze() { return this.fuze; }
+	public ItemStack getFuze() {
+		return this.fuze;
+	}
 
 	public boolean hasFuze() {
 		return !this.fuze.isEmpty();

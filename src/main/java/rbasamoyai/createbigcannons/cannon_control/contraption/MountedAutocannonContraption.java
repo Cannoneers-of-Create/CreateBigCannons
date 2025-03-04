@@ -9,10 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
-import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.foundation.utility.Components;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,6 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -215,7 +215,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 	}
 
 	public static AssemblyException noAutocannonBreech() {
-		return new AssemblyException(Components.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.noAutocannonBreech"));
+		return new AssemblyException(Component.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.noAutocannonBreech"));
 	}
 
 	@Override
@@ -427,7 +427,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				ResourceLocation loc = controllerBlock.getTypeId();
 				if (loc != null) key = "." + loc.getNamespace() + "." + loc.getPath();
 			}
-			player.displayClientMessage(Components.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
+			player.displayClientMessage(Component.translatable("block." + CreateBigCannons.MOD_ID + ".cannon_carriage.hotbar.fireRate" + key,
 				this.getReferencedFireRate()), true);
 		}
 
@@ -493,12 +493,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		return poce.toGlobalVector(Vec3.atCenterOf(this.startPos), 0);
 	}
 
-    @Override
+	@Override
 	public ICannonContraptionType getCannonType() {
 		return this.isHandle ? CBCCannonContraptionTypes.HANDLE_AUTOCANNON : CBCCannonContraptionTypes.AUTOCANNON;
 	}
 
-    @Override
+	@Override
 	public CompoundTag writeNBT(boolean clientData) {
 		CompoundTag tag = super.writeNBT(clientData);
 		tag.putString("AutocannonMaterial", this.cannonMaterial == null ? CBCAutocannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());

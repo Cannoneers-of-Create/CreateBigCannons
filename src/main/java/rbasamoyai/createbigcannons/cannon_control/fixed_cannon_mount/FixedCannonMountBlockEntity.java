@@ -8,10 +8,10 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.crank.ValveHandleBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
@@ -20,10 +20,9 @@ import com.simibubi.create.foundation.blockEntity.behaviour.CenteredSideValueBox
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsFormatter;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.VecHelper;
+import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -194,9 +193,15 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		this.running = false;
 	}
 
-	@Override public AssemblyException getLastAssemblyException() { return this.lastException; }
+	@Override
+	public AssemblyException getLastAssemblyException() {
+		return this.lastException;
+	}
 
-	@Override public boolean isAttachedTo(AbstractContraptionEntity entity) { return this.mountedContraption == entity; }
+	@Override
+	public boolean isAttachedTo(AbstractContraptionEntity entity) {
+		return this.mountedContraption == entity;
+	}
 
 	@Override
 	public void attach(PitchOrientedContraptionEntity contraption) {
@@ -221,9 +226,15 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).relative(facing);
 	}
 
-	@Override public BlockState getControllerState() { return this.getBlockState(); }
+	@Override
+	public BlockState getControllerState() {
+		return this.getBlockState();
+	}
 
-	@Override public BlockPos getControllerBlockPos() { return this.worldPosition; }
+	@Override
+	public BlockPos getControllerBlockPos() {
+		return this.worldPosition;
+	}
 
 	@Override
 	public void remove() {
@@ -267,7 +278,10 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 			? cannon.getInteractionVec(this.mountedContraption) : Vec3.atCenterOf(this.worldPosition);
 	}
 
-	@Nullable public PitchOrientedContraptionEntity getContraption() { return this.mountedContraption; }
+	@Nullable
+	public PitchOrientedContraptionEntity getContraption() {
+		return this.mountedContraption;
+	}
 
 	public static class FixedCannonMountScrollValueBehaviour extends ValveHandleBlockEntity.ValveHandleScrollValueBehaviour {
 		public static final BehaviourType<FixedCannonMountScrollValueBehaviour> PITCH_TYPE = new BehaviourType<>();
@@ -279,12 +293,12 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		public FixedCannonMountScrollValueBehaviour(SmartBlockEntity be, boolean pitch) {
 			super(be);
 			String suffix = pitch ? "pitch" : "yaw";
-			this.setLabel(Lang.builder(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_" + suffix).component());
+			this.setLabel(CreateLang.builder(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_" + suffix).component());
 			this.newSlotPositioning = new FixedCannonMountValueBox(pitch);
 			this.pitch = pitch;
 			this.between(-45, 45);
 			this.withFormatter(v -> {
-				return String.format("%s%d", v < 0 ? "-" : v > 0 ? "+" : "", Math.abs(v)) + Lang.translateDirect("generic.unit.degrees").getString();
+				return String.format("%s%d", v < 0 ? "-" : v > 0 ? "+" : "", Math.abs(v)) + CreateLang.translateDirect("generic.unit.degrees").getString();
 			});
 		}
 
@@ -298,12 +312,14 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		@Override
 		public MutableComponent formatValue(ValueSettings settings) {
 			int sgn = settings.row() == 0 ? -1 : 1;
-			return Lang.number(settings.value() * sgn)
-				.add(Lang.translateDirect("generic.unit.degrees"))
+			return CreateLang.number(settings.value() * sgn)
+				.add(CreateLang.translateDirect("generic.unit.degrees"))
 				.component();
 		}
 
-		@Override public void onShortInteract(Player player, InteractionHand hand, Direction side) {}
+		@Override
+		public void onShortInteract(Player player, InteractionHand hand, Direction side) {
+		}
 
 		@Override
 		public void setValueSettings(Player player, ValueSettings valueSetting, boolean ctrlHeld) {
@@ -315,18 +331,26 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 
 		@Override
 		public ValueSettingsBoard createBoard(Player player, BlockHitResult hitResult) {
-			ImmutableList<Component> rows = ImmutableList.of(Components.literal("-")
+			ImmutableList<Component> rows = ImmutableList.of(Component.literal("-")
 					.withStyle(ChatFormatting.BOLD),
-				Components.literal("+")
+				Component.literal("+")
 					.withStyle(ChatFormatting.BOLD));
 			return new ValueSettingsBoard(this.label, 45, 15, rows, new ValueSettingsFormatter(this::formatValue));
 		}
 
-		@Override public ValueBoxTransform getSlotPositioning() { return this.newSlotPositioning; }
+		@Override
+		public ValueBoxTransform getSlotPositioning() {
+			return this.newSlotPositioning;
+		}
 
-		@Override public BehaviourType<?> getType() { return this.pitch ? PITCH_TYPE : YAW_TYPE; }
+		@Override
+		public BehaviourType<?> getType() {
+			return this.pitch ? PITCH_TYPE : YAW_TYPE;
+		}
 
-		public boolean setsPitch() { return this.pitch; }
+		public boolean setsPitch() {
+			return this.pitch;
+		}
 
 		@Override
 		public void write(CompoundTag nbt, boolean clientPacket) {

@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.munitions.fuzes;
 import java.util.List;
 
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -55,7 +55,7 @@ public class ImpactFuzeItem extends FuzeItem {
 	@Override
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
-		MutableComponent info = Lang.builder("item")
+		MutableComponent info = CreateLang. ("item")
 			.translate(CreateBigCannons.MOD_ID + ".impact_fuze.tooltip.shell_info.chance", (int) (this.getDetonateChance() * 100.0f))
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));

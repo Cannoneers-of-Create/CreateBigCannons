@@ -7,19 +7,18 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.AllSoundEvents;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.utility.AngleHelper;
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
+import net.createmod.catnip.math.AngleHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -80,7 +79,9 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 		this.yawInterface.setLevel(level);
 	}
 
-	@Override public void addBehaviours(List<BlockEntityBehaviour> behaviours) {}
+	@Override
+	public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+	}
 
 	@Override
 	public BlockState getControllerState() {
@@ -89,7 +90,9 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 
 	@Nullable
 	@Override
-	public ResourceLocation getTypeId() { return CreateBigCannons.resource("cannon_mount"); }
+	public ResourceLocation getTypeId() {
+		return CreateBigCannons.resource("cannon_mount");
+	}
 
 	@Override
 	protected AABB createRenderBoundingBox() {
@@ -240,11 +243,21 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 		this.cannonPitch = pitch;
 	}
 
-	public float getPitchSpeed() { return this.pitchInterface.getSpeed(); }
-	public float getYawSpeed() { return this.yawInterface.getSpeed(); }
+	public float getPitchSpeed() {
+		return this.pitchInterface.getSpeed();
+	}
 
-	public KineticBlockEntity getPitchInterface() { return this.pitchInterface; }
-	public KineticBlockEntity getYawInterface() { return this.yawInterface; }
+	public float getYawSpeed() {
+		return this.yawInterface.getSpeed();
+	}
+
+	public KineticBlockEntity getPitchInterface() {
+		return this.pitchInterface;
+	}
+
+	public KineticBlockEntity getYawInterface() {
+		return this.yawInterface;
+	}
 
 	public float getYawOffset(float partialTicks) {
 		if (this.isVirtual())
@@ -453,7 +466,7 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 	}
 
 	public static AssemblyException cannonBlockOutsideOfWorld(BlockPos pos) {
-		return new AssemblyException(Components.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
+		return new AssemblyException(Component.translatable("exception." + CreateBigCannons.MOD_ID + ".cannon_mount.cannonBlockOutsideOfWorld", pos.getX(), pos.getY(), pos.getZ()));
 	}
 
 	public Vec3 getInteractionLocation() {
@@ -479,20 +492,20 @@ public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplay
 			float yawStress = this.yawInterface.calculateStressApplied();
 			if (!Mth.equal(pitchStress + yawStress, 0)) {
 				// Adapted from KineticBlockEntity
-				Lang.translate("gui.goggles.kinetic_stats")
+				CreateLang.translate("gui.goggles.kinetic_stats")
 					.forGoggles(tooltip);
-				Lang.translate("tooltip.stressImpact")
+				CreateLang.translate("tooltip.stressImpact")
 					.style(GRAY)
 					.forGoggles(tooltip);
 
 				float stressTotal = pitchStress * Math.abs(this.pitchInterface.getTheoreticalSpeed())
 					+ yawStress * Math.abs(this.yawInterface.getTheoreticalSpeed());
 
-				Lang.number(stressTotal)
+				CreateLang.number(stressTotal)
 					.translate("generic.unit.stress")
 					.style(ChatFormatting.AQUA)
 					.space()
-					.add(Lang.translate("gui.goggles.at_current_speed")
+					.add(CreateLang.translate("gui.goggles.at_current_speed")
 						.style(ChatFormatting.DARK_GRAY))
 					.forGoggles(tooltip, 1);
 			}

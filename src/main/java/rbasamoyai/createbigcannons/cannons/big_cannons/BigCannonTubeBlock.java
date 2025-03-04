@@ -4,8 +4,8 @@ import java.util.function.Supplier;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
@@ -71,7 +71,10 @@ public class BigCannonTubeBlock extends BigCannonBaseBlock implements IBE<BigCan
 		return this.visualShapes.get(this.getFacing(state));
 	}
 
-	@Override public BigCannonEnd getDefaultOpeningType() { return BigCannonEnd.OPEN; }
+	@Override
+	public BigCannonEnd getDefaultOpeningType() {
+		return BigCannonEnd.OPEN;
+	}
 
 	@Override
 	public boolean isComplete(BlockState state) {

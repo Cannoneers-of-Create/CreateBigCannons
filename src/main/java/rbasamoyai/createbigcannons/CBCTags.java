@@ -9,9 +9,9 @@ import java.util.function.Supplier;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.palettes.AllPaletteBlocks;
 import com.simibubi.create.foundation.block.CopperBlockSet;
-import com.simibubi.create.foundation.utility.Iterate;
 import com.tterrag.registrate.providers.ProviderType;
 
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;
@@ -38,8 +38,8 @@ public class CBCTags {
 			THICK_TUBING = makeTag("thick_tubing"),
 			REDUCES_SPREAD = makeTag("reduces_spread"),
 			DRILL_CAN_PASS_THROUGH = makeTag("drill_can_pass_through"),
-			// Datagen tags
-			OBSIDIAN = commonTag("obsidian", "obsidian", "obsidian" /* No Fabric c: tag */),
+		// Datagen tags
+		OBSIDIAN = commonTag("obsidian", "obsidian", "obsidian" /* No Fabric c: tag */),
 			SANDSTONE = commonTag("sandstone", "sandstone", "sandstone"),
 			CONCRETE = commonTag("concrete", "concrete", "concrete"),
 			NETHERRACK = commonTag("netherrack", "netherrack", "netherrack"),
@@ -56,9 +56,9 @@ public class CBCTags {
 		public static TagKey<Block> commonTag(String mainPath, String forgePath, String fabricPath) {
 			TagKey<Block> mainTag = makeTag(mainPath);
 			addOptionalTagsToBlockTag(mainTag, Arrays.asList(
-					CBCUtils.location("forge", forgePath),
-					CBCUtils.location("c", forgePath), // For forge -> fabric ports, e.g. Create
-					CBCUtils.location("c", fabricPath)));
+				CBCUtils.location("forge", forgePath),
+				CBCUtils.location("c", forgePath), // For forge -> fabric ports, e.g. Create
+				CBCUtils.location("c", fabricPath)));
 			return mainTag;
 		}
 
@@ -182,8 +182,8 @@ public class CBCTags {
 			INGOT_NETHERSTEEL = commonTag("ingot_nethersteel", "ingots/nethersteel", "nethersteel_ingots"),
 			BLOCK_NETHERSTEEL = commonTag("block_nethersteel", "blocks/nethersteel", "nethersteel_blocks"),
 
-			// Crafting tags
-			INGOT_IRON = commonTag("ingot_iron", "ingots/iron", "iron_ingots"),
+		// Crafting tags
+		INGOT_IRON = commonTag("ingot_iron", "ingots/iron", "iron_ingots"),
 			NUGGET_IRON = commonTag("nugget_iron", "nuggets/iron", "iron_nuggets"),
 			SHEET_IRON = commonTag("sheet_iron", "plates/iron", "iron_plates"),
 			NUGGET_COPPER = commonTag("nugget_copper", "nuggets/copper", "copper_nuggets"),
@@ -227,9 +227,9 @@ public class CBCTags {
 		public static TagKey<Item> commonTag(String mainPath, String forgePath, String fabricPath) {
 			TagKey<Item> mainTag = makeTag(mainPath);
 			addOptionalTagsToItemTag(mainTag, Arrays.asList(
-					CBCUtils.location("forge", forgePath),
-					CBCUtils.location("c", forgePath), // For forge -> fabric ports, e.g. Create
-					CBCUtils.location("c", fabricPath)));
+				CBCUtils.location("forge", forgePath),
+				CBCUtils.location("c", forgePath), // For forge -> fabric ports, e.g. Create
+				CBCUtils.location("c", fabricPath)));
 			return mainTag;
 		}
 
@@ -255,7 +255,7 @@ public class CBCTags {
 		public static void addTagsToItemTag(TagKey<Item> tag, TagKey<Item>... tags) {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
 				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
-				for(TagKey<Item> t : tags) {
+				for (TagKey<Item> t : tags) {
 					addTag(app, t);
 				}
 			});
@@ -306,8 +306,13 @@ public class CBCTags {
 		CBCItemTags.sectionRegister();
 	}
 
-	private static ResourceLocation alloyed(String path) { return CBCUtils.location("alloyed", path); }
-	private static ResourceLocation createdeco(String path) { return CBCUtils.location("createdeco", path); }
+	private static ResourceLocation alloyed(String path) {
+		return CBCUtils.location("alloyed", path);
+	}
+
+	private static ResourceLocation createdeco(String path) {
+		return CBCUtils.location("createdeco", path);
+	}
 
 	private static <T> void addTag(TagAppender<T> app, TagKey<T> tag) {
 		TagAppenderAccessor accessor = (TagAppenderAccessor) app;

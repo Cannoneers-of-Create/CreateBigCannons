@@ -2,8 +2,6 @@ package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
 import javax.annotation.Nullable;
 
-import com.simibubi.create.foundation.utility.Components;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -63,16 +61,35 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		super(type, pos, state);
 	}
 
-	@Override public ItemStack getMainAmmoStack() { return this.ammo == null ? ItemStack.EMPTY : this.ammo; }
-	@Override public ItemStack getTracerStack() { return this.tracers == null ? ItemStack.EMPTY : this.tracers; }
+	@Override
+	public ItemStack getMainAmmoStack() {
+		return this.ammo == null ? ItemStack.EMPTY : this.ammo;
+	}
 
-	public int getSpacing() { return this.spacing; }
+	@Override
+	public ItemStack getTracerStack() {
+		return this.tracers == null ? ItemStack.EMPTY : this.tracers;
+	}
 
-	public void setMainAmmoDirect(ItemStack stack) { this.ammo = stack == null ? ItemStack.EMPTY : stack; }
-	public void setTracersDirect(ItemStack stack) { this.tracers = stack == null ? ItemStack.EMPTY : stack; }
-	public void setSpacing(int spacing) { this.spacing = Mth.clamp(spacing, 1, 6); }
+	public int getSpacing() {
+		return this.spacing;
+	}
 
-	public boolean canDropInCreative() { return !this.getMainAmmoStack().isEmpty() || !this.getTracerStack().isEmpty(); }
+	public void setMainAmmoDirect(ItemStack stack) {
+		this.ammo = stack == null ? ItemStack.EMPTY : stack;
+	}
+
+	public void setTracersDirect(ItemStack stack) {
+		this.tracers = stack == null ? ItemStack.EMPTY : stack;
+	}
+
+	public void setSpacing(int spacing) {
+		this.spacing = Mth.clamp(spacing, 1, 6);
+	}
+
+	public boolean canDropInCreative() {
+		return !this.getMainAmmoStack().isEmpty() || !this.getTracerStack().isEmpty();
+	}
 
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
@@ -103,7 +120,10 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		tag.putInt("TracerSpacing", this.spacing);
 	}
 
-	@Override public CompoundTag getUpdateTag() { return this.saveWithFullMetadata(); }
+	@Override
+	public CompoundTag getUpdateTag() {
+		return this.saveWithFullMetadata();
+	}
 
 	@Nullable
 	@Override
@@ -114,16 +134,27 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
 	@Nullable
 	@Override
-	public Component getCustomName() { return this.name; }
-
-	public void setCustomName(Component name) { this.name = name; }
-
-	protected Component getDefaultName() {
-		return Components.translatable(CBCBlocks.AUTOCANNON_AMMO_CONTAINER.get().getDescriptionId());
+	public Component getCustomName() {
+		return this.name;
 	}
 
-	@Override public Component getName() { return this.name == null ? this.getDefaultName() : this.name; }
-	@Override public Component getDisplayName() { return this.getName(); }
+	public void setCustomName(Component name) {
+		this.name = name;
+	}
+
+	protected Component getDefaultName() {
+		return Component.translatable(CBCBlocks.AUTOCANNON_AMMO_CONTAINER.get().getDescriptionId());
+	}
+
+	@Override
+	public Component getName() {
+		return this.name == null ? this.getDefaultName() : this.name;
+	}
+
+	@Override
+	public Component getDisplayName() {
+		return this.getName();
+	}
 
 	@Nullable
 	@Override
@@ -131,7 +162,9 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		return AutocannonAmmoContainerMenu.getServerMenuForBlockEntity(i, inventory, this, this.isCreativeContainer());
 	}
 
-	public boolean isCreativeContainer() { return CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.has(this.getBlockState()); }
+	public boolean isCreativeContainer() {
+		return CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.has(this.getBlockState());
+	}
 
 	@Override
 	public ItemStack removeItem(int slot, int amount) {

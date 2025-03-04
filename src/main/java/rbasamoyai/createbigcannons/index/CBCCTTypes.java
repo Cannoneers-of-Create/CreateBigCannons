@@ -4,7 +4,6 @@ import com.simibubi.create.foundation.block.connected.CTType;
 import com.simibubi.create.foundation.block.connected.CTTypeRegistry;
 import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour.CTContext;
 import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour.ContextRequirement;
-import com.simibubi.create.foundation.utility.Lang;
 
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -29,8 +28,19 @@ public enum CBCCTTypes implements CTType {
 		CTTypeRegistry.register(this);
 	}
 
-	@Override public ResourceLocation getId() { return this.id; }
-	@Override public int getSheetSize() { return this.sheetSize; }
-	@Override public ContextRequirement getContextRequirement() { return this.contextRequirement; }
+	@Override
+	public ResourceLocation getId() {
+		return this.id;
+	}
+
+	@Override
+	public int getSheetSize() {
+		return this.sheetSize;
+	}
+
+	@Override
+	public ContextRequirement getContextRequirement() {
+		return this.contextRequirement;
+	}
 
 }

@@ -5,8 +5,8 @@ import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.foundation.render.CachedBufferer;
 
+import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -24,7 +24,9 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class DropMortarShellRenderer extends EntityRenderer<DropMortarShellProjectile> {
 
-	public DropMortarShellRenderer(EntityRendererProvider.Context context) { super(context); }
+	public DropMortarShellRenderer(EntityRendererProvider.Context context) {
+		super(context);
+	}
 
 	@Override
 	public void render(DropMortarShellProjectile entity, float entityYaw, float partialTicks, PoseStack poseStack,
@@ -43,13 +45,13 @@ public class DropMortarShellRenderer extends EntityRenderer<DropMortarShellProje
 			poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize()));
 		}
 
-		CachedBufferer.partial(CBCBlockPartials.DROP_MORTAR_SHELL_FLYING, CBCBlocks.DROP_MORTAR_SHELL.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH))
+		CachedBuffers.partial(CBCBlockPartials.DROP_MORTAR_SHELL_FLYING, CBCBlocks.DROP_MORTAR_SHELL.getDefaultState().setValue(BlockStateProperties.FACING, Direction.NORTH))
 			.light(isTracer ? LightTexture.FULL_BRIGHT : packedLight)
 			.renderInto(poseStack, buffers.getBuffer(RenderType.cutout()));
 		poseStack.popPose();
 
 		if (isTracer) {
-			int frame = (int)((entity.getId() + entity.level().getGameTime()) % 4L);
+			int frame = (int) ((entity.getId() + entity.level().getGameTime()) % 4L);
 			ResourceLocation textureLoc = CreateBigCannons.resource(String.format("textures/entity/tracer_glow%d.png", frame));
 			RenderType renderType = RenderType.entityCutoutNoCull(textureLoc);
 
@@ -63,16 +65,19 @@ public class DropMortarShellRenderer extends EntityRenderer<DropMortarShellProje
 			VertexConsumer builder = buffers.getBuffer(renderType);
 
 			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, -0.5f, -0.5f, 0, 1);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, -0.5f,  0.5f, 0, 0);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT,  0.5f,  0.5f, 1, 0);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT,  0.5f, -0.5f, 1, 1);
+			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, -0.5f, 0.5f, 0, 0);
+			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 0.5f, 0.5f, 1, 0);
+			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, 0.5f, -0.5f, 1, 1);
 
 			poseStack.popPose();
 		}
 		super.render(entity, entityYaw, partialTicks, poseStack, buffers, packedLight);
 	}
 
-	@Override public ResourceLocation getTextureLocation(DropMortarShellProjectile entity) { return null; }
+	@Override
+	public ResourceLocation getTextureLocation(DropMortarShellProjectile entity) {
+		return null;
+	}
 
 	private static void vertex(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int packedLight, float x, float y, int u, int v) {
 		builder.vertex(pose, x, y, 0.0f)

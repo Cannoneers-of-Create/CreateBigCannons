@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.crafting.boring;
 
+import java.util.function.Supplier;
+
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.foundation.utility.VoxelShaper;
+
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.state.BlockState;
@@ -10,8 +13,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.autocannon.AbstractIncompleteAutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-
-import java.util.function.Supplier;
 
 public class UnboredAutocannonBlock extends AbstractIncompleteAutocannonBlock {
 
@@ -41,6 +42,9 @@ public class UnboredAutocannonBlock extends AbstractIncompleteAutocannonBlock {
 		return this.shapes.get(this.getFacing(state));
 	}
 
-	@Override public CannonCastShape getCannonShape() { return this.cannonShape.get(); }
+	@Override
+	public CannonCastShape getCannonShape() {
+		return this.cannonShape.get();
+	}
 
 }

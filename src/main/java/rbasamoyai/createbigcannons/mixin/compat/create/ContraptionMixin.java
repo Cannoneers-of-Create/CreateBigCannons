@@ -20,9 +20,9 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.Contraption;
-import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.contraptions.chassis.ChassisBlockEntity;
 import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
@@ -45,9 +45,11 @@ import rbasamoyai.createbigcannons.remix.HasFragileContraption;
 @Mixin(Contraption.class)
 public abstract class ContraptionMixin {
 
-	@Unique private final Contraption createbigcannons$self = (Contraption) (Object) this;
+	@Unique
+	private final Contraption createbigcannons$self = (Contraption) (Object) this;
 
-	@Shadow private Set<SuperGlueEntity> glueToRemove;
+	@Shadow
+	private Set<SuperGlueEntity> glueToRemove;
 
 	@Shadow
 	protected abstract BlockPos toLocalPos(BlockPos globalPos);
@@ -56,7 +58,7 @@ public abstract class ContraptionMixin {
 	public boolean disassembled;
 
 	@Inject(method = "searchMovedStructure",
-			at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z", shift = At.Shift.BEFORE))
+		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z", shift = At.Shift.BEFORE))
 	private void createbigcannons$searchMovedStructure$setForcedDirection(Level level, BlockPos pos, Direction forcedDirection,
 																		  CallbackInfoReturnable<Boolean> cir,
 																		  @Local(argsOnly = true) LocalRef<Direction> forcedDirectionRef) {
@@ -66,8 +68,8 @@ public abstract class ContraptionMixin {
 	}
 
 	@Inject(method = "searchMovedStructure",
-			at = @At(value = "INVOKE", target = "Ljava/util/Queue;add(Ljava/lang/Object;)Z", shift = At.Shift.AFTER),
-			remap = false)
+		at = @At(value = "INVOKE", target = "Ljava/util/Queue;add(Ljava/lang/Object;)Z", shift = At.Shift.AFTER),
+		remap = false)
 	private void createbigcannons$searchMovedStructure$removePulley(Level level, BlockPos pos, Direction forcedDirection,
 																	CallbackInfoReturnable<Boolean> cir, @Local Queue<BlockPos> frontier) {
 		if (this.createbigcannons$self.getType() == ContraptionType.PULLEY)
@@ -96,7 +98,7 @@ public abstract class ContraptionMixin {
 	}
 
 	@Inject(method = "moveBlock",
-			at = @At(value = "INVOKE", target = "Lcom/tterrag/registrate/util/entry/BlockEntry;has(Lnet/minecraft/world/level/block/state/BlockState;)Z", ordinal = 0, shift = At.Shift.BEFORE))
+		at = @At(value = "INVOKE", target = "Lcom/tterrag/registrate/util/entry/BlockEntry;has(Lnet/minecraft/world/level/block/state/BlockState;)Z", ordinal = 0, shift = At.Shift.BEFORE))
 	private void createbigcannons$moveBlock$customChecks(Level level, Direction forcedDirection, Queue<BlockPos> frontier,
 														 Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir,
 														 @Local BlockPos pos, @Local BlockState state) {
@@ -104,7 +106,7 @@ public abstract class ContraptionMixin {
 	}
 
 	@Inject(method = "moveBlock",
-			at = @At(value = "INVOKE", target = "Ljava/util/Set;contains(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.BEFORE),
+		at = @At(value = "INVOKE", target = "Ljava/util/Set;contains(Ljava/lang/Object;)Z", ordinal = 0, shift = At.Shift.BEFORE),
 		remap = false)
 	private void createbigcannons$moveBlock$stickerMarking(Level level, Direction forcedDirection, Queue<BlockPos> frontier,
 														   Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir,
@@ -156,7 +158,7 @@ public abstract class ContraptionMixin {
 	}
 
 	@Inject(method = "moveBlock",
-			at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;below()Lnet/minecraft/core/BlockPos;", shift = At.Shift.BEFORE))
+		at = @At(value = "INVOKE", target = "Lnet/minecraft/core/BlockPos;below()Lnet/minecraft/core/BlockPos;", shift = At.Shift.BEFORE))
 	private void createbigcannons$moveBlock$loaderBlocks(Level level, Direction forcedDirection, Queue<BlockPos> frontier,
 														 Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir,
 														 @Local BlockPos pos, @Local BlockState state) {
@@ -177,7 +179,8 @@ public abstract class ContraptionMixin {
 														  @Local(ordinal = 2) boolean blockAttachedTowardsFace,
 														  @Share("removeFlag") LocalBooleanRef removeFlag) {
 		removeFlag.set(false);
-		if (!(CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self)) || frontier.contains(offsetPos)) return;
+		if (!(CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self)) || frontier.contains(offsetPos))
+			return;
 		boolean stickFlag = ContraptionRemix.getStickFlag((Contraption & CanLoadBigCannon) this.createbigcannons$self, level, pos, offsetPos,
 			state, blockState, offset, forcedDirection, faceHasGlue | blockAttachedTowardsFace);
 		removeFlag.set(ContraptionRemix.handleCannonFrontier((Contraption & CanLoadBigCannon) this.createbigcannons$self, level, pos, offsetPos,
@@ -196,10 +199,10 @@ public abstract class ContraptionMixin {
 	}
 
 	@ModifyExpressionValue(method = "moveBlock",
-			at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/Contraption;capture(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lorg/apache/commons/lang3/tuple/Pair;"))
+		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/Contraption;capture(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lorg/apache/commons/lang3/tuple/Pair;"))
 	private Pair<StructureBlockInfo, BlockEntity> createbigcannons$moveBlock$preCannonBlockCapture(Pair<StructureBlockInfo, BlockEntity> original,
-												Level level, @Nullable Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited,
-												@Local(ordinal = 0) BlockPos pos) {
+																								   Level level, @Nullable Direction forcedDirection, Queue<BlockPos> frontier, Set<BlockPos> visited,
+																								   @Local(ordinal = 0) BlockPos pos) {
 		if (CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self)) {
 			Pair<StructureBlockInfo, BlockEntity> pair = ContraptionRemix.handleCapture((Contraption & CanLoadBigCannon) this.createbigcannons$self,
 				level, pos, frontier, visited, forcedDirection, this.glueToRemove);
@@ -235,7 +238,7 @@ public abstract class ContraptionMixin {
 	}
 
 	@ModifyExpressionValue(method = "movePulley",
-			at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/Contraption;capture(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lorg/apache/commons/lang3/tuple/Pair;"))
+		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/Contraption;capture(Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;)Lorg/apache/commons/lang3/tuple/Pair;"))
 	private Pair<StructureBlockInfo, BlockEntity> createbigcannons$movePulley$2(Pair<StructureBlockInfo, BlockEntity> original,
 																				Level level, BlockPos pos,
 																				@Local(ordinal = 1) BlockPos ropePos) {

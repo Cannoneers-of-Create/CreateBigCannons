@@ -1,8 +1,8 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone;
 
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;

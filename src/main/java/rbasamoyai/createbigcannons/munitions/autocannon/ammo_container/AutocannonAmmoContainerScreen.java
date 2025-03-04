@@ -11,12 +11,12 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.foundation.gui.AllIcons;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.gui.menu.AbstractSimiContainerScreen;
 import com.simibubi.create.foundation.gui.widget.IconButton;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
@@ -92,7 +92,8 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 	protected void renderTooltip(GuiGraphics graphics, int x, int y) {
 		super.renderTooltip(graphics, x, y);
 		if (this.hoveredSlot != null && this.hoveredSlot.index == 1 && !this.hoveredSlot.hasItem()) {
-			graphics.renderTooltip(this.font, Lang.builder(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_slot").component(), x ,y);
+			graphics.renderTooltip(this.font, CreateLang.
+			(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_slot").component(), x, y);
 		}
 	}
 
@@ -130,11 +131,15 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 			.withRange(1, 7)
 			.calling(state -> {
 				this.lastUpdated = 0;
-				this.setValue.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_spacing", state).component());
+				this.setValue.titled(CreateLang.
+				(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_spacing", state).component());
 			})
 			.setState(Mth.clamp(this.menu.getValue(), 1, 6));
 	}
 
-	@Override public List<Rect2i> getExtraAreas() { return this.extraAreas; }
+	@Override
+	public List<Rect2i> getExtraAreas() {
+		return this.extraAreas;
+	}
 
 }

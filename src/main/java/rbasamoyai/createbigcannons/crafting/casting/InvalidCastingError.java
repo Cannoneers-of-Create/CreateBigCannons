@@ -2,8 +2,6 @@ package rbasamoyai.createbigcannons.crafting.casting;
 
 import javax.annotation.Nullable;
 
-import com.simibubi.create.foundation.utility.Components;
-
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -40,9 +38,9 @@ public record InvalidCastingError(BlockPos pos, Fluid fluid, CannonCastShape sha
 	}
 
 	public MutableComponent getMessage() {
-		MutableComponent fluidText = Components.translatable(Util.makeDescriptionId("fluid",  CBCRegistryUtils.getFluidLocation(this.fluid)));
-		MutableComponent shapeText = Components.translatable(Util.makeDescriptionId("cast_shape", CBCRegistries.cannonCastShapes().getKey(this.shape)));
-		return Components.translatable("exception.createbigcannons.casting", this.pos.getX(), this.pos.getY(), this.pos.getZ(), fluidText, shapeText);
+		MutableComponent fluidText = Component.translatable(Util.makeDescriptionId("fluid", CBCRegistryUtils.getFluidLocation(this.fluid)));
+		MutableComponent shapeText = Component.translatable(Util.makeDescriptionId("cast_shape", CBCRegistries.cannonCastShapes().getKey(this.shape)));
+		return Component.translatable("exception.createbigcannons.casting", this.pos.getX(), this.pos.getY(), this.pos.getZ(), fluidText, shapeText);
 	}
 
 }

@@ -2,8 +2,7 @@ package rbasamoyai.createbigcannons.crafting.incomplete;
 
 import java.util.List;
 
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.LangBuilder;
 
 import net.minecraft.ChatFormatting;
@@ -15,18 +14,18 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 public class IncompleteCannonBlockTooltip {
 
 	public static void addToTooltip(List<Component> tooltip, boolean isPlayerSneaking, IncompleteWithItemsCannonBlock incomplete, BlockState state) {
-		Lang.builder("block")
-				.translate(CreateBigCannons.MOD_ID + ".incomplete_block.tooltip.requiredParts")
-				.style(ChatFormatting.GOLD)
-				.forGoggles(tooltip);
+		CreateLang. ("block")
+			.translate(CreateBigCannons.MOD_ID + ".incomplete_block.tooltip.requiredParts")
+			.style(ChatFormatting.GOLD)
+			.forGoggles(tooltip);
 
 		List<ItemLike> required = incomplete.requiredItems();
 		int currentState = incomplete.progress(state);
 		for (int i = 0; i < required.size(); ++i) {
-			LangBuilder lb = Lang.builder();
+			LangBuilder lb = CreateLang. ();
 			lb.text(i == currentState ? "> " : "")
-			.add(Components.translatable(required.get(i).asItem().getDescriptionId()))
-			.style(i == currentState ? ChatFormatting.WHITE : ChatFormatting.DARK_GRAY);
+				.add(Component.translatable(required.get(i).asItem().getDescriptionId()))
+				.style(i == currentState ? ChatFormatting.WHITE : ChatFormatting.DARK_GRAY);
 			if (i < currentState) lb.style(ChatFormatting.STRIKETHROUGH);
 			lb.forGoggles(tooltip, 1);
 		}

@@ -2,9 +2,9 @@ package rbasamoyai.createbigcannons.crafting.casting;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
 
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -24,7 +24,7 @@ public class FinishedCannonCastBlockEntityRenderer extends SafeBlockEntityRender
 
 		BlockState state = te.getBlockState();
 
-		SuperByteBuffer castRender = CachedBufferer.partial(CBCBlockPartials.cannonCastFor(te.getRenderedShape()), state);
+		SuperByteBuffer castRender = CachedBuffers.partial(CBCBlockPartials.cannonCastFor(te.getRenderedShape()), state);
 		castRender
 			.translate(1, 0, 1)
 			.light(light)

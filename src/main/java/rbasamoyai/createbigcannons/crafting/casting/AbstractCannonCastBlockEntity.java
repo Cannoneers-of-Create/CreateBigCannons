@@ -11,12 +11,12 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.AllSoundEvents;
-import com.simibubi.create.content.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.foundation.blockEntity.IMultiBlockEntityContainer;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
 
@@ -212,7 +212,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		if (!clientPacket) return;
 		boolean changeOfController = !Objects.equals(controllerBefore, this.controllerPos);
 		if (changeOfController || this.getControllerBE() != null && prevHeight != this.getControllerBE().height) {
-			if (this.hasLevel()) this.getLevel().sendBlockUpdated(this.getBlockPos(), getBlockState(), getBlockState(), 16);
+			if (this.hasLevel())
+				this.getLevel().sendBlockUpdated(this.getBlockPos(), getBlockState(), getBlockState(), 16);
 			if (this.isController()) this.updateFluidClient();
 			this.invalidateRenderBoundingBox();
 		}
@@ -631,7 +632,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		Component errorMsg = controller.invalidCastingError.getMessage();
 		List<Component> cutErrorLines = TooltipHelper.cutTextComponent(errorMsg, TooltipHelper.Palette.GRAY_AND_WHITE);
 		for (Component cline : cutErrorLines) {
-			Lang.builder().add(cline.copy()).forGoggles(tooltip);
+			CreateLang. ().add(cline.copy()).forGoggles(tooltip);
 		}
 		return true;
 	}

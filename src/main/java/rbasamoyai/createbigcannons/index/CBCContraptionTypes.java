@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.simibubi.create.content.contraptions.ContraptionType;
+import com.simibubi.create.api.contraption.ContraptionType;
 
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;

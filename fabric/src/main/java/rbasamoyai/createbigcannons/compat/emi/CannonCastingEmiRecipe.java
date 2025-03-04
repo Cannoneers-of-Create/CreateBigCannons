@@ -8,13 +8,13 @@ import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.WidgetHolder;
 import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -70,7 +70,8 @@ public class CannonCastingEmiRecipe extends CBCEmiBlockRecipe<CannonCastingRecip
 			float castingTime = 0;
 			if (!matchingStacks.isEmpty()) {
 				FluidStack fstack = matchingStacks.get(0);
-				if (fstack.getFluid() != Fluids.EMPTY) castingTime = (float) FluidCastingTimeHandler.getCastingTime(fstack.getFluid());
+				if (fstack.getFluid() != Fluids.EMPTY)
+					castingTime = (float) FluidCastingTimeHandler.getCastingTime(fstack.getFluid());
 			}
 			Minecraft mc = Minecraft.getInstance();
 			Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
@@ -78,6 +79,9 @@ public class CannonCastingEmiRecipe extends CBCEmiBlockRecipe<CannonCastingRecip
 		}));
 	}
 
-	@Override public List<EmiIngredient> getCatalysts() { return this.catalysts; }
+	@Override
+	public List<EmiIngredient> getCatalysts() {
+		return this.catalysts;
+	}
 
 }

@@ -3,8 +3,8 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 import java.util.List;
 
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.Iterate;
 
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

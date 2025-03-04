@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
@@ -33,8 +33,14 @@ public class CannonCastGuiElement extends Widget {
 		poseStack.popPose();
 	}
 
-	public CannonCastGuiElement withShape(CannonCastShape shape) { this.currentShape = shape; return this; }
+	public CannonCastGuiElement withShape(CannonCastShape shape) {
+		this.currentShape = shape;
+		return this;
+	}
 
-	@Override public List<? extends GuiEventListener> children() { return List.of(); }
+	@Override
+	public List<? extends GuiEventListener> children() {
+		return List.of();
+	}
 
 }

@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.config;
 
-import com.simibubi.create.foundation.config.ConfigBase;
+import net.createmod.catnip.config.ConfigBase;
 
 public class CBCCfgCrafting extends ConfigBase {
 
@@ -10,7 +10,10 @@ public class CBCCfgCrafting extends ConfigBase {
 	public final ConfigInt maxCannonBuilderRange = i(32, 2, "maxCannonBuilderRange", Comments.maxCannonBuilderRange);
 	public final ConfigInt builtUpCannonHeatingTime = i(6000, 0, "builtUpCannonHeatingTime", "[in Ticks]", Comments.builtUpCannonHeatingTime);
 
-	@Override public String getName() { return "crafting"; }
+	@Override
+	public String getName() {
+		return "crafting";
+	}
 
 	private static class Comments {
 		static String maxCannonCastHeight = "Maximum height of a single cannon cast that can be built.";

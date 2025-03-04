@@ -6,7 +6,6 @@ import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRender
 
 import org.joml.Quaternionf;
 
-import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -14,10 +13,11 @@ import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
-import com.simibubi.create.foundation.utility.AnimationTickHolder;
 
+import dev.engine_room.flywheel.backend.Backend;
+import net.createmod.catnip.animation.AnimationTickHolder;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -28,7 +28,8 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<CannonMountBlockEntity> {
 
-	public CannonMountBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
+	public CannonMountBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
+	}
 
 	@Override
 	protected void renderSafe(CannonMountBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
@@ -42,20 +43,20 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 
 		ms.pushPose();
 
-		SuperByteBuffer yawShaft = CachedBufferer.partialFacing(AllPartialModels.SHAFT_HALF, state, vertical);
+		SuperByteBuffer yawShaft = CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, state, vertical);
 		KineticBlockEntity yawInterface = be.getYawInterface();
 		kineticRotationTransform(yawShaft, yawInterface, Direction.Axis.Y, getAngleForTe(yawInterface, be.getBlockPos(), Direction.Axis.Y), light)
 			.renderInto(ms, solidBuf);
 
 		Direction.Axis pitchAxis = ((IRotate) state.getBlock()).getRotationAxis(state);
-		SuperByteBuffer pitchShaft = CachedBufferer.block(shaft(pitchAxis));
+		SuperByteBuffer pitchShaft = CachedBuffers.block(shaft(pitchAxis));
 		KineticBlockEntity pitchInterface = be.getPitchInterface();
 		kineticRotationTransform(pitchShaft, pitchInterface, pitchAxis, getAngleForTe(pitchInterface, be.getBlockPos(), pitchAxis), light)
 			.renderInto(ms, solidBuf);
 
 		float yaw = getMountYaw(be);
 		Quaternionf qyaw = upsideDown ? Axis.ZP.rotationDegrees(180).mul(Axis.YP.rotationDegrees(yaw)) : Axis.YP.rotationDegrees(-yaw);
-		CachedBufferer.partial(CBCBlockPartials.ROTATING_MOUNT, state)
+		CachedBuffers.partial(CBCBlockPartials.ROTATING_MOUNT, state)
 			.translate(0.0d, upsideDown ? -1.0d : 1.0d, 0.0d)
 			.light(light)
 			.rotateCentered(qyaw)
@@ -66,7 +67,7 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 		Quaternionf qyaw1 = new Quaternionf(qyaw);
 		qyaw1.mul(qpitch);
 
-		CachedBufferer.partialFacing(CBCBlockPartials.CANNON_CARRIAGE_AXLE, state, Direction.NORTH)
+		CachedBuffers.partialFacing(CBCBlockPartials.CANNON_CARRIAGE_AXLE, state, Direction.NORTH)
 			.translate(0, upsideDown ? -2.0d : 2.0d, 0)
 			.rotateCentered(qyaw1)
 			.light(light)

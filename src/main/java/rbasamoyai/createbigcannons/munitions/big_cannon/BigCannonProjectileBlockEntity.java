@@ -2,9 +2,9 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 
 import java.util.List;
 
-import com.simibubi.create.content.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -37,16 +37,24 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 		this.tracer = tag.contains("Tracer", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Tracer")) : ItemStack.EMPTY;
 	}
 
-	@Override public int getContainerSize() { return 1; }
+	@Override
+	public int getContainerSize() {
+		return 1;
+	}
 
-	@Override public boolean isEmpty() { return this.tracer.isEmpty(); }
+	@Override
+	public boolean isEmpty() {
+		return this.tracer.isEmpty();
+	}
 
 	@Override
 	public ItemStack getItem(int slot) {
 		return slot == 0 ? this.tracer : ItemStack.EMPTY;
 	}
 
-	public ItemStack getTracer() { return this.tracer; }
+	public ItemStack getTracer() {
+		return this.tracer;
+	}
 
 	@Override
 	public ItemStack removeItem(int slot, int amount) {
@@ -74,7 +82,10 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 		this.setChanged();
 	}
 
-	@Override public boolean stillValid(Player player) { return false; }
+	@Override
+	public boolean stillValid(Player player) {
+		return false;
+	}
 
 	@Override
 	public void clearContent() {
@@ -84,9 +95,9 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		if (!this.tracer.isEmpty())
-			Lang.builder("tooltip")
-				.translate("createbigcannons.tracer")
-				.forGoggles(tooltip);
+			CreateLang. ("tooltip")
+			.translate("createbigcannons.tracer")
+			.forGoggles(tooltip);
 		return true;
 	}
 }

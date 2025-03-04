@@ -2,8 +2,7 @@ package rbasamoyai.createbigcannons.compat.framedblocks;
 
 import java.util.Map;
 
-import com.simibubi.create.foundation.utility.Iterate;
-
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
@@ -31,12 +30,12 @@ public class FramedCollapsibleCopycatBlockArmorProperties extends SingleFramedBl
 		for (Direction dir : Iterate.directions) {
 			int offset = fccbe.getFaceOffset(dir);
 			switch (dir.getAxis()) {
-                case X -> x -= offset;
-                case Y -> y -= offset;
-                case Z -> z -= offset;
-            }
+				case X -> x -= offset;
+				case Y -> y -= offset;
+				case Z -> z -= offset;
+			}
 		}
-		double scaledVolume = (double)(x * y * z) / 4096d;
+		double scaledVolume = (double) (x * y * z) / 4096d;
 		return Math.ceil(scaledVolume * 64d) / 64d;
 	}
 

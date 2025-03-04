@@ -2,8 +2,8 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -71,7 +71,10 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 		builder.add(DAMP);
 	}
 
-	@Override public boolean isRandomlyTicking(BlockState state) { return BigCannonMunitionBlock.canDry(state); }
+	@Override
+	public boolean isRandomlyTicking(BlockState state) {
+		return BigCannonMunitionBlock.canDry(state);
+	}
 
 	@Override
 	public boolean placeLiquid(LevelAccessor level, BlockPos pos, BlockState state, FluidState fluidState) {
@@ -181,7 +184,10 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 		return oldState;
 	}
 
-	@Override public Axis getAxis(BlockState state) { return state.getValue(AXIS); }
+	@Override
+	public Axis getAxis(BlockState state) {
+		return state.getValue(AXIS);
+	}
 
 	@Override
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {

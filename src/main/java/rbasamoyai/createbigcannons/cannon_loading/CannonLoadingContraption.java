@@ -13,8 +13,8 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
-import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.piston.PistonExtensionPoleBlock;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 
@@ -295,17 +295,32 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 		return false;
 	}
 
-	@Override public void createbigcannons$setBrokenDisassembly(boolean flag) { this.brokenDisassembly = flag; }
+	@Override
+	public void createbigcannons$setBrokenDisassembly(boolean flag) {
+		this.brokenDisassembly = flag;
+	}
 
-	@Override public boolean createbigcannons$isBrokenDisassembly() { return this.brokenDisassembly; }
+	@Override
+	public boolean createbigcannons$isBrokenDisassembly() {
+		return this.brokenDisassembly;
+	}
 
-	@Override public BlockPos createbigcannons$toLocalPos(BlockPos globalPos) { return this.toLocalPos(globalPos); }
+	@Override
+	public BlockPos createbigcannons$toLocalPos(BlockPos globalPos) {
+		return this.toLocalPos(globalPos);
+	}
 
-	@Override public Set<BlockPos> createbigcannons$getFragileBlockPositions() { return this.fragileBlocks; }
+	@Override
+	public Set<BlockPos> createbigcannons$getFragileBlockPositions() {
+		return this.fragileBlocks;
+	}
 
-    @Override public Set<BlockPos> createbigcannons$getCannonLoadingColliders() { return this.colliderBlocks; }
+	@Override
+	public Set<BlockPos> createbigcannons$getCannonLoadingColliders() {
+		return this.colliderBlocks;
+	}
 
-    @Override
+	@Override
 	@Nullable
 	public Direction createbigcannons$getAssemblyMovementDirection(Level level) {
 		return this.orientation != null && this.retract ? this.orientation.getOpposite() : this.orientation;
@@ -335,7 +350,10 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 		return CBCContraptionTypes.CANNON_LOADER;
 	}
 
-	@Override public Map<BlockPos, BlockState> createbigcannons$getEncounteredBlocks() { return this.encounteredBlocks; }
+	@Override
+	public Map<BlockPos, BlockState> createbigcannons$getEncounteredBlocks() {
+		return this.encounteredBlocks;
+	}
 
 	@Override
 	public boolean createbigcannons$blockBreaksDisassembly(Level level, BlockPos pos, BlockState newState) {
@@ -346,7 +364,10 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 		return HasFragileContraption.defaultBlockBreaksAssembly(level, pos, newState, this);
 	}
 
-	@Override public boolean createbigcannons$shouldCheckFragility() { return HasFragileContraption.defaultShouldCheck(); }
+	@Override
+	public boolean createbigcannons$shouldCheckFragility() {
+		return HasFragileContraption.defaultShouldCheck();
+	}
 
 	@Override
 	public void createbigcannons$fragileDisassemble() {

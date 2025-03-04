@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
@@ -40,22 +40,31 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 		return CBCEntityTypes.MACHINE_GUN_BULLET.get();
 	}
 
-	@Override public boolean isTracer(ItemStack stack) { return stack.getOrCreateTag().getBoolean("Tracer"); }
+	@Override
+	public boolean isTracer(ItemStack stack) {
+		return stack.getOrCreateTag().getBoolean("Tracer");
+	}
 
 	@Override
 	public void setTracer(ItemStack stack, boolean value) {
 		if (!stack.isEmpty()) stack.getOrCreateTag().putBoolean("Tracer", value);
 	}
 
-	@Override public ItemStack getSpentItem(ItemStack stack) { return CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack(); }
+	@Override
+	public ItemStack getSpentItem(ItemStack stack) {
+		return CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack();
+	}
 
-	@Override public AutocannonAmmoType getType() { return AutocannonAmmoType.MACHINE_GUN; }
+	@Override
+	public AutocannonAmmoType getType() {
+		return AutocannonAmmoType.MACHINE_GUN;
+	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
 		if (stack.getOrCreateTag().getBoolean("Tracer")) {
-			Lang.builder("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);
+			CreateLang. ("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);
 		}
 	}
 

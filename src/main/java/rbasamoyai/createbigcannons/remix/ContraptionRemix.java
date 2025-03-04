@@ -23,10 +23,10 @@ import com.simibubi.create.content.contraptions.glue.SuperGlueEntity;
 import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlock;
 import com.simibubi.create.content.contraptions.piston.MechanicalPistonHeadBlock;
 import com.simibubi.create.content.contraptions.pulley.PulleyContraption;
-import com.simibubi.create.foundation.utility.Iterate;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
+import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -168,7 +168,8 @@ public class ContraptionRemix {
 		Direction forcedDirection = contraption.createbigcannons$getAssemblyMovementDirection(level);
 		Direction direction = state.getValue(BlockStateProperties.FACING);
 		BlockPos offset = pos.relative(direction);
-		if ((forcedDirection == null || forcedDirection != direction) && !MechanicalPistonBlock.isStickyPiston(state)) return;
+		if ((forcedDirection == null || forcedDirection != direction) && !MechanicalPistonBlock.isStickyPiston(state))
+			return;
 		simpleMarking(contraption, level, offset, direction, forcedDirection);
 	}
 
@@ -176,7 +177,8 @@ public class ContraptionRemix {
 		Direction forcedDirection = contraption.createbigcannons$getAssemblyMovementDirection(level);
 		Direction direction = state.getValue(BlockStateProperties.FACING);
 		BlockPos offset = pos.relative(direction);
-		if ((forcedDirection == null || forcedDirection != direction) && state.getValue(MechanicalPistonHeadBlock.TYPE) != PistonType.STICKY) return;
+		if ((forcedDirection == null || forcedDirection != direction) && state.getValue(MechanicalPistonHeadBlock.TYPE) != PistonType.STICKY)
+			return;
 		simpleMarking(contraption, level, offset, direction, forcedDirection);
 	}
 
@@ -245,7 +247,8 @@ public class ContraptionRemix {
 			finalCannonBlocks.add(pos);
 
 			BlockState state = level.getBlockState(pos);
-			if (!(state.getBlock() instanceof BigCannonBlock cBlock) || cBlock.getFacing(state).getAxis() != forcedAxis) continue;
+			if (!(state.getBlock() instanceof BigCannonBlock cBlock) || cBlock.getFacing(state).getAxis() != forcedAxis)
+				continue;
 			for (Direction dir : Iterate.directionsInAxis(forcedAxis)) {
 				BlockPos offsetPos = pos.relative(dir);
 				if (!recheckPositions.contains(offsetPos) || localVisited.contains(offsetPos)) continue;
@@ -266,8 +269,8 @@ public class ContraptionRemix {
 	}
 
 	public static <T extends Contraption & CanLoadBigCannon> void moveLoaderBlocks(T contraption, Level level,
-												@Nullable Direction forcedDirection, Queue<BlockPos> frontier,
-												Set<BlockPos> visited, BlockPos pos, BlockState state) {
+																				   @Nullable Direction forcedDirection, Queue<BlockPos> frontier,
+																				   Set<BlockPos> visited, BlockPos pos, BlockState state) {
 		BlockEntity be = level.getBlockEntity(pos);
 		state = IBigCannonBlockEntity.getInnerCannonBlockState(level, pos, state);
 		if (state.getBlock() instanceof BigCannonBlock && be instanceof IBigCannonBlockEntity cbe) {
@@ -285,7 +288,8 @@ public class ContraptionRemix {
 				&& cBlock.getFacing(offsetState).getAxis() == facing.getAxis()
 				&& level.getBlockEntity(offset) instanceof IBigCannonBlockEntity cbe) {
 				StructureBlockInfo containedInfo = cbe.cannonBehavior().block();
-				if (containedInfo.state().getBlock() instanceof BigCannonMunitionBlock) offsetState = containedInfo.state();
+				if (containedInfo.state().getBlock() instanceof BigCannonMunitionBlock)
+					offsetState = containedInfo.state();
 			}
 			if (offsetState.getBlock() instanceof BigCannonMunitionBlock mBlock
 				&& mBlock.getAxis(offsetState) == forcedDirection.getAxis()) {
@@ -303,7 +307,8 @@ public class ContraptionRemix {
 			BlockPos localOffsetPos = contraption.createbigcannons$toLocalPos(offsetPos);
 			if (contraption.getBlocks().containsKey(localOffsetPos)) {
 				StructureBlockInfo offsetInfo = contraption.getBlocks().get(localOffsetPos);
-				if (BlockMovementChecks.isBlockAttachedTowards(offsetInfo.state(), level, offsetPos, offset.getOpposite())) return true;
+				if (BlockMovementChecks.isBlockAttachedTowards(offsetInfo.state(), level, offsetPos, offset.getOpposite()))
+					return true;
 			}
 			Direction.Axis offsetAxis = offset.getAxis();
 			if (offsetState.getBlock() instanceof BigCannonBlock cBlock
@@ -332,7 +337,8 @@ public class ContraptionRemix {
 				}
 				if (IBigCannonBlockEntity.isValidMunitionState(offsetAxis, currentState)
 					&& prevInfo != null && IBigCannonBlockEntity.isValidMunitionState(offsetAxis, prevInfo.state())) {
-					if (BlockMovementChecks.isBlockAttachedTowards(offsetInfo.state(), level, offsetPos, offset.getOpposite())) return true;
+					if (BlockMovementChecks.isBlockAttachedTowards(offsetInfo.state(), level, offsetPos, offset.getOpposite()))
+						return true;
 				} else {
 					return true;
 				}
@@ -381,8 +387,8 @@ public class ContraptionRemix {
 	}
 
 	public static <T extends Contraption & CanLoadBigCannon> boolean handleCannonFrontier(T contraption, Level level,
-												BlockPos pos, BlockPos offsetPos, Set<BlockPos> visited,
-												Direction offset, @Nullable Direction forcedDirection, boolean stickFlag) {
+																						  BlockPos pos, BlockPos offsetPos, Set<BlockPos> visited,
+																						  Direction offset, @Nullable Direction forcedDirection, boolean stickFlag) {
 		if (forcedDirection == null) return false;
 
 		BlockState state = level.getBlockState(pos);
@@ -458,8 +464,8 @@ public class ContraptionRemix {
 
 	@Nullable
 	public static <T extends Contraption & CanLoadBigCannon> Pair<StructureBlockInfo, BlockEntity> handleCapture(T contraption,
-												Level level, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited,
-												Direction forcedDirection, Set<SuperGlueEntity> glueToRemove) {
+																												 Level level, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited,
+																												 Direction forcedDirection, Set<SuperGlueEntity> glueToRemove) {
 		BlockPos localPos = contraption.createbigcannons$toLocalPos(pos);
 		if (shouldAddAsCannon(contraption, localPos)) {
 			StructureBlockInfo info = contraption.getBlocks().get(localPos);
@@ -511,7 +517,8 @@ public class ContraptionRemix {
 					BlockState otherState = otherInfo.state();
 					StructureBlockInfo prevInfo = contraption.getBlocks().get(prevLocalPos);
 					if (!IBigCannonBlockEntity.isValidMunitionState(offsetAxis, prevInfo)) {
-						if (prevInfo.state().getBlock() instanceof BigCannonBlock || addedState.isAir() || offset == forcedDirection) return null;
+						if (prevInfo.state().getBlock() instanceof BigCannonBlock || addedState.isAir() || offset == forcedDirection)
+							return null;
 					}
 
 					if (addedState.isAir() || otherState.isAir() || !isAttachedCapture(level, offset, pos, offsetPos,
@@ -542,7 +549,8 @@ public class ContraptionRemix {
 											 BlockState state, BlockState offsetState, Direction forcedDirection,
 											 Set<SuperGlueEntity> glueToRemove) {
 		if (SuperGlueEntity.isGlued(level, pos, offset, glueToRemove)) return true;
-		if (BlockMovementChecks.isBlockAttachedTowards(offsetState, level, offsetPos, offset.getOpposite())) return true;
+		if (BlockMovementChecks.isBlockAttachedTowards(offsetState, level, offsetPos, offset.getOpposite()))
+			return true;
 		boolean brittle = BlockMovementChecks.isBrittle(offsetState);
 		boolean canStick = !brittle && canStickTo(offsetState, state) && canStickTo(state, offsetState);
 		if (canStick) {
@@ -688,7 +696,8 @@ public class ContraptionRemix {
 
 	public static void validateCannonRope(Contraption contraption, Level level, @Nullable Direction direction,
 										  Function<BlockPos, BlockPos> toLocalPos) throws AssemblyException {
-		if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption) && (direction == null || direction.getAxis().isVertical())) return;
+		if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption) && (direction == null || direction.getAxis().isVertical()))
+			return;
 		BlockPos diff = toLocalPos.apply(BlockPos.ZERO).multiply(-1);
 
 		Set<BlockPos> blocksToCheck = new HashSet<>();
@@ -713,7 +722,8 @@ public class ContraptionRemix {
 		for (BlockPos pos : blocksToCheck) {
 			if (checked.contains(pos)) continue;
 			checked.add(pos);
-			check: for (Direction dir : Iterate.directionsInAxis(Direction.Axis.Y)) {
+			check:
+			for (Direction dir : Iterate.directionsInAxis(Direction.Axis.Y)) {
 				for (int i = 1; i <= LIMIT; ++i) {
 					BlockPos pos1 = pos.relative(dir, i);
 					if (checked.contains(pos1)) break check;
@@ -737,6 +747,9 @@ public class ContraptionRemix {
 		}
 	}
 
-	@ExpectPlatform public static boolean canStickTo(BlockState state, BlockState state1) { throw new AssertionError(); }
+	@ExpectPlatform
+	public static boolean canStickTo(BlockState state, BlockState state1) {
+		throw new AssertionError();
+	}
 
 }

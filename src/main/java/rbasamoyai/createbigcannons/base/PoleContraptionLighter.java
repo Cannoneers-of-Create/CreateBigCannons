@@ -1,8 +1,8 @@
 package rbasamoyai.createbigcannons.base;
 
-import com.jozufozu.flywheel.util.box.GridAlignedBB;
 import com.simibubi.create.content.contraptions.render.ContraptionLighter;
 
+import dev.engine_room.flywheel.util.box.GridAlignedBB;
 import net.minecraft.core.Vec3i;
 
 public class PoleContraptionLighter extends ContraptionLighter<PoleContraption> {

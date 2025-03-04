@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -157,13 +157,18 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 		return total.size() == 1 && total.get(0) == data;
 	}
 
-	public int getExpectedSize() { return 1; }
+	public int getExpectedSize() {
+		return 1;
+	}
 
 	public boolean isComplete(List<StructureBlockInfo> total, Direction dir) {
 		return total.size() == this.getExpectedSize();
 	}
 
-	@Override public Direction.Axis getAxis(BlockState state) { return state.getValue(FACING).getAxis(); }
+	@Override
+	public Direction.Axis getAxis(BlockState state) {
+		return state.getValue(FACING).getAxis();
+	}
 
 	public static ItemStack getTracerFromBlocks(List<StructureBlockInfo> blocks) {
 		if (blocks.isEmpty())
@@ -192,6 +197,9 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 		level.addFreshEntity(projectile);
 	}
 
-	@Override public boolean dropFromExplosion(Explosion explosion) { return false; }
+	@Override
+	public boolean dropFromExplosion(Explosion explosion) {
+		return false;
+	}
 
 }

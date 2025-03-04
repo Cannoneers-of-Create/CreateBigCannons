@@ -11,8 +11,8 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.ImmutableList;
+import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
-import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.StructureTransform;
 
 import net.minecraft.core.BlockPos;
@@ -190,7 +190,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			if (blockInfo.nbt() == null) continue;
 			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state(), blockInfo.nbt());
 			this.presentBlockEntities.put(localPos, be);
-			if (be instanceof IBigCannonBlockEntity cbe && cbe.cannonBehavior().isWelded()) this.hasWeldedPenalty = true;
+			if (be instanceof IBigCannonBlockEntity cbe && cbe.cannonBehavior().isWelded())
+				this.hasWeldedPenalty = true;
 		}
 		this.cannonMaterial = material;
 
@@ -343,8 +344,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				for (ListIterator<StructureBlockInfo> projIter = projectileBlocks.listIterator(); projIter.hasNext(); ) {
 					int i = projIter.nextIndex();
 					StructureBlockInfo projInfo = projIter.next();
-					if (projInfo.state().getBlock() instanceof ProjectileBlock<?> cproj1 && cproj1.isValidAddition(copy, projInfo, i, this.initialOrientation)) continue;
-					if (canFail) this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
+					if (projInfo.state().getBlock() instanceof ProjectileBlock<?> cproj1 && cproj1.isValidAddition(copy, projInfo, i, this.initialOrientation))
+						continue;
+					if (canFail)
+						this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
 					return;
 				}
 				this.consumeBlock(behavior, currentPos);
@@ -397,7 +400,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				for (ListIterator<StructureBlockInfo> projIter = projectileBlocks.listIterator(); projIter.hasNext(); ) {
 					int j = projIter.nextIndex();
 					StructureBlockInfo projInfo = projIter.next();
-					if (projInfo.state().getBlock() instanceof ProjectileBlock<?> cproj1 && cproj1.isValidAddition(copy, projInfo, j, this.initialOrientation)) continue;
+					if (projInfo.state().getBlock() instanceof ProjectileBlock<?> cproj1 && cproj1.isValidAddition(copy, projInfo, j, this.initialOrientation))
+						continue;
 					if (canFail) this.fail(currentPos, level, entity, null, (int) propelCtx.chargesUsed);
 					return;
 				}
@@ -603,7 +607,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		tag.putString("CannonMaterial", this.cannonMaterial == null ? CBCBigCannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
 		if (this.hasWeldedPenalty) tag.putBoolean("WeldedCannon", true);
 		if (this.mortarDelay > 0) tag.putInt("MortarDelay", this.mortarDelay);
-		if (this.cachedMortarRound != null && !this.cachedMortarRound.isEmpty()) tag.put("CachedMortarRound", this.cachedMortarRound.save(new CompoundTag()));
+		if (this.cachedMortarRound != null && !this.cachedMortarRound.isEmpty())
+			tag.put("CachedMortarRound", this.cachedMortarRound.save(new CompoundTag()));
 		if (this.hasFired) tag.putBoolean("HasFired", true);
 		return tag;
 	}
@@ -646,7 +651,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	public void actuallyFireDropMortar() {
-		if (!(this.entity instanceof PitchOrientedContraptionEntity poce) || !(poce.level() instanceof ServerLevel slevel)) return;
+		if (!(this.entity instanceof PitchOrientedContraptionEntity poce) || !(poce.level() instanceof ServerLevel slevel))
+			return;
 		ItemStack stack = this.cachedMortarRound;
 		this.cachedMortarRound = ItemStack.EMPTY;
 		if (!(Block.byItem(stack.getItem()) instanceof DropMortarMunition<?> munition)) return;
@@ -734,7 +740,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				StructureBlockInfo info = iter.next();
 
 				Block block = info.state().getBlock();
-				if (!(block instanceof BigCannonPropellantBlock cpropel) || !(cpropel.isValidAddition(info, index, orientation))) return false;
+				if (!(block instanceof BigCannonPropellantBlock cpropel) || !(cpropel.isValidAddition(info, index, orientation)))
+					return false;
 				if (actualCounts.containsKey(block)) {
 					actualCounts.put(block, actualCounts.get(block) + 1);
 				} else {

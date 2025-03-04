@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Queue;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
-import com.simibubi.create.content.contraptions.ContraptionType;
 import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlock;
 import com.simibubi.create.content.contraptions.piston.PistonExtensionPoleBlock;
 

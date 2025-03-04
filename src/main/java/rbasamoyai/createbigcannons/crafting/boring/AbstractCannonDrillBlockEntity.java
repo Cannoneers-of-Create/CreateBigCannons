@@ -15,15 +15,14 @@ import com.simibubi.create.content.contraptions.bearing.MechanicalBearingBlockEn
 import com.simibubi.create.content.contraptions.piston.MechanicalPistonBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.item.TooltipHelper.Palette;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
+import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -475,11 +474,11 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		this.addFluidInfoToTooltip(tooltip, isPlayerSneaking);
 		if (this.failureReason != FailureReason.NONE) {
 			tooltip.add(Component.empty());
-			Lang.builder("exception")
+			CreateLang. ("exception")
 				.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip.encounteredProblem")
 				.style(ChatFormatting.GOLD)
 				.forGoggles(tooltip);
-			Component exceptionText = Lang.builder("exception")
+			Component exceptionText = CreateLang. ("exception")
 				.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip." + this.failureReason.getSerializedName())
 				.component();
 			tooltip.addAll(TooltipHelper.cutTextComponent(exceptionText, Palette.GRAY_AND_WHITE.primary(), Palette.GRAY_AND_WHITE.highlight(), 4));

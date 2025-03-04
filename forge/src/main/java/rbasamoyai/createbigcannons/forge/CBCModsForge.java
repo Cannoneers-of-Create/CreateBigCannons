@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons.forge;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import com.simibubi.create.foundation.utility.Lang;
-
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.ModList;
@@ -23,11 +21,21 @@ public enum CBCModsForge {
 		this.id = Lang.asId(name());
 	}
 
-	public String id() { return this.id; }
+	public String id() {
+		return this.id;
+	}
 
-	public ResourceLocation resource(String path) { return CBCUtils.location(id, path); }
-	public Block getBlock(String id) { return ForgeRegistries.BLOCKS.getValue(this.resource(id)); }
-	public boolean isLoaded() { return ModList.get().isLoaded(this.id); }
+	public ResourceLocation resource(String path) {
+		return CBCUtils.location(id, path);
+	}
+
+	public Block getBlock(String id) {
+		return ForgeRegistries.BLOCKS.getValue(this.resource(id));
+	}
+
+	public boolean isLoaded() {
+		return ModList.get().isLoaded(this.id);
+	}
 
 	public <T> Optional<T> runIfInstalled(Supplier<Supplier<T>> toRun) {
 		return this.isLoaded() ? Optional.of(toRun.get().get()) : Optional.empty();

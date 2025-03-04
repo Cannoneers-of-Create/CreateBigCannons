@@ -5,7 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.item.TooltipHelper;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -93,7 +93,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
-		MutableComponent info = Lang.builder("item")
+		MutableComponent info = CreateLang. ("item")
 			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info", seconds, ticks)
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
@@ -105,7 +105,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
-		tooltip.add(Lang.builder("item")
+		tooltip.add(CreateLang. ("item")
 			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info.item", seconds, ticks)
 			.component());
 	}

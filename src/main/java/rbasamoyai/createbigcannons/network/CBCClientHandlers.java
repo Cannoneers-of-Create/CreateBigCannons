@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.Contraption;
-import com.simibubi.create.foundation.utility.Components;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -72,7 +71,7 @@ public class CBCClientHandlers {
 		if (CBCRootNetwork.VERSION.equals(pkt.serverVersion())) return;
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.getConnection() != null)
-			mc.getConnection().onDisconnect(Components.literal("Create Big Cannons on the client uses a different network format than the server.")
+			mc.getConnection().onDisconnect(Component.literal("Create Big Cannons on the client uses a different network format than the server.")
 				.append(" Please use a matching format."));
 	}
 
@@ -101,13 +100,13 @@ public class CBCClientHandlers {
 		if (mc.level == null || mc.player == null)
 			return;
 		Explosion explosion = switch (pkt.explosionType()) {
-            case SHRAPNEL -> new ShrapnelExplosion(mc.level, pkt);
-            case FLAK -> new FlakExplosion(mc.level, pkt);
+			case SHRAPNEL -> new ShrapnelExplosion(mc.level, pkt);
+			case FLAK -> new FlakExplosion(mc.level, pkt);
 			case SMOKE -> new SmokeExplosion(mc.level, pkt);
-            case MORTAR_STONE -> new MortarStoneExplosion(mc.level, pkt);
+			case MORTAR_STONE -> new MortarStoneExplosion(mc.level, pkt);
 			case IMPACT -> new ImpactExplosion(mc.level, pkt);
 			case SHELL, SHELL_NO_EFFECTS -> new ShellExplosion(mc.level, pkt);
-        };
+		};
 		explosion.finalizeExplosion(true);
 		mc.player.setDeltaMovement(mc.player.getDeltaMovement().add(pkt.knockbackX(), pkt.knockbackY(), pkt.knockbackZ()));
 	}

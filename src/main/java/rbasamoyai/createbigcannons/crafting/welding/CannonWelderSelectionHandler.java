@@ -4,9 +4,9 @@ import com.google.common.base.Objects;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.AllSpecialTextures;
 import com.simibubi.create.CreateClient;
-import com.simibubi.create.foundation.utility.Lang;
-import com.simibubi.create.foundation.utility.VecHelper;
+import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -56,7 +56,7 @@ public class CannonWelderSelectionHandler {
 			return;
 		}
 		if (this.firstPos != null && this.firstPos.distManhattan(hovered) > 1) {
-			Lang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.too_far").color(FAIL).sendStatus(player);
+			CreateLang. (CreateBigCannons.MOD_ID).translate("cannon_welder.too_far").color(FAIL).sendStatus(player);
 			return;
 		}
 		boolean cancel = player.isSteppingCarefully();
@@ -72,7 +72,7 @@ public class CannonWelderSelectionHandler {
 				color = FAIL;
 				key = "cannon_welder.click_to_discard";
 			}
-			Lang.builder(CreateBigCannons.MOD_ID).translate(key).color(color).sendStatus(player);
+			CreateLang. (CreateBigCannons.MOD_ID).translate(key).color(color).sendStatus(player);
 			if (this.firstPos != null) {
 				CreateClient.OUTLINER.showAABB(this.bbOutlineSlot, new AABB(this.firstPos, hovered).expandTowards(1, 1, 1))
 					.colored(color)
@@ -94,7 +94,7 @@ public class CannonWelderSelectionHandler {
 		LocalPlayer player = mc.player;
 		ClientLevel level = mc.level;
 		level.playSound(player, player.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.75f, 1);
-		Lang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.abort").sendStatus(player);
+		CreateLang. (CreateBigCannons.MOD_ID).translate("cannon_welder.abort").sendStatus(player);
 		this.firstPos = null;
 	}
 
@@ -105,7 +105,7 @@ public class CannonWelderSelectionHandler {
 		AllSoundEvents.STEAM.playAt(player.level(), this.hoveredPos, 0.5F, 0.95F, false);
 		Direction dir = Direction.getNearest(this.hoveredPos.getX() - this.firstPos.getX(), this.hoveredPos.getY() - this.firstPos.getY(), this.hoveredPos.getZ() - this.firstPos.getZ());
 		spawnParticles(mc.level, this.firstPos, dir, true);
-		Lang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.success").sendStatus(player);
+		CreateLang. (CreateBigCannons.MOD_ID).translate("cannon_welder.success").sendStatus(player);
 		this.firstPos = null;
 	}
 
@@ -128,7 +128,8 @@ public class CannonWelderSelectionHandler {
 		if (mc.hitResult instanceof BlockHitResult bhr) {
 			BlockState blockState = level.getBlockState(this.hoveredPos);
 			if (!(blockState.getBlock() instanceof WeldableBlock wblock) || !wblock.isWeldable(blockState)) {
-				Lang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.invalid_weld").color(FAIL).sendStatus(player);
+				CreateLang.
+				(CreateBigCannons.MOD_ID).translate("cannon_welder.invalid_weld").color(FAIL).sendStatus(player);
 				return false;
 			}
 			face = bhr.getDirection();
@@ -141,12 +142,14 @@ public class CannonWelderSelectionHandler {
 		}
 		this.firstPos = this.hoveredPos.immutable();
 		if (face != null) spawnParticles(level, this.firstPos, face, false);
-		Lang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.first_pos").sendStatus(player);
+		CreateLang. (CreateBigCannons.MOD_ID).translate("cannon_welder.first_pos").sendStatus(player);
 		level.playSound(player, this.firstPos, SoundEvents.BLAZE_SHOOT, SoundSource.BLOCKS, 0.75f, 1);
 		return true;
 	}
 
-	public boolean isActive() { return this.firstPos != null; }
+	public boolean isActive() {
+		return this.firstPos != null;
+	}
 
 	public static void spawnParticles(Level world, BlockPos pos, Direction direction, boolean fullBlock) {
 		Vec3 vec = Vec3.atLowerCornerOf(direction.getNormal());
@@ -157,7 +160,8 @@ public class CannonWelderSelectionHandler {
 		for (int i = fullBlock ? 40 : 15; i > 0; i--) {
 			Vec3 offset = VecHelper.rotate(plane, 360 * world.random.nextFloat(), direction.getAxis());
 			Vec3 motion = offset.normalize().scale(1 / 64f);
-			if (fullBlock) offset = new Vec3(Mth.clamp(offset.x, -.5, .5), Mth.clamp(offset.y, -.5, .5), Mth.clamp(offset.z, -.5, .5));
+			if (fullBlock)
+				offset = new Vec3(Mth.clamp(offset.x, -.5, .5), Mth.clamp(offset.y, -.5, .5), Mth.clamp(offset.z, -.5, .5));
 			Vec3 particlePos = facePos.add(offset);
 			world.addParticle(ParticleTypes.FLAME, particlePos.x, particlePos.y, particlePos.z, motion.x, motion.y, motion.z);
 		}

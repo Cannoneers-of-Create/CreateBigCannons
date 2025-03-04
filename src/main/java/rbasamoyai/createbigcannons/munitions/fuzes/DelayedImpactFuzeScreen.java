@@ -1,10 +1,10 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -21,18 +21,22 @@ public class DelayedImpactFuzeScreen extends AbstractFuzeScreen<DelayedImpactFuz
 	@Override
 	protected ScrollInput getScrollInput() {
 		return new ScrollInput(this.leftPos + 36, this.topPos + 29, 102, 18)
-				.withRange(0, 100)
-				.calling(state -> {
-					this.lastUpdated = 0;
-					int time = state + 1;
-					int seconds = time / 20;
-					int ticks = time - seconds * 20;
-					this.setValue.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
-				})
-				.setState(Mth.clamp(this.menu.getValue() - 1, 0, 100));
+			.withRange(0, 100)
+			.calling(state -> {
+				this.lastUpdated = 0;
+				int time = state + 1;
+				int seconds = time / 20;
+				int ticks = time - seconds * 20;
+				this.setValue.titled(CreateLang.
+				(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
+			})
+			.setState(Mth.clamp(this.menu.getValue() - 1, 0, 100));
 	}
 
-	@Override public int getUpdateState() { return this.setValue.getState() + 1; }
+	@Override
+	public int getUpdateState() {
+		return this.setValue.getState() + 1;
+	}
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {

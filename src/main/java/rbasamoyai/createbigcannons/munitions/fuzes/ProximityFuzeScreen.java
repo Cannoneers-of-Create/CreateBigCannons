@@ -1,10 +1,10 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
 import com.simibubi.create.foundation.gui.widget.ScrollInput;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -21,15 +21,19 @@ public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContain
 	@Override
 	protected ScrollInput getScrollInput() {
 		return new ScrollInput(this.leftPos + 36, this.topPos + 29, 102, 18)
-				.withRange(1, 33)
-				.calling(state -> {
-					this.lastUpdated = 0;
-					this.setValue.titled(Lang.builder(CreateBigCannons.MOD_ID).translate("gui.set_proximity_fuze.distance", state).component());
-				})
-				.setState(Mth.clamp(this.menu.getValue(), 1, 33));
+			.withRange(1, 33)
+			.calling(state -> {
+				this.lastUpdated = 0;
+				this.setValue.titled(CreateLang.
+				(CreateBigCannons.MOD_ID).translate("gui.set_proximity_fuze.distance", state).component());
+			})
+			.setState(Mth.clamp(this.menu.getValue(), 1, 33));
 	}
 
-	@Override public int getUpdateState() { return this.setValue.getState(); }
+	@Override
+	public int getUpdateState() {
+		return this.setValue.getState();
+	}
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
@@ -38,7 +42,7 @@ public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContain
 		CBCGuiTextures.PROXIMITY_FUZE_BG.render(graphics, this.leftPos, this.topPos);
 		graphics.drawCenteredString(this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
 		int top = 32;
-		double s = 100.0d / (double)(top - 1);
+		double s = 100.0d / (double) (top - 1);
 		int offsX = this.setValue.getState();
 		offsX = offsX == top ? 100 : (int) Math.ceil((double) offsX * s - s);
 		CBCGuiTextures.PROXIMITY_FUZE_SELECTOR.render(graphics, this.leftPos + 32 + offsX, this.topPos + 21);

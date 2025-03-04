@@ -4,11 +4,11 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-import com.jozufozu.flywheel.light.LightVolume;
-import com.jozufozu.flywheel.util.box.GridAlignedBB;
-import com.jozufozu.flywheel.util.box.ImmutableBox;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 
+import dev.engine_room.flywheel.light.LightVolume;
+import dev.engine_room.flywheel.util.box.GridAlignedBB;
+import dev.engine_room.flywheel.util.box.ImmutableBox;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.remix.HasCannonLightingVolume;
 

@@ -2,9 +2,8 @@ package rbasamoyai.createbigcannons.base;
 
 import java.util.Map;
 
-import com.simibubi.create.foundation.utility.NBTHelper;
-
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -23,7 +22,8 @@ public class PartialBlockDamageSaveData extends SavedData {
 
 	private final Map<ResourceKey<Level>, Map<BlockPos, Integer>> blockDamage = new Object2ObjectLinkedOpenHashMap<>();
 
-	private PartialBlockDamageSaveData() {}
+	private PartialBlockDamageSaveData() {
+	}
 
 	@Override
 	public CompoundTag save(CompoundTag tag) {
@@ -40,7 +40,9 @@ public class PartialBlockDamageSaveData extends SavedData {
 		return tag;
 	}
 
-	public Map<ResourceKey<Level>, Map<BlockPos, Integer>> getBlockDamage() { return this.blockDamage; }
+	public Map<ResourceKey<Level>, Map<BlockPos, Integer>> getBlockDamage() {
+		return this.blockDamage;
+	}
 
 	private static PartialBlockDamageSaveData load(CompoundTag tag) {
 		PartialBlockDamageSaveData savedata = new PartialBlockDamageSaveData();
@@ -63,8 +65,8 @@ public class PartialBlockDamageSaveData extends SavedData {
 
 	public static PartialBlockDamageSaveData load(MinecraftServer server) {
 		return server.overworld()
-				.getDataStorage()
-				.computeIfAbsent(PartialBlockDamageSaveData::load, PartialBlockDamageSaveData::new, "createbigcannons_block_damage");
+			.getDataStorage()
+			.computeIfAbsent(PartialBlockDamageSaveData::load, PartialBlockDamageSaveData::new, "createbigcannons_block_damage");
 	}
 
 }

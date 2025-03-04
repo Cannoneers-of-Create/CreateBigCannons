@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.cannon_loading;
 
+import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.Contraption;
-import com.simibubi.create.content.contraptions.ContraptionType;
 
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;

@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.config;
 
-import com.simibubi.create.foundation.config.ConfigBase;
+import net.createmod.catnip.config.ConfigBase;
 
 public class CBCCfgCannons extends ConfigBase {
 
@@ -38,7 +38,10 @@ public class CBCCfgCannons extends ConfigBase {
 		super();
 	}
 
-	@Override public String getName() { return "cannons"; }
+	@Override
+	public String getName() {
+		return "cannons";
+	}
 
 	private static class Comments {
 		static String maxCannonLength = "Maximum length of cannons that can be built.";

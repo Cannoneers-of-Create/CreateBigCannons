@@ -3,9 +3,9 @@ package rbasamoyai.createbigcannons.crafting.casting;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
 import com.simibubi.create.foundation.utility.animation.LerpedFloat;
 
+import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -33,7 +33,7 @@ public abstract class AbstractCannonCastBlockEntityRenderer extends SafeBlockEnt
 
 		CannonCastShape shape = te.getRenderedSize();
 		if (shape != null) {
-			CachedBufferer.partial(CBCBlockPartials.cannonCastFor(shape), state)
+			CachedBuffers.partial(CBCBlockPartials.cannonCastFor(shape), state)
 				.light(light)
 				.renderInto(ms, buffer.getBuffer(RenderType.solid()));
 		}

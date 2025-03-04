@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.kinetics.BlockStressDefaults;
-import com.simibubi.create.content.kinetics.BlockStressValues;
-import com.simibubi.create.foundation.utility.Couple;
 import com.simibubi.create.foundation.utility.RegisteredObjects;
 
+import net.createmod.catnip.data.Couple;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ForgeConfigSpec.Builder;

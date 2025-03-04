@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.simibubi.create.foundation.utility.Components;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -26,7 +24,7 @@ public class ProjectileBlockItem extends BlockItem {
 		CompoundTag tag = stack.getOrCreateTag();
 		ItemStack tracer = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Tracer"));
 		if (!tracer.isEmpty())
-			tooltip.add(Components.translatable("tooltip.createbigcannons.tracer"));
+			tooltip.add(Component.translatable("tooltip.createbigcannons.tracer"));
 	}
 
 }

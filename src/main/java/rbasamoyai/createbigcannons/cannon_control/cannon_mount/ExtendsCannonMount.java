@@ -4,8 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
@@ -21,7 +20,8 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public interface ExtendsCannonMount {
 
-	@Nullable CannonMountBlockEntity getCannonMount();
+	@Nullable
+	CannonMountBlockEntity getCannonMount();
 
 	MutableComponent noCannonPresent = Component.translatable(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.no_cannon_present");
 	MutableComponent cannonYawComponent = Component.translatable(CreateBigCannons.MOD_ID + ".goggles.cannon_mount.yaw");
@@ -46,23 +46,23 @@ public interface ExtendsCannonMount {
 				yaw = Mth.positiveModulo(mountedContraption.yaw, 360);
 			}
 			String format = "%." + precision + "f\u00ba";
-			Lang.builder().add(cannonYawComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Components.literal(String.format(format, yaw)).withStyle(ChatFormatting.WHITE)))
+			CreateLang. ().add(cannonYawComponent.copy().withStyle(ChatFormatting.GRAY)
+					.append(Component.literal(String.format(format, yaw)).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
-			Lang.builder().add(cannonPitchComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Components.literal(String.format(format, Mth.wrapDegrees(pitch))).withStyle(ChatFormatting.WHITE)))
+			CreateLang. ().add(cannonPitchComponent.copy().withStyle(ChatFormatting.GRAY)
+					.append(Component.literal(String.format(format, Mth.wrapDegrees(pitch))).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
 			if (cannon instanceof MountedBigCannonContraption bigCannon) {
-				Lang.builder().add(bigCannonStrengthComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Component.translatable(bigCannonStrengthValueKey, bigCannon.getMaxSafeCharges()).withStyle(ChatFormatting.WHITE)))
-				.forGoggles(tooltip);
+				CreateLang. ().add(bigCannonStrengthComponent.copy().withStyle(ChatFormatting.GRAY)
+						.append(Component.translatable(bigCannonStrengthValueKey, bigCannon.getMaxSafeCharges()).withStyle(ChatFormatting.WHITE)))
+					.forGoggles(tooltip);
 			} else if (cannon instanceof MountedAutocannonContraption autocannon) {
-				Lang.builder().add(autocannonRPMComponent.copy().withStyle(ChatFormatting.GRAY)
-					.append(Component.translatable(autocannonRPMValueKey, autocannon.getReferencedFireRate()).withStyle(ChatFormatting.WHITE)))
-				.forGoggles(tooltip);
+				CreateLang. ().add(autocannonRPMComponent.copy().withStyle(ChatFormatting.GRAY)
+						.append(Component.translatable(autocannonRPMValueKey, autocannon.getReferencedFireRate()).withStyle(ChatFormatting.WHITE)))
+					.forGoggles(tooltip);
 			}
 		} else {
-			Lang.builder().add(noCannonPresent.copy()).forGoggles(tooltip);
+			CreateLang. ().add(noCannonPresent.copy()).forGoggles(tooltip);
 		}
 	}
 

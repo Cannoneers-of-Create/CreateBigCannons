@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.LangBuilder;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.tterrag.registrate.AbstractRegistrate;
@@ -171,10 +171,10 @@ public class IndexPlatformImpl {
 			String amountStr = FluidTextUtil.getUnicodeMillibuckets(amount, unit, simplify);
 			String capacityStr = FluidTextUtil.getUnicodeMillibuckets(capacity, unit, simplify);
 			Lang.text(" ")
-				.add(Lang.builder()
-					.add(Lang.text(amountStr).add(mb).style(ChatFormatting.GOLD))
-					.text(ChatFormatting.GRAY, " / ")
-					.add(Lang.text(capacityStr).add(mb).style(ChatFormatting.DARK_GRAY)))
+				.add(CreateLang. ()
+				.add(Lang.text(amountStr).add(mb).style(ChatFormatting.GOLD))
+				.text(ChatFormatting.GRAY, " / ")
+				.add(Lang.text(capacityStr).add(mb).style(ChatFormatting.DARK_GRAY)))
 				.addTo(tooltip);
 		} else {
 			Lang.translate("gui.goggles.fluid_container.capacity")

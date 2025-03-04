@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import com.jozufozu.flywheel.core.PartialModel;
-
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -33,12 +32,12 @@ public class CBCBlockPartials {
 		BRONZE_SLIDING_BREECHBLOCK = breechblockPartial(CBCBigCannonMaterials.BRONZE, "bronze_sliding_breechblock"),
 		STEEL_SLIDING_BREECHBLOCK = breechblockPartial(CBCBigCannonMaterials.STEEL, "steel_sliding_breechblock"),
 
-		QUICKFIRING_BREECH_LEVER = block("quickfiring_breech_lever"),
+	QUICKFIRING_BREECH_LEVER = block("quickfiring_breech_lever"),
 
-		STEEL_SCREW_LOCK = screwLockPartial(CBCBigCannonMaterials.STEEL, "steel_screw_lock"),
+	STEEL_SCREW_LOCK = screwLockPartial(CBCBigCannonMaterials.STEEL, "steel_screw_lock"),
 		NETHERSTEEL_SCREW_LOCK = screwLockPartial(CBCBigCannonMaterials.NETHERSTEEL, "nethersteel_screw_lock"),
 
-		VERY_SMALL_CANNON_CAST = cannonCastPartial(() -> CannonCastShape.VERY_SMALL, "cannon_cast/very_small_cannon_cast"),
+	VERY_SMALL_CANNON_CAST = cannonCastPartial(() -> CannonCastShape.VERY_SMALL, "cannon_cast/very_small_cannon_cast"),
 		SMALL_CANNON_CAST = cannonCastPartial(() -> CannonCastShape.SMALL, "cannon_cast/small_cannon_cast"),
 		MEDIUM_CANNON_CAST = cannonCastPartial(() -> CannonCastShape.MEDIUM, "cannon_cast/medium_cannon_cast"),
 		LARGECANNON_CAST = cannonCastPartial(() -> CannonCastShape.LARGE, "cannon_cast/large_cannon_cast"),
@@ -50,24 +49,24 @@ public class CBCBlockPartials {
 		AUTOCANNON_RECOIL_SPRING_CAST = cannonCastPartial(() -> CannonCastShape.AUTOCANNON_RECOIL_SPRING, "cannon_cast/autocannon_recoil_spring_cast"),
 		AUTOCANNON_BARREL_CAST = cannonCastPartial(() -> CannonCastShape.AUTOCANNON_BARREL, "cannon_cast/autocannon_barrel_cast"),
 
-		ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
+	ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
 		FUZE = block("fuze"),
 		DROP_MORTAR_SHELL_FLYING = new PartialModel(CreateBigCannons.resource("block/drop_mortar_shell_flying")),
 
-		CANNON_CARRIAGE = block("cannon_carriage/carriage"),
+	CANNON_CARRIAGE = block("cannon_carriage/carriage"),
 		CANNON_CARRIAGE_AXLE = block("cannon_carriage/carriage_axle"),
 		CANNON_CARRIAGE_WHEEL = block("cannon_carriage/carriage_wheel"),
 		CANNON_CARRIAGE_SADDLE = block("cannon_carriage/carriage_saddle"),
 
-		CAST_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.CAST_IRON, "autocannon/cast_iron_autocannon_spring"),
+	CAST_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.CAST_IRON, "autocannon/cast_iron_autocannon_spring"),
 		BRONZE_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.BRONZE, "autocannon/bronze_autocannon_spring"),
 		STEEL_IRON_AUTOCANNON_SPRING = autocannonSpringPartial(CBCAutocannonMaterials.STEEL, "autocannon/steel_autocannon_spring"),
 
-		CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.CAST_IRON, "cast_iron"),
+	CAST_IRON_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.CAST_IRON, "cast_iron"),
 		BRONZE_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.BRONZE, "bronze"),
 		STEEL_AUTOCANNON_EJECTOR = autocannonEjectorPartial(CBCAutocannonMaterials.STEEL, "steel"),
 
-		AUTOCANNON_SEAT_WHITE = autocannonSeatPartial(DyeColor.WHITE, "autocannon/seat_white"),
+	AUTOCANNON_SEAT_WHITE = autocannonSeatPartial(DyeColor.WHITE, "autocannon/seat_white"),
 		AUTOCANNON_SEAT_ORANGE = autocannonSeatPartial(DyeColor.ORANGE, "autocannon/seat_orange"),
 		AUTOCANNON_SEAT_MAGENTA = autocannonSeatPartial(DyeColor.MAGENTA, "autocannon/seat_magenta"),
 		AUTOCANNON_SEAT_LIGHT_BLUE = autocannonSeatPartial(DyeColor.LIGHT_BLUE, "autocannon/seat_light_blue"),
@@ -84,13 +83,16 @@ public class CBCBlockPartials {
 		AUTOCANNON_SEAT_RED = autocannonSeatPartial(DyeColor.RED, "autocannon/seat_red"),
 		AUTOCANNON_SEAT_BLACK = autocannonSeatPartial(DyeColor.BLACK, "autocannon/seat_black"),
 
-		GAS_MASK = block("gas_mask");
+	GAS_MASK = block("gas_mask");
 
 
 	private static PartialModel block(String path) {
 		return new PartialModel(CreateBigCannons.resource("block/" + path));
 	}
-	private static PartialModel entity(String path) { return new PartialModel(CreateBigCannons.resource("entity/" + path)); }
+
+	private static PartialModel entity(String path) {
+		return new PartialModel(CreateBigCannons.resource("entity/" + path));
+	}
 
 	private static PartialModel breechblockPartial(BigCannonMaterial material, String path) {
 		return breechblockPartial(material, CreateBigCannons.resource("item/" + path));
@@ -180,7 +182,8 @@ public class CBCBlockPartials {
 		return AUTOCANNON_SEAT_BY_COLOR.getOrDefault(color, AUTOCANNON_SEAT_WHITE);
 	}
 
-	public static void init() {}
+	public static void init() {
+	}
 
 	public static void resolveDeferredModels() {
 		for (Runnable run : DEFERRED_MODEL_CALLBACKS) run.run();

@@ -2,14 +2,15 @@ package rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring;
 
 import java.util.Map;
 
-import com.jozufozu.flywheel.backend.Backend;
-import com.jozufozu.flywheel.core.PartialModel;
-import com.mojang.blaze3d.vertex.PoseStack;
 import org.joml.Vector3f;
-import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
+
+import dev.engine_room.flywheel.backend.Backend;
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -37,7 +38,7 @@ public class AutocannonRecoilSpringRenderer extends SmartBlockEntityRenderer<Aut
 
 		BlockState state = spring.getBlockState();
 		Direction facing = state.getValue(BlockStateProperties.FACING);
-		SuperByteBuffer ejectorBuf = CachedBufferer.partialFacing(getPartialModelForState(state), state, facing);
+		SuperByteBuffer ejectorBuf = CachedBuffers.partialFacing(getPartialModelForState(state), state, facing);
 
 		Direction.Axis axis = facing.getAxis();
 

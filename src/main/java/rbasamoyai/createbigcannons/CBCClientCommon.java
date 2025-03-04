@@ -13,11 +13,11 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 
-import com.jozufozu.flywheel.core.PartialModel;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.simibubi.create.foundation.utility.VecHelper;
 
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import net.createmod.catnip.math.VecHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
@@ -119,12 +119,12 @@ public class CBCClientCommon {
 		});
 
 		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("big_cartridge_filled"),
-		(stack, level, player, a) -> {
-			return BigCartridgeBlockItem.getPower(stack);
-		});
+			(stack, level, player, a) -> {
+				return BigCartridgeBlockItem.getPower(stack);
+			});
 
 		IndexPlatform.registerGenericClampedItemProperty(CreateBigCannons.resource("fuze_state"), (stack, level, player, a) -> {
-			if (!(stack.getItem() instanceof FuzedProjectileBlockItem fuzedItem) || !(fuzedItem.getBlock() instanceof FuzedProjectileBlock<?,?> fuzedBlock))
+			if (!(stack.getItem() instanceof FuzedProjectileBlockItem fuzedItem) || !(fuzedItem.getBlock() instanceof FuzedProjectileBlock<?, ?> fuzedBlock))
 				return 0;
 			CompoundTag tag = stack.getOrCreateTag();
 			ItemStack fuze = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Fuze"));
@@ -198,10 +198,10 @@ public class CBCClientCommon {
 		Fluid fluid = fluidState.getType();
 
 		List<Fluid> moltenMetals = Arrays.asList(
-				CBCFluids.MOLTEN_CAST_IRON.get(),
-				CBCFluids.MOLTEN_BRONZE.get(),
-				CBCFluids.MOLTEN_STEEL.get(),
-				CBCFluids.MOLTEN_NETHERSTEEL.get());
+			CBCFluids.MOLTEN_CAST_IRON.get(),
+			CBCFluids.MOLTEN_BRONZE.get(),
+			CBCFluids.MOLTEN_STEEL.get(),
+			CBCFluids.MOLTEN_NETHERSTEEL.get());
 
 		for (Fluid fluid1 : moltenMetals) {
 			if (fluid1.isSame(fluid)) {

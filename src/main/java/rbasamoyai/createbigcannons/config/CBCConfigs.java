@@ -6,15 +6,13 @@ import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-import com.simibubi.create.foundation.config.ui.BaseConfigScreen;
-
-import net.minecraft.client.gui.screens.Screen;
-
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.simibubi.create.content.kinetics.BlockStressValues;
-import com.simibubi.create.foundation.config.ConfigBase;
+import com.simibubi.create.api.stress.BlockStressValues;
+import com.simibubi.create.foundation.config.ui.BaseConfigScreen;
 
+import net.createmod.catnip.config.ConfigBase;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import rbasamoyai.createbigcannons.CreateBigCannons;

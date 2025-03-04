@@ -22,7 +22,6 @@ import com.simibubi.create.compat.rei.display.BasinDisplay;
 import com.simibubi.create.compat.rei.display.CreateDisplay;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.processing.basin.BasinRecipe;
-import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CRecipes;
 
@@ -71,7 +70,7 @@ public class CBCREI implements REIClientPlugin {
 		meltingCatalysts.add(AllBlocks.BASIN::asStack);
 		CreateRecipeCategory.Info<BasinRecipe> meltingInfo = new CreateRecipeCategory.Info<>(
 			CategoryIdentifier.of(CreateBigCannons.resource("melting")),
-			Components.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
+			Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
 			new EmptyBackground(177, 103),
 			new DoubleItemIcon(AllBlocks.BASIN::asStack, CBCBlocks.BASIN_FOUNDRY_LID::asStack),
 			meltingSupplier, meltingCatalysts,
@@ -82,11 +81,11 @@ public class CBCREI implements REIClientPlugin {
 		CBCBlockRecipeCategory<?>
 
 			cannon_casting = builder(CannonCastingRecipe.class)
-				.addTypedRecipes(BlockRecipeType.CANNON_CASTING)
-				.catalystStack(CBCBlocks.CASTING_SAND::asStack)
-				.itemIcon(CBCBlocks.CASTING_SAND.get())
-				.emptyBackground(177, 103)
-				.build("cannon_casting", CannonCastingCategory::new),
+			.addTypedRecipes(BlockRecipeType.CANNON_CASTING)
+			.catalystStack(CBCBlocks.CASTING_SAND::asStack)
+			.itemIcon(CBCBlocks.CASTING_SAND.get())
+			.emptyBackground(177, 103)
+			.build("cannon_casting", CannonCastingCategory::new),
 
 			built_up_heating = builder(BuiltUpHeatingRecipe.class)
 				.addTypedRecipes(BlockRecipeType.BUILT_UP_HEATING)
@@ -120,7 +119,10 @@ public class CBCREI implements REIClientPlugin {
 		return new CategoryBuilder<>(recipeClass);
 	}
 
-	@Override public String getPluginProviderName() { return ID.toString(); }
+	@Override
+	public String getPluginProviderName() {
+		return ID.toString();
+	}
 
 	@Override
 	public void registerCategories(CategoryRegistry registry) {
@@ -278,7 +280,7 @@ public class CBCREI implements REIClientPlugin {
 
 			CBCBlockRecipeCategory.Info<T> info = new CBCBlockRecipeCategory.Info<>(
 				CategoryIdentifier.of(CreateBigCannons.resource(name)),
-				Components.translatable("recipe." + CreateBigCannons.MOD_ID + "." + name),
+				Component.translatable("recipe." + CreateBigCannons.MOD_ID + "." + name),
 				this.background,
 				this.icon,
 				recipesSupplier,

@@ -1,9 +1,9 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
-import com.jozufozu.flywheel.util.box.GridAlignedBB;
-import com.jozufozu.flywheel.util.box.ImmutableBox;
 import com.simibubi.create.content.contraptions.render.NonStationaryLighter;
 
+import dev.engine_room.flywheel.util.box.GridAlignedBB;
+import dev.engine_room.flywheel.util.box.ImmutableBox;
 import rbasamoyai.createbigcannons.remix.HasCannonLightingVolume;
 
 public class CannonContraptionLighter<C extends AbstractMountedCannonContraption> extends NonStationaryLighter<C> {

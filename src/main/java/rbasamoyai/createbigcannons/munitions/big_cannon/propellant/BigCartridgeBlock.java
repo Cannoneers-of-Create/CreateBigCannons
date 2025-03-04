@@ -5,8 +5,8 @@ import javax.annotation.Nullable;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -87,7 +87,10 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		builder.add(DAMP);
 	}
 
-	@Override public boolean isRandomlyTicking(BlockState state) { return BigCannonMunitionBlock.canDry(state); }
+	@Override
+	public boolean isRandomlyTicking(BlockState state) {
+		return BigCannonMunitionBlock.canDry(state);
+	}
 
 	@Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
@@ -235,9 +238,12 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		return oldState.setValue(BlockStateProperties.FACING, facing);
 	}
 
-    @Override public Direction.Axis getAxis(BlockState state) { return state.getValue(BlockStateProperties.FACING).getAxis(); }
+	@Override
+	public Direction.Axis getAxis(BlockState state) {
+		return state.getValue(BlockStateProperties.FACING).getAxis();
+	}
 
-    @Override
+	@Override
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
 		CompoundTag blockTag = new CompoundTag();

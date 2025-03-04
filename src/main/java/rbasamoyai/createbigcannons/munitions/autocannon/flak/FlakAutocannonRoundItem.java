@@ -6,8 +6,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -49,17 +48,17 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 		ItemStack fuze =
 			tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Fuze")) : ItemStack.EMPTY;
 		if (!fuze.isEmpty()) {
-			Lang.builder("block")
-					.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
-					.add(Components.literal(" "))
-					.add(fuze.getDisplayName().copy())
-					.addTo(tooltip);
-            if (fuze.getItem() instanceof FuzeItem) {
-                List<Component> subTooltip = new ArrayList<>();
-                fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
-				subTooltip.replaceAll(sibling -> Components.literal("  ").append(sibling).withStyle(ChatFormatting.GRAY));
-                tooltip.addAll(subTooltip);
-            }
+			CreateLang. ("block")
+				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
+				.add(Component.literal(" "))
+				.add(fuze.getDisplayName().copy())
+				.addTo(tooltip);
+			if (fuze.getItem() instanceof FuzeItem) {
+				List<Component> subTooltip = new ArrayList<>();
+				fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
+				subTooltip.replaceAll(sibling -> Component.literal("  ").append(sibling).withStyle(ChatFormatting.GRAY));
+				tooltip.addAll(subTooltip);
+			}
 		}
 	}
 

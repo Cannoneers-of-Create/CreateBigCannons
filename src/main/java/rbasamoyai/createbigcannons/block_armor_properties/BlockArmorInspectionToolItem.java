@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.simibubi.create.foundation.utility.Components;
-import com.simibubi.create.foundation.utility.Lang;
+import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -22,9 +21,14 @@ public class BlockArmorInspectionToolItem extends Item {
 
 	private static final List<Predicate<Player>> IS_HOLDING_PREDICATES = new ArrayList<>();
 
-	public BlockArmorInspectionToolItem(Properties properties) { super(properties); }
+	public BlockArmorInspectionToolItem(Properties properties) {
+		super(properties);
+	}
 
-	@Override public boolean isFoil(ItemStack stack) { return true; }
+	@Override
+	public boolean isFoil(ItemStack stack) {
+		return true;
+	}
 
 	public static boolean isHoldingTool(Player player) {
 		for (Predicate<Player> predicate : IS_HOLDING_PREDICATES) {
@@ -42,16 +46,16 @@ public class BlockArmorInspectionToolItem extends Item {
 		BlockArmorPropertiesProvider provider = BlockArmorPropertiesHandler.getProperties(blockState);
 		double toughness = provider.toughness(level, blockState, pos, true);
 		double hardness = provider.hardness(level, blockState, pos, true);
-		Lang.builder()
-			.add(Components.translatable("debug.createbigcannons.block_armor_info"))
+		CreateLang.builder()
+			.add(Component.translatable("debug.createbigcannons.block_armor_info"))
 			.forGoggles(tooltip);
-		Lang.builder()
-			.add(Components.translatable("debug.createbigcannons.block_toughness").withStyle(ChatFormatting.GRAY))
-			.add(Components.literal(String.format(format, toughness)).withStyle(ChatFormatting.GOLD))
+		CreateLang.builder()
+			.add(Component.translatable("debug.createbigcannons.block_toughness").withStyle(ChatFormatting.GRAY))
+			.add(Component.literal(String.format(format, toughness)).withStyle(ChatFormatting.GOLD))
 			.forGoggles(tooltip, 1);
-		Lang.builder()
-			.add(Components.translatable("debug.createbigcannons.block_hardness").withStyle(ChatFormatting.GRAY))
-			.add(Components.literal(String.format(format, hardness)).withStyle(ChatFormatting.GOLD))
+		CreateLang.builder()
+			.add(Component.translatable("debug.createbigcannons.block_hardness").withStyle(ChatFormatting.GRAY))
+			.add(Component.literal(String.format(format, hardness)).withStyle(ChatFormatting.GOLD))
 			.forGoggles(tooltip, 1);
 	}
 
@@ -61,7 +65,9 @@ public class BlockArmorInspectionToolItem extends Item {
 	 *
 	 * <br>Adapted from {@link com.simibubi.create.content.equipment.goggles.GogglesItem#addIsWearingPredicate(Predicate)}.
 	 */
-	public static void addIsHoldingPredicate(Predicate<Player> predicate) { IS_HOLDING_PREDICATES.add(predicate); }
+	public static void addIsHoldingPredicate(Predicate<Player> predicate) {
+		IS_HOLDING_PREDICATES.add(predicate);
+	}
 
 	public static void registerDefaultHandlers() {
 		addIsHoldingPredicate(BlockArmorInspectionToolItem::defaultHandler);

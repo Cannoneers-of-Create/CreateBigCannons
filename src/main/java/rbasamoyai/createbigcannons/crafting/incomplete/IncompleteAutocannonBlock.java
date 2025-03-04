@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.simibubi.create.AllShapes;
-import com.simibubi.create.foundation.utility.VoxelShaper;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
+import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;

@@ -6,9 +6,9 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.foundation.gui.element.GuiGameElement;
 
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
+import net.createmod.catnip.gui.element.GuiGameElement;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -37,6 +37,9 @@ public class BasinFoundryLidElement extends Widget {
 		poseStack.popPose();
 	}
 
-	@Override public List<? extends GuiEventListener> children() { return new ArrayList<>(); }
+	@Override
+	public List<? extends GuiEventListener> children() {
+		return new ArrayList<>();
+	}
 
 }

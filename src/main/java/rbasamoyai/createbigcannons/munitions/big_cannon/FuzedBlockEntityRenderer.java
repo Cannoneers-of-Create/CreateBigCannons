@@ -1,11 +1,11 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
-import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
-import com.simibubi.create.foundation.render.CachedBufferer;
-import com.simibubi.create.foundation.render.SuperByteBuffer;
 
+import dev.engine_room.flywheel.backend.Backend;
+import net.createmod.catnip.render.CachedBuffers;
+import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -26,9 +26,10 @@ public class FuzedBlockEntityRenderer extends SafeBlockEntityRenderer<FuzedBlock
 
 		BlockState state = blockEntity.getBlockState();
 		Direction facing = state.getValue(BlockStateProperties.FACING);
-		if (state.getBlock() instanceof FuzedProjectileBlock<?, ?> fuzed && fuzed.isBaseFuze()) facing = facing.getOpposite();
+		if (state.getBlock() instanceof FuzedProjectileBlock<?, ?> fuzed && fuzed.isBaseFuze())
+			facing = facing.getOpposite();
 		if (blockEntity.hasFuze()) {
-			SuperByteBuffer fuzeRender = CachedBufferer.partialFacing(CBCBlockPartials.FUZE, blockEntity.getBlockState(), facing);
+			SuperByteBuffer fuzeRender = CachedBuffers.partialFacing(CBCBlockPartials.FUZE, blockEntity.getBlockState(), facing);
 			fuzeRender.renderInto(posestack, buffers.getBuffer(RenderType.cutout()));
 		}
 	}
