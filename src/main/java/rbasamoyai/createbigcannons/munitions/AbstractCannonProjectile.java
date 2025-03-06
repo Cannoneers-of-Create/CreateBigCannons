@@ -564,7 +564,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		double density = DimensionMunitionPropertiesHandler.getProperties(this.level()).dragMultiplier();
 		FluidState fluidState = this.level().getFluidState(this.blockPosition());
 		if (!fluidState.isEmpty())
-			density += FluidDragHandler.getFluidDrag(fluidState);
+			density += FluidDragHandler.getFluidDrag(fluidState) * 20;
 		double drag = formDrag * density * vel;
 		if (properties.isQuadraticDrag())
 			drag *= vel;
