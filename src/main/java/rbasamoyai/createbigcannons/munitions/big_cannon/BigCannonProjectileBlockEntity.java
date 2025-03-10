@@ -95,7 +95,7 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		if (!this.tracer.isEmpty())
-			CreateLang. ("tooltip")
+			CreateLang.builder("tooltip")
 			.translate("createbigcannons.tracer")
 			.forGoggles(tooltip);
 		return true;

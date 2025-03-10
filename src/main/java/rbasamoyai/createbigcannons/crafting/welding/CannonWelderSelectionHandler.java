@@ -56,7 +56,7 @@ public class CannonWelderSelectionHandler {
 			return;
 		}
 		if (this.firstPos != null && this.firstPos.distManhattan(hovered) > 1) {
-			CreateLang. (CreateBigCannons.MOD_ID).translate("cannon_welder.too_far").color(FAIL).sendStatus(player);
+			CreateLang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.too_far").color(FAIL).sendStatus(player);
 			return;
 		}
 		boolean cancel = player.isSteppingCarefully();
@@ -72,7 +72,7 @@ public class CannonWelderSelectionHandler {
 				color = FAIL;
 				key = "cannon_welder.click_to_discard";
 			}
-			CreateLang. (CreateBigCannons.MOD_ID).translate(key).color(color).sendStatus(player);
+			CreateLang.builder(CreateBigCannons.MOD_ID).translate(key).color(color).sendStatus(player);
 			if (this.firstPos != null) {
 				CreateClient.OUTLINER.showAABB(this.bbOutlineSlot, new AABB(this.firstPos, hovered).expandTowards(1, 1, 1))
 					.colored(color)
@@ -94,7 +94,7 @@ public class CannonWelderSelectionHandler {
 		LocalPlayer player = mc.player;
 		ClientLevel level = mc.level;
 		level.playSound(player, player.blockPosition(), SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.75f, 1);
-		CreateLang. (CreateBigCannons.MOD_ID).translate("cannon_welder.abort").sendStatus(player);
+		CreateLang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.abort").sendStatus(player);
 		this.firstPos = null;
 	}
 
@@ -105,7 +105,7 @@ public class CannonWelderSelectionHandler {
 		AllSoundEvents.STEAM.playAt(player.level(), this.hoveredPos, 0.5F, 0.95F, false);
 		Direction dir = Direction.getNearest(this.hoveredPos.getX() - this.firstPos.getX(), this.hoveredPos.getY() - this.firstPos.getY(), this.hoveredPos.getZ() - this.firstPos.getZ());
 		spawnParticles(mc.level, this.firstPos, dir, true);
-		CreateLang. (CreateBigCannons.MOD_ID).translate("cannon_welder.success").sendStatus(player);
+		CreateLang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.success").sendStatus(player);
 		this.firstPos = null;
 	}
 
@@ -128,8 +128,7 @@ public class CannonWelderSelectionHandler {
 		if (mc.hitResult instanceof BlockHitResult bhr) {
 			BlockState blockState = level.getBlockState(this.hoveredPos);
 			if (!(blockState.getBlock() instanceof WeldableBlock wblock) || !wblock.isWeldable(blockState)) {
-				CreateLang.
-				(CreateBigCannons.MOD_ID).translate("cannon_welder.invalid_weld").color(FAIL).sendStatus(player);
+				CreateLang.builder				(CreateBigCannons.MOD_ID).translate("cannon_welder.invalid_weld").color(FAIL).sendStatus(player);
 				return false;
 			}
 			face = bhr.getDirection();
@@ -142,7 +141,7 @@ public class CannonWelderSelectionHandler {
 		}
 		this.firstPos = this.hoveredPos.immutable();
 		if (face != null) spawnParticles(level, this.firstPos, face, false);
-		CreateLang. (CreateBigCannons.MOD_ID).translate("cannon_welder.first_pos").sendStatus(player);
+		CreateLang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.first_pos").sendStatus(player);
 		level.playSound(player, this.firstPos, SoundEvents.BLAZE_SHOOT, SoundSource.BLOCKS, 0.75f, 1);
 		return true;
 	}

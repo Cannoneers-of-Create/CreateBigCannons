@@ -40,18 +40,18 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 	@Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
-		CreateLang. ("block")
+		CreateLang.builder("block")
 			.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
 			.style(ChatFormatting.YELLOW)
 			.forGoggles(tooltip);
 		if (!this.fuze.isEmpty() && this.fuze.getItem() instanceof FuzeItem fuzeItem) {
-			CreateLang. ()
+			CreateLang.builder()
 				.add(fuzeItem.getDescription().copy())
 				.style(ChatFormatting.GREEN)
 				.forGoggles(tooltip, 1);
 			fuzeItem.addExtraInfo(tooltip, isPlayerSneaking, this.fuze);
 		} else {
-			CreateLang. ("block")
+			CreateLang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze.none")
 				.style(ChatFormatting.DARK_GRAY)
 				.forGoggles(tooltip, 1);

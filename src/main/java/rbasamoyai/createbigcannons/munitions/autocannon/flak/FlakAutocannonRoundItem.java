@@ -48,7 +48,7 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 		ItemStack fuze =
 			tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Fuze")) : ItemStack.EMPTY;
 		if (!fuze.isEmpty()) {
-			CreateLang. ("block")
+			CreateLang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
 				.add(Component.literal(" "))
 				.add(fuze.getDisplayName().copy())

@@ -46,23 +46,23 @@ public interface ExtendsCannonMount {
 				yaw = Mth.positiveModulo(mountedContraption.yaw, 360);
 			}
 			String format = "%." + precision + "f\u00ba";
-			CreateLang. ().add(cannonYawComponent.copy().withStyle(ChatFormatting.GRAY)
+			CreateLang.builder().add(cannonYawComponent.copy().withStyle(ChatFormatting.GRAY)
 					.append(Component.literal(String.format(format, yaw)).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
-			CreateLang. ().add(cannonPitchComponent.copy().withStyle(ChatFormatting.GRAY)
+			CreateLang.builder().add(cannonPitchComponent.copy().withStyle(ChatFormatting.GRAY)
 					.append(Component.literal(String.format(format, Mth.wrapDegrees(pitch))).withStyle(ChatFormatting.WHITE)))
 				.forGoggles(tooltip);
 			if (cannon instanceof MountedBigCannonContraption bigCannon) {
-				CreateLang. ().add(bigCannonStrengthComponent.copy().withStyle(ChatFormatting.GRAY)
+				CreateLang.builder().add(bigCannonStrengthComponent.copy().withStyle(ChatFormatting.GRAY)
 						.append(Component.translatable(bigCannonStrengthValueKey, bigCannon.getMaxSafeCharges()).withStyle(ChatFormatting.WHITE)))
 					.forGoggles(tooltip);
 			} else if (cannon instanceof MountedAutocannonContraption autocannon) {
-				CreateLang. ().add(autocannonRPMComponent.copy().withStyle(ChatFormatting.GRAY)
+				CreateLang.builder().add(autocannonRPMComponent.copy().withStyle(ChatFormatting.GRAY)
 						.append(Component.translatable(autocannonRPMValueKey, autocannon.getReferencedFireRate()).withStyle(ChatFormatting.WHITE)))
 					.forGoggles(tooltip);
 			}
 		} else {
-			CreateLang. ().add(noCannonPresent.copy()).forGoggles(tooltip);
+			CreateLang.builder().add(noCannonPresent.copy()).forGoggles(tooltip);
 		}
 	}
 

@@ -40,10 +40,8 @@ public class FixedCannonMountBoxRenderer {
 		BlockPos pos = result.getBlockPos();
 		Direction face = result.getDirection();
 
-		Component anglePitch = CreateLang.
-		(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_pitch").component();
-		Component angleYaw = CreateLang.
-		(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_yaw").component();
+		Component anglePitch = CreateLang.builder(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_pitch").component();
+		Component angleYaw = CreateLang.builder(CreateBigCannons.MOD_ID).translate("fixed_cannon_mount.angle_yaw").component();
 
 		for (boolean pitch : Iterate.trueAndFalse) {
 			BehaviourType<FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour> type = pitch ? FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour.PITCH_TYPE : FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour.YAW_TYPE;

@@ -103,7 +103,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
-		tooltip.add(CreateLang. ("item")
+		tooltip.add(CreateLang.builder("item")
 			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info.item", seconds, ticks)
 			.component());
 	}
@@ -124,7 +124,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
-		MutableComponent info = CreateLang. ("item")
+		MutableComponent info = CreateLang.builder("item")
 			.translate(CreateBigCannons.MOD_ID + ".delayed_impact_fuze.tooltip.shell_info.chance", (int) (this.getDetonateChance() * 100.0f))
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
@@ -132,7 +132,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
-		MutableComponent info1 = CreateLang. ("item")
+		MutableComponent info1 = CreateLang.builder("item")
 			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info", seconds, ticks)
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info1, Style.EMPTY, Style.EMPTY, 6));

@@ -93,7 +93,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
-		MutableComponent info = CreateLang. ("item")
+		MutableComponent info = CreateLang.builder("item")
 			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info", seconds, ticks)
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
@@ -105,7 +105,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
-		tooltip.add(CreateLang. ("item")
+		tooltip.add(CreateLang.builder("item")
 			.translate(CreateBigCannons.MOD_ID + ".timed_fuze.tooltip.shell_info.item", seconds, ticks)
 			.component());
 	}

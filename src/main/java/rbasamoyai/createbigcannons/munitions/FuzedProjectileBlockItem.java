@@ -30,7 +30,7 @@ public class FuzedProjectileBlockItem extends ProjectileBlockItem {
 		CompoundTag tag = stack.getOrCreateTag();
 		ItemStack fuze = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Fuze"));
 		if (!fuze.isEmpty()) {
-			CreateLang. ("block")
+			CreateLang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
 				.add(Component.literal(" "))
 				.add(fuze.getDisplayName().copy())

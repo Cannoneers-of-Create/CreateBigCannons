@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.crafting.incomplete;
 import java.util.List;
 
 import com.simibubi.create.foundation.utility.CreateLang;
-import com.simibubi.create.foundation.utility.LangBuilder;
+import net.createmod.catnip.lang.LangBuilder;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -14,7 +14,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 public class IncompleteCannonBlockTooltip {
 
 	public static void addToTooltip(List<Component> tooltip, boolean isPlayerSneaking, IncompleteWithItemsCannonBlock incomplete, BlockState state) {
-		CreateLang. ("block")
+		CreateLang.builder("block")
 			.translate(CreateBigCannons.MOD_ID + ".incomplete_block.tooltip.requiredParts")
 			.style(ChatFormatting.GOLD)
 			.forGoggles(tooltip);
@@ -22,7 +22,7 @@ public class IncompleteCannonBlockTooltip {
 		List<ItemLike> required = incomplete.requiredItems();
 		int currentState = incomplete.progress(state);
 		for (int i = 0; i < required.size(); ++i) {
-			LangBuilder lb = CreateLang. ();
+			LangBuilder lb = CreateLang.builder();
 			lb.text(i == currentState ? "> " : "")
 				.add(Component.translatable(required.get(i).asItem().getDescriptionId()))
 				.style(i == currentState ? ChatFormatting.WHITE : ChatFormatting.DARK_GRAY);

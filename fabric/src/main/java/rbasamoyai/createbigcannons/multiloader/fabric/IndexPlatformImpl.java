@@ -7,7 +7,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.utility.CreateLang;
-import com.simibubi.create.foundation.utility.LangBuilder;
+import net.createmod.catnip.lang.LangBuilder;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -171,7 +171,7 @@ public class IndexPlatformImpl {
 			String amountStr = FluidTextUtil.getUnicodeMillibuckets(amount, unit, simplify);
 			String capacityStr = FluidTextUtil.getUnicodeMillibuckets(capacity, unit, simplify);
 			Lang.text(" ")
-				.add(CreateLang. ()
+				.add(CreateLang.builder()
 				.add(Lang.text(amountStr).add(mb).style(ChatFormatting.GOLD))
 				.text(ChatFormatting.GRAY, " / ")
 				.add(Lang.text(capacityStr).add(mb).style(ChatFormatting.DARK_GRAY)))

@@ -474,11 +474,11 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		this.addFluidInfoToTooltip(tooltip, isPlayerSneaking);
 		if (this.failureReason != FailureReason.NONE) {
 			tooltip.add(Component.empty());
-			CreateLang. ("exception")
+			CreateLang.builder("exception")
 				.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip.encounteredProblem")
 				.style(ChatFormatting.GOLD)
 				.forGoggles(tooltip);
-			Component exceptionText = CreateLang. ("exception")
+			Component exceptionText = CreateLang.builder("exception")
 				.translate(CreateBigCannons.MOD_ID + ".cannon_drill.tooltip." + this.failureReason.getSerializedName())
 				.component();
 			tooltip.addAll(TooltipHelper.cutTextComponent(exceptionText, Palette.GRAY_AND_WHITE.primary(), Palette.GRAY_AND_WHITE.highlight(), 4));

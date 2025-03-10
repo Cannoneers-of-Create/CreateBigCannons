@@ -64,7 +64,7 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
 		if (stack.getOrCreateTag().getBoolean("Tracer")) {
-			CreateLang. ("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);
+			CreateLang.builder("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);
 		}
 	}
 

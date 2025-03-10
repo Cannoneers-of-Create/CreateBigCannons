@@ -632,7 +632,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		Component errorMsg = controller.invalidCastingError.getMessage();
 		List<Component> cutErrorLines = TooltipHelper.cutTextComponent(errorMsg, TooltipHelper.Palette.GRAY_AND_WHITE);
 		for (Component cline : cutErrorLines) {
-			CreateLang. ().add(cline.copy()).forGoggles(tooltip);
+			CreateLang.builder().add(cline.copy()).forGoggles(tooltip);
 		}
 		return true;
 	}

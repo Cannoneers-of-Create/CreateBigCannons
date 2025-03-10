@@ -19,13 +19,12 @@ public interface IDisplayEntityAssemblyExceptions {
 
 		if (!tooltip.isEmpty()) tooltip.add(Component.empty());
 
-		CreateLang.
-		().add(Lang.translateDirect("gui.assembly.exception").withStyle(ChatFormatting.GOLD)).forGoggles(tooltip);
+		CreateLang.builder().add(Lang.translateDirect("gui.assembly.exception").withStyle(ChatFormatting.GOLD)).forGoggles(tooltip);
 
 		String text = e.component.getString();
 		Arrays.stream(text.split("\n"))
 			.forEach(l -> TooltipHelper.cutStringTextComponent(l, TooltipHelper.Palette.GRAY_AND_WHITE)
-				.forEach(c -> CreateLang. ().add(c.copy()).forGoggles(tooltip)));
+				.forEach(c -> CreateLang.builder().add(c.copy()).forGoggles(tooltip)));
 
 		return true;
 	}
