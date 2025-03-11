@@ -19,7 +19,7 @@ public interface IDisplayEntityAssemblyExceptions {
 
 		if (!tooltip.isEmpty()) tooltip.add(Component.empty());
 
-		CreateLang.builder().add(Lang.translateDirect("gui.assembly.exception").withStyle(ChatFormatting.GOLD)).forGoggles(tooltip);
+		CreateLang.builder().add(CreateLang.translateDirect("gui.assembly.exception").withStyle(ChatFormatting.GOLD)).forGoggles(tooltip);
 
 		String text = e.component.getString();
 		Arrays.stream(text.split("\n"))

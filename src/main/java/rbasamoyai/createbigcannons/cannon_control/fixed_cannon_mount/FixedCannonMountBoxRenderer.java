@@ -63,7 +63,7 @@ public class FixedCannonMountBoxRenderer {
 
 			List<MutableComponent> tip = new ArrayList<>();
 			tip.add(label.copy());
-			tip.add(Lang.translateDirect("gui.value_settings.hold_to_edit"));
+			tip.add(CreateLang.translateDirect("gui.value_settings.hold_to_edit"));
 			CreateClient.VALUE_SETTINGS_HANDLER.showHoverTip(tip);
 		}
 	}

@@ -161,24 +161,24 @@ public class IndexPlatformImpl {
 		int capacity = AbstractFluidShellBlockEntity.getFluidShellCapacity();
 		FluidUnit unit = AllConfigs.client().fluidUnitType.get();
 		boolean simplify = AllConfigs.client().simplifyFluidUnit.get();
-		LangBuilder mb = Lang.translate(unit.getTranslationKey());
+		LangBuilder mb = CreateLang.translate(unit.getTranslationKey());
 
 		if (fluid != Fluids.EMPTY && amount > 0) {
-			Lang.text(" ")
-				.add(Lang.fluidName(new FluidStack(fluid, 1)).style(ChatFormatting.GRAY))
+			CreateLang.text(" ")
+				.add(CreateLang.fluidName(new FluidStack(fluid, 1)).style(ChatFormatting.GRAY))
 				.addTo(tooltip);
 
 			String amountStr = FluidTextUtil.getUnicodeMillibuckets(amount, unit, simplify);
 			String capacityStr = FluidTextUtil.getUnicodeMillibuckets(capacity, unit, simplify);
-			Lang.text(" ")
+			CreateLang.text(" ")
 				.add(CreateLang.builder()
-				.add(Lang.text(amountStr).add(mb).style(ChatFormatting.GOLD))
+				.add(CreateLang.text(amountStr).add(mb).style(ChatFormatting.GOLD))
 				.text(ChatFormatting.GRAY, " / ")
-				.add(Lang.text(capacityStr).add(mb).style(ChatFormatting.DARK_GRAY)))
+				.add(CreateLang.text(capacityStr).add(mb).style(ChatFormatting.DARK_GRAY)))
 				.addTo(tooltip);
 		} else {
-			Lang.translate("gui.goggles.fluid_container.capacity")
-				.add(Lang.text(FluidTextUtil.getUnicodeMillibuckets(capacity, unit, simplify)).add(mb).style(ChatFormatting.GOLD))
+			CreateLang.translate("gui.goggles.fluid_container.capacity")
+				.add(CreateLang.text(FluidTextUtil.getUnicodeMillibuckets(capacity, unit, simplify)).add(mb).style(ChatFormatting.GOLD))
 				.style(ChatFormatting.GRAY)
 				.addTo(tooltip);
 		}

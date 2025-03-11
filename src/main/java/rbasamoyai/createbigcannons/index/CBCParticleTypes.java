@@ -85,7 +85,7 @@ public enum CBCParticleTypes {
 	private final ParticleEntry<?> entry;
 
 	<D extends ParticleOptions> CBCParticleTypes(Supplier<ICustomParticleData<D>> typeFactory) {
-		String name = Lang.asId(name());
+		String name = CreateLang.asId(name());
 		this.entry = new ParticleEntry<>(name, typeFactory);
 	}
 

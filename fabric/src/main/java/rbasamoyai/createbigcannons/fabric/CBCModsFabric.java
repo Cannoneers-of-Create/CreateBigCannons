@@ -17,7 +17,7 @@ public enum CBCModsFabric {
 	private final String id;
 
 	CBCModsFabric() {
-		this.id = Lang.asId(name());
+		this.id = CreateLang.asId(name());
 	}
 
 	public String id() {

@@ -144,22 +144,22 @@ public class IndexPlatformImpl {
 
 	public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) {
 		int capacity = AbstractFluidShellBlockEntity.getFluidShellCapacity();
-		LangBuilder mb = Lang.translate("generic.unit.millibuckets");
+		LangBuilder mb = CreateLang.translate("generic.unit.millibuckets");
 		if (fluid != Fluids.EMPTY && amount > 0) {
-			Lang.translate("gui.goggles.fluid_container").addTo(tooltip);
-			Lang.text(" ")
-				.add(Lang.fluidName(new FluidStack(fluid, 1)).style(ChatFormatting.GRAY))
+			CreateLang.translate("gui.goggles.fluid_container").addTo(tooltip);
+			CreateLang.text(" ")
+				.add(CreateLang.fluidName(new FluidStack(fluid, 1)).style(ChatFormatting.GRAY))
 				.addTo(tooltip);
 
-			Lang.text(" ")
+			CreateLang.text(" ")
 				.add(CreateLang.builder()
-				.add(Lang.number(amount).add(mb).style(ChatFormatting.GOLD))
+				.add(CreateLang.number(amount).add(mb).style(ChatFormatting.GOLD))
 				.text(ChatFormatting.GRAY, " / ")
-				.add(Lang.number(capacity).add(mb).style(ChatFormatting.DARK_GRAY)))
+				.add(CreateLang.number(capacity).add(mb).style(ChatFormatting.DARK_GRAY)))
 				.addTo(tooltip);
 		} else {
-			Lang.translate("gui.goggles.fluid_container.capacity")
-				.add(Lang.number(capacity).add(mb).style(ChatFormatting.GOLD))
+			CreateLang.translate("gui.goggles.fluid_container.capacity")
+				.add(CreateLang.number(capacity).add(mb).style(ChatFormatting.GOLD))
 				.style(ChatFormatting.GRAY)
 				.addTo(tooltip);
 		}

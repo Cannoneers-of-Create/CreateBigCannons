@@ -18,7 +18,7 @@ public enum CBCModsForge {
 	private final String id;
 
 	CBCModsForge() {
-		this.id = Lang.asId(name());
+		this.id = CreateLang.asId(name());
 	}
 
 	public String id() {

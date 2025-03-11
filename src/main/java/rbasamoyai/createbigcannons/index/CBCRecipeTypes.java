@@ -53,7 +53,7 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	private final NonNullSupplier<RecipeType<?>> type;
 
 	CBCRecipeTypes(NonNullSupplier<RecipeSerializer<?>> serializerSupplier, NonNullSupplier<RecipeType<?>> typeSupplier, boolean registerType) {
-		String name = Lang.asId(name());
+		String name = CreateLang.asId(name());
 		id = CreateBigCannons.resource(name);
 		serializerObject = IndexPlatform.registerRecipeSerializer(this.id, serializerSupplier);
 		if (registerType) {
@@ -67,7 +67,7 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	}
 
 	CBCRecipeTypes(NonNullSupplier<RecipeSerializer<?>> serializerSupplier) {
-		String name = Lang.asId(name());
+		String name = CreateLang.asId(name());
 		id = CreateBigCannons.resource(name);
 		serializerObject = IndexPlatform.registerRecipeSerializer(this.id, serializerSupplier);
 		typeObject = simpleType(id);

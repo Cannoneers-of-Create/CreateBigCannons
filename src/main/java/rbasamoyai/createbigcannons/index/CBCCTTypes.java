@@ -22,7 +22,7 @@ public enum CBCCTTypes implements CTType {
 	private final ContextRequirement contextRequirement;
 
 	CBCCTTypes(int sheetSize, ContextRequirement requirement) {
-		this.id = CreateBigCannons.resource(Lang.asId(name()));
+		this.id = CreateBigCannons.resource(CreateLang.asId(name()));
 		this.sheetSize = sheetSize;
 		this.contextRequirement = requirement;
 		CTTypeRegistry.register(this);
