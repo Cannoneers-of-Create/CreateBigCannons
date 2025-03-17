@@ -14,7 +14,7 @@ val loader = property("loom.platform")!!
 val minecraftVersion: String = stonecutter.current.version
 val common: Project = requireNotNull(stonecutter.node.sibling("")) {
 	"No common project for $project"
-}
+}.project
 
 val ci = System.getenv("CI")?.toBoolean() ?: false
 val release = System.getenv("RELEASE")?.toBoolean() ?: false

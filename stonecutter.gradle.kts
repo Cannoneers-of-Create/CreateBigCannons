@@ -49,7 +49,7 @@ for (it in stonecutter.tree.nodes) {
 	if (it.metadata != stonecutter.current || it.branch.id.isEmpty()) continue
 	val types = listOf("Client", "Server")
 	val loader = it.branch.id.uppercaseFirstChar()
-	for (type in types) it.tasks.register("runActive$type$loader") {
+	for (type in types) it.project.tasks.register("runActive$type$loader") {
 		group = "project"
 		dependsOn("run$type")
 	}
