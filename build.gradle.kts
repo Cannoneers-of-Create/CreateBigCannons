@@ -52,7 +52,7 @@ dependencies {
 
 	// Ritchie's Projectile Library
 	val rplSuffix = if (mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
-	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-common$rplSuffix") {
+	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-fabric$rplSuffix") {
 		isTransitive = false
 	}
 
