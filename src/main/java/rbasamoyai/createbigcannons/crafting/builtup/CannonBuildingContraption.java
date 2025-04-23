@@ -144,7 +144,7 @@ public class CannonBuildingContraption extends PoleContraption {
 		Direction opposite = this.orientation.getOpposite();
 		boolean firstBlock = true;
 
-		for (int offset = 0; offset <= CBCConfigs.SERVER.crafting.maxCannonBuilderRange.get(); ++offset) {
+		for (int offset = 0; offset <= CBCConfigs.server().crafting.maxCannonBuilderRange.get(); ++offset) {
 			BlockPos currentPos = pos.relative(this.orientation, offset + this.initialExtensionProgress);
 			if (retracting && level.isOutsideBuildHeight(currentPos)) {
 				preAddedBlocks.forEach(this::addBlock);

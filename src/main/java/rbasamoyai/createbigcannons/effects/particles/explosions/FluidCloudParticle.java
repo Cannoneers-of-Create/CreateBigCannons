@@ -11,11 +11,11 @@ public class FluidCloudParticle extends ShrapnelCloudParticle {
 		super(level, x, y, z, dx, dy, dz);
 	}
 
-	@Override protected boolean shouldShow() { return CBCConfigs.CLIENT.showFluidShellClouds.get(); }
+	@Override protected boolean shouldShow() { return CBCConfigs.client().showFluidShellClouds.get(); }
 
-	@Override protected boolean flamesVisible() { return CBCConfigs.CLIENT.showExtraFluidShellCloudFlames.get(); }
+	@Override protected boolean flamesVisible() { return CBCConfigs.client().showExtraFluidShellCloudFlames.get(); }
 
-	@Override protected boolean shockwaveVisible() { return CBCConfigs.CLIENT.showExtraFluidShellCloudShockwave.get(); }
+	@Override protected boolean shockwaveVisible() { return CBCConfigs.client().showExtraFluidShellCloudShockwave.get(); }
 
 	public static class Provider implements ParticleProvider<FluidCloudParticleData> {
 		@Override

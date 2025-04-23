@@ -64,7 +64,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 			Vec3 oldPos = this.position();
 			super.tick();
 			if (!this.isInGround()) {
-				TrailType trailType = CBCConfigs.SERVER.munitions.bigCannonTrailType.get();
+				TrailType trailType = CBCConfigs.server().munitions.bigCannonTrailType.get();
 				if (trailType != TrailType.NONE) {
 					int lifetime = trailType == TrailType.SHORT ? 100 : 280 + this.level().random.nextInt(50);
 					ParticleOptions options = new TrailSmokeParticleData(lifetime);
@@ -87,7 +87,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 					double radius = Math.min(200, dispLen * 30);
 					EnvExecute.executeOnClient(() -> () -> CBCClientCommon.playShellFlyingSoundOnClient(this,
 						CBCSoundEvents.SHELL_FLYING.getMainEvent(), player -> {
-							if (!CBCConfigs.CLIENT.enableBigCannonFlybySounds.get())
+							if (!CBCConfigs.client().enableBigCannonFlybySounds.get())
 								return false;
 							if (player.distanceToSqr(originPos) > radius * radius)
 								return false;
@@ -101,7 +101,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 
 
 	public boolean hasTracer() {
-		return (!this.getTracer().isEmpty() || CBCConfigs.SERVER.munitions.allBigCannonProjectilesAreTracers.get()) && !this.isInGround();
+		return (!this.getTracer().isEmpty() || CBCConfigs.server().munitions.allBigCannonProjectilesAreTracers.get()) && !this.isInGround();
 	}
 
 	public void setTracer(ItemStack stack) {
@@ -167,8 +167,8 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		double incidence = Math.max(0, curVel.normalize().dot(normal.reverse()));
 		double velMag = curVel.length();
 		double mass = this.getProjectileMass();
-		double bonusMomentum = 1 + Math.max(0, (velMag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
-			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
+		double bonusMomentum = 1 + Math.max(0, (velMag - CBCConfigs.server().munitions.minVelocityForPenetrationBonus.getF())
+			* CBCConfigs.server().munitions.penetrationBonusScale.getF());
 		double incidentVel = velMag * incidence;
 		double momentum = mass * incidentVel * bonusMomentum;
 
@@ -178,11 +178,11 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		double bounceBonus = Math.max(1 - hardnessPenalty, 0);
 
 		double projectileDeflection = ballistics.deflection();
-		double baseChance = CBCConfigs.SERVER.munitions.baseProjectileBounceChance.getF();
+		double baseChance = CBCConfigs.server().munitions.baseProjectileBounceChance.getF();
 		double bounceChance = projectileDeflection < 1e-2d || incidence > projectileDeflection ? 0 : Math.max(baseChance, 1 - incidence / projectileDeflection) * bounceBonus;
 
 		boolean surfaceImpact = this.canHitSurface();
-		boolean canBounce = CBCConfigs.SERVER.munitions.projectilesCanBounce.get();
+		boolean canBounce = CBCConfigs.server().munitions.projectilesCanBounce.get();
 		boolean blockBroken = toughnessPenalty < 1e-2d && !unbreakable;
 		ImpactResult.KinematicOutcome outcome;
 		if (surfaceImpact && canBounce && this.level().getRandom().nextDouble() < bounceChance) {

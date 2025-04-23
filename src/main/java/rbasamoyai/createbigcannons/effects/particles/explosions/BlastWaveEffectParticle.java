@@ -57,10 +57,10 @@ public class BlastWaveEffectParticle extends NoRenderParticle {
 			return;
 		}
 
-		boolean instant = CBCConfigs.CLIENT.isInstantaneousBlastEffect();
+		boolean instant = CBCConfigs.client().isInstantaneousBlastEffect();
 		if (instant)
 			this.currentRadius = 0;
-		double speed = CBCConfigs.CLIENT.blastEffectDelaySpeed.getF() * 0.05d;
+		double speed = CBCConfigs.client().blastEffectDelaySpeed.getF() * 0.05d;
 		double newRadius = instant ? this.functionalRadius : Math.min(this.currentRadius + speed, this.functionalRadius);
 
 		double dist = Math.sqrt(minecraft.player.distanceToSqr(this.x, this.y, this.z));
@@ -75,7 +75,7 @@ public class BlastWaveEffectParticle extends NoRenderParticle {
 			if (dist < volumeDist) {
 				SoundInstance sound = new SimpleSoundInstance(this.soundEvent, this.soundSource, this.volume, this.pitch,
 					RandomSource.create(this.level.random.nextLong()), this.x, this.y, this.z);
-				if (CBCConfigs.CLIENT.blastSoundAirAbsorption.get())
+				if (CBCConfigs.client().blastSoundAirAbsorption.get())
 					sound = new AirAbsorptionWrapper(sound, this.airAbsorption);
 				minecraft.getSoundManager().play(sound);
 			}
@@ -95,9 +95,9 @@ public class BlastWaveEffectParticle extends NoRenderParticle {
 		@Override
 		public Particle createParticle(CannonBlastWaveEffectParticleData type, ClientLevel level, double x, double y, double z,
 									   double xSpeed, double ySpeed, double zSpeed) {
-			float power = type.power() * CBCConfigs.CLIENT.bigCannonShakePowerMultiplier.getF();
+			float power = type.power() * CBCConfigs.client().bigCannonShakePowerMultiplier.getF();
 			BlastWaveEffectParticle particle = new BlastWaveEffectParticle(level, x, y, z, type.blastRadius(), type.soundEvent().value(),
-				type.soundSource(), type.volume(), type.pitch(), type.airAbsorption(), power, CBCConfigs.CLIENT.bigCannonShakePowerLimit.getF());
+				type.soundSource(), type.volume(), type.pitch(), type.airAbsorption(), power, CBCConfigs.client().bigCannonShakePowerLimit.getF());
 			particle.setLifetime(100); // Timeout
 			return particle;
 		}
@@ -107,9 +107,9 @@ public class BlastWaveEffectParticle extends NoRenderParticle {
 		@Override
 		public Particle createParticle(ShellBlastWaveEffectParticleData type, ClientLevel level, double x, double y, double z,
 									   double xSpeed, double ySpeed, double zSpeed) {
-			float power = type.power() * CBCConfigs.CLIENT.shellShakePowerMultiplier.getF();
+			float power = type.power() * CBCConfigs.client().shellShakePowerMultiplier.getF();
 			BlastWaveEffectParticle particle = new BlastWaveEffectParticle(level, x, y, z, type.blastRadius(), type.soundEvent().value(),
-				type.soundSource(), type.volume(), type.pitch(), type.airAbsorption(), power, CBCConfigs.CLIENT.shellShakePowerLimit.getF());
+				type.soundSource(), type.volume(), type.pitch(), type.airAbsorption(), power, CBCConfigs.client().shellShakePowerLimit.getF());
 			particle.setLifetime(100); // Timeout
 			return particle;
 		}

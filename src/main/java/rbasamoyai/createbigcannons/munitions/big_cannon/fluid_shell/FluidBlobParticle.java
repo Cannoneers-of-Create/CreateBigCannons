@@ -17,7 +17,7 @@ public class FluidBlobParticle extends NoRenderParticle {
 	FluidBlobParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float scale, EndFluidStack fluid) {
 		super(level, x, y, z, dx, dy, dz);
 		this.scale = scale;
-		this.particleCount = CBCConfigs.CLIENT.fluidBlobParticleCount.get();
+		this.particleCount = CBCConfigs.client().fluidBlobParticleCount.get();
 		this.lifetime = 0;
 		this.fluid = fluid;
 	}

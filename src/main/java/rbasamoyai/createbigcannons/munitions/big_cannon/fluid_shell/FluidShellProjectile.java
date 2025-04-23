@@ -50,7 +50,7 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 		Vec3 oldDelta = this.getDeltaMovement();
 		FluidExplosion explosion = new FluidExplosion(this.level(), null, this.indirectArtilleryFire(false), position.x(),
 			position.y(), position.z(), this.getAllProperties().explosion().explosivePower(),
-			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction(), this.fluidStack.fluid());
+			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction(), this.fluidStack.fluid());
 		CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 
 		if (!this.fluidStack.isEmpty()) {

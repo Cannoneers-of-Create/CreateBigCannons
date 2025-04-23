@@ -26,7 +26,7 @@ public class FuzeSelectionHandler {
 	private Object bbOutlineSlot = new Object();
 
 	public void tick() {
-		if (!CBCConfigs.CLIENT.highlightFuzeInputOnShellBlocks.get())
+		if (!CBCConfigs.client().highlightFuzeInputOnShellBlocks.get())
 			return;
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;

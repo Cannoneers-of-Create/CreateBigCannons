@@ -128,7 +128,7 @@ public class CannonBuilderBlock extends DirectionalAxisKineticBlock implements I
 	}
 
 	public static int maxAllowedBuilderLength() {
-		return CBCConfigs.SERVER.crafting.maxCannonBuilderLength.get();
+		return CBCConfigs.server().crafting.maxCannonBuilderLength.get();
 	}
 
 	public enum BuilderState implements StringRepresentable {

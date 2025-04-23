@@ -104,7 +104,7 @@ public class CannonDrillBlock extends DirectionalAxisKineticBlock implements IBE
 	}
 
 	public static int maxAllowedDrillLength() {
-		return CBCConfigs.SERVER.crafting.maxCannonDrillLength.get();
+		return CBCConfigs.server().crafting.maxCannonDrillLength.get();
 	}
 
 }

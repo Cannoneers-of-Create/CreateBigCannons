@@ -179,7 +179,7 @@ public class SmokeEmitterEntity extends Entity {
 
 	protected int getLifetime() { return this.duration; }
 
-	protected boolean canChunkLoad() { return CBCConfigs.SERVER.munitions.smokeCloudsCanChunkload.get(); }
+	protected boolean canChunkLoad() { return CBCConfigs.server().munitions.smokeCloudsCanChunkload.get(); }
 
 	public boolean canMergeWithOther(SmokeEmitterEntity other) {
 		return this != other && other.getType() == this.getType();

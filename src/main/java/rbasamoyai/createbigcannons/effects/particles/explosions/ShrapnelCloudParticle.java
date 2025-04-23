@@ -57,9 +57,9 @@ public class ShrapnelCloudParticle extends NoRenderParticle {
 		super.tick();
 	}
 
-	protected boolean shouldShow() { return CBCConfigs.CLIENT.showShrapnelClouds.get(); }
-	protected boolean flamesVisible() { return CBCConfigs.CLIENT.showExtraShrapnelCloudFlames.get(); }
-	protected boolean shockwaveVisible() { return CBCConfigs.CLIENT.showExtraShrapnelCloudShockwave.get(); }
+	protected boolean shouldShow() { return CBCConfigs.client().showShrapnelClouds.get(); }
+	protected boolean flamesVisible() { return CBCConfigs.client().showExtraShrapnelCloudFlames.get(); }
+	protected boolean shockwaveVisible() { return CBCConfigs.client().showExtraShrapnelCloudShockwave.get(); }
 
 	public static class Provider implements ParticleProvider<ShrapnelCloudParticleData> {
 		@Override

@@ -28,7 +28,7 @@ public class AutocannonPlumeParticle extends NoRenderParticle {
 		super(level, x, y, z);
 		this.direction = direction;
 		this.scale = scale;
-		this.visible = CBCClientCommon.getParticleStatus() == ParticleStatus.ALL && CBCConfigs.CLIENT.showAutocannonPlumes.get();
+		this.visible = CBCClientCommon.getParticleStatus() == ParticleStatus.ALL && CBCConfigs.client().showAutocannonPlumes.get();
 
 		this.lifetime = 5;
 

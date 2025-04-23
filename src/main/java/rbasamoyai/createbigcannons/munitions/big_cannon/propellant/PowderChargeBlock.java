@@ -116,18 +116,18 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	@Override
 	public boolean canBeIgnited(StructureBlockInfo data, Direction dir) {
 		return !data.state().getValue(DAMP)
-			|| !CBCConfigs.SERVER.munitions.dampPropellantBlocksStartingIgnition.get()
+			|| !CBCConfigs.server().munitions.dampPropellantBlocksStartingIgnition.get()
 			|| !this.getProperties().propellantProperties().dampAmmoDoesntIgniteAsStarter();
 	}
 
 	public float getPowerMultiplier(StructureBlockInfo data) {
-		return CBCConfigs.SERVER.munitions.dampPropellantWeakensPropellant.get() && data.state().getValue(DAMP)
+		return CBCConfigs.server().munitions.dampPropellantWeakensPropellant.get() && data.state().getValue(DAMP)
 			? this.getProperties().propellantProperties().dampAmmoStrengthDebuff()
 			: 1;
 	}
 
 	public float getPowerMultiplier(ItemStack stack) {
-		return CBCConfigs.SERVER.munitions.dampPropellantWeakensPropellant.get() && stack.getOrCreateTag().getBoolean("Damp")
+		return CBCConfigs.server().munitions.dampPropellantWeakensPropellant.get() && stack.getOrCreateTag().getBoolean("Damp")
 			? this.getProperties().propellantProperties().dampAmmoStrengthDebuff()
 			: 1;
 	}

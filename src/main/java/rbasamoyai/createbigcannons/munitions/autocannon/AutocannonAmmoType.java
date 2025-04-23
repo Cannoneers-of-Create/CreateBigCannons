@@ -5,10 +5,10 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 
 public enum AutocannonAmmoType {
 	AUTOCANNON {
-		@Override public int getCapacity() { return CBCConfigs.SERVER.munitions.ammoContainerAutocannonRoundCapacity.get(); }
+		@Override public int getCapacity() { return CBCConfigs.server().munitions.ammoContainerAutocannonRoundCapacity.get(); }
 	},
 	MACHINE_GUN {
-		@Override public int getCapacity() { return CBCConfigs.SERVER.munitions.ammoContainerMachineGunRoundCapacity.get(); }
+		@Override public int getCapacity() { return CBCConfigs.server().munitions.ammoContainerMachineGunRoundCapacity.get(); }
 	},
 	NONE {
 		@Override public int getCapacity() { return 0; }

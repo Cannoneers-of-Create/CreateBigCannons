@@ -38,9 +38,9 @@ public interface ExtendsCannonMount {
 			float pitch = flag ? mountedContraption.pitch : -mountedContraption.pitch;
 			if (Math.abs(pitch) < 1e-1f) pitch = 0;
 
-			String precision = CBCConfigs.CLIENT.cannonMountAngleGoggleTooltipPrecision.get().toString();
+			String precision = CBCConfigs.client().cannonMountAngleGoggleTooltipPrecision.get().toString();
 			float yaw;
-			if (CBCConfigs.CLIENT.use180180RangeForYaw.get()) {
+			if (CBCConfigs.client().use180180RangeForYaw.get()) {
 				yaw = Mth.wrapDegrees(mountedContraption.yaw);
 			} else {
 				yaw = Mth.positiveModulo(mountedContraption.yaw, 360);

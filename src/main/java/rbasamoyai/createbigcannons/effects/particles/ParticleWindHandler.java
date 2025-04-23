@@ -39,7 +39,7 @@ public class ParticleWindHandler {
         bearing = Mth.wrapDegrees(bearing + deltaBearing);
 		oldWindForce = windForce;
 		time += 0.0005;
-		float bearingChange = CBCConfigs.CLIENT.maxWindBearingChangeSpeed.getF();
+		float bearingChange = CBCConfigs.client().maxWindBearingChangeSpeed.getF();
 		deltaBearing = (float) BEARING_NOISE.getValue(time, 0, 0);
 		deltaBearing *= bearingChange;
         float speed = (float) SPEED_NOISE.getValue(0, time, 0) * 0.5f + 0.5f;
@@ -48,7 +48,7 @@ public class ParticleWindHandler {
 	}
 
 	public static Vec3 getWindForce(double partialTick) {
-		double maximumWindSpeed = CBCConfigs.CLIENT.maximumWindSpeed.getF() * 0.05;
+		double maximumWindSpeed = CBCConfigs.client().maximumWindSpeed.getF() * 0.05;
 		return maximumWindSpeed < 1e-2d ? Vec3.ZERO : oldWindForce.lerp(windForce, partialTick).scale(maximumWindSpeed);
 	}
 

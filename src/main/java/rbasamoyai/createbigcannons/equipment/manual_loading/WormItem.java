@@ -7,7 +7,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
-import com.simibubi.create.foundation.utility.NBTProcessors;
+import net.createmod.catnip.nbt.NBTProcessors;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -59,13 +59,13 @@ public class WormItem extends Item implements HandloadingTool {
 	@Override
 	public InteractionResult useOn(UseOnContext context) {
 		Player player = context.getPlayer();
-		if (player instanceof DeployerFakePlayer && !CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get())
+		if (player instanceof DeployerFakePlayer && !CBCConfigs.server().cannons.deployersCanUseLoadingTools.get())
 			return InteractionResult.PASS;
 		Level level = context.getLevel();
 		BlockPos pos = context.getClickedPos();
 		Direction reachDirection = context.getClickedFace().getOpposite();
 
-		for (int i = 0; i < CBCConfigs.SERVER.cannons.wormReach.get(); ++i) {
+		for (int i = 0; i < CBCConfigs.server().cannons.wormReach.get(); ++i) {
 			BlockPos pos1 = pos.relative(reachDirection, i);
 			BlockState state1 = level.getBlockState(pos1);
 			BlockEntity be = level.getBlockEntity(pos1);
@@ -105,8 +105,8 @@ public class WormItem extends Item implements HandloadingTool {
 			}
 
 			level.playSound(null, pos, SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 1, 1);
-			player.causeFoodExhaustion(CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
-			player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());
+			player.causeFoodExhaustion(CBCConfigs.server().cannons.loadingToolHungerConsumption.getF());
+			player.getCooldowns().addCooldown(this, CBCConfigs.server().cannons.loadingToolCooldown.get());
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}
 		return super.useOn(context);
@@ -114,12 +114,12 @@ public class WormItem extends Item implements HandloadingTool {
 
 	@Override
 	public void onUseOnCannon(Player player, Level level, BlockPos startPos, Direction face, MountedBigCannonContraption contraption) {
-		if (player instanceof DeployerFakePlayer && !CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get())
+		if (player instanceof DeployerFakePlayer && !CBCConfigs.server().cannons.deployersCanUseLoadingTools.get())
 			return;
 		Direction reachDirection = face.getOpposite();
 
 		Set<BlockPos> changes = new HashSet<>(2);
-		for (int i = 0; i < CBCConfigs.SERVER.cannons.wormReach.get(); ++i) {
+		for (int i = 0; i < CBCConfigs.server().cannons.wormReach.get(); ++i) {
 			BlockPos pos1 = startPos.relative(reachDirection, i);
 			StructureBlockInfo info = contraption.getBlocks().get(pos1);
 			if (info == null || !isValidLoadBlock(info.state(), contraption, pos1, reachDirection)) return;
@@ -157,8 +157,8 @@ public class WormItem extends Item implements HandloadingTool {
 			}
 
 			level.playSound(null, player.blockPosition(), SoundEvents.WOOL_BREAK, SoundSource.PLAYERS, 1, 1);
-			player.causeFoodExhaustion(CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
-			player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());
+			player.causeFoodExhaustion(CBCConfigs.server().cannons.loadingToolHungerConsumption.getF());
+			player.getCooldowns().addCooldown(this, CBCConfigs.server().cannons.loadingToolCooldown.get());
 			return;
 		}
 	}
@@ -184,11 +184,11 @@ public class WormItem extends Item implements HandloadingTool {
 	}
 
 	public static int getReach() {
-		return CBCConfigs.SERVER.cannons.ramRodReach.get();
+		return CBCConfigs.server().cannons.ramRodReach.get();
 	}
 
 	public static boolean deployersCanUse() {
-		return CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get();
+		return CBCConfigs.server().cannons.deployersCanUseLoadingTools.get();
 	}
 
 }

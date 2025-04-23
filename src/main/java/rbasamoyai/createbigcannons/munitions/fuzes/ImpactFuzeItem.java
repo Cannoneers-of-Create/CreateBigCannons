@@ -45,11 +45,11 @@ public class ImpactFuzeItem extends FuzeItem {
 	}
 
 	protected float getDetonateChance() {
-		return CBCConfigs.SERVER.munitions.impactFuzeDetonationChance.getF();
+		return CBCConfigs.server().munitions.impactFuzeDetonationChance.getF();
 	}
 
 	protected int getFuzeDurability() {
-		return CBCConfigs.SERVER.munitions.impactFuzeDurability.get();
+		return CBCConfigs.server().munitions.impactFuzeDurability.get();
 	}
 
 	@Override

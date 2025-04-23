@@ -35,7 +35,7 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 	public void tick() {
 		super.tick();
 		if (this.level() instanceof ServerLevel slevel) {
-			if (!this.isRemoved() && CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+			if (!this.isRemoved() && CBCConfigs.server().munitions.projectilesCanChunkload.get()) {
 				ChunkPos cpos1 = new ChunkPos(this.blockPosition());
 				RitchiesProjectileLib.queueForceLoad(slevel, cpos1.x, cpos1.z);
 			}

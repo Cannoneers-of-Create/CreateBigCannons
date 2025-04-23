@@ -21,7 +21,7 @@ public class FlakCloudParticle extends NoRenderParticle {
 
 	FlakCloudParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
 		super(level, x, y, z, dx, dy, dz);
-		if (CBCConfigs.CLIENT.showExtraFlakTrails.get()) {
+		if (CBCConfigs.client().showExtraFlakTrails.get()) {
 			int count = switch (CBCClientCommon.getParticleStatus()) {
 				case ALL -> 12 + level.random.nextInt(5);
 				case DECREASED -> 4 + level.random.nextInt(3);
@@ -45,7 +45,7 @@ public class FlakCloudParticle extends NoRenderParticle {
 
 	@Override
 	public void tick() {
-		if (!CBCConfigs.CLIENT.showFlakClouds.get()) {
+		if (!CBCConfigs.client().showFlakClouds.get()) {
 			this.remove();
 			return;
 		}
@@ -67,7 +67,7 @@ public class FlakCloudParticle extends NoRenderParticle {
 				this.level.addParticle(new FlakSmokeParticleData(lifetime, 3), true, this.x + rx * 0.25,
 					this.y + ry * 0.25, this.z + rz * 0.25, dx * 0.5, dy * 0.5, dz * 0.5);
 			}
-			if (status == ParticleStatus.ALL && CBCConfigs.CLIENT.showExtraFlakCloudFlames.get()) {
+			if (status == ParticleStatus.ALL && CBCConfigs.client().showExtraFlakCloudFlames.get()) {
 				for (int i = 0; i < 20; ++i) {
 					double dx = this.random.nextDouble() - this.random.nextDouble();
 					double dy = this.random.nextDouble() - this.random.nextDouble();
@@ -79,7 +79,7 @@ public class FlakCloudParticle extends NoRenderParticle {
 						this.y + ry * 0.25, this.z + rz * 0.25, dx * 0.3, dy * 0.3, dz * 0.3);
 				}
 			}
-			if (status == ParticleStatus.ALL && CBCConfigs.CLIENT.showExtraFlakCloudShockwave.get()) {
+			if (status == ParticleStatus.ALL && CBCConfigs.client().showExtraFlakCloudShockwave.get()) {
 				this.level.addParticle(ParticleTypes.EXPLOSION, this.x, this.y, this.z, 0, 0, 0);
 			}
 		}

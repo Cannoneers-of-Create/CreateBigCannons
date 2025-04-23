@@ -19,7 +19,7 @@ public interface CanLoadBigCannon {
 
 	Set<BlockPos> createbigcannons$getCannonLoadingColliders();
 
-	static boolean intersectionLoadingEnabled() { return CBCConfigs.SERVER.kinetics.enableIntersectionLoading.get(); }
+	static boolean intersectionLoadingEnabled() { return CBCConfigs.server().kinetics.enableIntersectionLoading.get(); }
 
 	static boolean canBreakLoader(BlockState state) {
 		return !state.canBeReplaced() || state.isSolid();

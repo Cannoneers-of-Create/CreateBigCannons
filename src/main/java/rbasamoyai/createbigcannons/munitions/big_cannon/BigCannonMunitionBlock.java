@@ -31,7 +31,7 @@ public interface BigCannonMunitionBlock extends CBCExplodableBlock {
 	 * Only use for blocks that have the waterlogged and damp properties
 	 */
 	static boolean doesntIgnite(BlockState state) {
-		return state.getValue(WATERLOGGED) || state.getValue(DAMP) || !CBCConfigs.SERVER.munitions.munitionBlocksCanExplode.get();
+		return state.getValue(WATERLOGGED) || state.getValue(DAMP) || !CBCConfigs.server().munitions.munitionBlocksCanExplode.get();
 	}
 
 }

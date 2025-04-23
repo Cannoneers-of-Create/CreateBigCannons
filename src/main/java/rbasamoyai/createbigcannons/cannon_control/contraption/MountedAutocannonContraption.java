@@ -277,7 +277,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		AutocannonMaterialProperties properties = this.cannonMaterial.properties();
 		AutocannonProjectilePropertiesComponent roundProperties = round.getAutocannonProperties(foundProjectile);
 
-		boolean canFail = !CBCConfigs.SERVER.failure.disableAllFailure.get();
+		boolean canFail = !CBCConfigs.server().failure.disableAllFailure.get();
 
 		float speed = properties.baseSpeed();
 		float spread = properties.baseSpread();
@@ -343,7 +343,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		float recoilMagnitude = properties.baseRecoil();
 
-		boolean isTracer = CBCConfigs.SERVER.munitions.allAutocannonProjectilesAreTracers.get() || round.isTracer(foundProjectile);
+		boolean isTracer = CBCConfigs.server().munitions.allAutocannonProjectilesAreTracers.get() || round.isTracer(foundProjectile);
 
 		AbstractAutocannonProjectile projectile = round.getAutocannonProjectile(foundProjectile, level);
 		if (projectile != null) {
@@ -364,7 +364,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			if (roundProperties != null) recoilMagnitude += roundProperties.addedRecoil();
 		}
 
-		recoilMagnitude *= CBCConfigs.SERVER.cannons.autocannonRecoilScale.getF();
+		recoilMagnitude *= CBCConfigs.server().cannons.autocannonRecoilScale.getF();
 		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), entity);
 
 		Vec3 particleVel = vec1.scale(1.25);
@@ -381,7 +381,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				SoundSource.BLOCKS, 12, 1, 5f);
 		}
 
-		if (projectile != null && CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+		if (projectile != null && CBCConfigs.server().munitions.projectilesCanChunkload.get()) {
 			ChunkPos cpos1 = new ChunkPos(BlockPos.containing(projectile.position()));
 			RitchiesProjectileLib.queueForceLoad(level, cpos1.x, cpos1.z);
 		}

@@ -47,7 +47,7 @@ public class CannonLoaderBlock extends DirectionalAxisKineticBlock implements IB
 	}
 
 	public static int maxAllowedLoaderLength() {
-		return CBCConfigs.SERVER.kinetics.maxLoaderLength.get();
+		return CBCConfigs.server().kinetics.maxLoaderLength.get();
 	}
 
 	@Override

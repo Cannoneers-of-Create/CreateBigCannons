@@ -203,8 +203,8 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 		Vector4f newState = this.getWheelState();
 
 		float wMod = this.getWeightModifier();
-		float turnRate = CBCConfigs.SERVER.cannons.carriageTurnRate.getF() * wMod;
-		float speed = CBCConfigs.SERVER.cannons.carriageSpeed.getF() * wMod;
+		float turnRate = CBCConfigs.server().cannons.carriageTurnRate.getF() * wMod;
+		float speed = CBCConfigs.server().cannons.carriageSpeed.getF() * wMod;
 
 		boolean flag = this.canTurnCannon();
 
@@ -235,7 +235,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	protected float getWeightModifier() {
-		if (!CBCConfigs.SERVER.cannons.cannonWeightAffectsCarriageSpeed.get()) return 1;
+		if (!CBCConfigs.server().cannons.cannonWeightAffectsCarriageSpeed.get()) return 1;
 		if (this.cannonContraption == null || !(this.cannonContraption.getContraption() instanceof AbstractMountedCannonContraption cannon))
 			return 1;
 		float weight = cannon.getWeightForStress();

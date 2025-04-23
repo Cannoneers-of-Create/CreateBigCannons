@@ -72,7 +72,7 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 		Vec3 oldDelta = this.getDeltaMovement();
 		FlakAutocannonProjectileProperties properties = this.getAllProperties();
 		FlakExplosion explosion = new FlakExplosion(this.level(), null, this.indirectArtilleryFire(false), position.x(), position.y(), position.z(),
-			properties.explosion().explosivePower(), CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+			properties.explosion().explosivePower(), CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 		CBCProjectileBurst.spawnConeBurst(this.level(), CBCEntityTypes.FLAK_BURST.get(), new Vec3(position.x(), position.y(), position.z()),
 			oldDelta, properties.flakBurst().burstProjectileCount(), properties.flakBurst().burstSpread());

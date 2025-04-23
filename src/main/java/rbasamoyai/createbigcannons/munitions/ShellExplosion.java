@@ -64,7 +64,7 @@ public class ShellExplosion extends CustomExplosion.Impl {
 
 	@Override
 	public void editBlock(Level level, BlockPos pos, BlockState blockState, FluidState fluidState, float power) {
-		if (this.noEffects || !CBCConfigs.SERVER.munitions.projectilesChangeSurroundings.get() || this.changedBlocks.contains(pos))
+		if (this.noEffects || !CBCConfigs.server().munitions.projectilesChangeSurroundings.get() || this.changedBlocks.contains(pos))
 			return;
 		BlockState transformed = BlockImpactTransformationHandler.transformBlock(blockState);
 		level.setBlock(pos, transformed, 11);

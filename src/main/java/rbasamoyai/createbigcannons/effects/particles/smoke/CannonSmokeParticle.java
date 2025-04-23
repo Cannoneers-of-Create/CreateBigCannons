@@ -169,7 +169,7 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 
 		@Override
 		public Particle createParticle(CannonSmokeParticleData data, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
-			if (CBCConfigs.CLIENT.useShaderCompatibleGraphics.get()) {
+			if (CBCConfigs.client().useShaderCompatibleGraphics.get()) {
 				level.addParticle(new FallbackCannonSmokeParticleData(data), true, x, y, z, dx, dy, dz);
 				return null;
 			}

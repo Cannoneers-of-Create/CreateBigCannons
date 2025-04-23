@@ -119,7 +119,7 @@ public class QuickfiringBreechBlockEntity extends SmartBlockEntity implements IB
 	}
 
 	public static int getOpeningTime() {
-		return CBCConfigs.SERVER.cannons.quickfiringBreechOpeningCooldown.get();
+		return CBCConfigs.server().cannons.quickfiringBreechOpeningCooldown.get();
 	}
 
 	public static boolean isInstantOpen() { return getOpeningTime() <= 0; }

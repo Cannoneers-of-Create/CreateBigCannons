@@ -177,7 +177,7 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 	}
 
 	private static int getLoadingCooldown() {
-		return CBCConfigs.SERVER.cannons.quickfiringBreechLoadingCooldown.get();
+		return CBCConfigs.server().cannons.quickfiringBreechLoadingCooldown.get();
 	}
 
 }

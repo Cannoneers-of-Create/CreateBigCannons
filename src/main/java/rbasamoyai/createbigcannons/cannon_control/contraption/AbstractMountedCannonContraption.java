@@ -149,7 +149,7 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 	public abstract ICannonContraptionType getCannonType();
 
 	public static int getMaxCannonLength() {
-		return CBCConfigs.SERVER.cannons.maxCannonLength.get();
+		return CBCConfigs.server().cannons.maxCannonLength.get();
 	}
 
 	public AABB createBoundsFromExtensionLengths() {

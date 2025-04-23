@@ -144,7 +144,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 						if (!extract.isEmpty()) {
 							Vec3 ejectPos = Vec3.atCenterOf(localPos).add(normal.scale(1.1));
 							Vec3 globalPos = entity.toGlobalVector(ejectPos, 0);
-							if (CBCConfigs.SERVER.munitions.quickFiringBreechItemGoesToInventory.get()) {
+							if (CBCConfigs.server().munitions.quickFiringBreechItemGoesToInventory.get()) {
 								if (!player.addItem(extract) && !player.isCreative()) {
 									ItemEntity item = player.drop(extract, false);
 									if (item != null) {
@@ -155,7 +155,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 							} else {
 								Vec3 vel = dir.scale(0.075);
 								ItemEntity item = new ItemEntity(level, globalPos.x, globalPos.y, globalPos.z, extract, vel.x, vel.y, vel.z);
-								item.setPickUpDelay(CBCConfigs.SERVER.munitions.quickFiringBreechItemPickupDelay.get());
+								item.setPickUpDelay(CBCConfigs.server().munitions.quickFiringBreechItemPickupDelay.get());
 								level.addFreshEntity(item);
 							}
 						}

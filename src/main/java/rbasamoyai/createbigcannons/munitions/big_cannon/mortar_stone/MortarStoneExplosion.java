@@ -39,7 +39,7 @@ public class MortarStoneExplosion extends CustomExplosion.Impl {
 
 	@Override
 	public void editBlock(Level level, BlockPos pos, BlockState blockState, FluidState fluidState, float power) {
-		if (!CBCConfigs.SERVER.munitions.projectilesChangeSurroundings.get() || this.changedBlocks.contains(pos))
+		if (!CBCConfigs.server().munitions.projectilesChangeSurroundings.get() || this.changedBlocks.contains(pos))
 			return;
 		BlockState transformed = BlockImpactTransformationHandler.transformBlock(blockState);
 		level.setBlock(pos, transformed, 11);
@@ -53,7 +53,7 @@ public class MortarStoneExplosion extends CustomExplosion.Impl {
 
 	@Override
 	protected void spawnParticles() {
-		if (!CBCConfigs.CLIENT.showMortarStoneClouds.get())
+		if (!CBCConfigs.client().showMortarStoneClouds.get())
 			return;
 		ParticleOptions options = new DebrisSmokeParticleData(this.size);
 		float f1 = 0.15f * this.size;

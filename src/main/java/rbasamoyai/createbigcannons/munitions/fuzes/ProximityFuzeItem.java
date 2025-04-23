@@ -54,7 +54,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
 		CompoundTag tag = stack.getOrCreateTag();
 		int airTime = tag.getInt("AirTime");
-		if (airTime > CBCConfigs.SERVER.munitions.proximityFuzeArmingTime.get()) tag.putBoolean("Armed", true);
+		if (airTime > CBCConfigs.server().munitions.proximityFuzeArmingTime.get()) tag.putBoolean("Armed", true);
 		tag.putInt("AirTime", ++airTime);
 		return false;
 	}
@@ -78,8 +78,8 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 			.move(start.subtract(projectile.position()));
 		List<Entity> entities = projectile.level().getEntities(projectile, currentMovementRegion, projectile::canHitEntity);
 
-		int radius = CBCConfigs.SERVER.munitions.proximityFuzeScale.get();
-		double scale = CBCConfigs.SERVER.munitions.proximityFuzeSpacing.get();
+		int radius = CBCConfigs.server().munitions.proximityFuzeScale.get();
+		double scale = CBCConfigs.server().munitions.proximityFuzeSpacing.get();
 		for (int i = -radius; i <= radius; ++i) {
 			for (int j = -radius; j <= radius; ++j) {
 				Vec3 ray = dir.add(right.scale(i * scale)).add(up.scale(j * scale));

@@ -32,7 +32,7 @@ public class FluidBlobBurst extends CBCProjectileBurst {
 	public FluidBlobBurst(EntityType<? extends FluidBlobBurst> entityType, Level level) { super(entityType, level); }
 
 	public static float getBlockAffectChance() {
-		return CBCConfigs.SERVER.munitions.fluidBlobBlockAffectChance.getF();
+		return CBCConfigs.server().munitions.fluidBlobBlockAffectChance.getF();
 	}
 
 	private final Set<Entity> clippedThisTick = new HashSet<>();

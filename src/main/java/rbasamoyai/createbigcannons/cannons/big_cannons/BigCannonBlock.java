@@ -243,7 +243,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 				boolean flag = false;
 				if (cannon.isDropMortar()) {
 					if (!player.getCooldowns().isOnCooldown(stack.getItem()) && cannon.tryDroppingMortarRound(stack)) {
-						player.getCooldowns().addCooldown(stack.getItem(), CBCConfigs.SERVER.cannons.dropMortarItemCooldown.get());
+						player.getCooldowns().addCooldown(stack.getItem(), CBCConfigs.server().cannons.dropMortarItemCooldown.get());
 						flag = true;
 					}
 				} else {

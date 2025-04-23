@@ -27,7 +27,7 @@ public class GlassShardParticle extends SplinterParticle {
 			BlockState blockstate = type.state();
 			if (blockstate.isAir() || blockstate.is(Blocks.MOVING_PISTON))
 				return null;
-			if (CBCConfigs.CLIENT.useShaderCompatibleGraphics.get()) {
+			if (CBCConfigs.client().useShaderCompatibleGraphics.get()) {
 				level.addParticle(new CBCBlockParticleData(blockstate), x, y, z, xSpeed, ySpeed, zSpeed);
 				return null;
 			}

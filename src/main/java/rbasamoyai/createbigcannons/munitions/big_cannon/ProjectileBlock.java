@@ -186,7 +186,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 
 	@Override
 	public void createbigcannons$onBlockExplode(Level level, BlockPos pos, BlockState state, Explosion explosion) {
-		if (level.isClientSide || !CBCConfigs.SERVER.munitions.munitionBlocksCanExplode.get())
+		if (level.isClientSide || !CBCConfigs.server().munitions.munitionBlocksCanExplode.get())
 			return;
 		Vec3 entityPos = Vec3.atCenterOf(pos);
 		AbstractBigCannonProjectile projectile = this.spawnFromExplosion(level, pos, state, explosion);

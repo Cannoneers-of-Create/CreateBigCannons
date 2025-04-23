@@ -14,9 +14,9 @@ public class CBCScreenShakeHandler extends ModScreenShakeHandler.Impl {
 		Minecraft mc = Minecraft.getInstance();
 		if (effect.duration == -1) {
 			int ticks = 0;
-			if (!CBCConfigs.CLIENT.isInstantaneousBlastEffect() && mc.player != null) {
+			if (!CBCConfigs.client().isInstantaneousBlastEffect() && mc.player != null) {
 				double distSqr = mc.player.distanceToSqr(effect.posX, effect. posY, effect.posZ);
-				double timeInSec = Math.sqrt(distSqr) / CBCConfigs.CLIENT.blastEffectDelaySpeed.getF();
+				double timeInSec = Math.sqrt(distSqr) / CBCConfigs.client().blastEffectDelaySpeed.getF();
 				ticks = Mth.floor(timeInSec * 20);
 			}
 			effect = new ScreenShakeEffect(ticks, effect.yawMagnitude, effect.pitchMagnitude, effect.rollMagnitude,
@@ -27,7 +27,7 @@ public class CBCScreenShakeHandler extends ModScreenShakeHandler.Impl {
 
 	@Override
 	public ScreenShakeEffect modifyScreenShake(ScreenShakeEffect effect) {
-		float shakeScale = CBCConfigs.CLIENT.cannonScreenShakeIntensity.getF();
+		float shakeScale = CBCConfigs.client().cannonScreenShakeIntensity.getF();
 		return shakeScale == 1 ? effect : effect.copyWithProgressAndDuration(
 			effect.yawMagnitude * shakeScale,
 			effect.pitchMagnitude * shakeScale,
@@ -43,7 +43,7 @@ public class CBCScreenShakeHandler extends ModScreenShakeHandler.Impl {
 	@Override
 	protected void applyConstraints() {
 		super.applyConstraints();
-		double maxRotation = 45 * CBCConfigs.CLIENT.cannonScreenShakeIntensity.getF();
+		double maxRotation = 45 * CBCConfigs.client().cannonScreenShakeIntensity.getF();
 		if (Math.abs(this.displacement.x) > maxRotation) {
 			this.displacement = new Vec3(Math.copySign(maxRotation, this.displacement.x), this.displacement.y, this.displacement.z);
 			this.velocity = this.velocity.multiply(0, 1, 1);
@@ -58,7 +58,7 @@ public class CBCScreenShakeHandler extends ModScreenShakeHandler.Impl {
 		}
 	}
 
-	@Override protected double getRestitution() { return CBCConfigs.CLIENT.cannonScreenShakeSpringiness.getF(); }
-	@Override protected double getDrag() { return CBCConfigs.CLIENT.cannonScreenShakeDecay.getF(); }
+	@Override protected double getRestitution() { return CBCConfigs.client().cannonScreenShakeSpringiness.getF(); }
+	@Override protected double getDrag() { return CBCConfigs.client().cannonScreenShakeDecay.getF(); }
 
 }

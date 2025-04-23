@@ -9,7 +9,7 @@ import java.util.UUID;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.simibubi.create.content.kinetics.deployer.DeployerFakePlayer;
-import com.simibubi.create.foundation.utility.NBTProcessors;
+import net.createmod.catnip.nbt.NBTProcessors;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -150,8 +150,8 @@ public class RamRodItem extends Item implements HandloadingTool {
 			}
 		}
 		level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1, 1);
-		player.causeFoodExhaustion(toPush.size() * CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
-		player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());
+		player.causeFoodExhaustion(toPush.size() * CBCConfigs.server().cannons.loadingToolHungerConsumption.getF());
+		player.getCooldowns().addCooldown(this, CBCConfigs.server().cannons.loadingToolCooldown.get());
 		return InteractionResult.CONSUME;
 	}
 
@@ -215,8 +215,8 @@ public class RamRodItem extends Item implements HandloadingTool {
 		}
 
 		level.playSound(null, player.blockPosition(), SoundEvents.WOOL_PLACE, SoundSource.PLAYERS, 1, 1);
-		player.causeFoodExhaustion(toPush.size() * CBCConfigs.SERVER.cannons.loadingToolHungerConsumption.getF());
-		player.getCooldowns().addCooldown(this, CBCConfigs.SERVER.cannons.loadingToolCooldown.get());
+		player.causeFoodExhaustion(toPush.size() * CBCConfigs.server().cannons.loadingToolHungerConsumption.getF());
+		player.getCooldowns().addCooldown(this, CBCConfigs.server().cannons.loadingToolCooldown.get());
 	}
 
 	public static boolean isValidLoadBlock(BlockState state, Level level, BlockPos pos, Direction dir) {
@@ -242,15 +242,15 @@ public class RamRodItem extends Item implements HandloadingTool {
 	}
 
 	public static int getPushStrength() {
-		return CBCConfigs.SERVER.cannons.ramRodStrength.get();
+		return CBCConfigs.server().cannons.ramRodStrength.get();
 	}
 
 	public static int getReach() {
-		return CBCConfigs.SERVER.cannons.ramRodReach.get();
+		return CBCConfigs.server().cannons.ramRodReach.get();
 	}
 
 	public static boolean deployersCanUse() {
-		return CBCConfigs.SERVER.cannons.deployersCanUseLoadingTools.get();
+		return CBCConfigs.server().cannons.deployersCanUseLoadingTools.get();
 	}
 
 }

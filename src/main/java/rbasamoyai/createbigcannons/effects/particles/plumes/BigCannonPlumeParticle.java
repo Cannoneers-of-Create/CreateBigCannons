@@ -41,7 +41,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 
 	@Override
 	public void tick() {
-		if (!CBCConfigs.CLIENT.showBigCannonPlumes.get()) {
+		if (!CBCConfigs.client().showBigCannonPlumes.get()) {
 			this.remove();
 			return;
 		}
@@ -77,7 +77,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 			// TODO revert when Create #7232 is fixed
 		}
 
-		if (this.age == 0 && status == ParticleStatus.ALL && CBCConfigs.CLIENT.showExtraBigCannonSmoke.get()) {
+		if (this.age == 0 && status == ParticleStatus.ALL && CBCConfigs.client().showExtraBigCannonSmoke.get()) {
 			float scale2 = smallScale * 0.25f;
 			int count2 = (int) Math.floor(smallScale * 10);
 
@@ -95,7 +95,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 				// TODO revert when Create #7232 is fixed
 			}
 		}
-		if (this.age < 5 && status == ParticleStatus.ALL && CBCConfigs.CLIENT.showExtraBigCannonFlames.get()) {
+		if (this.age < 5 && status == ParticleStatus.ALL && CBCConfigs.client().showExtraBigCannonFlames.get()) {
 			float scale2 = 0.05f;
 			float count2 = smallScale * 5;
 			for (int i = 0; i < count2; ++i) {

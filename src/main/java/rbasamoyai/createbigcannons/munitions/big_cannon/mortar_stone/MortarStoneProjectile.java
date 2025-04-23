@@ -53,7 +53,7 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
             Vec3 hitLoc = hitResult.getLocation();
 			MortarStoneExplosion explosion = new MortarStoneExplosion(this.level(), null, this.indirectArtilleryFire(false),
 				hitLoc.x, hitLoc.y, hitLoc.z, this.getAllProperties().explosion().explosivePower(),
-				CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+				CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
 			CreateBigCannons.handleCustomExplosion(this.level(), explosion);
         }
 		return true;

@@ -76,7 +76,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 					this.expireProjectile();
 			}
 			if (!this.isInGround()) {
-				TrailType trailType = CBCConfigs.SERVER.munitions.autocannonTrailType.get();
+				TrailType trailType = CBCConfigs.server().munitions.autocannonTrailType.get();
 				if (trailType != TrailType.NONE) {
 					int lifetime = trailType == TrailType.SHORT ? 50 : 100 + this.level().random.nextInt(50);
 					ParticleOptions options = new TrailSmokeParticleData(lifetime);
@@ -105,7 +105,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 						}
 					}
 				}
-				if (this.level().isClientSide && CBCConfigs.CLIENT.enableAutocannonFlybySounds.get()) {
+				if (this.level().isClientSide && CBCConfigs.client().enableAutocannonFlybySounds.get()) {
 					for (Iterator<Map.Entry<Player, Integer>> iter = this.whooshedPlayers.entrySet().iterator(); iter.hasNext(); ) {
 						Map.Entry<Player, Integer> entry = iter.next();
 						if (entry.getKey().isRemoved() || !entry.getKey().isAlive()) {
@@ -176,18 +176,18 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 		double incidence = Math.max(0, curVel.normalize().dot(normal.reverse()));
 		double velMag = curVel.length();
 		double mass = this.getProjectileMass();
-		double bonusMomentum = 1 + Math.max(0, (velMag - CBCConfigs.SERVER.munitions.minVelocityForPenetrationBonus.getF())
-			* CBCConfigs.SERVER.munitions.penetrationBonusScale.getF());
+		double bonusMomentum = 1 + Math.max(0, (velMag - CBCConfigs.server().munitions.minVelocityForPenetrationBonus.getF())
+			* CBCConfigs.server().munitions.penetrationBonusScale.getF());
 		double momentum = mass * velMag * incidence * bonusMomentum;
 
 		double hardnessPenalty = Math.max(blockArmor.hardness(this.level(), state, pos, true) - ballistics.penetration(), 0);
 
 		double projectileDeflection = ballistics.deflection();
-		double baseChance = CBCConfigs.SERVER.munitions.baseProjectileBounceChance.getF();
+		double baseChance = CBCConfigs.server().munitions.baseProjectileBounceChance.getF();
 		double bounceChance = projectileDeflection < 1e-2d || incidence > projectileDeflection ? 0 : Math.max(baseChance, 1 - incidence / projectileDeflection);
 
 		boolean surfaceImpact = this.lastPenetratedBlock.isAir();
-		boolean canBounce = CBCConfigs.SERVER.munitions.projectilesCanBounce.get();
+		boolean canBounce = CBCConfigs.server().munitions.projectilesCanBounce.get();
 		ImpactResult.KinematicOutcome outcome;
 		if (surfaceImpact && canBounce && this.level().getRandom().nextDouble() < bounceChance) {
 			outcome = ImpactResult.KinematicOutcome.BOUNCE;

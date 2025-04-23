@@ -86,7 +86,7 @@ public class PrimedPropellant extends Entity {
 
 	private void explode() {
 		this.level().explode(this, this.getX(), this.getY(0.0625), this.getZ(), this.explosionPower,
-			CBCConfigs.SERVER.munitions.damageRestriction.get().explosiveInteraction());
+			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
 	}
 
 	@Override

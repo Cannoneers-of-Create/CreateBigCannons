@@ -149,7 +149,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				--this.localSoundCooldown;
 
 			if (this.level() instanceof ServerLevel slevel && !this.isRemoved()) {
-				if (CBCConfigs.SERVER.munitions.projectilesCanChunkload.get()) {
+				if (CBCConfigs.server().munitions.projectilesCanChunkload.get()) {
 					ChunkPos cpos1 = new ChunkPos(this.blockPosition());
 					RitchiesProjectileLib.queueForceLoad(slevel, cpos1.x, cpos1.z);
 				}
@@ -188,7 +188,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	public int getLocalSoundCooldown() { return this.localSoundCooldown; }
 
 	protected void clipAndDamage() {
-		ProjectileContext projCtx = new ProjectileContext(this, CBCConfigs.SERVER.munitions.damageRestriction.get());
+		ProjectileContext projCtx = new ProjectileContext(this, CBCConfigs.server().munitions.damageRestriction.get());
 
 		Vec3 pos = this.position();
 		Vec3 currentStart = pos;
@@ -358,8 +358,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		double projectileDeflection = this.getBallisticProperties().deflection();
 		double fluidDensity = FluidDragHandler.getFluidDrag(fluidState);
 
-		boolean canBounce = CBCConfigs.SERVER.munitions.projectilesCanBounce.get();
-		double baseChance = CBCConfigs.SERVER.munitions.baseProjectileFluidBounceChance.getF();
+		boolean canBounce = CBCConfigs.server().munitions.projectilesCanBounce.get();
+		double baseChance = CBCConfigs.server().munitions.baseProjectileFluidBounceChance.getF();
 		boolean criticalAngle = projectileDeflection > 1e-2d && incidence <= projectileDeflection;
 		boolean buoyant = fluidDensity > 1e-2d && momentum < fluidDensity;
 

@@ -41,7 +41,7 @@ public class BlockArmorInspectionToolItem extends Item {
 	public static void addBlockArmorInfo(List<Component> tooltip, Level level, BlockPos pos, BlockState blockState) {
 		if (blockState.isAir())
 			return;
-		String precision = CBCConfigs.CLIENT.blockArmorTooltipPrecision.get().toString();
+		String precision = CBCConfigs.client().blockArmorTooltipPrecision.get().toString();
 		String format = "%." + precision + "f";
 		BlockArmorPropertiesProvider provider = BlockArmorPropertiesHandler.getProperties(blockState);
 		double toughness = provider.toughness(level, blockState, pos, true);

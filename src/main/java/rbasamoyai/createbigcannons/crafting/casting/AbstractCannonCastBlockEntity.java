@@ -17,9 +17,10 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat;
-import com.simibubi.create.foundation.utility.animation.LerpedFloat.Chaser;
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.animation.LerpedFloat.Chaser;
 
+import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -546,7 +547,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	}
 
 	public static int getMaxHeight() {
-		return CBCConfigs.SERVER.crafting.maxCannonCastHeight.get();
+		return CBCConfigs.server().crafting.maxCannonCastHeight.get();
 	}
 
 	public int getHeight() {
@@ -603,7 +604,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 
 	@Override
 	public int getMaxLength(Axis longAxis, int width) {
-		return longAxis == Axis.Y ? CBCConfigs.SERVER.crafting.maxCannonCastHeight.get() : 3;
+		return longAxis == Axis.Y ? CBCConfigs.server().crafting.maxCannonCastHeight.get() : 3;
 	}
 
 	@Override
@@ -630,7 +631,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		AbstractCannonCastBlockEntity controller = this.getControllerBE();
 		if (controller == null || controller.invalidCastingError == null) return false;
 		Component errorMsg = controller.invalidCastingError.getMessage();
-		List<Component> cutErrorLines = TooltipHelper.cutTextComponent(errorMsg, TooltipHelper.Palette.GRAY_AND_WHITE);
+		List<Component> cutErrorLines = TooltipHelper.cutTextComponent(errorMsg, Palette.GRAY_AND_WHITE);
 		for (Component cline : cutErrorLines) {
 			CreateLang.builder().add(cline.copy()).forGoggles(tooltip);
 		}

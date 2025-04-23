@@ -30,7 +30,7 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 		this.power = power;
 		this.isPlume = isPlume;
 
-		if (CBCConfigs.CLIENT.showExtraShellExplosionTrails.get()) {
+		if (CBCConfigs.client().showExtraShellExplosionTrails.get()) {
 			double secondaryVelScale = this.power * 0.35;
 			int secondaryCount = switch(CBCClientCommon.getParticleStatus()) {
 				case ALL -> 12 + this.random.nextInt(6);
@@ -117,7 +117,7 @@ public class ShellExplosionCloudParticle extends NoRenderParticle {
 		@Override
 		public Particle createParticle(ShellExplosionCloudParticleData type, ClientLevel level, double x, double y, double z,
 									   double xSpeed, double ySpeed, double zSpeed) {
-			if (!CBCConfigs.CLIENT.showShellExplosionClouds.get())
+			if (!CBCConfigs.client().showShellExplosionClouds.get())
 				return null;
 			ShellExplosionCloudParticle particle = new ShellExplosionCloudParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, type.scale(), type.isPlume());
 			particle.setLifetime(10);

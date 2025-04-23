@@ -127,7 +127,7 @@ public class CBCClientHandlers {
 	public static void playBlockHitEffect(ClientboundPlayBlockHitEffectPacket pkt) {
 		BlockState blockState = pkt.blockState();
 		boolean isLiquid = blockState.getBlock() instanceof LiquidBlock;
-		if (isLiquid && !CBCConfigs.CLIENT.showProjectileSplashes.get() || !isLiquid && !CBCConfigs.CLIENT.showProjectileImpacts.get())
+		if (isLiquid && !CBCConfigs.client().showProjectileSplashes.get() || !isLiquid && !CBCConfigs.client().showProjectileImpacts.get())
 			return;
 		Minecraft minecraft = Minecraft.getInstance();
 		if (minecraft.level == null)
@@ -166,11 +166,11 @@ public class CBCClientHandlers {
 			return;
 		SoundInstance sound = new SimpleSoundInstance(pkt.sound(), pkt.source(), pkt.volume(), pkt.pitch(),
 			RandomSource.create(mc.level.random.nextLong()), pkt.x(), pkt.y(), pkt.z());
-		if (CBCConfigs.CLIENT.blastSoundAirAbsorption.get())
+		if (CBCConfigs.client().blastSoundAirAbsorption.get())
 			sound = new AirAbsorptionWrapper(sound, pkt.airAbsorption());
-		if (!CBCConfigs.CLIENT.isInstantaneousBlastEffect() && mc.player != null) {
+		if (!CBCConfigs.client().isInstantaneousBlastEffect() && mc.player != null) {
 			double distSqr = mc.player.distanceToSqr(pkt.x(), pkt.y(), pkt.z());
-			double timeInSec = Math.sqrt(distSqr) / CBCConfigs.CLIENT.blastEffectDelaySpeed.getF();
+			double timeInSec = Math.sqrt(distSqr) / CBCConfigs.client().blastEffectDelaySpeed.getF();
 			mc.getSoundManager().playDelayed(sound, Mth.floor(timeInSec * 20));
 		} else {
 			mc.getSoundManager().play(sound);

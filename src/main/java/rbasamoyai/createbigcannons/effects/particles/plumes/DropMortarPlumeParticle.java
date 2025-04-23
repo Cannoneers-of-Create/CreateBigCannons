@@ -28,7 +28,7 @@ public class DropMortarPlumeParticle extends NoRenderParticle {
 		super(level, x, y, z);
 		this.direction = direction;
 		this.scale = scale;
-		this.visible = CBCClientCommon.getParticleStatus() == ParticleStatus.ALL && CBCConfigs.CLIENT.showDropMortarPlumes.get();
+		this.visible = CBCClientCommon.getParticleStatus() == ParticleStatus.ALL && CBCConfigs.client().showDropMortarPlumes.get();
 
 		this.lifetime = 0;
 

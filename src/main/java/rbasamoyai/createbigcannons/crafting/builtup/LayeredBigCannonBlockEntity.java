@@ -131,7 +131,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 				this.clockStack.processingTime = -1;
 				++this.completionProgress;
 				this.sendData();
-				int cap = CBCConfigs.SERVER.crafting.builtUpCannonHeatingTime.get();
+				int cap = CBCConfigs.server().crafting.builtUpCannonHeatingTime.get();
 				if (this.completionProgress >= cap) {
 					this.completionProgress = cap;
 					if (!this.tryFinishHeating()) this.completionProgress = 0;
