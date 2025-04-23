@@ -4,7 +4,6 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import java.util.function.Supplier;
 
-import com.simibubi.create.content.redstone.displayLink.AllDisplayBehaviours;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.tterrag.registrate.builders.BlockBuilder;
@@ -855,7 +854,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMount())
-		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
+//		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource())) todo: fix DisplayLinks. see create AllBlocks
 		.register();
 
 	public static final BlockEntry<YawControllerBlock> YAW_CONTROLLER = REGISTRATE
@@ -864,7 +863,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.yawController())
-		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
+//		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
 		.register();
 
 	public static final BlockEntry<CannonMountExtensionBlock> CANNON_MOUNT_EXTENSION = REGISTRATE
@@ -873,7 +872,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMountExtension())
-		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
+//		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
 		.register();
 
 	public static final BlockEntry<FixedCannonMountBlock> FIXED_CANNON_MOUNT = REGISTRATE
@@ -882,7 +881,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.fixedCannonMount())
-		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
+//		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
 		.register();
 
 	public static final BlockEntry<CannonCarriageBlock> CANNON_CARRIAGE = REGISTRATE

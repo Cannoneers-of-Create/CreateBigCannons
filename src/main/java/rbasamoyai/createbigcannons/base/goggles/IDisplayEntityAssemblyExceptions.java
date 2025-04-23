@@ -7,6 +7,7 @@ import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.createmod.catnip.lang.FontHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
@@ -23,7 +24,7 @@ public interface IDisplayEntityAssemblyExceptions {
 
 		String text = e.component.getString();
 		Arrays.stream(text.split("\n"))
-			.forEach(l -> TooltipHelper.cutStringTextComponent(l, TooltipHelper.Palette.GRAY_AND_WHITE)
+			.forEach(l -> TooltipHelper.cutStringTextComponent(l, FontHelper.Palette.GRAY_AND_WHITE)
 				.forEach(c -> CreateLang.builder().add(c.copy()).forGoggles(tooltip)));
 
 		return true;

@@ -5,6 +5,8 @@ import com.simibubi.create.foundation.block.connected.CTTypeRegistry;
 import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour.CTContext;
 import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour.ContextRequirement;
 
+import com.simibubi.create.foundation.utility.CreateLang;
+
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 

@@ -2,7 +2,7 @@ package rbasamoyai.createbigcannons.index;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
-import com.simibubi.create.content.kinetics.base.ShaftInstance;
+import com.simibubi.create.content.kinetics.base.ShaftVisual;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
@@ -65,14 +65,14 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<SlidingBreechBlockEntity> SLIDING_BREECH = REGISTRATE
 		.blockEntity("sliding_breech", SlidingBreechBlockEntity::new)
-		.instance(() -> SlidingBreechInstance::new, false)
+		.visual(() -> SlidingBreechInstance::new, false)
 		.renderer(() -> SlidingBreechBlockEntityRenderer::new)
 		.validBlocks(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
 		.register();
 
 	public static final BlockEntityEntry<ScrewBreechBlockEntity> SCREW_BREECH = REGISTRATE
 		.blockEntity("screw_breech", ScrewBreechBlockEntity::new)
-		.instance(() -> ScrewBreechInstance::new, false)
+		.visual(() -> ScrewBreechInstance::new, false)
 		.renderer(() -> ScrewBreechBlockEntityRenderer::new)
 		.validBlocks(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
 		.register();
@@ -91,35 +91,35 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<QuickfiringBreechBlockEntity> QUICKFIRING_BREECH = REGISTRATE
 		.blockEntity("quickfiring_breech", QuickfiringBreechBlockEntity::new)
-		.instance(() -> QuickfiringBreechInstance::new)
+		.visual(() -> QuickfiringBreechInstance::new)
 		.renderer(() -> QuickfiringBreechBlockEntityRenderer::new)
 		.validBlocks(CBCBlocks.CAST_IRON_QUICKFIRING_BREECH, CBCBlocks.BRONZE_QUICKFIRING_BREECH, CBCBlocks.STEEL_QUICKFIRING_BREECH)
 		.register();
 
 	public static final BlockEntityEntry<CannonLoaderBlockEntity> CANNON_LOADER = REGISTRATE
 		.blockEntity("cannon_loader", CannonLoaderBlockEntity::new)
-		.instance(() -> ShaftInstance::new, false)
+		.visual(() -> ShaftVisual::new, false)
 		.renderer(() -> ShaftRenderer::new)
 		.validBlock(CBCBlocks.CANNON_LOADER)
 		.register();
 
 	public static final BlockEntityEntry<CannonMountBlockEntity> CANNON_MOUNT = REGISTRATE
 		.blockEntity("cannon_mount", CannonMountBlockEntity::new)
-		.instance(() -> CannonMountInstance::new)
+		.visual(() -> CannonMountInstance::new)
 		.renderer(() -> CannonMountBlockEntityRenderer::new)
 		.validBlock(CBCBlocks.CANNON_MOUNT)
 		.register();
 
 	public static final BlockEntityEntry<YawControllerBlockEntity> YAW_CONTROLLER = REGISTRATE
 		.blockEntity("yaw_controller", YawControllerBlockEntity::new)
-		.instance(() -> ShaftInstance::new)
+		.visual(() -> ShaftVisual::new)
 		.renderer(() -> ShaftRenderer::new)
 		.validBlock(CBCBlocks.YAW_CONTROLLER)
 		.register();
 
 	public static final BlockEntityEntry<CannonMountExtensionBlockEntity> CANNON_MOUNT_EXTENSION = REGISTRATE
 		.blockEntity("cannon_mount_extension", CannonMountExtensionBlockEntity::new)
-		.instance(() -> ShaftInstance::new)
+		.visual(() -> ShaftInstance::new)
 		.renderer(() -> ShaftRenderer::new)
 		.validBlock(CBCBlocks.CANNON_MOUNT_EXTENSION)
 		.register();
@@ -136,14 +136,14 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<FuzedBlockEntity> FUZED_BLOCK = REGISTRATE
 		.blockEntity("fuzed_block", FuzedBlockEntity::new)
-		.instance(() -> FuzedBlockInstance::new)
+		.visual(() -> FuzedBlockInstance::new)
 		.renderer(() -> FuzedBlockEntityRenderer::new)
 		.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL, CBCBlocks.DROP_MORTAR_SHELL, CBCBlocks.SMOKE_SHELL)
 		.register();
 
 	public static final BlockEntityEntry<AbstractFluidShellBlockEntity> FLUID_SHELL = REGISTRATE
 		.blockEntity("fluid_shell", IndexPlatform::makeFluidShellBlockEntity)
-		.instance(() -> FuzedBlockInstance::new)
+		.visual(() -> FuzedBlockInstance::new)
 		.renderer(() -> FuzedBlockEntityRenderer::new)
 		.validBlock(CBCBlocks.FLUID_SHELL)
 		.register();
@@ -162,7 +162,7 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<AbstractCannonDrillBlockEntity> CANNON_DRILL = REGISTRATE
 		.blockEntity("cannon_drill", IndexPlatform::makeDrill)
-		.instance(() -> ShaftInstance::new)
+		.visual(() -> ShaftVisual::new)
 		.renderer(() -> ShaftRenderer::new)
 		.validBlock(CBCBlocks.CANNON_DRILL)
 		.register();
@@ -175,7 +175,7 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<CannonBuilderBlockEntity> CANNON_BUILDER = REGISTRATE
 		.blockEntity("cannon_builder", CannonBuilderBlockEntity::new)
-		.instance(() -> ShaftInstance::new)
+		.visual(() -> ShaftVisual::new)
 		.renderer(() -> ShaftRenderer::new)
 		.validBlock(CBCBlocks.CANNON_BUILDER)
 		.register();
@@ -200,14 +200,14 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<AbstractAutocannonBreechBlockEntity> AUTOCANNON_BREECH = REGISTRATE
 		.blockEntity("autocannon_breech", IndexPlatform::makeAutocannonBreech)
-		.instance(() -> AutocannonBreechInstance::new)
+		.visual(() -> AutocannonBreechInstance::new)
 		.renderer(() -> AutocannonBreechRenderer::new)
 		.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_BREECH, CBCBlocks.BRONZE_AUTOCANNON_BREECH, CBCBlocks.STEEL_AUTOCANNON_BREECH)
 		.register();
 
 	public static final BlockEntityEntry<AutocannonRecoilSpringBlockEntity> AUTOCANNON_RECOIL_SPRING = REGISTRATE
 		.blockEntity("autocannon_recoil_spring", AutocannonRecoilSpringBlockEntity::new)
-		.instance(() -> AutocannonRecoilSpringInstance::new)
+		.visual(() -> AutocannonRecoilSpringInstance::new)
 		.renderer(() -> AutocannonRecoilSpringRenderer::new)
 		.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.STEEL_AUTOCANNON_RECOIL_SPRING)
 		.register();

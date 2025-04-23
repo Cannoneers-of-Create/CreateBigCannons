@@ -32,6 +32,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -304,9 +305,11 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 
 		@Override
 		public boolean testHit(Vec3 hit) {
+            Level level = this.blockEntity.getLevel();
+            BlockPos pos = this.blockEntity.getBlockPos();
 			BlockState state = this.blockEntity.getBlockState();
 			Vec3 localHit = hit.subtract(Vec3.atLowerCornerOf(this.blockEntity.getBlockPos()));
-			return this.newSlotPositioning.testHit(state, localHit);
+			return this.newSlotPositioning.testHit(level, pos, state, localHit);
 		}
 
 		@Override
@@ -315,10 +318,6 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 			return CreateLang.number(settings.value() * sgn)
 				.add(CreateLang.translateDirect("generic.unit.degrees"))
 				.component();
-		}
-
-		@Override
-		public void onShortInteract(Player player, InteractionHand hand, Direction side) {
 		}
 
 		@Override

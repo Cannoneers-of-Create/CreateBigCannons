@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons;
 
+import net.createmod.catnip.lang.FontHelper;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,7 +68,7 @@ public class CreateBigCannons {
 	}
 
 	static {
-		REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, TooltipHelper.Palette.STANDARD_CREATE)
+		REGISTRATE.setTooltipModifierFactory(item -> new ItemDescription.Modifier(item, FontHelper.Palette.STANDARD_CREATE)
 			.andThen(TooltipModifier.mapNull(KineticStats.create(item))));
 	}
 

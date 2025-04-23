@@ -4,6 +4,8 @@ import java.util.function.Supplier;
 
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
+import com.simibubi.create.foundation.utility.CreateLang;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;

@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.index;
 
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.BlockMovementChecks;
+import com.simibubi.create.api.contraption.BlockMovementChecks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
