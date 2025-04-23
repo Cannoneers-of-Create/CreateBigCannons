@@ -9,12 +9,6 @@ plugins {
 }
 stonecutter active "1.20.1" /* [SC] DO NOT EDIT */
 
-//todo: not sure if we even need this
-stonecutter.parameters {
-	val loader = metadata.project.substringAfterLast("-")
-	consts(loader, "fabric", "forge", "neoforge")
-}
-
 stonecutter registerChiseled tasks.register("chiseledBuild", stonecutter.chiseled) {
 	group = "project"
 	ofTask("buildAndCollect")
@@ -60,37 +54,17 @@ subprojects {
 	repositories {
 		mavenCentral()
 		// mappings
-		maven("https://maven.parchmentmc.org")
-		maven("https://maven.quiltmc.org/repository/release")
+		strictMaven("https://maven.parchmentmc.org", "org.parchmentmc.data")
+		strictMaven("https://maven.quiltmc.org/repository/release", "org.quiltmc")
 		// our repo
-		maven("https://maven.realrobotix.me/master/")
+		strictMaven("https://maven.realrobotix.me/master/", "com.rbasamoyai", "com.copycatsplus")
 
 		//maven("https://maven.shedaniel.me/")
 		maven("https://maven.blamejared.com/")
 		maven("https://maven.tterrag.com/")
 		maven("https://maven.createmod.net/")
-		exclusiveContent {
-			forRepository {
-				maven {
-					name = "Modrinth"
-					url = uri("https://api.modrinth.com/maven")
-				}
-			}
-			filter {
-				includeGroup("maven.modrinth")
-			}
-		}
-		exclusiveContent {
-			forRepository {
-				maven {
-					name = "CurseMaven"
-					url = uri("https://cursemaven.com")
-				}
-			}
-			filter {
-				includeGroup("curse.maven")
-			}
-		}
+		strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
+		strictMaven("https://cursemaven.com", "curse.maven")
 		flatDir{
 			dir("libs")
 		}

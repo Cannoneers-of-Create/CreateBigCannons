@@ -27,8 +27,7 @@ public class DelayedImpactFuzeScreen extends AbstractFuzeScreen<DelayedImpactFuz
 				int time = state + 1;
 				int seconds = time / 20;
 				int ticks = time - seconds * 20;
-				this.setValue.titled(CreateLang.
-				(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
+				this.setValue.titled(CreateLang.builder(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
 			})
 			.setState(Mth.clamp(this.menu.getValue() - 1, 0, 100));
 	}

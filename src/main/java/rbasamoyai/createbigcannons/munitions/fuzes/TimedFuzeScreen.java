@@ -27,8 +27,7 @@ public class TimedFuzeScreen extends AbstractFuzeScreen<TimedFuzeContainer> {
 				int time = Math.max(1, state * 5);
 				int seconds = time / 20;
 				int ticks = time - seconds * 20;
-				this.setValue.titled(CreateLang.
-				(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
+				this.setValue.titled(CreateLang.builder(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
 			})
 			.setState(Mth.clamp(this.menu.getValue() / 5, 0, 100));
 	}

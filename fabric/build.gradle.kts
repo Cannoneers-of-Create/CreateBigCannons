@@ -79,7 +79,6 @@ loom {
 }
 
 repositories {
-	maven("https://api.modrinth.com/maven") // LazyDFU
 	maven("https://maven.terraformersmc.com/releases/") // Mod Menu
 	maven("https://mvn.devos.one/snapshots/") // Create Fabric, Forge Tags, Milk Lib, Registrate Fabric
 	maven("https://mvn.devos.one/releases/") // Porting Lib Releases

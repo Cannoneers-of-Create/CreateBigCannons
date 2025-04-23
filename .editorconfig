@@ -2,7 +2,7 @@
 root = true
 
 [*]
-indent_style = tab
+indent_style = space
 indent_size = 4
 continuation_indent_size = 4
 end_of_line = lf
@@ -13,7 +13,6 @@ max_line_length = 120
 quote_type = double
 
 [*.json]
-indent_style = space
 indent_size = 2
 
 [*.java]
@@ -22,5 +21,5 @@ ij_java_class_count_to_use_import_on_demand = 99
 ij_java_names_count_to_use_import_on_demand = 99
 ij_java_imports_layout = $*, |, java.**, |, javax.**, |, org.**, |, com.**, |, *
 
-[{*.fsh,*.vsh}]
-indent_style = space
+[.github/workflows/*.yml]
+indent_size = 2

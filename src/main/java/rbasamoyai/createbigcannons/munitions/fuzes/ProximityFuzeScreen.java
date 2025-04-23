@@ -24,8 +24,7 @@ public class ProximityFuzeScreen extends AbstractFuzeScreen<ProximityFuzeContain
 			.withRange(1, 33)
 			.calling(state -> {
 				this.lastUpdated = 0;
-				this.setValue.titled(CreateLang.
-				(CreateBigCannons.MOD_ID).translate("gui.set_proximity_fuze.distance", state).component());
+				this.setValue.titled(CreateLang.builder(CreateBigCannons.MOD_ID).translate("gui.set_proximity_fuze.distance", state).component());
 			})
 			.setState(Mth.clamp(this.menu.getValue(), 1, 33));
 	}

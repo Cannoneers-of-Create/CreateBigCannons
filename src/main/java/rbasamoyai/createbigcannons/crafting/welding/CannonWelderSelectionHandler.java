@@ -128,7 +128,7 @@ public class CannonWelderSelectionHandler {
 		if (mc.hitResult instanceof BlockHitResult bhr) {
 			BlockState blockState = level.getBlockState(this.hoveredPos);
 			if (!(blockState.getBlock() instanceof WeldableBlock wblock) || !wblock.isWeldable(blockState)) {
-				CreateLang.builder				(CreateBigCannons.MOD_ID).translate("cannon_welder.invalid_weld").color(FAIL).sendStatus(player);
+				CreateLang.builder(CreateBigCannons.MOD_ID).translate("cannon_welder.invalid_weld").color(FAIL).sendStatus(player);
 				return false;
 			}
 			face = bhr.getDirection();

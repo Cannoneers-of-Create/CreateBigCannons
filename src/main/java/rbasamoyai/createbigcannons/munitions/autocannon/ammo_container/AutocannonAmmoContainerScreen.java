@@ -92,8 +92,7 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 	protected void renderTooltip(GuiGraphics graphics, int x, int y) {
 		super.renderTooltip(graphics, x, y);
 		if (this.hoveredSlot != null && this.hoveredSlot.index == 1 && !this.hoveredSlot.hasItem()) {
-			graphics.renderTooltip(this.font, CreateLang.
-			(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_slot").component(), x, y);
+			graphics.renderTooltip(this.font, CreateLang.builder(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_slot").component(), x, y);
 		}
 	}
 
@@ -131,8 +130,7 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 			.withRange(1, 7)
 			.calling(state -> {
 				this.lastUpdated = 0;
-				this.setValue.titled(CreateLang.
-				(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_spacing", state).component());
+				this.setValue.titled(CreateLang.builder(CreateBigCannons.MOD_ID).translate("gui.autocannon_ammo_container.tracer_spacing", state).component());
 			})
 			.setState(Mth.clamp(this.menu.getValue(), 1, 6));
 	}
