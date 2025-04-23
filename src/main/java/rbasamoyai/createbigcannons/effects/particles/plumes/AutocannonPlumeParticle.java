@@ -1,8 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.plumes;
 
-import com.simibubi.create.foundation.ponder.PonderWorld;
-import com.simibubi.create.foundation.utility.worldWrappers.WrappedClientWorld;
-
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
@@ -22,7 +19,8 @@ public class AutocannonPlumeParticle extends NoRenderParticle {
 	private final boolean visible;
 
 	// TODO: remove once Create #7232 is fixed
-	private final boolean isPonderWorld;
+    // todo: guessing it's fixed with c6 PLAYTEST when running
+	private final boolean isPonderWorld = false;
 
 	AutocannonPlumeParticle(ClientLevel level, double x, double y, double z, Vec3 direction, float scale) {
 		super(level, x, y, z);
@@ -36,7 +34,7 @@ public class AutocannonPlumeParticle extends NoRenderParticle {
 		this.setParticleSpeed(0, 0, 0);
 
 		// TODO remove once Create #7232 is fixed
-		this.isPonderWorld = level instanceof WrappedClientWorld wrapped && wrapped.getWrappedWorld() instanceof PonderWorld;
+		// this.isPonderWorld = level instanceof WrappedClientWorld wrapped && wrapped.getWrappedWorld() instanceof PonderWorld;
 	}
 
 	@Override
