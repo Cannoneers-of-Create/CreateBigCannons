@@ -3,16 +3,16 @@ package rbasamoyai.createbigcannons.config;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.BiConsumer;
 import java.util.function.Supplier;
+
+
+import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.simibubi.create.api.stress.BlockStressValues;
-import com.simibubi.create.foundation.config.ui.BaseConfigScreen;
 
 import net.createmod.catnip.config.ConfigBase;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -23,59 +23,67 @@ public class CBCConfigs {
 	 * A copy of AllConfigs. Yea, was a bit lazy in making config setup.
 	 */
 
-	private static final Map<ModConfig.Type, ConfigBase> CONFIGS = new EnumMap<>(ModConfig.Type.class);
 
-	public static CBCCfgClient CLIENT;
-	public static CBCCfgCommon COMMON;
-	public static CBCCfgServer SERVER;
+    private static final Map<ModConfig.Type, ConfigBase> CONFIGS = new EnumMap<>(ModConfig.Type.class);
 
-	public static ConfigBase byType(ModConfig.Type type) {
-		return CONFIGS.get(type);
-	}
+    private static CBCCfgClient client;
+    private static CBCCfgCommon common;
+    private static CBCCfgServer server;
 
-	private static <T extends CBCConfigBase> T register(Supplier<T> factory, ModConfig.Type side) {
-		Pair<T, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(builder -> {
-			T config = factory.get();
-			config.registerAll(builder);
-			return config;
-		});
+    public static CBCCfgClient client() {
+        return client;
+    }
 
-		T config = specPair.getLeft();
-		config.specification = specPair.getRight();
-		CONFIGS.put(side, config);
-		return config;
-	}
+    public static CBCCfgCommon common() {
+        return common;
+    }
 
-	public static void registerConfigs(BiConsumer<ModConfig.Type, ForgeConfigSpec> cons) {
-		CLIENT = register(CBCCfgClient::new, ModConfig.Type.CLIENT);
-		COMMON = register(CBCCfgCommon::new, ModConfig.Type.COMMON);
-		SERVER = register(CBCCfgServer::new, ModConfig.Type.SERVER);
+    public static CBCCfgServer server() {
+        return server;
+    }
 
-		for (Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
-			cons.accept(pair.getKey(), pair.getValue().specification);
+    public static ConfigBase byType(ModConfig.Type type) {
+        return CONFIGS.get(type);
+    }
 
-		BlockStressValues.registerProvider(CreateBigCannons.MOD_ID, SERVER.kinetics.stress);
-	}
+    private static <T extends ConfigBase> T register(Supplier<T> factory, ModConfig.Type side) {
+        Pair<T, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(builder -> {
+            T config = factory.get();
+            config.registerAll(builder);
+            return config;
+        });
 
-	public static void onLoad(ModConfig modConfig) {
-		for (ConfigBase config : CONFIGS.values())
-			if (config.specification == modConfig
-				.getSpec())
-				config.onLoad();
-	}
+        T config = specPair.getLeft();
+        config.specification = specPair.getRight();
+        CONFIGS.put(side, config);
+        return config;
+    }
 
-	public static void onReload(ModConfig modConfig) {
-		for (ConfigBase config : CONFIGS.values())
-			if (config.specification == modConfig
-				.getSpec())
-				config.onReload();
-	}
+    public static void register() {
+        client = register(CBCCfgClient::new, ModConfig.Type.CLIENT);
+        common = register(CBCCfgCommon::new, ModConfig.Type.COMMON);
+        server = register(CBCCfgServer::new, ModConfig.Type.SERVER);
 
-	public static BaseConfigScreen createConfigScreen(Screen parent) {
-		BaseConfigScreen.setDefaultActionFor(CreateBigCannons.MOD_ID, (base) ->
-			base.withSpecs(CLIENT.specification, null, SERVER.specification) // not including common since there's nothing there
-				.withTitles("Client Settings", "", "Server Settings")
-		);
-		return new BaseConfigScreen(parent, CreateBigCannons.MOD_ID);
-	}
+        for (Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
+            ForgeConfigRegistry.INSTANCE.register(CreateBigCannons.MOD_ID, pair.getKey(), pair.getValue().specification);
+
+        CBCCfgStress stress = server().kinetics.stressValues;
+        BlockStressValues.IMPACTS.registerProvider(stress::getImpact);
+        BlockStressValues.CAPACITIES.registerProvider(stress::getCapacity);
+    }
+
+    public static void onLoad(ModConfig modConfig) {
+        for (ConfigBase config : CONFIGS.values())
+            if (config.specification == modConfig
+                .getSpec())
+                config.onLoad();
+    }
+
+    public static void onReload(ModConfig modConfig) {
+        for (ConfigBase config : CONFIGS.values())
+            if (config.specification == modConfig
+                .getSpec())
+                config.onReload();
+    }
+
 }

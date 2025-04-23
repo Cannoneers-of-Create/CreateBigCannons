@@ -7,8 +7,9 @@ public class CBCCfgKinetics extends ConfigBase {
 	public final ConfigInt maxLoaderLength = i(64, 3, "maxLoaderLength", Comments.maxLoaderLength);
 	public final ConfigBool enableIntersectionLoading = b(false, "enableIntersectionLoading", Comments.enableIntersectionLoading);
 	public final CBCCfgStress stress = nested(1, CBCCfgStress::new, Comments.stress);
+    public CBCCfgStress stressValues;
 
-	@Override
+    @Override
 	public String getName() {
 		return "kinetics";
 	}
