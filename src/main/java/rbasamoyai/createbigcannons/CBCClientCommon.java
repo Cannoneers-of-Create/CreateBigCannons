@@ -8,6 +8,8 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import net.createmod.ponder.foundation.PonderIndex;
+
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -76,7 +78,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeSelectionHandler;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
-import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
+import rbasamoyai.createbigcannons.ponder.CBCPonderPlugin;
 import rbasamoyai.createbigcannons.remix.LightingRemix;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.RPLScreenShakeHandlerClient;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
@@ -106,8 +108,8 @@ public class CBCClientCommon {
 	}
 
 	public static void onClientSetup() {
-		CBCPonderIndex.register();
-		CBCPonderIndex.registerTags();
+        PonderIndex.addPlugin(new CBCPonderPlugin());
+
 		CBCBlockPartials.resolveDeferredModels();
 
 		IndexPlatform.registerClampedItemProperty(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {

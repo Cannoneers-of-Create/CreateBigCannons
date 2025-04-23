@@ -10,16 +10,17 @@ import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.redstone.nixieTube.NixieTubeBlockEntity;
+import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+
+import net.createmod.ponder.api.ParticleEmitter;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
-import net.createmod.ponder.foundation.element.InputWindowElement;
 import net.createmod.ponder.api.element.WorldSectionElement;
-import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
-import com.simibubi.create.foundation.ponder.instruction.FadeOutOfSceneInstruction;
-import com.simibubi.create.foundation.ponder.instruction.HighlightValueBoxInstruction;
+import net.createmod.ponder.foundation.instruction.FadeOutOfSceneInstruction;
+import net.createmod.ponder.foundation.instruction.HighlightValueBoxInstruction;
 import net.createmod.catnip.math.Pointing;
 
 import net.createmod.catnip.math.VecHelper;
@@ -60,8 +61,9 @@ import rbasamoyai.createbigcannons.multiloader.PonderPlatform;
 
 public class CannonCraftingScenes {
 
-	public static void cannonCasting(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/cannon_casting", "Cannon Casting");
+	public static void cannonCasting(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_crafting/cannon_casting", "Cannon Casting");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -97,19 +99,19 @@ public class CannonCraftingScenes {
 			.pointAt(castCenter);
 		scene.idle(40);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(2, 1, 2), Pointing.DOWN).withItem(CBCBlocks.MEDIUM_CAST_MOULD.asStack()), 10);
+		scene.overlay().showControls(util.vector().topOf(2, 1, 2), Pointing.DOWN, 10).withItem(CBCBlocks.MEDIUM_CAST_MOULD.asStack());
 		scene.idle(15);
 		scene.world().showSection(util.select().position(2, 1, 2), null);
 		scene.idle(30);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(2, 1, 2), Pointing.DOWN).withItem(CBCBlocks.CASTING_SAND.asStack()), 10);
+		scene.overlay().showControls(util.vector().topOf(2, 1, 2), Pointing.DOWN, 10).withItem(CBCBlocks.CASTING_SAND.asStack());
 		scene.idle(15);
 		scene.world().modifyBlock(util.grid().at(2, 1, 2), setStateValue(CannonCastMouldBlock.SAND, true), false);
-		Emitter mouldSandEmitter = Emitter.simple(new BlockParticleOption(ParticleTypes.BLOCK, CBCBlocks.CASTING_SAND.getDefaultState()), util.vector().of(0, 1, 0));
+		ParticleEmitter mouldSandEmitter = scene.effects().simpleParticleEmitter(new BlockParticleOption(ParticleTypes.BLOCK, CBCBlocks.CASTING_SAND.getDefaultState()), util.vector().of(0, 1, 0));
 		scene.effects().emitParticles(castCenter.add(0, 1, 0), mouldSandEmitter, 10, 1);
 		scene.idle(30);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(2, 1, 2), Pointing.DOWN).rightClick(), 10);
+		scene.overlay().showControls(util.vector().topOf(2, 1, 2), Pointing.DOWN, 10).rightClick();
 		scene.idle(15);
 		scene.world().hideSection(util.select().fromTo(1, 1, 1, 3, 1, 3), null);
 		ElementLink<WorldSectionElement> cast = scene.world().showIndependentSectionImmediately(util.select().fromTo(1, 2, 1, 3, 2, 3));
@@ -139,7 +141,7 @@ public class CannonCraftingScenes {
 
 		BlockPos deployerPos = util.grid().at(2, 2, 0);
 		Selection deployer = util.select().position(deployerPos);
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(2, 2, 0), Pointing.DOWN).withItem(CBCBlocks.MEDIUM_CAST_MOULD.asStack()), 10);
+		scene.overlay().showControls(util.vector().topOf(2, 2, 0), Pointing.DOWN, 10).withItem(CBCBlocks.MEDIUM_CAST_MOULD.asStack());
 		scene.idle(15);
 		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(CBCBlocks.MEDIUM_CAST_MOULD.asStack()));
 		scene.idle(10);
@@ -156,7 +158,7 @@ public class CannonCraftingScenes {
 		scene.world().moveDeployer(deployerPos, -1, 25);
 		scene.idle(36);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(2, 2, 0), Pointing.DOWN).withItem(CBCBlocks.CASTING_SAND.asStack()), 10);
+		scene.overlay().showControls(util.vector().topOf(2, 2, 0), Pointing.DOWN, 10).withItem(CBCBlocks.CASTING_SAND.asStack());
 		scene.idle(15);
 		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(CBCBlocks.CASTING_SAND.asStack()));
 		scene.idle(10);
@@ -266,7 +268,7 @@ public class CannonCraftingScenes {
 			.text("The finished cannon cast can be removed by breaking or interacting with it.")
 			.pointAt(util.vector().blockSurface(util.grid().at(1, 2, 1), Direction.WEST));
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 2, 1), Direction.NORTH), Pointing.RIGHT).leftClick(), 20);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 2, 1), Direction.NORTH), Pointing.RIGHT, 20).leftClick();
 		scene.idle(30);
 		scene.world().setBlocks(util.select().fromTo(1, 3, 1, 3, 3, 3).substract(innerCast), Blocks.AIR.defaultBlockState(), true);
 		scene.idle(80);
@@ -298,8 +300,9 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void cannonMovement(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/moving_cannons", "Moving Cannons Around");
+	public static void cannonMovement(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_crafting/moving_cannons", "Moving Cannons Around");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -310,7 +313,7 @@ public class CannonCraftingScenes {
 			.text("By default, most cast cannons will turn into scrap when broken without a Silk Touch pickaxe.")
 			.colored(PonderPalette.RED);
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(2, 1, 0), Pointing.DOWN).withItem(CBCItems.CAST_IRON_NUGGET.asStack()), 40);
+		scene.overlay().showControls(util.vector().topOf(2, 1, 0), Pointing.DOWN, 40).withItem(CBCItems.CAST_IRON_NUGGET.asStack());
 		scene.idle(20);
 		scene.world().destroyBlock(util.grid().at(2, 1, 0));
 		scene.idle(40);
@@ -373,8 +376,9 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void cannonBoring(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/cannon_boring", "Boring Holes in Cast Cannons");
+	public static void cannonBoring(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_crafting/cannon_boring", "Boring Holes in Cast Cannons");
 		scene.configureBasePlate(6, 0, 3);
 		scene.world().showSection(util.select().cuboid(util.grid().zero(), util.grid().at(9, 0, 3)), Direction.UP);
 
@@ -446,7 +450,7 @@ public class CannonCraftingScenes {
 			.colored(PonderPalette.GREEN);
 		scene.idle(20);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().centerOf(5, 1, 1), Pointing.DOWN).withItem(CBCItems.CAST_IRON_NUGGET.asStack()), 40);
+		scene.overlay().showControls(util.vector().centerOf(5, 1, 1), Pointing.DOWN, 40).withItem(CBCItems.CAST_IRON_NUGGET.asStack());
 		scene.idle(67);
 
 		scene.world().modifyBlock(util.grid().at(6, 1, 1), copyPropertyTo(FACING, CBCBlocks.CAST_IRON_CANNON_CHAMBER.getDefaultState()), false);
@@ -460,8 +464,9 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void cannonBuilding(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/cannon_building", "Building Built-Up Cannons");
+	public static void cannonBuilding(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_crafting/cannon_building", "Building Built-Up Cannons");
 		scene.configureBasePlate(6, 0, 3);
 		scene.world().showSection(util.select().cuboid(util.grid().zero(), util.grid().at(9, 0, 3)), Direction.UP);
 
@@ -567,8 +572,9 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void finishingBuiltUpCannons(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/finishing_built_up_cannons", "Finishing Built-Up Cannons");
+	public static void finishingBuiltUpCannons(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_crafting/finishing_built_up_cannons", "Finishing Built-Up Cannons");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -606,14 +612,14 @@ public class CannonCraftingScenes {
 			.colored(PonderPalette.BLUE);
 		scene.idle(20);
 		BlockPos pos = util.grid().at(0, 1, 2);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(pos, Direction.UP), Pointing.DOWN)
-			.withItem(CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER.asStack()), 30);
+		scene.overlay().showControls(util.vector().blockSurface(pos, Direction.UP), Pointing.DOWN, 30)
+			.withItem(CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER.asStack());
 		scene.idle(45);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(pos, Direction.UP), Pointing.DOWN)
-			.withItem(CBCBlocks.SMALL_STEEL_CANNON_LAYER.asStack()), 30);
+		scene.overlay().showControls(util.vector().blockSurface(pos, Direction.UP), Pointing.DOWN, 30)
+			.withItem(CBCBlocks.SMALL_STEEL_CANNON_LAYER.asStack());
 		scene.idle(45);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(pos, Direction.UP), Pointing.DOWN)
-			.withItem(CBCBlocks.MEDIUM_STEEL_CANNON_LAYER.asStack()), 30);
+		scene.overlay().showControls(util.vector().blockSurface(pos, Direction.UP), Pointing.DOWN, 30)
+			.withItem(CBCBlocks.MEDIUM_STEEL_CANNON_LAYER.asStack());
 		scene.idle(45);
 
 		scene.overlay().showText(60)
@@ -632,8 +638,9 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void incompleteCannonBlocks(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/incomplete_cannon_blocks", "Incomplete Cannon Blocks");
+	public static void incompleteCannonBlocks(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_crafting/incomplete_cannon_blocks", "Incomplete Cannon Blocks");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 		scene.idle(20);
@@ -652,13 +659,13 @@ public class CannonCraftingScenes {
 			.colored(PonderPalette.BLUE);
 		scene.idle(20);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(incompletePos), Pointing.DOWN).withItem(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH.asStack()), 40);
+		scene.overlay().showControls(util.vector().topOf(incompletePos), Pointing.DOWN, 40).withItem(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH.asStack());
 		scene.idle(60);
 
 		scene.world().modifyBlock(util.grid().at(2, 1, 4), copyPropertyTo(FACING, CBCBlocks.STEEL_CANNON_BARREL.getDefaultState()), true);
 		scene.world().modifyBlock(util.grid().at(2, 1, 3), copyPropertyTo(FACING, CBCBlocks.STEEL_CANNON_CHAMBER.getDefaultState()), true);
 		scene.world().modifyBlock(incompletePos, copyPropertyTo(FACING, CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH.getDefaultState()), true);
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(incompletePos), Pointing.DOWN).withItem(CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH.asStack()), 40);
+		scene.overlay().showControls(util.vector().topOf(incompletePos), Pointing.DOWN, 40).withItem(CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH.asStack());
 		scene.idle(60);
 
 		scene.world().modifyBlock(util.grid().at(2, 1, 4), copyPropertyTo(FACING, CBCBlocks.CAST_IRON_CANNON_BARREL.getDefaultState()), true);
@@ -674,7 +681,7 @@ public class CannonCraftingScenes {
 			.colored(PonderPalette.GREEN);
 		scene.idle(20);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(incompletePos), Pointing.DOWN).rightClick().withItem(AllBlocks.SHAFT.asStack()), 40);
+		scene.overlay().showControls(util.vector().topOf(incompletePos), Pointing.DOWN, 40).rightClick().withItem(AllBlocks.SHAFT.asStack());
 		scene.idle(10);
 		scene.world().modifyBlock(incompletePos, setStateValue(IncompleteWithItemsCannonBlock.STAGE_2, 1), false);
 		scene.idle(40);
@@ -694,7 +701,7 @@ public class CannonCraftingScenes {
 		scene.idle(20);
 		ItemStack breechblock = CBCItems.CAST_IRON_SLIDING_BREECHBLOCK.asStack();
 		Selection deployer = util.select().position(deployerPos);
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(deployerPos), Pointing.DOWN).withItem(breechblock), 40);
+		scene.overlay().showControls(util.vector().topOf(deployerPos), Pointing.DOWN, 40).withItem(breechblock);
 		scene.idle(30);
 		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", breechblock.save(new CompoundTag())));
 		scene.idle(15);
@@ -716,8 +723,9 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void basinFoundry(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/basin_foundry", "Using the Basin Foundry Lid");
+	public static void basinFoundry(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_crafting/basin_foundry", "Using the Basin Foundry Lid");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 		scene.world().showSection(util.select().fromTo(1, 1, 2, 1, 2, 2), Direction.UP);
@@ -735,7 +743,7 @@ public class CannonCraftingScenes {
 			.pointAt(util.vector().centerOf(1, 1, 2));
 		scene.idle(60);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(1, 2, 2), Pointing.DOWN).withItem(CBCItems.CAST_IRON_INGOT.asStack()), 10);
+		scene.overlay().showControls(util.vector().topOf(1, 2, 2), Pointing.DOWN, 10).withItem(CBCItems.CAST_IRON_INGOT.asStack());
 		scene.idle(10);
 		scene.world().modifyBlock(util.grid().at(1, 1, 2), setStateValue(BlazeBurnerBlock.HEAT_LEVEL, BlazeBurnerBlock.HeatLevel.KINDLED), false);
 		RandomSource rand = RandomSource.create();
@@ -745,7 +753,7 @@ public class CannonCraftingScenes {
 			offset = VecHelper.rotate(offset, angle, Axis.Y);
 			Vec3 target = VecHelper.rotate(offset, -25, Axis.Y).add(0, .5f, 0);
 			target = VecHelper.offsetRandomly(target.subtract(offset), rand, 1 / 128f);
-			Emitter foundryLava = Emitter.simple(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.LAVA.defaultBlockState()), target);
+			ParticleEmitter foundryLava = scene.effects().simpleParticleEmitter(new BlockParticleOption(ParticleTypes.BLOCK, Blocks.LAVA.defaultBlockState()), target);
 			scene.effects().emitParticles(util.vector().topOf(1, 2, 2).add(0, 0.25, 0), foundryLava, 5, 1);
 			scene.idle(5);
 		}
@@ -772,8 +780,9 @@ public class CannonCraftingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void makingQuickFiringBreeches(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_crafting/making_quick_firing_breeches", "Creating a Quick-Firing Breech");
+	public static void makingQuickFiringBreeches(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_crafting/making_quick_firing_breeches", "Creating a Quick-Firing Breech");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -790,9 +799,9 @@ public class CannonCraftingScenes {
 
 		scene.idle(20);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(breechPos), Pointing.DOWN).withItem(CBCBlocks.CAST_IRON_SLIDING_BREECH.asStack()), 60);
+		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 60).withItem(CBCBlocks.CAST_IRON_SLIDING_BREECH.asStack());
 		scene.idle(80);
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(breechPos), Pointing.DOWN).rightClick().withItem(CBCItems.QUICKFIRING_MECHANISM.asStack()), 60);
+		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 60).rightClick().withItem(CBCItems.QUICKFIRING_MECHANISM.asStack());
 		scene.idle(80);
 		scene.world().modifyBlock(breechPos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_QUICKFIRING_BREECH.getDefaultState()), true);
 		scene.idle(60);
@@ -816,7 +825,7 @@ public class CannonCraftingScenes {
 
 		ItemStack mechanism = CBCItems.QUICKFIRING_MECHANISM.asStack();
 		Selection deployer = util.select().position(deployerPos);
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(deployerPos), Pointing.DOWN).withItem(mechanism), 40);
+		scene.overlay().showControls(util.vector().topOf(deployerPos), Pointing.DOWN, 40).withItem(mechanism);
 		scene.idle(30);
 		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", mechanism.save(new CompoundTag())));
 		scene.idle(15);
@@ -843,7 +852,7 @@ public class CannonCraftingScenes {
 
 		scene.idle(20);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(breechPos), Pointing.DOWN).rightClick().withItem(AllItems.WRENCH.asStack()), 60);
+		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 60).rightClick().withItem(AllItems.WRENCH.asStack());
 
 		scene.idle(80);
 
@@ -891,7 +900,7 @@ public class CannonCraftingScenes {
 		scene.idle(1);
 		scene.overlay().chaseBoundingBoxOutline(PonderPalette.BLUE, weld1, weld2, 30);
 		scene.idle(10);
-		scene.overlay().showControls(new InputWindowElement(seam1.add(0, 0.5, 0), Pointing.DOWN).rightClick().withItem(CBCItems.CANNON_WELDER.asStack()), 20);
+		scene.overlay().showControls(seam1.add(0, 0.5, 0), Pointing.DOWN, 20).rightClick().withItem(CBCItems.CANNON_WELDER.asStack());
 		scene.idle(10);
 		scene.effects().emitParticles(util.vector().centerOf(3, 1, 2), particleEmitterForCannonWelder(Direction.WEST), 5, 1);
 		scene.world().modifyBlockEntityNBT(util.select().position(3, 1, 2), BlockEntity.class, setWeldInTag(Direction.WEST, true), true);
@@ -904,7 +913,7 @@ public class CannonCraftingScenes {
 		scene.idle(1);
 		scene.overlay().chaseBoundingBoxOutline(PonderPalette.BLUE, weld3, weld4, 30);
 		scene.idle(10);
-		scene.overlay().showControls(new InputWindowElement(seam2.add(0, 0.5, 0), Pointing.DOWN).rightClick().withItem(CBCItems.CANNON_WELDER.asStack()), 20);
+		scene.overlay().showControls(seam2.add(0, 0.5, 0), Pointing.DOWN, 20).rightClick().withItem(CBCItems.CANNON_WELDER.asStack());
 		scene.idle(10);
 		scene.effects().emitParticles(util.vector().centerOf(2, 1, 2), particleEmitterForCannonWelder(Direction.WEST), 5, 1);
 		scene.world().modifyBlockEntityNBT(util.select().position(2, 1, 2), BlockEntity.class, setWeldInTag(Direction.WEST, true), true);
@@ -917,7 +926,7 @@ public class CannonCraftingScenes {
 			.colored(PonderPalette.BLUE);
 		scene.idle(10);
 		scene.world().setBlock(util.grid().at(2, 1, 2), CBCBlocks.CAST_IRON_CANNON_CHAMBER.getDefaultState().setValue(FACING, Direction.SOUTH), true);
-		scene.overlay().showSelectionWithText(util.select().fromTo(2, 1, 2, 3, 1, 2), 120)
+		scene.overlay().showOutlineWithText(util.select().fromTo(2, 1, 2, 3, 1, 2), 120)
 			.text("Invalid")
 			.colored(PonderPalette.RED)
 			.placeNearTarget();
@@ -1010,7 +1019,7 @@ public class CannonCraftingScenes {
 		return tag -> tag.putString("RenderedShape", CBCRegistries.cannonCastShapes().getKey(shape).toString());
 	}
 
-	public static Emitter particleEmitterForCannonWelder(Direction dir) {
+	public static ParticleEmitter particleEmitterForCannonWelder(Direction dir) {
 		return (w, x, y, z) -> CannonWelderSelectionHandler.spawnParticles(w, BlockPos.containing(x, y, z), dir, true);
 	}
 

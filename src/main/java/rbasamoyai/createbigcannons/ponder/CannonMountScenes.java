@@ -7,15 +7,15 @@ import java.util.function.UnaryOperator;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.redstone.analogLever.AnalogLeverBlockEntity;
+import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+import net.createmod.ponder.api.ParticleEmitter;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
-import net.createmod.ponder.foundation.element.InputWindowElement;
 import net.createmod.ponder.api.element.WorldSectionElement;
-import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
-import com.simibubi.create.foundation.ponder.instruction.FadeOutOfSceneInstruction;
+import net.createmod.ponder.foundation.instruction.FadeOutOfSceneInstruction;
 import net.createmod.catnip.math.Pointing;
 
 import net.minecraft.core.BlockPos;
@@ -37,8 +37,9 @@ import rbasamoyai.createbigcannons.index.CBCItems;
 
 public class CannonMountScenes {
 
-	public static void assemblyAndUse(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_mount/assembly_and_use", "Assembly and Use");
+	public static void assemblyAndUse(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_mount/assembly_and_use", "Assembly and Use");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -176,8 +177,9 @@ public class CannonMountScenes {
 		scene.markAsFinished();
 	}
 
-	public static void firingBigCannons(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_mount/firing_big_cannons", "Firing Big Cannons");
+	public static void firingBigCannons(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_mount/firing_big_cannons", "Firing Big Cannons");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -228,7 +230,7 @@ public class CannonMountScenes {
 		scene.world().modifyBlock(fireLeverPos, setStateValue(LeverBlock.POWERED, true), false);
 		scene.effects().createRedstoneParticles(fireLeverPos, 0xFF0000, 10);
 		scene.effects().emitParticles(util.vector().of(-0.2d, 6.25d, 2.5),
-			Emitter.withinBlockSpace(new BigCannonPlumeParticleData(4), util.vector().of(-0.87d, 0.5d, 0.0d).scale(0.5)), 1, 1);
+			scene.effects().particleEmitterWithinBlockSpace(new BigCannonPlumeParticleData(4), util.vector().of(-0.87d, 0.5d, 0.0d).scale(0.5)), 1, 1);
 		scene.idle(60);
 
 		scene.rotateCameraY(180.0f);
@@ -269,8 +271,8 @@ public class CannonMountScenes {
 		scene.overlay().showText(80)
 			.text("Cannon Mounts can be rotated to face downwards by clicking their sides with a wrench.");
 		scene.idle(30);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 3, 2), Direction.WEST), Pointing.LEFT)
-			.withItem(AllItems.WRENCH.asStack()).rightClick(), 40);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 3, 2), Direction.WEST), Pointing.LEFT, 40)
+			.withItem(AllItems.WRENCH.asStack()).rightClick();
 		scene.idle(30);
 		scene.world().modifyBlock(util.grid().at(2, 3, 2), setStateValue(BlockStateProperties.VERTICAL_DIRECTION, Direction.UP), false);
 		scene.idle(30);
@@ -300,11 +302,11 @@ public class CannonMountScenes {
 		scene.overlay().showText(120)
 			.text("Cannon Mount Extensions provide extra interface areas for blocks.");
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 2, 2), Direction.WEST), Pointing.LEFT)
-			.withItem(AllBlocks.DISPLAY_LINK.asStack()), 40);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 2, 2), Direction.WEST), Pointing.LEFT, 40)
+			.withItem(AllBlocks.DISPLAY_LINK.asStack());
 		scene.idle(65);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 3, 3), Direction.WEST), Pointing.LEFT)
-			.withItem(AllBlocks.BRASS_FUNNEL.asStack()), 40);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 3, 3), Direction.WEST), Pointing.LEFT, 40)
+			.withItem(AllBlocks.BRASS_FUNNEL.asStack());
 		scene.idle(65);
 		scene.overlay().showText(50)
 			.attachKeyFrame()
@@ -346,8 +348,8 @@ public class CannonMountScenes {
 			.attachKeyFrame()
 			.text("They take in item munitions as input.");
 		scene.idle(30);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 4, 2), Direction.WEST), Pointing.LEFT)
-			.withItem(CBCItems.AUTOCANNON_CARTRIDGE.asStack()), 70);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 4, 2), Direction.WEST), Pointing.LEFT, 70)
+			.withItem(CBCItems.AUTOCANNON_CARTRIDGE.asStack());
 		scene.idle(85);
 		scene.overlay().showText(60)
 			.text("Spent ammunition is ejected from the breech.")
@@ -381,7 +383,7 @@ public class CannonMountScenes {
 		Selection spring = util.select().position(2, 5, 2);
 
 		Vec3 emitPos = util.vector().of(-0.2d, 5.5d, 2.5);
-		Emitter emitter = Emitter.withinBlockSpace(new AutocannonPlumeParticleData(1f), util.vector().of(-1d, 0.0d, 0.0d));
+		ParticleEmitter emitter = scene.effects().particleEmitterWithinBlockSpace(new AutocannonPlumeParticleData(1f), util.vector().of(-1d, 0.0d, 0.0d));
 
 		for (int i = 0; i < 5; ++i) {
 			scene.effects().emitParticles(emitPos, emitter, 1, 1);
@@ -424,7 +426,8 @@ public class CannonMountScenes {
 		scene.markAsFinished();
 	}
 
-	public static void customizingAutocannons(SceneBuilder scene, SceneBuildingUtil util) {
+	public static void customizingAutocannons(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
 		scene.title("cannon_mount/customizing_autocannons", "Customizing Autocannons");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
@@ -445,12 +448,11 @@ public class CannonMountScenes {
 			.text("Wrenching the end of an autocannon will change the type of barrel end.")
 			.pointAt(util.vector().centerOf(barrelEnd));
 		scene.idle(20);
-		InputWindowElement barrelWrench = new InputWindowElement(util.vector().topOf(barrelEnd), Pointing.DOWN).withWrench();
-		scene.overlay().showControls(barrelWrench, 40);
+		scene.overlay().showControls(util.vector().topOf(barrelEnd), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack()); //todo: maybe use rightclick here due to behavior change in c6, can't tell rn. there are a few more occurrences bellow -Robotix
 		scene.idle(30);
 		scene.world().modifyBlock(barrelEnd, setStateValue(AutocannonBarrelBlock.BARREL_END, AutocannonBarrelBlock.AutocannonBarrelEnd.FLANGED), false);
 		scene.idle(25);
-		scene.overlay().showControls(barrelWrench, 40);
+		scene.overlay().showControls(util.vector().topOf(barrelEnd), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack());
 		scene.idle(30);
 		scene.world().modifyBlock(barrelEnd, setStateValue(AutocannonBarrelBlock.BARREL_END, AutocannonBarrelBlock.AutocannonBarrelEnd.NOTHING), false);
 		scene.idle(25);
@@ -468,8 +470,7 @@ public class CannonMountScenes {
 			.text("Wrenching the autocannon breech will add handles.")
 			.pointAt(util.vector().topOf(breechPos));
 		scene.idle(20);
-		InputWindowElement breechWrench = new InputWindowElement(util.vector().topOf(breechPos), Pointing.DOWN).withWrench();
-		scene.overlay().showControls(breechWrench, 40);
+		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack());
 		scene.idle(30);
 		scene.world().modifyBlock(breechPos, setStateValue(AutocannonBreechBlock.HANDLE, true), false);
 		scene.idle(30);
@@ -500,7 +501,7 @@ public class CannonMountScenes {
 			.text("You can place a seat on the handle breech.")
 			.pointAt(util.vector().topOf(breechPos));
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().topOf(breechPos), Pointing.DOWN).rightClick(), 40);
+		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 40).rightClick();
 		scene.idle(30);
 		scene.world().modifyBlockEntityNBT(util.select().position(breechPos), AbstractAutocannonBreechBlockEntity.class, tag -> tag.putString("Seat", DyeColor.RED.getSerializedName()));
 		scene.idle(70);
@@ -514,7 +515,7 @@ public class CannonMountScenes {
 			.text("Wrenching the autocannon breech again will remove handles.")
 			.pointAt(util.vector().topOf(breechPos));
 		scene.idle(20);
-		scene.overlay().showControls(breechWrench, 40);
+		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack());;
 		scene.idle(30);
 		scene.world().modifyBlock(breechPos, setStateValue(AutocannonBreechBlock.HANDLE, false), false);
 		scene.idle(30);

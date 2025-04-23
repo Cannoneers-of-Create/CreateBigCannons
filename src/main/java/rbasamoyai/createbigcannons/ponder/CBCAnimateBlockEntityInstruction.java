@@ -4,8 +4,9 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import com.simibubi.create.foundation.ponder.PonderWorld;
 import com.simibubi.create.foundation.ponder.instruction.AnimateBlockEntityInstruction;
+
+import net.createmod.ponder.api.level.PonderLevel;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -15,8 +16,8 @@ import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
 public class CBCAnimateBlockEntityInstruction extends AnimateBlockEntityInstruction {
 
 	protected CBCAnimateBlockEntityInstruction(BlockPos location,
-											   float totalDelta, int ticks, BiConsumer<PonderWorld, Float> setter,
-											   Function<PonderWorld, Float> getter) {
+											   float totalDelta, int ticks, BiConsumer<PonderLevel, Float> setter,
+											   Function<PonderLevel, Float> getter) {
 		super(location, totalDelta, ticks, setter, getter);
 	}
 
@@ -41,7 +42,7 @@ public class CBCAnimateBlockEntityInstruction extends AnimateBlockEntityInstruct
 			level -> castIfPresent(level, location, AnimatedAutocannon.class).map(autocannon -> (float) autocannon.getAnimationTicks()).orElse(0.0f));
 	}
 
-	private static <T> Optional<T> castIfPresent(PonderWorld level, BlockPos pos, Class<T> clazz) {
+	private static <T> Optional<T> castIfPresent(PonderLevel level, BlockPos pos, Class<T> clazz) {
 		BlockEntity be = level.getBlockEntity(pos);
 		return clazz.isInstance(be) ? Optional.of(clazz.cast(be)) : Optional.empty();
 	}

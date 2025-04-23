@@ -3,6 +3,8 @@ package rbasamoyai.createbigcannons.ponder;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity.Phase;
+import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.scene.SceneBuilder;
@@ -10,7 +12,6 @@ import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
 import net.createmod.ponder.foundation.element.InputWindowElement;
 import net.createmod.ponder.api.element.WorldSectionElement;
-import com.simibubi.create.foundation.ponder.instruction.EmitParticlesInstruction.Emitter;
 import net.createmod.catnip.math.Pointing;
 
 import net.createmod.ponder.api.ParticleEmitter;
@@ -40,8 +41,9 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 
 public class CannonLoadingScenes {
 
-	public static void loadingBigCannons(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_loader/loading_big_cannons", "Loading Big Cannons");
+	public static void loadingBigCannons(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_loader/loading_big_cannons", "Loading Big Cannons");
 		scene.configureBasePlate(0, 0, 9);
 		scene.scaleSceneView(0.8f);
 		scene.showBasePlate();
@@ -150,8 +152,9 @@ public class CannonLoadingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void baseContraptionLoadingBigCannons(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_loader/base_contraption_loading", "Loading Big Cannons with base Create contraptions");
+	public static void baseContraptionLoadingBigCannons(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_loader/base_contraption_loading", "Loading Big Cannons with base Create contraptions");
 		scene.configureBasePlate(0, 0, 9);
 		scene.showBasePlate();
 
@@ -203,13 +206,13 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 
 		scene.world().setKineticSpeed(pistonSelection, 0);
-		scene.world().hideIndependentSectionImmediately(pistonMunitionsElement);
+		scene.world().hideIndependentSection(pistonMunitionsElement, Direction.EAST);
 		scene.idle(20);
 		scene.world().setKineticSpeed(pulleySelection, 0);
-		scene.world().hideIndependentSectionImmediately(pulleyMunitionsElement);
+		scene.world().hideIndependentSection(pulleyMunitionsElement, Direction.EAST);
 		scene.idle(30);
 		scene.world().setKineticSpeed(gantryShaftSelection, 0);
-		scene.world().hideIndependentSectionImmediately(gantryMunitionsElement);
+		scene.world().hideIndependentSection(gantryMunitionsElement, Direction.EAST);
 		scene.idle(15);
 
 		scene.overlay().showText(50)
@@ -240,7 +243,7 @@ public class CannonLoadingScenes {
 			.attachKeyFrame();
 		scene.world().setBlock(util.grid().at(1, 2, 3), AllBlocks.MECHANICAL_PISTON_HEAD.getDefaultState()
 			.setValue(BlockStateProperties.FACING, Direction.SOUTH).setValue(PistonHeadBlock.TYPE, PistonType.STICKY), false);
-		scene.effects().emitParticles(util.vector().blockSurface(util.grid().at(1, 1, 3), Direction.SOUTH), ParticleEmitter.simple(ParticleTypes.ITEM_SLIME, Vec3.ZERO), 8, 1);
+		scene.effects().emitParticles(util.vector().blockSurface(util.grid().at(1, 1, 3), Direction.SOUTH), scene.effects().simpleParticleEmitter(ParticleTypes.ITEM_SLIME, Vec3.ZERO), 8, 1);
 		scene.world().setBlock(util.grid().at(1, 2, 4), Blocks.OAK_PLANKS.defaultBlockState(), false);
 		scene.idle(20);
 
@@ -260,7 +263,7 @@ public class CannonLoadingScenes {
 		scene.world().moveSection(pistonMunitionsElement, util.vector().of(0, 0, 1), 20);
 		scene.idle(20);
 		scene.world().setKineticSpeed(pistonSelection, 0);
-		scene.world().hideIndependentSectionImmediately(pistonMunitionsElement);
+		scene.world().hideIndependentSection(pistonMunitionsElement, Direction.EAST); // todo: the old behavior can only be achieved by manually adding the instruction to the schedule. playtest must tell if that is needed. also check all other occurrences -Robotix
 		scene.idle(10);
 		scene.world().setKineticSpeed(pistonSelection, -16);
 		scene.world().moveSection(pistonElement, util.vector().of(0, 0, -1), 20);
@@ -326,7 +329,7 @@ public class CannonLoadingScenes {
 		scene.world().hideSection(safeLoad, Direction.UP);
 		scene.idle(20);
 
-		scene.overlay().showSelectionWithText(util.select().position(4, 1, 2), 60)
+		scene.overlay().showOutlineWithText(util.select().position(4, 1, 2), 60)
 			.text("The strength of a cannon can be affected by its breech.")
 			.colored(PonderPalette.RED)
 			.placeNearTarget()
@@ -366,7 +369,7 @@ public class CannonLoadingScenes {
 		scene.overlay().showText(80).text("...can cause catastrophic failure and pose a major threat to the surrounding environment.").colored(PonderPalette.RED);
 		scene.idle(20);
 		scene.world().hideSection(cannon, null);
-		scene.effects().emitParticles(util.vector().centerOf(2, 1, 2), Emitter.simple(ParticleTypes.EXPLOSION_EMITTER, util.vector().of(0, 0, 0)), 1, 10);
+		scene.effects().emitParticles(util.vector().centerOf(2, 1, 2), scene.effects().simpleParticleEmitter(ParticleTypes.EXPLOSION_EMITTER, util.vector().of(0, 0, 0)), 1, 10);
 		scene.idle(80);
 
 		scene.markAsFinished();
@@ -390,7 +393,7 @@ public class CannonLoadingScenes {
 		scene.idle(30);
 		scene.world().modifyBlocks(sel, state -> state.setValue(BigCannonMunitionBlock.WATERLOGGED, true)
 			.setValue(BigCannonMunitionBlock.DAMP, true), false);
-		Emitter splashEmitter = Emitter.simple(ParticleTypes.SPLASH, util.vector().of(0, 0.05, 0));
+		ParticleEmitter splashEmitter = scene.effects().simpleParticleEmitter(ParticleTypes.SPLASH, util.vector().of(0, 0.05, 0));
 		Vec3 blockSurface1 = util.vector().centerOf(util.grid().at(1, 1, 2));
 		Vec3 blockSurface2 = util.vector().centerOf(util.grid().at(2, 1, 2));
 		Vec3 blockSurface3 = util.vector().centerOf(util.grid().at(3, 1, 2));
@@ -406,7 +409,7 @@ public class CannonLoadingScenes {
 			.colored(PonderPalette.RED)
 			.pointAt(util.vector().centerOf(2, 1, 2));
 
-		Emitter moisture = Emitter.withinBlockSpace(ParticleTypes.DRIPPING_WATER, util.vector().of(0, 1e-5, 0));
+		ParticleEmitter moisture = scene.effects().particleEmitterWithinBlockSpace(ParticleTypes.DRIPPING_WATER, util.vector().of(0, 1e-5, 0));
 		for (int i = 0; i < 3; ++i) {
 			scene.idle(30);
 			if (i == 0)
@@ -452,8 +455,9 @@ public class CannonLoadingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void fuzingMunitions(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("munitions/fuzing_munitions", "Fuzing Munitions");
+	public static void fuzingMunitions(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("munitions/fuzing_munitions", "Fuzing Munitions");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -468,9 +472,9 @@ public class CannonLoadingScenes {
 			.pointAt(util.vector().centerOf(2, 1, 3));
 		scene.idle(40);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN)
-			.rightClick()
-			.withItem(CBCItems.IMPACT_FUZE.asStack()), 60);
+		scene.overlay().showControls(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN, 60)
+			.withItem(CBCItems.IMPACT_FUZE.asStack())
+			.rightClick();
 		scene.idle(20);
 		scene.world().modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.IMPACT_FUZE.asStack().save(new CompoundTag())));
 		scene.idle(50);
@@ -480,7 +484,7 @@ public class CannonLoadingScenes {
 			.text("Right-click the projectile head with an empty hand to remove any fuzes present. Some shells are fuzed on the base instead.")
 			.pointAt(util.vector().centerOf(2, 1, 3));
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN).rightClick(), 60);
+		scene.overlay().showControls(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN, 60).rightClick();
 		scene.idle(20);
 		scene.world().modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.remove("Fuze"));
 		scene.idle(80);
@@ -527,16 +531,16 @@ public class CannonLoadingScenes {
 
 		ElementLink<WorldSectionElement> munition = scene.world().showIndependentSection(util.select().position(2, 1, 1), Direction.SOUTH);
 		scene.idle(30);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 1, 1), Direction.NORTH), Pointing.RIGHT)
-			.withItem(CBCItems.RAM_ROD.asStack()), 30);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 1, 1), Direction.NORTH), Pointing.RIGHT, 30)
+			.withItem(CBCItems.RAM_ROD.asStack());
 		scene.idle(40);
 		scene.world().moveSection(munition, util.vector().of(0, 0, 1.2), 20);
 		scene.idle(40);
 
 		scene.addKeyframe();
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 1, 2), Direction.NORTH), Pointing.RIGHT)
-			.withItem(CBCItems.WORM.asStack()), 30);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 1, 2), Direction.NORTH), Pointing.RIGHT, 30)
+			.withItem(CBCItems.WORM.asStack());
 		scene.idle(40);
 		scene.world().moveSection(munition, util.vector().of(0, 0, -1.2), 20);
 		scene.idle(40);
@@ -547,8 +551,8 @@ public class CannonLoadingScenes {
 			.colored(PonderPalette.BLUE)
 			.attachKeyFrame();
 		scene.idle(30);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 1, 2), Direction.NORTH), Pointing.RIGHT)
-			.withItem(CBCBlocks.POWDER_CHARGE.asStack()), 30);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 1, 2), Direction.NORTH), Pointing.RIGHT, 30)
+			.withItem(CBCBlocks.POWDER_CHARGE.asStack());
 		scene.idle(40);
 
 		scene.overlay().showText(60)
@@ -556,8 +560,8 @@ public class CannonLoadingScenes {
 			.colored(PonderPalette.GREEN)
 			.attachKeyFrame();
 		scene.idle(30);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 1, 2), Direction.NORTH), Pointing.RIGHT)
-			.withItem(CBCItems.RAM_ROD.asStack()), 30);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 1, 2), Direction.NORTH), Pointing.RIGHT, 30)
+			.withItem(CBCItems.RAM_ROD.asStack());
 		scene.idle(50);
 
 		scene.markAsFinished();
@@ -586,8 +590,8 @@ public class CannonLoadingScenes {
 		BlockPos assembleLeverPos = util.grid().at(4, 1, 2);
 		BlockPos fireLeverPos = util.grid().at(4, 1, 4);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(assembleLeverPos.west(), Direction.EAST), Pointing.LEFT)
-			.rightClick(), 40);
+		scene.overlay().showControls(util.vector().blockSurface(assembleLeverPos.west(), Direction.EAST), Pointing.LEFT, 40)
+			.rightClick();
 
 		scene.world().modifyBlock(assembleLeverPos, state -> state.setValue(LeverBlock.POWERED, true), false);
 		scene.effects().createRedstoneParticles(assembleLeverPos, 0xFF0000, 10);
@@ -598,8 +602,8 @@ public class CannonLoadingScenes {
 			.text("The Quick-Firing Breech can be opened and closed by right clicking the side of the breech.")
 			.pointAt(util.vector().centerOf(breechPos));
 		scene.idle(30);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos.east(), Direction.WEST), Pointing.RIGHT)
-			.rightClick(), 40);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos.east(), Direction.WEST), Pointing.RIGHT, 40)
+			.rightClick();
 		scene.idle(40);
 		animateQFBHack(scene, breechSel, false);
 		scene.idle(35);
@@ -609,9 +613,9 @@ public class CannonLoadingScenes {
 			.pointAt(util.vector().centerOf(breechPos));
 		scene.idle(80);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos.west(), Direction.EAST), Pointing.LEFT)
-			.rightClick()
-			.withItem(CBCBlocks.SOLID_SHOT.asStack()), 40);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos.west(), Direction.EAST), Pointing.LEFT, 40)
+			.withItem(CBCBlocks.SOLID_SHOT.asStack())
+			.rightClick();
 		scene.idle(60);
 
 		scene.overlay().showText(60)
@@ -624,13 +628,12 @@ public class CannonLoadingScenes {
 			.colored(PonderPalette.BLUE)
 			.pointAt(util.vector().centerOf(breechPos));
 		scene.idle(30);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos.west(), Direction.EAST), Pointing.LEFT)
-			.rightClick()
-			.withItem(BigCartridgeBlockItem.getWithPower(4)), 30);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos.west(), Direction.EAST), Pointing.LEFT, 30)
+			.withItem(BigCartridgeBlockItem.getWithPower(4))
+			.rightClick();
 		scene.idle(40);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos.east(), Direction.WEST), Pointing.RIGHT)
-			.rightClick(), 20);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos.east(), Direction.WEST), Pointing.RIGHT,20).rightClick();
 		animateQFBHack(scene, breechSel, true);
 		scene.idle(35);
 
@@ -642,13 +645,13 @@ public class CannonLoadingScenes {
 		scene.rotateCameraY(180.0f);
 		scene.idle(20);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(fireLeverPos, Direction.WEST), Pointing.RIGHT)
-			.rightClick(), 40);
+		scene.overlay().showControls(util.vector().blockSurface(fireLeverPos, Direction.WEST), Pointing.RIGHT, 40)
+			.rightClick();
 		scene.idle(60);
 
 		scene.world().modifyBlock(fireLeverPos, state -> state.setValue(LeverBlock.POWERED, true), false);
 		scene.effects().createRedstoneParticles(fireLeverPos, 0xFF0000, 10);
-		scene.effects().emitParticles(util.vector().of(4, 2.5, 5.1), Emitter.withinBlockSpace(new BigCannonPlumeParticleData(1), util.vector().of(0d, 0d, 1d)), 1, 10);
+		scene.effects().emitParticles(util.vector().of(4, 2.5, 5.1), scene.effects().particleEmitterWithinBlockSpace(new BigCannonPlumeParticleData(1), util.vector().of(0d, 0d, 1d)), 1, 10);
 		scene.idle(60);
 
 		scene.rotateCameraY(180.0f);
@@ -662,8 +665,8 @@ public class CannonLoadingScenes {
 
 		animateQFBHack(scene, breechSel, false);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos.east(), Direction.EAST), Pointing.RIGHT)
-			.rightClick(), 40);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos.east(), Direction.EAST), Pointing.RIGHT, 40)
+			.rightClick();
 		scene.idle(60);
 		animateQFBHack(scene, breechSel, true);
 		scene.idle(40);
@@ -671,8 +674,9 @@ public class CannonLoadingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void automatingQuickFiringBreeches(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("cannon_kinetics/automating_quick_firing_breeches", "Automating Quick-Firing Breeches");
+	public static void automatingQuickFiringBreeches(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("cannon_kinetics/automating_quick_firing_breeches", "Automating Quick-Firing Breeches");
 		scene.configureBasePlate(1, 0, 7);
 		scene.showBasePlate();
 		scene.idle(20);
@@ -709,14 +713,14 @@ public class CannonLoadingScenes {
 
 		scene.idle(20);
 
-		scene.overlay().showSelectionWithText(mechanicalArm, 80)
+		scene.overlay().showOutlineWithText(mechanicalArm, 80)
 			.attachKeyFrame()
 			.colored(PonderPalette.RED)
 			.text("Mechanical Arms can be used to reload the Quick-Firing Breech.")
 			.placeNearTarget();
 		scene.idle(100);
 
-		scene.overlay().showSelectionWithText(cannonMount, 60)
+		scene.overlay().showOutlineWithText(cannonMount, 60)
 			.colored(PonderPalette.OUTPUT)
 			.text("Right-click the Cannon Mount to set the arm's output.")
 			.placeNearTarget();
@@ -727,8 +731,8 @@ public class CannonLoadingScenes {
 		ItemStack shot = new ItemStack(CBCBlocks.SOLID_SHOT.get());
 		scene.world().createItemOnBeltLike(shotDepotPos, Direction.SOUTH, shot);
 		scene.overlay().showOutline(PonderPalette.INPUT, null, shotDepot, 40);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(1, 1, 6), Direction.UP), Pointing.DOWN)
-			.withItem(CBCBlocks.SOLID_SHOT.asStack()), 40);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(1, 1, 6), Direction.UP), Pointing.DOWN, 40)
+			.withItem(CBCBlocks.SOLID_SHOT.asStack());
 
 		scene.idle(60);
 
@@ -737,8 +741,8 @@ public class CannonLoadingScenes {
 		ItemStack cartridge = BigCartridgeBlockItem.getWithPower(4);
 		scene.world().createItemOnBeltLike(cartridgeDepotPos, Direction.SOUTH, cartridge);
 		scene.overlay().showOutline(PonderPalette.INPUT, null, cartridgeDepot, 40);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(util.grid().at(2, 1, 6), Direction.UP), Pointing.DOWN)
-			.withItem(cartridge), 40);
+		scene.overlay().showControls(util.vector().blockSurface(util.grid().at(2, 1, 6), Direction.UP), Pointing.DOWN, 40)
+			.withItem(cartridge);
 
 		scene.idle(60);
 
@@ -839,8 +843,8 @@ public class CannonLoadingScenes {
 		scene.overlay().showText(80)
 			.text("Right-click a container on an Autocannon Breech to load it.");
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN)
-			.rightClick().withItem(filledContainer), 30);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN, 30)
+			.rightClick().withItem(filledContainer);
 		scene.idle(20);
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
 			tag.put("Magazine", filledContainer.save(new CompoundTag()));
@@ -850,8 +854,8 @@ public class CannonLoadingScenes {
 		scene.overlay().showText(80)
 			.text("To remove a container, right-click the breech with an empty hand.");
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN)
-			.rightClick(), 30);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN, 30)
+			.rightClick();
 		scene.idle(20);
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
 			tag.remove("Magazine");
@@ -867,8 +871,8 @@ public class CannonLoadingScenes {
 			.text("You can also swap out the container by right-clicking the breech with another container.")
 			.colored(PonderPalette.BLUE);
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN)
-			.rightClick().withItem(filledContainer), 30);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN, 30)
+			.rightClick().withItem(filledContainer);
 		scene.idle(20);
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
 			tag.put("Magazine", filledContainer.save(new CompoundTag()));
@@ -891,31 +895,32 @@ public class CannonLoadingScenes {
 			tag.put("Magazine", emptyContainer.save(new CompoundTag()));
 		});
 		scene.idle(15);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN)
-			.rightClick(), 30);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN, 30)
+			.rightClick();
 		scene.idle(45);
 
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
 			tag.put("Magazine", filledContainer.save(new CompoundTag()));
 		});
 		scene.idle(15);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN)
-			.rightClick().withItem(filledContainer), 30);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN, 30)
+			.rightClick().withItem(filledContainer);
 		scene.idle(45);
 
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
 			tag.put("Magazine", filledContainer.save(new CompoundTag()));
 		});
 		scene.idle(15);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN)
-			.rightClick().whileSneaking(), 30);
+		scene.overlay().showControls(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN, 30)
+			.rightClick().whileSneaking();
 		scene.idle(55);
 
 		scene.markAsFinished();
 	}
 
-	public static void fillingAutocannonAmmoContainer(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("munitions/filling_autocannon_ammo_container", "Filling the Autocannon Ammo Container");
+	public static void fillingAutocannonAmmoContainer(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("munitions/filling_autocannon_ammo_container", "Filling the Autocannon Ammo Container");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -926,8 +931,8 @@ public class CannonLoadingScenes {
 		scene.overlay().showText(60)
 			.text("Autocannon Ammo Containers can be filled in-menu.");
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(depot, Direction.UP), Pointing.DOWN)
-			.rightClick(), 30);
+		scene.overlay().showControls(util.vector().blockSurface(depot, Direction.UP), Pointing.DOWN, 30)
+			.rightClick();
 		scene.idle(55);
 		scene.overlay().showText(60)
 			.text("You can also configure tracer spacing in the menu.");
@@ -969,8 +974,8 @@ public class CannonLoadingScenes {
 			.text("The container can also be filled with deployers.")
 			.pointAt(util.vector().topOf(deployer));
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(deployer, Direction.WEST), Pointing.LEFT)
-			.withItem(ammo), 30);
+		scene.overlay().showControls(util.vector().blockSurface(deployer, Direction.WEST), Pointing.LEFT, 30)
+			.withItem(ammo);
 
 		scene.world().moveDeployer(deployer, 1, 25);
 		scene.idle(30);
@@ -983,8 +988,8 @@ public class CannonLoadingScenes {
 			.text("Ammo with tracers will go in the tracer slot, otherwise it will go in the main slot.")
 			.colored(PonderPalette.BLUE);
 		scene.idle(15);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(deployer.below(), Direction.WEST), Pointing.LEFT)
-			.withItem(CBCItems.TRACER_TIP.asStack()), 30);
+		scene.overlay().showControls(util.vector().blockSurface(deployer.below(), Direction.WEST), Pointing.LEFT, 30)
+			.withItem(CBCItems.TRACER_TIP.asStack());
 		scene.idle(5);
 		scene.world().moveDeployer(deployer, -1, 25);
 		scene.idle(30);
@@ -1004,8 +1009,9 @@ public class CannonLoadingScenes {
 		}
 	}
 
-	public static void automatingAutocannonAmmoContainer(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("munitions/automating_autocannon_ammo_container", "Automating loading the Autocannon Ammo Container");
+	public static void automatingAutocannonAmmoContainer(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("munitions/automating_autocannon_ammo_container", "Automating loading the Autocannon Ammo Container");
 		scene.configureBasePlate(0, 0, 7);
 		scene.showBasePlate();
 
@@ -1055,7 +1061,7 @@ public class CannonLoadingScenes {
 		scene.world().createItemOnBeltLike(takeDepot, Direction.EAST, filledContainer);
 		scene.idle(30);
 		scene.world().instructArm(arm, Phase.MOVE_TO_OUTPUT, filledContainer, 0);
-		scene.overlay().showSelectionWithText(armSel, 120)
+		scene.overlay().showOutlineWithText(armSel, 120)
 			.text("Mechanical Arms can load assembled autocannons with Autocannon Ammo Containers.")
 			.colored(PonderPalette.GREEN);
 		scene.idle(35);
@@ -1081,7 +1087,7 @@ public class CannonLoadingScenes {
 		scene.world().createItemOnBeltLike(takeDepot, Direction.EAST, filledContainer);
 		scene.idle(30);
 		scene.world().instructArm(arm, Phase.MOVE_TO_OUTPUT, filledContainer, 0);
-		scene.overlay().showSelectionWithText(util.select().position(3, 1, 4), 80)
+		scene.overlay().showOutlineWithText(util.select().position(3, 1, 4), 80)
 			.text("Set a Cannon Mount with an autocannon as one of the Mechanical Arm's deposits.")
 			.colored(PonderPalette.OUTPUT);
 		scene.idle(35);
@@ -1115,7 +1121,7 @@ public class CannonLoadingScenes {
 			.text("You can dispose of empty containers by setting a deposit filter slot to an empty container.");
 		scene.idle(5);
 		filter = filter.add(0, -5 / 16f, 0);
-		scene.overlay().showControls(new InputWindowElement(filter, Pointing.LEFT).rightClick().withItem(emptyContainer), 30);
+		scene.overlay().showControls(filter, Pointing.LEFT, 30).rightClick().withItem(emptyContainer);
 		scene.idle(30);
 
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
@@ -1134,8 +1140,9 @@ public class CannonLoadingScenes {
 		scene.markAsFinished();
 	}
 
-	public static void addingTracers(SceneBuilder scene, SceneBuildingUtil util) {
-		scene.title("munitions/adding_tracers", "Adding tracers to big cannon projectiles");
+	public static void addingTracers(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
+        scene.title("munitions/adding_tracers", "Adding tracers to big cannon projectiles");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
@@ -1150,9 +1157,9 @@ public class CannonLoadingScenes {
 			.pointAt(util.vector().centerOf(2, 1, 3));
 		scene.idle(40);
 
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN)
+		scene.overlay().showControls(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN, 60)
 			.rightClick()
-			.withItem(CBCItems.TRACER_TIP.asStack()), 60);
+			.withItem(CBCItems.TRACER_TIP.asStack());
 		scene.idle(20);
 		// Not actually visible for now
 		scene.world().modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> tag
@@ -1169,7 +1176,7 @@ public class CannonLoadingScenes {
 			.text("Right-click the projectile with an empty hand to remove any tracers present.")
 			.pointAt(util.vector().centerOf(2, 1, 3));
 		scene.idle(20);
-		scene.overlay().showControls(new InputWindowElement(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN).rightClick(), 60);
+		scene.overlay().showControls(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN, 60).rightClick();
 		scene.idle(20);
 		scene.world().modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> tag.remove("Tracer"));
 		scene.idle(60);

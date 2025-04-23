@@ -9,14 +9,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import com.simibubi.create.foundation.ponder.PonderRegistry;
+/*import com.simibubi.create.foundation.ponder.PonderRegistry;
 import com.simibubi.create.foundation.ponder.PonderScene;
-import com.simibubi.create.foundation.ponder.PonderStoryBoardEntry;
+import com.simibubi.create.foundation.ponder.PonderStoryBoardEntry;*/
 
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
-@Mixin(PonderRegistry.class)
+/*@Mixin(PonderRegistry.class)
 public class PonderRegistryMixin {
 
 	@Inject(method = "compile(Lnet/minecraft/resources/ResourceLocation;)Ljava/util/List;",
@@ -32,4 +32,5 @@ public class PonderRegistryMixin {
 		list.addAll(modified);
 	}
 
-}
+}*/
+// todo: doubt this is still needed in c6, need to confirm
