@@ -44,7 +44,7 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 	protected void init() {
 		boolean isCreative = this.menu.isCreativeContainer();
 		CBCGuiTextures bg = isCreative ? CREATIVE_AUTOCANNON_AMMO_CONTAINER_BG : AUTOCANNON_AMMO_CONTAINER_BG;
-		this.setWindowSize(bg.width, bg.height + 4 + PLAYER_INVENTORY.height);
+		this.setWindowSize(bg.width, bg.height + 4 + PLAYER_INVENTORY.getHeight());
 		this.setWindowOffset(1, 0);
 		super.init();
 
@@ -62,7 +62,7 @@ public class AutocannonAmmoContainerScreen extends AbstractSimiContainerScreen<A
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-		int invX = this.getLeftOfCentered(PLAYER_INVENTORY.width);
+		int invX = this.getLeftOfCentered(PLAYER_INVENTORY.getWidth());
 		int invY = this.topPos + AUTOCANNON_AMMO_CONTAINER_BG.height + 4;
 		this.renderPlayerInventory(graphics, invX, invY);
 		boolean isCreative = this.menu.isCreativeContainer();

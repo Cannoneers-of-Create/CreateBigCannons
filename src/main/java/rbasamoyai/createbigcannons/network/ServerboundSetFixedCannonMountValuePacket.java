@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsPacket;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.FriendlyByteBuf;
@@ -18,6 +19,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour;
 
@@ -25,13 +28,13 @@ import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannon
  * Adapted from {@link ValueSettingsPacket}
  */
 public record ServerboundSetFixedCannonMountValuePacket(BlockPos pos, int row, int value, @Nullable InteractionHand interactHand,
-														Direction side, boolean ctrlDown, boolean pitch) implements RootPacket {
+                                                        @Nullable BlockHitResult hitResult, Direction side, boolean ctrlDown, boolean pitch) implements RootPacket {
 
 	public ServerboundSetFixedCannonMountValuePacket(FriendlyByteBuf buf) {
-		this(buf.readBlockPos(), buf.readVarInt(), buf.readVarInt(),
-			buf.readBoolean() ?
-				buf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND
-				: null, Direction.values()[buf.readVarInt()], buf.readBoolean(), buf.readBoolean());
+        this(buf.readBlockPos(), buf.readVarInt(), buf.readVarInt(),
+            buf.readBoolean() ? buf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND : null,
+            buf.readBoolean() ? buf.readBlockHitResult() : null,
+            Direction.values()[buf.readVarInt()], buf.readBoolean(), buf.readBoolean());
 	}
 
 	@Override
@@ -41,7 +44,10 @@ public record ServerboundSetFixedCannonMountValuePacket(BlockPos pos, int row, i
 			.writeVarInt(this.value)
 			.writeBoolean(this.interactHand != null);
 		if (this.interactHand != null)
-			buf.writeBoolean(this.interactHand == InteractionHand.MAIN_HAND);
+            buf.writeBoolean(this.interactHand == InteractionHand.MAIN_HAND);
+        buf.writeBoolean(this.hitResult != null);
+        if (this.hitResult != null)
+            buf.writeBlockHitResult(this.hitResult);
 		buf.writeVarInt(this.side.ordinal())
 			.writeBoolean(this.ctrlDown)
 			.writeBoolean(this.pitch);
@@ -74,7 +80,7 @@ public record ServerboundSetFixedCannonMountValuePacket(BlockPos pos, int row, i
 		if (!(behaviour instanceof FixedCannonMountScrollValueBehaviour angleBehaviour) || !angleBehaviour.acceptsValueSettings())
 			return;
 		if (this.interactHand != null) {
-			angleBehaviour.onShortInteract(player, this.interactHand, this.side);
+			angleBehaviour.onShortInteract(player, this.interactHand, this.side, this.hitResult);
 			return;
 		}
 		angleBehaviour.setValueSettings(player, new ValueSettingsBehaviour.ValueSettings(this.row, this.value), this.ctrlDown);

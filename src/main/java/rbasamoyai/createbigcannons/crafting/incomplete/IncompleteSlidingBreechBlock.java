@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
@@ -37,7 +37,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.SolidBigCannonBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
-public class IncompleteSlidingBreechBlock extends SolidBigCannonBlock<IncompleteBigCannonBlockEntity> implements IncompleteWithItemsCannonBlock, ITransformableBlock {
+public class IncompleteSlidingBreechBlock extends SolidBigCannonBlock<IncompleteBigCannonBlockEntity> implements IncompleteWithItemsCannonBlock, TransformableBlock {
 
 	public static final BooleanProperty ALONG_FIRST = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 

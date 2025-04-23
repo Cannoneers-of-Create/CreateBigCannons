@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.simibubi.create.content.contraptions.Contraption;
-import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
@@ -51,7 +51,7 @@ import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
-public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<QuickfiringBreechBlockEntity>, ITransformableBlock, IWrenchable {
+public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<QuickfiringBreechBlockEntity>, TransformableBlock, IWrenchable {
 
 	public static final BooleanProperty AXIS = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 

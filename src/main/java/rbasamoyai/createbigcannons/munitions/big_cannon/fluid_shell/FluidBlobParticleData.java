@@ -5,7 +5,6 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
-import com.simibubi.create.foundation.utility.RegisteredObjects;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -72,7 +71,7 @@ public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDa
 
 	@Override
 	public String writeToString() {
-		return String.format("%f %s", this.scale, RegisteredObjects.getKeyOrThrow(this.fluid.fluid()));
+		return String.format("%f %s", this.scale, CBCParticleTypes.FLUID_BLOB.parameter());
 	}
 
 	@Override

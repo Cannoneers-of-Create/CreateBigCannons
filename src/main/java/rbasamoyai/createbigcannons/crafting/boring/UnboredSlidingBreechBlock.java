@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.boring;
 
-import com.simibubi.create.content.contraptions.ITransformableBlock;
+import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 
@@ -15,7 +15,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 
-public class UnboredSlidingBreechBlock extends UnboredBigCannonBlock implements ITransformableBlock {
+public class UnboredSlidingBreechBlock extends UnboredBigCannonBlock implements TransformableBlock {
 
 	public static final BooleanProperty ALONG_FIRST = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 

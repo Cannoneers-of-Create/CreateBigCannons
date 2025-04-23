@@ -6,10 +6,10 @@ import java.util.List;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.equipment.goggles.GogglesItem;
 import com.simibubi.create.foundation.gui.RemovedGuiUtils;
-import com.simibubi.create.foundation.gui.Theme;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CClient;
 
+import net.createmod.catnip.gui.element.BoxElement;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.theme.Color;
 import net.minecraft.client.Minecraft;
@@ -95,16 +95,13 @@ public class EntityGoggleOverlayRenderer {
 		posY = Math.min(posY, windowHeight - tooltipHeight - 20);
 
 		float fade = Mth.clamp((hoverTicks + partialTicks) / 24f, 0, 1);
-		Boolean useCustom = cfg.overlayCustomColor.get();
-		Color colorBackground = useCustom ? new Color(cfg.overlayBackgroundColor.get())
-			: Theme.c(Theme.Key.VANILLA_TOOLTIP_BACKGROUND)
-			.scaleAlpha(.75f);
-		Color colorBorderTop = useCustom ? new Color(cfg.overlayBorderColorTop.get())
-			: Theme.c(Theme.Key.VANILLA_TOOLTIP_BORDER, true)
-			.copy();
-		Color colorBorderBot = useCustom ? new Color(cfg.overlayBorderColorBot.get())
-			: Theme.c(Theme.Key.VANILLA_TOOLTIP_BORDER, false)
-			.copy();
+        Boolean useCustom = cfg.overlayCustomColor.get();
+        Color colorBackground = useCustom ? new Color(cfg.overlayBackgroundColor.get())
+            : BoxElement.COLOR_VANILLA_BACKGROUND.scaleAlpha(.75f);
+        Color colorBorderTop = useCustom ? new Color(cfg.overlayBorderColorTop.get())
+            : BoxElement.COLOR_VANILLA_BORDER.getFirst().copy();
+        Color colorBorderBot = useCustom ? new Color(cfg.overlayBorderColorBot.get())
+            : BoxElement.COLOR_VANILLA_BORDER.getSecond().copy();
 
 		if (fade < 1) {
 			graphics.pose().translate(Math.pow(1 - fade, 3) * Math.signum(cfg.overlayOffsetX.get() + .5f) * 8, 0, 0);

@@ -47,7 +47,7 @@ public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity>
 			.renderInto(stack, vcons);
 
 		axleBuf.translate(-0.5, 27 / 32f, -0.5)
-			.rotateCentered(Direction.EAST, carriage.getXRot() * Mth.DEG_TO_RAD)
+			.rotateCentered(carriage.getXRot() * Mth.DEG_TO_RAD, Direction.EAST)
 			.light(light)
 			.renderInto(stack, vcons);
 
