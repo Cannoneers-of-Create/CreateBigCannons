@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.base;
 
+/* fixme
 import com.simibubi.create.content.contraptions.render.ContraptionLighter;
 
 import dev.engine_room.flywheel.util.box.GridAlignedBB;
@@ -34,4 +35,4 @@ public class PoleContraptionLighter extends ContraptionLighter<PoleContraption> 
 		return bounds;
 	}
 
-}
+}*/

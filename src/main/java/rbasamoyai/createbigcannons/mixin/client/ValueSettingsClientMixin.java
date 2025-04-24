@@ -16,6 +16,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountValueScreen;
+/* fixme
 
 @Mixin(ValueSettingsClient.class)
 public class ValueSettingsClientMixin {
@@ -27,10 +28,11 @@ public class ValueSettingsClientMixin {
 												  @Local Player player, @Local BlockHitResult blockHitResult) {
 		if (valueSettingBehaviour instanceof FixedCannonMountScrollValueBehaviour fixedMountBehaviour) {
 			original.call(new FixedCannonMountValueScreen(this.interactHeldPos, valueSettingBehaviour.createBoard(player, blockHitResult),
-				valueSettingBehaviour.getValueSettings(), valueSettingBehaviour::newSettingHovered, fixedMountBehaviour.setsPitch()));
+				valueSettingBehaviour.getValueSettings(), valueSettingBehaviour::newSettingHovered, fixedMountBehaviour.setsPitch(), valueSettingBehaviour.netId()));
 			return;
 		}
 		original.call(screen);
 	}
 
 }
+*/
