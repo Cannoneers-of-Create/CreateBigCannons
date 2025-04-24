@@ -18,8 +18,8 @@ public class FixedCannonMountValueScreen extends ValueSettingsScreen {
 	private final BlockPos posCopy;
 
 	public FixedCannonMountValueScreen(BlockPos pos, ValueSettingsBoard board, ValueSettings valueSettings,
-                                       Consumer<ValueSettings> onHover, boolean pitch) {
-		super(pos, board, valueSettings, onHover);
+                                       Consumer<ValueSettings> onHover, boolean pitch, int netId) {
+		super(pos, board, valueSettings, onHover, netId);
 		this.pitch = pitch;
 		this.posCopy = pos;
 	}
@@ -29,7 +29,7 @@ public class FixedCannonMountValueScreen extends ValueSettingsScreen {
 		ValueSettings closest = getClosestCoordinate((int) pMouseX, (int) pMouseY);
 		// FIXME: value settings may be face-sensitive on future components - taken from ValueSettingsScreen#saveAndClose
 		NetworkPlatform.sendToServer(new ServerboundSetFixedCannonMountValuePacket(this.posCopy, closest.row(), closest.value(),
-			null, Direction.UP, AllKeys.ctrlDown(), this.pitch));
+			null, null, Direction.UP, AllKeys.ctrlDown(), this.pitch));
 		this.onClose();
 	}
 

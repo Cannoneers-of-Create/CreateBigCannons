@@ -238,7 +238,7 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 	}
 
 	@Override
-	public void _delete() {
+	public void remove() {
 		this.remove = true;
 		if (!this.level.isClientSide)
 			this.disassemble();

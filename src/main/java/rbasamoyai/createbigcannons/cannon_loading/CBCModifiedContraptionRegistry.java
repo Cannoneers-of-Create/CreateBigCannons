@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_loading;
 
+import com.simibubi.create.AllContraptionTypes;
 import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.Contraption;
 
@@ -33,14 +34,14 @@ public class CBCModifiedContraptionRegistry {
 	}
 
 	public static void registerDefaults() {
-		registerCannonLoaderType(CBCContraptionTypes.CANNON_LOADER);
-		registerCannonLoaderType(ContraptionType.PISTON);
-		registerCannonLoaderType(ContraptionType.GANTRY);
-		registerCannonLoaderType(ContraptionType.PULLEY);
-		registerFragileType(CBCContraptionTypes.CANNON_LOADER);
-		registerFragileType(ContraptionType.PISTON);
-		registerFragileType(ContraptionType.GANTRY);
-		registerFragileType(ContraptionType.PULLEY);
+		registerCannonLoaderType(CBCContraptionTypes.CANNON_LOADER.value());
+		registerCannonLoaderType(AllContraptionTypes.PISTON.value());
+		registerCannonLoaderType(AllContraptionTypes.GANTRY.value());
+		registerCannonLoaderType(AllContraptionTypes.PULLEY.value());
+		registerFragileType(CBCContraptionTypes.CANNON_LOADER.value());
+		registerFragileType(AllContraptionTypes.PISTON.value());
+		registerFragileType(AllContraptionTypes.GANTRY.value());
+		registerFragileType(AllContraptionTypes.PULLEY.value());
 	}
 
 }

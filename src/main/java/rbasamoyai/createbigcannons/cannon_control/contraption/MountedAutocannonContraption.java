@@ -531,7 +531,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 	@Override
 	public ContraptionType getType() {
-		return CBCContraptionTypes.MOUNTED_AUTOCANNON;
+		return CBCContraptionTypes.MOUNTED_AUTOCANNON.value();
 	}
 
 	@Override

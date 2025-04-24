@@ -148,7 +148,7 @@ public class CannonDrillingContraption extends PoleContraption {
 
 	@Override
 	public ContraptionType getType() {
-		return CBCContraptionTypes.CANNON_DRILL;
+		return CBCContraptionTypes.CANNON_DRILL.value();
 	}
 
 }

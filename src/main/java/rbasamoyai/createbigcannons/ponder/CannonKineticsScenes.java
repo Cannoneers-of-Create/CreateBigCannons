@@ -1,5 +1,8 @@
 package rbasamoyai.createbigcannons.ponder;
 
+import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+
+import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
@@ -10,13 +13,14 @@ import net.minecraft.core.Direction;
 
 public class CannonKineticsScenes {
 
-	public static void slidingBreech(SceneBuilder scene, SceneBuildingUtil util) {
+	public static void slidingBreech(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
 		scene.title("cannon_mount/sliding_breech", "Using a Sliding Breech");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
-		BlockPos breechPos = util.grid.at(2, 1, 2);
-		scene.world().showSection(util.select().fromTo(breechPos, util.grid.at(2, 1, 4)), Direction.DOWN);
+		BlockPos breechPos = util.grid().at(2, 1, 2);
+		scene.world().showSection(util.select().fromTo(breechPos, util.grid().at(2, 1, 4)), Direction.DOWN);
 		scene.idle(20);
 
 		scene.overlay().showText(80)
@@ -31,7 +35,7 @@ public class CannonKineticsScenes {
 		scene.addKeyframe();
 
 		Selection gearUp = util.select().fromTo(2, 2, 3, 3, 2, 3);
-		Selection gearDown = util.select().fromTo(breechPos, util.grid.at(3, 1, 2));
+		Selection gearDown = util.select().fromTo(breechPos, util.grid().at(3, 1, 2));
 		scene.world().setKineticSpeed(gearUp, -16);
 		scene.world().setKineticSpeed(gearDown, 8);
 		scene.idle(40);
@@ -47,7 +51,7 @@ public class CannonKineticsScenes {
 
 		scene.addKeyframe();
 
-		BlockPos munitionPos = util.grid.at(2, 1, 1);
+		BlockPos munitionPos = util.grid().at(2, 1, 1);
 		ElementLink<WorldSectionElement> munitionBlock = scene.world().showIndependentSection(util.select().position(munitionPos), Direction.SOUTH);
 		scene.idle(15);
 
@@ -77,14 +81,15 @@ public class CannonKineticsScenes {
 		scene.markAsFinished();
 	}
 
-	public static void screwBreech(SceneBuilder scene, SceneBuildingUtil util) {
+	public static void screwBreech(SceneBuilder builder, SceneBuildingUtil util) {
+        CreateSceneBuilder scene = new CreateSceneBuilder(builder);
 		scene.title("cannon_mount/screw_breech", "Using a Screw Breech");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
 
-		BlockPos breechPos = util.grid.at(2, 1, 2);
+		BlockPos breechPos = util.grid().at(2, 1, 2);
 		ElementLink<WorldSectionElement> breech = scene.world().showIndependentSection(util.select().position(breechPos), Direction.DOWN);
-		scene.world().showSection(util.select().fromTo(util.grid.at(3, 1, 2), util.grid.at(4, 1, 2)), Direction.DOWN);
+		scene.world().showSection(util.select().fromTo(util.grid().at(3, 1, 2), util.grid().at(4, 1, 2)), Direction.DOWN);
 		scene.idle(20);
 
 		scene.overlay().showText(80)
@@ -98,7 +103,7 @@ public class CannonKineticsScenes {
 
 		Selection breechGearUp = util.select().fromTo(0, 2, 3, 1, 2, 3);
 		Selection breechGearDown = util.select().position(1, 1, 2);
-		Selection breechGearDownAll = util.select().fromTo(util.grid.at(1, 1, 2), breechPos);
+		Selection breechGearDownAll = util.select().fromTo(util.grid().at(1, 1, 2), breechPos);
 
 		scene.world().showSection(breechGearUp, Direction.EAST);
 		scene.world().showSection(breechGearDown, Direction.EAST);

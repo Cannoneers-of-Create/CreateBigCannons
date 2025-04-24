@@ -6,6 +6,8 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.AllContraptionTypes;
+
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -56,6 +58,7 @@ public abstract class ContraptionMixin {
 
 	@Shadow
 	public boolean disassembled;
+/* fixme
 
 	@Inject(method = "searchMovedStructure",
 		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z", shift = At.Shift.BEFORE))
@@ -66,13 +69,14 @@ public abstract class ContraptionMixin {
 		if (forcedDirectionRef.get() == null)
 			forcedDirectionRef.set(((CanLoadBigCannon) this.createbigcannons$self).createbigcannons$getAssemblyMovementDirection(level));
 	}
+*/
 
 	@Inject(method = "searchMovedStructure",
 		at = @At(value = "INVOKE", target = "Ljava/util/Queue;add(Ljava/lang/Object;)Z", shift = At.Shift.AFTER),
 		remap = false)
 	private void createbigcannons$searchMovedStructure$removePulley(Level level, BlockPos pos, Direction forcedDirection,
 																	CallbackInfoReturnable<Boolean> cir, @Local Queue<BlockPos> frontier) {
-		if (this.createbigcannons$self.getType() == ContraptionType.PULLEY)
+		if (this.createbigcannons$self.getType() == AllContraptionTypes.PULLEY.value())
 			ContraptionRemix.pulleyChecks((PulleyContraption) this.createbigcannons$self, level, pos, forcedDirection, frontier);
 	}
 

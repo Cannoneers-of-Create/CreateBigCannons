@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 

@@ -347,7 +347,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 
 	@Override
 	public ContraptionType getType() {
-		return CBCContraptionTypes.CANNON_LOADER;
+		return CBCContraptionTypes.CANNON_LOADER.value();
 	}
 
 	@Override

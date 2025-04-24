@@ -119,7 +119,7 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<CannonMountExtensionBlockEntity> CANNON_MOUNT_EXTENSION = REGISTRATE
 		.blockEntity("cannon_mount_extension", CannonMountExtensionBlockEntity::new)
-		.visual(() -> ShaftInstance::new)
+		.visual(() -> ShaftVisual::new)
 		.renderer(() -> ShaftRenderer::new)
 		.validBlock(CBCBlocks.CANNON_MOUNT_EXTENSION)
 		.register();

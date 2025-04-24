@@ -626,7 +626,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 	@Override
 	public ContraptionType getType() {
-		return CBCContraptionTypes.MOUNTED_CANNON;
+		return CBCContraptionTypes.MOUNTED_CANNON.value();
 	}
 
 	public boolean isDropMortar() {

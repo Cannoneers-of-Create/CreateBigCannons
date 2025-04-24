@@ -289,7 +289,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 					}
 					newBe.setChanged();
 				}
-				this.playRemoveSound(level, pos);
+				// this.playRemoveSound(level, pos); todo: c6 fix
 			}
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}

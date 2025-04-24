@@ -59,7 +59,7 @@ public class CreateBigCannons {
 		CBCRecipeTypes.register();
 		CBCCannonContraptionTypes.register();
 
-		CBCContraptionTypes.prepare();
+		CBCContraptionTypes.init();
 		CBCArmInteractionPointTypes.register();
 		CBCChecks.register();
 		CBCTags.register();

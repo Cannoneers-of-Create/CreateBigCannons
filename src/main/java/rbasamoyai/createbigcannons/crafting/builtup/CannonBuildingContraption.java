@@ -430,7 +430,7 @@ public class CannonBuildingContraption extends PoleContraption {
 
 	@Override
 	public ContraptionType getType() {
-		return CBCContraptionTypes.CANNON_BUILDER;
+		return CBCContraptionTypes.CANNON_BUILDER.value();
 	}
 
 	public static AssemblyException tooManyPistonPoles() {
