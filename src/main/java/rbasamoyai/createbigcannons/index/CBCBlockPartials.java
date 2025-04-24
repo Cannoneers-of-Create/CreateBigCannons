@@ -51,7 +51,7 @@ public class CBCBlockPartials {
 
 	ROTATING_MOUNT = block("cannon_mount/rotating_mount"),
 		FUZE = block("fuze"),
-		DROP_MORTAR_SHELL_FLYING = new PartialModel(CreateBigCannons.resource("block/drop_mortar_shell_flying")),
+		DROP_MORTAR_SHELL_FLYING = PartialModel.of(CreateBigCannons.resource("block/drop_mortar_shell_flying")),
 
 	CANNON_CARRIAGE = block("cannon_carriage/carriage"),
 		CANNON_CARRIAGE_AXLE = block("cannon_carriage/carriage_axle"),
@@ -87,11 +87,11 @@ public class CBCBlockPartials {
 
 
 	private static PartialModel block(String path) {
-		return new PartialModel(CreateBigCannons.resource("block/" + path));
+		return PartialModel.of(CreateBigCannons.resource("block/" + path));
 	}
 
 	private static PartialModel entity(String path) {
-		return new PartialModel(CreateBigCannons.resource("entity/" + path));
+		return PartialModel.of(CreateBigCannons.resource("entity/" + path));
 	}
 
 	private static PartialModel breechblockPartial(BigCannonMaterial material, String path) {
@@ -99,7 +99,7 @@ public class CBCBlockPartials {
 	}
 
 	public static PartialModel breechblockPartial(BigCannonMaterial material, ResourceLocation loc) {
-		PartialModel model = new PartialModel(loc);
+		PartialModel model = PartialModel.of(loc);
 		BREECHBLOCK_BY_MATERIAL.put(material, model);
 		return model;
 	}
@@ -113,7 +113,7 @@ public class CBCBlockPartials {
 	}
 
 	public static PartialModel screwLockPartial(BigCannonMaterial material, ResourceLocation loc) {
-		PartialModel model = new PartialModel(loc);
+		PartialModel model = PartialModel.of(loc);
 		SCREW_LOCK_BY_MATERIAL.put(material, model);
 		return model;
 	}
@@ -123,7 +123,7 @@ public class CBCBlockPartials {
 	}
 
 	private static PartialModel cannonCastPartial(Supplier<CannonCastShape> size, String path) {
-		PartialModel model = new PartialModel(CreateBigCannons.resource("block/" + path));
+		PartialModel model = PartialModel.of(CreateBigCannons.resource("block/" + path));
 		DEFERRED_MODEL_CALLBACKS.add(() -> {
 			CANNON_CAST_BY_SIZE.put(size.get(), model);
 		});
@@ -131,7 +131,7 @@ public class CBCBlockPartials {
 	}
 
 	public static PartialModel cannonCastPartial(CannonCastShape size, ResourceLocation loc) {
-		PartialModel model = new PartialModel(loc);
+		PartialModel model = PartialModel.of(loc);
 		CANNON_CAST_BY_SIZE.put(size, model);
 		return model;
 	}
@@ -145,7 +145,7 @@ public class CBCBlockPartials {
 	}
 
 	public static PartialModel autocannonSpringPartial(AutocannonMaterial material, ResourceLocation loc) {
-		PartialModel model = new PartialModel(loc);
+		PartialModel model = PartialModel.of(loc);
 		AUTOCANNON_SPRING_BY_MATERIAL.put(material, model);
 		return model;
 	}
@@ -159,7 +159,7 @@ public class CBCBlockPartials {
 	}
 
 	public static PartialModel autocannonEjectorPartial(AutocannonMaterial material, ResourceLocation loc) {
-		PartialModel model = new PartialModel(loc);
+		PartialModel model = PartialModel.of(loc);
 		AUTOCANNON_EJECTOR_BY_MATERIAL.put(material, model);
 		return model;
 	}
@@ -173,7 +173,7 @@ public class CBCBlockPartials {
 	}
 
 	public static PartialModel autocannonSeatPartial(DyeColor color, ResourceLocation loc) {
-		PartialModel model = new PartialModel(loc);
+		PartialModel model = PartialModel.of(loc);
 		AUTOCANNON_SEAT_BY_COLOR.put(color, model);
 		return model;
 	}

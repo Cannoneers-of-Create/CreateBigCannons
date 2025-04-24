@@ -9,28 +9,28 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtensionBlockEntity;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountInstance;
+import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountVisual;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechInstance;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechVisual;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechRenderer;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringInstance;
+import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringVisual;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringRenderer;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntityRenderer;
-import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechInstance;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechVisual;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech.ScrewBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech.ScrewBreechBlockEntityRenderer;
-import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech.ScrewBreechInstance;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech.ScrewBreechVisual;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechBlockEntityRenderer;
-import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechInstance;
+import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechVisual;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEndBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlockEntity;
@@ -47,7 +47,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.Autocanno
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntityRenderer;
-import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockInstance;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockVisual;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockEntity;
 
@@ -65,14 +65,14 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<SlidingBreechBlockEntity> SLIDING_BREECH = REGISTRATE
 		.blockEntity("sliding_breech", SlidingBreechBlockEntity::new)
-		.visual(() -> SlidingBreechInstance::new, false)
+		.visual(() -> SlidingBreechVisual::new, false)
 		.renderer(() -> SlidingBreechBlockEntityRenderer::new)
 		.validBlocks(CBCBlocks.CAST_IRON_SLIDING_BREECH, CBCBlocks.BRONZE_SLIDING_BREECH, CBCBlocks.STEEL_SLIDING_BREECH)
 		.register();
 
 	public static final BlockEntityEntry<ScrewBreechBlockEntity> SCREW_BREECH = REGISTRATE
 		.blockEntity("screw_breech", ScrewBreechBlockEntity::new)
-		.visual(() -> ScrewBreechInstance::new, false)
+		.visual(() -> ScrewBreechVisual::new, false)
 		.renderer(() -> ScrewBreechBlockEntityRenderer::new)
 		.validBlocks(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
 		.register();
@@ -91,7 +91,7 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<QuickfiringBreechBlockEntity> QUICKFIRING_BREECH = REGISTRATE
 		.blockEntity("quickfiring_breech", QuickfiringBreechBlockEntity::new)
-		.visual(() -> QuickfiringBreechInstance::new)
+		.visual(() -> QuickfiringBreechVisual::new)
 		.renderer(() -> QuickfiringBreechBlockEntityRenderer::new)
 		.validBlocks(CBCBlocks.CAST_IRON_QUICKFIRING_BREECH, CBCBlocks.BRONZE_QUICKFIRING_BREECH, CBCBlocks.STEEL_QUICKFIRING_BREECH)
 		.register();
@@ -105,7 +105,7 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<CannonMountBlockEntity> CANNON_MOUNT = REGISTRATE
 		.blockEntity("cannon_mount", CannonMountBlockEntity::new)
-		.visual(() -> CannonMountInstance::new)
+		.visual(() -> CannonMountVisual::new)
 		.renderer(() -> CannonMountBlockEntityRenderer::new)
 		.validBlock(CBCBlocks.CANNON_MOUNT)
 		.register();
@@ -136,14 +136,14 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<FuzedBlockEntity> FUZED_BLOCK = REGISTRATE
 		.blockEntity("fuzed_block", FuzedBlockEntity::new)
-		.visual(() -> FuzedBlockInstance::new)
+		.visual(() -> FuzedBlockVisual::new)
 		.renderer(() -> FuzedBlockEntityRenderer::new)
 		.validBlocks(CBCBlocks.HE_SHELL, CBCBlocks.SHRAPNEL_SHELL, CBCBlocks.AP_SHELL, CBCBlocks.DROP_MORTAR_SHELL, CBCBlocks.SMOKE_SHELL)
 		.register();
 
 	public static final BlockEntityEntry<AbstractFluidShellBlockEntity> FLUID_SHELL = REGISTRATE
 		.blockEntity("fluid_shell", IndexPlatform::makeFluidShellBlockEntity)
-		.visual(() -> FuzedBlockInstance::new)
+		.visual(() -> FuzedBlockVisual::new)
 		.renderer(() -> FuzedBlockEntityRenderer::new)
 		.validBlock(CBCBlocks.FLUID_SHELL)
 		.register();
@@ -200,14 +200,14 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<AbstractAutocannonBreechBlockEntity> AUTOCANNON_BREECH = REGISTRATE
 		.blockEntity("autocannon_breech", IndexPlatform::makeAutocannonBreech)
-		.visual(() -> AutocannonBreechInstance::new)
+		.visual(() -> AutocannonBreechVisual::new)
 		.renderer(() -> AutocannonBreechRenderer::new)
 		.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_BREECH, CBCBlocks.BRONZE_AUTOCANNON_BREECH, CBCBlocks.STEEL_AUTOCANNON_BREECH)
 		.register();
 
 	public static final BlockEntityEntry<AutocannonRecoilSpringBlockEntity> AUTOCANNON_RECOIL_SPRING = REGISTRATE
 		.blockEntity("autocannon_recoil_spring", AutocannonRecoilSpringBlockEntity::new)
-		.visual(() -> AutocannonRecoilSpringInstance::new)
+		.visual(() -> AutocannonRecoilSpringVisual::new)
 		.renderer(() -> AutocannonRecoilSpringRenderer::new)
 		.validBlocks(CBCBlocks.CAST_IRON_AUTOCANNON_RECOIL_SPRING, CBCBlocks.BRONZE_AUTOCANNON_RECOIL_SPRING, CBCBlocks.STEEL_AUTOCANNON_RECOIL_SPRING)
 		.register();

@@ -9,7 +9,6 @@ import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 
-import dev.engine_room.flywheel.backend.Backend;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -31,7 +30,7 @@ public class ScrewBreechBlockEntityRenderer extends KineticBlockEntityRenderer {
 	@Override
 	protected void renderSafe(KineticBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		super.renderSafe(te, partialTicks, ms, buffer, light, overlay);
-		if (Backend.canUseInstancing(te.getLevel())) return;
+		if (VisualizationManager.supportsVisualization(te.getLevel())) return;
 
 		BlockState blockState = te.getBlockState();
 		Direction facing = blockState.getValue(BlockStateProperties.FACING);

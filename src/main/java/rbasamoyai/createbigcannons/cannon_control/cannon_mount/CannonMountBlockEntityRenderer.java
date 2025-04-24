@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
-import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.getAngleForTe;
+import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.getAngleForBe;
 import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.kineticRotationTransform;
 import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.shaft;
+
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 
 import org.joml.Quaternionf;
 
@@ -14,7 +16,6 @@ import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 
-import dev.engine_room.flywheel.backend.Backend;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -33,7 +34,7 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 
 	@Override
 	protected void renderSafe(CannonMountBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-		if (Backend.canUseInstancing(be.getLevel())) return;
+		if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
 		BlockState state = be.getBlockState();
 		Direction vertical = state.getValue(BlockStateProperties.VERTICAL_DIRECTION);
@@ -45,13 +46,13 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 
 		SuperByteBuffer yawShaft = CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, state, vertical);
 		KineticBlockEntity yawInterface = be.getYawInterface();
-		kineticRotationTransform(yawShaft, yawInterface, Direction.Axis.Y, getAngleForTe(yawInterface, be.getBlockPos(), Direction.Axis.Y), light)
+		kineticRotationTransform(yawShaft, yawInterface, Direction.Axis.Y, getAngleForBe(yawInterface, be.getBlockPos(), Direction.Axis.Y), light) // todo: c6 playtest
 			.renderInto(ms, solidBuf);
 
 		Direction.Axis pitchAxis = ((IRotate) state.getBlock()).getRotationAxis(state);
 		SuperByteBuffer pitchShaft = CachedBuffers.block(shaft(pitchAxis));
 		KineticBlockEntity pitchInterface = be.getPitchInterface();
-		kineticRotationTransform(pitchShaft, pitchInterface, pitchAxis, getAngleForTe(pitchInterface, be.getBlockPos(), pitchAxis), light)
+		kineticRotationTransform(pitchShaft, pitchInterface, pitchAxis, getAngleForBe(pitchInterface, be.getBlockPos(), pitchAxis), light)
 			.renderInto(ms, solidBuf);
 
 		float yaw = getMountYaw(be);

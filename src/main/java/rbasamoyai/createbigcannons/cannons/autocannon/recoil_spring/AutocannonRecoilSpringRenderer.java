@@ -2,12 +2,13 @@ package rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring;
 
 import java.util.Map;
 
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+
 import org.joml.Vector3f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 
-import dev.engine_room.flywheel.backend.Backend;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -34,7 +35,7 @@ public class AutocannonRecoilSpringRenderer extends SmartBlockEntityRenderer<Aut
 	@Override
 	protected void renderSafe(AutocannonRecoilSpringBlockEntity spring, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		super.renderSafe(spring, partialTicks, ms, buffer, light, overlay);
-		if (Backend.canUseInstancing(spring.getLevel())) return;
+		if (VisualizationManager.supportsVisualization(spring.getLevel())) return;
 
 		BlockState state = spring.getBlockState();
 		Direction facing = state.getValue(BlockStateProperties.FACING);
@@ -52,9 +53,7 @@ public class AutocannonRecoilSpringRenderer extends SmartBlockEntityRenderer<Aut
 		ms.pushPose();
 
 		if (facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE) {
-			ejectorBuf.centre()
-				.rotate(axis.isVertical() ? Direction.EAST : Direction.UP, Mth.PI)
-				.unCentre();
+			ejectorBuf.rotateCentered(Mth.PI, axis.isVertical() ? Direction.EAST : Direction.UP); // todo: c6 playtest confirm old behavior
 			//.translate(facing.getOpposite().step());
 		}
 		ejectorBuf.scale(fx, fy, fz)

@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 
-import dev.engine_room.flywheel.backend.Backend;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -22,7 +21,7 @@ public class FuzedBlockEntityRenderer extends SafeBlockEntityRenderer<FuzedBlock
 
 	@Override
 	protected void renderSafe(FuzedBlockEntity blockEntity, float partialTicks, PoseStack posestack, MultiBufferSource buffers, int packedLight, int packedOverlay) {
-		if (Backend.canUseInstancing(blockEntity.getLevel())) return;
+		if (VisualizationManager.supportsVisualization(blockEntity.getLevel())) return;
 
 		BlockState state = blockEntity.getBlockState();
 		Direction facing = state.getValue(BlockStateProperties.FACING);

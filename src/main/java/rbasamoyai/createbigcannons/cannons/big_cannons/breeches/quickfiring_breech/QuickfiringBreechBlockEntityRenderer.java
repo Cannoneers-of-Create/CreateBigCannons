@@ -9,7 +9,6 @@ import com.mojang.math.Axis;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 
-import dev.engine_room.flywheel.backend.Backend;
 import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -34,7 +33,7 @@ public class QuickfiringBreechBlockEntityRenderer extends SafeBlockEntityRendere
 	protected void renderSafe(QuickfiringBreechBlockEntity te, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		BlockState blockState = te.getBlockState();
 
-		if (Backend.canUseInstancing(te.getLevel())) return;
+		if (VisualizationManager.supportsVisualization(te.getLevel())) return;
 
 		Direction facing = blockState.getValue(BlockStateProperties.FACING);
 		Direction.Axis axis = CBCClientCommon.getRotationAxis(blockState);

@@ -52,7 +52,7 @@ dependencies {
 
 	// Ritchie's Projectile Library
 	val rplSuffix = if (mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
-	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-fabric$rplSuffix") {
+	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-common$rplSuffix") {
 		isTransitive = false
 	}
 
@@ -71,4 +71,10 @@ java {
 tasks.build {
 	group = "versioned"
 	description = "Must run through 'chiseledBuild'"
+}
+
+afterEvaluate {
+    tasks.withType<JavaCompile> {
+        options.compilerArgs.addAll(listOf("-Xmaxerrs", "2000"))
+    }
 }

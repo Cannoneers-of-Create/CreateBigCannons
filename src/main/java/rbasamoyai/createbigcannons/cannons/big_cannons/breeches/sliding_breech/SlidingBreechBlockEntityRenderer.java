@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech;
 
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -7,7 +9,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 
-import dev.engine_room.flywheel.backend.Backend;
 import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -30,7 +31,7 @@ public class SlidingBreechBlockEntityRenderer extends KineticBlockEntityRenderer
 
 		BlockState blockState = te.getBlockState();
 
-		if (Backend.canUseInstancing(te.getLevel())) return;
+		if (VisualizationManager.supportsVisualization(te.getLevel())) return;
 
 		Direction facing = blockState.getValue(BlockStateProperties.FACING);
 		Direction.Axis axis = CBCClientCommon.getRotationAxis(blockState);

@@ -7,7 +7,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 
-import dev.engine_room.flywheel.backend.Backend;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,7 +30,7 @@ public class AutocannonBreechRenderer extends SmartBlockEntityRenderer<AbstractA
 	@Override
 	protected void renderSafe(AbstractAutocannonBreechBlockEntity breech, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
 		super.renderSafe(breech, partialTicks, ms, buffer, light, overlay);
-		if (Backend.canUseInstancing(breech.getLevel())) return;
+		if (VisualizationManager.supportsVisualization(breech.getLevel())) return;
 
 		BlockState state = breech.getBlockState();
 		Direction facing = state.getValue(AutocannonBreechBlock.FACING);
