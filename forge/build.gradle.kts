@@ -103,7 +103,7 @@ dependencies {
 
 	// Fixes, integration
 	// "modImplementation"("curse.maven:free-cam-557076:${mod.dep("freecam_forge_file")}") // Freecam
-	modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-forge") { isTransitive = false }
+	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-forge") { isTransitive = false }
 	modImplementation("curse.maven:framedblocks-441647:${mod.dep("framedblocks_forge_file")}")
 	forgeRuntimeLibrary("com.github.ben-manes.caffeine:caffeine:3.1.1") // For FramedBlocks
 

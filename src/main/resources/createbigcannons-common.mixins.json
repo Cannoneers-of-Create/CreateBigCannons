@@ -4,7 +4,6 @@
   "package": "rbasamoyai.createbigcannons.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "client.AbstractMountedCannonContraptionMixin",
     "client.Blaze3DAudioChannelAccessor",
     "client.CameraAccessor",
     "client.CannonMountDisplaySourceMixin",
@@ -14,13 +13,8 @@
     "client.HumanoidPoseMixin",
     "client.LevelRendererMixin",
     "client.LightingMixin",
-    "client.LightVolumeAccessor",
-    "client.PitchOrientedContraptionEntityMixin",
-    "client.PoleContraptionMixin",
-    "client.PonderRegistryMixin",
     "client.RPLClientHandlersMixin",
-    "client.SoundEngineMixin",
-    "client.ValueSettingsClientMixin"
+    "client.SoundEngineMixin"
   ],
   "mixins": [
     "ArmorStandMixin",
@@ -34,9 +28,7 @@
     "compat.create.AbstractContraptionEntityMixin",
     "compat.create.AllSoundEventsMixin",
     "compat.create.BeltMovementHandlerMixin",
-    "compat.create.ChassisBlockEntityMixin",
     "compat.create.ContraptionColliderMixin",
-    "compat.create.ContraptionMixin",
     "compat.create.FilterItemMixin",
     "compat.create.GantryContraptionMixin",
     "compat.create.MechanicalBearingBlockEntityMixin",

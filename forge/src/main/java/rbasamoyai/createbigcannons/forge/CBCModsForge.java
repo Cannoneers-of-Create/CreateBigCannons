@@ -3,6 +3,8 @@ package rbasamoyai.createbigcannons.forge;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import com.simibubi.create.foundation.utility.CreateLang;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.ModList;

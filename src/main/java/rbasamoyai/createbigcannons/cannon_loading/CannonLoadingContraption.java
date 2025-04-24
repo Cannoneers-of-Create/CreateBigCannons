@@ -186,7 +186,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 			}
 		}
 
-		this.addBlock(pos, this.capture(level, pos));
+		this.addBlock(level, pos, this.capture(level, pos));
 		if (this.blocks.size() <= AllConfigs.server().kinetics.maxBlocksMoved.get()) {
 			return true;
 		}
@@ -206,7 +206,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 	}
 
 	@Override
-	protected void addBlock(BlockPos pos, Pair<StructureBlockInfo, BlockEntity> pair) {
+	protected void addBlock(Level level, BlockPos pos, Pair<StructureBlockInfo, BlockEntity> pair) {
 		BlockEntity blockEntity = pair.getRight();
 		if (blockEntity instanceof IBigCannonBlockEntity cannon) {
 			StructureBlockInfo containedInfo = cannon.cannonBehavior().block();
@@ -220,7 +220,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 			}
 			pair = Pair.of(containedInfo, containedBlockEntity);
 		}
-		super.addBlock(pos.relative(this.orientation, -this.initialExtensionProgress), pair);
+		super.addBlock(level, pos.relative(this.orientation, -this.initialExtensionProgress), pair);
 	}
 
 	@Override

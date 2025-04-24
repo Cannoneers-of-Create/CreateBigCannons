@@ -27,7 +27,7 @@ public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntity
 	protected void renderFluidBox(AbstractCannonCastBlockEntity cast, float width, float height, MultiBufferSource buffers, PoseStack stack, int light) {
 		if (!(cast instanceof CannonCastBlockEntity castc)) return;
 		FluidStack fstack = castc.fluid.getFluid();
-		if (!fstack.isEmpty()) FluidRenderer.renderFluidBox(fstack, 0, 0, 0, width, height, width, buffers, stack, light, false);
+		if (!fstack.isEmpty()) FluidRenderer.renderFluidBox(fstack.getFluid(), 0L, 0f, 0f, width, height, width, 0f, buffers, stack, light, false, false); // todo: c6 playtest. i have no idea what i'm doing
 	}
 
 	@Override

@@ -151,8 +151,8 @@ public class CBCClientForge {
 		ModContainer container = ModList.get()
 			.getModContainerById(CreateBigCannons.MOD_ID)
 			.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
-		container.registerExtensionPoint(ConfigScreenFactory.class,
-			() -> new ConfigScreenFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));
+		/*container.registerExtensionPoint(ConfigScreenFactory.class, fixme
+			() -> new ConfigScreenFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));*/
 	}
 
 	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent evt) {

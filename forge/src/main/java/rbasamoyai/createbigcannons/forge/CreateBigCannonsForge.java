@@ -34,6 +34,8 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
+import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
+import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
@@ -57,7 +59,7 @@ public class CreateBigCannonsForge {
         CreateBigCannons.init();
 		ModGroupImpl.registerForge(modEventBus);
         CBCParticleTypes.register();
-        CBCConfigs.registerConfigs(mlContext::registerConfig);
+        CBCConfigs.register(mlContext::registerConfig);
 
         modEventBus.addListener(this::onCommonSetup);
         modEventBus.addListener(this::onNewRegistry);
@@ -113,6 +115,8 @@ public class CreateBigCannonsForge {
 		} else if (CBCRegistries.CANNON_CAST_SHAPES.equals(key)) {
 			CannonCastShape.register();
 		}
+        CBCContraptionTypes.init();
+        CBCArmInteractionPointTypes.init();
 		FMLJavaModLoadingContext.get().getModEventBus().post(new CBCForgeRegisterEvent<>(CannonCastShape.class, CBCRegistries.cannonCastShapes()));
 	}
 

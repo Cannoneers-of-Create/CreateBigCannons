@@ -57,8 +57,8 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 			.addIngredients(ForgeTypes.FLUID_STACK, recipe.ingredient().getMatchingFluidStacks().stream().map(fs -> {
 				fs.setAmount(recipe.shape().fluidSize());
 				return fs;
-			}).toList())
-			.addTooltipCallback(addFluidTooltip());
+			}).toList());
+			//.addTooltipCallback(addFluidTooltip()); fixme
 
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 142, 62)
 			.setBackground(getRenderedSlot(), -1, -1)

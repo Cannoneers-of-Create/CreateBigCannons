@@ -127,7 +127,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 
 		if (!this.getLevel().isClientSide) {
 			if (this.clockStack.processedBy == AllFanProcessingTypes.BLASTING) {
-				this.clockStack.processedBy = AllFanProcessingTypes.NONE;
+				//this.clockStack.processedBy = AllFanProcessingTypes.NONE; fixme
 				this.clockStack.processingTime = -1;
 				++this.completionProgress;
 				this.sendData();

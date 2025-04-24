@@ -46,7 +46,7 @@ public class FuzedBlockVisual extends AbstractBlockEntityVisual<FuzedBlockEntity
 
 	@Override
 	public void updateLight(float partialTick) {
-		this.fuze.updateLight(this.world, this.pos);
+		//this.fuze.updateLight(this.world, this.pos); fixme
 	}
 
 	private boolean isBaseFuze() {

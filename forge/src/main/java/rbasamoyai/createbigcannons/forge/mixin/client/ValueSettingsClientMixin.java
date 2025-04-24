@@ -1,5 +1,9 @@
 package rbasamoyai.createbigcannons.forge.mixin.client;
 
+import net.minecraft.world.phys.BlockHitResult;
+
+import net.minecraft.world.phys.HitResult;
+
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -27,10 +31,10 @@ public class ValueSettingsClientMixin {
 	@Shadow public Direction interactHeldFace;
 
 	@WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraftforge/network/simple/SimpleChannel;sendToServer(Ljava/lang/Object;)V"), remap = false)
-	private void createbigcannons$tick$cancelPacket(SimpleChannel instance, Object message, Operation<Void> original, @Local ValueSettingsBehaviour valueSettingBehaviour) {
-		if (valueSettingBehaviour instanceof FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour fixedMountBehaviour) {
+	private void createbigcannons$tick$cancelPacket(SimpleChannel instance, Object message, Operation<Void> original, @Local ValueSettingsBehaviour valueSettingBehaviour, @Local HitResult hitResult) {
+		if (valueSettingBehaviour instanceof FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour fixedMountBehaviour && hitResult instanceof BlockHitResult blockHitResult) {
 			NetworkPlatform.sendToServer(new ServerboundSetFixedCannonMountValuePacket(this.interactHeldPos, 0, 0,
-				this.interactHeldHand, this.interactHeldFace, AllKeys.ctrlDown(), fixedMountBehaviour.setsPitch()));
+				this.interactHeldHand, blockHitResult, this.interactHeldFace, AllKeys.ctrlDown(), fixedMountBehaviour.setsPitch())); //todo: c6 playtest
 			return;
 		}
 		original.call(instance, message);

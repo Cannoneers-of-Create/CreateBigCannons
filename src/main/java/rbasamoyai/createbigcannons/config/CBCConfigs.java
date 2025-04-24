@@ -3,10 +3,9 @@ package rbasamoyai.createbigcannons.config;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-
-import fuzs.forgeconfigapiport.api.config.v2.ForgeConfigRegistry;
 
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -59,13 +58,13 @@ public class CBCConfigs {
         return config;
     }
 
-    public static void register() {
+    public static void register(BiConsumer<ModConfig.Type, ForgeConfigSpec> cons) {
         client = register(CBCCfgClient::new, ModConfig.Type.CLIENT);
         common = register(CBCCfgCommon::new, ModConfig.Type.COMMON);
         server = register(CBCCfgServer::new, ModConfig.Type.SERVER);
 
         for (Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
-            ForgeConfigRegistry.INSTANCE.register(CreateBigCannons.MOD_ID, pair.getKey(), pair.getValue().specification);
+            cons.accept(pair.getKey(), pair.getValue().specification);
 
         CBCCfgStress stress = server().kinetics.stressValues;
         BlockStressValues.IMPACTS.registerProvider(stress::getImpact);

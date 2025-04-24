@@ -147,7 +147,7 @@ public class CannonBuildingContraption extends PoleContraption {
 		for (int offset = 0; offset <= CBCConfigs.server().crafting.maxCannonBuilderRange.get(); ++offset) {
 			BlockPos currentPos = pos.relative(this.orientation, offset + this.initialExtensionProgress);
 			if (retracting && level.isOutsideBuildHeight(currentPos)) {
-				preAddedBlocks.forEach(this::addBlock);
+				preAddedBlocks.forEach(((blockPos, structureBlockInfoBlockEntityPair) -> addBlock(level, blockPos, structureBlockInfoBlockEntityPair)));
 				return this.material != null && !firstBlock;
 			}
 			if (!level.isLoaded(currentPos)) throw AssemblyException.unloadedChunk(currentPos);
@@ -249,7 +249,7 @@ public class CannonBuildingContraption extends PoleContraption {
 		}
 
 		if (this.material != null && !firstBlock) {
-			preAddedBlocks.forEach(this::addBlock);
+            preAddedBlocks.forEach(((blockPos, structureBlockInfoBlockEntityPair) -> addBlock(level, blockPos, structureBlockInfoBlockEntityPair)));
 		} else {
 			this.isActivated = false;
 		}
@@ -305,9 +305,9 @@ public class CannonBuildingContraption extends PoleContraption {
 	}
 
 	@Override
-	protected void addBlock(BlockPos pos, Pair<StructureBlockInfo, BlockEntity> pair) {
+	protected void addBlock(Level level, BlockPos pos, Pair<StructureBlockInfo, BlockEntity> pair) {
 		BlockPos offset = pos.relative(this.orientation, -this.initialExtensionProgress);
-		super.addBlock(offset, pair);
+		super.addBlock(level, offset, pair);
 		BlockEntity te = pair.getRight();
 		if (te != null) this.presentBlockEntities.put(offset.subtract(this.anchor), te);
 	}
