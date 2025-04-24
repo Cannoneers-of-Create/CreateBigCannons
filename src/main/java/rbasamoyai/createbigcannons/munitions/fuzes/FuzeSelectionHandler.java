@@ -1,8 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
-import com.simibubi.create.AllSpecialTextures;
-import com.simibubi.create.CreateClient;
 
+import net.createmod.catnip.outliner.Outliner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -59,9 +58,9 @@ public class FuzeSelectionHandler {
 			Vec3 center = Vec3.atCenterOf(hovered).add(new Vec3(dir.step()).scale(7 / 16f));
 			AABB box = new AABB(center, center).inflate(dx, dy, dz);
 
-			CreateClient.OUTLINER.showAABB(this.bbOutlineSlot, box)
+			Outliner.getInstance().showAABB(this.bbOutlineSlot, box)
 				.colored(HIGHLIGHT)
-				.withFaceTextures(AllSpecialTextures.BLANK, AllSpecialTextures.BLANK)
+                .clearTextures()
 				.disableLineNormals()
 				.lineWidth(1 / 32f);
 		}

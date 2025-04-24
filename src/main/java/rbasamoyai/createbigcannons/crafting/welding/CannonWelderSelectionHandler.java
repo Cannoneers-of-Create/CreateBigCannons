@@ -3,10 +3,10 @@ package rbasamoyai.createbigcannons.crafting.welding;
 import com.google.common.base.Objects;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.AllSpecialTextures;
-import com.simibubi.create.CreateClient;
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.createmod.catnip.math.VecHelper;
+import net.createmod.catnip.outliner.Outliner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
@@ -74,7 +74,7 @@ public class CannonWelderSelectionHandler {
 			}
 			CreateLang.builder(CreateBigCannons.MOD_ID).translate(key).color(color).sendStatus(player);
 			if (this.firstPos != null) {
-				CreateClient.OUTLINER.showAABB(this.bbOutlineSlot, new AABB(this.firstPos, hovered).expandTowards(1, 1, 1))
+				Outliner.getInstance().showAABB(this.bbOutlineSlot, new AABB(this.firstPos, hovered).expandTowards(1, 1, 1))
 					.colored(color)
 					.withFaceTextures(AllSpecialTextures.GLUE, AllSpecialTextures.GLUE)
 					.disableLineNormals()

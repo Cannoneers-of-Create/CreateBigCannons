@@ -12,6 +12,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollVa
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.createmod.catnip.data.Iterate;
+import net.createmod.catnip.outliner.Outliner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -50,7 +51,7 @@ public class FixedCannonMountBoxRenderer {
 				continue;
 			Pair<BehaviourType<?>, BlockPos> slot = Pair.of(type, pos);
 			if (!behaviour.isActive()) {
-				CreateClient.OUTLINER.remove(slot);
+				Outliner.getInstance().remove(slot);
 				continue;
 			}
 
@@ -82,7 +83,7 @@ public class FixedCannonMountBoxRenderer {
 		box.passive(!highlight)
 			.wideOutline();
 
-		CreateClient.OUTLINER.showValueBox(slot, box.transform(behaviour.getSlotPositioning()))
+		Outliner.getInstance().showOutline(slot, box.transform(behaviour.getSlotPositioning()))
 			.highlightFace(face);
 	}
 

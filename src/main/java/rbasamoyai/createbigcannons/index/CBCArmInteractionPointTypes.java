@@ -1,14 +1,13 @@
 package rbasamoyai.createbigcannons.index;
 
-import java.util.function.Function;
-
 import javax.annotation.Nullable;
 
+import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -19,20 +18,14 @@ import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannon
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.CannonMountPoint;
 
 public class CBCArmInteractionPointTypes {
-
-	public static final CannonMountType CANNON_MOUNT = register("cannon_mount", CannonMountType::new);
-
-	private static <T extends ArmInteractionPointType> T register(String id, Function<ResourceLocation, T> factory) {
-		T type = factory.apply(CreateBigCannons.resource(id));
-		ArmInteractionPointType.register(type);
-		return type;
-	}
+    static {
+        register("cannon_mount", new CannonMountType());
+    }
+    private static <T extends ArmInteractionPointType> void register(String name, T type) {
+        Registry.register(CreateBuiltInRegistries.ARM_INTERACTION_POINT_TYPE, CreateBigCannons.resource(name), type);
+    }
 
 	public static class CannonMountType extends ArmInteractionPointType {
-		public CannonMountType(ResourceLocation id) {
-			super(id);
-		}
-
 		@Override
 		public boolean canCreatePoint(Level level, BlockPos pos, BlockState state) {
 			if (CBCBlocks.CANNON_MOUNT.has(state))
@@ -53,7 +46,7 @@ public class CBCArmInteractionPointTypes {
 		}
 	}
 
-	public static void register() {
-	}
+    public static void init() {
+    }
 
 }

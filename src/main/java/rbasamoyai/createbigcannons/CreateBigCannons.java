@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.item.ItemDescription;
 import com.simibubi.create.foundation.item.KineticStats;
-import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.item.TooltipModifier;
 
 import net.minecraft.resources.ResourceLocation;
@@ -60,7 +59,7 @@ public class CreateBigCannons {
 		CBCCannonContraptionTypes.register();
 
 		CBCContraptionTypes.init();
-		CBCArmInteractionPointTypes.register();
+		CBCArmInteractionPointTypes.init();
 		CBCChecks.register();
 		CBCTags.register();
 
