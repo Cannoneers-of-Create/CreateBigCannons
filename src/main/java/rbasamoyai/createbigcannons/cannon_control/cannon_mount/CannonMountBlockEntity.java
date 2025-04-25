@@ -42,7 +42,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class CannonMountBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block,
+public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block,
 	ExtendsCannonMount, HasMultipleKineticInterfaces, IHaveGoggleInformation {
 
 	private static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;

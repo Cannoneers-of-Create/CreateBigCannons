@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
+import com.simibubi.create.content.kinetics.base.IRotate;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 
 import com.simibubi.create.foundation.render.AllInstanceTypes;
@@ -14,6 +16,9 @@ import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
 
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.block.state.BlockState;
+
 import org.joml.Quaternionf;
 
 import com.mojang.math.Axis;
@@ -26,7 +31,7 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 import java.util.function.Consumer;
 
-public class CannonMountVisual extends AbstractBlockEntityVisual<CannonMountBlockEntity> implements SimpleDynamicVisual {
+public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlockEntity> implements SimpleDynamicVisual {
 
 	private OrientedInstance rotatingMount;
 	private OrientedInstance rotatingMountShaft;
@@ -51,16 +56,17 @@ public class CannonMountVisual extends AbstractBlockEntityVisual<CannonMountBloc
 
         this.pitchShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.block(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, pitchAxis))).createInstance();
         this.pitchShaft
+            .rotateToFace(Direction.UP, pitchAxis) // todo: this is all messed up
             .setRotationAxis(pitchAxis)
-            .setRotationOffset(this.getRotationOffset(pitchAxis))
+            .setRotationOffset(rotationOffset(blockEntity.getPitchInterface().getBlockState(), pitchAxis, pos))
             .setColor(this.blockEntity.getPitchInterface())
             .setPosition(this.getVisualPosition());
             //.light(blockLight, skyLight);
 
         this.yawShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF)).createInstance();
         this.yawShaft
-            .setRotationAxis(Direction.Axis.Y)
-            .setRotationOffset(this.getRotationOffset(Direction.Axis.Y))
+            .setRotationAxis(Direction.Axis.Z)
+            .setRotationOffset(rotationOffset(blockEntity.getYawInterface().getBlockState(), Direction.Axis.Y, pos))
             .setColor(this.blockEntity.getYawInterface())
             .setPosition(this.getVisualPosition());
             //.light(blockLight, skyLight);
@@ -84,24 +90,13 @@ public class CannonMountVisual extends AbstractBlockEntityVisual<CannonMountBloc
 		this.updateRotation(this.yawShaft, Direction.Axis.Y, this.blockEntity.getYawSpeed(), false);
 	}
 
-	// Copied from KineticBlockEntityInstance
-	protected void updateRotation(RotatingInstance instance, Direction.Axis axis, float speed, boolean pitch) {
-		instance.setRotationAxis(axis)
-			.setRotationOffset(getRotationOffset(axis))
-			.setRotationalSpeed(speed)
-			.setColor(pitch ? this.blockEntity.getPitchInterface() : this.blockEntity.getYawInterface());
-	}
-
-	// Copied from KineticBlockEntityInstance
-	protected float getRotationOffset(final Direction.Axis axis) {
-		float offset = ICogWheel.isLargeCog(blockState) ? 11.25f : 0;
-		double d = (((axis == Direction.Axis.X) ? 0 : pos.getX()) + ((axis == Direction.Axis.Y) ? 0 : pos.getY())
-			+ ((axis == Direction.Axis.Z) ? 0 : pos.getZ())) % 2;
-		if (d == 0) {
-			offset = 22.5f;
-		}
-		return offset;
-	}
+    // Copied from KineticBlockEntityInstance
+    protected void updateRotation(RotatingInstance instance, Direction.Axis axis, float speed, boolean pitch) {
+        instance.setRotationAxis(axis)
+            .setRotationOffset(rotationOffset(blockState, axis, pos))
+            .setRotationalSpeed(speed)
+            .setColor(pitch ? this.blockEntity.getPitchInterface() : this.blockEntity.getYawInterface());
+    }
 
 
 	@Override

@@ -23,11 +23,11 @@ import static com.simibubi.create.AllContraptionTypes.BY_LEGACY_NAME;
 public class CBCContraptionTypes {
 
 	public static final Holder.Reference<ContraptionType>
-		CANNON_LOADER = register(CreateBigCannons.resource("cannon_loader").toString(), CannonLoadingContraption::new),
-        MOUNTED_CANNON = register(CreateBigCannons.resource("mounted_cannon").toString(), MountedBigCannonContraption::new),
-        MOUNTED_AUTOCANNON = register(CreateBigCannons.resource("mounted_autocannon").toString(), MountedAutocannonContraption::new),
-        CANNON_DRILL = register(CreateBigCannons.resource("cannon_drill").toString(), CannonDrillingContraption::new),
-        CANNON_BUILDER = register(CreateBigCannons.resource("cannon_builder").toString(), CannonBuildingContraption::new);
+		CANNON_LOADER = register("cannon_loader", CannonLoadingContraption::new),
+        MOUNTED_CANNON = register("mounted_cannon", MountedBigCannonContraption::new),
+        MOUNTED_AUTOCANNON = register("mounted_autocannon", MountedAutocannonContraption::new),
+        CANNON_DRILL = register("cannon_drill", CannonDrillingContraption::new),
+        CANNON_BUILDER = register("cannon_builder", CannonBuildingContraption::new);
 
     private static Holder.Reference<ContraptionType> register(String name, Supplier<? extends Contraption> factory) {
         ContraptionType type = new ContraptionType(factory);

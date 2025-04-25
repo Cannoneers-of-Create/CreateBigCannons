@@ -66,7 +66,7 @@ public class CBCConfigs {
         for (Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet())
             cons.accept(pair.getKey(), pair.getValue().specification);
 
-        CBCCfgStress stress = server().kinetics.stressValues;
+        CBCCfgStress stress = server().kinetics.stress;
         BlockStressValues.IMPACTS.registerProvider(stress::getImpact);
         BlockStressValues.CAPACITIES.registerProvider(stress::getCapacity);
     }

@@ -96,7 +96,7 @@ dependencies {
 	val rplSuffix = if (mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-forge$rplSuffix"){ isTransitive = false })
 	// Create: Unify
-	modImplementation("maven.modrinth:create-unify:${mod.dep("unify_forge_file")}")
+	// modImplementation("maven.modrinth:create-unify:${mod.dep("unify_forge_file")}") fixme
 
 	compileOnly("io.github.llamalad7:mixinextras-common:${mod.dep("mixinextras_version")}")
 	annotationProcessor(include("io.github.llamalad7:mixinextras-forge:${mod.dep("mixinextras_version")}"){})
