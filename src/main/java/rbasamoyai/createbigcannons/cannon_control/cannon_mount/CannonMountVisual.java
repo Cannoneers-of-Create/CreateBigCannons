@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
-import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 
@@ -12,19 +11,15 @@ import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
-import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
 
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 
-import net.minecraft.core.Vec3i;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.LightLayer;
 
 import org.joml.Quaternionf;
 
 import com.mojang.math.Axis;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllPartialModels;
-import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
@@ -41,11 +36,11 @@ public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlock
 	public CannonMountVisual(VisualizationContext ctx, CannonMountBlockEntity tile, float partialTick) {
         super(ctx, tile, partialTick);
 
-        //int blockLight = this.world.getBrightness(LightLayer.BLOCK, this.pos); // todo: it better do this itself now because they took this away. c6 playtest
-        //int skyLight = this.world.getBrightness(LightLayer.SKY, this.pos);
+        int blockLight = this.blockEntity.getLevel().getBrightness(LightLayer.BLOCK, this.pos); // todo: it better do this itself now because they took this away. c6 playtest
+        int skyLight = this.blockEntity.getLevel().getBrightness(LightLayer.SKY, this.pos);
 
-        Direction vertical = this.blockState.getValue(BlockStateProperties.VERTICAL_DIRECTION);
-        Direction facing = this.blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
+        Direction vertical = tile.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION);
+        Direction facing = tile.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
         Direction.Axis pitchAxis = facing.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
 
         this.rotatingMount = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCBlockPartials.ROTATING_MOUNT)).createInstance();
@@ -54,22 +49,23 @@ public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlock
         this.rotatingMountShaft = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCBlockPartials.CANNON_CARRIAGE_AXLE)).createInstance();
         this.rotatingMountShaft.position(getVisualPosition().relative(vertical, -2));
 
-        this.pitchShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.block(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, pitchAxis))).createInstance();
-        this.pitchShaft
-            .rotateToFace(Direction.UP, pitchAxis) // todo: this is all messed up
-            .setRotationAxis(pitchAxis)
-            .setRotationOffset(rotationOffset(blockEntity.getPitchInterface().getBlockState(), pitchAxis, pos))
-            .setColor(this.blockEntity.getPitchInterface())
-            .setPosition(this.getVisualPosition());
-            //.light(blockLight, skyLight);
+        this.pitchShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT))
+            .createInstance()
+            .rotateToFace(pitchAxis)
+            .setup(blockEntity.getPitchInterface())
+            .setColor(blockEntity.getPitchInterface())
+            .setPosition(getVisualPosition());
+        this.pitchShaft.light(blockLight, skyLight)
+            .setChanged();
 
         this.yawShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF)).createInstance();
         this.yawShaft
-            .setRotationAxis(Direction.Axis.Z)
-            .setRotationOffset(rotationOffset(blockEntity.getYawInterface().getBlockState(), Direction.Axis.Y, pos))
-            .setColor(this.blockEntity.getYawInterface())
-            .setPosition(this.getVisualPosition());
-            //.light(blockLight, skyLight);
+            .rotateToFace(Direction.Axis.Z)
+            .setup(blockEntity.getYawInterface())
+            .setColor(blockEntity.getYawInterface())
+            .setPosition(getVisualPosition())
+            .light(blockLight, skyLight)
+            .setChanged();
 
         this.transformModels();
 	}
@@ -94,8 +90,9 @@ public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlock
     protected void updateRotation(RotatingInstance instance, Direction.Axis axis, float speed, boolean pitch) {
         instance.setRotationAxis(axis)
             .setRotationOffset(rotationOffset(blockState, axis, pos))
-            .setRotationalSpeed(speed)
-            .setColor(pitch ? this.blockEntity.getPitchInterface() : this.blockEntity.getYawInterface());
+            //.setRotationalSpeed(speed) //todo broken
+            .setColor(pitch ? this.blockEntity.getPitchInterface() : this.blockEntity.getYawInterface())
+            .setChanged();
     }
 
 
@@ -113,6 +110,10 @@ public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlock
 		Quaternionf qyaw1 = new Quaternionf(qyaw);
 		qyaw1.mul(qpitch);
 		this.rotatingMountShaft.rotation(qyaw1);
+        this.rotatingMount.setChanged();
+        this.rotatingMountShaft.setChanged();
+        this.pitchShaft.setChanged();
+        this.yawShaft.setChanged();
 	}
 
     @Override

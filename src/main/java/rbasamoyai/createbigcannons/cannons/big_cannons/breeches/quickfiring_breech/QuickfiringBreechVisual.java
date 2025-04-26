@@ -1,5 +1,9 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech;
 
+import com.simibubi.create.content.kinetics.base.RotatingInstance;
+
+import com.simibubi.create.foundation.render.AllInstanceTypes;
+
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
@@ -42,20 +46,18 @@ public class QuickfiringBreechVisual extends AbstractBlockEntityVisual<Quickfiri
         if (this.blockRotation == Direction.DOWN) this.blockRotation = Direction.UP;
 
         this.breechblock = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(getPartialModelForState(this.blockState))).createInstance();
-        this.shaft = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.block(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, axis))).createInstance();
+        this.shaft = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.block(AllBlocks.SHAFT.getDefaultState().setValue(BlockStateProperties.AXIS, axis))).createInstance().position(getVisualPosition());
         this.lever = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCBlockPartials.QUICKFIRING_BREECH_LEVER)).createInstance();
         this.direction = facing.getCounterClockWise(this.blockRotation.getAxis());
 
         boolean alongFirst = this.blockState.getValue(QuickfiringBreechBlock.AXIS);
-        if (facing.getAxis().isHorizontal() && !alongFirst) {
-            Direction rotDir = facing.getAxis() == Direction.Axis.X ? Direction.UP : Direction.EAST;
-            Quaternionf q = Axis.of(rotDir.step()).rotationDegrees(90f);
-            this.breechblock.rotation(q);
+        if (!alongFirst) {
+            this.breechblock.rotateYDegrees(90f);
         }
-        if (facing.getAxis() == Direction.Axis.X && alongFirst) {
-            this.breechblock.rotation(Axis.of(this.blockRotation.step()).rotationDegrees(90f));
+        if (facing.getAxis().isHorizontal()) {
+            this.breechblock.rotateTo(Direction.NORTH, Direction.UP);
         }
-
+        this.shaft.setChanged();
         this.transformModels(partialTick);
 	}
 
@@ -66,17 +68,18 @@ public class QuickfiringBreechVisual extends AbstractBlockEntityVisual<Quickfiri
 
 	private void transformModels(float partialTick) {
 		float progress = this.blockEntity.getOpenProgress(AnimationTickHolder.getPartialTicks());
-		BlockPos instancePos = this.getVisualPosition();
+		BlockPos visualPos = this.getVisualPosition();
 
 		float renderedBreechblockOffset = progress / 16.0f * 13.0f;
 		Vector3f normal = this.blockRotation.step();
 		normal.mul(renderedBreechblockOffset);
-		this.breechblock.position(instancePos).translatePosition(normal.x(), normal.y(), normal.z());
+		this.breechblock.position(visualPos).translatePosition(normal.x(), normal.y(), normal.z()).setChanged();
 
 		float angle = progress * 90;
 		Quaternionf qrot = Axis.of(this.direction.step()).rotationDegrees(angle);
-		this.shaft.position(instancePos).rotation(qrot);
-		this.lever.position(instancePos.relative(this.direction)).rotation(qrot);
+		this.shaft.position(visualPos).rotation(qrot).setChanged();
+		this.lever.position(visualPos.relative(this.direction)).rotation(qrot).setChanged();
+        this.lever.setChanged();
 	}
 
 	@Override

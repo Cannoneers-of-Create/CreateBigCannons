@@ -78,7 +78,7 @@ dependencies {
 	}
 
 	// Create and its dependencies
-	modImplementation("com.simibubi.create:create-${minecraftVersion}:${mod.dep("create_forge_version")}") { isTransitive = false }
+	modImplementation("com.simibubi.create:create-${minecraftVersion}:${mod.dep("create_forge_version")}:slim") { isTransitive = false }
 	modImplementation("net.createmod.ponder:Ponder-Forge-${minecraftVersion}:${mod.dep("ponder_forge_version")}")
 	modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraftVersion}:${mod.dep("flywheel_forge_version")}")
 	modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraftVersion}:${mod.dep("flywheel_forge_version")}")

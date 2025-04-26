@@ -9,10 +9,8 @@ import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 
-import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import com.mojang.math.Axis;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -36,13 +34,11 @@ public class SlidingBreechVisual extends ShaftVisual<SlidingBreechBlockEntity> i
         this.breechblock = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCClientCommon.getBreechblockForState(this.blockState))).createInstance();
 
         boolean alongFirst = this.blockState.getValue(QuickfiringBreechBlock.AXIS);
-        if (facing.getAxis().isHorizontal() && !alongFirst) {
-            Direction rotDir = facing.getAxis() == Direction.Axis.X ? Direction.UP : Direction.EAST;
-            Quaternionf q = Axis.of(rotDir.step()).rotationDegrees(90f);
-            this.breechblock.rotation(q);
+        if (!alongFirst) {
+            this.breechblock.rotateYDegrees(90f);
         }
-        if (facing.getAxis() == Direction.Axis.X && alongFirst) {
-            this.breechblock.rotation(Axis.of(this.blockRotation.step()).rotationDegrees(90f));
+        if (facing.getAxis().isHorizontal()) {
+            this.breechblock.rotateTo(Direction.NORTH, Direction.UP);
         }
 
         this.transformModels(partialTick);
@@ -58,7 +54,7 @@ public class SlidingBreechVisual extends ShaftVisual<SlidingBreechBlockEntity> i
 		renderedBreechblockOffset = renderedBreechblockOffset / 16.0f * 13.0f;
 		Vector3f normal = this.blockRotation.step();
 		normal.mul(renderedBreechblockOffset);
-		this.breechblock.position(this.getVisualPosition()).translatePosition(normal.x(), normal.y(), normal.z());
+		this.breechblock.position(this.getVisualPosition()).translatePosition(normal.x(), normal.y(), normal.z()).setChanged();
 	}
 
 	@Override

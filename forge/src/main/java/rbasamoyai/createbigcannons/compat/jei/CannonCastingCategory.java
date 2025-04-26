@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.compat.jei;
 
-import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.addFluidTooltip;
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRenderedSlot;
 
 import java.util.List;
@@ -58,7 +57,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 				fs.setAmount(recipe.shape().fluidSize());
 				return fs;
 			}).toList());
-			//.addTooltipCallback(addFluidTooltip()); fixme
+			//.addTooltipCallback(addFluidSlot()); fixme
 
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 142, 62)
 			.setBackground(getRenderedSlot(), -1, -1)
