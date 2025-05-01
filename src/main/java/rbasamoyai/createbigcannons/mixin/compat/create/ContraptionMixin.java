@@ -58,10 +58,9 @@ public abstract class ContraptionMixin {
 
 	@Shadow
 	public boolean disassembled;
-/* fixme
 
 	@Inject(method = "searchMovedStructure",
-		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z", shift = At.Shift.BEFORE))
+		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/api/contraption/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z", shift = At.Shift.BEFORE))
 	private void createbigcannons$searchMovedStructure$setForcedDirection(Level level, BlockPos pos, Direction forcedDirection,
 																		  CallbackInfoReturnable<Boolean> cir,
 																		  @Local(argsOnly = true) LocalRef<Direction> forcedDirectionRef) {
@@ -69,7 +68,6 @@ public abstract class ContraptionMixin {
 		if (forcedDirectionRef.get() == null)
 			forcedDirectionRef.set(((CanLoadBigCannon) this.createbigcannons$self).createbigcannons$getAssemblyMovementDirection(level));
 	}
-*/
 
 	@Inject(method = "searchMovedStructure",
 		at = @At(value = "INVOKE", target = "Ljava/util/Queue;add(Ljava/lang/Object;)Z", shift = At.Shift.AFTER),
@@ -171,7 +169,7 @@ public abstract class ContraptionMixin {
 	}
 
 	@Inject(method = "moveBlock",
-		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z"))
+		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/api/contraption/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z"))
 	private void createbigcannons$moveBlock$addFrontier$0(Level level, Direction forcedDirection, Queue<BlockPos> frontier,
 														  Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir,
 														  @Local(ordinal = 0) BlockPos pos,

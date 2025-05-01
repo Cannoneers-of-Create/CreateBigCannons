@@ -84,6 +84,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	public boolean assemble(Level level, BlockPos pos) throws AssemblyException {
 		if (!this.collectCannonBlocks(level, pos)) return false;
 		this.bounds = this.createBoundsFromExtensionLengths();
+        startMoving(level);
 		return !this.blocks.isEmpty();
 	}
 

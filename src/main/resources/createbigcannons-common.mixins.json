@@ -15,7 +15,8 @@
     "client.LightingMixin",
     "client.RPLClientHandlersMixin",
     "client.SoundEngineMixin",
-    "client.ValueSettingsClientMixin"
+    "client.ValueSettingsClientMixin",
+    "client.PitchOrientedContraptionEntityMixin"
   ],
   "mixins": [
     "ArmorStandMixin",
@@ -29,7 +30,9 @@
     "compat.create.AbstractContraptionEntityMixin",
     "compat.create.AllSoundEventsMixin",
     "compat.create.BeltMovementHandlerMixin",
+    "compat.create.ChassisBlockEntityMixin",
     "compat.create.ContraptionColliderMixin",
+    "compat.create.ContraptionMixin",
     "compat.create.FilterItemMixin",
     "compat.create.GantryContraptionMixin",
     "compat.create.MechanicalBearingBlockEntityMixin",

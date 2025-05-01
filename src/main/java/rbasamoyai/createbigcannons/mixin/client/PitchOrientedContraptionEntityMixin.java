@@ -1,12 +1,12 @@
 package rbasamoyai.createbigcannons.mixin.client;
-/* fixme
+import net.minecraft.util.Mth;
 
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 
-import dev.engine_room.flywheel.util.transform.TransformStack;
+import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -27,18 +27,17 @@ public abstract class PitchOrientedContraptionEntityMixin extends OrientedContra
 
 		stack.translate(-0.5f, 0.0f, -0.5f);
 
-		TransformStack tstack = TransformStack.cast(stack)
+		TransformStack tstack = TransformStack.of(stack)
 			.nudge(this.getId())
-			.centre()
-			.rotateY(yaw);
+			.center()
+			.rotateY(yaw + Mth.TWO_PI);
 
 		if (this.getInitialOrientation().getAxis() == Direction.Axis.X) {
 			tstack.rotateZ(pitch);
 		} else {
 			tstack.rotateX(pitch);
 		}
-		tstack.unCentre();
+		tstack.uncenter();
 	}
 
 }
-*/
