@@ -44,7 +44,7 @@ jobs:
                     cache-read-only: true
 
             -   name: Build jar
-                run: ./gradlew chiseledBuild
+                run: ./gradlew buildAndCollect
 
             -   name: Find jars
                 id: find_jars

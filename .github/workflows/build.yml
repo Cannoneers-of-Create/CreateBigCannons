@@ -50,7 +50,7 @@ jobs:
                         loom-cache
 
             -   name: Build jar
-                run: ./gradlew chiseledBuild
+                run: ./gradlew buildAndCollect
 
             -   name: Publish to Maven Repository
                 env:
@@ -58,7 +58,7 @@ jobs:
                     MAVEN_USER: ${{ secrets.MAVEN_USER }}
                     MAVEN_ACCESS_TOKEN: ${{ secrets.MAVEN_ACCESS_TOKEN }}
                 if: env.MAVEN_USER != '' && env.MAVEN_ACCESS_TOKEN != '' && env.GITHUB_TOKEN != ''
-                run: ./gradlew chiseledPublish -PrealRobotixMavenUsername=${{ secrets.MAVEN_USER }} -PrealRobotixMavenPassword=${{ secrets.MAVEN_ACCESS_TOKEN }}
+                run: ./gradlew publish -PrealRobotixMavenUsername=${{ secrets.MAVEN_USER }} -PrealRobotixMavenPassword=${{ secrets.MAVEN_ACCESS_TOKEN }}
 
             -   name: Find jars
                 id: find_jars
