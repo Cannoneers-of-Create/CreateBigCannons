@@ -16,14 +16,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountValueScreen;
-/* fixme
 
 @Mixin(ValueSettingsClient.class)
 public class ValueSettingsClientMixin {
 
 	@Shadow public BlockPos interactHeldPos;
 
-	@WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/foundation/gui/ScreenOpener;open(Lnet/minecraft/client/gui/screens/Screen;)V"))
+	@WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/createmod/catnip/gui/ScreenOpener;open(Lnet/minecraft/client/gui/screens/Screen;)V"))
 	private void createbigcannons$tick$openScreen(Screen screen, Operation<Void> original, @Local ValueSettingsBehaviour valueSettingBehaviour,
 												  @Local Player player, @Local BlockHitResult blockHitResult) {
 		if (valueSettingBehaviour instanceof FixedCannonMountScrollValueBehaviour fixedMountBehaviour) {
@@ -35,4 +34,4 @@ public class ValueSettingsClientMixin {
 	}
 
 }
-*/
+

@@ -14,7 +14,8 @@
     "client.LevelRendererMixin",
     "client.LightingMixin",
     "client.RPLClientHandlersMixin",
-    "client.SoundEngineMixin"
+    "client.SoundEngineMixin",
+    "client.ValueSettingsClientMixin"
   ],
   "mixins": [
     "ArmorStandMixin",
