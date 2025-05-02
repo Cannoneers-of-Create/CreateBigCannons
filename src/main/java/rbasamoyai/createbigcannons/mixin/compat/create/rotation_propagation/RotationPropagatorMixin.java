@@ -1,4 +1,5 @@
 package rbasamoyai.createbigcannons.mixin.compat.create.rotation_propagation;
+/*
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -104,3 +105,4 @@ public class RotationPropagatorMixin {
 	}
 
 }
+*/

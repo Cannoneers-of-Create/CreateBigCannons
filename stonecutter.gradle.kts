@@ -23,6 +23,7 @@ subprojects {
 		maven("https://maven.blamejared.com/")
 		maven("https://maven.tterrag.com/")
 		maven("https://maven.createmod.net/")
+        maven("https://maven.minecraftforge.net/")
 		strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
 		strictMaven("https://cursemaven.com", "curse.maven")
 		flatDir{
