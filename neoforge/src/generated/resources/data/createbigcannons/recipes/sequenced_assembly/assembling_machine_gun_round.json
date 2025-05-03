@@ -1,0 +1,49 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "createbigcannons:empty_machine_gun_round"
+  },
+  "loops": 1,
+  "results": [
+    {
+      "item": "createbigcannons:machine_gun_round"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "createbigcannons:partially_assembled_machine_gun_round"
+        },
+        {
+          "tag": "createbigcannons:gunpowder_pinch"
+        }
+      ],
+      "results": [
+        {
+          "item": "createbigcannons:partially_assembled_machine_gun_round"
+        }
+      ]
+    },
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "createbigcannons:partially_assembled_machine_gun_round"
+        },
+        {
+          "tag": "createbigcannons:nugget_copper"
+        }
+      ],
+      "results": [
+        {
+          "item": "createbigcannons:partially_assembled_machine_gun_round"
+        }
+      ]
+    }
+  ],
+  "transitionalItem": {
+    "item": "createbigcannons:partially_assembled_machine_gun_round"
+  }
+}

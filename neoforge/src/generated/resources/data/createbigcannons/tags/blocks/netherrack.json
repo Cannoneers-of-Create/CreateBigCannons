@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#forge:netherrack",
+      "required": false
+    },
+    {
+      "id": "#c:netherrack",
+      "required": false
+    },
+    {
+      "id": "#c:netherrack",
+      "required": false
+    }
+  ]
+}

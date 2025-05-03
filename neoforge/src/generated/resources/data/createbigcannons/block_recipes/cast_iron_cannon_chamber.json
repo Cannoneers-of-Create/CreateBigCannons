@@ -1,0 +1,6 @@
+{
+  "type": "createbigcannons:drill_boring",
+  "input": "createbigcannons:unbored_cast_iron_cannon_chamber",
+  "obey_facing_or_axis": true,
+  "result": "createbigcannons:cast_iron_cannon_chamber"
+}

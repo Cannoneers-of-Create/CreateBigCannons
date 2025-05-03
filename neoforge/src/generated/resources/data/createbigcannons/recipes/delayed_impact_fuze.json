@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "createbigcannons:timed_fuze"
+    },
+    {
+      "item": "createbigcannons:impact_fuze"
+    }
+  ],
+  "result": {
+    "item": "createbigcannons:delayed_impact_fuze"
+  }
+}

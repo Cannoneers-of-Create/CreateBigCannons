@@ -1,0 +1,6 @@
+{
+  "parent": "createbigcannons:block/autocannon/recoil_spring",
+  "textures": {
+    "material": "createbigcannons:block/autocannon/cast_iron_autocannon"
+  }
+}

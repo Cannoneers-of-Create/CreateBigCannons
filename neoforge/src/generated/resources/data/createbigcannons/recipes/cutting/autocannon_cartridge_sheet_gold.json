@@ -1,0 +1,19 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:sheet_copper"
+    }
+  ],
+  "results": [
+    {
+      "count": 3,
+      "item": "createbigcannons:autocannon_cartridge_sheet"
+    },
+    {
+      "chance": 0.25,
+      "count": 2,
+      "item": "createbigcannons:autocannon_cartridge_sheet"
+    }
+  ]
+}

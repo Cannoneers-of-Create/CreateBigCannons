@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:log_cannon_chamber",
+    "createbigcannons:wrought_iron_cannon_chamber",
+    "createbigcannons:cast_iron_cannon_chamber",
+    "createbigcannons:bronze_cannon_chamber",
+    "createbigcannons:steel_cannon_chamber",
+    "createbigcannons:built_up_steel_cannon_chamber",
+    "createbigcannons:thick_steel_cannon_chamber",
+    "createbigcannons:nethersteel_cannon_chamber",
+    "createbigcannons:built_up_nethersteel_cannon_chamber",
+    "createbigcannons:thick_nethersteel_cannon_chamber"
+  ]
+}

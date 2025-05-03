@@ -1,0 +1,19 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:guncotton"
+    },
+    {
+      "tag": "createbigcannons:guncotton"
+    },
+    {
+      "tag": "createbigcannons:guncotton"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:packed_guncotton"
+    }
+  ]
+}

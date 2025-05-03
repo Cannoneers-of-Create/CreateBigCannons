@@ -1,0 +1,14 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:sheet_brass"
+    }
+  ],
+  "results": [
+    {
+      "count": 6,
+      "item": "createbigcannons:autocannon_cartridge_sheet"
+    }
+  ]
+}

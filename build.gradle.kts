@@ -41,22 +41,27 @@ dependencies {
 	})
 
 	modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader_version")}")
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}")
-	modCompileOnly("com.simibubi.create:create-fabric-${mod.dep("minecraft_version")}:${mod.dep("create_fabric_version")}")
-	modCompileOnly("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}")
+	modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}+${minecraftVersion}")
+	modCompileOnly("com.simibubi.create:create-fabric-${minecraftVersion}:${mod.dep("create_fabric_version")}")
 
-	"io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras")}".let {
+	"io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras_version")}".let {
 		annotationProcessor(it)
 		implementation(it)
 	}
 
 	// Ritchie's Projectile Library
 	val rplSuffix = if (mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
-	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-fabric$rplSuffix") {
-		isTransitive = false
-	}
+    if (stonecutter.eval(minecraftVersion, ">=1.21")) {
+        modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-neoforge$rplSuffix") {
+            isTransitive = false
+        }
+    } else {
+        modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-fabric$rplSuffix") {
+            isTransitive = false
+        }
+    }
 
-	modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") {isTransitive=false}
+	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") {isTransitive=false}
 }
 
 

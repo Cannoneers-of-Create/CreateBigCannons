@@ -1,0 +1,9 @@
+{
+  "type": "createbigcannons:cannon_casting",
+  "cast_shape": "createbigcannons:cannon_end",
+  "fluid": {
+    "amount": 1,
+    "fluidTag": "forge:molten_bronze"
+  },
+  "result": "createbigcannons:bronze_cannon_end"
+}

@@ -1,0 +1,24 @@
+{
+  "type": "create:mechanical_crafting",
+  "acceptMirrored": true,
+  "key": {
+    "I": {
+      "tag": "createbigcannons:ingot_iron"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "T": {
+      "tag": "createbigcannons:high_explosive_materials"
+    }
+  },
+  "pattern": [
+    " I ",
+    "ITI",
+    "ITI",
+    " S "
+  ],
+  "result": {
+    "item": "createbigcannons:he_shell"
+  }
+}

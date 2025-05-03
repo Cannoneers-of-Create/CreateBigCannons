@@ -1,0 +1,7 @@
+{
+  "type": "createbigcannons:built_up_heating",
+  "layers": [
+    "createbigcannons:very_small_nethersteel_cannon_layer"
+  ],
+  "result": "createbigcannons:nethersteel_cannon_barrel"
+}

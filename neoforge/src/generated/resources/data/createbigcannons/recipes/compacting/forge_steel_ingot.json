@@ -1,0 +1,22 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:item_tags_populated",
+      "values": [
+        "createbigcannons:ingot_steel"
+      ]
+    }
+  ],
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "amount": 90,
+      "fluidTag": "c:molten_steel"
+    }
+  ],
+  "results": [
+    {
+      "item": "alloyed:steel_ingot"
+    }
+  ]
+}

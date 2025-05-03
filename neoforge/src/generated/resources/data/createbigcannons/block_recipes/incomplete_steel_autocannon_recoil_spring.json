@@ -1,0 +1,6 @@
+{
+  "type": "createbigcannons:drill_boring",
+  "input": "createbigcannons:unbored_steel_autocannon_recoil_spring",
+  "obey_facing_or_axis": true,
+  "result": "createbigcannons:incomplete_steel_autocannon_recoil_spring"
+}

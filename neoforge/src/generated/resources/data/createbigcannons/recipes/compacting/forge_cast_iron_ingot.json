@@ -1,0 +1,14 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "amount": 90,
+      "fluidTag": "c:molten_cast_iron"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:cast_iron_ingot"
+    }
+  ]
+}

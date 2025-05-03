@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "tag": "createbigcannons:ingot_cast_iron"
+    },
+    "I": {
+      "tag": "createbigcannons:ingot_iron"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "pattern": [
+    " C ",
+    "III",
+    " S "
+  ],
+  "result": {
+    "item": "createbigcannons:ap_shot"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "createbigcannons:block/autocannon/extractor",
+  "textures": {
+    "material": "createbigcannons:block/autocannon/bronze_autocannon"
+  }
+}

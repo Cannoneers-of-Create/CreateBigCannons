@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "createbigcannons:nethersteel_ingot"
+    },
+    "S": {
+      "item": "create:shaft"
+    }
+  },
+  "pattern": [
+    " S ",
+    "III"
+  ],
+  "result": {
+    "item": "createbigcannons:nethersteel_screw_lock"
+  },
+  "show_notification": true
+}

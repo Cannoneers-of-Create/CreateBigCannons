@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "createbigcannons:gunpowder"
+    },
+    "K": {
+      "tag": "minecraft:wooden_buttons"
+    },
+    "L": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "pattern": [
+    " K ",
+    "LLL",
+    " G "
+  ],
+  "result": {
+    "item": "createbigcannons:log_cannon_end"
+  },
+  "show_notification": true
+}

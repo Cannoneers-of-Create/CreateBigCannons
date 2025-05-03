@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "tag": "createbigcannons:stone"
+    },
+    "s": {
+      "tag": "minecraft:wooden_slabs"
+    }
+  },
+  "pattern": [
+    " S ",
+    "SSS",
+    " s "
+  ],
+  "result": {
+    "item": "createbigcannons:mortar_stone"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "createbigcannons:block/autocannon/unbored_breech",
+  "textures": {
+    "material": "createbigcannons:block/autocannon/bronze_autocannon",
+    "material1": "createbigcannons:block/autocannon/bronze_autocannon_1"
+  }
+}

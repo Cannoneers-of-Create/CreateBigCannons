@@ -72,7 +72,7 @@ dependencies {
 	})
 	"forge"("net.minecraftforge:forge:$minecraftVersion-${common.mod.dep("forge_loader")}")
 
-	"io.github.llamalad7:mixinextras-forge:${mod.dep("mixin_extras")}".let {
+	"io.github.llamalad7:mixinextras-forge:${mod.dep("mixin_extras_version")}".let {
 		annotationProcessor(it)
 		implementation(it)
 	}
@@ -86,30 +86,23 @@ dependencies {
 
 	// Development QOL
 	modLocalRuntime("mezz.jei:jei-${minecraftVersion}-forge:${mod.dep("jei_version")}") { isTransitive = false }
-
-	// if you would like to add integration with JEI, uncomment this line.
-	modCompileOnly("mezz.jei:jei-${minecraftVersion}-forge-api:${mod.dep("jei_version")}")
-
-	modImplementation("curse.maven:spark-361579:${mod.dep("spark_forge_file")}") // Spark
+	modRuntimeOnly("maven.modrinth:spark:${common.mod.dep("spark_version")}-${loader}") // Spark
 
 	// Ritchie's Projectile Library
 	val rplSuffix = if (mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-forge$rplSuffix"){ isTransitive = false })
 	// Create: Unify
-	// modImplementation("maven.modrinth:create-unify:${mod.dep("unify_forge_file")}") fixme
-
-	compileOnly("io.github.llamalad7:mixinextras-common:${mod.dep("mixinextras_version")}")
-	annotationProcessor(include("io.github.llamalad7:mixinextras-forge:${mod.dep("mixinextras_version")}"){})
+	// modImplementation("maven.modrinth:create-unify:${minecraftVersion}-${mod.dep("unify_forge_version")}") fixme
 
 	// Fixes, integration
-	// "modImplementation"("curse.maven:free-cam-557076:${mod.dep("freecam_forge_file")}") // Freecam
+	modCompileOnly("mezz.jei:jei-${minecraftVersion}-forge-api:${mod.dep("jei_version")}")
 	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-forge") { isTransitive = false }
-	modImplementation("curse.maven:framedblocks-441647:${mod.dep("framedblocks_forge_file")}")
+	modImplementation("maven.modrinth:framedblocks:${mod.dep("framedblocks_version")}")
 	forgeRuntimeLibrary("com.github.ben-manes.caffeine:caffeine:3.1.1") // For FramedBlocks
 
 	// Curios
-	modRuntimeOnly("top.theillusivec4.curios:curios-forge:${mod.dep("curios_forge_version")}")
-	modCompileOnly("top.theillusivec4.curios:curios-forge:${mod.dep("curios_forge_version")}:api")
+	modRuntimeOnly("top.theillusivec4.curios:curios-forge:${mod.dep("curios_version")}+${minecraftVersion}")
+	modCompileOnly("top.theillusivec4.curios:curios-forge:${mod.dep("curios_version")}+${minecraftVersion}:api")
 
 	commonBundle(project(common.path, "namedElements")) { isTransitive = false }
 	shadowBundle(project(common.path, "transformProductionForge")) { isTransitive = false }
@@ -160,9 +153,9 @@ tasks.processResources {
 		"minecraft_version" to minecraftVersion,
 		"create_version" to mod.dep("create_forge_version").substringBefore("-"),
 		"unify_version" to mod.dep("unify_forge_version"),
-		"copycats_requirement" to mod.dep("copycats_requirement_forge"),
-		"framedblocks_requirement" to mod.dep("framedblocks_requirement_forge"),
-		"curios_requirement" to mod.dep("curios_requirement_forge")
+		"copycats_version" to mod.dep("copycats_version"),
+		"framedblocks_version" to mod.dep("framedblocks_version"),
+		"curios_version" to mod.dep("curios_version")
 	)
 }
 

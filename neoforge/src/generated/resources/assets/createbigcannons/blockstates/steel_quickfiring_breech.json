@@ -1,0 +1,56 @@
+{
+  "variants": {
+    "axis_along_first=false,facing=down": {
+      "model": "createbigcannons:block/steel_quickfiring_breech_rotated",
+      "x": 180
+    },
+    "axis_along_first=false,facing=east": {
+      "model": "createbigcannons:block/steel_quickfiring_breech",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=false,facing=north": {
+      "model": "createbigcannons:block/steel_quickfiring_breech_rotated",
+      "x": 90
+    },
+    "axis_along_first=false,facing=south": {
+      "model": "createbigcannons:block/steel_quickfiring_breech_rotated",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=false,facing=up": {
+      "model": "createbigcannons:block/steel_quickfiring_breech_rotated"
+    },
+    "axis_along_first=false,facing=west": {
+      "model": "createbigcannons:block/steel_quickfiring_breech",
+      "x": 90,
+      "y": 270
+    },
+    "axis_along_first=true,facing=down": {
+      "model": "createbigcannons:block/steel_quickfiring_breech",
+      "x": 180
+    },
+    "axis_along_first=true,facing=east": {
+      "model": "createbigcannons:block/steel_quickfiring_breech_rotated",
+      "x": 90,
+      "y": 90
+    },
+    "axis_along_first=true,facing=north": {
+      "model": "createbigcannons:block/steel_quickfiring_breech",
+      "x": 90
+    },
+    "axis_along_first=true,facing=south": {
+      "model": "createbigcannons:block/steel_quickfiring_breech",
+      "x": 90,
+      "y": 180
+    },
+    "axis_along_first=true,facing=up": {
+      "model": "createbigcannons:block/steel_quickfiring_breech"
+    },
+    "axis_along_first=true,facing=west": {
+      "model": "createbigcannons:block/steel_quickfiring_breech_rotated",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

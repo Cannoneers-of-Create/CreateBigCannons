@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "tag": "createbigcannons:ingot_iron"
+    },
+    "i": {
+      "tag": "createbigcannons:nugget_iron"
+    }
+  },
+  "pattern": [
+    "iii",
+    "iIi",
+    "iii"
+  ],
+  "result": {
+    "count": 2,
+    "item": "createbigcannons:shot_balls"
+  },
+  "show_notification": true
+}

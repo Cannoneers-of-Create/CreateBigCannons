@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "createbigcannons:sheet_brass"
+    },
+    "I": {
+      "tag": "createbigcannons:sheet_iron"
+    },
+    "V": {
+      "tag": "create:valve_handles"
+    },
+    "Z": {
+      "item": "create:blaze_burner"
+    }
+  },
+  "pattern": [
+    "VI ",
+    "BZB",
+    " B "
+  ],
+  "result": {
+    "item": "createbigcannons:cannon_welder"
+  },
+  "show_notification": true
+}

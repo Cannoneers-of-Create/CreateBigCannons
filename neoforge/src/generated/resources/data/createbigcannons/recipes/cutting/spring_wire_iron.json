@@ -1,0 +1,13 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:sheet_iron"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:spring_wire"
+    }
+  ]
+}

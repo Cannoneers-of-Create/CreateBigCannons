@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:item_tags_populated",
+      "values": [
+        "createbigcannons:ingot_bronze"
+      ]
+    }
+  ],
+  "type": "createbigcannons:melting",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:ingot_bronze"
+    }
+  ],
+  "processingTime": 180,
+  "results": [
+    {
+      "amount": 90,
+      "fluid": "createbigcannons:molten_bronze"
+    }
+  ]
+}

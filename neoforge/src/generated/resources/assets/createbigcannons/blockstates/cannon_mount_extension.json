@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_extension",
+      "x": 180
+    },
+    "facing=east": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_extension",
+      "x": 90,
+      "y": 90
+    },
+    "facing=north": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_extension",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_extension",
+      "x": 90,
+      "y": 180
+    },
+    "facing=up": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_extension"
+    },
+    "facing=west": {
+      "model": "createbigcannons:block/cannon_mount/cannon_mount_extension",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

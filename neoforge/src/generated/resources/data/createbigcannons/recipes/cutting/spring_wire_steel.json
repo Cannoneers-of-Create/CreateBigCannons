@@ -1,0 +1,14 @@
+{
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:sheet_steel"
+    }
+  ],
+  "results": [
+    {
+      "count": 3,
+      "item": "createbigcannons:spring_wire"
+    }
+  ]
+}

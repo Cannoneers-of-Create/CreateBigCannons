@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "createbigcannons:solid_shot",
+    "createbigcannons:he_shell",
+    "createbigcannons:shrapnel_shell",
+    "createbigcannons:ap_shot",
+    "createbigcannons:traffic_cone",
+    "createbigcannons:ap_shell",
+    "createbigcannons:fluid_shell",
+    "createbigcannons:smoke_shell",
+    "createbigcannons:bag_of_grapeshot",
+    "createbigcannons:mortar_stone",
+    "createbigcannons:drop_mortar_shell"
+  ]
+}

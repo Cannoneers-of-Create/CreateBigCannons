@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_bars"
+    },
+    "C": {
+      "tag": "createbigcannons:gems_quartz"
+    },
+    "I": {
+      "tag": "createbigcannons:ingot_iron"
+    },
+    "R": {
+      "tag": "createbigcannons:dusts_redstone"
+    }
+  },
+  "pattern": [
+    " A ",
+    "RCR",
+    " I "
+  ],
+  "result": {
+    "count": 4,
+    "item": "createbigcannons:proximity_fuze"
+  },
+  "show_notification": true
+}

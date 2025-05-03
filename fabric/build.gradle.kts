@@ -95,10 +95,10 @@ dependencies {
 		officialMojangMappings { nameSyntheticMembers = false }
 		parchment("org.parchmentmc.data:parchment-${minecraftVersion}:${mod.dep("parchment_version")}@zip")
 	})
-	modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
+	modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader_version")}")
 	modApi("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}")
 
-	"io.github.llamalad7:mixinextras-fabric:${mod.dep("mixin_extras")}".let {
+	"io.github.llamalad7:mixinextras-fabric:${mod.dep("mixin_extras_version")}".let {
 		annotationProcessor(it)
 		implementation(it)
 	}
@@ -108,6 +108,7 @@ dependencies {
 
 	// Development QOL
 	modLocalRuntime("maven.modrinth:lazydfu:${mod.dep("lazydfu_version")}")
+	modLocalRuntime("maven.modrinth:spark:${mod.dep("spark_version")}-${loader}") // Spark
 	modImplementation("com.terraformersmc:modmenu:${mod.dep("modmenu_version")}")
 
 	// Recipe Viewers - Create Fabric supports JEI, REI, and EMI.
@@ -115,7 +116,7 @@ dependencies {
 	when (mod.dep("fabric_recipe_viewer").lowercase(Locale.ROOT)) {
 		"jei" -> modLocalRuntime("mezz.jei:jei-${minecraftVersion}-fabric:${mod.dep("jei_version")}")
 		"rei" -> modLocalRuntime("me.shedaniel:RoughlyEnoughItems-fabric:${mod.dep("rei_version")}")
-		"emi" -> modLocalRuntime("dev.emi:emi-fabric:${mod.dep("emi_version")}")
+		"emi" -> modLocalRuntime("dev.emi:emi-fabric:${mod.dep("emi_version")}+${minecraftVersion}")
 		"disabled" -> {}
 		else -> println("Unknown recipe viewer specified: ${mod.dep("fabric_recipe_viewer")}. Must be JEI, REI, EMI, or disabled.")
 	}
@@ -126,20 +127,18 @@ dependencies {
 	modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:${mod.dep("rei_version")}")
 	modCompileOnly("dev.emi:emi-fabric:${mod.dep("emi_version")}")
 
-	modLocalRuntime("curse.maven:spark-361579:${mod.dep("spark_fabric_file")}") // Spark
 
 	// Ritchie's Projectile Library
 	val rplSuffix = if (mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
 	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-fabric" + rplSuffix) { isTransitive = false })
 
 	// Fixes, integration
-	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
-	modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") { isTransitive = false }
+	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") { isTransitive = false }
 	// Trinkets and CCA
-	modLocalRuntime("dev.emi:trinkets:${mod.dep("trinkets_fabric_version")}")
-	modCompileOnly("dev.emi:trinkets:${mod.dep("trinkets_fabric_version")}") { exclude(group = "com.terraformersmc") }
-	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${mod.dep("cca_fabric_version")}")
-	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${mod.dep("cca_fabric_version")}")
+	modLocalRuntime("dev.emi:trinkets:${mod.dep("trinkets_version")}")
+	modCompileOnly("dev.emi:trinkets:${mod.dep("trinkets_version")}") { exclude(group = "com.terraformersmc") }
+	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${mod.dep("cca_version")}")
+	modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${mod.dep("cca_version")}")
 
 	commonBundle(project(common.path, "namedElements")) { isTransitive = false }
 	shadowBundle(project(common.path, "transformProductionFabric")) { isTransitive = false }

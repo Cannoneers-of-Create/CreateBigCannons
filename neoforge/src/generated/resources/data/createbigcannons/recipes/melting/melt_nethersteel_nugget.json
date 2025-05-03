@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:item_tags_populated",
+      "values": [
+        "createbigcannons:nugget_nethersteel"
+      ]
+    }
+  ],
+  "type": "createbigcannons:melting",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:nugget_nethersteel"
+    }
+  ],
+  "processingTime": 20,
+  "results": [
+    {
+      "amount": 10,
+      "fluid": "createbigcannons:molten_nethersteel"
+    }
+  ]
+}

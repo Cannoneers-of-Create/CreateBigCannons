@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "create:andesite_casing"
+    },
+    "G": {
+      "tag": "createbigcannons:gunpowder"
+    },
+    "I": {
+      "tag": "createbigcannons:sheet_iron"
+    },
+    "S": {
+      "item": "create:shaft"
+    }
+  },
+  "pattern": [
+    "ISI",
+    "SCS",
+    "GSG"
+  ],
+  "result": {
+    "item": "createbigcannons:cannon_mount"
+  },
+  "show_notification": true
+}

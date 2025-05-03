@@ -1,0 +1,11 @@
+{
+  "parent": "createbigcannons:block/drop_mortar_end",
+  "textures": {
+    "bottom": "createbigcannons:block/cannon_end/wrought_iron_cannon_end_bottom",
+    "knob": "createbigcannons:block/cannon_end/wrought_iron_cannon_end_knob",
+    "particle": "createbigcannons:block/cannon_end/wrought_iron_cannon_end_top",
+    "side": "createbigcannons:block/cannon_end/wrought_iron_cannon_end_side",
+    "spike": "createbigcannons:block/cannon_end/wrought_iron_drop_mortar_end_spike",
+    "top": "createbigcannons:block/cannon_end/wrought_iron_cannon_end_top"
+  }
+}

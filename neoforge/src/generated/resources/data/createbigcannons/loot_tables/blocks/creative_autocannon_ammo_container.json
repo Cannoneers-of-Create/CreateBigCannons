@@ -1,0 +1,53 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createbigcannons:creative_autocannon_ammo_container"
+        }
+      ],
+      "functions": [
+        {
+          "function": "minecraft:copy_name",
+          "source": "block_entity"
+        },
+        {
+          "function": "minecraft:copy_nbt",
+          "ops": [
+            {
+              "op": "replace",
+              "source": "Ammo",
+              "target": "Ammo"
+            },
+            {
+              "op": "replace",
+              "source": "Tracers",
+              "target": "Tracers"
+            },
+            {
+              "op": "replace",
+              "source": "TracerSpacing",
+              "target": "TracerSpacing"
+            },
+            {
+              "op": "replace",
+              "source": "CurrentIndex",
+              "target": "CurrentIndex"
+            }
+          ],
+          "source": "block_entity"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createbigcannons:blocks/creative_autocannon_ammo_container"
+}
