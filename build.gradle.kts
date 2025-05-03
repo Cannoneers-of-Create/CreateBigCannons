@@ -31,6 +31,14 @@ repositories {
 loom {
 	silentMojangMappingsLicense()
 	accessWidenerPath = rootProject.file("src/main/resources/createbigcannons.accesswidener")
+    forge.convertAccessWideners = true
+    forge.mixinConfigs("createbigcannons-common.mixins.json")
+    forge.useCustomMixin = false
+    runConfigs.all {
+        isIdeConfigGenerated = true
+        runDir = "../../../run"
+        vmArgs("-Dmixin.debug.export=true")
+    }
 }
 
 dependencies {
@@ -39,29 +47,32 @@ dependencies {
 		officialMojangMappings { nameSyntheticMembers = false }
 		parchment("org.parchmentmc.data:parchment-${minecraftVersion}:${mod.dep("parchment_version")}@zip")
 	})
+    forge("net.minecraftforge:forge:$minecraftVersion-${mod.dep("forge_loader")}")
 
-	modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader_version")}")
-	modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}+${minecraftVersion}")
-	modCompileOnly("com.simibubi.create:create-fabric-${minecraftVersion}:${mod.dep("create_fabric_version")}")
+    modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader_version")}")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}")
 
-	"io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras_version")}".let {
-		annotationProcessor(it)
-		implementation(it)
-	}
+    modImplementation("com.simibubi.create:create-${minecraftVersion}:${mod.dep("create_forge_version")}:slim") { isTransitive = false }
+    modCompileOnly("net.createmod.ponder:Ponder-Forge-${minecraftVersion}:${mod.dep("ponder_forge_version")}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraftVersion}:${mod.dep("flywheel_forge_version")}")
+    modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraftVersion}:${mod.dep("flywheel_forge_version")}")
+    modCompileOnly("com.tterrag.registrate:Registrate:${mod.dep("registrate_forge_version")}")
+
+    "io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras")}".let {
+        annotationProcessor(it)
+        implementation(it)
+    }
+
+    compileOnly("io.github.llamalad7:mixinextras-common:${mod.dep("mixinextras_version")}")
+    annotationProcessor(include("io.github.llamalad7:mixinextras-forge:${mod.dep("mixinextras_version")}"){})
 
 	// Ritchie's Projectile Library
 	val rplSuffix = if (mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
-    if (stonecutter.eval(minecraftVersion, ">=1.21")) {
-        modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-neoforge$rplSuffix") {
-            isTransitive = false
-        }
-    } else {
-        modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-fabric$rplSuffix") {
-            isTransitive = false
-        }
-    }
+	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-forge$rplSuffix") {
+		isTransitive = false
+	}
 
-	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") {isTransitive=false}
+	modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-forge") {isTransitive=false}
 }
 
 

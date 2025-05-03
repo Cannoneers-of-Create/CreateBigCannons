@@ -15,7 +15,6 @@
     "client.LightingMixin",
     "client.RPLClientHandlersMixin",
     "client.SoundEngineMixin",
-    "client.ValueSettingsClientMixin",
     "client.PitchOrientedContraptionEntityMixin"
   ],
   "mixins": [
@@ -30,15 +29,11 @@
     "compat.create.AbstractContraptionEntityMixin",
     "compat.create.AllSoundEventsMixin",
     "compat.create.BeltMovementHandlerMixin",
-    "compat.create.ChassisBlockEntityMixin",
     "compat.create.ContraptionColliderMixin",
-    "compat.create.ContraptionMixin",
-    "compat.create.FilterItemMixin",
     "compat.create.GantryContraptionMixin",
     "compat.create.MechanicalBearingBlockEntityMixin",
     "compat.create.MechanicalPistonBlockMixin",
     "compat.create.PistonContraptionMixin",
-    "compat.create.PulleyBlockEntityMixin",
     "compat.create.PulleyBlockMixin",
     "compat.create.PulleyContraptionMixin",
     "compat.create.RopeBlockBaseMixin",
@@ -46,7 +41,6 @@
     "compat.create.rotation_propagation.KineticBlockAccessor",
     "compat.create.rotation_propagation.KineticBlockEntityMixin",
     "compat.create.rotation_propagation.KineticNetworkMixin",
-    "compat.create.rotation_propagation.RotationPropagatorMixin"
   ],
   "injectors": {
     "defaultRequire": 1

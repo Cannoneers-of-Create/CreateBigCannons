@@ -70,7 +70,7 @@ public class BoringScrapLoot implements LootTableSubProvider {
 	}
 
 	protected static LootTable.Builder dropAmount(ItemLike drop, int min, int max) {
-		int maxSz = new ItemStack(drop).getMaxStackSize();
+		/*int maxSz = new ItemStack(drop).getMaxStackSize();
 		LootTable.Builder table = LootTable.lootTable();
 		for (int i = 0; i < Mth.floor((float) min / maxSz); ++i)
 			table.withPool(LootPool.lootPool()
@@ -86,7 +86,8 @@ public class BoringScrapLoot implements LootTableSubProvider {
 		}
 		return table.withPool(LootPool.lootPool()
 				.add(LootItem.lootTableItem(drop))
-				.apply(SetItemCountFunction.setCount(UniformGenerator.between(base, base + diff))));
+				.apply(SetItemCountFunction.setCount(UniformGenerator.between(base, base + diff))));*/
+        return null;
 	}
 
 }
