@@ -7,7 +7,7 @@ plugins {
 	id("architectury-plugin") version "3.4.+" apply false
 	id("com.gradleup.shadow") version "8.3.5" apply false
 }
-stonecutter active "1.20.1" /* [SC] DO NOT EDIT */
+stonecutter active "1.21.1" /* [SC] DO NOT EDIT */
 
 subprojects {
 	apply(plugin = "maven-publish")
@@ -24,6 +24,8 @@ subprojects {
 		maven("https://maven.tterrag.com/")
 		maven("https://maven.createmod.net/")
         maven("https://maven.minecraftforge.net/")
+        maven("https://maven.neoforged.net/releases/")
+        maven("https://mvn.devos.one/snapshots")
 		strictMaven("https://api.modrinth.com/maven", "maven.modrinth")
 		strictMaven("https://cursemaven.com", "curse.maven")
 		flatDir{

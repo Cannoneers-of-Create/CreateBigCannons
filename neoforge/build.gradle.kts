@@ -56,6 +56,7 @@ loom {
 repositories {
     maven("https://maven.neoforged.net/releases/")
 	maven("https://maven.theillusivec4.top/") // Curios
+	maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
 }
 
 dependencies {
@@ -73,22 +74,22 @@ dependencies {
 
 	// Create and its dependencies
 	modImplementation("com.simibubi.create:create-${minecraftVersion}:${common.mod.dep("create_forge_version")}:slim") { isTransitive = false }
-	modImplementation("net.createmod.ponder:Ponder-Forge-${minecraftVersion}:${common.mod.dep("ponder_forge_version")}")
-	modCompileOnly("dev.engine-room.flywheel:flywheel-forge-api-${minecraftVersion}:${common.mod.dep("flywheel_forge_version")}")
-	modRuntimeOnly("dev.engine-room.flywheel:flywheel-forge-${minecraftVersion}:${common.mod.dep("flywheel_forge_version")}")
+	modImplementation("net.createmod.ponder:Ponder-NeoForge-${minecraftVersion}:${common.mod.dep("ponder_forge_version")}")
+	modCompileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraftVersion}:${common.mod.dep("flywheel_forge_version")}")
+	modRuntimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraftVersion}:${common.mod.dep("flywheel_forge_version")}")
 	modImplementation("com.tterrag.registrate:Registrate:${common.mod.dep("registrate_forge_version")}")
 
 	// Development QOL
-	modLocalRuntime("mezz.jei:jei-${minecraftVersion}-forge:${common.mod.dep("jei_version")}") { isTransitive = false }
+	modLocalRuntime("mezz.jei:jei-${minecraftVersion}-neoforge:${common.mod.dep("jei_version")}") { isTransitive = false }
 
 	// if you would like to add integration with JEI, uncomment this line.
-	modCompileOnly("mezz.jei:jei-${minecraftVersion}-forge-api:${common.mod.dep("jei_version")}")
+	modCompileOnly("mezz.jei:jei-${minecraftVersion}-neoforge-api:${common.mod.dep("jei_version")}")
 
-	modImplementation("curse.maven:spark-361579:${common.mod.dep("spark_forge_file")}") // Spark
+	//modImplementation("curse.maven:spark-361579:${common.mod.dep("spark_forge_file")}") // Spark
 
 	// Ritchie's Projectile Library
 	val rplSuffix = if (common.mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
-	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${common.mod.dep("rpl_version")}+mc.${minecraftVersion}-forge$rplSuffix"){ isTransitive = false })
+	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${common.mod.dep("rpl_version")}+mc.${minecraftVersion}-neoforge$rplSuffix"){ isTransitive = false })
 	// Create: Unify
 	// modImplementation("maven.modrinth:create-unify:${mod.dep("unify_forge_file")}") fixme
 
@@ -98,8 +99,8 @@ dependencies {
 	forgeRuntimeLibrary("com.github.ben-manes.caffeine:caffeine:3.1.1") // For FramedBlocks
 
 	// Curios
-	modRuntimeOnly("top.theillusivec4.curios:curios-forge:${common.mod.dep("curios_forge_version")}")
-	modCompileOnly("top.theillusivec4.curios:curios-forge:${common.mod.dep("curios_forge_version")}:api")
+	modRuntimeOnly("top.theillusivec4.curios:curios-neoforge:${common.mod.dep("curios_version")}+${minecraftVersion}")
+	modCompileOnly("top.theillusivec4.curios:curios-neoforge:${common.mod.dep("curios_version")}+${minecraftVersion}:api")
 
     commonBundle(project(common.path, "namedElements")) { isTransitive = false }
     shadowBundle(project(common.path, "transformProductionNeoForge")) { isTransitive = false }
@@ -146,7 +147,7 @@ tasks.processResources {
         "id" to mod.id,
         "name" to mod.id,
         "version" to mod.version,
-        "forge_version" to common.mod.dep("forge_loader").substringBefore("."), // only specify major version of forge
+        "forge_version" to common.mod.dep("forge_loader_version").substringBefore("."), // only specify major version of forge
         "minecraft_version" to minecraftVersion,
         "create_version" to mod.dep("create_forge_version").substringBefore("-"),
         "unify_version" to mod.dep("unify_forge_version"),

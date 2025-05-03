@@ -6,9 +6,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.PacketDistributor;
-import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
-import rbasamoyai.createbigcannons.forge.network.ForgeClientPacket;
-import rbasamoyai.createbigcannons.forge.network.ForgeServerPacket;
+import rbasamoyai.createbigcannons.neoforge.network.CBCNetworkForge;
+import rbasamoyai.createbigcannons.neoforge.network.ForgeClientPacket;
+import rbasamoyai.createbigcannons.neoforge.network.ForgeServerPacket;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class NetworkPlatformImpl {

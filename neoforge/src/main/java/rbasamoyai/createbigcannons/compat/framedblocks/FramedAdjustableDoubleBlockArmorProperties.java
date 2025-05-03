@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks.MimickingBlockArmorUnit;
-import rbasamoyai.createbigcannons.forge.mixin.compat.FramedAdjustableDoubleBlockEntityAccessor;
+import rbasamoyai.createbigcannons.neoforge.mixin.compat.FramedAdjustableDoubleBlockEntityAccessor;
 import xfacthd.framedblocks.common.blockentity.doubled.FramedAdjustableDoubleBlockEntity;
 
 public class FramedAdjustableDoubleBlockArmorProperties extends FramedDoubleBlockArmorProperties {

@@ -12,9 +12,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import com.simibubi.create.api.stress.BlockStressValues;
 
 import net.createmod.catnip.config.ConfigBase;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.config.ModConfig;
-import rbasamoyai.createbigcannons.CreateBigCannons;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class CBCConfigs {
 
@@ -46,7 +45,7 @@ public class CBCConfigs {
     }
 
     private static <T extends ConfigBase> T register(Supplier<T> factory, ModConfig.Type side) {
-        Pair<T, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(builder -> {
+        Pair<T, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(builder -> {
             T config = factory.get();
             config.registerAll(builder);
             return config;
@@ -58,7 +57,7 @@ public class CBCConfigs {
         return config;
     }
 
-    public static void register(BiConsumer<ModConfig.Type, ForgeConfigSpec> cons) {
+    public static void register(BiConsumer<ModConfig.Type, ModConfigSpec> cons) {
         client = register(CBCCfgClient::new, ModConfig.Type.CLIENT);
         common = register(CBCCfgCommon::new, ModConfig.Type.COMMON);
         server = register(CBCCfgServer::new, ModConfig.Type.SERVER);
