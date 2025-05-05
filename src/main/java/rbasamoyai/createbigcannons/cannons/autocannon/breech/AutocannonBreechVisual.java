@@ -1,22 +1,22 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
-import dev.engine_room.flywheel.api.instance.Instance;
-import dev.engine_room.flywheel.api.visual.DynamicVisual;
-import dev.engine_room.flywheel.api.visualization.VisualizationContext;
-import dev.engine_room.flywheel.lib.instance.InstanceTypes;
-import dev.engine_room.flywheel.lib.instance.OrientedInstance;
-
-import dev.engine_room.flywheel.lib.model.Models;
-import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
-
-import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
+import java.util.function.Consumer;
 
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import com.mojang.math.Axis;
 
+import dev.engine_room.flywheel.api.instance.Instance;
+import dev.engine_room.flywheel.api.instance.Instancer;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
+import dev.engine_room.flywheel.api.visualization.VisualizationContext;
+import dev.engine_room.flywheel.lib.instance.InstanceTypes;
+import dev.engine_room.flywheel.lib.instance.OrientedInstance;
+import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
@@ -29,33 +29,35 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
-import java.util.function.Consumer;
-
 public class AutocannonBreechVisual extends AbstractBlockEntityVisual<AbstractAutocannonBreechBlockEntity> implements SimpleDynamicVisual {
 
-	private OrientedInstance ejector;
-	private OrientedInstance seat;
-	private OrientedInstance ammoContainer;
+	private final OrientedInstance ejector;
+	private final OrientedInstance seat;
+	private final OrientedInstance ammoContainer;
 	private DyeColor seatColor;
 	//private final OrientedData shell;
 
-	private Direction facing;
+	private final Direction facing;
 	private boolean isFilled = false;
 	private Item magazineItem = null;
 
 	public AutocannonBreechVisual(VisualizationContext ctx, AbstractAutocannonBreechBlockEntity blockEntity, float partialTick) {
 		super(ctx, blockEntity, partialTick);
+
         this.facing = this.blockState.getValue(BlockStateProperties.FACING);
         Quaternionf q = Axis.YP.rotationDegrees(this.facing.getAxis().isVertical() ? 180 : 0);
-        this.ejector = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(getPartialModelForState())).createInstance();
-        this.ejector.rotation(q);
+        this.ejector = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(getPartialModelForState(), this.facing))
+            .createInstance()
+            .rotation(q);
 
         this.seatColor = this.blockEntity.getSeatColor();
 
-        this.seat = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCBlockPartials.autocannonSeatFor(this.seatColor))).createInstance();
-        this.seat.rotation(q).position(this.getVisualPosition());
+        this.seat = this.seatInstancer()
+            .createInstance()
+            .rotation(q)
+            .position(this.getVisualPosition());
 
-        this.ammoContainer = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.block(getAmmoContainerModel())).createInstance();
+        this.ammoContainer = this.containerInstancer().createInstance();
         boolean flag = this.facing.getAxis().isVertical();
         Quaternionf q1;
         if (flag) {
@@ -77,6 +79,25 @@ public class AutocannonBreechVisual extends AbstractBlockEntityVisual<AbstractAu
         this.updateTransforms(partialTick);
 	}
 
+    protected void refreshSeat() {
+        this.seatColor = this.blockEntity.getSeatColor();
+        this.seatInstancer().stealInstance(this.seat);
+    }
+
+    protected Instancer<OrientedInstance> seatInstancer() {
+        return this.instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCBlockPartials.autocannonSeatFor(this.seatColor), this.facing));
+    }
+
+    protected void refreshContainer() {
+        this.isFilled = this.isFilled();
+        this.magazineItem = this.getMagazineItem();
+        this.containerInstancer().stealInstance(this.ammoContainer);
+    }
+
+    protected Instancer<OrientedInstance> containerInstancer() {
+        return this.instancerProvider().instancer(InstanceTypes.ORIENTED, Models.block(this.getAmmoContainerModel()));
+    }
+
 	@Override
 	public void beginFrame(DynamicVisual.Context ctx) {
 		this.updateTransforms(ctx.partialTick());
@@ -84,10 +105,11 @@ public class AutocannonBreechVisual extends AbstractBlockEntityVisual<AbstractAu
 
 	private void updateTransforms(float partialTick) {
 		if (this.blockState.getValue(AutocannonBreechBlock.HANDLE)) {
-			this.ejector.color((byte) 255, (byte) 255, (byte) 255, (byte) 0);
-			this.seat.color((byte) 255, (byte) 255, (byte) 255, (byte) (this.seatColor == null ? 0 : 255));
+			this.ejector.setVisible(false);
+			this.seat.setVisible(this.seatColor != null);
 		} else {
-			this.seat.color((byte) 255, (byte) 255, (byte) 255, (byte) 0);
+            this.ejector.setVisible(true);
+			this.seat.setVisible(false);
 
 			float offset = this.blockEntity.getAnimateOffset(partialTick) * 0.5f;
 			Vector3f normal = this.facing.getOpposite().step();
@@ -95,13 +117,16 @@ public class AutocannonBreechVisual extends AbstractBlockEntityVisual<AbstractAu
 			this.ejector.position(this.getVisualPosition()).translatePosition(normal.x(), normal.y(), normal.z()).color((byte) 255, (byte) 255, (byte) 255, (byte) 255);
 		}
 
-		ItemStack container = this.blockEntity.getMagazine();
-		this.ammoContainer.color((byte) 255, (byte) 255, (byte) 255, (byte) (container.getItem() instanceof AutocannonAmmoContainerItem ? 255 : 0));
-		if (this.isFilled != this.isFilled() || this.magazineItem != this.getMagazineItem() || this.seatColor != this.blockEntity.getSeatColor()) {
-			this._delete();
-			//this.init(); todo: c6 playtest
-			this.updateLight(partialTick);
-		}
+		this.ammoContainer.setVisible(this.getMagazineItem() instanceof AutocannonAmmoContainerItem);
+
+        if (this.seatColor != this.blockEntity.getSeatColor())
+            this.refreshSeat();
+        if (this.isFilled != this.isFilled() || this.magazineItem != this.getMagazineItem())
+            this.refreshContainer();
+
+        this.seat.setChanged();
+        this.ejector.setChanged();
+        this.ammoContainer.setChanged();
 	}
 
 	@Override

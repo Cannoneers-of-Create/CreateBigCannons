@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech;
 
+import org.joml.Vector3f;
+
 import com.simibubi.create.content.kinetics.base.ShaftVisual;
 
 import dev.engine_room.flywheel.api.visual.DynamicVisual;
@@ -8,9 +10,6 @@ import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
-
-import org.joml.Vector3f;
-
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -20,16 +19,18 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 public class SlidingBreechVisual extends ShaftVisual<SlidingBreechBlockEntity> implements SimpleDynamicVisual {
 
 	private final SlidingBreechBlockEntity breech;
-	private OrientedInstance breechblock;
-	private Direction blockRotation;
+	private final OrientedInstance breechblock;
+	private final Direction blockRotation;
 
 	public SlidingBreechVisual(VisualizationContext ctx, SlidingBreechBlockEntity tile, float partialTick) {
 		super(ctx, tile, partialTick);
 		this.breech = tile;
         Direction.Axis axis = CBCClientCommon.getRotationAxis(this.blockState);
         Direction facing = this.blockState.getValue(BlockStateProperties.FACING);
-        this.blockRotation = facing.getCounterClockWise(axis);
-        if (this.blockRotation == Direction.DOWN) this.blockRotation = Direction.UP;
+        Direction blockRotation = facing.getCounterClockWise(axis);
+        if (blockRotation == Direction.DOWN)
+            blockRotation = Direction.UP;
+        this.blockRotation = blockRotation;
 
         this.breechblock = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCClientCommon.getBreechblockForState(this.blockState))).createInstance();
 

@@ -2,8 +2,8 @@ package rbasamoyai.createbigcannons.index;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
-import com.simibubi.create.content.kinetics.base.ShaftVisual;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
+import com.simibubi.create.content.kinetics.base.ShaftVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
@@ -16,11 +16,11 @@ import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannon
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechVisual;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechRenderer;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechVisual;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
-import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringVisual;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringRenderer;
+import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringVisual;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntityRenderer;
@@ -72,7 +72,7 @@ public class CBCBlockEntities {
 
 	public static final BlockEntityEntry<ScrewBreechBlockEntity> SCREW_BREECH = REGISTRATE
 		.blockEntity("screw_breech", ScrewBreechBlockEntity::new)
-		.visual(() -> ScrewBreechVisual::new, false)
+		.visual(() -> ScrewBreechVisual.factory(), false)
 		.renderer(() -> ScrewBreechBlockEntityRenderer::new)
 		.validBlocks(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
 		.register();

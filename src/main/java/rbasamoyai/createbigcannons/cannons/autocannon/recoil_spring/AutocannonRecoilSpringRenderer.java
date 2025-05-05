@@ -2,13 +2,12 @@ package rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring;
 
 import java.util.Map;
 
-import dev.engine_room.flywheel.api.visualization.VisualizationManager;
-
 import org.joml.Vector3f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.foundation.blockEntity.renderer.SmartBlockEntityRenderer;
 
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -53,8 +52,7 @@ public class AutocannonRecoilSpringRenderer extends SmartBlockEntityRenderer<Aut
 		ms.pushPose();
 
 		if (facing.getAxisDirection() == Direction.AxisDirection.NEGATIVE) {
-			ejectorBuf.rotateCentered(Mth.PI, axis.isVertical() ? Direction.EAST : Direction.UP); // todo: c6 playtest confirm old behavior
-			//.translate(facing.getOpposite().step());
+			ejectorBuf.rotateCentered(Mth.PI, axis.isVertical() ? Direction.EAST : Direction.UP);
 		}
 		ejectorBuf.scale(fx, fy, fz)
 			.light(light)

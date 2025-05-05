@@ -4,18 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import org.joml.Vector3f;
+
 import dev.engine_room.flywheel.api.instance.Instance;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.instance.TransformedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
-import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
-
-import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
-
-import org.joml.Vector3f;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import dev.engine_room.flywheel.lib.visual.AbstractBlockEntityVisual;
+import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -27,16 +26,15 @@ import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
 public class AutocannonRecoilSpringVisual extends AbstractBlockEntityVisual<AutocannonRecoilSpringBlockEntity> implements SimpleDynamicVisual {
 
-	private TransformedInstance spring;
+	private final TransformedInstance spring;
 	private final Map<BlockPos, OrientedInstance> blocks = new HashMap<>();
 
-	private Direction facing;
+	private final Direction facing;
 
 	public AutocannonRecoilSpringVisual(VisualizationContext ctx, AutocannonRecoilSpringBlockEntity blockEntity, float partialTicks) {
 		super(ctx, blockEntity, partialTicks);
         this.facing = this.blockState.getValue(BlockStateProperties.FACING);
-
-        this.spring = instancerProvider().instancer(InstanceTypes.TRANSFORMED, Models.partial(getPartialModelForState())).createInstance();
+        this.spring = instancerProvider().instancer(InstanceTypes.TRANSFORMED, Models.partial(getPartialModelForState(), this.facing)).createInstance();
 
         this.blocks.clear();
         for (Map.Entry<BlockPos, BlockState> entry : this.blockEntity.toAnimate.entrySet()) {
@@ -64,12 +62,14 @@ public class AutocannonRecoilSpringVisual extends AbstractBlockEntityVisual<Auto
 		float fy = axis == Direction.Axis.Y ? f1 : 1;
 		float fz = axis == Direction.Axis.Z ? f1 : 1;
 
-		this.spring.translate(pivot);
+		this.spring.setIdentityTransform()
+            .translate(pivot);
 		if (flag) {
 			this.spring.rotateCentered(Mth.PI, axis.isVertical() ? Direction.EAST : Direction.UP)
 				.translate(this.facing.getOpposite().step());
 		}
 		this.spring.scale(fx, fy, fz);
+        this.spring.setChanged();
 
 		Vector3f offs = this.facing.step();
 		offs.mul((1 - scale) * -0.5f);
@@ -77,7 +77,7 @@ public class AutocannonRecoilSpringVisual extends AbstractBlockEntityVisual<Auto
 
 		for (Map.Entry<BlockPos, OrientedInstance> entry : this.blocks.entrySet()) {
 			BlockPos pos1 = entry.getKey();
-			entry.getValue().position(offs).translatePosition(pos1.getX(), pos1.getY(), pos1.getZ());
+			entry.getValue().position(offs).translatePosition(pos1.getX(), pos1.getY(), pos1.getZ()).setChanged();
 		}
 	}
 
@@ -92,7 +92,8 @@ public class AutocannonRecoilSpringVisual extends AbstractBlockEntityVisual<Auto
 	@Override
 	protected void _delete() {
 		this.spring.delete();
-		for (OrientedInstance block : this.blocks.values()) block.delete();
+		for (OrientedInstance block : this.blocks.values())
+            block.delete();
 	}
 
 	private PartialModel getPartialModelForState() {
@@ -103,6 +104,7 @@ public class AutocannonRecoilSpringVisual extends AbstractBlockEntityVisual<Auto
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        consumer.accept(spring);
+        consumer.accept(this.spring);
     }
+
 }

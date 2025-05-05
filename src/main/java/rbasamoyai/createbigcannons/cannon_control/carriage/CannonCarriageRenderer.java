@@ -55,30 +55,30 @@ public class CannonCarriageRenderer extends EntityRenderer<CannonCarriageEntity>
 		Vector4f newWheel = carriage.getWheelState();
 
 		wheelBuf.translate(-11 / 16f, 0.25, -5 / 32f)
-			.rotateX(90)
-			.rotateZ(90)
-			.rotateY(Mth.lerp(partialTicks, oldWheel.x(), newWheel.x()))
+			.rotateXDegrees(90)
+			.rotateZDegrees(90)
+			.rotateYDegrees(Mth.lerp(partialTicks, oldWheel.x(), newWheel.x()))
 			.light(light)
 			.renderInto(stack, vcons);
 
 		wheelBuf.translate(-11 / 16f, 0.25, 37 / 32f)
-			.rotateX(90)
-			.rotateZ(90)
-			.rotateY(Mth.lerp(partialTicks, oldWheel.y(), newWheel.y()))
+			.rotateXDegrees(90)
+			.rotateZDegrees(90)
+			.rotateYDegrees(Mth.lerp(partialTicks, oldWheel.y(), newWheel.y()))
 			.light(light)
 			.renderInto(stack, vcons);
 
 		wheelBuf.translate(11 / 16f, 0.25, -5 / 32f)
-			.rotateX(90)
-			.rotateZ(-90)
-			.rotateY(Mth.lerp(partialTicks, oldWheel.z(), newWheel.z()))
+			.rotateXDegrees(90)
+			.rotateZDegrees(-90)
+			.rotateYDegrees(Mth.lerp(partialTicks, oldWheel.z(), newWheel.z()))
 			.light(light)
 			.renderInto(stack, vcons);
 
 		wheelBuf.translate(11 / 16f, 0.25, 37 / 32f)
-			.rotateX(90)
-			.rotateZ(-90)
-			.rotateY(Mth.lerp(partialTicks, oldWheel.w(), newWheel.w()))
+			.rotateXDegrees(90)
+			.rotateZDegrees(-90)
+			.rotateYDegrees(Mth.lerp(partialTicks, oldWheel.w(), newWheel.w()))
 			.light(light)
 			.renderInto(stack, vcons);
 
