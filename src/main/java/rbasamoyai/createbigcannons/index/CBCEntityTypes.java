@@ -4,6 +4,7 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import java.util.function.Consumer;
 
+import com.simibubi.create.content.contraptions.render.ContraptionVisual;
 import com.simibubi.create.content.contraptions.render.OrientedContraptionEntityRenderer;
 import com.tterrag.registrate.util.entry.EntityEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
@@ -53,12 +54,13 @@ public class CBCEntityTypes {
 
 	public static final EntityEntry<PitchOrientedContraptionEntity> PITCH_ORIENTED_CONTRAPTION = REGISTRATE
 		.entity("pitch_contraption", PitchOrientedContraptionEntity::new, MobCategory.MISC)
+        .visual(() -> ContraptionVisual::new)
+        .renderer(() -> OrientedContraptionEntityRenderer::new)
 		.properties(configure(c -> c.trackingRange(16)
 			.updateInterval(3)
 			.updateVelocity(true)
 			.fireImmune()
 			.size(1, 1)))
-		.renderer(() -> OrientedContraptionEntityRenderer::new)
 		.register();
 
 	public static final EntityEntry<SolidShotProjectile> SHOT = cannonProjectile("shot", SolidShotProjectile::new, CBCMunitionPropertiesHandlers.INERT_BIG_CANNON_PROJECTILE);
