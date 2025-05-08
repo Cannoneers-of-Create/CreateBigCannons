@@ -5,17 +5,14 @@ import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity.Phase;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 
-import net.createmod.ponder.api.element.ElementLink;
+import net.createmod.catnip.math.Pointing;
+import net.createmod.ponder.api.ParticleEmitter;
 import net.createmod.ponder.api.PonderPalette;
+import net.createmod.ponder.api.element.ElementLink;
+import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
-import net.createmod.ponder.foundation.element.InputWindowElement;
-import net.createmod.ponder.api.element.WorldSectionElement;
-import net.createmod.catnip.math.Pointing;
-
-import net.createmod.ponder.api.ParticleEmitter;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -206,13 +203,13 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 
 		scene.world().setKineticSpeed(pistonSelection, 0);
-		scene.world().hideIndependentSection(pistonMunitionsElement, Direction.EAST);
+		scene.world().hideIndependentSection(pistonMunitionsElement, null);
 		scene.idle(20);
 		scene.world().setKineticSpeed(pulleySelection, 0);
-		scene.world().hideIndependentSection(pulleyMunitionsElement, Direction.EAST);
+		scene.world().hideIndependentSection(pulleyMunitionsElement, null);
 		scene.idle(30);
 		scene.world().setKineticSpeed(gantryShaftSelection, 0);
-		scene.world().hideIndependentSection(gantryMunitionsElement, Direction.EAST);
+		scene.world().hideIndependentSection(gantryMunitionsElement, null);
 		scene.idle(15);
 
 		scene.overlay().showText(50)
@@ -263,7 +260,7 @@ public class CannonLoadingScenes {
 		scene.world().moveSection(pistonMunitionsElement, util.vector().of(0, 0, 1), 20);
 		scene.idle(20);
 		scene.world().setKineticSpeed(pistonSelection, 0);
-		scene.world().hideIndependentSection(pistonMunitionsElement, Direction.EAST); // todo: the old behavior can only be achieved by manually adding the instruction to the schedule. playtest must tell if that is needed. also check all other occurrences -Robotix
+		scene.world().hideIndependentSection(pistonMunitionsElement, null);
 		scene.idle(10);
 		scene.world().setKineticSpeed(pistonSelection, -16);
 		scene.world().moveSection(pistonElement, util.vector().of(0, 0, -1), 20);
