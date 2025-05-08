@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.effects.particles.plumes;
 
+import net.createmod.catnip.levelWrappers.WrappedClientLevel;
+import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
@@ -20,8 +22,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 	private final float power;
 
 	// TODO: remove once Create #7232 is fixed
-    // todo: guessing it's fixed with c6 PLAYTEST when running
-	private final boolean isPonderWorld = false;
+	private final boolean isPonderLevel;
 
 	BigCannonPlumeParticle(ClientLevel level, double x, double y, double z, double dx, double dy, double dz, float size, float power) {
 		super(level, x, y, z);
@@ -34,7 +35,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 		this.setParticleSpeed(dx * f, dy * f, dz * f);
 
 		// TODO remove once Create #7232 is fixed
-		// this.isPonderWorld = level instanceof WrappedClientWorld wrapped && wrapped.getWrappedWorld() instanceof PonderWorld;
+		this.isPonderLevel = level instanceof WrappedClientLevel wrapped && wrapped.getWrappedLevel() instanceof PonderLevel;
 	}
 
 	@Override
@@ -66,7 +67,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 			// TODO revert when Create #7232 is fixed
 //			this.level.addParticle(new CannonSmokeParticleData(this.power, smallScale, lifetime, 0.95f),
 //				true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
-			if (this.isPonderWorld) {
+			if (this.isPonderLevel) {
 				this.level.addParticle(new CannonSmokeParticleData(this.power, smallScale, lifetime, 0.95f), this.x, this.y, this.z, vel.x, vel.y, vel.z);
 			} else {
 				this.level.addParticle(new CannonSmokeParticleData(this.power, smallScale, lifetime, 0.95f),
@@ -85,7 +86,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 					.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * scale2));
 				// TODO revert when Create #7232 is fixed
 //				this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
-				if (this.isPonderWorld) {
+				if (this.isPonderLevel) {
 					this.level.addParticle(ParticleTypes.CLOUD, this.x, this.y, this.z, vel.x, vel.y, vel.z);
 				} else {
 					this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
@@ -102,7 +103,7 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 					.add(up.scale((this.random.nextDouble() - this.random.nextDouble()) * scale2));
 				// TODO revert when Create #7232 is fixed
 //				this.level.addParticle(ParticleTypes.FLAME, false, this.x, this.y, this.z, vel1.x, vel1.y, vel1.z);
-				if (this.isPonderWorld) {
+				if (this.isPonderLevel) {
 					this.level.addParticle(ParticleTypes.FLAME, this.x, this.y, this.z, vel1.x, vel1.y, vel1.z);
 				} else {
 					this.level.addParticle(ParticleTypes.FLAME, false, this.x, this.y, this.z, vel1.x, vel1.y, vel1.z);

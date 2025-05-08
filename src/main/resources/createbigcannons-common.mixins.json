@@ -13,10 +13,10 @@
     "client.HumanoidPoseMixin",
     "client.LevelRendererMixin",
     "client.LightingMixin",
+    "client.PitchOrientedContraptionEntityMixin",
     "client.RPLClientHandlersMixin",
     "client.SoundEngineMixin",
-    "client.ValueSettingsClientMixin",
-    "client.PitchOrientedContraptionEntityMixin"
+    "client.ValueSettingsClientMixin"
   ],
   "mixins": [
     "ArmorStandMixin",
@@ -27,6 +27,7 @@
     "ServerEntityMixin",
     "ServerLevelMixin",
     "TagAppenderAccessor",
+    "client.PonderSceneRegistryMixin",
     "compat.create.AbstractContraptionEntityMixin",
     "compat.create.AllSoundEventsMixin",
     "compat.create.BeltMovementHandlerMixin",

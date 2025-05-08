@@ -3,8 +3,9 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bre
 import java.util.HashSet;
 import java.util.Set;
 
-import com.simibubi.create.content.contraptions.Contraption;
+import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.api.contraption.transformable.TransformableBlock;
+import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
@@ -289,7 +290,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 					}
 					newBe.setChanged();
 				}
-				// this.playRemoveSound(level, pos); todo: c6 fix
+                AllSoundEvents.WRENCH_REMOVE.playOnServer(level, pos, 1, level.random.nextFloat() * .5f + .5f);
 			}
 			return InteractionResult.sidedSuccess(level.isClientSide);
 		}

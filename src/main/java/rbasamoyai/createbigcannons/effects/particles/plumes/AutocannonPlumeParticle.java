@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.effects.particles.plumes;
 
+import net.createmod.catnip.levelWrappers.WrappedClientLevel;
+import net.createmod.ponder.api.level.PonderLevel;
 import net.minecraft.client.ParticleStatus;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.NoRenderParticle;
@@ -19,8 +21,7 @@ public class AutocannonPlumeParticle extends NoRenderParticle {
 	private final boolean visible;
 
 	// TODO: remove once Create #7232 is fixed
-    // todo: guessing it's fixed with c6 PLAYTEST when running
-	private final boolean isPonderWorld = false;
+	private final boolean isPonderLevel;
 
 	AutocannonPlumeParticle(ClientLevel level, double x, double y, double z, Vec3 direction, float scale) {
 		super(level, x, y, z);
@@ -34,7 +35,8 @@ public class AutocannonPlumeParticle extends NoRenderParticle {
 		this.setParticleSpeed(0, 0, 0);
 
 		// TODO remove once Create #7232 is fixed
-		// this.isPonderWorld = level instanceof WrappedClientWorld wrapped && wrapped.getWrappedWorld() instanceof PonderWorld;
+        // Not fixed as of c6
+		this.isPonderLevel = level instanceof WrappedClientLevel wrapped && wrapped.getWrappedLevel() instanceof PonderLevel;
 	}
 
 	@Override
@@ -56,7 +58,7 @@ public class AutocannonPlumeParticle extends NoRenderParticle {
 				.add(0, 0.02, 0);
 			// TODO revert when Create #7232 is fixed
 //			this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
-			if (this.isPonderWorld) {
+			if (this.isPonderLevel) {
 				this.level.addParticle(ParticleTypes.CLOUD, this.x, this.y, this.z, vel.x, vel.y, vel.z);
 			} else {
 				this.level.addParticle(ParticleTypes.CLOUD, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
@@ -69,7 +71,7 @@ public class AutocannonPlumeParticle extends NoRenderParticle {
 				Vec3 vel = this.direction.scale(dirScale);
 				// TODO revert when Create #7232 is fixed
 //				this.level.addParticle(ParticleTypes.FLAME, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
-				if (this.isPonderWorld) {
+				if (this.isPonderLevel) {
 					this.level.addParticle(ParticleTypes.FLAME, this.x, this.y, this.z, vel.x, vel.y, vel.z);
 				} else {
 					this.level.addParticle(ParticleTypes.FLAME, true, this.x, this.y, this.z, vel.x, vel.y, vel.z);
