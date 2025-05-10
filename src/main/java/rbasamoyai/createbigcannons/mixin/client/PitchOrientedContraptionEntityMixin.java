@@ -1,5 +1,4 @@
 package rbasamoyai.createbigcannons.mixin.client;
-import net.minecraft.util.Mth;
 
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -30,12 +29,12 @@ public abstract class PitchOrientedContraptionEntityMixin extends OrientedContra
 		TransformStack tstack = TransformStack.of(stack)
 			.nudge(this.getId())
 			.center()
-			.rotateY(yaw + Mth.TWO_PI);
+			.rotateYDegrees(yaw);
 
 		if (this.getInitialOrientation().getAxis() == Direction.Axis.X) {
-			tstack.rotateZ(pitch);
+			tstack.rotateZDegrees(pitch);
 		} else {
-			tstack.rotateX(pitch);
+			tstack.rotateXDegrees(pitch);
 		}
 		tstack.uncenter();
 	}

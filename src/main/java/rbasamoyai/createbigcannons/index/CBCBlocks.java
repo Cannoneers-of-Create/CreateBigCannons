@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.index;
 
+import static com.simibubi.create.api.behaviour.display.DisplaySource.displaySource;
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import java.util.function.Supplier;
@@ -30,7 +31,6 @@ import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.base.CBCDefaultStress;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
-import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountDisplaySource;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtensionBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlock;
@@ -854,7 +854,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMount())
-//		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource())) todo: fix DisplayLinks. see create AllBlocks
+        .transform(displaySource(CBCDisplaySources.CANNON_MOUNT))
 		.register();
 
 	public static final BlockEntry<YawControllerBlock> YAW_CONTROLLER = REGISTRATE
@@ -863,7 +863,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.yawController())
-//		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
+        .transform(displaySource(CBCDisplaySources.CANNON_MOUNT))
 		.register();
 
 	public static final BlockEntry<CannonMountExtensionBlock> CANNON_MOUNT_EXTENSION = REGISTRATE
@@ -872,7 +872,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonMountExtension())
-//		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
+        .transform(displaySource(CBCDisplaySources.CANNON_MOUNT))
 		.register();
 
 	public static final BlockEntry<FixedCannonMountBlock> FIXED_CANNON_MOUNT = REGISTRATE
@@ -881,7 +881,7 @@ public class CBCBlocks {
 		.properties(p -> p.isRedstoneConductor(CBCBlocks::never))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.fixedCannonMount())
-//		.onRegister(AllDisplayBehaviours.assignDataBehaviour(new CannonMountDisplaySource()))
+        .transform(displaySource(CBCDisplaySources.CANNON_MOUNT))
 		.register();
 
 	public static final BlockEntry<CannonCarriageBlock> CANNON_CARRIAGE = REGISTRATE

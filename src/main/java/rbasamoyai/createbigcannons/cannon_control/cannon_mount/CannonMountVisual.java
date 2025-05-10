@@ -1,8 +1,14 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
+import java.util.function.Consumer;
+
+import org.joml.Quaternionf;
+
+import com.mojang.math.Axis;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.KineticDebugger;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
-
 import com.simibubi.create.foundation.render.AllInstanceTypes;
 
 import dev.engine_room.flywheel.api.instance.Instance;
@@ -11,61 +17,46 @@ import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
-
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
-
-import net.minecraft.world.level.LightLayer;
-
-import org.joml.Quaternionf;
-
-import com.mojang.math.Axis;
-import com.simibubi.create.AllPartialModels;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 
-import java.util.function.Consumer;
-
 public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlockEntity> implements SimpleDynamicVisual {
 
-	private OrientedInstance rotatingMount;
-	private OrientedInstance rotatingMountShaft;
-	private RotatingInstance pitchShaft;
-	private RotatingInstance yawShaft;
+	private final OrientedInstance rotatingMount;
+	private final OrientedInstance rotatingMountShaft;
+	private final RotatingInstance pitchShaft;
+	private final RotatingInstance yawShaft;
 
 	public CannonMountVisual(VisualizationContext ctx, CannonMountBlockEntity tile, float partialTick) {
         super(ctx, tile, partialTick);
-
-        int blockLight = this.blockEntity.getLevel().getBrightness(LightLayer.BLOCK, this.pos); // todo: it better do this itself now because they took this away. c6 playtest
-        int skyLight = this.blockEntity.getLevel().getBrightness(LightLayer.SKY, this.pos);
 
         Direction vertical = tile.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION);
         Direction facing = tile.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
         Direction.Axis pitchAxis = facing.getAxis() == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
 
-        this.rotatingMount = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCBlockPartials.ROTATING_MOUNT)).createInstance();
-        this.rotatingMount.position(getVisualPosition().relative(vertical.getOpposite()));
+        this.rotatingMount = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCBlockPartials.ROTATING_MOUNT))
+            .createInstance()
+            .position(this.getVisualPosition().relative(vertical.getOpposite()));
 
-        this.rotatingMountShaft = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCBlockPartials.CANNON_CARRIAGE_AXLE)).createInstance();
-        this.rotatingMountShaft.position(getVisualPosition().relative(vertical, -2));
+        this.rotatingMountShaft = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCBlockPartials.CANNON_CARRIAGE_AXLE))
+            .createInstance()
+            .position(this.getVisualPosition().relative(vertical, -2));
 
         this.pitchShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT))
             .createInstance()
             .rotateToFace(pitchAxis)
-            .setup(blockEntity.getPitchInterface())
-            .setColor(blockEntity.getPitchInterface())
-            .setPosition(getVisualPosition());
-        this.pitchShaft.light(blockLight, skyLight)
-            .setChanged();
+            .setup(this.blockEntity.getPitchInterface())
+            .setColor(this.blockEntity.getPitchInterface())
+            .setPosition(this.getVisualPosition());
 
-        this.yawShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF)).createInstance();
-        this.yawShaft
+        this.yawShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
+            .createInstance()
             .rotateToFace(Direction.Axis.Z)
-            .setup(blockEntity.getYawInterface())
-            .setColor(blockEntity.getYawInterface())
-            .setPosition(getVisualPosition())
-            .light(blockLight, skyLight)
-            .setChanged();
+            .setup(this.blockEntity.getYawInterface())
+            .setColor(this.blockEntity.getYawInterface())
+            .setPosition(this.getVisualPosition());
 
         this.transformModels();
 	}
@@ -89,10 +80,11 @@ public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlock
     // Copied from KineticBlockEntityInstance
     protected void updateRotation(RotatingInstance instance, Direction.Axis axis, float speed, boolean pitch) {
         instance.setRotationAxis(axis)
-            .setRotationOffset(rotationOffset(blockState, axis, pos))
-            //.setRotationalSpeed(speed) //todo broken
-            .setColor(pitch ? this.blockEntity.getPitchInterface() : this.blockEntity.getYawInterface())
-            .setChanged();
+            .setRotationOffset(rotationOffset(this.blockState, axis, this.pos))
+            .setRotationalSpeed(speed * RotatingInstance.SPEED_MULTIPLIER);
+        if (KineticDebugger.isActive())
+            instance.setColor(pitch ? this.blockEntity.getPitchInterface() : this.blockEntity.getYawInterface());
+        instance.setChanged();
     }
 
 
@@ -127,10 +119,10 @@ public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlock
 
     @Override
     public void collectCrumblingInstances(Consumer<Instance> consumer) {
-        consumer.accept(rotatingMount);
-        consumer.accept(rotatingMountShaft);
-        consumer.accept(pitchShaft);
-        consumer.accept(yawShaft);
+        consumer.accept(this.rotatingMount);
+        consumer.accept(this.rotatingMountShaft);
+        consumer.accept(this.pitchShaft);
+        consumer.accept(this.yawShaft);
     }
 
 }

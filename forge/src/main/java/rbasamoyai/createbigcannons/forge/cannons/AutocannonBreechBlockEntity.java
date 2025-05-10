@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.forge.cannons;
 
+import dev.engine_room.flywheel.lib.visualization.VisualizationHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -25,8 +26,8 @@ public class AutocannonBreechBlockEntity extends AbstractAutocannonBreechBlockEn
 	@Override
 	public void requestModelDataUpdate() {
 		super.requestModelDataUpdate();
-		//if (!this.remove) fixme
-			//DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> RenderDispat.enqueueUpdate(this));
+		if (!this.remove)
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> VisualizationHelper.queueUpdate(this));
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import rbasamoyai.createbigcannons.index.CBCItems;
 
 public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container {
 
@@ -82,7 +83,12 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 		this.setChanged();
 	}
 
-	@Override
+    @Override
+    public boolean canPlaceItem(int index, ItemStack stack) {
+        return index == 0 && CBCItems.TRACER_TIP.isIn(stack) && this.tracer.isEmpty();
+    }
+
+    @Override
 	public boolean stillValid(Player player) {
 		return false;
 	}

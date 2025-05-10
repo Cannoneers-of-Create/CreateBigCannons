@@ -113,7 +113,15 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 		super.setItem(slot, stack);
 	}
 
-	@Override
+    @Override
+    public boolean canPlaceItem(int index, ItemStack stack) {
+        if (index == 1) {
+            return stack.getItem() instanceof FuzeItem && this.fuze.isEmpty();
+        }
+        return super.canPlaceItem(index, stack);
+    }
+
+    @Override
 	public void clearContent() {
 		this.fuze = ItemStack.EMPTY;
 		super.clearContent();

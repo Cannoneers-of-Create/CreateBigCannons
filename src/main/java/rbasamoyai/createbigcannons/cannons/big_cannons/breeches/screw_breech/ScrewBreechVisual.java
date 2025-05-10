@@ -1,6 +1,11 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech;
 
-import com.simibubi.create.content.kinetics.base.ShaftVisual;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
+
+import com.mojang.math.Axis;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
 
 import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
@@ -8,35 +13,35 @@ import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
-
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
-
-import com.mojang.math.Axis;
-
-import net.createmod.catnip.animation.AnimationTickHolder;
+import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 
-public class ScrewBreechVisual extends ShaftVisual<ScrewBreechBlockEntity> implements SimpleDynamicVisual { // todo: HalfShaftInstance doesn't exist anymore. c6 playtest
+public class ScrewBreechVisual extends OrientedRotatingVisual<ScrewBreechBlockEntity> implements SimpleDynamicVisual {
 
 	private final ScrewBreechBlockEntity breech;
-	private OrientedInstance screwLock;
-	private Direction facing;
+	private final OrientedInstance screwLock;
+	private final Direction facing;
 
-	public ScrewBreechVisual(VisualizationContext ctx, ScrewBreechBlockEntity tile, float partialTick) {
-		super(ctx, tile, partialTick);
+	protected ScrewBreechVisual(VisualizationContext ctx, ScrewBreechBlockEntity tile, float partialTick, Direction to) {
+		super(ctx, tile, partialTick, Direction.SOUTH, to, Models.partial(AllPartialModels.SHAFT_HALF));
 		this.breech = tile;
-        this.facing = this.blockState.getValue(BlockStateProperties.FACING);
+        this.facing = to;
         this.screwLock = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCClientCommon.getScrewBreechForState(this.blockState))).createInstance();
         this.transformModels(partialTick);
 	}
 
+    public static SimpleBlockEntityVisualizer.Factory<ScrewBreechBlockEntity> factory() {
+        return (ctx, be, partialTick) -> {
+            Direction to = be.getBlockState().getValue(BlockStateProperties.FACING);
+            return new ScrewBreechVisual(ctx, be, partialTick, to);
+        };
+    }
 
 	private void transformModels(float partialTick) {
-		float renderedScrewLockOffset = this.breech.getRenderedBlockOffset(AnimationTickHolder.getPartialTicks());
+		float renderedScrewLockOffset = this.breech.getRenderedBlockOffset(partialTick);
 		float heightOffset = renderedScrewLockOffset * 0.25f;
 		float rotationOffset = renderedScrewLockOffset * (this.facing.getAxisDirection() == AxisDirection.POSITIVE ? 360.0f : -360.0f);
 		Vector3f normal = this.facing.step();
@@ -45,7 +50,7 @@ public class ScrewBreechVisual extends ShaftVisual<ScrewBreechBlockEntity> imple
 
 		Quaternionf q = Axis.of(normal).rotationDegrees(rotationOffset);
 
-		this.screwLock.position(this.getVisualPosition()).translatePosition(height.x(), height.y(), height.z()).rotation(q);
+		this.screwLock.position(this.getVisualPosition()).translatePosition(height.x(), height.y(), height.z()).rotation(q).setChanged();
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.ponder;
 
 import com.simibubi.create.AllBlocks;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
-
 import com.tterrag.registrate.util.entry.RegistryEntry;
 
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
@@ -48,7 +47,8 @@ public class CBCPonderScenes {
             .addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::automatingQuickFiringBreeches);
 
         HELPER.forComponents(AllBlocks.MECHANICAL_ARM)
-            .addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::automatingQuickFiringBreeches);
+            .addStoryBoard("cannon_kinetics/quick_firing_breech", CannonLoadingScenes::automatingQuickFiringBreeches,
+                entry -> entry.orderAfter("create", "mechanical_arm/redstone"));
 
         HELPER.forComponents(CBCBlocks.STEEL_SCREW_BREECH, CBCBlocks.NETHERSTEEL_SCREW_BREECH)
             .addStoryBoard("cannon_kinetics/screw_breech", CannonKineticsScenes::screwBreech);
@@ -67,8 +67,10 @@ public class CBCPonderScenes {
             .addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
 
         HELPER.forComponents(AllBlocks.ENCASED_FAN)
-            .addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons)
-            .addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement);
+            .addStoryBoard("cannon_crafting/finishing_built_up_cannons", CannonCraftingScenes::finishingBuiltUpCannons,
+                entry -> entry.orderAfter("create", "fan/processing"))
+            .addStoryBoard("cannon_crafting/moving_cannons", CannonCraftingScenes::cannonMovement,
+                entry -> entry.orderAfter("cannon_crafting/finishing_built_up_cannons"));
 
         HELPER.forComponents(CBCBlocks.INCOMPLETE_CAST_IRON_SLIDING_BREECH, CBCBlocks.INCOMPLETE_BRONZE_SLIDING_BREECH, CBCBlocks.INCOMPLETE_STEEL_SLIDING_BREECH,
                 CBCBlocks.INCOMPLETE_STEEL_SCREW_BREECH, CBCBlocks.INCOMPLETE_NETHERSTEEL_SCREW_BREECH,
@@ -92,11 +94,16 @@ public class CBCPonderScenes {
 
         HELPER.forComponents(AllBlocks.MECHANICAL_PISTON, AllBlocks.STICKY_MECHANICAL_PISTON,
                 AllBlocks.GANTRY_CARRIAGE, AllBlocks.GANTRY_SHAFT, AllBlocks.ROPE_PULLEY)
-            .addStoryBoard("cannon_loader/base_contraption_loading", CannonLoadingScenes::baseContraptionLoadingBigCannons);
+            .addStoryBoard("cannon_loader/base_contraption_loading", CannonLoadingScenes::baseContraptionLoadingBigCannons,
+                entry -> entry.orderAfter("create", "mechanical_piston/modes")
+                    .orderAfter("create", "gantry/subgantry")
+                    .orderAfter("create", "rope_pulley/anchor"));
 
         HELPER.forComponents(AllBlocks.PISTON_EXTENSION_POLE)
-            .addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons)
-            .addStoryBoard("cannon_loader/base_contraption_loading", CannonLoadingScenes::baseContraptionLoadingBigCannons);
+            .addStoryBoard("cannon_loader/loading_big_cannons", CannonLoadingScenes::loadingBigCannons,
+                entry -> entry.orderAfter("create", "mechanical_piston/piston_pole"))
+            .addStoryBoard("cannon_loader/base_contraption_loading", CannonLoadingScenes::baseContraptionLoadingBigCannons,
+                entry -> entry.orderAfter("cannon_loader/loading_big_cannons"));
 
         HELPER.forComponents(CBCItems.TRACER_TIP)
             .addStoryBoard("munitions/adding_tracers", CannonLoadingScenes::addingTracers);

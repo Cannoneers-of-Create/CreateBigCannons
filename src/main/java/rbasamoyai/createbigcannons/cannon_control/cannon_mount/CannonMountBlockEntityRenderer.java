@@ -4,8 +4,6 @@ import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRender
 import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.kineticRotationTransform;
 import static com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer.shaft;
 
-import dev.engine_room.flywheel.api.visualization.VisualizationManager;
-
 import org.joml.Quaternionf;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -16,6 +14,7 @@ import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -46,7 +45,7 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 
 		SuperByteBuffer yawShaft = CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, state, vertical);
 		KineticBlockEntity yawInterface = be.getYawInterface();
-		kineticRotationTransform(yawShaft, yawInterface, Direction.Axis.Y, getAngleForBe(yawInterface, be.getBlockPos(), Direction.Axis.Y), light) // todo: c6 playtest
+		kineticRotationTransform(yawShaft, yawInterface, Direction.Axis.Y, getAngleForBe(yawInterface, be.getBlockPos(), Direction.Axis.Y), light)
 			.renderInto(ms, solidBuf);
 
 		Direction.Axis pitchAxis = ((IRotate) state.getBlock()).getRotationAxis(state);

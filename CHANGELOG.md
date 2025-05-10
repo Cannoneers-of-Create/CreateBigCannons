@@ -1,11 +1,12 @@
 # Changelog
 
-## [5.8.3] - Unreleased
+## [5.9.0] - Unreleased
 
-**Create Big Cannons 5.8.3. More fixes.**
+**Create Big Cannons 5.9.0, now supporting Create v6.**
 
 Fixed:
 - Fixed autocannon seats not displaying properly when rendered using instancing
+- Fixed fuzed projectiles able to take in invalid items via item insertion
 
 ## [5.8.2] - 2025-01-07
 
