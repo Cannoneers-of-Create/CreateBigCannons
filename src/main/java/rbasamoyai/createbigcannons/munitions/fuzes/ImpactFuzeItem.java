@@ -27,7 +27,7 @@ public class ImpactFuzeItem extends FuzeItem {
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, boolean baseFuze) {
 		if (baseFuze) return false;
-		CompoundTag tag = stack.getOrCreateTag();
+		CompoundTag tag = (CompoundTag) stack.saveOptional(projectile.level().registryAccess());
 		int damage = tag.contains("Damage") ? tag.getInt("Damage") : this.getFuzeDurability();
 		if (damage > 0) {
 			--damage;

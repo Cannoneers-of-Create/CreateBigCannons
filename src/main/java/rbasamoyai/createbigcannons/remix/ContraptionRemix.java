@@ -70,7 +70,7 @@ public class ContraptionRemix {
 			if (CBCModifiedContraptionRegistry.isFragileContraption(contraption)) {
 				boolean isBrokenDisassembly = ((HasFragileContraption) contraption).createbigcannons$isBrokenDisassembly();
 				if (isBrokenDisassembly && !intersectState.isAir() && blockInfo != null && !blockInfo.state().isAir()) {
-					BlockEntity contraptionBE = blockInfo.nbt() == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state(), blockInfo.nbt());
+					BlockEntity contraptionBE = blockInfo.nbt() == null ? null : BlockEntity.loadStatic(BlockPos.ZERO, blockInfo.state(), blockInfo.nbt(), levelAccessor.registryAccess());
 					Block.dropResources(blockInfo.state(), contraption.entity.level(), pos, contraptionBE, null, ItemStack.EMPTY);
 					levelAccessor.levelEvent(2001, pos, Block.getId(blockInfo.state()));
 					levelAccessor.gameEvent(contraption.entity, GameEvent.BLOCK_DESTROY, pos);
@@ -541,7 +541,7 @@ public class ContraptionRemix {
 
 		visited.remove(pos);
 		CompoundTag tag = currentInfo.nbt() == null ? null : currentInfo.nbt().copy();
-		BlockEntity newBe = tag != null && tag.contains("id", Tag.TAG_STRING) ? BlockEntity.loadStatic(currentInfo.pos(), currentInfo.state(), tag) : null;
+		BlockEntity newBe = tag != null && tag.contains("id", Tag.TAG_STRING) ? BlockEntity.loadStatic(currentInfo.pos(), currentInfo.state(), tag, level.registryAccess()) : null;
 		return Pair.of(new StructureBlockInfo(currentInfo.pos(), currentInfo.state(), tag), newBe);
 	}
 

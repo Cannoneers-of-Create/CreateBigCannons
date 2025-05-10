@@ -58,7 +58,7 @@ public class CBCClientHandlers {
 				copy.putInt("x", info.pos().getX());
 				copy.putInt("y", info.pos().getY());
 				copy.putInt("z", info.pos().getZ());
-				be.load(copy);
+				be.loadWithComponents(copy, mc.level.registryAccess());
 			}
 			contraption.deferInvalidate = true;
 		}

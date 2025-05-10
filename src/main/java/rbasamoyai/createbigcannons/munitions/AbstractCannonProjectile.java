@@ -8,6 +8,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -416,9 +417,9 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	@Override public boolean hurt(DamageSource source, float damage) { return false; }
 
 	@Override
-	protected void defineSynchedData() {
-		this.entityData.define(ID_FLAGS, (byte) 0);
-		this.entityData.define(PROJECTILE_MASS, 0.0f);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(ID_FLAGS, (byte) 0);
+		builder.define(PROJECTILE_MASS, 0.0f);
 	}
 
 	public void setInGround(boolean inGround) {
@@ -535,10 +536,10 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				.sized(0.8f, 0.8f);
 	}
 
-	@Override
-	protected float getEyeHeight(Pose pose, EntityDimensions dimensions) {
-		return 0;
-	}
+    @Override
+    public EntityDimensions getDimensions(Pose pose) {
+        return super.getDimensions(pose).withEyeHeight(0f);
+    }
 
 	@Override
 	protected AABB makeBoundingBox() {

@@ -103,15 +103,15 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	public ResourceLocation getTypeId() { return CreateBigCannons.resource("cannon_carriage"); }
 
 	@Override
-	protected void defineSynchedData() {
-		this.entityData.define(DATA_ID_HURT, 0);
-		this.entityData.define(DATA_ID_HURTDIR, 0);
-		this.entityData.define(DATA_ID_DAMAGE, 0f);
-		this.entityData.define(DATA_ID_RIDER, false);
-		this.entityData.define(DATA_ID_WHEEL_LF, 0f);
-		this.entityData.define(DATA_ID_WHEEL_RF, 0f);
-		this.entityData.define(DATA_ID_WHEEL_LB, 0f);
-		this.entityData.define(DATA_ID_WHEEL_RB, 0f);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_ID_HURT, 0);
+		builder.define(DATA_ID_HURTDIR, 0);
+		builder.define(DATA_ID_DAMAGE, 0f);
+		builder.define(DATA_ID_RIDER, false);
+		builder.define(DATA_ID_WHEEL_LF, 0f);
+		builder.define(DATA_ID_WHEEL_RF, 0f);
+		builder.define(DATA_ID_WHEEL_LB, 0f);
+		builder.define(DATA_ID_WHEEL_RB, 0f);
 	}
 
 	@Override

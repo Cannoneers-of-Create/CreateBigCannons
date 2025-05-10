@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -34,7 +35,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
-		CompoundTag tag = stack.getOrCreateTag();
+		CompoundTag tag = (CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess());
 		if (!tag.contains("FuzeTimer")) return true;
 		int timer = tag.getInt("FuzeTimer");
 		--timer;
@@ -51,7 +52,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (player instanceof ServerPlayer splayer && player.mayBuild()) {
 			ItemStack stack = player.getItemInHand(hand);
-			CompoundTag tag = stack.getOrCreateTag();
+			CompoundTag tag = (CompoundTag) stack.saveOptional(level.registryAccess());
 			if (!tag.contains("FuzeTimer")) {
 				tag.putInt("FuzeTimer", 20);
 			}
@@ -67,7 +68,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile projectile) {
-		return stack.getOrCreateTag().contains("FuzeTimer");
+		return ((CompoundTag) stack.save(Minecraft.getInstance().level.registryAccess())).contains("FuzeTimer"); // todo: hacks
 	}
 
 	@Override
@@ -83,14 +84,14 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 
 	public static ItemStack getCreativeTabItem(int defaultFuze) {
 		ItemStack stack = CBCItems.TIMED_FUZE.asStack();
-		stack.getOrCreateTag().putInt("FuzeTimer", defaultFuze);
+        ((CompoundTag) stack.save(Minecraft.getInstance().level.registryAccess())).putInt("FuzeTimer", defaultFuze); // todo: hacks
 		return stack;
 	}
 
 	@Override
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
-		int time = stack.getOrCreateTag().getInt("FuzeTimer");
+		int time = ((CompoundTag) stack.save(Minecraft.getInstance().level.registryAccess())).getInt("FuzeTimer"); // todo: hacks
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		MutableComponent info = CreateLang.builder("item")
@@ -102,7 +103,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
-		int time = stack.getOrCreateTag().getInt("FuzeTimer");
+		int time = ((CompoundTag) stack.save(Minecraft.getInstance().level.registryAccess())).getInt("FuzeTimer"); // todo: hacks
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		tooltip.add(CreateLang.builder("item")

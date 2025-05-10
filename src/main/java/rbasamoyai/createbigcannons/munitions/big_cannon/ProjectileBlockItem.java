@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -21,7 +22,7 @@ public class ProjectileBlockItem extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
-		CompoundTag tag = stack.getOrCreateTag();
+		CompoundTag tag = (CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess());
 		ItemStack tracer = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Tracer"));
 		if (!tracer.isEmpty())
 			tooltip.add(Component.translatable("tooltip.createbigcannons.tracer"));

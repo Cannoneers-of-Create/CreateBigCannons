@@ -4,7 +4,9 @@ import javax.annotation.Nonnull;
 
 import com.mojang.math.Constants;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -52,9 +54,9 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(TRACER, ItemStack.EMPTY);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(TRACER, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -111,16 +113,16 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	public ItemStack getTracer() { return this.entityData.get(TRACER); }
 
 	@Override
-	public void addAdditionalSaveData(CompoundTag tag) {
+    public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		if (!this.getTracer().isEmpty())
-			tag.put("Tracer", this.getTracer().save(registry));
+			tag.put("Tracer", this.getTracer().save(Minecraft.getInstance().level.registryAccess())); // todo: this seems hella hacky
 	}
 
 	@Override
-	public void readAdditionalSaveData(CompoundTag tag) {
+    public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.setTracer(tag.contains("Tracer", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Tracer")) : ItemStack.EMPTY);
+		this.setTracer(tag.contains("Tracer", Tag.TAG_COMPOUND) ? ItemStack.parseOptional(Minecraft.getInstance().level.registryAccess(), tag.getCompound("Tracer")) : ItemStack.EMPTY);
 	}
 
 	@Override

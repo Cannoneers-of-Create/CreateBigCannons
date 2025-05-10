@@ -6,6 +6,8 @@ import java.util.Map;
 
 import com.google.common.collect.Maps;
 
+import com.simibubi.create.content.equipment.potatoCannon.AllPotatoProjectileEntityHitActions;
+
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -43,9 +45,9 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(DATA_COLOR, 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(DATA_COLOR, 0);
 	}
 
 	public void setPotion(Potion potion) {
@@ -55,10 +57,10 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 	}
 
 	private void updateColor() {
-		if (this.potion == Potions.EMPTY && this.effects.isEmpty()) {
+		if (this.potion == null && this.effects.isEmpty()) {
 			this.getEntityData().set(DATA_COLOR, 0);
 		} else {
-			this.getEntityData().set(DATA_COLOR, PotionUtils.getColor(PotionUtils.getAllEffects(this.potion, this.effects)));
+			this.getEntityData().set(DATA_COLOR, getColor()); // todo: playtest 1.21
 		}
 	}
 
@@ -105,8 +107,8 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 						continue;
 					this.victims.put(target, this.tickCount + this.reapplicationDelay);
 					for (MobEffectInstance appliedEffect : toApply) {
-						if (appliedEffect.getEffect().isInstantenous()) {
-							appliedEffect.getEffect().applyInstantenousEffect(this, null, target, appliedEffect.getAmplifier(), 0.5);
+						if (appliedEffect.getEffect().value().isInstantenous()) {
+							appliedEffect.getEffect().value().applyInstantenousEffect(this, null, target, appliedEffect.getAmplifier(), 0.5);
 						} else {
 							target.addEffect(new MobEffectInstance(appliedEffect), this);
 						}
@@ -144,7 +146,7 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 		tag.putInt("ReapplicationDelay", this.reapplicationDelay);
 		if (this.fixedColor)
 			tag.putInt("Color", this.getColor());
-		if (this.potion != Potions.EMPTY)
+		if (this.potion != null)
 			tag.putString("Potion", BuiltInRegistries.POTION.getKey(this.potion).toString());
 
 		if (!this.effects.isEmpty()) {

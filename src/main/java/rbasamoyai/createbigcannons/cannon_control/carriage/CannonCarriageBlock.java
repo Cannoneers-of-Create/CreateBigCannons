@@ -9,6 +9,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -57,33 +58,34 @@ public class CannonCarriageBlock extends Block implements IWrenchable, IBE<Canno
 		return InteractionResult.sidedSuccess(level.isClientSide);
 	}
 
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (state.getValue(SADDLED)) {
+            level.setBlock(pos, state.setValue(SADDLED, false), 11);
+            if (!level.isClientSide) {
+                ItemStack resultStack = Items.SADDLE.getDefaultInstance();
+                if (!player.addItem(resultStack) && !player.isCreative()) {
+                    ItemEntity item = player.drop(resultStack, false);
+                    if (item != null) {
+                        item.setNoPickUpDelay();
+                        item.setTarget(player.getUUID());
+                    }
+                }
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
+        }
+        return InteractionResult.PASS;
+    }
+
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemStack stack = player.getItemInHand(hand);
-		if (state.getValue(SADDLED)) {
-			if (stack.isEmpty()) {
-				level.setBlock(pos, state.setValue(SADDLED, false), 11);
-				if (!level.isClientSide) {
-					ItemStack resultStack = Items.SADDLE.getDefaultInstance();
-					if (!player.addItem(resultStack) && !player.isCreative()) {
-						ItemEntity item = player.drop(resultStack, false);
-						if (item != null) {
-							item.setNoPickUpDelay();
-							item.setTarget(player.getUUID());
-						}
-					}
-				}
-				return InteractionResult.sidedSuccess(level.isClientSide);
-			}
-		} else {
-			if (stack.is(Items.SADDLE)) {
-				if (!level.isClientSide && !player.isCreative()) stack.shrink(1);
-				level.setBlock(pos, state.setValue(SADDLED, true), 11);
-				level.playSound(player, pos, SoundEvents.HORSE_SADDLE, SoundSource.NEUTRAL, 0.5F, 1.0F);
-				return InteractionResult.sidedSuccess(level.isClientSide);
-			}
-		}
-		return InteractionResult.PASS;
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (!state.getValue(SADDLED) && stack.is(Items.SADDLE)) {
+            if (!level.isClientSide && !player.isCreative()) stack.shrink(1);
+            level.setBlock(pos, state.setValue(SADDLED, true), 11);
+            level.playSound(player, pos, SoundEvents.HORSE_SADDLE, SoundSource.NEUTRAL, 0.5F, 1.0F);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
+        }
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 	}
 
 	@Override

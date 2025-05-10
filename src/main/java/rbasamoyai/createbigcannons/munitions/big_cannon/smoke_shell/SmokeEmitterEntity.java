@@ -36,10 +36,10 @@ public class SmokeEmitterEntity extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.entityData.define(SMOKE_SIZE_X, 0f);
-		this.entityData.define(SMOKE_SIZE_Y, 0f);
-		this.entityData.define(SMOKE_SIZE_Z, 0f);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(SMOKE_SIZE_X, 0f);
+		builder.define(SMOKE_SIZE_Y, 0f);
+		builder.define(SMOKE_SIZE_Z, 0f);
 	}
 
 	@Override

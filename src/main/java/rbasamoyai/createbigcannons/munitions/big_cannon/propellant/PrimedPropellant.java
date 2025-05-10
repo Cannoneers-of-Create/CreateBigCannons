@@ -48,9 +48,9 @@ public class PrimedPropellant extends Entity {
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		this.entityData.define(DATA_FUSE_ID, 20);
-		this.entityData.define(DATA_APPEARANCE, CBCBlocks.POWDER_CHARGE.getDefaultState());
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(DATA_FUSE_ID, 20);
+		builder.define(DATA_APPEARANCE, CBCBlocks.POWDER_CHARGE.getDefaultState());
 	}
 
 	@Override protected Entity.MovementEmission getMovementEmission() { return Entity.MovementEmission.NONE; }

@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -52,7 +53,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
-		CompoundTag tag = stack.getOrCreateTag();
+		CompoundTag tag = (CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess());
 		int airTime = tag.getInt("AirTime");
 		if (airTime > CBCConfigs.server().munitions.proximityFuzeArmingTime.get()) tag.putBoolean("Armed", true);
 		tag.putInt("AirTime", ++airTime);
@@ -62,7 +63,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile projectile, Vec3 start, Vec3 end, ProjectileContext ctx, boolean baseFuze) {
 		if (baseFuze) return false;
-		CompoundTag tag = stack.getOrCreateTag();
+		CompoundTag tag = (CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess());
 		if (!tag.contains("Armed")) return false;
 
 		double l = Math.max(tag.getInt("DetonationDistance"), 1);
@@ -104,7 +105,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (player instanceof ServerPlayer splayer && player.mayBuild()) {
 			ItemStack stack = player.getItemInHand(hand);
-			CompoundTag tag = stack.getOrCreateTag();
+			CompoundTag tag = (CompoundTag) stack.saveOptional(level.registryAccess());
 			if (!tag.contains("DetonationDistance")) {
 				tag.putInt("DetonationDistance", 1);
 			}
@@ -129,7 +130,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 	public static ItemStack getCreativeTabItem(int defaultFuze) {
 		ItemStack stack = CBCItems.PROXIMITY_FUZE.asStack();
-		stack.getOrCreateTag().putInt("DetonationDistance", 1);
+        ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).putInt("DetonationDistance", 1);
 		return stack;
 	}
 
@@ -137,7 +138,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
 		MutableComponent info = CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", stack.getOrCreateTag().getInt("DetonationDistance"))
+			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getInt("DetonationDistance"))
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 	}
@@ -146,7 +147,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
 		tooltip.add(CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info.item", stack.getOrCreateTag().getInt("DetonationDistance"))
+			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info.item", ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getInt("DetonationDistance"))
 			.component());
 	}
 

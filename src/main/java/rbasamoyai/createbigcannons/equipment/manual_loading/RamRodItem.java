@@ -110,7 +110,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 			} else {
 				CompoundTag tag = null;
 				if (be != null) {
-					tag = be.saveWithFullMetadata();
+					tag = be.saveWithFullMetadata(context.getLevel().registryAccess());
 					tag.remove("x");
 					tag.remove("y");
 					tag.remove("z");
@@ -145,7 +145,7 @@ public class RamRodItem extends Item implements HandloadingTool {
 					tag.putInt("x", pos2.getX());
 					tag.putInt("y", pos2.getY());
 					tag.putInt("z", pos2.getZ());
-					be2.load(tag);
+					be2.loadWithComponents(tag, context.getLevel().registryAccess());
 				}
 			}
 		}

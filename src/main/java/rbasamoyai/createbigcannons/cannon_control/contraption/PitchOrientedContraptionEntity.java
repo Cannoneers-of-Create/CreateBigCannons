@@ -8,6 +8,7 @@ import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
@@ -64,8 +66,8 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	}
 
 	@Override
-	protected void writeAdditional(CompoundTag compound, boolean spawnPacket) {
-		super.writeAdditional(compound, spawnPacket);
+	protected void writeAdditional(CompoundTag compound, HolderLookup.Provider registries, boolean spawnPacket) {
+		super.writeAdditional(compound, registries, spawnPacket);
 		if (this.controllerPos != null)
 			compound.put("ControllerRelative", NbtUtils.writeBlockPos(controllerPos.subtract(blockPosition())));
 		compound.putBoolean("UpdatesOwnRotation", this.updatesOwnRotation);
@@ -255,7 +257,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	}
 
 	@Override
-	public boolean ignoreExplosion() {
+	public boolean ignoreExplosion(Explosion explosion) {
 		return true;
 	}
 }

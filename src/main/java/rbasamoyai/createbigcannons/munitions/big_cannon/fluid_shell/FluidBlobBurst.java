@@ -38,9 +38,8 @@ public class FluidBlobBurst extends CBCProjectileBurst {
 	private final Set<Entity> clippedThisTick = new HashSet<>();
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(BLOB_SIZE, (byte) 0);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		builder.define(BLOB_SIZE, (byte) 0);
 	}
 
 	@Override

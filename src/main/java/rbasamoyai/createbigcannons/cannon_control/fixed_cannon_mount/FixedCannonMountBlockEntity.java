@@ -26,6 +26,7 @@ import net.createmod.catnip.math.VecHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -251,7 +252,7 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		tag.putBoolean("Running", this.running);
 		tag.putFloat("CannonYaw", this.cannonYaw);
 		tag.putFloat("CannonPitch", this.cannonPitch);
-		AssemblyException.write(tag, this.lastException);
+		AssemblyException.write(tag, registry, this.lastException);
 	}
 
 	@Override
@@ -260,7 +261,7 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		this.running = tag.getBoolean("Running");
 		this.cannonYaw = tag.getFloat("CannonYaw");
 		this.cannonPitch = tag.getFloat("CannonPitch");
-		this.lastException = AssemblyException.read(tag);
+		this.lastException = AssemblyException.read(tag, registry);
 
 		if (!clientPacket) return;
 

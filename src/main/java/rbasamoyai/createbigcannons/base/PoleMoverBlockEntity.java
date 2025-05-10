@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.utility.ServerSpeedProvider;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -30,15 +31,15 @@ public abstract class PoleMoverBlockEntity extends LinearActuatorBlockEntity {
 	}
 
 	@Override
-	protected void read(CompoundTag compound, boolean clientPacket) {
+	protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
 		this.extensionLength = compound.getInt("ExtensionLength");
-		super.read(compound, clientPacket);
+		super.read(compound, registries, clientPacket);
 	}
 
 	@Override
-	protected void write(CompoundTag compound, boolean clientPacket) {
+	protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
 		compound.putInt("ExtensionLength", this.extensionLength);
-		super.write(compound, clientPacket);
+		super.write(compound, registries, clientPacket);
 	}
 
 	@Override

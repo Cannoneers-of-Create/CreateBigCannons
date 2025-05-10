@@ -112,7 +112,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
+	protected void write(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
 		Registry<CannonCastShape> shapeRegistry = CBCRegistries.cannonCastShapes();
 		if (this.canRenderCastModel() && this.castShape != null) {
 			tag.putString("Size", shapeRegistry.getKey(this.castShape).toString());
@@ -153,7 +153,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			tag.put("Controller", NbtUtils.writeBlockPos(this.controllerPos));
 		}
 
-		super.write(tag, clientPacket);
+		super.write(tag, registries, clientPacket);
 
 		if (!clientPacket) return;
 		if (this.forceFluidLevelUpdate) tag.putBoolean("ForceFluidLevel", true);

@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
@@ -94,8 +95,8 @@ public class CannonDrillingContraption extends PoleContraption {
 		this.anchor = pos.relative(direction, this.initialExtensionProgress + 1);
 		this.initialExtensionProgress = extensionsInFront;
 		this.pistonContraptionHitbox = new AABB(
-			BlockPos.ZERO,
-			BlockPos.ZERO.relative(direction, -this.extensionLength - 1))
+			Vec3.ZERO.ZERO,
+			Vec3.ZERO.relative(direction, -this.extensionLength - 1))
 			.expandTowards(1, 1, 1);
 
 		this.bounds = new AABB(0, 0, 0, 0, 0, 0);
