@@ -24,14 +24,14 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, ctx, tooltip, flag);
 		ItemStack round = getProjectileStack(stack);
 		if (!round.isEmpty()) {
 			tooltip.add(Component.translatable("item.minecraft.crossbow.projectile").append(" ").append(round.getDisplayName()));
 			if (round.getItem() instanceof AutocannonRoundItem) {
 				List<Component> subTooltip = new ArrayList<>();
-				round.getItem().appendHoverText(round, level, subTooltip, flag);
+				round.getItem().appendHoverText(round, ctx, subTooltip, flag);
 				for (int i = 0; i < subTooltip.size(); ++i) {
 					subTooltip.set(i, Component.literal("  ").append(subTooltip.get(i)).withStyle(ChatFormatting.GRAY));
 				}

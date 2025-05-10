@@ -10,6 +10,7 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.DisconnectionDetails;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -72,8 +73,8 @@ public class CBCClientHandlers {
 		if (CBCRootNetwork.VERSION.equals(pkt.serverVersion())) return;
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.getConnection() != null)
-			mc.getConnection().onDisconnect(Component.literal("Create Big Cannons on the client uses a different network format than the server.")
-				.append(" Please use a matching format."));
+			mc.getConnection().onDisconnect(new DisconnectionDetails(Component.literal("Create Big Cannons on the client uses a different network format than the server.")
+				.append(" Please use a matching format.")));
 	}
 
 	public static void syncPreciseRotation(ClientboundPreciseRotationSyncPacket pkt) {
@@ -82,7 +83,7 @@ public class CBCClientHandlers {
 		Entity entity = mc.level.getEntity(pkt.entityId());
 		if (entity == null) return;
 
-		entity.lerpTo(entity.getX(), entity.getY(), entity.getZ(), pkt.yRot(), pkt.xRot(), 3, false);
+		entity.lerpTo(entity.getX(), entity.getY(), entity.getZ(), pkt.yRot(), pkt.xRot(), 3);
 	}
 
 	public static void updateFluidBlob(ClientboundFluidBlobStackSyncPacket pkt) {

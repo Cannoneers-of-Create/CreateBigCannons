@@ -42,17 +42,12 @@ public class SparkParticle extends Particle {
 
 	private static final ParticleRenderType RENDER_TYPE = new ParticleRenderType() {
 		@Override
-		public void begin(BufferBuilder builder, TextureManager textureManager) {
+        public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
 			RenderSystem.depthMask(true);
 			RenderSystem.disableBlend();
 			RenderSystem.setShader(GameRenderer::getRendertypeEntityTranslucentCullShader);
 			COLOR.setupRenderState();
-			builder.begin(COLOR.mode(), COLOR.format());
-		}
-
-		@Override
-		public void end(Tesselator tesselator) {
-			tesselator.end();
+			return tesselator.begin(COLOR.mode(), COLOR.format());
 		}
 
 		@Override public String toString() { return "SPARK"; }
@@ -84,13 +79,12 @@ public class SparkParticle extends Particle {
 		for(int vert = 0; vert < 16; ++vert) {
 			Vector3f vector3f2 = vector3fs[vert];
 			orient.transform(vector3f2);
-			buffer.vertex(vector3f2.x() + x1, vector3f2.y() + y1, vector3f2.z() + z1)
-				.color(this.rCol, this.gCol, this.bCol, this.alpha)
-				.uv(0, 0)
-				.overlayCoords(OverlayTexture.NO_OVERLAY)
-				.uv2(p)
-				.normal(0, 1, 0)
-				.endVertex();
+			buffer.addVertex(vector3f2.x() + x1, vector3f2.y() + y1, vector3f2.z() + z1)
+				.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+				.setUv(0, 0)
+				.setOverlay(OverlayTexture.NO_OVERLAY)
+				.setLight(p)
+				.setNormal(0, 1, 0);
 		}
 	}
 

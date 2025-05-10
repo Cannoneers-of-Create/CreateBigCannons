@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -46,7 +47,7 @@ public class TrafficConeBlockItem extends BlockItem implements Equipable {
 
 	@Nullable
 	@Override
-	public SoundEvent getEquipSound() {
+	public Holder<SoundEvent> getEquipSound() {
 		return SoundEvents.ARMOR_EQUIP_GENERIC;
 	}
 

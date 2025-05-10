@@ -6,16 +6,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -39,7 +39,7 @@ public class CannonCastBlock extends Block implements IBE<AbstractCannonCastBloc
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		return CBCBlocks.CASTING_SAND.asStack();
 	}
 
@@ -92,18 +92,17 @@ public class CannonCastBlock extends Block implements IBE<AbstractCannonCastBloc
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		ItemStack stack = player.getItemInHand(hand);
-		if (hit.getDirection() != Direction.UP) return InteractionResult.PASS;
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (hit.getDirection() != Direction.UP) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 
-		return this.onBlockEntityUse(level, pos, cast -> {
+		return this.onBlockEntityUseItemOn(level, pos, cast -> {
 			AbstractCannonCastBlockEntity controller = cast.getControllerBE();
-			if (controller == null || stack.isEmpty()) return InteractionResult.PASS;
+			if (controller == null || stack.isEmpty()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 			if (controller.tryEmptyItemIntoBE(level, player, hand, stack, Direction.UP))
-				return InteractionResult.SUCCESS;
+				return ItemInteractionResult.SUCCESS;
 			if (controller.tryFillItemFromBE(level, player, hand, stack, Direction.UP))
-				return InteractionResult.SUCCESS;
-			return InteractionResult.PASS;
+				return ItemInteractionResult.SUCCESS;
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		});
 	}
 

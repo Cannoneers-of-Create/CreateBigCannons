@@ -12,6 +12,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -62,11 +63,10 @@ public class IncompleteScrewBreechBlock extends SolidBigCannonBlock<IncompleteBi
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemStack stack = player.getItemInHand(hand);
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		int stage = state.getValue(STAGE_2);
-		if (stage == 0 && !AllBlocks.SHAFT.is(stack.getItem())) return InteractionResult.PASS;
-		if (stage == 1 && !stack.is(this.resolveSecondItem())) return InteractionResult.PASS;
+		if (stage == 0 && !AllBlocks.SHAFT.is(stack.getItem())) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION; //todo: check behavior
+		if (stage == 1 && !stack.is(this.resolveSecondItem())) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		level.playSound(player, pos, SoundEvents.NETHERITE_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
 		if (!level.isClientSide) {
 			if (!player.isCreative()) stack.shrink(1);
@@ -92,7 +92,7 @@ public class IncompleteScrewBreechBlock extends SolidBigCannonBlock<IncompleteBi
 				}
 			});
 		}
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return ItemInteractionResult.sidedSuccess(level.isClientSide);
 	}
 
 	@Override

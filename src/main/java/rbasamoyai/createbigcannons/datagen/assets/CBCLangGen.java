@@ -407,7 +407,7 @@ public class CBCLangGen {
 		private final String type;
 		private int cbCount = 1;
 		private int caCount = 1;
-		public TooltipBuilder(ItemProviderEntry<?> provider, boolean item) {
+		public TooltipBuilder(ItemProviderEntry<?, ?> provider, boolean item) {
 			this.loc = provider.getId();
 			this.type = item ? "item" : "block";
 		}

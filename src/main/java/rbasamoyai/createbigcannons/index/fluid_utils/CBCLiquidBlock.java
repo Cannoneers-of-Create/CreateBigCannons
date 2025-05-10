@@ -5,6 +5,7 @@ import dev.architectury.injectables.targets.ArchitecturyTarget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -14,6 +15,8 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluids;
+
+import javax.annotation.Nullable;
 
 import java.util.Optional;
 
@@ -55,15 +58,16 @@ public class CBCLiquidBlock extends LiquidBlock implements FluidGetter {
 		return super.updateShape(state, direction, neighborState, level, currentPos, neighborPos);
 	}
 
-	@Override
-	public ItemStack pickupBlock(LevelAccessor level, BlockPos pos, BlockState state) {
+    // todo: might not be needed anymore
+	/*@Override
+	public ItemStack pickupBlock(@Nullable Player player, LevelAccessor level, BlockPos pos, BlockState state) {
 		if (state.getValue(LEVEL) == 0) {
 			level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
 			return new ItemStack(this.getFluid().getBucket());
 		} else {
 			return ItemStack.EMPTY;
 		}
-	}
+	}*/
 
 	@Override public FlowingFluid getFluid() { return this.fluidSup.get(); }
 

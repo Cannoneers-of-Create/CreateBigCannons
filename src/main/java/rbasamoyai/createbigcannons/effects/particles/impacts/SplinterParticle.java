@@ -123,73 +123,72 @@ public class SplinterParticle extends CBCBlockParticle {
 		float particleV1 = this.sprite1.getV1();
 		int p = this.getLightColor(partialTicks);
 
-		buffer.vertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z())
-			.uv(blockU0, blockV0)
-			.uv(blockU1, blockV1)
-			.uv(particleU1, particleV1)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.normal(normal.x(), normal.y(), normal.z())
-			.endVertex();
-		buffer.vertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
-			.uv(blockU0, blockV0)
-			.uv(blockU1, blockV1)
-			.uv(particleU1, particleV0)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.normal(normal.x(), normal.y(), normal.z())
-			.endVertex();
-		buffer.vertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
-			.uv(blockU0, blockV0)
-			.uv(blockU1, blockV1)
-			.uv(particleU0, particleV0)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.normal(normal.x(), normal.y(), normal.z())
-			.endVertex();
-		buffer.vertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
-			.uv(blockU0, blockV0)
-			.uv(blockU1, blockV1)
-			.uv(particleU0, particleV1)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.normal(normal.x(), normal.y(), normal.z())
-			.endVertex();
+		buffer.addVertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z()) //todo: check
+			.setUv(blockU0, blockV0)
+			.setUv(blockU1, blockV1)
+			.setUv(particleU1, particleV1)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setLight(p)
+			.setNormal(normal.x(), normal.y(), normal.z());
+		buffer.addVertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
+			.setUv(blockU0, blockV0)
+			.setUv(blockU1, blockV1)
+			.setUv(particleU1, particleV0)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setUv(blockU1, blockV1)
+			.setLight(p)
+			.setNormal(normal.x(), normal.y(), normal.z());
+		buffer.addVertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
+			.setUv(blockU0, blockV0)
+			.setUv(blockU1, blockV1)
+			.setUv(particleU0, particleV0)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setUv(blockU1, blockV1)
+			.setLight(p)
+			.setNormal(normal.x(), normal.y(), normal.z());
+		buffer.addVertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
+			.setUv(blockU0, blockV0)
+			.setUv(blockU1, blockV1)
+			.setUv(particleU0, particleV1)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setUv(blockU1, blockV1)
+			.setLight(p)
+			.setNormal(normal.x(), normal.y(), normal.z());
 
 		normal.mul(-1);
 
-		buffer.vertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z())
-			.uv(blockU0, blockV0)
-			.uv(blockU1, blockV1)
-			.uv(particleU1, particleV1)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.normal(normal.x(), normal.y(), normal.z())
-			.endVertex();
-		buffer.vertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
-			.uv(blockU0, blockV0)
-			.uv(blockU1, blockV1)
-			.uv(particleU0, particleV1)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.normal(normal.x(), normal.y(), normal.z())
-			.endVertex();
-		buffer.vertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
-			.uv(blockU0, blockV0)
-			.uv(blockU1, blockV1)
-			.uv(particleU0, particleV0)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.normal(normal.x(), normal.y(), normal.z())
-			.endVertex();
-		buffer.vertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
-			.uv(blockU0, blockV0)
-			.uv(blockU1, blockV1)
-			.uv(particleU1, particleV0)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.normal(normal.x(), normal.y(), normal.z())
-			.endVertex();
+		buffer.addVertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z())
+			.setUv(blockU0, blockV0)
+			.setUv(blockU1, blockV1)
+			.setUv(particleU1, particleV1)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setUv(blockU1, blockV1)
+			.setLight(p)
+			.setNormal(normal.x(), normal.y(), normal.z());
+		buffer.addVertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
+			.setUv(blockU0, blockV0)
+			.setUv(blockU1, blockV1)
+			.setUv(particleU0, particleV1)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setUv(blockU1, blockV1)
+			.setLight(p)
+			.setNormal(normal.x(), normal.y(), normal.z());
+		buffer.addVertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
+			.setUv(blockU0, blockV0)
+			.setUv(blockU1, blockV1)
+			.setUv(particleU0, particleV0)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setUv(blockU1, blockV1)
+			.setLight(p)
+			.setNormal(normal.x(), normal.y(), normal.z());
+		buffer.addVertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
+			.setUv(blockU0, blockV0)
+			.setUv(blockU1, blockV1)
+			.setUv(particleU1, particleV0)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setUv(blockU1, blockV1)
+			.setLight(p)
+			.setNormal(normal.x(), normal.y(), normal.z());
 	}
 
 	@Override

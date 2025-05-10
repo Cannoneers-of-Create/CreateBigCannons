@@ -45,10 +45,11 @@ public class CannonDrillBlock extends DirectionalAxisKineticBlock implements IBE
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		destroyExtensionPoles(level, pos, state, !player.isCreative());
 		super.playerWillDestroy(level, pos, state, player);
-	}
+        return state;
+    }
 
 	public static void destroyExtensionPoles(Level level, BlockPos pos, BlockState state, boolean dropBlocks) {
 		dropBlocks &= level.getGameRules().getBoolean(GameRules.RULE_DOBLOCKDROPS);

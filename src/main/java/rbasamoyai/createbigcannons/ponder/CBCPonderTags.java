@@ -18,7 +18,7 @@ public class CBCPonderTags {
     CANNON_CRAFTING = CreateBigCannons.resource("cannon_crafting");
 
     public static void register(PonderTagRegistrationHelper<ResourceLocation> helper) {
-        PonderTagRegistrationHelper<RegistryEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        PonderTagRegistrationHelper<RegistryEntry<?, ?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
 
         helper.registerTag(OPERATING_CANNONS)
             .addToIndex()

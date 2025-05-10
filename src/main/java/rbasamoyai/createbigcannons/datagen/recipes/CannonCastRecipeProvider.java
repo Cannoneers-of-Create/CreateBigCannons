@@ -290,7 +290,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 	}
 
 	private static TagKey<Fluid> fluidTag(String path) {
-		return TagKey.create(Registries.FLUID, new ResourceLocation(CBCDatagenCommon.PLATFORM.tagNamespace(), path));
+		return TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath(CBCDatagenCommon.PLATFORM.tagNamespace(), path));
 	}
 
 }

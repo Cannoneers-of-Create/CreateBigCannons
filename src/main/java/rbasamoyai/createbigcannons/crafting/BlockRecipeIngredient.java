@@ -7,6 +7,8 @@ import java.util.function.Predicate;
 import com.google.gson.JsonElement;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
@@ -26,7 +28,9 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 		public List<ItemStack> getBlockItems() {
 			if (this.ingredient == null) {
 				this.ingredient = new ArrayList<>(1);
-				this.ingredient.add(new ItemStack(Blocks.BARRIER).setHoverName(Component.literal("Invalid block")));
+                ItemStack stack = new ItemStack(Blocks.BARRIER);
+                stack.applyComponents(DataComponentPatch.builder().set(DataComponents.ITEM_NAME, Component.literal("Invalid block")).build()); // todo: this seems fucking stupid
+                this.ingredient.add(stack);
 			}
 			return this.ingredient;
 		}
@@ -118,7 +122,9 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 					this.blocks.add(new ItemStack(holder.value()));
 				}
 				if (this.blocks.isEmpty()) {
-					this.blocks.add(new ItemStack(Blocks.BARRIER).setHoverName(Component.literal("Empty Tag: " + this.tag.location())));
+                    ItemStack stack = new ItemStack(Blocks.BARRIER);
+                    stack.applyComponents(DataComponentPatch.builder().set(DataComponents.ITEM_NAME, Component.literal("Empty Tag: " + this.tag.location())).build()); // todo: this seems fucking stupid
+                    this.blocks.add(stack);
 				}
 			}
 			return this.blocks;

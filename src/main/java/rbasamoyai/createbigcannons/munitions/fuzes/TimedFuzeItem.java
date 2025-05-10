@@ -100,8 +100,8 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, ctx, tooltip, flag);
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;

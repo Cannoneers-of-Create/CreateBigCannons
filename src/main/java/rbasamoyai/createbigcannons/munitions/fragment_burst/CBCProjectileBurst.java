@@ -50,7 +50,7 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 		return Math.min(drag, magnitude);
 	}
 
-	protected double getGravity() {
+	protected double getDefaultGravity() {
 		BallisticPropertiesComponent properties = this.getProperties().ballistics();
 		return properties.gravity() * DimensionMunitionPropertiesHandler.getProperties(this.level()).gravityMultiplier();
 	}

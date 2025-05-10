@@ -93,7 +93,7 @@ public abstract class AbstractBlastWaveEffectParticleData<DATA extends AbstractB
 		this.power = power;
 	}
 
-	protected AbstractBlastWaveEffectParticleData() { this(0, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.GENERIC_EXPLODE), SoundSource.BLOCKS, 1, 1, 0, 0); }
+	protected AbstractBlastWaveEffectParticleData() { this(0, BuiltInRegistries.SOUND_EVENT.wrapAsHolder(SoundEvents.GENERIC_EXPLODE.value()), SoundSource.BLOCKS, 1, 1, 0, 0); }
 
 	public double blastRadius() { return this.blastRadius; }
 	public Holder<SoundEvent> soundEvent() { return this.soundEvent; }

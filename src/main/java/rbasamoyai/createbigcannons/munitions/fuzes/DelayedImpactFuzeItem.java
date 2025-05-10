@@ -96,9 +96,9 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		CBCTooltip.appendImpactFuzeText(stack, level, tooltip, flag, this.getDetonateChance(), this.getFuzeDurability());
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, ctx, tooltip, flag);
+		CBCTooltip.appendImpactFuzeText(stack, ctx.level(), tooltip, flag, this.getDetonateChance(), this.getFuzeDurability());
 
 		int time = stack.getOrCreateTag().getInt("FuzeTimer");
 		int seconds = time / 20;

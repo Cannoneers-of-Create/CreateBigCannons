@@ -17,9 +17,9 @@ public class LightingRemix {
 		if (LEVEL_LIGHTING == null)
 			return;
 		if (isNether) {
-			Lighting.setupNetherLevel(LEVEL_LIGHTING);
+			Lighting.setupNetherLevel(); // todo: things changed, this is strange
 		} else {
-			Lighting.setupLevel(LEVEL_LIGHTING);
+			Lighting.setupLevel();
 		}
 	}
 

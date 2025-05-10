@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -140,67 +141,73 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemStack stack = player.getItemInHand(hand);
-		if (level.getBlockEntity(pos) instanceof AbstractAutocannonBreechBlockEntity breech) {
-			if (breech.getSeatColor() == null
-				&& state.getValue(HANDLE)
-				&& stack.getItem() instanceof BlockItem blockItem
-				&& blockItem.getBlock() instanceof SeatBlock seat) {
-				if (!level.isClientSide) {
-					breech.setSeatColor(seat.getColor());
-					SoundType soundType = seat.defaultBlockState().getSoundType();
-					level.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
-					if (!player.isCreative()) stack.shrink(1);
-				}
-				return InteractionResult.sidedSuccess(level.isClientSide);
-			} else if (stack.isEmpty() && breech.getSeatColor() != null) {
-				if (!level.isClientSide) {
-					DyeColor seat = breech.getSeatColor();
-					if (seat != null) {
-						ItemStack drop = AllBlocks.SEATS.get(seat).asStack();
-						if (!player.addItem(drop) && !player.isCreative()) {
-							Vec3 spawnLoc = Vec3.atCenterOf(pos);
-							ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, drop);
-							level.addFreshEntity(dropEntity);
-						}
-					}
-					breech.setSeatColor(null);
-					level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0f, 1.0f);
-				}
-				return InteractionResult.sidedSuccess(level.isClientSide);
-			}
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        if (level.getBlockEntity(pos) instanceof AbstractAutocannonBreechBlockEntity breech) {
+            if (breech.getSeatColor() == null
+                && state.getValue(HANDLE)
+                && stack.getItem() instanceof BlockItem blockItem
+                && blockItem.getBlock() instanceof SeatBlock seat) {
+                if (!level.isClientSide) {
+                    breech.setSeatColor(seat.getColor());
+                    SoundType soundType = seat.defaultBlockState().getSoundType();
+                    level.playSound(null, pos, soundType.getPlaceSound(), SoundSource.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
+                    if (!player.isCreative()) stack.shrink(1);
+                }
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
+            ItemStack container = breech.getMagazine();
+            boolean changed = false;
+            boolean tryAdd = false;
+            if (!container.isEmpty()) {
+                if (!level.isClientSide) {
+                    tryAdd = true;
+                    breech.setMagazine(ItemStack.EMPTY);
+                }
+                changed = true;
+            }
+            if (stack.getItem() instanceof AutocannonAmmoContainerItem) {
+                if (!level.isClientSide) {
+                    breech.setMagazine(stack);
+                    player.setItemInHand(hand, ItemStack.EMPTY);
+                    CBCSoundEvents.PLACE_AUTOCANNON_AMMO_CONTAINER.playOnServer(level, pos);
+                }
+                changed = true;
+            }
 
-			ItemStack container = breech.getMagazine();
-			boolean changed = false;
-			boolean tryAdd = false;
-			if (!container.isEmpty()) {
-				if (!level.isClientSide) {
-					tryAdd = true;
-					breech.setMagazine(ItemStack.EMPTY);
-				}
-				changed = true;
-			}
-			if (stack.getItem() instanceof AutocannonAmmoContainerItem) {
-				if (!level.isClientSide) {
-					breech.setMagazine(stack);
-					player.setItemInHand(hand, ItemStack.EMPTY);
-					CBCSoundEvents.PLACE_AUTOCANNON_AMMO_CONTAINER.playOnServer(level, pos);
-				}
-				changed = true;
-			}
+            if (tryAdd && !player.addItem(container)) {
+                Vec3 spawnLoc = Vec3.atCenterOf(pos);
+                ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, container);
+                level.addFreshEntity(dropEntity);
+            }
+            if (changed) {
+                breech.notifyUpdate();
+                return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            }
+        }
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION; // todo: check behavior
+    }
 
-			if (tryAdd && !player.addItem(container)) {
-				Vec3 spawnLoc = Vec3.atCenterOf(pos);
-				ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, container);
-				level.addFreshEntity(dropEntity);
-			}
-			if (changed) {
-				breech.notifyUpdate();
-				return InteractionResult.sidedSuccess(level.isClientSide);
-			}
-		}
-		return super.use(state, level, pos, player, hand, result);
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
+        if (level.getBlockEntity(pos) instanceof AbstractAutocannonBreechBlockEntity breech) {
+            if (breech.getSeatColor() != null) {
+                if (!level.isClientSide) {
+                    DyeColor seat = breech.getSeatColor();
+                    if (seat != null) {
+                        ItemStack drop = AllBlocks.SEATS.get(seat).asStack();
+                        if (!player.addItem(drop) && !player.isCreative()) {
+                            Vec3 spawnLoc = Vec3.atCenterOf(pos);
+                            ItemEntity dropEntity = new ItemEntity(level, spawnLoc.x, spawnLoc.y, spawnLoc.z, drop);
+                            level.addFreshEntity(dropEntity);
+                        }
+                    }
+                    breech.setSeatColor(null);
+                    level.playSound(null, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS, 1.0f, 1.0f);
+                }
+                return InteractionResult.sidedSuccess(level.isClientSide);
+            }
+        }
+        return super.useWithoutItem(state, level, pos, player, hitResult);
 	}
 
 	@Override

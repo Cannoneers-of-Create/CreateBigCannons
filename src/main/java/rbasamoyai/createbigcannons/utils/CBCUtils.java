@@ -56,7 +56,7 @@ public class CBCUtils {
 	 * @return Resource location of form {@code <namespace>:<path>}
 	 */
 	public static ResourceLocation location(String namespace, String path) {
-		return new ResourceLocation(namespace, path);
+		return ResourceLocation.fromNamespaceAndPath(namespace, path);
 	}
 
 	/**
@@ -66,7 +66,7 @@ public class CBCUtils {
 	 * @return Resource location of form {@code <namespace>:<path>}
 	 */
 	public static ResourceLocation location(String location) {
-		return new ResourceLocation(location);
+		return ResourceLocation.parse(location);
 	}
 
 	/**

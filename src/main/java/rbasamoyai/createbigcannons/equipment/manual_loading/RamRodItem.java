@@ -236,9 +236,9 @@ public class RamRodItem extends Item implements HandloadingTool {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		CBCTooltip.appendRamRodText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, ctx, tooltip, flag);
+		CBCTooltip.appendRamRodText(stack, ctx.level(), tooltip, flag);
 	}
 
 	public static int getPushStrength() {

@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -66,13 +67,13 @@ public class FinishedCannonCastBlock extends Block implements IBE<FinishedCannon
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		return CBCBlocks.CASTING_SAND.asStack();
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		if (!level.isClientSide && player.getItemInHand(hand).isEmpty()) {
+	public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult result) {
+		if (!level.isClientSide) {
 			this.withBlockEntityDo(level, result.getBlockPos(), FinishedCannonCastBlockEntity::removeCast);
 		}
 		return InteractionResult.sidedSuccess(level.isClientSide);

@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -105,9 +106,8 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 	}
 
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
-		ItemStack stack = player.getItemInHand(hand);
-		if (stack.getItem() != this.resolveItem()) return InteractionResult.PASS;
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if (stack.getItem() != this.resolveItem()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION; //todo: this behavior might be wrong
 		level.playSound(player, pos, SoundEvents.NETHERITE_BLOCK_PLACE, SoundSource.BLOCKS, 1.0f, 1.0f);
 		if (!level.isClientSide) {
 			if (!player.isCreative()) stack.shrink(1);
@@ -129,7 +129,7 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 				}
 			});
 		}
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return ItemInteractionResult.sidedSuccess(level.isClientSide);
 	}
 
 }

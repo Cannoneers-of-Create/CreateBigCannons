@@ -11,6 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
@@ -68,10 +69,11 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements IBE<LayeredB
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		if (!level.isClientSide) this.playerWillDestroyBigCannon(level, pos, state, player);
 		super.playerWillDestroy(level, pos, state, player);
-	}
+        return state;
+    }
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
@@ -117,7 +119,7 @@ public class BuiltUpCannonBlock extends DirectionalBlock implements IBE<LayeredB
 	}
 
 	@Override
-	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pos, BlockState state) {
+	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		return ItemStack.EMPTY;
 	}
 

@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.effects.particles.smoke;
 
+import net.minecraft.client.renderer.texture.OverlayTexture;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -120,30 +122,26 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 		float o = this.getV1();
 		int p = this.getLightColor(partialTicks);
 		int cannonPower = (int) Math.floor(this.power);
-		buffer.vertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z())
-			.uv(m, o)
-			.overlayCoords(0, cannonPower)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.endVertex();
-		buffer.vertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
-			.uv(m, n)
-			.overlayCoords(0, cannonPower)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.endVertex();
-		buffer.vertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
-			.uv(l, n)
-			.overlayCoords(0, cannonPower)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.endVertex();
-		buffer.vertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
-			.uv(l, o)
-			.overlayCoords(0, cannonPower)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.endVertex();
+		buffer.addVertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z()) // todo: confirm this works
+			.setUv(m, o)
+			.setOverlay(OverlayTexture.pack(0, cannonPower))
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setLight(p);
+		buffer.addVertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
+			.setUv(m, n)
+            .setOverlay(OverlayTexture.pack(0, cannonPower))
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setLight(p);
+		buffer.addVertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
+			.setUv(l, n)
+            .setOverlay(OverlayTexture.pack(0, cannonPower))
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setLight(p);
+		buffer.addVertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
+			.setUv(l, o)
+            .setOverlay(OverlayTexture.pack(0, cannonPower))
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setLight(p);
 	}
 
 	@Override

@@ -55,26 +55,22 @@ public class FallbackCannonSmokeParticle extends CannonSmokeParticle {
 		float n = this.getV0();
 		float o = this.getV1();
 		int p = this.getLightColor(partialTicks);
-		buffer.vertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z())
-			.uv(m, o)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.endVertex();
-		buffer.vertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
-			.uv(m, n)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.endVertex();
-		buffer.vertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
-			.uv(l, n)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.endVertex();
-		buffer.vertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
-			.uv(l, o)
-			.color(this.rCol, this.gCol, this.bCol, this.alpha)
-			.uv2(p)
-			.endVertex();
+		buffer.addVertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z())
+			.setUv(m, o)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setLight(p);
+		buffer.addVertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
+			.setUv(m, n)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setLight(p);
+		buffer.addVertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
+			.setUv(l, n)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setLight(p);
+		buffer.addVertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
+			.setUv(l, o)
+			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+			.setLight(p); //todo: 1.21 playtest
 	}
 
 	public static class Provider implements ParticleProvider<FallbackCannonSmokeParticleData> {

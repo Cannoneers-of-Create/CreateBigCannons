@@ -19,7 +19,7 @@ public class CannonWelderItem extends Item {
 
 	@Override public boolean canAttackBlock(BlockState state, Level level, BlockPos pos, Player player) { return false; }
 
-	@Override public boolean canBeDepleted() { return true; }
+	//@Override public boolean canBeDepleted() { return true; } // fixme
 
 	@Override
 	public InteractionResult useOn(UseOnContext context) {

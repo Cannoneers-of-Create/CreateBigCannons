@@ -74,7 +74,7 @@ public class CannonWelderSelectionHandler {
 			}
 			CreateLang.builder(CreateBigCannons.MOD_ID).translate(key).color(color).sendStatus(player);
 			if (this.firstPos != null) {
-				Outliner.getInstance().showAABB(this.bbOutlineSlot, new AABB(this.firstPos, hovered).expandTowards(1, 1, 1))
+				Outliner.getInstance().showAABB(this.bbOutlineSlot, new AABB(this.firstPos.getX(), this.firstPos.getY(), this.firstPos.getZ(), hovered.getX(), hovered.getY(), hovered.getZ()).expandTowards(1, 1, 1))
 					.colored(color)
 					.withFaceTextures(AllSpecialTextures.GLUE, AllSpecialTextures.GLUE)
 					.disableLineNormals()

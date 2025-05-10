@@ -3,17 +3,11 @@ package rbasamoyai.createbigcannons.datagen.loot;
 import java.util.function.BiConsumer;
 
 import net.minecraft.data.loot.LootTableSubProvider;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
@@ -22,7 +16,7 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 public class BoringScrapLoot implements LootTableSubProvider {
 
 	@Override
-	public void generate(BiConsumer<ResourceLocation, LootTable.Builder> cons) {
+	public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> cons) {
 		ItemLike castIron = CBCItems.CAST_IRON_NUGGET.get();
 		ItemLike bronze = CBCItems.BRONZE_SCRAP.get();
 		ItemLike steel = CBCItems.STEEL_SCRAP.get();
@@ -64,7 +58,7 @@ public class BoringScrapLoot implements LootTableSubProvider {
 		cons.accept(loc(CBCBlocks.UNBORED_STEEL_AUTOCANNON_BREECH.get()), dropAmount(steel, 25, 30));
 	}
 
-	protected static ResourceLocation loc(Block block) {
+	protected static ResourceKey<LootTable> loc(Block block) {
 		ResourceLocation id = CBCRegistryUtils.getBlockLocation(block);
 		return CBCUtils.location(id.getNamespace(), "boring_scrap/" + id.getPath());
 	}
