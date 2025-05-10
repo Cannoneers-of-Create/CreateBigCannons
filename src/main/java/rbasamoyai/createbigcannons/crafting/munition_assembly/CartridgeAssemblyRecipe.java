@@ -86,9 +86,9 @@ public class CartridgeAssemblyRecipe extends CustomRecipe {
 		if (fuzePosition != -1) {
 			ItemStack fuzeCopy = container.getItem(fuzePosition).copy();
 			fuzeCopy.setCount(1);
-			roundCopy.getOrCreateTag().put("Fuze", fuzeCopy.save(new CompoundTag()));
+			roundCopy.getOrCreateTag().put("Fuze", fuzeCopy.save(registry));
 		}
-		tag.put("Projectile", roundCopy.save(new CompoundTag()));
+		tag.put("Projectile", roundCopy.save(registry));
 
 		return result;
 	}

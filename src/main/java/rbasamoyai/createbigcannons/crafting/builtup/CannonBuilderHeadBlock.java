@@ -47,7 +47,7 @@ public class CannonBuilderHeadBlock extends WrenchableDirectionalBlock implement
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		Direction direction = state.getValue(FACING);
 		BlockPos builderBase = null;
 
@@ -71,7 +71,8 @@ public class CannonBuilderHeadBlock extends WrenchableDirectionalBlock implement
 		}
 
 		super.playerWillDestroy(level, pos, state, player);
-	}
+        return state;
+    }
 
 	private static boolean isExtensionPole(BlockState state) {
 		return AllBlocks.PISTON_EXTENSION_POLE.has(state);

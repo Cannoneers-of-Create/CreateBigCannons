@@ -11,6 +11,10 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import net.minecraft.core.HolderLookup;
+
+import net.minecraft.world.phys.Vec3;
+
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.simibubi.create.AllBlocks;
@@ -117,8 +121,8 @@ public class CannonBuildingContraption extends PoleContraption {
 		this.anchor = pos.relative(direction, this.initialExtensionProgress + 1);
 		this.initialExtensionProgress = extensionsInFront;
 		this.pistonContraptionHitbox = new AABB(
-			BlockPos.ZERO.relative(direction, -1),
-			BlockPos.ZERO.relative(direction, -this.extensionLength - 1))
+			Vec3.ZERO.relative(direction, -1),
+			Vec3.ZERO.relative(direction, -this.extensionLength - 1))
 			.expandTowards(1, 1, 1);
 
 		this.bounds = new AABB(0, 0, 0, 0, 0, 0);
@@ -180,7 +184,7 @@ public class CannonBuildingContraption extends PoleContraption {
 					BlockState simpleState = split.getSimplifiedBlock().defaultBlockState();
 					if (!simpleState.hasProperty(BlockStateProperties.FACING)) return false;
 					simpleState = simpleState.setValue(BlockStateProperties.FACING, cBlock.getFacing(state));
-					CompoundTag tag = this.getBlockEntityTag(split);
+					CompoundTag tag = this.getBlockEntityTag(split, level.registryAccess());
 					preAddedBlocks.put(currentPos, Pair.of(new StructureBlockInfo(currentPos, simpleState, tag), split));
 
 					connectedShapes.addAll(split.getLayers().keySet());
@@ -232,12 +236,12 @@ public class CannonBuildingContraption extends PoleContraption {
 						if (!simpleState.hasProperty(BlockStateProperties.FACING)) return false;
 						simpleState = simpleState.setValue(BlockStateProperties.FACING, cBlock.getFacing(state));
 
-						CompoundTag tag = this.getBlockEntityTag(layered1);
+						CompoundTag tag = this.getBlockEntityTag(layered1, level.registryAccess());
 						preAddedBlocks.put(backPos, Pair.of(new StructureBlockInfo(backPos, simpleState, tag), layered1));
 					}
 
 					BlockEntity be = level.getBlockEntity(currentPos);
-					preAddedBlocks.put(currentPos, Pair.of(new StructureBlockInfo(currentPos, state, this.getBlockEntityTag(be)), be));
+					preAddedBlocks.put(currentPos, Pair.of(new StructureBlockInfo(currentPos, state, this.getBlockEntityTag(be, level.registryAccess())), be));
 					fullShape = isNonLayerConnectedTo(level, shape, cBlock, state, currentPos, this.orientation, forcedDirection) ? shape : null;
 					connectedShapes.clear();
 				}
@@ -256,9 +260,9 @@ public class CannonBuildingContraption extends PoleContraption {
 		return true;
 	}
 
-	protected CompoundTag getBlockEntityTag(BlockEntity be) {
+	protected CompoundTag getBlockEntityTag(BlockEntity be, HolderLookup.Provider registry) {
 		if (be == null) return null;
-		CompoundTag tag = be.saveWithFullMetadata();
+		CompoundTag tag = be.saveWithFullMetadata(registry);
 		tag.remove("x");
 		tag.remove("y");
 		tag.remove("z");
@@ -336,7 +340,7 @@ public class CannonBuildingContraption extends PoleContraption {
 
 			if (blockEntity1 instanceof LayeredBigCannonBlockEntity layered) {
 				if (blockInfo.nbt() == null || !blockInfo.nbt().contains("id")) return true;
-				BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, blockInfo.nbt());
+				BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, blockInfo.nbt(), level.registryAccess());
 				if (!(infoBE instanceof LayeredBigCannonBlockEntity layered1)) return true;
 				layered.addLayersOfOther(layered1);
 				layered.updateBlockstate();
@@ -365,7 +369,7 @@ public class CannonBuildingContraption extends PoleContraption {
 		if (blockInfo != null && blockEntity1 instanceof LayeredBigCannonBlockEntity layered) {
 			CompoundTag infoNbt = blockInfo.nbt();
 			if (infoNbt == null || !infoNbt.contains("id")) return true;
-			BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, infoNbt);
+			BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, infoNbt, level.registryAccess());
 			if (!(infoBE instanceof LayeredBigCannonBlockEntity layered1)) return true;
 			layered.removeLayersOfOther(layered1);
 			layered.updateBlockstate();
@@ -412,8 +416,8 @@ public class CannonBuildingContraption extends PoleContraption {
 	}
 
 	@Override
-	public CompoundTag writeNBT(boolean spawnPacket) {
-		CompoundTag tag = super.writeNBT(spawnPacket);
+	public CompoundTag writeNBT(HolderLookup.Provider registries, boolean spawnPacket) {
+		CompoundTag tag = super.writeNBT(registries, spawnPacket);
 		tag.putBoolean("Activated", this.isActivated);
 		if (this.material != null) tag.putString("Material", this.material.name().toString());
 		return tag;

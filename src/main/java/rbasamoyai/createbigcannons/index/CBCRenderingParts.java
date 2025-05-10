@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.index;
 import java.util.function.Function;
 
 import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormatElement;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 
@@ -33,24 +33,20 @@ public class CBCRenderingParts extends RenderType {
 		.setCullState(CULL)
 		.createCompositeState(false);
 
-	public static final VertexFormat CANNON_SMOKE_PARTICLE_INPUT = new VertexFormat(
-		ImmutableMap.<String, VertexFormatElement>builder()
-			.put("Position", DefaultVertexFormat.ELEMENT_POSITION)
-			.put("UV0", DefaultVertexFormat.ELEMENT_UV0)
-			.put("UV1", DefaultVertexFormat.ELEMENT_UV1)
-			.put("Color", DefaultVertexFormat.ELEMENT_COLOR)
-			.put("UV2", DefaultVertexFormat.ELEMENT_UV2).build()
-	);
+	public static final VertexFormat CANNON_SMOKE_PARTICLE_INPUT = VertexFormat.builder()
+			.add("Position", VertexFormatElement.POSITION)
+			.add("UV0", VertexFormatElement.UV0)
+			.add("UV1", VertexFormatElement.UV1)
+			.add("Color", VertexFormatElement.COLOR)
+			.add("UV2", VertexFormatElement.UV2).build();
 
-	public static final VertexFormat SPLINTER_PARTICLE_INPUT = new VertexFormat(
-		ImmutableMap.<String, VertexFormatElement>builder()
-			.put("Position", DefaultVertexFormat.ELEMENT_POSITION)
-			.put("UV0", DefaultVertexFormat.ELEMENT_UV0)
-			.put("UV01", DefaultVertexFormat.ELEMENT_UV0)
-			.put("UV3", DefaultVertexFormat.ELEMENT_UV0)
-			.put("Color", DefaultVertexFormat.ELEMENT_COLOR)
-			.put("UV2", DefaultVertexFormat.ELEMENT_UV2)
-			.put("Normal", DefaultVertexFormat.ELEMENT_NORMAL).build()
-	);
+	public static final VertexFormat SPLINTER_PARTICLE_INPUT = VertexFormat.builder()
+			.add("Position", VertexFormatElement.POSITION)
+			.add("UV0", VertexFormatElement.UV0)
+			.add("UV01", VertexFormatElement.UV0)
+			.add("UV3", VertexFormatElement.UV0)
+			.add("Color", VertexFormatElement.COLOR)
+			.add("UV2", VertexFormatElement.UV2)
+			.add("Normal", VertexFormatElement.NORMAL).build();
 
 }

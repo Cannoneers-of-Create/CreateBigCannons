@@ -22,6 +22,7 @@ import net.createmod.catnip.math.AngleHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -372,37 +373,37 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
-		super.write(tag, clientPacket);
+	protected void write(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
+		super.write(tag, registry, clientPacket);
 		tag.putBoolean("Running", this.running);
 		tag.putFloat("CannonYaw", this.cannonYaw);
 		tag.putFloat("CannonPitch", this.cannonPitch);
-		AssemblyException.write(tag, this.lastException);
+		AssemblyException.write(tag, registry, this.lastException);
 
 		CompoundTag pitchTag = new CompoundTag();
-		this.pitchInterface.saveAdditional(pitchTag);
+		this.pitchInterface.saveAdditional(pitchTag, registry);
 		tag.put("PitchInterface", pitchTag);
 
 		CompoundTag yawTag = new CompoundTag();
-		this.yawInterface.saveAdditional(yawTag);
+		this.yawInterface.saveAdditional(yawTag, registry);
 		tag.put("YawInterface", yawTag);
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
+	protected void read(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
+		super.read(tag, registry, clientPacket);
 		boolean oldRunning = this.running;
 		this.running = tag.getBoolean("Running");
 		this.cannonYaw = tag.getFloat("CannonYaw");
 		this.cannonPitch = tag.getFloat("CannonPitch");
-		this.lastException = AssemblyException.read(tag);
+		this.lastException = AssemblyException.read(tag, registry);
 
 		if (clientPacket) {
-			this.pitchInterface.readClient(tag.getCompound("PitchInterface"));
-			this.yawInterface.readClient(tag.getCompound("YawInterface"));
+			this.pitchInterface.readClient(tag.getCompound("PitchInterface"), registry);
+			this.yawInterface.readClient(tag.getCompound("YawInterface"), registry);
 		} else {
-			this.pitchInterface.load(tag.getCompound("PitchInterface"));
-			this.yawInterface.load(tag.getCompound("YawInterface"));
+			this.pitchInterface.loadWithComponents(tag.getCompound("PitchInterface"), registry);
+			this.yawInterface.loadWithComponents(tag.getCompound("YawInterface"), registry);
 		}
 
 		if (!clientPacket) return;

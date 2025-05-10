@@ -18,9 +18,9 @@ public class MortarStoneItem extends BlockItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
-        CBCTooltip.appendMortarStoneText(stack, level, tooltip, flag);
+    public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(stack, ctx, tooltip, flag);
+        CBCTooltip.appendMortarStoneText(stack, ctx, tooltip, flag);
     }
 
 }

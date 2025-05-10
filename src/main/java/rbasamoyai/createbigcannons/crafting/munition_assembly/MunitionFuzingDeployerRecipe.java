@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -47,17 +48,17 @@ public class MunitionFuzingDeployerRecipe implements Recipe<Container> {
 	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
 
 	@Override
-	public ItemStack getResultItem(RegistryAccess access) {
+	public ItemStack getResultItem(HolderLookup.Provider registries) {
 		ItemStack result = this.munition.copy();
 		result.setCount(1);
 		ItemStack fuzeCopy = this.fuze.copy();
 		fuzeCopy.setCount(1);
 		CompoundTag tag = result.getOrCreateTag();
 		if (result.getItem() instanceof FuzedItemMunition) {
-			tag.put("Fuze", fuzeCopy.save(new CompoundTag()));
+			tag.put("Fuze", fuzeCopy.save(registries));
 		} else if (result.getItem() instanceof AutocannonCartridgeItem) {
 			CompoundTag projectileTag = tag.getCompound("Projectile").getCompound("tag");
-			projectileTag.put("Fuze", fuzeCopy.save(new CompoundTag()));
+			projectileTag.put("Fuze", fuzeCopy.save(registries));
 			tag.getCompound("Projectile").put("tag", projectileTag);
 		}
 		return result;

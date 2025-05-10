@@ -42,14 +42,14 @@ public class IncompleteBigCannonBlockEntity extends BigCannonEndBlockEntity impl
 		if (!(this.getBlockState().getBlock() instanceof IncompleteWithItemsCannonBlock incomplete))
 			return InteractionResult.PASS;
 		if (!this.getLevel().isClientSide) {
-			CompoundTag loadTag = this.saveWithFullMetadata();
+			CompoundTag loadTag = this.saveWithFullMetadata(this.getLevel().registryAccess());
 			BlockState state = this.getBlockState();
 			BlockState boredState = incomplete.getCompleteBlockState(state);
 			this.setRemoved();
 			BigCannonMaterial material = ((BigCannonBlock) state.getBlock()).getCannonMaterialInLevel(this.level, state, this.worldPosition);
 			this.level.setBlock(this.worldPosition, boredState, 11);
 			BlockEntity newBE = this.level.getBlockEntity(this.worldPosition);
-			if (newBE != null) newBE.load(loadTag);
+			if (newBE != null) newBE.loadWithComponents(loadTag, this.getLevel().registryAccess());
 
 			for (Direction dir1 : Iterate.directions) {
 				if (!this.cannonBehavior().isConnectedTo(dir1)) continue;

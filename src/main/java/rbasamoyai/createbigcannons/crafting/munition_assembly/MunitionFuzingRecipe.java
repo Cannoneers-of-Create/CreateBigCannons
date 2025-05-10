@@ -72,10 +72,10 @@ public class MunitionFuzingRecipe extends CustomRecipe {
 		fuzeCopy.setCount(1);
 		CompoundTag tag = result.getOrCreateTag();
 		if (result.getItem() instanceof FuzedItemMunition) {
-			tag.put("Fuze", fuzeCopy.save(new CompoundTag()));
+			tag.put("Fuze", fuzeCopy.save(registry));
 		} else if (result.getItem() instanceof AutocannonCartridgeItem) {
 			CompoundTag projectileTag = tag.getCompound("Projectile").getCompound("tag");
-			projectileTag.put("Fuze", fuzeCopy.save(new CompoundTag()));
+			projectileTag.put("Fuze", fuzeCopy.save(registry));
 			tag.getCompound("Projectile").put("tag", projectileTag);
 		}
 		return result;

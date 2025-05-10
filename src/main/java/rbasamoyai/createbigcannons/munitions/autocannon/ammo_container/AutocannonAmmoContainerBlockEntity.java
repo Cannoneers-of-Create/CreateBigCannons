@@ -94,8 +94,8 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 	@Override
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
-		if (this.ammo != null && !this.ammo.isEmpty()) tag.put("Ammo", this.ammo.save(new CompoundTag()));
-		if (this.tracers != null && !this.tracers.isEmpty()) tag.put("Tracers", this.tracers.save(new CompoundTag()));
+		if (this.ammo != null && !this.ammo.isEmpty()) tag.put("Ammo", this.ammo.save(registry));
+		if (this.tracers != null && !this.tracers.isEmpty()) tag.put("Tracers", this.tracers.save(registry));
 		if (this.name != null) tag.putString("CustomName", Component.Serializer.toJson(this.name));
 		if (this.isCreativeContainer()) tag.putInt("CurrentIndex", this.currentIndex);
 		tag.putInt("TracerSpacing", this.spacing);
@@ -114,15 +114,15 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 	@Override
 	public void saveToItem(ItemStack stack) {
 		CompoundTag tag = stack.getOrCreateTag();
-		if (this.ammo != null && !this.ammo.isEmpty()) tag.put("Ammo", this.ammo.save(new CompoundTag()));
-		if (this.tracers != null && !this.tracers.isEmpty()) tag.put("Tracers", this.tracers.save(new CompoundTag()));
+		if (this.ammo != null && !this.ammo.isEmpty()) tag.put("Ammo", this.ammo.save(registry));
+		if (this.tracers != null && !this.tracers.isEmpty()) tag.put("Tracers", this.tracers.save(registry));
 		if (this.isCreativeContainer()) tag.putInt("CurrentIndex", this.currentIndex);
 		tag.putInt("TracerSpacing", this.spacing);
 	}
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		return this.saveWithFullMetadata();
+		return this.saveWithFullMetadata(this.getLevel().registryAccess());
 	}
 
 	@Nullable

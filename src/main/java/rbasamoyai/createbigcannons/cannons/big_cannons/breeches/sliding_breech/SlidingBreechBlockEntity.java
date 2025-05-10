@@ -4,6 +4,7 @@ import com.simibubi.create.content.contraptions.ControlledContraptionEntity;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -54,14 +55,14 @@ public class SlidingBreechBlockEntity extends AbstractBigCannonBreechBlockEntity
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
-		super.write(tag, clientPacket);
+	protected void write(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
+		super.write(tag, registry, clientPacket);
 		tag.putFloat("Progress", this.openProgress);
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
+	protected void read(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
+		super.read(tag, registry, clientPacket);
 		this.openProgress = tag.getFloat("Progress");
 	}
 

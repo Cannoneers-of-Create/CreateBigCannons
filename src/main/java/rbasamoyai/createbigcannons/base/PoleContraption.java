@@ -6,6 +6,7 @@ import com.simibubi.create.content.contraptions.TranslatingContraption;
 import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -54,8 +55,8 @@ public abstract class PoleContraption extends TranslatingContraption {
 	}
 
 	@Override
-	public CompoundTag writeNBT(boolean spawnPacket) {
-		CompoundTag tag = super.writeNBT(spawnPacket);
+	public CompoundTag writeNBT(HolderLookup.Provider registries, boolean spawnPacket) {
+		CompoundTag tag = super.writeNBT(registries, spawnPacket);
 		tag.putInt("InitialLength", this.initialExtensionProgress);
 		tag.putInt("ExtensionLength", this.extensionLength);
 		tag.putInt("Orientation", this.orientation.get3DDataValue());

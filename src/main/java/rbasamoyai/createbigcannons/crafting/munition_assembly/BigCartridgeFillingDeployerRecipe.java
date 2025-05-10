@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -36,7 +37,7 @@ public class BigCartridgeFillingDeployerRecipe implements Recipe<Container> {
 	}
 
 	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
-	@Override public ItemStack getResultItem(RegistryAccess access) { return BigCartridgeBlockItem.getWithPower(this.resultPower); }
+	@Override public ItemStack getResultItem(HolderLookup.Provider registries) { return BigCartridgeBlockItem.getWithPower(this.resultPower); }
 
 	@Override public boolean canCraftInDimensions(int width, int height) { return true; }
 

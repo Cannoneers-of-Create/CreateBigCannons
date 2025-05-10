@@ -171,10 +171,10 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	public void setOrientation(Vec3 orientation) { this.orientation = orientation; }
 
 	@Override
-	public void lerpTo(double x, double y, double z, float yRot, float xRot, int lerpSteps, boolean teleport) {
+	public void lerpTo(double x, double y, double z, float yRot, float xRot, int lerpSteps) {
 		if (this.tickCount < 2)
 			return;
-		super.lerpTo(x, y, z, yRot, xRot, lerpSteps, teleport);
+		super.lerpTo(x, y, z, yRot, xRot, lerpSteps);
 	}
 
 	/**
@@ -552,7 +552,8 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		return this.isInGround() && this.orientation != null ? eyePos.subtract(this.orientation.normalize().scale(0.1)) : eyePos;
 	}
 
-	protected double getGravity() {
+    @Override
+	protected double getDefaultGravity() {
 		return this.isNoGravity() ? 0 : this.getBallisticProperties().gravity() * DimensionMunitionPropertiesHandler
 			.getProperties(this.level()).gravityMultiplier();
 	}

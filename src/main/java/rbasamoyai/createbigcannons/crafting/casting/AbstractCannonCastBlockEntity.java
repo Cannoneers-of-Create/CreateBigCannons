@@ -24,6 +24,7 @@ import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -166,8 +167,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	protected abstract void writeFluidToTag(CompoundTag tag);
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
+	protected void read(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
+		super.read(tag, registry, clientPacket);
 
 		Registry<CannonCastShape> shapeRegistry = CBCRegistries.cannonCastShapes();
 

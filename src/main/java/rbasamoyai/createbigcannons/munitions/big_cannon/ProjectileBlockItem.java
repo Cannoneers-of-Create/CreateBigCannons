@@ -19,8 +19,8 @@ public class ProjectileBlockItem extends BlockItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, ctx, tooltip, flag);
 		CompoundTag tag = stack.getOrCreateTag();
 		ItemStack tracer = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Tracer"));
 		if (!tracer.isEmpty())

@@ -150,7 +150,7 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 		if (!this.effects.isEmpty()) {
 			ListTag listTag = new ListTag();
 			for (MobEffectInstance mobEffectInstance : this.effects)
-				listTag.add(mobEffectInstance.save(new CompoundTag()));
+				listTag.add(mobEffectInstance.save(registry));
 			tag.put("Effects", listTag);
 		}
 	}

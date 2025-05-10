@@ -116,7 +116,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = tracerAmmo.split(1);
-					container.getOrCreateTag().put("Tracers", tracerAmmo.isEmpty() ? new CompoundTag() : tracerAmmo.save(new CompoundTag()));
+					container.getOrCreateTag().put("Tracers", tracerAmmo.isEmpty() ? new CompoundTag() : tracerAmmo.save(registry));
 				}
 			} else if (!mainAmmo.isEmpty()) {
 				if (isCreative) {
@@ -124,7 +124,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = mainAmmo.split(1);
-					container.getOrCreateTag().put("Ammo", mainAmmo.isEmpty() ? new CompoundTag() : mainAmmo.save(new CompoundTag()));
+					container.getOrCreateTag().put("Ammo", mainAmmo.isEmpty() ? new CompoundTag() : mainAmmo.save(registry));
 				}
 			}
 		} else {
@@ -134,7 +134,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = mainAmmo.split(1);
-					container.getOrCreateTag().put("Ammo", mainAmmo.isEmpty() ? new CompoundTag() : mainAmmo.save(new CompoundTag()));
+					container.getOrCreateTag().put("Ammo", mainAmmo.isEmpty() ? new CompoundTag() : mainAmmo.save(registry));
 				}
 			} else if (!tracerAmmo.isEmpty()) {
 				if (isCreative) {
@@ -142,7 +142,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = tracerAmmo.split(1);
-					container.getOrCreateTag().put("Tracers", tracerAmmo.isEmpty() ? new CompoundTag() : tracerAmmo.save(new CompoundTag()));
+					container.getOrCreateTag().put("Tracers", tracerAmmo.isEmpty() ? new CompoundTag() : tracerAmmo.save(registry));
 				}
 			}
 		}

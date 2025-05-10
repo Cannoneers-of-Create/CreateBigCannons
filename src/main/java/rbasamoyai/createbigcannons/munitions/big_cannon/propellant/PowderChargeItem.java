@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -22,11 +23,11 @@ public class PowderChargeItem extends BlockItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
-		super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
-		CBCTooltip.appendMuzzleVelocityText(stack, level, tooltipComponents, isAdvanced, CBCBlocks.POWDER_CHARGE.get());
-		CBCTooltip.appendPropellantStressText(stack, level, tooltipComponents, isAdvanced, CBCBlocks.POWDER_CHARGE.get());
-		if (stack.getOrCreateTag().getBoolean("Damp"))
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+		super.appendHoverText(stack, ctx, tooltipComponents, isAdvanced);
+		CBCTooltip.appendMuzzleVelocityText(stack, ctx, tooltipComponents, isAdvanced, CBCBlocks.POWDER_CHARGE.get());
+		CBCTooltip.appendPropellantStressText(stack, ctx, tooltipComponents, isAdvanced, CBCBlocks.POWDER_CHARGE.get());
+		if (((CompoundTag) stack.saveOptional(ctx.registries())).getBoolean("Damp"))
 			tooltipComponents.add(Component.translatable("block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.damp").withStyle(ChatFormatting.BLUE));
 	}
 

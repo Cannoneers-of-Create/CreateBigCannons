@@ -41,7 +41,7 @@ public class ImpactFuzeItem extends FuzeItem {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
-		CBCTooltip.appendImpactFuzeText(stack, ctx.level(), tooltip, flag, this.getDetonateChance(), this.getFuzeDurability());
+		CBCTooltip.appendImpactFuzeText(stack, ctx, tooltip, flag, this.getDetonateChance(), this.getFuzeDurability());
 	}
 
 	protected float getDetonateChance() {

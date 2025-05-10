@@ -18,9 +18,9 @@ public class CannonCarriageBlockItem extends BlockItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		if (level != null) CBCTooltip.appendCannonCarriageText(stack, level, tooltip, flag, this);
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, ctx, tooltip, flag);
+		if (ctx != null) CBCTooltip.appendCannonCarriageText(stack, ctx, tooltip, flag, this);
 	}
 
 }

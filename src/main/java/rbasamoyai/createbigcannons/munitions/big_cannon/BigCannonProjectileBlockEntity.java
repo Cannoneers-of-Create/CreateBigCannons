@@ -29,7 +29,7 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		if (!this.tracer.isEmpty())
-			tag.put("Tracer", this.tracer.save(new CompoundTag()));
+			tag.put("Tracer", this.tracer.save(registry));
 	}
 
 	@Override

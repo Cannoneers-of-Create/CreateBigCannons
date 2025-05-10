@@ -15,6 +15,7 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -103,8 +104,8 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends RecipeType<?>> T getType() {
-		return (T) this.type.get();
+	public <I extends RecipeInput, R extends Recipe<I>> RecipeType<R> getType() {
+		return (RecipeType<R>) this.type.get();
 	}
 
 	public static void register() {

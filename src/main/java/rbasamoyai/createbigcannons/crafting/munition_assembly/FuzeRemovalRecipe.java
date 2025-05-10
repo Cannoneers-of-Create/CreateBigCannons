@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -60,7 +61,7 @@ public class FuzeRemovalRecipe extends CustomRecipe {
 				return ItemStack.EMPTY;
 			}
 		}
-		return ItemStack.of(target.getOrCreateTag().getCompound("Fuze"));
+		return ItemStack.parseOptional(registryAccess, ((CompoundTag) target.saveOptional(registryAccess)).getCompound("Fuze"));
 	}
 
 	@Override

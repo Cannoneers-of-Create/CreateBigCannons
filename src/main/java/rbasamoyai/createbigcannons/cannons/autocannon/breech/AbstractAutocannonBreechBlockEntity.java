@@ -13,6 +13,7 @@ import com.simibubi.create.content.contraptions.Contraption;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -137,8 +138,8 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	@Nullable DyeColor getSeatColor() { return this.seat; }
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
+	protected void read(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
+		super.read(tag, registry, clientPacket);
 		this.fireRate = tag.getInt("FiringRate");
 		this.firingCooldown = tag.getInt("Cooldown");
 		this.animateTicks = tag.getInt("AnimateTicks");
@@ -157,20 +158,20 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 	}
 
 	@Override
-	protected void write(CompoundTag tag, boolean clientPacket) {
-		super.write(tag, clientPacket);
+	protected void write(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
+		super.write(tag, registry, clientPacket);
 		tag.putInt("FiringRate", this.fireRate);
 		tag.putInt("Cooldown", this.firingCooldown);
 		tag.putInt("AnimateTicks", this.animateTicks);
-		if (this.outputBuffer != null && !this.outputBuffer.isEmpty()) tag.put("Output", this.outputBuffer.save(new CompoundTag()));
+		if (this.outputBuffer != null && !this.outputBuffer.isEmpty()) tag.put("Output", this.outputBuffer.save(registry));
 		if (this.seat != null) tag.putString("Seat", this.seat.getSerializedName());
 
 		if (!this.inputBuffer.isEmpty()) {
 			tag.put("Input", this.inputBuffer.stream()
-					.map(s -> s.save(new CompoundTag()))
+					.map(s -> s.save(registry))
 					.collect(Collectors.toCollection(ListTag::new)));
 		}
-		if (this.magazine != null && !this.magazine.isEmpty()) tag.put("Magazine", this.magazine.save(new CompoundTag()));
+		if (this.magazine != null && !this.magazine.isEmpty()) tag.put("Magazine", this.magazine.save(registry));
 
 		if (!clientPacket) return;
 		if (this.updateInstance) tag.putBoolean("UpdateInstance", true);

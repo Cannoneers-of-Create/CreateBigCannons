@@ -9,6 +9,7 @@ import com.simibubi.create.content.contraptions.Contraption;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -72,18 +73,18 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 	}
 
 	@Override
-	public CompoundTag writeNBT(boolean spawnPacket) {
+	public CompoundTag writeNBT(HolderLookup.Provider registries, boolean spawnPacket) {
 		for (Map.Entry<BlockPos, BlockEntity> entry : this.presentBlockEntities.entrySet()) {
 			StructureBlockInfo info = this.blocks.get(entry.getKey());
 			if (info == null) continue;
-			CompoundTag nbt = entry.getValue().saveWithFullMetadata();
+			CompoundTag nbt = entry.getValue().saveWithFullMetadata(registries);
 			nbt.remove("x");
 			nbt.remove("y");
 			nbt.remove("z");
 			this.blocks.put(entry.getKey(), new StructureBlockInfo(info.pos(), info.state(), nbt));
 		}
 
-		CompoundTag tag = super.writeNBT(spawnPacket);
+		CompoundTag tag = super.writeNBT(registries, spawnPacket);
 		if (this.initialOrientation != null) {
 			tag.putString("InitialOrientation", this.initialOrientation.getSerializedName());
 		}

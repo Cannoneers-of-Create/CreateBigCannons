@@ -23,7 +23,7 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 		ItemStack ammo = this.getItem(slot);
 		if (ammo.isEmpty()) return ItemStack.EMPTY;
 		ItemStack split = ammo.split(amount);
-		this.stack.getOrCreateTag().put(slot == AMMO_SLOT ? "Ammo" : "Tracers", ammo.save(new CompoundTag()));
+		this.stack.getOrCreateTag().put(slot == AMMO_SLOT ? "Ammo" : "Tracers", ammo.save(registry));
 		this.setChanged();
 		return split;
 	}
@@ -32,14 +32,14 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 	public ItemStack removeItemNoUpdate(int slot) {
 		if (slot != 0 && slot != 1) return ItemStack.EMPTY;
 		ItemStack ret = this.getItem(slot);
-		this.stack.getOrCreateTag().put(slot == AMMO_SLOT ? "Ammo" : "Tracers", ItemStack.EMPTY.save(new CompoundTag()));
+		this.stack.getOrCreateTag().put(slot == AMMO_SLOT ? "Ammo" : "Tracers", ItemStack.EMPTY.save(registry));
 		return ret;
 	}
 
 	@Override
 	public void setItem(int slot, ItemStack stack) {
 		if (slot != 0 && slot != 1) return;
-		this.stack.getOrCreateTag().put(slot == AMMO_SLOT ? "Ammo" : "Tracers", stack.save(new CompoundTag()));
+		this.stack.getOrCreateTag().put(slot == AMMO_SLOT ? "Ammo" : "Tracers", stack.save(registry));
 		this.setChanged();
 	}
 
@@ -53,8 +53,8 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 	@Override
 	public void clearContent() {
 		CompoundTag tag = this.stack.getOrCreateTag();
-		tag.put("Ammo", ItemStack.EMPTY.save(new CompoundTag()));
-		tag.put("Tracers", ItemStack.EMPTY.save(new CompoundTag()));
+		tag.put("Ammo", ItemStack.EMPTY.save(registry));
+		tag.put("Tracers", ItemStack.EMPTY.save(registry));
 	}
 
 	@Override

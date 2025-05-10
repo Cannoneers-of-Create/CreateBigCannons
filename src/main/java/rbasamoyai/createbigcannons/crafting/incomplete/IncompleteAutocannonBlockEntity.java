@@ -52,7 +52,7 @@ public class IncompleteAutocannonBlockEntity extends AutocannonBlockEntity imple
 			Direction dir = state.getValue(BlockStateProperties.FACING);
 			AutocannonMaterial material = ((AutocannonBlock) state.getBlock()).getAutocannonMaterialInLevel(this.level, state, this.worldPosition);
 			DrillBoringBlockRecipe recipe = AbstractCannonDrillBlockEntity.getBlockRecipe(state, dir);
-			CompoundTag loadTag = this.saveWithFullMetadata();
+			CompoundTag loadTag = this.saveWithFullMetadata(this.getLevel().registryAccess());
 			if (recipe != null) {
 				BlockState newState = recipe.getResultState(state);
 				this.level.setBlock(this.worldPosition, newState, 11);
@@ -66,7 +66,7 @@ public class IncompleteAutocannonBlockEntity extends AutocannonBlockEntity imple
 			}
 			this.setRemoved();
 			BlockEntity newBE = this.level.getBlockEntity(this.worldPosition);
-			if (newBE != null) newBE.load(loadTag);
+			if (newBE != null) newBE.loadWithComponents(loadTag, this.getLevel().registryAccess());
 
 			for (Direction dir1 : Iterate.directions) {
 				if (!this.cannonBehavior().isConnectedTo(dir1)) continue;

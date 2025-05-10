@@ -20,7 +20,7 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCFluids {
 
-	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_CAST_IRON =
+	public static final RegistryEntry<Fluid, CBCFlowingFluid.Flowing> MOLTEN_CAST_IRON =
 			standardFluid("molten_cast_iron")
 			.lang("Molten Cast Iron")
 			.tag(forgeTag("molten_cast_iron"))
@@ -37,7 +37,7 @@ public class CBCFluids {
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
-	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_BRONZE =
+	public static final RegistryEntry<Fluid, CBCFlowingFluid.Flowing> MOLTEN_BRONZE =
 			standardFluid("molten_bronze")
 			.lang("Molten Bronze")
 			.tag(forgeTag("molten_bronze"))
@@ -54,7 +54,7 @@ public class CBCFluids {
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
-	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_STEEL =
+	public static final RegistryEntry<Fluid, CBCFlowingFluid.Flowing> MOLTEN_STEEL =
 			standardFluid("molten_steel")
 			.lang("Molten Steel")
 			.tag(forgeTag("molten_steel"))
@@ -71,7 +71,7 @@ public class CBCFluids {
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
-	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
+	public static final RegistryEntry<Fluid, CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
 			standardFluid("molten_nethersteel")
 			.lang("Molten Nethersteel")
 			.tag(forgeTag("molten_nethersteel"))

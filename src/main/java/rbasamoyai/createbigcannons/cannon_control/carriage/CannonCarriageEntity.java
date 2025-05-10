@@ -243,7 +243,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	@Override
-	public void lerpTo(double lerpX, double lerpY, double lerpZ, float lerpYRot, float lerpXRot, int lerpSteps, boolean p_38305_) {
+	public void lerpTo(double lerpX, double lerpY, double lerpZ, float lerpYRot, float lerpXRot, int lerpSteps) {
 		this.lerpX = lerpX;
 		this.lerpY = lerpY;
 		this.lerpZ = lerpZ;

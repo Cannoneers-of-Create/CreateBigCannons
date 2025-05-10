@@ -121,7 +121,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		this.defaultBlock = false;
 		NonNullSupplier<T> supplier = asSupplier();
 		return getOwner().<B, FluidBuilder<T, P>>block(this, sourceName, p -> factory.apply(supplier, p))
-			.properties(p -> BlockBehaviour.Properties.copy(Blocks.WATER).noLootTable())
+			.properties(p -> BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable())
 			.blockstate(this::acceptBlockstate);
 	}
 
@@ -201,7 +201,7 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	@Override
-	public RegistryEntry<T> register() {
+	public RegistryEntry<Fluid, T> register() {
 		if (defaultSource == Boolean.TRUE) {
 			source(CBCFlowingFluid.Still::new);
 		}

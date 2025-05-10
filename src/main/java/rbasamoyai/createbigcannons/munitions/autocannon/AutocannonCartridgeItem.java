@@ -81,7 +81,7 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 
 	public static void writeProjectile(ItemStack round, ItemStack cartridge) {
 		if (round.getItem() instanceof AutocannonRoundItem && cartridge.getItem() instanceof AutocannonCartridgeItem) {
-			cartridge.getOrCreateTag().put("Projectile", round.save(new CompoundTag()));
+			cartridge.getOrCreateTag().put("Projectile", round.save(registry));
 		}
 	}
 

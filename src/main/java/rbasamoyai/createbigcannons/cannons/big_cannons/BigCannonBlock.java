@@ -268,7 +268,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 	}
 
 	static void writeAndSyncSingleBlockData(BlockEntity be, StructureBlockInfo oldInfo, AbstractContraptionEntity entity, Contraption contraption) {
-		CompoundTag tag = be.saveWithFullMetadata();
+		CompoundTag tag = be.saveWithFullMetadata(be.getLevel().registryAccess()); // todo: might crash. should get registry access from elsewhere but i'm lazy
 		tag.remove("x");
 		tag.remove("y");
 		tag.remove("z");
@@ -285,7 +285,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 			CompoundTag tag = null;
 			BlockEntity be = contraption.presentBlockEntities.get(pos);
 			if (be != null) {
-				tag = be.saveWithFullMetadata();
+				tag = be.saveWithFullMetadata(be.getLevel().registryAccess()); // todo: might crash. should get registry access from elsewhere but i'm lazy
 				tag.remove("x");
 				tag.remove("y");
 				tag.remove("z");

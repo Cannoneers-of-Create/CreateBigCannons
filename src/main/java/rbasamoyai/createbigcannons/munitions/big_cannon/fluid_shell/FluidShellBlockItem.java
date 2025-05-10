@@ -24,9 +24,9 @@ public class FluidShellBlockItem extends FuzedProjectileBlockItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		CompoundTag tag = stack.getOrCreateTag();
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, ctx, tooltip, flag);
+		CompoundTag tag = (CompoundTag) stack.saveOptional(ctx.registries());
 		CompoundTag beTag = tag.getCompound("BlockEntityTag");
 		CompoundTag fluidTag = beTag.getCompound("FluidContent");
 		ResourceLocation fluidId = ResourceLocation.tryParse(fluidTag.getString("FluidName"));

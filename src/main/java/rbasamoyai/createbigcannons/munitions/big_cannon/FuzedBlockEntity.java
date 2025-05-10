@@ -27,7 +27,7 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 	protected void saveAdditional(CompoundTag tag) {
 		super.saveAdditional(tag);
 		if (!this.fuze.isEmpty()) {
-			tag.put("Fuze", this.fuze.save(new CompoundTag()));
+			tag.put("Fuze", this.fuze.save(registry));
 		}
 	}
 

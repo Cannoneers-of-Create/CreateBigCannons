@@ -40,10 +40,10 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 			poseStack.pushPose();
 			if (vel.horizontalDistanceSqr() > 1e-4d && Math.abs(vel.y) > 1e-2d) {
 				Vec3 horizontal = new Vec3(vel.x, 0, vel.z).normalize();
-				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize().reverse(), horizontal));
-				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(horizontal));
+				poseStack.mulPose(CBCUtils.mat4x4fFacing(vel.normalize().reverse(), horizontal));
+				poseStack.mulPose(CBCUtils.mat4x4fFacing(horizontal));
 			} else {
-				poseStack.mulPoseMatrix(CBCUtils.mat4x4fFacing(vel.normalize()));
+				poseStack.mulPose(CBCUtils.mat4x4fFacing(vel.normalize()));
 			}
 			poseStack.translate(-0.5, -0.5, -0.5);
 
@@ -63,13 +63,12 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 
 			PoseStack.Pose lastPose = poseStack.last();
 			Matrix4f pose = lastPose.pose();
-			Matrix3f normal = lastPose.normal();
 			VertexConsumer builder = buffers.getBuffer(renderType);
 
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, -0.5f, -0.5f, 0, 1);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT, -0.5f,  0.5f, 0, 0);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT,  0.5f,  0.5f, 1, 0);
-			vertex(builder, pose, normal, LightTexture.FULL_BRIGHT,  0.5f, -0.5f, 1, 1);
+			vertex(builder, pose, LightTexture.FULL_BRIGHT, -0.5f, -0.5f, 0, 1);
+			vertex(builder, pose, LightTexture.FULL_BRIGHT, -0.5f,  0.5f, 0, 0);
+			vertex(builder, pose, LightTexture.FULL_BRIGHT,  0.5f,  0.5f, 1, 0);
+			vertex(builder, pose, LightTexture.FULL_BRIGHT,  0.5f, -0.5f, 1, 1);
 
 			poseStack.popPose();
 		}
@@ -83,14 +82,13 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 		return entity.hasTracer() || super.shouldRender(entity, camera, camX, camY, camZ);
 	}
 
-	private static void vertex(VertexConsumer builder, Matrix4f pose, Matrix3f normal, int packedLight, float x, float y, int u, int v) {
-		builder.vertex(pose, x, y, 0.0f)
-			.color(255, 255, 255, 255)
-			.uv((float) u, (float) v)
-			.overlayCoords(OverlayTexture.NO_OVERLAY)
-			.uv2(packedLight)
-			.normal(normal, 0.0f, 1.0f, 0.0f)
-			.endVertex();
+	private static void vertex(VertexConsumer builder, Matrix4f pose, int packedLight, float x, float y, int u, int v) {
+		builder.addVertex(pose, x, y, 0.0f)
+			.setColor(255, 255, 255, 255)
+			.setUv((float) u, (float) v)
+			.setOverlay(OverlayTexture.NO_OVERLAY)
+			.setLight(packedLight)
+			.setNormal(0.0f, 1.0f, 0.0f);
 	}
 
 }

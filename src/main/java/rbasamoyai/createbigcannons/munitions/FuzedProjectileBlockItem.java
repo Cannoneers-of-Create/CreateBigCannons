@@ -25,8 +25,8 @@ public class FuzedProjectileBlockItem extends ProjectileBlockItem {
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, ctx, tooltip, flag);
 		CompoundTag tag = stack.getOrCreateTag();
 		ItemStack fuze = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Fuze"));
 		if (!fuze.isEmpty()) {
@@ -37,7 +37,7 @@ public class FuzedProjectileBlockItem extends ProjectileBlockItem {
 				.addTo(tooltip);
 			if (fuze.getItem() instanceof FuzeItem) {
 				List<Component> subTooltip = new ArrayList<>();
-				fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
+				fuze.getItem().appendHoverText(fuze, ctx, subTooltip, flag);
 				subTooltip.replaceAll(sibling -> Component.literal("  ").append(sibling).withStyle(ChatFormatting.GRAY));
 				tooltip.addAll(subTooltip);
 			}

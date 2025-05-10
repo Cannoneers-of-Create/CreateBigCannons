@@ -17,6 +17,7 @@ import com.simibubi.create.content.contraptions.StructureTransform;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -603,13 +604,13 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 	}
 
 	@Override
-	public CompoundTag writeNBT(boolean clientData) {
-		CompoundTag tag = super.writeNBT(clientData);
+	public CompoundTag writeNBT(HolderLookup.Provider registries, boolean spawnPacket) {
+		CompoundTag tag = super.writeNBT(registries, spawnPacket);
 		tag.putString("CannonMaterial", this.cannonMaterial == null ? CBCBigCannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
 		if (this.hasWeldedPenalty) tag.putBoolean("WeldedCannon", true);
 		if (this.mortarDelay > 0) tag.putInt("MortarDelay", this.mortarDelay);
 		if (this.cachedMortarRound != null && !this.cachedMortarRound.isEmpty())
-			tag.put("CachedMortarRound", this.cachedMortarRound.save(new CompoundTag()));
+			tag.put("CachedMortarRound", this.cachedMortarRound.save(registries));
 		if (this.hasFired) tag.putBoolean("HasFired", true);
 		return tag;
 	}
