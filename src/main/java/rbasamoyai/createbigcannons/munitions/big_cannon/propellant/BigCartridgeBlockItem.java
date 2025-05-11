@@ -5,6 +5,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
@@ -59,7 +61,7 @@ public class BigCartridgeBlockItem extends BlockItem {
 
 	public static ItemStack getWithPower(int power) {
 		ItemStack stack = CBCBlocks.BIG_CARTRIDGE.asStack();
-		stack.getOrCreateTag().putInt("Power", power);
+        ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).putInt("Power", power);
 		return stack;
 	}
 

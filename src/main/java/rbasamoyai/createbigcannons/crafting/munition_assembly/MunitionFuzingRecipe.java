@@ -33,7 +33,7 @@ public class MunitionFuzingRecipe extends CustomRecipe {
 				stack = AutocannonCartridgeItem.getProjectileStack(stack);
 			}
 			if (stack.getItem() instanceof FuzedItemMunition) {
-				if (!round.isEmpty() || stack.getOrCreateTag().contains("Fuze", Tag.TAG_COMPOUND)) return false;
+				if (!round.isEmpty() || ((CompoundTag) stack.saveOptional(level.registryAccess())).contains("Fuze", Tag.TAG_COMPOUND)) return false;
 				round = stack;
 			} else if (stack.getItem() instanceof FuzeItem) {
 				if (!fuze.isEmpty()) return false;

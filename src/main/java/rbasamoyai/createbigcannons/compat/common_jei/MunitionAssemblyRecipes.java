@@ -294,7 +294,7 @@ public class MunitionAssemblyRecipes {
 				ItemStack fuzeStack = new ItemStack(fuze);
 				ItemStack fuzedMunitionStack = new ItemStack(munition);
 
-				fuzedMunitionStack.getOrCreateTag().put("Fuze", fuzeStack.save(registry));
+				fuzedMunitionStack.saveOptional().put("Fuze", fuzeStack.save(registry));
 
 				String subid = munition.getDescriptionId() + "." + fuze.getDescriptionId();
 				NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(fuzedMunitionStack));

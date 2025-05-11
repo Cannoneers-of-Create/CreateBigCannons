@@ -113,11 +113,11 @@ public class CBCClientCommon {
 		CBCBlockPartials.resolveDeferredModels();
 
 		IndexPlatform.registerClampedItemProperty(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
-			return stack.getOrCreateTag().getCompound("SequencedAssembly").getInt("Step") - 1;
+			return ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getCompound("SequencedAssembly").getInt("Step") - 1;
 		});
 
 		IndexPlatform.registerClampedItemProperty(CBCItems.PARTIALLY_FORMED_BIG_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
-			return stack.getOrCreateTag().getCompound("SequencedAssembly").getInt("Step") - 1;
+			return ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getCompound("SequencedAssembly").getInt("Step") - 1;
 		});
 
 		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("big_cartridge_filled"),
@@ -128,7 +128,7 @@ public class CBCClientCommon {
 		IndexPlatform.registerGenericClampedItemProperty(CreateBigCannons.resource("fuze_state"), (stack, level, player, a) -> {
 			if (!(stack.getItem() instanceof FuzedProjectileBlockItem fuzedItem) || !(fuzedItem.getBlock() instanceof FuzedProjectileBlock<?, ?> fuzedBlock))
 				return 0;
-			CompoundTag tag = stack.getOrCreateTag();
+			CompoundTag tag = ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess()));
 			ItemStack fuze = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Fuze"));
 			if (fuze.isEmpty())
 				return 0;

@@ -34,19 +34,19 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 	@Override
 	public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
 		FlakAutocannonProjectile projectile = CBCEntityTypes.FLAK_AUTOCANNON.create(level);
-		CompoundTag tag = stack.getOrCreateTag();
+		CompoundTag tag = (CompoundTag) stack.saveOptional(level.registryAccess());
 		if (tag.contains("Fuze", Tag.TAG_COMPOUND)) {
-			projectile.setFuze(ItemStack.of(tag.getCompound("Fuze")));
+			projectile.setFuze(ItemStack.parseOptional(level.registryAccess(), tag.getCompound("Fuze")));
 		}
 		return projectile;
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-		super.appendHoverText(stack, level, tooltip, flag);
-		CompoundTag tag = stack.getOrCreateTag();
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
+		super.appendHoverText(stack, ctx, tooltip, flag);
+		CompoundTag tag = (CompoundTag) stack.saveOptional(ctx.registries());
 		ItemStack fuze =
-			tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Fuze")) : ItemStack.EMPTY;
+			tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.parseOptional(ctx.registries(), tag.getCompound("Fuze")) : ItemStack.EMPTY;
 		if (!fuze.isEmpty()) {
 			CreateLang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
@@ -55,7 +55,7 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 				.addTo(tooltip);
 			if (fuze.getItem() instanceof FuzeItem) {
 				List<Component> subTooltip = new ArrayList<>();
-				fuze.getItem().appendHoverText(fuze, level, subTooltip, flag);
+				fuze.getItem().appendHoverText(fuze, ctx, subTooltip, flag);
 				subTooltip.replaceAll(sibling -> Component.literal("  ").append(sibling).withStyle(ChatFormatting.GRAY));
 				tooltip.addAll(subTooltip);
 			}

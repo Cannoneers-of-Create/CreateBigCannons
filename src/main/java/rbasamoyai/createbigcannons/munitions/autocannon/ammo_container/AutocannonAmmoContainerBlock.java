@@ -85,7 +85,7 @@ public class AutocannonAmmoContainerBlock extends Block implements IWrenchable, 
 	}
 
 	@Override
-	public void playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+	public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
 		if (!level.isClientSide && level.getBlockEntity(pos) instanceof AutocannonAmmoContainerBlockEntity be && player.isCreative() && be.canDropInCreative()) {
 			ItemStack stack = new ItemStack(this.asItem());
 			be.saveToItem(stack);
@@ -96,7 +96,8 @@ public class AutocannonAmmoContainerBlock extends Block implements IWrenchable, 
 			level.addFreshEntity(itemEntity);
 		}
 		super.playerWillDestroy(level, pos, state, player);
-	}
+        return state;
+    }
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {

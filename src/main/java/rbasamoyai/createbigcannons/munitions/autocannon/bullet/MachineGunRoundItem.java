@@ -6,6 +6,8 @@ import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -42,12 +44,12 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 
 	@Override
 	public boolean isTracer(ItemStack stack) {
-		return stack.getOrCreateTag().getBoolean("Tracer");
+		return ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getBoolean("Tracer");
 	}
 
 	@Override
 	public void setTracer(ItemStack stack, boolean value) {
-		if (!stack.isEmpty()) stack.getOrCreateTag().putBoolean("Tracer", value);
+		if (!stack.isEmpty()) ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).putBoolean("Tracer", value);
 	}
 
 	@Override
@@ -63,7 +65,7 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, ctx, tooltipComponents, isAdvanced);
-		if (stack.getOrCreateTag().getBoolean("Tracer")) {
+		if (((CompoundTag)stack.saveOptional(ctx.registries())).getBoolean("Tracer")) {
 			CreateLang.builder("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);
 		}
 	}

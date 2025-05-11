@@ -131,7 +131,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	@Override
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
-		CompoundTag baseTag = stack.getOrCreateTag();
+		CompoundTag baseTag = stack.saveOptional();
 		if (baseTag.contains("BlockEntityTag")) {
 			CompoundTag tag = baseTag.getCompound("BlockEntityTag").copy();
 			tag.remove("x");
