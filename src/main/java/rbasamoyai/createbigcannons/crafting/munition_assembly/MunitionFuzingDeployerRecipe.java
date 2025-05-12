@@ -7,16 +7,18 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-public class MunitionFuzingDeployerRecipe implements Recipe<Container> {
+public class MunitionFuzingDeployerRecipe implements Recipe<CraftingInput> {
 
 	private final ItemStack munition;
 	private final ItemStack fuze;
@@ -32,20 +34,20 @@ public class MunitionFuzingDeployerRecipe implements Recipe<Container> {
 	}
 
 	@Override
-	public boolean matches(Container container, Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		if (!(this.fuze.getItem() instanceof FuzeItem)) return false;
 		if (this.munition.getItem() instanceof FuzedItemMunition) {
-			return !this.munition.getOrCreateTag().contains("Fuze", Tag.TAG_COMPOUND);
+			return !this.munition.has(CBCDataComponents.FUZE);
 		}
 		if (this.munition.getItem() instanceof AutocannonCartridgeItem) {
 			ItemStack cartridgeRound = AutocannonCartridgeItem.getProjectileStack(this.munition);
 			return !cartridgeRound.isEmpty() && cartridgeRound.getItem() instanceof FuzedItemMunition
-				&& !cartridgeRound.getOrCreateTag().contains("Fuze", Tag.TAG_COMPOUND);
+				&& !cartridgeRound.has(CBCDataComponents.FUZE);
 		}
 		return false;
 	}
 
-	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
+	@Override public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) { return this.getResultItem(registries); }
 
 	@Override
 	public ItemStack getResultItem(HolderLookup.Provider registries) {
@@ -53,20 +55,17 @@ public class MunitionFuzingDeployerRecipe implements Recipe<Container> {
 		result.setCount(1);
 		ItemStack fuzeCopy = this.fuze.copy();
 		fuzeCopy.setCount(1);
-		CompoundTag tag = result.getOrCreateTag();
 		if (result.getItem() instanceof FuzedItemMunition) {
-			tag.put("Fuze", fuzeCopy.save(registries));
+            result.set(CBCDataComponents.FUZE, fuzeCopy);
 		} else if (result.getItem() instanceof AutocannonCartridgeItem) {
-			CompoundTag projectileTag = tag.getCompound("Projectile").getCompound("tag");
-			projectileTag.put("Fuze", fuzeCopy.save(registries));
-			tag.getCompound("Projectile").put("tag", projectileTag);
+            ItemStack projectile = result.get(CBCDataComponents.PROJECTILE);
+            projectile.set(CBCDataComponents.FUZE, fuzeCopy);
 		}
 		return result;
 	}
 
 	@Override public boolean canCraftInDimensions(int width, int height) { return true; }
 
-	@Override public ResourceLocation getId() { return CBCRecipeTypes.MUNITION_FUZING_DEPLOYER.getId(); }
 	@Override public RecipeSerializer<?> getSerializer() { return CBCRecipeTypes.MUNITION_FUZING_DEPLOYER.getSerializer(); }
 	@Override public RecipeType<?> getType() { return CBCRecipeTypes.MUNITION_FUZING_DEPLOYER.getType(); }
 

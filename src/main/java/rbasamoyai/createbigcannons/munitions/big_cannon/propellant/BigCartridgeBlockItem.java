@@ -2,11 +2,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
@@ -17,6 +13,7 @@ import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 
 public class BigCartridgeBlockItem extends BlockItem {
@@ -34,7 +31,7 @@ public class BigCartridgeBlockItem extends BlockItem {
 		CBCTooltip.appendBigCartridgePropellantPowerText(stack, ctx, tooltipComponents, isAdvanced, this.cartridgeBlock);
 		CBCTooltip.appendMuzzleVelocityText(stack, ctx, tooltipComponents, isAdvanced, this.cartridgeBlock);
 		CBCTooltip.appendPropellantStressText(stack, ctx, tooltipComponents, isAdvanced, this.cartridgeBlock);
-		if (stack.getOrCreateTag().getBoolean("Damp"))
+		if (stack.getOrDefault(CBCDataComponents.DAMP, false))
 			tooltipComponents.add(Component.translatable("block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.damp").withStyle(ChatFormatting.BLUE));
 	}
 
@@ -56,12 +53,12 @@ public class BigCartridgeBlockItem extends BlockItem {
 	}
 
 	public static int getPower(ItemStack stack) {
-		return stack.getOrCreateTag().getInt("Power");
+		return stack.get(CBCDataComponents.POWER);
 	}
 
 	public static ItemStack getWithPower(int power) {
 		ItemStack stack = CBCBlocks.BIG_CARTRIDGE.asStack();
-        ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).putInt("Power", power);
+        stack.set(CBCDataComponents.POWER, power);
 		return stack;
 	}
 

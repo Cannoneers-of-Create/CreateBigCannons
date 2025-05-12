@@ -14,11 +14,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
-import net.minecraft.world.Container;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -264,8 +264,8 @@ public class CBCCommonEvents {
 		cons.accept(FluidDragHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("fluid_drag_handler"));
 	}
 
-	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, Container container,
-		BiConsumer<Supplier<Optional<? extends Recipe<? extends Container>>>, Integer> cons) {
+	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, CraftingInput container,
+		BiConsumer<Supplier<Optional<? extends Recipe<? extends CraftingInput>>>, Integer> cons) {
 		Level level = ((BlockEntity) deployer).getLevel();
 		ItemStack containerItem = container.getItem(0);
 		ItemStack deployerItem = container.getItem(1);

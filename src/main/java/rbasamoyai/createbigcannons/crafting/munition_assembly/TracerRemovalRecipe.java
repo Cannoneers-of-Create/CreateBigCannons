@@ -1,14 +1,18 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
@@ -19,14 +23,14 @@ public class TracerRemovalRecipe extends CustomRecipe {
 
 
 	public TracerRemovalRecipe(ResourceLocation id) {
-		super(id, CraftingBookCategory.MISC);
+		super(CraftingBookCategory.MISC);
 	}
 
 	@Override
-	public boolean matches(CraftingContainer container, Level level) {
+	public boolean matches(CraftingInput container, Level level) {
 		ItemStack target = ItemStack.EMPTY;
 
-		for (int i = 0; i < container.getContainerSize(); ++i) {
+		for (int i = 0; i < container.size(); ++i) {
 			ItemStack stack = container.getItem(i);
 			if (stack.isEmpty()) continue;
 			if (!target.isEmpty()) return false;
@@ -34,7 +38,7 @@ public class TracerRemovalRecipe extends CustomRecipe {
 			if (stack.getItem() instanceof AutocannonCartridgeItem)
 				stack = AutocannonCartridgeItem.getProjectileStack(stack);
 			if (stack.getItem() instanceof AutocannonRoundItem) {
-				if (!stack.getOrCreateTag().getBoolean("Tracer")) return false;
+				if (!stack.getOrDefault(CBCDataComponents.AUTOCANNON_TRACER, false)) return false;
 				target = stack;
 			} else if (stack.getItem() instanceof AutocannonAmmoItem item) {
 				if (!item.isTracer(stack)) return false;
@@ -47,27 +51,27 @@ public class TracerRemovalRecipe extends CustomRecipe {
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container, RegistryAccess registryAccess) {
+	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registryAccess) {
 		return new ItemStack(CBCItems.TRACER_TIP.get());
 	}
 
 	@Override
-	public NonNullList<ItemStack> getRemainingItems(CraftingContainer container) {
-		NonNullList<ItemStack> result = super.getRemainingItems(container);
-		int sz = container.getContainerSize();
+	public NonNullList<ItemStack> getRemainingItems(CraftingInput input) {
+		NonNullList<ItemStack> result = super.getRemainingItems(input);
+		int sz = input.size();
 
 		for (int i = 0; i < sz; ++i) {
-			ItemStack stack = container.getItem(i);
+			ItemStack stack = input.getItem(i);
 			ItemStack originalStack = stack.copy();
 
 			boolean isCartridge = stack.getItem() instanceof AutocannonCartridgeItem;
 			if (isCartridge)
 				stack = AutocannonCartridgeItem.getProjectileStack(stack);
 			if (stack.getItem() instanceof AutocannonRoundItem) {
-				if (stack.getOrCreateTag().getBoolean("Tracer")) {
+				if (stack.getOrDefault(CBCDataComponents.AUTOCANNON_TRACER, false)) {
 					ItemStack copy = stack.copy();
 					copy.setCount(1);
-					copy.getOrCreateTag().remove("Tracer");
+					copy.remove(CBCDataComponents.AUTOCANNON_TRACER);
 					if (isCartridge) {
 						ItemStack cartridge = new ItemStack(originalStack.getItem());
 						AutocannonCartridgeItem.writeProjectile(copy, cartridge);

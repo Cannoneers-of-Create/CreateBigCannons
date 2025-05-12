@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
@@ -34,9 +35,8 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 	@Override
 	public AbstractAutocannonProjectile getAutocannonProjectile(ItemStack stack, Level level) {
 		FlakAutocannonProjectile projectile = CBCEntityTypes.FLAK_AUTOCANNON.create(level);
-		CompoundTag tag = (CompoundTag) stack.saveOptional(level.registryAccess());
-		if (tag.contains("Fuze", Tag.TAG_COMPOUND)) {
-			projectile.setFuze(ItemStack.parseOptional(level.registryAccess(), tag.getCompound("Fuze")));
+		if (stack.has(CBCDataComponents.FUZE)) {
+			projectile.setFuze(stack.get(CBCDataComponents.FUZE));
 		}
 		return projectile;
 	}
@@ -44,9 +44,7 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
-		CompoundTag tag = (CompoundTag) stack.saveOptional(ctx.registries());
-		ItemStack fuze =
-			tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.parseOptional(ctx.registries(), tag.getCompound("Fuze")) : ItemStack.EMPTY;
+		ItemStack fuze = stack.getOrDefault(CBCDataComponents.FUZE, ItemStack.EMPTY);
 		if (!fuze.isEmpty()) {
 			CreateLang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")

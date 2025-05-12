@@ -5,16 +5,18 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 
-public class TracerApplicationDeployerRecipe implements Recipe<Container> {
+public class TracerApplicationDeployerRecipe implements Recipe<CraftingInput> {
 
 	private final ItemStack munition;
 	private final ItemStack fuze;
@@ -30,21 +32,21 @@ public class TracerApplicationDeployerRecipe implements Recipe<Container> {
 	}
 
 	@Override
-	public boolean matches(Container container, Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		if (!CBCItems.TRACER_TIP.isIn(this.fuze)) return false;
-		if (this.munition.getItem() instanceof AutocannonRoundItem) return !this.munition.getOrCreateTag().getBoolean("Tracer");
+		if (this.munition.getItem() instanceof AutocannonRoundItem) return !this.munition.getOrDefault(CBCDataComponents.AUTOCANNON_TRACER, false);
 		if (this.munition.getItem() instanceof AutocannonAmmoItem item) return !item.isTracer(this.munition);
 		return false;
 	}
 
-	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
+	@Override public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registries) { return this.getResultItem(registries); }
 
 	@Override
 	public ItemStack getResultItem(HolderLookup.Provider registries) {
 		ItemStack result = this.munition.copy();
 		result.setCount(1);
 		if (result.getItem() instanceof AutocannonRoundItem) {
-			result.getOrCreateTag().putBoolean("Tracer", true);
+			result.set(CBCDataComponents.AUTOCANNON_TRACER, true);
 		} else if (result.getItem() instanceof AutocannonAmmoItem item) {
 			item.setTracer(result, true);
 		}
@@ -53,7 +55,6 @@ public class TracerApplicationDeployerRecipe implements Recipe<Container> {
 
 	@Override public boolean canCraftInDimensions(int width, int height) { return true; }
 
-	@Override public ResourceLocation getId() { return CBCRecipeTypes.TRACER_APPLICATION_DEPLOYER.getId(); }
 	@Override public RecipeSerializer<?> getSerializer() { return CBCRecipeTypes.TRACER_APPLICATION_DEPLOYER.getSerializer(); }
 	@Override public RecipeType<?> getType() { return CBCRecipeTypes.TRACER_APPLICATION_DEPLOYER.getType(); }
 

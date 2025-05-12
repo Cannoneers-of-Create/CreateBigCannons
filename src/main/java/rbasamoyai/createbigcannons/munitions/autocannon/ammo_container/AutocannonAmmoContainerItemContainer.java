@@ -5,6 +5,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 
 public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoContainerContainer {
 
@@ -23,7 +24,7 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 		ItemStack ammo = this.getItem(slot);
 		if (ammo.isEmpty()) return ItemStack.EMPTY;
 		ItemStack split = ammo.split(amount);
-		this.stack.getOrCreateTag().put(slot == AMMO_SLOT ? "Ammo" : "Tracers", ammo.save(registry));
+		this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ammo);
 		this.setChanged();
 		return split;
 	}
@@ -32,14 +33,14 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 	public ItemStack removeItemNoUpdate(int slot) {
 		if (slot != 0 && slot != 1) return ItemStack.EMPTY;
 		ItemStack ret = this.getItem(slot);
-		this.stack.getOrCreateTag().put(slot == AMMO_SLOT ? "Ammo" : "Tracers", ItemStack.EMPTY.save(registry));
+        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ItemStack.EMPTY);;
 		return ret;
 	}
 
 	@Override
 	public void setItem(int slot, ItemStack stack) {
 		if (slot != 0 && slot != 1) return;
-		this.stack.getOrCreateTag().put(slot == AMMO_SLOT ? "Ammo" : "Tracers", stack.save(registry));
+        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, stack);
 		this.setChanged();
 	}
 
@@ -52,9 +53,8 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 
 	@Override
 	public void clearContent() {
-		CompoundTag tag = this.stack.getOrCreateTag();
-		tag.put("Ammo", ItemStack.EMPTY.save(registry));
-		tag.put("Tracers", ItemStack.EMPTY.save(registry));
+		stack.set(CBCDataComponents.AMMO, ItemStack.EMPTY);
+		stack.set(CBCDataComponents.TRACER, ItemStack.EMPTY);
 	}
 
 	@Override

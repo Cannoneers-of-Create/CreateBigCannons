@@ -1,14 +1,17 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
@@ -17,16 +20,16 @@ import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class CartridgeAssemblyRecipe extends CustomRecipe {
 
-	public CartridgeAssemblyRecipe(ResourceLocation id) { super(id, CraftingBookCategory.MISC); }
+	public CartridgeAssemblyRecipe(ResourceLocation id) { super(CraftingBookCategory.MISC); }
 
 	@Override
-	public boolean matches(CraftingContainer container, Level level) {
+	public boolean matches(CraftingInput container, Level level) {
 		int roundPosition = -1;
 		int cartridgePosition = -1;
 		boolean searchFuze = false;
 		int fuzePosition = -1;
 
-		for (int i = 0; i < container.getContainerSize(); ++i) {
+		for (int i = 0; i < container.size(); ++i) {
 			ItemStack stack = container.getItem(i);
 			if (stack.isEmpty()) continue;
 			if (stack.getItem() instanceof AutocannonRoundItem) {
@@ -44,20 +47,20 @@ public class CartridgeAssemblyRecipe extends CustomRecipe {
 			}
 		}
 		if (roundPosition == -1 || cartridgePosition == -1 || !searchFuze && fuzePosition != -1) return false;
-		int w = container.getWidth();
+		int w = container.width();
 		int i = roundPosition % w;
 		return cartridgePosition % w == i && (fuzePosition == -1 || fuzePosition % w == i);
 	}
 
 	@Override
-	public ItemStack assemble(CraftingContainer container, RegistryAccess access) {
+	public ItemStack assemble(CraftingInput input, HolderLookup.Provider access) {
 		int roundPosition = -1;
 		int cartridgePosition = -1;
 		boolean searchFuze = false;
 		int fuzePosition = -1;
 
-		for (int i = 0; i < container.getContainerSize(); ++i) {
-			ItemStack stack = container.getItem(i);
+		for (int i = 0; i < input.size(); ++i) {
+			ItemStack stack = input.getItem(i);
 			if (stack.isEmpty()) continue;
 			if (stack.getItem() instanceof AutocannonRoundItem) {
 				if (roundPosition != -1) return ItemStack.EMPTY;
@@ -75,20 +78,19 @@ public class CartridgeAssemblyRecipe extends CustomRecipe {
 		}
 
 		if (roundPosition == -1 || cartridgePosition == -1 || !searchFuze && fuzePosition != -1) return ItemStack.EMPTY;
-		int w = container.getWidth();
+		int w = input.width();
 		int i = roundPosition % w;
 		if (cartridgePosition % w != i || fuzePosition != -1 && fuzePosition % w != i) return ItemStack.EMPTY;
 
 		ItemStack result = CBCItems.AUTOCANNON_CARTRIDGE.asStack();
-		CompoundTag tag = result.getOrCreateTag();
-		ItemStack roundCopy = container.getItem(roundPosition).copy();
+		ItemStack roundCopy = input.getItem(roundPosition).copy();
 		roundCopy.setCount(1);
 		if (fuzePosition != -1) {
-			ItemStack fuzeCopy = container.getItem(fuzePosition).copy();
+			ItemStack fuzeCopy = input.getItem(fuzePosition).copy();
 			fuzeCopy.setCount(1);
-			roundCopy.getOrCreateTag().put("Fuze", fuzeCopy.save(registry));
+			roundCopy.set(CBCDataComponents.FUZE, fuzeCopy);
 		}
-		tag.put("Projectile", roundCopy.save(registry));
+		result.set(CBCDataComponents.PROJECTILE, roundCopy);
 
 		return result;
 	}

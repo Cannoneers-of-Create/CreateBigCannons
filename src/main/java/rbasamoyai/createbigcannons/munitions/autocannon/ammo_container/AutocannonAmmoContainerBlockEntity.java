@@ -91,40 +91,6 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		return !this.getMainAmmoStack().isEmpty() || !this.getTracerStack().isEmpty();
 	}
 
-	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
-		if (this.ammo != null && !this.ammo.isEmpty()) tag.put("Ammo", this.ammo.save(registry));
-		if (this.tracers != null && !this.tracers.isEmpty()) tag.put("Tracers", this.tracers.save(registry));
-		if (this.name != null) tag.putString("CustomName", Component.Serializer.toJson(this.name));
-		if (this.isCreativeContainer()) tag.putInt("CurrentIndex", this.currentIndex);
-		tag.putInt("TracerSpacing", this.spacing);
-	}
-
-	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
-		this.ammo = tag.contains("Ammo") ? ItemStack.of(tag.getCompound("Ammo")) : ItemStack.EMPTY;
-		this.tracers = tag.contains("Tracers") ? ItemStack.of(tag.getCompound("Tracers")) : ItemStack.EMPTY;
-		this.spacing = tag.contains("TracerSpacing") ? Mth.clamp(tag.getInt("TracerSpacing"), 1, 6) : 1;
-		this.name = tag.contains("CustomName", Tag.TAG_STRING) ? Component.Serializer.fromJson(tag.getString("CustomName")) : null;
-		this.currentIndex = tag.contains("CurrentIndex", Tag.TAG_INT) ? tag.getInt("CurrentIndex") : 0;
-	}
-
-	@Override
-	public void saveToItem(ItemStack stack) {
-		CompoundTag tag = stack.getOrCreateTag();
-		if (this.ammo != null && !this.ammo.isEmpty()) tag.put("Ammo", this.ammo.save(registry));
-		if (this.tracers != null && !this.tracers.isEmpty()) tag.put("Tracers", this.tracers.save(registry));
-		if (this.isCreativeContainer()) tag.putInt("CurrentIndex", this.currentIndex);
-		tag.putInt("TracerSpacing", this.spacing);
-	}
-
-	@Override
-	public CompoundTag getUpdateTag() {
-		return this.saveWithFullMetadata(this.getLevel().registryAccess());
-	}
-
 	@Nullable
 	@Override
 	public Packet<ClientGamePacketListener> getUpdatePacket() {

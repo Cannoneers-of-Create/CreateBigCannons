@@ -1,0 +1,103 @@
+package rbasamoyai.createbigcannons.index;
+
+import com.mojang.serialization.Codec;
+
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import rbasamoyai.createbigcannons.CreateBigCannons;
+
+import java.util.function.UnaryOperator;
+
+public class CBCDataComponents {
+    public static final DataComponentType<Boolean> AUTOCANNON_TRACER = register(
+        "autocannon_tracer",
+        builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL)
+    );
+
+    public static final DataComponentType<Integer> TRACER_SPACING = register(
+        "tracer_spacing",
+        builder -> builder.persistent(ExtraCodecs.intRange(1,6)).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+
+    public static final DataComponentType<ItemStack> TRACER = register(
+        "tracer",
+        builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC)
+    );
+
+    public static final DataComponentType<Integer> CURRENT_INDEX = register(
+        "current_index",
+        builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+
+    public static final DataComponentType<Integer> POWER = register(
+        "power",
+        builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+
+    public static final DataComponentType<Integer> DAMAGE = register(
+        "damage",
+        builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+
+    public static final DataComponentType<Boolean> DAMP = register(
+        "damp",
+        builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL)
+    );
+
+    public static final DataComponentType<ItemStack> AMMO = register(
+        "ammo",
+        builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC)
+    );
+
+    public static final DataComponentType<ItemStack> FUZE = register(
+        "fuze",
+        builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC)
+    );
+
+    public static final DataComponentType<Integer> DETONATION_DISTANCE = register(
+        "detonation_distance",
+        builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+
+    public static final DataComponentType<Integer> FUZE_TIMER = register(
+        "fuze_timer",
+        builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+
+    public static final DataComponentType<Integer> AIR_TIME = register(
+        "air_time",
+        builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+
+    public static final DataComponentType<Boolean> ARMED = register(
+        "armed",
+        builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL)
+    );
+
+    public static final DataComponentType<Boolean> ACTIVATED = register(
+        "activated",
+        builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL)
+    );
+
+    public static final DataComponentType<ItemStack> PROJECTILE = register(
+        "projectile",
+        builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC)
+    );
+
+    public static final DataComponentType<CustomData> FLUID_CONTENT = register( // todo: CustomData for now, should be Fluid, hoping for Mojang to implement codecs
+        "fluid_content",
+        builder -> builder.persistent(CustomData.CODEC).networkSynchronized(CustomData.STREAM_CODEC)
+    );
+
+    private static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
+        return Registry.register((Registry) Registries.DATA_COMPONENT_TYPE, CreateBigCannons.resource(name), builder.apply(DataComponentType.builder()).build());
+    }
+}

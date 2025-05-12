@@ -28,8 +28,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
+import org.checkerframework.checker.units.qual.C;
+
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
@@ -53,20 +57,18 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
-		CompoundTag tag = (CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess());
-		int airTime = tag.getInt("AirTime");
-		if (airTime > CBCConfigs.server().munitions.proximityFuzeArmingTime.get()) tag.putBoolean("Armed", true);
-		tag.putInt("AirTime", ++airTime);
+		int airTime = stack.get(CBCDataComponents.AIR_TIME);
+		if (airTime > CBCConfigs.server().munitions.proximityFuzeArmingTime.get()) stack.set(CBCDataComponents.ARMED, true);
+		stack.set(CBCDataComponents.AIR_TIME, ++airTime);
 		return false;
 	}
 
 	@Override
 	public boolean onProjectileClip(ItemStack stack, AbstractCannonProjectile projectile, Vec3 start, Vec3 end, ProjectileContext ctx, boolean baseFuze) {
 		if (baseFuze) return false;
-		CompoundTag tag = (CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess());
-		if (!tag.contains("Armed")) return false;
+		if (!stack.has(CBCDataComponents.ARMED)) return false;
 
-		double l = Math.max(tag.getInt("DetonationDistance"), 1);
+		double l = Math.max(stack.get(CBCDataComponents.DETONATION_DISTANCE), 1);
 		Vec3 dir = projectile.getOrientation().normalize();
 		Vec3 right = dir.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = dir.cross(right);
@@ -105,14 +107,13 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (player instanceof ServerPlayer splayer && player.mayBuild()) {
 			ItemStack stack = player.getItemInHand(hand);
-			CompoundTag tag = (CompoundTag) stack.saveOptional(level.registryAccess());
-			if (!tag.contains("DetonationDistance")) {
-				tag.putInt("DetonationDistance", 1);
+			if (!stack.has(CBCDataComponents.DETONATION_DISTANCE)) {
+				stack.set(CBCDataComponents.DETONATION_DISTANCE, 1);
 			}
-			int dist = tag.getInt("DetonationDistance");
+			int dist = stack.get(CBCDataComponents.DETONATION_DISTANCE);
 			CBCMenuTypes.SET_PROXIMITY_FUZE.open(splayer, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(dist);
-				buf.writeItem(new ItemStack(this));
+				buf.writeNbt(new ItemStack(this).save(level.registryAccess())); //todo: playtest 1.21
 			});
 		}
 		return super.use(level, player, hand);
@@ -130,7 +131,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 	public static ItemStack getCreativeTabItem(int defaultFuze) {
 		ItemStack stack = CBCItems.PROXIMITY_FUZE.asStack();
-        ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).putInt("DetonationDistance", 1);
+        stack.set(CBCDataComponents.DETONATION_DISTANCE, 1);
 		return stack;
 	}
 
@@ -138,7 +139,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
 		MutableComponent info = CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getInt("DetonationDistance"))
+			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", stack.get(CBCDataComponents.DETONATION_DISTANCE))
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 	}
@@ -147,7 +148,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
 		tooltip.add(CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info.item", ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getInt("DetonationDistance"))
+			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info.item", stack.get(CBCDataComponents.DETONATION_DISTANCE))
 			.component());
 	}
 

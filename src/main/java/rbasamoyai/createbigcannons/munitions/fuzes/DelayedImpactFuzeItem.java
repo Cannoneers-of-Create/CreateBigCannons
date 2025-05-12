@@ -23,6 +23,7 @@ import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
@@ -38,15 +39,14 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (player instanceof ServerPlayer && player.mayBuild()) {
 			ItemStack stack = player.getItemInHand(hand);
-			CompoundTag tag = stack.getOrCreateTag();
-			if (!tag.contains("FuzeTimer")) {
-				tag.putInt("FuzeTimer", 20);
+			if (!stack.has(CBCDataComponents.FUZE_TIMER)) {
+				stack.set(CBCDataComponents.FUZE_TIMER, 20);
 			}
-			int timer = tag.getInt("FuzeTimer");
+			int timer = stack.get(CBCDataComponents.FUZE_TIMER);
 
 			CBCMenuTypes.SET_DELAYED_IMPACT_FUZE.open((ServerPlayer) player, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(timer);
-				buf.writeItem(new ItemStack(this));
+				buf.writeNbt(new ItemStack(this).save(level.registryAccess()));
 			});
 		}
 		return super.use(level, player, hand);
@@ -66,14 +66,13 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, ImpactResult impactResult, boolean baseFuze) {
 		if (baseFuze || impactResult.shouldRemove()) return false;
-		CompoundTag tag = stack.getOrCreateTag();
-		int damage = tag.contains("Damage") ? tag.getInt("Damage") : this.getFuzeDurability();
-		if (damage > 0 && !tag.contains("Activated")) {
+		int damage = stack.has(CBCDataComponents.DAMAGE) ? stack.get(CBCDataComponents.DAMAGE) : this.getFuzeDurability();
+		if (damage > 0 && !stack.has(CBCDataComponents.ACTIVATED)) {
 			--damage;
-			tag.putInt("Damage", damage);
+			stack.set(CBCDataComponents.DAMAGE, damage);
 			float f = this.getDetonateChance();
 			if (f > 0 && projectile.level().getRandom().nextFloat() < f) {
-				tag.putBoolean("Activated", true);
+				stack.set(CBCDataComponents.ACTIVATED, true);
 			}
 		}
 		return false;
@@ -81,12 +80,11 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
-		CompoundTag tag = stack.getOrCreateTag();
-		if (!tag.contains("Activated")) return false;
-		if (!tag.contains("FuzeTimer")) return true;
-		int timer = tag.getInt("FuzeTimer");
+		if (!stack.has(CBCDataComponents.ACTIVATED)) return false;
+		if (!stack.has(CBCDataComponents.FUZE_TIMER)) return true;
+		int timer = stack.get(CBCDataComponents.FUZE_TIMER);
 		--timer;
-		tag.putInt("FuzeTimer", timer);
+		stack.set(CBCDataComponents.FUZE_TIMER, timer);
 		return timer <= 0;
 	}
 
@@ -100,7 +98,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 		super.appendHoverText(stack, ctx, tooltip, flag);
 		CBCTooltip.appendImpactFuzeText(stack, ctx, tooltip, flag, this.getDetonateChance(), this.getFuzeDurability());
 
-		int time = stack.getOrCreateTag().getInt("FuzeTimer");
+		int time = stack.get(CBCDataComponents.FUZE_TIMER);
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		tooltip.add(CreateLang.builder("item")
@@ -118,7 +116,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile projectile) {
-		return stack.getOrCreateTag().contains("Activated");
+		return stack.get(CBCDataComponents.ACTIVATED);
 	}
 
 	@Override
@@ -129,7 +127,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 
-		int time = stack.getOrCreateTag().getInt("FuzeTimer");
+		int time = stack.get(CBCDataComponents.FUZE_TIMER);
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		MutableComponent info1 = CreateLang.builder("item")
@@ -140,7 +138,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 
 	public static ItemStack getCreativeTabItem(int defaultFuze) {
 		ItemStack stack = CBCItems.DELAYED_IMPACT_FUZE.asStack();
-		stack.getOrCreateTag().putInt("FuzeTimer", defaultFuze);
+		stack.set(CBCDataComponents.FUZE_TIMER, defaultFuze);
 		return stack;
 	}
 

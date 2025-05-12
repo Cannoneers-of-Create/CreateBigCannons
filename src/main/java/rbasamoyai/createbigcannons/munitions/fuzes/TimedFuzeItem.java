@@ -23,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
@@ -35,11 +36,10 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
-		CompoundTag tag = (CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess());
-		if (!tag.contains("FuzeTimer")) return true;
-		int timer = tag.getInt("FuzeTimer");
+		if (!stack.has(CBCDataComponents.FUZE_TIMER)) return true;
+		int timer = stack.get(CBCDataComponents.FUZE_TIMER);
 		--timer;
-		tag.putInt("FuzeTimer", timer);
+		stack.set(CBCDataComponents.FUZE_TIMER, timer);
 		return timer <= 0;
 	}
 
@@ -52,15 +52,14 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
 		if (player instanceof ServerPlayer splayer && player.mayBuild()) {
 			ItemStack stack = player.getItemInHand(hand);
-			CompoundTag tag = (CompoundTag) stack.saveOptional(level.registryAccess());
-			if (!tag.contains("FuzeTimer")) {
-				tag.putInt("FuzeTimer", 20);
+			if (!stack.has(CBCDataComponents.FUZE_TIMER)) {
+				stack.set(CBCDataComponents.FUZE_TIMER, 20);
 			}
-			int timer = tag.getInt("FuzeTimer");
+			int timer = stack.get(CBCDataComponents.FUZE_TIMER);
 
 			CBCMenuTypes.SET_TIMED_FUZE.open(splayer, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(timer);
-				buf.writeItem(new ItemStack(this));
+				buf.writeNbt(new ItemStack(this).save(level.registryAccess())); // todo: playtest 1.21
 			});
 		}
 		return super.use(level, player, hand);
@@ -68,7 +67,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile projectile) {
-		return ((CompoundTag) stack.save(Minecraft.getInstance().level.registryAccess())).contains("FuzeTimer"); // todo: hacks
+		return stack.has(CBCDataComponents.FUZE_TIMER);
 	}
 
 	@Override
@@ -84,14 +83,14 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 
 	public static ItemStack getCreativeTabItem(int defaultFuze) {
 		ItemStack stack = CBCItems.TIMED_FUZE.asStack();
-        ((CompoundTag) stack.save(Minecraft.getInstance().level.registryAccess())).putInt("FuzeTimer", defaultFuze); // todo: hacks
+        stack.set(CBCDataComponents.FUZE_TIMER, defaultFuze);
 		return stack;
 	}
 
 	@Override
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
-		int time = ((CompoundTag) stack.save(Minecraft.getInstance().level.registryAccess())).getInt("FuzeTimer"); // todo: hacks
+		int time = stack.get(CBCDataComponents.FUZE_TIMER);
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		MutableComponent info = CreateLang.builder("item")
@@ -103,7 +102,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
-		int time = ((CompoundTag) stack.save(Minecraft.getInstance().level.registryAccess())).getInt("FuzeTimer"); // todo: hacks
+        int time = stack.get(CBCDataComponents.FUZE_TIMER);
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		tooltip.add(CreateLang.builder("item")

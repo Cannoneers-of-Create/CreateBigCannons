@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 
@@ -48,13 +50,13 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 			ItemStack stack = player.getItemInHand(hand);
 			if (player instanceof ServerPlayer splayer) {
 				int spacing = getTracerSpacing(stack);
-				Component screenName = stack.hasCustomHoverName() ? stack.getHoverName() : this.getDisplayName();
+				Component screenName = stack.has(DataComponents.CUSTOM_NAME) ? stack.getHoverName() : this.getDisplayName();
 
 				CBCMenuTypes.AUTOCANNON_AMMO_CONTAINER.open(splayer, screenName, this, buf -> {
 					buf.writeBoolean(this.isCreative());
 					buf.writeVarInt(spacing);
 					buf.writeBoolean(false);
-					buf.writeItem(new ItemStack(this));
+					buf.writeNbt(new ItemStack(this).save(level.registryAccess()));
 				});
 			}
 			return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
@@ -70,25 +72,21 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 	}
 
 	public static ItemStack getMainAmmoStack(ItemStack container) {
-		CompoundTag tag = container.getOrCreateTag();
-		return tag.contains("Ammo") ? ItemStack.of(tag.getCompound("Ammo")) : ItemStack.EMPTY;
+		return container.getOrDefault(CBCDataComponents.AMMO, ItemStack.EMPTY);
 	}
 
 	public static ItemStack getTracerAmmoStack(ItemStack container) {
-		CompoundTag tag = container.getOrCreateTag();
-		return tag.contains("Tracers") ? ItemStack.of(tag.getCompound("Tracers")) : ItemStack.EMPTY;
+        return container.getOrDefault(CBCDataComponents.TRACER, ItemStack.EMPTY);
 	}
 
 	public static int getTracerSpacing(ItemStack container) {
-		CompoundTag tag = container.getOrCreateTag();
-		return tag.contains("TracerSpacing") ? Mth.clamp(tag.getInt("TracerSpacing"), 1, 6) : 1;
+		return container.getOrDefault(CBCDataComponents.TRACER_SPACING, 1);
 	}
 
 	public static boolean shouldPullTracer(ItemStack container) {
-		CompoundTag tag = container.getOrCreateTag();
-		if (!tag.contains("CurrentIndex", CompoundTag.TAG_INT)) tag.putInt("CurrentIndex", 0);
-		int currentCount = Math.max(tag.getInt("CurrentIndex"), 0);
-		tag.putInt("CurrentIndex", currentCount >= getTracerSpacing(container) ? 0 : currentCount + 1);
+		if (!container.has(CBCDataComponents.CURRENT_INDEX)) container.set(CBCDataComponents.CURRENT_INDEX, 0);
+		int currentCount = Math.max(container.get(CBCDataComponents.CURRENT_INDEX), 0);
+		container.set(CBCDataComponents.CURRENT_INDEX, currentCount >= getTracerSpacing(container) ? 0 : currentCount + 1);
 		return currentCount == 0;
 	}
 
@@ -116,7 +114,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = tracerAmmo.split(1);
-					container.getOrCreateTag().put("Tracers", tracerAmmo.isEmpty() ? new CompoundTag() : tracerAmmo.save(registry));
+					container.set(CBCDataComponents.TRACER, tracerAmmo.isEmpty() ? ItemStack.EMPTY : tracerAmmo);
 				}
 			} else if (!mainAmmo.isEmpty()) {
 				if (isCreative) {
@@ -124,7 +122,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = mainAmmo.split(1);
-					container.getOrCreateTag().put("Ammo", mainAmmo.isEmpty() ? new CompoundTag() : mainAmmo.save(registry));
+                    container.set(CBCDataComponents.AMMO, tracerAmmo.isEmpty() ? ItemStack.EMPTY : mainAmmo);
 				}
 			}
 		} else {
@@ -134,7 +132,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = mainAmmo.split(1);
-					container.getOrCreateTag().put("Ammo", mainAmmo.isEmpty() ? new CompoundTag() : mainAmmo.save(registry));
+                    container.set(CBCDataComponents.AMMO, tracerAmmo.isEmpty() ? ItemStack.EMPTY : mainAmmo);
 				}
 			} else if (!tracerAmmo.isEmpty()) {
 				if (isCreative) {
@@ -142,7 +140,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = tracerAmmo.split(1);
-					container.getOrCreateTag().put("Tracers", tracerAmmo.isEmpty() ? new CompoundTag() : tracerAmmo.save(registry));
+                    container.set(CBCDataComponents.TRACER, tracerAmmo.isEmpty() ? ItemStack.EMPTY : tracerAmmo);
 				}
 			}
 		}
@@ -150,8 +148,8 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
-		super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+		super.appendHoverText(stack, ctx, tooltipComponents, isAdvanced);
 		String infinity = "\u221E";
 
 		ItemStack mainAmmo = getMainAmmoStack(stack);

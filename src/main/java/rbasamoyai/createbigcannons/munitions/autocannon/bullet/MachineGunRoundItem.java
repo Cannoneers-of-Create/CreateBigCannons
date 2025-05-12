@@ -6,8 +6,6 @@ import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.utility.CreateLang;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -15,6 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
@@ -44,12 +43,12 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 
 	@Override
 	public boolean isTracer(ItemStack stack) {
-		return ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getBoolean("Tracer");
+		return stack.getComponents().getOrDefault(CBCDataComponents.AUTOCANNON_TRACER, false);
 	}
 
 	@Override
 	public void setTracer(ItemStack stack, boolean value) {
-		if (!stack.isEmpty()) ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).putBoolean("Tracer", value);
+		if (!stack.isEmpty()) stack.set(CBCDataComponents.AUTOCANNON_TRACER, value);
 	}
 
 	@Override
@@ -65,7 +64,7 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, ctx, tooltipComponents, isAdvanced);
-		if (((CompoundTag)stack.saveOptional(ctx.registries())).getBoolean("Tracer")) {
+		if (stack.getComponents().getOrDefault(CBCDataComponents.AUTOCANNON_TRACER, false)) {
 			CreateLang.builder("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);
 		}
 	}

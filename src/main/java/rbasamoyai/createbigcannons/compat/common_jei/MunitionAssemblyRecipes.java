@@ -2,26 +2,32 @@ package rbasamoyai.createbigcannons.compat.common_jei;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.ShapedRecipePattern;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
@@ -46,23 +52,20 @@ public class MunitionAssemblyRecipes {
 
 		String group = CreateBigCannons.MOD_ID + ".fuzing";
 
-		ListTag loreTag = new ListTag();
-		String loc = I18n.get("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_fuze");
-		loreTag.add(StringTag.valueOf("\"" + loc + "\""));
-		CompoundTag displayTag = new CompoundTag();
-		displayTag.put("Lore", loreTag);
+		List<Component> loreList = new ArrayList<>(1);
+		loreList.add(Component.translatable("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_fuze"));
 
 		List<CraftingRecipe> recipes = new ArrayList<>();
 		for (Item munition : munitions) {
 			NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(munition), fuzeIngredient);
 			ItemStack fuzedMunition = new ItemStack(munition);
-			fuzedMunition.getOrCreateTag().put("display", displayTag.copy());
+			fuzedMunition.set(DataComponents.LORE, new ItemLore(loreList));
 			recipes.add(new ShapelessRecipe(group, CraftingBookCategory.MISC, fuzedMunition, inputs));
 
 			if (munition instanceof AutocannonRoundItem round) {
 				NonNullList<Ingredient> inputs1 = NonNullList.of(Ingredient.EMPTY, Ingredient.of(round.getCreativeTabCartridgeItem()), fuzeIngredient);
 				ItemStack fuzedCartridge = round.getCreativeTabCartridgeItem();
-				fuzedCartridge.getOrCreateTag().put("display", displayTag.copy());
+                fuzedCartridge.set(DataComponents.LORE, new ItemLore(loreList));
 				recipes.add(new ShapelessRecipe(group + ".autocannon_round", CraftingBookCategory.MISC, fuzedCartridge, inputs1));
 			}
 		}
@@ -84,22 +87,19 @@ public class MunitionAssemblyRecipes {
 
 		Ingredient fuzeIngredient = Ingredient.of(fuzes.toArray(new Item[]{}));
 
-		ListTag loreTag = new ListTag();
-		String loc = I18n.get("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_fuze");
-		loreTag.add(StringTag.valueOf("\"" + loc + "\""));
-		CompoundTag displayTag = new CompoundTag();
-		displayTag.put("Lore", loreTag);
+        List<Component> loreList = new ArrayList<>(1);
+        loreList.add(Component.translatable("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_fuze"));
 
 		List<CraftingRecipe> recipes = new ArrayList<>();
 		for (AutocannonRoundItem round : munitions) {
 			NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(round), cartridge);
-			recipes.add(new ShapedRecipe(group, CraftingBookCategory.MISC, 1, 2, inputs, round.getCreativeTabCartridgeItem()));
+			recipes.add(new ShapedRecipe(group, CraftingBookCategory.MISC, new ShapedRecipePattern(1, 2, inputs, Optional.empty()), round.getCreativeTabCartridgeItem()));
 
 			if (round instanceof FuzedItemMunition) {
 				NonNullList<Ingredient> inputs1 = NonNullList.of(Ingredient.EMPTY, fuzeIngredient, Ingredient.of(round), cartridge);
 				ItemStack fuzedRound = round.getCreativeTabCartridgeItem();
-				fuzedRound.getOrCreateTag().put("display", displayTag.copy());
-				recipes.add(new ShapedRecipe(group, CraftingBookCategory.MISC, 1, 3, inputs1, fuzedRound));
+                fuzedRound.set(DataComponents.LORE, new ItemLore(loreList));
+				recipes.add(new ShapedRecipe(group, CraftingBookCategory.MISC, new ShapedRecipePattern(1, 3, inputs1, Optional.empty()), fuzedRound));
 			}
 		}
 		return recipes;
@@ -110,12 +110,9 @@ public class MunitionAssemblyRecipes {
 		NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(BigCartridgeBlockItem.getWithPower(0)),
 				Ingredient.of(CBCTags.CBCItemTags.NITROPOWDER));
 		ItemStack result = BigCartridgeBlockItem.getWithPower(1);
-		ListTag loreTag = new ListTag();
-		String loc = I18n.get("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_power");
-		loreTag.add(StringTag.valueOf("\"" + loc + "\""));
-		CompoundTag displayTag = new CompoundTag();
-		displayTag.put("Lore", loreTag);
-		result.getOrCreateTag().put("display", displayTag);
+        List<Component> loreList = new ArrayList<>(1);
+        loreList.add(Component.translatable("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_power"));
+		result.set(DataComponents.LORE, new ItemLore(loreList));
 		return List.of(new ShapelessRecipe(group, CraftingBookCategory.MISC, result, inputs));
 	}
 
@@ -135,7 +132,7 @@ public class MunitionAssemblyRecipes {
 		for (Item munition : munitions) {
 			NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(munition), tracerIngredient);
 			ItemStack tracerMunition = new ItemStack(munition);
-			tracerMunition.getOrCreateTag().putBoolean("Tracer", true);
+			tracerMunition.set(CBCDataComponents.AUTOCANNON_TRACER, true);
 			recipes.add(new ShapelessRecipe(group, CraftingBookCategory.MISC, tracerMunition, inputs));
 
 			if (munition instanceof AutocannonRoundItem round) {
@@ -162,17 +159,14 @@ public class MunitionAssemblyRecipes {
 
 		String group = CreateBigCannons.MOD_ID + ".fuzing_deployer";
 
-		ListTag loreTag = new ListTag();
-		String loc = I18n.get("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_fuze");
-		loreTag.add(StringTag.valueOf("\"" + loc + "\""));
-		CompoundTag displayTag = new CompoundTag();
-		displayTag.put("Lore", loreTag);
+        List<Component> loreList = new ArrayList<>(1);
+        loreList.add(Component.translatable("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_fuze"));
 
 		List<DeployerApplicationRecipe> recipes = new ArrayList<>();
 		for (Item munition : munitions) {
 			ResourceLocation id = CreateBigCannons.resource(group + "." + munition.getDescriptionId());
 			ItemStack fuzedMunition = new ItemStack(munition);
-			fuzedMunition.getOrCreateTag().put("display", displayTag.copy());
+            fuzedMunition.set(DataComponents.LORE, new ItemLore(loreList));
 
 			recipes.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id)
 				.require(Ingredient.of(munition))
@@ -183,7 +177,7 @@ public class MunitionAssemblyRecipes {
 			if (munition instanceof AutocannonRoundItem round) {
 				ResourceLocation id1 = CreateBigCannons.resource(group + ".autocannon_round." + munition.getDescriptionId());
 				ItemStack fuzedCartridge = round.getCreativeTabCartridgeItem();
-				fuzedCartridge.getOrCreateTag().put("display", displayTag.copy());
+                fuzedCartridge.set(DataComponents.LORE, new ItemLore(loreList));
 
 				recipes.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id1)
 					.require(Ingredient.of(round.getCreativeTabCartridgeItem()))
@@ -223,12 +217,9 @@ public class MunitionAssemblyRecipes {
 		ResourceLocation id = CreateBigCannons.resource(group + "." + CBCBlocks.BIG_CARTRIDGE.get().getDescriptionId());
 
 		ItemStack result = BigCartridgeBlockItem.getWithPower(1);
-		ListTag loreTag = new ListTag();
-		String loc = I18n.get("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_power");
-		loreTag.add(StringTag.valueOf("\"" + loc + "\""));
-		CompoundTag displayTag = new CompoundTag();
-		displayTag.put("Lore", loreTag);
-		result.getOrCreateTag().put("display", displayTag);
+        List<Component> loreList = new ArrayList<>(1);
+        loreList.add(Component.translatable("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_power"));
+        result.set(DataComponents.LORE, new ItemLore(loreList));
 
 		return List.of(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id)
 			.require(Ingredient.of(BigCartridgeBlockItem.getWithPower(0)))
@@ -253,7 +244,7 @@ public class MunitionAssemblyRecipes {
 		for (Item munition : munitions) {
 			ResourceLocation id = CreateBigCannons.resource(group + "." + munition.getDescriptionId());
 			ItemStack tracerMunition = new ItemStack(munition);
-			tracerMunition.getOrCreateTag().putBoolean("Tracer", true);
+			tracerMunition.set(CBCDataComponents.AUTOCANNON_TRACER, true);
 
 			recipes.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id)
 				.require(Ingredient.of(munition))
@@ -294,7 +285,7 @@ public class MunitionAssemblyRecipes {
 				ItemStack fuzeStack = new ItemStack(fuze);
 				ItemStack fuzedMunitionStack = new ItemStack(munition);
 
-				fuzedMunitionStack.saveOptional().put("Fuze", fuzeStack.save(registry));
+				fuzedMunitionStack.set(CBCDataComponents.FUZE, fuzeStack);
 
 				String subid = munition.getDescriptionId() + "." + fuze.getDescriptionId();
 				NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(fuzedMunitionStack));
@@ -324,7 +315,7 @@ public class MunitionAssemblyRecipes {
 		List<CraftingRecipe> recipes = new ArrayList<>();
 		for (Item munition : munitions) {
 			ItemStack tracerMunition = new ItemStack(munition);
-			tracerMunition.getOrCreateTag().putBoolean("Tracer", true);
+			tracerMunition.set(CBCDataComponents.AUTOCANNON_TRACER, true);
 			NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(tracerMunition));
 			recipes.add(new ShapelessRecipe(group, CraftingBookCategory.MISC, CBCItems.TRACER_TIP.asStack(), inputs));
 

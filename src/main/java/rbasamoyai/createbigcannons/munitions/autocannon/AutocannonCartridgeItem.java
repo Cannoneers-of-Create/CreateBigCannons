@@ -6,14 +6,13 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 
@@ -72,30 +71,28 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 	}
 
 	public static ItemStack getProjectileStack(ItemStack stack) {
-		return hasProjectile(stack) ? ItemStack.of(stack.getOrCreateTag().getCompound("Projectile")) : ItemStack.EMPTY;
+		return stack.getOrDefault(CBCDataComponents.PROJECTILE, ItemStack.EMPTY);
 	}
 
 	public static boolean hasProjectile(ItemStack stack) {
-		return stack.getOrCreateTag().contains("Projectile", Tag.TAG_COMPOUND);
+		return stack.has(CBCDataComponents.PROJECTILE);
 	}
 
 	public static void writeProjectile(ItemStack round, ItemStack cartridge) {
 		if (round.getItem() instanceof AutocannonRoundItem && cartridge.getItem() instanceof AutocannonCartridgeItem) {
-			cartridge.getOrCreateTag().put("Projectile", round.save(registry));
+			cartridge.set(CBCDataComponents.PROJECTILE, round);
 		}
 	}
 
 	@Override
 	public boolean isTracer(ItemStack stack) {
-		return hasProjectile(stack) && getProjectileStack(stack).getOrCreateTag().getBoolean("Tracer");
+		return hasProjectile(stack) && getProjectileStack(stack).getOrDefault(CBCDataComponents.AUTOCANNON_TRACER, false);
 	}
 
 	@Override
 	public void setTracer(ItemStack stack, boolean value) {
 		if (!hasProjectile(stack)) return;
-		CompoundTag tag = stack.getOrCreateTag().getCompound("Projectile");
-		if (!tag.contains("tag", Tag.TAG_COMPOUND)) tag.put("tag", new CompoundTag());
-		tag.getCompound("tag").putBoolean("Tracer", value);
+        stack.get(CBCDataComponents.PROJECTILE).set(CBCDataComponents.AUTOCANNON_TRACER, value);
 	}
 
 }

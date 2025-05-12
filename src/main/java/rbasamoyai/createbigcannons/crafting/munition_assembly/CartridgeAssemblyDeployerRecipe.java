@@ -5,15 +5,18 @@ import com.simibubi.create.foundation.item.SmartInventory;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 
-public class CartridgeAssemblyDeployerRecipe implements Recipe<SmartInventory> { // todo: check this works. was Recipe<Container>
+public class CartridgeAssemblyDeployerRecipe implements Recipe<CraftingInput> { // todo: check this works. was Recipe<Container>
 
 	private final ItemStack round;
 
@@ -26,19 +29,18 @@ public class CartridgeAssemblyDeployerRecipe implements Recipe<SmartInventory> {
 	}
 
 	@Override
-	public boolean matches(SmartInventory container, Level level) {
+	public boolean matches(CraftingInput container, Level level) {
 		return CBCItems.FILLED_AUTOCANNON_CARTRIDGE.isIn(container.getItem(0)) && this.round.getItem() instanceof AutocannonRoundItem;
 	}
 
-	@Override public ItemStack assemble(SmartInventory inv, HolderLookup.Provider registries) { return this.getResultItem(registries); }
+	@Override public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registries) { return this.getResultItem(registries); }
 
 	@Override
 	public ItemStack getResultItem(HolderLookup.Provider registries) {
 		ItemStack result = CBCItems.AUTOCANNON_CARTRIDGE.asStack();
-		CompoundTag tag = (CompoundTag) result.saveOptional(registries); // todo: not entirely sure that's correct, but it's how create does it. there are probably multiple occurrences of this in our codebase
 		ItemStack roundCopy = this.round.copy();
 		roundCopy.setCount(1);
-		tag.put("Projectile", roundCopy.save(registries));
+		result.set(CBCDataComponents.PROJECTILE, roundCopy);
 		return result;
 	}
 

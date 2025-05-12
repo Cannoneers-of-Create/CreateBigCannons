@@ -10,6 +10,8 @@ import java.util.function.Supplier;
 
 import net.createmod.ponder.foundation.PonderIndex;
 
+import net.minecraft.core.component.DataComponents;
+
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -65,6 +67,7 @@ import rbasamoyai.createbigcannons.effects.sounds.ShellFlyingSoundInstance;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskOverlay;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
@@ -113,11 +116,11 @@ public class CBCClientCommon {
 		CBCBlockPartials.resolveDeferredModels();
 
 		IndexPlatform.registerClampedItemProperty(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
-			return ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getCompound("SequencedAssembly").getInt("Step") - 1;
+			return stack.get(DataComponents.CUSTOM_DATA).copyTag().getCompound("SequencedAssembly").getInt("Step") - 1; // todo: get rid of CustomData
 		});
 
 		IndexPlatform.registerClampedItemProperty(CBCItems.PARTIALLY_FORMED_BIG_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
-			return ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess())).getCompound("SequencedAssembly").getInt("Step") - 1;
+			return stack.get(DataComponents.CUSTOM_DATA).copyTag().getCompound("SequencedAssembly").getInt("Step") - 1;
 		});
 
 		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("big_cartridge_filled"),
@@ -128,8 +131,7 @@ public class CBCClientCommon {
 		IndexPlatform.registerGenericClampedItemProperty(CreateBigCannons.resource("fuze_state"), (stack, level, player, a) -> {
 			if (!(stack.getItem() instanceof FuzedProjectileBlockItem fuzedItem) || !(fuzedItem.getBlock() instanceof FuzedProjectileBlock<?, ?> fuzedBlock))
 				return 0;
-			CompoundTag tag = ((CompoundTag) stack.saveOptional(Minecraft.getInstance().level.registryAccess()));
-			ItemStack fuze = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Fuze"));
+			ItemStack fuze = stack.getOrDefault(CBCDataComponents.FUZE, ItemStack.EMPTY);
 			if (fuze.isEmpty())
 				return 0;
 			return fuzedBlock.isBaseFuze() ? 2 : 1;

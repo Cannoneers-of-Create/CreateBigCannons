@@ -6,16 +6,18 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
-public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Container> {
+public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<CraftingInput> {
 
 	private final ItemStack ammoContainer;
 	private final ItemStack insertedAmmo;
@@ -30,7 +32,7 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Cont
 	}
 
 	@Override
-	public boolean matches(Container container, Level level) {
+	public boolean matches(CraftingInput input, Level level) {
 		if (!(this.ammoContainer.getItem() instanceof AutocannonAmmoContainerItem containerItem)
 			|| containerItem.isCreative()
 			|| !(this.insertedAmmo.getItem() instanceof AutocannonAmmoItem ammoItem)) return false;
@@ -39,14 +41,14 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Cont
 		ItemStack existing = ammoItem.isTracer(this.insertedAmmo) ? AutocannonAmmoContainerItem.getTracerAmmoStack(this.ammoContainer)
 			: AutocannonAmmoContainerItem.getMainAmmoStack(this.ammoContainer);
 		if (existing.isEmpty() && (ammoType == AutocannonAmmoType.NONE || ammoType != ctType && ctType != AutocannonAmmoType.NONE)
-			|| !existing.isEmpty() && !ItemStack.isSameItemSameTags(existing, this.insertedAmmo)) return false;
+			|| !existing.isEmpty() && !ItemStack.isSameItemSameComponents(existing, this.insertedAmmo)) return false;
 		return (ctType == AutocannonAmmoType.NONE || AutocannonAmmoContainerItem.getTotalAmmoCount(this.ammoContainer) < ctType.getCapacity())
 			&& existing.getCount() < existing.getMaxStackSize();
 	}
 
 	@Override
-	public ItemStack assemble(Container container, RegistryAccess registryAccess) {
-		return this.getResultItem(registryAccess);
+	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+		return this.getResultItem(registries);
 	}
 
 	@Override public boolean canCraftInDimensions(int width, int height) { return true; }
@@ -63,11 +65,14 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Cont
 		} else {
 			insert.grow(1);
 		}
-		result.getOrCreateTag().put(tracer ? "Tracers" : "Ammo", insert.save(registry));
+        if(tracer) {
+            result.set(CBCDataComponents.TRACER, insert);
+        } else {
+            result.set(CBCDataComponents.AMMO, insert);
+        }
 		return result;
 	}
 
-	@Override public ResourceLocation getId() { return CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getId(); }
 	@Override public RecipeSerializer<?> getSerializer() { return CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getSerializer(); }
 	@Override public RecipeType<?> getType() { return CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getType(); }
 

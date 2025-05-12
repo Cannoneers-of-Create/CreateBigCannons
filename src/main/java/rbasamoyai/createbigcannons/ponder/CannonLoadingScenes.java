@@ -30,6 +30,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonB
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlockEntity;
 import rbasamoyai.createbigcannons.effects.particles.plumes.BigCannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonProjectileBlockEntity;
@@ -826,7 +827,7 @@ public class CannonLoadingScenes {
 		Selection breechSel = util.select().position(breechPos);
 
 		ItemStack filledContainer = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack();
-        ((CompoundTag) filledContainer.saveOptional(scene.world().getHolderLookupProvider())).put("Ammo", CBCItems.MACHINE_GUN_ROUND.asStack(64).save(scene.world().getHolderLookupProvider()));
+        filledContainer.set(CBCDataComponents.AMMO, CBCItems.MACHINE_GUN_ROUND.asStack(64));
 		ItemStack emptyContainer = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack();
 
 		scene.world().showSection(autocannon, Direction.DOWN);
@@ -1031,7 +1032,7 @@ public class CannonLoadingScenes {
 
 		ItemStack emptyContainer = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack();
 		ItemStack filledContainer = emptyContainer.copy();
-        ((CompoundTag) filledContainer.saveOptional(scene.world().getHolderLookupProvider())).put("Ammo", CBCItems.MACHINE_GUN_ROUND.asStack(64).save(scene.world().getHolderLookupProvider()));
+        filledContainer.set(CBCDataComponents.AMMO, CBCItems.MACHINE_GUN_ROUND.asStack(64));
 
 		scene.world().showSection(powerLargeCog, Direction.WEST);
 		scene.world().setKineticSpeed(powerLargeCog, 16);

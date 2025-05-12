@@ -15,6 +15,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlockItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
@@ -27,8 +28,7 @@ public class FuzedProjectileBlockItem extends ProjectileBlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
-		CompoundTag tag = stack.getOrCreateTag();
-		ItemStack fuze = ItemStack.of(tag.getCompound("BlockEntityTag").getCompound("Fuze"));
+		ItemStack fuze = stack.getOrDefault(CBCDataComponents.FUZE, ItemStack.EMPTY);
 		if (!fuze.isEmpty()) {
 			CreateLang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")

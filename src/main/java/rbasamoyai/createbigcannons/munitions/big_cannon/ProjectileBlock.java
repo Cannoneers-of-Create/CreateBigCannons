@@ -6,12 +6,16 @@ import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 
 import net.createmod.catnip.math.VoxelShaper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
@@ -34,6 +38,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 
 public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile> extends DirectionalBlock
 	implements IWrenchable, BigCannonMunitionBlock, SimpleWaterloggedBlock {
@@ -47,7 +52,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	}
 
 	public static ItemStack getTracerFromItemStack(ItemStack stack) {
-		return ItemStack.of(stack.getOrCreateTag().getCompound("BlockEntityTag").getCompound("Tracer"));
+        return stack.getOrDefault(CBCDataComponents.TRACER, ItemStack.EMPTY);
 	}
 
 	@Override
@@ -131,9 +136,8 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	@Override
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
-		CompoundTag baseTag = stack.saveOptional();
-		if (baseTag.contains("BlockEntityTag")) {
-			CompoundTag tag = baseTag.getCompound("BlockEntityTag").copy();
+		if (stack.has(DataComponents.BLOCK_ENTITY_DATA)) { // todo: playtest 1.21
+			CompoundTag tag = stack.get(DataComponents.BLOCK_ENTITY_DATA).copyTag();
 			tag.remove("x");
 			tag.remove("y");
 			tag.remove("z");
@@ -146,7 +150,8 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	public ItemStack getExtractedItem(StructureBlockInfo info) {
 		ItemStack stack = new ItemStack(this);
 		if (info.nbt() != null) {
-			stack.getOrCreateTag().put("BlockEntityTag", info.nbt());
+			CompoundTag tag = (CompoundTag) stack.get(DataComponents.BLOCK_ENTITY_DATA).copyTag().put("BlockEntityTag", info.nbt());
+            stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
 		}
 		return stack;
 	}
@@ -176,7 +181,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 		StructureBlockInfo info = blocks.get(0);
 		if (info.nbt() == null)
 			return ItemStack.EMPTY;
-		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt());
+		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt(), Minecraft.getInstance().level.registryAccess()); //fixme this seems wrong
 		return load instanceof BigCannonProjectileBlockEntity projectile ? projectile.getItem(0) : ItemStack.EMPTY;
 	}
 

@@ -1,10 +1,8 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -14,7 +12,7 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 
-public class BigCartridgeFillingDeployerRecipe implements Recipe<Container> {
+public class BigCartridgeFillingDeployerRecipe implements Recipe<CraftingInput> {
 
 	private final int startPower;
 	private final int resultPower;
@@ -30,18 +28,17 @@ public class BigCartridgeFillingDeployerRecipe implements Recipe<Container> {
 	}
 
 	@Override
-	public boolean matches(Container container, Level level) {
-		ItemStack cartridge = container.getItem(0);
+	public boolean matches(CraftingInput input, Level level) {
+		ItemStack cartridge = input.getItem(0);
 		return CBCBlocks.BIG_CARTRIDGE.isIn(cartridge) && BigCartridgeBlockItem.getPower(cartridge) == this.startPower
-			&& container.getItem(1).is(CBCTags.CBCItemTags.NITROPOWDER);
+			&& input.getItem(1).is(CBCTags.CBCItemTags.NITROPOWDER);
 	}
 
-	@Override public ItemStack assemble(Container inv, RegistryAccess access) { return this.getResultItem(access); }
+	@Override public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) { return this.getResultItem(registries); }
 	@Override public ItemStack getResultItem(HolderLookup.Provider registries) { return BigCartridgeBlockItem.getWithPower(this.resultPower); }
 
 	@Override public boolean canCraftInDimensions(int width, int height) { return true; }
 
-	@Override public ResourceLocation getId() { return CBCRecipeTypes.BIG_CARTRIDGE_FILLING_DEPLOYER.getId(); }
 	@Override public RecipeSerializer<?> getSerializer() { return CBCRecipeTypes.BIG_CARTRIDGE_FILLING_DEPLOYER.getSerializer(); }
 	@Override public RecipeType<?> getType() { return CBCRecipeTypes.BIG_CARTRIDGE_FILLING_DEPLOYER.getType(); }
 

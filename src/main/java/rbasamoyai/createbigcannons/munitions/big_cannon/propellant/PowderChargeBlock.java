@@ -13,6 +13,8 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
@@ -42,6 +44,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.config.PowderChargeProperties;
@@ -100,7 +103,7 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		ItemStack itemStack = context.getItemInHand();
 		boolean waterlogged = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
-		boolean damp = (itemStack.getOrCreateTag().getBoolean("Damp") || waterlogged) && !context.getLevel().dimensionType().ultraWarm();
+		boolean damp = (itemStack.getOrDefault(CBCDataComponents.DAMP, false) || waterlogged) && !context.getLevel().dimensionType().ultraWarm();
 		return super.getStateForPlacement(context).setValue(DAMP, damp).setValue(WATERLOGGED, waterlogged);
 	}
 
@@ -128,7 +131,7 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	}
 
 	public float getPowerMultiplier(ItemStack stack) {
-		return CBCConfigs.server().munitions.dampPropellantWeakensPropellant.get() && stack.getOrCreateTag().getBoolean("Damp")
+		return CBCConfigs.server().munitions.dampPropellantWeakensPropellant.get() && stack.getOrDefault(CBCDataComponents.DAMP, false)
 			? this.getProperties().propellantProperties().dampAmmoStrengthDebuff()
 			: 1;
 	}
@@ -193,7 +196,7 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	@Override
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(AXIS, cannonOrientation.getAxis())
-			.setValue(DAMP, stack.getOrCreateTag().getBoolean("Damp"));
+			.setValue(DAMP, stack.getOrDefault(CBCDataComponents.DAMP, false));
 		return new StructureBlockInfo(localPos, state, null);
 	}
 
@@ -201,7 +204,7 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	public ItemStack getExtractedItem(StructureBlockInfo info) {
 		ItemStack result = new ItemStack(this);
 		if (info.state().getValue(DAMP))
-			result.getOrCreateTag().putBoolean("Damp", true);
+			result.set(CBCDataComponents.DAMP, true);
 		return result;
 	}
 
@@ -225,23 +228,23 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 
 	// Adapted from TntBlock#use
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		ItemStack itemStack = player.getItemInHand(hand);
 		if (!isPropellantIgniter(itemStack, player) || BigCannonMunitionBlock.doesntIgnite(state))
-			return super.use(state, level, pos, player, hand, hit);
+			return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 		PrimedPropellant propellant = this.spawnPrimedPropellant(level, pos, state);
 		propellant.setFuse(10);
 		level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
 		Item item = itemStack.getItem();
 		if (!player.isCreative()) {
 			if (itemStack.is(Items.FLINT_AND_STEEL)) {
-				itemStack.hurtAndBreak(1, player, playerx -> playerx.broadcastBreakEvent(hand));
+                stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 			} else {
 				itemStack.shrink(1);
 			}
 		}
 		player.awardStat(Stats.ITEM_USED.get(item));
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return ItemInteractionResult.sidedSuccess(level.isClientSide);
 	}
 
 	// Adapted from TntBlock#onProjectileHit
@@ -264,7 +267,7 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		ItemStack result = super.getCloneItemStack(level, pos, state);
 		if (state.getValue(DAMP))
-			result.getOrCreateTag().putBoolean("Damp", true);
+			result.set(CBCDataComponents.DAMP, true);
 		return result;
 	}
 

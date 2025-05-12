@@ -2,19 +2,16 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 
 public class PowderChargeItem extends BlockItem {
 
@@ -27,7 +24,7 @@ public class PowderChargeItem extends BlockItem {
 		super.appendHoverText(stack, ctx, tooltipComponents, isAdvanced);
 		CBCTooltip.appendMuzzleVelocityText(stack, ctx, tooltipComponents, isAdvanced, CBCBlocks.POWDER_CHARGE.get());
 		CBCTooltip.appendPropellantStressText(stack, ctx, tooltipComponents, isAdvanced, CBCBlocks.POWDER_CHARGE.get());
-		if (((CompoundTag) stack.saveOptional(ctx.registries())).getBoolean("Damp"))
+		if (stack.getOrDefault(CBCDataComponents.DAMP, false))
 			tooltipComponents.add(Component.translatable("block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.damp").withStyle(ChatFormatting.BLUE));
 	}
 

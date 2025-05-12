@@ -16,6 +16,8 @@ import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.Item;
@@ -49,6 +51,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
@@ -141,7 +144,7 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		}
 		ItemStack itemStack = context.getItemInHand();
 		boolean waterlogged = context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER;
-		boolean damp = (itemStack.getOrCreateTag().getBoolean("Damp") || waterlogged) && !context.getLevel().dimensionType().ultraWarm();
+		boolean damp = (itemStack.getOrDefault(CBCDataComponents.DAMP, false) || waterlogged) && !context.getLevel().dimensionType().ultraWarm();
 		return this.defaultBlockState()
 			.setValue(FILLED, BigCartridgeBlockItem.getPower(itemStack) > 0)
 			.setValue(DAMP, damp)
@@ -169,7 +172,7 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	}
 
 	public float getPowerMultiplier(ItemStack stack) {
-		return CBCConfigs.server().munitions.dampPropellantWeakensPropellant.get() && stack.getOrCreateTag().getBoolean("Damp")
+		return CBCConfigs.server().munitions.dampPropellantWeakensPropellant.get() && stack.getOrDefault(CBCDataComponents.DAMP, false)
 			? this.getProperties().propellantProperties().dampAmmoStrengthDebuff()
 			: 1;
 	}
@@ -248,9 +251,8 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
 		CompoundTag blockTag = new CompoundTag();
-		CompoundTag stackTag = stack.getOrCreateTag();
-		blockTag.putInt("Power", stackTag.getInt("Power"));
-		if (stackTag.getBoolean("Damp"))
+		blockTag.putInt("Power", stack.get(CBCDataComponents.POWER));
+		if (stack.getOrDefault(CBCDataComponents.DAMP, false))
 			state = state.setValue(DAMP, true);
 		return new StructureBlockInfo(localPos, state, blockTag);
 	}
@@ -259,10 +261,10 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	public ItemStack getExtractedItem(StructureBlockInfo info) {
 		ItemStack stack = new ItemStack(this);
 		if (info.nbt() != null) {
-			stack.getOrCreateTag().putInt("Power", info.nbt().getInt("Power"));
+			stack.set(CBCDataComponents.POWER, info.nbt().getInt("Power"));
 		}
 		if (info.state().getValue(DAMP))
-			stack.getOrCreateTag().putBoolean("Damp", true);
+			stack.set(CBCDataComponents.DAMP, true);
 		return stack;
 	}
 
@@ -291,25 +293,24 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 
 	// Adapted from TntBlock#use
 	@Override
-	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-		ItemStack itemStack = player.getItemInHand(hand);
-		if (!PowderChargeBlock.isPropellantIgniter(itemStack, player) || BigCannonMunitionBlock.doesntIgnite(state))
-			return super.use(state, level, pos, player, hand, hit);
+	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+		if (!PowderChargeBlock.isPropellantIgniter(stack, player) || BigCannonMunitionBlock.doesntIgnite(state))
+			return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 		if (!(level.getBlockEntity(pos) instanceof BigCartridgeBlockEntity cartridge) || cartridge.getPower() < 1)
-			return super.use(state, level, pos, player, hand, hit);
+			return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
 		PrimedPropellant propellant = this.spawnPrimedPropellant(level, pos, state);
 		propellant.setFuse(10);
 		level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
-		Item item = itemStack.getItem();
+		Item item = stack.getItem();
 		if (!player.isCreative()) {
-			if (itemStack.is(Items.FLINT_AND_STEEL)) {
-				itemStack.hurtAndBreak(1, player, playerx -> playerx.broadcastBreakEvent(hand));
+			if (stack.is(Items.FLINT_AND_STEEL)) {
+                stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
 			} else {
-				itemStack.shrink(1);
+				stack.shrink(1);
 			}
 		}
 		player.awardStat(Stats.ITEM_USED.get(item));
-		return InteractionResult.sidedSuccess(level.isClientSide);
+		return ItemInteractionResult.sidedSuccess(level.isClientSide);
 	}
 
 	// Adapted from TntBlock#onProjectileHit
@@ -327,10 +328,9 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	@Override
 	public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		ItemStack result = super.getCloneItemStack(level, pos, state);
-		CompoundTag tag = result.getOrCreateTag();
 		if (state.getValue(DAMP))
-			tag.putBoolean("Damp", true);
-		tag.putInt("Power", level.getBlockEntity(pos) instanceof BigCartridgeBlockEntity cartridge ? cartridge.getPower() : 0);
+			result.set(CBCDataComponents.DAMP, true);
+		result.set(CBCDataComponents.POWER, level.getBlockEntity(pos) instanceof BigCartridgeBlockEntity cartridge ? cartridge.getPower() : 0);
 		return result;
 	}
 

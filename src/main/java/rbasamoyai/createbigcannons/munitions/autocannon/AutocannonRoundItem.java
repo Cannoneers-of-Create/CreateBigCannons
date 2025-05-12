@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 
@@ -39,7 +40,7 @@ public abstract class AutocannonRoundItem extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
 		super.appendHoverText(stack, ctx, tooltipComponents, isAdvanced);
-		if (stack.getOrCreateTag().getBoolean("Tracer")) {
+		if (stack.getOrDefault(CBCDataComponents.AUTOCANNON_TRACER, false)) {
 			CreateLang.builder("tooltip").translate(CreateBigCannons.MOD_ID + ".tracer").addTo(tooltipComponents);
 		}
 	}
