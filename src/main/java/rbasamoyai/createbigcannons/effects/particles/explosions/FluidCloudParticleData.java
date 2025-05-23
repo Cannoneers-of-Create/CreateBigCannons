@@ -17,21 +17,8 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class FluidCloudParticleData implements ParticleOptions, ICustomParticleData<FluidCloudParticleData> {
 
-	/*private static final Deserializer<FluidCloudParticleData> DESERIALIZER = new Deserializer<>() {
-        @Override
-        public FluidCloudParticleData fromCommand(ParticleType<FluidCloudParticleData> particleType, StringReader reader) {
-            return new FluidCloudParticleData();
-        }
-
-        @Override
-        public FluidCloudParticleData fromNetwork(ParticleType<FluidCloudParticleData> particleType, FriendlyByteBuf buffer) {
-            return new FluidCloudParticleData();
-        }
-    };*/
-
-	/*private static final MapCodec<FluidCloudParticleData> CODEC = MapCodec.
-    private static final StreamCodec<? super RegistryFriendlyByteBuf, FluidCloudParticleData> STREAM_CODEC = StreamCodec.composite(FluidCloudParticleData::new);
-    }
+	private static final MapCodec<FluidCloudParticleData> CODEC = MapCodec.unit(FluidCloudParticleData::new);
+    private static final StreamCodec<? super RegistryFriendlyByteBuf, FluidCloudParticleData> STREAM_CODEC = StreamCodec.unit(new FluidCloudParticleData());
 
 	@Override public MapCodec<FluidCloudParticleData> getCodec(ParticleType<FluidCloudParticleData> type) { return CODEC; }
 	@Override public StreamCodec<? super RegistryFriendlyByteBuf, FluidCloudParticleData> getStreamCodec() { return STREAM_CODEC; }
@@ -43,8 +30,5 @@ public class FluidCloudParticleData implements ParticleOptions, ICustomParticleD
 	}
 
 	@Override public ParticleType<?> getType() { return CBCParticleTypes.FLUID_CLOUD.get(); }
-
-	@Override public void writeToNetwork(FriendlyByteBuf buffer) {}
-	@Override public String writeToString() { return ""; }*/
 
 }

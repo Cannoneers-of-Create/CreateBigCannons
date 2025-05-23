@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
 import net.fabricmc.api.EnvType;
@@ -9,37 +8,29 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public record DebrisSmokeBurstParticleData() implements ParticleOptions, ICustomParticleData<DebrisSmokeBurstParticleData> {
 
-	private static final Deserializer<DebrisSmokeBurstParticleData> DESERIALIZER = new Deserializer<>() {
-        @Override
-        public DebrisSmokeBurstParticleData fromCommand(ParticleType<DebrisSmokeBurstParticleData> particleType, StringReader reader) {
-            return new DebrisSmokeBurstParticleData();
-        }
+	private static final MapCodec<DebrisSmokeBurstParticleData> CODEC = MapCodec.unit(DebrisSmokeBurstParticleData::new);
 
-        @Override
-        public DebrisSmokeBurstParticleData fromNetwork(ParticleType<DebrisSmokeBurstParticleData> particleType, FriendlyByteBuf buffer) {
-            return new DebrisSmokeBurstParticleData();
-        }
-    };
+    private static final StreamCodec<RegistryFriendlyByteBuf, DebrisSmokeBurstParticleData> STREAM_CODEC = StreamCodec.unit(new DebrisSmokeBurstParticleData());
 
-	private static final Codec<DebrisSmokeBurstParticleData> CODEC = Codec.unit(DebrisSmokeBurstParticleData::new);
+	@Override public MapCodec<DebrisSmokeBurstParticleData> getCodec(ParticleType<DebrisSmokeBurstParticleData> type) { return CODEC; }
 
-	@Override public Deserializer<DebrisSmokeBurstParticleData> getDeserializer() { return DESERIALIZER; }
-	@Override public Codec<DebrisSmokeBurstParticleData> getCodec(ParticleType<DebrisSmokeBurstParticleData> type) { return CODEC; }
+    @Override
+    public StreamCodec<? super RegistryFriendlyByteBuf, DebrisSmokeBurstParticleData> getStreamCodec() {
+        return STREAM_CODEC;
+    }
 
-	@Environment(EnvType.CLIENT)
+    @Environment(EnvType.CLIENT)
 	@Override
 	public ParticleProvider<DebrisSmokeBurstParticleData> getFactory() {
 		return new DebrisSmokeBurstParticle.Provider();
 	}
 
 	@Override public ParticleType<?> getType() { return CBCParticleTypes.DEBRIS_SMOKE_BURST.get(); }
-
-	@Override public void writeToNetwork(FriendlyByteBuf buffer) {}
-	@Override public String writeToString() { return ""; }
 
 }

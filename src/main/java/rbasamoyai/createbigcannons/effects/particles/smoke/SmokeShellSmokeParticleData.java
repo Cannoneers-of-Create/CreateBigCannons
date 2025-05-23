@@ -1,8 +1,7 @@
 package rbasamoyai.createbigcannons.effects.particles.smoke;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
 
@@ -11,31 +10,22 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class SmokeShellSmokeParticleData implements ParticleOptions, ICustomParticleDataWithSprite<SmokeShellSmokeParticleData> {
 
-	public static final Codec<SmokeShellSmokeParticleData> CODEC = RecordCodecBuilder.create(i -> i
+	public static final MapCodec<SmokeShellSmokeParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i
 		.group(Codec.FLOAT.fieldOf("scale")
 			.forGetter(data -> data.scale))
 		.apply(i, SmokeShellSmokeParticleData::new));
 
-	@SuppressWarnings("deprecation")
-	public static final Deserializer<SmokeShellSmokeParticleData> DESERIALIZER = new Deserializer<>() {
-        @Override
-        public SmokeShellSmokeParticleData fromNetwork(ParticleType<SmokeShellSmokeParticleData> type, FriendlyByteBuf buf) {
-            float scale = buf.readFloat();
-            return new SmokeShellSmokeParticleData(scale);
-        }
-
-        @Override
-        public SmokeShellSmokeParticleData fromCommand(ParticleType<SmokeShellSmokeParticleData> type, StringReader reader) throws CommandSyntaxException {
-            reader.expect(' ');
-            float scale = reader.readFloat();
-            return new SmokeShellSmokeParticleData(scale);
-        }
-    };
+    private static final StreamCodec<RegistryFriendlyByteBuf, SmokeShellSmokeParticleData> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.FLOAT, p -> p.scale,
+        SmokeShellSmokeParticleData::new
+    );
 
 	private final float scale;
 
@@ -57,26 +47,14 @@ public class SmokeShellSmokeParticleData implements ParticleOptions, ICustomPart
 	}
 
 	@Override
-	public void writeToNetwork(FriendlyByteBuf buf) {
-		buf.writeFloat(this.scale);
-	}
-
-	@Override
-	public String writeToString() {
-		return String.format("%f", this.scale);
-	}
-
-	@Override
-	public Deserializer<SmokeShellSmokeParticleData> getDeserializer() {
-		return DESERIALIZER;
-	}
-
-	@Override
-	public Codec<SmokeShellSmokeParticleData> getCodec(ParticleType<SmokeShellSmokeParticleData> type) {
+	public MapCodec<SmokeShellSmokeParticleData> getCodec(ParticleType<SmokeShellSmokeParticleData> type) {
 		return CODEC;
 	}
 
-	@Environment(EnvType.CLIENT)
+    @Override
+    public StreamCodec<? super RegistryFriendlyByteBuf, SmokeShellSmokeParticleData> getStreamCodec() { return STREAM_CODEC; }
+
+    @Environment(EnvType.CLIENT)
 	@Override
 	public SpriteParticleRegistration<SmokeShellSmokeParticleData> getMetaFactory() {
 		return SmokeShellSmokeParticle.Provider::new;

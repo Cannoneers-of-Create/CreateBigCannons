@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.effects.particles.smoke;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
 
@@ -12,11 +13,14 @@ import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class FallbackCannonSmokeParticleData implements ParticleOptions, ICustomParticleDataWithSprite<FallbackCannonSmokeParticleData> {
 
-	public static final Codec<FallbackCannonSmokeParticleData> CODEC = RecordCodecBuilder.create(i -> i
+	public static final MapCodec<FallbackCannonSmokeParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i
 		.group(Codec.FLOAT.fieldOf("power")
 				.forGetter(data -> data.power),
 			Codec.FLOAT.fieldOf("size")
@@ -27,30 +31,13 @@ public class FallbackCannonSmokeParticleData implements ParticleOptions, ICustom
 				.forGetter(data -> data.friction))
 		.apply(i, FallbackCannonSmokeParticleData::new));
 
-	@SuppressWarnings("deprecation")
-	public static final Deserializer<FallbackCannonSmokeParticleData> DESERIALIZER = new Deserializer<>() {
-        @Override
-        public FallbackCannonSmokeParticleData fromNetwork(ParticleType<FallbackCannonSmokeParticleData> type, FriendlyByteBuf buf) {
-            float power = buf.readFloat();
-			float size = buf.readFloat();
-            int lifetime = buf.readVarInt();
-			float friction = buf.readFloat();
-            return new FallbackCannonSmokeParticleData(power, size, lifetime, friction);
-        }
-
-        @Override
-        public FallbackCannonSmokeParticleData fromCommand(ParticleType<FallbackCannonSmokeParticleData> type, StringReader reader) throws CommandSyntaxException {
-            reader.expect(' ');
-            float power = reader.readFloat();
-			reader.expect(' ');
-			float size = reader.readFloat();
-			reader.expect(' ');
-            int lifetime = reader.readInt();
-			reader.expect(' ');
-			float friction = reader.readFloat();
-            return new FallbackCannonSmokeParticleData(power, size, lifetime, friction);
-        }
-    };
+    private static final StreamCodec<RegistryFriendlyByteBuf, FallbackCannonSmokeParticleData> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.FLOAT, p -> p.power,
+        ByteBufCodecs.FLOAT, p -> p.size,
+        ByteBufCodecs.INT, p -> p.lifetime,
+        ByteBufCodecs.FLOAT, p -> p.friction,
+        FallbackCannonSmokeParticleData::new
+    );
 
 	private final float power;
 	private final float size;
@@ -83,29 +70,13 @@ public class FallbackCannonSmokeParticleData implements ParticleOptions, ICustom
 	}
 
 	@Override
-	public void writeToNetwork(FriendlyByteBuf buf) {
-		buf.writeFloat(this.power)
-			.writeFloat(this.size);
-		buf.writeVarInt(this.lifetime)
-			.writeFloat(this.friction);
-	}
-
-	@Override
-	public String writeToString() {
-		return String.format("%f %f %d %f", this.power, this.size, this.lifetime, this.friction);
-	}
-
-	@Override
-	public Deserializer<FallbackCannonSmokeParticleData> getDeserializer() {
-		return DESERIALIZER;
-	}
-
-	@Override
-	public Codec<FallbackCannonSmokeParticleData> getCodec(ParticleType<FallbackCannonSmokeParticleData> type) {
+	public MapCodec<FallbackCannonSmokeParticleData> getCodec(ParticleType<FallbackCannonSmokeParticleData> type) {
 		return CODEC;
 	}
 
-	@Environment(EnvType.CLIENT)
+    @Override public StreamCodec<? super RegistryFriendlyByteBuf, FallbackCannonSmokeParticleData> getStreamCodec() { return STREAM_CODEC; }
+
+    @Environment(EnvType.CLIENT)
 	@Override
 	public SpriteParticleRegistration<FallbackCannonSmokeParticleData> getMetaFactory() {
 		return FallbackCannonSmokeParticle.Provider::new;

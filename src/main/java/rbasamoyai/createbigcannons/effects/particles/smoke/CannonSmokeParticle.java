@@ -41,7 +41,7 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 			RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 			RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 			RenderSystem.setShaderTexture(3, GRADIENT_LOCATION);
-			CBCRenderTypes.CANNON_SMOKE_PARTICLE.setRenderTypeForBuilder(builder);
+			CBCRenderTypes.CANNON_SMOKE_PARTICLE.setRenderTypeForTesselator(builder);
 		}
 
 		@Override

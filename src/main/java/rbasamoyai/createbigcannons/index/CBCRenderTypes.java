@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
 import net.minecraft.client.renderer.RenderType;
@@ -40,9 +41,9 @@ public enum CBCRenderTypes {
 	@Nullable public ShaderInstance getShaderInstance() { return this.shaderInstance; }
 	public void setShaderInstance(ShaderInstance shaderInstance) { this.shaderInstance = shaderInstance; }
 
-	public void setRenderTypeForBuilder(BufferBuilder builder) {
+	public BufferBuilder createBuilder(Tesselator tesselator) {
 		RenderSystem.setShader(this::getShaderInstance);
-		builder.begin(this.renderType.mode(), this.renderType.format());
+		return tesselator.begin(this.renderType.mode(), this.renderType.format());
 	}
 
 	public static void registerAllShaders(BiConsumer<ShaderInstance, Consumer<ShaderInstance>> cons,

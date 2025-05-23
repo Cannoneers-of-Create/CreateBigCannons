@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.effects.particles.smoke;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
 
@@ -12,24 +13,22 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class ShrapnelSmokeParticleData implements ParticleOptions, ICustomParticleDataWithSprite<ShrapnelSmokeParticleData> {
 
-	private static final Deserializer<ShrapnelSmokeParticleData> DESERIALIZER = new Deserializer<>() {
-		public ShrapnelSmokeParticleData fromCommand(ParticleType<ShrapnelSmokeParticleData> particleType, StringReader reader) throws CommandSyntaxException {
-			reader.expect(' ');
-			return new ShrapnelSmokeParticleData(reader.readInt());
-		}
-
-		public ShrapnelSmokeParticleData fromNetwork(ParticleType<ShrapnelSmokeParticleData> particleType, FriendlyByteBuf buffer) {
-			return new ShrapnelSmokeParticleData(buffer.readVarInt());
-		}
-	};
-	private static final Codec<ShrapnelSmokeParticleData> CODEC = RecordCodecBuilder.create(i -> i
+	private static final MapCodec<ShrapnelSmokeParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i
 		.group(Codec.INT.fieldOf("lifetime")
 			.forGetter(data -> data.lifetime))
 		.apply(i, ShrapnelSmokeParticleData::new));
+
+    private static final StreamCodec<RegistryFriendlyByteBuf, ShrapnelSmokeParticleData> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.INT, p -> p.lifetime,
+        ShrapnelSmokeParticleData::new
+    );
 
 	private final int lifetime;
 
@@ -44,16 +43,13 @@ public class ShrapnelSmokeParticleData implements ParticleOptions, ICustomPartic
 	}
 
 	@Override
-	public Deserializer<ShrapnelSmokeParticleData> getDeserializer() {
-		return DESERIALIZER;
-	}
-
-	@Override
-	public Codec<ShrapnelSmokeParticleData> getCodec(ParticleType<ShrapnelSmokeParticleData> type) {
+	public MapCodec<ShrapnelSmokeParticleData> getCodec(ParticleType<ShrapnelSmokeParticleData> type) {
 		return CODEC;
 	}
 
-	@Environment(EnvType.CLIENT)
+    @Override public StreamCodec<? super RegistryFriendlyByteBuf, ShrapnelSmokeParticleData> getStreamCodec() { return STREAM_CODEC; }
+
+    @Environment(EnvType.CLIENT)
 	@Override
 	public ParticleEngine.SpriteParticleRegistration<ShrapnelSmokeParticleData> getMetaFactory() {
 		return ShrapnelSmokeParticle.Provider::new;
@@ -62,16 +58,6 @@ public class ShrapnelSmokeParticleData implements ParticleOptions, ICustomPartic
 	@Override
 	public ParticleType<?> getType() {
 		return CBCParticleTypes.SHRAPNEL_SMOKE.get();
-	}
-
-	@Override
-	public void writeToNetwork(FriendlyByteBuf buffer) {
-		buffer.writeVarInt(this.lifetime);
-	}
-
-	@Override
-	public String writeToString() {
-		return String.format("%d", this.lifetime);
 	}
 
 }

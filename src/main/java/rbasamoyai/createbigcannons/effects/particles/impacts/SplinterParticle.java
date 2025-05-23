@@ -1,5 +1,8 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
+import com.mojang.blaze3d.vertex.VertexFormat;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -36,7 +39,7 @@ public class SplinterParticle extends CBCBlockParticle {
 
 	private static final ParticleRenderType RENDER_TYPE = new ParticleRenderType() {
 		@Override
-		public void begin(BufferBuilder builder, TextureManager textureManager) {
+		public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
 			RenderSystem.depthMask(true);
@@ -45,12 +48,7 @@ public class SplinterParticle extends CBCBlockParticle {
 			Minecraft minecraft = Minecraft.getInstance();
 			if (minecraft.level != null)
 				LightingRemix.reapplyLevelLighting(minecraft.level.effects().constantAmbientLight());
-			CBCRenderTypes.SPLINTER_PARTICLE.setRenderTypeForBuilder(builder);
-		}
-
-		@Override
-		public void end(Tesselator tesselator) {
-			tesselator.end();
+			return CBCRenderTypes.SPLINTER_PARTICLE.createBuilder(tesselator);
 		}
 
 		public String toString() { return "SPLINTER"; }
