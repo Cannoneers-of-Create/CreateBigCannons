@@ -1,8 +1,11 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell;
 
+import com.mojang.serialization.MapCodec;
+
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DirectionalBlock;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
@@ -13,9 +16,16 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.SimpleShellBlock;
 
 public class DropMortarShellBlock extends SimpleShellBlock<DropMortarShellProjectile> implements DropMortarMunition<DropMortarShellProjectile> {
 
+    private static final MapCodec<ProjectileBlock> CODEC = simpleCodec(DropMortarShellBlock::new);
+
 	public DropMortarShellBlock(Properties properties) {
 		super(properties);
 	}
+
+    @Override
+    protected MapCodec<? extends DirectionalBlock> codec() {
+        return CODEC;
+    }
 
 	@Override
 	public boolean isBaseFuze() {

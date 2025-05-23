@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
 import javax.annotation.Nullable;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
@@ -60,6 +61,8 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.config.BigCar
 public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock, IBE<BigCartridgeBlockEntity>,
 	SimpleWaterloggedBlock {
 
+    private static final MapCodec<BigCartridgeBlock> CODEC = simpleCodec(BigCartridgeBlock::new);
+
 	public static final BooleanProperty FILLED = BooleanProperty.create("filled");
 
 	private final VoxelShaper shapes;
@@ -72,7 +75,12 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		this.shapes = this.makeShapes();
 	}
 
-	private VoxelShaper makeShapes() {
+    @Override
+    protected MapCodec<? extends DirectionalBlock> codec() {
+        return CODEC;
+    }
+
+    private VoxelShaper makeShapes() {
 		VoxelShape base = Block.box(3, 0, 3, 13, 16, 13);
 		return new AllShapes.Builder(base).forDirectional();
 	}
