@@ -13,7 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntityRenderer;
 
@@ -24,11 +24,14 @@ public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntity
 	public CannonCastBlockEntityRenderer(BlockEntityRendererProvider.Context context) { super(context); }
 
 	@Override
-	protected void renderFluidBox(AbstractCannonCastBlockEntity cast, float width, float height, MultiBufferSource buffers, PoseStack stack, int light) {
-		if (!(cast instanceof CannonCastBlockEntity castc)) return;
-		FluidStack fstack = castc.fluid.getFluid();
-		if (!fstack.isEmpty()) FluidRenderer.renderFluidBox(fstack.getFluid(), 0L, 0f, 0f, width, height, width, 0f, buffers, stack, light, false, false); // todo: c6 playtest. i have no idea what i'm doing
-	}
+    protected void renderFluidBox(AbstractCannonCastBlockEntity cast, float width, float height, MultiBufferSource buffers, PoseStack stack, int light) {
+        if (!(cast instanceof CannonCastBlockEntity castc))
+            return;
+        FluidStack fstack = castc.fluid.getFluid();
+        if (!fstack.isEmpty())
+            FluidRenderer.renderFluidBox(fstack.getFluid(), fstack.getAmount(), 0f, 0f, 0f, width, height, width,
+                buffers, stack, light, false, true, fstack.getTag());
+    }
 
 	@Override
 	protected void renderPreview(PoseStack ms, float alpha, VertexConsumer vCons, BlockState state, int light, BlockPos pos) {

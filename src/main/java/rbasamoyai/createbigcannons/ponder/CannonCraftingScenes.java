@@ -12,18 +12,17 @@ import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.content.redstone.nixieTube.NixieTubeBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 
+import net.createmod.catnip.math.Pointing;
+import net.createmod.catnip.math.VecHelper;
 import net.createmod.ponder.api.ParticleEmitter;
-import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.PonderPalette;
+import net.createmod.ponder.api.element.ElementLink;
+import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
-import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.foundation.instruction.FadeOutOfSceneInstruction;
 import net.createmod.ponder.foundation.instruction.HighlightValueBoxInstruction;
-import net.createmod.catnip.math.Pointing;
-
-import net.createmod.catnip.math.VecHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -854,7 +853,7 @@ public class CannonCraftingScenes {
 
 		scene.idle(20);
 
-		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 60).rightClick().withItem(AllItems.WRENCH.asStack());
+		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 60).rightClick().withItem(AllItems.WRENCH.asStack()).rightClick();
 
 		scene.idle(80);
 

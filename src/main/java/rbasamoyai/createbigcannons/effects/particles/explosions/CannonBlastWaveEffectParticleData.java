@@ -2,19 +2,23 @@ package rbasamoyai.createbigcannons.effects.particles.explosions;
 
 import com.mojang.serialization.Codec;
 
+import com.mojang.serialization.MapCodec;
+
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class CannonBlastWaveEffectParticleData extends AbstractBlastWaveEffectParticleData<CannonBlastWaveEffectParticleData> {
 
-	private static final Deserializer<CannonBlastWaveEffectParticleData> DESERIALIZER = createDeserializer(CannonBlastWaveEffectParticleData::new);
-	private static final Codec<CannonBlastWaveEffectParticleData> CODEC = createCodec(CannonBlastWaveEffectParticleData::new);
+	private static final MapCodec<CannonBlastWaveEffectParticleData> CODEC = createMapCodec(CannonBlastWaveEffectParticleData::new);
+    private static final StreamCodec<RegistryFriendlyByteBuf, CannonBlastWaveEffectParticleData> STREAM_CODEC = createStreamCodec(CannonBlastWaveEffectParticleData::new);
 
 	public CannonBlastWaveEffectParticleData(double blastRAdius, Holder<SoundEvent> soundEvent, SoundSource soundSource,
 											 float volume, float pitch, float airAbsorption, float power) {
@@ -23,10 +27,11 @@ public class CannonBlastWaveEffectParticleData extends AbstractBlastWaveEffectPa
 
 	public CannonBlastWaveEffectParticleData() { super(); }
 
-	@Override public Deserializer<CannonBlastWaveEffectParticleData> getDeserializer() { return DESERIALIZER; }
-	@Override public Codec<CannonBlastWaveEffectParticleData> getCodec(ParticleType<CannonBlastWaveEffectParticleData> type) { return CODEC; }
+	@Override public MapCodec<CannonBlastWaveEffectParticleData> getCodec(ParticleType<CannonBlastWaveEffectParticleData> type) { return CODEC; }
 
-	@Environment(EnvType.CLIENT)
+    @Override public StreamCodec<? super RegistryFriendlyByteBuf, CannonBlastWaveEffectParticleData> getStreamCodec() { return STREAM_CODEC; }
+
+    @Environment(EnvType.CLIENT)
 	@Override
 	public ParticleProvider<CannonBlastWaveEffectParticleData> getFactory() {
 		return new BlastWaveEffectParticle.CannonBlastProvider();

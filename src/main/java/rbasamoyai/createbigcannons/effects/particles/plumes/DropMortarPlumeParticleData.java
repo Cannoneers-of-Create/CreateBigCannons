@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.effects.particles.plumes;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
@@ -12,28 +13,22 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class DropMortarPlumeParticleData implements ParticleOptions, ICustomParticleData<DropMortarPlumeParticleData> {
 
-	public static final Codec<DropMortarPlumeParticleData> CODEC = RecordCodecBuilder.create(i -> i
+	public static final MapCodec<DropMortarPlumeParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i
 		.group(Codec.FLOAT.fieldOf("scale")
 			.forGetter(data -> data.scale))
 		.apply(i, DropMortarPlumeParticleData::new));
 
-	@SuppressWarnings("deprecation")
-	public static final Deserializer<DropMortarPlumeParticleData> DESERIALIZER = new Deserializer<>() {
-        @Override
-        public DropMortarPlumeParticleData fromNetwork(ParticleType<DropMortarPlumeParticleData> type, FriendlyByteBuf buf) {
-            return new DropMortarPlumeParticleData(buf.readFloat());
-        }
-
-        @Override
-        public DropMortarPlumeParticleData fromCommand(ParticleType<DropMortarPlumeParticleData> type, StringReader reader) throws CommandSyntaxException {
-            reader.expect(' ');
-            return new DropMortarPlumeParticleData(reader.readFloat());
-        }
-    };
+    private static final StreamCodec<RegistryFriendlyByteBuf, DropMortarPlumeParticleData> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.FLOAT, p -> p.scale,
+        DropMortarPlumeParticleData::new
+    );
 
 	private final float scale;
 
@@ -56,26 +51,14 @@ public class DropMortarPlumeParticleData implements ParticleOptions, ICustomPart
 	}
 
 	@Override
-	public void writeToNetwork(FriendlyByteBuf buf) {
-		buf.writeFloat(this.scale);
-	}
-
-	@Override
-	public String writeToString() {
-		return String.format("%f", this.scale);
-	}
-
-	@Override
-	public Deserializer<DropMortarPlumeParticleData> getDeserializer() {
-		return DESERIALIZER;
-	}
-
-	@Override
-	public Codec<DropMortarPlumeParticleData> getCodec(ParticleType<DropMortarPlumeParticleData> type) {
+	public MapCodec<DropMortarPlumeParticleData> getCodec(ParticleType<DropMortarPlumeParticleData> type) {
 		return CODEC;
 	}
 
-	@Environment(EnvType.CLIENT)
+    @Override
+    public StreamCodec<? super RegistryFriendlyByteBuf, DropMortarPlumeParticleData> getStreamCodec() { return STREAM_CODEC; }
+
+    @Environment(EnvType.CLIENT)
 	@Override
 	public ParticleProvider<DropMortarPlumeParticleData> getFactory() {
 		return new DropMortarPlumeParticle.Provider();

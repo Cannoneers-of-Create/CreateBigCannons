@@ -11,12 +11,12 @@ import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountDispla
 
 public class CBCDisplaySources {
 
-    public static final RegistryEntry<CannonMountDisplaySource> CANNON_MOUNT = simple("cannon_mount", CannonMountDisplaySource::new);
+    public static final RegistryEntry<DisplaySource, CannonMountDisplaySource> CANNON_MOUNT = simple("cannon_mount", CannonMountDisplaySource::new);
 
     public static void register() {}
 
-    private static <T extends DisplaySource> RegistryEntry<T> simple(String name, Supplier<T> sup) {
-        return REGISTRATE.displaySource(name, sup).register();
+    private static <T extends DisplaySource> RegistryEntry<DisplaySource, T> simple(String name, Supplier<T> supplier) {
+        return REGISTRATE.displaySource(name, supplier).register();
     }
 
 }

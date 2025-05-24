@@ -218,7 +218,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 				infoNbt.putInt("x", pos.getX());
 				infoNbt.putInt("y", pos.getY());
 				infoNbt.putInt("z", pos.getZ());
-				containedBlockEntity = BlockEntity.loadStatic(pos, containedInfo.state(), infoNbt);
+				containedBlockEntity = BlockEntity.loadStatic(pos, containedInfo.state(), infoNbt, level.registryAccess());
 			}
 			pair = Pair.of(containedInfo, containedBlockEntity);
 		}

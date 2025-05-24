@@ -1,12 +1,11 @@
 package rbasamoyai.createbigcannons.neoforge.cannons;
 
+import dev.engine_room.flywheel.lib.visualization.VisualizationHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 
 public class AutocannonBreechBlockEntity extends AbstractAutocannonBreechBlockEntity {
@@ -25,8 +24,8 @@ public class AutocannonBreechBlockEntity extends AbstractAutocannonBreechBlockEn
 	@Override
 	public void requestModelDataUpdate() {
 		super.requestModelDataUpdate();
-		//if (!this.remove) fixme
-			//DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> RenderDispat.enqueueUpdate(this));
+        if (!this.remove)
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> VisualizationHelper.queueUpdate(this));
 	}
 
 	@Override

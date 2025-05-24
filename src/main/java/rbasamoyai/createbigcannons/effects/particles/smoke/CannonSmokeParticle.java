@@ -35,18 +35,13 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 
 	private static final ParticleRenderType RENDER_TYPE = new ParticleRenderType() {
 		@Override
-		public void begin(BufferBuilder builder, TextureManager textureManager) {
+		public BufferBuilder begin(Tesselator tesselator, TextureManager textureManager) {
 			RenderSystem.depthMask(true);
 			RenderSystem.enableBlend();
 			RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 			RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 			RenderSystem.setShaderTexture(3, GRADIENT_LOCATION);
-			CBCRenderTypes.CANNON_SMOKE_PARTICLE.setRenderTypeForBuilder(builder);
-		}
-
-		@Override
-		public void end(Tesselator tesselator) {
-			tesselator.end();
+			return CBCRenderTypes.CANNON_SMOKE_PARTICLE.createBuilder(tesselator);
 		}
 
 		@Override public String toString() { return "CANNON_SMOKE"; }

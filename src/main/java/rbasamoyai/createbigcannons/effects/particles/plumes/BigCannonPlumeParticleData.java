@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.effects.particles.plumes;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
@@ -12,11 +13,14 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class BigCannonPlumeParticleData implements ParticleOptions, ICustomParticleData<BigCannonPlumeParticleData> {
 
-	public static final Codec<BigCannonPlumeParticleData> CODEC = RecordCodecBuilder.create(i -> i
+	public static final MapCodec<BigCannonPlumeParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i
 		.group(Codec.FLOAT.fieldOf("size")
 			.forGetter(data -> data.size),
 		Codec.FLOAT.fieldOf("power")
@@ -25,24 +29,12 @@ public class BigCannonPlumeParticleData implements ParticleOptions, ICustomParti
 			.forGetter(data -> data.lifetime))
 		.apply(i, BigCannonPlumeParticleData::new));
 
-	@SuppressWarnings("deprecation")
-	public static final Deserializer<BigCannonPlumeParticleData> DESERIALIZER = new Deserializer<>() {
-        @Override
-        public BigCannonPlumeParticleData fromNetwork(ParticleType<BigCannonPlumeParticleData> type, FriendlyByteBuf buf) {
-            return new BigCannonPlumeParticleData(buf.readFloat(), buf.readFloat(), buf.readVarInt());
-        }
-
-        @Override
-        public BigCannonPlumeParticleData fromCommand(ParticleType<BigCannonPlumeParticleData> type, StringReader reader) throws CommandSyntaxException {
-            reader.expect(' ');
-			float size = reader.readFloat();
-            reader.expect(' ');
-			float power = reader.readFloat();
-			reader.expect(' ');
-			int lifetime = reader.readInt();
-            return new BigCannonPlumeParticleData(size, power, lifetime);
-        }
-    };
+    private static final StreamCodec<RegistryFriendlyByteBuf, BigCannonPlumeParticleData> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.FLOAT, p -> p.size,
+        ByteBufCodecs.FLOAT, p -> p.power,
+        ByteBufCodecs.INT, p -> p.lifetime,
+        BigCannonPlumeParticleData::new
+    );
 
 	private final float size;
 	private final float power;
@@ -68,28 +60,14 @@ public class BigCannonPlumeParticleData implements ParticleOptions, ICustomParti
 	}
 
 	@Override
-	public void writeToNetwork(FriendlyByteBuf buf) {
-		buf.writeFloat(this.size)
-			.writeFloat(this.power);
-		buf.writeVarInt(this.lifetime);
-	}
-
-	@Override
-	public String writeToString() {
-		return String.format("%f %f %d", this.size, this.power, this.lifetime);
-	}
-
-	@Override
-	public Deserializer<BigCannonPlumeParticleData> getDeserializer() {
-		return DESERIALIZER;
-	}
-
-	@Override
-	public Codec<BigCannonPlumeParticleData> getCodec(ParticleType<BigCannonPlumeParticleData> type) {
+	public MapCodec<BigCannonPlumeParticleData> getCodec(ParticleType<BigCannonPlumeParticleData> type) {
 		return CODEC;
 	}
 
-	@Environment(EnvType.CLIENT)
+    @Override
+    public StreamCodec<? super RegistryFriendlyByteBuf, BigCannonPlumeParticleData> getStreamCodec() { return STREAM_CODEC; }
+
+    @Environment(EnvType.CLIENT)
 	@Override
 	public ParticleProvider<BigCannonPlumeParticleData> getFactory() {
 		return new BigCannonPlumeParticle.Provider();

@@ -353,12 +353,12 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		}
 
 		@Override
-		public void write(CompoundTag nbt, boolean clientPacket) {
+		public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
 			nbt.putInt(this.pitch ? "PitchAdjustment" : "YawAdjustment", this.value);
 		}
 
 		@Override
-		public void read(CompoundTag nbt, boolean clientPacket) {
+		public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
 			this.value = nbt.getInt(this.pitch ? "PitchAdjustment" : "YawAdjustment");
 		}
 	}

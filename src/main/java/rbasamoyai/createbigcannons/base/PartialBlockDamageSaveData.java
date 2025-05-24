@@ -1,10 +1,12 @@
 package rbasamoyai.createbigcannons.base;
 
+import java.io.File;
 import java.util.Map;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -56,7 +58,7 @@ public class PartialBlockDamageSaveData extends SavedData {
 			int len = Math.min(damagesTag.size(), MAX_DAMAGES_PER_DIMENSION);
 			for (int i = 0; i < len; ++i) {
 				CompoundTag entry = damagesTag.getCompound(i);
-				damages.put(NbtUtils.readBlockPos(entry.getCompound("Pos")), entry.getInt("Damage"));
+				damages.put(NbtUtils.readBlockPos(entry, "Pos").get(), entry.getInt("Damage"));
 			}
 			savedata.blockDamage.put(dimensionKey, damages);
 		}

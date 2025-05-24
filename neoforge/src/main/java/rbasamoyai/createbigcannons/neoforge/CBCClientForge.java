@@ -2,29 +2,30 @@ package rbasamoyai.createbigcannons.neoforge;
 
 import java.io.IOException;
 
+import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraftforge.client.ConfigScreenHandler.ConfigScreenFactory;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.ComputeFovModifierEvent;
-import net.minecraftforge.client.event.InputEvent;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.client.event.RegisterShadersEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.ViewportEvent;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModContainer;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
+import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.InputEvent;
+import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.event.RenderPlayerEvent;
+import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.compat.curios.CBCCuriosRenderers;
@@ -89,7 +90,6 @@ public class CBCClientForge {
 	}
 
 	public static void getFogDensity(ViewportEvent.RenderFog event) {
-		if (!event.isCancelable()) return;
 		float density = CBCClientCommon.getFogDensity(event.getCamera(), event.getFarPlaneDistance());
 		if (density != -1) {
 			event.setFarPlaneDistance(density);
@@ -98,16 +98,16 @@ public class CBCClientForge {
 		}
 	}
 
-	public static void onClientGameTick(TickEvent.ClientTickEvent evt) {
+	public static void onClientGameTick(ClientTickEvent evt) {
 		CBCClientCommon.onClientGameTick(Minecraft.getInstance());
 	}
 
 	public static void onClickMouse(InputEvent.InteractionKeyMappingTriggered evt) {
-		if (CBCClientCommon.onClickMouse(evt.getKeyMapping()) && evt.isCancelable()) evt.setCanceled(true);
+		if (CBCClientCommon.onClickMouse(evt.getKeyMapping())) evt.setCanceled(true);
 	}
 
 	public static void onScrollMouse(InputEvent.MouseScrollingEvent evt) {
-		if (CBCClientCommon.onScrollMouse(Minecraft.getInstance(), evt.getScrollDelta()) && evt.isCancelable()) {
+		if (CBCClientCommon.onScrollMouse(Minecraft.getInstance(), evt.getScrollDelta())) {
 			evt.setCanceled(true);
 		}
 	}
@@ -122,7 +122,7 @@ public class CBCClientForge {
 
 	public static void onSetupCamera(ViewportEvent.ComputeCameraAngles evt) {
 		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTick(), evt::getYaw, evt::getPitch, evt::getRoll,
-			evt::setYaw, evt::setPitch, evt::setRoll) && evt.isCancelable()) {
+			evt::setYaw, evt::setPitch, evt::setRoll)) {
 			evt.setCanceled(true);
 		}
 	}
@@ -150,8 +150,8 @@ public class CBCClientForge {
 		ModContainer container = ModList.get()
 			.getModContainerById(CreateBigCannons.MOD_ID)
 			.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
-		/*container.registerExtensionPoint(ConfigScreenFactory.class, fixme
-			() -> new ConfigScreenFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));*/
+        container.registerExtensionPoint(ConfigScreenFactory.class,
+            () -> new ConfigScreenFactory((mc, screen) -> new BaseConfigScreen(screen, CreateBigCannons.MOD_ID)));
 	}
 
 	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent evt) {

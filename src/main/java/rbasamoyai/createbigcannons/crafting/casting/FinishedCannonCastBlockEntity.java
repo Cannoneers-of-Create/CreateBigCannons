@@ -101,8 +101,8 @@ public class FinishedCannonCastBlockEntity extends SmartBlockEntity {
 	@Override
 	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
 		super.read(tag, registries, clientPacket);
-		this.centralBlock = tag.contains("CentralBlock") ? NbtUtils.readBlockPos(tag.getCompound("CentralBlock")) : null;
-		this.rootBlock = tag.contains("RootBlock") ? NbtUtils.readBlockPos(tag.getCompound("RootBlock")) : this.worldPosition;
+		this.centralBlock = tag.contains("CentralBlock") ? NbtUtils.readBlockPos(tag, "CentralBlock").get() : null;
+		this.rootBlock = tag.contains("RootBlock") ? NbtUtils.readBlockPos(tag, "RootBlock").get() : this.worldPosition;
 		this.height = tag.getInt("Height");
 		this.renderedShape = tag.contains("RenderedShape")
 			? CBCRegistries.cannonCastShapes().get(CBCUtils.location(tag.getString("RenderedShape")))

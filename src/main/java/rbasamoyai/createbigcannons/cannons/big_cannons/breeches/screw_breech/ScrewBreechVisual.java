@@ -29,7 +29,8 @@ public class ScrewBreechVisual extends OrientedRotatingVisual<ScrewBreechBlockEn
 		super(ctx, tile, partialTick, Direction.SOUTH, to, Models.partial(AllPartialModels.SHAFT_HALF));
 		this.breech = tile;
         this.facing = to;
-        this.screwLock = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCClientCommon.getScrewBreechForState(this.blockState))).createInstance();
+        this.screwLock = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCClientCommon.getScrewBreechForState(this.blockState),
+            this.facing)).createInstance();
         this.transformModels(partialTick);
 	}
 

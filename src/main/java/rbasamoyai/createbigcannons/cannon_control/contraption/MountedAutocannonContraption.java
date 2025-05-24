@@ -165,7 +165,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			this.blocks.put(localPos, localBlockInfo);
 
 			if (blockInfo.nbt() == null) continue;
-			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state(), blockInfo.nbt());
+			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state(), blockInfo.nbt(), level.registryAccess());
 			this.presentBlockEntities.put(localPos, be);
 			if (blockInfo.state().getBlock() instanceof AutocannonRecoilSpringBlock)
 				this.recoilSpringPositions.add(localPos);
@@ -193,7 +193,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					springBE.toAnimate.put(pos1.subtract(mainRecoilSpringPos), springed.getMovingState(blockInfo.state()));
 					this.blocks.put(pos1, new StructureBlockInfo(pos1, springed.getStationaryState(blockInfo.state()), blockInfo.nbt()));
 				}
-				CompoundTag newTag = springBE.saveWithFullMetadata();
+				CompoundTag newTag = springBE.saveWithFullMetadata(level.registryAccess());
 				newTag.remove("x");
 				newTag.remove("y");
 				newTag.remove("z");
@@ -302,7 +302,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 					StructureBlockInfo oldInfo = this.blocks.get(currentPos);
 					if (oldInfo == null) return;
 					behavior.tryLoadingItem(foundProjectile);
-					CompoundTag tag = this.presentBlockEntities.get(currentPos).saveWithFullMetadata();
+					CompoundTag tag = this.presentBlockEntities.get(currentPos).saveWithFullMetadata(level.registryAccess());
 					tag.remove("x");
 					tag.remove("y");
 					tag.remove("z");
@@ -519,13 +519,13 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		super.readNBT(level, tag, clientData);
 		this.cannonMaterial = AutocannonMaterial.fromNameOrNull(CBCUtils.location(tag.getString("AutocannonMaterial")));
 		if (this.cannonMaterial == null) this.cannonMaterial = CBCAutocannonMaterials.CAST_IRON;
-		this.startPos = tag.contains("StartPos") ? NbtUtils.readBlockPos(tag.getCompound("StartPos")) : null;
+		this.startPos = tag.contains("StartPos") ? NbtUtils.readBlockPos(tag, "StartPos").get() : null;
 		this.recoilSpringPositions.clear();
 		if (tag.contains("RecoilSpringPositions")) {
 			ListTag positionTags = tag.getList("RecoilSpringPositions", Tag.TAG_COMPOUND);
 			int sz = positionTags.size();
 			for (int i = 0; i < sz; ++i)
-				this.recoilSpringPositions.add(NbtUtils.readBlockPos(positionTags.getCompound(i)));
+				this.recoilSpringPositions.add(NbtUtils.readBlockPos(positionTags, String.valueOf(i)).get());
 		}
 		this.isHandle = tag.getBoolean("IsHandle");
 	}

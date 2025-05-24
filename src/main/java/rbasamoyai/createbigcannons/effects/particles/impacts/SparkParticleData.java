@@ -1,5 +1,13 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
+import com.mojang.serialization.MapCodec;
+
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+
 import org.joml.Vector3f;
 
 import com.mojang.brigadier.StringReader;
@@ -18,50 +26,28 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public record SparkParticleData(Vector3f color) implements ParticleOptions, ICustomParticleData<SparkParticleData> {
 
-	private static final Deserializer<SparkParticleData> DESERIALIZER = new Deserializer<>() {
-        @Override
-        public SparkParticleData fromCommand(ParticleType<SparkParticleData> particleType, StringReader reader) throws CommandSyntaxException {
-			reader.expect(' ');
-			float r = reader.readFloat();
-			reader.expect(' ');
-			float g = reader.readFloat();
-			reader.expect(' ');
-			float b = reader.readFloat();
-            return new SparkParticleData(r, g, b);
-        }
+	private static final MapCodec<SparkParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+        ExtraCodecs.VECTOR3F.fieldOf("scale").forGetter(p -> p.color)).apply(i, SparkParticleData::new)
+    );
 
-        @Override
-        public SparkParticleData fromNetwork(ParticleType<SparkParticleData> particleType, FriendlyByteBuf buffer) {
-            return new SparkParticleData(buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
-        }
-    };
-
-	private static final Codec<SparkParticleData> CODEC = ExtraCodecs.VECTOR3F.xmap(SparkParticleData::new, data -> data.color);
+    private static final StreamCodec<RegistryFriendlyByteBuf, SparkParticleData> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.VECTOR3F, p -> p.color,
+        SparkParticleData::new
+    );
 
 	public SparkParticleData(float r, float g, float b) { this(new Vector3f(r, g, b)); }
 	public SparkParticleData() { this(0, 0, 0); }
 
-	@Override public Deserializer<SparkParticleData> getDeserializer() { return DESERIALIZER; }
-	@Override public Codec<SparkParticleData> getCodec(ParticleType<SparkParticleData> type) { return CODEC; }
+	@Override public MapCodec<SparkParticleData> getCodec(ParticleType<SparkParticleData> type) { return CODEC; }
 
-	@Environment(EnvType.CLIENT)
+    @Override public StreamCodec<? super RegistryFriendlyByteBuf, SparkParticleData> getStreamCodec() { return STREAM_CODEC; }
+
+    @Environment(EnvType.CLIENT)
 	@Override
 	public ParticleProvider<SparkParticleData> getFactory() {
 		return new SparkParticle.Provider();
 	}
 
 	@Override public ParticleType<?> getType() { return CBCParticleTypes.SPARK.get(); }
-
-	@Override
-	public void writeToNetwork(FriendlyByteBuf buffer) {
-		buffer.writeFloat(this.color.x())
-			.writeFloat(this.color.y())
-			.writeFloat(this.color.z());
-	}
-
-	@Override
-	public String writeToString() {
-		return String.format("%f %f %f", this.color.x(), this.color.y(), this.color.z());
-	}
 
 }

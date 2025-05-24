@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
@@ -13,30 +14,24 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class FluidBlobParticleData implements ParticleOptions, ICustomParticleData<FluidBlobParticleData> {
 
-	public static final Codec<FluidBlobParticleData> CODEC = RecordCodecBuilder.create(i -> i
+	public static final MapCodec<FluidBlobParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i
 		.group(Codec.FLOAT.fieldOf("scale").forGetter(FluidBlobParticleData::scale),
 			EndFluidStack.CODEC.fieldOf("fluid").forGetter(FluidBlobParticleData::fluid))
 		.apply(i, FluidBlobParticleData::new));
 
-	@SuppressWarnings("deprecation")
-	public static final Deserializer<FluidBlobParticleData> DESERIALIZER = new Deserializer<>() {
-		@Override
-		public FluidBlobParticleData fromNetwork(ParticleType<FluidBlobParticleData> type, FriendlyByteBuf buf) {
-			return new FluidBlobParticleData(buf.readFloat(), EndFluidStack.readBuf(buf));
-		}
-
-		@Override
-		public FluidBlobParticleData fromCommand(ParticleType<FluidBlobParticleData> type, StringReader reader) throws CommandSyntaxException {
-			// TODO: Read from command
-			reader.expect(' ');
-			return new FluidBlobParticleData(reader.readFloat(), new EndFluidStack(Fluids.WATER, 1, new CompoundTag()));
-		}
-	};
+    private static final StreamCodec<RegistryFriendlyByteBuf, FluidBlobParticleData> STREAM_CODEC = /*StreamCodec.composite(
+        ByteBufCodecs.FLOAT, p -> p.scale,
+        EndFluidStack.STREAM_CODEC, p -> p. fluid, //fixme implement STREAM_CODEC for EndFluidStack
+        FluidBlobParticleData::new
+    );*/null;
 
 	private final float scale;
 	private final EndFluidStack fluid;
@@ -64,27 +59,14 @@ public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDa
 	}
 
 	@Override
-	public void writeToNetwork(FriendlyByteBuf buf) {
-		buf.writeFloat(this.scale);
-		this.fluid.writeBuf(buf);
-	}
-
-	@Override
-	public String writeToString() {
-		return String.format("%f %s", this.scale, CBCParticleTypes.FLUID_BLOB.parameter());
-	}
-
-	@Override
-	public Deserializer<FluidBlobParticleData> getDeserializer() {
-		return DESERIALIZER;
-	}
-
-	@Override
-	public Codec<FluidBlobParticleData> getCodec(ParticleType<FluidBlobParticleData> type) {
+	public MapCodec<FluidBlobParticleData> getCodec(ParticleType<FluidBlobParticleData> type) {
 		return CODEC;
 	}
 
-	@Environment(EnvType.CLIENT)
+    @Override
+    public StreamCodec<? super RegistryFriendlyByteBuf, FluidBlobParticleData> getStreamCodec() { return STREAM_CODEC; }
+
+    @Environment(EnvType.CLIENT)
 	@Override
 	public ParticleProvider<FluidBlobParticleData> getFactory() {
 		return new FluidBlobParticle.Provider();

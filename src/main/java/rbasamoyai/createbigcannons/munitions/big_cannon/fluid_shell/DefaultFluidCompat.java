@@ -59,7 +59,7 @@ public class DefaultFluidCompat {
 		Entity entity = context.result().getEntity();
 		if (entity.fireImmune())
 			return;
-		entity.setSecondsOnFire(10);
+		entity.igniteForSeconds(10);
 		if (entity.hurt(context.level().damageSources().onFire(), 4.0F))
 			entity.playSound(SoundEvents.GENERIC_BURN, 0.4F, 2.0F + entity.level().random.nextFloat() * 0.4F);
 	}

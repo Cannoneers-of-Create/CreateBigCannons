@@ -30,7 +30,7 @@ public record InvalidCastingError(BlockPos pos, Fluid fluid, CannonCastShape sha
 		if (!tag.contains("CastingError", Tag.TAG_COMPOUND)) return null;
 		CompoundTag errorTag = tag.getCompound("CastingError");
 		if (!errorTag.contains("Position", Tag.TAG_COMPOUND)) return null;
-		BlockPos pos = NbtUtils.readBlockPos(errorTag.getCompound("Position"));
+		BlockPos pos = NbtUtils.readBlockPos(errorTag,"Position").get();
 		if (!errorTag.contains("Fluid", Tag.TAG_STRING)) return null;
 		Fluid fluid = CBCRegistryUtils.getFluid(CBCUtils.location(errorTag.getString("Fluid")));
 		if (!errorTag.contains("CastShape", Tag.TAG_STRING)) return null;
