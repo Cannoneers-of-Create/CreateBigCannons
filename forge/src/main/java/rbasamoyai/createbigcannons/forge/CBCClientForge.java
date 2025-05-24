@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.forge;
 
 import java.io.IOException;
 
+import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.world.level.LevelAccessor;
@@ -28,7 +29,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.compat.curios.CBCCuriosRenderers;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
@@ -151,8 +151,8 @@ public class CBCClientForge {
 		ModContainer container = ModList.get()
 			.getModContainerById(CreateBigCannons.MOD_ID)
 			.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
-		/*container.registerExtensionPoint(ConfigScreenFactory.class, fixme
-			() -> new ConfigScreenFactory((mc, screen) -> CBCConfigs.createConfigScreen(screen)));*/
+		container.registerExtensionPoint(ConfigScreenFactory.class,
+			() -> new ConfigScreenFactory((mc, screen) -> new BaseConfigScreen(screen, CreateBigCannons.MOD_ID)));
 	}
 
 	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent evt) {

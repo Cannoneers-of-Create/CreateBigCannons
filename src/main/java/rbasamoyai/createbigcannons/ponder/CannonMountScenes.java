@@ -8,16 +8,16 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.redstone.analogLever.AnalogLeverBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+
+import net.createmod.catnip.math.Pointing;
 import net.createmod.ponder.api.ParticleEmitter;
-import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.PonderPalette;
+import net.createmod.ponder.api.element.ElementLink;
+import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
-import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.foundation.instruction.FadeOutOfSceneInstruction;
-import net.createmod.catnip.math.Pointing;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DyeColor;
@@ -448,11 +448,11 @@ public class CannonMountScenes {
 			.text("Wrenching the end of an autocannon will change the type of barrel end.")
 			.pointAt(util.vector().centerOf(barrelEnd));
 		scene.idle(20);
-		scene.overlay().showControls(util.vector().topOf(barrelEnd), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack()); //todo: maybe use rightclick here due to behavior change in c6, can't tell rn. there are a few more occurrences bellow -Robotix
+		scene.overlay().showControls(util.vector().topOf(barrelEnd), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack()).rightClick();
 		scene.idle(30);
 		scene.world().modifyBlock(barrelEnd, setStateValue(AutocannonBarrelBlock.BARREL_END, AutocannonBarrelBlock.AutocannonBarrelEnd.FLANGED), false);
 		scene.idle(25);
-		scene.overlay().showControls(util.vector().topOf(barrelEnd), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack());
+		scene.overlay().showControls(util.vector().topOf(barrelEnd), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack()).rightClick();
 		scene.idle(30);
 		scene.world().modifyBlock(barrelEnd, setStateValue(AutocannonBarrelBlock.BARREL_END, AutocannonBarrelBlock.AutocannonBarrelEnd.NOTHING), false);
 		scene.idle(25);
@@ -470,7 +470,7 @@ public class CannonMountScenes {
 			.text("Wrenching the autocannon breech will add handles.")
 			.pointAt(util.vector().topOf(breechPos));
 		scene.idle(20);
-		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack());
+		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack()).rightClick();
 		scene.idle(30);
 		scene.world().modifyBlock(breechPos, setStateValue(AutocannonBreechBlock.HANDLE, true), false);
 		scene.idle(30);
@@ -515,7 +515,7 @@ public class CannonMountScenes {
 			.text("Wrenching the autocannon breech again will remove handles.")
 			.pointAt(util.vector().topOf(breechPos));
 		scene.idle(20);
-		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack());;
+		scene.overlay().showControls(util.vector().topOf(breechPos), Pointing.DOWN, 40).withItem(AllItems.WRENCH.asStack()).rightClick();
 		scene.idle(30);
 		scene.world().modifyBlock(breechPos, setStateValue(AutocannonBreechBlock.HANDLE, false), false);
 		scene.idle(30);

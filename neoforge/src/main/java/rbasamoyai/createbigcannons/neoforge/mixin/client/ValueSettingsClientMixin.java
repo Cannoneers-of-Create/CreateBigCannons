@@ -34,7 +34,7 @@ public class ValueSettingsClientMixin {
 	private void createbigcannons$tick$cancelPacket(SimpleChannel instance, Object message, Operation<Void> original, @Local ValueSettingsBehaviour valueSettingBehaviour, @Local HitResult hitResult) {
 		if (valueSettingBehaviour instanceof FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour fixedMountBehaviour && hitResult instanceof BlockHitResult blockHitResult) {
 			NetworkPlatform.sendToServer(new ServerboundSetFixedCannonMountValuePacket(this.interactHeldPos, 0, 0,
-				this.interactHeldHand, blockHitResult, this.interactHeldFace, AllKeys.ctrlDown(), fixedMountBehaviour.setsPitch())); //todo: c6 playtest
+				this.interactHeldHand, blockHitResult, this.interactHeldFace, AllKeys.ctrlDown(), fixedMountBehaviour.setsPitch()));
 			return;
 		}
 		original.call(instance, message);

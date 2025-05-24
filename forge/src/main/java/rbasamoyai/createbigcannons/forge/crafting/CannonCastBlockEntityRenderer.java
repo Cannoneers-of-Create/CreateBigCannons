@@ -1,8 +1,11 @@
 package rbasamoyai.createbigcannons.forge.crafting;
 
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -17,17 +20,18 @@ import net.minecraftforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntityRenderer;
 
-import java.util.List;
-
 public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntityRenderer {
 
 	public CannonCastBlockEntityRenderer(BlockEntityRendererProvider.Context context) { super(context); }
 
 	@Override
 	protected void renderFluidBox(AbstractCannonCastBlockEntity cast, float width, float height, MultiBufferSource buffers, PoseStack stack, int light) {
-		if (!(cast instanceof CannonCastBlockEntity castc)) return;
+		if (!(cast instanceof CannonCastBlockEntity castc))
+            return;
 		FluidStack fstack = castc.fluid.getFluid();
-		if (!fstack.isEmpty()) FluidRenderer.renderFluidBox(fstack.getFluid(), 0L, 0f, 0f, width, height, width, 0f, buffers, stack, light, false, false); // todo: c6 playtest. i have no idea what i'm doing
+		if (!fstack.isEmpty())
+            FluidRenderer.renderFluidBox(fstack.getFluid(), fstack.getAmount(), 0f, 0f, 0f, width, height, width,
+                buffers, stack, light, false, true, fstack.getTag());
 	}
 
 	@Override
