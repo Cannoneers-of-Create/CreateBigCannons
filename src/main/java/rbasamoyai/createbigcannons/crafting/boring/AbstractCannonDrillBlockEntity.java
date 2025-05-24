@@ -402,7 +402,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 
 				StructureBlockInfo nextBlockInfo = lathe.getBlocks().get(boringOffset.relative(facing));
 				if (nextBlockInfo != null && nextBlockInfo.nbt() != null) {
-					BlockEntity be1 = BlockEntity.loadStatic(BlockPos.ZERO, nextBlockInfo.state(), nextBlockInfo.nbt());
+					BlockEntity be1 = BlockEntity.loadStatic(BlockPos.ZERO, nextBlockInfo.state(), nextBlockInfo.nbt(), level.registryAccess());
 					if (be1 instanceof LayeredBigCannonBlockEntity layered1 && layered1.isLayerConnectedTo(opp, shape)
 						|| be1 instanceof ICannonBlockEntity<?> cbe1 && cbe1.cannonBehavior().isConnectedTo(opp)) {
 						ResourceLocation key = CBCRegistries.cannonCastShapes().getKey(cBlock.getCannonShape());
@@ -413,7 +413,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 				}
 				StructureBlockInfo prevBlockInfo = lathe.getBlocks().get(boringOffset.relative(opp));
 				if (prevBlockInfo != null && prevBlockInfo.nbt() != null) {
-					BlockEntity be2 = BlockEntity.loadStatic(BlockPos.ZERO, prevBlockInfo.state(), prevBlockInfo.nbt());
+					BlockEntity be2 = BlockEntity.loadStatic(BlockPos.ZERO, prevBlockInfo.state(), prevBlockInfo.nbt(), level.registryAccess());
 					if (be2 instanceof LayeredBigCannonBlockEntity layered2 && layered2.isLayerConnectedTo(facing, shape)
 						|| be2 instanceof ICannonBlockEntity<?> cbe2 && cbe2.cannonBehavior().isConnectedTo(facing)) {
 						ResourceLocation key = CBCRegistries.cannonCastShapes().getKey(cBlock.getCannonShape());

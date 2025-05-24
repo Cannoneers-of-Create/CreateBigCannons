@@ -143,15 +143,15 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 		this.fireRate = tag.getInt("FiringRate");
 		this.firingCooldown = tag.getInt("Cooldown");
 		this.animateTicks = tag.getInt("AnimateTicks");
-		this.outputBuffer = tag.contains("Output") ? ItemStack.of(tag.getCompound("Output")) : ItemStack.EMPTY;
+		this.outputBuffer = tag.contains("Output") ? ItemStack.parseOptional(registry, tag.getCompound("Output")) : ItemStack.EMPTY;
 		this.seat = DyeColor.byName(tag.getString("Seat"), null);
 
 		this.inputBuffer.clear();
 		ListTag inputTag = tag.getList("Input", Tag.TAG_COMPOUND);
 		for (int i = 0; i < inputTag.size(); ++i) {
-			this.inputBuffer.add(ItemStack.of(inputTag.getCompound(i)));
+			this.inputBuffer.add(ItemStack.parseOptional(registry, inputTag.getCompound(i)));
 		}
-		this.magazine = tag.contains("Magazine") ? ItemStack.of(tag.getCompound("Magazine")) : ItemStack.EMPTY;
+		this.magazine = tag.contains("Magazine") ? ItemStack.parseOptional(registry, tag.getCompound("Magazine")) : ItemStack.EMPTY;
 
 		if (!clientPacket) return;
 		this.updateInstance = tag.contains("UpdateInstance");

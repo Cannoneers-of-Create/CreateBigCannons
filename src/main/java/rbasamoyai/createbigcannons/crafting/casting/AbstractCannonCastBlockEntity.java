@@ -176,7 +176,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		int prevHeight = this.getControllerBE() == null ? 0 : this.getControllerBE().height;
 
 		this.castShape = tag.contains("Size") ? shapeRegistry.get(CBCUtils.location(tag.getString("Size"))) : null;
-		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag.getCompound("LastKnownPos"));
+		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag, "LastKnownPos").get();
 
 		this.structure.clear();
 		if (tag.contains("Structure")) {
@@ -201,7 +201,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 
 			this.controllerPos = null;
 		} else if (tag.contains("Controller")) {
-			this.controllerPos = NbtUtils.readBlockPos(tag.getCompound("Controller"));
+			this.controllerPos = NbtUtils.readBlockPos(tag, "Controller").get();
 		}
 
 		if (tag.contains("ForceFluidLevel") || this.fluidLevel == null) {

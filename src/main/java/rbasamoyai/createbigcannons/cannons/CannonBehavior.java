@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -87,7 +88,7 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 	}
 
 	@Override
-	public void write(CompoundTag nbt, boolean spawnPacket) {
+	public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
 		if (this.currentFacing != null) {
 			nbt.putString("Facing", this.currentFacing.getSerializedName());
 		}
@@ -106,11 +107,11 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 			.forEach(weldsTag::add);
 		nbt.put("Welds", weldsTag);
 
-		super.write(nbt, spawnPacket);
+		super.write(nbt, registries, clientPacket);
 	}
 
 	@Override
-	public void read(CompoundTag nbt, boolean clientPacket) {
+	public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
 		this.currentFacing = nbt.contains("Facing") ? Direction.byName(nbt.getString("Facing")) : null;
 
 		boolean updateFlag = false;
@@ -143,7 +144,7 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 			}
 		}
 
-		super.read(nbt, clientPacket);
+		super.read(nbt, registries, clientPacket);
 	}
 
 	public void setWelded(Direction face, boolean welded) {

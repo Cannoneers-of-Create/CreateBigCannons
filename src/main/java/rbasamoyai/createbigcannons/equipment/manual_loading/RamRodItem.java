@@ -15,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
@@ -42,16 +43,15 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 
 public class RamRodItem extends Item implements HandloadingTool {
 
-	public static final UUID BASE_ATTACK_KNOCKBACK_UUID = UUID.fromString("bfa4160d-4ef0-4069-9569-3dfd2765f1c6");
 
 	private final Multimap<Attribute, AttributeModifier> defaultModifiers;
 
 	public RamRodItem(Properties properties) {
 		super(properties);
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 3.0d, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -3.5d, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_KNOCKBACK, new AttributeModifier(BASE_ATTACK_KNOCKBACK_UUID, "Tool modifier", 2.5d, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_DAMAGE.value(), new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 3.0d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+		builder.put(Attributes.ATTACK_SPEED.value(), new AttributeModifier(BASE_ATTACK_SPEED_ID, -3.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+		builder.put(Attributes.ATTACK_KNOCKBACK.value(), new AttributeModifier(Attributes.ATTACK_KNOCKBACK.getKey().location(), 2.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 		this.defaultModifiers = builder.build();
 	}
 

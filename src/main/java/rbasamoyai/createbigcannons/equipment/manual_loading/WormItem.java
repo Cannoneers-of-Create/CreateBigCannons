@@ -46,8 +46,8 @@ public class WormItem extends Item implements HandloadingTool {
 	public WormItem(Properties properties) {
 		super(properties);
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 2.5d, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -3.0d, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_DAMAGE.value(), new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 2.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+		builder.put(Attributes.ATTACK_SPEED.value(), new AttributeModifier(BASE_ATTACK_SPEED_ID, -3.0d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
 		this.defaultModifiers = builder.build();
 	}
 

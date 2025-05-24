@@ -89,7 +89,7 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.fuze = tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Fuze")) : ItemStack.EMPTY;
+		this.fuze = tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.parseOptional(tag.getCompound("Fuze")) : ItemStack.EMPTY;
 	}
 
 	protected final boolean canDetonate(Predicate<FuzeItem> cons) {

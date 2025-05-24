@@ -4,6 +4,7 @@ import com.mojang.serialization.Lifecycle;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.MappedRegistry;
+import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.Registry;
 import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -40,7 +41,7 @@ public class CBCRegistries {
 	private static <T> Registry<T> makeRegistrySimple(ResourceKey<? extends Registry<T>> key) {
 		MappedRegistry<T> registry = new MappedRegistry<>(key, Lifecycle.stable(), false);
 		WritableRegistry root = (WritableRegistry) BuiltInRegistries.REGISTRY;
-		root.register(key, registry, Lifecycle.stable());
+		root.register(key, registry, RegistrationInfo.BUILT_IN);
 		return registry;
 	}
 

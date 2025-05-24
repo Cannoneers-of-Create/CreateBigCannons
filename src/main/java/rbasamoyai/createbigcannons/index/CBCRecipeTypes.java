@@ -122,19 +122,6 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 			this.constructor = constructor;
 		}
 
-		@Override
-		public T fromJson(ResourceLocation recipeId, JsonObject serializedRecipe) {
-			return this.constructor.apply(recipeId);
-		}
-
-		@Override
-		public T fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-			return this.constructor.apply(recipeId);
-		}
-
-		@Override
-		public void toNetwork(FriendlyByteBuf buffer, T recipe) {
-		}
 	}
 
 }
