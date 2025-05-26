@@ -21,7 +21,7 @@ public class FluidExplosion extends CustomExplosion.Impl {
 	private final float radius;
 
 	public FluidExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						  double toBlowY, double toBlowZ, float radius, Level.ExplosionInteraction interaction, Fluid fluid) {
+                          double toBlowY, double toBlowZ, float radius, BlockInteraction interaction, Fluid fluid) {
 		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
 		this.fluid = fluid;
 		this.radius = radius;

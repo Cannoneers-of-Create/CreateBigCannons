@@ -1,13 +1,14 @@
 package rbasamoyai.createbigcannons.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.PacketListener;
-import net.minecraft.server.level.ServerPlayer;
+import java.util.concurrent.Executor;
+
 import javax.annotation.Nullable;
 
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.base.SimpleValueContainer;
-
-import java.util.concurrent.Executor;
 
 public class ServerboundSetContainerValuePacket implements RootPacket {
 
@@ -21,7 +22,7 @@ public class ServerboundSetContainerValuePacket implements RootPacket {
 		this.value = buf.readVarInt();
 	}
 
-	@Override public void rootEncode(FriendlyByteBuf buf) {
+	@Override public void rootEncode(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(this.value);
 	}
 

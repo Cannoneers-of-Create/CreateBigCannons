@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
@@ -17,7 +18,7 @@ public record ClientboundSendCustomBreakProgressPacket(BlockPos pos, int damage)
 	}
 
 	@Override
-	public void rootEncode(FriendlyByteBuf buf) {
+	public void rootEncode(RegistryFriendlyByteBuf buf) {
 		buf.writeBlockPos(this.pos)
 			.writeVarInt(this.damage);
 	}

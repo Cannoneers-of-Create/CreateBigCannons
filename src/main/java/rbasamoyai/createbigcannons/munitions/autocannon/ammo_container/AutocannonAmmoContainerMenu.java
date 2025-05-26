@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -38,7 +38,7 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 		return new AutocannonAmmoContainerMenu(CBCMenuTypes.AUTOCANNON_AMMO_CONTAINER.get(), id, playerInv, be, new AutocannonAmmoContainerServerData(be), isCreative, false);
 	}
 
-	public static AutocannonAmmoContainerMenu getClientMenu(MenuType<AutocannonAmmoContainerMenu> type, int id, Inventory playerInv, FriendlyByteBuf buf) {
+	public static AutocannonAmmoContainerMenu getClientMenu(MenuType<AutocannonAmmoContainerMenu> type, int id, Inventory playerInv, RegistryFriendlyByteBuf buf) {
 		boolean isCreative = buf.readBoolean();
 		ContainerData data = new SimpleContainerData(1);
 		data.set(0, buf.readVarInt());
@@ -49,7 +49,7 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 			BlockEntity be = playerInv.player.level().getBlockEntity(pos);
 			ct = new AutocannonAmmoContainerBlockEntityContainerWrapper(be instanceof AutocannonAmmoContainerBlockEntity abe ? abe : null, pos);
 		} else {
-			ct = new AutocannonAmmoContainerItemContainer(buf.readItem());
+			ct = new AutocannonAmmoContainerItemContainer(ItemStack.STREAM_CODEC.decode(buf));
 		}
 		return new AutocannonAmmoContainerMenu(type, id, playerInv, ct, data, isCreative, !isBlock);
 	}

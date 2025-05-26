@@ -5,7 +5,7 @@ import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -63,13 +63,13 @@ public class CannonCastingRecipe implements BlockRecipe {
 		@Override
 		public CannonCastingRecipe fromJson(ResourceLocation id, JsonObject obj) {
 			CannonCastShape shape = CBCRegistries.cannonCastShapes().get(CBCUtils.location(obj.get("cast_shape").getAsString()));
-			FluidIngredient ingredient = FluidIngredient.deserialize(obj.get("fluid"));
+			FluidIngredient ingredient = FluidIngredient.CODEC.parse( obj.get("fluid"));
 			Block result = CBCRegistryUtils.getBlock(CBCUtils.location(obj.get("result").getAsString()));
 			return new CannonCastingRecipe(shape, ingredient, result, id);
 		}
 
 		@Override
-		public CannonCastingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+		public CannonCastingRecipe fromNetwork(ResourceLocation id, RegistryFriendlyByteBuf buf) {
 			CannonCastShape shape = CBCRegistries.cannonCastShapes().byId(buf.readVarInt());
 			Block result = CBCRegistryUtils.getBlock(buf.readVarInt());
 			FluidIngredient ingredient = FluidIngredient.read(buf);
@@ -77,10 +77,10 @@ public class CannonCastingRecipe implements BlockRecipe {
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buf, CannonCastingRecipe recipe) {
+		public void toNetwork(RegistryFriendlyByteBuf buf, CannonCastingRecipe recipe) {
 			buf.writeVarInt(CBCRegistries.cannonCastShapes().getId(recipe.shape()))
 			.writeVarInt(CBCRegistryUtils.getBlockNumericId(recipe.getResultBlock()));
-			recipe.ingredient().write(buf);
+			FluidIngredient.write(buf, recipe.ingredient());
 		}
 	}
 

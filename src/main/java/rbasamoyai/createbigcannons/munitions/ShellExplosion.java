@@ -31,7 +31,7 @@ public class ShellExplosion extends CustomExplosion.Impl {
 	private final boolean noEffects;
 
 	public ShellExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						  double toBlowY, double toBlowZ, float radius, boolean fire,  Level.ExplosionInteraction  interaction, boolean noEffects) {
+						  double toBlowY, double toBlowZ, float radius, boolean fire, BlockInteraction interaction, boolean noEffects) {
 		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, fire, interaction);
 		BlockPos pos = BlockPos.containing(this.x, this.y, this.z);
 		this.isPlume = this.level.getBlockState(pos.above()).isAir() && !this.level.getBlockState(pos.below()).isAir();
@@ -39,7 +39,7 @@ public class ShellExplosion extends CustomExplosion.Impl {
 	}
 
 	public ShellExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						  double toBlowY, double toBlowZ, float radius, boolean fire, Level.ExplosionInteraction interaction) {
+						  double toBlowY, double toBlowZ, float radius, boolean fire, BlockInteraction interaction) {
 		this(level, source, damageSource, toBlowX, toBlowY, toBlowZ, radius, fire, interaction, false);
 	}
 

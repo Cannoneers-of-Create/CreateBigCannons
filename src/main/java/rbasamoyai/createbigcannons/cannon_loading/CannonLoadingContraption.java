@@ -10,8 +10,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.core.HolderLookup;
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.simibubi.create.AllBlocks;
@@ -22,6 +20,7 @@ import com.simibubi.create.infrastructure.config.AllConfigs;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -32,6 +31,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.PoleContraption;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
@@ -145,8 +145,8 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 		if (this.loadingHead == LoadingHead.NOTHING) this.anchor = this.anchor.relative(direction, -1);
 		this.initialExtensionProgress = extensionsInFront;
 		this.pistonContraptionHitbox = new AABB(
-			BlockPos.ZERO.relative(direction, -1),
-			BlockPos.ZERO.relative(direction, -this.extensionLength - 2))
+            Vec3.atLowerCornerOf(BlockPos.ZERO.relative(direction, -1)),
+			Vec3.atLowerCornerOf(BlockPos.ZERO.relative(direction, -this.extensionLength - 2)))
 			.expandTowards(1, 1, 1);
 
 		this.bounds = new AABB(0, 0, 0, 0, 0, 0);

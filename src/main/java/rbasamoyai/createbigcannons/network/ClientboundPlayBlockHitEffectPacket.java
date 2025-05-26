@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.block.Block;
@@ -24,7 +25,7 @@ public record ClientboundPlayBlockHitEffectPacket(BlockState blockState, EntityT
 	}
 
 	@Override
-	public void rootEncode(FriendlyByteBuf buf) {
+	public void rootEncode(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(Block.getId(this.blockState))
 			.writeVarInt(CBCRegistryUtils.getEntityTypeNumericId(this.entityType))
 			.writeBoolean(this.deflect)

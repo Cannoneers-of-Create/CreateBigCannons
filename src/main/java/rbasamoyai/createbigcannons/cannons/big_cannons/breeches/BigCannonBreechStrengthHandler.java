@@ -9,10 +9,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
-import net.minecraft.core.registries.BuiltInRegistries;
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -89,7 +89,7 @@ public class BigCannonBreechStrengthHandler {
 			return new ClientboundBigCannonBreechStrengthPacket(new FriendlyByteBuf(buf.copy()));
 		}
 
-		@Override public void rootEncode(FriendlyByteBuf buf) { writeBuf(buf); }
+		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {

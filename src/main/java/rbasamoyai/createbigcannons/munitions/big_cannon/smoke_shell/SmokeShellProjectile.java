@@ -5,6 +5,7 @@ import javax.annotation.Nonnull;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -28,8 +29,7 @@ public class SmokeShellProjectile extends FuzedBigCannonProjectile {
 	@Override
 	protected void detonate(Position position) {
 		SmokeShellProperties properties = this.getAllProperties();
-		SmokeExplosion explosion = new SmokeExplosion(this.level(), null, position.x(), position.y(), position.z(), 2,
-			Level.ExplosionInteraction.NONE);
+		SmokeExplosion explosion = new SmokeExplosion(this.level(), null, position.x(), position.y(), position.z(), 2, Explosion.BlockInteraction.KEEP);
 		CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 		SmokeEmitterEntity smoke = CBCEntityTypes.SMOKE_EMITTER.create(this.level());
 		smoke.setPos(new Vec3(position.x(), position.y(), position.z()));

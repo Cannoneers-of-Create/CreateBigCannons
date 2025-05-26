@@ -1,9 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -18,7 +15,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 
 public class TracerApplicationRecipe extends CustomRecipe {
 
-	public TracerApplicationRecipe(ResourceLocation location) { super(CraftingBookCategory.MISC); }
+	public TracerApplicationRecipe() { super(CraftingBookCategory.MISC); }
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {

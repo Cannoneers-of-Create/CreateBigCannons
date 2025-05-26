@@ -4,12 +4,9 @@ import javax.annotation.Nonnull;
 
 import com.mojang.math.Constants;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -20,6 +17,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -116,13 +114,13 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
     public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		if (!this.getTracer().isEmpty())
-			tag.put("Tracer", this.getTracer().save(Minecraft.getInstance().level.registryAccess())); // todo: this seems hella hacky
+			tag.put("Tracer", this.getTracer().save(this.level().registryAccess()));
 	}
 
 	@Override
     public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.setTracer(tag.contains("Tracer", Tag.TAG_COMPOUND) ? ItemStack.parseOptional(Minecraft.getInstance().level.registryAccess(), tag.getCompound("Tracer")) : ItemStack.EMPTY);
+		this.setTracer(ItemStack.parseOptional(this.level().registryAccess(), tag.getCompound("Tracer")));
 	}
 
 	@Override
@@ -229,7 +227,8 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 			}
 			Vec3 spallLoc = hitLoc.add(curVel.normalize().scale(2));
 			if (!this.level().isClientSide) {
-				ImpactExplosion explosion = new ImpactExplosion(this.level(), this, this.indirectArtilleryFire(false), spallLoc.x, spallLoc.y, spallLoc.z, 2, Level.ExplosionInteraction.NONE);
+				ImpactExplosion explosion = new ImpactExplosion(this.level(), this, this.indirectArtilleryFire(false),
+                    spallLoc.x, spallLoc.y, spallLoc.z, 2, Explosion.BlockInteraction.KEEP);
 				CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 			}
 			SoundType sound = state.getSoundType();

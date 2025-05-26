@@ -142,6 +142,7 @@ public class CBCEntityTypes {
 		.entity("primed_propellant", PrimedPropellant::new, MobCategory.MISC)
 		.properties(configure(c -> c.fireImmune()
 			.size(0.98F, 0.98F)
+            .eyeHeight(0.15f)
 			.trackingRange(10)
 			.updateInterval(10)))
 		.renderer(() -> PrimedPropellantRenderer::new)

@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.neoforge.network;
 import java.util.function.Supplier;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import rbasamoyai.createbigcannons.network.CBCRootNetwork;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
@@ -13,7 +13,7 @@ public class ForgeClientPacket {
 
 	public ForgeClientPacket(RootPacket pkt) { this.pkt = pkt; }
 
-	public ForgeClientPacket(FriendlyByteBuf buf) {
+	public ForgeClientPacket(RegistryFriendlyByteBuf buf) {
 		this.pkt = CBCRootNetwork.constructPacket(buf, buf.readVarInt());
 	}
 

@@ -29,8 +29,8 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.CopyCustomDataFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
-import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
@@ -705,18 +705,20 @@ public class CBCBuilderTransformersImpl {
 		return tracerProjectileLoot(t -> t);
 	}
 
-	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> tracerProjectileLoot(NonNullFunction<CopyNbtFunction.Builder, CopyNbtFunction.Builder> additionalCopyData) {
+	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> tracerProjectileLoot(
+            NonNullFunction<CopyCustomDataFunction.Builder, CopyCustomDataFunction.Builder> additionalCopyData) {
 		return (t, u) -> t.add(u, LootTable.lootTable()
 			.withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1.0f))
 				.add(LootItem.lootTableItem(u)
 					.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
-					.apply(additionalCopyData.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
+					.apply(additionalCopyData.apply(CopyCustomDataFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
 						.copy("Tracer", "BlockEntityTag.Tracer")
 						.copy("id", "BlockEntityTag.id"))))));
 	}
 
-	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot(NonNullFunction<CopyNbtFunction.Builder, CopyNbtFunction.Builder> additionalCopyData) {
+	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot(
+            NonNullFunction<CopyCustomDataFunction.Builder, CopyCustomDataFunction.Builder> additionalCopyData) {
 		return tracerProjectileLoot(f -> additionalCopyData.apply(f).copy("Fuze", "BlockEntityTag.Fuze"));
 	}
 

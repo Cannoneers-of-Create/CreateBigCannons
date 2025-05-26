@@ -66,7 +66,7 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.put("Fuze", this.fuze.save(registry));
+		tag.put("Fuze", this.fuze.save(this.level().registryAccess()));
 		if (this.explosionCountdown >= 0)
 			tag.putInt("ExplosionCountdown", this.explosionCountdown);
 	}
@@ -74,7 +74,7 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.fuze = ItemStack.of(tag.getCompound("Fuze"));
+		this.fuze = ItemStack.parseOptional(this.level().registryAccess(), tag.getCompound("Fuze"));
 		this.explosionCountdown = tag.contains("ExplosionCountdown", Tag.TAG_INT) ? tag.getInt("ExplosionCountdown") : -1;
 	}
 

@@ -103,6 +103,9 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 		this.frontExtensionLength = tag.getInt("FrontExtensionLength");
 
 		if (world.isClientSide) return;
+
+        HolderLookup.Provider registries = world.registryAccess();
+
 		for (Map.Entry<BlockPos, StructureBlockInfo> entry : this.blocks.entrySet()) {
 			StructureBlockInfo info = this.blocks.get(entry.getKey());
 			if (info == null || info.nbt() == null) continue;
@@ -113,7 +116,7 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 			infoNbt.putInt("y", pos.getY());
 			infoNbt.putInt("z", pos.getZ());
 
-			BlockEntity be = BlockEntity.loadStatic(pos, info.state(), infoNbt);
+			BlockEntity be = BlockEntity.loadStatic(pos, info.state(), infoNbt, registries);
 			if (be == null) continue;
 			be.setLevel(world);
 			this.presentBlockEntities.put(pos, be);

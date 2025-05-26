@@ -10,6 +10,7 @@ public abstract class EntityTypeConfigurator {
 	}
 
 	public abstract EntityTypeConfigurator size(float width, float height);
+	public abstract EntityTypeConfigurator eyeHeight(float eyeHeight);
 	public abstract EntityTypeConfigurator fireImmune();
 	public abstract EntityTypeConfigurator trackingRange(int range);
 	public abstract EntityTypeConfigurator updateInterval(int interval);

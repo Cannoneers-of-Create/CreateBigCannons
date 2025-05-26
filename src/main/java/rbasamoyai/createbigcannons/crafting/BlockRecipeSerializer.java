@@ -1,20 +1,21 @@
 package rbasamoyai.createbigcannons.crafting;
 
 import com.google.gson.JsonObject;
+
 import net.minecraft.core.Registry;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
-import rbasamoyai.createbigcannons.base.CBCRegistries;
 
 public interface BlockRecipeSerializer<T extends BlockRecipe> {
 
 	T fromJson(ResourceLocation id, JsonObject obj);
-	T fromNetwork(ResourceLocation id, FriendlyByteBuf buf);
-	void toNetwork(FriendlyByteBuf buf, T recipe);
+	T fromNetwork(ResourceLocation id, RegistryFriendlyByteBuf buf);
+	void toNetwork(RegistryFriendlyByteBuf buf, T recipe);
 
 	BlockRecipeSerializer<CannonCastingRecipe> CANNON_CASTING = register("cannon_casting", new CannonCastingRecipe.Serializer());
 	BlockRecipeSerializer<BuiltUpHeatingRecipe> BUILT_UP_HEATING = register("built_up_heating", new BuiltUpHeatingRecipe.Serializer());

@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -78,7 +78,7 @@ public class DrillBoringBlockRecipe implements BlockRecipe {
 		}
 
 		@Override
-		public DrillBoringBlockRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
+		public DrillBoringBlockRecipe fromNetwork(ResourceLocation id, RegistryFriendlyByteBuf buf) {
 			BlockRecipeIngredient input = BlockRecipeIngredient.fromNetwork(buf);
 			Block result = CBCRegistryUtils.getBlock(buf.readResourceLocation());
 			boolean obeyFacing = buf.readBoolean();
@@ -86,7 +86,7 @@ public class DrillBoringBlockRecipe implements BlockRecipe {
 		}
 
 		@Override
-		public void toNetwork(FriendlyByteBuf buf, DrillBoringBlockRecipe recipe) {
+		public void toNetwork(RegistryFriendlyByteBuf buf, DrillBoringBlockRecipe recipe) {
 			recipe.input.toNetwork(buf);
 			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(recipe.result))
 			.writeBoolean(recipe.obeyFacingOrAxis);

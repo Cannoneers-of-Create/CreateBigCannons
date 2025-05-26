@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons.base;
 
-import java.io.File;
 import java.util.Map;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
@@ -28,7 +27,7 @@ public class PartialBlockDamageSaveData extends SavedData {
 	}
 
 	@Override
-	public CompoundTag save(CompoundTag tag) {
+	public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
 		CompoundTag blockDamage = new CompoundTag();
 		for (Map.Entry<ResourceKey<Level>, Map<BlockPos, Integer>> entry : this.blockDamage.entrySet()) {
 			blockDamage.put(entry.getKey().location().toString(), NBTHelper.writeCompoundList(entry.getValue().entrySet(), e -> {
@@ -46,7 +45,7 @@ public class PartialBlockDamageSaveData extends SavedData {
 		return this.blockDamage;
 	}
 
-	private static PartialBlockDamageSaveData load(CompoundTag tag) {
+	private static PartialBlockDamageSaveData load(CompoundTag tag, HolderLookup.Provider registries) {
 		PartialBlockDamageSaveData savedata = new PartialBlockDamageSaveData();
 		CompoundTag values = tag.getCompound("BlockDamage");
 
@@ -68,7 +67,7 @@ public class PartialBlockDamageSaveData extends SavedData {
 	public static PartialBlockDamageSaveData load(MinecraftServer server) {
 		return server.overworld()
 			.getDataStorage()
-			.computeIfAbsent(PartialBlockDamageSaveData::load, PartialBlockDamageSaveData::new, "createbigcannons_block_damage");
+			.computeIfAbsent(new Factory<PartialBlockDamageSaveData>(PartialBlockDamageSaveData::new, PartialBlockDamageSaveData::load, null), "createbigcannons_block_damage");
 	}
 
 }

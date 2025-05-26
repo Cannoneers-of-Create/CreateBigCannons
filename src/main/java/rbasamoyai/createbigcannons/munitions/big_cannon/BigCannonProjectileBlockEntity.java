@@ -7,8 +7,8 @@ import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -26,16 +26,16 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+		super.saveAdditional(tag, registries);
 		if (!this.tracer.isEmpty())
-			tag.put("Tracer", this.tracer.save(registry));
+			tag.put("Tracer", this.tracer.save(registries));
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
-		this.tracer = tag.contains("Tracer", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Tracer")) : ItemStack.EMPTY;
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+		super.loadAdditional(tag, registries);
+		this.tracer = ItemStack.parseOptional(registries, tag.getCompound("Tracer"));
 	}
 
 	@Override

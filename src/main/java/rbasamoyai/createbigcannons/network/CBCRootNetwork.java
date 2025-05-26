@@ -7,6 +7,7 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler.ClientboundSyncBlockArmorPropertiesPacket;
 import rbasamoyai.createbigcannons.cannon_control.config.CannonMountPropertiesHandler.ClientboundSyncCannonMountPropertiesPacket;
@@ -66,12 +67,12 @@ public class CBCRootNetwork {
 		ID_TO_CONSTRUCTOR.put(id, decoder);
 	}
 
-	public static RootPacket constructPacket(FriendlyByteBuf buf, int id) {
+	public static RootPacket constructPacket(RegistryFriendlyByteBuf buf, int id) {
 		if (!ID_TO_CONSTRUCTOR.containsKey(id)) throw new IllegalStateException("Attempted to deserialize packet with illegal id: " + id);
 		return ID_TO_CONSTRUCTOR.get(id).apply(buf);
 	}
 
-	public static void writeToBuf(RootPacket pkt, FriendlyByteBuf buf) {
+	public static void writeToBuf(RootPacket pkt, RegistryFriendlyByteBuf buf) {
 		int id = TYPE_TO_ID.getOrDefault(pkt.getClass(), -1);
 		if (id == -1) throw new IllegalStateException("Attempted to serialize packet with illegal id: " + id);
 		buf.writeVarInt(id);

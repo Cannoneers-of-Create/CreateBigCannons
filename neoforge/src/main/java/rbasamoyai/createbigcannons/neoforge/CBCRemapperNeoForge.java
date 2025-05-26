@@ -19,7 +19,7 @@ import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class CBCRemapperForge {
+public class CBCRemapperNeoForge {
 
 	private static final Map<String, ResourceLocation> REMAP = new HashMap<>();
 

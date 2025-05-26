@@ -2,18 +2,19 @@ package rbasamoyai.createbigcannons.network;
 
 import java.util.concurrent.Executor;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.crafting.welding.WeldableBlock;
-
-import javax.annotation.Nullable;
 
 public record ServerboundUseWelderPacket(BlockPos from, BlockPos to) implements RootPacket {
 
@@ -22,7 +23,7 @@ public record ServerboundUseWelderPacket(BlockPos from, BlockPos to) implements 
 	}
 
 	@Override
-	public void rootEncode(FriendlyByteBuf buf) {
+	public void rootEncode(RegistryFriendlyByteBuf buf) {
 		buf.writeBlockPos(this.from).writeBlockPos(this.to);
 	}
 
@@ -34,7 +35,7 @@ public record ServerboundUseWelderPacket(BlockPos from, BlockPos to) implements 
 		if (!(stack.getItem() instanceof CannonWelderItem)) return;
 		BlockState state = level.getBlockState(this.from);
 		if (!CannonWelderItem.weldBlocks(level, this.from, this.to, false)) return;
-		stack.hurtAndBreak(((WeldableBlock) state.getBlock()).weldDamage(), sender, p -> p.broadcastBreakEvent(InteractionHand.MAIN_HAND));
+		stack.hurtAndBreak(((WeldableBlock) state.getBlock()).weldDamage(), sender, EquipmentSlot.MAINHAND);
 	}
 
 }

@@ -1,13 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -22,7 +15,7 @@ import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class MunitionFuzingRecipe extends CustomRecipe {
 
-	public MunitionFuzingRecipe(ResourceLocation location) { super(CraftingBookCategory.MISC); }
+	public MunitionFuzingRecipe() { super(CraftingBookCategory.MISC); }
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {

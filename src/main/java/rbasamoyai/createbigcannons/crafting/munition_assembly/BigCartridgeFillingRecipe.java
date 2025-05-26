@@ -2,10 +2,6 @@ package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -20,7 +16,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 
 public class BigCartridgeFillingRecipe extends CustomRecipe {
 
-	public BigCartridgeFillingRecipe(ResourceLocation id) { super(CraftingBookCategory.MISC); }
+	public BigCartridgeFillingRecipe() { super(CraftingBookCategory.MISC); }
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {

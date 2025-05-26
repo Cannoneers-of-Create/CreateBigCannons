@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
@@ -15,10 +15,10 @@ public class DelayedImpactFuzeContainer extends AbstractFuzeContainer {
 		return new DelayedImpactFuzeContainer(CBCMenuTypes.SET_DELAYED_IMPACT_FUZE.get(), id, new ItemStackServerData(stack, "FuzeTimer"), ItemStack.EMPTY);
 	}
 
-    public static DelayedImpactFuzeContainer getClientMenu(MenuType<DelayedImpactFuzeContainer> type, int id, Inventory playerInv, FriendlyByteBuf buf) {
+    public static DelayedImpactFuzeContainer getClientMenu(MenuType<DelayedImpactFuzeContainer> type, int id, Inventory playerInv, RegistryFriendlyByteBuf buf) {
         ContainerData data = new SimpleContainerData(1);
         data.set(0, buf.readVarInt());
-        return new DelayedImpactFuzeContainer(type, id, data, buf.readItem());
+        return new DelayedImpactFuzeContainer(type, id, data, ItemStack.STREAM_CODEC.decode(buf));
     }
 
 	protected DelayedImpactFuzeContainer(MenuType<? extends AbstractFuzeContainer> type, int windowId, ContainerData data, ItemStack stackToRender) {

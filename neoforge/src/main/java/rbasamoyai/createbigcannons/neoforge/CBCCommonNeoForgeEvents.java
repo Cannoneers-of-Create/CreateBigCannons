@@ -4,41 +4,36 @@ import com.simibubi.create.content.kinetics.deployer.DeployerRecipeSearchEvent;
 
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.OnDatapackSyncEvent;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.event.level.LevelEvent;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.LogicalSide;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.util.TriState;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.level.BlockEvent;
+import net.neoforged.neoforge.event.level.LevelEvent;
+import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import rbasamoyai.createbigcannons.CBCCommonEvents;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 
-public class CBCCommonForgeEvents {
+public class CBCCommonNeoForgeEvents {
 
 	public static void register(IEventBus forgeEventBus) {
-		forgeEventBus.addListener(CBCCommonForgeEvents::onPlayerBreakBlock);
-		forgeEventBus.addListener(CBCCommonForgeEvents::onPlayerLogin);
-		forgeEventBus.addListener(CBCCommonForgeEvents::onPlayerLogout);
-		forgeEventBus.addListener(CBCCommonForgeEvents::onLoadWorld);
-		forgeEventBus.addListener(CBCCommonForgeEvents::onServerWorldTick);
-		forgeEventBus.addListener(CBCCommonForgeEvents::onDatapackSync);
-		forgeEventBus.addListener(CBCCommonForgeEvents::onAddReloadListeners);
-		forgeEventBus.addListener(CBCCommonForgeEvents::onDeployerRecipeSearch);
-		forgeEventBus.addListener(CBCCommonForgeEvents::onUseItemOnBlock);
+		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onPlayerBreakBlock);
+		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onPlayerLogin);
+		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onPlayerLogout);
+		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onLoadWorld);
+		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onServerWorldTick);
+		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onDatapackSync);
+		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onAddReloadListeners);
+		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onDeployerRecipeSearch);
+		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onUseItemOnBlock);
 	}
 
-	public static void onServerWorldTick(TickEvent.LevelTickEvent evt) {
-		if (evt.phase == TickEvent.Phase.START) {
+	public static void onServerWorldTick(LevelTickEvent.Post evt) {
+		if (evt.getLevel().isClientSide)
 			return;
-		}
-		if (evt.side == LogicalSide.CLIENT) {
-			return;
-		}
-		CBCCommonEvents.serverLevelTickEnd(evt.level);
+		CBCCommonEvents.serverLevelTickEnd(evt.getLevel());
 	}
 
 	public static void onPlayerBreakBlock(BlockEvent.BreakEvent event) {
@@ -78,7 +73,7 @@ public class CBCCommonForgeEvents {
 	public static void onUseItemOnBlock(PlayerInteractEvent.RightClickBlock event) {
 		if (event.getItemStack().getItem() instanceof CannonWelderItem
 			&& CannonWelderItem.welderItemAlwaysPlacesWhenUsed(event.getEntity(), event.getLevel(), event.getHand(), event.getHitVec()) == InteractionResult.FAIL)
-			event.setUseBlock(Event.Result.DENY);
+			event.setUseBlock(TriState.FALSE); // TODO c6 playtest
 	}
 
 }

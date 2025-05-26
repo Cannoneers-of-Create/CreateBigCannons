@@ -73,7 +73,7 @@ public class CBCSoundEvents {
 			.build(),
 
 		PLACE_AUTOCANNON_AMMO_CONTAINER = create("place_autocannon_ammo_container").noSubtitle()
-			.playExisting(SoundEvents.ARMOR_EQUIP_IRON, 0.25f, 1.0f)
+			.playExisting(SoundEvents.ARMOR_EQUIP_IRON.value(), 0.25f, 1.0f)
 			.category(SoundSource.BLOCKS)
 			.build(),
 

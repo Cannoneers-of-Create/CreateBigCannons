@@ -522,10 +522,13 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		this.startPos = tag.contains("StartPos") ? NbtUtils.readBlockPos(tag, "StartPos").get() : null;
 		this.recoilSpringPositions.clear();
 		if (tag.contains("RecoilSpringPositions")) {
-			ListTag positionTags = tag.getList("RecoilSpringPositions", Tag.TAG_COMPOUND);
+			ListTag positionTags = tag.getList("RecoilSpringPositions", Tag.TAG_INT_ARRAY);
 			int sz = positionTags.size();
-			for (int i = 0; i < sz; ++i)
-				this.recoilSpringPositions.add(NbtUtils.readBlockPos(positionTags, String.valueOf(i)).get());
+			for (int i = 0; i < sz; ++i) {
+                int[] is = positionTags.getIntArray(i);
+                if (is.length == 3)
+                    this.recoilSpringPositions.add(new BlockPos(is[0], is[1], is[2]));
+            }
 		}
 		this.isHandle = tag.getBoolean("IsHandle");
 	}

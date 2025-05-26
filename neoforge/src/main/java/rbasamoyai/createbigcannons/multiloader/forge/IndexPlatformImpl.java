@@ -7,12 +7,12 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.lang.LangBuilder;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.particle.TerrainParticle;
@@ -36,27 +36,26 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.common.util.FakePlayer;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.common.util.FakePlayer;
+import net.neoforged.neoforge.event.EventHooks;
+import net.neoforged.neoforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
-import rbasamoyai.createbigcannons.neoforge.CreateBigCannonsForge;
+import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
+import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
+import rbasamoyai.createbigcannons.neoforge.CreateBigCannonsNeoForge;
 import rbasamoyai.createbigcannons.neoforge.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.neoforge.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.neoforge.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.neoforge.crafting.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.neoforge.index.fluid_utils.ForgeFluidBuilder;
 import rbasamoyai.createbigcannons.neoforge.munitions.fluid_shell.FluidShellBlockEntity;
-import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
-import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
-import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
 public class IndexPlatformImpl {
 
@@ -81,7 +80,7 @@ public class IndexPlatformImpl {
 	}
 
 	public static ParticleOptions createFluidDripParticle(EndFluidStack stack) {
-		return FluidFX.getFluidParticle(new FluidStack(stack.fluid(), stack.amount(), stack.data()));
+		return FluidFX.getFluidParticle(new FluidStack(stack.fluid(), stack.amount(), stack.components()));
 	}
 
 	public static NonNullSupplier<NonNullFunction<BlockEntityRendererProvider.Context,
@@ -100,11 +99,11 @@ public class IndexPlatformImpl {
 	}
 
 	public static void registerDeferredParticleType(String name, ParticleType<?> type) {
-		CreateBigCannonsForge.PARTICLE_REGISTER.register(name, () -> type);
+		CreateBigCannonsNeoForge.PARTICLE_REGISTER.register(name, () -> type);
 	}
 
 	public static void registerDeferredParticles() {
-		CreateBigCannonsForge.PARTICLE_REGISTER.register(FMLJavaModLoadingContext.get().getModEventBus());
+
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -123,11 +122,11 @@ public class IndexPlatformImpl {
 	}
 
 	public static Supplier<RecipeSerializer<?>> registerRecipeSerializer(ResourceLocation id, NonNullSupplier<RecipeSerializer<?>> sup) {
-		return CreateBigCannonsForge.RECIPE_SERIALIZER_REGISTER.register(id.getPath(), sup);
+		return CreateBigCannonsNeoForge.RECIPE_SERIALIZER_REGISTER.register(id.getPath(), sup);
 	}
 
 	public static void registerRecipeType(ResourceLocation id, Supplier<RecipeType<?>> type) {
-		CreateBigCannonsForge.RECIPE_TYPE_REGISTER.register(id.getPath(), type);
+		CreateBigCannonsNeoForge.RECIPE_TYPE_REGISTER.register(id.getPath(), type);
 	}
 
 	public static float getFluidConversionFactor() {
@@ -166,7 +165,7 @@ public class IndexPlatformImpl {
 	}
 
 	public static boolean onExplosionStart(Level level, Explosion explosion) {
-		return ForgeEventFactory.onExplosionStart(level, explosion);
+		return EventHooks.onExplosionStart(level, explosion);
 	}
 
 	@OnlyIn(Dist.CLIENT)

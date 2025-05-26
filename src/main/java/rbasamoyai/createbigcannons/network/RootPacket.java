@@ -1,15 +1,16 @@
 package rbasamoyai.createbigcannons.network;
 
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.PacketListener;
-import net.minecraft.server.level.ServerPlayer;
+import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
-import java.util.concurrent.Executor;
+
+import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
 
 public interface RootPacket {
 
-	void rootEncode(FriendlyByteBuf buf);
+	void rootEncode(RegistryFriendlyByteBuf buf);
 	void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender);
 
 }

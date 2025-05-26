@@ -4,32 +4,37 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
-public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
+public record EndFluidStack(Fluid fluid, int amount, PatchedDataComponentMap components) {
 
-	public static EndFluidStack EMPTY = new EndFluidStack(Fluids.EMPTY, 0, new CompoundTag());
+	public static EndFluidStack EMPTY = new EndFluidStack(Fluids.EMPTY, 0, new PatchedDataComponentMap(DataComponentMap.EMPTY));
 
 	private static final Codec<Fluid> FLUID_CODEC =
 			ResourceLocation.CODEC.comapFlatMap(EndFluidStack::read, CBCRegistryUtils::getFluidLocation).stable();
 	public static final Codec<EndFluidStack> CODEC = RecordCodecBuilder.create(i -> i
 			.group(FLUID_CODEC.fieldOf("fluid").forGetter(EndFluidStack::fluid),
 					Codec.INT.fieldOf("amount").forGetter(EndFluidStack::amount),
-					CompoundTag.CODEC.fieldOf("data").forGetter(EndFluidStack::data))
+                    DataComponentPatch.CODEC.optionalFieldOf("data", DataComponentPatch.EMPTY).forGetter(stack -> stack.components.asPatch()))
 			.apply(i, EndFluidStack::new));
+
+    public EndFluidStack(Fluid fluid, int amount, DataComponentPatch patch) {
+        this(fluid, amount, PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, patch));
+    }
 
 	public CompoundTag writeTag(CompoundTag tag) {
 		tag.putString("Fluid", CBCRegistryUtils.getFluidLocation(this.fluid).toString());
 		tag.putInt("FluidAmount", this.amount);
-		tag.put("FluidTag", this.data);
+		tag.put("FluidTag", this.components);
 		return tag;
 	}
 
@@ -43,7 +48,7 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 	public void writeBuf(FriendlyByteBuf buf) {
 		buf.writeResourceLocation(CBCRegistryUtils.getFluidLocation(this.fluid))
 		.writeVarInt(this.amount)
-		.writeNbt(this.data);
+		.writeNbt(this.components);
 	}
 
 	public static EndFluidStack readBuf(FriendlyByteBuf buf) {
@@ -55,7 +60,7 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 	}
 
 	public EndFluidStack copy(int newAmount) {
-		return new EndFluidStack(this.fluid, newAmount, this.data.copy());
+		return new EndFluidStack(this.fluid, newAmount, this.components.copy());
 	}
 
 	public EndFluidStack copy() { return this.copy(this.amount); }

@@ -5,17 +5,16 @@ import java.util.List;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 public class ImpactFuzeItem extends FuzeItem {
@@ -27,10 +26,10 @@ public class ImpactFuzeItem extends FuzeItem {
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, boolean baseFuze) {
 		if (baseFuze) return false;
-		int damage = stack.has("Damage") ? tag.getInt("Damage") : this.getFuzeDurability();
+		int damage = stack.has(CBCDataComponents.FUZE_DAMAGE) ? stack.get(CBCDataComponents.FUZE_DAMAGE) : this.getFuzeDurability();
 		if (damage > 0) {
 			--damage;
-			tag.putInt("Damage", damage);
+			stack.set(CBCDataComponents.FUZE_DAMAGE, damage);
 		}
 		if (damage == 0) return false;
 		float f = this.getDetonateChance();

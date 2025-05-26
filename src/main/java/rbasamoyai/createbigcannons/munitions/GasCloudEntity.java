@@ -3,27 +3,27 @@ package rbasamoyai.createbigcannons.munitions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.common.collect.Maps;
 
-import com.simibubi.create.content.equipment.potatoCannon.AllPotatoProjectileEntityHitActions;
-
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.effects.particles.smoke.GasCloudParticleData;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.smoke_shell.SmokeEmitterEntity;
@@ -34,8 +34,7 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 
 	private int waitTime;
 
-	private Potion potion = Potions.EMPTY;
-	private final List<MobEffectInstance> effects = new ArrayList<>();
+	private PotionContents potionContents = PotionContents.EMPTY;
 	private final Map<Entity, Integer> victims = Maps.newHashMap();
 	private boolean fixedColor;
 	private int reapplicationDelay = 20;
@@ -50,24 +49,14 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 		builder.define(DATA_COLOR, 0);
 	}
 
-	public void setPotion(Potion potion) {
-		this.potion = potion;
+	public void setPotionContents(PotionContents potion) {
+		this.potionContents = potion;
 		if (!this.fixedColor)
 			this.updateColor();
 	}
 
 	private void updateColor() {
-		if (this.potion == null && this.effects.isEmpty()) {
-			this.getEntityData().set(DATA_COLOR, 0);
-		} else {
-			this.getEntityData().set(DATA_COLOR, getColor()); // todo: playtest 1.21
-		}
-	}
-
-	public void addEffect(MobEffectInstance effectInstance) {
-		this.effects.add(effectInstance);
-		if (!this.fixedColor)
-			this.updateColor();
+        this.getEntityData().set(DATA_COLOR, this.potionContents.getColor()); // todo: playtest 1.21
 	}
 
 	public int getColor() {
@@ -89,16 +78,19 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 			this.victims.entrySet().removeIf(entry -> this.tickCount >= entry.getValue());
 			List<MobEffectInstance> toApply = new ArrayList<>();
 
-			for (MobEffectInstance potionEffect : this.potion.getEffects()) {
-				toApply.add(new MobEffectInstance(
-					potionEffect.getEffect(),
-					potionEffect.getDuration() / 4,
-					potionEffect.getAmplifier(),
-					potionEffect.isAmbient(),
-					potionEffect.isVisible()
-					));
-			}
-			toApply.addAll(this.effects);
+            if (this.potionContents.potion().isPresent()) {
+                for (MobEffectInstance potionEffect : this.potionContents.potion().get().value().getEffects()) {
+                    toApply.add(new MobEffectInstance(
+                        potionEffect.getEffect(),
+                        potionEffect.mapDuration(i -> i / 4),
+                        potionEffect.getAmplifier(),
+                        potionEffect.isAmbient(),
+                        potionEffect.isVisible()
+                    ));
+                }
+            }
+
+			toApply.addAll(this.potionContents.customEffects());
 			if (toApply.isEmpty()) {
 				this.victims.clear();
 			} else {
@@ -122,7 +114,7 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 	public boolean canMergeWithOther(SmokeEmitterEntity other) {
 		if (!super.canMergeWithOther(other) || !(other instanceof GasCloudEntity otherGas))
 			return false;
-		return this.potion == otherGas.potion || this.potion == null || otherGas.potion == null;
+		return this.potionContents == otherGas.potionContents || this.potionContents == null || otherGas.potionContents == null;
 	}
 
 	@Override
@@ -133,9 +125,19 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 		super.mergeWith(other);
 		if (flag)
 			this.age = Math.max(this.age, Math.min(this.waitTime, otherGas.waitTime));
-		if (this.potion != otherGas.potion && this.potion == null)
-			this.potion = otherGas.potion;
-		this.effects.addAll(otherGas.effects);
+
+        Optional<Holder<Potion>> potionOp;
+        if (this.potionContents.potion().isPresent()) {
+            potionOp = this.potionContents.potion();
+        } else if (otherGas.potionContents.potion().isPresent()) {
+            potionOp = otherGas.potionContents.potion();
+        } else {
+            potionOp = Optional.empty();
+        }
+        List<MobEffectInstance> effects = new ArrayList<>();
+        effects.addAll(this.potionContents.customEffects());
+        effects.addAll(otherGas.potionContents.customEffects());
+        this.potionContents = new PotionContents(potionOp, this.potionContents.customColor(), effects);
 	}
 
 	@Override
@@ -146,15 +148,12 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 		tag.putInt("ReapplicationDelay", this.reapplicationDelay);
 		if (this.fixedColor)
 			tag.putInt("Color", this.getColor());
-		if (this.potion != null)
-			tag.putString("Potion", BuiltInRegistries.POTION.getKey(this.potion).toString());
 
-		if (!this.effects.isEmpty()) {
-			ListTag listTag = new ListTag();
-			for (MobEffectInstance mobEffectInstance : this.effects)
-				listTag.add(mobEffectInstance.save(registry));
-			tag.put("Effects", listTag);
-		}
+        RegistryOps<Tag> registryOps = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
+        if (!this.potionContents.equals(PotionContents.EMPTY)) {
+            Tag potionTag = PotionContents.CODEC.encodeStart(registryOps, this.potionContents).getOrThrow();
+            tag.put("potion_contents", potionTag);
+        }
 	}
 
 	@Override
@@ -165,18 +164,13 @@ public class GasCloudEntity extends SmokeEmitterEntity {
 		this.reapplicationDelay = tag.getInt("ReapplicationDelay");
 		if (tag.contains("Color", Tag.TAG_ANY_NUMERIC))
 			this.setFixedColor(tag.getInt("Color"));
-		if (tag.contains("Potion", Tag.TAG_STRING))
-			this.setPotion(PotionUtils.getPotion(tag));
 
-		if (tag.contains("Effects", Tag.TAG_LIST)) {
-			ListTag listTag = tag.getList("Effects", Tag.TAG_COMPOUND);
-			this.effects.clear();
-			for (int i = 0; i < listTag.size(); ++i) {
-				MobEffectInstance mobEffectInstance = MobEffectInstance.load(listTag.getCompound(i));
-				if (mobEffectInstance != null)
-					this.addEffect(mobEffectInstance);
-			}
-		}
+        RegistryOps<Tag> registryOps = this.registryAccess().createSerializationContext(NbtOps.INSTANCE);
+		if (tag.contains("potion_contents", Tag.TAG_COMPOUND))
+            PotionContents.CODEC
+                .parse(registryOps, tag.get("potion_contents"))
+                .resultOrPartial(string -> CreateBigCannons.LOGGER.warn("Failed to parse area effect cloud potions: '{}'", string))
+                .ifPresent(this::setPotionContents);
 	}
 
 	@Override

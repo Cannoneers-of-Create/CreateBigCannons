@@ -1,13 +1,16 @@
 package rbasamoyai.createbigcannons.network;
 
-import org.joml.Vector4f;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.PacketListener;
-import net.minecraft.server.level.ServerPlayer;
-import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
+import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
-import java.util.concurrent.Executor;
+
+import org.joml.Vector4f;
+
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.server.level.ServerPlayer;
+import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 
 public class ServerboundCarriageWheelPacket implements RootPacket {
 
@@ -25,7 +28,7 @@ public class ServerboundCarriageWheelPacket implements RootPacket {
     }
 
     @Override
-    public void rootEncode(FriendlyByteBuf buf) {
+    public void rootEncode(RegistryFriendlyByteBuf buf) {
         buf.writeVarInt(this.id)
         .writeFloat(this.state.x())
         .writeFloat(this.state.y())

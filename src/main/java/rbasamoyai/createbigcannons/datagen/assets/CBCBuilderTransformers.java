@@ -14,7 +14,7 @@ import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
+import net.minecraft.world.level.storage.loot.functions.CopyCustomDataFunction;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCannonPropellantBlock;
@@ -95,7 +95,7 @@ public class CBCBuilderTransformers {
 	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> bronzeScrapLoot(int count) { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> steelScrapLoot(int count) { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> nethersteelScrapLoot(int count) { throw new AssertionError(); }
-	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot(NonNullFunction<CopyNbtFunction.Builder, CopyNbtFunction.Builder> additionalCopyData) { throw new AssertionError(); }
+	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot(NonNullFunction<CopyCustomDataFunction.Builder, CopyCustomDataFunction.Builder> additionalCopyData) { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot() { throw new AssertionError(); }
 	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<DataGenContext<Block, T>, RegistrateBlockstateProvider> builtUpCannon() { throw new AssertionError(); }
 
@@ -113,6 +113,6 @@ public class CBCBuilderTransformers {
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> tracerProjectileLoot() { return tracerProjectileLoot(t -> t); }
 
-	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> tracerProjectileLoot(NonNullFunction<CopyNbtFunction.Builder, CopyNbtFunction.Builder> additionalCopyData) { throw new AssertionError(); }
+	@ExpectPlatform public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> tracerProjectileLoot(NonNullFunction<CopyCustomDataFunction.Builder, CopyCustomDataFunction.Builder> additionalCopyData) { throw new AssertionError(); }
 
 }

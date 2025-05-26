@@ -6,6 +6,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -21,7 +22,7 @@ public record ClientboundBlastSoundPacket(SoundEvent sound, SoundSource source, 
 	}
 
 	@Override
-	public void rootEncode(FriendlyByteBuf buf) {
+	public void rootEncode(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(CBCRegistryUtils.getSoundEventNumericId(this.sound))
 			.writeEnum(this.source)
 			.writeDouble(this.x)

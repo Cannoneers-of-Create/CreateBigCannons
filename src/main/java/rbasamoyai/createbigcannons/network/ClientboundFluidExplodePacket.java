@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
@@ -31,7 +32,7 @@ public record ClientboundFluidExplodePacket(double x, double y, double z, float 
 	}
 
 	@Override
-	public void rootEncode(FriendlyByteBuf buf) {
+	public void rootEncode(RegistryFriendlyByteBuf buf) {
 		buf.writeDouble(this.x)
 			.writeDouble(this.y)
 			.writeDouble(this.z)

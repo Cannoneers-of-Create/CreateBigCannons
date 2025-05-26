@@ -6,8 +6,8 @@ import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -24,17 +24,17 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 	}
 
 	@Override
-	protected void saveAdditional(CompoundTag tag) {
-		super.saveAdditional(tag);
+	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+		super.saveAdditional(tag, registries);
 		if (!this.fuze.isEmpty()) {
-			tag.put("Fuze", this.fuze.save(registry));
+			tag.put("Fuze", this.fuze.save(registries));
 		}
 	}
 
 	@Override
-	public void load(CompoundTag tag) {
-		super.load(tag);
-		this.fuze = tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Fuze")) : ItemStack.EMPTY;
+	public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+		super.loadAdditional(tag, registries);
+		this.fuze = ItemStack.parseOptional(registries, tag.getCompound("Fuze"));
 	}
 
 	@Override

@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.config;
 
 import net.createmod.catnip.config.ConfigBase;
-import net.minecraft.world.level.Level.ExplosionInteraction;
+import net.minecraft.world.level.Explosion;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 
@@ -82,17 +82,17 @@ public class CBCCfgMunitions extends ConfigBase {
 	}
 
 	public enum GriefState {
-		ALL_DAMAGE(ExplosionInteraction.BLOCK),
-		NO_EXPLOSIVE_DAMAGE(ExplosionInteraction.NONE),
-		NO_DAMAGE(ExplosionInteraction.NONE);
+		ALL_DAMAGE(Explosion.BlockInteraction.DESTROY_WITH_DECAY),
+		NO_EXPLOSIVE_DAMAGE(Explosion.BlockInteraction.KEEP),
+		NO_DAMAGE(Explosion.BlockInteraction.KEEP);
 
-		private final ExplosionInteraction explosiveInteraction;
+		private final Explosion.BlockInteraction explosiveInteraction;
 
-		GriefState(ExplosionInteraction explosiveInteraction) {
+		GriefState(Explosion.BlockInteraction explosiveInteraction) {
 			this.explosiveInteraction = explosiveInteraction;
 		}
 
-		public ExplosionInteraction explosiveInteraction() {
+		public Explosion.BlockInteraction explosiveInteraction() {
 			return this.explosiveInteraction;
 		}
 	}

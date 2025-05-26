@@ -1,20 +1,17 @@
 package rbasamoyai.createbigcannons.index;
 
+import java.util.function.UnaryOperator;
+
 import com.mojang.serialization.Codec;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-
-import java.util.function.UnaryOperator;
 
 public class CBCDataComponents {
     public static final DataComponentType<Boolean> AUTOCANNON_TRACER = register(
@@ -69,6 +66,11 @@ public class CBCDataComponents {
 
     public static final DataComponentType<Integer> FUZE_TIMER = register(
         "fuze_timer",
+        builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
+    );
+
+    public static final DataComponentType<Integer> FUZE_DAMAGE = register(
+        "fuze_damage",
         builder -> builder.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT)
     );
 

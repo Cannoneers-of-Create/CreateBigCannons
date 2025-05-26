@@ -1,8 +1,10 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
 import com.simibubi.create.AllFluids;
+import com.simibubi.create.content.fluids.potion.PotionFluidHandler;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -10,7 +12,9 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractCandleBlock;
 import net.minecraft.world.level.block.BaseFireBlock;
@@ -23,6 +27,7 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.effects.particles.explosions.FluidCloudParticleData;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
@@ -68,7 +73,7 @@ public class DefaultFluidCompat {
 		Entity entity = context.result().getEntity();
 		if (!(entity instanceof LivingEntity living))
 			return;
-		CompoundTag tag = context.burst().getFluidStack().data();
+		CompoundTag tag = context.burst().getFluidStack().components();
 		for (MobEffectInstance effect : PotionUtils.getAllEffects(tag))
 			living.addEffect(new MobEffectInstance(effect));
 	}
@@ -164,14 +169,14 @@ public class DefaultFluidCompat {
 	}
 
 	public static void spawnGasCloud(BlockPos pos, FluidBlobBurst blob, Level level) {
-		CompoundTag tag = blob.getFluidStack().data();
+		CompoundTag tag = blob.getFluidStack().components();
 
 		GasCloudEntity gasCloud = CBCEntityTypes.GAS_CLOUD.create(level);
 		gasCloud.setPos(Vec3.atCenterOf(pos));
 		gasCloud.setWaitTime(10);
 		gasCloud.setSize(blob.getBlobSize());
 		gasCloud.setDuration(300);
-		gasCloud.setPotion(PotionUtils.getPotion(tag));
+		gasCloud.setPotionContents(PotionUtils.getPotion(tag));
 
 		for (MobEffectInstance effect : PotionUtils.getAllEffects(tag))
 			gasCloud.addEffect(new MobEffectInstance(effect));
@@ -179,5 +184,12 @@ public class DefaultFluidCompat {
 		gasCloud.setFixedColor(PotionUtils.getColor(PotionUtils.getAllEffects(tag)) | 0xff000000);
 		level.addFreshEntity(gasCloud);
 	}
+
+    private static PotionContents getContents(FluidStack fluid) {
+        FluidStack copy = fluid.copy();
+        copy.setAmount(250);
+        ItemStack bottle = PotionFluidHandler.fillBottle(new ItemStack(Items.GLASS_BOTTLE), copy);
+        return bottle.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY);
+    }
 
 }

@@ -23,7 +23,13 @@ public class EntityTypeConfiguratorImpl extends EntityTypeConfigurator {
 		return this;
 	}
 
-	@Override
+    @Override
+    public EntityTypeConfigurator eyeHeight(float eyeHeight) {
+        this.builder.eyeHeight(eyeHeight);
+        return this;
+    }
+
+    @Override
 	public EntityTypeConfigurator fireImmune() {
 		this.builder.fireImmune();
 		return this;

@@ -1,6 +1,6 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
@@ -15,10 +15,10 @@ public class TimedFuzeContainer extends AbstractFuzeContainer {
 		return new TimedFuzeContainer(CBCMenuTypes.SET_TIMED_FUZE.get(), id, new ItemStackServerData(stack, "FuzeTimer"), ItemStack.EMPTY);
 	}
 
-	public static TimedFuzeContainer getClientMenu(MenuType<TimedFuzeContainer> type, int id, Inventory playerInv, FriendlyByteBuf buf) {
+	public static TimedFuzeContainer getClientMenu(MenuType<TimedFuzeContainer> type, int id, Inventory playerInv, RegistryFriendlyByteBuf buf) {
 		ContainerData data = new SimpleContainerData(1);
 		data.set(0, buf.readVarInt());
-		return new TimedFuzeContainer(type, id, data, buf.readItem());
+		return new TimedFuzeContainer(type, id, data, ItemStack.STREAM_CODEC.decode(buf));
 	}
 
 	protected TimedFuzeContainer(MenuType<? extends TimedFuzeContainer> type, int windowId, ContainerData data, ItemStack stackToRender) {

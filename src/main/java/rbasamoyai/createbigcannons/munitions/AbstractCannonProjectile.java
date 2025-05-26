@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
@@ -26,6 +25,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -296,10 +297,14 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		if (!this.level().isClientSide) {
 			if (projCtx.griefState() != GriefState.NO_DAMAGE) {
 				Vec3 oldVel = this.getDeltaMovement();
+
+                Explosion.BlockInteraction interaction = this.level().getGameRules().getBoolean(GameRules.RULE_BLOCK_EXPLOSION_DROP_DECAY) ?
+                    Explosion.BlockInteraction.DESTROY_WITH_DECAY : Explosion.BlockInteraction.DESTROY;
+
 				for (Map.Entry<BlockPos, Float> queued : projCtx.getQueuedExplosions().entrySet()) {
 					Vec3 impactPos = Vec3.atCenterOf(queued.getKey());
 					ImpactExplosion explosion = new ImpactExplosion(this.level(), this, this.indirectArtilleryFire(false),
-						impactPos.x, impactPos.y, impactPos.z, queued.getValue(), Level.ExplosionInteraction.BLOCK);
+						impactPos.x, impactPos.y, impactPos.z, queued.getValue(), interaction);
 					CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 				}
 				this.setDeltaMovement(oldVel);

@@ -11,6 +11,7 @@ import com.google.gson.JsonElement;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -94,7 +95,7 @@ public class DimensionMunitionPropertiesHandler {
 			return new ClientboundSyncDimensionMunitionPropertiesPacket(new FriendlyByteBuf(buf.copy()));
 		}
 
-		@Override public void rootEncode(FriendlyByteBuf buf) { writeBuf(buf); }
+		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {

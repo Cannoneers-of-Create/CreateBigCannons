@@ -20,7 +20,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket;
 import net.minecraft.server.level.ServerLevel;
@@ -184,13 +183,14 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		this.anchor = pos;
 
 		this.startPos = this.startPos.subtract(pos);
+        HolderLookup.Provider registries = level.registryAccess();
 		for (StructureBlockInfo blockInfo : cannonBlocks) {
 			BlockPos localPos = blockInfo.pos().subtract(pos);
 			StructureBlockInfo localBlockInfo = new StructureBlockInfo(localPos, blockInfo.state(), blockInfo.nbt());
 			this.getBlocks().put(localPos, localBlockInfo);
 
 			if (blockInfo.nbt() == null) continue;
-			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state(), blockInfo.nbt());
+			BlockEntity be = BlockEntity.loadStatic(localPos, blockInfo.state(), blockInfo.nbt(), registries);
 			this.presentBlockEntities.put(localPos, be);
 			if (be instanceof IBigCannonBlockEntity cbe && cbe.cannonBehavior().isWelded())
 				this.hasWeldedPenalty = true;
@@ -281,6 +281,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		float minimumSpread = this.cannonMaterial.properties().minimumSpread();
 
+        HolderLookup.Provider registries = level.registryAccess();
+
 		while (this.presentBlockEntities.get(currentPos) instanceof IBigCannonBlockEntity cbe) {
 			BigCannonBehavior behavior = cbe.cannonBehavior();
 			StructureBlockInfo containedBlockInfo = behavior.block();
@@ -306,7 +308,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 						propelCtx.spread = Math.max(propelCtx.spread - spreadSub, minimumSpread);
 					}
 					if (canFail && projectile.canSquib() && this.cannonMaterial.properties().mayGetStuck(propelCtx.chargesUsed, propelCtx.barrelTravelled) && rollSquib(rand)) {
-						this.squibBlocks(currentPos, projectileBlocks);
+						this.squibBlocks(currentPos, projectileBlocks, registries);
 						Vec3 squibPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 						level.playSound(null, squibPos.x, squibPos.y, squibPos.z, cannonInfo.state().getSoundType().getBreakSound(), SoundSource.BLOCKS, 10.0f, 0.0f);
 						return;
@@ -321,7 +323,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
 					return;
 				}
-				this.consumeBlock(behavior, currentPos, cpropel::consumePropellant);
+				this.consumeBlock(behavior, currentPos, cpropel::consumePropellant, registries);
 				if (canFail && (!cbe.blockCanHandle(cannonInfo) && rollBarrelBurst(rand)
 					|| propelCtx.stress > maxSafeCharges && rollOverloadBurst(rand))) {
 					this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
@@ -352,7 +354,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 						this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
 					return;
 				}
-				this.consumeBlock(behavior, currentPos);
+				this.consumeBlock(behavior, currentPos, registries);
 				if (cannonInfo.state().is(CBCTags.CBCBlockTags.REDUCES_SPREAD)) {
 					propelCtx.spread = Math.max(propelCtx.spread - spreadSub, minimumSpread);
 				}
@@ -360,7 +362,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					projectile = projBlock.getProjectile(level, projectileBlocks);
 					propelCtx.chargesUsed += projectile.addedChargePower();
 					if (propelCtx.chargesUsed <= 0 || canFail && propelCtx.chargesUsed < projectile.minimumChargePower()) {
-						this.squibBlocks(assemblyPos, projectileBlocks);
+						this.squibBlocks(assemblyPos, projectileBlocks, registries);
 						return;
 					}
 				}
@@ -370,7 +372,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 					this.fail(currentPos, level, entity, behavior.blockEntity, (int) propelCtx.chargesUsed);
 					return;
 				} else {
-					this.consumeBlock(behavior, currentPos);
+					this.consumeBlock(behavior, currentPos, registries);
 				}
 			}
 			currentPos = currentPos.relative(this.initialOrientation);
@@ -414,7 +416,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				projectile = projBlock.getProjectile(level, projectileBlocks);
 				propelCtx.chargesUsed += projectile.addedChargePower();
 				if (propelCtx.chargesUsed <= 0 || canFail && propelCtx.chargesUsed < projectile.minimumChargePower()) {
-					this.squibBlocks(assemblyPos, projectileBlocks);
+					this.squibBlocks(assemblyPos, projectileBlocks, registries);
 					return;
 				}
 			} else if (canFail) {
@@ -491,13 +493,13 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		}
 	}
 
-	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos) {
-		this.consumeBlock(behavior, pos, BigCannonBehavior::removeBlock);
+	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos, HolderLookup.Provider registries) {
+		this.consumeBlock(behavior, pos, BigCannonBehavior::removeBlock, registries);
 	}
 
-	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos, Consumer<BigCannonBehavior> action) {
+	private void consumeBlock(BigCannonBehavior behavior, BlockPos pos, Consumer<BigCannonBehavior> action, HolderLookup.Provider registries) {
 		action.accept(behavior);
-		CompoundTag tag = behavior.blockEntity.saveWithFullMetadata();
+		CompoundTag tag = behavior.blockEntity.saveWithFullMetadata(registries);
 		tag.remove("x");
 		tag.remove("y");
 		tag.remove("z");
@@ -513,7 +515,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		return f != 0 && random.nextFloat() <= f;
 	}
 
-	private void squibBlocks(BlockPos currentPos, List<StructureBlockInfo> projectileBlocks) {
+	private void squibBlocks(BlockPos currentPos, List<StructureBlockInfo> projectileBlocks, HolderLookup.Provider registries) {
 		for (int i = 0; i < projectileBlocks.size(); ++i) {
 			BlockPos pos = currentPos.relative(this.initialOrientation, i);
 			StructureBlockInfo cannonInfo1 = this.blocks.get(pos);
@@ -523,7 +525,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			if (cannonInfo1 != null && be1 instanceof IBigCannonBlockEntity cbe1) {
 				BigCannonBehavior behavior1 = cbe1.cannonBehavior();
 				behavior1.loadBlock(projBlock);
-				CompoundTag tag = behavior1.blockEntity.saveWithFullMetadata();
+				CompoundTag tag = behavior1.blockEntity.saveWithFullMetadata(registries);
 				tag.remove("x");
 				tag.remove("y");
 				tag.remove("z");
@@ -622,7 +624,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		this.hasWeldedPenalty = tag.contains("WeldedCannon");
 		if (this.cannonMaterial == null) this.cannonMaterial = CBCBigCannonMaterials.CAST_IRON;
 		this.mortarDelay = Math.max(0, tag.getInt("MortarDelay"));
-		this.cachedMortarRound = tag.contains("CachedMortarRound", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("CachedMortarRound")) : ItemStack.EMPTY;
+		this.cachedMortarRound = ItemStack.parseOptional(level.registryAccess(), tag.getCompound("CachedMortarRound"));
 		this.hasFired = tag.contains("HasFired");
 	}
 

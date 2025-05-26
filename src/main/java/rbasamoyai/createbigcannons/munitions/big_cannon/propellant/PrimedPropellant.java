@@ -7,13 +7,10 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
@@ -85,8 +82,7 @@ public class PrimedPropellant extends Entity {
 	}
 
 	private void explode() {
-		this.level().explode(this, this.getX(), this.getY(0.0625), this.getZ(), this.explosionPower,
-			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
+		this.level().explode(this, this.getX(), this.getY(0.0625), this.getZ(), this.explosionPower, Level.ExplosionInteraction.BLOCK);
 	}
 
 	@Override
@@ -102,8 +98,6 @@ public class PrimedPropellant extends Entity {
 		this.setAppearance(NbtUtils.readBlockState(this.level().holderLookup(CBCRegistryUtils.getBlockRegistryKey()), tag.getCompound("Appearance")));
 		this.explosionPower = tag.getFloat("ExplosionPower");
 	}
-
-	@Override protected float getEyeHeight(Pose pose, EntityDimensions dimensions) { return 0.15F; }
 
 	public void setFuse(int life) { this.entityData.set(DATA_FUSE_ID, life); }
 	public int getFuse() { return this.entityData.get(DATA_FUSE_ID); }

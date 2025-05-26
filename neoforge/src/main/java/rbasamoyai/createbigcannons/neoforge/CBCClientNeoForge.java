@@ -14,16 +14,13 @@ import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
-import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
-import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
-import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import rbasamoyai.createbigcannons.CBCClientCommon;
@@ -32,33 +29,33 @@ import rbasamoyai.createbigcannons.compat.curios.CBCCuriosRenderers;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
-public class CBCClientForge {
+public class CBCClientNeoForge {
 
 	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
 		CBCBlockPartials.init();
 
-		modEventBus.addListener(CBCClientForge::onClientSetup);
-		modEventBus.addListener(CBCClientForge::onRegisterKeyMappings);
-		modEventBus.addListener(CBCClientForge::onRegisterParticleFactories);
-		modEventBus.addListener(CBCClientForge::onLoadComplete);
-		modEventBus.addListener(CBCClientForge::onRegisterClientReloadListeners);
-		modEventBus.addListener(CBCClientForge::onRegisterGuiOverlays);
-		modEventBus.addListener(CBCClientForge::onRegisterShaders);
+		modEventBus.addListener(CBCClientNeoForge::onClientSetup);
+		modEventBus.addListener(CBCClientNeoForge::onRegisterKeyMappings);
+		modEventBus.addListener(CBCClientNeoForge::onRegisterParticleFactories);
+		modEventBus.addListener(CBCClientNeoForge::onLoadComplete);
+		modEventBus.addListener(CBCClientNeoForge::onRegisterClientReloadListeners);
+		modEventBus.addListener(CBCClientNeoForge::onRegisterGuiOverlays);
+		modEventBus.addListener(CBCClientNeoForge::onRegisterShaders);
 
-		forgeEventBus.addListener(CBCClientForge::getFogColor);
-		forgeEventBus.addListener(CBCClientForge::getFogDensity);
-		forgeEventBus.addListener(CBCClientForge::onClientGameTick);
-		forgeEventBus.addListener(CBCClientForge::onScrollMouse);
-		forgeEventBus.addListener(CBCClientForge::onFovModify);
-		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
-		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
-		forgeEventBus.addListener(CBCClientForge::onPlayerLogOut);
-		forgeEventBus.addListener(CBCClientForge::onClickMouse);
-		forgeEventBus.addListener(CBCClientForge::onLoadClientLevel);
-		forgeEventBus.addListener(CBCClientForge::onPlayerLogIn);
-		forgeEventBus.addListener(CBCClientForge::onPlayerChangeDimension);
+		forgeEventBus.addListener(CBCClientNeoForge::getFogColor);
+		forgeEventBus.addListener(CBCClientNeoForge::getFogDensity);
+		forgeEventBus.addListener(CBCClientNeoForge::onClientGameTick);
+		forgeEventBus.addListener(CBCClientNeoForge::onScrollMouse);
+		forgeEventBus.addListener(CBCClientNeoForge::onFovModify);
+		forgeEventBus.addListener(CBCClientNeoForge::onPlayerRenderPre);
+		forgeEventBus.addListener(CBCClientNeoForge::onSetupCamera);
+		forgeEventBus.addListener(CBCClientNeoForge::onPlayerLogOut);
+		forgeEventBus.addListener(CBCClientNeoForge::onClickMouse);
+		forgeEventBus.addListener(CBCClientNeoForge::onLoadClientLevel);
+		forgeEventBus.addListener(CBCClientNeoForge::onPlayerLogIn);
+		forgeEventBus.addListener(CBCClientNeoForge::onPlayerChangeDimension);
 
-		CBCModsForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosRenderers.register(modEventBus, forgeEventBus));
+		CBCModsNeoForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosRenderers.register(modEventBus, forgeEventBus));
 	}
 
 	private static void wrapOverlay(String id, CBCClientCommon.CBCGuiOverlay overlay, VanillaGuiOverlay renderOver,

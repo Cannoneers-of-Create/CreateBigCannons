@@ -14,6 +14,7 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -240,7 +241,7 @@ public class CannonMountPropertiesHandler {
 			return new ClientboundSyncCannonMountPropertiesPacket(new FriendlyByteBuf(buf.copy()));
 		}
 
-		@Override public void rootEncode(FriendlyByteBuf buf) { writeBuf(buf); }
+		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {

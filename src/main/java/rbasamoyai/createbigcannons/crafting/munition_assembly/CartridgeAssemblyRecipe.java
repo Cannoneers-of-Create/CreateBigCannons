@@ -1,10 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
@@ -20,7 +16,7 @@ import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class CartridgeAssemblyRecipe extends CustomRecipe {
 
-	public CartridgeAssemblyRecipe(ResourceLocation id) { super(CraftingBookCategory.MISC); }
+	public CartridgeAssemblyRecipe() { super(CraftingBookCategory.MISC); }
 
 	@Override
 	public boolean matches(CraftingInput container, Level level) {

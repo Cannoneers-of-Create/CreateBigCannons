@@ -12,14 +12,14 @@ import net.minecraftforge.registries.ForgeRegistries;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 // Copied from Create's Mods class --ritchie
-public enum CBCModsForge {
+public enum CBCModsNeoForge {
 	COPYCATS,
 	CURIOS,
 	FRAMEDBLOCKS;
 
 	private final String id;
 
-	CBCModsForge() {
+	CBCModsNeoForge() {
 		this.id = CreateLang.asId(name());
 	}
 

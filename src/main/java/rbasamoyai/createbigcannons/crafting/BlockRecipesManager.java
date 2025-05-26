@@ -16,6 +16,8 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -45,7 +47,7 @@ public class BlockRecipesManager {
 		BLOCK_RECIPES_BY_TYPE.clear();
 	}
 
-	public static void writeBuf(FriendlyByteBuf buf) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(BLOCK_RECIPES_BY_NAME.size());
 		for (Map.Entry<ResourceLocation, BlockRecipe> entry : BLOCK_RECIPES_BY_NAME.entrySet()) {
 			buf.writeResourceLocation(entry.getKey());
@@ -54,13 +56,13 @@ public class BlockRecipesManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T extends BlockRecipe> void toNetworkCasted(FriendlyByteBuf buf, T recipe) {
+	public static <T extends BlockRecipe> void toNetworkCasted(RegistryFriendlyByteBuf buf, T recipe) {
 		BlockRecipeSerializer<T> ser = (BlockRecipeSerializer<T>) recipe.getSerializer();
 		buf.writeResourceLocation(CBCRegistries.blockRecipeSerializers().getKey(ser));
 		ser.toNetwork(buf, recipe);
 	}
 
-	public static void readBuf(FriendlyByteBuf buf) {
+	public static void readBuf(RegistryFriendlyByteBuf buf) {
 		clear();
 		int sz = buf.readVarInt();
 		Registry<BlockRecipeSerializer<?>> serializersRegistry = CBCRegistries.blockRecipeSerializers();
@@ -94,10 +96,10 @@ public class BlockRecipesManager {
 		}
 
 		@Override
-		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resources,
-			ProfilerFiller profiler) {
+		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resources, ProfilerFiller profiler) {
 			clear();
 
+            RegistryOps<JsonElement> registryOps = this.makeConditionalOps();
 			Registry<BlockRecipeSerializer<?>> serializersRegistry = CBCRegistries.blockRecipeSerializers();
 			Registry<BlockRecipeType<?>> typeRegistry = CBCRegistries.blockRecipeTypes();
 
@@ -107,7 +109,7 @@ public class BlockRecipesManager {
 					ResourceLocation id = entry.getKey();
 					JsonObject obj = el.getAsJsonObject();
 					ResourceLocation type = CBCUtils.location(obj.get("type").getAsString());
-					BlockRecipe recipe = CBCRegistries.blockRecipeSerializers().get(type).fromJson(id, obj);
+					BlockRecipe recipe = serializersRegistry.get(type).fromJson(id, obj);
 					BLOCK_RECIPES_BY_NAME.put(id, recipe);
 					BlockRecipeType<?> recipeType = typeRegistry.get(type);
 					if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType)) {
@@ -130,7 +132,7 @@ public class BlockRecipesManager {
 		}
 
 		@Override
-		public void rootEncode(FriendlyByteBuf buf) {
+		public void rootEncode(RegistryFriendlyByteBuf buf) {
 			writeBuf(buf);
 		}
 

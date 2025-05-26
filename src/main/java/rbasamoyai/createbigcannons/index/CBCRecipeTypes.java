@@ -1,18 +1,18 @@
 package rbasamoyai.createbigcannons.index;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
@@ -39,12 +39,12 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	MUNITION_FUZING(noSerializer(MunitionFuzingRecipe::new)),
 	CARTRIDGE_ASSEMBLY(noSerializer(CartridgeAssemblyRecipe::new)),
 	BIG_CARTRIDGE_FILLING(noSerializer(BigCartridgeFillingRecipe::new)),
-	BIG_CARTRIDGE_FILLING_DEPLOYER(noSerializer(r -> new BigCartridgeFillingDeployerRecipe())),
-	MUNITION_FUZING_DEPLOYER(noSerializer(r -> new MunitionFuzingDeployerRecipe())),
-	CARTRIDGE_ASSEMBLY_DEPLOYER(noSerializer(r -> new CartridgeAssemblyDeployerRecipe())),
+	BIG_CARTRIDGE_FILLING_DEPLOYER(noSerializer(BigCartridgeFillingDeployerRecipe::new)),
+	MUNITION_FUZING_DEPLOYER(noSerializer(MunitionFuzingDeployerRecipe::new)),
+	CARTRIDGE_ASSEMBLY_DEPLOYER(noSerializer(CartridgeAssemblyDeployerRecipe::new)),
 	TRACER_APPLICATION(noSerializer(TracerApplicationRecipe::new)),
-	TRACER_APPLICATION_DEPLOYER(noSerializer(r -> new TracerApplicationDeployerRecipe())),
-	AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER(noSerializer(r -> new AutocannonAmmoContainerFillingDeployerRecipe())),
+	TRACER_APPLICATION_DEPLOYER(noSerializer(TracerApplicationDeployerRecipe::new)),
+	AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER(noSerializer(AutocannonAmmoContainerFillingDeployerRecipe::new)),
 	FUZE_REMOVAL(noSerializer(FuzeRemovalRecipe::new)),
 	TRACER_REMOVAL(noSerializer(TracerRemovalRecipe::new));
 
@@ -111,17 +111,21 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 	public static void register() {
 	}
 
-	private static <T extends Recipe<?>> NonNullSupplier<RecipeSerializer<?>> noSerializer(Function<ResourceLocation, T> prov) {
+	private static <T extends Recipe<?>> NonNullSupplier<RecipeSerializer<?>> noSerializer(Supplier<T> prov) {
 		return () -> new SimpleRecipeSerializer<>(prov);
 	}
 
 	private static class SimpleRecipeSerializer<T extends Recipe<?>> implements RecipeSerializer<T> {
-		private final Function<ResourceLocation, T> constructor;
+        private final MapCodec<T> codec;
+        private final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;
 
-		public SimpleRecipeSerializer(Function<ResourceLocation, T> constructor) {
-			this.constructor = constructor;
+		public SimpleRecipeSerializer(Supplier<T> constructor) {
+            this.codec = MapCodec.unit(constructor);
+            this.streamCodec = StreamCodec.unit(constructor.get());
 		}
 
-	}
+        @Override public MapCodec<T> codec() { return this.codec; }
+        @Override public StreamCodec<RegistryFriendlyByteBuf, T> streamCodec() { return this.streamCodec; }
+    }
 
 }

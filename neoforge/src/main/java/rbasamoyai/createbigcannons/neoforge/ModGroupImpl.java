@@ -9,19 +9,19 @@ import com.simibubi.create.Create;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
 
 public class ModGroupImpl {
 
 	private static final DeferredRegister<CreativeModeTab> TAB_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CreateBigCannons.MOD_ID);
-	private static Map<ResourceKey<CreativeModeTab>, RegistryObject<CreativeModeTab>> TABS = new HashMap<>();
+	private static Map<ResourceKey<CreativeModeTab>, DeferredHolder<CreativeModeTab, CreativeModeTab>> TABS = new HashMap<>();
 
 	public static Supplier<CreativeModeTab> wrapGroup(String id, Supplier<CreativeModeTab> sup) {
-		RegistryObject<CreativeModeTab> obj = TAB_REGISTER.register(id, sup);
+		DeferredHolder<CreativeModeTab, CreativeModeTab> obj = TAB_REGISTER.register(id, sup);
 		TABS.put(ModGroup.makeKey(id), obj);
 		return obj;
 	}
@@ -30,7 +30,7 @@ public class ModGroupImpl {
 		return CreativeModeTab.builder().withTabsBefore(Create.asResource("palettes"));
 	}
 
-	public static void registerForge(IEventBus modBus) {
+	public static void registerNeoForge(IEventBus modBus) {
 		TAB_REGISTER.register(modBus);
 	}
 

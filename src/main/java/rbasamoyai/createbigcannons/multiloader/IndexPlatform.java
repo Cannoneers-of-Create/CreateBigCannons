@@ -27,6 +27,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Explosion;
@@ -134,5 +135,7 @@ public class IndexPlatform {
 	@Environment(EnvType.CLIENT)
 	@ExpectPlatform
 	public static void updateSprite(TerrainParticle particle, BlockState state, BlockPos pos) { throw new AssertionError(); }
+
+    @ExpectPlatform public static PotionContents getPotionContentsFromFluidStack(EndFluidStack fstack) { throw new AssertionError(); }
 
 }

@@ -1,11 +1,13 @@
 package rbasamoyai.createbigcannons.multiloader;
 
-import dev.architectury.injectables.annotations.ExpectPlatform;
-
 import java.util.function.Supplier;
+
+import net.createmod.catnip.platform.CatnipServices;
 
 public class EnvExecute {
 
-	@ExpectPlatform public static void executeOnClient(Supplier<Runnable> sup) { throw new AssertionError(); }
+	public static void executeOnClient(Supplier<Runnable> sup) {
+        CatnipServices.PLATFORM.executeOnClientOnly(sup);
+    }
 
 }

@@ -8,6 +8,7 @@ import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
@@ -24,7 +25,7 @@ public class ClientboundAnimateCannonContraptionPacket implements RootPacket {
 	}
 
 	@Override
-	public void rootEncode(FriendlyByteBuf buf) {
+	public void rootEncode(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(this.id);
 	}
 

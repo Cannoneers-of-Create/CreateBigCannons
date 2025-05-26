@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.index;
 
+import static net.minecraft.world.item.Item.BASE_ATTACK_DAMAGE_ID;
+import static net.minecraft.world.item.Item.BASE_ATTACK_SPEED_ID;
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
@@ -8,8 +10,12 @@ import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EquipmentSlotGroup;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
@@ -218,13 +224,37 @@ public class CBCItems {
 
 	public static final ItemEntry<RamRodItem> RAM_ROD = REGISTRATE
 		.item("ram_rod", RamRodItem::new)
-		.properties(p -> p.stacksTo(1))
+		.properties(p -> p.stacksTo(1)
+            .attributes(ItemAttributeModifiers.builder()
+                .add(
+                    Attributes.ATTACK_DAMAGE,
+                    new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 3.0d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    EquipmentSlotGroup.MAINHAND)
+                .add(
+                    Attributes.ATTACK_SPEED,
+                    new AttributeModifier(BASE_ATTACK_SPEED_ID, -3.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    EquipmentSlotGroup.MAINHAND)
+                .add(
+                    Attributes.ATTACK_KNOCKBACK,
+                    new AttributeModifier(Attributes.ATTACK_KNOCKBACK.getKey().location(), 2.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    EquipmentSlotGroup.MAINHAND)
+                .build()))
 		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<WormItem> WORM = REGISTRATE
 		.item("worm", WormItem::new)
-		.properties(p -> p.stacksTo(1))
+		.properties(p -> p.stacksTo(1)
+            .attributes(ItemAttributeModifiers.builder()
+                .add(
+                    Attributes.ATTACK_DAMAGE,
+                    new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 2.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    EquipmentSlotGroup.MAINHAND)
+                .add(
+                    Attributes.ATTACK_SPEED,
+                    new AttributeModifier(BASE_ATTACK_SPEED_ID, -3.0d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    EquipmentSlotGroup.MAINHAND)
+                .build()))
 		.model((c, p) -> {})
 		.register();
 

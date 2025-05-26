@@ -22,14 +22,15 @@ import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -82,7 +83,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 	@Override
 	protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(compound, registries, clientPacket);
-		this.boringPos = compound.contains("BoringPos") ? NbtUtils.readBlockPos(compound.getCompound("BoringPos")) : null;
+		this.boringPos = NbtUtils.readBlockPos(compound, "BoringPos").orElse(null);
 
 		if (!clientPacket) return;
 		this.boreSpeed = compound.getFloat("BoreSpeed");
@@ -435,7 +436,8 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		bearing.notifyUpdate();
 
 		ResourceLocation unboredId = CBCRegistryUtils.getBlockLocation(latheBlockInfo.state().getBlock());
-		LootTable table = slevel.getServer().reloadableRegistries().getLootTable(CBCUtils.location(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
+        ResourceKey<LootTable> key = ResourceKey.create(Registries.LOOT_TABLE, CBCUtils.location(unboredId.getNamespace(), "boring_scrap/" + unboredId.getPath()));
+		LootTable table = slevel.getServer().reloadableRegistries().getLootTable(key); // TODO: c6 playtest
 		List<ItemStack> scrap = table.getRandomItems(new LootParams.Builder(slevel)
 			.withParameter(LootContextParams.BLOCK_STATE, latheBlockInfo.state())
 			.withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(this.boringPos))

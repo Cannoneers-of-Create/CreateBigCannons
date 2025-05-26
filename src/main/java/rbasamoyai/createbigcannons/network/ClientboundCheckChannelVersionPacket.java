@@ -1,12 +1,14 @@
 package rbasamoyai.createbigcannons.network;
 
+import java.util.concurrent.Executor;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
-import javax.annotation.Nullable;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
-
-import java.util.concurrent.Executor;
 
 public record ClientboundCheckChannelVersionPacket(String serverVersion) implements RootPacket {
 
@@ -16,7 +18,7 @@ public record ClientboundCheckChannelVersionPacket(String serverVersion) impleme
 
 
 	@Override
-	public void rootEncode(FriendlyByteBuf buf) {
+	public void rootEncode(RegistryFriendlyByteBuf buf) {
 		buf.writeUtf(this.serverVersion);
 	}
 

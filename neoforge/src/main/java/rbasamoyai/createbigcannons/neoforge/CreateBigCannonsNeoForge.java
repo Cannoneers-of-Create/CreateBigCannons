@@ -1,28 +1,12 @@
 package rbasamoyai.createbigcannons.neoforge;
 
-import com.simibubi.create.foundation.utility.DistExecutor;
-
+import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
-/*import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.config.ModConfigEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.NewRegistryEvent;
-import net.minecraftforge.registries.RegisterEvent;
-import net.minecraftforge.registries.RegistryBuilder;*/
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
@@ -47,21 +31,20 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
-import rbasamoyai.createbigcannons.neoforge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
-import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
+import rbasamoyai.createbigcannons.neoforge.network.CBCNetworkForge;
 
 @Mod(CreateBigCannons.MOD_ID)
-public class CreateBigCannonsForge {
+public class CreateBigCannonsNeoForge {
 
     public static final DeferredRegister<ParticleType<?>> PARTICLE_REGISTER = DeferredRegister.create(Registries.PARTICLE_TYPE, CreateBigCannons.MOD_ID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER_REGISTER = DeferredRegister.create(Registries.RECIPE_SERIALIZER, CreateBigCannons.MOD_ID);
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPE_REGISTER = DeferredRegister.create(Registries.RECIPE_TYPE, CreateBigCannons.MOD_ID);
 
-    public CreateBigCannonsForge(IEventBus modEventBus) {
+    public CreateBigCannonsNeoForge(IEventBus modEventBus) {
         IEventBus forgeEventBus = NeoForge.EVENT_BUS;
         ModContainer mlContext = ModLoadingContext.get().getActiveContainer();
 
@@ -70,8 +53,8 @@ public class CreateBigCannonsForge {
 
         CreateBigCannons.REGISTRATE.registerEventListeners(modEventBus);
         CreateBigCannons.init();
-		ModGroupImpl.registerForge(modEventBus);
-        CBCParticleTypes.register();
+		ModGroupImpl.registerNeoForge(modEventBus);
+        PARTICLE_REGISTER.register(modEventBus);
         CBCConfigs.register(mlContext::registerConfig);
 
         modEventBus.addListener(this::onCommonSetup);
@@ -81,11 +64,11 @@ public class CreateBigCannonsForge {
         modEventBus.addListener(this::onRegisterSounds);
 		modEventBus.addListener(this::onRegister);
 
-        CBCCommonForgeEvents.register(forgeEventBus);
+        CBCCommonNeoForgeEvents.register(forgeEventBus);
 
-		CBCModsForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosIntegration.init(modEventBus, forgeEventBus));
+		CBCModsNeoForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosIntegration.init(modEventBus, forgeEventBus));
 
-        DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> CBCClientForge.prepareClient(modEventBus, forgeEventBus));
+        CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> CBCClientNeoForge.prepareClient(modEventBus, forgeEventBus));
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
@@ -98,8 +81,8 @@ public class CreateBigCannonsForge {
 		CreateBigCannons.onCommonSetup();
 		DefaultCreateCompat.init();
 		DefaultCannonMountPropertiesSerializers.init();
-		CBCModsForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsForge.COPYCATS::getBlock));
-		CBCModsForge.FRAMEDBLOCKS.executeIfInstalled(() -> () -> FramedBlocksCompat.init());
+		CBCModsNeoForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsNeoForge.COPYCATS::getBlock));
+		CBCModsNeoForge.FRAMEDBLOCKS.executeIfInstalled(() -> () -> FramedBlocksCompat.init());
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {
@@ -130,7 +113,7 @@ public class CreateBigCannonsForge {
 		}
         CBCContraptionTypes.init();
         CBCArmInteractionPointTypes.init();
-		FMLJavaModLoadingContext.get().getModEventBus().post(new CBCForgeRegisterEvent<>(CannonCastShape.class, CBCRegistries.cannonCastShapes()));
+		FMLJavaModLoadingContext.get().getModEventBus().post(new CBCNeoForgeRegisterEvent<>(CannonCastShape.class, CBCRegistries.cannonCastShapes()));
 	}
 
     private void onRegisterSounds(RegisterEvent event) {

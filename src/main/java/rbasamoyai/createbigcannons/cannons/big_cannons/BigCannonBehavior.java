@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.Blocks;
@@ -57,8 +58,8 @@ public class BigCannonBehavior extends CannonBehavior {
 	}
 
 	@Override
-	public void write(CompoundTag nbt, boolean spawnPacket) {
-		super.write(nbt, spawnPacket);
+	public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean spawnPacket) {
+		super.write(nbt, registries, spawnPacket);
 		if (this.containedBlockInfo.isPresent()) {
 			StructureBlockInfo blockInfo = this.containedBlockInfo.get();
 			if (!blockInfo.state().isAir()) {
@@ -72,8 +73,8 @@ public class BigCannonBehavior extends CannonBehavior {
 	}
 
 	@Override
-	public void read(CompoundTag nbt, boolean clientPacket) {
-		super.read(nbt, clientPacket);
+	public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(nbt, registries, clientPacket);
 		BlockPos pos = BlockPos.of(nbt.getLong("Pos"));
 		BlockState state = NbtUtils.readBlockState(this.blockEntity.blockHolderGetter(), nbt.getCompound("State"));
 		CompoundTag tag = nbt.contains("Data") ? nbt.getCompound("Data") : null;

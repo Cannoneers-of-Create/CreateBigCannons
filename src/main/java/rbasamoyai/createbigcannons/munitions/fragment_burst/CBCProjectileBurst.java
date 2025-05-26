@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.fragment_burst;
 
 import net.minecraft.core.Direction;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -21,7 +22,11 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 
 	protected CBCProjectileBurst(EntityType<? extends CBCProjectileBurst> entityType, Level level) { super(entityType, level); }
 
-	@Override
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+    }
+
+    @Override
 	protected void applyForces(double[] velocity, double[] displacement) {
 		double length = Math.sqrt(velocity[0] * velocity[0] + velocity[1] * velocity[1] + velocity[2] * velocity[2]);
 		double drag = length < 1e-2d ? 1 : this.getDragCoefficient(length) / length;
