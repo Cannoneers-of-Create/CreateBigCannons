@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.remix.forge;
+package rbasamoyai.createbigcannons.remix.neoforge;
 
 import net.minecraft.world.level.block.state.BlockState;
 

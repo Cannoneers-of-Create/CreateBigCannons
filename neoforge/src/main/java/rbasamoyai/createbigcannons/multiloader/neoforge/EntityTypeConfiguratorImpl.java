@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.multiloader.forge;
+package rbasamoyai.createbigcannons.multiloader.neoforge;
 
 import net.minecraft.world.entity.EntityType;
 import rbasamoyai.createbigcannons.multiloader.EntityTypeConfigurator;

@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.forge;
+package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.neoforge;
 
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.tterrag.registrate.providers.DataGenContext;
@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechBlockGen;
 

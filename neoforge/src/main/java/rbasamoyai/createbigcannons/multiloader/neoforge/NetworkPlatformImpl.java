@@ -1,11 +1,10 @@
-package rbasamoyai.createbigcannons.multiloader.forge;
+package rbasamoyai.createbigcannons.multiloader.neoforge;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.network.PacketDistributor;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import rbasamoyai.createbigcannons.neoforge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.neoforge.network.ForgeClientPacket;
 import rbasamoyai.createbigcannons.neoforge.network.ForgeServerPacket;

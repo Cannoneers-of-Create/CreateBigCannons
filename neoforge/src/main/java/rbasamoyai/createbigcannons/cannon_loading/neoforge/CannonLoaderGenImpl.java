@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.cannon_loading.forge;
+package rbasamoyai.createbigcannons.cannon_loading.neoforge;
 
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.tterrag.registrate.providers.DataGenContext;
@@ -7,7 +7,7 @@ import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlock;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderGen;

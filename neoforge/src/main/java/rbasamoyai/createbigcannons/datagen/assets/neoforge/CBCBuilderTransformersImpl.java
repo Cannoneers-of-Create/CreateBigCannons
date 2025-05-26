@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.datagen.assets.forge;
+package rbasamoyai.createbigcannons.datagen.assets.neoforge;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags.AllBlockTags;

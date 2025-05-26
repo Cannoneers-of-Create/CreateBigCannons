@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.base.forge;
+package rbasamoyai.createbigcannons.base.neoforge;
 
 public class CBCRegistriesImpl {
 

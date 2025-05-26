@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.multiloader.forge;
+package rbasamoyai.createbigcannons.multiloader.neoforge;
 
 import java.util.List;
 import java.util.function.Supplier;
