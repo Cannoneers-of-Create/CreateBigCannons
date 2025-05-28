@@ -5,7 +5,7 @@ import com.simibubi.create.content.fluids.potion.PotionFluidHandler;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -73,8 +73,8 @@ public class DefaultFluidCompat {
 		Entity entity = context.result().getEntity();
 		if (!(entity instanceof LivingEntity living))
 			return;
-		CompoundTag tag = context.burst().getFluidStack().components();
-		for (MobEffectInstance effect : PotionUtils.getAllEffects(tag))
+		PatchedDataComponentMap tag = context.burst().getFluidStack().components();
+		for (MobEffectInstance effect : tag.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getAllEffects())
 			living.addEffect(new MobEffectInstance(effect));
 	}
 
@@ -169,19 +169,20 @@ public class DefaultFluidCompat {
 	}
 
 	public static void spawnGasCloud(BlockPos pos, FluidBlobBurst blob, Level level) {
-		CompoundTag tag = blob.getFluidStack().components();
+		PatchedDataComponentMap components = blob.getFluidStack().components();
 
 		GasCloudEntity gasCloud = CBCEntityTypes.GAS_CLOUD.create(level);
 		gasCloud.setPos(Vec3.atCenterOf(pos));
 		gasCloud.setWaitTime(10);
 		gasCloud.setSize(blob.getBlobSize());
 		gasCloud.setDuration(300);
-		gasCloud.setPotionContents(PotionUtils.getPotion(tag));
+		gasCloud.setPotionContents(components.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY));
 
-		for (MobEffectInstance effect : PotionUtils.getAllEffects(tag))
-			gasCloud.addEffect(new MobEffectInstance(effect));
+		/* todo: i don't think it's needed anymore as of 1.21.1 but if it is look at AreaEffectCloud for addEffect method
+		for (MobEffectInstance effect : components.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getAllEffects())
+			gasCloud.addEffect(new MobEffectInstance(effect));*/
 
-		gasCloud.setFixedColor(PotionUtils.getColor(PotionUtils.getAllEffects(tag)) | 0xff000000);
+		gasCloud.setFixedColor(components.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor() | 0xff000000);
 		level.addFreshEntity(gasCloud);
 	}
 
