@@ -2,12 +2,20 @@ package rbasamoyai.createbigcannons.datagen.loot;
 
 import java.util.function.BiConsumer;
 
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
@@ -60,11 +68,11 @@ public class BoringScrapLoot implements LootTableSubProvider {
 
 	protected static ResourceKey<LootTable> loc(Block block) {
 		ResourceLocation id = CBCRegistryUtils.getBlockLocation(block);
-		return CBCUtils.location(id.getNamespace(), "boring_scrap/" + id.getPath());
+        return ResourceKey.create(Registries.LOOT_TABLE, CBCUtils.location(id.getNamespace(), "boring_scrap/" + id.getPath()));
 	}
 
 	protected static LootTable.Builder dropAmount(ItemLike drop, int min, int max) {
-		/*int maxSz = new ItemStack(drop).getMaxStackSize();
+		int maxSz = new ItemStack(drop).getMaxStackSize();
 		LootTable.Builder table = LootTable.lootTable();
 		for (int i = 0; i < Mth.floor((float) min / maxSz); ++i)
 			table.withPool(LootPool.lootPool()
@@ -80,8 +88,7 @@ public class BoringScrapLoot implements LootTableSubProvider {
 		}
 		return table.withPool(LootPool.lootPool()
 				.add(LootItem.lootTableItem(drop))
-				.apply(SetItemCountFunction.setCount(UniformGenerator.between(base, base + diff))));*/
-        return null;
+				.apply(SetItemCountFunction.setCount(UniformGenerator.between(base, base + diff))));
 	}
 
 }
