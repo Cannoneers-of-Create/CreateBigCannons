@@ -267,7 +267,7 @@ public class CBCUtils {
 																		  Function<String, E> namingFunction) {
 		E[] enums = elementSupplier.get();
 		return ExtraCodecs.orCompressed(
-			ExtraCodecs.stringResolverCodec(strFunc, namingFunction),
+            Codec.stringResolver(strFunc, namingFunction),
 			ExtraCodecs.idResolverCodec(Enum::ordinal, i -> i >= 0 && i < enums.length ? enums[i] : null, -1)
 		);
 	}
