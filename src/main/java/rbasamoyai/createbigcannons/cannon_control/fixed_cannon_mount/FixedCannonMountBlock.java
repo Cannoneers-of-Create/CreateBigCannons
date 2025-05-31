@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount;
 
 import javax.annotation.Nullable;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
 
@@ -31,6 +32,8 @@ public class FixedCannonMountBlock extends DirectionalBlock implements IBE<Fixed
 	public static final BooleanProperty FIRE_POWERED = CannonMountBlock.FIRE_POWERED;
 	public static final DirectionProperty ROTATION = DirectionProperty.create("rotation", Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST);
 
+    public static final MapCodec<? extends DirectionalBlock> CODEC = simpleCodec(FixedCannonMountBlock::new);
+
 	public FixedCannonMountBlock(Properties properties) {
 		super(properties);
 		this.registerDefaultState(this.getStateDefinition().any()
@@ -40,7 +43,9 @@ public class FixedCannonMountBlock extends DirectionalBlock implements IBE<Fixed
 			.setValue(FIRE_POWERED, false));
 	}
 
-	@Override
+    @Override protected MapCodec<? extends DirectionalBlock> codec() { return CODEC; }
+
+    @Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		builder.add(FACING, ROTATION, ASSEMBLY_POWERED, FIRE_POWERED);
 		super.createBlockStateDefinition(builder);

@@ -1,9 +1,12 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.drop_mortar;
 
+import com.mojang.serialization.MapCodec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -17,11 +20,20 @@ import rbasamoyai.createbigcannons.index.CBCShapes;
 
 public class DropMortarEndBlock extends SolidBigCannonBlock<BigCannonEndBlockEntity> {
 
+    private final MapCodec<? extends DirectionalBlock> codec;
+
 	public DropMortarEndBlock(Properties properties, BigCannonMaterial cannonMaterial) {
 		super(properties, cannonMaterial);
+        this.codec = simpleCodec(this::fromSelf);
 	}
 
-	@Override public boolean canConnectToSide(BlockState state, Direction dir) { return this.getFacing(state) == dir; }
+    private DropMortarEndBlock fromSelf(Properties properties) {
+        return new DropMortarEndBlock(properties, this.getCannonMaterial());
+    }
+
+    @Override protected MapCodec<? extends DirectionalBlock> codec() { return this.codec; }
+
+    @Override public boolean canConnectToSide(BlockState state, Direction dir) { return this.getFacing(state) == dir; }
 
 	@Override
 	public Direction getFacing(BlockState state) {

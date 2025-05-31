@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.Contraption;
@@ -60,13 +59,21 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 	public static final BooleanProperty AXIS = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 
 	private final NonNullSupplier<? extends Block> slidingConversion;
+    private final MapCodec<? extends DirectionalBlock> codec;
 
 	public QuickfiringBreechBlock(Properties properties, BigCannonMaterial material, NonNullSupplier<? extends Block> slidingConversion) {
 		super(properties, material);
 		this.slidingConversion = slidingConversion;
+        this.codec = simpleCodec(this::fromSelf);
 	}
 
-	@Override
+    private QuickfiringBreechBlock fromSelf(Properties properties) {
+        return new QuickfiringBreechBlock(properties, this.getCannonMaterial(), this.slidingConversion);
+    }
+
+    @Override protected MapCodec<? extends DirectionalBlock> codec() { return this.codec; }
+
+    @Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(AXIS);

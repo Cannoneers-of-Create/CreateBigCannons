@@ -2,11 +2,14 @@ package rbasamoyai.createbigcannons.crafting.boring;
 
 import java.util.function.Supplier;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
 
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -18,11 +21,13 @@ public class UnboredAutocannonBlock extends AbstractIncompleteAutocannonBlock {
 
 	private final VoxelShaper shapes;
 	private final Supplier<CannonCastShape> cannonShape;
+    private final MapCodec<? extends DirectionalBlock> codec;
 
 	public UnboredAutocannonBlock(Properties properties, AutocannonMaterial material, VoxelShape shape, Supplier<CannonCastShape> castShape) {
 		super(properties, material);
 		this.shapes = new AllShapes.Builder(shape).forDirectional();
 		this.cannonShape = castShape;
+        this.codec = simpleCodec(this::fromSelf);
 	}
 
 	public static UnboredAutocannonBlock barrel(Properties properties, AutocannonMaterial material) {
@@ -37,7 +42,13 @@ public class UnboredAutocannonBlock extends AbstractIncompleteAutocannonBlock {
 		return new UnboredAutocannonBlock(properties, material, box(4, 0, 4, 12, 16, 12), () -> CannonCastShape.AUTOCANNON_BREECH);
 	}
 
-	@Override
+    private UnboredAutocannonBlock fromSelf(Properties properties) {
+        return new UnboredAutocannonBlock(properties, this.getAutocannonMaterial(), this.shapes.get(Direction.UP), this.cannonShape);
+    }
+
+    @Override protected MapCodec<? extends DirectionalBlock> codec() { return this.codec; }
+
+    @Override
 	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 		return this.shapes.get(this.getFacing(state));
 	}

@@ -2,13 +2,16 @@ package rbasamoyai.createbigcannons.cannons.big_cannons;
 
 import java.util.function.Supplier;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -24,6 +27,7 @@ public class BigCannonTubeBlock extends BigCannonBaseBlock implements IBE<BigCan
 	private final VoxelShaper visualShapes;
 	private final VoxelShaper collisionShapes;
 	private final Supplier<CannonCastShape> cannonShape;
+    private final MapCodec<? extends DirectionalBlock> codec;
 
 	public BigCannonTubeBlock(Properties properties, BigCannonMaterial material, Supplier<CannonCastShape> cannonShape, VoxelShape base) {
 		this(properties, material, cannonShape, base, base);
@@ -34,6 +38,7 @@ public class BigCannonTubeBlock extends BigCannonBaseBlock implements IBE<BigCan
 		this.visualShapes = new AllShapes.Builder(visualShape).forDirectional();
 		this.collisionShapes = new AllShapes.Builder(collisionShape).forDirectional();
 		this.cannonShape = cannonShape;
+        this.codec = simpleCodec(this::fromSelf);
 	}
 
 	public static BigCannonTubeBlock verySmall(Properties properties, BigCannonMaterial material) {
@@ -56,7 +61,13 @@ public class BigCannonTubeBlock extends BigCannonBaseBlock implements IBE<BigCan
 		return new BigCannonTubeBlock(properties, material, () -> CannonCastShape.VERY_LARGE, Block.box(-2, 0, -2, 18, 16, 18), Shapes.block());
 	}
 
-	@Override
+    private BigCannonTubeBlock fromSelf(Properties properties) {
+        return new BigCannonTubeBlock(properties, this.getCannonMaterial(), this.cannonShape, this.visualShapes.get(Direction.UP), this.collisionShapes.get(Direction.UP));
+    }
+
+    @Override protected MapCodec<? extends DirectionalBlock> codec() { return this.codec; }
+
+    @Override
 	public CannonCastShape getCannonShape() {
 		return this.cannonShape.get();
 	}

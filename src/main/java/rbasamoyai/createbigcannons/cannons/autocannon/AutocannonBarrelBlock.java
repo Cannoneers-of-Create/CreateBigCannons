@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannons.autocannon;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 import com.simibubi.create.foundation.block.IBE;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -29,12 +31,21 @@ public class AutocannonBarrelBlock extends AutocannonBaseBlock implements IBE<Au
 	public static final BooleanProperty ASSEMBLED = BooleanProperty.create("assembled");
 	public static final EnumProperty<AutocannonBarrelEnd> BARREL_END = EnumProperty.create("end", AutocannonBarrelEnd.class);
 
+    private final MapCodec<? extends DirectionalBlock> codec;
+
 	public AutocannonBarrelBlock(Properties properties, AutocannonMaterial material) {
 		super(properties, material);
 		this.registerDefaultState(this.defaultBlockState().setValue(BARREL_END, AutocannonBarrelEnd.NOTHING).setValue(ASSEMBLED, false));
+        this.codec = simpleCodec(this::fromSelf);
 	}
 
-	@Override
+    private AutocannonBarrelBlock fromSelf(Properties properties) {
+        return new AutocannonBarrelBlock(properties, this.getAutocannonMaterial());
+    }
+
+    @Override protected MapCodec<? extends DirectionalBlock> codec() { return this.codec; }
+
+    @Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(ASSEMBLED).add(BARREL_END);

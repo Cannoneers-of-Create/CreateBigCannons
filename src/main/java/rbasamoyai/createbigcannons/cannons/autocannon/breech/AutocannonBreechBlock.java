@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.cannons.autocannon.breech;
 
 import static rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock.writeAndSyncSingleBlockData;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.contraptions.Contraption;
@@ -26,6 +27,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -50,10 +52,19 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 
 	public static final BooleanProperty HANDLE = BooleanProperty.create("handle");
 
+    private final MapCodec<? extends DirectionalBlock> codec;
+
 	public AutocannonBreechBlock(Properties properties, AutocannonMaterial material) {
 		super(properties, material);
 		this.registerDefaultState(this.defaultBlockState().setValue(HANDLE, false));
+        this.codec = simpleCodec(this::fromSelf);
 	}
+
+    private AutocannonBreechBlock fromSelf(Properties properties) {
+        return new AutocannonBreechBlock(properties, this.getAutocannonMaterial());
+    }
+
+    @Override protected MapCodec<? extends DirectionalBlock> codec() { return this.codec; }
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.crafting.incomplete;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -14,7 +15,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -23,6 +23,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,9 +33,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.cannons.CannonBehavior;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
-import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.SolidBigCannonBlock;
+import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 
@@ -47,15 +48,23 @@ public class IncompleteSlidingBreechBlock extends SolidBigCannonBlock<Incomplete
 	private final NonNullSupplier<? extends Block> resultSupplier;
 	private Block result;
 	private List<ItemLike> resolvedRequiredItems;
+    private final MapCodec<? extends DirectionalBlock> codec;
 
 	public IncompleteSlidingBreechBlock(Properties properties, BigCannonMaterial material, NonNullSupplier<? extends Item> secondItemSupplier, NonNullSupplier<? extends Block> resultSupplier) {
 		super(properties, material);
 		this.secondItemSupplier = secondItemSupplier;
 		this.resultSupplier = resultSupplier;
 		this.registerDefaultState(this.defaultBlockState().setValue(STAGE_2, 0).setValue(ALONG_FIRST, false));
+        this.codec = simpleCodec(this::fromSelf);
 	}
 
-	@Override
+    private IncompleteSlidingBreechBlock fromSelf(Properties properties) {
+        return new IncompleteSlidingBreechBlock(properties, this.getCannonMaterial(), this.secondItemSupplier, this.resultSupplier);
+    }
+
+    @Override protected MapCodec<? extends DirectionalBlock> codec() { return this.codec; }
+
+    @Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(STAGE_2);

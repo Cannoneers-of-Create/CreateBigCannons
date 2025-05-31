@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring;
 
+import com.mojang.serialization.MapCodec;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.foundation.block.IBE;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
@@ -7,6 +8,7 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -20,11 +22,19 @@ import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 public class AutocannonRecoilSpringBlock extends AutocannonBaseBlock implements IBE<AutocannonRecoilSpringBlockEntity>, MovesWithAutocannonRecoilSpring {
 
 	private final NonNullFunction<Direction, BlockState> movingBlockFunction;
+    private final MapCodec<? extends DirectionalBlock> codec;
 
 	public AutocannonRecoilSpringBlock(Properties properties, AutocannonMaterial material, NonNullFunction<Direction, BlockState> movingBlockFunction) {
 		super(properties, material);
 		this.movingBlockFunction = movingBlockFunction;
+        this.codec = simpleCodec(this::fromSelf);
 	}
+
+    private AutocannonRecoilSpringBlock fromSelf(Properties properties) {
+        return new AutocannonRecoilSpringBlock(properties, this.getAutocannonMaterial(), this.movingBlockFunction);
+    }
+
+    @Override protected MapCodec<? extends DirectionalBlock> codec() { return this.codec; }
 
 	@Override
 	public Class<AutocannonRecoilSpringBlockEntity> getBlockEntityClass() {
