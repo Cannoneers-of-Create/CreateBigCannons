@@ -1,12 +1,9 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -16,7 +13,7 @@ import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 
-public class TracerApplicationDeployerRecipe implements Recipe<CraftingInput> {
+public class TracerApplicationDeployerRecipe implements Recipe<RecipeInput> { // TODO c6 playtest
 
 	private final ItemStack munition;
 	private final ItemStack fuze;
@@ -32,14 +29,14 @@ public class TracerApplicationDeployerRecipe implements Recipe<CraftingInput> {
 	}
 
 	@Override
-	public boolean matches(CraftingInput input, Level level) {
+	public boolean matches(RecipeInput input, Level level) {
 		if (!CBCItems.TRACER_TIP.isIn(this.fuze)) return false;
 		if (this.munition.getItem() instanceof AutocannonRoundItem) return !this.munition.getOrDefault(CBCDataComponents.AUTOCANNON_TRACER, false);
 		if (this.munition.getItem() instanceof AutocannonAmmoItem item) return !item.isTracer(this.munition);
 		return false;
 	}
 
-	@Override public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registries) { return this.getResultItem(registries); }
+	@Override public ItemStack assemble(RecipeInput inv, HolderLookup.Provider registries) { return this.getResultItem(registries); }
 
 	@Override
 	public ItemStack getResultItem(HolderLookup.Provider registries) {

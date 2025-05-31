@@ -1,14 +1,9 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -18,7 +13,7 @@ import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
-public class MunitionFuzingDeployerRecipe implements Recipe<CraftingInput> {
+public class MunitionFuzingDeployerRecipe implements Recipe<RecipeInput> { // TODO c6 playtest
 
 	private final ItemStack munition;
 	private final ItemStack fuze;
@@ -34,7 +29,7 @@ public class MunitionFuzingDeployerRecipe implements Recipe<CraftingInput> {
 	}
 
 	@Override
-	public boolean matches(CraftingInput input, Level level) {
+	public boolean matches(RecipeInput input, Level level) {
 		if (!(this.fuze.getItem() instanceof FuzeItem)) return false;
 		if (this.munition.getItem() instanceof FuzedItemMunition) {
 			return !this.munition.has(CBCDataComponents.FUZE);
@@ -47,7 +42,7 @@ public class MunitionFuzingDeployerRecipe implements Recipe<CraftingInput> {
 		return false;
 	}
 
-	@Override public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) { return this.getResultItem(registries); }
+	@Override public ItemStack assemble(RecipeInput input, HolderLookup.Provider registries) { return this.getResultItem(registries); }
 
 	@Override
 	public ItemStack getResultItem(HolderLookup.Provider registries) {

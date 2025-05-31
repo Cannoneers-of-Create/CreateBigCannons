@@ -28,7 +28,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
-import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockImpactTransformationHandler;
 import rbasamoyai.createbigcannons.cannon_control.config.CannonMountPropertiesHandler;
@@ -54,6 +53,7 @@ import rbasamoyai.createbigcannons.crafting.munition_assembly.TracerApplicationD
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
@@ -265,33 +265,36 @@ public class CBCCommonEvents {
 		cons.accept(FluidDragHandler.ReloadListener.INSTANCE, CreateBigCannons.resource("fluid_drag_handler"));
 	}
 
-	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, RecipeWrapper container,
+	public static void onAddDeployerRecipes(DeployerBlockEntity deployer, RecipeInput container,
 		BiConsumer<Supplier<Optional<? extends RecipeHolder<? extends Recipe<? extends RecipeInput>>>>, Integer> cons) {
 		Level level = deployer.getLevel();
 		ItemStack containerItem = container.getItem(0);
 		ItemStack deployerItem = container.getItem(1);
 
+        // TODO c6 playtest
 		if (containerItem.getItem() instanceof BigCartridgeBlockItem cartridge && deployerItem.is(CBCTags.CBCItemTags.NITROPOWDER)) {
 			int power = BigCartridgeBlockItem.getPower(containerItem);
 			if (power < cartridge.getMaximumPowerLevels()) {
-				cons.accept(() -> Optional.of(new BigCartridgeFillingDeployerRecipe(power, power + 1)), 25);
+				cons.accept(() -> Optional.of(new RecipeHolder<>(CBCRecipeTypes.BIG_CARTRIDGE_FILLING_DEPLOYER.getId(),
+                    new BigCartridgeFillingDeployerRecipe(power, power + 1))), 25);
 			}
 		}
 		if (CBCItems.FILLED_AUTOCANNON_CARTRIDGE.isIn(containerItem)
 			&& deployerItem.getItem() instanceof AutocannonRoundItem) {
-			cons.accept(() -> Optional.of(new CartridgeAssemblyDeployerRecipe(deployerItem)), 25);
+			cons.accept(() -> Optional.of(new RecipeHolder<>(CBCRecipeTypes.CARTRIDGE_ASSEMBLY_DEPLOYER.getId(),
+                new CartridgeAssemblyDeployerRecipe(deployerItem))), 25);
 		}
 		MunitionFuzingDeployerRecipe fuzingRecipe = new MunitionFuzingDeployerRecipe(containerItem, deployerItem);
 		if (fuzingRecipe.matches(container, level)) {
-			cons.accept(() -> Optional.of(fuzingRecipe), 25);
+			cons.accept(() -> Optional.of(new RecipeHolder<>(CBCRecipeTypes.MUNITION_FUZING_DEPLOYER.getId(), fuzingRecipe)), 25);
 		}
 		TracerApplicationDeployerRecipe tracerRecipe = new TracerApplicationDeployerRecipe(containerItem, deployerItem);
 		if (tracerRecipe.matches(container, level)) {
-			cons.accept(() -> Optional.of(tracerRecipe), 25);
+			cons.accept(() -> Optional.of(new RecipeHolder<>(CBCRecipeTypes.TRACER_APPLICATION_DEPLOYER.getId(), tracerRecipe)), 25);
 		}
 		AutocannonAmmoContainerFillingDeployerRecipe ammoContainerRecipe = new AutocannonAmmoContainerFillingDeployerRecipe(containerItem, deployerItem);
 		if (ammoContainerRecipe.matches(container, level)) {
-			cons.accept(() -> Optional.of(ammoContainerRecipe), 25);
+			cons.accept(() -> Optional.of(new RecipeHolder<>(CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getId(), ammoContainerRecipe)), 25);
 		}
 	}
 

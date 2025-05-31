@@ -1,11 +1,7 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
-import com.simibubi.create.foundation.item.SmartInventory;
-
 import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -16,7 +12,7 @@ import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 
-public class CartridgeAssemblyDeployerRecipe implements Recipe<CraftingInput> { // todo: check this works. was Recipe<Container>
+public class CartridgeAssemblyDeployerRecipe implements Recipe<RecipeInput> { // TODO c6 playtest
 
 	private final ItemStack round;
 
@@ -29,11 +25,11 @@ public class CartridgeAssemblyDeployerRecipe implements Recipe<CraftingInput> { 
 	}
 
 	@Override
-	public boolean matches(CraftingInput container, Level level) {
+	public boolean matches(RecipeInput container, Level level) {
 		return CBCItems.FILLED_AUTOCANNON_CARTRIDGE.isIn(container.getItem(0)) && this.round.getItem() instanceof AutocannonRoundItem;
 	}
 
-	@Override public ItemStack assemble(CraftingInput inv, HolderLookup.Provider registries) { return this.getResultItem(registries); }
+	@Override public ItemStack assemble(RecipeInput inv, HolderLookup.Provider registries) { return this.getResultItem(registries); }
 
 	@Override
 	public ItemStack getResultItem(HolderLookup.Provider registries) {

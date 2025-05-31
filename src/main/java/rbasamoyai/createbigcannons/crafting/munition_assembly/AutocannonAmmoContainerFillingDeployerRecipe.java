@@ -2,8 +2,8 @@ package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -13,7 +13,7 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
-public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<CraftingInput> {
+public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<RecipeInput> { // TODO c6 playtest
 
 	private final ItemStack ammoContainer;
 	private final ItemStack insertedAmmo;
@@ -28,7 +28,7 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Craf
 	}
 
 	@Override
-	public boolean matches(CraftingInput input, Level level) {
+	public boolean matches(RecipeInput input, Level level) {
 		if (!(this.ammoContainer.getItem() instanceof AutocannonAmmoContainerItem containerItem)
 			|| containerItem.isCreative()
 			|| !(this.insertedAmmo.getItem() instanceof AutocannonAmmoItem ammoItem)) return false;
@@ -43,7 +43,7 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Craf
 	}
 
 	@Override
-	public ItemStack assemble(CraftingInput input, HolderLookup.Provider registries) {
+	public ItemStack assemble(RecipeInput input, HolderLookup.Provider registries) {
 		return this.getResultItem(registries);
 	}
 
