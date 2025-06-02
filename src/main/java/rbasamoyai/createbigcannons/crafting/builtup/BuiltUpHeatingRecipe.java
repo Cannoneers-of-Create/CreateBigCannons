@@ -2,19 +2,25 @@ package rbasamoyai.createbigcannons.crafting.builtup;
 
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -24,23 +30,21 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
-import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
-import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BuiltUpHeatingRecipe implements BlockRecipe {
 
 	private final Set<BlockRecipeIngredient> layers;
+    private final List<BlockRecipeIngredient> layerList; // For codec writing
 	private final Block result;
-	private final ResourceLocation id;
 
-	public BuiltUpHeatingRecipe(Set<BlockRecipeIngredient> requiredLayers, Block result, ResourceLocation id) {
-		this.layers = requiredLayers;
-		this.result = result;
-		this.id = id;
-	}
+    private BuiltUpHeatingRecipe(List<BlockRecipeIngredient> requiredLayers, Block result) {
+        this.layerList = requiredLayers;
+        this.layers = new HashSet<>(requiredLayers);
+        this.result = result;
+    }
 
 	public Set<BlockRecipeIngredient> layers() { return this.layers; }
-	public Block result() { return this.result; }
+    public List<BlockRecipeIngredient> layerList() { return this.layerList; }
 
 	@Override
 	public boolean matches(Level level, BlockPos pos) {
@@ -79,39 +83,25 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 	}
 
 	@Override public Block getResultBlock() { return this.result; }
-	@Override public ResourceLocation getId() { return this.id; }
 	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.BUILT_UP_HEATING; }
 	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.BUILT_UP_HEATING; }
 
-	public static class Serializer implements BlockRecipeSerializer<BuiltUpHeatingRecipe> {
-		@Override
-		public BuiltUpHeatingRecipe fromJson(ResourceLocation id, JsonObject obj) {
-			JsonArray layerArr = obj.getAsJsonArray("layers");
-			Set<BlockRecipeIngredient> layers = new HashSet<>();
-			if (layerArr != null) {
-				for (JsonElement el : layerArr) layers.add(BlockRecipeIngredient.fromJson(el));
-			}
-			Block result = CBCRegistryUtils.getBlock(CBCUtils.location(obj.get("result").getAsString()));
-			return new BuiltUpHeatingRecipe(layers, result, id);
-		}
+	public static class Serializer implements BlockRecipeSerializer<BuiltUpHeatingRecipe> { // TODO c6 playtest
+        public static final Codec<Block> BLOCK_CODEC = BuiltInRegistries.BLOCK.byNameCodec()
+            .validate(block -> block == Blocks.AIR ? DataResult.error(() -> "Invalid block for built-up heating recipe") : DataResult.success(block));
 
-		@Override
-		public BuiltUpHeatingRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
-			int sz = buf.readVarInt();
-			Set<BlockRecipeIngredient> layers = sz == 0 ? null : new HashSet<>();
-			for (int i = 0; i < sz; ++i) layers.add(BlockRecipeIngredient.fromNetwork(buf));
-			Block result = CBCRegistryUtils.getBlock(buf.readResourceLocation());
-			return new BuiltUpHeatingRecipe(layers, result, id);
-		}
+        public static final MapCodec<BuiltUpHeatingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                Codec.list(BlockRecipeIngredient.CODEC).fieldOf("layers").forGetter(BuiltUpHeatingRecipe::layerList),
+                BLOCK_CODEC.fieldOf("result").forGetter(BuiltUpHeatingRecipe::getResultBlock)
+            ).apply(instance, BuiltUpHeatingRecipe::new));
 
-		@Override
-		public void toNetwork(FriendlyByteBuf buf, BuiltUpHeatingRecipe recipe) {
-			buf.writeVarInt(recipe.layers == null ? 0 : recipe.layers.size());
-			if (recipe.layers != null && !recipe.layers.isEmpty()) {
-				recipe.layers.forEach(p -> p.toNetwork(buf));
-			}
-			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(recipe.result));
-		}
+        public static final StreamCodec<RegistryFriendlyByteBuf, BuiltUpHeatingRecipe> STREAM_CODEC = StreamCodec.composite(
+            BlockRecipeIngredient.STREAM_CODEC.apply(ByteBufCodecs.list()), BuiltUpHeatingRecipe::layerList,
+            ByteBufCodecs.registry(Registries.BLOCK), BuiltUpHeatingRecipe::getResultBlock,
+            BuiltUpHeatingRecipe::new);
+
+        @Override public MapCodec<BuiltUpHeatingRecipe> codec() { return CODEC; }
+        @Override public StreamCodec<RegistryFriendlyByteBuf, BuiltUpHeatingRecipe> streamCodec() { return STREAM_CODEC; }
 	}
 
 }

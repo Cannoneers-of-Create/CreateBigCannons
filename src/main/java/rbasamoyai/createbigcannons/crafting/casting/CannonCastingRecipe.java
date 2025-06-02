@@ -1,40 +1,42 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
-import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
-import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CannonCastingRecipe implements BlockRecipe {
 
 	private final CannonCastShape requiredShape;
 	private final FluidIngredient ingredient;
 	private final Block result;
-	private final ResourceLocation id;
 
-	public CannonCastingRecipe(CannonCastShape requiredShape, FluidIngredient ingredient, Block result, ResourceLocation id) {
+	public CannonCastingRecipe(CannonCastShape requiredShape, FluidIngredient ingredient, Block result) {
 		this.requiredShape = requiredShape;
 		this.ingredient = ingredient;
 		this.result = result;
-		this.id = id;
 	}
 
 	public CannonCastShape shape() { return this.requiredShape; }
 	public FluidIngredient ingredient() { return this.ingredient; }
-	public ResourceLocation id() { return this.id; }
 
 	@Override
 	public boolean matches(Level level, BlockPos pos) {
@@ -55,33 +57,29 @@ public class CannonCastingRecipe implements BlockRecipe {
 	}
 
 	@Override public Block getResultBlock() { return this.result; }
-	@Override public ResourceLocation getId() { return this.id; }
 	@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.CANNON_CASTING; }
 	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.CANNON_CASTING; }
 
-	public static class Serializer implements BlockRecipeSerializer<CannonCastingRecipe> {
-		@Override
-		public CannonCastingRecipe fromJson(ResourceLocation id, JsonObject obj) {
-			CannonCastShape shape = CBCRegistries.cannonCastShapes().get(CBCUtils.location(obj.get("cast_shape").getAsString()));
-			FluidIngredient ingredient = FluidIngredient.CODEC.parse( obj.get("fluid"));
-			Block result = CBCRegistryUtils.getBlock(CBCUtils.location(obj.get("result").getAsString()));
-			return new CannonCastingRecipe(shape, ingredient, result, id);
-		}
+	public static class Serializer implements BlockRecipeSerializer<CannonCastingRecipe> { // TODO c6 playtest
+        public static final Codec<CannonCastShape> CANNON_SHAPE_CODEC = CBCRegistries.cannonCastShapes().byNameCodec()
+            .validate(shape -> shape == null ? DataResult.error(() -> "Invalid cannon cast shape") : DataResult.success(shape));
+        public static final Codec<Block> BLOCK_CODEC = BuiltInRegistries.BLOCK.byNameCodec()
+            .validate(block -> block == Blocks.AIR ? DataResult.error(() -> "Invalid block for built-up heating recipe") : DataResult.success(block));
 
-		@Override
-		public CannonCastingRecipe fromNetwork(ResourceLocation id, RegistryFriendlyByteBuf buf) {
-			CannonCastShape shape = CBCRegistries.cannonCastShapes().byId(buf.readVarInt());
-			Block result = CBCRegistryUtils.getBlock(buf.readVarInt());
-			FluidIngredient ingredient = FluidIngredient.read(buf);
-			return new CannonCastingRecipe(shape, ingredient, result, id);
-		}
+        public static final MapCodec<CannonCastingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+                CANNON_SHAPE_CODEC.fieldOf("cast_shape").forGetter(CannonCastingRecipe::shape),
+                FluidIngredient.CODEC.fieldOf("fluid").forGetter(CannonCastingRecipe::ingredient),
+                BLOCK_CODEC.fieldOf("result").forGetter(CannonCastingRecipe::getResultBlock)
+            ).apply(instance, CannonCastingRecipe::new));
 
-		@Override
-		public void toNetwork(RegistryFriendlyByteBuf buf, CannonCastingRecipe recipe) {
-			buf.writeVarInt(CBCRegistries.cannonCastShapes().getId(recipe.shape()))
-			.writeVarInt(CBCRegistryUtils.getBlockNumericId(recipe.getResultBlock()));
-			FluidIngredient.write(buf, recipe.ingredient());
-		}
+        public static final StreamCodec<RegistryFriendlyByteBuf, CannonCastingRecipe> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.registry(CBCRegistries.CANNON_CAST_SHAPES), CannonCastingRecipe::shape,
+            FluidIngredient.STREAM_CODEC, CannonCastingRecipe::ingredient,
+            ByteBufCodecs.registry(Registries.BLOCK), CannonCastingRecipe::getResultBlock,
+            CannonCastingRecipe::new);
+
+        @Override public MapCodec<CannonCastingRecipe> codec() { return CODEC; }
+        @Override public StreamCodec<RegistryFriendlyByteBuf, CannonCastingRecipe> streamCodec() { return STREAM_CODEC; }
 	}
 
 }

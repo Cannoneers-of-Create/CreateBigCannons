@@ -2,71 +2,43 @@ package rbasamoyai.createbigcannons.crafting;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Predicate;
 
-import com.google.gson.JsonElement;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.MapCodec;
 
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
-import rbasamoyai.createbigcannons.utils.CBCUtils;
 
-public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
+public abstract sealed class BlockRecipeIngredient implements Predicate<BlockState> {
+    // TODO needs datagen on NeoForge working
+    // TODO c6 playtest
 
-	public static final BlockRecipeIngredient NONE = new BlockRecipeIngredient() {
-		private List<ItemStack> ingredient;
+    public static final Codec<BlockRecipeIngredient> CODEC = Type.CODEC.dispatch(BlockRecipeIngredient::ingredientType, type -> type.codec);
+    public static final StreamCodec<RegistryFriendlyByteBuf, BlockRecipeIngredient> STREAM_CODEC = Type.STREAM_CODEC.dispatch(BlockRecipeIngredient::ingredientType, type -> type.streamCodec);
 
-		@Override
-		public List<ItemStack> getBlockItems() {
-			if (this.ingredient == null) {
-				this.ingredient = new ArrayList<>(1);
-                ItemStack stack = new ItemStack(Blocks.BARRIER);
-                stack.applyComponents(DataComponentPatch.builder().set(DataComponents.ITEM_NAME, Component.literal("Invalid block")).build()); // todo: this seems fucking stupid
-                this.ingredient.add(stack);
-			}
-			return this.ingredient;
-		}
+	public static BlockRecipeIngredient of(Block block) { return new BlockIngredient(block); }
 
-		@Override
-		public boolean test(BlockState blockState) {
-			return false;
-		}
-
-		@Override
-		public String stringForSerialization() {
-			return "/";
-		}
-	};
-
-	public static BlockRecipeIngredient of(Block block) {
-		return new BlockIngredient(block);
-	}
-
-	public static BlockRecipeIngredient of(TagKey<Block> tag) {
-		return new TagIngredient(tag);
-	}
-
-	public static BlockRecipeIngredient fromJson(JsonElement el) {
-		return el.isJsonPrimitive() && el.getAsJsonPrimitive().isString() ? fromString(el.getAsJsonPrimitive().getAsString()) : NONE;
-	}
-
-	public static BlockRecipeIngredient fromNetwork(FriendlyByteBuf buf) {
-		return fromString(buf.readUtf());
-	}
-
-	public static BlockRecipeIngredient fromString(String s) {
-		return s.charAt(0) == '/' ? NONE :
-			s.charAt(0) == '#' ? of(TagKey.create(CBCRegistryUtils.getBlockRegistryKey(), CBCUtils.location(s.substring(1)))) :
-				CBCRegistryUtils.getOptionalBlock(CBCUtils.location(s)).map(BlockRecipeIngredient::of).orElse(NONE);
-	}
+	public static BlockRecipeIngredient of(TagKey<Block> tag) { return new TagIngredient(tag); }
 
 	public abstract List<ItemStack> getBlockItems();
 
@@ -76,18 +48,27 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 
 	public abstract String stringForSerialization();
 
-	public static class BlockIngredient extends BlockRecipeIngredient {
+    public abstract Type ingredientType();
+
+	public static final class BlockIngredient extends BlockRecipeIngredient {
+        public static final Codec<Block> BLOCK_CODEC = BuiltInRegistries.BLOCK.byNameCodec()
+            .validate(block -> block == Blocks.AIR ? DataResult.error(() -> "Invalid block ingredient block") : DataResult.success(block));
+
+        public static final MapCodec<BlockIngredient> CODEC = BLOCK_CODEC.fieldOf("block").xmap(BlockIngredient::new, i -> i.block);
+        public static final StreamCodec<RegistryFriendlyByteBuf, BlockIngredient> STREAM_CODEC = ByteBufCodecs.registry(Registries.BLOCK).map(BlockIngredient::new, i -> i.block);
+
+        public static final BlockIngredient NONE = new BlockIngredient(Blocks.AIR);
 		private final Block block;
 		private final List<ItemStack> blocks = new ArrayList<>(1);
 
-		protected BlockIngredient(Block block) {
+		public BlockIngredient(Block block) {
 			this.block = block;
 			this.blocks.add(new ItemStack(this.block));
 		}
 
 		@Override
 		public boolean test(BlockState blockState) {
-			return blockState.is(this.block);
+			return this.block != Blocks.AIR && blockState.is(this.block);
 		}
 
 		@Override
@@ -99,13 +80,20 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 		public String stringForSerialization() {
 			return CBCRegistryUtils.getBlockLocation(this.block).toString();
 		}
-	}
 
-	public static class TagIngredient extends BlockRecipeIngredient {
+        @Override public Type ingredientType() { return Type.BLOCK; }
+    }
+
+	public static final class TagIngredient extends BlockRecipeIngredient {
+        public static final MapCodec<TagIngredient> CODEC = TagKey.codec(Registries.BLOCK).fieldOf("tag").xmap(TagIngredient::new, i -> i.tag);
+        public static final StreamCodec<RegistryFriendlyByteBuf, TagIngredient> STREAM_CODEC = StreamCodec.composite(
+            ResourceLocation.STREAM_CODEC, i -> i.tag.location(),
+            rl -> new TagIngredient(TagKey.create(Registries.BLOCK, rl)));
+
 		private final TagKey<Block> tag;
 		private List<ItemStack> blocks = null;
 
-		protected TagIngredient(TagKey<Block> tag) {
+		public TagIngredient(TagKey<Block> tag) {
 			this.tag = tag;
 		}
 
@@ -118,9 +106,8 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 		public List<ItemStack> getBlockItems() {
 			if (this.blocks == null) {
 				this.blocks = new ArrayList<>();
-				for (Holder<Block> holder : CBCRegistryUtils.getBlockTagEntries(this.tag)) {
-					this.blocks.add(new ItemStack(holder.value()));
-				}
+				for (Holder<Block> holder : CBCRegistryUtils.getBlockTagEntries(this.tag))
+                    this.blocks.add(new ItemStack(holder.value()));
 				if (this.blocks.isEmpty()) {
                     ItemStack stack = new ItemStack(Blocks.BARRIER);
                     stack.applyComponents(DataComponentPatch.builder().set(DataComponents.ITEM_NAME, Component.literal("Empty Tag: " + this.tag.location())).build()); // todo: this seems fucking stupid
@@ -134,6 +121,28 @@ public abstract class BlockRecipeIngredient implements Predicate<BlockState> {
 		public String stringForSerialization() {
 			return "#" + this.tag.location();
 		}
-	}
+
+        @Override public Type ingredientType() { return Type.TAG; }
+    }
+
+    public enum Type implements StringRepresentable {
+        BLOCK(BlockIngredient.CODEC, BlockIngredient.STREAM_CODEC),
+        TAG(TagIngredient.CODEC, TagIngredient.STREAM_CODEC);
+
+        public static final Codec<Type> CODEC = StringRepresentable.fromValues(Type::values);
+        public static final StreamCodec<RegistryFriendlyByteBuf, Type> STREAM_CODEC = CatnipStreamCodecBuilders.ofEnum(Type.class);
+
+        private final String id = this.name().toLowerCase(Locale.ROOT);
+
+        private final MapCodec<? extends BlockRecipeIngredient> codec;
+        private final StreamCodec<RegistryFriendlyByteBuf, ? extends BlockRecipeIngredient> streamCodec;
+
+        Type(MapCodec<? extends BlockRecipeIngredient> codec, StreamCodec<RegistryFriendlyByteBuf, ? extends BlockRecipeIngredient> streamCodec) {
+            this.codec = codec;
+            this.streamCodec = streamCodec;
+        }
+
+        @Override public String getSerializedName() { return this.id; }
+    }
 
 }
