@@ -178,10 +178,6 @@ public class DefaultFluidCompat {
 		gasCloud.setDuration(300);
 		gasCloud.setPotionContents(components.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY));
 
-		/* todo: i don't think it's needed anymore as of 1.21.1 but if it is look at AreaEffectCloud for addEffect method
-		for (MobEffectInstance effect : components.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getAllEffects())
-			gasCloud.addEffect(new MobEffectInstance(effect));*/
-
 		gasCloud.setFixedColor(components.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).getColor() | 0xff000000);
 		level.addFreshEntity(gasCloud);
 	}

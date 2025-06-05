@@ -8,10 +8,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.createmod.ponder.foundation.PonderIndex;
-
-import net.minecraft.core.component.DataComponents;
-
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -19,9 +15,11 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.AllDataComponents;
 
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.math.VecHelper;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
@@ -34,7 +32,6 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.sounds.SoundEvent;
@@ -116,11 +113,11 @@ public class CBCClientCommon {
 		CBCBlockPartials.resolveDeferredModels();
 
 		IndexPlatform.registerClampedItemProperty(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
-			return stack.get(DataComponents.CUSTOM_DATA).copyTag().getCompound("SequencedAssembly").getInt("Step") - 1; // todo: get rid of CustomData
+			return stack.has(AllDataComponents.SEQUENCED_ASSEMBLY) ? stack.get(AllDataComponents.SEQUENCED_ASSEMBLY).step() - 1 : 0;
 		});
 
 		IndexPlatform.registerClampedItemProperty(CBCItems.PARTIALLY_FORMED_BIG_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
-			return stack.get(DataComponents.CUSTOM_DATA).copyTag().getCompound("SequencedAssembly").getInt("Step") - 1;
+            return stack.has(AllDataComponents.SEQUENCED_ASSEMBLY) ? stack.get(AllDataComponents.SEQUENCED_ASSEMBLY).step() - 1 : 0;
 		});
 
 		IndexPlatform.registerClampedItemProperty(CBCBlocks.BIG_CARTRIDGE.get().asItem(), CreateBigCannons.resource("big_cartridge_filled"),

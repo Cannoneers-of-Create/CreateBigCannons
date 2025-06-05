@@ -45,7 +45,7 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 	@Override
 	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		FuzedBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
-		projectile.setTracer(getTracerFromBlocks(projectileBlocks));
+		projectile.setTracer(getTracerFromBlocks(projectileBlocks, level.registryAccess()));
 		projectile.setFuze(getFuzeFromBlocks(projectileBlocks));
 		return projectile;
 	}

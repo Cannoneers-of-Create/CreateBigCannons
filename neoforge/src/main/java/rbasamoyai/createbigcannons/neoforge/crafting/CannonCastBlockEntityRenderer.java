@@ -1,8 +1,11 @@
 package rbasamoyai.createbigcannons.neoforge.crafting;
 
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.foundation.fluid.FluidRenderer;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -17,8 +20,6 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntityRenderer;
 
-import java.util.List;
-
 public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntityRenderer {
 
 	public CannonCastBlockEntityRenderer(BlockEntityRendererProvider.Context context) { super(context); }
@@ -30,7 +31,7 @@ public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntity
         FluidStack fstack = castc.fluid.getFluid();
         if (!fstack.isEmpty())
             FluidRenderer.renderFluidBox(fstack.getFluid(), fstack.getAmount(), 0f, 0f, 0f, width, height, width,
-                buffers, stack, light, false, true, fstack.getTag());
+                buffers, stack, light, false, true, fstack.getComponentsPatch());
     }
 
 	@Override

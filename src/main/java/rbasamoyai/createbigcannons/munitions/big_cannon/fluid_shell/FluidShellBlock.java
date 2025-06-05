@@ -55,7 +55,7 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		FluidShellProjectile projectile = CBCEntityTypes.FLUID_SHELL.create(level);
 		projectile.setFuze(getFuzeFromBlocks(projectileBlocks));
-		projectile.setTracer(getTracerFromBlocks(projectileBlocks));
+		projectile.setTracer(getTracerFromBlocks(projectileBlocks, level.registryAccess()));
 		if (!projectileBlocks.isEmpty()) {
 			StructureBlockInfo info = projectileBlocks.get(0);
 			if (info.nbt() != null) {

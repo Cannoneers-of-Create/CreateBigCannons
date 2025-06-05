@@ -6,12 +6,11 @@ import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 
 import net.createmod.catnip.math.VoxelShaper;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -175,13 +174,13 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 		return state.getValue(FACING).getAxis();
 	}
 
-	public static ItemStack getTracerFromBlocks(List<StructureBlockInfo> blocks) {
+	public static ItemStack getTracerFromBlocks(List<StructureBlockInfo> blocks, HolderLookup.Provider registries) {
 		if (blocks.isEmpty())
 			return ItemStack.EMPTY;
 		StructureBlockInfo info = blocks.get(0);
 		if (info.nbt() == null)
 			return ItemStack.EMPTY;
-		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt(), Minecraft.getInstance().level.registryAccess()); //fixme this seems wrong
+		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt(), registries);
 		return load instanceof BigCannonProjectileBlockEntity projectile ? projectile.getItem(0) : ItemStack.EMPTY;
 	}
 

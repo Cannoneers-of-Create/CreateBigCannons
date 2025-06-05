@@ -5,12 +5,14 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecs;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,11 +28,16 @@ public record SplinterBurstParticleData(BlockState blockState, int count) implem
 			.forGetter(data -> data.count))
 		.apply(i, SplinterBurstParticleData::new));
 
+    private static final StreamCodec<RegistryFriendlyByteBuf, SplinterBurstParticleData> STREAM_CODEC = StreamCodec.composite(
+        CatnipStreamCodecs.BLOCK_STATE, SplinterBurstParticleData::blockState,
+        ByteBufCodecs.VAR_INT, SplinterBurstParticleData::count,
+        SplinterBurstParticleData::new);
+
 	public SplinterBurstParticleData() { this(Blocks.AIR.defaultBlockState(), 0); }
 
 	@Override public MapCodec<SplinterBurstParticleData> getCodec(ParticleType<SplinterBurstParticleData> type) { return CODEC; }
 
-    @Override public StreamCodec<? super RegistryFriendlyByteBuf, SplinterBurstParticleData> getStreamCodec() { return null; } //fixme
+    @Override public StreamCodec<? super RegistryFriendlyByteBuf, SplinterBurstParticleData> getStreamCodec() { return STREAM_CODEC; }
 
 	@Environment(EnvType.CLIENT)
 	@Override

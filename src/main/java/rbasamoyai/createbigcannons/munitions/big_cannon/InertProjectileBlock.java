@@ -30,7 +30,7 @@ public abstract class InertProjectileBlock extends ProjectileBlock<AbstractBigCa
 	@Override
 	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureTemplate.StructureBlockInfo> projectileBlocks) {
 		AbstractBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
-		projectile.setTracer(getTracerFromBlocks(projectileBlocks));
+		projectile.setTracer(getTracerFromBlocks(projectileBlocks, level.registryAccess()));
 		return projectile;
 	}
 

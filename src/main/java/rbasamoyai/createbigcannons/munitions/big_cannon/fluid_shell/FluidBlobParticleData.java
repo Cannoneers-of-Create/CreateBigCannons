@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,12 +10,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class FluidBlobParticleData implements ParticleOptions, ICustomParticleData<FluidBlobParticleData> {
@@ -27,11 +22,10 @@ public class FluidBlobParticleData implements ParticleOptions, ICustomParticleDa
 			EndFluidStack.CODEC.fieldOf("fluid").forGetter(FluidBlobParticleData::fluid))
 		.apply(i, FluidBlobParticleData::new));
 
-    private static final StreamCodec<RegistryFriendlyByteBuf, FluidBlobParticleData> STREAM_CODEC = /*StreamCodec.composite(
-        ByteBufCodecs.FLOAT, p -> p.scale,
-        EndFluidStack.STREAM_CODEC, p -> p. fluid, //fixme implement STREAM_CODEC for EndFluidStack
-        FluidBlobParticleData::new
-    );*/null;
+    private static final StreamCodec<RegistryFriendlyByteBuf, FluidBlobParticleData> STREAM_CODEC = StreamCodec.composite(
+        ByteBufCodecs.FLOAT, FluidBlobParticleData::scale,
+        EndFluidStack.STREAM_CODEC, FluidBlobParticleData::fluid,
+        FluidBlobParticleData::new);
 
 	private final float scale;
 	private final EndFluidStack fluid;

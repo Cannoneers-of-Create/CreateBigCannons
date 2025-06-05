@@ -109,7 +109,7 @@ public abstract sealed class BlockRecipeIngredient implements Predicate<BlockSta
                     this.blocks.add(new ItemStack(holder.value()));
 				if (this.blocks.isEmpty()) {
                     ItemStack stack = new ItemStack(Blocks.BARRIER);
-                    stack.applyComponents(DataComponentPatch.builder().set(DataComponents.ITEM_NAME, Component.literal("Empty Tag: " + this.tag.location())).build()); // todo: this seems fucking stupid
+                    stack.applyComponents(DataComponentPatch.builder().set(DataComponents.ITEM_NAME, Component.literal("Empty Tag: " + this.tag.location())).build());
                     this.blocks.add(stack);
 				}
 			}
