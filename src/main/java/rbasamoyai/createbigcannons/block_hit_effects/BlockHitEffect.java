@@ -1,22 +1,15 @@
 package rbasamoyai.createbigcannons.block_hit_effects;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSyntaxException;
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.minecraft.commands.arguments.ParticleArgument;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,41 +19,12 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public record BlockHitEffect(List<ParticleOptions> impactParticles, List<ParticleOptions> deflectParticles, HitSound impactSound, HitSound deflectSound) {
 
-	public static BlockHitEffect fromJson(JsonObject obj, HolderLookup.Provider registries) throws CommandSyntaxException, JsonParseException {
-		List<ParticleOptions> impactParticles = new ArrayList<>();
-		if (GsonHelper.isStringValue(obj, "impact_particle")) {
-			String particle = GsonHelper.getAsString(obj, "impact_particle");
-			ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle), registries);
-			impactParticles.add(options);
-		} else if (GsonHelper.isArrayNode(obj, "impact_particles")) {
-			JsonArray arr = GsonHelper.getAsJsonArray(obj, "impact_particles");
-			for (JsonElement el : arr) {
-				String particle = el.getAsString();
-				ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle), registries);
-				impactParticles.add(options);
-			}
-		} else {
-			throw new JsonSyntaxException("Impact particles should either be specified as string \"impact_particle\" or string array \"impact_particles\"");
-		}
-		List<ParticleOptions> deflectParticles = new ArrayList<>();
-		if (GsonHelper.isStringValue(obj, "deflect_particle")) {
-			String particle = GsonHelper.getAsString(obj, "deflect_particle");
-			ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle), registries);
-			deflectParticles.add(options);
-		} else if (GsonHelper.isArrayNode(obj, "deflect_particles")) {
-			JsonArray arr = GsonHelper.getAsJsonArray(obj, "deflect_particles");
-			for (JsonElement el : arr) {
-				String particle = el.getAsString();
-				ParticleOptions options = ParticleArgument.readParticle(new StringReader(particle), registries);
-				deflectParticles.add(options);
-			}
-		} else {
-			throw new JsonSyntaxException("Deflect particles should either be specified as string \"deflect_particle\" or string array \"deflect_particles\"");
-		}
-		HitSound impactSound = HitSound.fromJson(obj.getAsJsonObject("impact_sound"));
-		HitSound deflectSound = HitSound.fromJson(obj.getAsJsonObject("deflect_sound"));
-		return new BlockHitEffect(impactParticles, deflectParticles, impactSound, deflectSound);
-	}
+    public static final Codec<BlockHitEffect> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+        ParticleTypes.CODEC.listOf().fieldOf("impact_particles").forGetter(BlockHitEffect::impactParticles),
+        ParticleTypes.CODEC.listOf().fieldOf("deflect_particles").forGetter(BlockHitEffect::deflectParticles),
+        HitSound.CODEC.fieldOf("impact_sound").forGetter(BlockHitEffect::impactSound),
+        HitSound.CODEC.fieldOf("deflect_sound").forGetter(BlockHitEffect::deflectSound)
+    ).apply(instance, BlockHitEffect::new));
 
 	public void playEffect(Level level, boolean deflect, boolean forceDisplay, double x, double y, double z, double dx,
 						   double dy, double dz, EntityType<?> entityType, BlockState blockState, ProjectileHitEffect projectileEffect) {
@@ -74,19 +38,14 @@ public record BlockHitEffect(List<ParticleOptions> impactParticles, List<Particl
 	}
 
 	public record HitSound(ResourceLocation location, SoundSource source, float basePitch, float pitchVariation) {
-
-		public static HitSound fromJson(JsonObject obj) throws JsonParseException {
-			ResourceLocation id = CBCUtils.location(GsonHelper.getAsString(obj, "sound"));
-			String sourceName = GsonHelper.getAsString(obj, "source", SoundSource.BLOCKS.getName());
-			SoundSource source = CBCUtils.soundSourceFromName(sourceName);
-			if (source == null) {
-				String types = '\'' + String.join("', '", CBCUtils.getSoundSourceNames()) + '\'';
-				throw new JsonParseException("Invalid sound type '" + sourceName + "', should either be absent or one of " + types);
-			}
-			float pitch = GsonHelper.getAsFloat(obj, "pitch", 1);
-			float pitchVariation = GsonHelper.getAsFloat(obj, "pitch_variation", 0);
-			return new HitSound(id, source, pitch, pitchVariation);
-		}
+        public static final Codec<HitSound> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            ResourceLocation.CODEC.fieldOf("sound").forGetter(HitSound::location),
+            CBCUtils.SOUND_SOURCE_CODEC.fieldOf("source")
+                .validate(s -> s == null ? DataResult.error(() -> "Invalid sound type") : DataResult.success(s))
+                .forGetter(HitSound::source),
+            Codec.FLOAT.fieldOf("pitch").forGetter(HitSound::basePitch),
+            Codec.FLOAT.fieldOf("pitch_variation").forGetter(HitSound::pitchVariation)
+        ).apply(instance, HitSound::new));
 
 		public void playSound(Level level, double x, double y, double z, double dx, double dy, double dz, ProjectileHitEffect projectileEffect) {
 			EnvExecute.executeOnClient(() -> () -> CBCClientCommon.playCustomSound(this, level, x, y, z, dx, dy, dz, projectileEffect));

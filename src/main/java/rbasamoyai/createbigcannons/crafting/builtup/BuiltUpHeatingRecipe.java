@@ -11,8 +11,6 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -30,6 +28,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class BuiltUpHeatingRecipe implements BlockRecipe {
 
@@ -87,17 +86,17 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
 	@Override public BlockRecipeType<?> getType() { return BlockRecipeType.BUILT_UP_HEATING; }
 
 	public static class Serializer implements BlockRecipeSerializer<BuiltUpHeatingRecipe> { // TODO c6 playtest
-        public static final Codec<Block> BLOCK_CODEC = BuiltInRegistries.BLOCK.byNameCodec()
+        public static final Codec<Block> BLOCK_CODEC = CBCRegistryUtils.getBlockRegistry().byNameCodec()
             .validate(block -> block == Blocks.AIR ? DataResult.error(() -> "Invalid block for built-up heating recipe") : DataResult.success(block));
 
         public static final MapCodec<BuiltUpHeatingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-                Codec.list(BlockRecipeIngredient.CODEC).fieldOf("layers").forGetter(BuiltUpHeatingRecipe::layerList),
+                BlockRecipeIngredient.CODEC.listOf().fieldOf("layers").forGetter(BuiltUpHeatingRecipe::layerList),
                 BLOCK_CODEC.fieldOf("result").forGetter(BuiltUpHeatingRecipe::getResultBlock)
             ).apply(instance, BuiltUpHeatingRecipe::new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, BuiltUpHeatingRecipe> STREAM_CODEC = StreamCodec.composite(
             BlockRecipeIngredient.STREAM_CODEC.apply(ByteBufCodecs.list()), BuiltUpHeatingRecipe::layerList,
-            ByteBufCodecs.registry(Registries.BLOCK), BuiltUpHeatingRecipe::getResultBlock,
+            ByteBufCodecs.registry(CBCRegistryUtils.getBlockRegistryKey()), BuiltUpHeatingRecipe::getResultBlock,
             BuiltUpHeatingRecipe::new);
 
         @Override public MapCodec<BuiltUpHeatingRecipe> codec() { return CODEC; }

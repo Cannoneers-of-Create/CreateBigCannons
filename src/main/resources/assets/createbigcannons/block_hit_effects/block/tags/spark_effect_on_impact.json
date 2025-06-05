@@ -1,6 +1,20 @@
 {
-  "impact_particle": "createbigcannons:spark_burst 1 0.95 0.85 false 30",
-  "deflect_particle": "createbigcannons:spark_burst 1 0.95 0.85 false 30",
+  "impact_particles": [
+    {
+      "type": "createbigcannons:spark_burst",
+      "color": [1, 0.95, 0.85],
+      "deflect": false,
+      "count": 30
+    }
+  ],
+  "deflect_particles": [
+    {
+      "type": "createbigcannons:spark_burst",
+      "color": [1, 0.95, 0.85],
+      "deflect": false,
+      "count": 30
+    }
+  ],
   "impact_sound": { "sound": "minecraft:block.netherite_block.break", "pitch": 1, "pitch_variation": 0.25 },
   "deflect_sound": { "sound": "minecraft:block.netherite_block.break", "pitch": 1, "pitch_variation": 0.25 }
 }

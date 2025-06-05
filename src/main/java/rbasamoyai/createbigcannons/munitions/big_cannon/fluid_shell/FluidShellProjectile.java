@@ -34,13 +34,13 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.put("Fluid", this.fluidStack.writeTag(new CompoundTag()));
+		tag.put("Fluid", this.fluidStack.writeTag(new CompoundTag(), this.level().registryAccess()));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		this.fluidStack = EndFluidStack.readTag(tag.getCompound("Fluid"));
+		this.fluidStack = EndFluidStack.readTag(tag.getCompound("Fluid"), this.level().registryAccess());
 	}
 
 	public void setFluidStack(EndFluidStack fstack) { this.fluidStack = fstack; }

@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.smoke;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,7 +10,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -26,7 +23,7 @@ public class ShrapnelSmokeParticleData implements ParticleOptions, ICustomPartic
 		.apply(i, ShrapnelSmokeParticleData::new));
 
     private static final StreamCodec<RegistryFriendlyByteBuf, ShrapnelSmokeParticleData> STREAM_CODEC = StreamCodec.composite(
-        ByteBufCodecs.INT, p -> p.lifetime,
+        ByteBufCodecs.VAR_INT, p -> p.lifetime,
         ShrapnelSmokeParticleData::new
     );
 

@@ -13,8 +13,6 @@ import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -51,11 +49,12 @@ public abstract sealed class BlockRecipeIngredient implements Predicate<BlockSta
     public abstract Type ingredientType();
 
 	public static final class BlockIngredient extends BlockRecipeIngredient {
-        public static final Codec<Block> BLOCK_CODEC = BuiltInRegistries.BLOCK.byNameCodec()
+        public static final Codec<Block> BLOCK_CODEC = CBCRegistryUtils.getBlockRegistry().byNameCodec()
             .validate(block -> block == Blocks.AIR ? DataResult.error(() -> "Invalid block ingredient block") : DataResult.success(block));
 
         public static final MapCodec<BlockIngredient> CODEC = BLOCK_CODEC.fieldOf("block").xmap(BlockIngredient::new, i -> i.block);
-        public static final StreamCodec<RegistryFriendlyByteBuf, BlockIngredient> STREAM_CODEC = ByteBufCodecs.registry(Registries.BLOCK).map(BlockIngredient::new, i -> i.block);
+        public static final StreamCodec<RegistryFriendlyByteBuf, BlockIngredient> STREAM_CODEC = ByteBufCodecs.registry(CBCRegistryUtils.getBlockRegistryKey())
+            .map(BlockIngredient::new, i -> i.block);
 
         public static final BlockIngredient NONE = new BlockIngredient(Blocks.AIR);
 		private final Block block;
@@ -85,10 +84,10 @@ public abstract sealed class BlockRecipeIngredient implements Predicate<BlockSta
     }
 
 	public static final class TagIngredient extends BlockRecipeIngredient {
-        public static final MapCodec<TagIngredient> CODEC = TagKey.codec(Registries.BLOCK).fieldOf("tag").xmap(TagIngredient::new, i -> i.tag);
+        public static final MapCodec<TagIngredient> CODEC = TagKey.codec(CBCRegistryUtils.getBlockRegistryKey()).fieldOf("tag").xmap(TagIngredient::new, i -> i.tag);
         public static final StreamCodec<RegistryFriendlyByteBuf, TagIngredient> STREAM_CODEC = StreamCodec.composite(
             ResourceLocation.STREAM_CODEC, i -> i.tag.location(),
-            rl -> new TagIngredient(TagKey.create(Registries.BLOCK, rl)));
+            rl -> new TagIngredient(TagKey.create(CBCRegistryUtils.getBlockRegistryKey(), rl)));
 
 		private final TagKey<Block> tag;
 		private List<ItemStack> blocks = null;

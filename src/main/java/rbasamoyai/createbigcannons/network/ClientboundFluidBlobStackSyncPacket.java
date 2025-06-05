@@ -4,7 +4,6 @@ import java.util.concurrent.Executor;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
@@ -14,8 +13,8 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.FluidBlobBur
 
 public record ClientboundFluidBlobStackSyncPacket(EndFluidStack fstack, int entityId) implements RootPacket {
 
-	public ClientboundFluidBlobStackSyncPacket(FriendlyByteBuf buf) {
-		this(EndFluidStack.readBuf(buf), buf.readVarInt());
+	public ClientboundFluidBlobStackSyncPacket(RegistryFriendlyByteBuf buf) {
+		this(EndFluidStack.STREAM_CODEC.decode(buf), buf.readVarInt());
 	}
 
 	public ClientboundFluidBlobStackSyncPacket(FluidBlobBurst blobBurst) {
@@ -24,7 +23,7 @@ public record ClientboundFluidBlobStackSyncPacket(EndFluidStack fstack, int enti
 
 	@Override
 	public void rootEncode(RegistryFriendlyByteBuf buf) {
-		this.fstack.writeBuf(buf);
+        EndFluidStack.STREAM_CODEC.encode(buf, this.fstack);
 		buf.writeVarInt(this.entityId);
 	}
 

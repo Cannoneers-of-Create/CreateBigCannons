@@ -31,7 +31,7 @@ public class CannonSmokeParticleData implements ParticleOptions, ICustomParticle
     public static final StreamCodec<RegistryFriendlyByteBuf, CannonSmokeParticleData> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.FLOAT, p -> p.power,
         ByteBufCodecs.FLOAT, p -> p.size,
-        ByteBufCodecs.INT, p -> p.lifetime,
+        ByteBufCodecs.VAR_INT, p -> p.lifetime,
         ByteBufCodecs.FLOAT, p -> p.friction,
         CannonSmokeParticleData::new
     );

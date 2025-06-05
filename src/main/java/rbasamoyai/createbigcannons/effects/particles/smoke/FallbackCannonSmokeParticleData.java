@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.smoke;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,7 +10,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -34,7 +31,7 @@ public class FallbackCannonSmokeParticleData implements ParticleOptions, ICustom
     private static final StreamCodec<RegistryFriendlyByteBuf, FallbackCannonSmokeParticleData> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.FLOAT, p -> p.power,
         ByteBufCodecs.FLOAT, p -> p.size,
-        ByteBufCodecs.INT, p -> p.lifetime,
+        ByteBufCodecs.VAR_INT, p -> p.lifetime,
         ByteBufCodecs.FLOAT, p -> p.friction,
         FallbackCannonSmokeParticleData::new
     );

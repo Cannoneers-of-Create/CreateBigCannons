@@ -17,11 +17,15 @@ import org.joml.Matrix4fc;
 
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.datafixers.util.Function7;
 import com.mojang.serialization.Codec;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -47,6 +51,8 @@ public class CBCUtils {
 
 	public static final Codec<SoundSource> SOUND_SOURCE_CODEC =
 		CBCUtils.fromEnumWithStringFunction(SoundSource::values, SoundSource::getName, CBCUtils::soundSourceFromName);
+
+    public static final StreamCodec<ByteBuf, SoundSource> SOUND_SOURCE_STREAM_CODEC = ByteBufCodecs.VAR_INT.map(i -> SoundSource.values()[i], SoundSource::ordinal);
 
 	/**
 	 * Alias method for easier porting to 1.21+.
@@ -282,6 +288,51 @@ public class CBCUtils {
 	public static BlockState parseBlockState(StringReader reader) throws CommandSyntaxException {
 		return BlockStateParser.parseForBlock(CBCRegistryUtils.getBlockRegistry().asLookup(), reader, false).blockState();
 	}
+
+    /**
+     * Copied from NeoForgeStreamCodecs
+     */
+    public static <B, C, T1, T2, T3, T4, T5, T6, T7> StreamCodec<B, C> composite7ArgStreamCodec(
+        final StreamCodec<? super B, T1> codec1,
+        final Function<C, T1> getter1,
+        final StreamCodec<? super B, T2> codec2,
+        final Function<C, T2> getter2,
+        final StreamCodec<? super B, T3> codec3,
+        final Function<C, T3> getter3,
+        final StreamCodec<? super B, T4> codec4,
+        final Function<C, T4> getter4,
+        final StreamCodec<? super B, T5> codec5,
+        final Function<C, T5> getter5,
+        final StreamCodec<? super B, T6> codec6,
+        final Function<C, T6> getter6,
+        final StreamCodec<? super B, T7> codec7,
+        final Function<C, T7> getter7,
+        final Function7<T1, T2, T3, T4, T5, T6, T7, C> p_331335_) {
+        return new StreamCodec<>() {
+            @Override
+            public C decode(B p_330310_) {
+                T1 t1 = codec1.decode(p_330310_);
+                T2 t2 = codec2.decode(p_330310_);
+                T3 t3 = codec3.decode(p_330310_);
+                T4 t4 = codec4.decode(p_330310_);
+                T5 t5 = codec5.decode(p_330310_);
+                T6 t6 = codec6.decode(p_330310_);
+                T7 t7 = codec7.decode(p_330310_);
+                return p_331335_.apply(t1, t2, t3, t4, t5, t6, t7);
+            }
+
+            @Override
+            public void encode(B p_332052_, C p_331912_) {
+                codec1.encode(p_332052_, getter1.apply(p_331912_));
+                codec2.encode(p_332052_, getter2.apply(p_331912_));
+                codec3.encode(p_332052_, getter3.apply(p_331912_));
+                codec4.encode(p_332052_, getter4.apply(p_331912_));
+                codec5.encode(p_332052_, getter5.apply(p_331912_));
+                codec6.encode(p_332052_, getter6.apply(p_331912_));
+                codec7.encode(p_332052_, getter7.apply(p_331912_));
+            }
+        };
+    }
 
 	private CBCUtils() {}
 

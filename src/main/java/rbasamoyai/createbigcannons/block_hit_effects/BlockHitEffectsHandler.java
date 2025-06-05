@@ -6,8 +6,10 @@ import javax.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
@@ -40,24 +42,24 @@ public class BlockHitEffectsHandler {
 		@Override
 		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
 			this.holder.cleanUp();
+            RegistryOps<JsonElement> registryops = this.makeConditionalOps();
 
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 				JsonElement el = entry.getValue();
-				if (!el.isJsonObject()) continue;
+                ResourceLocation loc = entry.getKey();
 				try {
-					ResourceLocation loc = entry.getKey();
 					if (loc.getPath().startsWith("tags/")) {
 						ResourceLocation pruned = CBCUtils.location(loc.getNamespace(), loc.getPath().substring(5));
 						TagKey<Block> tag = TagKey.create(CBCRegistryUtils.getBlockRegistryKey(), pruned);
-						this.holder.addTagData(tag, BlockHitEffect.fromJson(el.getAsJsonObject()));
+                        this.holder.addTagData(tag, BlockHitEffect.CODEC.parse(registryops, el).getOrThrow(JsonParseException::new));
 					} else {
 						Block block = CBCRegistryUtils.getOptionalBlock(loc).orElseThrow(() -> {
 							return new JsonSyntaxException("Unknown block '" + loc + "'");
 						});
-						this.holder.addData(block, BlockHitEffect.fromJson(el.getAsJsonObject()));
+						this.holder.addData(block, BlockHitEffect.CODEC.parse(registryops, el).getOrThrow(JsonParseException::new));
 					}
 				} catch (Exception e) {
-					CreateBigCannons.LOGGER.warn("Exception loading block hit effects: {}", e.getMessage());
+					CreateBigCannons.LOGGER.warn("Exception loading block hit effect {}: {}", loc, e.getMessage());
 				}
 			}
 			loadTags();

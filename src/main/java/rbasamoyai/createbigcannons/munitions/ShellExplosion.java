@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,6 +22,7 @@ import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundCBCExplodePacket;
 import rbasamoyai.createbigcannons.remix.CustomExplosion;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class ShellExplosion extends CustomExplosion.Impl {
 
@@ -55,7 +55,7 @@ public class ShellExplosion extends CustomExplosion.Impl {
 		if (this.noEffects)
 			return;
 		ShellBlastWaveEffectParticleData blastWave = new ShellBlastWaveEffectParticleData(this.size * 12,
-			BuiltInRegistries.SOUND_EVENT.wrapAsHolder(CBCSoundEvents.SHELL_EXPLOSION.getMainEvent()), SoundSource.BLOCKS,
+			CBCRegistryUtils.getSoundEventRegistry().wrapAsHolder(CBCSoundEvents.SHELL_EXPLOSION.getMainEvent()), SoundSource.BLOCKS,
 			Math.max(this.size * 2, 16), 0.8f + level.random.nextFloat() * 0.4f, 2f, this.size);
 		ShellExplosionCloudParticleData explosionCloud = new ShellExplosionCloudParticleData(this.size, this.isPlume);
 		this.level.addParticle(blastWave, true, this.x, this.y, this.z, 0, 0, 0);

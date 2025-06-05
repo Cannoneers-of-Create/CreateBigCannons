@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.mojang.serialization.MapCodec;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
@@ -61,7 +59,7 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 		if (!projectileBlocks.isEmpty()) {
 			StructureBlockInfo info = projectileBlocks.get(0);
 			if (info.nbt() != null) {
-				BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt(), Minecraft.getInstance().level.registryAccess()); // todo: hack
+				BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt(), level.registryAccess());
 				if (load instanceof AbstractFluidShellBlockEntity shell) shell.setFluidShellStack(projectile);
 			}
 		}
@@ -74,7 +72,7 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 		projectile.setFuze(getFuzeFromItemStack(itemStack));
 		projectile.setTracer(getTracerFromItemStack(itemStack));
 		CompoundTag fluidTag = itemStack.get(CBCDataComponents.FLUID_CONTENT).copyTag();
-		projectile.setFluidStack(EndFluidStack.readTag(fluidTag));
+		projectile.setFluidStack(EndFluidStack.readTag(fluidTag, level.registryAccess()));
 		return projectile;
     }
 

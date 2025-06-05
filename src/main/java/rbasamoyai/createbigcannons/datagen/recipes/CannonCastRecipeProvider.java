@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 import com.google.gson.JsonObject;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -265,32 +264,24 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 		}
 	}
 
-	private static class Result implements FinishedBlockRecipe {
-		private final ResourceLocation id;
-		private final CannonCastShape shape;
-		private final FluidIngredient ingredient;
-		private final Block result;
+    // TODO fixme for new data gen
+    private record Result(CannonCastShape shape, FluidIngredient ingredient, Block result, ResourceLocation id) implements FinishedBlockRecipe {
+        @Override
+        public void serializeRecipeData(JsonObject obj) {
+            obj.addProperty("cast_shape", CBCRegistries.cannonCastShapes().getKey(this.shape).toString());
+            //obj.add("fluid", this.ingredient.serialize());
+            obj.addProperty("result", CBCRegistryUtils.getBlockLocation(this.result).toString());
+        }
 
-		public Result(CannonCastShape shape, FluidIngredient ingredient, Block result, ResourceLocation id) {
-			this.shape = shape;
-			this.ingredient = ingredient;
-			this.result = result;
-			this.id = id;
-		}
 
-		@Override
-		public void serializeRecipeData(JsonObject obj) {
-			obj.addProperty("cast_shape", CBCRegistries.cannonCastShapes().getKey(this.shape).toString());
-			obj.add("fluid", this.ingredient.serialize());
-			obj.addProperty("result", CBCRegistryUtils.getBlockLocation(this.result).toString());
-		}
-
-		@Override public ResourceLocation id() { return this.id; }
-		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.CANNON_CASTING; }
-	}
+        @Override
+        public BlockRecipeSerializer<?> getSerializer() {
+            return BlockRecipeSerializer.CANNON_CASTING;
+        }
+    }
 
 	private static TagKey<Fluid> fluidTag(String path) {
-		return TagKey.create(Registries.FLUID, ResourceLocation.fromNamespaceAndPath(CBCDatagenCommon.PLATFORM.tagNamespace(), path));
+		return TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), ResourceLocation.fromNamespaceAndPath(CBCDatagenCommon.PLATFORM.tagNamespace(), path));
 	}
 
 }

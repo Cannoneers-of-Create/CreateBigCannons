@@ -4,7 +4,10 @@
 
 **Create Big Cannons 5.9.1, now supporting Create v6 on NeoForge 1.21.1.**
 
-
+Changes:
+- `block_hit_effects` files have changed format
+  - now only accept `impact_particles` and `deflect_particles` lists
+  - particles formatted in JSON rather than command string
 
 ## [5.9.0] - 2025-06-04
 

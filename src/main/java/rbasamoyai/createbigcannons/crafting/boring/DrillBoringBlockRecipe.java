@@ -9,8 +9,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -25,6 +23,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class DrillBoringBlockRecipe implements BlockRecipe {
 
@@ -71,7 +70,7 @@ public class DrillBoringBlockRecipe implements BlockRecipe {
 	}
 
 	public static class Serializer implements BlockRecipeSerializer<DrillBoringBlockRecipe> { // TODO c6 playtest
-        public static final Codec<Block> BLOCK_CODEC = BuiltInRegistries.BLOCK.byNameCodec()
+        public static final Codec<Block> BLOCK_CODEC = CBCRegistryUtils.getBlockRegistry().byNameCodec()
             .validate(block -> block == Blocks.AIR ? DataResult.error(() -> "Invalid block for drilling recipe") : DataResult.success(block));
 
         public static final MapCodec<DrillBoringBlockRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -82,7 +81,7 @@ public class DrillBoringBlockRecipe implements BlockRecipe {
 
         public static final StreamCodec<RegistryFriendlyByteBuf, DrillBoringBlockRecipe> STREAM_CODEC = StreamCodec.composite(
             BlockRecipeIngredient.STREAM_CODEC, i -> i.input,
-            ByteBufCodecs.registry(Registries.BLOCK), DrillBoringBlockRecipe::getResultBlock,
+            ByteBufCodecs.registry(CBCRegistryUtils.getBlockRegistryKey()), DrillBoringBlockRecipe::getResultBlock,
             ByteBufCodecs.BOOL, i -> i.obeyFacingOrAxis,
             DrillBoringBlockRecipe::new);
 

@@ -46,14 +46,14 @@ public class FluidBlobBurst extends CBCProjectileBurst {
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
 		tag.putByte("Size", this.getBlobSize());
-		tag.put("Fluid", this.getFluidStack().writeTag(new CompoundTag()));
+		tag.put("Fluid", this.getFluidStack().writeTag(new CompoundTag(), this.level().registryAccess()));
 	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 		this.setBlobSize(tag.getByte("Size"));
-		this.setFluidStack(EndFluidStack.readTag(tag.getCompound("Fluid")));
+		this.setFluidStack(EndFluidStack.readTag(tag.getCompound("Fluid"), this.level().registryAccess()));
 	}
 
 	protected void setBlobSize(byte size) {

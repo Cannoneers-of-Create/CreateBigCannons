@@ -20,7 +20,7 @@ public record ShellExplosionCloudParticleData(float scale, boolean isPlume) impl
 
 	private static final MapCodec<ShellExplosionCloudParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
 		Codec.FLOAT.fieldOf("scale").forGetter(ShellExplosionCloudParticleData::scale),
-		Codec.BOOL.fieldOf("isPlume").forGetter(ShellExplosionCloudParticleData::isPlume)
+		Codec.BOOL.fieldOf("is_plume").forGetter(ShellExplosionCloudParticleData::isPlume)
 	).apply(i, ShellExplosionCloudParticleData::new));
 
     private static final StreamCodec<RegistryFriendlyByteBuf, ShellExplosionCloudParticleData> STREAM_CODEC = StreamCodec.composite(

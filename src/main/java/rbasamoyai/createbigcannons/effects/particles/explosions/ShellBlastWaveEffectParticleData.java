@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.explosions;
 
-import com.mojang.serialization.Codec;
-
 import com.mojang.serialization.MapCodec;
 
 import net.fabricmc.api.EnvType;

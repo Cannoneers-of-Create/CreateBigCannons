@@ -8,8 +8,6 @@ import com.simibubi.create.foundation.fluid.FluidIngredient;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -22,6 +20,7 @@ import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class CannonCastingRecipe implements BlockRecipe {
 
@@ -63,7 +62,7 @@ public class CannonCastingRecipe implements BlockRecipe {
 	public static class Serializer implements BlockRecipeSerializer<CannonCastingRecipe> { // TODO c6 playtest
         public static final Codec<CannonCastShape> CANNON_SHAPE_CODEC = CBCRegistries.cannonCastShapes().byNameCodec()
             .validate(shape -> shape == null ? DataResult.error(() -> "Invalid cannon cast shape") : DataResult.success(shape));
-        public static final Codec<Block> BLOCK_CODEC = BuiltInRegistries.BLOCK.byNameCodec()
+        public static final Codec<Block> BLOCK_CODEC = CBCRegistryUtils.getBlockRegistry().byNameCodec()
             .validate(block -> block == Blocks.AIR ? DataResult.error(() -> "Invalid block for built-up heating recipe") : DataResult.success(block));
 
         public static final MapCodec<CannonCastingRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -75,7 +74,7 @@ public class CannonCastingRecipe implements BlockRecipe {
         public static final StreamCodec<RegistryFriendlyByteBuf, CannonCastingRecipe> STREAM_CODEC = StreamCodec.composite(
             ByteBufCodecs.registry(CBCRegistries.CANNON_CAST_SHAPES), CannonCastingRecipe::shape,
             FluidIngredient.STREAM_CODEC, CannonCastingRecipe::ingredient,
-            ByteBufCodecs.registry(Registries.BLOCK), CannonCastingRecipe::getResultBlock,
+            ByteBufCodecs.registry(CBCRegistryUtils.getBlockRegistryKey()), CannonCastingRecipe::getResultBlock,
             CannonCastingRecipe::new);
 
         @Override public MapCodec<CannonCastingRecipe> codec() { return CODEC; }

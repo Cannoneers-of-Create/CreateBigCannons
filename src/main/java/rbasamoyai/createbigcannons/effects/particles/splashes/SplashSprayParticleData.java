@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.splashes;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,7 +10,6 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -42,7 +39,7 @@ public record SplashSprayParticleData(float r, float g, float b, float size, flo
         ByteBufCodecs.FLOAT, p -> p.b,
         ByteBufCodecs.FLOAT, p -> p.size,
         ByteBufCodecs.FLOAT, p -> p.light,
-        ByteBufCodecs.INT, p -> p.lifetime,
+        ByteBufCodecs.VAR_INT, p -> p.lifetime,
         SplashSprayParticleData::new
     );
 

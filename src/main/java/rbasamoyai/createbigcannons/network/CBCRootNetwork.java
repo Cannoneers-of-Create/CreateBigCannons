@@ -6,7 +6,6 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler.ClientboundSyncBlockArmorPropertiesPacket;
@@ -24,7 +23,7 @@ import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler.Cl
 
 public class CBCRootNetwork {
 
-	private static final Int2ObjectMap<Function<FriendlyByteBuf, ? extends RootPacket>> ID_TO_CONSTRUCTOR = new Int2ObjectOpenHashMap<>();
+	private static final Int2ObjectMap<Function<RegistryFriendlyByteBuf, ? extends RootPacket>> ID_TO_CONSTRUCTOR = new Int2ObjectOpenHashMap<>();
 	private static final Object2IntMap<Class<? extends RootPacket>> TYPE_TO_ID = new Object2IntOpenHashMap<>();
 
 	public static final String VERSION = "14.0.0";
@@ -62,7 +61,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ServerboundSetFixedCannonMountValuePacket.class, ServerboundSetFixedCannonMountValuePacket::new);
 	}
 
-	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<FriendlyByteBuf, T> decoder) {
+	private static <T extends RootPacket> void addMsg(int id, Class<T> clazz, Function<RegistryFriendlyByteBuf, T> decoder) {
 		TYPE_TO_ID.put(clazz, id);
 		ID_TO_CONSTRUCTOR.put(id, decoder);
 	}

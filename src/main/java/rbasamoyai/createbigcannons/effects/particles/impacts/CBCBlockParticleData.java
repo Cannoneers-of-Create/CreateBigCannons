@@ -3,15 +3,14 @@ package rbasamoyai.createbigcannons.effects.particles.impacts;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecs;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
@@ -20,7 +19,7 @@ public record CBCBlockParticleData(BlockState state) implements ParticleOptions,
 
     private static final MapCodec<CBCBlockParticleData> CODEC = BlockState.CODEC.xmap(CBCBlockParticleData::new, CBCBlockParticleData::state).fieldOf("block_state");
     private static final StreamCodec<? super RegistryFriendlyByteBuf, CBCBlockParticleData> STREAM_CODEC =
-        ByteBufCodecs.idMapper(Block.BLOCK_STATE_REGISTRY).map(CBCBlockParticleData::new, CBCBlockParticleData::state);
+        CatnipStreamCodecs.BLOCK_STATE.map(CBCBlockParticleData::new, CBCBlockParticleData::state);
 
 	public CBCBlockParticleData() { this(Blocks.AIR.defaultBlockState()); }
 
