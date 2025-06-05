@@ -37,6 +37,13 @@ ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
+modId = "ritchiesprojectilelib"
+mandatory = true
+versionRange="[${rpl_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.createbigcannons]]
 modId = "unify"
 mandatory = false
 versionRange = "[${unify_version},)"

@@ -93,8 +93,8 @@ dependencies {
 	modImplementation("curse.maven:spark-361579:${mod.dep("spark_forge_file")}") // Spark
 
 	// Ritchie's Projectile Library
-	val rplSuffix = if (mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
-	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-forge$rplSuffix"){ isTransitive = false })
+	val rplSuffix = if (mod.dep("use_rpl_nightly").toBoolean()) "-build.${mod.dep("rpl_build")}" else ""
+	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-forge$rplSuffix"){ isTransitive = false }
 	// Create: Unify
 	// modImplementation("maven.modrinth:create-unify:${mod.dep("unify_forge_file")}") fixme
 
@@ -159,6 +159,7 @@ tasks.processResources {
 		"forge_version" to common.mod.dep("forge_loader").substringBefore("."), // only specify major version of forge
 		"minecraft_version" to minecraftVersion,
 		"create_version" to mod.dep("create_forge_version").substringBefore("-"),
+        "rpl_version" to mod.dep("rpl_version"),
 		"unify_version" to mod.dep("unify_forge_version"),
 		"copycats_requirement" to mod.dep("copycats_requirement_forge"),
 		"framedblocks_requirement" to mod.dep("framedblocks_requirement_forge"),
