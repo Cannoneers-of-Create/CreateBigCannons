@@ -7,12 +7,13 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.base.ItemStackServerData;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 
 public class DelayedImpactFuzeContainer extends AbstractFuzeContainer {
 
 	public static DelayedImpactFuzeContainer getServerMenu(int id, Inventory playerInv, ItemStack stack) {
-		return new DelayedImpactFuzeContainer(CBCMenuTypes.SET_DELAYED_IMPACT_FUZE.get(), id, new ItemStackServerData(stack, "FuzeTimer"), ItemStack.EMPTY);
+		return new DelayedImpactFuzeContainer(CBCMenuTypes.SET_DELAYED_IMPACT_FUZE.get(), id, new ItemStackServerData(stack, CBCDataComponents.FUZE_TIMER), ItemStack.EMPTY);
 	}
 
     public static DelayedImpactFuzeContainer getClientMenu(MenuType<DelayedImpactFuzeContainer> type, int id, Inventory playerInv, RegistryFriendlyByteBuf buf) {

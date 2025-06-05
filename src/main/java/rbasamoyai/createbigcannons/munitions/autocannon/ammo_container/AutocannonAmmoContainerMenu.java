@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.ItemStackServerData;
 import rbasamoyai.createbigcannons.base.SimpleValueContainer;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
@@ -31,7 +32,7 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 
 	public static AutocannonAmmoContainerMenu getServerMenuForItemStack(int id, Inventory playerInv, ItemStack stack, boolean isCreative) {
 		IAutocannonAmmoContainerContainer ct = new AutocannonAmmoContainerItemContainer(stack);
-		return new AutocannonAmmoContainerMenu(CBCMenuTypes.AUTOCANNON_AMMO_CONTAINER.get(), id, playerInv, ct, new ItemStackServerData(stack, "TracerSpacing"), isCreative, true);
+		return new AutocannonAmmoContainerMenu(CBCMenuTypes.AUTOCANNON_AMMO_CONTAINER.get(), id, playerInv, ct, new ItemStackServerData(stack, CBCDataComponents.TRACER_SPACING), isCreative, true);
 	}
 
 	public static AutocannonAmmoContainerMenu getServerMenuForBlockEntity(int id, Inventory playerInv, AutocannonAmmoContainerBlockEntity be, boolean isCreative) {
@@ -97,7 +98,7 @@ public class AutocannonAmmoContainerMenu extends AbstractContainerMenu implement
 	@Override public boolean stillValid(Player player) { return this.container.stillValid(player); }
 
 	public int getValue() { return this.data.get(0); }
-	public boolean isCreativeContainer() { return this.isCreative; };
+	public boolean isCreativeContainer() { return this.isCreative; }
 
 	@Override public void setValue(int value) { this.data.set(0, value); }
 

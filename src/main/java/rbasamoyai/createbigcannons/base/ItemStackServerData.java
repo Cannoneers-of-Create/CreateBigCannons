@@ -1,26 +1,26 @@
 package rbasamoyai.createbigcannons.base;
 
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemStackServerData implements ContainerData {
 	private final ItemStack stack;
-	private final String tag;
+	private final DataComponentType<Integer> component;
 
-	public ItemStackServerData(ItemStack stack, String tag) {
+	public ItemStackServerData(ItemStack stack, DataComponentType<Integer> component) {
 		this.stack = stack;
-		this.tag = tag;
+		this.component = component;
 	}
 
 	@Override
 	public int get(int index) {
-		return index == 0 ? this.stack.get(DataComponents.CUSTOM_DATA).copyTag().getInt(this.tag) : 1; //todo: make this use DataComponents properly
+		return index == 0 && this.stack.has(this.component) ? this.stack.get(this.component) : 1;
 	}
 
 	@Override
 	public void set(int index, int value) {
-		if (index == 0) this.stack.get(DataComponents.CUSTOM_DATA).copyTag().putInt(this.tag, value);
+		if (index == 0) this.stack.set(this.component, value);
 	}
 
 	@Override
