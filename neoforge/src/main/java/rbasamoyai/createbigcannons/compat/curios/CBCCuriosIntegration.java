@@ -4,16 +4,12 @@ import java.util.Map;
 import java.util.Optional;
 
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import rbasamoyai.createbigcannons.CBCTags.CBCItemTags;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import top.theillusivec4.curios.api.CuriosCapability;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
+import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 import top.theillusivec4.curios.api.type.inventory.ICurioStacksHandler;
 import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
@@ -30,12 +26,11 @@ public class CBCCuriosIntegration {
 	 * @return An optional of the Stacks Handler Map
 	 */
 	private static Optional<Map<String, ICurioStacksHandler>> resolveCuriosMap(LivingEntity entity) {
-		return entity.getCapability(CuriosCapability.INVENTORY).map(ICuriosItemHandler::getCurios);
+        return CuriosApi.getCuriosInventory(entity).map(ICuriosItemHandler::getCurios);
 	}
 
 	public static void init(IEventBus modBus, IEventBus forgeBus) {
 		modBus.addListener(CBCCuriosIntegration::onCommonSetup);
-		modBus.addListener(CBCCuriosIntegration::onInterModEnqueue);
 	}
 
 	private static void onCommonSetup(FMLCommonSetupEvent event) {
@@ -64,11 +59,6 @@ public class CBCCuriosIntegration {
 				return false;
 			})
 			.orElse(false));
-	}
-
-	private static void onInterModEnqueue(InterModEnqueueEvent event) {
-		InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HEAD.getMessageBuilder()
-			.size(2).build());
 	}
 
 }

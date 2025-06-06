@@ -2,9 +2,9 @@ package rbasamoyai.createbigcannons.compat.curios;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
