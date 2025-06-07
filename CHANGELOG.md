@@ -8,6 +8,9 @@ Changes:
 - `block_hit_effects` files have changed format
   - now only accept `impact_particles` and `deflect_particles` lists
   - particles formatted in JSON rather than command string
+- [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
+  `RegisterEvent`.
+- Very old CBC objects will no longer be supported.
 
 ## [5.9.0] - 2025-06-04
 

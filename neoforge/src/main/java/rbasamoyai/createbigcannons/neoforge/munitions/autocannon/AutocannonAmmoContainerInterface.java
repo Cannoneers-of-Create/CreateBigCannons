@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.neoforge.munitions.autocannon;
 import javax.annotation.Nonnull;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlockEntity;
 
@@ -33,7 +33,7 @@ public record AutocannonAmmoContainerInterface(AutocannonAmmoContainerBlockEntit
 
 		boolean ammoSlot = slot == AMMO_SLOT;
 		ItemStack currentStack = ammoSlot ? this.be.getMainAmmoStack() : this.be.getTracerStack();
-		if (!currentStack.isEmpty() && !ItemStack.isSameItemSameTags(stack, currentStack)) return stack;
+		if (!currentStack.isEmpty() && !ItemStack.isSameItemSameComponents(stack, currentStack)) return stack;
 
 		int currentCapacity;
 		if (ammoType == AutocannonAmmoType.NONE) {

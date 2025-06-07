@@ -1,10 +1,9 @@
 package rbasamoyai.createbigcannons.neoforge.mixin_interface;
 
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import javax.annotation.Nullable;
 
-import javax.annotation.Nonnull;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public interface GetItemStorage {
-	@Nonnull LazyOptional<IItemHandler> getItemStorage();
+	@Nullable IItemHandler getItemStorage();
 }

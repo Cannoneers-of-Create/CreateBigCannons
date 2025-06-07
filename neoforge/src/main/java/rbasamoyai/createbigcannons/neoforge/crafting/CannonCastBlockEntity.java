@@ -4,9 +4,9 @@ import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import net.createmod.catnip.data.Pair;
-import net.createmod.catnip.animation.LerpedFloat;
 
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,67 +19,57 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
 public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 
 	protected FluidTank fluid;
-	protected LazyOptional<IFluidHandler> fluidOptional = null;
 	protected FluidStack leakage = FluidStack.EMPTY;
 
 	public CannonCastBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		this.fluid = new SmartFluidTank(1, this::onFluidStackChanged);
-		this.fluidOptional = LazyOptional.of(() -> this.fluid);
 		this.refreshCap();
 	}
 
-	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-		if (cap == ForgeCapabilities.FLUID_HANDLER && side == Direction.UP) {
-			if (this.fluidOptional == null) {
-				this.fluidOptional = LazyOptional.of(this::createHandlerForCap);
-			}
-			return this.fluidOptional.cast();
-		}
-		return super.getCapability(cap, side);
-	}
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent evt) {
+        evt.registerBlockEntity(Capabilities.FluidHandler.BLOCK, CBCBlockEntities.CANNON_CAST.get(), (be, dir) -> {
+            if (dir != Direction.UP)
+                return null;
+            return ((CannonCastBlockEntity) be).getHandlerForCap();
+        });
+    }
 
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if (this.fluidOptional != null) {
-			this.fluidOptional.invalidate();
-		}
-	}
+    @Override
+    protected void refreshCap() {
+        this.invalidate();
+    }
 
-	@Override
-	public void refreshCap() {
-		if (this.fluidOptional == null) {
-			this.fluidOptional = LazyOptional.of(this::createHandlerForCap);
-		} else {
-			LazyOptional<IFluidHandler> oldOp = this.fluidOptional;
-			this.fluidOptional = LazyOptional.of(this::createHandlerForCap);
-			oldOp.invalidate();
-		}
-	}
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        this.invalidateCapabilities();
+    }
 
-	private IFluidHandler createHandlerForCap() {
+    private IFluidHandler getHandlerForCap() {
 		return this.isController() ? this.fluid :
-			this.getController() == null ? this.fluid : ((CannonCastBlockEntity) this.getControllerBE()).createHandlerForCap();
+			this.getController() == null ? this.fluid : ((CannonCastBlockEntity) this.getControllerBE()).getHandlerForCap();
 	}
 
 	@Override
 	protected void updateFluids(CompoundTag tag) {
 		this.fluid.setCapacity(this.calculateCapacityFromStructure());
-		this.fluid.readFromNBT(tag.getCompound("FluidContent"));
-		this.leakage = tag.contains("Leakage") ? FluidStack.loadFluidStackFromNBT(tag.getCompound("Leakage")) : FluidStack.EMPTY;
+		this.fluid.readFromNBT(this.level.registryAccess(), tag.getCompound("FluidContent"));
+		this.leakage = FluidStack.parseOptional(this.level.registryAccess(), tag.getCompound("Leakage"));
 	}
 
 	@Override
@@ -89,8 +79,8 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 
 	@Override
 	protected void writeFluidToTag(CompoundTag tag) {
-		tag.put("FluidContent", this.fluid.writeToNBT(new CompoundTag()));
-		if (!this.leakage.isEmpty()) tag.put("Leakage", this.leakage.writeToNBT(new CompoundTag()));
+		tag.put("FluidContent", this.fluid.writeToNBT(this.level.registryAccess(), new CompoundTag()));
+		if (!this.leakage.isEmpty()) tag.put("Leakage", this.leakage.save(this.level.registryAccess()));
 	}
 
 	protected void onFluidStackChanged(FluidStack stack) {

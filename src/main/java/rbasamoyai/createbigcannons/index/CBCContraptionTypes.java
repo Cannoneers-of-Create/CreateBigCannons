@@ -1,9 +1,10 @@
 package rbasamoyai.createbigcannons.index;
 
-import com.simibubi.create.AllContraptionTypes;
-import com.simibubi.create.Create;
-import com.simibubi.create.api.contraption.ContraptionType;
+import static com.simibubi.create.AllContraptionTypes.BY_LEGACY_NAME;
 
+import java.util.function.Supplier;
+
+import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.api.registry.CreateBuiltInRegistries;
 import com.simibubi.create.content.contraptions.Contraption;
 
@@ -15,10 +16,6 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonCo
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoadingContraption;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillingContraption;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuildingContraption;
-
-import java.util.function.Supplier;
-
-import static com.simibubi.create.AllContraptionTypes.BY_LEGACY_NAME;
 
 public class CBCContraptionTypes {
 

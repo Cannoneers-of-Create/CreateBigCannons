@@ -2,9 +2,14 @@ package rbasamoyai.createbigcannons.neoforge;
 
 import com.simibubi.create.content.kinetics.deployer.DeployerRecipeSearchEvent;
 
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.util.TriState;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
@@ -13,8 +18,16 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 import net.neoforged.neoforge.event.level.BlockEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.CBCCommonEvents;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.neoforge.crafting.CannonCastBlockEntity;
+import rbasamoyai.createbigcannons.neoforge.crafting.CannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.neoforge.munitions.fluid_shell.FluidShellBlockEntity;
+import rbasamoyai.createbigcannons.neoforge.remix.CBCHasIItemHandlerBlockEntity;
+import rbasamoyai.createbigcannons.neoforge.remix.CBCHasIItemHandlerEntity;
 
 public class CBCCommonNeoForgeEvents {
 
@@ -28,6 +41,7 @@ public class CBCCommonNeoForgeEvents {
 		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onAddReloadListeners);
 		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onDeployerRecipeSearch);
 		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onUseItemOnBlock);
+        forgeEventBus.addListener(CBCCommonNeoForgeEvents::onRegisterCapabilities);
 	}
 
 	public static void onServerWorldTick(LevelTickEvent.Post evt) {
@@ -75,5 +89,21 @@ public class CBCCommonNeoForgeEvents {
 			&& CannonWelderItem.welderItemAlwaysPlacesWhenUsed(event.getEntity(), event.getLevel(), event.getHand(), event.getHitVec()) == InteractionResult.FAIL)
 			event.setUseBlock(TriState.FALSE); // TODO c6 playtest
 	}
+
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent evt) {
+        FluidShellBlockEntity.onRegisterCapabilities(evt);
+        CannonCastBlockEntity.onRegisterCapabilities(evt);
+        CannonDrillBlockEntity.onRegisterCapabilities(evt);
+
+        evt.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CBCBlockEntities.AUTOCANNON_AMMO_CONTAINER.get(), CBCCommonNeoForgeEvents::getMixinBlockEntityItemHandler);
+        evt.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CBCBlockEntities.CANNON_MOUNT.get(), CBCCommonNeoForgeEvents::getMixinBlockEntityItemHandler);
+        evt.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CBCBlockEntities.CANNON_MOUNT_EXTENSION.get(), CBCCommonNeoForgeEvents::getMixinBlockEntityItemHandler);
+        evt.registerBlockEntity(Capabilities.ItemHandler.BLOCK, CBCBlockEntities.FIXED_CANNON_MOUNT.get(), CBCCommonNeoForgeEvents::getMixinBlockEntityItemHandler);
+
+        evt.registerEntity(Capabilities.ItemHandler.ENTITY, CBCEntityTypes.PITCH_ORIENTED_CONTRAPTION.get(), CBCCommonNeoForgeEvents::getMixinEntityItemHandler);
+    }
+
+    public static IItemHandler getMixinBlockEntityItemHandler(BlockEntity be, Direction side) { return ((CBCHasIItemHandlerBlockEntity) be).getItemHandler(side); }
+    public static IItemHandler getMixinEntityItemHandler(Entity entity, Void v) { return ((CBCHasIItemHandlerEntity) entity).getItemHandler(); }
 
 }

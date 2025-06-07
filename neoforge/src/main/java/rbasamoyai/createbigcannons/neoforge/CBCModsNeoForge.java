@@ -5,10 +5,10 @@ import java.util.function.Supplier;
 
 import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.fml.ModList;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 // Copied from Create's Mods class --ritchie
@@ -32,7 +32,7 @@ public enum CBCModsNeoForge {
 	}
 
 	public Block getBlock(String id) {
-		return ForgeRegistries.BLOCKS.getValue(this.resource(id));
+		return BuiltInRegistries.BLOCK.get(this.resource(id));
 	}
 
 	public boolean isLoaded() {

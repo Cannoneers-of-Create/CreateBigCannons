@@ -87,19 +87,13 @@ public class CreateBigCannonsNeoForge {
 
     private void onNewRegistry(NewRegistryEvent evt) {
         evt.create(new RegistryBuilder<>(CBCRegistries.BLOCK_RECIPE_SERIALIZERS)
-			/*.hasTags() fixme
-			.allowModification()*/
 			.defaultKey(CreateBigCannons.resource("cannon_casting")));
 
 		evt.create(new RegistryBuilder<>(CBCRegistries.BLOCK_RECIPE_TYPES)
-			/*.hasTags()
-			.allowModification()*/
 			.defaultKey(CreateBigCannons.resource("cannon_casting")));
 
 		evt.create(new RegistryBuilder<>(CBCRegistries.CANNON_CAST_SHAPES)
-			/*.hasTags()
-			.allowModification()*/
-			.defaultKey(CreateBigCannons.resource("very_small")));
+            .defaultKey(CreateBigCannons.resource("very_small")));
     }
 
 	private void onRegister(RegisterEvent evt) {
@@ -113,7 +107,6 @@ public class CreateBigCannonsNeoForge {
 		}
         CBCContraptionTypes.init();
         CBCArmInteractionPointTypes.init();
-		FMLJavaModLoadingContext.get().getModEventBus().post(new CBCNeoForgeRegisterEvent<>(CannonCastShape.class, CBCRegistries.cannonCastShapes()));
 	}
 
     private void onRegisterSounds(RegisterEvent event) {

@@ -2,69 +2,50 @@ package rbasamoyai.createbigcannons.neoforge.crafting;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.crafting.boring.AbstractCannonDrillBlockEntity;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 
 public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity {
 
 	protected FluidTank lubricant;
-	private LazyOptional<IFluidHandler> fluidOptional;
 
 	public CannonDrillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 		this.lubricant = new SmartFluidTank(IndexPlatform.convertFluid(1000), this::onFluidStackChanged).setValidator(fs -> fs.getFluid() == Fluids.WATER);
 	}
 
-	@Nonnull
-	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (cap == ForgeCapabilities.FLUID_HANDLER) {
-			Direction facing = this.getBlockState().getValue(BlockStateProperties.FACING);
-			boolean alongFirst = this.getBlockState().getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
-			Direction.Axis pipeAxis = switch (facing.getAxis()) {
-				case X -> alongFirst ? Direction.Axis.Z : Direction.Axis.Y;
-				case Y -> alongFirst ? Direction.Axis.Z : Direction.Axis.X;
-				default -> alongFirst ? Direction.Axis.Y : Direction.Axis.X;
-			};
-			if (side != null && pipeAxis == side.getAxis()) {
-				return this.getFluidOptional().cast();
-			}
-		}
-		return super.getCapability(cap, side);
-	}
-
-	private LazyOptional<IFluidHandler> getFluidOptional() {
-		if (this.fluidOptional == null) {
-			this.fluidOptional = LazyOptional.of(() -> this.lubricant);
-		}
-		return this.fluidOptional;
-	}
-
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if (this.fluidOptional != null) this.fluidOptional.invalidate();
-	}
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent evt) {
+        evt.registerBlockEntity(Capabilities.FluidHandler.BLOCK, CBCBlockEntities.CANNON_DRILL.get(), (be, dir) -> {
+            if (dir == null)
+                return null;
+            Direction facing = be.getBlockState().getValue(BlockStateProperties.FACING);
+            boolean alongFirst = be.getBlockState().getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
+            Direction.Axis pipeAxis = switch (facing.getAxis()) {
+                case X -> alongFirst ? Direction.Axis.Z : Direction.Axis.Y;
+                case Y -> alongFirst ? Direction.Axis.Z : Direction.Axis.X;
+                default -> alongFirst ? Direction.Axis.Y : Direction.Axis.X;
+            };
+            return pipeAxis == dir.getAxis() ? ((CannonDrillBlockEntity) be).lubricant : null;
+        });
+    }
 
 	protected void onFluidStackChanged(FluidStack newStack) {
 		if (this.hasLevel() && !this.getLevel().isClientSide) {
@@ -73,15 +54,15 @@ public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity {
 	}
 
 	@Override
-	protected void read(CompoundTag compound, boolean clientPacket) {
-		super.read(compound, clientPacket);
-		this.lubricant.readFromNBT(compound.getCompound("FluidContent"));
+	protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(compound, registries, clientPacket);
+		this.lubricant.readFromNBT(registries, compound.getCompound("FluidContent"));
 	}
 
 	@Override
-	protected void write(CompoundTag compound, boolean clientPacket) {
-		super.write(compound, clientPacket);
-		compound.put("FluidContent", this.lubricant.writeToNBT(new CompoundTag()));
+	protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
+		super.write(compound, registries, clientPacket);
+		compound.put("FluidContent", this.lubricant.writeToNBT(registries, new CompoundTag()));
 	}
 
 	@Override
@@ -91,7 +72,7 @@ public class CannonDrillBlockEntity extends AbstractCannonDrillBlockEntity {
 
 	@Override
 	protected void addFluidInfoToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-		this.containedFluidTooltip(tooltip, isPlayerSneaking, this.getFluidOptional());
+		this.containedFluidTooltip(tooltip, isPlayerSneaking, this.lubricant);
 	}
 
 }

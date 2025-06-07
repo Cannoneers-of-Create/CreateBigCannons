@@ -29,15 +29,16 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyCustomDataFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
+import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
@@ -58,6 +59,7 @@ import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlockGen;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
@@ -479,12 +481,10 @@ public class CBCBuilderTransformersImpl {
 			.addLayer(() -> RenderType::solid)
 			.blockstate((c, p) -> BlockStateGen.axisBlock(c, p, $ -> p.models().getExistingFile(baseLoc)))
 			.loot((t, c) -> {
-				CompoundTag dampTag = new CompoundTag();
-				dampTag.putBoolean("Damp", true);
 				t.add(c, LootTable.lootTable()
 					.withPool(t.applyExplosionCondition(c, LootPool.lootPool())
 						.add(LootItem.lootTableItem(c))
-						.apply(SetNbtFunction.setTag(dampTag))
+						.apply(SetComponentsFunction.setComponent(CBCDataComponents.DAMP, true))
 						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(c)
 							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BigCannonMunitionBlock.DAMP, true))))
 					.withPool(t.applyExplosionCondition(c, LootPool.lootPool())
@@ -510,14 +510,14 @@ public class CBCBuilderTransformersImpl {
 					.withPool(t.applyExplosionCondition(c, LootPool.lootPool()
 							.add(LootItem.lootTableItem(c))
 							.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
-							.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Power", "Power")))
-						.apply(SetNbtFunction.setTag(dampTag))
+							.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(CBCDataComponents.POWER)))
+						.apply(SetComponentsFunction.setComponent(CBCDataComponents.DAMP, true))
 						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(c)
 							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BigCannonMunitionBlock.DAMP, true))))
 					.withPool(t.applyExplosionCondition(c, LootPool.lootPool()
 							.add(LootItem.lootTableItem(c))
 							.apply(SetItemCountFunction.setCount(ConstantValue.exactly(1)))
-							.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Power", "Power")))
+                            .apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY).include(CBCDataComponents.POWER)))
 						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(c)
 							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BigCannonMunitionBlock.DAMP, false)))));
 			})
@@ -549,12 +549,12 @@ public class CBCBuilderTransformersImpl {
 						.build();
 				}, BlockStateProperties.WATERLOGGED))
 			.loot((t, c) -> {
-				CopyNbtFunction.Builder func = CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-					.copy("Ammo", "Ammo")
-					.copy("Tracers", "Tracers")
-					.copy("TracerSpacing", "TracerSpacing");
+				CopyComponentsFunction.Builder func = CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+					.include(CBCDataComponents.AMMO)
+					.include(CBCDataComponents.TRACER)
+					.include(CBCDataComponents.TRACER_SPACING);
 				if (isCreative)
-					func = func.copy("CurrentIndex", "CurrentIndex");
+					func = func.include(CBCDataComponents.CURRENT_INDEX);
 				t.add(c, LootTable.lootTable()
 					.withPool(t.applyExplosionCondition(c, LootPool.lootPool()
 							.add(LootItem.lootTableItem(c))

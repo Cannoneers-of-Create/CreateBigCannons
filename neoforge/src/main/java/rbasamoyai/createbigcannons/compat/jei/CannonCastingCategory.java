@@ -9,10 +9,10 @@ import java.util.Optional;
 import com.simibubi.create.AllFluids;
 import com.simibubi.create.content.fluids.potion.PotionFluidHandler;
 
-import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.ingredient.IRecipeSlotView;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.Minecraft;
@@ -85,7 +85,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 
         if (fluidStack.getFluid().isSame(AllFluids.POTION.get())) {
             ArrayList<Component> potionTooltip = new ArrayList<>();
-            PotionFluidHandler.addPotionTooltip(fluidStack, potionTooltip, 1);
+            PotionFluidHandler.addPotionTooltip(fluidStack, potionTooltip::add, 1);
             // append after item name
             tooltip.addAll(1, potionTooltip.stream().toList());
         }

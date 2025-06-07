@@ -4,7 +4,9 @@ import java.io.IOException;
 
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.ShaderInstance;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelAccessor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -16,11 +18,14 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.ComputeFovModifierEvent;
 import net.neoforged.neoforge.client.event.InputEvent;
 import net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import rbasamoyai.createbigcannons.CBCClientCommon;
@@ -58,11 +63,9 @@ public class CBCClientNeoForge {
 		CBCModsNeoForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosRenderers.register(modEventBus, forgeEventBus));
 	}
 
-	private static void wrapOverlay(String id, CBCClientCommon.CBCGuiOverlay overlay, VanillaGuiOverlay renderOver,
-									RegisterGuiOverlaysEvent event) {
-		event.registerAbove(renderOver.id(), id, (gui, stack, partialTicks, width, height) -> {
-			overlay.renderOverlay(stack, partialTicks, width, height);
-		});
+    // TODO c6 playtest
+	private static void wrapOverlay(String id, LayeredDraw.Layer layer, ResourceLocation renderOver, RegisterGuiLayersEvent evt) {
+		evt.registerAbove(renderOver, CreateBigCannons.resource(id), layer);
 	}
 
 	public static void onRegisterParticleFactories(RegisterParticleProvidersEvent event) {
@@ -104,7 +107,7 @@ public class CBCClientNeoForge {
 	}
 
 	public static void onScrollMouse(InputEvent.MouseScrollingEvent evt) {
-		if (CBCClientCommon.onScrollMouse(Minecraft.getInstance(), evt.getScrollDelta())) {
+		if (CBCClientCommon.onScrollMouse(Minecraft.getInstance(), evt.getScrollDeltaY())) {
 			evt.setCanceled(true);
 		}
 	}
@@ -118,11 +121,8 @@ public class CBCClientNeoForge {
 	}
 
 	public static void onSetupCamera(ViewportEvent.ComputeCameraAngles evt) {
-		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTick(), evt::getYaw, evt::getPitch, evt::getRoll,
-			evt::setYaw, evt::setPitch, evt::setRoll)) {
-			evt.setCanceled(true);
-		}
-	}
+        CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTick(), evt::getYaw, evt::getPitch, evt::getRoll, evt::setYaw, evt::setPitch, evt::setRoll);
+    }
 
 	public static void onLoadClientLevel(LevelEvent.Load evt) {
 		LevelAccessor level = evt.getLevel();
@@ -147,17 +147,16 @@ public class CBCClientNeoForge {
 		ModContainer container = ModList.get()
 			.getModContainerById(CreateBigCannons.MOD_ID)
 			.orElseThrow(() -> new IllegalStateException("CBC mod container missing on LoadComplete"));
-        container.registerExtensionPoint(ConfigScreenFactory.class,
-            () -> new ConfigScreenFactory((mc, screen) -> new BaseConfigScreen(screen, CreateBigCannons.MOD_ID)));
+        container.registerExtensionPoint(IConfigScreenFactory.class, (modctr, screen) -> new BaseConfigScreen(screen, CreateBigCannons.MOD_ID));
 	}
 
 	public static void onRegisterClientReloadListeners(RegisterClientReloadListenersEvent evt) {
 		CBCClientCommon.registerClientReloadListeners((listener, id) -> evt.registerReloadListener(listener));
 	}
 
-	public static void onRegisterGuiOverlays(RegisterGuiOverlaysEvent evt) {
-		CBCClientCommon.registerOverlays("hotbar", (id, overlay) -> wrapOverlay(id, overlay, VanillaGuiOverlay.HOTBAR, evt));
-		CBCClientCommon.registerOverlays("helmet", (id, overlay) -> wrapOverlay(id, overlay, VanillaGuiOverlay.HELMET, evt));
+	public static void onRegisterGuiOverlays(RegisterGuiLayersEvent evt) {
+		CBCClientCommon.registerOverlays("hotbar", (id, overlay) -> wrapOverlay(id, overlay, VanillaGuiLayers.HOTBAR, evt));
+		CBCClientCommon.registerOverlays("helmet", (id, overlay) -> wrapOverlay(id, overlay, VanillaGuiLayers.CAMERA_OVERLAYS, evt));
 	}
 
 	public static void onRegisterShaders(RegisterShadersEvent evt) {

@@ -4,18 +4,18 @@ import javax.annotation.Nonnull;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
 
-import dev.architectury.patchedmixin.staticmixin.spongepowered.asm.mixin.Shadow;
 import net.minecraft.Util;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.material.FlowingFluid;
-import net.minecraftforge.common.SoundActions;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.fluids.FluidType;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 
 @Mixin(CBCFlowingFluid.class)

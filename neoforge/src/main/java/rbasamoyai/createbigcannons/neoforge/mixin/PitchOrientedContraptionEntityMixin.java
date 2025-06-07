@@ -1,46 +1,31 @@
 package rbasamoyai.createbigcannons.neoforge.mixin;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.spongepowered.asm.mixin.Mixin;
 
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.neoforge.mixin_interface.GetItemStorage;
+import rbasamoyai.createbigcannons.neoforge.remix.CBCHasIItemHandlerEntity;
 
 @Mixin(PitchOrientedContraptionEntity.class)
-public class PitchOrientedContraptionEntityMixin extends OrientedContraptionEntity {
-
-	private LazyOptional<IItemHandler> itemOptional;
+public class PitchOrientedContraptionEntityMixin extends OrientedContraptionEntity implements CBCHasIItemHandlerEntity {
 
 	PitchOrientedContraptionEntityMixin(EntityType<?> type, Level level) {
 		super(type, level);
 	}
 
-	@Nonnull
-	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (cap == ForgeCapabilities.ITEM_HANDLER) {
-			if (this.itemOptional == null)
-				this.itemOptional = this.contraption instanceof GetItemStorage storage ? storage.getItemStorage() : LazyOptional.empty();
-			return this.itemOptional.cast();
-		}
-		return super.getCapability(cap, side);
-	}
+    @Nullable
+    @Override
+    public IItemHandler getItemHandler() {
+        return this.contraption instanceof GetItemStorage storage ? storage.getItemStorage() : null;
+    }
 
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if (this.itemOptional != null) this.itemOptional.invalidate();
-	}
+    // TODO: address invalidation?
 
 }

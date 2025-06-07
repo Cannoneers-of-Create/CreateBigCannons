@@ -1,12 +1,11 @@
 package rbasamoyai.createbigcannons.neoforge.mixin;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.spongepowered.asm.mixin.Mixin;
 
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.ItemCannon;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedAutocannonContraption;
@@ -18,20 +17,22 @@ public abstract class MountedAutocannonContraptionMixin extends AbstractMountedC
 
 	@Override
 	public ItemStack insertItemIntoCannon(ItemStack stack, boolean simulate) {
-		return this.getItemStorage().map(h -> h.insertItem(1, stack, simulate)).orElse(stack);
+        if (this.getItemStorage() == null)
+            return stack;
+		return this.getItemStorage().insertItem(1, stack, simulate);
 	}
 
 	@Override
 	public ItemStack extractItemFromCannon(boolean simulate) {
-		return this.getItemStorage().map(h -> h.extractItem(0, 1, simulate)).orElse(ItemStack.EMPTY);
+        if (this.getItemStorage() == null)
+            return ItemStack.EMPTY;
+        return this.getItemStorage().extractItem(0, 1, simulate);
 	}
 
-	@Nonnull
+	@Nullable
 	@Override
-	public LazyOptional<IItemHandler> getItemStorage() {
-		return this.presentBlockEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech
-			? LazyOptional.of(breech::createItemHandler)
-			: LazyOptional.empty();
+	public IItemHandler getItemStorage() {
+		return this.presentBlockEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech ? breech.createItemHandler() : null;
 	}
 
 }

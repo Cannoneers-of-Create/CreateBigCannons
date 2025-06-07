@@ -66,11 +66,6 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 			: new EndFluidStack(fstack.getFluid(), fstack.getAmount(), fstack.getComponentsPatch()));
 	}
 
-	protected void refreshCapabilities() {
-
-        this.invalidateCapabilities();
-    }
-
 	@Override
 	public boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
 		if (this.hasFuze() || !GenericItemEmptying.canItemBeEmptied(worldIn, heldItem)) return false;

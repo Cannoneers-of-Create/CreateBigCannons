@@ -12,6 +12,7 @@ import com.simibubi.create.infrastructure.config.CClient;
 import net.createmod.catnip.gui.element.BoxElement;
 import net.createmod.catnip.gui.element.GuiGameElement;
 import net.createmod.catnip.theme.Color;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -28,7 +29,7 @@ public class EntityGoggleOverlayRenderer {
 
 	public static int hoverTicks = 0;
 
-	public static void renderOverlay(GuiGraphics graphics, float partialTicks, int windowWidth, int windowHeight) {
+	public static void renderOverlay(GuiGraphics graphics, DeltaTracker tracker) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.options.hideGui || mc.gameMode.getPlayerMode() == GameType.SPECTATOR) return;
 
@@ -88,13 +89,13 @@ public class EntityGoggleOverlayRenderer {
 		}
 
 		CClient cfg = AllConfigs.client();
-		int posX = windowWidth / 2 + cfg.overlayOffsetX.get();
-		int posY = windowHeight / 2 + cfg.overlayOffsetY.get();
+		int posX = graphics.guiWidth() / 2 + cfg.overlayOffsetX.get();
+		int posY = graphics.guiHeight() / 2 + cfg.overlayOffsetY.get();
 
-		posX = Math.min(posX, windowWidth - tooltipTextWidth - 20);
-		posY = Math.min(posY, windowHeight - tooltipHeight - 20);
+		posX = Math.min(posX, graphics.guiWidth() - tooltipTextWidth - 20);
+		posY = Math.min(posY, graphics.guiHeight() - tooltipHeight - 20);
 
-		float fade = Mth.clamp((hoverTicks + partialTicks) / 24f, 0, 1);
+		float fade = Mth.clamp((hoverTicks + tracker.getGameTimeDeltaPartialTick(false)) / 24f, 0, 1);
         Boolean useCustom = cfg.overlayCustomColor.get();
         Color colorBackground = useCustom ? new Color(cfg.overlayBackgroundColor.get())
             : BoxElement.COLOR_VANILLA_BACKGROUND.scaleAlpha(.75f);
@@ -110,7 +111,7 @@ public class EntityGoggleOverlayRenderer {
 			colorBorderBot.scaleAlpha(fade);
 		}
 
-		RemovedGuiUtils.drawHoveringText(graphics, tooltip, posX, posY, windowWidth, windowHeight, -1, colorBackground.getRGB(),
+		RemovedGuiUtils.drawHoveringText(graphics, tooltip, posX, posY, graphics.guiWidth(), graphics.guiHeight(), -1, colorBackground.getRGB(),
 			colorBorderTop.getRGB(), colorBorderBot.getRGB(), mc.font);
 
 		ItemStack item = AllItems.GOGGLES.asStack();

@@ -9,7 +9,7 @@ import com.mojang.math.Constants;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -245,13 +245,13 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 	}
 
 	@Override
-	public void baseWriteSpawnData(FriendlyByteBuf buf) {
+	public void baseWriteSpawnData(RegistryFriendlyByteBuf buf) {
 		super.baseWriteSpawnData(buf);
 		buf.writeDouble(this.displacement);
 	}
 
 	@Override
-	public void baseReadSpawnData(FriendlyByteBuf buf) {
+	public void baseReadSpawnData(RegistryFriendlyByteBuf buf) {
 		super.baseReadSpawnData(buf);
 		this.displacement = buf.readDouble();
 	}

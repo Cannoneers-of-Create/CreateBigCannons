@@ -2,11 +2,13 @@ package rbasamoyai.createbigcannons.neoforge.cannons;
 
 import dev.engine_room.flywheel.lib.visualization.VisualizationHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
+import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
 public class AutocannonBreechBlockEntity extends AbstractAutocannonBreechBlockEntity {
 
@@ -25,12 +27,12 @@ public class AutocannonBreechBlockEntity extends AbstractAutocannonBreechBlockEn
 	public void requestModelDataUpdate() {
 		super.requestModelDataUpdate();
         if (!this.remove)
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> VisualizationHelper.queueUpdate(this));
+            EnvExecute.executeOnClient(() -> () -> VisualizationHelper.queueUpdate(this));
 	}
 
 	@Override
-	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
+	protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
+		super.read(tag, registries, clientPacket);
 		if (clientPacket && !this.isVirtual()) this.requestModelDataUpdate();
 	}
 

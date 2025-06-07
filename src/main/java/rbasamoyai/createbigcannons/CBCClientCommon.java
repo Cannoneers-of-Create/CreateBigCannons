@@ -25,7 +25,7 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.ParticleStatus;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -144,18 +144,13 @@ public class CBCClientCommon {
 		KEYS.add(FIRE_CONTROLLED_CANNON);
 	}
 
-	public static void registerOverlays(String type, BiConsumer<String, CBCGuiOverlay> cons) {
+	public static void registerOverlays(String type, BiConsumer<String, LayeredDraw.Layer> cons) {
 		if (type.equals("hotbar")) {
 			cons.accept("entity_goggles_overlay", EntityGoggleOverlayRenderer::renderOverlay);
 		}
 		if (type.equals("helmet")) {
 			cons.accept("gas_mask_overlay", GasMaskOverlay::renderOverlay);
 		}
-	}
-
-	@FunctionalInterface
-	public interface CBCGuiOverlay {
-		void renderOverlay(GuiGraphics graphics, float partialTicks, int windowWidth, int windowHeight);
 	}
 
 	public static void setFogColor(Camera info, SetColorWrapper wrapper) {

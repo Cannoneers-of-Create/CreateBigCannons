@@ -1,13 +1,13 @@
 package rbasamoyai.createbigcannons.neoforge.cannons;
 
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemHandlerHelper;
+import java.util.Deque;
+
 import javax.annotation.Nonnull;
+
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
-
-import java.util.Deque;
 
 public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity breech) implements IItemHandler {
 	@Override
@@ -33,10 +33,10 @@ public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity bree
 		int maxCount = Math.min(this.breech.getQueueLimit() - this.breech.getInputBuffer().size(), stack.getCount());
 		if (!simulate) {
 			for (int i = 0; i < maxCount; ++i) {
-				this.breech.getInputBuffer().add(ItemHandlerHelper.copyStackWithSize(stack, 1));
+				this.breech.getInputBuffer().add(stack.copyWithCount(1));
 			}
 		}
-		return stack.getCount() == maxCount ? ItemStack.EMPTY : ItemHandlerHelper.copyStackWithSize(stack, stack.getCount() - maxCount);
+		return stack.getCount() == maxCount ? ItemStack.EMPTY : stack.copyWithCount(stack.getCount() - maxCount);
 	}
 
 	@Nonnull
@@ -45,7 +45,7 @@ public record AutocannonBreechInterface(AbstractAutocannonBreechBlockEntity bree
 		if (amount <= 0) return ItemStack.EMPTY;
 		return switch (slot) {
 			case 0 ->
-					simulate ? ItemHandlerHelper.copyStackWithSize(this.breech.getOutputBuffer(), 1) : this.breech.getOutputBuffer().split(1);
+					simulate ? this.breech.getOutputBuffer().copyWithCount(1) : this.breech.getOutputBuffer().split(1);
 			default -> ItemStack.EMPTY;
 		};
 	}

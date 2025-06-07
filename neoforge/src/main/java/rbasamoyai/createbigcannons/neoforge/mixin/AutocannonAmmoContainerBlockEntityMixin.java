@@ -1,48 +1,29 @@
 package rbasamoyai.createbigcannons.neoforge.mixin;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import net.neoforged.neoforge.capabilities.Capabilities;
-
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import rbasamoyai.createbigcannons.neoforge.munitions.autocannon.AutocannonAmmoContainerInterface;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlockEntity;
+import rbasamoyai.createbigcannons.neoforge.munitions.autocannon.AutocannonAmmoContainerInterface;
+import rbasamoyai.createbigcannons.neoforge.remix.CBCHasIItemHandlerBlockEntity;
 
 @Mixin(AutocannonAmmoContainerBlockEntity.class)
-public abstract class AutocannonAmmoContainerBlockEntityMixin extends BlockEntity {
+public abstract class AutocannonAmmoContainerBlockEntityMixin extends BlockEntity implements CBCHasIItemHandlerBlockEntity {
 
 	private IItemHandler inventory;
-	private LazyOptional<IItemHandler> itemOptional;
 
 	AutocannonAmmoContainerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
 	}
 
-	@Unique
-	private IItemHandler createItemHandler() {
+    @Override
+	public IItemHandler getItemHandler(Direction side) {
 		return this.inventory == null ? this.inventory = new AutocannonAmmoContainerInterface((AutocannonAmmoContainerBlockEntity) (Object) this) : this.inventory;
-	}
-
-	@Nonnull
-	@Override
-	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-		if (ForgeCapabilities.ITEM_HANDLER == cap) {
-			if (this.itemOptional == null)
-				this.itemOptional = LazyOptional.of(this::createItemHandler);
-			return this.itemOptional.cast();
-		}
-		return super.getCapability(cap, side);
 	}
 
 }

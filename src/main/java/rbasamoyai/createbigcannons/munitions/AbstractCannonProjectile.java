@@ -12,7 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -506,7 +506,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		this.removeNextTick = tag.contains("RemoveNextTick");
 	}
 
-	public void baseWriteSpawnData(FriendlyByteBuf buf) {
+	public void baseWriteSpawnData(RegistryFriendlyByteBuf buf) {
 		Vec3 vel = this.getDeltaMovement();
 		Vec3 orientation = this.orientation == null ? vel : this.orientation;
 		buf.writeFloat(this.getXRot())
@@ -519,7 +519,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			.writeDouble(orientation.z);
 	}
 
-	public void baseReadSpawnData(FriendlyByteBuf buf) {
+	public void baseReadSpawnData(RegistryFriendlyByteBuf buf) {
 		this.setXRot(buf.readFloat());
 		this.setYRot(buf.readFloat());
 		this.setDeltaMovement(buf.readDouble(), buf.readDouble(), buf.readDouble());
