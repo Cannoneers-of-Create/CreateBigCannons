@@ -32,6 +32,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.ItemLike;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.compat.common_jei.IncompleteCannonBlockRecipe;
@@ -56,16 +57,19 @@ public class CBCJEI implements IModPlugin {
 	private void loadCategories() {
 		this.allCategories.clear();
 
-		Supplier<List<BasinRecipe>> meltingSupplier = () -> {
-			List<BasinRecipe> list = new ArrayList<>();
-			CreateJEI.<MeltingRecipe>consumeTypedRecipes(list::add, CBCRecipeTypes.MELTING.getType());
+		Supplier<List<RecipeHolder<BasinRecipe>>> meltingSupplier = () -> {
+			List<RecipeHolder<BasinRecipe>> list = new ArrayList<>();
+			CreateJEI.<MeltingRecipe>consumeTypedRecipes(e -> {
+                if (e.value() instanceof MeltingRecipe)
+                    list.add((RecipeHolder<BasinRecipe>) e); // TODO c6 playtest
+            }, CBCRecipeTypes.MELTING.getType());
 			return list;
 		};
 		List<Supplier<? extends ItemStack>> meltingCatalysts = new ArrayList<>();
 		meltingCatalysts.add(CBCBlocks.BASIN_FOUNDRY_LID::asStack);
 		meltingCatalysts.add(AllBlocks.BASIN::asStack);
 		CreateRecipeCategory.Info<BasinRecipe> meltingInfo = new CreateRecipeCategory.Info<BasinRecipe>(
-			new RecipeType<>(CreateBigCannons.resource("melting"), BasinRecipe.class),
+			new RecipeType<>(CreateBigCannons.resource("melting"), MeltingRecipe.class),
 			Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
 			new EmptyBackground(177, 103),
 			new DoubleItemIcon(AllBlocks.BASIN::asStack, CBCBlocks.BASIN_FOUNDRY_LID::asStack),
@@ -138,6 +142,13 @@ public class CBCJEI implements IModPlugin {
 		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getBigCartridgeDeployerRecipe());
 		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getTracerDeployerRecipes());
 	}
+
+    private static <T extends Recipe<?>> List<T> unwrapHolders(List<RecipeHolder<T>> list) {
+        List<T> result = new ArrayList<>();
+        for (RecipeHolder<T> holder : list)
+            result.add(holder.value());
+        return result;
+    }
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
