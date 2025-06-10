@@ -1,23 +1,26 @@
 package rbasamoyai.createbigcannons.neoforge.mixin;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.FluidState;
-import javax.annotation.Nonnull;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCLiquidBlock;
-
-import java.util.ArrayList;
-import java.util.List;
+import rbasamoyai.createbigcannons.index.fluid_utils.FluidGetter;
 
 @Mixin(CBCLiquidBlock.class)
-public class CBCLiquidBlockMixin extends LiquidBlock {
+public abstract class CBCLiquidBlockMixin extends LiquidBlock implements FluidGetter {
 
 	@Unique private List<FluidState> cbc$stateCache = null;
 
-	public CBCLiquidBlockMixin(FlowingFluid arg, Properties arg2) { super(arg, arg2); }
+	CBCLiquidBlockMixin(FlowingFluid arg, Properties arg2) { super(arg, arg2); }
 
 	// Taken from Bumblezone with help from TelepathicGrunt - thanks! --ritchie
 	@Nonnull

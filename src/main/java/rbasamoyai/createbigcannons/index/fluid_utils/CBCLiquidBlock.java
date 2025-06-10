@@ -1,32 +1,26 @@
 package rbasamoyai.createbigcannons.index.fluid_utils;
 
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import java.util.Optional;
+
 import dev.architectury.injectables.targets.ArchitecturyTarget;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluids;
 
-import javax.annotation.Nullable;
-
-import java.util.Optional;
-
 public class CBCLiquidBlock extends LiquidBlock implements FluidGetter {
 
-	private final NonNullSupplier<? extends FlowingFluid> fluidSup;
+    private final FlowingFluid fluid;
 
-	public CBCLiquidBlock(NonNullSupplier<? extends FlowingFluid> fluid, Properties properties) {
-		super("forge".equals(ArchitecturyTarget.getCurrentTarget()) ? Fluids.FLOWING_WATER : fluid.get(), properties);
-		this.fluidSup = fluid;
+	public CBCLiquidBlock(FlowingFluid fluid, Properties properties) {
+		super("forge".equals(ArchitecturyTarget.getCurrentTarget()) ? Fluids.FLOWING_WATER : fluid, properties);
+        this.fluid = fluid;
 	}
 
 	@Override
@@ -69,7 +63,7 @@ public class CBCLiquidBlock extends LiquidBlock implements FluidGetter {
 		}
 	}*/
 
-	@Override public FlowingFluid getFluid() { return this.fluidSup.get(); }
+	@Override public FlowingFluid getFluid() { return this.fluid; }
 
 	@Override public Optional<SoundEvent> getPickupSound() { return this.getFluid().getPickupSound(); }
 

@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.chat.Component;
@@ -54,7 +55,7 @@ import rbasamoyai.createbigcannons.neoforge.cannons.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.neoforge.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.neoforge.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.neoforge.crafting.CannonDrillBlockEntity;
-import rbasamoyai.createbigcannons.neoforge.index.fluid_utils.ForgeFluidBuilder;
+import rbasamoyai.createbigcannons.neoforge.index.fluid_utils.NeoForgeFluidBuilder;
 import rbasamoyai.createbigcannons.neoforge.munitions.fluid_shell.FluidShellBlockEntity;
 
 public class IndexPlatformImpl {
@@ -80,7 +81,7 @@ public class IndexPlatformImpl {
 	}
 
 	public static ParticleOptions createFluidDripParticle(EndFluidStack stack) {
-		return FluidFX.getFluidParticle(new FluidStack(stack.fluid(), stack.amount(), stack.components()));
+		return FluidFX.getFluidParticle(new FluidStack(Holder.direct(stack.fluid()), stack.amount(), stack.components().asPatch()));
 	}
 
 	public static NonNullSupplier<NonNullFunction<BlockEntityRendererProvider.Context,
@@ -91,7 +92,7 @@ public class IndexPlatformImpl {
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluidBuilder(AbstractRegistrate<?> owner,
 																					   P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
 																					   NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
-		return new ForgeFluidBuilder<>(owner, parent, name, callback, stillTexture, flowingTexture, factory);
+		return new NeoForgeFluidBuilder<>(owner, parent, name, callback, stillTexture, flowingTexture, factory);
 	}
 
 	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> doFluidBuilderTransforms(FluidBuilder<T, P> builder) {

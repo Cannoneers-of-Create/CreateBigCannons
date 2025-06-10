@@ -11,7 +11,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.remix.CBCExplodableBlock;
 
 @Mixin(ProjectileBlock.class)
-public class ProjectileBlockMixin extends DirectionalBlock implements CBCExplodableBlock {
+public abstract class ProjectileBlockMixin extends DirectionalBlock implements CBCExplodableBlock {
 
 	ProjectileBlockMixin(Properties arg) { super(arg); }
 

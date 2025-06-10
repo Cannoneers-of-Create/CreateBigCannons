@@ -114,13 +114,13 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 
 	public abstract BlockBuilder<LiquidBlock, FluidBuilder<T, P>> block();
 
-	public <B extends LiquidBlock> BlockBuilder<B, FluidBuilder<T, P>> block(NonNullBiFunction<NonNullSupplier<? extends T>, BlockBehaviour.Properties, ? extends B> factory) {
+	public <B extends LiquidBlock> BlockBuilder<B, FluidBuilder<T, P>> block(NonNullBiFunction<T, BlockBehaviour.Properties, ? extends B> factory) {
 		if (this.defaultBlock == Boolean.FALSE) {
 			throw new IllegalStateException("Only one call to block/noBlock per builder allowed");
 		}
 		this.defaultBlock = false;
 		NonNullSupplier<T> supplier = asSupplier();
-		return getOwner().<B, FluidBuilder<T, P>>block(this, sourceName, p -> factory.apply(supplier, p))
+		return getOwner().<B, FluidBuilder<T, P>>block(this, sourceName, p -> factory.apply(supplier.get(), p))
 			.properties(p -> BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).noLootTable())
 			.blockstate(this::acceptBlockstate);
 	}

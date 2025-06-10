@@ -22,10 +22,11 @@ import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
-public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilder<T, P> {
+public class NeoForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilder<T, P> {
 
-	public ForgeFluidBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture, NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
+	public NeoForgeFluidBuilder(AbstractRegistrate<?> owner, P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture, NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
 		super(owner, parent, name, callback, stillTexture, flowingTexture, factory);
 	}
 
@@ -62,7 +63,7 @@ public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilde
 
 	@Override
 	protected <I extends Item> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov) {
-		prov.generated(ctx, new ResourceLocation(this.getOwner().getModid(), "item/" + this.bucketName));
+		prov.generated(ctx, CBCUtils.location(this.getOwner().getModid(), "item/" + this.bucketName));
 	}
 
 }
