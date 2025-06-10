@@ -18,9 +18,9 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -28,6 +28,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -134,7 +135,7 @@ public class BlockArmorPropertiesHandler {
 		return ser;
 	}
 
-	public static void writeBuf(FriendlyByteBuf buf) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(TAG_MAP.size());
 		for (Map.Entry<Block, SimpleBlockArmorProperties> entry : TAG_MAP.entrySet()) {
 			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()));
@@ -148,7 +149,7 @@ public class BlockArmorPropertiesHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T extends BlockArmorPropertiesProvider> void toNetworkCasted(Block block, T properties, FriendlyByteBuf buf) {
+	private static <T extends BlockArmorPropertiesProvider> void toNetworkCasted(Block block, T properties, RegistryFriendlyByteBuf buf) {
 		BlockArmorPropertiesSerializer<T> ser = (BlockArmorPropertiesSerializer<T>) CUSTOM_SERIALIZERS.get(block);
 		if (ser != null) {
 			ser.toNetwork(properties, buf);
@@ -160,7 +161,7 @@ public class BlockArmorPropertiesHandler {
 		}
 	}
 
-	public static void readBuf(FriendlyByteBuf buf) {
+	public static void readBuf(RegistryFriendlyByteBuf buf) {
 		TAG_MAP.clear();
 		int tagSz = buf.readVarInt();
 		for (int i = 0; i < tagSz; ++i) {
@@ -177,18 +178,21 @@ public class BlockArmorPropertiesHandler {
 		}
 	}
 
-	public record ClientboundSyncBlockArmorPropertiesPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {
-		public ClientboundSyncBlockArmorPropertiesPacket() { this(null); }
+    // TODO c6 playtest
+	public record ClientboundSyncBlockArmorPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+		public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSyncBlockArmorPropertiesPacket> STREAM_CODEC =
+            StreamCodec.of((b, t) -> writeBuf(b), ClientboundSyncBlockArmorPropertiesPacket::copyOf);
 
-		public static ClientboundSyncBlockArmorPropertiesPacket copyOf(FriendlyByteBuf buf) {
-			return new ClientboundSyncBlockArmorPropertiesPacket(new FriendlyByteBuf(buf.copy()));
+        public ClientboundSyncBlockArmorPropertiesPacket() { this(null); }
+
+		public static ClientboundSyncBlockArmorPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
+			return new ClientboundSyncBlockArmorPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
 		}
 
-		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
-
 		@Override
-		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-			if (this.buf != null) readBuf(this.buf);
+		public void handle(Executor exec, PacketListener listener, Player player) {
+			if (this.buf != null)
+                readBuf(this.buf);
 		}
 	}
 

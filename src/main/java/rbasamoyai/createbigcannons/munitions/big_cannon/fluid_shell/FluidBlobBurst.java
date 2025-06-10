@@ -77,7 +77,7 @@ public class FluidBlobBurst extends CBCProjectileBurst {
 
 		if (!this.level().isClientSide) {
 			if (this.level().getGameTime() % 3 == 0) {
-				NetworkPlatform.sendToClientTracking(new ClientboundFluidBlobStackSyncPacket(this), this);
+				NetworkPlatform.sendToClientTracking(ClientboundFluidBlobStackSyncPacket.entity(this), this);
 			}
 		}
 		if (this.level().isClientSide) {

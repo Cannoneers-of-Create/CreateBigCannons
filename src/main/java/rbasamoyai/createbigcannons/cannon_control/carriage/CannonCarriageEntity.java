@@ -142,7 +142,7 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			this.moveCarriage();
 			if (this.level().isClientSide) {
 				this.controlCarriage();
-				NetworkPlatform.sendToServer(new ServerboundCarriageWheelPacket(this));
+				NetworkPlatform.sendToServer(ServerboundCarriageWheelPacket.entity(this));
 			}
 			this.move(MoverType.SELF, this.getDeltaMovement());
 		} else {

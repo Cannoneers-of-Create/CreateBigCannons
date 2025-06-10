@@ -2,39 +2,33 @@ package rbasamoyai.createbigcannons.network;
 
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.network.FriendlyByteBuf;
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
-import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCStreamCodecs;
 
 public record ClientboundBlastSoundPacket(SoundEvent sound, SoundSource source, double x, double y, double z, float volume,
 										  float pitch, float airAbsorption) implements RootPacket {
 
-	public ClientboundBlastSoundPacket(FriendlyByteBuf buf) {
-		this(CBCRegistryUtils.getSoundEvent(buf.readVarInt()), buf.readEnum(SoundSource.class), buf.readDouble(), buf.readDouble(),
-			buf.readDouble(), buf.readFloat(), buf.readFloat(), buf.readFloat());
-	}
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundBlastSoundPacket> STREAM_CODEC = CBCStreamCodecs.composite(
+        SoundEvent.DIRECT_STREAM_CODEC, ClientboundBlastSoundPacket::sound,
+        CatnipStreamCodecBuilders.ofEnum(SoundSource.class), ClientboundBlastSoundPacket::source,
+        ByteBufCodecs.DOUBLE, ClientboundBlastSoundPacket::x,
+        ByteBufCodecs.DOUBLE, ClientboundBlastSoundPacket::y,
+        ByteBufCodecs.DOUBLE, ClientboundBlastSoundPacket::z,
+        ByteBufCodecs.FLOAT, ClientboundBlastSoundPacket::volume,
+        ByteBufCodecs.FLOAT, ClientboundBlastSoundPacket::pitch,
+        ByteBufCodecs.FLOAT, ClientboundBlastSoundPacket::airAbsorption,
+        ClientboundBlastSoundPacket::new);
 
 	@Override
-	public void rootEncode(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(CBCRegistryUtils.getSoundEventNumericId(this.sound))
-			.writeEnum(this.source)
-			.writeDouble(this.x)
-			.writeDouble(this.y)
-			.writeDouble(this.z)
-			.writeFloat(this.volume)
-			.writeFloat(this.pitch)
-			.writeFloat(this.airAbsorption);
-	}
-
-	@Override
-	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+	public void handle(Executor exec, PacketListener listener, Player player) {
 		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.playBlastSound(this));
 	}
 

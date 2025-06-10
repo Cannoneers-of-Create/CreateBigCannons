@@ -12,9 +12,9 @@ import com.google.gson.JsonSyntaxException;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,6 +23,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -156,7 +157,7 @@ public class CannonMountPropertiesHandler {
 		return ENTITY_MOUNT_PROPERTIES.containsKey(entityType) ? ENTITY_MOUNT_PROPERTIES.get(entityType).getOrDefault(contraptionType, FALLBACK_ENTITY) : FALLBACK_ENTITY;
 	}
 
-	public static void writeBuf(FriendlyByteBuf buf) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(BLOCK_MOUNT_PROPERTIES.size());
 		for (Map.Entry<BlockEntityType<?>, Map<ICannonContraptionType, CannonMountBlockPropertiesProvider>> entry : BLOCK_MOUNT_PROPERTIES.entrySet()) {
 			buf.writeResourceLocation(CBCRegistryUtils.getBlockEntityTypeLocation(entry.getKey()));
@@ -180,18 +181,18 @@ public class CannonMountPropertiesHandler {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T extends CannonMountBlockPropertiesProvider> void toNetworkCasted(FriendlyByteBuf buf, BlockEntityType<?> beType, T properties) {
+	private static <T extends CannonMountBlockPropertiesProvider> void toNetworkCasted(RegistryFriendlyByteBuf buf, BlockEntityType<?> beType, T properties) {
 		CannonMountBlockPropertiesSerializer<T> ser = (CannonMountBlockPropertiesSerializer<T>) BLOCK_MOUNT_SERIALIZERS.get(beType);
 		ser.toNetwork(properties, buf);
 	}
 
 	@SuppressWarnings("unchecked")
-	private static <T extends CannonMountEntityPropertiesProvider> void toNetworkCasted(FriendlyByteBuf buf, EntityType<?> entityType, T properties) {
+	private static <T extends CannonMountEntityPropertiesProvider> void toNetworkCasted(RegistryFriendlyByteBuf buf, EntityType<?> entityType, T properties) {
 		CannonMountEntityPropertiesSerializer<T> ser = (CannonMountEntityPropertiesSerializer<T>) ENTITY_MOUNT_SERIALIZERS.get(entityType);
 		ser.toNetwork(properties, buf);
 	}
 
-	public static void readBuf(FriendlyByteBuf buf) {
+	public static void readBuf(RegistryFriendlyByteBuf buf) {
 		BLOCK_MOUNT_PROPERTIES.clear();
 		int blockSz = buf.readVarInt();
 		for (int i = 0; i < blockSz; ++i) {
@@ -234,18 +235,21 @@ public class CannonMountPropertiesHandler {
 		NetworkPlatform.sendToClientAll(new ClientboundSyncCannonMountPropertiesPacket(), server);
 	}
 
-	public record ClientboundSyncCannonMountPropertiesPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {
+    // TODO c6 playtest
+	public record ClientboundSyncCannonMountPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSyncCannonMountPropertiesPacket> STREAM_CODEC =
+            StreamCodec.of((b, t) -> writeBuf(b), ClientboundSyncCannonMountPropertiesPacket::copyOf);
+
 		public ClientboundSyncCannonMountPropertiesPacket() { this(null); }
 
-		public static ClientboundSyncCannonMountPropertiesPacket copyOf(FriendlyByteBuf buf) {
-			return new ClientboundSyncCannonMountPropertiesPacket(new FriendlyByteBuf(buf.copy()));
+		public static ClientboundSyncCannonMountPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
+			return new ClientboundSyncCannonMountPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
 		}
 
-		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
-
 		@Override
-		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-			if (this.buf != null) readBuf(this.buf);
+		public void handle(Executor exec, PacketListener listener, Player player) {
+			if (this.buf != null)
+                readBuf(this.buf);
 		}
 
 	}

@@ -15,6 +15,7 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -22,6 +23,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
@@ -106,25 +108,22 @@ public class BlockRecipesManager {
 		}
 	}
 
-	public static class ClientboundRecipesPacket implements RootPacket {
-		private RegistryFriendlyByteBuf buf;
+    // TODO c6 playtest
+	public record ClientboundRecipesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundRecipesPacket> STREAM_CODEC =
+            StreamCodec.of((b, t) -> writeBuf(b), ClientboundRecipesPacket::copyOf);
 
-		public ClientboundRecipesPacket() {
-		}
+		public ClientboundRecipesPacket() { this(null); }
 
-		public ClientboundRecipesPacket(RegistryFriendlyByteBuf buf) {
-			this.buf = new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess());
-		}
-
-		@Override
-		public void rootEncode(RegistryFriendlyByteBuf buf) {
-			writeBuf(buf);
+		public static ClientboundRecipesPacket copyOf(RegistryFriendlyByteBuf buf) {
+			return new ClientboundRecipesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
 		}
 
 		@Override
-		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-			readBuf(this.buf);
-		}
+        public void handle(Executor exec, PacketListener listener, Player player) {
+            if (this.buf != null)
+                readBuf(this.buf);
+        }
 	}
 
 }

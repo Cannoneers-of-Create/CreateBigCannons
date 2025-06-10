@@ -9,9 +9,9 @@ import javax.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
@@ -19,6 +19,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
@@ -61,7 +62,7 @@ public class DimensionMunitionPropertiesHandler {
 	public static DimensionMunitionProperties getProperties(ResourceKey<Level> dimension) { return DIMENSIONS.getOrDefault(dimension, DEFAULT); }
     public static DimensionMunitionProperties getProperties(Level level) { return getProperties(level.dimension()); }
 
-	public static void writeBuf(FriendlyByteBuf buf) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(DIMENSIONS.size());
 		for (Map.Entry<ResourceKey<Level>, DimensionMunitionProperties> entry : DIMENSIONS.entrySet()) {
 			buf.writeResourceLocation(entry.getKey().location());
@@ -69,7 +70,7 @@ public class DimensionMunitionPropertiesHandler {
 		}
 	}
 
-	public static void readBuf(FriendlyByteBuf buf) {
+	public static void readBuf(RegistryFriendlyByteBuf buf) {
 		DIMENSIONS.clear();
 		int sz = buf.readVarInt();
 		for (int i = 0; i < sz; ++i) {
@@ -88,18 +89,21 @@ public class DimensionMunitionPropertiesHandler {
 		NetworkPlatform.sendToClientPlayer(new ClientboundSyncDimensionMunitionPropertiesPacket(), player);
 	}
 
-	public record ClientboundSyncDimensionMunitionPropertiesPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {
+    // TODO c6 playtest
+	public record ClientboundSyncDimensionMunitionPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSyncDimensionMunitionPropertiesPacket> STREAM_CODEC =
+            StreamCodec.of((b, t) -> writeBuf(b), ClientboundSyncDimensionMunitionPropertiesPacket::copyOf);
+
 		public ClientboundSyncDimensionMunitionPropertiesPacket() { this(null); }
 
-		public static ClientboundSyncDimensionMunitionPropertiesPacket copyOf(FriendlyByteBuf buf) {
-			return new ClientboundSyncDimensionMunitionPropertiesPacket(new FriendlyByteBuf(buf.copy()));
+		public static ClientboundSyncDimensionMunitionPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
+			return new ClientboundSyncDimensionMunitionPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
 		}
 
-		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
-
 		@Override
-		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-			if (this.buf != null) readBuf(this.buf);
+		public void handle(Executor exec, PacketListener listener, Player player) {
+			if (this.buf != null)
+                readBuf(this.buf);
 		}
 	}
 

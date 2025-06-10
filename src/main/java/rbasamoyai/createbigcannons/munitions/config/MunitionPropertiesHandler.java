@@ -11,9 +11,9 @@ import com.google.gson.JsonSyntaxException;
 
 import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.minecraft.core.Registry;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,6 +21,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -149,13 +150,13 @@ public class MunitionPropertiesHandler {
 		ITEM_PROPELLANT.put(item, handler);
 	}
 
-	public static void writeBuf(FriendlyByteBuf buf) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf) {
 		writeToNetwork(buf, PROJECTILES, CBCRegistryUtils.getEntityTypeRegistry());
 		writeToNetwork(buf, BLOCK_PROPELLANT, CBCRegistryUtils.getBlockRegistry());
 		writeToNetwork(buf, ITEM_PROPELLANT, CBCRegistryUtils.getItemRegistry());
 	}
 
-	private static <TYPE> void writeToNetwork(FriendlyByteBuf buf, Map<TYPE, PropertiesTypeHandler<TYPE, ?>> handlers, Registry<TYPE> registry) {
+	private static <TYPE> void writeToNetwork(RegistryFriendlyByteBuf buf, Map<TYPE, PropertiesTypeHandler<TYPE, ?>> handlers, Registry<TYPE> registry) {
 		buf.writeVarInt(handlers.size());
 		for (Map.Entry<TYPE, PropertiesTypeHandler<TYPE, ?>> entry : handlers.entrySet()) {
 			TYPE type = entry.getKey();
@@ -164,13 +165,13 @@ public class MunitionPropertiesHandler {
 		}
 	}
 
-	public static void readBuf(FriendlyByteBuf buf) {
+	public static void readBuf(RegistryFriendlyByteBuf buf) {
 		readFromNetwork(buf, PROJECTILES, CBCRegistryUtils.getEntityTypeRegistry());
 		readFromNetwork(buf, BLOCK_PROPELLANT, CBCRegistryUtils.getBlockRegistry());
 		readFromNetwork(buf, ITEM_PROPELLANT, CBCRegistryUtils.getItemRegistry());
 	}
 
-	private static <TYPE> void readFromNetwork(FriendlyByteBuf buf, Map<TYPE, PropertiesTypeHandler<TYPE, ?>> map, Registry<TYPE> registry) {
+	private static <TYPE> void readFromNetwork(RegistryFriendlyByteBuf buf, Map<TYPE, PropertiesTypeHandler<TYPE, ?>> map, Registry<TYPE> registry) {
 		map.values().forEach(PropertiesTypeHandler::clearForReload);
 		int size = buf.readVarInt();
 		for (int i = 0; i < size; ++i) {
@@ -187,18 +188,21 @@ public class MunitionPropertiesHandler {
 		NetworkPlatform.sendToClientAll(new ClientboundMunitionPropertiesPacket(), server);
 	}
 
-	public record ClientboundMunitionPropertiesPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {
+    // TODO c6 playtest
+	public record ClientboundMunitionPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundMunitionPropertiesPacket> STREAM_CODEC =
+            StreamCodec.of((b, t) -> writeBuf(b), ClientboundMunitionPropertiesPacket::copyOf);
+
 		public ClientboundMunitionPropertiesPacket() { this(null); }
 
-		public static ClientboundMunitionPropertiesPacket copyOf(FriendlyByteBuf buf) {
-			return new ClientboundMunitionPropertiesPacket(new FriendlyByteBuf(buf.copy()));
+		public static ClientboundMunitionPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
+			return new ClientboundMunitionPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
 		}
 
-		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
-
 		@Override
-		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-			if (this.buf != null) readBuf(this.buf);
+		public void handle(Executor exec, PacketListener listener, Player player) {
+			if (this.buf != null)
+                readBuf(this.buf);
 		}
 	}
 

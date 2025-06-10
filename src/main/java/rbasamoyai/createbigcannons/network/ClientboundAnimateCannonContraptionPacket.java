@@ -2,40 +2,27 @@ package rbasamoyai.createbigcannons.network;
 
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
-public class ClientboundAnimateCannonContraptionPacket implements RootPacket {
+public record ClientboundAnimateCannonContraptionPacket(int id) implements RootPacket {
 
-	private final int id;
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundAnimateCannonContraptionPacket> STREAM_CODEC =
+        ByteBufCodecs.VAR_INT.<RegistryFriendlyByteBuf>cast().map(ClientboundAnimateCannonContraptionPacket::new, ClientboundAnimateCannonContraptionPacket::id);
 
-	public ClientboundAnimateCannonContraptionPacket(AbstractContraptionEntity entity) {
-		this.id = entity.getId();
-	}
-
-	public ClientboundAnimateCannonContraptionPacket(FriendlyByteBuf buf) {
-		this.id = buf.readVarInt();
+	public static ClientboundAnimateCannonContraptionPacket entity(AbstractContraptionEntity entity) {
+		return new ClientboundAnimateCannonContraptionPacket(entity.getId());
 	}
 
 	@Override
-	public void rootEncode(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(this.id);
-	}
-
-	@Override
-	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+	public void handle(Executor exec, PacketListener listener, Player player) {
 		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.animateCannon(this));
-	}
-
-	public int id() {
-		return this.id;
 	}
 
 }

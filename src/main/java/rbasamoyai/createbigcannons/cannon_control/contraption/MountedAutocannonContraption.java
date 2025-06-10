@@ -335,7 +335,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			if (this.presentBlockEntities.get(pos) instanceof AutocannonRecoilSpringBlockEntity spring)
 				spring.handleFiring();
 		}
-		NetworkPlatform.sendToClientTracking(new ClientboundAnimateCannonContraptionPacket(entity), entity);
+		NetworkPlatform.sendToClientTracking(ClientboundAnimateCannonContraptionPacket.entity(entity), entity);
 
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 		Vec3 vec1 = spawnPos.subtract(centerPos).normalize();

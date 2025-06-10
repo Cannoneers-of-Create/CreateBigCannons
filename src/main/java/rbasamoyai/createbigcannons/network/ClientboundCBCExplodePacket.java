@@ -1,54 +1,37 @@
 package rbasamoyai.createbigcannons.network;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
+import rbasamoyai.createbigcannons.utils.CBCStreamCodecs;
 
 public record ClientboundCBCExplodePacket(double x, double y, double z, float power, List<BlockPos> toBlow, float knockbackX,
 										  float knockbackY, float knockbackZ, ExplosionType explosionType) implements RootPacket {
 
-	public ClientboundCBCExplodePacket(FriendlyByteBuf buf) {
-		this(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), readToBlow(buf), buf.readFloat(),
-			buf.readFloat(), buf.readFloat(), buf.readEnum(ExplosionType.class));
-	}
-
-	private static List<BlockPos> readToBlow(FriendlyByteBuf buf) {
-		int sz = buf.readVarInt();
-		List<BlockPos> toBlow = new LinkedList<>();
-		for (int i = 0; i < sz; ++i)
-			toBlow.add(buf.readBlockPos());
-		return toBlow;
-	}
-
-	@Override
-	public void rootEncode(RegistryFriendlyByteBuf buf) {
-		buf.writeDouble(this.x)
-			.writeDouble(this.y)
-			.writeDouble(this.z)
-			.writeFloat(this.power);
-		buf.writeVarInt(this.toBlow.size());
-		for (BlockPos pos : this.toBlow)
-			buf.writeBlockPos(pos);
-		buf.writeFloat(this.knockbackX)
-			.writeFloat(this.knockbackY)
-			.writeFloat(this.knockbackZ);
-		buf.writeEnum(this.explosionType);
-	}
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundCBCExplodePacket> STREAM_CODEC = CBCStreamCodecs.composite(
+        ByteBufCodecs.DOUBLE, ClientboundCBCExplodePacket::x,
+        ByteBufCodecs.DOUBLE, ClientboundCBCExplodePacket::y,
+        ByteBufCodecs.DOUBLE, ClientboundCBCExplodePacket::z,
+        ByteBufCodecs.FLOAT, ClientboundCBCExplodePacket::power,
+        CatnipStreamCodecBuilders.list(BlockPos.STREAM_CODEC), ClientboundCBCExplodePacket::toBlow,
+        ByteBufCodecs.FLOAT, ClientboundCBCExplodePacket::knockbackX,
+        ByteBufCodecs.FLOAT, ClientboundCBCExplodePacket::knockbackY,
+        ByteBufCodecs.FLOAT, ClientboundCBCExplodePacket::knockbackZ,
+        CatnipStreamCodecBuilders.ofEnum(ExplosionType.class), ClientboundCBCExplodePacket::explosionType,
+        ClientboundCBCExplodePacket::new);
 
 	@Override
-	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+	public void handle(Executor exec, PacketListener listener, Player player) {
 		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.addExplosionFromServer(this));
 	}
-
 
 	public enum ExplosionType {
 		SHRAPNEL,

@@ -446,7 +446,7 @@ public abstract class AbstractCannonDrillBlockEntity extends PoleMoverBlockEntit
 		scrap.forEach(s -> Block.popResource(this.getLevel(), this.boringPos, s));
 
 		this.getLevel().playSound(null, this.boringPos, SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.BLOCKS, 1.0f, 1.0f);
-		NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(this.latheEntity, boringOffset, newInfo), this.latheEntity);
+		NetworkPlatform.sendToClientTracking(ClientboundUpdateContraptionPacket.entity(this.latheEntity, boringOffset, newInfo), this.latheEntity);
 		this.boringPos = null;
 	}
 

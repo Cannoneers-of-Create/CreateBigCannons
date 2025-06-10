@@ -2,35 +2,21 @@ package rbasamoyai.createbigcannons.network;
 
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
 
-public class ServerboundSetFireRatePacket implements RootPacket {
+public record ServerboundSetFireRatePacket(int fireRateAdjustment) implements RootPacket {
 
-    private final int fireRateAdjustment;
-
-    public ServerboundSetFireRatePacket(int fireRateAdjustment) {
-        this.fireRateAdjustment = fireRateAdjustment;
-    }
-
-    public ServerboundSetFireRatePacket(FriendlyByteBuf buf) {
-        this.fireRateAdjustment = buf.readVarInt();
-    }
-
-    @Override public void rootEncode(RegistryFriendlyByteBuf buf) {
-        buf.writeVarInt(this.fireRateAdjustment);
-    }
+    public static final StreamCodec<RegistryFriendlyByteBuf, ServerboundSetFireRatePacket> STREAM_CODEC = ByteBufCodecs.VAR_INT.<RegistryFriendlyByteBuf>cast()
+        .map(ServerboundSetFireRatePacket::new, ServerboundSetFireRatePacket::fireRateAdjustment);
 
     @Override
-    public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-        if (this.fireRateAdjustment != 0
-            && sender != null
-            && sender.getRootVehicle() instanceof CannonCarriageEntity carriage)
+    public void handle(Executor exec, PacketListener listener, Player player) {
+        if (this.fireRateAdjustment != 0 && player.getRootVehicle() instanceof CannonCarriageEntity carriage)
             carriage.trySettingFireRateCarriage(this.fireRateAdjustment);
     }
 

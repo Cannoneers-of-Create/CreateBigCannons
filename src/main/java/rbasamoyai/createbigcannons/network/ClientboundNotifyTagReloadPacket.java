@@ -2,22 +2,18 @@ package rbasamoyai.createbigcannons.network;
 
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
-public record ClientboundNotifyTagReloadPacket() implements RootPacket {
+public class ClientboundNotifyTagReloadPacket implements RootPacket {
 
-	public ClientboundNotifyTagReloadPacket(FriendlyByteBuf buf) { this(); }
-
-	@Override public void rootEncode(RegistryFriendlyByteBuf buf) {}
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundNotifyTagReloadPacket> STREAM_CODEC = StreamCodec.unit(new ClientboundNotifyTagReloadPacket());
 
 	@Override
-	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+	public void handle(Executor exec, PacketListener listener, Player player) {
 		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.reloadTagDependentClientResources(this));
 	}
 

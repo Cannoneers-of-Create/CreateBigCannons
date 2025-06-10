@@ -15,11 +15,13 @@ import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.base.CBCJsonResourceReloadListener;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -81,18 +83,21 @@ public class BigCannonPropellantCompatibilityHandler {
 		NetworkPlatform.sendToClientPlayer(new ClientboundBigCannonPropellantPropertiesPacket(), player);
 	}
 
-	public record ClientboundBigCannonPropellantPropertiesPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {
+    // TODO c6 playtest
+	public record ClientboundBigCannonPropellantPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundBigCannonPropellantPropertiesPacket> STREAM_CODEC =
+            StreamCodec.of((b, t) -> writeBuf(b), ClientboundBigCannonPropellantPropertiesPacket::copyOf);
+
 		public ClientboundBigCannonPropellantPropertiesPacket() { this(null); }
 
-		public static ClientboundBigCannonPropellantPropertiesPacket copyOf(FriendlyByteBuf buf) {
-			return new ClientboundBigCannonPropellantPropertiesPacket(new FriendlyByteBuf(buf.copy()));
+		public static ClientboundBigCannonPropellantPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
+			return new ClientboundBigCannonPropellantPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
 		}
 
-		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
-
 		@Override
-		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-			if (this.buf != null) readBuf(this.buf);
+		public void handle(Executor exec, PacketListener listener, Player player) {
+			if (this.buf != null)
+                readBuf(this.buf);
 		}
 	}
 

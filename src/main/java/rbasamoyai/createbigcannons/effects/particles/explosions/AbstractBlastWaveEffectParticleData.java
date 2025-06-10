@@ -15,6 +15,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCStreamCodecs;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class AbstractBlastWaveEffectParticleData<DATA extends AbstractBlastWaveEffectParticleData<DATA>>
@@ -33,10 +34,10 @@ public abstract class AbstractBlastWaveEffectParticleData<DATA extends AbstractB
 	}
 
     protected static <DATA extends AbstractBlastWaveEffectParticleData<DATA>> StreamCodec<RegistryFriendlyByteBuf, DATA> createStreamCodec(Constructor<DATA> cons) {
-        return CBCUtils.composite7ArgStreamCodec(
+        return CBCStreamCodecs.composite(
             ByteBufCodecs.DOUBLE, AbstractBlastWaveEffectParticleData::blastRadius,
             SoundEvent.STREAM_CODEC, AbstractBlastWaveEffectParticleData::soundEvent,
-            CBCUtils.SOUND_SOURCE_STREAM_CODEC, AbstractBlastWaveEffectParticleData::soundSource,
+            CBCStreamCodecs.SOUND_SOURCE, AbstractBlastWaveEffectParticleData::soundSource,
             ByteBufCodecs.FLOAT, AbstractBlastWaveEffectParticleData::volume,
             ByteBufCodecs.FLOAT, AbstractBlastWaveEffectParticleData::pitch,
             ByteBufCodecs.FLOAT, AbstractBlastWaveEffectParticleData::airAbsorption,

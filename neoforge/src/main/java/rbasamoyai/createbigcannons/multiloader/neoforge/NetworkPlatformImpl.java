@@ -5,28 +5,27 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
-import rbasamoyai.createbigcannons.neoforge.network.CBCNetworkForge;
-import rbasamoyai.createbigcannons.neoforge.network.ForgeClientPacket;
-import rbasamoyai.createbigcannons.neoforge.network.ForgeServerPacket;
+import net.neoforged.neoforge.network.PacketDistributor;
+import rbasamoyai.createbigcannons.neoforge.network.CBCNeoForgePacket;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class NetworkPlatformImpl {
 
 	@OnlyIn(Dist.CLIENT)
 	public static void sendToServer(RootPacket pkt) {
-		CBCNetworkForge.INSTANCE.sendToServer(new ForgeServerPacket(pkt));
+		PacketDistributor.sendToServer(new CBCNeoForgePacket(pkt));
 	}
 
 	public static void sendToClientPlayer(RootPacket pkt, ServerPlayer player) {
-		CBCNetworkForge.INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new ForgeClientPacket(pkt));
+        PacketDistributor.sendToPlayer(player, new CBCNeoForgePacket(pkt));
 	}
 
 	public static void sendToClientTracking(RootPacket pkt, Entity tracked) {
-		CBCNetworkForge.INSTANCE.send(PacketDistributor.TRACKING_ENTITY.with(() -> tracked), new ForgeClientPacket(pkt));
+        PacketDistributor.sendToPlayersTrackingEntity(tracked, new CBCNeoForgePacket(pkt));
 	}
 
 	public static void sendToClientAll(RootPacket pkt, MinecraftServer server) {
-		CBCNetworkForge.INSTANCE.send(PacketDistributor.ALL.noArg(), new ForgeClientPacket(pkt));
+        PacketDistributor.sendToAllPlayers(new CBCNeoForgePacket(pkt));
 	}
 
 }

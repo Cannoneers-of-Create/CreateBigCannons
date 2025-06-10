@@ -35,7 +35,6 @@ import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
-import rbasamoyai.createbigcannons.neoforge.network.CBCNetworkForge;
 
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannonsNeoForge {
@@ -72,7 +71,6 @@ public class CreateBigCannonsNeoForge {
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
-        CBCNetworkForge.init();
 		BlockArmorInspectionToolItem.registerDefaultHandlers();
 		GasMaskItem.registerDefaultHandlers();
         DefaultFluidCompat.registerMinecraftBlobEffects();

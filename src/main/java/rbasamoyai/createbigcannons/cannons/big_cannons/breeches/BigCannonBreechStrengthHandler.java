@@ -10,9 +10,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
 import it.unimi.dsi.fastutil.objects.Reference2IntOpenHashMap;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,6 +20,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
@@ -57,7 +58,7 @@ public class BigCannonBreechStrengthHandler {
 
 	public static int getStrength(Block block, int defaultStrength) { return BREECH_STRENGTHS.getOrDefault(block, defaultStrength); }
 
-	public static void writeBuf(FriendlyByteBuf buf) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(BREECH_STRENGTHS.size());
 		for (Map.Entry<Block, Integer> entry : BREECH_STRENGTHS.entrySet()) {
 			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()))
@@ -65,7 +66,7 @@ public class BigCannonBreechStrengthHandler {
 		}
 	}
 
-	public static void readBuf(FriendlyByteBuf buf) {
+	public static void readBuf(RegistryFriendlyByteBuf buf) {
 		BREECH_STRENGTHS.clear();
 		int sz = buf.readVarInt();
 
@@ -82,18 +83,21 @@ public class BigCannonBreechStrengthHandler {
 		NetworkPlatform.sendToClientAll(new ClientboundBigCannonBreechStrengthPacket(), server);
 	}
 
-	public record ClientboundBigCannonBreechStrengthPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {
+    // TODO c6 playtest
+	public record ClientboundBigCannonBreechStrengthPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundBigCannonBreechStrengthPacket> STREAM_CODEC =
+            StreamCodec.of((b, t) -> writeBuf(b), ClientboundBigCannonBreechStrengthPacket::copyOf);
+
 		public ClientboundBigCannonBreechStrengthPacket() { this(null); }
 
-		public static ClientboundBigCannonBreechStrengthPacket copyOf(FriendlyByteBuf buf) {
-			return new ClientboundBigCannonBreechStrengthPacket(new FriendlyByteBuf(buf.copy()));
+		public static ClientboundBigCannonBreechStrengthPacket copyOf(RegistryFriendlyByteBuf buf) {
+			return new ClientboundBigCannonBreechStrengthPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
 		}
 
-		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
-
 		@Override
-		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-			if (this.buf != null) readBuf(this.buf);
+		public void handle(Executor exec, PacketListener listener, Player player) {
+			if (this.buf != null)
+                readBuf(this.buf);
 		}
 	}
 

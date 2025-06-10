@@ -1,53 +1,37 @@
 package rbasamoyai.createbigcannons.network;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecBuilders;
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecs;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
-import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCStreamCodecs;
 
 public record ClientboundFluidExplodePacket(double x, double y, double z, float power, List<BlockPos> toBlow, float knockbackX,
 											float knockbackY, float knockbackZ, Fluid fluid) implements RootPacket {
 
-	public ClientboundFluidExplodePacket(FriendlyByteBuf buf) {
-		this(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), readToBlow(buf), buf.readFloat(),
-			buf.readFloat(), buf.readFloat(), CBCRegistryUtils.getFluid(buf.readResourceLocation()));
-	}
-
-	private static List<BlockPos> readToBlow(FriendlyByteBuf buf) {
-		int sz = buf.readVarInt();
-		List<BlockPos> toBlow = new LinkedList<>();
-		for (int i = 0; i < sz; ++i)
-			toBlow.add(buf.readBlockPos());
-		return toBlow;
-	}
-
-	@Override
-	public void rootEncode(RegistryFriendlyByteBuf buf) {
-		buf.writeDouble(this.x)
-			.writeDouble(this.y)
-			.writeDouble(this.z)
-			.writeFloat(this.power);
-		buf.writeVarInt(this.toBlow.size());
-		for (BlockPos pos : this.toBlow)
-			buf.writeBlockPos(pos);
-		buf.writeFloat(this.knockbackX)
-			.writeFloat(this.knockbackY)
-			.writeFloat(this.knockbackZ);
-		buf.writeResourceLocation(CBCRegistryUtils.getFluidLocation(this.fluid));
-	}
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundFluidExplodePacket> STREAM_CODEC = CBCStreamCodecs.composite(
+        ByteBufCodecs.DOUBLE, ClientboundFluidExplodePacket::x,
+        ByteBufCodecs.DOUBLE, ClientboundFluidExplodePacket::y,
+        ByteBufCodecs.DOUBLE, ClientboundFluidExplodePacket::z,
+        ByteBufCodecs.FLOAT, ClientboundFluidExplodePacket::power,
+        CatnipStreamCodecBuilders.list(BlockPos.STREAM_CODEC), ClientboundFluidExplodePacket::toBlow,
+        ByteBufCodecs.FLOAT, ClientboundFluidExplodePacket::knockbackX,
+        ByteBufCodecs.FLOAT, ClientboundFluidExplodePacket::knockbackY,
+        ByteBufCodecs.FLOAT, ClientboundFluidExplodePacket::knockbackZ,
+        CatnipStreamCodecs.FLUID, ClientboundFluidExplodePacket::fluid,
+        ClientboundFluidExplodePacket::new);
 
 	@Override
-	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+	public void handle(Executor exec, PacketListener listener, Player player) {
 		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.addFluidExplosionFromServer(this));
 	}
 

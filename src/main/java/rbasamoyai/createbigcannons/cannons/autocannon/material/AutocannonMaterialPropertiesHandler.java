@@ -9,15 +9,16 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
@@ -50,7 +51,7 @@ public class AutocannonMaterialPropertiesHandler {
 
 	public static AutocannonMaterialProperties getMaterial(AutocannonMaterial material) { return PROPERTIES.get(material); }
 
-	public static void writeBuf(FriendlyByteBuf buf) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf) {
 		buf.writeVarInt(PROPERTIES.size());
 		for (Map.Entry<AutocannonMaterial, AutocannonMaterialProperties> entry : PROPERTIES.entrySet()) {
 			buf.writeResourceLocation(entry.getKey().name());
@@ -58,7 +59,7 @@ public class AutocannonMaterialPropertiesHandler {
 		}
 	}
 
-	public static void readBuf(FriendlyByteBuf buf) {
+	public static void readBuf(RegistryFriendlyByteBuf buf) {
 		PROPERTIES.clear();
 		int sz = buf.readVarInt();
 
@@ -75,18 +76,21 @@ public class AutocannonMaterialPropertiesHandler {
 		NetworkPlatform.sendToClientAll(new ClientboundAutocannonMaterialPropertiesPacket(), server);
 	}
 
-	public record ClientboundAutocannonMaterialPropertiesPacket(@Nullable FriendlyByteBuf buf) implements RootPacket {
+    // TODO c6 playtest
+	public record ClientboundAutocannonMaterialPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundAutocannonMaterialPropertiesPacket> STREAM_CODEC =
+            StreamCodec.of((b, t) -> writeBuf(b), ClientboundAutocannonMaterialPropertiesPacket::copyOf);
+
 		public ClientboundAutocannonMaterialPropertiesPacket() { this(null); }
 
-		public static ClientboundAutocannonMaterialPropertiesPacket copyOf(FriendlyByteBuf buf) {
-			return new ClientboundAutocannonMaterialPropertiesPacket(new FriendlyByteBuf(buf.copy()));
+		public static ClientboundAutocannonMaterialPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
+			return new ClientboundAutocannonMaterialPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
 		}
 
-		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
-
 		@Override
-		public void handle(Executor exec, PacketListener listener, @javax.annotation.Nullable ServerPlayer sender) {
-			if (this.buf != null) readBuf(this.buf);
+		public void handle(Executor exec, PacketListener listener, Player player) {
+			if (this.buf != null)
+                readBuf(this.buf);
 		}
 	}
 

@@ -2,44 +2,38 @@ package rbasamoyai.createbigcannons.network;
 
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
-import net.minecraft.network.FriendlyByteBuf;
+import net.createmod.catnip.codecs.stream.CatnipStreamCodecs;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
-import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCStreamCodecs;
 
 public record ClientboundPlayBlockHitEffectPacket(BlockState blockState, EntityType<?> entityType, boolean deflect,
 												  boolean forceDisplay, double x, double y, double z, float dx, float dy,
 												  float dz)
 	implements RootPacket {
 
-	public ClientboundPlayBlockHitEffectPacket(FriendlyByteBuf buf) {
-		this(Block.stateById(buf.readVarInt()), CBCRegistryUtils.getEntityType(buf.readVarInt()), buf.readBoolean(),
-			buf.readBoolean(), buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(), buf.readFloat());
-	}
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundPlayBlockHitEffectPacket> STREAM_CODEC = CBCStreamCodecs.composite(
+        CatnipStreamCodecs.BLOCK_STATE, ClientboundPlayBlockHitEffectPacket::blockState,
+        ByteBufCodecs.registry(Registries.ENTITY_TYPE), ClientboundPlayBlockHitEffectPacket::entityType,
+        ByteBufCodecs.BOOL, ClientboundPlayBlockHitEffectPacket::deflect,
+        ByteBufCodecs.BOOL, ClientboundPlayBlockHitEffectPacket::forceDisplay,
+        ByteBufCodecs.DOUBLE, ClientboundPlayBlockHitEffectPacket::x,
+        ByteBufCodecs.DOUBLE, ClientboundPlayBlockHitEffectPacket::y,
+        ByteBufCodecs.DOUBLE, ClientboundPlayBlockHitEffectPacket::z,
+        ByteBufCodecs.FLOAT, ClientboundPlayBlockHitEffectPacket::dx,
+        ByteBufCodecs.FLOAT, ClientboundPlayBlockHitEffectPacket::dy,
+        ByteBufCodecs.FLOAT, ClientboundPlayBlockHitEffectPacket::dz,
+        ClientboundPlayBlockHitEffectPacket::new);
 
 	@Override
-	public void rootEncode(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(Block.getId(this.blockState))
-			.writeVarInt(CBCRegistryUtils.getEntityTypeNumericId(this.entityType))
-			.writeBoolean(this.deflect)
-			.writeBoolean(this.forceDisplay)
-			.writeDouble(this.x)
-			.writeDouble(this.y)
-			.writeDouble(this.z)
-			.writeFloat(this.dx)
-			.writeFloat(this.dy)
-			.writeFloat(this.dz);
-	}
-
-	@Override
-	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+	public void handle(Executor exec, PacketListener listener, Player player) {
 		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.playBlockHitEffect(this));
 	}
 

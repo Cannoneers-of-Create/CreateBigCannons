@@ -13,6 +13,7 @@ import com.google.gson.JsonSyntaxException;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,6 +22,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.base.tag_utils.FluidTypeDataHolder;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
@@ -90,18 +92,21 @@ public class FluidCastingTimeHandler {
 		NetworkPlatform.sendToClientAll(new ClientboundFluidCastingTimePacket(), server);
 	}
 
-	public record ClientboundFluidCastingTimePacket(@Nullable FriendlyByteBuf buf) implements RootPacket {
+    // TODO c6 playtest
+	public record ClientboundFluidCastingTimePacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundFluidCastingTimePacket> STREAM_CODEC =
+            StreamCodec.of((b, t) -> writeBuf(b), ClientboundFluidCastingTimePacket::copyOf);
+
 		public ClientboundFluidCastingTimePacket() { this(null); }
 
-		public static ClientboundFluidCastingTimePacket copyOf(FriendlyByteBuf buf) {
-			return new ClientboundFluidCastingTimePacket(new FriendlyByteBuf(buf.copy()));
+		public static ClientboundFluidCastingTimePacket copyOf(RegistryFriendlyByteBuf buf) {
+			return new ClientboundFluidCastingTimePacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
 		}
 
-		@Override public void rootEncode(RegistryFriendlyByteBuf buf) { writeBuf(buf); }
-
 		@Override
-		public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-			if (this.buf != null) readBuf(this.buf);
+		public void handle(Executor exec, PacketListener listener, Player player) {
+			if (this.buf != null)
+                readBuf(this.buf);
 		}
 	}
 

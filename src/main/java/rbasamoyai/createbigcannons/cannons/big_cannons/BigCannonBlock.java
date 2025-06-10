@@ -274,7 +274,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 		tag.remove("z");
 		StructureBlockInfo newInfo = new StructureBlockInfo(oldInfo.pos(), oldInfo.state(), tag);
 		contraption.getBlocks().put(oldInfo.pos(), newInfo);
-		NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(entity, oldInfo.pos(), newInfo), entity);
+		NetworkPlatform.sendToClientTracking(ClientboundUpdateContraptionPacket.entity(entity, oldInfo.pos(), newInfo), entity);
 	}
 
 	static void writeAndSyncMultipleBlockData(Set<BlockPos> changed, AbstractContraptionEntity entity, Contraption contraption) {
@@ -294,7 +294,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 			changes.put(pos, newInfo);
 		}
 		blocks.putAll(changes);
-		NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(entity, changes), entity);
+		NetworkPlatform.sendToClientTracking(ClientboundUpdateContraptionPacket.entity(entity, changes), entity);
 	}
 
 	@Override default boolean isWeldable(BlockState state) { return this.getCannonMaterial().properties().isWeldable(); }

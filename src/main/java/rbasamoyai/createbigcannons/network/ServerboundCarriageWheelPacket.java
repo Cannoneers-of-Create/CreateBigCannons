@@ -2,43 +2,31 @@ package rbasamoyai.createbigcannons.network;
 
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import org.joml.Vector4f;
 
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
+import rbasamoyai.createbigcannons.utils.CBCStreamCodecs;
 
-public class ServerboundCarriageWheelPacket implements RootPacket {
+public record ServerboundCarriageWheelPacket(Vector4f state, int id) implements RootPacket {
 
-    private final Vector4f state;
-    private final int id;
+    public static final StreamCodec<RegistryFriendlyByteBuf, ServerboundCarriageWheelPacket> STREAM_CODEC = StreamCodec.composite(
+        CBCStreamCodecs.VECTOR_4F, ServerboundCarriageWheelPacket::state,
+        ByteBufCodecs.VAR_INT, ServerboundCarriageWheelPacket::id,
+        ServerboundCarriageWheelPacket::new);
 
-    public ServerboundCarriageWheelPacket(CannonCarriageEntity entity) {
-        this.state = entity.getWheelState();
-        this.id = entity.getId();
-    }
-
-    public ServerboundCarriageWheelPacket(FriendlyByteBuf buf) {
-        this.id = buf.readVarInt();
-        this.state = new Vector4f(buf.readFloat(), buf.readFloat(), buf.readFloat(), buf.readFloat());
+    public static ServerboundCarriageWheelPacket entity(CannonCarriageEntity entity) {
+        return new ServerboundCarriageWheelPacket(entity.getWheelState(), entity.getId());
     }
 
     @Override
-    public void rootEncode(RegistryFriendlyByteBuf buf) {
-        buf.writeVarInt(this.id)
-        .writeFloat(this.state.x())
-        .writeFloat(this.state.y())
-        .writeFloat(this.state.z())
-        .writeFloat(this.state.w());
-    }
-
-    @Override
-    public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
-        if (sender != null && sender.level().getEntity(this.id) instanceof CannonCarriageEntity carriage) carriage.setWheelState(this.state);
+    public void handle(Executor exec, PacketListener listener, Player player) {
+        if (player.level().getEntity(this.id) instanceof CannonCarriageEntity carriage)
+            carriage.setWheelState(this.state);
     }
 
 }

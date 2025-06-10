@@ -2,29 +2,23 @@ package rbasamoyai.createbigcannons.network;
 
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
 public record ClientboundSendCustomBreakProgressPacket(BlockPos pos, int damage) implements RootPacket {
 
-	public ClientboundSendCustomBreakProgressPacket(FriendlyByteBuf buf) {
-		this(buf.readBlockPos(), buf.readVarInt());
-	}
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSendCustomBreakProgressPacket> STREAM_CODEC = StreamCodec.composite(
+        BlockPos.STREAM_CODEC, ClientboundSendCustomBreakProgressPacket::pos,
+        ByteBufCodecs.VAR_INT, ClientboundSendCustomBreakProgressPacket::damage,
+        ClientboundSendCustomBreakProgressPacket::new);
 
 	@Override
-	public void rootEncode(RegistryFriendlyByteBuf buf) {
-		buf.writeBlockPos(this.pos)
-			.writeVarInt(this.damage);
-	}
-
-	@Override
-	public void handle(Executor exec, PacketListener listener, @Nullable ServerPlayer sender) {
+	public void handle(Executor exec, PacketListener listener, Player player) {
 		EnvExecute.executeOnClient(() -> () -> CBCClientHandlers.setCustomBlockDamage(this));
 	}
 
