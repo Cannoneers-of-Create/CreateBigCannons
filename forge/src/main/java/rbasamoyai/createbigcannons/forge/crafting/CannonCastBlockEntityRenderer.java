@@ -4,8 +4,8 @@ import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.foundation.fluid.FluidRenderer;
 
+import net.createmod.catnip.platform.ForgeCatnipServices;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -30,8 +30,8 @@ public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntity
             return;
 		FluidStack fstack = castc.fluid.getFluid();
 		if (!fstack.isEmpty())
-            FluidRenderer.renderFluidBox(fstack.getFluid(), fstack.getAmount(), 0f, 0f, 0f, width, height, width,
-                buffers, stack, light, false, true, fstack.getTag());
+            ForgeCatnipServices.FLUID_RENDERER.renderFluidBox(fstack, 0f, 0f, 0f, width, height, width,
+                buffers, stack, light, false, true);
 	}
 
 	@Override
