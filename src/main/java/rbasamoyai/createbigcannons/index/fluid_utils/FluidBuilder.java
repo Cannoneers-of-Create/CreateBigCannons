@@ -159,10 +159,10 @@ public abstract class FluidBuilder<T extends CBCFlowingFluid, P> extends Abstrac
 		}
 		return getOwner().<I, FluidBuilder<T, P>>item(this, bucketName, p -> ((NonNullBiFunction<CBCFlowingFluid, Item.Properties, ? extends I>) factory).apply(this.source.get(), p))
 				.properties(p -> p.craftRemainder(Items.BUCKET).stacksTo(1))
-				.model((ctx, prov) -> prov.generated(ctx, CBCUtils.location(getOwner().getModid(), "item/" + bucketName)));
+				.model(this::acceptItemModel);
 	}
 
-	protected abstract <I extends Item> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov);
+	protected abstract <I extends BucketItem> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov);
 
 	@Beta
 	public FluidBuilder<T, P> noBucket() {

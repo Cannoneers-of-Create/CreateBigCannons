@@ -15,6 +15,7 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilder<T, P> {
 
@@ -61,8 +63,8 @@ public class ForgeFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuilde
 	}
 
 	@Override
-	protected <I extends Item> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov) {
-		prov.generated(ctx, new ResourceLocation(this.getOwner().getModid(), "item/" + this.bucketName));
+	protected <I extends BucketItem> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov) {
+		prov.generated(ctx, CBCUtils.location(this.getOwner().getModid(), "item/" + this.bucketName));
 	}
 
 }
