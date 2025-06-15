@@ -17,6 +17,7 @@ import rbasamoyai.createbigcannons.datagen.CBCDatagenCommon;
 import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
 import rbasamoyai.createbigcannons.datagen.assets.forge.CBCBlockPartialsGen;
 import rbasamoyai.createbigcannons.datagen.forge.CBCCompactingRecipeProvider;
+import rbasamoyai.createbigcannons.datagen.forge.CBCCraftingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.forge.CBCCuttingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.forge.CBCMillingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.forge.CBCMixingRecipeProvider;
@@ -24,7 +25,6 @@ import rbasamoyai.createbigcannons.datagen.forge.CBCSequencedAssemblyRecipeProvi
 import rbasamoyai.createbigcannons.datagen.forge.MeltingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.loot.BoringScrapLoot;
 import rbasamoyai.createbigcannons.datagen.recipes.BlockRecipeProvider;
-import rbasamoyai.createbigcannons.datagen.recipes.CBCCraftingRecipeProvider;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.ponder.CBCPonderPlugin;
 

@@ -1,16 +1,16 @@
-package rbasamoyai.createbigcannons.datagen.recipes;
+package rbasamoyai.createbigcannons.datagen.forge;
 
-import static net.minecraft.data.recipes.RecipeProvider.getHasName;
-import static net.minecraft.data.recipes.RecipeProvider.has;
-import static net.minecraft.data.recipes.RecipeProvider.nineBlockStorageRecipesRecipesWithCustomUnpacking;
-import static net.minecraft.data.recipes.RecipeProvider.nineBlockStorageRecipesWithCustomPacking;
+import static com.tterrag.registrate.providers.RegistrateRecipeProvider.getHasName;
+import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
+import static com.tterrag.registrate.providers.RegistrateRecipeProvider.nineBlockStorageRecipesRecipesWithCustomUnpacking;
+import static com.tterrag.registrate.providers.RegistrateRecipeProvider.nineBlockStorageRecipesWithCustomPacking;
 
 import java.util.function.Consumer;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
+import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 
 import net.minecraft.data.recipes.FinishedRecipe;
