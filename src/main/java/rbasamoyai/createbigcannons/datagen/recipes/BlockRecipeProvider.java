@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import net.minecraft.data.DataGenerator;
-
 import org.slf4j.Logger;
 
 import com.google.common.hash.HashCode;
@@ -41,12 +39,12 @@ public abstract class BlockRecipeProvider implements DataProvider {
 
 	protected static final List<DataProvider.Factory<BlockRecipeProvider>> GENERATORS = new ArrayList<>();
 
-	public static void registerAll(DataGenerator.PackGenerator gen) {
+	public static void registerAll(Consumer<DataProvider.Factory<?>> cons) {
 		GENERATORS.add(CannonCastRecipeProvider::new);
 		GENERATORS.add(BuiltUpHeatingRecipeProvider::new);
 		GENERATORS.add(DrillBoringRecipeProvider::new);
 
-		gen.addProvider(output -> new DataProvider() {
+        cons.accept(output -> new DataProvider() {
 			@Override
 			public CompletableFuture<?> run(CachedOutput cache) {
 				return CompletableFuture.allOf(GENERATORS.stream().map(gen -> {
