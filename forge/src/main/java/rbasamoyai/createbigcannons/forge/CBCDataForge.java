@@ -11,7 +11,7 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.datagen.CBCDatagenCommon;
 import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
@@ -28,11 +28,11 @@ import rbasamoyai.createbigcannons.datagen.recipes.CBCCraftingRecipeProvider;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.ponder.CBCPonderPlugin;
 
-@Mod.EventBusSubscriber(modid = CreateBigCannons.MOD_ID)
+@EventBusSubscriber(modid = CreateBigCannons.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class CBCDataForge {
 
     @SubscribeEvent
-    public static void onDatagen(GatherDataEvent evt) {
+    public static void onGatherDataEvent(GatherDataEvent evt) {
         ExistingFileHelper helper = evt.getExistingFileHelper();
         CreateBigCannons.REGISTRATE.addDataGenerator(ProviderType.LOOT, prov -> {
             prov.addLootAction(LootContextParamSets.BLOCK, new BoringScrapLoot()::generate);

@@ -59,7 +59,8 @@ loom {
 
             programArgs("--mod", mod.id)
             programArgs("--output", "${project.rootProject.file("fabric/src/generated/resources")}")
-            programArgs("--existing", "${project.rootProject.file("common/src/main/resources")}")
+            programArgs("--existing", "${project.rootProject.file("src/main/resources")}")
+            programArg("--all")
             vmArg("-Dcreatebigcannons.datagen.platform=fabric")
         }
         create("datagen_forge") {
@@ -67,7 +68,8 @@ loom {
 
             programArgs("--mod", mod.id)
             programArgs("--output", "${project.rootProject.file("forge/src/generated/resources")}")
-            programArgs("--existing", "${project.rootProject.file("common/src/main/resources")}")
+            programArgs("--existing", "${project.rootProject.file("src/main/resources")}")
+            programArg("--all")
             vmArg("-Dcreatebigcannons.datagen.platform=forge")
         }
         all {
