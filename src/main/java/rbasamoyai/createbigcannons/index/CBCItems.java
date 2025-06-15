@@ -11,7 +11,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionToolItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
@@ -183,7 +182,7 @@ public class CBCItems {
 		.register(),
 
 	PARTIALLY_FILLED_AUTOCANNON_CARTRIDGE = REGISTRATE.item("partially_filled_autocannon_cartridge", SequencedAssemblyItem::new)
-		.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("item/filled_autocannon_cartridge")))
+		.model((c, p) -> {})
 		.register(),
 
 	PARTIALLY_FORMED_BIG_CARTRIDGE = REGISTRATE.item("partially_formed_big_cartridge", SequencedAssemblyItem::new)
@@ -191,7 +190,7 @@ public class CBCItems {
 		.register(),
 
 	PARTIALLY_ASSEMBLED_MACHINE_GUN_ROUND = REGISTRATE.item("partially_assembled_machine_gun_round", SequencedAssemblyItem::new)
-		.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("item/empty_machine_gun_round")))
+		.model((c, p) -> {})
 		.register();
 
 	public static final ItemEntry<AutocannonCartridgeItem> AUTOCANNON_CARTRIDGE = REGISTRATE
