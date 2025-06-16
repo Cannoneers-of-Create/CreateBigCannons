@@ -195,7 +195,7 @@ public class CBCTags {
 			SHEET_BRASS = commonTag("sheet_brass", "plates/brass", "brass_plates"),
 			INGOT_BRASS = commonTag("ingot_brass", "ingots/brass", "brass_ingots"),
 			SHEET_COPPER = commonTag("sheet_copper", "plates/copper", "copper_plates"),
-			SHEET_GOLD = commonTag("sheet_copper", "plates/gold", "gold_plates"),
+			SHEET_GOLD = commonTag("sheet_gold", "plates/gold", "gold_plates"),
 			SHEET_STEEL = commonTag("sheet_steel", "plates/steel", "steel_plates"),
 			DUST_GLOWSTONE = commonTag("dust_glowstone", "dusts/glowstone", "glowstone_dusts"),
 			GLASS = commonTag("glass", "glass", "glass"),
