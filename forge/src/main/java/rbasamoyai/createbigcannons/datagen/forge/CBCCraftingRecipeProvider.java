@@ -1,10 +1,5 @@
 package rbasamoyai.createbigcannons.datagen.forge;
 
-import static com.tterrag.registrate.providers.RegistrateRecipeProvider.getHasName;
-import static com.tterrag.registrate.providers.RegistrateRecipeProvider.has;
-import static com.tterrag.registrate.providers.RegistrateRecipeProvider.nineBlockStorageRecipesRecipesWithCustomUnpacking;
-import static com.tterrag.registrate.providers.RegistrateRecipeProvider.nineBlockStorageRecipesWithCustomPacking;
-
 import java.util.function.Consumer;
 
 import com.simibubi.create.AllBlocks;
@@ -13,24 +8,32 @@ import com.simibubi.create.AllTags;
 import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.SpecialRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.level.ItemLike;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 
-public class CBCCraftingRecipeProvider {
+public abstract class CBCCraftingRecipeProvider extends RecipeProvider {
 
-	public static void register() {
+    private CBCCraftingRecipeProvider(PackOutput output) { super(output); }
+
+    public static void register() {
 		CreateBigCannons.REGISTRATE.addDataGenerator(ProviderType.RECIPE, CBCCraftingRecipeProvider::buildCraftingRecipes);
 	}
 
@@ -91,7 +94,7 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
-		nineBlockStorageRecipesWithCustomPacking(cons, RecipeCategory.MISC, CBCItems.GUNPOWDER_PINCH.get(), RecipeCategory.MISC, Items.GUNPOWDER, "gunpowder_from_pinches", "gunpowder");
+		cbc$nineBlockStorageRecipesWithCustomPacking(cons, RecipeCategory.MISC, CBCItems.GUNPOWDER_PINCH.get(), RecipeCategory.MISC, Items.GUNPOWDER, "gunpowder_from_pinches", "gunpowder");
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCItems.BIG_CARTRIDGE_SHEET.get(), 4)
 			.define('S', CBCTags.CBCItemTags.SHEET_BRASS)
@@ -105,7 +108,7 @@ public class CBCCraftingRecipeProvider {
 			.pattern("SS")
 			.pattern("SS")
 			.unlockedBy("has_inexpensive_big_cartridge_sheet", has(CBCTags.CBCItemTags.INEXPENSIVE_BIG_CARTRIDGE_SHEET))
-			.save(cons, "big_cannon_sheet_inexpensive");
+			.save(cons, CreateBigCannons.resource("big_cannon_sheet_inexpensive"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCBlocks.AUTOCANNON_AMMO_CONTAINER.get())
 			.define('I', CBCTags.CBCItemTags.SHEET_IRON).define('B', CBCTags.CBCItemTags.INGOT_BRASS)
@@ -132,11 +135,11 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
 			.save(cons);
 
-		nineBlockStorageRecipesRecipesWithCustomUnpacking(cons, RecipeCategory.MISC, CBCItems.CAST_IRON_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, CBCBlocks.CAST_IRON_BLOCK.get(), "cast_iron_ingot_from_block", "cast_iron_ingot");
-		nineBlockStorageRecipesWithCustomPacking(cons, RecipeCategory.BUILDING_BLOCKS, CBCItems.CAST_IRON_NUGGET.get(), RecipeCategory.MISC, CBCItems.CAST_IRON_INGOT.get(), "cast_iron_ingot_from_nuggets", "cast_iron_ingot");
+		cbc$nineBlockStorageRecipesRecipesWithCustomUnpacking(cons, RecipeCategory.MISC, CBCItems.CAST_IRON_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, CBCBlocks.CAST_IRON_BLOCK.get(), "cast_iron_ingot_from_block", "cast_iron_ingot");
+		cbc$nineBlockStorageRecipesWithCustomPacking(cons, RecipeCategory.BUILDING_BLOCKS, CBCItems.CAST_IRON_NUGGET.get(), RecipeCategory.MISC, CBCItems.CAST_IRON_INGOT.get(), "cast_iron_ingot_from_nuggets", "cast_iron_ingot");
 
-		nineBlockStorageRecipesRecipesWithCustomUnpacking(cons, RecipeCategory.MISC, CBCItems.NETHERSTEEL_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, CBCBlocks.NETHERSTEEL_BLOCK.get(), "nethersteel_ingot_from_block", "nethersteel_ingot");
-		nineBlockStorageRecipesWithCustomPacking(cons, RecipeCategory.BUILDING_BLOCKS, CBCItems.NETHERSTEEL_NUGGET.get(), RecipeCategory.MISC, CBCItems.NETHERSTEEL_INGOT.get(), "nethersteel_ingot_from_nuggets", "nethersteel_ingot");
+		cbc$nineBlockStorageRecipesRecipesWithCustomUnpacking(cons, RecipeCategory.MISC, CBCItems.NETHERSTEEL_INGOT.get(), RecipeCategory.BUILDING_BLOCKS, CBCBlocks.NETHERSTEEL_BLOCK.get(), "nethersteel_ingot_from_block", "nethersteel_ingot");
+		cbc$nineBlockStorageRecipesWithCustomPacking(cons, RecipeCategory.BUILDING_BLOCKS, CBCItems.NETHERSTEEL_NUGGET.get(), RecipeCategory.MISC, CBCItems.NETHERSTEEL_INGOT.get(), "nethersteel_ingot_from_nuggets", "nethersteel_ingot");
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCBlocks.SOLID_SHOT.get())
 			.define('I', CBCTags.CBCItemTags.INGOT_IRON).define('i', CBCTags.CBCItemTags.NUGGET_IRON).define('S', ItemTags.WOODEN_SLABS)
@@ -342,7 +345,7 @@ public class CBCCraftingRecipeProvider {
 			.pattern("B")
 			.pattern("E")
 			.unlockedBy("has_gunpowder", has(CBCTags.CBCItemTags.GUNPOWDER))
-			.save(cons, "wrought_iron_drop_mortar_end_mirrored");
+			.save(cons, CreateBigCannons.resource("wrought_iron_drop_mortar_end_mirrored"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCBlocks.CANNON_MOUNT.get())
 			.define('S', AllBlocks.SHAFT.get()).define('C', AllBlocks.ANDESITE_CASING.get()).define('G', CBCTags.CBCItemTags.GUNPOWDER).define('I', CBCTags.CBCItemTags.SHEET_IRON)
@@ -453,7 +456,7 @@ public class CBCCraftingRecipeProvider {
 			.pattern("BZB")
 			.pattern(" B ")
 			.unlockedBy(getHasName(AllBlocks.BLAZE_BURNER.get()), has(AllBlocks.BLAZE_BURNER.get()))
-			.save(cons, "cannon_welder_mirrored");
+			.save(cons, CreateBigCannons.resource("cannon_welder_mirrored"));
 
 		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCItems.GAS_MASK.get())
 			.define('L', Items.LEATHER).define('G', CBCTags.CBCItemTags.GLASS).define('W', ItemTags.WOOL)
@@ -463,21 +466,47 @@ public class CBCCraftingRecipeProvider {
 			.unlockedBy("has_wool", has(ItemTags.WOOL))
 			.save(cons);
 
-		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING.getSerializer()).save(cons, "munition_fuzing");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY.getSerializer()).save(cons, "cartridge_assembly");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.BIG_CARTRIDGE_FILLING.getSerializer()).save(cons, "big_cartridge_filling");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.BIG_CARTRIDGE_FILLING_DEPLOYER.getSerializer()).save(cons, "big_cartridge_filling_deployer");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.MUNITION_FUZING_DEPLOYER.getSerializer()).save(cons, "munition_fuzing_deployer");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.CARTRIDGE_ASSEMBLY_DEPLOYER.getSerializer()).save(cons, "cartridge_assembly_deployer");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.TRACER_APPLICATION.getSerializer()).save(cons, "tracer_application");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.TRACER_APPLICATION_DEPLOYER.getSerializer()).save(cons, "tracer_application_deployer");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getSerializer()).save(cons, "autocannon_ammo_container_filling_deployer");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.FUZE_REMOVAL.getSerializer()).save(cons, "fuze_removal");
-		SpecialRecipeBuilder.special(CBCRecipeTypes.TRACER_REMOVAL.getSerializer()).save(cons, "tracer_removal");
+		specialRecipe(CBCRecipeTypes.MUNITION_FUZING.getSerializer(), cons, "munition_fuzing");
+		specialRecipe(CBCRecipeTypes.CARTRIDGE_ASSEMBLY.getSerializer(), cons, "cartridge_assembly");
+		specialRecipe(CBCRecipeTypes.BIG_CARTRIDGE_FILLING.getSerializer(), cons, "big_cartridge_filling");
+		specialRecipe(CBCRecipeTypes.BIG_CARTRIDGE_FILLING_DEPLOYER.getSerializer(), cons, "big_cartridge_filling_deployer");
+		specialRecipe(CBCRecipeTypes.MUNITION_FUZING_DEPLOYER.getSerializer(), cons, "munition_fuzing_deployer");
+		specialRecipe(CBCRecipeTypes.CARTRIDGE_ASSEMBLY_DEPLOYER.getSerializer(), cons, "cartridge_assembly_deployer");
+		specialRecipe(CBCRecipeTypes.TRACER_APPLICATION.getSerializer(), cons, "tracer_application");
+		specialRecipe(CBCRecipeTypes.TRACER_APPLICATION_DEPLOYER.getSerializer(), cons, "tracer_application_deployer");
+		specialRecipe(CBCRecipeTypes.AUTOCANNON_AMMO_CONTAINER_FILLING_DEPLOYER.getSerializer(), cons, "autocannon_ammo_container_filling_deployer");
+		specialRecipe(CBCRecipeTypes.FUZE_REMOVAL.getSerializer(), cons, "fuze_removal");
+		specialRecipe(CBCRecipeTypes.TRACER_REMOVAL.getSerializer(), cons, "tracer_removal");
 
 		SimpleCookingRecipeBuilder.smelting(Ingredient.of(CBCItems.CONGEALED_NITRO.get()), RecipeCategory.MISC, CBCItems.HARDENED_NITRO.get(), 5, 200)
 			.unlockedBy(getHasName(Items.BLAZE_POWDER), has(Items.BLAZE_POWDER))
 			.save(cons);
 	}
+
+    private static void specialRecipe(RecipeSerializer<? extends CraftingRecipe> ser, Consumer<FinishedRecipe> cons, String id) {
+        SpecialRecipeBuilder.special(ser).save(cons, CreateBigCannons.resource(id).toString());
+    }
+
+    private static void cbc$nineBlockStorageRecipesWithCustomPacking(Consumer<FinishedRecipe> finishedRecipeConsumer,
+                                                                     RecipeCategory unpackedCategory, ItemLike unpacked,
+                                                                     RecipeCategory packedCategory, ItemLike packed,
+                                                                     String packedName, String packedGroup) {
+        nineBlockStorageRecipes(finishedRecipeConsumer, unpackedCategory, unpacked, packedCategory, packed,
+            CreateBigCannons.resource(packedName).toString(), CreateBigCannons.resource(packedGroup).toString(),
+            cbc$getSimpleRecipeName(unpacked), null);
+    }
+
+    private static void cbc$nineBlockStorageRecipesRecipesWithCustomUnpacking(Consumer<FinishedRecipe> finishedRecipeConsumer,
+                                                                              RecipeCategory unpackedCategory, ItemLike unpacked,
+                                                                              RecipeCategory packedCategory, ItemLike packed,
+                                                                              String unpackedName, String unpackedGroup) {
+        nineBlockStorageRecipes(finishedRecipeConsumer, unpackedCategory, unpacked, packedCategory, packed,
+            cbc$getSimpleRecipeName(packed), null, CreateBigCannons.resource(unpackedName).toString(),
+            CreateBigCannons.resource(unpackedGroup).toString());
+    }
+
+    private static String cbc$getSimpleRecipeName(ItemLike item) {
+        return BuiltInRegistries.ITEM.getKey(item.asItem()).toString();
+    }
 
 }

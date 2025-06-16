@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cast_iron_ingot_from_nuggets"
+        "recipe": "createbigcannons:cast_iron_ingot_from_nuggets"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:cast_iron_ingot_from_nuggets"
+      "createbigcannons:cast_iron_ingot_from_nuggets"
     ]
   },
   "sends_telemetry_event": false

@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:nethersteel_nugget"
+        "recipe": "createbigcannons:nethersteel_nugget"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:nethersteel_nugget"
+      "createbigcannons:nethersteel_nugget"
     ]
   },
   "sends_telemetry_event": false

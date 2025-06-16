@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:gunpowder_pinch"
+        "recipe": "createbigcannons:gunpowder_pinch"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:gunpowder_pinch"
+      "createbigcannons:gunpowder_pinch"
     ]
   },
   "sends_telemetry_event": false
