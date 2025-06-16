@@ -5,8 +5,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.mojang.serialization.MapCodec;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeSerializer;
+import com.simibubi.create.content.processing.recipe.StandardProcessingRecipe;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
@@ -77,8 +76,8 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 		IndexPlatform.registerRecipeType(this.id, this.type);
 	}
 
-	CBCRecipeTypes(ProcessingRecipeBuilder.ProcessingRecipeFactory<?> processingFactory) {
-		this(() -> new ProcessingRecipeSerializer<>(processingFactory));
+	CBCRecipeTypes(StandardProcessingRecipe.Factory<?> processingFactory) {
+		this(() -> new StandardProcessingRecipe.Serializer<>(processingFactory));
 	}
 
 	public static <T extends Recipe<?>> RecipeType<T> simpleType(ResourceLocation id) {

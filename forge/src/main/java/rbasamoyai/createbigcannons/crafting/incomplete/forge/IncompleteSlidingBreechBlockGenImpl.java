@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.crafting.incomplete.forge;
+package rbasamoyai.createbigcannons.crafting.incomplete.neoforge;
 
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.tterrag.registrate.providers.DataGenContext;

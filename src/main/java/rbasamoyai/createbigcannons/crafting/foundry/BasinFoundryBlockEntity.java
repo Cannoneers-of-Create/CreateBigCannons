@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.simibubi.create.content.processing.basin.BasinBlockEntity;
-import com.simibubi.create.content.processing.basin.BasinInventory;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
-import com.simibubi.create.content.processing.basin.BasinRecipe;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 
 import net.createmod.catnip.math.VecHelper;
@@ -16,10 +14,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -122,7 +118,7 @@ public class BasinFoundryBlockEntity extends BasinOperatingBlockEntity {
 		if (this.running && this.meltingTime > 0) return;
 		super.startProcessingBasin();
 		this.running = true;
-		this.meltingTime = this.currentRecipe instanceof ProcessingRecipe<?> processed ? processed.getProcessingDuration() : 20;
+		this.meltingTime = this.currentRecipe instanceof ProcessingRecipe<?, ?> processed ? processed.getProcessingDuration() : 20;
 	}
 
 	@Override

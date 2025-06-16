@@ -50,14 +50,14 @@ dependencies {
         "neoForge"("net.neoforged:neoforge:${mod.dep("neoforge_loader_version")}")
     }
 
-    modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader_version")}")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}+${minecraftVersion}")
+    //modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader_version")}")
+    //modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}+${minecraftVersion}")
 
-    modImplementation("com.simibubi.create:create-${minecraftVersion}:${mod.dep("create_forge_version")}:slim") { isTransitive = false }
-    modCompileOnly("net.createmod.ponder:Ponder-NeoForge-${minecraftVersion}:${mod.dep("ponder_forge_version")}")
-    modCompileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraftVersion}:${mod.dep("flywheel_forge_version")}")
-    modRuntimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraftVersion}:${mod.dep("flywheel_forge_version")}")
-    modCompileOnly("com.tterrag.registrate:Registrate:${mod.dep("registrate_forge_version")}")
+    modImplementation("com.simibubi.create:create-${minecraftVersion}:${mod.dep("create_neoforge_version")}:slim") { isTransitive = false }
+    modCompileOnly("net.createmod.ponder:Ponder-NeoForge-${minecraftVersion}:${mod.dep("ponder_neoforge_version")}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraftVersion}:${mod.dep("flywheel_neoforge_version")}")
+    modRuntimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraftVersion}:${mod.dep("flywheel_neoforge_version")}")
+    modCompileOnly("com.tterrag.registrate:Registrate:${mod.dep("registrate_neoforge_version")}")
 
     "io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras_version")}".let {
         annotationProcessor(it)

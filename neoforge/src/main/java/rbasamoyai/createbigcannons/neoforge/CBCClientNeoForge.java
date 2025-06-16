@@ -98,7 +98,7 @@ public class CBCClientNeoForge {
 		}
 	}
 
-	public static void onClientGameTick(ClientTickEvent evt) {
+	public static void onClientGameTick(ClientTickEvent.Pre evt) { // TODO c6 playtest, see if Pre or Post
 		CBCClientCommon.onClientGameTick(Minecraft.getInstance());
 	}
 

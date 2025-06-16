@@ -5,8 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.createmod.catnip.annotations.Environment;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -36,7 +35,7 @@ public record ShellExplosionSmokeParticleData(int lifetime, float scale) impleme
 
     @Override public StreamCodec<? super RegistryFriendlyByteBuf, ShellExplosionSmokeParticleData> getStreamCodec() { return STREAM_CODEC; }
 
-    @Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@Override
 	public ParticleEngine.SpriteParticleRegistration<ShellExplosionSmokeParticleData> getMetaFactory() {
 		return ShellExplosionSmokeParticle.Provider::new;

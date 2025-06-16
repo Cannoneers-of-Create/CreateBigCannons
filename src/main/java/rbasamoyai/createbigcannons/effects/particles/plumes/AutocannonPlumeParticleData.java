@@ -5,8 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.createmod.catnip.annotations.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -55,7 +54,7 @@ public class AutocannonPlumeParticleData implements ParticleOptions, ICustomPart
     @Override
     public StreamCodec<? super RegistryFriendlyByteBuf, AutocannonPlumeParticleData> getStreamCodec() { return STREAM_CODEC; }
 
-    @Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@Override
 	public ParticleProvider<AutocannonPlumeParticleData> getFactory() {
 		return new AutocannonPlumeParticle.Provider();

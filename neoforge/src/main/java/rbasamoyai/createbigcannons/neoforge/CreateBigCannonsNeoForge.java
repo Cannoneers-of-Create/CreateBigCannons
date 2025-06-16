@@ -63,7 +63,7 @@ public class CreateBigCannonsNeoForge {
         modEventBus.addListener(this::onRegisterSounds);
 		modEventBus.addListener(this::onRegister);
 
-        CBCCommonNeoForgeEvents.register(forgeEventBus);
+        CBCCommonNeoForgeEvents.register(modEventBus, forgeEventBus);
 
 		CBCModsNeoForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosIntegration.init(modEventBus, forgeEventBus));
 

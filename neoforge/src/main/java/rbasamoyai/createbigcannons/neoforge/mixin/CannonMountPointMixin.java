@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.neoforge.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPoint;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 
@@ -25,16 +26,16 @@ public abstract class CannonMountPointMixin extends ArmInteractionPoint {
 	}
 
 	@Override
-	public ItemStack insert(ItemStack stack, boolean simulate) {
+	public ItemStack insert(ArmBlockEntity be, ItemStack stack, boolean simulate) {
 		CannonMountPoint self = (CannonMountPoint) (Object) this;
-		BlockEntity be = this.getLevel().getBlockEntity(this.pos);
+		BlockEntity targetBE = this.getLevel().getBlockEntity(this.pos);
 		PitchOrientedContraptionEntity poce;
-		if (be instanceof ExtendsCannonMount extendsMount) {
+		if (targetBE instanceof ExtendsCannonMount extendsMount) {
 			CannonMountBlockEntity mount = extendsMount.getCannonMount();
 			if (mount == null)
 				return stack;
 			poce = mount.getContraption();
-		} else if (be instanceof FixedCannonMountBlockEntity mount) {
+		} else if (targetBE instanceof FixedCannonMountBlockEntity mount) {
 			poce = mount.getContraption();
 		} else {
 			return stack;

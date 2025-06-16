@@ -1,18 +1,12 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.createmod.catnip.annotations.Environment;
 import net.minecraft.client.particle.ParticleEngine;
-import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -20,7 +14,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
-import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public record LeafParticleData(BlockState state) implements ParticleOptions, ICustomParticleDataWithSprite<LeafParticleData> {
 
@@ -35,7 +28,7 @@ public record LeafParticleData(BlockState state) implements ParticleOptions, ICu
 
     @Override public StreamCodec<? super RegistryFriendlyByteBuf, LeafParticleData> getStreamCodec() { return STREAM_CODEC; }
 
-    @Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@Override
 	public ParticleEngine.SpriteParticleRegistration<LeafParticleData> getMetaFactory() {
 		return LeafParticle.Provider::new;

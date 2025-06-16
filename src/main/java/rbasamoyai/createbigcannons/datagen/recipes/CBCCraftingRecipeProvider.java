@@ -1,18 +1,18 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
-import static net.minecraft.data.recipes.RecipeProvider.getHasName;
-import static net.minecraft.data.recipes.RecipeProvider.has;
-import static net.minecraft.data.recipes.RecipeProvider.nineBlockStorageRecipesRecipesWithCustomUnpacking;
-import static net.minecraft.data.recipes.RecipeProvider.nineBlockStorageRecipesWithCustomPacking;
+import java.util.concurrent.CompletableFuture;
 
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllTags;
-import com.simibubi.create.foundation.data.recipe.MechanicalCraftingRecipeBuilder;
+import com.simibubi.create.api.data.recipe.MechanicalCraftingRecipeBuilder;
 import com.tterrag.registrate.providers.ProviderType;
 
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
+import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
@@ -26,9 +26,13 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 
-public class CBCCraftingRecipeProvider {
+public abstract class CBCCraftingRecipeProvider extends RecipeProvider {
 
-	public static void register() {
+    private CBCCraftingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        super(output, registries);
+    }
+
+    public static void register() {
 		CreateBigCannons.REGISTRATE.addDataGenerator(ProviderType.RECIPE, CBCCraftingRecipeProvider::buildCraftingRecipes);
 	}
 

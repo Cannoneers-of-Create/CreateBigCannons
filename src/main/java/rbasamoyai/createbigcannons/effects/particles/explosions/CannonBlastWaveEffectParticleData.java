@@ -1,11 +1,8 @@
 package rbasamoyai.createbigcannons.effects.particles.explosions;
 
-import com.mojang.serialization.Codec;
-
 import com.mojang.serialization.MapCodec;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.createmod.catnip.annotations.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.particles.ParticleType;
@@ -31,7 +28,7 @@ public class CannonBlastWaveEffectParticleData extends AbstractBlastWaveEffectPa
 
     @Override public StreamCodec<? super RegistryFriendlyByteBuf, CannonBlastWaveEffectParticleData> getStreamCodec() { return STREAM_CODEC; }
 
-    @Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@Override
 	public ParticleProvider<CannonBlastWaveEffectParticleData> getFactory() {
 		return new BlastWaveEffectParticle.CannonBlastProvider();

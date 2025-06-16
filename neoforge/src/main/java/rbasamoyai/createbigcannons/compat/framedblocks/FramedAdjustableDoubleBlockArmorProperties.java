@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks.MimickingBlockArmorUnit;
 import rbasamoyai.createbigcannons.neoforge.mixin.compat.FramedAdjustableDoubleBlockEntityAccessor;
-import xfacthd.framedblocks.common.blockentity.doubled.FramedAdjustableDoubleBlockEntity;
+import xfacthd.framedblocks.common.blockentity.doubled.slab.FramedAdjustableDoubleBlockEntity;
 
 public class FramedAdjustableDoubleBlockArmorProperties extends FramedDoubleBlockArmorProperties {
 
@@ -28,8 +28,8 @@ public class FramedAdjustableDoubleBlockArmorProperties extends FramedDoubleBloc
 		BlockState secondaryState = Blocks.AIR.defaultBlockState();
 		double primaryMultiplier = 0.5;
 		if (level.getBlockEntity(pos) instanceof FramedAdjustableDoubleBlockEntity fbe) {
-			primaryState = fbe.getCamo().getState();
-			secondaryState = fbe.getCamoTwo().getState();
+			primaryState = fbe.getCamo().getContent().getAsBlockState();
+			secondaryState = fbe.getCamoTwo().getContent().getAsBlockState();
 			int primaryOffset = ((FramedAdjustableDoubleBlockEntityAccessor) fbe).getFirstHeight();
 			primaryMultiplier = primaryOffset / 16d;
 		}

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
-import com.simibubi.create.content.processing.recipe.ProcessingRecipeBuilder;
+import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipe;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
@@ -172,7 +172,7 @@ public class MunitionAssemblyRecipes {
 			ItemStack fuzedMunition = new ItemStack(munition);
             fuzedMunition.set(DataComponents.LORE, new ItemLore(loreList));
 
-			recipes.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id)
+			recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
 				.require(Ingredient.of(munition))
 				.require(fuzeIngredient)
 				.output(fuzedMunition)
@@ -183,7 +183,7 @@ public class MunitionAssemblyRecipes {
 				ItemStack fuzedCartridge = round.getCreativeTabCartridgeItem();
                 fuzedCartridge.set(DataComponents.LORE, new ItemLore(loreList));
 
-				recipes.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id1)
+				recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id1)
 					.require(Ingredient.of(round.getCreativeTabCartridgeItem()))
 					.require(fuzeIngredient)
 					.output(fuzedCartridge)
@@ -207,7 +207,7 @@ public class MunitionAssemblyRecipes {
 		for (AutocannonRoundItem round : munitions) {
 			ResourceLocation id = CreateBigCannons.resource(group + "." + round.getDescriptionId());
 
-			recipes.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id)
+			recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
 				.require(CBCItems.FILLED_AUTOCANNON_CARTRIDGE.get())
 				.require(round)
 				.output(round.getCreativeTabCartridgeItem())
@@ -225,7 +225,7 @@ public class MunitionAssemblyRecipes {
         loreList.add(Component.translatable("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_power"));
         result.set(DataComponents.LORE, new ItemLore(loreList));
 
-		return List.of(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id)
+		return List.of(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
 			.require(Ingredient.of(BigCartridgeBlockItem.getWithPower(0)))
 			.require(CBCTags.CBCItemTags.NITROPOWDER)
 			.output(result)
@@ -250,7 +250,7 @@ public class MunitionAssemblyRecipes {
 			ItemStack tracerMunition = new ItemStack(munition);
 			tracerMunition.set(CBCDataComponents.AUTOCANNON_TRACER, true);
 
-			recipes.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id)
+			recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
 				.require(Ingredient.of(munition))
 				.require(tracerIngredient)
 				.output(tracerMunition)
@@ -261,7 +261,7 @@ public class MunitionAssemblyRecipes {
 				ItemStack tracerCartridge = round.getCreativeTabCartridgeItem();
 				CBCItems.AUTOCANNON_CARTRIDGE.get().setTracer(tracerCartridge, true);
 
-				recipes.add(new ProcessingRecipeBuilder<>(DeployerApplicationRecipe::new, id1)
+				recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id1)
 					.require(Ingredient.of(round.getCreativeTabCartridgeItem()))
 					.require(tracerIngredient)
 					.output(tracerCartridge)

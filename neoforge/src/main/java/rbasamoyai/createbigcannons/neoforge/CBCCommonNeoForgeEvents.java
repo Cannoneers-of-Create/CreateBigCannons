@@ -31,7 +31,7 @@ import rbasamoyai.createbigcannons.neoforge.remix.CBCHasIItemHandlerEntity;
 
 public class CBCCommonNeoForgeEvents {
 
-	public static void register(IEventBus forgeEventBus) {
+	public static void register(IEventBus modEventBus, IEventBus forgeEventBus) {
 		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onPlayerBreakBlock);
 		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onPlayerLogin);
 		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onPlayerLogout);
@@ -41,7 +41,7 @@ public class CBCCommonNeoForgeEvents {
 		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onAddReloadListeners);
 		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onDeployerRecipeSearch);
 		forgeEventBus.addListener(CBCCommonNeoForgeEvents::onUseItemOnBlock);
-        forgeEventBus.addListener(CBCCommonNeoForgeEvents::onRegisterCapabilities);
+        modEventBus.addListener(CBCCommonNeoForgeEvents::onRegisterCapabilities);
 	}
 
 	public static void onServerWorldTick(LevelTickEvent.Post evt) {

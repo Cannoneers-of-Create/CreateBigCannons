@@ -3,11 +3,9 @@ package rbasamoyai.createbigcannons.index;
 import java.util.function.Supplier;
 
 import com.simibubi.create.foundation.particle.ICustomParticleData;
-
 import com.simibubi.create.foundation.utility.CreateLang;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.createmod.catnip.annotations.Environment;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
@@ -95,7 +93,7 @@ public enum CBCParticleTypes {
 		IndexPlatform.registerDeferredParticles();
 	}
 
-	@Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	public static void registerFactories() {
 		ParticleEngine particles = Minecraft.getInstance().particleEngine;
 		for (CBCParticleTypes particle : values())
@@ -123,7 +121,7 @@ public enum CBCParticleTypes {
 			IndexPlatform.registerDeferredParticleType(this.name, this.object);
 		}
 
-		@Environment(EnvType.CLIENT)
+        @Environment(Environment.EnvType.CLIENT)
 		public void registerFactory(ParticleEngine particles) {
 			ParticlesPlatform.register(this.typeFactory.get(), this.object, particles);
 		}

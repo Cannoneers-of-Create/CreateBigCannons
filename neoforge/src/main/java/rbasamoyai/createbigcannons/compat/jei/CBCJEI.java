@@ -69,7 +69,7 @@ public class CBCJEI implements IModPlugin {
 		meltingCatalysts.add(CBCBlocks.BASIN_FOUNDRY_LID::asStack);
 		meltingCatalysts.add(AllBlocks.BASIN::asStack);
 		CreateRecipeCategory.Info<BasinRecipe> meltingInfo = new CreateRecipeCategory.Info<BasinRecipe>(
-			new RecipeType<>(CreateBigCannons.resource("melting"), MeltingRecipe.class),
+			RecipeType.createRecipeHolderType(CreateBigCannons.resource("melting")),
 			Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".melting"),
 			new EmptyBackground(177, 103),
 			new DoubleItemIcon(AllBlocks.BASIN::asStack, CBCBlocks.BASIN_FOUNDRY_LID::asStack),
@@ -250,15 +250,15 @@ public class CBCJEI implements IModPlugin {
 
 		void registerCatalysts(IRecipeCatalystRegistration reg);
 
-		public static <T extends Recipe<?>> PackedCategory<T> packCreateCategory(CreateRecipeCategory<T> cat) {
+		public static <T extends Recipe<?>> PackedCategory<RecipeHolder<T>> packCreateCategory(CreateRecipeCategory<T> cat) {
 			return new PackedCategory<>() {
 				@Override
-				public IRecipeCategory<T> asCategory() {
+				public IRecipeCategory<RecipeHolder<T>> asCategory() {
 					return cat;
 				}
 
 				@Override
-				public RecipeType<T> getType() {
+				public RecipeType<RecipeHolder<T>> getType() {
 					return cat.getRecipeType();
 				}
 

@@ -1,8 +1,7 @@
 package rbasamoyai.createbigcannons.multiloader;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.createmod.catnip.annotations.Environment;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -10,7 +9,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class NetworkPlatform {
 
-    @Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
     @ExpectPlatform
     public static void sendToServer(RootPacket pkt) { throw new AssertionError(); }
 

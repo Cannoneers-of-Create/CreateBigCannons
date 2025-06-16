@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[${forge_version},)"
+loaderVersion = "[0,)"
 issueTrackerURL = "https://github.com/Cannoneers-of-Create/CreateBigCannons/issues"
 license = "MIT and CC BY-NC-SA (see github for details)"
 
@@ -16,50 +16,50 @@ Textures by rbasamoyai, Milkyfur, and LopyLuna
 logoFile = "icon.png"
 
 [[dependencies.createbigcannons]]
-modId = "forge"
-mandatory = true
-versionRange = "[${forge_version},)"
+modId = "neoforge"
+type = "required"
+versionRange = "${neoforge_version}"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "minecraft"
-mandatory = true
+type = "required"
 versionRange = "[${minecraft_version}]"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "create"
-mandatory = true
+type = "required"
 versionRange="[${create_version},)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.createbigcannons]]
-modId = "unify"
-mandatory = false
-versionRange = "[${unify_version},)"
-ordering = "NONE"
-side = "BOTH"
+#[[dependencies.createbigcannons]]
+#modId = "unify"
+#type = "optional"
+# replace version range
+#ordering = "NONE"
+#side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "copycats"
-mandatory = false
+type = "optional"
 versionRange = "[${copycats_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "framedblocks"
-mandatory = false
+type = "optional"
 versionRange = "[${framedblocks_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "curios"
-mandatory = false
+type = "optional"
 versionRange = "[${curios_version},)"
 ordering = "NONE"
 side = "BOTH"

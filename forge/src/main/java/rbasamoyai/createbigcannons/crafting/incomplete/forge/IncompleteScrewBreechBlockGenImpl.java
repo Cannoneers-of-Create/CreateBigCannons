@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.crafting.incomplete.forge;
+package rbasamoyai.createbigcannons.crafting.incomplete.neoforge;
 
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;

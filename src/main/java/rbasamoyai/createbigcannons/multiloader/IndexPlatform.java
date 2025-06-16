@@ -11,8 +11,7 @@ import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 import dev.architectury.injectables.annotations.ExpectPlatform;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.createmod.catnip.annotations.Environment;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.particle.TerrainParticle;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -94,19 +93,19 @@ public class IndexPlatform {
 
 	@ExpectPlatform public static void registerDeferredParticles() { throw new AssertionError(); }
 
-	@Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@ExpectPlatform
 	public static KeyMapping createSafeKeyMapping(String description, InputConstants.Type type, int keycode) {
 		throw new AssertionError();
 	}
 
-	@Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@ExpectPlatform
 	public static <T extends ItemPropertyFunction> void registerClampedItemProperty(Item item, ResourceLocation loc, T func) {
 		throw new AssertionError();
 	}
 
-	@Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@ExpectPlatform
 	public static <T extends ItemPropertyFunction> void registerGenericClampedItemProperty(ResourceLocation loc, T func) {
 		throw new AssertionError();
@@ -132,7 +131,7 @@ public class IndexPlatform {
 
 	@ExpectPlatform public static boolean onExplosionStart(Level level, Explosion explosion) { throw new AssertionError(); }
 
-	@Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@ExpectPlatform
 	public static void updateSprite(TerrainParticle particle, BlockState state, BlockPos pos) { throw new AssertionError(); }
 

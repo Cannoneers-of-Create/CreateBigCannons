@@ -3,7 +3,7 @@ package rbasamoyai.createbigcannons.neoforge.mixin.compat;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-import xfacthd.framedblocks.common.blockentity.doubled.FramedAdjustableDoubleBlockEntity;
+import xfacthd.framedblocks.common.blockentity.doubled.slab.FramedAdjustableDoubleBlockEntity;
 
 @Mixin(FramedAdjustableDoubleBlockEntity.class)
 public interface FramedAdjustableDoubleBlockEntityAccessor {

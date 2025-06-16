@@ -8,7 +8,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks.AbstractMimickingBlockArmorProperties;
 import rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks.MimickingBlockArmorUnit;
-import xfacthd.framedblocks.api.block.FramedBlockEntity;
+import xfacthd.framedblocks.api.block.blockentity.FramedBlockEntity;
 
 public class SingleFramedBlockArmorProperties extends AbstractMimickingBlockArmorProperties {
 
@@ -18,7 +18,7 @@ public class SingleFramedBlockArmorProperties extends AbstractMimickingBlockArmo
 
 	@Override
 	protected BlockState getCopiedState(Level level, BlockState state, BlockPos pos) {
-		return level.getBlockEntity(pos) instanceof FramedBlockEntity fbe ? fbe.getCamo().getState() : Blocks.AIR.defaultBlockState();
+		return level.getBlockEntity(pos) instanceof FramedBlockEntity fbe ? fbe.getCamo().getContent().getAsBlockState() : Blocks.AIR.defaultBlockState();
 	}
 
 }

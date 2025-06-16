@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesProvider;
 import rbasamoyai.createbigcannons.block_armor_properties.mimicking_blocks.MimickingBlockArmorUnit;
-import xfacthd.framedblocks.common.blockentity.FramedDoubleBlockEntity;
+import xfacthd.framedblocks.common.blockentity.doubled.FramedDoubleBlockEntity;
 
 public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesProvider {
 
@@ -37,8 +37,8 @@ public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesPro
 		BlockState primaryState = Blocks.AIR.defaultBlockState();
 		BlockState secondaryState = Blocks.AIR.defaultBlockState();
 		if (level.getBlockEntity(pos) instanceof FramedDoubleBlockEntity fbe) {
-			primaryState = fbe.getCamo().getState();
-			secondaryState = fbe.getCamoTwo().getState();
+			primaryState = fbe.getCamo().getContent().getAsBlockState();
+			secondaryState = fbe.getCamoTwo().getContent().getAsBlockState();
 		}
 
 		if (primaryState.getDestroySpeed(level, pos) == -1 || secondaryState.getDestroySpeed(level, pos) == -1)
@@ -58,8 +58,8 @@ public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesPro
 		BlockState primaryState = Blocks.AIR.defaultBlockState();
 		BlockState secondaryState = Blocks.AIR.defaultBlockState();
 		if (level.getBlockEntity(pos) instanceof FramedDoubleBlockEntity fbe) {
-			primaryState = fbe.getCamo().getState();
-			secondaryState = fbe.getCamoTwo().getState();
+			primaryState = fbe.getCamo().getContent().getAsBlockState();
+			secondaryState = fbe.getCamoTwo().getContent().getAsBlockState();
 		}
 
 		boolean secondaryUnbreakable = secondaryState.getDestroySpeed(level, pos) == -1;
@@ -82,8 +82,8 @@ public class FramedDoubleBlockArmorProperties implements BlockArmorPropertiesPro
 		BlockState primaryState = Blocks.AIR.defaultBlockState();
 		BlockState secondaryState = Blocks.AIR.defaultBlockState();
 		if (level.getBlockEntity(pos) instanceof FramedDoubleBlockEntity fbe) {
-			primaryState = fbe.getCamo().getState();
-			secondaryState = fbe.getCamoTwo().getState();
+			primaryState = fbe.getCamo().getContent().getAsBlockState();
+			secondaryState = fbe.getCamoTwo().getContent().getAsBlockState();
 		}
         return Lists.newArrayList(primaryState, secondaryState);
     }

@@ -3,8 +3,7 @@ package rbasamoyai.createbigcannons.effects.particles.smoke;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.particle.ICustomParticleData;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.createmod.catnip.annotations.Environment;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -22,7 +21,7 @@ public class QuickFiringBreechSmokeParticleData implements ParticleOptions, ICus
 
     @Override public StreamCodec<? super RegistryFriendlyByteBuf, QuickFiringBreechSmokeParticleData> getStreamCodec() { return STREAM_CODEC; }
 
-    @Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@Override
 	public ParticleProvider<QuickFiringBreechSmokeParticleData> getFactory() {
 		return new QuickFiringBreechSmokeParticle.Provider();

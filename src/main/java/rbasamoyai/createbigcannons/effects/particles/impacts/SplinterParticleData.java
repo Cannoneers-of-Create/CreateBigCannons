@@ -1,11 +1,9 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.simibubi.create.foundation.particle.ICustomParticleDataWithSprite;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.createmod.catnip.annotations.Environment;
 import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
@@ -30,7 +28,7 @@ public record SplinterParticleData(BlockState state) implements ParticleOptions,
 
     @Override public StreamCodec<? super RegistryFriendlyByteBuf, SplinterParticleData> getStreamCodec() { return STREAM_CODEC; }
 
-    @Environment(EnvType.CLIENT)
+    @Environment(Environment.EnvType.CLIENT)
 	@Override
 	public ParticleEngine.SpriteParticleRegistration<SplinterParticleData> getMetaFactory() {
 		return SplinterParticle.Provider::new;
