@@ -1,5 +1,4 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
-/*
 
 import java.util.HashSet;
 import java.util.List;
@@ -109,4 +108,3 @@ public abstract class ChassisBlockEntityMixin extends SmartBlockEntity {
 
 
 }
-*/

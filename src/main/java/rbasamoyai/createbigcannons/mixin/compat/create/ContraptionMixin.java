@@ -1,13 +1,10 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
-/*
 
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
 import javax.annotation.Nullable;
-
-import com.simibubi.create.AllContraptionTypes;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +20,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
-import com.simibubi.create.api.contraption.ContraptionType;
+import com.simibubi.create.AllContraptionTypes;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -33,6 +30,7 @@ import com.simibubi.create.content.contraptions.pulley.PulleyContraption;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -280,7 +278,8 @@ public abstract class ContraptionMixin {
 	}
 
 	@Inject(method = "writeNBT", at = @At("TAIL"), remap = false)
-	private void createbigcannons$writeNBT(boolean spawnPacket, CallbackInfoReturnable<CompoundTag> cir, @Local(ordinal = 0) CompoundTag nbt) {
+	private void createbigcannons$writeNBT(HolderLookup.Provider registries, boolean spawnPacket,
+                                           CallbackInfoReturnable<CompoundTag> cir, @Local(ordinal = 0) CompoundTag nbt) {
 		if (CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
 			ContraptionRemix.writeCannonLoaderData((Contraption & CanLoadBigCannon) this.createbigcannons$self, nbt);
 		if (CBCModifiedContraptionRegistry.isFragileContraption(this.createbigcannons$self))
@@ -288,4 +287,3 @@ public abstract class ContraptionMixin {
 	}
 
 }
-*/
