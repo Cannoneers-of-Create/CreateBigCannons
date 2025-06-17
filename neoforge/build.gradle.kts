@@ -88,8 +88,8 @@ dependencies {
 	//modImplementation("curse.maven:spark-361579:${common.mod.dep("spark_forge_file")}") // Spark
 
 	// Ritchie's Projectile Library
-	val rplSuffix = if (common.mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
-	modImplementation(include("com.rbasamoyai:ritchiesprojectilelib:${common.mod.dep("rpl_version")}+mc.${minecraftVersion}-neoforge$rplSuffix"){ isTransitive = false })
+    val rplSuffix = if (mod.dep("use_rpl_nightly").toBoolean()) "-build.${mod.dep("rpl_build")}" else ""
+	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${common.mod.dep("rpl_version")}+mc.${minecraftVersion}-neoforge$rplSuffix") { isTransitive = false }
 	// Create: Unify
 	// modImplementation("maven.modrinth:create-unify:${mod.dep("unify_forge_file")}") fixme
 

@@ -68,10 +68,8 @@ dependencies {
     annotationProcessor(include("io.github.llamalad7:mixinextras-forge:${mod.dep("mixin_extras_version")}"){})
 
 	// Ritchie's Projectile Library
-	val rplSuffix = if (mod.dep("use_local_rpl_build").toBoolean()) "" else "-build.${mod.dep("rpl_build")}"
-	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-neoforge$rplSuffix") {
-		isTransitive = false
-	}
+    val rplSuffix = if (mod.dep("use_rpl_nightly").toBoolean()) "-build.${mod.dep("rpl_build")}" else ""
+	modImplementation("com.rbasamoyai:ritchiesprojectilelib:${mod.dep("rpl_version")}+mc.${minecraftVersion}-neoforge$rplSuffix") { isTransitive = false }
 
 	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-forge") {isTransitive=false}
 }
