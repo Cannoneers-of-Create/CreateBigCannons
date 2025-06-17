@@ -10,6 +10,7 @@ Changes:
     - particles formatted in JSON rather than command string
 Fixes:
 - Fixed gold sheet tag and dependent recipes
+- Fixed wrong id on nitropowder milling recipe
 
 ## [5.9.0] - 2025-06-04
 
