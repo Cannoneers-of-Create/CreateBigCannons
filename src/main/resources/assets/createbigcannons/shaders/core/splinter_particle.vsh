@@ -31,7 +31,7 @@ out vec4 normal;
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
 
-    vertexDistance = fog_distance(ModelViewMat, Position, FogShape);
+    vertexDistance = fog_distance(Position, FogShape);
     texCoord0 = UV0;
     texCoord0End = UV01;
     texCoord1 = UV3;

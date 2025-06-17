@@ -1,6 +1,6 @@
 {
   "parent": "createbigcannons:block/cannon_carriage/textures",
-  "loader": "forge:obj",
+  "loader": "neoforge:obj",
   "porting_lib:loader": "porting_lib:obj",
   "flip_v": true,
   "detectCullableFaces": false,

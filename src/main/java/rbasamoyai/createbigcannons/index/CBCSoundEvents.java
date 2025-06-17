@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import com.google.gson.JsonObject;
+import com.simibubi.create.AllSoundEvents;
 
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -158,6 +159,7 @@ public class CBCSoundEvents {
 		@Override
 		public SoundEntry build() {
 			SoundEntry entry = super.build();
+            AllSoundEvents.ALL.remove(entry.getId());
 			ALL.put(entry.getId(), entry);
 			return entry;
 		}
