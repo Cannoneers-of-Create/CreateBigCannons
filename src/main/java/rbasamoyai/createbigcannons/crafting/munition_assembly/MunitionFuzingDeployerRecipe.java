@@ -1,7 +1,11 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -22,6 +26,10 @@ public class MunitionFuzingDeployerRecipe implements Recipe<RecipeInput> { // TO
 		this.munition = ItemStack.EMPTY;
 		this.fuze = ItemStack.EMPTY;
 	}
+
+    public MunitionFuzingDeployerRecipe(CraftingBookCategory cat) {
+        this();
+    }
 
 	public MunitionFuzingDeployerRecipe(ItemStack munition, ItemStack fuze) {
 		this.munition = munition.copy();
@@ -51,10 +59,14 @@ public class MunitionFuzingDeployerRecipe implements Recipe<RecipeInput> { // TO
 		ItemStack fuzeCopy = this.fuze.copy();
 		fuzeCopy.setCount(1);
 		if (result.getItem() instanceof FuzedItemMunition) {
-            result.set(CBCDataComponents.FUZE, fuzeCopy);
+            result.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(Lists.newArrayList(fuzeCopy)));
 		} else if (result.getItem() instanceof AutocannonCartridgeItem) {
-            ItemStack projectile = result.get(CBCDataComponents.PROJECTILE);
-            projectile.set(CBCDataComponents.FUZE, fuzeCopy);
+            ItemContainerContents items = result.getOrDefault(CBCDataComponents.PROJECTILE, ItemContainerContents.EMPTY);
+            ItemStack projectile = items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY; // This should not be EMPTY
+            if (!projectile.isEmpty()) {
+                projectile.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(Lists.newArrayList(fuzeCopy)));
+                result.set(CBCDataComponents.PROJECTILE, ItemContainerContents.fromItems(Lists.newArrayList(projectile)));
+            }
 		}
 		return result;
 	}

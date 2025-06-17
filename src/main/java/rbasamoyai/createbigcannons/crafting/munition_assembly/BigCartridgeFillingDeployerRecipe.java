@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -21,6 +22,10 @@ public class BigCartridgeFillingDeployerRecipe implements Recipe<RecipeInput> { 
 		this.startPower = 0;
 		this.resultPower = 0;
 	}
+
+    public BigCartridgeFillingDeployerRecipe(CraftingBookCategory cat) {
+        this();
+    }
 
 	public BigCartridgeFillingDeployerRecipe(int startPower, int resultPower) {
 		this.startPower = startPower;

@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import net.minecraft.data.DataGenerator;
-
 import org.slf4j.Logger;
 
 import com.google.common.hash.HashCode;
@@ -41,28 +39,28 @@ public abstract class BlockRecipeProvider implements DataProvider {
 
 	protected static final List<DataProvider.Factory<BlockRecipeProvider>> GENERATORS = new ArrayList<>();
 
-	public static void registerAll(DataGenerator.PackGenerator gen) {
+    public static void registerAll(Consumer<DataProvider.Factory<?>> cons) {
 		GENERATORS.add(CannonCastRecipeProvider::new);
 		GENERATORS.add(BuiltUpHeatingRecipeProvider::new);
 		GENERATORS.add(DrillBoringRecipeProvider::new);
 
-		gen.addProvider(output -> new DataProvider() {
-			@Override
-			public CompletableFuture<?> run(CachedOutput cache) {
-				return CompletableFuture.allOf(GENERATORS.stream().map(gen -> {
-					try {
-						return gen.create(output).run(cache);
-					} catch (Exception e) {
-						throw e;
-					}
-				}).toArray(i -> new CompletableFuture[i]));
-			}
+        cons.accept(output -> new DataProvider() {
+            @Override
+            public CompletableFuture<?> run(CachedOutput cache) {
+                return CompletableFuture.allOf(GENERATORS.stream().map(gen -> {
+                    try {
+                        return gen.create(output).run(cache);
+                    } catch (Exception e) {
+                        throw e;
+                    }
+                }).toArray(i -> new CompletableFuture[i]));
+            }
 
-			@Override
-			public String getName() {
-				return "Create Big Cannons Block Recipes";
-			}
-		});
+            @Override
+            public String getName() {
+                return "Create Big Cannons Block Recipes";
+            }
+        });
 	}
 
 	@Override

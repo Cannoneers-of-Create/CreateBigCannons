@@ -26,7 +26,6 @@ import net.createmod.ponder.foundation.instruction.HighlightValueBoxInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -44,7 +43,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.Property;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
@@ -144,7 +142,7 @@ public class CannonCraftingScenes {
 		Selection deployer = util.select().position(deployerPos);
 		scene.overlay().showControls(util.vector().topOf(2, 2, 0), Pointing.DOWN, 10).withItem(CBCBlocks.MEDIUM_CAST_MOULD.asStack());
 		scene.idle(15);
-		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(CBCBlocks.MEDIUM_CAST_MOULD.asStack(), scene.world().getHolderLookupProvider()));
+		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(CBCBlocks.MEDIUM_CAST_MOULD.asStack(), scene));
 		scene.idle(10);
 
 		scene.world().setKineticSpeed(deployerGearDown, 16);
@@ -153,7 +151,7 @@ public class CannonCraftingScenes {
 		scene.world().moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
 		scene.world().modifyBlock(util.grid().at(2, 1, 2), setStateValue(CannonCastMouldBlock.SAND, false), false);
-		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(ItemStack.EMPTY, scene.world().getHolderLookupProvider()));
+		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(ItemStack.EMPTY, scene));
 		ElementLink<WorldSectionElement> reusedFirstLayerCore = scene.world().showIndependentSectionImmediately(util.select().position(2, 1, 2));
 		scene.world().moveSection(reusedFirstLayerCore, util.vector().of(0, 1, 0), 0);
 		scene.world().moveDeployer(deployerPos, -1, 25);
@@ -161,13 +159,13 @@ public class CannonCraftingScenes {
 
 		scene.overlay().showControls(util.vector().topOf(2, 2, 0), Pointing.DOWN, 10).withItem(CBCBlocks.CASTING_SAND.asStack());
 		scene.idle(15);
-		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(CBCBlocks.CASTING_SAND.asStack(), scene.world().getHolderLookupProvider()));
+		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(CBCBlocks.CASTING_SAND.asStack(), scene));
 		scene.idle(10);
 		scene.world().moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
 		scene.world().modifyBlock(util.grid().at(2, 1, 2), setStateValue(CannonCastMouldBlock.SAND, true), false);
 		scene.effects().emitParticles(castCenter.add(0, 2, 0), mouldSandEmitter, 10, 1);
-		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(ItemStack.EMPTY, scene.world().getHolderLookupProvider()));
+		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, putItemInDeployer(ItemStack.EMPTY, scene));
 		scene.world().moveDeployer(deployerPos, -1, 25);
 		scene.idle(36);
 
@@ -1004,8 +1002,8 @@ public class CannonCraftingScenes {
 		return state -> state.hasProperty(property) ? state.setValue(property, value) : state;
 	}
 
-	private static Consumer<CompoundTag> putItemInDeployer(ItemStack stack, HolderLookup.Provider registry) {
-		return tag -> tag.put("HeldItem", stack.save(registry));
+	private static Consumer<CompoundTag> putItemInDeployer(ItemStack stack, SceneBuilder scene) {
+		return tag -> tag.put("HeldItem", stack.save(scene.world().getHolderLookupProvider()));
 	}
 
 	private static Consumer<CompoundTag> setUnfinishedCannonShape(CannonCastShape shape) {

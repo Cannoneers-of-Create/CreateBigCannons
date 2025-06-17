@@ -1,7 +1,11 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -26,6 +30,10 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Reci
 	public AutocannonAmmoContainerFillingDeployerRecipe() {
 		this(ItemStack.EMPTY, ItemStack.EMPTY);
 	}
+
+    public AutocannonAmmoContainerFillingDeployerRecipe(CraftingBookCategory cat) {
+        this();
+    }
 
 	@Override
 	public boolean matches(RecipeInput input, Level level) {
@@ -61,10 +69,11 @@ public class AutocannonAmmoContainerFillingDeployerRecipe implements Recipe<Reci
 		} else {
 			insert.grow(1);
 		}
-        if(tracer) {
-            result.set(CBCDataComponents.TRACER, insert);
+        ItemContainerContents container = ItemContainerContents.fromItems(Lists.newArrayList(insert));
+        if (tracer) {
+            result.set(CBCDataComponents.TRACER, container);
         } else {
-            result.set(CBCDataComponents.AMMO, insert);
+            result.set(CBCDataComponents.AMMO, container);
         }
 		return result;
 	}

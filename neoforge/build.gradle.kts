@@ -46,11 +46,31 @@ loom {
 	silentMojangMappingsLicense()
 	accessWidenerPath = common.loom.accessWidenerPath
 
-	runConfigs.all {
-		isIdeConfigGenerated = true
-		runDir = "../../../run"
-		vmArgs("-Dmixin.debug.export=true")
-	}
+    runConfigs {
+        create("datagen_fabric") {
+            data()
+
+            programArgs("--mod", mod.id)
+            programArgs("--output", "${project.rootProject.file("fabric/src/generated/resources")}")
+            programArgs("--existing", "${project.rootProject.file("src/main/resources")}")
+            programArg("--all")
+            vmArg("-Dcreatebigcannons.datagen.platform=fabric")
+        }
+        create("datagen_neoforge") {
+            data()
+
+            programArgs("--mod", mod.id)
+            programArgs("--output", "${project.rootProject.file("neoforge/src/generated/resources")}")
+            programArgs("--existing", "${project.rootProject.file("src/main/resources")}")
+            programArg("--all")
+            vmArg("-Dcreatebigcannons.datagen.platform=forge")
+        }
+        all {
+            isIdeConfigGenerated = true
+            runDir = "../../../run"
+            vmArgs("-Dmixin.debug.export=true")
+        }
+    }
 }
 
 repositories {

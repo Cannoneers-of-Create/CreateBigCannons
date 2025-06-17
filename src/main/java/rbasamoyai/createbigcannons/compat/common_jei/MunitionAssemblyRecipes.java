@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.google.common.collect.Lists;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.kinetics.deployer.ItemApplicationRecipe;
 
@@ -13,6 +14,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingRecipe;
@@ -289,7 +291,7 @@ public class MunitionAssemblyRecipes {
 				ItemStack fuzeStack = new ItemStack(fuze);
 				ItemStack fuzedMunitionStack = new ItemStack(munition);
 
-				fuzedMunitionStack.set(CBCDataComponents.FUZE, fuzeStack);
+				fuzedMunitionStack.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(Lists.newArrayList(fuzeStack)));
 
 				String subid = munition.getDescriptionId() + "." + fuze.getDescriptionId();
 				NonNullList<Ingredient> inputs = NonNullList.of(Ingredient.EMPTY, Ingredient.of(fuzedMunitionStack));

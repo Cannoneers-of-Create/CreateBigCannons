@@ -33,6 +33,7 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
@@ -107,6 +108,7 @@ public class CreateBigCannonsNeoForge {
 		}
         CBCContraptionTypes.init();
         CBCArmInteractionPointTypes.init();
+        CBCDataComponents.init();
 	}
 
     private void onRegisterSounds(RegisterEvent event) {

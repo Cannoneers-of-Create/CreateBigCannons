@@ -6,6 +6,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 
@@ -18,7 +19,8 @@ public class ProjectileBlockItem extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
-		ItemStack tracer = stack.getOrDefault(CBCDataComponents.TRACER, ItemStack.EMPTY);
+        ItemContainerContents items = stack.getOrDefault(CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
+		ItemStack tracer = items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
 		if (!tracer.isEmpty())
 			tooltip.add(Component.translatable("tooltip.createbigcannons.tracer"));
 	}

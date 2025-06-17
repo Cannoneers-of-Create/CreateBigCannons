@@ -19,8 +19,12 @@ public class TracerRemovalRecipe extends CustomRecipe {
 
 
 	public TracerRemovalRecipe() {
-		super(CraftingBookCategory.MISC);
+		this(CraftingBookCategory.MISC);
 	}
+
+    public TracerRemovalRecipe(CraftingBookCategory cat) {
+        super(cat);
+    }
 
 	@Override
 	public boolean matches(CraftingInput container, Level level) {

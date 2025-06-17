@@ -53,7 +53,7 @@ public class BigCartridgeBlockItem extends BlockItem {
 	}
 
 	public static int getPower(ItemStack stack) {
-		return stack.get(CBCDataComponents.POWER);
+		return stack.has(CBCDataComponents.POWER) ? stack.get(CBCDataComponents.POWER) : 0;
 	}
 
 	public static ItemStack getWithPower(int power) {

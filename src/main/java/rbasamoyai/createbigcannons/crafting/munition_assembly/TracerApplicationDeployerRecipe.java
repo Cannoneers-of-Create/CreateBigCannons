@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -22,6 +23,10 @@ public class TracerApplicationDeployerRecipe implements Recipe<RecipeInput> { //
 		this.munition = ItemStack.EMPTY;
 		this.fuze = ItemStack.EMPTY;
 	}
+
+    public TracerApplicationDeployerRecipe(CraftingBookCategory cat) {
+        this();
+    }
 
 	public TracerApplicationDeployerRecipe(ItemStack munition, ItemStack fuze) {
 		this.munition = munition.copy();

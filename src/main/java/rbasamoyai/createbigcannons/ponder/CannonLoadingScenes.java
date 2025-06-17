@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.ponder;
 
+import com.google.common.collect.Lists;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity.Phase;
@@ -16,8 +17,8 @@ import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeverBlock;
 import net.minecraft.world.level.block.piston.PistonHeadBlock;
@@ -827,7 +828,7 @@ public class CannonLoadingScenes {
 		Selection breechSel = util.select().position(breechPos);
 
 		ItemStack filledContainer = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack();
-        filledContainer.set(CBCDataComponents.AMMO, CBCItems.MACHINE_GUN_ROUND.asStack(64));
+        filledContainer.set(CBCDataComponents.AMMO, ItemContainerContents.fromItems(Lists.newArrayList(CBCItems.MACHINE_GUN_ROUND.asStack(64))));
 		ItemStack emptyContainer = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack();
 
 		scene.world().showSection(autocannon, Direction.DOWN);
@@ -1032,7 +1033,7 @@ public class CannonLoadingScenes {
 
 		ItemStack emptyContainer = CBCBlocks.AUTOCANNON_AMMO_CONTAINER.asStack();
 		ItemStack filledContainer = emptyContainer.copy();
-        filledContainer.set(CBCDataComponents.AMMO, CBCItems.MACHINE_GUN_ROUND.asStack(64));
+        filledContainer.set(CBCDataComponents.AMMO, ItemContainerContents.fromItems(Lists.newArrayList(CBCItems.MACHINE_GUN_ROUND.asStack(64))));
 
 		scene.world().showSection(powerLargeCog, Direction.WEST);
 		scene.world().setKineticSpeed(powerLargeCog, 16);

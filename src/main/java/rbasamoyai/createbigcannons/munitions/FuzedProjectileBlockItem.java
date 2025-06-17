@@ -3,16 +3,13 @@ package rbasamoyai.createbigcannons.munitions;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
@@ -28,7 +25,8 @@ public class FuzedProjectileBlockItem extends ProjectileBlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
-		ItemStack fuze = stack.getOrDefault(CBCDataComponents.FUZE, ItemStack.EMPTY);
+        ItemContainerContents items = stack.getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
+		ItemStack fuze = items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
 		if (!fuze.isEmpty()) {
 			CreateLang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")

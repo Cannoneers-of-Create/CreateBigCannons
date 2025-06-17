@@ -16,7 +16,9 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeB
 
 public class BigCartridgeFillingRecipe extends CustomRecipe {
 
-	public BigCartridgeFillingRecipe() { super(CraftingBookCategory.MISC); }
+	public BigCartridgeFillingRecipe() { this(CraftingBookCategory.MISC); }
+
+    public BigCartridgeFillingRecipe(CraftingBookCategory cat) { super(cat); }
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {

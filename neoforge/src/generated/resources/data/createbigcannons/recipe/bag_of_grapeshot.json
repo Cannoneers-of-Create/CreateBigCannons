@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "minecraft:string"
+    },
+    "L": {
+      "item": "createbigcannons:shot_balls"
+    },
+    "S": {
+      "tag": "minecraft:wooden_slabs"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    "DDD",
+    "WLW",
+    " S "
+  ],
+  "result": {
+    "count": 1,
+    "id": "createbigcannons:bag_of_grapeshot"
+  }
+}

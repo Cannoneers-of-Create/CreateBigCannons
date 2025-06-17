@@ -15,7 +15,9 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonRoundItem;
 
 public class TracerApplicationRecipe extends CustomRecipe {
 
-	public TracerApplicationRecipe() { super(CraftingBookCategory.MISC); }
+	public TracerApplicationRecipe() { this(CraftingBookCategory.MISC); }
+
+    public TracerApplicationRecipe(CraftingBookCategory cat) { super(cat); }
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {

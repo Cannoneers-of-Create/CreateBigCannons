@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.crafting.munition_assembly;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
@@ -17,8 +18,12 @@ public class FuzeRemovalRecipe extends CustomRecipe {
 
 
 	public FuzeRemovalRecipe() {
-		super(CraftingBookCategory.MISC);
+		this(CraftingBookCategory.MISC);
 	}
+
+    public FuzeRemovalRecipe(CraftingBookCategory cat) {
+        super(cat);
+    }
 
 	@Override
 	public boolean matches(CraftingInput input, Level level) {
@@ -59,7 +64,8 @@ public class FuzeRemovalRecipe extends CustomRecipe {
 				return ItemStack.EMPTY;
 			}
 		}
-		return target.get(CBCDataComponents.FUZE);
+        ItemContainerContents items = target.getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
+		return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
 	}
 
 	@Override

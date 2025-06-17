@@ -1,10 +1,12 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
-import net.minecraft.nbt.CompoundTag;
+import com.google.common.collect.Lists;
+
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 
 public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoContainerContainer {
@@ -24,7 +26,7 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 		ItemStack ammo = this.getItem(slot);
 		if (ammo.isEmpty()) return ItemStack.EMPTY;
 		ItemStack split = ammo.split(amount);
-		this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ammo);
+		this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ItemContainerContents.fromItems(Lists.newArrayList(ammo)));
 		this.setChanged();
 		return split;
 	}
@@ -33,14 +35,14 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 	public ItemStack removeItemNoUpdate(int slot) {
 		if (slot != 0 && slot != 1) return ItemStack.EMPTY;
 		ItemStack ret = this.getItem(slot);
-        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ItemStack.EMPTY);;
+        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
 		return ret;
 	}
 
 	@Override
 	public void setItem(int slot, ItemStack stack) {
 		if (slot != 0 && slot != 1) return;
-        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, stack);
+        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
 		this.setChanged();
 	}
 
@@ -53,8 +55,8 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 
 	@Override
 	public void clearContent() {
-		stack.set(CBCDataComponents.AMMO, ItemStack.EMPTY);
-		stack.set(CBCDataComponents.TRACER, ItemStack.EMPTY);
+		this.stack.set(CBCDataComponents.AMMO, ItemContainerContents.EMPTY);
+		this.stack.set(CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
 	}
 
 	@Override

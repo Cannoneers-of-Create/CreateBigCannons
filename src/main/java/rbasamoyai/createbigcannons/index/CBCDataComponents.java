@@ -6,11 +6,11 @@ import com.mojang.serialization.Codec;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.ItemContainerContents;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
 public class CBCDataComponents {
@@ -22,11 +22,6 @@ public class CBCDataComponents {
     public static final DataComponentType<Integer> TRACER_SPACING = register(
         "tracer_spacing",
         builder -> builder.persistent(ExtraCodecs.intRange(1,6)).networkSynchronized(ByteBufCodecs.VAR_INT)
-    );
-
-    public static final DataComponentType<ItemStack> TRACER = register(
-        "tracer",
-        builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC)
     );
 
     public static final DataComponentType<Integer> CURRENT_INDEX = register(
@@ -49,14 +44,24 @@ public class CBCDataComponents {
         builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL)
     );
 
-    public static final DataComponentType<ItemStack> AMMO = register(
-        "ammo",
-        builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC)
+    public static final DataComponentType<ItemContainerContents> TRACER = register(
+        "tracer",
+        builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC)
     );
 
-    public static final DataComponentType<ItemStack> FUZE = register(
+    public static final DataComponentType<ItemContainerContents> AMMO = register(
+        "ammo",
+        builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC)
+    );
+
+    public static final DataComponentType<ItemContainerContents> FUZE = register(
         "fuze",
-        builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC)
+        builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC)
+    );
+
+    public static final DataComponentType<ItemContainerContents> PROJECTILE = register(
+        "projectile",
+        builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC)
     );
 
     public static final DataComponentType<Integer> DETONATION_DISTANCE = register(
@@ -89,17 +94,15 @@ public class CBCDataComponents {
         builder -> builder.persistent(Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL)
     );
 
-    public static final DataComponentType<ItemStack> PROJECTILE = register(
-        "projectile",
-        builder -> builder.persistent(ItemStack.CODEC).networkSynchronized(ItemStack.STREAM_CODEC)
-    );
-
     public static final DataComponentType<CustomData> FLUID_CONTENT = register( // todo: CustomData for now, should be Fluid, hoping for Mojang to implement codecs
         "fluid_content",
         builder -> builder.persistent(CustomData.CODEC).networkSynchronized(CustomData.STREAM_CODEC)
     );
 
     private static <T> DataComponentType<T> register(String name, UnaryOperator<DataComponentType.Builder<T>> builder) {
-        return Registry.register((Registry) Registries.DATA_COMPONENT_TYPE, CreateBigCannons.resource(name), builder.apply(DataComponentType.builder()).build());
+        return Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE, CreateBigCannons.resource(name), builder.apply(DataComponentType.builder()).build());
     }
+
+    public static void init() {}
+
 }

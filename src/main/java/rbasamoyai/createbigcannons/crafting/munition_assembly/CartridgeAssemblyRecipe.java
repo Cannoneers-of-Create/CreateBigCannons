@@ -1,7 +1,10 @@
 package rbasamoyai.createbigcannons.crafting.munition_assembly;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
@@ -16,7 +19,9 @@ import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class CartridgeAssemblyRecipe extends CustomRecipe {
 
-	public CartridgeAssemblyRecipe() { super(CraftingBookCategory.MISC); }
+	public CartridgeAssemblyRecipe() { this(CraftingBookCategory.MISC); }
+
+	public CartridgeAssemblyRecipe(CraftingBookCategory cat) { super(cat); }
 
 	@Override
 	public boolean matches(CraftingInput container, Level level) {
@@ -84,9 +89,9 @@ public class CartridgeAssemblyRecipe extends CustomRecipe {
 		if (fuzePosition != -1) {
 			ItemStack fuzeCopy = input.getItem(fuzePosition).copy();
 			fuzeCopy.setCount(1);
-			roundCopy.set(CBCDataComponents.FUZE, fuzeCopy);
+			roundCopy.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(Lists.newArrayList(fuzeCopy)));
 		}
-		result.set(CBCDataComponents.PROJECTILE, roundCopy);
+		result.set(CBCDataComponents.PROJECTILE, ItemContainerContents.fromItems(Lists.newArrayList(roundCopy)));
 
 		return result;
 	}

@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
+
 import net.minecraft.core.component.DataComponents;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -19,6 +19,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -72,11 +73,13 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 	}
 
 	public static ItemStack getMainAmmoStack(ItemStack container) {
-		return container.getOrDefault(CBCDataComponents.AMMO, ItemStack.EMPTY);
+        ItemContainerContents items = container.getOrDefault(CBCDataComponents.AMMO, ItemContainerContents.EMPTY);
+		return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
 	}
 
 	public static ItemStack getTracerAmmoStack(ItemStack container) {
-        return container.getOrDefault(CBCDataComponents.TRACER, ItemStack.EMPTY);
+        ItemContainerContents items = container.getOrDefault(CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
+        return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
 	}
 
 	public static int getTracerSpacing(ItemStack container) {
@@ -114,7 +117,9 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = tracerAmmo.split(1);
-					container.set(CBCDataComponents.TRACER, tracerAmmo.isEmpty() ? ItemStack.EMPTY : tracerAmmo);
+                    ItemContainerContents tracerData = tracerAmmo.isEmpty() ? ItemContainerContents.EMPTY
+                        : ItemContainerContents.fromItems(Lists.newArrayList(tracerAmmo));
+                    container.set(CBCDataComponents.TRACER, tracerData);
 				}
 			} else if (!mainAmmo.isEmpty()) {
 				if (isCreative) {
@@ -122,7 +127,9 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = mainAmmo.split(1);
-                    container.set(CBCDataComponents.AMMO, tracerAmmo.isEmpty() ? ItemStack.EMPTY : mainAmmo);
+                    ItemContainerContents ammoData = mainAmmo.isEmpty() ? ItemContainerContents.EMPTY
+                        : ItemContainerContents.fromItems(Lists.newArrayList(mainAmmo));
+                    container.set(CBCDataComponents.TRACER, ammoData);
 				}
 			}
 		} else {
@@ -132,7 +139,9 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = mainAmmo.split(1);
-                    container.set(CBCDataComponents.AMMO, tracerAmmo.isEmpty() ? ItemStack.EMPTY : mainAmmo);
+                    ItemContainerContents ammoData = mainAmmo.isEmpty() ? ItemContainerContents.EMPTY
+                        : ItemContainerContents.fromItems(Lists.newArrayList(mainAmmo));
+                    container.set(CBCDataComponents.TRACER, ammoData);
 				}
 			} else if (!tracerAmmo.isEmpty()) {
 				if (isCreative) {
@@ -140,7 +149,9 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret.setCount(1);
 				} else {
 					ret = tracerAmmo.split(1);
-                    container.set(CBCDataComponents.TRACER, tracerAmmo.isEmpty() ? ItemStack.EMPTY : tracerAmmo);
+                    ItemContainerContents tracerData = tracerAmmo.isEmpty() ? ItemContainerContents.EMPTY
+                        : ItemContainerContents.fromItems(Lists.newArrayList(tracerAmmo));
+                    container.set(CBCDataComponents.TRACER, tracerData);
 				}
 			}
 		}
