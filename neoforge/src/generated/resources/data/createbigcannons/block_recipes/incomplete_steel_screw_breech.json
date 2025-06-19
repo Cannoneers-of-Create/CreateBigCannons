@@ -1,0 +1,6 @@
+{
+  "type": "createbigcannons:drill_boring",
+  "input": "createbigcannons:unbored_steel_screw_breech",
+  "obey_facing_or_axis": true,
+  "result": "createbigcannons:incomplete_steel_screw_breech"
+}

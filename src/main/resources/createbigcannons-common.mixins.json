@@ -25,7 +25,6 @@
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",
-    "TagAppenderAccessor",
     "client.ValueSettingsClientMixin",
     "compat.create.AbstractContraptionEntityMixin",
     "compat.create.AllSoundEventsMixin",

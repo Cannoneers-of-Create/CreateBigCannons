@@ -15,6 +15,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
+import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.datagen.CBCDatagenCommon;
 import rbasamoyai.createbigcannons.datagen.assets.CBCLangGen;
@@ -48,6 +49,7 @@ public class CBCDataNeoForge {
         CBCLangGen.prepare();
         CBCSoundEvents.registerLangEntries();
         CBCCraftingRecipeProvider.register();
+        CBCTags.register();
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)

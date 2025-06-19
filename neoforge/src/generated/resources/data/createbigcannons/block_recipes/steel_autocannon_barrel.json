@@ -1,0 +1,6 @@
+{
+  "type": "createbigcannons:drill_boring",
+  "input": "createbigcannons:unbored_steel_autocannon_barrel",
+  "obey_facing_or_axis": true,
+  "result": "createbigcannons:steel_autocannon_barrel"
+}

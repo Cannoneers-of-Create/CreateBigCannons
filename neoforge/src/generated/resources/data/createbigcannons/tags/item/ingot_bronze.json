@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/bronze",
+      "required": false
+    },
+    {
+      "id": "#c:ingots/bronze",
+      "required": false
+    },
+    {
+      "id": "#c:bronze_ingots",
+      "required": false
+    }
+  ]
+}

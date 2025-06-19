@@ -1,0 +1,84 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "createbigcannons:big_cartridge",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "damp": "true"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createbigcannons:big_cartridge"
+        }
+      ],
+      "functions": [
+        {
+          "add": false,
+          "count": 1.0,
+          "function": "minecraft:set_count"
+        },
+        {
+          "function": "minecraft:copy_components",
+          "include": [
+            "createbigcannons:power"
+          ],
+          "source": "block_entity"
+        },
+        {
+          "components": {
+            "createbigcannons:damp": true
+          },
+          "function": "minecraft:set_components"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "createbigcannons:big_cartridge",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "damp": "false"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createbigcannons:big_cartridge"
+        }
+      ],
+      "functions": [
+        {
+          "add": false,
+          "count": 1.0,
+          "function": "minecraft:set_count"
+        },
+        {
+          "function": "minecraft:copy_components",
+          "include": [
+            "createbigcannons:power"
+          ],
+          "source": "block_entity"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createbigcannons:blocks/big_cartridge"
+}

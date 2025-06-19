@@ -16,8 +16,6 @@ import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.data.tags.TagsProvider.TagAppender;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagBuilder;
-import net.minecraft.tags.TagEntry;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -26,8 +24,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.WeatheringCopper.WeatherState;
 import net.minecraft.world.level.material.Fluid;
-import rbasamoyai.createbigcannons.base.tag_utils.ForcedTagEntry;
-import rbasamoyai.createbigcannons.mixin.TagAppenderAccessor;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
@@ -94,7 +90,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
 				for (TagKey<Block> t : tags)
-					addTag(app, t);
+                    app.addOptionalTag(t);
 			});
 		}
 
@@ -256,7 +252,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
 				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				for (TagKey<Item> t : tags) {
-					addTag(app, t);
+                    app.addOptionalTag(t);
 				}
 			});
 		}
@@ -312,12 +308,6 @@ public class CBCTags {
 
 	private static ResourceLocation createdeco(String path) {
 		return CBCUtils.location("createdeco", path);
-	}
-
-	private static <T> void addTag(TagAppender<T> app, TagKey<T> tag) {
-		TagAppenderAccessor accessor = (TagAppenderAccessor) app;
-		TagBuilder builder = accessor.getBuilder();
-		builder.add(new ForcedTagEntry(TagEntry.tag(tag.location())));
 	}
 
 }

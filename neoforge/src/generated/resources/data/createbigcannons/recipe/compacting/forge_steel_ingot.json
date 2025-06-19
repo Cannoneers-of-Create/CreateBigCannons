@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "createbigcannons:ingot_steel"
+      }
+    }
+  ],
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "type": "fluid_tag",
+      "amount": 90,
+      "fluid_tag": "c:molten_steel"
+    }
+  ],
+  "results": [
+    {
+      "id": "alloyed:steel_ingot"
+    }
+  ]
+}

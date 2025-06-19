@@ -1,0 +1,6 @@
+{
+  "type": "createbigcannons:drill_boring",
+  "input": "createbigcannons:unbored_medium_steel_cannon_layer",
+  "obey_facing_or_axis": true,
+  "result": "createbigcannons:medium_steel_cannon_layer"
+}
