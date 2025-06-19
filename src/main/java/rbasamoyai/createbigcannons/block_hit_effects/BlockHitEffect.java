@@ -40,7 +40,7 @@ public record BlockHitEffect(List<ParticleOptions> impactParticles, List<Particl
 	public record HitSound(ResourceLocation location, SoundSource source, float basePitch, float pitchVariation) {
         public static final Codec<HitSound> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             ResourceLocation.CODEC.fieldOf("sound").forGetter(HitSound::location),
-            CBCUtils.SOUND_SOURCE_CODEC.fieldOf("source")
+            CBCUtils.SOUND_SOURCE_CODEC.optionalFieldOf("source", SoundSource.BLOCKS)
                 .validate(s -> s == null ? DataResult.error(() -> "Invalid sound type") : DataResult.success(s))
                 .forGetter(HitSound::source),
             Codec.FLOAT.fieldOf("pitch").forGetter(HitSound::basePitch),

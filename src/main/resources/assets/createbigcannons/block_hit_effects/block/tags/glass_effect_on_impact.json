@@ -2,14 +2,18 @@
   "impact_particles": [
     {
       "type": "createbigcannons:glass_burst",
-      "block_state": "minecraft_air",
+      "block_state": {
+        "Name": "minecraft:air"
+      },
       "count": 40
     }
   ],
   "deflect_particles": [
     {
       "type": "createbigcannons:glass_burst",
-      "block_state": "minecraft_air",
+      "block_state": {
+        "Name": "minecraft:air"
+      },
       "count": 40
     }
   ],

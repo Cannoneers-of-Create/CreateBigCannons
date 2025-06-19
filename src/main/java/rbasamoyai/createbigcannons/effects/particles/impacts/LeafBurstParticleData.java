@@ -21,7 +21,7 @@ public record LeafBurstParticleData(BlockState blockState, int count) implements
 	ICustomParticleData<LeafBurstParticleData> {
 
 	private static final MapCodec<LeafBurstParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i
-		.group(BlockState.CODEC.fieldOf("blockState")
+		.group(BlockState.CODEC.fieldOf("block_state")
 			.forGetter(data -> data.blockState),
 		Codec.INT.fieldOf("count")
 			.forGetter(data -> data.count))

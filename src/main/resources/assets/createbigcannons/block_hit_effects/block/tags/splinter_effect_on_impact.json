@@ -2,14 +2,18 @@
   "impact_particles": [
     {
       "type": "createbigcannons:splinter_burst",
-      "block_state": "minecraft:air",
+      "block_state": {
+        "Name": "minecraft:air"
+      },
       "count": 40
     }
   ],
   "deflect_particles": [
     {
       "type": "createbigcannons:splinter_burst",
-      "block_state": "minecraft:air",
+      "block_state": {
+        "Name": "minecraft:air"
+      },
       "count": 40
     }
   ],

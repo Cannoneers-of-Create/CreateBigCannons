@@ -21,7 +21,7 @@ public record SplinterBurstParticleData(BlockState blockState, int count) implem
 	ICustomParticleData<SplinterBurstParticleData> {
 
 	private static final MapCodec<SplinterBurstParticleData> CODEC = RecordCodecBuilder.mapCodec(i -> i
-		.group(BlockState.CODEC.fieldOf("blockState")
+		.group(BlockState.CODEC.fieldOf("block_state")
 			.forGetter(data -> data.blockState),
 		Codec.INT.fieldOf("count")
 			.forGetter(data -> data.count))
