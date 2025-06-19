@@ -2,9 +2,6 @@
   "values": [
     "createbigcannons:casting_sand",
     "createbigcannons:cannon_cast",
-    "createbigcannons:casting_sand",
-    "createbigcannons:finished_cannon_cast",
-    "createbigcannons:cannon_cast",
     "createbigcannons:finished_cannon_cast"
   ]
 }
