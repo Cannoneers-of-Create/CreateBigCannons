@@ -80,7 +80,6 @@ import rbasamoyai.createbigcannons.munitions.fuzes.FuzeSelectionHandler;
 import rbasamoyai.createbigcannons.network.ServerboundFiringActionPacket;
 import rbasamoyai.createbigcannons.network.ServerboundSetFireRatePacket;
 import rbasamoyai.createbigcannons.ponder.CBCPonderPlugin;
-import rbasamoyai.createbigcannons.remix.LightingRemix;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.RPLScreenShakeHandlerClient;
 import rbasamoyai.ritchiesprojectilelib.effects.screen_shake.ScreenShakeEffect;
 
@@ -347,16 +346,11 @@ public class CBCClientCommon {
 
 	public static void onPlayerLogOut(LocalPlayer player) {
 		BlockHitEffectsHandler.cleanUpTags();
-		LightingRemix.clearCache();
 	}
 
-	public static void onPlayerLogIn(LocalPlayer player) {
-		LightingRemix.clearCache();
-	}
+	public static void onPlayerLogIn(LocalPlayer player) {}
 
-	public static void onChangeDimension(Player player) {
-		LightingRemix.clearCache();
-	}
+	public static void onChangeDimension(Player player) {}
 
 	public static void playCustomSound(BlockHitEffect.HitSound sound, Level level, double x, double y, double z, double dx,
 									   double dy, double dz, ProjectileHitEffect projectileEffect) {

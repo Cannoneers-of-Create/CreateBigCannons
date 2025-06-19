@@ -22,6 +22,8 @@ public class CannonDamageSource extends DamageSource {
 	public boolean is(TagKey<DamageType> damageTypeKey) {
 		if (damageTypeKey.location().equals(DamageTypeTags.BYPASSES_ARMOR.location()))
 			return this.bypassArmor;
+        if (damageTypeKey.location().equals(DamageTypeTags.ALWAYS_KILLS_ARMOR_STANDS.location()))
+            return true; // Hack, but really now this entire class is hacky
 		return super.is(damageTypeKey);
 	}
 

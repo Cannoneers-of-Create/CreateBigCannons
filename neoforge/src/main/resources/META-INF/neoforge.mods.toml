@@ -15,6 +15,12 @@ Textures by rbasamoyai, Milkyfur, and LopyLuna
 """
 logoFile = "icon.png"
 
+[[mixins]]
+config = "createbigcannons-common.mixins.json"
+
+[[mixins]]
+config = "createbigcannons.mixins.json"
+
 [[dependencies.createbigcannons]]
 modId = "neoforge"
 type = "required"

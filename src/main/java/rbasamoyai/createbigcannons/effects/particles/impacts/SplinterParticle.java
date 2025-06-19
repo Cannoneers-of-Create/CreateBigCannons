@@ -1,8 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.impacts;
 
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.VertexFormat;
-
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
