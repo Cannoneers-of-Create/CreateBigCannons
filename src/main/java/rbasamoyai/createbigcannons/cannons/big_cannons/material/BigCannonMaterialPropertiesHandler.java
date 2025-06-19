@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.material;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -24,7 +22,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class BigCannonMaterialPropertiesHandler {
 
-	public static final Map<BigCannonMaterial, BigCannonMaterialProperties> PROPERTIES = new Reference2ObjectOpenHashMap<>();
+	private static final Map<BigCannonMaterial, BigCannonMaterialProperties> PROPERTIES = new Reference2ObjectOpenHashMap<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
@@ -51,21 +49,20 @@ public class BigCannonMaterialPropertiesHandler {
 
 	public static BigCannonMaterialProperties getMaterial(BigCannonMaterial material) { return PROPERTIES.get(material); }
 
-	public static void writeBuf(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(PROPERTIES.size());
-		for (Map.Entry<BigCannonMaterial, BigCannonMaterialProperties> entry : PROPERTIES.entrySet()) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf, ClientboundBigCannonMaterialPropertiesPacket pkt) {
+		buf.writeVarInt(pkt.properties.size());
+		for (Map.Entry<BigCannonMaterial, BigCannonMaterialProperties> entry : pkt.properties.entrySet()) {
 			buf.writeResourceLocation(entry.getKey().name());
 			entry.getValue().writeBuf(buf);
 		}
 	}
 
-	public static void readBuf(RegistryFriendlyByteBuf buf) {
-		PROPERTIES.clear();
+	public static ClientboundBigCannonMaterialPropertiesPacket readBuf(RegistryFriendlyByteBuf buf) {
 		int sz = buf.readVarInt();
-
-		for (int i = 0; i < sz; ++i) {
-			PROPERTIES.put(BigCannonMaterial.fromName(buf.readResourceLocation()), BigCannonMaterialProperties.fromBuf(buf));
-		}
+        Map<BigCannonMaterial, BigCannonMaterialProperties> properties = new Reference2ObjectOpenHashMap<>();
+		for (int i = 0; i < sz; ++i)
+			properties.put(BigCannonMaterial.fromName(buf.readResourceLocation()), BigCannonMaterialProperties.fromBuf(buf));
+        return new ClientboundBigCannonMaterialPropertiesPacket(properties);
 	}
 
 	public static void syncTo(ServerPlayer player) {
@@ -77,20 +74,16 @@ public class BigCannonMaterialPropertiesHandler {
 	}
 
     // TODO c6 playtest
-	public record ClientboundBigCannonMaterialPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+	public record ClientboundBigCannonMaterialPropertiesPacket(Map<BigCannonMaterial, BigCannonMaterialProperties> properties) implements RootPacket {
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundBigCannonMaterialPropertiesPacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundBigCannonMaterialPropertiesPacket::copyOf);
+            StreamCodec.of(BigCannonMaterialPropertiesHandler::writeBuf, BigCannonMaterialPropertiesHandler::readBuf);
 
-		public ClientboundBigCannonMaterialPropertiesPacket() { this(null); }
-
-		public static ClientboundBigCannonMaterialPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundBigCannonMaterialPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+		public ClientboundBigCannonMaterialPropertiesPacket() { this(new Reference2ObjectOpenHashMap<>(PROPERTIES)); }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, Player player) {
-			if (this.buf != null)
-                readBuf(this.buf);
+            PROPERTIES.clear();
+            PROPERTIES.putAll(this.properties);
 		}
 	}
 

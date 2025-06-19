@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons.cannons.autocannon.material;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -24,7 +22,7 @@ import rbasamoyai.createbigcannons.network.RootPacket;
 
 public class AutocannonMaterialPropertiesHandler {
 
-	public static final Map<AutocannonMaterial, AutocannonMaterialProperties> PROPERTIES = new Reference2ObjectOpenHashMap<>();
+	private static final Map<AutocannonMaterial, AutocannonMaterialProperties> PROPERTIES = new Reference2ObjectOpenHashMap<>();
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
@@ -51,21 +49,20 @@ public class AutocannonMaterialPropertiesHandler {
 
 	public static AutocannonMaterialProperties getMaterial(AutocannonMaterial material) { return PROPERTIES.get(material); }
 
-	public static void writeBuf(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(PROPERTIES.size());
-		for (Map.Entry<AutocannonMaterial, AutocannonMaterialProperties> entry : PROPERTIES.entrySet()) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf, ClientboundAutocannonMaterialPropertiesPacket pkt) {
+		buf.writeVarInt(pkt.properties.size());
+		for (Map.Entry<AutocannonMaterial, AutocannonMaterialProperties> entry : pkt.properties.entrySet()) {
 			buf.writeResourceLocation(entry.getKey().name());
 			entry.getValue().writeBuf(buf);
 		}
 	}
 
-	public static void readBuf(RegistryFriendlyByteBuf buf) {
-		PROPERTIES.clear();
+	public static ClientboundAutocannonMaterialPropertiesPacket readBuf(RegistryFriendlyByteBuf buf) {
+        Map<AutocannonMaterial, AutocannonMaterialProperties> properties = new Reference2ObjectOpenHashMap<>();
 		int sz = buf.readVarInt();
-
-		for (int i = 0; i < sz; ++i) {
-			PROPERTIES.put(AutocannonMaterial.fromName(buf.readResourceLocation()), AutocannonMaterialProperties.fromBuf(buf));
-		}
+		for (int i = 0; i < sz; ++i)
+			properties.put(AutocannonMaterial.fromName(buf.readResourceLocation()), AutocannonMaterialProperties.fromBuf(buf));
+        return new ClientboundAutocannonMaterialPropertiesPacket(properties);
 	}
 
 	public static void syncTo(ServerPlayer player) {
@@ -77,20 +74,16 @@ public class AutocannonMaterialPropertiesHandler {
 	}
 
     // TODO c6 playtest
-	public record ClientboundAutocannonMaterialPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+	public record ClientboundAutocannonMaterialPropertiesPacket(Map<AutocannonMaterial, AutocannonMaterialProperties> properties) implements RootPacket {
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundAutocannonMaterialPropertiesPacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundAutocannonMaterialPropertiesPacket::copyOf);
+            StreamCodec.of(AutocannonMaterialPropertiesHandler::writeBuf, AutocannonMaterialPropertiesHandler::readBuf);
 
-		public ClientboundAutocannonMaterialPropertiesPacket() { this(null); }
-
-		public static ClientboundAutocannonMaterialPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundAutocannonMaterialPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+		public ClientboundAutocannonMaterialPropertiesPacket() { this(new Reference2ObjectOpenHashMap<>(PROPERTIES)); }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, Player player) {
-			if (this.buf != null)
-                readBuf(this.buf);
+			PROPERTIES.clear();
+            PROPERTIES.putAll(this.properties);
 		}
 	}
 

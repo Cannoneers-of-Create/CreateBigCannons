@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -135,14 +133,14 @@ public class BlockArmorPropertiesHandler {
 		return ser;
 	}
 
-	public static void writeBuf(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(TAG_MAP.size());
-		for (Map.Entry<Block, SimpleBlockArmorProperties> entry : TAG_MAP.entrySet()) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf, ClientboundSyncBlockArmorPropertiesPacket packet) {
+		buf.writeVarInt(packet.tagProperties.size());
+		for (Map.Entry<Block, SimpleBlockArmorProperties> entry : packet.tagProperties.entrySet()) {
 			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()));
 			entry.getValue().toNetwork(buf);
 		}
-		buf.writeVarInt(BLOCK_MAP.size());
-		for (Map.Entry<Block, BlockArmorPropertiesProvider> entry : BLOCK_MAP.entrySet()) {
+		buf.writeVarInt(packet.blockProperties.size());
+		for (Map.Entry<Block, BlockArmorPropertiesProvider> entry : packet.blockProperties.entrySet()) {
 			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()));
 			toNetworkCasted(entry.getKey(), entry.getValue(), buf);
 		}
@@ -161,38 +159,38 @@ public class BlockArmorPropertiesHandler {
 		}
 	}
 
-	public static void readBuf(RegistryFriendlyByteBuf buf) {
-		TAG_MAP.clear();
+	public static ClientboundSyncBlockArmorPropertiesPacket readBuf(RegistryFriendlyByteBuf buf) {
+		Map<Block, SimpleBlockArmorProperties> tagMap = new Reference2ObjectOpenHashMap<>();
 		int tagSz = buf.readVarInt();
 		for (int i = 0; i < tagSz; ++i) {
 			Block block = CBCRegistryUtils.getBlock(buf.readResourceLocation());
 			SimpleBlockArmorProperties properties = SimpleBlockArmorProperties.fromNetwork(buf);
-			TAG_MAP.put(block, properties);
+			tagMap.put(block, properties);
 		}
-		BLOCK_MAP.clear();
+		Map<Block, BlockArmorPropertiesProvider> blockMap = new Reference2ObjectOpenHashMap<>();
 		int blockSz = buf.readVarInt();
 		for (int i = 0; i < blockSz; ++i) {
 			Block block = CBCRegistryUtils.getBlock(buf.readResourceLocation());
 			BlockArmorPropertiesSerializer<?> ser = CUSTOM_SERIALIZERS.get(block);
-			BLOCK_MAP.put(block, ser == null ? VariantBlockArmorProperties.fromNetwork(buf) : ser.fromNetwork(buf));
+			blockMap.put(block, ser == null ? VariantBlockArmorProperties.fromNetwork(buf) : ser.fromNetwork(buf));
 		}
+        return new ClientboundSyncBlockArmorPropertiesPacket(tagMap, blockMap);
 	}
 
     // TODO c6 playtest
-	public record ClientboundSyncBlockArmorPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+	public record ClientboundSyncBlockArmorPropertiesPacket(Map<Block, SimpleBlockArmorProperties> tagProperties,
+                                                            Map<Block, BlockArmorPropertiesProvider> blockProperties) implements RootPacket {
 		public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSyncBlockArmorPropertiesPacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundSyncBlockArmorPropertiesPacket::copyOf);
+            StreamCodec.of(BlockArmorPropertiesHandler::writeBuf, BlockArmorPropertiesHandler::readBuf);
 
-        public ClientboundSyncBlockArmorPropertiesPacket() { this(null); }
-
-		public static ClientboundSyncBlockArmorPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundSyncBlockArmorPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+        public ClientboundSyncBlockArmorPropertiesPacket() { this(new Reference2ObjectOpenHashMap<>(TAG_MAP), new Reference2ObjectOpenHashMap<>(BLOCK_MAP)); }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, Player player) {
-			if (this.buf != null)
-                readBuf(this.buf);
+			TAG_MAP.clear();
+            TAG_MAP.putAll(this.tagProperties);
+            BLOCK_MAP.clear();
+            BLOCK_MAP.putAll(this.blockProperties);
 		}
 	}
 

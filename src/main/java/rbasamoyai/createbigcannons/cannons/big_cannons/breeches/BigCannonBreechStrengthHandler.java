@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons.cannons.big_cannons.breeches;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
@@ -58,21 +56,20 @@ public class BigCannonBreechStrengthHandler {
 
 	public static int getStrength(Block block, int defaultStrength) { return BREECH_STRENGTHS.getOrDefault(block, defaultStrength); }
 
-	public static void writeBuf(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(BREECH_STRENGTHS.size());
-		for (Map.Entry<Block, Integer> entry : BREECH_STRENGTHS.entrySet()) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf, ClientboundBigCannonBreechStrengthPacket pkt) {
+		buf.writeVarInt(pkt.strengths.size());
+		for (Map.Entry<Block, Integer> entry : pkt.strengths.entrySet()) {
 			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()))
 				.writeVarInt(entry.getValue());
 		}
 	}
 
-	public static void readBuf(RegistryFriendlyByteBuf buf) {
-		BREECH_STRENGTHS.clear();
+	public static ClientboundBigCannonBreechStrengthPacket readBuf(RegistryFriendlyByteBuf buf) {
 		int sz = buf.readVarInt();
-
-		for (int i = 0; i < sz; ++i) {
-			BREECH_STRENGTHS.put(CBCRegistryUtils.getBlock(buf.readResourceLocation()), buf.readVarInt());
-		}
+        Map<Block, Integer> strengths = new Reference2IntOpenHashMap<>();
+		for (int i = 0; i < sz; ++i)
+			strengths.put(CBCRegistryUtils.getBlock(buf.readResourceLocation()), buf.readVarInt());
+        return new ClientboundBigCannonBreechStrengthPacket(strengths);
 	}
 
 	public static void syncTo(ServerPlayer player) {
@@ -84,20 +81,16 @@ public class BigCannonBreechStrengthHandler {
 	}
 
     // TODO c6 playtest
-	public record ClientboundBigCannonBreechStrengthPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+	public record ClientboundBigCannonBreechStrengthPacket(Map<Block, Integer> strengths) implements RootPacket {
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundBigCannonBreechStrengthPacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundBigCannonBreechStrengthPacket::copyOf);
+            StreamCodec.of(BigCannonBreechStrengthHandler::writeBuf, BigCannonBreechStrengthHandler::readBuf);
 
-		public ClientboundBigCannonBreechStrengthPacket() { this(null); }
-
-		public static ClientboundBigCannonBreechStrengthPacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundBigCannonBreechStrengthPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+		public ClientboundBigCannonBreechStrengthPacket() { this(new Reference2IntOpenHashMap<>(BREECH_STRENGTHS)); }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, Player player) {
-			if (this.buf != null)
-                readBuf(this.buf);
+            BREECH_STRENGTHS.clear();
+            BREECH_STRENGTHS.putAll(this.strengths);
 		}
 	}
 

@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons.munitions.config;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -62,42 +60,37 @@ public class BigCannonPropellantCompatibilityHandler {
 		return PROPERTIES_MAP.getOrDefault(block, BigCannonPropellantCompatibilities.DEFAULT);
 	}
 
-	public static void writeBuf(FriendlyByteBuf buf) {
-		buf.writeVarInt(PROPERTIES_MAP.size());
-		for (Map.Entry<Block, BigCannonPropellantCompatibilities> entry : PROPERTIES_MAP.entrySet()) {
+	public static void writeBuf(FriendlyByteBuf buf, ClientboundBigCannonPropellantCompatibilitiesPacket pkt) {
+		buf.writeVarInt(pkt.properties.size());
+		for (Map.Entry<Block, BigCannonPropellantCompatibilities> entry : pkt.properties.entrySet()) {
 			buf.writeResourceLocation(CBCRegistryUtils.getBlockLocation(entry.getKey()));
 			entry.getValue().writeBuf(buf);
 		}
 	}
 
-	public static void readBuf(FriendlyByteBuf buf) {
-		PROPERTIES_MAP.clear();
+	public static ClientboundBigCannonPropellantCompatibilitiesPacket readBuf(FriendlyByteBuf buf) {
 		int sz = buf.readVarInt();
-
-		for (int i = 0; i < sz; ++i) {
-			PROPERTIES_MAP.put(CBCRegistryUtils.getBlock(buf.readResourceLocation()), BigCannonPropellantCompatibilities.readBuf(buf));
-		}
+        Map<Block, BigCannonPropellantCompatibilities> properties = new Reference2ObjectOpenHashMap<>();
+		for (int i = 0; i < sz; ++i)
+			properties.put(CBCRegistryUtils.getBlock(buf.readResourceLocation()), BigCannonPropellantCompatibilities.readBuf(buf));
+        return new ClientboundBigCannonPropellantCompatibilitiesPacket(properties);
 	}
 
 	public static void syncTo(ServerPlayer player) {
-		NetworkPlatform.sendToClientPlayer(new ClientboundBigCannonPropellantPropertiesPacket(), player);
+		NetworkPlatform.sendToClientPlayer(new ClientboundBigCannonPropellantCompatibilitiesPacket(), player);
 	}
 
     // TODO c6 playtest
-	public record ClientboundBigCannonPropellantPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
-        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundBigCannonPropellantPropertiesPacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundBigCannonPropellantPropertiesPacket::copyOf);
+	public record ClientboundBigCannonPropellantCompatibilitiesPacket(Map<Block, BigCannonPropellantCompatibilities> properties) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundBigCannonPropellantCompatibilitiesPacket> STREAM_CODEC =
+            StreamCodec.of(BigCannonPropellantCompatibilityHandler::writeBuf, BigCannonPropellantCompatibilityHandler::readBuf);
 
-		public ClientboundBigCannonPropellantPropertiesPacket() { this(null); }
-
-		public static ClientboundBigCannonPropellantPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundBigCannonPropellantPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+		public ClientboundBigCannonPropellantCompatibilitiesPacket() { this(new Reference2ObjectOpenHashMap<>(PROPERTIES_MAP)); }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, Player player) {
-			if (this.buf != null)
-                readBuf(this.buf);
+			PROPERTIES_MAP.clear();
+            PROPERTIES_MAP.putAll(this.properties);
 		}
 	}
 

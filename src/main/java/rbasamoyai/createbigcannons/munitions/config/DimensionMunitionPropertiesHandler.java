@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 
@@ -62,23 +60,24 @@ public class DimensionMunitionPropertiesHandler {
 	public static DimensionMunitionProperties getProperties(ResourceKey<Level> dimension) { return DIMENSIONS.getOrDefault(dimension, DEFAULT); }
     public static DimensionMunitionProperties getProperties(Level level) { return getProperties(level.dimension()); }
 
-	public static void writeBuf(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(DIMENSIONS.size());
-		for (Map.Entry<ResourceKey<Level>, DimensionMunitionProperties> entry : DIMENSIONS.entrySet()) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf, ClientboundSyncDimensionMunitionPropertiesPacket pkt) {
+		buf.writeVarInt(pkt.dimensions.size());
+		for (Map.Entry<ResourceKey<Level>, DimensionMunitionProperties> entry : pkt.dimensions.entrySet()) {
 			buf.writeResourceLocation(entry.getKey().location());
 			entry.getValue().toNetwork(buf);
 		}
 	}
 
-	public static void readBuf(RegistryFriendlyByteBuf buf) {
-		DIMENSIONS.clear();
+	public static ClientboundSyncDimensionMunitionPropertiesPacket readBuf(RegistryFriendlyByteBuf buf) {
 		int sz = buf.readVarInt();
+        Map<ResourceKey<Level>, DimensionMunitionProperties> dimensions = new HashMap<>();
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation loc = buf.readResourceLocation();
 			ResourceKey<Level> key = ResourceKey.create(CBCRegistryUtils.getDimensionRegistryKey(), loc);
 			DimensionMunitionProperties properties = DimensionMunitionProperties.fromNetwork(buf);
-			DIMENSIONS.put(key, properties);
+            dimensions.put(key, properties);
 		}
+        return new ClientboundSyncDimensionMunitionPropertiesPacket(dimensions);
 	}
 
 	public static void syncToAll(MinecraftServer server) {
@@ -90,20 +89,16 @@ public class DimensionMunitionPropertiesHandler {
 	}
 
     // TODO c6 playtest
-	public record ClientboundSyncDimensionMunitionPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+	public record ClientboundSyncDimensionMunitionPropertiesPacket(Map<ResourceKey<Level>, DimensionMunitionProperties> dimensions) implements RootPacket {
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSyncDimensionMunitionPropertiesPacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundSyncDimensionMunitionPropertiesPacket::copyOf);
+            StreamCodec.of(DimensionMunitionPropertiesHandler::writeBuf, DimensionMunitionPropertiesHandler::readBuf);
 
-		public ClientboundSyncDimensionMunitionPropertiesPacket() { this(null); }
-
-		public static ClientboundSyncDimensionMunitionPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundSyncDimensionMunitionPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+		public ClientboundSyncDimensionMunitionPropertiesPacket() { this(new HashMap<>(DIMENSIONS)); }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, Player player) {
-			if (this.buf != null)
-                readBuf(this.buf);
+            DIMENSIONS.clear();
+            DIMENSIONS.putAll(this.dimensions);
 		}
 	}
 

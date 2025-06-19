@@ -3,8 +3,6 @@ package rbasamoyai.createbigcannons.cannon_control.config;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
@@ -157,9 +155,9 @@ public class CannonMountPropertiesHandler {
 		return ENTITY_MOUNT_PROPERTIES.containsKey(entityType) ? ENTITY_MOUNT_PROPERTIES.get(entityType).getOrDefault(contraptionType, FALLBACK_ENTITY) : FALLBACK_ENTITY;
 	}
 
-	public static void writeBuf(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(BLOCK_MOUNT_PROPERTIES.size());
-		for (Map.Entry<BlockEntityType<?>, Map<ICannonContraptionType, CannonMountBlockPropertiesProvider>> entry : BLOCK_MOUNT_PROPERTIES.entrySet()) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf, ClientboundSyncCannonMountPropertiesPacket pkt) {
+		buf.writeVarInt(pkt.blockMountProperties.size());
+		for (Map.Entry<BlockEntityType<?>, Map<ICannonContraptionType, CannonMountBlockPropertiesProvider>> entry : pkt.blockMountProperties.entrySet()) {
 			buf.writeResourceLocation(CBCRegistryUtils.getBlockEntityTypeLocation(entry.getKey()));
 			Map<ICannonContraptionType, CannonMountBlockPropertiesProvider> map = entry.getValue();
 			buf.writeVarInt(map.size());
@@ -168,8 +166,8 @@ public class CannonMountPropertiesHandler {
 				toNetworkCasted(buf, entry.getKey(), entry1.getValue());
 			}
 		}
-		buf.writeVarInt(ENTITY_MOUNT_PROPERTIES.size());
-		for (Map.Entry<EntityType<?>, Map<ICannonContraptionType, CannonMountEntityPropertiesProvider>> entry : ENTITY_MOUNT_PROPERTIES.entrySet()) {
+		buf.writeVarInt(pkt.entityMountProperties.size());
+		for (Map.Entry<EntityType<?>, Map<ICannonContraptionType, CannonMountEntityPropertiesProvider>> entry : pkt.entityMountProperties.entrySet()) {
 			buf.writeResourceLocation(CBCRegistryUtils.getEntityTypeLocation(entry.getKey()));
 			Map<ICannonContraptionType, CannonMountEntityPropertiesProvider> map = entry.getValue();
 			buf.writeVarInt(map.size());
@@ -192,8 +190,8 @@ public class CannonMountPropertiesHandler {
 		ser.toNetwork(properties, buf);
 	}
 
-	public static void readBuf(RegistryFriendlyByteBuf buf) {
-		BLOCK_MOUNT_PROPERTIES.clear();
+	public static ClientboundSyncCannonMountPropertiesPacket readBuf(RegistryFriendlyByteBuf buf) {
+		Map<BlockEntityType<?>, Map<ICannonContraptionType, CannonMountBlockPropertiesProvider>> blockMountProperties = new Reference2ObjectOpenHashMap<>();
 		int blockSz = buf.readVarInt();
 		for (int i = 0; i < blockSz; ++i) {
 			ResourceLocation beTypeLoc = buf.readResourceLocation();
@@ -207,9 +205,9 @@ public class CannonMountPropertiesHandler {
 				ICannonContraptionType contraptionType = CannonContraptionTypeRegistry.get(contraptionTypeLoc);
 				map.put(contraptionType, ser.fromNetwork(buf));
 			}
-			BLOCK_MOUNT_PROPERTIES.put(beType, map);
+			blockMountProperties.put(beType, map);
 		}
-		ENTITY_MOUNT_PROPERTIES.clear();
+		Map<EntityType<?>, Map<ICannonContraptionType, CannonMountEntityPropertiesProvider>> entityMountProperties = new Reference2ObjectOpenHashMap<>();
 		int entitySz = buf.readVarInt();
 		for (int i = 0; i < entitySz; ++i) {
 			ResourceLocation entityTypeLoc = buf.readResourceLocation();
@@ -223,8 +221,9 @@ public class CannonMountPropertiesHandler {
 				ICannonContraptionType contraptionType = CannonContraptionTypeRegistry.get(contraptionTypeLoc);
 				map.put(contraptionType, ser.fromNetwork(buf));
 			}
-			ENTITY_MOUNT_PROPERTIES.put(entityType, map);
+			entityMountProperties.put(entityType, map);
 		}
+        return new ClientboundSyncCannonMountPropertiesPacket(blockMountProperties, entityMountProperties);
 	}
 
 	public static void syncTo(ServerPlayer player) {
@@ -236,22 +235,22 @@ public class CannonMountPropertiesHandler {
 	}
 
     // TODO c6 playtest
-	public record ClientboundSyncCannonMountPropertiesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
+	public record ClientboundSyncCannonMountPropertiesPacket(Map<BlockEntityType<?>, Map<ICannonContraptionType, CannonMountBlockPropertiesProvider>> blockMountProperties,
+                                                             Map<EntityType<?>, Map<ICannonContraptionType, CannonMountEntityPropertiesProvider>> entityMountProperties) implements RootPacket {
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundSyncCannonMountPropertiesPacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundSyncCannonMountPropertiesPacket::copyOf);
+            StreamCodec.of(CannonMountPropertiesHandler::writeBuf, CannonMountPropertiesHandler::readBuf);
 
-		public ClientboundSyncCannonMountPropertiesPacket() { this(null); }
-
-		public static ClientboundSyncCannonMountPropertiesPacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundSyncCannonMountPropertiesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+		public ClientboundSyncCannonMountPropertiesPacket() {
+            this(new Reference2ObjectOpenHashMap<>(BLOCK_MOUNT_PROPERTIES), new Reference2ObjectOpenHashMap<>(ENTITY_MOUNT_PROPERTIES));
+        }
 
 		@Override
 		public void handle(Executor exec, PacketListener listener, Player player) {
-			if (this.buf != null)
-                readBuf(this.buf);
+            BLOCK_MOUNT_PROPERTIES.clear();
+            BLOCK_MOUNT_PROPERTIES.putAll(this.blockMountProperties);
+            ENTITY_MOUNT_PROPERTIES.clear();
+            ENTITY_MOUNT_PROPERTIES.putAll(this.entityMountProperties);
 		}
-
 	}
 
 }

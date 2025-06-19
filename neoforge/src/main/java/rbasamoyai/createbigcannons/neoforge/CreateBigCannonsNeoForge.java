@@ -88,13 +88,16 @@ public class CreateBigCannonsNeoForge {
 
     private void onNewRegistry(NewRegistryEvent evt) {
         evt.create(new RegistryBuilder<>(CBCRegistries.BLOCK_RECIPE_SERIALIZERS)
-			.defaultKey(CreateBigCannons.resource("cannon_casting")));
+			.defaultKey(CreateBigCannons.resource("cannon_casting"))
+            .sync(true));
 
 		evt.create(new RegistryBuilder<>(CBCRegistries.BLOCK_RECIPE_TYPES)
-			.defaultKey(CreateBigCannons.resource("cannon_casting")));
+			.defaultKey(CreateBigCannons.resource("cannon_casting"))
+            .sync(true));
 
 		evt.create(new RegistryBuilder<>(CBCRegistries.CANNON_CAST_SHAPES)
-            .defaultKey(CreateBigCannons.resource("very_small")));
+            .defaultKey(CreateBigCannons.resource("very_small"))
+            .sync(true));
     }
 
 	private void onRegister(RegisterEvent evt) {

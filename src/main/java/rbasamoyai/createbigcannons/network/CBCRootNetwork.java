@@ -16,7 +16,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMateria
 import rbasamoyai.createbigcannons.crafting.BlockRecipesManager;
 import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler.ClientboundFluidCastingTimePacket;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
-import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler.ClientboundBigCannonPropellantPropertiesPacket;
+import rbasamoyai.createbigcannons.munitions.config.BigCannonPropellantCompatibilityHandler.ClientboundBigCannonPropellantCompatibilitiesPacket;
 import rbasamoyai.createbigcannons.munitions.config.DimensionMunitionPropertiesHandler.ClientboundSyncDimensionMunitionPropertiesPacket;
 import rbasamoyai.createbigcannons.munitions.config.FluidDragHandler.ClientboundFluidDragPacket;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler.ClientboundMunitionPropertiesPacket;
@@ -35,7 +35,7 @@ public class CBCRootNetwork {
 		int id = 0;
 		addMsg(id++, ClientboundCheckChannelVersionPacket.class, ClientboundCheckChannelVersionPacket.STREAM_CODEC);
 
-		addMsg(id++, BlockRecipesManager.ClientboundRecipesPacket.class, BlockRecipesManager.ClientboundRecipesPacket.STREAM_CODEC);
+		addMsg(id++, BlockRecipesManager.ClientboundBlockRecipesPacket.class, BlockRecipesManager.ClientboundBlockRecipesPacket.STREAM_CODEC);
 		addMsg(id++, ClientboundAnimateCannonContraptionPacket.class, ClientboundAnimateCannonContraptionPacket.STREAM_CODEC);
 		addMsg(id++, ClientboundUpdateContraptionPacket.class, ClientboundUpdateContraptionPacket.STREAM_CODEC);
 		addMsg(id++, ServerboundCarriageWheelPacket.class, ServerboundCarriageWheelPacket.STREAM_CODEC);
@@ -49,7 +49,7 @@ public class CBCRootNetwork {
 		addMsg(id++, ClientboundPreciseRotationSyncPacket.class, ClientboundPreciseRotationSyncPacket.STREAM_CODEC);
 		addMsg(id++, ClientboundFluidCastingTimePacket.class, ClientboundFluidCastingTimePacket.STREAM_CODEC);
 		addMsg(id++, ServerboundUseWelderPacket.class, ServerboundUseWelderPacket.STREAM_CODEC);
-		addMsg(id++, ClientboundBigCannonPropellantPropertiesPacket.class, ClientboundBigCannonPropellantPropertiesPacket.STREAM_CODEC);
+		addMsg(id++, ClientboundBigCannonPropellantCompatibilitiesPacket.class, ClientboundBigCannonPropellantCompatibilitiesPacket.STREAM_CODEC);
 		addMsg(id++, ClientboundFluidBlobStackSyncPacket.class, ClientboundFluidBlobStackSyncPacket.STREAM_CODEC);
 		addMsg(id++, ClientboundSyncCannonMountPropertiesPacket.class, ClientboundSyncCannonMountPropertiesPacket.STREAM_CODEC);
 		addMsg(id++, ClientboundSyncBlockArmorPropertiesPacket.class, ClientboundSyncBlockArmorPropertiesPacket.STREAM_CODEC);

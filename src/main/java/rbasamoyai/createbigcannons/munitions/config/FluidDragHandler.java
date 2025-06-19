@@ -95,19 +95,19 @@ public class FluidDragHandler {
     // TODO c6 playtest
 	public record ClientboundFluidDragPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundFluidDragPacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundFluidDragPacket::copyOf);
+            StreamCodec.of((b, t) -> writeBuf(b), b -> {
+                RegistryFriendlyByteBuf copy = new RegistryFriendlyByteBuf(b.copy(), b.registryAccess());
+                b.skipBytes(b.readableBytes());
+                return new ClientboundFluidDragPacket(copy);
+            });
 
-		public ClientboundFluidDragPacket() { this(null); }
-
-		public static ClientboundFluidDragPacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundFluidDragPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+        public ClientboundFluidDragPacket() { this(null); }
 
 		@Override
-		public void handle(Executor exec, PacketListener listener, Player player) {
-			if (this.buf != null)
-				readBuf(this.buf);
-		}
+        public void handle(Executor exec, PacketListener listener, Player player) {
+            if (this.buf != null)
+                readBuf(this.buf);
+        }
 	}
 
 }

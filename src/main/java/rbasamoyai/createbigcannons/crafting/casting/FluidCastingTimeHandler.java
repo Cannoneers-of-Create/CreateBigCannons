@@ -95,19 +95,19 @@ public class FluidCastingTimeHandler {
     // TODO c6 playtest
 	public record ClientboundFluidCastingTimePacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
         public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundFluidCastingTimePacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundFluidCastingTimePacket::copyOf);
+            StreamCodec.of((b, t) -> writeBuf(b), b -> {
+                RegistryFriendlyByteBuf copy = new RegistryFriendlyByteBuf(b.copy(), b.registryAccess());
+                b.skipBytes(b.readableBytes());
+                return new ClientboundFluidCastingTimePacket(copy);
+            });
 
-		public ClientboundFluidCastingTimePacket() { this(null); }
-
-		public static ClientboundFluidCastingTimePacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundFluidCastingTimePacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+        public ClientboundFluidCastingTimePacket() { this(null); }
 
 		@Override
-		public void handle(Executor exec, PacketListener listener, Player player) {
-			if (this.buf != null)
+        public void handle(Executor exec, PacketListener listener, Player player) {
+            if (this.buf != null)
                 readBuf(this.buf);
-		}
+        }
 	}
 
 }

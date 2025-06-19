@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
-import javax.annotation.Nullable;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -46,34 +44,31 @@ public class BlockRecipesManager {
 		BLOCK_RECIPES_BY_TYPE.clear();
 	}
 
-	public static void writeBuf(RegistryFriendlyByteBuf buf) {
-		buf.writeVarInt(BLOCK_RECIPES_BY_NAME.size());
-		for (Map.Entry<ResourceLocation, BlockRecipe> entry : BLOCK_RECIPES_BY_NAME.entrySet()) {
+	public static void writeBuf(RegistryFriendlyByteBuf buf, ClientboundBlockRecipesPacket pkt) {
+		buf.writeVarInt(pkt.blockRecipes.size());
+		for (Map.Entry<ResourceLocation, BlockRecipe> entry : pkt.blockRecipes.entrySet()) {
 			buf.writeResourceLocation(entry.getKey());
             BlockRecipe.STREAM_CODEC.encode(buf, entry.getValue()); // TODO c6 playtest
 		}
 	}
 
-	public static void readBuf(RegistryFriendlyByteBuf buf) {
-		clear();
+	public static ClientboundBlockRecipesPacket readBuf(RegistryFriendlyByteBuf buf) {
 		int sz = buf.readVarInt();
+        Map<ResourceLocation, BlockRecipe> blockRecipes = new Object2ObjectOpenHashMap<>();
 		for (int i = 0; i < sz; ++i) {
 			ResourceLocation id = buf.readResourceLocation();
             BlockRecipe recipe = BlockRecipe.STREAM_CODEC.decode(buf);
-			BLOCK_RECIPES_BY_NAME.put(id, recipe);
-			BlockRecipeType<?> recipeType = recipe.getType();
-			if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
-				BLOCK_RECIPES_BY_TYPE.put(recipeType, new Object2ObjectOpenHashMap<>());
-			BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
+			blockRecipes.put(id, recipe);
 		}
+        return new ClientboundBlockRecipesPacket(blockRecipes);
 	}
 
 	public static void syncTo(ServerPlayer player) {
-		NetworkPlatform.sendToClientPlayer(new ClientboundRecipesPacket(), player);
+		NetworkPlatform.sendToClientPlayer(new ClientboundBlockRecipesPacket(), player);
 	}
 
 	public static void syncToAll(MinecraftServer server) {
-		NetworkPlatform.sendToClientAll(new ClientboundRecipesPacket(), server);
+		NetworkPlatform.sendToClientAll(new ClientboundBlockRecipesPacket(), server);
 	}
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
@@ -107,20 +102,24 @@ public class BlockRecipesManager {
 	}
 
     // TODO c6 playtest
-	public record ClientboundRecipesPacket(@Nullable RegistryFriendlyByteBuf buf) implements RootPacket {
-        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundRecipesPacket> STREAM_CODEC =
-            StreamCodec.of((b, t) -> writeBuf(b), ClientboundRecipesPacket::copyOf);
+	public record ClientboundBlockRecipesPacket(Map<ResourceLocation, BlockRecipe> blockRecipes) implements RootPacket {
+        public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundBlockRecipesPacket> STREAM_CODEC =
+            StreamCodec.of(BlockRecipesManager::writeBuf, BlockRecipesManager::readBuf);
 
-		public ClientboundRecipesPacket() { this(null); }
-
-		public static ClientboundRecipesPacket copyOf(RegistryFriendlyByteBuf buf) {
-			return new ClientboundRecipesPacket(new RegistryFriendlyByteBuf(buf.copy(), buf.registryAccess()));
-		}
+		public ClientboundBlockRecipesPacket() { this(new Object2ObjectOpenHashMap<>(BLOCK_RECIPES_BY_NAME)); }
 
 		@Override
         public void handle(Executor exec, PacketListener listener, Player player) {
-            if (this.buf != null)
-                readBuf(this.buf);
+            clear();
+            for (Map.Entry<ResourceLocation, BlockRecipe> e : this.blockRecipes.entrySet()) {
+                ResourceLocation id = e.getKey();
+                BlockRecipe recipe = e.getValue();
+                BLOCK_RECIPES_BY_NAME.put(id, recipe);
+                BlockRecipeType<?> recipeType = recipe.getType();
+                if (!BLOCK_RECIPES_BY_TYPE.containsKey(recipeType))
+                    BLOCK_RECIPES_BY_TYPE.put(recipeType, new Object2ObjectOpenHashMap<>());
+                BLOCK_RECIPES_BY_TYPE.get(recipeType).put(id, recipe);
+            }
         }
 	}
 

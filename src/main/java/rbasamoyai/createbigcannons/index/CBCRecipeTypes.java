@@ -120,7 +120,7 @@ public enum CBCRecipeTypes implements IRecipeTypeInfo {
 
 		public SimpleRecipeSerializer(Supplier<T> constructor) {
             this.codec = MapCodec.unit(constructor);
-            this.streamCodec = StreamCodec.unit(constructor.get());
+            this.streamCodec = StreamCodec.of((buf, r) -> {}, buf -> constructor.get());
 		}
 
         @Override public MapCodec<T> codec() { return this.codec; }
