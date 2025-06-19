@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import org.slf4j.Logger;
@@ -18,31 +19,33 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.logging.LogUtils;
 
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 
 public abstract class BlockRecipeProvider implements DataProvider {
 
 	private static final Logger LOGGER = LogUtils.getLogger();
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().create();
 
-	private final PackOutput output;
-	protected final String modid;
+    private final PackOutput.PathProvider blockRecipePath;
+    private final CompletableFuture<HolderLookup.Provider> registries;
 	protected ResourceLocation info;
 
-	public BlockRecipeProvider(String modid, PackOutput output) {
-		this.modid = modid;
-		this.output	= output;
+	protected BlockRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+        this.blockRecipePath = output.createPathProvider(PackOutput.Target.DATA_PACK, "createbigcannons/block_recipes");
+        this.registries = registries;
 	}
 
 	protected static final List<DataProvider.Factory<BlockRecipeProvider>> GENERATORS = new ArrayList<>();
 
-    public static void registerAll(Consumer<DataProvider.Factory<?>> cons) {
-		GENERATORS.add(CannonCastRecipeProvider::new);
-		GENERATORS.add(BuiltUpHeatingRecipeProvider::new);
-		GENERATORS.add(DrillBoringRecipeProvider::new);
+    public static void registerAll(Consumer<DataProvider.Factory<?>> cons, CompletableFuture<HolderLookup.Provider> registries) {
+		GENERATORS.add(output -> new CannonCastRecipeProvider(output, registries));
+		GENERATORS.add(output -> new BuiltUpHeatingRecipeProvider(output, registries));
+		GENERATORS.add(output -> new DrillBoringRecipeProvider(output, registries));
 
         cons.accept(output -> new DataProvider() {
             @Override
@@ -65,18 +68,20 @@ public abstract class BlockRecipeProvider implements DataProvider {
 
 	@Override
 	public CompletableFuture<?> run(CachedOutput cache) {
-		Path path = this.output.getOutputFolder();
-		Map<ResourceLocation, FinishedBlockRecipe> map = new HashMap<>();
-		this.registerRecipes(recipe -> {
-			if (map.put(recipe.id(), recipe) != null) {
-				throw new IllegalStateException("Duplicate block recipe " + recipe.id());
-			}
+        return this.registries.thenCompose(reg -> this.run(cache, reg));
+    }
+
+    protected CompletableFuture<?> run(CachedOutput cache, HolderLookup.Provider registries) {
+		Map<ResourceLocation, BlockRecipe> map = new HashMap<>();
+		this.registerRecipes((id, recipe) -> {
+			if (map.put(id, recipe) != null)
+				throw new IllegalStateException("Duplicate block recipe " + id);
 		});
 		return CompletableFuture.allOf(map.entrySet().stream()
 			.map(e -> {
 				ResourceLocation id = e.getKey();
-				FinishedBlockRecipe recipe = e.getValue();
-				return DataProvider.saveStable(cache, recipe.serializeRecipe(), path.resolve("data/" + id.getNamespace() + "/block_recipes/" + id.getPath() + ".json"));
+				BlockRecipe recipe = e.getValue();
+                return DataProvider.saveStable(cache, registries, BlockRecipe.CODEC, recipe, BlockRecipeProvider.this.blockRecipePath.json(id));
 			}).toArray(i -> new CompletableFuture[i]));
 	}
 
@@ -90,7 +95,7 @@ public abstract class BlockRecipeProvider implements DataProvider {
 		}
 	}
 
-	protected abstract void registerRecipes(Consumer<FinishedBlockRecipe> cons);
+	protected abstract void registerRecipes(BiConsumer<ResourceLocation, BlockRecipe> cons);
 
 	@Override
 	public String getName() {

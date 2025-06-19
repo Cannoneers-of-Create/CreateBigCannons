@@ -36,7 +36,7 @@ public class BuiltUpHeatingRecipe implements BlockRecipe {
     private final List<BlockRecipeIngredient> layerList; // For codec writing
 	private final Block result;
 
-    private BuiltUpHeatingRecipe(List<BlockRecipeIngredient> requiredLayers, Block result) {
+    public BuiltUpHeatingRecipe(List<BlockRecipeIngredient> requiredLayers, Block result) {
         this.layerList = requiredLayers;
         this.layers = new HashSet<>(requiredLayers);
         this.result = result;

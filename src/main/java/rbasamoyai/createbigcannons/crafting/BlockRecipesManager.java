@@ -80,9 +80,7 @@ public class BlockRecipesManager {
 		private static final Gson GSON = new Gson();
 		public static final ReloadListener INSTANCE = new ReloadListener();
 
-		public ReloadListener() {
-			super(GSON, "block_recipes");
-		}
+		public ReloadListener() { super(GSON, "createbigcannons/block_recipes"); }
 
 		@Override
 		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resources, ProfilerFiller profiler) {

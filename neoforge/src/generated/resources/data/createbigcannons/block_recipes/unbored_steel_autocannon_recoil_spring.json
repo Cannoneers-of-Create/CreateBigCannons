@@ -1,5 +1,0 @@
-{
-  "type": "createbigcannons:cannon_casting",
-  "cast_shape": "createbigcannons:autocannon_recoil_spring",
-  "result": "createbigcannons:unbored_steel_autocannon_recoil_spring"
-}

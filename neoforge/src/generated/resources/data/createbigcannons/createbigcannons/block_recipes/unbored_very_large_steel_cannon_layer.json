@@ -1,0 +1,10 @@
+{
+  "type": "createbigcannons:cannon_casting",
+  "cast_shape": "createbigcannons:very_large",
+  "fluid": {
+    "type": "fluid_tag",
+    "amount": 1,
+    "fluid_tag": "forge:molten_steel"
+  },
+  "result": "createbigcannons:unbored_very_large_steel_cannon_layer"
+}

@@ -1,0 +1,8 @@
+{
+  "type": "createbigcannons:drill_boring",
+  "input": {
+    "type": "block",
+    "block": "createbigcannons:unbored_cast_iron_autocannon_barrel"
+  },
+  "result": "createbigcannons:cast_iron_autocannon_barrel"
+}

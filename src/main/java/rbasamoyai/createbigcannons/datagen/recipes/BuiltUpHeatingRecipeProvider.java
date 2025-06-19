@@ -1,156 +1,134 @@
 package rbasamoyai.createbigcannons.datagen.recipes;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeIngredient;
-import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
+import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
-import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BuiltUpHeatingRecipeProvider extends BlockRecipeProvider {
 
-	BuiltUpHeatingRecipeProvider(PackOutput output) {
-		this(CreateBigCannons.MOD_ID, output);
-	}
-
-	public BuiltUpHeatingRecipeProvider(String modid, PackOutput output) {
-		super(modid, output);
+	public BuiltUpHeatingRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
+		super(output, registries);
 		this.info = CreateBigCannons.resource("built_up_heating");
 	}
 
 	@Override
-	protected void registerRecipes(Consumer<FinishedBlockRecipe> cons) {
-		builder("steel_cannon_barrel")
+	protected void registerRecipes(BiConsumer<ResourceLocation, BlockRecipe> cons) {
+		builder(CBCBlocks.STEEL_CANNON_BARREL.get())
 		.addLayer(CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.STEEL_CANNON_BARREL.get())
 		.save(cons);
 
-		builder("built_up_steel_cannon_barrel")
+		builder(CBCBlocks.BUILT_UP_STEEL_CANNON_BARREL.get())
 		.addLayer(CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.SMALL_STEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.BUILT_UP_STEEL_CANNON_BARREL.get())
 		.save(cons);
 
-		builder("steel_cannon_chamber")
+		builder(CBCBlocks.STEEL_CANNON_CHAMBER.get())
 		.addLayer(CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.SMALL_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.MEDIUM_STEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.STEEL_CANNON_CHAMBER.get())
 		.save(cons);
 
-		builder("built_up_steel_cannon_chamber")
+		builder(CBCBlocks.BUILT_UP_STEEL_CANNON_CHAMBER.get())
 		.addLayer(CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.SMALL_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.MEDIUM_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.LARGE_STEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.BUILT_UP_STEEL_CANNON_CHAMBER.get())
 		.save(cons);
 
-		builder("thick_steel_cannon_chamber")
+		builder(CBCBlocks.THICK_STEEL_CANNON_CHAMBER.get())
 		.addLayer(CBCBlocks.VERY_SMALL_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.SMALL_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.MEDIUM_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.LARGE_STEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.VERY_LARGE_STEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.THICK_STEEL_CANNON_CHAMBER.get())
 		.save(cons);
 
-		builder("nethersteel_cannon_barrel")
+		builder(CBCBlocks.NETHERSTEEL_CANNON_BARREL.get())
 		.addLayer(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.NETHERSTEEL_CANNON_BARREL.get())
 		.save(cons);
 
-		builder("built_up_nethersteel_cannon_barrel")
+		builder(CBCBlocks.BUILT_UP_NETHERSTEEL_CANNON_BARREL.get())
 		.addLayer(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.BUILT_UP_NETHERSTEEL_CANNON_BARREL.get())
 		.save(cons);
 
-		builder("nethersteel_cannon_chamber")
+		builder(CBCBlocks.NETHERSTEEL_CANNON_CHAMBER.get())
 		.addLayer(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.MEDIUM_NETHERSTEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.NETHERSTEEL_CANNON_CHAMBER.get())
 		.save(cons);
 
-		builder("built_up_nethersteel_cannon_chamber")
+		builder(CBCBlocks.BUILT_UP_NETHERSTEEL_CANNON_CHAMBER.get())
 		.addLayer(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.MEDIUM_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.BUILT_UP_NETHERSTEEL_CANNON_CHAMBER.get())
 		.save(cons);
 
-		builder("thick_nethersteel_cannon_chamber")
+		builder(CBCBlocks.THICK_NETHERSTEEL_CANNON_CHAMBER.get())
 		.addLayer(CBCBlocks.VERY_SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.SMALL_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.MEDIUM_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.LARGE_NETHERSTEEL_CANNON_LAYER.get())
 		.addLayer(CBCBlocks.VERY_LARGE_NETHERSTEEL_CANNON_LAYER.get())
-		.result(CBCBlocks.THICK_NETHERSTEEL_CANNON_CHAMBER.get())
 		.save(cons);
 	}
 
-	protected Builder builder(String name) {
-		return new Builder(name);
-	}
+	protected Builder builder(Block result) { return new Builder(result); }
 
-	private class Builder {
-		private final ResourceLocation id;
+	protected static class Builder {
+		private final Set<BlockRecipeIngredient> layers = new LinkedHashSet<>();
+        private final List<BlockRecipeIngredient> layersList = new ArrayList<>();
+		private final Block result;
 
-		private Set<BlockRecipeIngredient> layers = new LinkedHashSet<>();
-		private Block result = null;
-
-		private Builder(String name) {
-			this.id = CBCUtils.location(BuiltUpHeatingRecipeProvider.this.modid, name);
+		private Builder(Block result) {
+            this.result = result;
 		}
 
 		public Builder addLayer(Block block) {
-			this.layers.add(BlockRecipeIngredient.of(block));
+            BlockRecipeIngredient ingredient = BlockRecipeIngredient.of(block);
+            if (!this.layers.add(ingredient))
+                throw new IllegalStateException("Cannot add the same layer twice: " + CBCRegistryUtils.getBlockLocation(block));
+			this.layers.add(ingredient);
+            this.layersList.add(ingredient);
 			return this;
 		}
 
 		public Builder addLayer(TagKey<Block> tag) {
-			this.layers.add(BlockRecipeIngredient.of(tag));
+            BlockRecipeIngredient ingredient = BlockRecipeIngredient.of(tag);
+            if (!this.layers.add(ingredient))
+                throw new IllegalStateException("Cannot add the same layer twice: #" + tag.location());
+            this.layers.add(ingredient);
+            this.layersList.add(ingredient);
 			return this;
 		}
 
-		public Builder result(Block result) {
-			this.result = result;
-			return this;
-		}
+        public void save(BiConsumer<ResourceLocation, BlockRecipe> cons) {
+            this.save(cons, CBCRegistryUtils.getBlockLocation(this.result));
+        }
 
-		public void save(Consumer<FinishedBlockRecipe> cons) {
-			if (this.layers.isEmpty()) throw new IllegalStateException("Recipe " + this.id + " has no layers specified");
-			Objects.requireNonNull(this.result, "Recipe " + this.id + " has no result specified");
-			cons.accept(new Result(this.layers, this.result, this.id));
+		public void save(BiConsumer<ResourceLocation, BlockRecipe> cons, ResourceLocation id) {
+			if (this.layers.isEmpty())
+                throw new IllegalStateException("Recipe " + id + " has no layers specified");
+			Objects.requireNonNull(this.result, "Recipe " + id + " has no result specified");
+			cons.accept(id, new BuiltUpHeatingRecipe(this.layersList, this.result));
 		}
-	}
-
-	private record Result(Set<BlockRecipeIngredient> layers, Block result, ResourceLocation id) implements FinishedBlockRecipe {
-		@Override
-		public void serializeRecipeData(JsonObject obj) {
-			JsonArray layersArr = new JsonArray();
-			this.layers.stream()
-					.map(BlockRecipeIngredient::stringForSerialization)
-					.forEach(layersArr::add);
-			obj.add("layers", layersArr);
-			obj.addProperty("result", CBCRegistryUtils.getBlockLocation(this.result).toString());
-		}
-
-		@Override public BlockRecipeSerializer<?> getSerializer() { return BlockRecipeSerializer.BUILT_UP_HEATING; }
 	}
 
 }

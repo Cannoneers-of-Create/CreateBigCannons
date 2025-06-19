@@ -11,7 +11,8 @@ Changes:
 - [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
   `RegisterEvent`.
 - Very old CBC objects will no longer be supported.
- Fixes:
+- [1.21.1, Data Packs] Moved block recipes from `block_recipes` to `createbigcannons/block_recipes`
+Fixes:
 - Fixed gold sheet tag and dependent recipes
 - Fixed wrong id on nitropowder milling recipe
 

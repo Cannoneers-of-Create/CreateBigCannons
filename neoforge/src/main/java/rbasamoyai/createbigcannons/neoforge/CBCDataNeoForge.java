@@ -65,7 +65,7 @@ public class CBCDataNeoForge {
         CompletableFuture<HolderLookup.Provider> registries = evt.getLookupProvider();
 
         boolean includeServer = evt.includeServer();
-        BlockRecipeProvider.registerAll(provider -> generator.addProvider(includeServer, provider.create(output)));
+        BlockRecipeProvider.registerAll(provider -> generator.addProvider(includeServer, provider.create(output)), registries);
 
         generator.addProvider(evt.includeClient(), CBCSoundEvents.provider(output));
 

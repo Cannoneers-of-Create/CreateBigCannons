@@ -81,6 +81,15 @@ public abstract sealed class BlockRecipeIngredient implements Predicate<BlockSta
 		}
 
         @Override public Type ingredientType() { return Type.BLOCK; }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (!(obj instanceof BlockIngredient other))
+                return false;
+            return this.block == other.block;
+        }
     }
 
 	public static final class TagIngredient extends BlockRecipeIngredient {
@@ -122,6 +131,15 @@ public abstract sealed class BlockRecipeIngredient implements Predicate<BlockSta
 		}
 
         @Override public Type ingredientType() { return Type.TAG; }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (!(obj instanceof TagIngredient other))
+                return false;
+            return this.tag.equals(other.tag);
+        }
     }
 
     public enum Type implements StringRepresentable {
