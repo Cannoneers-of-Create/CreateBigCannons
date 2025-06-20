@@ -47,6 +47,7 @@ public class CreateBigCannons {
 
 		CBCMunitionPropertiesHandlers.init();
 		ModGroup.register();
+        ModGroup.setDefaultTabToNull();
         CBCDisplaySources.register();
 		CBCBlocks.register();
 		CBCItems.register();

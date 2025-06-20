@@ -38,4 +38,8 @@ public class ModGroupImpl {
 		CreateBigCannons.REGISTRATE.setCreativeTab(TABS.get(key));
 	}
 
+    public static void setDefaultTabToNull() {
+        CreateBigCannons.REGISTRATE.defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
+    }
+
 }

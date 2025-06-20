@@ -242,6 +242,7 @@ public class ModGroup {
 
 	@ExpectPlatform public static Supplier<CreativeModeTab> wrapGroup(String id, Supplier<CreativeModeTab> sup) { throw new AssertionError(); }
 	@ExpectPlatform public static CreativeModeTab.Builder createBuilder() { throw new AssertionError(); }
+    @ExpectPlatform public static void setDefaultTabToNull() { throw new AssertionError(); }
 
 	@ExpectPlatform public static void useModTab(ResourceKey<CreativeModeTab> key) { throw new AssertionError(); }
 
