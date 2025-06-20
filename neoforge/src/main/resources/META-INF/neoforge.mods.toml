@@ -52,20 +52,20 @@ side = "BOTH"
 [[dependencies.createbigcannons]]
 modId = "copycats"
 type = "optional"
-versionRange = "[${copycats_version},)"
+versionRange = "[${copycats_version_range},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "framedblocks"
 type = "optional"
-versionRange = "[${framedblocks_version},)"
+versionRange = "[${framedblocks_version_range},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "curios"
 type = "optional"
-versionRange = "[${curios_version},)"
+versionRange = "[${curios_version_range},)"
 ordering = "NONE"
 side = "BOTH"

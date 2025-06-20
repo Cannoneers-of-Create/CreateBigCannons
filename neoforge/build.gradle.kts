@@ -171,9 +171,9 @@ tasks.processResources {
         "minecraft_version" to minecraftVersion,
         "create_version" to mod.dep("create_neoforge_version").substringBefore("-"),
         //"unify_version" to mod.dep("unify_forge_version"),
-        "copycats_version" to mod.dep("copycats_version"),
-        "framedblocks_version" to mod.dep("framedblocks_version"),
-        "curios_version" to mod.dep("curios_version")
+        "copycats_version_range" to mod.dep("copycats_version_range"),
+        "framedblocks_version_range" to mod.dep("framedblocks_version_range"),
+        "curios_version_range" to mod.dep("curios_version_range")
     )
 }
 
