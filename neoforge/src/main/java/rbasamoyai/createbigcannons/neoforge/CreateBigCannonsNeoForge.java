@@ -7,12 +7,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLLoader;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
@@ -38,6 +40,8 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
 
+import static rbasamoyai.createbigcannons.CreateBigCannons.LOGGER;
+
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannonsNeoForge {
 
@@ -55,7 +59,7 @@ public class CreateBigCannonsNeoForge {
         CreateBigCannons.REGISTRATE.registerEventListeners(modEventBus);
         CreateBigCannons.init();
 		ModGroupImpl.registerNeoForge(modEventBus);
-        CBCParticleTypes.register();
+        if (FMLLoader.getDist() == Dist.CLIENT) CBCParticleTypes.register();
         PARTICLE_REGISTER.register(modEventBus);
         CBCConfigs.register(mlContext::registerConfig);
 
