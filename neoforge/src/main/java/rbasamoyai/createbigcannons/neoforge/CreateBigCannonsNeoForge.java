@@ -40,8 +40,6 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
 
-import static rbasamoyai.createbigcannons.CreateBigCannons.LOGGER;
-
 @Mod(CreateBigCannons.MOD_ID)
 public class CreateBigCannonsNeoForge {
 
