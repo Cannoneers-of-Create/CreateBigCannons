@@ -41,7 +41,7 @@ public record SimpleBlockMountProperties(GeneralMountProperties defaultPropertie
 		public SimpleBlockMountProperties fromJson(BlockEntityType<?> beType, ICannonContraptionType contraptionType, JsonObject obj) {
 			Map<BlockState, GeneralMountProperties> propertiesByState = new Reference2ObjectOpenHashMap<>();
 
-			for (Block block : beType.validBlocks) {
+			for (Block block : beType.getValidBlocks()) {
 				ResourceLocation blockLoc = CBCRegistryUtils.getBlockLocation(block);
 				String blockKey = blockLoc.toString();
 				if (!obj.has(blockKey) && !obj.get(blockKey).isJsonObject()) continue;
