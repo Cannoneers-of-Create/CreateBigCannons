@@ -37,13 +37,19 @@ public class ItemCannonBehavior extends CannonBehavior {
 
 	@Override
 	public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean spawnPacket) {
-		nbt.put("ContainedStack", this.containedStack.save(registries));
+		if (!this.getItem().isEmpty()) {
+            nbt.put("ContainedStack", this.containedStack.save(registries));
+        }
 		super.write(nbt, registries, spawnPacket);
 	}
 
 	@Override
 	public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
-		this.containedStack = ItemStack.parseOptional(registries, nbt.getCompound("ContainedStack"));
+        if (nbt.contains("ContainedStack", CompoundTag.TAG_COMPOUND)) {
+            this.containedStack = ItemStack.parseOptional(registries, nbt.getCompound("ContainedStack"));
+        } else {
+            this.containedStack = ItemStack.EMPTY;
+        }
 		super.read(nbt, registries, clientPacket);
 	}
 
