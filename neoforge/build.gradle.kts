@@ -74,6 +74,7 @@ loom {
 }
 
 repositories {
+    maven("https://maven.createmod.net")
     maven("https://maven.neoforged.net/releases/")
 	maven("https://maven.theillusivec4.top/") // Curios
 	maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")

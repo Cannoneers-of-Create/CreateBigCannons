@@ -22,6 +22,7 @@ architectury.common(stonecutter.tree.branches.mapNotNull {
 })
 
 repositories {
+    maven("https://maven.createmod.net")
 	maven("https://mvn.devos.one/snapshots/") // Create Fabric
 	maven("https://mvn.devos.one/releases/") // Porting Lib
 	maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") // Forge Config API Port
@@ -54,9 +55,8 @@ dependencies {
     //modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}+${minecraftVersion}")
 
     modImplementation("com.simibubi.create:create-${minecraftVersion}:${mod.dep("create_neoforge_version")}:slim") { isTransitive = false }
-    modCompileOnly("net.createmod.ponder:Ponder-NeoForge-${minecraftVersion}:${mod.dep("ponder_neoforge_version")}")
-    modCompileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraftVersion}:${mod.dep("flywheel_neoforge_version")}")
-    modRuntimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraftVersion}:${mod.dep("flywheel_neoforge_version")}")
+    modImplementation("net.createmod.ponder:Ponder-Common-${minecraftVersion}:${mod.dep("ponder_neoforge_version")}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-common-mojmap-api-${minecraftVersion}:${mod.dep("flywheel_neoforge_version")}")
     modCompileOnly("com.tterrag.registrate:Registrate:${mod.dep("registrate_neoforge_version")}")
 
     "io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras_version")}".let {
@@ -65,7 +65,7 @@ dependencies {
     }
 
     compileOnly("io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras_version")}")
-    annotationProcessor(include("io.github.llamalad7:mixinextras-forge:${mod.dep("mixin_extras_version")}"){})
+    annotationProcessor(include("io.github.llamalad7:mixinextras-neoforge:${mod.dep("mixin_extras_version")}"){})
 
 	// Ritchie's Projectile Library
     val rplSuffix = if (mod.dep("use_rpl_nightly").toBoolean()) "-build.${mod.dep("rpl_build")}" else ""
