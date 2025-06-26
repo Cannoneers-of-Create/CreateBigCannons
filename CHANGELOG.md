@@ -1,18 +1,21 @@
 # Changelog
 
-## [5.9.1] - Unreleased
+## [5.9.2] - Unreleased
 
-**Create Big Cannons 5.9.1, now supporting Create v6.0.6 on Forge 1.20.1 and NeoForge 1.21.1.**
+Changes:
+- [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
+  `RegisterEvent`.
+
+## [5.9.1] - 2025-06-25
+
+**Create Big Cannons 5.9.1, now supporting Create v6.0.6 on Forge 1.20.1.**
 
 Changes:
 - `block_hit_effects` files have changed format
     - now only accept `impact_particles` and `deflect_particles` lists
     - particles formatted in JSON rather than command string
-- [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
-  `RegisterEvent`.
 - Very old CBC objects will no longer be supported.
-- [1.21.1, Data Packs] Moved block recipes from `block_recipes` to `createbigcannons/block_recipes`
-Fixes:
+  Fixes:
 - Fixed gold sheet tag and dependent recipes
 - Fixed wrong id on nitropowder milling recipe
 
