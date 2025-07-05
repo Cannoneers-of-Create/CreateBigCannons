@@ -22,5 +22,5 @@ Generated localization files are located under
 [`forge/src/generated/resources/assets/createbigcannons/lang`](forge/src/generated/resources/assets/createbigcannons/lang).
 
 [2] All handmade textures and models are located under
-[`common/src/main/resources/assets/createbigcannons`](common/src/main/resources/assets/createbigcannons).
+[`src/main/resources/assets/createbigcannons`](src/main/resources/assets/createbigcannons).
 
