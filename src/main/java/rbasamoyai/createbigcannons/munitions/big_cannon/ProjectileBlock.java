@@ -13,7 +13,9 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -53,7 +55,8 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 
 	public static ItemStack getTracerFromItemStack(ItemStack stack) {
         ItemContainerContents items = stack.getOrDefault(CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
-        return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+        // return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY; todo: fix
+        return new ItemStack(Items.NETHERITE_HOE, 128);
 	}
 
 	@Override

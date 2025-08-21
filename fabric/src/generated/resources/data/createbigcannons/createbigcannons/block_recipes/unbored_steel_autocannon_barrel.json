@@ -1,0 +1,10 @@
+{
+  "type": "createbigcannons:cannon_casting",
+  "cast_shape": "createbigcannons:autocannon_barrel",
+  "fluid": {
+    "type": "fluid_tag",
+    "amount": 1,
+    "fluid_tag": "c:molten_steel"
+  },
+  "result": "createbigcannons:unbored_steel_autocannon_barrel"
+}

@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "createbigcannons:block_nethersteel"
+      }
+    }
+  ],
+  "type": "createbigcannons:melting",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:block_nethersteel"
+    }
+  ],
+  "processing_time": 1620,
+  "results": [
+    {
+      "amount": 65610,
+      "id": "createbigcannons:molten_nethersteel"
+    }
+  ]
+}

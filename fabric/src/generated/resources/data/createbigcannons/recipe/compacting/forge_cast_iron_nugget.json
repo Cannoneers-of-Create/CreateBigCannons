@@ -1,0 +1,15 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "type": "fluid_tag",
+      "amount": 810,
+      "fluid_tag": "c:molten_cast_iron"
+    }
+  ],
+  "results": [
+    {
+      "id": "createbigcannons:cast_iron_nugget"
+    }
+  ]
+}

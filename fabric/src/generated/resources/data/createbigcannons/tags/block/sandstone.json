@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:sandstone",
+      "required": false
+    },
+    {
+      "id": "#c:sandstone",
+      "required": false
+    },
+    {
+      "id": "#c:sandstone",
+      "required": false
+    }
+  ]
+}

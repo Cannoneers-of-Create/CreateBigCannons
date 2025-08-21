@@ -1,0 +1,30 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "createbigcannons:spring_wire"
+  },
+  "loops": 3,
+  "results": [
+    {
+      "id": "createbigcannons:recoil_spring"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:pressing",
+      "ingredients": [
+        {
+          "item": "createbigcannons:partial_recoil_spring"
+        }
+      ],
+      "results": [
+        {
+          "id": "createbigcannons:partial_recoil_spring"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "createbigcannons:partial_recoil_spring"
+  }
+}

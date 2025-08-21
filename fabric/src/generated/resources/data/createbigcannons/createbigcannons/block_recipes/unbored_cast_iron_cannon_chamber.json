@@ -1,0 +1,10 @@
+{
+  "type": "createbigcannons:cannon_casting",
+  "cast_shape": "createbigcannons:medium",
+  "fluid": {
+    "type": "fluid_tag",
+    "amount": 1,
+    "fluid_tag": "c:molten_cast_iron"
+  },
+  "result": "createbigcannons:unbored_cast_iron_cannon_chamber"
+}

@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/brass",
+      "required": false
+    },
+    {
+      "id": "#c:ingots/brass",
+      "required": false
+    },
+    {
+      "id": "#c:brass_ingots",
+      "required": false
+    }
+  ]
+}

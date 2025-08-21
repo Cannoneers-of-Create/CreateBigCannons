@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "tag": "createbigcannons:glass"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "pattern": [
+    " L ",
+    "LGL",
+    " W "
+  ],
+  "result": {
+    "count": 1,
+    "id": "createbigcannons:gas_mask"
+  }
+}

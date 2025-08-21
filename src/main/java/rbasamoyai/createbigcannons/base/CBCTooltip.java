@@ -70,7 +70,7 @@ public class CBCTooltip {
 		return Component.literal(" " + TooltipHelper.makeProgressBar(5, outOfFive)).withStyle(color);
 	}
 
-	public static FontHelper.Palette getPalette(Level level, ItemStack stack) {
+	public static FontHelper.Palette getPalette() {
 		return FontHelper.Palette.STANDARD_CREATE;
 	}
 
@@ -82,7 +82,7 @@ public class CBCTooltip {
 			return;
 		}
 
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		BigCannonMaterialProperties material = block.getCannonMaterial().properties();
 		Minecraft mc = Minecraft.getInstance();
 		boolean hasGoggles = GogglesItem.isWearingGoggles(mc.player);
@@ -146,7 +146,7 @@ public class CBCTooltip {
 			return;
 		}
 
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		AutocannonMaterial material = block.getAutocannonMaterial();
 		Minecraft mc = Minecraft.getInstance();
 		boolean hasGoggles = GogglesItem.isWearingGoggles(mc.player);
@@ -179,7 +179,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) {
 			return;
 		}
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		String key = stack.getDescriptionId() + ".tooltip.maximumCharges";
 		tooltip.add(Component.translatable(key).withStyle(ChatFormatting.GRAY));
 		MortarStoneProperties properties = CBCMunitionPropertiesHandlers.MORTAR_STONE.getPropertiesOf(CBCEntityTypes.MORTAR_STONE.get());
@@ -192,7 +192,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) {
 			return;
 		}
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		String keyBase = stack.getDescriptionId() + ".tooltip.";
 
 		String key = keyBase + "pushStrength";
@@ -213,7 +213,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) {
 			return;
 		}
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		String keyBase = stack.getDescriptionId() + ".tooltip.";
 
 		String key = keyBase + "reach";
@@ -227,7 +227,7 @@ public class CBCTooltip {
 
 	public static void appendImpactFuzeText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag, float detChance, int fuzeDurability) {
 		if (!Screen.hasShiftDown()) return;
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		String chanceKey = stack.getDescriptionId() + ".tooltip.chance";
 		tooltip.add(Component.literal(I18n.get(chanceKey)).withStyle(ChatFormatting.GRAY));
 		tooltip.addAll(TooltipHelper.cutStringTextComponent(I18n.get(chanceKey + ".value", (int) (detChance * 100.0f)), palette.primary(), palette.highlight(), 1));
@@ -241,7 +241,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) {
 			return;
 		}
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		String key = block.getDescriptionId() + ".tooltip";
 
 		String fire = I18n.get(CBCClientCommon.FIRE_CONTROLLED_CANNON.getTranslatedKeyMessage().getString());
@@ -264,7 +264,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) {
 			return;
 		}
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.added_muzzle_velocity";
 		tooltip.add(Component.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		String s = String.format("%+.2f", propellant.getChargePower(stack) * 20);
@@ -279,7 +279,7 @@ public class CBCTooltip {
 		if (!Screen.hasShiftDown()) {
 			return;
 		}
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.added_stress";
 		tooltip.add(Component.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		String s = String.format("%+.2f", propellant.getStressOnCannon(stack));
@@ -291,7 +291,7 @@ public class CBCTooltip {
 	public static void appendBigCartridgePropellantPowerText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag,
                                                              BigCartridgeBlock propellant) {
 		if (!Screen.hasShiftDown()) return;
-		FontHelper.Palette palette = getPalette(ctx.level(), stack);
+		FontHelper.Palette palette = getPalette();
 		String key = "block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.power";
 		tooltip.add(Component.literal(I18n.get(key)).withStyle(ChatFormatting.GRAY));
 		int min = BigCartridgeBlockItem.getPower(stack);

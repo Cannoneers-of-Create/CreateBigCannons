@@ -1,0 +1,12 @@
+{
+  "values": [
+    {
+      "id": "#createbigcannons:sheet_gold",
+      "required": false
+    },
+    {
+      "id": "#createbigcannons:sheet_copper",
+      "required": false
+    }
+  ]
+}

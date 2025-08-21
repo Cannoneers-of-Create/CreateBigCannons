@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "createbigcannons:block_bronze"
+      }
+    }
+  ],
+  "type": "createbigcannons:melting",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:block_bronze"
+    }
+  ],
+  "processing_time": 1620,
+  "results": [
+    {
+      "amount": 65610,
+      "id": "createbigcannons:molten_bronze"
+    }
+  ]
+}

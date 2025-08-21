@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:ingots/nethersteel",
+      "required": false
+    },
+    {
+      "id": "#c:ingots/nethersteel",
+      "required": false
+    },
+    {
+      "id": "#c:nethersteel_ingots",
+      "required": false
+    }
+  ]
+}
