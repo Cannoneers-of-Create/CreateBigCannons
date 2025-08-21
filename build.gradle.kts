@@ -37,6 +37,13 @@ loom {
         runDir = "../../../run"
         vmArgs("-Dmixin.debug.export=true")
     }
+    runs.configureEach {
+        vmArg("-XX:+AllowEnhancedClassRedefinition")
+        vmArg("-XX:+IgnoreUnrecognizedVMOptions")
+        vmArg("-Dmixin.debug.export=true")
+        vmArg("-Dmixin.env.remapRefMap=true")
+        vmArg("-Dmixin.env.refMapRemappingFile=${projectDir}/build/createSrgToMcp/output.srg")
+    }
 }
 
 dependencies {
@@ -45,19 +52,19 @@ dependencies {
 		officialMojangMappings { nameSyntheticMembers = false }
 		parchment("org.parchmentmc.data:parchment-${minecraftVersion}:${mod.dep("parchment_version")}@zip")
 	})
-    if (stonecutter.eval(minecraftVersion, "<1.21.1")) {
-        "forge"("net.minecraftforge:forge:$minecraftVersion-${mod.dep("forge_loader_version")}")
-    } else {
-        "neoForge"("net.neoforged:neoforge:${mod.dep("neoforge_loader_version")}")
-    }
 
-    //modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader_version")}")
-    //modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}+${minecraftVersion}")
+    modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader_version")}")
 
     modImplementation("com.simibubi.create:create-${minecraftVersion}:${mod.dep("create_neoforge_version")}:slim") { isTransitive = false }
-    modImplementation("net.createmod.ponder:Ponder-Common-${minecraftVersion}:${mod.dep("ponder_neoforge_version")}")
-    modCompileOnly("dev.engine-room.flywheel:flywheel-common-mojmap-api-${minecraftVersion}:${mod.dep("flywheel_neoforge_version")}")
-    modCompileOnly("com.tterrag.registrate:Registrate:${mod.dep("registrate_neoforge_version")}")
+    modImplementation("net.createmod.ponder:Ponder-NeoForge-${minecraftVersion}:${mod.dep("ponder_neoforge_version")}")
+    modCompileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraftVersion}:${mod.dep("flywheel_neoforge_version")}")
+    modRuntimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraftVersion}:${mod.dep("flywheel_neoforge_version")}")
+    modImplementation("com.tterrag.registrate:Registrate:${mod.dep("registrate_neoforge_version")}")
+
+    compileOnly("net.neoforged.fancymodloader:loader:9.0.18")
+    compileOnly("net.neoforged:neoforge:${mod.dep("neoforge_loader_version")}")
+    compileOnly("com.google.code.findbugs:jsr305:3.0.2")
+    modCompileOnly("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}+${minecraftVersion}")
 
     "io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras_version")}".let {
         annotationProcessor(it)
