@@ -27,6 +27,7 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
+import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvider {
 
@@ -74,12 +75,11 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 
 	public static ItemStack getMainAmmoStack(ItemStack container) {
         ItemContainerContents items = container.getOrDefault(CBCDataComponents.AMMO, ItemContainerContents.EMPTY);
-		return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+		return items.copyOne();
 	}
 
 	public static ItemStack getTracerAmmoStack(ItemStack container) {
-        ItemContainerContents items = container.getOrDefault(CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
-        return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+        return ProjectileBlock.getTracerFromItemStack(container);
 	}
 
 	public static int getTracerSpacing(ItemStack container) {

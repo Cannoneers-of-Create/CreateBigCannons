@@ -236,7 +236,7 @@ public class CBCItems {
                     EquipmentSlotGroup.MAINHAND)
                 .add(
                     Attributes.ATTACK_KNOCKBACK,
-                    new AttributeModifier(Attributes.ATTACK_KNOCKBACK.getKey().location(), 2.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    new AttributeModifier(Attributes.ATTACK_KNOCKBACK.unwrapKey().get().location(), 2.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
                     EquipmentSlotGroup.MAINHAND)
                 .build()))
 		.model((c, p) -> {})

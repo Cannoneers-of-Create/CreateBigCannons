@@ -35,7 +35,7 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 		FlakAutocannonProjectile projectile = CBCEntityTypes.FLAK_AUTOCANNON.create(level);
 		if (stack.has(CBCDataComponents.FUZE)) {
             ItemContainerContents items = stack.getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
-            ItemStack fuze = items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+            ItemStack fuze = items.copyOne();
 			projectile.setFuze(fuze);
 		}
 		return projectile;
@@ -45,7 +45,7 @@ public class FlakAutocannonRoundItem extends AutocannonRoundItem implements Fuze
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
         ItemContainerContents items = stack.getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
-        ItemStack fuze = items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+        ItemStack fuze = items.copyOne();
 		if (!fuze.isEmpty()) {
 			CreateLang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")

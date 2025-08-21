@@ -20,7 +20,7 @@ public class ProjectileBlockItem extends BlockItem {
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
         ItemContainerContents items = stack.getOrDefault(CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
-		ItemStack tracer = items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+		ItemStack tracer = items.copyOne();
 		if (!tracer.isEmpty())
 			tooltip.add(Component.translatable("tooltip.createbigcannons.tracer"));
 	}

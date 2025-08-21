@@ -41,7 +41,7 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 
 	public static ItemStack getFuzeFromItemStack(ItemStack stack) {
         ItemContainerContents items = stack.getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
-		return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+		return items.copyOne();
 	}
 
 	@Override

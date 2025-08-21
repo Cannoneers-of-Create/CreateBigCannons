@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -8,6 +9,7 @@ import javax.annotation.Nullable;
 import com.google.common.collect.Lists;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
@@ -75,7 +77,7 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 
 	public static ItemStack getProjectileStack(ItemStack stack) {
         ItemContainerContents items = stack.getOrDefault(CBCDataComponents.PROJECTILE, ItemContainerContents.EMPTY);
-        return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+        return items.copyOne();
 	}
 
 	public static boolean hasProjectile(ItemStack stack) {
@@ -98,7 +100,7 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 		if (!hasProjectile(stack))
             return;
         ItemContainerContents items = stack.getOrDefault(CBCDataComponents.PROJECTILE, ItemContainerContents.EMPTY);
-        ItemStack projectile = items.getStackInSlot(0);
+        ItemStack projectile = items.copyOne();
         projectile.set(CBCDataComponents.AUTOCANNON_TRACER, value);
         stack.set(CBCDataComponents.PROJECTILE, ItemContainerContents.fromItems(Lists.newArrayList(projectile)));
 	}
