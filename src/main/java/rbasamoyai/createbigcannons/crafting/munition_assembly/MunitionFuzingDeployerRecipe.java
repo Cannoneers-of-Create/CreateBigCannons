@@ -62,7 +62,7 @@ public class MunitionFuzingDeployerRecipe implements Recipe<RecipeInput> { // TO
             result.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(Lists.newArrayList(fuzeCopy)));
 		} else if (result.getItem() instanceof AutocannonCartridgeItem) {
             ItemContainerContents items = result.getOrDefault(CBCDataComponents.PROJECTILE, ItemContainerContents.EMPTY);
-            ItemStack projectile = items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY; // This should not be EMPTY
+            ItemStack projectile = items.copyOne(); // This should not be EMPTY
             if (!projectile.isEmpty()) {
                 projectile.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(Lists.newArrayList(fuzeCopy)));
                 result.set(CBCDataComponents.PROJECTILE, ItemContainerContents.fromItems(Lists.newArrayList(projectile)));

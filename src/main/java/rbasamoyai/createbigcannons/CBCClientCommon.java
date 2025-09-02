@@ -129,7 +129,7 @@ public class CBCClientCommon {
 			if (!(stack.getItem() instanceof FuzedProjectileBlockItem fuzedItem) || !(fuzedItem.getBlock() instanceof FuzedProjectileBlock<?, ?> fuzedBlock))
 				return 0;
             ItemContainerContents items = stack.getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
-            ItemStack fuze = items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+            ItemStack fuze = items.copyOne();
 			if (fuze.isEmpty())
 				return 0;
 			return fuzedBlock.isBaseFuze() ? 2 : 1;

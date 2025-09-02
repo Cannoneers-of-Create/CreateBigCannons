@@ -90,7 +90,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.BLOCK_TAGS, prov -> {
 				TagAppender<Block> app = ((TagsProvider<Block>) prov).tag(tag);
 				for (TagKey<Block> t : tags)
-                    app.addOptionalTag(t);
+                    app.addOptionalTag(t.location());
 			});
 		}
 
@@ -252,7 +252,7 @@ public class CBCTags {
 			REGISTRATE.addDataGenerator(ProviderType.ITEM_TAGS, prov -> {
 				TagAppender<Item> app = ((TagsProvider<Item>) prov).tag(tag);
 				for (TagKey<Item> t : tags) {
-                    app.addOptionalTag(t);
+                    app.addOptionalTag(t.location());
 				}
 			});
 		}

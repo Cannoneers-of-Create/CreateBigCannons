@@ -13,6 +13,7 @@ import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 import rbasamoyai.createbigcannons.munitions.FuzedItemMunition;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonCartridgeItem;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
 
 public class FuzeRemovalRecipe extends CustomRecipe {
 
@@ -64,8 +65,7 @@ public class FuzeRemovalRecipe extends CustomRecipe {
 				return ItemStack.EMPTY;
 			}
 		}
-        ItemContainerContents items = target.getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
-		return items.getSlots() > 0 ? items.getStackInSlot(0) : ItemStack.EMPTY;
+        return FuzedProjectileBlock.getFuzeFromItemStack(target);
 	}
 
 	@Override
