@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.multiloader.neoforge;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.google.gson.JsonElement;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
@@ -22,10 +23,13 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -56,6 +60,7 @@ import rbasamoyai.createbigcannons.neoforge.crafting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.neoforge.crafting.CannonCastBlockEntityRenderer;
 import rbasamoyai.createbigcannons.neoforge.crafting.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.neoforge.index.fluid_utils.NeoForgeFluidBuilder;
+import rbasamoyai.createbigcannons.neoforge.mixin.ContextAwareReloadListenerAccessor;
 import rbasamoyai.createbigcannons.neoforge.munitions.fluid_shell.FluidShellBlockEntity;
 
 public class IndexPlatformImpl {
@@ -173,5 +178,9 @@ public class IndexPlatformImpl {
 	public static void updateSprite(TerrainParticle particle, BlockState state, BlockPos pos) {
 		particle.updateSprite(state, pos);
 	}
+
+    public static RegistryOps<JsonElement> makeRegistryOps(RegistryAccess access, SimpleJsonResourceReloadListener listener) {
+        return ((ContextAwareReloadListenerAccessor) listener).callMakeConditionalOps();
+    }
 
 }

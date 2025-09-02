@@ -17,6 +17,7 @@
     "CannonMountPointMixin",
     "CBCFlowingFluidMixin",
     "CBCLiquidBlockMixin",
+    "ContextAwareReloadListenerAccessor",
     "FixedCannonMountBlockEntityMixin",
     "GasMaskItemMixin",
     "MountedAutocannonContraptionMixin",

@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.multiloader;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.google.gson.JsonElement;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.tterrag.registrate.AbstractRegistrate;
@@ -18,10 +19,13 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -136,5 +140,7 @@ public class IndexPlatform {
 	public static void updateSprite(TerrainParticle particle, BlockState state, BlockPos pos) { throw new AssertionError(); }
 
     @ExpectPlatform public static PotionContents getPotionContentsFromFluidStack(EndFluidStack fstack) { throw new AssertionError(); }
+
+    @ExpectPlatform public static RegistryOps<JsonElement> makeRegistryOps(RegistryAccess access, SimpleJsonResourceReloadListener listener) { throw new AssertionError(); }
 
 }

@@ -77,7 +77,7 @@ public class CBCCommonNeoForgeEvents {
 	}
 
 	public static void onAddReloadListeners(AddReloadListenerEvent event) {
-		CBCCommonEvents.onAddReloadListeners((m, l) -> event.addListener(m));
+		CBCCommonEvents.onAddReloadListeners((m, l) -> event.addListener(m), event.getRegistryAccess());
 	}
 
 	public static void onDeployerRecipeSearch(DeployerRecipeSearchEvent evt) {

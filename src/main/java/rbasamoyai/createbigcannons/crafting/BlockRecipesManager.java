@@ -11,6 +11,7 @@ import com.google.gson.JsonParseException;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Reference2ObjectOpenHashMap;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -23,6 +24,7 @@ import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.RootPacket;
 
@@ -73,15 +75,19 @@ public class BlockRecipesManager {
 
 	public static class ReloadListener extends SimpleJsonResourceReloadListener {
 		private static final Gson GSON = new Gson();
-		public static final ReloadListener INSTANCE = new ReloadListener();
 
-		public ReloadListener() { super(GSON, "createbigcannons/block_recipes"); }
+        private final RegistryAccess registryAccess;
+
+		public ReloadListener(RegistryAccess registryAccess) {
+            super(GSON, "createbigcannons/block_recipes");
+            this.registryAccess = registryAccess;
+        }
 
 		@Override
 		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager resources, ProfilerFiller profiler) {
 			clear();
 
-            RegistryOps<JsonElement> registryOps = this.makeConditionalOps();
+            RegistryOps<JsonElement> registryOps = IndexPlatform.makeRegistryOps(this.registryAccess, this);
 
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 				JsonElement el = entry.getValue();

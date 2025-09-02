@@ -10,6 +10,7 @@ import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -246,9 +247,9 @@ public class CBCCommonEvents {
 		FluidDragHandler.syncTo(player);
 	}
 
-	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons) {
+	public static void onAddReloadListeners(BiConsumer<PreparableReloadListener, ResourceLocation> cons, RegistryAccess access) {
 		cons.accept(BlockRecipeFinder.LISTENER, CreateBigCannons.resource("block_recipe_finder"));
-		cons.accept(BlockRecipesManager.ReloadListener.INSTANCE, CreateBigCannons.resource("block_recipe_manager"));
+		cons.accept(new BlockRecipesManager.ReloadListener(access), CreateBigCannons.resource("block_recipe_manager"));
 		cons.accept(BlockArmorPropertiesHandler.BlockReloadListener.INSTANCE, CreateBigCannons.resource("block_hardness_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListenerProjectiles.INSTANCE, CreateBigCannons.resource("projectile_properties_handler"));
 		cons.accept(MunitionPropertiesHandler.ReloadListenerBlockPropellant.INSTANCE, CreateBigCannons.resource("block_propellant_properties_handler"));

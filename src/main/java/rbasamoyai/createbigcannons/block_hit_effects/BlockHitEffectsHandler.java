@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.tag_utils.TypeAndTagDataHolder;
+import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
@@ -42,7 +43,7 @@ public class BlockHitEffectsHandler {
 		@Override
 		protected void apply(Map<ResourceLocation, JsonElement> map, ResourceManager manager, ProfilerFiller profiler) {
 			this.holder.cleanUp();
-            RegistryOps<JsonElement> registryops = this.makeConditionalOps();
+            RegistryOps<JsonElement> registryops = IndexPlatform.makeRegistryOps(null, this); // FIXME need registry access for non-neoforge platforms
 
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 				JsonElement el = entry.getValue();
