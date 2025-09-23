@@ -10,10 +10,10 @@
 
 <h3> <a href="https://www.curseforge.com/minecraft/mc-mods/create-big-cannons"> <strong style="color: #f16436"> DOWNLOAD </strong> </a> </h3>
 
-<p><strong>Create Big Cannons</strong> is an addon for Create about building big cannons that work with Create.</p>
+<p><strong>Create Big Cannons</strong> is an addon for Create that is about building big cannons that work with Create.</p>
 <br>
 <p><img src="./promotional/casemate_gun.png" width="472" height="250"></p>
-<h4><strong>What's there?</strong></h4>
+<h4><strong>What's added?</strong></h4>
 <p>Create Big Cannons (CBC) has:</p>
 <ul>
 <li>Multiblock big cannons, built out of various cannon blocks with different materials of different tiers</li>
@@ -37,7 +37,7 @@
 <p><a href="https://www.curseforge.com/minecraft/mc-mods/create" rel="nofollow">Create</a> is required.</p>
 <p>A mod that adds bronze and steel is needed to access the bronze and steel cannon materials. <a href="https://www.curseforge.com/minecraft/mc-mods/ingotcraft" rel="nofollow">IngotCraft</a> is the recommended mod. This is planned to change in the future.</p>
 <p><strong>Will older versions be supported?</strong></p>
-<p>No. Porting is allowed; see <a href=https://github.com/Cannoneers-of-Create/CreateBigCannons/blob/1.18.2/dev/LICENSE.md>the license</a> for more info.</p>
+<p>No, But Porting is allowed; see <a href=https://github.com/Cannoneers-of-Create/CreateBigCannons/blob/1.18.2/dev/LICENSE.md>the license</a> for more info.</p>
 <br>
 <p>An rbasamoyai mod.</p>
 
@@ -57,4 +57,6 @@ Create Big Cannons depends on code from Ritchie's Projectile Library, which is
 licensed under the MIT license. See [RPL's LICENSE](https://github.com/Wagers-of-Industrial-Warfare/RitchiesProjectileLib/blob/1.18.2/dev/LICENSE)
 for details.
 
-Create Big Cannons derives some of its textures from Create.
+Create Big Cannons derives some of its textures from Create, which is licensed under the MIT
+license. See [Create's LICENSE](https://github.com/Creators-of-Create/Create/blob/mc1.18/dev/LICENSE)
+for details.
