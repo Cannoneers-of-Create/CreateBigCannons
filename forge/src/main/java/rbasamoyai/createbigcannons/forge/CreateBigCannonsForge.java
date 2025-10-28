@@ -13,6 +13,7 @@ import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -35,7 +36,9 @@ import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.forge.network.CBCNetworkForge;
 import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
@@ -62,6 +65,7 @@ public class CreateBigCannonsForge {
         CBCConfigs.register(mlContext::registerConfig);
 
         modEventBus.addListener(this::onCommonSetup);
+        modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::onNewRegistry);
         modEventBus.addListener(this::onLoadConfig);
         modEventBus.addListener(this::onReloadConfig);
@@ -87,6 +91,11 @@ public class CreateBigCannonsForge {
 		DefaultCannonMountPropertiesSerializers.init();
 		CBCModsForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsForge.COPYCATS::getBlock));
 		CBCModsForge.FRAMEDBLOCKS.executeIfInstalled(() -> () -> FramedBlocksCompat.init());
+    }
+
+    private void onClientSetup(FMLClientSetupEvent event) {
+        CBCEntityTypes.registerVisuals();
+        CBCBlockEntities.registerVisuals();
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {

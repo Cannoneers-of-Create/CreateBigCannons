@@ -22,6 +22,7 @@ architectury.common(stonecutter.tree.branches.mapNotNull {
 })
 
 repositories {
+    maven("https://maven.createmod.net")
 	maven("https://mvn.devos.one/snapshots/") // Create Fabric
 	maven("https://mvn.devos.one/releases/") // Porting Lib
 	maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") // Forge Config API Port
@@ -42,8 +43,8 @@ dependencies {
 
 	modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader_version")}")
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}")
-	modCompileOnly("com.simibubi.create:create-fabric-${mod.dep("minecraft_version")}:${mod.dep("create_fabric_version")}")
-	modCompileOnly("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}")
+    modCompileOnly("com.simibubi.create:create-fabric:${mod.dep("create_fabric_version")}")
+    modCompileOnly("net.fabricmc.fabric-api:fabric-api:${mod.dep("fabric_api_version")}")
 
 	"io.github.llamalad7:mixinextras-common:${mod.dep("mixin_extras")}".let {
 		annotationProcessor(it)
