@@ -65,7 +65,6 @@ public class CreateBigCannonsForge {
         CBCConfigs.register(mlContext::registerConfig);
 
         modEventBus.addListener(this::onCommonSetup);
-        modEventBus.addListener(this::onClientSetup);
         modEventBus.addListener(this::onNewRegistry);
         modEventBus.addListener(this::onLoadConfig);
         modEventBus.addListener(this::onReloadConfig);
@@ -91,11 +90,6 @@ public class CreateBigCannonsForge {
 		DefaultCannonMountPropertiesSerializers.init();
 		CBCModsForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsForge.COPYCATS::getBlock));
 		CBCModsForge.FRAMEDBLOCKS.executeIfInstalled(() -> () -> FramedBlocksCompat.init());
-    }
-
-    private void onClientSetup(FMLClientSetupEvent event) {
-        CBCEntityTypes.registerVisuals();
-        CBCBlockEntities.registerVisuals();
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {
