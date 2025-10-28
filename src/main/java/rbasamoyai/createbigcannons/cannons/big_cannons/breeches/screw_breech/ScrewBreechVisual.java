@@ -13,7 +13,6 @@ import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
-import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -25,21 +24,14 @@ public class ScrewBreechVisual extends OrientedRotatingVisual<ScrewBreechBlockEn
 	private final OrientedInstance screwLock;
 	private final Direction facing;
 
-	protected ScrewBreechVisual(VisualizationContext ctx, ScrewBreechBlockEntity tile, float partialTick, Direction to) {
-		super(ctx, tile, partialTick, Direction.SOUTH, to, Models.partial(AllPartialModels.SHAFT_HALF));
+	public ScrewBreechVisual(VisualizationContext ctx, ScrewBreechBlockEntity tile, float partialTick) {
+		super(ctx, tile, partialTick, Direction.SOUTH, tile.getBlockState().getValue(BlockStateProperties.FACING), Models.partial(AllPartialModels.SHAFT_HALF));
 		this.breech = tile;
-        this.facing = to;
+        this.facing = tile.getBlockState().getValue(BlockStateProperties.FACING);
         this.screwLock = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCClientCommon.getScrewBreechForState(this.blockState),
             this.facing)).createInstance();
         this.transformModels(partialTick);
 	}
-
-    public static SimpleBlockEntityVisualizer.Factory<ScrewBreechBlockEntity> factory() {
-        return (ctx, be, partialTick) -> {
-            Direction to = be.getBlockState().getValue(BlockStateProperties.FACING);
-            return new ScrewBreechVisual(ctx, be, partialTick, to);
-        };
-    }
 
 	private void transformModels(float partialTick) {
 		float renderedScrewLockOffset = this.breech.getRenderedBlockOffset(partialTick);

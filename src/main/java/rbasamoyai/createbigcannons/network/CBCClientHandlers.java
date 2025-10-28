@@ -26,6 +26,7 @@ import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffectsHandler;
 import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.ProjectileHitEffectsHandler;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.sounds.AirAbsorptionWrapper;
@@ -47,10 +48,10 @@ public class CBCClientHandlers {
 		Entity entity = mc.level.getEntity(pkt.id());
 		if (!(entity instanceof AbstractContraptionEntity ace)) return;
 		Contraption contraption = ace.getContraption();
-		if (contraption != null) {
+		if (contraption instanceof AbstractMountedCannonContraption cannon) {
 			contraption.getBlocks().putAll(pkt.changes());
 			for (Map.Entry<BlockPos, StructureBlockInfo> entry : pkt.changes().entrySet()) {
-				BlockEntity be = contraption.presentBlockEntities.get(entry.getKey());
+				BlockEntity be = cannon.presentBlockEntities.get(entry.getKey());
 				StructureBlockInfo info = entry.getValue();
 				if (be == null || info.nbt() == null) continue;
 				CompoundTag copy = info.nbt().copy();
@@ -59,7 +60,7 @@ public class CBCClientHandlers {
 				copy.putInt("z", info.pos().getZ());
 				be.load(copy);
 			}
-			contraption.deferInvalidate = true;
+			contraption.invalidateClientContraptionChildren();
 		}
 	}
 

@@ -9,11 +9,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 
+//TODO: refactor this to Create's Interactability Interface
 public interface InteractableCannonBlock {
 
 	boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand hand, Level level,
-									 Contraption contraption, BlockEntity be, StructureBlockInfo info, PitchOrientedContraptionEntity entity);
+                                     AbstractMountedCannonContraption contraption, BlockEntity be, StructureBlockInfo info, PitchOrientedContraptionEntity entity);
 
 }

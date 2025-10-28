@@ -37,6 +37,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.MountedBigCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBaseBlock;
@@ -101,8 +102,8 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 
 	@Override
 	public boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,
-											Level level, Contraption contraption, BlockEntity be,
-											StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
+                                            Level level, AbstractMountedCannonContraption contraption, BlockEntity be,
+                                            StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
 		if (!(contraption instanceof MountedBigCannonContraption cannon)
 			|| !(be instanceof QuickfiringBreechBlockEntity breech)
 			|| breech.cannonBehavior().isConnectedTo(side)) return false;

@@ -47,6 +47,8 @@ public class CannonBuildingContraption extends PoleContraption {
 	protected boolean isActivated = false;
 	protected BigCannonMaterial material = null;
 
+    public final Map<BlockPos, BlockEntity> presentBlockEntities = new HashMap<>();
+
 	public CannonBuildingContraption() {
 	}
 
