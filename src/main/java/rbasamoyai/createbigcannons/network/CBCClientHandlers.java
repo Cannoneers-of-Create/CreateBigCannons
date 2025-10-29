@@ -52,14 +52,16 @@ public class CBCClientHandlers {
 			contraption.getBlocks().putAll(pkt.changes());
 			for (Map.Entry<BlockPos, StructureBlockInfo> entry : pkt.changes().entrySet()) {
 				BlockEntity be = cannon.presentBlockEntities.get(entry.getKey());
-				StructureBlockInfo info = entry.getValue();
+                BlockEntity rbe = contraption.getOrCreateClientContraptionLazy().getBlockEntity(entry.getKey());
+                StructureBlockInfo info = entry.getValue();
 				if (be == null || info.nbt() == null) continue;
 				CompoundTag copy = info.nbt().copy();
 				copy.putInt("x", info.pos().getX());
 				copy.putInt("y", info.pos().getY());
 				copy.putInt("z", info.pos().getZ());
 				be.load(copy);
-			}
+                rbe.load(copy);
+                }
 			contraption.invalidateClientContraptionChildren();
 		}
 	}

@@ -231,8 +231,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		super.tick(level, entity);
 
 		BlockPos endPos = this.startPos.relative(this.initialOrientation.getOpposite());
-		if (this.presentBlockEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech)
-			qfbreech.tickAnimation();
+		if (this.presentBlockEntities.get(endPos) instanceof QuickfiringBreechBlockEntity qfbreech) {
+            qfbreech.tickAnimation();
+            ((QuickfiringBreechBlockEntity)this.getOrCreateClientContraptionLazy().getBlockEntity(endPos)).tickAnimation();
+        }
 		if (!level.isClientSide && this.isDropMortar() && this.mortarDelay > 0) {
 			--this.mortarDelay;
 			if (this.mortarDelay == 0) this.actuallyFireDropMortar();
