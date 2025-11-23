@@ -2,22 +2,18 @@ package rbasamoyai.createbigcannons.index;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
-import com.simibubi.create.content.contraptions.render.ContraptionVisual;
 import com.simibubi.create.content.kinetics.base.ShaftRenderer;
 import com.simibubi.create.content.kinetics.base.ShaftVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
-import dev.engine_room.flywheel.api.internal.FlwApiLink;
 import dev.engine_room.flywheel.api.visualization.VisualizerRegistry;
 import dev.engine_room.flywheel.lib.visualization.SimpleBlockEntityVisualizer;
-import dev.engine_room.flywheel.lib.visualization.SimpleEntityVisualizer;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntityRenderer;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtensionBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountVisual;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageBlockEntity;
-import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_loading.CannonLoaderBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
@@ -253,6 +249,7 @@ public class CBCBlockEntities {
         VisualizerRegistry.setVisualizer(CBCBlockEntities.YAW_CONTROLLER.get(), new SimpleBlockEntityVisualizer<>(ShaftVisual::new, (blockEntity) -> false));
         VisualizerRegistry.setVisualizer(CBCBlockEntities.CANNON_MOUNT_EXTENSION.get(), new SimpleBlockEntityVisualizer<>(ShaftVisual::new, (blockEntity) -> false));
         VisualizerRegistry.setVisualizer(CBCBlockEntities.FUZED_BLOCK.get(), new SimpleBlockEntityVisualizer<>(FuzedBlockVisual::new, (blockEntity) -> false));
+        VisualizerRegistry.setVisualizer(CBCBlockEntities.FLUID_SHELL.get(), new SimpleBlockEntityVisualizer<>(FuzedBlockVisual::new, (blockEntity) -> false));
         VisualizerRegistry.setVisualizer(CBCBlockEntities.CANNON_DRILL.get(), new SimpleBlockEntityVisualizer<>(ShaftVisual::new, (blockEntity) -> false));
         VisualizerRegistry.setVisualizer(CBCBlockEntities.CANNON_BUILDER.get(), new SimpleBlockEntityVisualizer<>(ShaftVisual::new, (blockEntity) -> false));
         VisualizerRegistry.setVisualizer(CBCBlockEntities.AUTOCANNON_BREECH.get(), new SimpleBlockEntityVisualizer<>(AutocannonBreechVisual::new, (blockEntity) -> false));
