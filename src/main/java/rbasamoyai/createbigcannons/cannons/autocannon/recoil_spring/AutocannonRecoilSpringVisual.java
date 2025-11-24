@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import org.joml.Vector3f;
 
 import dev.engine_room.flywheel.api.instance.Instance;
+import dev.engine_room.flywheel.api.visual.DynamicVisual;
 import dev.engine_room.flywheel.api.visualization.VisualizationContext;
 import dev.engine_room.flywheel.lib.instance.InstanceTypes;
 import dev.engine_room.flywheel.lib.instance.OrientedInstance;
@@ -46,7 +47,7 @@ public class AutocannonRecoilSpringVisual extends AbstractBlockEntityVisual<Auto
 	}
 
 	@Override
-	public void beginFrame(Context ctx) {
+	public void beginFrame(DynamicVisual.Context ctx) {
 		this.updateTransforms(ctx.partialTick());
 	}
 

@@ -61,7 +61,7 @@ public class CBCClientHandlers {
 				copy.putInt("z", info.pos().getZ());
 				be.load(copy);
                 rbe.load(copy);
-                }
+            }
 			contraption.invalidateClientContraptionChildren();
 		}
 	}

@@ -396,6 +396,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			if (this.presentBlockEntities.get(pos) instanceof AutocannonRecoilSpringBlockEntity spring)
 				spring.handleFiring();
 		}
+        if (this.getBlockEntityClientSide(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
+            breech.handleFiring();
+        for (BlockPos pos : this.recoilSpringPositions) {
+            if (this.getBlockEntityClientSide(pos) instanceof AutocannonRecoilSpringBlockEntity spring)
+                spring.handleFiring();
+        }
 	}
 
 	@Override
