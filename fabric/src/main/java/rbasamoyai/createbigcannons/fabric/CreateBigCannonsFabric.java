@@ -35,7 +35,7 @@ public class CreateBigCannonsFabric implements ModInitializer {
 		BlockRecipeSerializer.register();
 		BlockRecipeType.register();
 
-		CBCConfigs.registerConfigs((t, c) -> ForgeConfigRegistry.INSTANCE.register(CreateBigCannons.MOD_ID, t, c));
+		CBCConfigs.register((t, c) -> ForgeConfigRegistry.INSTANCE.register(CreateBigCannons.MOD_ID, t, c));
 
 		CBCNetworkFabric.INSTANCE.initServerListener();
 		DefaultFluidCompat.registerMinecraftBlobEffects();

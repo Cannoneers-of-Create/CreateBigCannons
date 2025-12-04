@@ -2,13 +2,13 @@ package rbasamoyai.createbigcannons.fabric.crafting;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.foundation.fluid.FluidRenderer;
+import com.simibubi.create.foundation.render.fabric.DefaultLayerFilteringBakedModel;
 
-import dev.engine_room.flywheel.core.virtual.VirtualEmptyBlockGetter;
-import dev.engine_room.flywheel.fabric.model.DefaultLayerFilteringBakedModel;
+import dev.engine_room.flywheel.lib.model.baked.EmptyVirtualBlockGetter;
 import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.models.virtual.FixedLightBakedModel;
 import io.github.fabricators_of_create.porting_lib.models.virtual.TranslucentBakedModel;
+import net.createmod.catnip.platform.FabricCatnipServices;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -30,7 +30,7 @@ public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntity
 		if (!(cast instanceof CannonCastBlockEntity castc)) return;
 		FluidStack fstack = castc.fluid.getFluid();
 		if (!fstack.isEmpty())
-			FluidRenderer.renderFluidBox(fstack, 0, 0, 0, width, height, width, buffers, stack, light, false);
+			FabricCatnipServices.FLUID_RENDERER.renderFluidBox(fstack, 0, 0, 0, width, height, width, buffers, stack, light, false, false);
 	}
 
 	@Override
@@ -39,8 +39,8 @@ public class CannonCastBlockEntityRenderer extends AbstractCannonCastBlockEntity
 		model = DefaultLayerFilteringBakedModel.wrap(model);
 		model = FixedLightBakedModel.wrap(model, light);
 		model = TranslucentBakedModel.wrap(model, () -> alpha);
-		this.dispatcher.getModelRenderer()
-			.tesselateBlock(VirtualEmptyBlockGetter.INSTANCE, model, state, pos, ms, vCons, false, RandomSource.create(), 42L, OverlayTexture.NO_OVERLAY);
+		this.dispatcher.getModelRenderer() // TODO check EVBG
+			.tesselateBlock(EmptyVirtualBlockGetter.FULL_BRIGHT, model, state, pos, ms, vCons, false, RandomSource.create(), 42L, OverlayTexture.NO_OVERLAY);
 	}
 
 
