@@ -21,7 +21,7 @@ public class CBCMillingRecipeProvider extends ProcessingRecipeGen {
 
 	GeneratedRecipe
 
-		NITROPOWDER = create(CreateBigCannons.resource("alloy_nethersteel_cast_iron"), b -> b.require(CBCItems.HARDENED_NITRO.get())
+		NITROPOWDER = create(CreateBigCannons.resource("nitropowder"), b -> b.require(CBCItems.HARDENED_NITRO.get())
 		.output(CBCItems.NITROPOWDER.get(), 2));
 
 }

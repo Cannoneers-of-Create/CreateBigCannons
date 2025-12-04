@@ -15,8 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
-/*fixme
+import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes.CannonMountType;
 
 @Mixin(ArmBlockEntity.class)
 public class ArmTileEntityMixin extends KineticBlockEntity {
@@ -29,9 +28,9 @@ public class ArmTileEntityMixin extends KineticBlockEntity {
 		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/kinetics/mechanicalArm/ArmInteractionPoint;insert(Lnet/minecraft/world/item/ItemStack;Lnet/fabricmc/fabric/api/transfer/v1/transaction/TransactionContext;)Lnet/minecraft/world/item/ItemStack;"))
 	private void createbigcannons$depositItem(CallbackInfo ci, @Local ArmInteractionPoint point, @Local ItemStack stack) {
 		ArmInteractionPointType type = point.getType();
-		if (type != CBCArmInteractionPointTypes.CANNON_MOUNT) return;
+		if (!(type instanceof CannonMountType))
+            return;
 		stack.getOrCreateTag().putBoolean("DontSimulate", true);
 	}
 
 }
-*/

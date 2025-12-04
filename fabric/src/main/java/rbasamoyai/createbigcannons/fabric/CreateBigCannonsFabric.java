@@ -15,6 +15,7 @@ import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.fabric.network.CBCNetworkFabric;
+import rbasamoyai.createbigcannons.index.CBCArmInteractionPointTypes;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
@@ -34,6 +35,7 @@ public class CreateBigCannonsFabric implements ModInitializer {
 		CannonCastShape.register();
 		BlockRecipeSerializer.register();
 		BlockRecipeType.register();
+        CBCArmInteractionPointTypes.init();
 
 		CBCConfigs.register((t, c) -> ForgeConfigRegistry.INSTANCE.register(CreateBigCannons.MOD_ID, t, c));
 

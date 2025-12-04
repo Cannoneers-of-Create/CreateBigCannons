@@ -57,7 +57,7 @@ dependencies {
 		isTransitive = false
 	}
 
-	modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") {isTransitive=false}
+	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") {isTransitive=false}
 }
 
 
