@@ -80,7 +80,12 @@ public class BigCannonBehavior extends CannonBehavior {
 		this.containedBlockInfo = Optional.of(new StructureBlockInfo(pos, state, tag));
 	}
 
-	public boolean canLoadBlock(StructureBlockInfo info) {
+    @Override
+    public void writeSafe(CompoundTag nbt) {
+        super.write(nbt, false);
+    }
+
+    public boolean canLoadBlock(StructureBlockInfo info) {
 		return this.predicate.test(info);
 	}
 

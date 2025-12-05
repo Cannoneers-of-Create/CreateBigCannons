@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     {
       "id": "#forge:plates/copper",
@@ -11,18 +10,6 @@
     },
     {
       "id": "#c:copper_plates",
-      "required": false
-    },
-    {
-      "id": "#forge:plates/gold",
-      "required": false
-    },
-    {
-      "id": "#c:plates/gold",
-      "required": false
-    },
-    {
-      "id": "#c:gold_plates",
       "required": false
     }
   ]

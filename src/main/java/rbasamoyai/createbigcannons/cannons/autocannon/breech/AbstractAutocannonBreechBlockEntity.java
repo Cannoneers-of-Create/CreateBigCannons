@@ -9,7 +9,10 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.AllBlocks;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockEntityItemRequirement;
 import com.simibubi.create.content.contraptions.Contraption;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,7 +32,8 @@ import rbasamoyai.createbigcannons.cannons.autocannon.AnimatedAutocannon;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
 
-public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBlockEntity implements AnimatedAutocannon {
+public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBlockEntity implements AnimatedAutocannon,
+    SpecialBlockEntityItemRequirement {
 
 	protected static final int[] FIRE_RATES = new int[] {
 			120, // 10 rpm
@@ -179,7 +183,23 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 		if (this.updateInstance) tag.putBoolean("UpdateInstance", true);
 	}
 
-	public boolean isInputFull() { return this.inputBuffer.size() >= this.getQueueLimit() || !this.magazine.isEmpty(); }
+    @Override
+    public void writeSafe(CompoundTag tag) {
+        super.write(tag, false);
+        tag.putInt("FiringRate", this.fireRate);
+        if (this.seat != null)
+            tag.putString("Seat", this.seat.getSerializedName());
+    }
+
+    @Override
+    public ItemRequirement getRequiredItems(BlockState state) {
+        if (this.seat == null)
+            return ItemRequirement.NONE;
+        ItemStack drop = AllBlocks.SEATS.get(this.seat).asStack();
+        return new ItemRequirement(ItemRequirement.ItemUseType.CONSUME, drop);
+    }
+
+    public boolean isInputFull() { return this.inputBuffer.size() >= this.getQueueLimit() || !this.magazine.isEmpty(); }
 	public boolean isOutputFull() { return !this.outputBuffer.isEmpty(); }
 
 	public ItemStack insertOutput(ItemStack stack) {

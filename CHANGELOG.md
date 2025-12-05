@@ -1,10 +1,11 @@
 # Changelog
 
-## [5.9.2] - Unreleased
+## [5.10.0] - Unreleased
 
-Changes:
-- [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
-  `RegisterEvent`.
+**Create Big Cannons 5.9.1, now supporting Create v6.0.8 on Forge 1.20.1 and Fabric 1.20.1.**
+
+Fixes:
+- Fixed various block entities' safe data and schematic requirements
 
 ## [5.9.1] - 2025-06-25
 

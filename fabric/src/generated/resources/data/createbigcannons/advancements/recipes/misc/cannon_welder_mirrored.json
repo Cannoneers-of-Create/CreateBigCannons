@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:cannon_welder_mirrored"
+        "recipe": "createbigcannons:cannon_welder_mirrored"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -28,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "minecraft:cannon_welder_mirrored"
+      "createbigcannons:cannon_welder_mirrored"
     ]
   },
   "sends_telemetry_event": false

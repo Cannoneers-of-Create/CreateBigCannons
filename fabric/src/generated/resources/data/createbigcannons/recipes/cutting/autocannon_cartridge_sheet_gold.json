@@ -2,7 +2,7 @@
   "type": "create:cutting",
   "ingredients": [
     {
-      "tag": "createbigcannons:sheet_copper"
+      "tag": "createbigcannons:sheet_gold"
     }
   ],
   "results": [

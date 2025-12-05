@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
@@ -26,7 +28,7 @@ import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
-public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements IAutocannonAmmoContainerContainer, MenuProvider, Nameable {
+public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements IAutocannonAmmoContainerContainer, MenuProvider, Nameable, PartialSafeNBT {
 
 	private ItemStack ammo = ItemStack.EMPTY;
 	private ItemStack tracers = ItemStack.EMPTY;
@@ -120,7 +122,14 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		tag.putInt("TracerSpacing", this.spacing);
 	}
 
-	@Override
+    @Override
+    public void writeSafe(CompoundTag tag) {
+        super.saveAdditional(tag);
+        if (this.name != null) tag.putString("CustomName", Component.Serializer.toJson(this.name));
+        tag.putInt("TracerSpacing", this.spacing);
+    }
+
+    @Override
 	public CompoundTag getUpdateTag() {
 		return this.saveWithFullMetadata();
 	}

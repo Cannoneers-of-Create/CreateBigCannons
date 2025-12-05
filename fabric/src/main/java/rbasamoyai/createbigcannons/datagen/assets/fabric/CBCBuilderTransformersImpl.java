@@ -111,8 +111,7 @@ public class CBCBuilderTransformersImpl {
 			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), model)
 				.texture("side", sideLoc)
 				.texture("end", endLoc)
-				.texture("particle", sideLoc)))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+				.texture("particle", sideLoc)));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> sizedHollowCannon(String sizePath, String pathAndMaterial) {
@@ -174,7 +173,6 @@ public class CBCBuilderTransformersImpl {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate(SlidingBreechBlockGen.create(pathAndMaterial)::generate)
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item(BigCannonBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 				.texture("hole", holeLoc)
@@ -276,7 +274,6 @@ public class CBCBuilderTransformersImpl {
 				};
 				return p.models().withExistingParent(name, loc).texture("material", texLoc);
 			}))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item(AutocannonBlockItem::new)
 			.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/barrel")).texture("material", texLoc))
 			.build();
@@ -295,8 +292,7 @@ public class CBCBuilderTransformersImpl {
 					return p.models().withExistingParent(handle ? c.getName() + "_handle" : c.getName(), handle ? handleLoc : baseLoc)
 						.texture("material", texLoc)
 						.texture("handle", tex1Loc);
-				}))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+				}));
 		if (complete) {
 			result = result.andThen(b -> b.item(AutocannonBlockItem::new)
 				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/breech_item")).texture("material", texLoc))
@@ -314,8 +310,7 @@ public class CBCBuilderTransformersImpl {
 		NonNullUnaryOperator<BlockBuilder<T, P>> result = b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p,
-				$ -> p.models().withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring")).texture("material", texLoc)))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+				$ -> p.models().withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring")).texture("material", texLoc)));
 		if (complete) {
 			result = result.andThen(b -> b.item(AutocannonBlockItem::new)
 				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring_item")).texture("material", texLoc))
@@ -560,7 +555,6 @@ public class CBCBuilderTransformersImpl {
 							.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)))
 						.apply(func)));
 			})
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item(AutocannonAmmoContainerItem::new)
 			.properties(p -> p.stacksTo(1))
 			.properties(p -> isCreative ? p.rarity(Rarity.EPIC) : p)

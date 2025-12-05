@@ -46,7 +46,12 @@ public class ItemCannonBehavior extends CannonBehavior {
 		super.read(nbt, clientPacket);
 	}
 
-	@Override
+    @Override
+    public void writeSafe(CompoundTag nbt) {
+        super.write(nbt, false);
+    }
+
+    @Override
 	public BehaviourType<?> getType() {
 		return TYPE;
 	}
