@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.fabric;
 import java.util.Optional;
 import java.util.function.Supplier;
 
+import net.createmod.catnip.lang.Lang;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -17,7 +18,7 @@ public enum CBCModsFabric {
 	private final String id;
 
 	CBCModsFabric() {
-		this.id = CreateLang.asId(name());
+		this.id = Lang.asId(name());
 	}
 
 	public String id() {

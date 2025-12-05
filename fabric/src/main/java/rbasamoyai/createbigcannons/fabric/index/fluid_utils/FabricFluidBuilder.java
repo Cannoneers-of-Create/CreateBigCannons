@@ -21,6 +21,7 @@ import com.tterrag.registrate.util.nullness.NonNullSupplier;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -68,10 +69,10 @@ public class FabricFluidBuilder<T extends CBCFlowingFluid, P> extends FluidBuild
 		prov.simpleBlock(ctx.get(), prov.models().getBuilder(this.sourceName).texture("particle", this.stillTexture));
 	}
 
-	@Override
-	protected <I extends Item> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov) {
-		prov.generated(ctx, new ResourceLocation(this.getOwner().getModid(), "item/" + this.bucketName));
-	}
+    @Override
+    protected <I extends BucketItem> void acceptItemModel(DataGenContext<Item, I> ctx, RegistrateItemModelProvider prov) {
+        prov.generated(ctx, new ResourceLocation(this.getOwner().getModid(), "item/" + this.bucketName));
+    }
 
 	@SuppressWarnings("unchecked")
 	public <B extends LiquidBlock> BlockBuilder<B, FluidBuilder<T, P>> block1(NonNullBiFunction<? extends T, BlockBehaviour.Properties, ? extends B> factory) {

@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.fabric.datagen;
 
+import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -15,7 +15,7 @@ import rbasamoyai.createbigcannons.index.CBCRecipeTypes;
 public class MeltingRecipeProvider extends ProcessingRecipeGen {
 
 	public MeltingRecipeProvider(FabricDataOutput output) {
-		super(output);
+		super(output, CreateBigCannons.MOD_ID);
 	}
 
 	@Override

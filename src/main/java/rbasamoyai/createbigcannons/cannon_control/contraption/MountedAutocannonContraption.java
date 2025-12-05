@@ -149,7 +149,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		if (cannonLength < 2 || positiveBreech && negativeBreech) throw invalidCannon();
 
-		this.startPos = !positiveBreech && !negativeBreech ? pos : negativeBreech ? negativeEndPos : positiveEndPos;
+		this.startPos = !positiveBreech && !negativeBreech ? pos : (negativeBreech ? negativeEndPos : positiveEndPos);
 		BlockState breechState = level.getBlockState(this.startPos);
 		if (!(breechState.getBlock() instanceof AutocannonBreechBlock)) throw invalidCannon();
 		this.initialOrientation = breechState.getValue(BlockStateProperties.FACING);
@@ -396,6 +396,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			if (this.presentBlockEntities.get(pos) instanceof AutocannonRecoilSpringBlockEntity spring)
 				spring.handleFiring();
 		}
+        if (this.getBlockEntityClientSide(this.startPos) instanceof AbstractAutocannonBreechBlockEntity breech)
+            breech.handleFiring();
+        for (BlockPos pos : this.recoilSpringPositions) {
+            if (this.getBlockEntityClientSide(pos) instanceof AutocannonRecoilSpringBlockEntity spring)
+                spring.handleFiring();
+        }
 	}
 
 	@Override

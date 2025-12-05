@@ -1,12 +1,16 @@
 package rbasamoyai.createbigcannons.compat.jei;
 
-import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.addFluidTooltip;
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRenderedSlot;
 import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.toJei;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.simibubi.create.AllFluids;
+import com.simibubi.create.content.fluids.potion.PotionFluidHandler;
+
+import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import mezz.jei.api.fabric.constants.FabricTypes;
 import mezz.jei.api.fabric.ingredients.fluids.IJeiFluidIngredient;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -16,6 +20,7 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -59,7 +64,7 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 				fs.setAmount(recipe.shape().fluidSize());
 				return fs;
 			}).toList()))
-			.addTooltipCallback(addFluidTooltip());
+			.addTooltipCallback(CannonCastingCategory::addPotionTooltip);
 
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 142, 62)
 			.setBackground(getRenderedSlot(), -1, -1)
@@ -69,5 +74,22 @@ public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingR
 			.setBackground(getRenderedSlot(), -1, -1)
 			.addItemStack(new ItemStack(recipe.shape().castMould()));
 	}
+
+    // TODO: remove once CreateRecipeCategory#addPotionTooltip is removed. See that method for more details.
+    private static void addPotionTooltip(IRecipeSlotView view, List<Component> tooltip) {
+        Optional<IJeiFluidIngredient> displayed = view.getDisplayedIngredient(FabricTypes.FLUID_STACK);
+        if (displayed.isEmpty())
+            return;
+
+        IJeiFluidIngredient fluidStack = displayed.get();
+
+        if (fluidStack.getFluid().isSame(AllFluids.POTION.get())) {
+            ArrayList<Component> potionTooltip = new ArrayList<>();
+            FluidStack fluidStack1 = new FluidStack(fluidStack.getFluid(), fluidStack.getAmount(), fluidStack.getTag().orElse(new CompoundTag()));
+            PotionFluidHandler.addPotionTooltip(fluidStack1, potionTooltip, 1);
+            // append after item name
+            tooltip.addAll(1, potionTooltip.stream().toList());
+        }
+    }
 
 }

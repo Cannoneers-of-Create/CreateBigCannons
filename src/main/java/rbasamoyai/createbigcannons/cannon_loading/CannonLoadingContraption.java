@@ -372,7 +372,7 @@ public class CannonLoadingContraption extends PoleContraption implements CanLoad
 	@Override
 	public void createbigcannons$fragileDisassemble() {
 		BlockPos loaderPos = this.anchor.relative(this.orientation, -1);
-		if (this.world.getBlockEntity(loaderPos) instanceof CannonLoaderBlockEntity loaderBE) {
+		if (this.entity.level().getBlockEntity(loaderPos) instanceof CannonLoaderBlockEntity loaderBE) {
 			loaderBE.disassemble();
 		} else {
 			this.entity.disassemble();

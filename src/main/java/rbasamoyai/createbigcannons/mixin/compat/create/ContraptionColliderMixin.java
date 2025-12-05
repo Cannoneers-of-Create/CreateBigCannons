@@ -44,7 +44,7 @@ public abstract class ContraptionColliderMixin {
 			if (level.getBlockEntity(colliderPos) instanceof LayeredBigCannonBlockEntity layered) {
 				if (CBCBlocks.CANNON_BUILDER_HEAD.has(blockInfo.state()))
 					return contraption.entity == null && builder.getBlocks().containsKey(pos);
-				if (contraption.presentBlockEntities.get(pos) instanceof LayeredBigCannonBlockEntity layered1)
+				if (contraption instanceof CannonBuildingContraption builderContraption && builderContraption.presentBlockEntities.get(pos) instanceof LayeredBigCannonBlockEntity layered1)
 					return flag || !layered.isCollidingWith(blockInfo, layered1, movementDirection);
 			}
 			return flag;

@@ -36,6 +36,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCannonContraption;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBaseBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.AutocannonBlockEntity;
@@ -205,8 +206,8 @@ public class AutocannonBreechBlock extends AutocannonBaseBlock implements IBE<Ab
 
 	@Override
 	public boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,
-											Level level, Contraption contraption, BlockEntity be, StructureBlockInfo info,
-											PitchOrientedContraptionEntity entity) {
+                                            Level level, AbstractMountedCannonContraption contraption, BlockEntity be, StructureBlockInfo info,
+                                            PitchOrientedContraptionEntity entity) {
 		if (!(be instanceof AbstractAutocannonBreechBlockEntity breech)) return false;
 
 		ItemStack stack = player.getItemInHand(interactionHand);

@@ -3,10 +3,12 @@ package rbasamoyai.createbigcannons.fabric;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
+import java.util.function.BiConsumer;
 
 import com.tterrag.registrate.providers.ProviderType;
 
 import io.github.fabricators_of_create.porting_lib.data.ExistingFileHelper;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator.Pack.Factory;
@@ -25,8 +27,7 @@ import rbasamoyai.createbigcannons.fabric.datagen.CBCSequencedAssemblyRecipeProv
 import rbasamoyai.createbigcannons.fabric.datagen.MeltingRecipeProvider;
 import rbasamoyai.createbigcannons.fabric.datagen.assets.CBCBlockPartialsGen;
 import rbasamoyai.createbigcannons.index.CBCSoundEvents;
-import rbasamoyai.createbigcannons.ponder.CBCPonderIndex;
-import rbasamoyai.createbigcannons.ponder.CBCPonderTags;
+import rbasamoyai.createbigcannons.ponder.CBCPonderPlugin;
 
 public class CBCDataFabric implements DataGeneratorEntrypoint {
 
@@ -44,15 +45,15 @@ public class CBCDataFabric implements DataGeneratorEntrypoint {
 
 		FabricDataGenerator.Pack modDatapack = generator.createPack();
 
-		BlockRecipeProvider.registerAll(modDatapack);
+		BlockRecipeProvider.registerAll(modDatapack::addProvider);
 		CBCCraftingRecipeProvider.register();
 
 		CBCLangGen.prepare();
 		modDatapack.addProvider((Factory<CBCSoundEvents.SoundEntryProvider>) CBCSoundEvents::provider);
 		CBCSoundEvents.registerLangEntries();
-		CBCPonderTags.register();
-		CBCPonderIndex.register();
-		CBCPonderIndex.registerLang();
+        CreateBigCannons.REGISTRATE.addDataGenerator(ProviderType.LANG, prov -> {
+            providePonderLang(prov::add);
+        });
 
 		modDatapack.addProvider((Factory<CBCBlockPartialsGen>) output -> new CBCBlockPartialsGen(output, helper));
 
@@ -63,5 +64,10 @@ public class CBCDataFabric implements DataGeneratorEntrypoint {
 		modDatapack.addProvider(CBCSequencedAssemblyRecipeProvider::new);
 		modDatapack.addProvider(CBCCuttingRecipeProvider::new);
 	}
+
+    private static void providePonderLang(BiConsumer<String, String> cons) {
+        PonderIndex.addPlugin(new CBCPonderPlugin());
+        PonderIndex.getLangAccess().provideLang(CreateBigCannons.MOD_ID, cons);
+    }
 
 }

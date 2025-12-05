@@ -117,7 +117,7 @@ public abstract class PistonContraptionMixin extends TranslatingContraption impl
 	@Override
 	public void createbigcannons$fragileDisassemble() {
 		BlockPos pistonPos = this.anchor.relative(this.orientation, -1);
-		if (this.world.getBlockEntity(pistonPos) instanceof MechanicalPistonBlockEntity pistonBE) {
+		if (this.entity.level().getBlockEntity(pistonPos) instanceof MechanicalPistonBlockEntity pistonBE) {
 			pistonBE.disassemble();
 		} else {
 			this.entity.disassemble();

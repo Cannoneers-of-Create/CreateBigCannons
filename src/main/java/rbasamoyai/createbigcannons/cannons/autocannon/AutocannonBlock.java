@@ -137,7 +137,7 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
 
 	@Override
 	default boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,
-											 Level level, Contraption contraption, BlockEntity be, StructureBlockInfo info,
+											 Level level, AbstractMountedCannonContraption contraption, BlockEntity be, StructureBlockInfo info,
 											 PitchOrientedContraptionEntity entity) {
 		return false;
 	}

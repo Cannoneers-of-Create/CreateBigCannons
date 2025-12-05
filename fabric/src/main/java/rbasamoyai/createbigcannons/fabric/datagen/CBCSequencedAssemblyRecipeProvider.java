@@ -2,23 +2,22 @@ package rbasamoyai.createbigcannons.fabric.datagen;
 
 import java.util.function.UnaryOperator;
 
+import com.simibubi.create.api.data.recipe.SequencedAssemblyRecipeGen;
 import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.kinetics.press.PressingRecipe;
 import com.simibubi.create.content.kinetics.saw.CuttingRecipe;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeBuilder;
-import com.simibubi.create.foundation.data.recipe.CreateRecipeProvider;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
-import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CBCTags.CBCItemTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 
-public class CBCSequencedAssemblyRecipeProvider extends CreateRecipeProvider {
+public class CBCSequencedAssemblyRecipeProvider extends SequencedAssemblyRecipeGen {
 
 	public CBCSequencedAssemblyRecipeProvider(FabricDataOutput output) {
-		super(output);
+		super(output, CreateBigCannons.MOD_ID);
 	}
 
 	@Override

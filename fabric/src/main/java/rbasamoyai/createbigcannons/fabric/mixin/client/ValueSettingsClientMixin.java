@@ -16,6 +16,8 @@ import me.pepperbell.simplenetworking.SimpleChannel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ServerboundSetFixedCannonMountValuePacket;
@@ -29,10 +31,12 @@ public class ValueSettingsClientMixin {
 
 	@WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lme/pepperbell/simplenetworking/SimpleChannel;sendToServer(Lme/pepperbell/simplenetworking/C2SPacket;)V"), remap = false)
 	private void createbigcannons$tick$cancelPacket(SimpleChannel instance, C2SPacket packet, Operation<Void> original,
-													@Local ValueSettingsBehaviour valueSettingBehaviour) {
-		if (valueSettingBehaviour instanceof FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour fixedMountBehaviour) {
+                                                    @Local ValueSettingsBehaviour valueSettingBehaviour,
+                                                    @Local HitResult hitResult) {
+		if (valueSettingBehaviour instanceof FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour fixedMountBehaviour
+            && hitResult instanceof BlockHitResult blockHitResult) {
 			NetworkPlatform.sendToServer(new ServerboundSetFixedCannonMountValuePacket(this.interactHeldPos, 0, 0,
-				this.interactHeldHand, this.interactHeldFace, AllKeys.ctrlDown(), fixedMountBehaviour.setsPitch()));
+				this.interactHeldHand, blockHitResult, this.interactHeldFace, AllKeys.ctrlDown(), fixedMountBehaviour.setsPitch()));
 			return;
 		}
 		original.call(instance, packet);

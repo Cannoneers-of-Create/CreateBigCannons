@@ -63,8 +63,10 @@ import rbasamoyai.createbigcannons.effects.CBCScreenShakeHandler;
 import rbasamoyai.createbigcannons.effects.particles.ParticleWindHandler;
 import rbasamoyai.createbigcannons.effects.sounds.ShellFlyingSoundInstance;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskOverlay;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
@@ -111,6 +113,8 @@ public class CBCClientCommon {
         PonderIndex.addPlugin(new CBCPonderPlugin());
 
 		CBCBlockPartials.resolveDeferredModels();
+        CBCEntityTypes.registerVisuals();
+        CBCBlockEntities.registerVisuals();
 
 		IndexPlatform.registerClampedItemProperty(CBCItems.PARTIALLY_FORMED_AUTOCANNON_CARTRIDGE.get(), CreateBigCannons.resource("formed"), (stack, level, player, a) -> {
 			return stack.getOrCreateTag().getCompound("SequencedAssembly").getInt("Step") - 1;

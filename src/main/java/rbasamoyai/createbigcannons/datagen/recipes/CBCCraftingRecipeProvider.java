@@ -1,4 +1,4 @@
-package rbasamoyai.createbigcannons.datagen.forge;
+package rbasamoyai.createbigcannons.datagen.recipes;
 
 import java.util.function.Consumer;
 

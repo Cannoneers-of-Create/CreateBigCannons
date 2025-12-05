@@ -229,7 +229,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 
 	@Override
 	default boolean onInteractWhileAssembled(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand,
-											 Level level, Contraption contraption, BlockEntity be,
+											 Level level, AbstractMountedCannonContraption contraption, BlockEntity be,
 											 StructureBlockInfo info, PitchOrientedContraptionEntity entity) {
 		if (!(be instanceof IBigCannonBlockEntity cbe)
 			|| !(contraption instanceof MountedBigCannonContraption cannon)
@@ -277,7 +277,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 		NetworkPlatform.sendToClientTracking(new ClientboundUpdateContraptionPacket(entity, oldInfo.pos(), newInfo), entity);
 	}
 
-	static void writeAndSyncMultipleBlockData(Set<BlockPos> changed, AbstractContraptionEntity entity, Contraption contraption) {
+	static void writeAndSyncMultipleBlockData(Set<BlockPos> changed, AbstractContraptionEntity entity, AbstractMountedCannonContraption contraption) {
 		Map<BlockPos, StructureBlockInfo> changes = new HashMap<>(changed.size());
 		Map<BlockPos, StructureBlockInfo> blocks = contraption.getBlocks();
 		for (BlockPos pos : changed) {

@@ -1,7 +1,7 @@
 package rbasamoyai.createbigcannons.fabric.datagen;
 
 import com.simibubi.create.AllRecipeTypes;
-import com.simibubi.create.foundation.data.recipe.ProcessingRecipeGen;
+import com.simibubi.create.api.data.recipe.ProcessingRecipeGen;
 import com.simibubi.create.foundation.recipe.IRecipeTypeInfo;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
@@ -18,7 +18,7 @@ import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 public class CBCCuttingRecipeProvider extends ProcessingRecipeGen {
 
 	public CBCCuttingRecipeProvider(FabricDataOutput output) {
-		super(output);
+		super(output, CreateBigCannons.MOD_ID);
 	}
 
 	@Override

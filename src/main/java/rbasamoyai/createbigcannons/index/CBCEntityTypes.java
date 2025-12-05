@@ -9,6 +9,9 @@ import com.simibubi.create.content.contraptions.render.OrientedContraptionEntity
 import com.tterrag.registrate.util.entry.EntityEntry;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 
+import dev.engine_room.flywheel.api.internal.FlwApiLink;
+import dev.engine_room.flywheel.api.visualization.VisualizerRegistry;
+import dev.engine_room.flywheel.lib.visualization.SimpleEntityVisualizer;
 import net.minecraft.client.renderer.entity.NoopRenderer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityType.EntityFactory;
@@ -54,7 +57,7 @@ public class CBCEntityTypes {
 
 	public static final EntityEntry<PitchOrientedContraptionEntity> PITCH_ORIENTED_CONTRAPTION = REGISTRATE
 		.entity("pitch_contraption", PitchOrientedContraptionEntity::new, MobCategory.MISC)
-        .visual(() -> ContraptionVisual::new)
+        //.visual(() -> ContraptionVisual::new)
         .renderer(() -> OrientedContraptionEntityRenderer::new)
 		.properties(configure(c -> c.trackingRange(16)
 			.updateInterval(3)
@@ -195,7 +198,12 @@ public class CBCEntityTypes {
 	}
 
 	public static void register() {
-	}
+    }
+
+    // Temporary Fix to registrate parameter of visualizer factory has different interface on forge and fabric.
+    public static void registerVisuals(){
+        VisualizerRegistry.setVisualizer(CBCEntityTypes.PITCH_ORIENTED_CONTRAPTION.get(), new SimpleEntityVisualizer<PitchOrientedContraptionEntity>(ContraptionVisual::new, (entity) -> false));
+    }
 
 	private static <T> NonNullConsumer<T> configure(Consumer<EntityTypeConfigurator> cons) {
 		return b -> cons.accept(EntityTypeConfigurator.of(b));

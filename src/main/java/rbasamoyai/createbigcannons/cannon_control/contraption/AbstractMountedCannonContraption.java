@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_control.contraption;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -31,6 +32,8 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 	protected BlockPos startPos = BlockPos.ZERO;
 	protected int backExtensionLength = 0;
 	protected int frontExtensionLength = 0;
+
+    public final Map<BlockPos, BlockEntity> presentBlockEntities = new HashMap<>();
 
 	public float maximumDepression(@Nonnull ControlPitchContraption controller) {
 		ICannonContraptionType type = this.getCannonType();
@@ -101,7 +104,6 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 		this.backExtensionLength = tag.getInt("BackExtensionLength");
 		this.frontExtensionLength = tag.getInt("FrontExtensionLength");
 
-		if (world.isClientSide) return;
 		for (Map.Entry<BlockPos, StructureBlockInfo> entry : this.blocks.entrySet()) {
 			StructureBlockInfo info = this.blocks.get(entry.getKey());
 			if (info == null || info.nbt() == null) continue;

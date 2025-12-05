@@ -70,7 +70,7 @@ public abstract class PulleyContraptionMixin extends TranslatingContraption impl
 	@Override
 	public void createbigcannons$fragileDisassemble() {
 		BlockPos pulleyPos = this.anchor.above(((PulleyContraption) (Object) this).getInitialOffset() + 1);
-		if (this.world.getBlockEntity(pulleyPos) instanceof PulleyBlockEntity pulleyBE) {
+		if (this.entity.level().getBlockEntity(pulleyPos) instanceof PulleyBlockEntity pulleyBE) {
 			pulleyBE.disassemble();
 		} else {
 			this.entity.disassemble();
