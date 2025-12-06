@@ -6,6 +6,7 @@
 
 Fixes:
 - Fixed various block entities' safe data and schematic requirements
+- Fixed shrapnel block damage
 
 ## [5.9.1] - 2025-06-25
 

@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -67,7 +68,7 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 			double curPom = this.getProperties().ballistics().durabilityMass() * curVel.length();
 			double toughness = BlockArmorPropertiesHandler.getProperties(state).toughness(this.level(), state, pos, true);
 			BlockPos pos1 = pos.immutable();
-			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (int) Math.min(curPom, toughness), state, this.level(), PartialBlockDamageManager::voidBlock);
+			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, Mth.ceil(Math.min(curPom, toughness)), state, this.level(), PartialBlockDamageManager::voidBlock);
 		}
 		if (this.level() instanceof ServerLevel slevel) {
 			ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);
