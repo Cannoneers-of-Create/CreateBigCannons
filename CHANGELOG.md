@@ -2,7 +2,7 @@
 
 ## [5.10.0] - Unreleased
 
-**Create Big Cannons 5.9.1, now supporting Create v6.0.8 on Forge 1.20.1 and Fabric 1.20.1.**
+**Create Big Cannons 5.10.0, now supporting Create v6.0.8 on Forge 1.20.1 and Fabric 1.20.1.**
 
 Changes:
 - Updated Chinese (Simplified) (zh_cn) translation courtesy of Yizhouuu
