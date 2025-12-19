@@ -4,6 +4,7 @@
 
 Fixes:
 - Fixed dedicated server crashing due to loading clientside code
+- Fixed fuzed big cannon shells rendering with black fuze when Flywheel is off
 
 ## [5.10.0] - 2025-12-08
 
