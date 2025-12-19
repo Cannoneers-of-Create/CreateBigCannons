@@ -110,12 +110,12 @@ public class CBCUtils {
 		float cy = (float) normalized.x;
 		float cos = (float) -normalized.z; // (0, 0, 1) . norm
 		float k = 1f / (1f + cos);
-		if (Float.isFinite(k))
+        if (cos > -0.9999d)
 			return mat3x3f( cx*cx*k+cos, cy*cx*k,      cy,
 			                cx*cy*k,     cy*cy*k+cos, -cx,
 			               -cy,          cx,           cos);
-		return mat3x3f( 1,  0,  0,
-			            0, -1,  0,
+		return mat3x3f(-1,  0,  0,
+			            0,  1,  0,
 			            0,  0, -1);
 	}
 
@@ -134,13 +134,13 @@ public class CBCUtils {
 		float cz = (float) c.z;
 		float cos = (float) -source.dot(dest);
 		float k = 1f / (1f + cos);
-		if (Float.isFinite(k))
+        if (cos > -0.9999d)
 			return mat3x3f(cx*cx*k+cos, cy*cx*k-cz,  cz*cx*k+cy,
 				           cx*cy*k+cz,  cy*cy*k+cos, cz*cy*k-cx,
 				           cx*cz*k-cy,  cy*cz*k+cx,  cz*cz*k+cos);
 		if (Math.abs(1 - source.dot(new Vec3(0, 0, 1))) < 1e-4d)
-			return mat3x3f( 1,  0,  0,
-				            0, -1,  0,
+			return mat3x3f(-1,  0,  0,
+				            0,  1,  0,
 				            0,  0, -1);
 		Matrix3f first = mat3x3fFacing(source); // (0, 0, 1) -> source
 		first.transpose(first); // source -> (0, 0, 1)
@@ -162,13 +162,13 @@ public class CBCUtils {
 		float cy = (float) normalized.x;
 		float cos = (float) -normalized.z; // (0, 0, 1) . norm
 		float k = 1f / (1f + cos);
-		if (Float.isFinite(k))
+		if (cos > -0.9999d)
 			return mat4x4f( cx*cx*k+cos, cy*cx*k,      cy,  0,
 				            cx*cy*k,     cy*cy*k+cos, -cx,  0,
 				           -cy,          cx,           cos, 0,
 				            0,           0,            0,   1);
-		return mat4x4f( 1,  0,  0,  0,
-				        0, -1,  0,  0,
+		return mat4x4f(-1,  0,  0,  0,
+				        0,  1,  0,  0,
 		                0,  0, -1,  0,
 		                0,  0,  0,  1);
 	}
@@ -188,14 +188,14 @@ public class CBCUtils {
 		float cz = (float) c.z;
 		float cos = (float) -source.dot(dest);
 		float k = 1f / (1f + cos);
-		if (Float.isFinite(k))
+        if (cos > -0.9999d)
 			return mat4x4f(cx*cx*k+cos, cy*cx*k-cz,  cz*cx*k+cy,  0,
 			               cx*cy*k+cz,  cy*cy*k+cos, cz*cy*k-cx,  0,
 			               cx*cz*k-cy,  cy*cz*k+cx,  cz*cz*k+cos, 0,
 			               0,           0,           0,           1);
 		if (Math.abs(1 - source.dot(new Vec3(0, 0, 1))) < 1e-4d)
-			return mat4x4f( 1,  0,  0,  0,
-				            0, -1,  0,  0,
+			return mat4x4f(-1,  0,  0,  0,
+				            0,  1,  0,  0,
 				            0,  0, -1,  0,
 				            0,  0,  0,  1);
 		Matrix4fc first = mat4x4fFacing(source); // (0, 0, 1) -> source
