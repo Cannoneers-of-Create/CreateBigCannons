@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.10.1] - Unreleased
+
+Fixes:
+- Fixed dedicated server crashing due to loading clientside code
+
 ## [5.10.0] - 2025-12-08
 
 **Create Big Cannons 5.10.0, now supporting Create v6.0.8 on Forge 1.20.1 and Fabric 1.20.1.**
