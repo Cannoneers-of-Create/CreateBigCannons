@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.10.1] - Unreleased
+## [5.10.1] - 2025-12-19
 
 Fixes:
 - Fixed dedicated server crashing due to loading clientside code
