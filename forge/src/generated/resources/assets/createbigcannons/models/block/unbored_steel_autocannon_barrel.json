@@ -1,7 +1,0 @@
-{
-  "parent": "createbigcannons:block/autocannon/unbored_barrel",
-  "textures": {
-    "material": "createbigcannons:block/autocannon/steel_autocannon",
-    "material1": "createbigcannons:block/autocannon/steel_autocannon_1"
-  }
-}

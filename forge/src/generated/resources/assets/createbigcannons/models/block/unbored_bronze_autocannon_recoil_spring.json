@@ -1,7 +1,0 @@
-{
-  "parent": "createbigcannons:block/autocannon/unbored_recoil_spring",
-  "textures": {
-    "material": "createbigcannons:block/autocannon/bronze_autocannon",
-    "material1": "createbigcannons:block/autocannon/bronze_autocannon_1"
-  }
-}

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "createbigcannons:block/cast_iron_block"
-  }
-}

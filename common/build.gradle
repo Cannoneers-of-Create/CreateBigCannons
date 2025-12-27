@@ -1,0 +1,71 @@
+plugins {
+    id "multiloader-common"
+    id "net.neoforged.moddev"
+}
+
+var ci = System.getenv("CI")?.toBoolean() ?: false
+var release = System.getenv("RELEASE")?.toBoolean() ?: false
+var nightly = ci && !release
+var buildNumber = System.getenv("GITHUB_RUN_NUMBER")?.toIntOrNull()
+version = "${mod_version}${release ? "" : "-dev"}+mc.${minecraft_version}-common${nightly ? "-build.${buildNumber}" : ""}"
+group = "${group}.common"
+base.archivesName.set(mod_id)
+
+neoForge {
+    neoFormVersion = neo_form_version
+    // Automatically enable AccessTransformers if the file exists
+    def at = file('src/main/resources/META-INF/accesstransformer.cfg')
+    if (at.exists()) {
+        //accessTransformers.from(at.absolutePath)
+    }
+    parchment {
+        minecraftVersion = parchment_minecraft
+        mappingsVersion = parchment_version
+    }
+}
+
+
+repositories {
+    maven { url = "https://maven.createmod.net" } // Create, Ponder, Flywheel
+    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
+}
+
+dependencies {
+//	minecraft("com.mojang:minecraft:${minecraft_version}")
+//	mappings(loom.layered {
+//		officialMojangMappings { nameSyntheticMembers = false }
+//		parchment("org.parchmentmc.data:parchment-${minecraft_version}:${parchment_version}@zip")
+//	})
+
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_neoforge_version}:slim") { transitive = false }
+    implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_neoforge_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_neoforge_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_neoforge_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_neoforge_version}")
+
+    compileOnly("org.spongepowered:mixin:0.8.5")
+    annotationProcessor("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
+    implementation("io.github.llamalad7:mixinextras-common:${mixin_extras_version}")
+
+	// Ritchie's Projectile Library
+    String rplSuffix = Boolean.valueOf(use_rpl_nightly) ? "-build.${rpl_build}" : ""
+	implementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-neoforge$rplSuffix") { transitive = false }
+
+	//implementation("com.copycatsplus:copycats:${copycats_version}+mc.${minecraft_version}-forge") {transitive=false}
+}
+
+configurations {
+    commonJava {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+    commonResources {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    commonJava sourceSets.main.java.sourceDirectories.singleFile
+    commonResources sourceSets.main.resources.sourceDirectories.singleFile
+}
