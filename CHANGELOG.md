@@ -1,5 +1,10 @@
 # Changelog
 
+## [5.10.2] - Unreleased
+
+Fixes:
+- [Valkyrien Skies] Fixed cannon firing breaking ship ticking
+
 ## [5.10.1] - 2025-12-19
 
 Fixes:

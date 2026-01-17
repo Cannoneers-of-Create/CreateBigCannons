@@ -44,6 +44,7 @@ import rbasamoyai.createbigcannons.cannon_control.config.DefaultCannonMountPrope
 import rbasamoyai.createbigcannons.compat.copycats.CopycatsCompat;
 import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 import rbasamoyai.createbigcannons.compat.trinkets.CBCTrinketsIntegration;
+import rbasamoyai.createbigcannons.compat.valkyrienskies.ValkyrienSkiesCompat;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 
@@ -76,6 +77,7 @@ public class CBCCommonFabricEvents {
 		CreateBigCannons.onCommonSetup();
 		CBCModsFabric.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsFabric.COPYCATS::getBlock));
 		CBCModsFabric.TRINKETS.executeIfInstalled(() -> () -> CBCTrinketsIntegration.init());
+        CBCModsFabric.VALKYRIENSKIES.executeIfInstalled(() -> () -> ValkyrienSkiesCompat.init());
 	}
 
 	public static void onServerLevelTick(ServerLevel level) {

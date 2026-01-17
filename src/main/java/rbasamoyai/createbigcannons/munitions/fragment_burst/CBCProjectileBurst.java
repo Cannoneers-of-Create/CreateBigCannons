@@ -9,6 +9,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannon_control.contraption.CBCPositionTransformers;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
@@ -36,7 +37,7 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 		super.tick();
 		if (this.level() instanceof ServerLevel slevel) {
 			if (!this.isRemoved() && CBCConfigs.server().munitions.projectilesCanChunkload.get()) {
-				ChunkPos cpos1 = new ChunkPos(this.blockPosition());
+                ChunkPos cpos1 = new ChunkPos(CBCPositionTransformers.transformBlockPos(slevel, this.blockPosition()));
 				RitchiesProjectileLib.queueForceLoad(slevel, cpos1.x, cpos1.z);
 			}
 		}

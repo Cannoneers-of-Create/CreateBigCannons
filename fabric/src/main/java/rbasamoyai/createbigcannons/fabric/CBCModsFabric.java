@@ -13,7 +13,8 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 // Copied from Create's Mods class --ritchie
 public enum CBCModsFabric {
 	COPYCATS,
-	TRINKETS;
+	TRINKETS,
+    VALKYRIENSKIES;
 
 	private final String id;
 

@@ -36,6 +36,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannon_control.contraption.CBCPositionTransformers;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
@@ -150,7 +151,10 @@ public abstract class AbstractCannonProjectile extends Projectile {
 
 			if (this.level() instanceof ServerLevel slevel && !this.isRemoved()) {
 				if (CBCConfigs.server().munitions.projectilesCanChunkload.get()) {
-					ChunkPos cpos1 = new ChunkPos(this.blockPosition());
+                    BlockPos lpos = this.blockPosition();
+                    if (this.isInGround()) // Flying projectiles should not be contained within ships
+                        lpos = CBCPositionTransformers.transformBlockPos(slevel, lpos);
+					ChunkPos cpos1 = new ChunkPos(lpos);
 					RitchiesProjectileLib.queueForceLoad(slevel, cpos1.x, cpos1.z);
 				}
 			}

@@ -18,6 +18,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.cannon_control.contraption.CBCPositionTransformers;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.smoke.SmokeShellSmokeParticleData;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
@@ -167,7 +168,7 @@ public class SmokeEmitterEntity extends Entity {
 			}
 			if (this.level() instanceof ServerLevel slevel && !this.isRemoved()) {
 				if (this.canChunkLoad()) {
-					ChunkPos cpos = new ChunkPos(this.blockPosition());
+                    ChunkPos cpos = new ChunkPos(CBCPositionTransformers.transformBlockPos(slevel, this.blockPosition()));
 					RitchiesProjectileLib.queueForceLoad(slevel, cpos.x, cpos.z);
 				}
 			}
