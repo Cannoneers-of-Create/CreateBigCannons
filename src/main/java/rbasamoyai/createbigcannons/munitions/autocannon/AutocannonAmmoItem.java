@@ -18,6 +18,7 @@ public interface AutocannonAmmoItem {
 	void setTracer(ItemStack stack, boolean value);
 
 	ItemStack getSpentItem(ItemStack stack);
+    ItemStack getSquibItem(ItemStack stack);
 
 	AutocannonAmmoType getType();
 

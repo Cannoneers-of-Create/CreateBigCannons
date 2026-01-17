@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.network.chat.Component;
@@ -55,7 +56,12 @@ public class MachineGunRoundItem extends Item implements AutocannonAmmoItem {
 		return CBCItems.EMPTY_MACHINE_GUN_ROUND.asStack();
 	}
 
-	@Override
+    @Override
+    public ItemStack getSquibItem(ItemStack stack) {
+        return AllItems.COPPER_NUGGET.asStack();
+    }
+
+    @Override
 	public AutocannonAmmoType getType() {
 		return AutocannonAmmoType.MACHINE_GUN;
 	}

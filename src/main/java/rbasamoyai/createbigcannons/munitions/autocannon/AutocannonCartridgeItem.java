@@ -45,7 +45,12 @@ public class AutocannonCartridgeItem extends Item implements AutocannonAmmoItem 
 		return CBCItems.EMPTY_AUTOCANNON_CARTRIDGE.asStack();
 	}
 
-	@Override
+    @Override
+    public ItemStack getSquibItem(ItemStack stack) {
+        return getProjectileStack(stack);
+    }
+
+    @Override
 	public AutocannonAmmoType getType() {
 		return AutocannonAmmoType.AUTOCANNON;
 	}

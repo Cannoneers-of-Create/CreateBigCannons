@@ -3,6 +3,7 @@
 ## [5.10.2] - Unreleased
 
 Fixes:
+- Fixed empty casing duplication glitch present in autocannons
 - [Valkyrien Skies] Fixed cannon firing breaking ship ticking
 
 ## [5.10.1] - 2025-12-19
