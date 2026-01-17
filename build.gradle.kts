@@ -27,6 +27,7 @@ repositories {
 	maven("https://mvn.devos.one/releases/") // Porting Lib
 	maven("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/") // Forge Config API Port
 	maven("https://maven.jamieswhiteshirt.com/libs-release") // Reach Entity Attributes
+    maven("https://maven.valkyrienskies.org/") // Valkyrien Skies
 }
 
 loom {
@@ -58,6 +59,20 @@ dependencies {
 	}
 
 	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") {isTransitive=false}
+
+    // VS2 (copied from clockwork)
+    modCompileOnly("org.valkyrienskies:valkyrienskies-120-common:${mod.dep("vs2_version")}") {
+        exclude("com.simibubi")
+    }
+    compileOnly("org.valkyrienskies.core:api:${mod.dep("vscore_version")}") {
+        exclude("org.joml", "")
+    }
+    compileOnly("org.valkyrienskies.core:impl:${mod.dep("vscore_version")}") {
+        exclude("org.joml", "")
+    }
+    compileOnly("org.valkyrienskies.core:internal:${mod.dep("vscore_version")}") {
+        exclude("org.joml", "")
+    }
 }
 
 
