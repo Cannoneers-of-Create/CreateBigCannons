@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.10.2] - Unreleased
+## [5.10.2] - 2026-01-17
 
 Fixes:
 - Fixed empty casing duplication glitch present in autocannons
