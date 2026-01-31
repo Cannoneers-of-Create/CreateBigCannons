@@ -6,7 +6,6 @@ import java.util.Map.Entry;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
-
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.simibubi.create.api.stress.BlockStressValues;

@@ -1,9 +1,10 @@
 package rbasamoyai.createbigcannons.base;
 
-import com.tterrag.registrate.util.nullness.NonNullSupplier;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
-import java.util.function.Supplier;
+
+import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
 public class LazySupplier<T> implements NonNullSupplier<T> {
 

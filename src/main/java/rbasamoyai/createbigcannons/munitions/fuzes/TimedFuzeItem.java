@@ -2,13 +2,9 @@ package rbasamoyai.createbigcannons.munitions.fuzes;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;

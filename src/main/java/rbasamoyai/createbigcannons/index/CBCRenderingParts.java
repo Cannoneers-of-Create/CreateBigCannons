@@ -2,8 +2,6 @@ package rbasamoyai.createbigcannons.index;
 
 import java.util.function.Function;
 
-import com.google.common.collect.ImmutableMap;
-import com.mojang.blaze3d.vertex.VertexFormatElement;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 

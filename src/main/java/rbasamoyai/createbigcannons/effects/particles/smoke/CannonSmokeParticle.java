@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.smoke;
 
-import net.minecraft.client.renderer.texture.OverlayTexture;
-
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -19,6 +17,7 @@ import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;

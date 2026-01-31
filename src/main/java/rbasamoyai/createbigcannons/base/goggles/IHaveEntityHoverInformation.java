@@ -1,8 +1,8 @@
 package rbasamoyai.createbigcannons.base.goggles;
 
-import net.minecraft.network.chat.Component;
-
 import java.util.List;
+
+import net.minecraft.network.chat.Component;
 
 public interface IHaveEntityHoverInformation {
 

@@ -2,7 +2,6 @@ package rbasamoyai.createbigcannons.crafting.boring;
 
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.foundation.data.SpecialBlockStateGen;
-
 import com.tterrag.registrate.providers.DataGenContext;
 import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 

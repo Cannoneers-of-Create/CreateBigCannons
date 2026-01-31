@@ -3,7 +3,6 @@ package rbasamoyai.createbigcannons.munitions.autocannon;
 import java.util.List;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import com.simibubi.create.foundation.utility.CreateLang;
 

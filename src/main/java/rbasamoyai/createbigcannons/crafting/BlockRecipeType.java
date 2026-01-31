@@ -2,10 +2,10 @@ package rbasamoyai.createbigcannons.crafting;
 
 import net.minecraft.core.Registry;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBoringBlockRecipe;
 import rbasamoyai.createbigcannons.crafting.builtup.BuiltUpHeatingRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
-import rbasamoyai.createbigcannons.base.CBCRegistries;
 
 public interface BlockRecipeType<T extends BlockRecipe>  {
 

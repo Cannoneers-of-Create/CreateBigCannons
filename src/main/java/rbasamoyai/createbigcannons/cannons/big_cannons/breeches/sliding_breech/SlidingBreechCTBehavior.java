@@ -1,5 +1,9 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
+
+import javax.annotation.Nullable;
+
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.simibubi.create.foundation.block.connected.ConnectedTextureBehaviour;
 
@@ -12,10 +16,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.IBigCannonBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
-
-import javax.annotation.Nullable;
-
-import static net.minecraft.world.level.block.state.properties.BlockStateProperties.FACING;
 
 public class SlidingBreechCTBehavior extends ConnectedTextureBehaviour.Base {
 

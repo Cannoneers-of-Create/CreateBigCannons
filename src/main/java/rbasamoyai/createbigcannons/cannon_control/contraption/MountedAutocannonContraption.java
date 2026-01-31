@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.simibubi.create.api.contraption.ContraptionType;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -72,8 +74,6 @@ import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPa
 import rbasamoyai.createbigcannons.remix.GetItemStorage;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
-
-import javax.annotation.Nullable;
 
 public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon, GetItemStorage {
 

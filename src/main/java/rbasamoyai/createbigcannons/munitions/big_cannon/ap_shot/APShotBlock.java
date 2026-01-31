@@ -8,7 +8,6 @@ import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.InertProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
-import rbasamoyai.createbigcannons.munitions.big_cannon.ap_shell.APShellBlock;
 
 public class APShotBlock extends InertProjectileBlock {
 

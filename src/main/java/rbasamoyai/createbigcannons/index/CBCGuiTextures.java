@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons.index;
 
 import net.createmod.catnip.gui.element.ScreenElement;
-
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import rbasamoyai.createbigcannons.CreateBigCannons;

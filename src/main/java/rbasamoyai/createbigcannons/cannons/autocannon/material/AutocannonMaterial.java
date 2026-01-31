@@ -1,9 +1,9 @@
 package rbasamoyai.createbigcannons.cannons.autocannon.material;
 
-import net.minecraft.resources.ResourceLocation;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import net.minecraft.resources.ResourceLocation;
 
 public record AutocannonMaterial(ResourceLocation name, AutocannonMaterialProperties defaultProperties) {
 

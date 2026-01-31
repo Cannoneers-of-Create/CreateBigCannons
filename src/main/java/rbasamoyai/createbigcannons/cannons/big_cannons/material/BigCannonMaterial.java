@@ -1,9 +1,9 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.material;
 
-import net.minecraft.resources.ResourceLocation;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import net.minecraft.resources.ResourceLocation;
 
 public record BigCannonMaterial(ResourceLocation name, BigCannonMaterialProperties defaultProperties) {
 

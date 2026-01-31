@@ -5,8 +5,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.network.CBCRootNetwork;
-import rbasamoyai.createbigcannons.network.RootPacket;
 
 public record CBCNeoForgePacket(RootPacket pkt) implements CustomPacketPayload {
 

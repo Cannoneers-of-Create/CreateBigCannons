@@ -18,7 +18,6 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 import net.neoforged.neoforge.registries.RegisterEvent;
 import net.neoforged.neoforge.registries.RegistryBuilder;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionToolItem;
 import rbasamoyai.createbigcannons.cannon_control.config.DefaultCannonMountPropertiesSerializers;

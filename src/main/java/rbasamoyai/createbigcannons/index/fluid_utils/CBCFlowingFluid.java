@@ -1,5 +1,10 @@
 package rbasamoyai.createbigcannons.index.fluid_utils;
 
+import java.util.function.Supplier;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.simibubi.create.foundation.data.CreateRegistrate;
 
 import net.minecraft.Util;
@@ -26,10 +31,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidType;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.function.Supplier;
 
 public abstract class CBCFlowingFluid extends FlowingFluid {
 

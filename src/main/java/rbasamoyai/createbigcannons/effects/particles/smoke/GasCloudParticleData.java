@@ -1,8 +1,5 @@
 package rbasamoyai.createbigcannons.effects.particles.smoke;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
-
 import org.joml.Vector3f;
 
 import com.mojang.serialization.Codec;
@@ -17,6 +14,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public record GasCloudParticleData(float scale, Vector3f color) implements ParticleOptions, ICustomParticleDataWithSprite<GasCloudParticleData> {

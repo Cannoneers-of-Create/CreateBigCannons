@@ -1,15 +1,5 @@
 package rbasamoyai.createbigcannons.mixin.client;
 
-import com.simibubi.create.AllKeys;
-
-import net.createmod.catnip.platform.services.NetworkHelper;
-import net.minecraft.core.Direction;
-
-import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.world.InteractionHand;
-
-import net.minecraft.world.phys.HitResult;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,13 +7,19 @@ import org.spongepowered.asm.mixin.injection.At;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import com.simibubi.create.AllKeys;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsClient;
 
+import net.createmod.catnip.platform.services.NetworkHelper;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlockEntity.FixedCannonMountScrollValueBehaviour;
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountValueScreen;

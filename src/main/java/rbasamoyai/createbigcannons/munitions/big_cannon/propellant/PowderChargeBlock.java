@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.propellant;
 
+import javax.annotation.Nullable;
+
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.equipment.wrench.IWrenchable;
 
@@ -12,7 +14,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -49,8 +50,6 @@ import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.config.PowderChargeProperties;
 import rbasamoyai.createbigcannons.remix.CBCExplodableBlock;
-
-import javax.annotation.Nullable;
 
 public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock,
     SimpleWaterloggedBlock, CBCExplodableBlock {
