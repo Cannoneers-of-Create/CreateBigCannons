@@ -1,111 +1,226 @@
 plugins {
-    // see https://fabricmc.net/develop/ for new versions
-    id 'fabric-loom' version '1.10-SNAPSHOT' apply false
-    // see https://projects.neoforged.net/neoforged/moddevgradle for new versions
-    id 'net.neoforged.moddev' version '2.0.90' apply false
-    id "maven-publish"
+    id 'java-library'
+    id 'maven-publish'
+    id 'net.neoforged.moddev' version '2.0.139'
+    id 'idea'
 }
 
-allprojects {
-    apply plugin: "java"
+tasks.named('wrapper', Wrapper).configure {
+    // Define wrapper values here so as to not have to always do so when updating gradlew.properties.
+    // Switching this to Wrapper.DistributionType.ALL will download the full gradle sources that comes with
+    // documentation attached on cursor hover of gradle classes and methods. However, this comes with increased
+    // file size for Gradle. If you do switch this to ALL, run the Gradle wrapper task twice afterwards.
+    // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
+    distributionType = Wrapper.DistributionType.BIN
+}
 
-    version = "${rootProject.mod_version}+mc.${minecraft_version}-${project.name}"
+version = mod_version
+group = mod_group
 
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
+repositories {
+    maven { url = "https://maven.createmod.net" } // Create, Flywheel, Ponder
+    maven { url = "https://maven.ithundxr.dev/snapshots" } // Registrate
+    maven { url = "https://maven.realrobotix.me/master" } // Registrate
+    maven { url = "https://maven.neoforged.net/releases/" }
+    maven { url = "https://maven.theillusivec4.top/" } // Curios
+    maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
+    maven { url = 'https://maven.blamejared.com' }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                url "https://cursemaven.com"
+            }
+        }
+        filter {
+            includeGroup "curse.maven"
+        }
     }
 
-    java {
-        withSourcesJar()
-        targetCompatibility = JavaVersion.VERSION_21
-        sourceCompatibility = JavaVersion.VERSION_21
-    }
-
-    afterEvaluate {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs.addAll("-Xmaxerrs", "2000")
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
         }
     }
 }
 
-subprojects {
+base {
+    archivesName = mod_id
+}
+
+// Mojang ships Java 21 to end users in 1.21.1, so mods should target Java 21.
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+neoForge {
+    // Specify the version of NeoForge to use.
+    version = project.neoforge_version
+
+    parchment {
+        mappingsVersion = project.parchment_version
+        minecraftVersion = project.parchment_minecraft
+    }
+
+    // This line is optional. Access Transformers are automatically detected
+    accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        client {
+            client()
+
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        server {
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        // This run config launches GameTestServer and runs all registered gametests, then exits.
+        // By default, the server will crash when no gametests are provided.
+        // The gametest system is also enabled by default for other run configs under the /test command.
+        gameTestServer {
+            type = "gameTestServer"
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
+        }
+
+        data {
+            data()
+
+            // example of overriding the workingDirectory set in configureEach above, uncomment if you want to use it
+            // gameDirectory = project.file('run-data')
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
+
+        // applies to all the run configs above
+        configureEach {
+            // Recommended logging data for a userdev environment
+            // The markers can be added/remove as needed separated by commas.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        // define mod <-> source bindings
+        // these are used to tell the game which sources are for which mod
+        // multi mod projects should define one per mod
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
+        }
+    }
+}
+
+// Include resources generated by data generators.
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+// Sets up a dependency configuration called 'localRuntime'.
+// This configuration should be used instead of 'runtimeOnly' to declare
+// a dependency that will be present for runtime testing but that is
+// "optional", meaning it will not be pulled by dependents of this mod.
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
+}
+
+dependencies {
+    implementation("com.simibubi.create:create-${minecraft_version}:${create_neoforge_version}:slim") { transitive = false }
+    implementation("net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_neoforge_version}")
+    compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_neoforge_version}")
+    runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_neoforge_version}")
+    implementation("com.tterrag.registrate:Registrate:${registrate_neoforge_version}")
+
+    // Development QOL
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}") { transitive = false }
+
+    // if you would like to add integration with JEI, uncomment this line.
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+
+    //implementation("curse.maven:spark-361579:${spark_forge_file}") // Spark
+
+    // Ritchie's Projectile Library
+    String rplSuffix = Boolean.valueOf(use_rpl_nightly) ? "-build.${rpl_build}" : ""
+    implementation("com.rbasamoyai:ritchiesprojectilelib:${rpl_version}+mc.${minecraft_version}-neoforge$rplSuffix") { transitive = false }
+    // Create: Unify
+    // implementation("maven.modrinth:create-unify:${mod.dep("unify_forge_file")}") fixme
+
+    // Fixes, integration
+    //implementation("com.copycatsplus:copycats:${copycats_version}+mc.${minecraft_version}-neoforge") { transitive = false }
+    implementation("maven.modrinth:framedblocks:${framedblocks_version}")
+
+    // Curios
+    runtimeOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${minecraft_version}")
+    compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${minecraft_version}:api")
+}
+
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
+    var replaceProperties = [
+        minecraft_version      : minecraft_version,
+        minecraft_version_range: minecraft_version_range,
+        neoforge_version       : neoforge_version,
+        loader_version_range   : neoforge_loader_version_range,
+        mod_id                 : mod_id,
+        mod_name               : mod_name,
+        mod_license            : mod_license,
+        mod_version            : mod_version,
+        mod_author             : mod_author,
+        create_neoforge_version: create_neoforge_version,
+        copycats_version_range : copycats_version_range,
+        framedblocks_version_range : framedblocks_version_range,
+        curios_version_range   : curios_version_range
+    ]
+    inputs.properties replaceProperties
+    expand replaceProperties
+    from "src/main/templates"
+    into "build/generated/sources/modMetadata"
+}
+// Include the output of "generateModMetadata" as an input directory for the build
+// this works with both building through Gradle and the IDE.
+sourceSets.main.resources.srcDir generateModMetadata
+// To avoid having to run "generateModMetadata" manually, make it run on every project reload
+neoForge.ideSyncTask generateModMetadata
+
+// Example configuration to allow publishing using the maven-publish plugin
+publishing {
+    publications {
+        register('mavenJava', MavenPublication) {
+            from components.java
+        }
+    }
     repositories {
-        mavenCentral()
-
-        // mappings
-        exclusiveContent {
-            forRepository {
-                maven { url = "https://maven.parchmentmc.org" }
-            }
-            filter {
-                includeGroup "org.parchmentmc.data"
-            }
-        }
-        exclusiveContent { // mappings
-            forRepository {
-                maven { url = "https://maven.quiltmc.org/repository/release" }
-            }
-            filter {
-                includeGroup "org.quiltmc"
-            }
-        }
-
-        exclusiveContent { // our repo
-            forRepository {
-                maven { url = "https://maven.realrobotix.me/master/" }
-            }
-            filter {
-                includeGroup("com.rbasamoyai")
-                includeGroup("com.copycatsplus")
-            }
-        }
-
-        // Mod websites
-        exclusiveContent {
-            forRepository {
-                maven { url = "https://cursemaven.com" }
-            }
-            filter {
-                includeGroup("curse.maven")
-            }
-        }
-
-        exclusiveContent {
-            forRepository {
-                maven { url = "https://api.modrinth.com/maven" }
-            }
-            filter {
-                includeGroup("maven.modrinth")
-            }
-        }
-
-        //maven("https://maven.shedaniel.me/")
-        maven { url = "https://maven.blamejared.com/" }
-        maven { url = "https://maven.tterrag.com/" }
-        maven { url = "https://maven.createmod.net/" }
-        maven { url = "https://maven.neoforged.net/releases/" }
-        maven { url = "https://mvn.devos.one/snapshots" }
-
-        flatDir{
-            dir("libs")
+        maven {
+            url "file://${project.projectDir}/repo"
         }
     }
-    publishing {
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/cannoneers-of-create/createbigcannons")
-                credentials {
-                    username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
-                    password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
-                }
-            }
-            maven {
-                name = "realRobotixMaven"
-                url = uri("https://maven.realrobotix.me/createbigcannons")
-                credentials(PasswordCredentials)
-            }
-            mavenLocal()
-        }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+// IDEA no longer automatically downloads sources/javadoc jars for dependencies, so we need to explicitly enable the behavior.
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
     }
 }

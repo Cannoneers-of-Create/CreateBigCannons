@@ -1,0 +1,74 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+issueTrackerURL = "https://github.com/Cannoneers-of-Create/CreateBigCannons/issues"
+license = "${license}"
+
+[[mods]]
+modId = "${mod_id}"
+version = "${mod_version}"
+displayName = "${mod_name}"
+authors = "${mod_author}"
+description = """Artillery engineering comes to Create
+Attributions:
+Logo by Milkyfur
+Textures by rbasamoyai, Milkyfur, and LopyLuna
+"""
+logoFile = "icon.png"
+
+[[mixins]]
+config = "${mod_id}-common.mixins.json"
+
+[[mixins]]
+config = "${mod_id}.mixins.json"
+
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
+[[dependencies.${mod_id}]]
+modId = "neoforge"
+type = "required"
+versionRange = "${neoforge_version}"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "minecraft"
+type = "required"
+versionRange = "[${minecraft_version}]"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "create"
+type = "required"
+versionRange="[${create_neoforge_version},)"
+ordering = "NONE"
+side = "BOTH"
+
+#[[dependencies.${mod_id}]]
+#modId = "unify"
+#type = "optional"
+# replace version range
+#ordering = "NONE"
+#side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "copycats"
+type = "optional"
+versionRange = "[${copycats_version_range},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "framedblocks"
+type = "optional"
+versionRange = "[${framedblocks_version_range},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "curios"
+type = "optional"
+versionRange = "[${curios_version_range},)"
+ordering = "NONE"
+side = "BOTH"

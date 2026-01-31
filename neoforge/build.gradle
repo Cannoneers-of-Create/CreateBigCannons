@@ -85,7 +85,7 @@ neoForge {
 }
 
 repositories {
-    maven { url = "https://maven.createmod.net" }
+    maven { url = "https://maven.createmod.net" } // Create, Flywheel, Ponder
     maven { url = "https://maven.neoforged.net/releases/" }
 	maven { url = "https://maven.theillusivec4.top/" } // Curios
 	maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
