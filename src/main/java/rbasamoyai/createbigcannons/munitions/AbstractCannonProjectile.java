@@ -37,6 +37,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -52,7 +53,7 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 import rbasamoyai.ritchiesprojectilelib.network.ClientboundPreciseMotionSyncPacket;
 
-public abstract class AbstractCannonProjectile extends Projectile {
+public abstract class AbstractCannonProjectile extends Projectile implements IEntityWithComplexSpawn {
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
@@ -74,7 +75,17 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		this.setProjectileMass(this.getBallisticProperties().durabilityMass());
 	}
 
-	@Nonnull public abstract EntityDamagePropertiesComponent getDamageProperties();
+    @Override
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
+        this.baseWriteSpawnData(buffer);
+    }
+
+    @Override
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
+        this.baseReadSpawnData(additionalData);
+    }
+
+    @Nonnull public abstract EntityDamagePropertiesComponent getDamageProperties();
 
 	@Override
 	public void tick() {

@@ -357,4 +357,26 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 		}
 	}
 
+    @Override
+    public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction direction, @Nullable LivingEntity igniter) {
+        this.spawnPrimedPropellant(level, pos, state);
+        level.removeBlock(pos, false);
+    }
+
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+        this.createbigcannons$onBlockExplode(level, pos, state, explosion);
+        super.onBlockExploded(state, level, pos, explosion);
+    }
+
+    @Override
+    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return level.getBlockEntity(pos) instanceof BigCartridgeBlockEntity cartridge && cartridge.getPower() > 0 ? 30 : 0;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return level.getBlockEntity(pos) instanceof BigCartridgeBlockEntity cartridge && cartridge.getPower() > 0 ? 8 : 0;
+    }
+
 }

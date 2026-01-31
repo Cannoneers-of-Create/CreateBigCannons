@@ -1,8 +1,0 @@
-{
-  "type": "createbigcannons:drill_boring",
-  "input": {
-    "type": "block",
-    "block": "createbigcannons:unbored_large_steel_cannon_layer"
-  },
-  "result": "createbigcannons:large_steel_cannon_layer"
-}

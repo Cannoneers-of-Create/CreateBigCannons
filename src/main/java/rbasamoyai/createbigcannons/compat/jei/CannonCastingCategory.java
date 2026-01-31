@@ -1,0 +1,96 @@
+package rbasamoyai.createbigcannons.compat.jei;
+
+import static com.simibubi.create.compat.jei.category.CreateRecipeCategory.getRenderedSlot;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
+import com.simibubi.create.AllFluids;
+import com.simibubi.create.content.fluids.potion.PotionFluidHandler;
+
+import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
+import mezz.jei.api.gui.ingredient.IRecipeSlotView;
+import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.neoforge.NeoForgeTypes;
+import mezz.jei.api.recipe.IFocusGroup;
+import mezz.jei.api.recipe.RecipeIngredientRole;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.fluids.FluidStack;
+import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.compat.jei.animated.CannonCastGuiElement;
+import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
+import rbasamoyai.createbigcannons.crafting.casting.FluidCastingTimeHandler;
+import rbasamoyai.createbigcannons.index.CBCGuiTextures;
+
+public class CannonCastingCategory extends CBCBlockRecipeCategory<CannonCastingRecipe> {
+
+    private final CannonCastGuiElement cannonCast = new CannonCastGuiElement();
+
+    public CannonCastingCategory(Info<CannonCastingRecipe> info) {
+        super(info);
+    }
+
+    @Override
+    public void draw(CannonCastingRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
+        CBCGuiTextures.CANNON_CAST_SHADOW.render(graphics, 40, 45);
+        this.cannonCast.withShape(recipe.shape()).draw(graphics, this.getBackground().getWidth() / 2 - 15, 55);
+        CBCGuiTextures.CASTING_ARROW.render(graphics, 21, 47);
+        CBCGuiTextures.CASTING_ARROW_1.render(graphics, 124, 27);
+
+        float castingTime = 0;
+        List<IRecipeSlotView> inputViews = recipeSlotsView.getSlotViews(RecipeIngredientRole.INPUT);
+        if (!inputViews.isEmpty()) {
+            IRecipeSlotView view = inputViews.get(0);
+            Optional<FluidStack> ing = view.getDisplayedIngredient(NeoForgeTypes.FLUID_STACK);
+            if (ing.isPresent()) castingTime = (float) FluidCastingTimeHandler.getCastingTime(ing.get().getFluid());
+        }
+        Minecraft mc = Minecraft.getInstance();
+        Component text = Component.translatable("recipe." + CreateBigCannons.MOD_ID + ".casting_time", String.format("%.2f", castingTime / 20.0f));
+        graphics.drawString(mc.font, text, (177 - mc.font.width(text)) / 2, 90, 4210752, false);
+    }
+
+    @SuppressWarnings("removal") // see below
+    @Override
+    public void setRecipe(IRecipeLayoutBuilder builder, CannonCastingRecipe recipe, IFocusGroup focuses) {
+        int amount = recipe.shape().fluidSize();
+        builder.addSlot(RecipeIngredientRole.INPUT, 16, 27)
+            .setBackground(getRenderedSlot(), -1, -1)
+            .addIngredients(NeoForgeTypes.FLUID_STACK, Arrays.stream(recipe.ingredient().getStacks()).map(fs -> {
+                FluidStack fs1 = fs.copy();
+                fs1.setAmount(amount);
+                return fs1;
+            }).toList())
+            .setFluidRenderer(amount, false, 16, 16)
+            .addTooltipCallback(CannonCastingCategory::addPotionTooltip); // removal
+
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 142, 62)
+            .setBackground(getRenderedSlot(), -1, -1)
+            .addItemStack(new ItemStack(recipe.getResultBlock()));
+
+        builder.addSlot(RecipeIngredientRole.CATALYST, 80, 5)
+            .setBackground(getRenderedSlot(), -1, -1)
+            .addItemStack(new ItemStack(recipe.shape().castMould()));
+    }
+
+    // TODO: remove once CreateRecipeCategory#addPotionTooltip is removed. See that method for more details.
+    private static void addPotionTooltip(IRecipeSlotView view, List<Component> tooltip) {
+        Optional<FluidStack> displayed = view.getDisplayedIngredient(NeoForgeTypes.FLUID_STACK);
+        if (displayed.isEmpty())
+            return;
+
+        FluidStack fluidStack = displayed.get();
+
+        if (fluidStack.getFluid().isSame(AllFluids.POTION.get())) {
+            ArrayList<Component> potionTooltip = new ArrayList<>();
+            PotionFluidHandler.addPotionTooltip(fluidStack, potionTooltip::add, 1);
+            // append after item name
+            tooltip.addAll(1, potionTooltip.stream().toList());
+        }
+    }
+
+}

@@ -3,8 +3,7 @@ package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -24,15 +23,19 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.remix.CBCHasIItemHandlerBlockEntity;
 
-public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements IAutocannonAmmoContainerContainer, MenuProvider, Nameable {
+public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements IAutocannonAmmoContainerContainer,
+    MenuProvider, Nameable, CBCHasIItemHandlerBlockEntity {
 
 	private ItemStack ammo = ItemStack.EMPTY;
 	private ItemStack tracers = ItemStack.EMPTY;
 	private int spacing = 1;
 	private int currentIndex = 0;
 	private Component name;
+    private IItemHandler inventory;
 
 	private ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
@@ -216,5 +219,10 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		double z = (double) this.worldPosition.getZ() + 0.5d;
 		this.level.playSound(null, x, y, z, sound, SoundSource.BLOCKS, 0.5F, this.level.getRandom().nextFloat() * 0.1F + 0.9F);
 	}
+
+    @Override
+    public IItemHandler getItemHandler(Direction side) {
+        return this.inventory == null ? this.inventory = new AutocannonAmmoContainerInterface((AutocannonAmmoContainerBlockEntity) (Object) this) : this.inventory;
+    }
 
 }

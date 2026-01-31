@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.index.fluid_utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import net.minecraft.core.BlockPos;
@@ -11,6 +13,9 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
+import net.minecraft.world.level.material.FluidState;
+
+import javax.annotation.Nonnull;
 
 public class CBCLiquidBlock extends LiquidBlock implements FluidGetter {
 
@@ -64,5 +69,29 @@ public class CBCLiquidBlock extends LiquidBlock implements FluidGetter {
 	@Override public FlowingFluid getFluid() { return this.fluid; }
 
 	@Override public Optional<SoundEvent> getPickupSound() { return this.getFluid().getPickupSound(); }
+
+    private List<FluidState> stateCache = null;
+
+    // Taken from Bumblezone with help from TelepathicGrunt - thanks! --ritchie
+    @Nonnull
+    @Override
+    public FluidState getFluidState(BlockState arg) {
+        int i = arg.getValue(LEVEL);
+        if (this.stateCache == null) {
+            this.initFluidStateCache();
+        }
+        return this.stateCache.get(Math.min(i, 8));
+    }
+
+    protected synchronized void initFluidStateCache() {
+        if (this.stateCache == null) {
+            this.stateCache = new ArrayList<>();
+            this.stateCache.add(this.getFluid().getSource(false));
+            for(int i = 1; i < 8; ++i) {
+                this.stateCache.add(this.getFluid().getFlowing(8 - i, false));
+            }
+            this.stateCache.add(this.getFluid().getFlowing(8, true));
+        }
+    }
 
 }

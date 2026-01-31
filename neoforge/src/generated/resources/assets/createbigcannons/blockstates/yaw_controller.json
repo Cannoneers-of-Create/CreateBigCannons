@@ -1,7 +1,0 @@
-{
-  "variants": {
-    "": {
-      "model": "createbigcannons:block/cannon_mount/yaw_controller"
-    }
-  }
-}

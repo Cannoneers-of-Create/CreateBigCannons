@@ -31,7 +31,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -39,6 +38,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.ExtendsCannonMount;
@@ -46,8 +47,10 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCan
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.remix.CBCHasIItemHandlerBlockEntity;
 
-public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block, IHaveGoggleInformation {
+public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions,
+    ControlPitchContraption.Block, IHaveGoggleInformation, CBCHasIItemHandlerBlockEntity {
 
 	private AssemblyException lastException = null;
 	protected PitchOrientedContraptionEntity mountedContraption;
@@ -284,6 +287,12 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 	public PitchOrientedContraptionEntity getContraption() {
 		return this.mountedContraption;
 	}
+
+    @Nullable
+    @Override
+    public IItemHandler getItemHandler(Direction side) {
+        return this.mountedContraption == null ? null : this.mountedContraption.getCapability(Capabilities.ItemHandler.ENTITY);
+    }
 
 	public static class FixedCannonMountScrollValueBehaviour extends ValveHandleBlockEntity.ValveHandleScrollValueBehaviour {
 		public static final BehaviourType<FixedCannonMountScrollValueBehaviour> PITCH_TYPE = new BehaviourType<>();

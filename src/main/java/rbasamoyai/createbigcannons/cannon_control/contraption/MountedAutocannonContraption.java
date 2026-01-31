@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
@@ -51,6 +52,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.IAutocannonBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.MovesWithAutocannonRecoilSpring;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AbstractAutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlock;
+import rbasamoyai.createbigcannons.cannons.autocannon.breech.AutocannonBreechBlockEntity;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterial;
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialProperties;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlock;
@@ -67,10 +69,13 @@ import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 import rbasamoyai.createbigcannons.munitions.autocannon.config.AutocannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.network.ClientboundAnimateCannonContraptionPacket;
+import rbasamoyai.createbigcannons.remix.GetItemStorage;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 import rbasamoyai.ritchiesprojectilelib.RitchiesProjectileLib;
 
-public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon {
+import javax.annotation.Nullable;
+
+public class MountedAutocannonContraption extends AbstractMountedCannonContraption implements ItemCannon, GetItemStorage {
 
 	private AutocannonMaterial cannonMaterial;
 	private final Set<BlockPos> recoilSpringPositions = new LinkedHashSet<>();
@@ -538,14 +543,24 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		return CBCContraptionTypes.MOUNTED_AUTOCANNON.value();
 	}
 
-	@Override
-	public ItemStack insertItemIntoCannon(ItemStack stack, boolean simulate) {
-		return stack;
-	}
+    @Override
+    public ItemStack insertItemIntoCannon(ItemStack stack, boolean simulate) {
+        if (this.getItemStorage() == null)
+            return stack;
+        return this.getItemStorage().insertItem(1, stack, simulate);
+    }
 
-	@Override
-	public ItemStack extractItemFromCannon(boolean simulate) {
-		return ItemStack.EMPTY;
-	}
+    @Override
+    public ItemStack extractItemFromCannon(boolean simulate) {
+        if (this.getItemStorage() == null)
+            return ItemStack.EMPTY;
+        return this.getItemStorage().extractItem(0, 1, simulate);
+    }
+
+    @Nullable
+    @Override
+    public IItemHandler getItemStorage() {
+        return this.presentBlockEntities.get(this.startPos) instanceof AutocannonBreechBlockEntity breech ? breech.createItemHandler() : null;
+    }
 
 }

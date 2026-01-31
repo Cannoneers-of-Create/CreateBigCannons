@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.AllArmInteractionPointTypes;
+import com.simibubi.create.content.kinetics.mechanicalArm.ArmBlockEntity;
 import com.simibubi.create.content.kinetics.mechanicalArm.ArmInteractionPointType;
 
 import net.minecraft.core.BlockPos;
@@ -179,5 +180,24 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 	private static int getLoadingCooldown() {
 		return CBCConfigs.server().cannons.quickfiringBreechLoadingCooldown.get();
 	}
+
+    @Override
+    public ItemStack insert(ArmBlockEntity be, ItemStack stack, boolean simulate) {
+        BlockEntity targetBE = this.getLevel().getBlockEntity(this.pos);
+        PitchOrientedContraptionEntity poce;
+        if (targetBE instanceof ExtendsCannonMount extendsMount) {
+            CannonMountBlockEntity mount = extendsMount.getCannonMount();
+            if (mount == null)
+                return stack;
+            poce = mount.getContraption();
+        } else if (targetBE instanceof FixedCannonMountBlockEntity mount) {
+            poce = mount.getContraption();
+        } else {
+            return stack;
+        }
+        if (poce == null || !(poce.getContraption() instanceof AbstractMountedCannonContraption cannon))
+            return stack;
+        return this.getInsertedResultAndDoSomething(stack, simulate, cannon, poce);
+    }
 
 }

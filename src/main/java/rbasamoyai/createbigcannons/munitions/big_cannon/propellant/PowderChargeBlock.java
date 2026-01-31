@@ -48,8 +48,12 @@ import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.config.PowderChargeProperties;
+import rbasamoyai.createbigcannons.remix.CBCExplodableBlock;
 
-public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock, SimpleWaterloggedBlock {
+import javax.annotation.Nullable;
+
+public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable, BigCannonPropellantBlock,
+    SimpleWaterloggedBlock, CBCExplodableBlock {
 
 	private static final EnumProperty<Axis> AXIS = RotatedPillarBlock.AXIS;
 
@@ -285,5 +289,27 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 			}
 		}
 	}
+
+    @Override
+    public void onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction direction, @Nullable LivingEntity igniter) {
+        this.spawnPrimedPropellant(level, pos, state);
+        level.removeBlock(pos, false);
+    }
+
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+        this.createbigcannons$onBlockExplode(level, pos, state, explosion);
+        super.onBlockExploded(state, level, pos, explosion);
+    }
+
+    @Override
+    public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return 100;
+    }
+
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+        return 30;
+    }
 
 }

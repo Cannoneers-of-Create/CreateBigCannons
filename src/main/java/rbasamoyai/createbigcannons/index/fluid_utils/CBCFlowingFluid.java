@@ -1,7 +1,11 @@
 package rbasamoyai.createbigcannons.index.fluid_utils;
 
+import com.simibubi.create.foundation.data.CreateRegistrate;
+
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -20,7 +24,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.fluids.FluidType;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.function.Supplier;
 
@@ -114,6 +121,21 @@ public abstract class CBCFlowingFluid extends FlowingFluid {
 		@Override public boolean isSource(FluidState state) { return true; }
 		@Override public int getAmount(FluidState state) { return 8; }
 	}
+
+    private FluidType fluidType;
+
+    @Nonnull
+    @Override
+    public FluidType getFluidType() {
+        if (this.fluidType == null) {
+            this.fluidType = CreateRegistrate.defaultFluidType(
+                FluidType.Properties.create()
+                    .sound(SoundActions.BUCKET_FILL, this.fillSound)
+                    .sound(SoundActions.BUCKET_EMPTY, this.emptySound)
+                    .descriptionId(Util.makeDescriptionId("fluid", BuiltInRegistries.FLUID.getKey(this))), this.stillTex, this.flowingTex);
+        }
+        return this.fluidType;
+    }
 
 	/**
 	 * Taken from SimpleFlowableFluid.Properties

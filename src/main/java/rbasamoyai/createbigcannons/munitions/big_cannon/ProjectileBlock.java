@@ -39,9 +39,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
+import rbasamoyai.createbigcannons.remix.CBCExplodableBlock;
 
 public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile> extends DirectionalBlock
-	implements IWrenchable, BigCannonMunitionBlock, SimpleWaterloggedBlock {
+	implements IWrenchable, BigCannonMunitionBlock, SimpleWaterloggedBlock, CBCExplodableBlock {
 
 	private final VoxelShaper shapes;
 
@@ -207,5 +208,11 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	public boolean dropFromExplosion(Explosion explosion) {
 		return false;
 	}
+
+    @Override
+    public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
+        this.createbigcannons$onBlockExplode(level, pos, state, explosion);
+        super.onBlockExploded(state, level, pos, explosion);
+    }
 
 }

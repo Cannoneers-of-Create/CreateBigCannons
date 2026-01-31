@@ -24,11 +24,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannons.InteractableCannonBlock;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
+import rbasamoyai.createbigcannons.remix.CBCHasIItemHandlerEntity;
+import rbasamoyai.createbigcannons.remix.GetItemStorage;
 
-public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
+public class PitchOrientedContraptionEntity extends OrientedContraptionEntity implements CBCHasIItemHandlerEntity {
 
 	private BlockPos controllerPos;
 	private boolean updatesOwnRotation;
@@ -260,4 +263,11 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 	public boolean ignoreExplosion(Explosion explosion) {
 		return true;
 	}
+
+    @Nullable
+    @Override
+    public IItemHandler getItemHandler() {
+        return this.contraption instanceof GetItemStorage storage ? storage.getItemStorage() : null;
+    }
+
 }

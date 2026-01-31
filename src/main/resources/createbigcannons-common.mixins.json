@@ -24,6 +24,7 @@
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",
+    "client.GoggleOverlayRendererMixin",
     "client.ValueSettingsClientMixin",
     "compat.create.AbstractContraptionEntityMixin",
     "compat.create.AllSoundEventsMixin",

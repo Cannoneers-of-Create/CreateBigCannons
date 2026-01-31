@@ -13,7 +13,6 @@ import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
@@ -35,6 +34,8 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.multiple_kinetic_interface.HasMultipleKineticInterfaces;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
@@ -42,9 +43,10 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.AbstractMountedCan
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.remix.CBCHasIItemHandlerBlockEntity;
 
 public class CannonMountBlockEntity extends KineticBlockEntity implements IDisplayAssemblyExceptions, ControlPitchContraption.Block,
-	ExtendsCannonMount, HasMultipleKineticInterfaces, IHaveGoggleInformation {
+	ExtendsCannonMount, HasMultipleKineticInterfaces, IHaveGoggleInformation, CBCHasIItemHandlerBlockEntity {
 
 	private static final DirectionProperty HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
 
@@ -545,5 +547,11 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		this.pitchInterface.setBlockState(blockState);
 		this.yawInterface.setBlockState(blockState);
 	}
+
+    @Nullable
+    @Override
+    public IItemHandler getItemHandler(Direction side) { // TODO c6 playtest
+        return this.mountedContraption != null ? this.mountedContraption.getCapability(Capabilities.ItemHandler.ENTITY) : null;
+    }
 
 }
