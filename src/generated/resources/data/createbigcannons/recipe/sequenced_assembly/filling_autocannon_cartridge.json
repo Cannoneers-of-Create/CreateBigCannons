@@ -1,0 +1,32 @@
+{
+  "type": "create:sequenced_assembly",
+  "ingredient": {
+    "item": "createbigcannons:empty_autocannon_cartridge"
+  },
+  "results": [
+    {
+      "id": "createbigcannons:filled_autocannon_cartridge"
+    }
+  ],
+  "sequence": [
+    {
+      "type": "create:deploying",
+      "ingredients": [
+        {
+          "item": "createbigcannons:partially_filled_autocannon_cartridge"
+        },
+        {
+          "tag": "createbigcannons:gunpowder"
+        }
+      ],
+      "results": [
+        {
+          "id": "createbigcannons:partially_filled_autocannon_cartridge"
+        }
+      ]
+    }
+  ],
+  "transitional_item": {
+    "id": "createbigcannons:partially_filled_autocannon_cartridge"
+  }
+}

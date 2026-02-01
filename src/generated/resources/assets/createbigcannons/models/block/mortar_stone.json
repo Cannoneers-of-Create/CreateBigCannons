@@ -1,0 +1,8 @@
+{
+  "parent": "createbigcannons:block/standard_projectile_block",
+  "textures": {
+    "particle": "createbigcannons:block/projectile/mortar_stone_top",
+    "side": "createbigcannons:block/projectile/mortar_stone",
+    "top": "createbigcannons:block/projectile/mortar_stone_top"
+  }
+}

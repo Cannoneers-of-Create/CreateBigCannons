@@ -38,14 +38,14 @@ public class CBCMixingRecipeProvider extends MixingRecipeGen {
 
 	CONGEALED_NITRO_NO_NETHER = create(CreateBigCannons.resource("congealed_nitro_no_nether"), b -> b.require(CBCItemTags.GUNCOTTON)
 		.require(CBCItemTags.GELATINIZERS)
-		.require(Fluids.WATER, 150 * CBCDatagenCommon.FLUID_MULTIPLIER)
+		.require(Fluids.WATER, 150)
 		.require(CBCItemTags.NITRO_ACIDIFIERS)
 		.output(CBCItems.CONGEALED_NITRO.get())
 		.duration(200)),
 
 	GUNCOTTON = create(CreateBigCannons.resource("guncotton"), b -> b.require(CBCItemTags.CAN_BE_NITRATED)
 		.require(CBCItemTags.GUNPOWDER)
-		.require(Fluids.WATER, 200 * CBCDatagenCommon.FLUID_MULTIPLIER)
+		.require(Fluids.WATER, 200)
 		.require(CBCItemTags.NITRO_ACIDIFIERS)
 		.output(CBCItems.GUNCOTTON.get())
 		.duration(300));

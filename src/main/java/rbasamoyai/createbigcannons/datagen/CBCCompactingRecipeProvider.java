@@ -2,13 +2,15 @@ package rbasamoyai.createbigcannons.datagen;
 
 import java.util.concurrent.CompletableFuture;
 
-import com.simibubi.create.AllTags;
 import com.simibubi.create.api.data.recipe.CompactingRecipeGen;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
 import rbasamoyai.createbigcannons.CBCTags;
@@ -16,6 +18,7 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCCompactingRecipeProvider extends CompactingRecipeGen {
@@ -31,26 +34,26 @@ public class CBCCompactingRecipeProvider extends CompactingRecipeGen {
 		.require(CBCTags.CBCItemTags.GUNPOWDER)
 		.output(CBCItems.PACKED_GUNPOWDER.get())),
 
-	FORGE_CAST_IRON_INGOT = create(CreateBigCannons.resource("forge_cast_iron_ingot"), b -> b.require(AllTags.commonFluidTag("molten_cast_iron"), 90 * CBCDatagenCommon.FLUID_MULTIPLIER)
+	FORGE_CAST_IRON_INGOT = create(CreateBigCannons.resource("forge_cast_iron_ingot"), b -> b.require(fluidTag("molten_cast_iron"), 90)
 		.output(CBCItems.CAST_IRON_INGOT.get())),
 
-	FORGE_CAST_IRON_NUGGET = create(CreateBigCannons.resource("forge_cast_iron_nugget"), b -> b.require(AllTags.commonFluidTag("molten_cast_iron"), 10 * CBCDatagenCommon.FLUID_MULTIPLIER)
+	FORGE_CAST_IRON_NUGGET = create(CreateBigCannons.resource("forge_cast_iron_nugget"), b -> b.require(fluidTag("molten_cast_iron"), 10)
 		.output(CBCItems.CAST_IRON_NUGGET.get())),
 
 	FORGE_BRONZE_INGOT = create(CreateBigCannons.resource("forge_bronze_ingot"), b -> b
 		.withCondition(new NotCondition(new TagEmptyCondition(CBCTags.CBCItemTags.INGOT_BRONZE)))
-		.require(AllTags.commonFluidTag("molten_bronze"), 90 * CBCDatagenCommon.FLUID_MULTIPLIER)
+		.require(fluidTag("molten_bronze"), 90)
 		.output(1, CBCUtils.location("alloyed", "bronze_ingot"), 1)),
 
 	FORGE_STEEL_INGOT = create(CreateBigCannons.resource("forge_steel_ingot"), b -> b
         .withCondition(new NotCondition(new TagEmptyCondition(CBCTags.CBCItemTags.INGOT_STEEL)))
-		.require(AllTags.commonFluidTag("molten_steel"), 90 * CBCDatagenCommon.FLUID_MULTIPLIER)
+		.require(fluidTag("molten_steel"), 90)
 		.output(1, CBCUtils.location("alloyed", "steel_ingot"), 1)),
 
-	FORGE_NETHERSTEEL_INGOT = create(CreateBigCannons.resource("forge_nethersteel_ingot"), b -> b.require(CBCFluids.MOLTEN_NETHERSTEEL.get(), 90 * CBCDatagenCommon.FLUID_MULTIPLIER)
+	FORGE_NETHERSTEEL_INGOT = create(CreateBigCannons.resource("forge_nethersteel_ingot"), b -> b.require(CBCFluids.MOLTEN_NETHERSTEEL.get(), 90)
 		.output(CBCItems.NETHERSTEEL_INGOT.get())),
 
-	FORGE_NETHERSTEEL_NUGGET = create(CreateBigCannons.resource("forge_nethersteel_nugget"), b -> b.require(CBCFluids.MOLTEN_NETHERSTEEL.get(), 10 * CBCDatagenCommon.FLUID_MULTIPLIER)
+	FORGE_NETHERSTEEL_NUGGET = create(CreateBigCannons.resource("forge_nethersteel_nugget"), b -> b.require(CBCFluids.MOLTEN_NETHERSTEEL.get(), 10)
 		.output(CBCItems.NETHERSTEEL_NUGGET.get())),
 
 	// The following are reimplemented from Create Deco
@@ -66,5 +69,9 @@ public class CBCCompactingRecipeProvider extends CompactingRecipeGen {
 		.require(CBCTags.CBCItemTags.GUNCOTTON)
 		.require(CBCTags.CBCItemTags.GUNCOTTON)
 		.output(CBCItems.PACKED_GUNCOTTON.get()));
+
+    private static TagKey<Fluid> fluidTag(String path) {
+        return TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), ResourceLocation.fromNamespaceAndPath("c", path));
+    }
 
 }

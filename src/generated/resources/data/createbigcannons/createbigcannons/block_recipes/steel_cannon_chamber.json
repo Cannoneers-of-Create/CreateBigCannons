@@ -1,0 +1,18 @@
+{
+  "type": "createbigcannons:built_up_heating",
+  "layers": [
+    {
+      "type": "block",
+      "block": "createbigcannons:very_small_steel_cannon_layer"
+    },
+    {
+      "type": "block",
+      "block": "createbigcannons:small_steel_cannon_layer"
+    },
+    {
+      "type": "block",
+      "block": "createbigcannons:medium_steel_cannon_layer"
+    }
+  ],
+  "result": "createbigcannons:steel_cannon_chamber"
+}

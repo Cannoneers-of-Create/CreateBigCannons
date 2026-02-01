@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "createbigcannons:item/delayed_impact_fuze"
+  }
+}

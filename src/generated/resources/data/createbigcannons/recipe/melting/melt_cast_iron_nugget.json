@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:tag_empty",
+        "tag": "createbigcannons:nugget_cast_iron"
+      }
+    }
+  ],
+  "type": "createbigcannons:melting",
+  "heat_requirement": "heated",
+  "ingredients": [
+    {
+      "tag": "createbigcannons:nugget_cast_iron"
+    }
+  ],
+  "processing_time": 20,
+  "results": [
+    {
+      "amount": 10,
+      "id": "createbigcannons:molten_cast_iron"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "type": "neoforge:single",
+      "amount": 10,
+      "fluid": "createbigcannons:molten_nethersteel"
+    }
+  ],
+  "results": [
+    {
+      "id": "createbigcannons:nethersteel_nugget"
+    }
+  ]
+}

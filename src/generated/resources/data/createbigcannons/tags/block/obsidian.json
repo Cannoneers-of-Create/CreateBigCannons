@@ -1,0 +1,16 @@
+{
+  "values": [
+    {
+      "id": "#forge:obsidian",
+      "required": false
+    },
+    {
+      "id": "#c:obsidian",
+      "required": false
+    },
+    {
+      "id": "#c:obsidian",
+      "required": false
+    }
+  ]
+}

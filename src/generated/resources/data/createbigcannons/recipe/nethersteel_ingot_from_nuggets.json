@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "createbigcannons:nethersteel_ingot",
+  "key": {
+    "#": {
+      "item": "createbigcannons:nethersteel_nugget"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "count": 1,
+    "id": "createbigcannons:nethersteel_ingot"
+  }
+}

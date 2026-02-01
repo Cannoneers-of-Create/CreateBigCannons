@@ -18,7 +18,6 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import rbasamoyai.createbigcannons.datagen.CBCCompactingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.CBCCraftingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.CBCCuttingRecipeProvider;
-import rbasamoyai.createbigcannons.datagen.CBCDatagenCommon;
 import rbasamoyai.createbigcannons.datagen.CBCMillingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.CBCMixingRecipeProvider;
 import rbasamoyai.createbigcannons.datagen.CBCSequencedAssemblyRecipeProvider;
@@ -56,7 +55,6 @@ public class CBCDataNeoForge {
             return;
 
         ExistingFileHelper helper = evt.getExistingFileHelper();
-        CBCDatagenCommon.init();
 
         DataGenerator generator = evt.getGenerator();
         PackOutput output = generator.getPackOutput();

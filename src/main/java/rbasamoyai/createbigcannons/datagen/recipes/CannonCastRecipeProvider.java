@@ -15,7 +15,6 @@ import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.BlockRecipe;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
-import rbasamoyai.createbigcannons.datagen.CBCDatagenCommon;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
@@ -227,7 +226,7 @@ public class CannonCastRecipeProvider extends BlockRecipeProvider {
 	}
 
 	private static TagKey<Fluid> fluidTag(String path) {
-		return TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), ResourceLocation.fromNamespaceAndPath(CBCDatagenCommon.PLATFORM.tagNamespace(), path));
+		return TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), ResourceLocation.fromNamespaceAndPath("c", path));
 	}
 
 }

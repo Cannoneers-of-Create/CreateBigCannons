@@ -1,0 +1,61 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createbigcannons:nethersteel_nugget"
+        }
+      ],
+      "functions": [
+        {
+          "add": false,
+          "count": 64.0,
+          "function": "minecraft:set_count"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createbigcannons:nethersteel_nugget"
+        }
+      ],
+      "functions": [
+        {
+          "add": false,
+          "count": 64.0,
+          "function": "minecraft:set_count"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "createbigcannons:nethersteel_nugget"
+        }
+      ],
+      "functions": [
+        {
+          "add": false,
+          "count": {
+            "type": "minecraft:uniform",
+            "max": 39.0,
+            "min": 29.0
+          },
+          "function": "minecraft:set_count"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "createbigcannons:boring_scrap/unbored_very_large_nethersteel_cannon_layer"
+}

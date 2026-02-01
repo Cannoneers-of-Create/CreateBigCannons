@@ -1,0 +1,8 @@
+{
+  "type": "createbigcannons:drill_boring",
+  "input": {
+    "type": "block",
+    "block": "createbigcannons:unbored_bronze_autocannon_breech"
+  },
+  "result": "createbigcannons:incomplete_bronze_autocannon_breech"
+}
