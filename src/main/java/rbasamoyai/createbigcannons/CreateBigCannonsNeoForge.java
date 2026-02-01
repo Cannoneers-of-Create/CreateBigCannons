@@ -50,10 +50,10 @@ public class CreateBigCannonsNeoForge {
 
         RECIPE_SERIALIZER_REGISTER.register(modEventBus);
         RECIPE_TYPE_REGISTER.register(modEventBus);
+        ModGroup.registerNeoForge(modEventBus);
 
         CreateBigCannons.REGISTRATE.registerEventListeners(modEventBus);
         CreateBigCannons.init();
-		ModGroup.registerNeoForge(modEventBus);
         CBCParticleTypes.register();
         PARTICLE_REGISTER.register(modEventBus);
         CBCConfigs.register(mlContext::registerConfig);

@@ -27,6 +27,9 @@ public class ModGroup {
 
 	public static final ResourceKey<CreativeModeTab> MAIN_TAB_KEY = makeKey("base");
 
+    private static final DeferredRegister<CreativeModeTab> TAB_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CreateBigCannons.MOD_ID);
+    private static final Map<ResourceKey<CreativeModeTab>, DeferredHolder<CreativeModeTab, CreativeModeTab>> TABS = new HashMap<>();
+
 	public static final Supplier<CreativeModeTab> GROUP = wrapGroup("base", () -> createBuilder()
 		.title(Component.translatable("itemGroup." + CreateBigCannons.MOD_ID))
 		.icon(CBCBlocks.SOLID_SHOT::asStack)
@@ -245,9 +248,6 @@ public class ModGroup {
 				CBCItems.BLOCK_ARMOR_INSPECTION_TOOL.asStack()));
 		})
 		.build());
-
-    private static final DeferredRegister<CreativeModeTab> TAB_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, CreateBigCannons.MOD_ID);
-    private static Map<ResourceKey<CreativeModeTab>, DeferredHolder<CreativeModeTab, CreativeModeTab>> TABS = new HashMap<>();
 
     public static Supplier<CreativeModeTab> wrapGroup(String id, Supplier<CreativeModeTab> sup) {
         DeferredHolder<CreativeModeTab, CreativeModeTab> obj = TAB_REGISTER.register(id, sup);
