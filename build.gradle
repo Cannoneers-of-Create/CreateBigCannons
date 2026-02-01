@@ -212,7 +212,17 @@ publishing {
     }
     repositories {
         maven {
-            url "file://${project.projectDir}/repo"
+            name = "GitHubPackages"
+            url = "https://maven.pkg.github.com/cannoneers-of-create/createbigcannons"
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_ACTOR")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+        maven {
+            name = "realRobotixMaven"
+            url = "https://maven.realrobotix.me/createbigcannons"
+            credentials(PasswordCredentials)
         }
     }
 }
