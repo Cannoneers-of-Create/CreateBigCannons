@@ -14,7 +14,11 @@ tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
 
-version = mod_version
+boolean ci = System.getenv("CI") != null ? System.getenv("CI").toBoolean() : false
+boolean release = System.getenv("RELEASE") != null ? System.getenv("RELEASE").toBoolean() : false
+boolean nightly = ci && !release
+String buildNumber = System.getenv("GITHUB_RUN_NUMBER")
+version = "${mod_version}${release ? "" : "-dev"}+mc.${minecraft_version}${nightly ? "-build.${buildNumber}" : ""}"
 group = mod_group
 
 repositories {
