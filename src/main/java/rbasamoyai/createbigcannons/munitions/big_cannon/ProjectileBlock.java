@@ -151,7 +151,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	@Override
 	public ItemStack getExtractedItem(StructureBlockInfo info) {
 		ItemStack stack = new ItemStack(this);
-		if (info.nbt() != null) {
+		if (info.nbt() != null && stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
 			CompoundTag tag = (CompoundTag) stack.get(DataComponents.BLOCK_ENTITY_DATA).copyTag().put("BlockEntityTag", info.nbt());
             stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
 		}

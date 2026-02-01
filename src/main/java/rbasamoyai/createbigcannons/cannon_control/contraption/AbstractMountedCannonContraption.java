@@ -105,8 +105,6 @@ public abstract class AbstractMountedCannonContraption extends Contraption {
 		this.backExtensionLength = tag.getInt("BackExtensionLength");
 		this.frontExtensionLength = tag.getInt("FrontExtensionLength");
 
-		if (world.isClientSide) return;
-
         HolderLookup.Provider registries = world.registryAccess();
 
 		for (Map.Entry<BlockPos, StructureBlockInfo> entry : this.blocks.entrySet()) {

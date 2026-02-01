@@ -249,7 +249,9 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity im
 
 	@Override
 	public boolean handlePlayerInteraction(Player player, BlockPos localPos, Direction side, InteractionHand interactionHand) {
-		BlockEntity be = this.contraption instanceof AbstractMountedCannonContraption cannon ? cannon.presentBlockEntities.get(localPos) : null;
+		BlockEntity be = this.contraption instanceof AbstractMountedCannonContraption cannon
+            ? cannon.presentBlockEntities.get(localPos)
+            : null;
 		StructureBlockInfo info = this.contraption.getBlocks().get(localPos);
 
 		if (info.state().getBlock() instanceof InteractableCannonBlock cBlock && interactionHand == InteractionHand.MAIN_HAND
