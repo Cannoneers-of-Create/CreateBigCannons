@@ -1,11 +1,6 @@
 package rbasamoyai.createbigcannons.base;
 
-import com.mojang.serialization.Lifecycle;
-
-import net.minecraft.core.MappedRegistry;
-import net.minecraft.core.RegistrationInfo;
 import net.minecraft.core.Registry;
-import net.minecraft.core.WritableRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -34,28 +29,6 @@ public class CBCRegistries {
 	@SuppressWarnings("unchecked")
 	public static Registry<CannonCastShape> cannonCastShapes() {
 		return (Registry<CannonCastShape>) BuiltInRegistries.REGISTRY.get(CANNON_CAST_SHAPES.location());
-	}
-
-	@SuppressWarnings("rawtypes")
-	private static <T> Registry<T> makeRegistrySimple(ResourceKey<? extends Registry<T>> key) {
-		MappedRegistry<T> registry = new MappedRegistry<>(key, Lifecycle.stable(), false);
-		WritableRegistry root = (WritableRegistry) BuiltInRegistries.REGISTRY;
-		root.register(key, registry, RegistrationInfo.BUILT_IN);
-		return registry;
-	}
-
-	private static boolean initialized = false;
-
-	public static void actualInit() {
-		if (initialized) return;
-		initialized = true;
-		makeRegistrySimple(BLOCK_RECIPE_SERIALIZERS);
-		makeRegistrySimple(BLOCK_RECIPE_TYPES);
-		makeRegistrySimple(CANNON_CAST_SHAPES);
-	}
-
-	static {
-        CBCRegistries.actualInit();
 	}
 
 }
