@@ -10,11 +10,13 @@
     "client.ClientLevelAccessor",
     "client.EntityClientMixin",
     "client.EntityRenderDispatcherMixin",
+    "client.GoggleOverlayRendererMixin",
     "client.HumanoidPoseMixin",
     "client.LevelRendererMixin",
     "client.PitchOrientedContraptionEntityMixin",
     "client.RPLClientHandlersMixin",
-    "client.SoundEngineMixin"
+    "client.SoundEngineMixin",
+    "client.ValueSettingsClientMixin"
   ],
   "mixins": [
     "ContextAwareReloadListenerAccessor",
@@ -24,8 +26,6 @@
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",
-    "client.GoggleOverlayRendererMixin",
-    "client.ValueSettingsClientMixin",
     "compat.create.AbstractContraptionEntityMixin",
     "compat.create.AllSoundEventsMixin",
     "compat.create.BeltMovementHandlerMixin",

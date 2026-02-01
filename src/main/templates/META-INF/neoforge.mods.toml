@@ -1,7 +1,7 @@
 modLoader = "javafml"
 loaderVersion = "${loader_version_range}"
 issueTrackerURL = "https://github.com/Cannoneers-of-Create/CreateBigCannons/issues"
-license = "${license}"
+license = "${mod_license}"
 
 [[mods]]
 modId = "${mod_id}"
@@ -14,9 +14,6 @@ Logo by Milkyfur
 Textures by rbasamoyai, Milkyfur, and LopyLuna
 """
 logoFile = "icon.png"
-
-[[mixins]]
-config = "${mod_id}-common.mixins.json"
 
 [[mixins]]
 config = "${mod_id}.mixins.json"
