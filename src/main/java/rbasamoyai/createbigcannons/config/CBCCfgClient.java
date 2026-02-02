@@ -10,6 +10,7 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigInt fluidBlobParticleCount = i(20, 0, 1000, "fluidBlobParticleCount", Comments.fluidBlobParticleCount);
 	public final ConfigInt blockArmorTooltipPrecision = i(2, 0, 4, "blockArmorInfoPrecision", Comments.blockArmorTooltipPrecision);
 	public final ConfigBool useShaderCompatibleGraphics = b(false, "useShaderCompatibleGraphics", Comments.useShaderCompatibleGraphics);
+    public final ConfigFloat moltenMetalTransparencyMultiplier = f(1, .125f, 256, "moltenMetalTransparency", Comments.moltenMetalTransparencyMultiplier);
 
 	/**
 	 * In meters per second; divide by 20 to get meters per tick
@@ -88,6 +89,7 @@ public class CBCCfgClient extends CBCConfigBase {
 			"NOTE: This may entail some visual downgrades. Affected graphics include:",
 			"- Cannon smoke",
 			"- Adaptive debris particles (splinters, leaves, glass shards)" };
+        static String moltenMetalTransparencyMultiplier = "The vision range though molten metal will be multiplied by this factor.";
 	}
 
 }

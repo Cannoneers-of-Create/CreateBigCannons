@@ -20,6 +20,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.CBCTags;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.foundry.MoltenMetalLiquidBlock;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
@@ -28,7 +29,7 @@ public class CBCFluids {
 
 	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_CAST_IRON = REGISTRATE
         .standardFluid("molten_cast_iron", SolidRenderedPlaceableFluidType.create(0x460A0B,
-            () -> 1f / 32f)) // TODO config option
+            () -> 1f / 32f * CBCConfigs.client().moltenMetalTransparencyMultiplier.getF()))
 			.lang("Molten Cast Iron")
 			.tag(commonTag("molten_cast_iron"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
@@ -44,7 +45,7 @@ public class CBCFluids {
 
 	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_BRONZE = REGISTRATE
         .standardFluid("molten_bronze", SolidRenderedPlaceableFluidType.create(0x634216,
-            () -> 1f / 32f)) // TODO config option
+            () -> 1f / 32f * CBCConfigs.client().moltenMetalTransparencyMultiplier.getF()))
 			.lang("Molten Bronze")
 			.tag(commonTag("molten_bronze"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
@@ -60,7 +61,7 @@ public class CBCFluids {
 
 	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_STEEL = REGISTRATE
         .standardFluid("molten_steel", SolidRenderedPlaceableFluidType.create(0x6F6E6A,
-            () -> 1f / 32f)) // TODO config option
+            () -> 1f / 32f * CBCConfigs.client().moltenMetalTransparencyMultiplier.getF()))
 			.lang("Molten Steel")
 			.tag(commonTag("molten_steel"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
@@ -76,7 +77,7 @@ public class CBCFluids {
 
 	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_NETHERSTEEL = REGISTRATE
         .standardFluid("molten_nethersteel", SolidRenderedPlaceableFluidType.create(0x4C323A,
-            () -> 1f / 32f)) // TODO config option
+            () -> 1f / 32f * CBCConfigs.client().moltenMetalTransparencyMultiplier.getF()))
 			.lang("Molten Nethersteel")
 			.tag(commonTag("molten_nethersteel"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
