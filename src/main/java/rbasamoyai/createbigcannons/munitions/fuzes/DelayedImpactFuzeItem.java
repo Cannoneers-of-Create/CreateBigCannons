@@ -45,7 +45,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 
 			CBCMenuTypes.SET_DELAYED_IMPACT_FUZE.open((ServerPlayer) player, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(timer);
-				buf.writeNbt(new ItemStack(this).save(level.registryAccess()));
+                ItemStack.STREAM_CODEC.encode(buf, new ItemStack(this));
 			});
 		}
 		return super.use(level, player, hand);

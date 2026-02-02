@@ -58,7 +58,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					buf.writeBoolean(this.isCreative());
 					buf.writeVarInt(spacing);
 					buf.writeBoolean(false);
-					buf.writeNbt(new ItemStack(this).save(level.registryAccess()));
+                    ItemStack.STREAM_CODEC.encode(buf, new ItemStack(this));
 				});
 			}
 			return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);

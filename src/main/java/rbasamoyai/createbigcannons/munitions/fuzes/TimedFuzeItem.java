@@ -55,7 +55,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 
 			CBCMenuTypes.SET_TIMED_FUZE.open(splayer, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(timer);
-				buf.writeNbt(new ItemStack(this).save(level.registryAccess())); // todo: playtest 1.21
+                ItemStack.STREAM_CODEC.encode(buf, new ItemStack(this));
 			});
 		}
 		return super.use(level, player, hand);

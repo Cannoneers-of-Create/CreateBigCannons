@@ -106,7 +106,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 			int dist = stack.get(CBCDataComponents.DETONATION_DISTANCE);
 			CBCMenuTypes.SET_PROXIMITY_FUZE.open(splayer, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(dist);
-				buf.writeNbt(new ItemStack(this).save(level.registryAccess())); //todo: playtest 1.21
+                ItemStack.STREAM_CODEC.encode(buf, new ItemStack(this));
 			});
 		}
 		return super.use(level, player, hand);
