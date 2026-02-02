@@ -7,8 +7,6 @@ import com.google.gson.JsonElement;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.utility.CreateLang;
-import com.tterrag.registrate.AbstractRegistrate;
-import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
@@ -55,9 +53,6 @@ import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastBlockEntityRenderer;
-import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
-import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
-import rbasamoyai.createbigcannons.index.fluid_utils.NeoForgeFluidBuilder;
 import rbasamoyai.createbigcannons.mixin.ContextAwareReloadListenerAccessor;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity;
 import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
@@ -92,16 +87,6 @@ public class IndexPlatform {
 	public static NonNullSupplier<NonNullFunction<BlockEntityRendererProvider.Context,
 		BlockEntityRenderer<? super AbstractCannonCastBlockEntity>>> getCastRenderer() {
 		return () -> CannonCastBlockEntityRenderer::new;
-	}
-
-	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluidBuilder(AbstractRegistrate<?> owner,
-																					   P parent, String name, BuilderCallback callback, ResourceLocation stillTexture, ResourceLocation flowingTexture,
-																					   NonNullFunction<CBCFlowingFluid.Properties, T> factory) {
-		return new NeoForgeFluidBuilder<>(owner, parent, name, callback, stillTexture, flowingTexture, factory);
-	}
-
-	public static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> doFluidBuilderTransforms(FluidBuilder<T, P> builder) {
-		return builder;
 	}
 
 	public static void registerDeferredParticleType(String name, ParticleType<?> type) {

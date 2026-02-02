@@ -2,113 +2,145 @@ package rbasamoyai.createbigcannons.index;
 
 import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
-import com.tterrag.registrate.AbstractRegistrate;
-import com.tterrag.registrate.util.entry.RegistryEntry;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
+import java.util.function.Supplier;
 
+import org.joml.Vector3f;
+
+import com.simibubi.create.AllFluids;
+import com.tterrag.registrate.builders.FluidBuilder;
+import com.tterrag.registrate.util.entry.RegistryEntry;
+
+import net.createmod.catnip.theme.Color;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.crafting.foundry.MoltenMetalLiquidBlock;
-import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
-import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
-import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCFluids {
 
-	public static final RegistryEntry<Fluid, CBCFlowingFluid.Flowing> MOLTEN_CAST_IRON =
-			standardFluid("molten_cast_iron")
+	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_CAST_IRON = REGISTRATE
+        .standardFluid("molten_cast_iron", SolidRenderedPlaceableFluidType.create(0x460A0B,
+            () -> 1f / 32f)) // TODO config option
 			.lang("Molten Cast Iron")
-			.tag(forgeTag("molten_cast_iron"))
-			.tag(fabricTag("molten_cast_iron"))
+			.tag(commonTag("molten_cast_iron"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
-//			.attributes(b -> b.viscosity(1250)
-//					.density(7100)
-//					.temperature(1200))
-			.properties(p -> p.levelDecreasePerBlock(2)
-					.tickRate(25)
-					.flowSpeed(3)
-					.blastResistance(100f))
+			.properties(b -> b.viscosity(1250)
+				.density(7100)
+				.temperature(1200))
+            .fluidProperties(p -> p.levelDecreasePerBlock(2)
+                .tickRate(25)
+                .slopeFindDistance(3)
+                .explosionResistance(100f))
 			.block(MoltenMetalLiquidBlock::new).build()
-			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
-	public static final RegistryEntry<Fluid, CBCFlowingFluid.Flowing> MOLTEN_BRONZE =
-			standardFluid("molten_bronze")
+	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_BRONZE = REGISTRATE
+        .standardFluid("molten_bronze", SolidRenderedPlaceableFluidType.create(0x634216,
+            () -> 1f / 32f)) // TODO config option
 			.lang("Molten Bronze")
-			.tag(forgeTag("molten_bronze"))
-			.tag(fabricTag("molten_bronze"))
+			.tag(commonTag("molten_bronze"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
-//			.attributes(b -> b.viscosity(1250)
-//					.density(8770)
-//					.temperature(920))
-			.properties(p -> p.levelDecreasePerBlock(2)
-					.tickRate(25)
-					.flowSpeed(3)
-					.blastResistance(100f))
+			.properties(b -> b.viscosity(1250)
+				.density(8770)
+				.temperature(920))
+            .fluidProperties(p -> p.levelDecreasePerBlock(2)
+                .tickRate(25)
+                .slopeFindDistance(3)
+                .explosionResistance(100f))
 			.block(MoltenMetalLiquidBlock::new).build()
-			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
-	public static final RegistryEntry<Fluid, CBCFlowingFluid.Flowing> MOLTEN_STEEL =
-			standardFluid("molten_steel")
+	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_STEEL = REGISTRATE
+        .standardFluid("molten_steel", SolidRenderedPlaceableFluidType.create(0x6F6E6A,
+            () -> 1f / 32f)) // TODO config option
 			.lang("Molten Steel")
-			.tag(forgeTag("molten_steel"))
-			.tag(fabricTag("molten_steel"))
+			.tag(commonTag("molten_steel"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
-//			.attributes(b -> b.viscosity(1250)
-//					.density(7040)
-//					.temperature(1430))
-			.properties(p -> p.levelDecreasePerBlock(2)
-					.tickRate(25)
-					.flowSpeed(3)
-					.blastResistance(100f))
+			.properties(b -> b.viscosity(1250)
+                .density(7040)
+				.temperature(1430))
+            .fluidProperties(p -> p.levelDecreasePerBlock(2)
+                .tickRate(25)
+                .slopeFindDistance(3)
+                .explosionResistance(100f))
 			.block(MoltenMetalLiquidBlock::new).build()
-			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
-	public static final RegistryEntry<Fluid, CBCFlowingFluid.Flowing> MOLTEN_NETHERSTEEL =
-			standardFluid("molten_nethersteel")
+	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_NETHERSTEEL = REGISTRATE
+        .standardFluid("molten_nethersteel", SolidRenderedPlaceableFluidType.create(0x4C323A,
+            () -> 1f / 32f)) // TODO config option
 			.lang("Molten Nethersteel")
-			.tag(forgeTag("molten_nethersteel"))
-			.tag(fabricTag("molten_nethersteel"))
+			.tag(commonTag("molten_nethersteel"))
 			.tag(CBCTags.CBCFluidTags.MOLTEN_METAL)
-//			.attributes(b -> b.viscosity(1250)
-//					.density(7040)
-//					.temperature(1430))
-			.properties(p -> p.levelDecreasePerBlock(2)
-					.tickRate(25)
-					.flowSpeed(3)
-					.blastResistance(100f))
+			.properties(b -> b.viscosity(1250)
+				.density(7040)
+				.temperature(1430))
+            .fluidProperties(p -> p.levelDecreasePerBlock(2)
+                .tickRate(25)
+                .slopeFindDistance(3)
+                .explosionResistance(100f))
 			.block(MoltenMetalLiquidBlock::new).build()
-			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
 	public static void register() {}
 
-	private static <T extends CBCFlowingFluid, P> FluidBuilder<T, P> createFluid(String name, NonNullFunction<CBCFlowingFluid.Properties, T> fac) {
-		ResourceLocation stillTex = CreateBigCannons.resource("fluid/" + name + "_still");
-		ResourceLocation flowingTex = CreateBigCannons.resource("fluid/" + name + "_flow");
-		return REGISTRATE.entry(name, cb -> FluidBuilder.create(REGISTRATE, regSelf(REGISTRATE), name, cb, stillTex, flowingTex, fac));
-	}
-
-	private static <P> FluidBuilder<CBCFlowingFluid.Flowing, P> standardFluid(String name) {
-		return createFluid(name, CBCFlowingFluid.Flowing::new);
-	}
-
-	@SuppressWarnings("unchecked")
-	private static <S> S regSelf(AbstractRegistrate<?> reg) { return (S) reg; }
-
-	private static TagKey<Fluid> forgeTag(String path) {
-		return TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), CBCUtils.location("forge", path));
-	}
-
-	private static TagKey<Fluid> fabricTag(String path) {
+	private static TagKey<Fluid> commonTag(String path) {
 		return TagKey.create(CBCRegistryUtils.getFluidRegistryKey(), CBCUtils.location("c", path));
 	}
+
+    // Copied from AllFluids$SolidRenderedPlaceableFluidType
+    private static class SolidRenderedPlaceableFluidType extends AllFluids.TintedFluidType {
+
+        private Vector3f fogColor;
+        private Supplier<Float> fogDistance;
+
+        public static FluidBuilder.FluidTypeFactory create(int fogColor, Supplier<Float> fogDistance) {
+            return (p, s, f) -> {
+                SolidRenderedPlaceableFluidType fluidType = new SolidRenderedPlaceableFluidType(p, s, f);
+                fluidType.fogColor = new Color(fogColor, false).asVectorF();
+                fluidType.fogDistance = fogDistance;
+                return fluidType;
+            };
+        }
+
+        private SolidRenderedPlaceableFluidType(Properties properties, ResourceLocation stillTexture,
+                                                ResourceLocation flowingTexture) {
+            super(properties, stillTexture, flowingTexture);
+        }
+
+        @Override
+        protected int getTintColor(FluidStack stack) {
+            return NO_TINT;
+        }
+
+        /*
+         * Removing alpha from tint prevents optifine from forcibly applying biome
+         * colors to modded fluids (this workaround only works for fluids in the solid
+         * render layer)
+         */
+        @Override
+        public int getTintColor(FluidState state, BlockAndTintGetter world, BlockPos pos) {
+            return 0x00ffffff;
+        }
+
+        @Override
+        protected Vector3f getCustomFogColor() {
+            return this.fogColor;
+        }
+
+        @Override
+        protected float getFogDistanceModifier() {
+            return this.fogDistance.get();
+        }
+
+    }
 
 }

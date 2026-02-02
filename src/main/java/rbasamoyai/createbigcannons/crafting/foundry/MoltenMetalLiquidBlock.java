@@ -1,11 +1,11 @@
 package rbasamoyai.createbigcannons.crafting.foundry;
 
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import rbasamoyai.createbigcannons.index.fluid_utils.CBCLiquidBlock;
 
-public class MoltenMetalLiquidBlock extends CBCLiquidBlock {
+public class MoltenMetalLiquidBlock extends LiquidBlock {
 
 	public MoltenMetalLiquidBlock(FlowingFluid fluid, Properties properties) {
 		super(fluid, properties);

@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -44,8 +43,6 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.goggles.EntityGoggleOverlayRenderer;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffect;
@@ -66,7 +63,6 @@ import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskOverlay;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
-import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 import rbasamoyai.createbigcannons.mixin.client.CameraAccessor;
@@ -152,60 +148,6 @@ public class CBCClientCommon {
 		if (type.equals("helmet")) {
 			cons.accept("gas_mask_overlay", GasMaskOverlay::renderOverlay);
 		}
-	}
-
-	public static void setFogColor(Camera info, SetColorWrapper wrapper) {
-		Minecraft mc = Minecraft.getInstance();
-		Level level = mc.level;
-		BlockPos blockPos = info.getBlockPosition();
-		FluidState fluidState = level.getFluidState(blockPos);
-		if (info.getPosition().y > blockPos.getY() + fluidState.getHeight(level, blockPos)) return;
-
-		Fluid fluid = fluidState.getType();
-
-		if (CBCFluids.MOLTEN_CAST_IRON.get().isSame(fluid)) {
-			wrapper.setFogColor(70 / 255f, 10 / 255f, 11 / 255f);
-			return;
-		}
-		if (CBCFluids.MOLTEN_BRONZE.get().isSame(fluid)) {
-			wrapper.setFogColor(99 / 255f, 66 / 255f, 22 / 255f);
-			return;
-		}
-		if (CBCFluids.MOLTEN_STEEL.get().isSame(fluid)) {
-			wrapper.setFogColor(111 / 255f, 110 / 255f, 106 / 255f);
-			return;
-		}
-		if (CBCFluids.MOLTEN_NETHERSTEEL.get().isSame(fluid)) {
-			wrapper.setFogColor(76 / 255f, 50 / 255f, 58 / 255f);
-			return;
-		}
-	}
-
-	public interface SetColorWrapper {
-		void setFogColor(float r, float g, float b);
-	}
-
-	public static float getFogDensity(Camera info, float currentDensity) {
-		Minecraft mc = Minecraft.getInstance();
-		Level level = mc.level;
-		BlockPos blockPos = info.getBlockPosition();
-		FluidState fluidState = level.getFluidState(blockPos);
-		if (info.getPosition().y > blockPos.getY() + fluidState.getHeight(level, blockPos)) return -1;
-
-		Fluid fluid = fluidState.getType();
-
-		List<Fluid> moltenMetals = Arrays.asList(
-			CBCFluids.MOLTEN_CAST_IRON.get(),
-			CBCFluids.MOLTEN_BRONZE.get(),
-			CBCFluids.MOLTEN_STEEL.get(),
-			CBCFluids.MOLTEN_NETHERSTEEL.get());
-
-		for (Fluid fluid1 : moltenMetals) {
-			if (fluid1.isSame(fluid)) {
-				return 1f / 32f;
-			}
-		}
-		return -1;
 	}
 
 	public static void onClientGameTick(Minecraft mc) {

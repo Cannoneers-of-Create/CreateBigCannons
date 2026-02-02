@@ -45,8 +45,6 @@ public class CBCClientNeoForge {
 		modEventBus.addListener(CBCClientNeoForge::onRegisterGuiOverlays);
 		modEventBus.addListener(CBCClientNeoForge::onRegisterShaders);
 
-		forgeEventBus.addListener(CBCClientNeoForge::getFogColor);
-		forgeEventBus.addListener(CBCClientNeoForge::getFogDensity);
 		forgeEventBus.addListener(CBCClientNeoForge::onClientGameTick);
 		forgeEventBus.addListener(CBCClientNeoForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientNeoForge::onFovModify);
@@ -77,23 +75,6 @@ public class CBCClientNeoForge {
 
 	public static void onRegisterKeyMappings(RegisterKeyMappingsEvent event) {
 		CBCClientCommon.registerKeyMappings(event::register);
-	}
-
-	public static void getFogColor(ViewportEvent.ComputeFogColor event) {
-		CBCClientCommon.setFogColor(event.getCamera(), (r, g, b) -> {
-			event.setRed(r);
-			event.setGreen(g);
-			event.setBlue(b);
-		});
-	}
-
-	public static void getFogDensity(ViewportEvent.RenderFog event) {
-		float density = CBCClientCommon.getFogDensity(event.getCamera(), event.getFarPlaneDistance());
-		if (density != -1) {
-			event.setFarPlaneDistance(density);
-			event.setNearPlaneDistance(density);
-			event.setCanceled(true);
-		}
 	}
 
 	public static void onClientGameTick(ClientTickEvent.Pre evt) { // TODO c6 playtest, see if Pre or Post
