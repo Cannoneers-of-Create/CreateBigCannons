@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech;
 
+import java.util.List;
+
 import com.simibubi.create.content.contraptions.ControlledContraptionEntity;
 import com.simibubi.create.content.contraptions.TranslatingContraption;
 
@@ -16,6 +18,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 public class SlidingBreechBlockEntity extends AbstractBigCannonBreechBlockEntity {
 
 	private float openProgress;
+    private boolean canClose = true;
 
 	public SlidingBreechBlockEntity(BlockEntityType<? extends SlidingBreechBlockEntity> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -36,18 +39,30 @@ public class SlidingBreechBlockEntity extends AbstractBigCannonBreechBlockEntity
 
 		if (this.getSpeed() == 0) return;
 		float progress = this.getOpeningSpeed();
-		if (progress > 0 || this.canClose()) {
+
+        boolean oldClose = this.canClose;
+        this.canClose = this.canClose();
+
+		if (progress > 0 || this.canClose)
 			this.openProgress = Mth.clamp(this.openProgress + progress, 0.0f, 1.0f);
-		}
+
+        if (oldClose != this.canClose)
+            this.notifyUpdate();
 	}
 
 	public boolean canClose() {
-		return this.cannonBehavior.block().state().isAir() && this.getLevel().getEntitiesOfClass(ControlledContraptionEntity.class, new AABB(this.worldPosition))
-			.stream().noneMatch(cce -> cce.getContraption() instanceof TranslatingContraption);
+        if (!this.cannonBehavior.block().state().isAir())
+            return false;
+        List<ControlledContraptionEntity> contraptions = this.getLevel().getEntitiesOfClass(ControlledContraptionEntity.class, new AABB(this.worldPosition));
+        for (ControlledContraptionEntity cce : contraptions) {
+            if (cce.getContraption() instanceof TranslatingContraption)
+                return false;
+        }
+        return true;
 	}
 
 	public float getOpeningSpeed() {
-		return this.getSpeed() > 0 || this.canClose() ? this.getSpeed() / 512.0f : 0.0f;
+		return this.getSpeed() > 0 || this.canClose ? this.getSpeed() / 512.0f : 0.0f;
 	}
 
 	public float getRenderedBlockOffset(float partialTicks) {
@@ -58,12 +73,18 @@ public class SlidingBreechBlockEntity extends AbstractBigCannonBreechBlockEntity
 	protected void write(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
 		super.write(tag, registry, clientPacket);
 		tag.putFloat("Progress", this.openProgress);
+        if (!clientPacket)
+            return;
+        tag.putBoolean("CanClose", this.canClose);
 	}
 
 	@Override
 	protected void read(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
 		super.read(tag, registry, clientPacket);
 		this.openProgress = tag.getFloat("Progress");
+        if (!clientPacket)
+            return;
+        this.canClose = tag.getBoolean("CanClose");
 	}
 
 }
