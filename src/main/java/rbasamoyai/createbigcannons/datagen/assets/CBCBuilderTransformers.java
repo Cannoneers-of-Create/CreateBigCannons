@@ -30,12 +30,10 @@ import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
-import net.minecraft.world.level.storage.loot.functions.CopyCustomDataFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
 import net.minecraft.world.level.storage.loot.functions.SetComponentsFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
@@ -706,20 +704,19 @@ public class CBCBuilderTransformers {
 	}
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> tracerProjectileLoot(
-            NonNullFunction<CopyCustomDataFunction.Builder, CopyCustomDataFunction.Builder> additionalCopyData) {
+            NonNullFunction<CopyComponentsFunction.Builder, CopyComponentsFunction.Builder> additionalCopyData) {
 		return (t, u) -> t.add(u, LootTable.lootTable()
 			.withPool(LootPool.lootPool()
 				.setRolls(ConstantValue.exactly(1.0f))
 				.add(LootItem.lootTableItem(u)
 					.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
-					.apply(additionalCopyData.apply(CopyCustomDataFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-						.copy("Tracer", "BlockEntityTag.Tracer")
-						.copy("id", "BlockEntityTag.id"))))));
+					.apply(additionalCopyData.apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+						.include(CBCDataComponents.TRACER))))));
 	}
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot(
-            NonNullFunction<CopyCustomDataFunction.Builder, CopyCustomDataFunction.Builder> additionalCopyData) {
-		return tracerProjectileLoot(f -> additionalCopyData.apply(f).copy("Fuze", "BlockEntityTag.Fuze"));
+            NonNullFunction<CopyComponentsFunction.Builder, CopyComponentsFunction.Builder> additionalCopyData) {
+		return tracerProjectileLoot(f -> additionalCopyData.apply(f).include(CBCDataComponents.FUZE));
 	}
 
 	public static <T extends Block> NonNullBiConsumer<RegistrateBlockLootTables, T> shellLoot() {

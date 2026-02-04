@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +35,9 @@ public abstract class AbstractFluidShellBlockEntity extends FuzedBlockEntity {
 
 	public abstract boolean tryEmptyItemIntoTE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
 	public abstract boolean tryFillItemFromTE(Level world, Player player, InteractionHand handIn, ItemStack heldItem, Direction side);
+
+    public abstract void setFluidShellItemFluidData(ItemStack stack, HolderLookup.Provider registries);
+    public abstract void readFluidDataFromFluidShellItem(ItemStack stack, HolderLookup.Provider registries);
 
 	public static int getFluidShellCapacity() {
 		FluidShellProperties properties = CBCMunitionPropertiesHandlers.FLUID_SHELL.getPropertiesOf(CBCEntityTypes.FLUID_SHELL.get());

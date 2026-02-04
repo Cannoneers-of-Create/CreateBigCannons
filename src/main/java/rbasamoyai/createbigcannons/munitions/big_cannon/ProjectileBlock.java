@@ -20,6 +20,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
@@ -213,6 +214,14 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
     public void onBlockExploded(BlockState state, Level level, BlockPos pos, Explosion explosion) {
         this.createbigcannons$onBlockExplode(level, pos, state, explosion);
         super.onBlockExploded(state, level, pos, explosion);
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        ItemStack item = super.getCloneItemStack(level, pos, state);
+        if (level.getBlockEntity(pos) instanceof BigCannonProjectileBlockEntity be)
+            item.set(CBCDataComponents.TRACER, be.components().getOrDefault(CBCDataComponents.TRACER, ItemContainerContents.EMPTY));
+        return item;
     }
 
 }

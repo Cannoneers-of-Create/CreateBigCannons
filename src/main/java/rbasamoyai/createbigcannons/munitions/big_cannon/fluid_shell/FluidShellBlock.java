@@ -6,6 +6,7 @@ import com.mojang.serialization.MapCodec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -14,11 +15,14 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
@@ -117,5 +121,28 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 	public boolean isBaseFuze() {
 		return CBCMunitionPropertiesHandlers.FLUID_SHELL.getPropertiesOf(this.getAssociatedEntityType()).fuze().baseFuze();
 	}
+
+    @Override
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        // Because fluid content does not have a good direct block entity data-item component mapping.
+        List<ItemStack> items = super.getDrops(state, params);
+        if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof AbstractFluidShellBlockEntity be) {
+            HolderLookup.Provider prov = be.getLevel().registryAccess();
+            for (ItemStack item : items) {
+                if (this.asItem() == item.getItem())
+                    be.setFluidShellItemFluidData(item, prov);
+            }
+        }
+        return items;
+    }
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        ItemStack item = super.getCloneItemStack(level, pos, state);
+        if (level.getBlockEntity(pos) instanceof AbstractFluidShellBlockEntity be) {
+            be.setFluidShellItemFluidData(item, level.registryAccess());
+        }
+        return item;
+    }
 
 }

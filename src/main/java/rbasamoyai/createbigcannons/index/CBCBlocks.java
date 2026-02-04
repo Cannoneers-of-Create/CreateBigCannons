@@ -1054,7 +1054,7 @@ public class CBCBlocks {
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.projectile("projectile/fluid_shell"))
 		.transform(CBCBuilderTransformers.safeNbt())
-		.loot(CBCBuilderTransformers.shellLoot(f -> f.copy("FluidContent", "BlockEntityTag.FluidContent")))
+		.loot(CBCBuilderTransformers.shellLoot())
 		.item(FluidShellBlockItem::new)
 		.transform(CBCBuilderTransformers.fuzedProjectileItem("projectile/fluid_shell"))
 		.tag(CBCTags.CBCItemTags.BIG_CANNON_PROJECTILES)

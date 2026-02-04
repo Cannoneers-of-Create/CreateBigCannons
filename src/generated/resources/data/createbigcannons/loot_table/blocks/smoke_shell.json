@@ -12,23 +12,10 @@
               "source": "block_entity"
             },
             {
-              "function": "minecraft:copy_custom_data",
-              "ops": [
-                {
-                  "op": "replace",
-                  "source": "Tracer",
-                  "target": "BlockEntityTag.Tracer"
-                },
-                {
-                  "op": "replace",
-                  "source": "id",
-                  "target": "BlockEntityTag.id"
-                },
-                {
-                  "op": "replace",
-                  "source": "Fuze",
-                  "target": "BlockEntityTag.Fuze"
-                }
+              "function": "minecraft:copy_components",
+              "include": [
+                "createbigcannons:tracer",
+                "createbigcannons:fuze"
               ],
               "source": "block_entity"
             }

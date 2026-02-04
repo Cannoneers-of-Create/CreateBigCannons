@@ -17,6 +17,7 @@ import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Blocks;
@@ -506,7 +507,7 @@ public class CannonLoadingScenes {
 		scene.idle(90);
 		scene.world().moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
-		scene.world().modifyBlockEntityNBT(util.select().position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(scene.world().getHolderLookupProvider())));
+		scene.world().modifyBlockEntityNBT(util.select().position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", new CompoundTag()));
 		scene.world().modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.TIMED_FUZE.asStack().save(scene.world().getHolderLookupProvider())));
 		scene.world().moveDeployer(deployerPos, -1, 25);
 		scene.idle(46);
@@ -1198,7 +1199,7 @@ public class CannonLoadingScenes {
 		scene.idle(90);
 		scene.world().moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
-		scene.world().modifyBlockEntityNBT(util.select().position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(scene.world().getHolderLookupProvider())));
+		scene.world().modifyBlockEntityNBT(util.select().position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", new CompoundTag()));
 		scene.world().modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> tag.put("Tracer", CBCItems.TRACER_TIP.asStack().save(scene.world().getHolderLookupProvider())));
 		scene.world().moveDeployer(deployerPos, -1, 25);
 		scene.idle(46);

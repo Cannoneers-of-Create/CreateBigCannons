@@ -713,7 +713,7 @@ public class CannonCraftingScenes {
 		scene.world().modifyBlock(incompletePos, copyPropertyTo(FACING, CBCBlocks.CAST_IRON_SLIDING_BREECH.getDefaultState().setValue(ALONG_FIRST, true)), false);
 
 		scene.idle(10);
-		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", ItemStack.EMPTY.save(scene.world().getHolderLookupProvider())));
+		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", new CompoundTag()));
 		scene.world().setKineticSpeed(deployerGearDown, 16);
 		scene.world().setKineticSpeed(deployerGearUp, -32);
 		scene.world().moveDeployer(deployerPos, -1, 25);

@@ -15,6 +15,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,6 +26,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 
 public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 
@@ -118,5 +120,17 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 	protected void addFluidToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		this.containedFluidTooltip(tooltip, isPlayerSneaking, this.tank);
 	}
+
+    @Override
+    public void setFluidShellItemFluidData(ItemStack stack, HolderLookup.Provider registries) {
+        CustomData.set(CBCDataComponents.FLUID_CONTENT, stack, this.tank.writeToNBT(registries, new CompoundTag()));
+    }
+
+    @Override
+    public void readFluidDataFromFluidShellItem(ItemStack stack, HolderLookup.Provider registries) {
+        if (stack.has(CBCDataComponents.FLUID_CONTENT)) {
+            this.tank.readFromNBT(registries, stack.get(CBCDataComponents.FLUID_CONTENT).copyTag());
+        }
+    }
 
 }

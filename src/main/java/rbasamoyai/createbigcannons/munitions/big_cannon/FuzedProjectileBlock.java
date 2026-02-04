@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -99,28 +100,27 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 		Direction fuzeFace = state.getValue(FACING);
 		if (this.isBaseFuze())
 			fuzeFace = fuzeFace.getOpposite();
-			int slot;
-			if (CBCItems.TRACER_TIP.isIn(stack)) {
-				slot = 0;
-			} else if (stack.getItem() instanceof FuzeItem && hitResult.getDirection() == fuzeFace) {
-				slot = 1;
-			} else {
-				return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-			}
-			if (!fuzedBlock.getItem(slot).isEmpty())
-				return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-			if (!level.isClientSide) {
-				ItemStack copy = player.getAbilities().instabuild ? stack.copy() : stack.split(1);
-				copy.setCount(1);
-				fuzedBlock.setItem(slot, copy);
-				fuzedBlock.notifyUpdate();
-				if (!level.getBlockTicks().willTickThisTick(pos, this)) {
-					level.scheduleTick(pos, this, 0);
-				}
-			}
-			level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
-			return ItemInteractionResult.sidedSuccess(level.isClientSide);
-
+        int slot;
+        if (CBCItems.TRACER_TIP.isIn(stack)) {
+            slot = 0;
+        } else if (stack.getItem() instanceof FuzeItem && hitResult.getDirection() == fuzeFace) {
+            slot = 1;
+        } else {
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        }
+        if (!fuzedBlock.getItem(slot).isEmpty())
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+        if (!level.isClientSide) {
+            ItemStack copy = player.getAbilities().instabuild ? stack.copy() : stack.split(1);
+            copy.setCount(1);
+            fuzedBlock.setItem(slot, copy);
+            fuzedBlock.notifyUpdate();
+            if (!level.getBlockTicks().willTickThisTick(pos, this)) {
+                level.scheduleTick(pos, this, 0);
+            }
+        }
+        level.playSound(null, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.NEUTRAL, 1.0f, 1.0f);
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
 	}
 
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
@@ -196,5 +196,13 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 		projectile.setDeltaMovement(orientation.scale(0.5)); // Velocity boost for burst shells
 		fuzedProjectile.detonate(projectile.position());
 	}
+
+    @Override
+    public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
+        ItemStack item = super.getCloneItemStack(level, pos, state);
+        if (level.getBlockEntity(pos) instanceof FuzedBlockEntity be)
+            item.set(CBCDataComponents.FUZE, be.components().getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY));
+        return item;
+    }
 
 }

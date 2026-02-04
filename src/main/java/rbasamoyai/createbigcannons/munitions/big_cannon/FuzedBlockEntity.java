@@ -7,49 +7,52 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
-
-	protected ItemStack fuze = ItemStack.EMPTY;
 
 	public FuzedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
-	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.saveAdditional(tag, registries);
-		if (!this.fuze.isEmpty()) {
-			tag.put("Fuze", this.fuze.save(registries));
-		}
-	}
+    @Override
+    public CompoundTag writeClient(CompoundTag tag, HolderLookup.Provider registries) {
+        super.writeClient(tag, registries);
+        ItemStack fuze = this.getFuze();
+        if (!fuze.isEmpty())
+            tag.put("Fuze", fuze.save(registries));
+        return tag;
+    }
 
-	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-		super.loadAdditional(tag, registries);
-		this.fuze = ItemStack.parseOptional(registries, tag.getCompound("Fuze"));
-	}
+    @Override
+    public void readClient(CompoundTag tag, HolderLookup.Provider registries) {
+        super.readClient(tag, registries);
+        this.setFuze(ItemStack.parseOptional(registries, tag.getCompound("Fuze")));
+    }
 
-	@Override
+    @Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		CreateLang.builder("block")
 			.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze")
 			.style(ChatFormatting.YELLOW)
 			.forGoggles(tooltip);
-		if (!this.fuze.isEmpty() && this.fuze.getItem() instanceof FuzeItem fuzeItem) {
+        ItemStack fuze = this.getFuze();
+		if (!fuze.isEmpty() && fuze.getItem() instanceof FuzeItem fuzeItem) {
 			CreateLang.builder()
 				.add(fuzeItem.getDescription().copy())
 				.style(ChatFormatting.GREEN)
 				.forGoggles(tooltip, 1);
-			fuzeItem.addExtraInfo(tooltip, isPlayerSneaking, this.fuze);
+			fuzeItem.addExtraInfo(tooltip, isPlayerSneaking, fuze);
 		} else {
 			CreateLang.builder("block")
 				.translate(CreateBigCannons.MOD_ID + ".shell.tooltip.fuze.none")
@@ -66,37 +69,52 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 
 	@Override
 	public boolean isEmpty() {
-		return super.isEmpty() && this.fuze.isEmpty();
+		return super.isEmpty() && !this.hasFuze();
 	}
 
 	@Override
 	public ItemStack getItem(int slot) {
-		return slot == 1 ? this.fuze : super.getItem(slot);
+		return slot == 1 ? this.getFuze() : super.getItem(slot);
 	}
 
 	public ItemStack getFuze() {
-		return this.fuze;
+        ItemContainerContents contents = this.components().getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
+		return contents.getSlots() > 0 ? contents.getStackInSlot(0) : ItemStack.EMPTY;
 	}
 
+    public void setFuze(ItemStack itemStack) {
+        PatchedDataComponentMap components = new PatchedDataComponentMap(this.components());
+        if (itemStack.isEmpty()) {
+            components.remove(CBCDataComponents.FUZE);
+        } else {
+            components.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(List.of(itemStack)));
+        }
+        this.setComponents(components);
+    }
+
 	public boolean hasFuze() {
-		return !this.fuze.isEmpty();
+		return !this.getFuze().isEmpty();
 	}
 
 	@Override
 	public ItemStack removeItem(int slot, int amount) {
-		if (slot == 1 && amount > 0)
-			return this.getItem(slot).split(amount);
+		if (slot == 1 && amount > 0) {
+            ItemStack originalCopy = this.getFuze(); // internally, ItemContainerContents#getStackInSlot copies
+            ItemStack result = originalCopy.split(amount);
+            this.setFuze(originalCopy);
+            return result;
+        }
 		return super.removeItem(slot, amount);
 	}
 
 	@Override
 	public ItemStack removeItemNoUpdate(int slot) {
 		if (slot == 1) {
-			if (this.fuze.isEmpty())
+            ItemStack fuze = this.getFuze();
+			if (fuze.isEmpty())
 				return ItemStack.EMPTY;
-			ItemStack result = this.fuze;
-			this.fuze = ItemStack.EMPTY;
-			return result;
+			this.setFuze(ItemStack.EMPTY);
+			return fuze;
 		}
 		return super.removeItemNoUpdate(slot);
 	}
@@ -104,7 +122,7 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 	@Override
 	public void setItem(int slot, ItemStack stack) {
 		if (slot == 1) {
-			this.fuze = stack;
+			this.setFuze(stack);
 			if (stack.getCount() > this.getMaxStackSize())
 				stack.setCount(this.getMaxStackSize());
 			this.setChanged();
@@ -116,14 +134,14 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
     @Override
     public boolean canPlaceItem(int index, ItemStack stack) {
         if (index == 1) {
-            return stack.getItem() instanceof FuzeItem && this.fuze.isEmpty();
+            return stack.getItem() instanceof FuzeItem && this.getFuze().isEmpty();
         }
         return super.canPlaceItem(index, stack);
     }
 
     @Override
 	public void clearContent() {
-		this.fuze = ItemStack.EMPTY;
+		this.setFuze(ItemStack.EMPTY);
 		super.clearContent();
 	}
 
