@@ -12,11 +12,17 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
-public record DebrisSmokeBurstParticleData() implements ParticleOptions, ICustomParticleData<DebrisSmokeBurstParticleData> {
+public class DebrisSmokeBurstParticleData implements ParticleOptions, ICustomParticleData<DebrisSmokeBurstParticleData> {
 
-	private static final MapCodec<DebrisSmokeBurstParticleData> CODEC = MapCodec.unit(DebrisSmokeBurstParticleData::new);
+    private static final DebrisSmokeBurstParticleData INSTANCE = new DebrisSmokeBurstParticleData();
 
-    private static final StreamCodec<RegistryFriendlyByteBuf, DebrisSmokeBurstParticleData> STREAM_CODEC = StreamCodec.unit(new DebrisSmokeBurstParticleData());
+    private DebrisSmokeBurstParticleData() {}
+
+    public static DebrisSmokeBurstParticleData instance() { return INSTANCE; }
+
+	private static final MapCodec<DebrisSmokeBurstParticleData> CODEC = MapCodec.unit(DebrisSmokeBurstParticleData::instance);
+
+    private static final StreamCodec<RegistryFriendlyByteBuf, DebrisSmokeBurstParticleData> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	@Override public MapCodec<DebrisSmokeBurstParticleData> getCodec(ParticleType<DebrisSmokeBurstParticleData> type) { return CODEC; }
 

@@ -14,9 +14,15 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class ShrapnelCloudParticleData implements ParticleOptions, ICustomParticleData<ShrapnelCloudParticleData> {
 
-    private static final MapCodec<ShrapnelCloudParticleData> CODEC = MapCodec.unit(ShrapnelCloudParticleData::new);
+    private static final ShrapnelCloudParticleData INSTANCE = new ShrapnelCloudParticleData();
 
-    private static final StreamCodec<RegistryFriendlyByteBuf, ShrapnelCloudParticleData> STREAM_CODEC = StreamCodec.unit(new ShrapnelCloudParticleData());
+    private ShrapnelCloudParticleData() {}
+
+    public static ShrapnelCloudParticleData instance() { return INSTANCE; }
+
+    private static final MapCodec<ShrapnelCloudParticleData> CODEC = MapCodec.unit(ShrapnelCloudParticleData::instance);
+
+    private static final StreamCodec<RegistryFriendlyByteBuf, ShrapnelCloudParticleData> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	@Override public MapCodec<ShrapnelCloudParticleData> getCodec(ParticleType<ShrapnelCloudParticleData> type) { return CODEC; }
 

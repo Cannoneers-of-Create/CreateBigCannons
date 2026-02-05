@@ -176,7 +176,7 @@ public class QuickfiringBreechBlock extends BigCannonBaseBlock implements IBE<Qu
 							Vec3 smokePos = Vec3.atCenterOf(localPos).add(normal.scale(0.6));
 							Vec3 globalPos = entity.toGlobalVector(smokePos, 0);
 							Vec3 vel = dir.scale(0.075);
-							slevel.sendParticles(new QuickFiringBreechSmokeParticleData(), globalPos.x, globalPos.y, globalPos.z, 0, vel.x, vel.y, vel.z, 1);
+							slevel.sendParticles(QuickFiringBreechSmokeParticleData.instance(), globalPos.x, globalPos.y, globalPos.z, 0, vel.x, vel.y, vel.z, 1);
 							cannon.hasFired = false;
 						}
 					}

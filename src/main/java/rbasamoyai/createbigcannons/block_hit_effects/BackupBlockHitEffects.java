@@ -25,7 +25,7 @@ public class BackupBlockHitEffects {
 		if (deflect) {
 			level.playLocalSound(x, y, z, type.getBreakSound(), SoundSource.BLOCKS, 2, type.getPitch(), false);
 		} else if (projectileEffect.effectMultiplier() >= 1) {
-			level.addParticle(new DebrisSmokeBurstParticleData(), forceDisplay, x, y, z, dx, dy, dz);
+			level.addParticle(DebrisSmokeBurstParticleData.instance(), forceDisplay, x, y, z, dx, dy, dz);
 			CBCSoundEvents.PROJECTILE_IMPACT.playAt(level, x, y, z, 3f, 1.0f + level.random.nextFloat() * 0.4f, false);
 		}
 	}

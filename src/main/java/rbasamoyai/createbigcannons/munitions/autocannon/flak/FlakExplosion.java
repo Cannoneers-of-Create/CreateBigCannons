@@ -42,7 +42,7 @@ public class FlakExplosion extends CustomExplosion.Impl {
 
 	@Override
 	protected void spawnParticles() {
-		this.level.addParticle(new FlakCloudParticleData(), true, this.x, this.y, this.z, 0, 0, 0);
+		this.level.addParticle(FlakCloudParticleData.instance(), true, this.x, this.y, this.z, 0, 0, 0);
 	}
 
 }

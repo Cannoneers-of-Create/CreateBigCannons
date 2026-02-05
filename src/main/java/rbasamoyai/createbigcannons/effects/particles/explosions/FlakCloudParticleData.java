@@ -14,9 +14,15 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class FlakCloudParticleData implements ParticleOptions, ICustomParticleData<FlakCloudParticleData> {
 
-	private static final MapCodec<FlakCloudParticleData> CODEC = MapCodec.unit(FlakCloudParticleData::new);
+    private static final FlakCloudParticleData INSTANCE = new FlakCloudParticleData();
 
-    private static final StreamCodec<RegistryFriendlyByteBuf, FlakCloudParticleData> STREAM_CODEC = StreamCodec.unit(new FlakCloudParticleData());
+    private FlakCloudParticleData() {}
+
+    public static FlakCloudParticleData instance() { return INSTANCE; }
+
+	private static final MapCodec<FlakCloudParticleData> CODEC = MapCodec.unit(FlakCloudParticleData::instance);
+
+    private static final StreamCodec<RegistryFriendlyByteBuf, FlakCloudParticleData> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	@Override public MapCodec<FlakCloudParticleData> getCodec(ParticleType<FlakCloudParticleData> type) { return CODEC; }
 

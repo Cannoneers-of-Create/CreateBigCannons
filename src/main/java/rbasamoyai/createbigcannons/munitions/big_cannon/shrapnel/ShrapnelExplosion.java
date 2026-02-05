@@ -42,7 +42,7 @@ public class ShrapnelExplosion extends CustomExplosion.Impl {
 
 	@Override
 	protected void spawnParticles() {
-		this.level.addParticle(new ShrapnelCloudParticleData(), true, this.x, this.y, this.z, 0, 0, 0);
+		this.level.addParticle(ShrapnelCloudParticleData.instance(), true, this.x, this.y, this.z, 0, 0, 0);
 	}
 
 }

@@ -14,9 +14,15 @@ import rbasamoyai.createbigcannons.index.CBCParticleTypes;
 
 public class QuickFiringBreechSmokeParticleData implements ParticleOptions, ICustomParticleData<QuickFiringBreechSmokeParticleData> {
 
-	private static final MapCodec<QuickFiringBreechSmokeParticleData> CODEC = MapCodec.unit(QuickFiringBreechSmokeParticleData::new);
+    private static final QuickFiringBreechSmokeParticleData INSTANCE = new QuickFiringBreechSmokeParticleData();
 
-    private static final StreamCodec<RegistryFriendlyByteBuf, QuickFiringBreechSmokeParticleData> STREAM_CODEC = StreamCodec.unit(new QuickFiringBreechSmokeParticleData());
+    private QuickFiringBreechSmokeParticleData() {}
+
+    public static QuickFiringBreechSmokeParticleData instance() { return INSTANCE; }
+
+	private static final MapCodec<QuickFiringBreechSmokeParticleData> CODEC = MapCodec.unit(QuickFiringBreechSmokeParticleData::instance);
+
+    private static final StreamCodec<RegistryFriendlyByteBuf, QuickFiringBreechSmokeParticleData> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	@Override public MapCodec<QuickFiringBreechSmokeParticleData> getCodec(ParticleType<QuickFiringBreechSmokeParticleData> type) { return CODEC; }
 
