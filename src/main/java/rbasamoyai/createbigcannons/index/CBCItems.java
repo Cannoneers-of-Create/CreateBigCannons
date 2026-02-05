@@ -228,15 +228,15 @@ public class CBCItems {
             .attributes(ItemAttributeModifiers.builder()
                 .add(
                     Attributes.ATTACK_DAMAGE,
-                    new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 3.0d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 3.0d, AttributeModifier.Operation.ADD_VALUE),
                     EquipmentSlotGroup.MAINHAND)
                 .add(
                     Attributes.ATTACK_SPEED,
-                    new AttributeModifier(BASE_ATTACK_SPEED_ID, -3.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    new AttributeModifier(BASE_ATTACK_SPEED_ID, -3.5d, AttributeModifier.Operation.ADD_VALUE),
                     EquipmentSlotGroup.MAINHAND)
                 .add(
                     Attributes.ATTACK_KNOCKBACK,
-                    new AttributeModifier(Attributes.ATTACK_KNOCKBACK.unwrapKey().get().location(), 2.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    new AttributeModifier(Attributes.ATTACK_KNOCKBACK.unwrapKey().get().location(), 2.5d, AttributeModifier.Operation.ADD_VALUE),
                     EquipmentSlotGroup.MAINHAND)
                 .build()))
 		.model((c, p) -> {})
@@ -248,11 +248,11 @@ public class CBCItems {
             .attributes(ItemAttributeModifiers.builder()
                 .add(
                     Attributes.ATTACK_DAMAGE,
-                    new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 2.5d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    new AttributeModifier(BASE_ATTACK_DAMAGE_ID, 2.5d, AttributeModifier.Operation.ADD_VALUE),
                     EquipmentSlotGroup.MAINHAND)
                 .add(
                     Attributes.ATTACK_SPEED,
-                    new AttributeModifier(BASE_ATTACK_SPEED_ID, -3.0d, AttributeModifier.Operation.ADD_MULTIPLIED_BASE),
+                    new AttributeModifier(BASE_ATTACK_SPEED_ID, -3.0d, AttributeModifier.Operation.ADD_VALUE),
                     EquipmentSlotGroup.MAINHAND)
                 .build()))
 		.model((c, p) -> {})
