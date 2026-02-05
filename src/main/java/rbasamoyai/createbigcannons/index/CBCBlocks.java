@@ -29,7 +29,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.ModGroup;
-import rbasamoyai.createbigcannons.base.CBCDefaultStress;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtensionBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
@@ -50,6 +49,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.S
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.sliding_breech.SlidingBreechCTBehavior;
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEndBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.drop_mortar.DropMortarEndBlock;
+import rbasamoyai.createbigcannons.config.CBCCfgStress;
 import rbasamoyai.createbigcannons.crafting.boring.CannonDrillBlock;
 import rbasamoyai.createbigcannons.crafting.boring.DrillBitBlock;
 import rbasamoyai.createbigcannons.crafting.boring.UnboredAutocannonBlock;
@@ -177,7 +177,7 @@ public class CBCBlocks {
 		.transform(cannonBlock(false))
 		.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/cast_iron"))
 		.loot(CBCBuilderTransformers.castIronScrapLoot(10))
-		.transform(CBCDefaultStress.setImpact(16.0d))
+		.transform(CBCCfgStress.setImpact(16.0d))
 		.register();
 
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_CAST_IRON_CANNON_BARREL = REGISTRATE
@@ -255,7 +255,7 @@ public class CBCBlocks {
 		.transform(cannonBlock(false))
 		.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/bronze"))
 		.loot(CBCBuilderTransformers.bronzeScrapLoot(10))
-		.transform(CBCDefaultStress.setImpact(12.0d))
+		.transform(CBCCfgStress.setImpact(12.0d))
 		.register();
 
 	public static final BlockEntry<UnboredBigCannonBlock> UNBORED_BRONZE_CANNON_BARREL = REGISTRATE
@@ -438,7 +438,7 @@ public class CBCBlocks {
 		.transform(strongCannonBlock(false))
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.transform(CBCBuilderTransformers.slidingBreech("sliding_breech/steel"))
-		.transform(CBCDefaultStress.setImpact(32.0d))
+		.transform(CBCCfgStress.setImpact(32.0d))
 		.onRegister(CreateRegistrate.connectedTextures(() ->
 			new SlidingBreechCTBehavior(CBCSpriteShifts.STEEL_SLIDING_BREECH_SIDE, CBCSpriteShifts.STEEL_SLIDING_BREECH_SIDE_HOLE)))
 		.register();
@@ -464,7 +464,7 @@ public class CBCBlocks {
 		.transform(strongCannonBlock(false))
 		.loot(CBCBuilderTransformers.steelScrapLoot(10))
 		.transform(CBCBuilderTransformers.screwBreech("screw_breech/steel"))
-		.transform(CBCDefaultStress.setImpact(16.0d))
+		.transform(CBCCfgStress.setImpact(16.0d))
 		.register();
 
 	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_STEEL_SCREW_BREECH = REGISTRATE
@@ -617,7 +617,7 @@ public class CBCBlocks {
 		.transform(strongCannonBlock(false))
 		.loot(CBCBuilderTransformers.nethersteelScrapLoot(10))
 		.transform(CBCBuilderTransformers.screwBreech("screw_breech/nethersteel"))
-		.transform(CBCDefaultStress.setImpact(40.0d))
+		.transform(CBCCfgStress.setImpact(40.0d))
 		.register();
 
 	public static final BlockEntry<IncompleteScrewBreechBlock> INCOMPLETE_NETHERSTEEL_SCREW_BREECH = REGISTRATE
@@ -823,7 +823,7 @@ public class CBCBlocks {
 		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonLoader())
-		.transform(CBCDefaultStress.setImpact(4.0d))
+		.transform(CBCCfgStress.setImpact(4.0d))
 		.register();
 
 	public static final BlockEntry<RamHeadBlock> RAM_HEAD = REGISTRATE
@@ -900,7 +900,7 @@ public class CBCBlocks {
 		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonDrill())
-		.transform(CBCDefaultStress.setImpact(8.0d))
+		.transform(CBCCfgStress.setImpact(8.0d))
 		.register();
 
 	public static final BlockEntry<DrillBitBlock> CANNON_DRILL_BIT = REGISTRATE
@@ -917,7 +917,7 @@ public class CBCBlocks {
 		.transform(cbcMachine())
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonBuilder())
-		.transform(CBCDefaultStress.setImpact(8.0d))
+		.transform(CBCCfgStress.setImpact(8.0d))
 		.register();
 
 	public static final BlockEntry<CannonBuilderHeadBlock> CANNON_BUILDER_HEAD = REGISTRATE
