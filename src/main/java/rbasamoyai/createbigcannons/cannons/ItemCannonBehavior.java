@@ -37,7 +37,7 @@ public class ItemCannonBehavior extends CannonBehavior {
 
 	@Override
 	public void write(CompoundTag nbt, HolderLookup.Provider registries, boolean spawnPacket) {
-		nbt.put("ContainedStack", this.containedStack.save(registries));
+		nbt.put("ContainedStack", this.containedStack.saveOptional(registries));
 		super.write(nbt, registries, spawnPacket);
 	}
 

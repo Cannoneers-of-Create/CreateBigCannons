@@ -614,8 +614,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		tag.putString("CannonMaterial", this.cannonMaterial == null ? CBCBigCannonMaterials.CAST_IRON.name().toString() : this.cannonMaterial.name().toString());
 		if (this.hasWeldedPenalty) tag.putBoolean("WeldedCannon", true);
 		if (this.mortarDelay > 0) tag.putInt("MortarDelay", this.mortarDelay);
-		if (this.cachedMortarRound != null && !this.cachedMortarRound.isEmpty())
-			tag.put("CachedMortarRound", this.cachedMortarRound.save(registries));
+		if (this.cachedMortarRound != null)
+			tag.put("CachedMortarRound", this.cachedMortarRound.saveOptional(registries));
 		if (this.hasFired) tag.putBoolean("HasFired", true);
 		return tag;
 	}

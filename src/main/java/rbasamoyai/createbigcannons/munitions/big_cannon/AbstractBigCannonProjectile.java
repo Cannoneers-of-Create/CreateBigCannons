@@ -113,8 +113,7 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 	@Override
     public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		if (!this.getTracer().isEmpty())
-			tag.put("Tracer", this.getTracer().save(this.level().registryAccess()));
+        tag.put("Tracer", this.getTracer().saveOptional(this.level().registryAccess()));
 	}
 
 	@Override

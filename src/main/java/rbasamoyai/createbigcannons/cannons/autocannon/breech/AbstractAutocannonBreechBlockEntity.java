@@ -163,12 +163,12 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 		tag.putInt("FiringRate", this.fireRate);
 		tag.putInt("Cooldown", this.firingCooldown);
 		tag.putInt("AnimateTicks", this.animateTicks);
-		if (this.outputBuffer != null && !this.outputBuffer.isEmpty()) tag.put("Output", this.outputBuffer.save(registry));
+		if (this.outputBuffer != null) tag.put("Output", this.outputBuffer.saveOptional(registry));
 		if (this.seat != null) tag.putString("Seat", this.seat.getSerializedName());
 
 		if (!this.inputBuffer.isEmpty()) {
 			tag.put("Input", this.inputBuffer.stream()
-					.map(s -> s.save(registry))
+					.map(s -> s.saveOptional(registry))
 					.collect(Collectors.toCollection(ListTag::new)));
 		}
 		if (this.magazine != null && !this.magazine.isEmpty()) tag.put("Magazine", this.magazine.save(registry));

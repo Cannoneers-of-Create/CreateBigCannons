@@ -82,8 +82,8 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		if (this.fuze != null && !this.fuze.isEmpty())
-            tag.put("Fuze", this.fuze.save(this.level().registryAccess()));
+		if (this.fuze != null)
+            tag.put("Fuze", this.fuze.saveOptional(this.level().registryAccess()));
 	}
 
 	@Override

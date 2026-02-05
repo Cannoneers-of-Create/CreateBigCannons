@@ -27,9 +27,7 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
     @Override
     public CompoundTag writeClient(CompoundTag tag, HolderLookup.Provider registries) {
         super.writeClient(tag, registries);
-        ItemStack fuze = this.getFuze();
-        if (!fuze.isEmpty())
-            tag.put("Fuze", fuze.save(registries));
+        tag.put("Fuze", this.getFuze().saveOptional(registries));
         return tag;
     }
 

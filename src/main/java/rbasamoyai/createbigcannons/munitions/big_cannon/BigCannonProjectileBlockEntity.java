@@ -29,9 +29,7 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
     @Override
     public CompoundTag writeClient(CompoundTag tag, HolderLookup.Provider registries) {
         super.writeClient(tag, registries);
-        ItemStack tracer = this.getTracer();
-        if (!tracer.isEmpty())
-            tag.put("Tracer", tracer.save(registries));
+        tag.put("Tracer", this.getTracer().saveOptional(registries));
         return tag;
     }
 

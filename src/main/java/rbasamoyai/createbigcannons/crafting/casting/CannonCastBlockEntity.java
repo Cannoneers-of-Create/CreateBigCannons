@@ -77,7 +77,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 	@Override
 	protected void writeFluidToTag(CompoundTag tag) {
 		tag.put("FluidContent", this.fluid.writeToNBT(this.level.registryAccess(), new CompoundTag()));
-		if (!this.leakage.isEmpty()) tag.put("Leakage", this.leakage.save(this.level.registryAccess()));
+		tag.put("Leakage", this.leakage.saveOptional(this.level.registryAccess()));
 	}
 
 	protected void onFluidStackChanged(FluidStack stack) {
