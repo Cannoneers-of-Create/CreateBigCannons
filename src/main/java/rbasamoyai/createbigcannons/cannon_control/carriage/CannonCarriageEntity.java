@@ -30,7 +30,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -357,25 +356,20 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 
 	@Override
 	protected void positionRider(Entity entity, Entity.MoveFunction function) {
-		if (!(entity instanceof Player)) {
-			super.positionRider(entity, function);
-			return;
-		}
-		if (!this.hasPassenger(entity)) return;
+        if (entity == this.cannonContraption) {
+            function.accept(entity, this.getX(), this.getY() + 27 / 32f, this.getZ());
+            return;
+        }
+        if (!this.hasPassenger(entity)) return;
 
-		if (this.isCannonRider()) {
-			function.accept(entity, this.getX(), this.getY() + 1.375, this.getZ());
-		} else {
-			double yawRad = Math.toRadians(this.getYRot());
-			double x = this.getX() + Math.cos(yawRad) * 1.5;
-			double z = this.getZ() + Math.sin(yawRad) * 1.5;
-			function.accept(entity, x, this.getY(), z);
-		}
-	}
-
-    @Override
-    protected Vec3 getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float partialTick) {
-        return super.getPassengerAttachmentPoint(entity, dimensions, partialTick);
+        if (this.isCannonRider()) {
+            function.accept(entity, this.getX(), this.getY() + 1.375, this.getZ());
+        } else {
+            double yawRad = Math.toRadians(this.getYRot());
+            double x = this.getX() + Math.cos(yawRad) * 1.5;
+            double z = this.getZ() + Math.sin(yawRad) * 1.5;
+            function.accept(entity, x, this.getY(), z);
+        }
     }
 
 //    @Override
