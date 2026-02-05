@@ -5,9 +5,11 @@ import java.util.List;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.createmod.catnip.data.Iterate;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -24,7 +26,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
@@ -49,7 +50,7 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		FuzedBigCannonProjectile projectile = this.getAssociatedEntityType().create(level);
 		projectile.setTracer(getTracerFromBlocks(projectileBlocks, level.registryAccess()));
-		projectile.setFuze(getFuzeFromBlocks(projectileBlocks));
+		projectile.setFuze(getFuzeFromBlocks(projectileBlocks, level.registryAccess()));
 		return projectile;
 	}
 
@@ -78,12 +79,16 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 		return projectile;
 	}
 
-	protected static ItemStack getFuzeFromBlocks(List<StructureBlockInfo> blocks) {
+	protected static ItemStack getFuzeFromBlocks(List<StructureBlockInfo> blocks, HolderLookup.Provider registries) {
 		if (blocks.isEmpty()) return ItemStack.EMPTY;
 		StructureBlockInfo info = blocks.get(0);
 		if (info.nbt() == null) return ItemStack.EMPTY;
-		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt(), Minecraft.getInstance().level.registryAccess()); //todo: hack
-		return load instanceof FuzedBlockEntity fuzed ? fuzed.getItem(1) : ItemStack.EMPTY;
+        Tag tag = info.nbt().getCompound("components").get("createbigcannons:fuze");
+		ItemContainerContents contents = ItemContainerContents.CODEC
+            .parse(registries.createSerializationContext(NbtOps.INSTANCE), tag)
+            .resultOrPartial()
+            .orElse(ItemContainerContents.EMPTY);
+		return contents.getSlots() > 0 ? contents.getStackInSlot(0) : ItemStack.EMPTY;
 	}
 
 	public static ItemStack getFuzeFromBlock(Level level, BlockPos pos, BlockState state) {
@@ -93,10 +98,10 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 	@Override
 	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (hand == InteractionHand.OFF_HAND)
-			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION; //todo: playtest 1.21
+			return ItemInteractionResult.FAIL;
 		FuzedBlockEntity fuzedBlock = this.getBlockEntity(level, pos);
 		if (fuzedBlock == null)
-			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+			return ItemInteractionResult.FAIL;
 		Direction fuzeFace = state.getValue(FACING);
 		if (this.isBaseFuze())
 			fuzeFace = fuzeFace.getOpposite();
@@ -106,10 +111,10 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
         } else if (stack.getItem() instanceof FuzeItem && hitResult.getDirection() == fuzeFace) {
             slot = 1;
         } else {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return ItemInteractionResult.FAIL;
         }
         if (!fuzedBlock.getItem(slot).isEmpty())
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            return ItemInteractionResult.FAIL;
         if (!level.isClientSide) {
             ItemStack copy = player.getAbilities().instabuild ? stack.copy() : stack.split(1);
             copy.setCount(1);

@@ -219,7 +219,7 @@ public class CBCCommonEvents {
 
 	public static void onDatapackReload(MinecraftServer server) {
 		loadTags();
-		NetworkPlatform.sendToClientAll(new ClientboundNotifyTagReloadPacket(), server);
+		NetworkPlatform.sendToClientAll(ClientboundNotifyTagReloadPacket.instance(), server);
 
 		BlockArmorPropertiesHandler.syncToAll(server);
 		BlockRecipesManager.syncToAll(server);

@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
+import static rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.AbstractFluidShellBlockEntity.getFluidShellCapacity;
+
 import java.util.List;
 
 import com.mojang.serialization.MapCodec;
@@ -17,13 +19,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.DirectionalBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCEntityTypes;
@@ -58,13 +61,15 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 	@Override
 	public AbstractBigCannonProjectile getProjectile(Level level, List<StructureBlockInfo> projectileBlocks) {
 		FluidShellProjectile projectile = CBCEntityTypes.FLUID_SHELL.create(level);
-		projectile.setFuze(getFuzeFromBlocks(projectileBlocks));
+		projectile.setFuze(getFuzeFromBlocks(projectileBlocks, level.registryAccess()));
 		projectile.setTracer(getTracerFromBlocks(projectileBlocks, level.registryAccess()));
 		if (!projectileBlocks.isEmpty()) {
 			StructureBlockInfo info = projectileBlocks.get(0);
-			if (info.nbt() != null) {
-				BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt(), level.registryAccess());
-				if (load instanceof AbstractFluidShellBlockEntity shell) shell.setFluidShellStack(projectile);
+			if (info.nbt() != null) { // jank alert
+				CompoundTag component = info.nbt().getCompound("components").getCompound("createbigcannons:fluid_content");
+                FluidTank tank = new FluidTank(getFluidShellCapacity()).readFromNBT(level.registryAccess(), component); // It's cheaper than recreating the entire BE.
+                FluidStack fstack = tank.getFluid();
+                projectile.setFluidStack(fstack.isEmpty() ? EndFluidStack.EMPTY : new EndFluidStack(fstack.getFluid(), fstack.getAmount(), fstack.getComponentsPatch()));
 			}
 		}
 		return projectile;

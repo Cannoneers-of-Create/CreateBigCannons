@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.block.IBE;
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -56,6 +57,7 @@ import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.config.BigCartridgeProperties;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock, IBE<BigCartridgeBlockEntity>,
 	SimpleWaterloggedBlock {
@@ -169,7 +171,8 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	}
 
 	public static float getPowerFromData(StructureBlockInfo data) {
-		return data.nbt() == null ? 0 : data.nbt().getInt("Power");
+        // Not the desired components -> components access but whatever
+		return data.nbt() == null ? 0 : data.nbt().getCompound("components").getInt("createbigcannons:power");
 	}
 
 	public float getPowerMultiplier(StructureBlockInfo data) {
@@ -255,21 +258,19 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	}
 
 	@Override
-	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
+	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation, HolderLookup.Provider registries) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
 		CompoundTag blockTag = new CompoundTag();
-		blockTag.putInt("Power", stack.get(CBCDataComponents.POWER));
+        CBCUtils.saveComponentsToStructureTag(blockTag, stack.getComponents(), registries);
 		if (stack.getOrDefault(CBCDataComponents.DAMP, false))
 			state = state.setValue(DAMP, true);
 		return new StructureBlockInfo(localPos, state, blockTag);
 	}
 
 	@Override
-	public ItemStack getExtractedItem(StructureBlockInfo info) {
+	public ItemStack getExtractedItem(StructureBlockInfo info, HolderLookup.Provider registries) {
 		ItemStack stack = new ItemStack(this);
-		if (info.nbt() != null) {
-			stack.set(CBCDataComponents.POWER, info.nbt().getInt("Power"));
-		}
+		stack.set(CBCDataComponents.POWER, (int) getPowerFromData(info));
 		if (info.state().getValue(DAMP))
 			stack.set(CBCDataComponents.DAMP, true);
 		return stack;

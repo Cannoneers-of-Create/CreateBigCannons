@@ -9,6 +9,7 @@ import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.stats.Stats;
@@ -197,14 +198,14 @@ public class PowderChargeBlock extends RotatedPillarBlock implements IWrenchable
 	}
 
 	@Override
-	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
+	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation, HolderLookup.Provider registries) {
 		BlockState state = this.defaultBlockState().setValue(AXIS, cannonOrientation.getAxis())
 			.setValue(DAMP, stack.getOrDefault(CBCDataComponents.DAMP, false));
 		return new StructureBlockInfo(localPos, state, null);
 	}
 
 	@Override
-	public ItemStack getExtractedItem(StructureBlockInfo info) {
+	public ItemStack getExtractedItem(StructureBlockInfo info, HolderLookup.Provider registries) {
 		ItemStack result = new ItemStack(this);
 		if (info.state().getValue(DAMP))
 			result.set(CBCDataComponents.DAMP, true);

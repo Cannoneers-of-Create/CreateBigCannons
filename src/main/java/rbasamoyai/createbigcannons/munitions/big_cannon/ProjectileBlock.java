@@ -9,12 +9,13 @@ import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -26,7 +27,6 @@ import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -41,6 +41,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.remix.CBCExplodableBlock;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile> extends DirectionalBlock
 	implements IWrenchable, BigCannonMunitionBlock, SimpleWaterloggedBlock, CBCExplodableBlock {
@@ -137,24 +138,19 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	}
 
 	@Override
-	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation) {
+	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation, HolderLookup.Provider registries) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
-		if (stack.has(DataComponents.BLOCK_ENTITY_DATA)) { // todo: playtest 1.21
-			CompoundTag tag = stack.get(DataComponents.BLOCK_ENTITY_DATA).copyTag();
-			tag.remove("x");
-			tag.remove("y");
-			tag.remove("z");
-			return new StructureBlockInfo(localPos, state, tag);
-		}
-		return new StructureBlockInfo(localPos, state, null);
+        CompoundTag tag = new CompoundTag();
+        CBCUtils.saveComponentsToStructureTag(tag, stack.getComponents(), registries); // TODO not efficient but works
+		return new StructureBlockInfo(localPos, state, tag);
 	}
 
 	@Override
-	public ItemStack getExtractedItem(StructureBlockInfo info) {
+	public ItemStack getExtractedItem(StructureBlockInfo info, HolderLookup.Provider registries) {
 		ItemStack stack = new ItemStack(this);
-		if (info.nbt() != null && stack.has(DataComponents.BLOCK_ENTITY_DATA)) {
-			CompoundTag tag = (CompoundTag) stack.get(DataComponents.BLOCK_ENTITY_DATA).copyTag().put("BlockEntityTag", info.nbt());
-            stack.set(DataComponents.BLOCK_ENTITY_DATA, CustomData.of(tag));
+		if (info.nbt() != null) {
+            DataComponentMap components = CBCUtils.readComponentsFromStructureTag(info.nbt(), registries);
+            stack.applyComponents(components);
 		}
 		return stack;
 	}
@@ -184,8 +180,12 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 		StructureBlockInfo info = blocks.get(0);
 		if (info.nbt() == null)
 			return ItemStack.EMPTY;
-		BlockEntity load = BlockEntity.loadStatic(info.pos(), info.state(), info.nbt(), registries);
-		return load instanceof BigCannonProjectileBlockEntity projectile ? projectile.getItem(0) : ItemStack.EMPTY;
+        Tag tag = info.nbt().getCompound("components").get("createbigcannons:tracer");
+        ItemContainerContents contents = ItemContainerContents.CODEC
+            .parse(registries.createSerializationContext(NbtOps.INSTANCE), tag)
+            .resultOrPartial()
+            .orElse(ItemContainerContents.EMPTY);
+        return contents.getSlots() > 0 ? contents.getStackInSlot(0) : ItemStack.EMPTY;
 	}
 
 	public static ItemStack getTracerFromBlock(Level level, BlockPos pos, BlockState state) {

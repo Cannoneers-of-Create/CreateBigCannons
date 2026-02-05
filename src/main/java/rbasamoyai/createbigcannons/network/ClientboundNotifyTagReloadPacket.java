@@ -10,7 +10,13 @@ import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
 public class ClientboundNotifyTagReloadPacket implements RootPacket {
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundNotifyTagReloadPacket> STREAM_CODEC = StreamCodec.unit(new ClientboundNotifyTagReloadPacket());
+    private static final ClientboundNotifyTagReloadPacket INSTANCE = new ClientboundNotifyTagReloadPacket();
+
+    private ClientboundNotifyTagReloadPacket() {}
+
+    public static ClientboundNotifyTagReloadPacket instance() { return INSTANCE; }
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundNotifyTagReloadPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
 	@Override
 	public void handle(Executor exec, PacketListener listener, Player player) {

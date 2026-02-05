@@ -22,6 +22,10 @@ import com.mojang.serialization.Codec;
 import net.minecraft.commands.arguments.blocks.BlockStateParser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,6 +37,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundBlastSoundPacket;
 import rbasamoyai.createbigcannons.network.ClientboundSendCustomBreakProgressPacket;
@@ -47,6 +52,23 @@ public class CBCUtils {
 
 	public static final Codec<SoundSource> SOUND_SOURCE_CODEC =
 		CBCUtils.fromEnumWithStringFunction(SoundSource::values, SoundSource::getName, CBCUtils::soundSourceFromName);
+
+    // Copied from BlockEntity
+    private static final Codec<DataComponentMap> COMPONENTS_CODEC = DataComponentMap.CODEC.optionalFieldOf("components", DataComponentMap.EMPTY).codec();
+
+    public static void saveComponentsToStructureTag(CompoundTag dest, DataComponentMap components, HolderLookup.Provider registries) {
+        COMPONENTS_CODEC
+            .encodeStart(registries.createSerializationContext(NbtOps.INSTANCE), components)
+            .resultOrPartial(err -> CreateBigCannons.LOGGER.warn("Failed to save components: {}", err))
+            .ifPresent(saveTag -> dest.merge((CompoundTag) saveTag));
+    }
+
+    public static DataComponentMap readComponentsFromStructureTag(CompoundTag src, HolderLookup.Provider registries) {
+        return COMPONENTS_CODEC
+            .parse(registries.createSerializationContext(NbtOps.INSTANCE), src)
+            .resultOrPartial(err -> CreateBigCannons.LOGGER.warn("Failed to load components: {}", err))
+            .orElse(DataComponentMap.EMPTY);
+    }
 
     /**
 	 * Alias method for easier porting to 1.21+.

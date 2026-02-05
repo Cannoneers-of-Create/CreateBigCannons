@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,8 +20,8 @@ public interface BigCannonMunitionBlock extends CBCExplodableBlock {
 	BlockState onCannonRotate(BlockState oldState, Direction.Axis rotationAxis, Rotation rotation);
 	Direction.Axis getAxis(BlockState state);
 	boolean canBeLoaded(BlockState state, Direction.Axis facing);
-	StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation);
-	ItemStack getExtractedItem(StructureBlockInfo info);
+	StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation, HolderLookup.Provider registries);
+	ItemStack getExtractedItem(StructureBlockInfo info, HolderLookup.Provider registries);
 
 	/**
 	 * Only use for blocks that have the waterlogged and damp properties

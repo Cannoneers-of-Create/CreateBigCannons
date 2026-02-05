@@ -12,7 +12,13 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 
 public class ServerboundFiringActionPacket implements RootPacket {
 
-    public static final StreamCodec<RegistryFriendlyByteBuf, ServerboundFiringActionPacket> STREAM_CODEC = StreamCodec.unit(new ServerboundFiringActionPacket());
+    private static final ServerboundFiringActionPacket INSTANCE = new ServerboundFiringActionPacket();
+
+    private ServerboundFiringActionPacket() {}
+
+    public static ServerboundFiringActionPacket instance() { return INSTANCE; }
+
+    public static final StreamCodec<RegistryFriendlyByteBuf, ServerboundFiringActionPacket> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     @Override
     public void handle(Executor exec, PacketListener listener, Player player) {

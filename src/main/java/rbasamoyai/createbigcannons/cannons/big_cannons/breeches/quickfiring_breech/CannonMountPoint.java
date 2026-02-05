@@ -98,7 +98,7 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 				}
 				if (BigCartridgeBlock.getPowerFromData(firstInfo) == 0) {
 					if (simulate) stack.setCount(1);
-					return cartridge.getExtractedItem(firstInfo);
+					return cartridge.getExtractedItem(firstInfo, poce.level().registryAccess());
 				} else {
 					return stack;
 				}
@@ -133,7 +133,7 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 		BlockEntity be = bigCannon.presentBlockEntities.get(startPos);
 		IBigCannonBlockEntity cbe = (IBigCannonBlockEntity) be;
 		cbe.cannonBehavior().removeBlock();
-		cbe.cannonBehavior().tryLoadingBlock(munition.getHandloadingInfo(stack, startPos, dir));
+		cbe.cannonBehavior().tryLoadingBlock(munition.getHandloadingInfo(stack, startPos, dir, entity.level().registryAccess()));
 		BigCannonBlock.writeAndSyncSingleBlockData(be, bigCannon.getBlocks().get(startPos), entity, bigCannon);
 	}
 
@@ -157,7 +157,7 @@ public class CannonMountPoint extends AllArmInteractionPointTypes.DepositOnlyArm
 			cbe.cannonBehavior().removeBlock();
 			changes.add(nextPos);
 		}
-		cbe.cannonBehavior().tryLoadingBlock(munition.getHandloadingInfo(stack, startPos, dir));
+		cbe.cannonBehavior().tryLoadingBlock(munition.getHandloadingInfo(stack, startPos, dir, entity.level().registryAccess()));
 
 		BigCannonBlock.writeAndSyncMultipleBlockData(changes, entity, cannon);
 	}

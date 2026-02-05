@@ -117,7 +117,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 		if (be instanceof IBigCannonBlockEntity cbe) {
 			StructureBlockInfo info = cbe.cannonBehavior().block();
 			BlockState innerState = info.state();
-			ItemStack stack = innerState.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info) : ItemStack.EMPTY;
+			ItemStack stack = innerState.getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info, level.registryAccess()) : ItemStack.EMPTY;
 			if (!stack.isEmpty()) {
 				Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
 			}
@@ -239,7 +239,7 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 		ItemStack stack = player.getItemInHand(interactionHand);
 		if (Block.byItem(stack.getItem()) instanceof BigCannonMunitionBlock munition) {
 			if (!level.isClientSide) {
-				StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side);
+				StructureBlockInfo loadInfo = munition.getHandloadingInfo(stack, localPos, side, level.registryAccess());
 				boolean flag = false;
 				if (cannon.isDropMortar()) {
 					if (!player.getCooldowns().isOnCooldown(stack.getItem()) && cannon.tryDroppingMortarRound(stack)) {

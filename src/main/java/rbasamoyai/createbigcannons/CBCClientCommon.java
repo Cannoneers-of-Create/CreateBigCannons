@@ -162,7 +162,7 @@ public class CBCClientCommon {
 
 		if (CBCClientCommon.FIRE_CONTROLLED_CANNON.isDown() && isControllingCannon(mc.player)) {
 			mc.player.handsBusy = true;
-			NetworkPlatform.sendToServer(new ServerboundFiringActionPacket());
+			NetworkPlatform.sendToServer(ServerboundFiringActionPacket.instance());
 		}
 
 		CANNON_WELDER_HANDLER.tick();

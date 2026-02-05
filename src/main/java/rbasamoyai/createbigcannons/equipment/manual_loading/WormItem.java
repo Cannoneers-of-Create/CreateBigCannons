@@ -121,7 +121,8 @@ public class WormItem extends Item implements HandloadingTool {
 				}
 			} else if (i == 0) {
 				if (!level.isClientSide) {
-					ItemStack stack = info1.state().getBlock() instanceof BigCannonMunitionBlock munition ? munition.getExtractedItem(info1) : ItemStack.EMPTY;
+					ItemStack stack = info1.state().getBlock() instanceof BigCannonMunitionBlock munition
+                        ? munition.getExtractedItem(info1, level.registryAccess()) : ItemStack.EMPTY;
 					if (!player.addItem(stack) && !player.isCreative()) {
 						ItemEntity item = player.drop(stack, false);
 						if (item != null) {
