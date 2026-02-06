@@ -1,19 +1,10 @@
 package rbasamoyai.createbigcannons.effects.particles.smoke;
 
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
-
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
-
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
 
 public class FallbackCannonSmokeParticle extends CannonSmokeParticle {
 
@@ -22,56 +13,6 @@ public class FallbackCannonSmokeParticle extends CannonSmokeParticle {
 	}
 
 	@Override public ParticleRenderType getRenderType() { return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT; }
-
-	@Override
-	public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-		Vec3 vec3 = renderInfo.getPosition();
-		float f = (float)(Mth.lerp(partialTicks, this.xo, this.x) - vec3.x());
-		float g = (float)(Mth.lerp(partialTicks, this.yo, this.y) - vec3.y());
-		float h = (float)(Mth.lerp(partialTicks, this.zo, this.z) - vec3.z());
-		Quaternionf quaternion;
-		if (this.roll == 0.0F) {
-			quaternion = renderInfo.rotation();
-		} else {
-			quaternion = new Quaternionf(renderInfo.rotation());
-			float i = Mth.lerp(partialTicks, this.oRoll, this.roll);
-			quaternion.mul(Axis.ZP.rotation(i));
-		}
-
-		Vector3f[] vector3fs = new Vector3f[]{
-			new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)
-		};
-		float j = this.getQuadSize(partialTicks);
-
-		for(int k = 0; k < 4; ++k) {
-			Vector3f vector3f2 = vector3fs[k];
-			quaternion.transform(vector3f2);
-			vector3f2.mul(j);
-			vector3f2.add(f, g, h);
-		}
-
-		float l = this.getU0();
-		float m = this.getU1();
-		float n = this.getV0();
-		float o = this.getV1();
-		int p = this.getLightColor(partialTicks);
-		buffer.addVertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z())
-			.setUv(m, o)
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-			.setLight(p);
-		buffer.addVertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
-			.setUv(m, n)
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-			.setLight(p);
-		buffer.addVertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
-			.setUv(l, n)
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-			.setLight(p);
-		buffer.addVertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
-			.setUv(l, o)
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-			.setLight(p); //todo: 1.21 playtest
-	}
 
 	public static class Provider implements ParticleProvider<FallbackCannonSmokeParticleData> {
 		private final SpriteSet sprites;

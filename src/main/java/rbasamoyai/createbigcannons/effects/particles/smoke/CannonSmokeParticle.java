@@ -8,9 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 
-import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.BaseAshSmokeParticle;
 import net.minecraft.client.particle.Particle;
@@ -83,60 +81,30 @@ public class CannonSmokeParticle extends BaseAshSmokeParticle {
 
 	@Override public ParticleRenderType getRenderType() { return RENDER_TYPE; }
 
-	@Override
-	public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-		Vec3 vec3 = renderInfo.getPosition();
-		float f = (float)(Mth.lerp(partialTicks, this.xo, this.x) - vec3.x());
-		float g = (float)(Mth.lerp(partialTicks, this.yo, this.y) - vec3.y());
-		float h = (float)(Mth.lerp(partialTicks, this.zo, this.z) - vec3.z());
-		Quaternionf quaternion;
-		if (this.roll == 0.0F) {
-			quaternion = renderInfo.rotation();
-		} else {
-			quaternion = new Quaternionf(renderInfo.rotation());
-			float i = Mth.lerp(partialTicks, this.oRoll, this.roll);
-			quaternion.mul(Axis.ZP.rotation(i));
-		}
+    @Override
+    protected void renderRotatedQuad(VertexConsumer buffer, Quaternionf quaternion, float x, float y, float z, float partialTicks) {
+        float size = this.getQuadSize(partialTicks);
+        float u0 = this.getU0();
+        float u1 = this.getU1();
+        float v0 = this.getV0();
+        float v1 = this.getV1();
+        int light = this.getLightColor(partialTicks);
+        int cannonPower = (int) Math.floor(this.power);
+        this.renderVertex(buffer, quaternion, x, y, z, 1.0F, -1.0F, size, u1, v1, light, cannonPower);
+        this.renderVertex(buffer, quaternion, x, y, z, 1.0F, 1.0F, size, u1, v0, light, cannonPower);
+        this.renderVertex(buffer, quaternion, x, y, z, -1.0F, 1.0F, size, u0, v0, light, cannonPower);
+        this.renderVertex(buffer, quaternion, x, y, z, -1.0F, -1.0F, size, u0, v1, light, cannonPower);
+    }
 
-		Vector3f[] vector3fs = new Vector3f[]{
-			new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)
-		};
-		float j = this.getQuadSize(partialTicks);
-
-		for(int k = 0; k < 4; ++k) {
-			Vector3f vector3f2 = vector3fs[k];
-			quaternion.transform(vector3f2);
-			vector3f2.mul(j);
-			vector3f2.add(f, g, h);
-		}
-
-		float l = this.getU0();
-		float m = this.getU1();
-		float n = this.getV0();
-		float o = this.getV1();
-		int p = this.getLightColor(partialTicks);
-		int cannonPower = (int) Math.floor(this.power);
-		buffer.addVertex(vector3fs[0].x(), vector3fs[0].y(), vector3fs[0].z()) // todo: confirm this works
-			.setUv(m, o)
-			.setOverlay(OverlayTexture.pack(0, cannonPower))
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-			.setLight(p);
-		buffer.addVertex(vector3fs[1].x(), vector3fs[1].y(), vector3fs[1].z())
-			.setUv(m, n)
+    private void renderVertex(VertexConsumer buffer, Quaternionf quaternion, float x, float y, float z, float xOffset,
+        float yOffset, float quadSize, float u, float v, int packedLight, int cannonPower) {
+        Vector3f vector3f = new Vector3f(xOffset, yOffset, 0.0F).rotate(quaternion).mul(quadSize).add(x, y, z);
+        buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z())
+            .setUv(u, v)
             .setOverlay(OverlayTexture.pack(0, cannonPower))
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-			.setLight(p);
-		buffer.addVertex(vector3fs[2].x(), vector3fs[2].y(), vector3fs[2].z())
-			.setUv(l, n)
-            .setOverlay(OverlayTexture.pack(0, cannonPower))
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-			.setLight(p);
-		buffer.addVertex(vector3fs[3].x(), vector3fs[3].y(), vector3fs[3].z())
-			.setUv(l, o)
-            .setOverlay(OverlayTexture.pack(0, cannonPower))
-			.setColor(this.rCol, this.gCol, this.bCol, this.alpha)
-			.setLight(p);
-	}
+            .setColor(this.rCol, this.gCol, this.bCol, this.alpha)
+            .setLight(packedLight);
+    }
 
 	@Override
 	public int getLightColor(float partialTick) {
