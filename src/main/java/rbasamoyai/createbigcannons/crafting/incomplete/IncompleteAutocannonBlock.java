@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DirectionalBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -112,7 +113,8 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 	@Override
 	public BlockState getCompleteBlockState(BlockState state) {
 		BlockState complete = this.getResultBlock().defaultBlockState();
-		return complete.hasProperty(FACING) ? complete.setValue(FACING, state.getValue(FACING)) : complete;
+		return complete.trySetValue(FACING, state.getValue(FACING))
+            .trySetValue(BlockStateProperties.WATERLOGGED, state.getValue(BlockStateProperties.WATERLOGGED));
 	}
 
 	@Override
