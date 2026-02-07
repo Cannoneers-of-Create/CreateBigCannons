@@ -188,6 +188,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
         mod_version            : mod_version,
         mod_author             : mod_author,
         create_neoforge_version: create_neoforge_version.substring(create_neoforge_version.indexOf("-")),
+        rpl_neoforge_version   : rpl_neoforge_version_range,
         copycats_version_range : copycats_version_range,
         framedblocks_version_range : framedblocks_version_range,
         curios_version_range   : curios_version_range

@@ -42,6 +42,13 @@ versionRange="[${create_neoforge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
+[[dependencies.${mod_id}]]
+modId = "ritchiesprojectilelib"
+type = "required"
+versionRange="[${rpl_neoforge_version},)"
+ordering = "NONE"
+side = "BOTH"
+
 #[[dependencies.${mod_id}]]
 #modId = "unify"
 #type = "optional"
