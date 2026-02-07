@@ -2,14 +2,27 @@
 
 ## [5.11.0] - Unreleased
 
+**Create Big Cannons 5.11.0, now supporting Create v6.0.9 on NeoForge 1.21.1.** \
+You will need to update Ritchie's Projectile Library to v2.1.2.
+
 Added:
--
+- Added view transparency config for molten metal fluids
+- Added ability to top up cannon cast fluids in Creative
 
 Changes:
+- Updated Ritchie's Projectile Library dependency to v2.1.2.
+- Changed cannon drill bit texture
 - [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
   `RegisterEvent`.
 
 Fixed:
+- Fixed positioning of Creative Autocannon Ammo Container screen text
+- Fixed display and attack stats of ram rod and worm items
+- Fixed default stress values for CBC not registering
+- Fixed fluid shell tooltip when potions contained
+- Fixed cannon drill model pipe UVs
+- Fixed incomplete autocannon block waterlogged state on completion
+- Fixed autocannon not syncing creative connections
 - Fixed incorrect top-bottom cannon cast merger fluid capacity
 
 ## [5.10.2] - 2026-01-17
