@@ -50,7 +50,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
-		int airTime = stack.get(CBCDataComponents.AIR_TIME);
+		int airTime = stack.getOrDefault(CBCDataComponents.AIR_TIME, 0);
 		if (airTime > CBCConfigs.server().munitions.proximityFuzeArmingTime.get()) stack.set(CBCDataComponents.ARMED, true);
 		stack.set(CBCDataComponents.AIR_TIME, ++airTime);
 		return false;
@@ -61,7 +61,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 		if (baseFuze) return false;
 		if (!stack.has(CBCDataComponents.ARMED)) return false;
 
-		double l = Math.max(stack.get(CBCDataComponents.DETONATION_DISTANCE), 1);
+		double l = Math.max(stack.getOrDefault(CBCDataComponents.DETONATION_DISTANCE, 1), 1);
 		Vec3 dir = projectile.getOrientation().normalize();
 		Vec3 right = dir.cross(new Vec3(Direction.UP.step()));
 		Vec3 up = dir.cross(right);
@@ -103,7 +103,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 			if (!stack.has(CBCDataComponents.DETONATION_DISTANCE)) {
 				stack.set(CBCDataComponents.DETONATION_DISTANCE, 1);
 			}
-			int dist = stack.get(CBCDataComponents.DETONATION_DISTANCE);
+			int dist = stack.getOrDefault(CBCDataComponents.DETONATION_DISTANCE, 1);
 			CBCMenuTypes.SET_PROXIMITY_FUZE.open(splayer, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(dist);
                 ItemStack.STREAM_CODEC.encode(buf, new ItemStack(this));
