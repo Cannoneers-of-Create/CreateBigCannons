@@ -67,6 +67,7 @@ public class CBCClientHandlers {
                     rbe.loadWithComponents(copy, registryAccess);
 			}
 		}
+        contraption.invalidateClientContraptionStructure();
         contraption.invalidateClientContraptionChildren();
 	}
 
