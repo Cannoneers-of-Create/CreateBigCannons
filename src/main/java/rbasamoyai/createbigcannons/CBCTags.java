@@ -139,7 +139,7 @@ public class CBCTags {
 				AllBlocks.WATER_WHEEL_STRUCTURAL, AllBlocks.LINEAR_CHASSIS, AllBlocks.SECONDARY_LINEAR_CHASSIS,
 				AllBlocks.RADIAL_CHASSIS, AllBlocks.ANDESITE_DOOR, AllBlocks.COPPER_DOOR, AllBlocks.BRASS_DOOR);
 
-			addOptionalTagsToBlockTag(GLASS_EFFECT_ON_IMPACT, CBCUtils.location("c", "glass"), CBCUtils.location("forge", "glass"),
+			addOptionalTagsToBlockTag(GLASS_EFFECT_ON_IMPACT, CBCUtils.location("c", "glass_blocks"), CBCUtils.location("forge", "glass"),
 				CBCUtils.location("c", "glass_panes"), CBCUtils.location("forge", "glass_panes"));
 			addBlocksToBlockTag(GLASS_EFFECT_ON_IMPACT, AllBlocks.FRAMED_GLASS_DOOR, AllBlocks.FRAMED_GLASS_TRAPDOOR,
 				AllPaletteBlocks.OAK_WINDOW, AllPaletteBlocks.OAK_WINDOW_PANE, AllPaletteBlocks.SPRUCE_WINDOW, AllPaletteBlocks.SPRUCE_WINDOW_PANE,
