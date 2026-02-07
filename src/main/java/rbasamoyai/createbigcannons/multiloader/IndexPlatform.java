@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.network.chat.Component;
@@ -132,13 +133,13 @@ public class IndexPlatform {
 		return FluidIngredient.tag(fluid);
 	}
 
-	public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) {
+	public static void addFluidShellComponents(Fluid fluid, DataComponentPatch fluidData, long amount, List<Component> tooltip) {
 		int capacity = AbstractFluidShellBlockEntity.getFluidShellCapacity();
 		LangBuilder mb = CreateLang.translate("generic.unit.millibuckets");
 		if (fluid != Fluids.EMPTY && amount > 0) {
 			CreateLang.translate("gui.goggles.fluid_container").addTo(tooltip);
 			CreateLang.text(" ")
-				.add(CreateLang.fluidName(new FluidStack(fluid, 1)).style(ChatFormatting.GRAY))
+				.add(CreateLang.fluidName(new FluidStack(Holder.direct(fluid), 1, fluidData)).style(ChatFormatting.GRAY))
 				.addTo(tooltip);
 
 			CreateLang.text(" ")
