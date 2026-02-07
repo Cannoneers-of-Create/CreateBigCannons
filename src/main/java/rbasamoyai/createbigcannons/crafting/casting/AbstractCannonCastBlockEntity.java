@@ -28,6 +28,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
@@ -44,6 +45,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.AABB;
+import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCRegistries;
 import rbasamoyai.createbigcannons.cannons.ICannonBlockEntity;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -129,7 +131,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			}
 			tag.putInt("Height", this.height);
 			tag.putInt("CastingTime", this.castingTime);
-			this.writeFluidToTag(tag);
+			this.writeFluidToTag(tag, registries);
 			if (this.startCastingTime > 1) tag.putInt("StartCastingTime", this.startCastingTime);
 			if (this.updateRecipes) tag.putBoolean("UpdateRecipes", true);
 
@@ -147,7 +149,12 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 				}
 				tag.put("Preview", previewList);
 			}
-			InvalidCastingError.write(tag, this.invalidCastingError);
+            if (this.invalidCastingError != null) {
+                InvalidCastingError.CODEC.codec()
+                    .encode(this.invalidCastingError, registries.createSerializationContext(NbtOps.INSTANCE), new CompoundTag())
+                    .resultOrPartial(err -> CreateBigCannons.LOGGER.warn("Failed to save cannon casting error: {}", err))
+                    .ifPresent(errtag -> tag.put("CastingError", errtag));
+            }
 			tag.putInt("CastingDelay", this.castDelay);
 		} else {
 			tag.put("Controller", NbtUtils.writeBlockPos(this.controllerPos));
@@ -164,7 +171,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		this.forceCastLevelUpdate = false;
 	}
 
-	protected abstract void writeFluidToTag(CompoundTag tag);
+	protected abstract void writeFluidToTag(CompoundTag tag, HolderLookup.Provider registries);
 
 	@Override
 	protected void read(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
@@ -176,7 +183,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		int prevHeight = this.getControllerBE() == null ? 0 : this.getControllerBE().height;
 
 		this.castShape = tag.contains("Size") ? shapeRegistry.get(CBCUtils.location(tag.getString("Size"))) : null;
-		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag, "LastKnownPos").get();
+		if (tag.contains("LastKnownPos")) this.lastKnownPos = NbtUtils.readBlockPos(tag, "LastKnownPos").orElse(null);
 
 		this.structure.clear();
 		if (tag.contains("Structure")) {
@@ -186,7 +193,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 				this.structure.add(shape == null ? CannonCastShape.VERY_SMALL : shape);
 			}
 			this.height = tag.getInt("Height");
-			this.updateFluids(tag);
+			this.updateFluids(tag, registry);
 			this.castingTime = Math.max(tag.getInt("CastingTime"), 0);
 			this.startCastingTime = Math.max(tag.getInt("StartCastingTime"), 1);
 			this.updateRecipes = this.firstLoadUpdate || tag.contains("UpdateRecipes");
@@ -196,12 +203,19 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			for (int i = 0; i < preview.size(); ++i) {
 				this.resultPreview.add(NbtUtils.readBlockState(this.blockHolderGetter(), preview.getCompound(i)));
 			}
-			this.invalidCastingError = InvalidCastingError.read(tag);
+            if (tag.contains("CastingError", Tag.TAG_COMPOUND)) {
+                InvalidCastingError.CODEC.codec()
+                    .parse(registry.createSerializationContext(NbtOps.INSTANCE), tag.getCompound("CastingError"))
+                    .resultOrPartial(err -> CreateBigCannons.LOGGER.warn("Failed to read cannon casting error: {}", err))
+                    .ifPresent(casterr -> this.invalidCastingError = casterr);
+            } else {
+                this.invalidCastingError = null;
+            }
 			this.castDelay = tag.getInt("CastingDelay");
 
 			this.controllerPos = null;
 		} else if (tag.contains("Controller")) {
-			this.controllerPos = NbtUtils.readBlockPos(tag, "Controller").get();
+			this.controllerPos = NbtUtils.readBlockPos(tag, "Controller").orElse(null);
 		}
 
 		if (tag.contains("ForceFluidLevel") || this.fluidLevel == null) {
@@ -239,7 +253,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		this.firstLoadUpdate = false;
 	}
 
-	protected abstract void updateFluids(CompoundTag tag);
+	protected abstract void updateFluids(CompoundTag tag, HolderLookup.Provider registries);
 
 	protected abstract void updateFluidClient();
 
@@ -281,6 +295,11 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		}
 		if (this.getLevel().getBlockState(this.worldPosition.below()).canBeReplaced()) {
 			this.leakContents();
+            this.startCastingTime = 1;
+            this.castingTime = 0;
+            this.castDelay = 8;
+            this.recipes.clear();
+            this.notifyUpdate();
 		} else if (this.canStartCasting() && this.castDelay <= 0) {
 			if (this.updateRecipes) {
 				this.invalidCastingError = null;

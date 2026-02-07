@@ -4,7 +4,9 @@ import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -87,7 +89,12 @@ public class CannonCastBlock extends Block implements IBE<AbstractCannonCastBloc
 			.orElse(0);
 	}
 
-	public static int castFractionToRedstoneLevel(float frac) {
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        super.tick(state, level, pos, random);
+    }
+
+    public static int castFractionToRedstoneLevel(float frac) {
 		return Mth.floor(Mth.clamp(frac * 13 + (frac > 0 ? 1 : 0), 0, 14));
 	}
 

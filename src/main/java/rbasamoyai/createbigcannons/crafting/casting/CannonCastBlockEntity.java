@@ -9,6 +9,7 @@ import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -63,10 +64,10 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 	}
 
 	@Override
-	protected void updateFluids(CompoundTag tag) {
+	protected void updateFluids(CompoundTag tag, HolderLookup.Provider registry) {
 		this.fluid.setCapacity(this.calculateCapacityFromStructure());
-		this.fluid.readFromNBT(this.level.registryAccess(), tag.getCompound("FluidContent"));
-		this.leakage = FluidStack.parseOptional(this.level.registryAccess(), tag.getCompound("Leakage"));
+		this.fluid.readFromNBT(registry, tag.getCompound("FluidContent"));
+		this.leakage = FluidStack.parseOptional(registry, tag.getCompound("Leakage"));
 	}
 
 	@Override
@@ -75,17 +76,17 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 	}
 
 	@Override
-	protected void writeFluidToTag(CompoundTag tag) {
-		tag.put("FluidContent", this.fluid.writeToNBT(this.level.registryAccess(), new CompoundTag()));
-		tag.put("Leakage", this.leakage.saveOptional(this.level.registryAccess()));
+	protected void writeFluidToTag(CompoundTag tag, HolderLookup.Provider registries) {
+		tag.put("FluidContent", this.fluid.writeToNBT(registries, new CompoundTag()));
+		tag.put("Leakage", this.leakage.saveOptional(registries));
 	}
 
 	protected void onFluidStackChanged(FluidStack stack) {
 		if (!this.hasLevel()) return;
 
 		for (int yOffset = 0; yOffset < this.height; yOffset++) {
-			for (int xOffset = 0; xOffset < 3; xOffset++) {
-				for (int zOffset = 0; zOffset < 3; zOffset++) {
+			for (int xOffset = -1; xOffset < 2; xOffset++) {
+				for (int zOffset = -1; zOffset < 2; zOffset++) {
 					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
 					AbstractCannonCastBlockEntity castAt = ConnectivityHandler.partAt(this.getType(), this.getLevel(), pos);
 					if (castAt == null) continue;
@@ -247,7 +248,10 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 		Pair<FluidStack, ItemStack> emptyingResult = GenericItemEmptying.emptyItem(worldIn, heldItem, true);
 		FluidStack fluidStack = emptyingResult.getFirst();
 
-		if (fluidStack.getAmount() != this.fluid.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE)) return false;
+        int fillAmount = this.fluid.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE);
+		if (fluidStack.getAmount() != fillAmount && (!player.isCreative() || fillAmount < 1)) {
+            return false; // Enable top-up filling in creative
+        }
 
 		ItemStack copyOfHeld = heldItem.copy();
 		emptyingResult = GenericItemEmptying.emptyItem(worldIn, copyOfHeld, false);
