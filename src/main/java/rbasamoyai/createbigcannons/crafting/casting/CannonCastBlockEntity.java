@@ -149,7 +149,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 	@Override
 	protected void mergeControllerAndOtherFluids(AbstractCannonCastBlockEntity controller, AbstractCannonCastBlockEntity otherCast) {
 		if (controller instanceof CannonCastBlockEntity cController && otherCast instanceof CannonCastBlockEntity cOther) {
-			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.castShape.fluidSize());
+			cController.fluid.setCapacity(cController.fluid.getCapacity() + cOther.fluid.getCapacity());
 			cController.fluid.fill(cOther.fluid.drain(cOther.fluid.getCapacity(), IFluidHandler.FluidAction.EXECUTE), IFluidHandler.FluidAction.EXECUTE);
 			cOther.fluid = new FluidTank(1);
 		}

@@ -10,7 +10,7 @@ Changes:
   `RegisterEvent`.
 
 Fixed:
--
+- Fixed incorrect top-bottom cannon cast merger fluid capacity
 
 ## [5.10.2] - 2026-01-17
 
