@@ -130,15 +130,12 @@ public class SplinterParticle extends CBCBlockParticle {
 
         // Because we can't have nice things in 1.21.1
         buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z());
-        long i1 = buffer.beginElement(CBCVertexFormatElements.BLOCK_UV0.element);
+        long i1 = buffer.beginElement(CBCVertexFormatElements.BLOCK_UV.element);
         if (i1 != -1L) {
             MemoryUtil.memPutFloat(i1, blockU0);
             MemoryUtil.memPutFloat(i1 + 4L, blockV0);
-        }
-        long i2 = buffer.beginElement(CBCVertexFormatElements.BLOCK_UV1.element);
-        if (i2 != -1L) {
-            MemoryUtil.memPutFloat(i2, blockU1);
-            MemoryUtil.memPutFloat(i2 + 4L, blockV1);
+            MemoryUtil.memPutFloat(i1 + 8L, blockU1);
+            MemoryUtil.memPutFloat(i1 + 12L, blockV1);
         }
 
         buffer

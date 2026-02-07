@@ -4,8 +4,7 @@ import com.mojang.blaze3d.vertex.VertexFormatElement;
 
 public enum CBCVertexFormatElements {
 
-    BLOCK_UV0(VertexFormatElement.Type.FLOAT, VertexFormatElement.Usage.UV, 2),
-    BLOCK_UV1(VertexFormatElement.Type.FLOAT, VertexFormatElement.Usage.UV, 2);
+    BLOCK_UV(VertexFormatElement.Type.FLOAT, VertexFormatElement.Usage.UV, 4);
 
     public final VertexFormatElement element;
 

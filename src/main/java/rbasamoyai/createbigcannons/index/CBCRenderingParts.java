@@ -40,8 +40,7 @@ public class CBCRenderingParts extends RenderType {
 
 	public static final VertexFormat SPLINTER_PARTICLE_INPUT = VertexFormat.builder()
 			.add("Position", VertexFormatElement.POSITION)
-			.add("UV0", CBCVertexFormatElements.BLOCK_UV0.element)
-			.add("UV01", CBCVertexFormatElements.BLOCK_UV1.element)
+			.add("UV0", CBCVertexFormatElements.BLOCK_UV.element)
 			.add("UV3", VertexFormatElement.UV0)
 			.add("Color", VertexFormatElement.COLOR)
 			.add("UV2", VertexFormatElement.UV2)
