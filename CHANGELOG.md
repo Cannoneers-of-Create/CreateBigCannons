@@ -1,10 +1,39 @@
 # Changelog
 
-## [5.9.2] - Unreleased
+## [5.11.0] - Unreleased
+
+Added:
+-
 
 Changes:
 - [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
   `RegisterEvent`.
+
+Fixed:
+-
+
+## [5.10.2] - 2026-01-17
+
+Fixes:
+- Fixed empty casing duplication glitch present in autocannons
+- [Valkyrien Skies] Fixed cannon firing breaking ship ticking
+
+## [5.10.1] - 2025-12-19
+
+Fixes:
+- Fixed dedicated server crashing due to loading clientside code
+- Fixed fuzed big cannon shells rendering with black fuze when Flywheel is off
+- Fixed projectiles fired along the z+ axis being visually distorted
+
+## [5.10.0] - 2025-12-08
+
+**Create Big Cannons 5.10.0, now supporting Create v6.0.8 on Forge 1.20.1 and Fabric 1.20.1.**
+
+Changes:
+- Updated Chinese (Simplified) (zh_cn) translation courtesy of Yizhouuu
+  Fixes:
+- Fixed various block entities' safe data and schematic requirements
+- Fixed shrapnel block damage
 
 ## [5.9.1] - 2025-06-25
 
