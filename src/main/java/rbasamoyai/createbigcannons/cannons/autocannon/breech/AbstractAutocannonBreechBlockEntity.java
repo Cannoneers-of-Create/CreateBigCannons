@@ -92,6 +92,9 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 			Contraption contraption = poce.getContraption();
 			writeAndSyncSingleBlockData(this, contraption.getBlocks().get(localPos), poce, contraption);
 		}
+        if (level.isClientSide && poce.getContraption().getBlockEntityClientSide(localPos) instanceof AbstractAutocannonBreechBlockEntity cbe) {
+            cbe.allTick(level);
+        }
 	}
 
 	private void allTick(Level level) {

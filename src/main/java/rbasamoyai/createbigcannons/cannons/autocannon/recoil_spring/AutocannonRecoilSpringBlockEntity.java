@@ -37,6 +37,9 @@ public class AutocannonRecoilSpringBlockEntity extends AutocannonBlockEntity imp
     public void tickFromContraption(Level level, PitchOrientedContraptionEntity poce, BlockPos localPos) {
         super.tickFromContraption(level, poce, localPos);
         this.allTick();
+        if (level.isClientSide && poce.getContraption().getBlockEntityClientSide(localPos) instanceof AutocannonRecoilSpringBlockEntity cbe) {
+            cbe.allTick();
+        }
     }
 
     private void allTick() {

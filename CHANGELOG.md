@@ -25,6 +25,7 @@ Fixed:
 - Fixed autocannon not syncing creative connections
 - Fixed incorrect top-bottom cannon cast merger fluid capacity
 - Fixed cannon builder assembly and layering collision
+- Fixed white seat flickering when changing autocannon seating when Flywheel is on
 
 ## [5.10.2] - 2026-01-17
 
