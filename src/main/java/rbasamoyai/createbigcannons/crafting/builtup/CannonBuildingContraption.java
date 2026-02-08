@@ -40,6 +40,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderBlock.BuilderState;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.index.CBCBigCannonMaterials;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCContraptionTypes;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
@@ -340,7 +341,7 @@ public class CannonBuildingContraption extends PoleContraption {
 
 			if (blockEntity1 instanceof LayeredBigCannonBlockEntity layered) {
 				if (blockInfo.nbt() == null || !blockInfo.nbt().contains("id")) return true;
-				BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, blockInfo.nbt(), level.registryAccess());
+				BlockEntity infoBE = BlockEntity.loadStatic(blockPos, blockInfo.state(), blockInfo.nbt(), level.registryAccess());
 				if (!(infoBE instanceof LayeredBigCannonBlockEntity layered1)) return true;
 				layered.addLayersOfOther(layered1);
 				layered.updateBlockstate();
@@ -369,7 +370,7 @@ public class CannonBuildingContraption extends PoleContraption {
 		if (blockInfo != null && blockEntity1 instanceof LayeredBigCannonBlockEntity layered) {
 			CompoundTag infoNbt = blockInfo.nbt();
 			if (infoNbt == null || !infoNbt.contains("id")) return true;
-			BlockEntity infoBE = BlockEntity.loadStatic(blockPos, builderState, infoNbt, level.registryAccess());
+			BlockEntity infoBE = BlockEntity.loadStatic(blockPos, blockInfo.state(), infoNbt, level.registryAccess());
 			if (!(infoBE instanceof LayeredBigCannonBlockEntity layered1)) return true;
 			layered.removeLayersOfOther(layered1);
 			layered.updateBlockstate();
@@ -430,6 +431,31 @@ public class CannonBuildingContraption extends PoleContraption {
 
 		this.material = BigCannonMaterial.fromNameOrNull(CBCUtils.location(tag.getString("Material")));
 		if (this.material == null) this.material = CBCBigCannonMaterials.STEEL;
+
+        if (spawnData) {
+            HolderLookup.Provider registries = level.registryAccess();
+            for (Map.Entry<BlockPos, StructureBlockInfo> entry : this.blocks.entrySet()) {
+                StructureBlockInfo info = entry.getValue();
+                if (info == null || info.nbt() == null)
+                    continue;
+                CompoundTag infoNbt = info.nbt();
+                BlockPos pos = info.pos();
+                BlockState state = info.state();
+                if (!(state.getBlock() instanceof BigCannonLayerBlock) && !CBCBlocks.BUILT_UP_CANNON.has(state))
+                    continue;
+
+                infoNbt.putInt("x", pos.getX());
+                infoNbt.putInt("y", pos.getY());
+                infoNbt.putInt("z", pos.getZ());
+                infoNbt.putString("id", CBCBlockEntities.LAYERED_CANNON.getKey().location().toString());
+
+                BlockEntity be = BlockEntity.loadStatic(pos, info.state(), infoNbt, registries);
+                if (be == null)
+                    continue;
+                be.setLevel(level);
+                this.presentBlockEntities.put(pos, be);
+            }
+        }
 	}
 
 	@Override
