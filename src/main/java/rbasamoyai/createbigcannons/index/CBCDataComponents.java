@@ -54,6 +54,11 @@ public class CBCDataComponents {
         builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC)
     );
 
+    public static final DataComponentType<ItemContainerContents> TRACERS = register(
+        "tracers",
+        builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC)
+    );
+
     public static final DataComponentType<ItemContainerContents> FUZE = register(
         "fuze",
         builder -> builder.persistent(ItemContainerContents.CODEC).networkSynchronized(ItemContainerContents.STREAM_CODEC)

@@ -26,7 +26,7 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 		ItemStack ammo = this.getItem(slot);
 		if (ammo.isEmpty()) return ItemStack.EMPTY;
 		ItemStack split = ammo.split(amount);
-		this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ItemContainerContents.fromItems(Lists.newArrayList(ammo)));
+		this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACERS, ItemContainerContents.fromItems(Lists.newArrayList(ammo)));
 		this.setChanged();
 		return split;
 	}
@@ -35,14 +35,14 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 	public ItemStack removeItemNoUpdate(int slot) {
 		if (slot != 0 && slot != 1) return ItemStack.EMPTY;
 		ItemStack ret = this.getItem(slot);
-        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
+        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACERS, ItemContainerContents.EMPTY);
 		return ret;
 	}
 
 	@Override
 	public void setItem(int slot, ItemStack stack) {
 		if (slot != 0 && slot != 1) return;
-        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACER, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
+        this.stack.set(slot == AMMO_SLOT ? CBCDataComponents.AMMO : CBCDataComponents.TRACERS, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
 		this.setChanged();
 	}
 
@@ -56,7 +56,7 @@ public class AutocannonAmmoContainerItemContainer implements IAutocannonAmmoCont
 	@Override
 	public void clearContent() {
 		this.stack.set(CBCDataComponents.AMMO, ItemContainerContents.EMPTY);
-		this.stack.set(CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
+		this.stack.set(CBCDataComponents.TRACERS, ItemContainerContents.EMPTY);
 	}
 
 	@Override

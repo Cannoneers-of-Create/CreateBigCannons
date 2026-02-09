@@ -27,7 +27,6 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
-import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 
 public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvider {
 
@@ -79,16 +78,17 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 	}
 
 	public static ItemStack getTracerAmmoStack(ItemStack container) {
-        return ProjectileBlock.getTracerFromItemStack(container);
+        ItemContainerContents items = container.getOrDefault(CBCDataComponents.TRACERS, ItemContainerContents.EMPTY);
+        return items.copyOne();
 	}
 
 	public static int getTracerSpacing(ItemStack container) {
-		return container.getOrDefault(CBCDataComponents.TRACER_SPACING, 1);
+		return Math.max(container.getOrDefault(CBCDataComponents.TRACER_SPACING, 1), 1);
 	}
 
 	public static boolean shouldPullTracer(ItemStack container) {
 		if (!container.has(CBCDataComponents.CURRENT_INDEX)) container.set(CBCDataComponents.CURRENT_INDEX, 0);
-		int currentCount = Math.max(container.get(CBCDataComponents.CURRENT_INDEX), 0);
+		int currentCount = Math.max(container.getOrDefault(CBCDataComponents.CURRENT_INDEX, 0), 0);
 		container.set(CBCDataComponents.CURRENT_INDEX, currentCount >= getTracerSpacing(container) ? 0 : currentCount + 1);
 		return currentCount == 0;
 	}
@@ -110,7 +110,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 		ItemStack ret = ItemStack.EMPTY;
 		boolean isCreative = ctItem.isCreative();
 
-		if (isCreative && shouldPullTracer(container) || !isCreative && getTotalAmmoCount(container) % getTracerSpacing(container) == 0) {
+		if (isCreative && shouldPullTracer(container) || !isCreative && getTotalAmmoCount(container) % (getTracerSpacing(container) + 1) == 0) {
 			if (!tracerAmmo.isEmpty()) {
 				if (isCreative) {
 					ret = tracerAmmo.copy();
@@ -119,7 +119,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret = tracerAmmo.split(1);
                     ItemContainerContents tracerData = tracerAmmo.isEmpty() ? ItemContainerContents.EMPTY
                         : ItemContainerContents.fromItems(Lists.newArrayList(tracerAmmo));
-                    container.set(CBCDataComponents.TRACER, tracerData);
+                    container.set(CBCDataComponents.TRACERS, tracerData);
 				}
 			} else if (!mainAmmo.isEmpty()) {
 				if (isCreative) {
@@ -129,7 +129,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret = mainAmmo.split(1);
                     ItemContainerContents ammoData = mainAmmo.isEmpty() ? ItemContainerContents.EMPTY
                         : ItemContainerContents.fromItems(Lists.newArrayList(mainAmmo));
-                    container.set(CBCDataComponents.TRACER, ammoData);
+                    container.set(CBCDataComponents.AMMO, ammoData);
 				}
 			}
 		} else {
@@ -141,7 +141,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret = mainAmmo.split(1);
                     ItemContainerContents ammoData = mainAmmo.isEmpty() ? ItemContainerContents.EMPTY
                         : ItemContainerContents.fromItems(Lists.newArrayList(mainAmmo));
-                    container.set(CBCDataComponents.TRACER, ammoData);
+                    container.set(CBCDataComponents.AMMO, ammoData);
 				}
 			} else if (!tracerAmmo.isEmpty()) {
 				if (isCreative) {
@@ -151,7 +151,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 					ret = tracerAmmo.split(1);
                     ItemContainerContents tracerData = tracerAmmo.isEmpty() ? ItemContainerContents.EMPTY
                         : ItemContainerContents.fromItems(Lists.newArrayList(tracerAmmo));
-                    container.set(CBCDataComponents.TRACER, tracerData);
+                    container.set(CBCDataComponents.TRACERS, tracerData);
 				}
 			}
 		}
