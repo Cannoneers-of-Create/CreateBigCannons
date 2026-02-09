@@ -17,7 +17,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.simibubi.create.AllDataComponents;
 
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
-import net.createmod.catnip.math.VecHelper;
 import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
@@ -29,7 +28,6 @@ import net.minecraft.client.particle.ParticleEngine;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.PreparableReloadListener;
@@ -43,7 +41,6 @@ import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.base.goggles.EntityGoggleOverlayRenderer;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffect;
 import rbasamoyai.createbigcannons.block_hit_effects.BlockHitEffectsHandler;
@@ -65,7 +62,6 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.index.CBCParticleTypes;
-import rbasamoyai.createbigcannons.mixin.client.CameraAccessor;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
@@ -251,29 +247,13 @@ public class CBCClientCommon {
 										Consumer<Float> setYaw, Consumer<Float> setPitch, Consumer<Float> setRoll) {
 		Minecraft mc = Minecraft.getInstance();
 		LocalPlayer player = mc.player;
-		CameraAccessor camAccess = (CameraAccessor) camera;
 
 		if (player != null && camera.getEntity() == player && player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
 			Direction dir = poce.getInitialOrientation();
-			Direction up = Direction.UP; // TODO: up and down cases
-
-			Vec3 upNormal = new Vec3(up.step());
-			Vec3 localPos = Vec3.atCenterOf(poce.getSeatPos(player));
-			if (mc.options.getCameraType() == CameraType.FIRST_PERSON) {
-				localPos = localPos.add(upNormal.scale(0.35));
-				Vec3 rotationOffset = VecHelper.getCenterOf(BlockPos.ZERO);
-				Vec3 anchor = poce.getPrevAnchorVec().lerp(poce.getAnchorVec(), partialTicks);
-
-				Vec3 camPos = localPos.subtract(rotationOffset);
-				camPos = poce.applyRotation(camPos, (float) partialTicks);
-				camPos = camPos.add(anchor).add(rotationOffset);
-				camAccess.callSetPosition(camPos);
-			}
-
 			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
 			boolean flag1 = mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT;
-			float sgn = flag == flag1 ? 1 : -1;
-			float add = flag1 ? 180 : 0;
+			float sgn = (flag == flag1) != flag1 ? 1 : -1;
+			float add = 0;//flag1 ? 180 : 0;
 			setYaw.accept(-poce.getViewYRot((float) partialTicks) + add);
 			setPitch.accept(poce.getViewXRot((float) partialTicks) * sgn);
 			setRoll.accept(0f);
