@@ -53,7 +53,7 @@ public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlock
 
         this.yawShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
             .createInstance()
-            .rotateToFace(Direction.Axis.Z)
+            .rotateToFace(Direction.SOUTH, vertical)
             .setup(this.blockEntity.getYawInterface())
             .setColor(this.blockEntity.getYawInterface())
             .setPosition(this.getVisualPosition());
