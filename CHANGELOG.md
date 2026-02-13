@@ -28,6 +28,7 @@ Fixed:
 - Fixed white seat flickering when changing autocannon seating when Flywheel is on
 - Fixed tracer spacing of regular Autocannon Ammo Container
 - Fixed upside-down cannon mount rendering with Flywheel
+- Fixed turning cannon carriage wheels when turning autocannon
 
 ## [5.10.2] - 2026-01-17
 
