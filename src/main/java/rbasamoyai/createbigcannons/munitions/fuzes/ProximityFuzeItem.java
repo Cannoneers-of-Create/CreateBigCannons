@@ -132,7 +132,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
 		MutableComponent info = CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", stack.get(CBCDataComponents.DETONATION_DISTANCE))
+			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info", stack.getOrDefault(CBCDataComponents.DETONATION_DISTANCE, 1))
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 	}
@@ -141,7 +141,7 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
 		tooltip.add(CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info.item", stack.get(CBCDataComponents.DETONATION_DISTANCE))
+			.translate(CreateBigCannons.MOD_ID + ".proximity_fuze.tooltip.shell_info.item", stack.getOrDefault(CBCDataComponents.DETONATION_DISTANCE, 1))
 			.component());
 	}
 

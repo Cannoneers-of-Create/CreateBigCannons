@@ -65,7 +65,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, ImpactResult impactResult, boolean baseFuze) {
 		if (baseFuze || impactResult.shouldRemove()) return false;
-		int damage = stack.has(CBCDataComponents.DAMAGE) ? stack.get(CBCDataComponents.DAMAGE) : this.getFuzeDurability();
+		int damage = stack.getOrDefault(CBCDataComponents.DAMAGE, this.getFuzeDurability());
 		if (damage > 0 && !stack.has(CBCDataComponents.ACTIVATED)) {
 			--damage;
 			stack.set(CBCDataComponents.DAMAGE, damage);
@@ -97,7 +97,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 		super.appendHoverText(stack, ctx, tooltip, flag);
 		CBCTooltip.appendImpactFuzeText(stack, ctx, tooltip, flag, this.getDetonateChance(), this.getFuzeDurability());
 
-		int time = stack.get(CBCDataComponents.FUZE_TIMER);
+		int time = stack.getOrDefault(CBCDataComponents.FUZE_TIMER, 20);
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		tooltip.add(CreateLang.builder("item")
@@ -115,7 +115,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile projectile) {
-		return stack.get(CBCDataComponents.ACTIVATED);
+		return stack.getOrDefault(CBCDataComponents.ACTIVATED, false);
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 
-		int time = stack.get(CBCDataComponents.FUZE_TIMER);
+		int time = stack.getOrDefault(CBCDataComponents.FUZE_TIMER, 20);
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		MutableComponent info1 = CreateLang.builder("item")

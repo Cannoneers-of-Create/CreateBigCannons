@@ -86,7 +86,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
-		int time = stack.get(CBCDataComponents.FUZE_TIMER);
+		int time = stack.getOrDefault(CBCDataComponents.FUZE_TIMER, 20);
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		MutableComponent info = CreateLang.builder("item")
@@ -98,7 +98,7 @@ public class TimedFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {
 		super.appendHoverText(stack, ctx, tooltip, flag);
-        int time = stack.get(CBCDataComponents.FUZE_TIMER);
+        int time = stack.getOrDefault(CBCDataComponents.FUZE_TIMER, 20);
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		tooltip.add(CreateLang.builder("item")
