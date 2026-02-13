@@ -458,9 +458,9 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	@Override
-	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
 		Direction vertical = this.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION);
-		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).relative(vertical.getOpposite());
+		return Vec3.atBottomCenterOf(this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).relative(vertical.getOpposite()));
 	}
 
 	@Override

@@ -226,9 +226,9 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 	}
 
 	@Override
-	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
 		Direction facing = this.getBlockState().getValue(BlockStateProperties.FACING);
-		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).relative(facing);
+		return Vec3.atBottomCenterOf(this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).relative(facing));
 	}
 
 	@Override

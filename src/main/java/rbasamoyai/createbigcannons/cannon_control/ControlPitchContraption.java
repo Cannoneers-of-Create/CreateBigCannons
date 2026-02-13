@@ -20,7 +20,7 @@ public interface ControlPitchContraption {
 
 	void disassemble();
 
-	BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce);
+	Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce);
 
 	BlockState getControllerState();
 
