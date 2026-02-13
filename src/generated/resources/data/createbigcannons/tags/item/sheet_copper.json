@@ -1,15 +1,7 @@
 {
   "values": [
     {
-      "id": "#forge:plates/copper",
-      "required": false
-    },
-    {
       "id": "#c:plates/copper",
-      "required": false
-    },
-    {
-      "id": "#c:copper_plates",
       "required": false
     }
   ]

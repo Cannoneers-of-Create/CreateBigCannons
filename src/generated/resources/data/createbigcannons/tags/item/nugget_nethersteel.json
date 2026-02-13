@@ -1,15 +1,7 @@
 {
   "values": [
     {
-      "id": "#forge:nuggets/nethersteel",
-      "required": false
-    },
-    {
       "id": "#c:nuggets/nethersteel",
-      "required": false
-    },
-    {
-      "id": "#c:nethersteel_nuggets",
       "required": false
     }
   ]

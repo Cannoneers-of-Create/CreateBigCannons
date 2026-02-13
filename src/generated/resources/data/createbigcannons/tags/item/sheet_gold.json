@@ -1,15 +1,7 @@
 {
   "values": [
     {
-      "id": "#forge:plates/gold",
-      "required": false
-    },
-    {
       "id": "#c:plates/gold",
-      "required": false
-    },
-    {
-      "id": "#c:gold_plates",
       "required": false
     }
   ]

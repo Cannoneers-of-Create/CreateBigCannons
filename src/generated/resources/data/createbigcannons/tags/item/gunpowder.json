@@ -1,15 +1,7 @@
 {
   "values": [
     {
-      "id": "#forge:gunpowder",
-      "required": false
-    },
-    {
-      "id": "#c:gunpowder",
-      "required": false
-    },
-    {
-      "id": "#c:gunpowder",
+      "id": "#c:gunpowders",
       "required": false
     }
   ]

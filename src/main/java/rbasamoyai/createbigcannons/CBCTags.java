@@ -164,36 +164,36 @@ public class CBCTags {
 		// TODO: Update fabric ore tags to use fabric-convention-tags in 1.21
 		public static final TagKey<Item>
 			IMPACT_FUZE_HEAD = makeTag("impact_fuze_head"),
-			NUGGET_CAST_IRON = commonTag("nugget_cast_iron", "nuggets/cast_iron", "cast_iron_nuggets"),
-			INGOT_CAST_IRON = commonTag("ingot_cast_iron", "ingots/cast_iron", "cast_iron_ingots"),
-			BLOCK_CAST_IRON = commonTag("block_cast_iron", "storage_blocks/cast_iron", "cast_iron_blocks"),
-			NUGGET_BRONZE = commonTag("nugget_bronze", "nuggets/bronze", "bronze_nuggets"),
-			INGOT_BRONZE = commonTag("ingot_bronze", "ingots/bronze", "bronze_ingots"),
-			BLOCK_BRONZE = commonTag("block_bronze", "storage_blocks/bronze", "bronze_blocks"),
-			NUGGET_STEEL = commonTag("nugget_steel", "nuggets/steel", "steel_nuggets"),
-			INGOT_STEEL = commonTag("ingot_steel", "ingots/steel", "steel_ingots"),
-			BLOCK_STEEL = commonTag("block_steel", "storage_blocks/steel", "steel_blocks"),
-			NUGGET_NETHERSTEEL = commonTag("nugget_nethersteel", "nuggets/nethersteel", "nethersteel_nuggets"),
-			INGOT_NETHERSTEEL = commonTag("ingot_nethersteel", "ingots/nethersteel", "nethersteel_ingots"),
-			BLOCK_NETHERSTEEL = commonTag("block_nethersteel", "blocks/nethersteel", "nethersteel_blocks"),
+			NUGGET_CAST_IRON = commonTag("nugget_cast_iron", "nuggets/cast_iron"),
+			INGOT_CAST_IRON = commonTag("ingot_cast_iron", "ingots/cast_iron"),
+			BLOCK_CAST_IRON = commonTag("block_cast_iron", "storage_blocks/cast_iron"),
+			NUGGET_BRONZE = commonTag("nugget_bronze", "nuggets/bronze"),
+			INGOT_BRONZE = commonTag("ingot_bronze", "ingots/bronze"),
+			BLOCK_BRONZE = commonTag("block_bronze", "storage_blocks/bronze"),
+			NUGGET_STEEL = commonTag("nugget_steel", "nuggets/steel"),
+			INGOT_STEEL = commonTag("ingot_steel", "ingots/steel"),
+			BLOCK_STEEL = commonTag("block_steel", "storage_blocks/steel"),
+			NUGGET_NETHERSTEEL = commonTag("nugget_nethersteel", "nuggets/nethersteel"),
+			INGOT_NETHERSTEEL = commonTag("ingot_nethersteel", "ingots/nethersteel"),
+			BLOCK_NETHERSTEEL = commonTag("block_nethersteel", "blocks/nethersteel"),
 
 		// Crafting tags
-		INGOT_IRON = commonTag("ingot_iron", "ingots/iron", "iron_ingots"),
-			NUGGET_IRON = commonTag("nugget_iron", "nuggets/iron", "iron_nuggets"),
-			SHEET_IRON = commonTag("sheet_iron", "plates/iron", "iron_plates"),
-			NUGGET_COPPER = commonTag("nugget_copper", "nuggets/copper", "copper_nuggets"),
-			INGOT_COPPER = commonTag("ingot_copper", "ingots/copper", "copper_ingots"),
-			GUNPOWDER = commonTag("gunpowder", "gunpowder", "gunpowder" /* No fabric c: tag */),
-			GEMS_QUARTZ = commonTag("gems_quartz", "gems/quartz", "quartz"),
-			DUSTS_REDSTONE = commonTag("dusts_redstone", "dusts/redstone", "redstone_dusts"),
-			STONE = commonTag("stone", "stone", "stone"),
-			SHEET_BRASS = commonTag("sheet_brass", "plates/brass", "brass_plates"),
-			INGOT_BRASS = commonTag("ingot_brass", "ingots/brass", "brass_ingots"),
-			SHEET_COPPER = commonTag("sheet_copper", "plates/copper", "copper_plates"),
-			SHEET_GOLD = commonTag("sheet_gold", "plates/gold", "gold_plates"),
-			SHEET_STEEL = commonTag("sheet_steel", "plates/steel", "steel_plates"),
-			DUST_GLOWSTONE = commonTag("dust_glowstone", "dusts/glowstone", "glowstone_dusts"),
-			GLASS = commonTag("glass", "glass", "glass"),
+		INGOT_IRON = commonTag("ingot_iron", "ingots/iron"),
+			NUGGET_IRON = commonTag("nugget_iron", "nuggets/iron"),
+			SHEET_IRON = commonTag("sheet_iron", "plates/iron"),
+			NUGGET_COPPER = commonTag("nugget_copper", "nuggets/copper"),
+			INGOT_COPPER = commonTag("ingot_copper", "ingots/copper"),
+			GUNPOWDER = commonTag("gunpowder", "gunpowders"),
+			GEMS_QUARTZ = commonTag("gems_quartz", "gems/quartz"),
+			DUSTS_REDSTONE = commonTag("dusts_redstone", "dusts/redstone"),
+			STONE = commonTag("stone", "stones"),
+			SHEET_BRASS = commonTag("sheet_brass", "plates/brass"),
+			INGOT_BRASS = commonTag("ingot_brass", "ingots/brass"),
+			SHEET_COPPER = commonTag("sheet_copper", "plates/copper"),
+			SHEET_GOLD = commonTag("sheet_gold", "plates/gold"),
+			SHEET_STEEL = commonTag("sheet_steel", "plates/steel"),
+			DUST_GLOWSTONE = commonTag("dust_glowstone", "dusts/glowstone"),
+			GLASS = commonTag("glass", "glass_blocks"),
 			INEXPENSIVE_BIG_CARTRIDGE_SHEET = makeTag("inexpensive_big_cartridge_sheet"),
 			NITROPOWDER = makeTag("nitropowder"),
 			BIG_CANNON_PROPELLANT = makeTag("big_cannon_propellant"),
@@ -219,12 +219,9 @@ public class CBCTags {
 			return tag;
 		}
 
-		public static TagKey<Item> commonTag(String mainPath, String forgePath, String fabricPath) {
+		public static TagKey<Item> commonTag(String mainPath, String path) {
 			TagKey<Item> mainTag = makeTag(mainPath);
-			addOptionalTagsToItemTag(mainTag, Arrays.asList(
-				CBCUtils.location("forge", forgePath),
-				CBCUtils.location("c", forgePath), // For forge -> fabric ports, e.g. Create
-				CBCUtils.location("c", fabricPath)));
+			addOptionalTagsToItemTag(mainTag, Arrays.asList(CBCUtils.location("c", path)));
 			return mainTag;
 		}
 

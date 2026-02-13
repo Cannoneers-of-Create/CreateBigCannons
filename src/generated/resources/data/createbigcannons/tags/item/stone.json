@@ -1,15 +1,7 @@
 {
   "values": [
     {
-      "id": "#forge:stone",
-      "required": false
-    },
-    {
-      "id": "#c:stone",
-      "required": false
-    },
-    {
-      "id": "#c:stone",
+      "id": "#c:stones",
       "required": false
     }
   ]

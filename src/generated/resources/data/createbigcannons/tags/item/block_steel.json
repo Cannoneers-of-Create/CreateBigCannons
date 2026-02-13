@@ -1,15 +1,7 @@
 {
   "values": [
     {
-      "id": "#forge:storage_blocks/steel",
-      "required": false
-    },
-    {
       "id": "#c:storage_blocks/steel",
-      "required": false
-    },
-    {
-      "id": "#c:steel_blocks",
       "required": false
     },
     {

@@ -1,15 +1,7 @@
 {
   "values": [
     {
-      "id": "#forge:dusts/redstone",
-      "required": false
-    },
-    {
       "id": "#c:dusts/redstone",
-      "required": false
-    },
-    {
-      "id": "#c:redstone_dusts",
       "required": false
     }
   ]
