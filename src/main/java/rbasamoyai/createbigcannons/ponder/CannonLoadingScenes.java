@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.block.Blocks;
@@ -309,7 +310,7 @@ public class CannonLoadingScenes {
 		scene.overlay().chaseBoundingBoxOutline(PonderPalette.WHITE, bb1, bb3, 20);
 		scene.overlay().chaseBoundingBoxOutline(PonderPalette.WHITE, bb2, bb2.move(util.vector().of(-1, 0, 0)), 20);
 
-		scene.idle(40);
+		scene.idle(45);
 
 		scene.overlay().showText(80).text("The barrel that the loaded projectile is in is also counted towards the barrels travelled.");
 		scene.idle(120);
@@ -476,7 +477,7 @@ public class CannonLoadingScenes {
 			.withItem(CBCItems.IMPACT_FUZE.asStack())
 			.rightClick();
 		scene.idle(20);
-		scene.world().modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.IMPACT_FUZE.asStack().save(scene.world().getHolderLookupProvider())));
+        setFuze(scene, munitionSel, CBCItems.IMPACT_FUZE.asStack());
 		scene.idle(50);
 
 		scene.overlay().showText(100)
@@ -486,7 +487,7 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 		scene.overlay().showControls(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN, 60).rightClick();
 		scene.idle(20);
-		scene.world().modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.remove("Fuze"));
+        setFuze(scene, munitionSel, ItemStack.EMPTY);
 		scene.idle(80);
 
 		Selection kineticSel = util.select().fromTo(2, 1, 1, 5, 1, 1);
@@ -508,12 +509,27 @@ public class CannonLoadingScenes {
 		scene.world().moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
 		scene.world().modifyBlockEntityNBT(util.select().position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", new CompoundTag()));
-		scene.world().modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> tag.put("Fuze", CBCItems.TIMED_FUZE.asStack().save(scene.world().getHolderLookupProvider())));
+        setFuze(scene, munitionSel, CBCItems.TIMED_FUZE.asStack());
 		scene.world().moveDeployer(deployerPos, -1, 25);
 		scene.idle(46);
 
 		scene.markAsFinished();
 	}
+
+    private static void setFuze(SceneBuilder scene, Selection munitionSel, ItemStack itemStack) {
+        scene.world().modifyBlockEntityNBT(munitionSel, FuzedBlockEntity.class, tag -> {
+            CompoundTag componentsTag = new CompoundTag();
+            if (!itemStack.isEmpty()) {
+                CompoundTag slotTag = new CompoundTag();
+                slotTag.putInt("slot", 0);
+                slotTag.put("item", itemStack.saveOptional(scene.world().getHolderLookupProvider()));
+                ListTag contentsTag = new ListTag();
+                contentsTag.add(slotTag);
+                componentsTag.put("createbigcannons:fuze", contentsTag);
+            }
+            tag.put("components", componentsTag);
+        });
+    }
 
 	public static void handloadingTools(SceneBuilder scene, SceneBuildingUtil util) {
 		scene.title("cannon_loader/handloading_tools", "Handloading Tools");
@@ -847,7 +863,7 @@ public class CannonLoadingScenes {
 			.rightClick().withItem(filledContainer);
 		scene.idle(20);
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
-			tag.put("Magazine", filledContainer.save(scene.world().getHolderLookupProvider()));
+			tag.put("Magazine", filledContainer.saveOptional(scene.world().getHolderLookupProvider()));
 		});
 		scene.idle(55);
 
@@ -864,7 +880,7 @@ public class CannonLoadingScenes {
 
 		scene.addKeyframe();
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
-			tag.put("Magazine", emptyContainer.save(scene.world().getHolderLookupProvider()));
+			tag.put("Magazine", emptyContainer.saveOptional(scene.world().getHolderLookupProvider()));
 		});
 		scene.idle(15);
 		scene.overlay().showText(80)
@@ -875,7 +891,7 @@ public class CannonLoadingScenes {
 			.rightClick().withItem(filledContainer);
 		scene.idle(20);
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
-			tag.put("Magazine", filledContainer.save(scene.world().getHolderLookupProvider()));
+			tag.put("Magazine", filledContainer.saveOptional(scene.world().getHolderLookupProvider()));
 		});
 		scene.idle(55);
 
@@ -892,7 +908,7 @@ public class CannonLoadingScenes {
 		scene.idle(15);
 
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
-			tag.put("Magazine", emptyContainer.save(scene.world().getHolderLookupProvider()));
+			tag.put("Magazine", emptyContainer.saveOptional(scene.world().getHolderLookupProvider()));
 		});
 		scene.idle(15);
 		scene.overlay().showControls(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN, 30)
@@ -900,7 +916,7 @@ public class CannonLoadingScenes {
 		scene.idle(45);
 
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
-			tag.put("Magazine", filledContainer.save(scene.world().getHolderLookupProvider()));
+			tag.put("Magazine", filledContainer.saveOptional(scene.world().getHolderLookupProvider()));
 		});
 		scene.idle(15);
 		scene.overlay().showControls(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN, 30)
@@ -908,7 +924,7 @@ public class CannonLoadingScenes {
 		scene.idle(45);
 
 		scene.world().modifyBlockEntityNBT(breechSel, AbstractAutocannonBreechBlockEntity.class, tag -> {
-			tag.put("Magazine", filledContainer.save(scene.world().getHolderLookupProvider()));
+			tag.put("Magazine", filledContainer.saveOptional(scene.world().getHolderLookupProvider()));
 		});
 		scene.idle(15);
 		scene.overlay().showControls(util.vector().blockSurface(breechPos, Direction.UP), Pointing.DOWN, 30)
@@ -956,7 +972,7 @@ public class CannonLoadingScenes {
 		ItemStack ammo = CBCItems.AP_AUTOCANNON_ROUND.get().getCreativeTabCartridgeItem();
 
 		scene.world().modifyBlockEntityNBT(deployerSel, DeployerBlockEntity.class, tag -> {
-			tag.put("HeldItem", ammo.save(scene.world().getHolderLookupProvider()));
+			tag.put("HeldItem", ammo.saveOptional(scene.world().getHolderLookupProvider()));
 		});
 
 		scene.world().showSection(largePowerCog, Direction.WEST);
@@ -1162,8 +1178,7 @@ public class CannonLoadingScenes {
 			.withItem(CBCItems.TRACER_TIP.asStack());
 		scene.idle(20);
 		// Not actually visible for now
-		scene.world().modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> tag
-			.put("Tracer", CBCItems.TRACER_TIP.asStack().save(scene.world().getHolderLookupProvider())));
+        setTracer(scene, munitionSel, CBCItems.TRACER_TIP.asStack());
 		scene.idle(55);
 
 		scene.overlay().showText(50)
@@ -1178,7 +1193,7 @@ public class CannonLoadingScenes {
 		scene.idle(20);
 		scene.overlay().showControls(util.vector().blockSurface(munitionPos, Direction.NORTH), Pointing.DOWN, 60).rightClick();
 		scene.idle(20);
-		scene.world().modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> tag.remove("Tracer"));
+		setTracer(scene, munitionSel, ItemStack.EMPTY);
 		scene.idle(60);
 
 		Selection kineticSel = util.select().fromTo(2, 1, 1, 5, 1, 1);
@@ -1200,11 +1215,26 @@ public class CannonLoadingScenes {
 		scene.world().moveDeployer(deployerPos, 1, 25);
 		scene.idle(26);
 		scene.world().modifyBlockEntityNBT(util.select().position(deployerPos), DeployerBlockEntity.class, tag -> tag.put("HeldItem", new CompoundTag()));
-		scene.world().modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> tag.put("Tracer", CBCItems.TRACER_TIP.asStack().save(scene.world().getHolderLookupProvider())));
+        setTracer(scene, munitionSel, CBCItems.TRACER_TIP.asStack());
 		scene.world().moveDeployer(deployerPos, -1, 25);
 		scene.idle(46);
 
 		scene.markAsFinished();
 	}
+
+    private static void setTracer(SceneBuilder scene, Selection munitionSel, ItemStack itemStack) {
+        scene.world().modifyBlockEntityNBT(munitionSel, BigCannonProjectileBlockEntity.class, tag -> {
+            CompoundTag componentsTag = new CompoundTag();
+            if (!itemStack.isEmpty()) {
+                CompoundTag slotTag = new CompoundTag();
+                slotTag.putInt("slot", 0);
+                slotTag.put("item", itemStack.saveOptional(scene.world().getHolderLookupProvider()));
+                ListTag contentsTag = new ListTag();
+                contentsTag.add(slotTag);
+                componentsTag.put("createbigcannons:tracer", contentsTag);
+            }
+            tag.put("components", componentsTag);
+        });
+    }
 
 }

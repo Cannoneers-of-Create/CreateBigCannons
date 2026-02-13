@@ -702,7 +702,7 @@ public class CannonCraftingScenes {
 		Selection deployer = util.select().position(deployerPos);
 		scene.overlay().showControls(util.vector().topOf(deployerPos), Pointing.DOWN, 40).withItem(breechblock);
 		scene.idle(30);
-		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", breechblock.save(scene.world().getHolderLookupProvider())));
+		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", breechblock.saveOptional(scene.world().getHolderLookupProvider())));
 		scene.idle(15);
 
 		scene.world().setKineticSpeed(deployerGearDown, -16);
@@ -826,7 +826,7 @@ public class CannonCraftingScenes {
 		Selection deployer = util.select().position(deployerPos);
 		scene.overlay().showControls(util.vector().topOf(deployerPos), Pointing.DOWN, 40).withItem(mechanism);
 		scene.idle(30);
-		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", mechanism.save(scene.world().getHolderLookupProvider())));
+		scene.world().modifyBlockEntityNBT(deployer, DeployerBlockEntity.class, tag -> tag.put("HeldItem", mechanism.saveOptional(scene.world().getHolderLookupProvider())));
 		scene.idle(15);
 
 		scene.world().setKineticSpeed(deployerGearDown, -16);
@@ -1003,7 +1003,7 @@ public class CannonCraftingScenes {
 	}
 
 	private static Consumer<CompoundTag> putItemInDeployer(ItemStack stack, SceneBuilder scene) {
-		return tag -> tag.put("HeldItem", stack.save(scene.world().getHolderLookupProvider()));
+		return tag -> tag.put("HeldItem", stack.saveOptional(scene.world().getHolderLookupProvider()));
 	}
 
 	private static Consumer<CompoundTag> setUnfinishedCannonShape(CannonCastShape shape) {
