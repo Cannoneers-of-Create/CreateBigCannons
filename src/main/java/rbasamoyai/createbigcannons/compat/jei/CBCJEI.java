@@ -21,6 +21,7 @@ import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.api.recipe.IRecipeManager;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
@@ -28,6 +29,7 @@ import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.runtime.IIngredientManager;
+import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -135,13 +137,18 @@ public class CBCJEI implements IModPlugin {
 		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getTracerRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getFuzeRemovalRecipes());
 		registration.addRecipes(RecipeTypes.CRAFTING, MunitionAssemblyRecipes.getTracerRemovalRecipes());
-
-		RecipeType<DeployerApplicationRecipe> deployingType = new RecipeType<>(Create.asResource("deploying"), DeployerApplicationRecipe.class);
-		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getFuzingDeployerRecipes());
-		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getAutocannonRoundDeployerRecipes());
-		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getBigCartridgeDeployerRecipe());
-		registration.addRecipes(deployingType, MunitionAssemblyRecipes.getTracerDeployerRecipes());
 	}
+
+    @Override
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        CreateBigCannons.LOGGER.info("Attempting to load CBC deployer recipes");
+        IRecipeManager manager = jeiRuntime.getRecipeManager();
+        RecipeType<RecipeHolder<DeployerApplicationRecipe>> deployingType = RecipeType.createRecipeHolderType(Create.asResource("deploying"));
+        manager.addRecipes(deployingType, MunitionAssemblyRecipes.getFuzingDeployerRecipes());
+        manager.addRecipes(deployingType, MunitionAssemblyRecipes.getAutocannonRoundDeployerRecipes());
+        manager.addRecipes(deployingType, MunitionAssemblyRecipes.getBigCartridgeDeployerRecipe());
+        manager.addRecipes(deployingType, MunitionAssemblyRecipes.getTracerDeployerRecipes());
+    }
 
     private static <T extends Recipe<?>> List<T> unwrapHolders(List<RecipeHolder<T>> list) {
         List<T> result = new ArrayList<>();

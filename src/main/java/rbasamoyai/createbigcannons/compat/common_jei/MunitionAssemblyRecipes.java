@@ -151,7 +151,7 @@ public class MunitionAssemblyRecipes {
 		return recipes;
 	}
 
-	public static List<DeployerApplicationRecipe> getFuzingDeployerRecipes() {
+	public static List<RecipeHolder<DeployerApplicationRecipe>> getFuzingDeployerRecipes() {
 		List<Item> fuzes = new ArrayList<>();
 		List<Item> munitions = new ArrayList<>();
 
@@ -168,34 +168,34 @@ public class MunitionAssemblyRecipes {
         List<Component> loreList = new ArrayList<>(1);
         loreList.add(Component.translatable("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_fuze"));
 
-		List<DeployerApplicationRecipe> recipes = new ArrayList<>();
+		List<RecipeHolder<DeployerApplicationRecipe>> recipes = new ArrayList<>();
 		for (Item munition : munitions) {
 			ResourceLocation id = CreateBigCannons.resource(group + "." + munition.getDescriptionId());
 			ItemStack fuzedMunition = new ItemStack(munition);
             fuzedMunition.set(DataComponents.LORE, new ItemLore(loreList));
 
-			recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
+			recipes.add(new RecipeHolder<>(id, new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
 				.require(Ingredient.of(munition))
 				.require(fuzeIngredient)
 				.output(fuzedMunition)
-				.build());
+				.build()));
 
 			if (munition instanceof AutocannonRoundItem round) {
 				ResourceLocation id1 = CreateBigCannons.resource(group + ".autocannon_round." + munition.getDescriptionId());
 				ItemStack fuzedCartridge = round.getCreativeTabCartridgeItem();
                 fuzedCartridge.set(DataComponents.LORE, new ItemLore(loreList));
 
-				recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id1)
+				recipes.add(new RecipeHolder<>(id1, new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id1)
 					.require(Ingredient.of(round.getCreativeTabCartridgeItem()))
 					.require(fuzeIngredient)
 					.output(fuzedCartridge)
-					.build());
+					.build()));
 			}
 		}
 		return recipes;
 	}
 
-	public static List<DeployerApplicationRecipe> getAutocannonRoundDeployerRecipes() {
+	public static List<RecipeHolder<DeployerApplicationRecipe>> getAutocannonRoundDeployerRecipes() {
 		String group = CreateBigCannons.MOD_ID + ".autocannon_round_deployer";
 
 		List<AutocannonRoundItem> munitions = new ArrayList<>();
@@ -205,20 +205,20 @@ public class MunitionAssemblyRecipes {
 			if (i instanceof AutocannonRoundItem acr) munitions.add(acr);
 		});
 
-		List<DeployerApplicationRecipe> recipes = new ArrayList<>();
+		List<RecipeHolder<DeployerApplicationRecipe>> recipes = new ArrayList<>();
 		for (AutocannonRoundItem round : munitions) {
 			ResourceLocation id = CreateBigCannons.resource(group + "." + round.getDescriptionId());
 
-			recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
+			recipes.add(new RecipeHolder<>(id, new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
 				.require(CBCItems.FILLED_AUTOCANNON_CARTRIDGE.get())
 				.require(round)
 				.output(round.getCreativeTabCartridgeItem())
-				.build());
+				.build()));
 		}
 		return recipes;
 	}
 
-	public static List<DeployerApplicationRecipe> getBigCartridgeDeployerRecipe() {
+	public static List<RecipeHolder<DeployerApplicationRecipe>> getBigCartridgeDeployerRecipe() {
 		String group = CreateBigCannons.MOD_ID + ".big_cartridge_filling_deployer";
 		ResourceLocation id = CreateBigCannons.resource(group + "." + CBCBlocks.BIG_CARTRIDGE.get().getDescriptionId());
 
@@ -227,14 +227,14 @@ public class MunitionAssemblyRecipes {
         loreList.add(Component.translatable("tooltip." + CreateBigCannons.MOD_ID + ".jei_info.added_power"));
         result.set(DataComponents.LORE, new ItemLore(loreList));
 
-		return List.of(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
+		return List.of(new RecipeHolder<>(id, new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
 			.require(Ingredient.of(BigCartridgeBlockItem.getWithPower(0)))
 			.require(CBCTags.CBCItemTags.NITROPOWDER)
 			.output(result)
-			.build());
+			.build()));
 	}
 
-	public static List<DeployerApplicationRecipe> getTracerDeployerRecipes() {
+	public static List<RecipeHolder<DeployerApplicationRecipe>> getTracerDeployerRecipes() {
 		List<Item> munitions = new ArrayList<>();
 
 		CBCRegistryUtils.streamAllItems()
@@ -246,28 +246,28 @@ public class MunitionAssemblyRecipes {
 
 		String group = CreateBigCannons.MOD_ID + ".tracer_deployer";
 
-		List<DeployerApplicationRecipe> recipes = new ArrayList<>();
+		List<RecipeHolder<DeployerApplicationRecipe>> recipes = new ArrayList<>();
 		for (Item munition : munitions) {
 			ResourceLocation id = CreateBigCannons.resource(group + "." + munition.getDescriptionId());
 			ItemStack tracerMunition = new ItemStack(munition);
 			tracerMunition.set(CBCDataComponents.AUTOCANNON_TRACER, true);
 
-			recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
+			recipes.add(new RecipeHolder<>(id, new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id)
 				.require(Ingredient.of(munition))
 				.require(tracerIngredient)
 				.output(tracerMunition)
-				.build());
+				.build()));
 
 			if (munition instanceof AutocannonRoundItem round) {
 				ResourceLocation id1 = CreateBigCannons.resource(group + ".autocannon_round." + munition.getDescriptionId());
 				ItemStack tracerCartridge = round.getCreativeTabCartridgeItem();
 				CBCItems.AUTOCANNON_CARTRIDGE.get().setTracer(tracerCartridge, true);
 
-				recipes.add(new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id1)
+				recipes.add(new RecipeHolder<>(id1, new ItemApplicationRecipe.Builder<>(DeployerApplicationRecipe::new, id1)
 					.require(Ingredient.of(round.getCreativeTabCartridgeItem()))
 					.require(tracerIngredient)
 					.output(tracerCartridge)
-					.build());
+					.build()));
 			}
 		}
 		return recipes;
