@@ -98,10 +98,10 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 	@Override
 	public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
 		if (hand == InteractionHand.OFF_HAND)
-			return ItemInteractionResult.FAIL;
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		FuzedBlockEntity fuzedBlock = this.getBlockEntity(level, pos);
 		if (fuzedBlock == null)
-			return ItemInteractionResult.FAIL;
+			return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
 		Direction fuzeFace = state.getValue(FACING);
 		if (this.isBaseFuze())
 			fuzeFace = fuzeFace.getOpposite();
@@ -111,10 +111,10 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
         } else if (stack.getItem() instanceof FuzeItem && hitResult.getDirection() == fuzeFace) {
             slot = 1;
         } else {
-            return ItemInteractionResult.FAIL;
+            return stack.isEmpty() ? ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION : ItemInteractionResult.FAIL;
         }
         if (!fuzedBlock.getItem(slot).isEmpty())
-            return ItemInteractionResult.FAIL;
+            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         if (!level.isClientSide) {
             ItemStack copy = player.getAbilities().instabuild ? stack.copy() : stack.split(1);
             copy.setCount(1);
@@ -128,6 +128,7 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
 	}
 
+    @Override
     public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         FuzedBlockEntity fuzedBlock = this.getBlockEntity(level, pos);
         if (fuzedBlock == null)
