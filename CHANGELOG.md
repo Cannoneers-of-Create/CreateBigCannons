@@ -3,17 +3,23 @@
 ## [5.11.0] - Unreleased
 
 **Create Big Cannons 5.11.0, now supporting Create v6.0.9 on NeoForge 1.21.1.** \
-You will need to update Ritchie's Projectile Library to v2.1.2.
+You will need to update Ritchie's Projectile Library to v2.1.2 on 1.21.1.
 
 Added:
 - Added view transparency config for molten metal fluids
 - Added ability to top up cannon cast fluids in Creative
 - Added bronze and steel ingots and blocks (yes, after over 3 years)
+- Added ability to combine different propellant types
+  - By default, big cartridges must come before powder charges
 
 Changes:
 - Updated Ritchie's Projectile Library dependency to v2.1.2.
 - Changed cannon drill bit texture
 - Changed how cast iron is made; compacting now requires coal or charcoal
+- Big cannon propellant compatibility data pack format different; maximum_amount => maximum_amount_ahead
+  - Now based on maximum amount of propellant of block type ahead from first block type of file
+- Increased nethersteel screw breech max stress to 10 charges
+- Increased steel screw breech max stress to 8 charges
 - [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
   `RegisterEvent`.
 

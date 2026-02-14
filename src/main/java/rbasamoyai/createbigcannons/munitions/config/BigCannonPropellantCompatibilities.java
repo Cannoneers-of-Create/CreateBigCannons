@@ -37,7 +37,7 @@ public record BigCannonPropellantCompatibilities(Map<Block, Integer> validPropel
 			Block block = CBCRegistryUtils.getOptionalBlock(loc).orElseThrow(() -> {
 				return new JsonSyntaxException("Unknown block '" + loc + "'");
 			});
-			int maxCount = Math.max(-1, GsonHelper.getAsInt(obj1, "maximum_amount", -1));
+			int maxCount = Math.max(-1, GsonHelper.getAsInt(obj1, "maximum_amount_ahead", -1));
 			builder.put(block, maxCount);
 		}
 		return new BigCannonPropellantCompatibilities(builder.build());

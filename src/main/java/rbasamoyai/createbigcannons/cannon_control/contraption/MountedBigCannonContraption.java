@@ -2,10 +2,12 @@ package rbasamoyai.createbigcannons.cannon_control.contraption;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
@@ -741,7 +743,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		public static boolean safeLoad(List<StructureBlockInfo> propellant, Direction orientation) {
 			Map<Block, Integer> allowedCounts = new HashMap<>();
-			Map<Block, Integer> actualCounts = new HashMap<>();
+            Set<Block> foundBlocks = new HashSet<>();
 			for (ListIterator<StructureBlockInfo> iter = propellant.listIterator(); iter.hasNext(); ) {
 				int index = iter.nextIndex();
 				StructureBlockInfo info = iter.next();
@@ -749,22 +751,27 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				Block block = info.state().getBlock();
 				if (!(block instanceof BigCannonPropellantBlock cpropel) || !(cpropel.isValidAddition(info, index, orientation)))
 					return false;
-				if (actualCounts.containsKey(block)) {
-					actualCounts.put(block, actualCounts.get(block) + 1);
-				} else {
-					actualCounts.put(block, 1);
-				}
-				BigCannonPropellantCompatibilities compatibilities = BigCannonPropellantCompatibilityHandler.getCompatibilities(block);
-				for (Map.Entry<Block, Integer> entry : compatibilities.validPropellantCounts().entrySet()) {
-					Block block1 = entry.getKey();
-					int oldCount = allowedCounts.getOrDefault(block1, -1);
-					int newCount = entry.getValue();
-					if (newCount >= 0 && (oldCount < 0 || newCount < oldCount)) allowedCounts.put(block1, newCount);
-				}
-			}
-			for (Map.Entry<Block, Integer> entry : actualCounts.entrySet()) {
-				Block block = entry.getKey();
-				if (allowedCounts.containsKey(block) && allowedCounts.get(block) < entry.getValue()) return false;
+
+                BigCannonPropellantCompatibilities compatibilities = BigCannonPropellantCompatibilityHandler.getCompatibilities(block);
+                boolean firstAndPreviouslyUnrestricted = false;
+                if (!foundBlocks.contains(block)) {
+                    foundBlocks.add(block);
+                    for (Map.Entry<Block, Integer> entry : compatibilities.validPropellantCounts().entrySet()) {
+                        Block block1 = entry.getKey();
+                        int oldCount = allowedCounts.getOrDefault(block1, -1);
+                        int newCount = entry.getValue();
+                        if (newCount >= 0 && (oldCount < 0 || newCount < oldCount)) {
+                            firstAndPreviouslyUnrestricted = block == block1 && !allowedCounts.containsKey(block);
+                            allowedCounts.put(block1, newCount);
+                        }
+                    }
+                }
+                if (allowedCounts.containsKey(block) && !firstAndPreviouslyUnrestricted) {
+                    int allowed = allowedCounts.get(block);
+                    if (allowed <= 0)
+                        return false;
+                    allowedCounts.put(block, allowed - 1);
+                }
 			}
 			return true;
 		}
