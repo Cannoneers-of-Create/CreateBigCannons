@@ -1,0 +1,54 @@
+package rbasamoyai.createbigcannons.munitions.fuzes;
+
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.simibubi.create.foundation.gui.widget.ScrollInput;
+import com.simibubi.create.foundation.utility.CreateLang;
+
+import net.createmod.catnip.gui.element.GuiGameElement;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Inventory;
+import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.index.CBCGuiTextures;
+
+public class DelayedInertiaFuzeScreen extends AbstractFuzeScreen<DelayedInertiaFuzeContainer> {
+
+	public DelayedInertiaFuzeScreen(DelayedInertiaFuzeContainer menu, Inventory playerInv, Component title) {
+		super(menu, playerInv, title);
+	}
+
+	@Override
+	protected ScrollInput getScrollInput() {
+		return new ScrollInput(this.leftPos + 36, this.topPos + 29, 102, 18)
+			.withRange(0, 100)
+			.calling(state -> {
+				this.lastUpdated = 0;
+				int time = state + 1;
+				int seconds = time / 20;
+				int ticks = time - seconds * 20;
+				this.setValue.titled(CreateLang.builder(CreateBigCannons.MOD_ID).translate("gui.set_timed_fuze.time", seconds, ticks).component());
+			})
+			.setState(Mth.clamp(this.menu.getValue() - 1, 0, 100));
+	}
+
+	@Override
+	public int getUpdateState() {
+		return this.setValue.getState() + 1;
+	}
+
+	@Override
+	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
+		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+		CBCGuiTextures.TIMED_FUZE_BG.render(graphics, this.leftPos, this.topPos);
+		graphics.drawCenteredString(this.font, this.title, this.leftPos + this.imageWidth / 2 - 4, this.topPos + 3, 0xffffff);
+		CBCGuiTextures.TIMED_FUZE_SELECTOR.render(graphics, this.leftPos + 34 + this.setValue.getState(), this.topPos + 21);
+
+		GuiGameElement.of(this.menu.getStackToRender())
+			.<GuiGameElement.GuiItemRenderBuilder>at(this.leftPos + 185, this.topPos + 26, -200)
+			.scale(5)
+			.render(graphics);
+	}
+
+}

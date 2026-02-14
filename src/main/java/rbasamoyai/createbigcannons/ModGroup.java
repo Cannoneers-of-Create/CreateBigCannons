@@ -20,6 +20,7 @@ import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.BigCartridgeBlockItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
+import rbasamoyai.createbigcannons.munitions.fuzes.DelayedInertiaFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 
@@ -106,6 +107,8 @@ public class ModGroup {
 				ProximityFuzeItem.getCreativeTabItem(1),
 				DelayedImpactFuzeItem.getCreativeTabItem(20),
 				CBCItems.WIRED_FUZE.asStack(),
+                CBCItems.INERTIA_FUZE.asStack(),
+                DelayedInertiaFuzeItem.getCreativeTabItem(20),
 				CBCItems.TRACER_TIP.asStack(),
 
 				CBCItems.CANNON_WELDER.asStack(),

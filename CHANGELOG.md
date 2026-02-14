@@ -11,6 +11,7 @@ Added:
 - Added bronze and steel ingots and blocks (yes, after over 3 years)
 - Added ability to combine different propellant types
   - By default, big cartridges must come before powder charges
+- Added Inertia Fuze and Delayed Inertia Fuze
 
 Changes:
 - Updated Ritchie's Projectile Library dependency to v2.1.2.
@@ -20,6 +21,8 @@ Changes:
   - Now based on maximum amount of propellant of block type ahead from first block type of file
 - Increased nethersteel screw breech max stress to 10 charges
 - Increased steel screw breech max stress to 8 charges
+- Changed Impact Fuze and Delayed Impact Fuze trigger condition
+  - They now do not trigger if the projectile is destroyed on impact or if they bounce/ricochet
 - [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
   `RegisterEvent`.
 

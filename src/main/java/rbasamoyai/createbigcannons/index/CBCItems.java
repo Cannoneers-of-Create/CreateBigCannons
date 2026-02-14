@@ -35,7 +35,9 @@ import rbasamoyai.createbigcannons.munitions.autocannon.ap_round.APAutocannonRou
 import rbasamoyai.createbigcannons.munitions.autocannon.bullet.MachineGunRoundItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.flak.FlakAutocannonRoundItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeItem;
+import rbasamoyai.createbigcannons.munitions.fuzes.DelayedInertiaFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ImpactFuzeItem;
+import rbasamoyai.createbigcannons.munitions.fuzes.InertiaFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.WiredFuzeItem;
@@ -60,6 +62,12 @@ public class CBCItems {
 	public static final ItemEntry<WiredFuzeItem> WIRED_FUZE = REGISTRATE.item("wired_fuze", WiredFuzeItem::new)
 		.tag(CBCTags.CBCItemTags.FUZES)
 		.register();
+    public static final ItemEntry<InertiaFuzeItem> INERTIA_FUZE = REGISTRATE.item("inertia_fuze", InertiaFuzeItem::new)
+        .tag(CBCTags.CBCItemTags.FUZES)
+        .register();
+    public static final ItemEntry<DelayedInertiaFuzeItem> DELAYED_INERTIA_FUZE = REGISTRATE.item("delayed_inertia_fuze", DelayedInertiaFuzeItem::new)
+        .tag(CBCTags.CBCItemTags.FUZES)
+        .register();
 
 	public static final ItemEntry<Item>
 		CAST_IRON_SLIDING_BREECHBLOCK = REGISTRATE.item("cast_iron_sliding_breechblock", Item::new)

@@ -17,15 +17,15 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
-public class ImpactFuzeItem extends FuzeItem {
+public class InertiaFuzeItem extends FuzeItem {
 
-	public ImpactFuzeItem(Properties properties) {
+	public InertiaFuzeItem(Properties properties) {
 		super(properties);
 	}
 
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, boolean baseFuze) {
-		if (baseFuze || impactResult.shouldRemove() || impactResult.kinematics() == AbstractCannonProjectile.ImpactResult.KinematicOutcome.BOUNCE)
+		if (impactResult.shouldRemove())
             return false;
 		int damage = stack.getOrDefault(CBCDataComponents.FUZE_DAMAGE, this.getFuzeDurability());
 		if (damage > 0) {
@@ -44,18 +44,18 @@ public class ImpactFuzeItem extends FuzeItem {
 	}
 
 	protected float getDetonateChance() {
-		return CBCConfigs.server().munitions.impactFuzeDetonationChance.getF();
+		return CBCConfigs.server().munitions.inertiaFuzeDetonationChance.getF();
 	}
 
 	protected int getFuzeDurability() {
-		return CBCConfigs.server().munitions.impactFuzeDurability.get();
+		return CBCConfigs.server().munitions.inertiaFuzeDurability.get();
 	}
 
 	@Override
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
 		MutableComponent info = CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".impact_fuze.tooltip.shell_info.chance", (int) (this.getDetonateChance() * 100.0f))
+			.translate(CreateBigCannons.MOD_ID + ".inertia_fuze.tooltip.shell_info.chance", (int) (this.getDetonateChance() * 100.0f))
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 	}
