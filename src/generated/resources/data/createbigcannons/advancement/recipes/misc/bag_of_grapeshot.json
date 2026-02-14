@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#createbigcannons:ingot_iron"
+            "items": "#c:ingots/iron"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#createbigcannons:nugget_iron"
+            "items": "#c:nuggets/iron"
           }
         ]
       },

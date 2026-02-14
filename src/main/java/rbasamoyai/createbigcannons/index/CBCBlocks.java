@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
@@ -68,6 +69,7 @@ import rbasamoyai.createbigcannons.crafting.foundry.BasinFoundryLidBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteAutocannonBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlock;
+import rbasamoyai.createbigcannons.datagen.CBCCommonMetal;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.munitions.FuzedProjectileBlockItem;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
@@ -943,11 +945,42 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.METAL))
 		.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 		.tag(BlockTags.NEEDS_STONE_TOOL)
+        .tag(CBCCommonMetal.CAST_IRON.storageBlocks.blocks())
 		.lang("Block of Cast Iron")
 		.item()
-		.tag(CBCTags.CBCItemTags.BLOCK_CAST_IRON)
+		.tag(CBCCommonMetal.CAST_IRON.storageBlocks.items())
 		.build()
 		.register();
+
+    public static final BlockEntry<Block> BRONZE_BLOCK = REGISTRATE
+        .block("bronze_block", Block::new)
+        .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
+        .properties(p -> p.requiresCorrectToolForDrops())
+        .properties(p -> p.strength(5.0F, 6.0F))
+        .properties(p -> p.sound(SoundType.METAL))
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(CBCCommonMetal.BRONZE.storageBlocks.blocks())
+        .lang("Block of Bronze")
+        .item()
+        .tag(CBCCommonMetal.BRONZE.storageBlocks.items())
+        .build()
+        .register();
+
+    public static final BlockEntry<Block> STEEL_BLOCK = REGISTRATE
+        .block("steel_block", Block::new)
+        .properties(p -> p.mapColor(MapColor.TERRACOTTA_GRAY))
+        .properties(p -> p.requiresCorrectToolForDrops())
+        .properties(p -> p.strength(5.0F, 6.0F))
+        .properties(p -> p.sound(SoundType.METAL))
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(CommonMetal.STEEL.storageBlocks.blocks())
+        .lang("Block of Steel")
+        .item()
+        .tag(CommonMetal.STEEL.storageBlocks.items())
+        .build()
+        .register();
 
 	public static final BlockEntry<Block> NETHERSTEEL_BLOCK = REGISTRATE
 		.block("nethersteel_block", Block::new)
@@ -957,9 +990,10 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 		.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 		.tag(BlockTags.NEEDS_DIAMOND_TOOL)
+        .tag(CBCCommonMetal.NETHERSTEEL.storageBlocks.blocks())
 		.lang("Block of Nethersteel")
 		.item()
-		.tag(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL)
+		.tag(CBCCommonMetal.NETHERSTEEL.storageBlocks.items())
 		.build()
 		.register();
 

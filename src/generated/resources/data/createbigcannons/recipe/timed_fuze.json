@@ -6,7 +6,7 @@
       "item": "minecraft:clock"
     },
     "I": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "c:ingots/iron"
     },
     "R": {
       "tag": "createbigcannons:dusts_redstone"

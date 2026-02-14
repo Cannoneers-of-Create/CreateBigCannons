@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#createbigcannons:sheet_brass"
+            "items": "#c:plates/brass"
           }
         ]
       },

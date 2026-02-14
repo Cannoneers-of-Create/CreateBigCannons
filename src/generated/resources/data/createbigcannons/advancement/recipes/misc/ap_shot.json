@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "items": "#createbigcannons:ingot_cast_iron"
+            "items": "#c:ingots/cast_iron"
           }
         ]
       },

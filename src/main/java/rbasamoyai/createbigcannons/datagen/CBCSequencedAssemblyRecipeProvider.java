@@ -8,6 +8,7 @@ import com.simibubi.create.content.kinetics.deployer.DeployerApplicationRecipe;
 import com.simibubi.create.content.kinetics.press.PressingRecipe;
 import com.simibubi.create.content.kinetics.saw.CuttingRecipe;
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyRecipeBuilder;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -40,7 +41,7 @@ public class CBCSequencedAssemblyRecipeProvider extends SequencedAssemblyRecipeG
 		.transitionTo(CBCItems.PARTIALLY_ASSEMBLED_MACHINE_GUN_ROUND.get())
 		.loops(1)
 		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCItemTags.GUNPOWDER_PINCH))
-		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CBCItemTags.NUGGET_COPPER))
+		.addStep(DeployerApplicationRecipe::new, rb -> rb.require(CommonMetal.COPPER.nuggets))
 		.addOutput(CBCItems.MACHINE_GUN_ROUND.get(), 1)),
 
 	RECOIL_SPRING = create("recoil_spring", b -> b.require(CBCItems.SPRING_WIRE.get())
@@ -49,19 +50,19 @@ public class CBCSequencedAssemblyRecipeProvider extends SequencedAssemblyRecipeG
 		.addStep(PressingRecipe::new, rb -> rb)
 		.addOutput(CBCItems.RECOIL_SPRING.get(), 1)),
 
-	CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR = create("cast_iron_autocannon_breech_extractor", b -> b.require(CBCItemTags.INGOT_CAST_IRON)
+	CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR = create("cast_iron_autocannon_breech_extractor", b -> b.require(CBCCommonMetal.CAST_IRON.ingots)
 		.transitionTo(CBCItems.PARTIAL_CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR.get())
 		.loops(3)
 		.addStep(CuttingRecipe::new, rb -> rb)
 		.addOutput(CBCItems.CAST_IRON_AUTOCANNON_BREECH_EXTRACTOR.get(), 1)),
 
-	BRONZE_AUTOCANNON_BREECH_EXTRACTOR = create("bronze_autocannon_breech_extractor", b -> b.require(CBCItemTags.INGOT_BRONZE)
+	BRONZE_AUTOCANNON_BREECH_EXTRACTOR = create("bronze_autocannon_breech_extractor", b -> b.require(CBCCommonMetal.BRONZE.ingots)
 		.transitionTo(CBCItems.PARTIAL_BRONZE_AUTOCANNON_BREECH_EXTRACTOR.get())
 		.loops(3)
 		.addStep(CuttingRecipe::new, rb -> rb)
 		.addOutput(CBCItems.BRONZE_AUTOCANNON_BREECH_EXTRACTOR.get(), 1)),
 
-	STEEL_AUTOCANNON_BREECH_EXTRACTOR = create("steel_autocannon_breech_extractor", b -> b.require(CBCItemTags.INGOT_STEEL)
+	STEEL_AUTOCANNON_BREECH_EXTRACTOR = create("steel_autocannon_breech_extractor", b -> b.require(CommonMetal.STEEL.ingots)
 		.transitionTo(CBCItems.PARTIAL_STEEL_AUTOCANNON_BREECH_EXTRACTOR.get())
 		.loops(3)
 		.addStep(CuttingRecipe::new, rb -> rb)

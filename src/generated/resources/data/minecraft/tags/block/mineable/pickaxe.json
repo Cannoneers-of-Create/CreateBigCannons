@@ -98,6 +98,8 @@
     "createbigcannons:cannon_builder_head",
     "createbigcannons:built_up_cannon",
     "createbigcannons:cast_iron_block",
+    "createbigcannons:bronze_block",
+    "createbigcannons:steel_block",
     "createbigcannons:nethersteel_block",
     "createbigcannons:solid_shot",
     "createbigcannons:he_shell",

@@ -1,9 +1,0 @@
-{
-  "values": [
-    {
-      "id": "#c:blocks/nethersteel",
-      "required": false
-    },
-    "createbigcannons:nethersteel_block"
-  ]
-}

@@ -4,7 +4,7 @@
       "type": "neoforge:not",
       "value": {
         "type": "neoforge:tag_empty",
-        "tag": "createbigcannons:ingot_bronze"
+        "tag": "c:ingots/bronze"
       }
     }
   ],
@@ -12,7 +12,7 @@
   "heat_requirement": "heated",
   "ingredients": [
     {
-      "tag": "createbigcannons:ingot_bronze"
+      "tag": "c:ingots/bronze"
     }
   ],
   "processing_time": 180,

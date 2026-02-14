@@ -1,0 +1,15 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "type": "neoforge:tag",
+      "amount": 810,
+      "tag": "c:molten_cast_iron"
+    }
+  ],
+  "results": [
+    {
+      "id": "createbigcannons:cast_iron_block"
+    }
+  ]
+}

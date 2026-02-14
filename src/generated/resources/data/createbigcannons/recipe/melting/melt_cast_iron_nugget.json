@@ -4,7 +4,7 @@
       "type": "neoforge:not",
       "value": {
         "type": "neoforge:tag_empty",
-        "tag": "createbigcannons:nugget_cast_iron"
+        "tag": "c:nuggets/cast_iron"
       }
     }
   ],
@@ -12,7 +12,7 @@
   "heat_requirement": "heated",
   "ingredients": [
     {
-      "tag": "createbigcannons:nugget_cast_iron"
+      "tag": "c:nuggets/cast_iron"
     }
   ],
   "processing_time": 20,

@@ -4,7 +4,7 @@
   "category": "misc",
   "key": {
     "I": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "c:ingots/iron"
     },
     "L": {
       "item": "createbigcannons:shot_balls"

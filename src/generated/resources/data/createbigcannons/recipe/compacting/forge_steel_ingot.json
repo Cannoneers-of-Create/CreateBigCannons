@@ -1,13 +1,4 @@
 {
-  "neoforge:conditions": [
-    {
-      "type": "neoforge:not",
-      "value": {
-        "type": "neoforge:tag_empty",
-        "tag": "createbigcannons:ingot_steel"
-      }
-    }
-  ],
   "type": "create:compacting",
   "ingredients": [
     {
@@ -18,7 +9,7 @@
   ],
   "results": [
     {
-      "id": "alloyed:steel_ingot"
+      "id": "createbigcannons:steel_ingot"
     }
   ]
 }

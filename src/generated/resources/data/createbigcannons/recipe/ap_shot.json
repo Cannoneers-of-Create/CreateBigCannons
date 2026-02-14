@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "C": {
-      "tag": "createbigcannons:ingot_cast_iron"
+      "tag": "c:ingots/cast_iron"
     },
     "I": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "c:ingots/iron"
     },
     "S": {
       "tag": "minecraft:wooden_slabs"

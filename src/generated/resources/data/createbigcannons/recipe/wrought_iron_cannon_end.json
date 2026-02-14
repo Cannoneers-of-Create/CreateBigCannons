@@ -6,10 +6,10 @@
       "tag": "createbigcannons:gunpowder"
     },
     "I": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "c:plates/iron"
     },
     "K": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "c:ingots/iron"
     }
   },
   "pattern": [

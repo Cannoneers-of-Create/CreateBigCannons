@@ -6,7 +6,7 @@
       "item": "create:cogwheel"
     },
     "I": {
-      "tag": "createbigcannons:ingot_cast_iron"
+      "tag": "c:ingots/cast_iron"
     }
   },
   "pattern": [

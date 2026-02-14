@@ -9,6 +9,7 @@ import java.util.function.Supplier;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.palettes.AllPaletteBlocks;
 import com.simibubi.create.foundation.block.CopperBlockSet;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.tterrag.registrate.providers.ProviderType;
 
 import net.createmod.catnip.data.Iterate;
@@ -161,37 +162,14 @@ public class CBCTags {
 	}
 
 	public static class CBCItemTags {
-		// TODO: Update fabric ore tags to use fabric-convention-tags in 1.21
+
+        // Crafting tags
 		public static final TagKey<Item>
 			IMPACT_FUZE_HEAD = makeTag("impact_fuze_head"),
-			NUGGET_CAST_IRON = commonTag("nugget_cast_iron", "nuggets/cast_iron"),
-			INGOT_CAST_IRON = commonTag("ingot_cast_iron", "ingots/cast_iron"),
-			BLOCK_CAST_IRON = commonTag("block_cast_iron", "storage_blocks/cast_iron"),
-			NUGGET_BRONZE = commonTag("nugget_bronze", "nuggets/bronze"),
-			INGOT_BRONZE = commonTag("ingot_bronze", "ingots/bronze"),
-			BLOCK_BRONZE = commonTag("block_bronze", "storage_blocks/bronze"),
-			NUGGET_STEEL = commonTag("nugget_steel", "nuggets/steel"),
-			INGOT_STEEL = commonTag("ingot_steel", "ingots/steel"),
-			BLOCK_STEEL = commonTag("block_steel", "storage_blocks/steel"),
-			NUGGET_NETHERSTEEL = commonTag("nugget_nethersteel", "nuggets/nethersteel"),
-			INGOT_NETHERSTEEL = commonTag("ingot_nethersteel", "ingots/nethersteel"),
-			BLOCK_NETHERSTEEL = commonTag("block_nethersteel", "blocks/nethersteel"),
-
-		// Crafting tags
-		INGOT_IRON = commonTag("ingot_iron", "ingots/iron"),
-			NUGGET_IRON = commonTag("nugget_iron", "nuggets/iron"),
-			SHEET_IRON = commonTag("sheet_iron", "plates/iron"),
-			NUGGET_COPPER = commonTag("nugget_copper", "nuggets/copper"),
-			INGOT_COPPER = commonTag("ingot_copper", "ingots/copper"),
 			GUNPOWDER = commonTag("gunpowder", "gunpowders"),
 			GEMS_QUARTZ = commonTag("gems_quartz", "gems/quartz"),
 			DUSTS_REDSTONE = commonTag("dusts_redstone", "dusts/redstone"),
 			STONE = commonTag("stone", "stones"),
-			SHEET_BRASS = commonTag("sheet_brass", "plates/brass"),
-			INGOT_BRASS = commonTag("ingot_brass", "ingots/brass"),
-			SHEET_COPPER = commonTag("sheet_copper", "plates/copper"),
-			SHEET_GOLD = commonTag("sheet_gold", "plates/gold"),
-			SHEET_STEEL = commonTag("sheet_steel", "plates/steel"),
 			DUST_GLOWSTONE = commonTag("dust_glowstone", "dusts/glowstone"),
 			GLASS = commonTag("glass", "glass_blocks"),
 			INEXPENSIVE_BIG_CARTRIDGE_SHEET = makeTag("inexpensive_big_cartridge_sheet"),
@@ -271,10 +249,7 @@ public class CBCTags {
 
 		public static void sectionRegister() {
 			addItemsToItemTag(IMPACT_FUZE_HEAD, Items.STONE_BUTTON, Items.POLISHED_BLACKSTONE_BUTTON);
-			addIdsToItemTag(BLOCK_BRONZE, alloyed("bronze_block"));
-			addIdsToItemTag(BLOCK_STEEL, alloyed("steel_block"));
-			addIdsToItemTag(BLOCK_CAST_IRON, createdeco("cast_iron_block"));
-			addTagsToItemTag(INEXPENSIVE_BIG_CARTRIDGE_SHEET, SHEET_GOLD, SHEET_COPPER);
+			addTagsToItemTag(INEXPENSIVE_BIG_CARTRIDGE_SHEET, CommonMetal.GOLD.plates, CommonMetal.COPPER.plates);
 			addTagsToItemTag(BIG_CANNON_PROPELLANT, BIG_CANNON_PROPELLANT_BAGS, BIG_CANNON_CARTRIDGES);
 			addItemsToItemTag(CAN_BE_NITRATED, Items.PAPER);
 			addItemsToItemTag(GELATINIZERS, Items.SLIME_BALL);

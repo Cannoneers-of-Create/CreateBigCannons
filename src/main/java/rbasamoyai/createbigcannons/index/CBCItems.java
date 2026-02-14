@@ -6,6 +6,7 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.resources.ResourceLocation;
@@ -23,6 +24,7 @@ import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionTo
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderItem;
+import rbasamoyai.createbigcannons.datagen.CBCCommonMetal;
 import rbasamoyai.createbigcannons.datagen.assets.CBCBuilderTransformers;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskItem;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskModel;
@@ -38,7 +40,6 @@ import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeItem;
 import rbasamoyai.createbigcannons.munitions.fuzes.WiredFuzeItem;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
-import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCItems {
 
@@ -104,36 +105,30 @@ public class CBCItems {
 
 	EMPTY_POWDER_CHARGE = REGISTRATE.item("empty_powder_charge", Item::new).register(),
 	CAST_IRON_INGOT = REGISTRATE.item("cast_iron_ingot", Item::new)
-		.tag(forgeTag("ingots/cast_iron"))
-		.tag(fabricTag("ingots/cast_iron"))
-		.tag(fabricTag("cast_iron_ingots"))
+		.tag(CBCCommonMetal.CAST_IRON.ingots)
 		.register(),
 	CAST_IRON_NUGGET = REGISTRATE.item("cast_iron_nugget", Item::new)
-		.tag(forgeTag("nuggets/cast_iron"))
-		.tag(fabricTag("nuggets/cast_iron"))
-		.tag(fabricTag("cast_iron_nuggets"))
+        .tag(CBCCommonMetal.CAST_IRON.nuggets)
 		.register(),
 	NETHERSTEEL_INGOT = REGISTRATE.item("nethersteel_ingot", Item::new)
-		.tag(forgeTag("ingots/nethersteel"))
-		.tag(fabricTag("ingots/nethersteel"))
-		.tag(fabricTag("nethersteel_ingots"))
+        .tag(CBCCommonMetal.NETHERSTEEL.ingots)
 		.register(),
 	NETHERSTEEL_NUGGET = REGISTRATE.item("nethersteel_nugget", Item::new)
-		.tag(forgeTag("nuggets/nethersteel"))
-		.tag(fabricTag("nuggets/nethersteel"))
-		.tag(fabricTag("nethersteel_nuggets"))
+        .tag(CBCCommonMetal.NETHERSTEEL.nuggets)
+		.register(),
+    BRONZE_INGOT = REGISTRATE.item("bronze_ingot", Item::new)
+        .tag(CBCCommonMetal.BRONZE.ingots)
+        .register(),
+    BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
+        .tag(CBCCommonMetal.BRONZE.nuggets)
+        .register(),
+    STEEL_INGOT = REGISTRATE.item("steel_ingot", Item::new)
+        .tag(CommonMetal.STEEL.ingots)
+        .register(),
+	STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new)
+        .tag(CommonMetal.STEEL.nuggets)
 		.register(),
 
-	BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
-		.tag(forgeTag("nuggets/bronze"))
-		.tag(fabricTag("nuggets/bronze"))
-		.tag(fabricTag("bronze_nuggets"))
-		.register(),
-	STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new)
-		.tag(forgeTag("nuggets/steel"))
-		.tag(fabricTag("nuggets/steel"))
-		.tag(fabricTag("steel_nuggets"))
-		.register(),
 	SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register(),
 	AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
 
@@ -293,7 +288,5 @@ public class CBCItems {
 	}
 
 	public static TagKey<Item> tag(ResourceLocation loc) { return CBCRegistryUtils.createItemTag(loc); }
-	private static TagKey<Item> forgeTag(String loc) { return tag(CBCUtils.location("forge", loc)); }
-	private static TagKey<Item> fabricTag(String loc) { return tag(CBCUtils.location("c", loc)); }
 
 }

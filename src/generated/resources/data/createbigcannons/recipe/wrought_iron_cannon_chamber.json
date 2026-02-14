@@ -6,7 +6,7 @@
       "tag": "createbigcannons:gunpowder"
     },
     "I": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "c:plates/iron"
     }
   },
   "pattern": [

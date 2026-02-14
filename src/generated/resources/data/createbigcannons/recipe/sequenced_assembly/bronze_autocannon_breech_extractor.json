@@ -1,7 +1,7 @@
 {
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "createbigcannons:ingot_bronze"
+    "tag": "c:ingots/bronze"
   },
   "loops": 3,
   "results": [

@@ -6,7 +6,7 @@
       "tag": "minecraft:logs"
     },
     "S": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "c:plates/iron"
     }
   },
   "pattern": [

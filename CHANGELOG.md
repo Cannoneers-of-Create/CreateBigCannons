@@ -8,10 +8,12 @@ You will need to update Ritchie's Projectile Library to v2.1.2.
 Added:
 - Added view transparency config for molten metal fluids
 - Added ability to top up cannon cast fluids in Creative
+- Added bronze and steel ingots and blocks (yes, after over 3 years)
 
 Changes:
 - Updated Ritchie's Projectile Library dependency to v2.1.2.
 - Changed cannon drill bit texture
+- Changed how cast iron is made; compacting now requires coal or charcoal
 - [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
   `RegisterEvent`.
 

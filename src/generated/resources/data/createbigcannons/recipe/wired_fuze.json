@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "I": {
-      "tag": "createbigcannons:ingot_copper"
+      "tag": "c:ingots/copper"
     },
     "W": {
       "tag": "createbigcannons:dusts_redstone"

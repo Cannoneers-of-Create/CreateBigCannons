@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "B": {
-      "tag": "createbigcannons:nugget_copper"
+      "tag": "c:nuggets/copper"
     },
     "C": {
       "item": "createbigcannons:empty_machine_gun_round"

@@ -1,11 +1,11 @@
 {
   "values": [
     {
-      "id": "#createbigcannons:sheet_gold",
+      "id": "#c:plates/gold",
       "required": false
     },
     {
-      "id": "#createbigcannons:sheet_copper",
+      "id": "#c:plates/copper",
       "required": false
     }
   ]

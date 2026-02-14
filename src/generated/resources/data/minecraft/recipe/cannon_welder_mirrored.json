@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "B": {
-      "tag": "createbigcannons:sheet_brass"
+      "tag": "c:plates/brass"
     },
     "I": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "c:plates/iron"
     },
     "V": {
       "tag": "create:valve_handles"
