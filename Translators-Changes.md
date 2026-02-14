@@ -6,6 +6,48 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
+## 5.8.1 → 5.11.0
+Additions: \
+&plus; `"block.createbigcannons.bronze_block": "Block of Bronze"` \
+&plus; `"block.createbigcannons.steel_block": "Block of Steel"` \
+&plus; `"item.createbigcannons.bronze_ingot": "Bronze Ingot"` \
+&plus; `"item.createbigcannons.steel_ingot": "Steel Ingot"` \
+&plus; `"tag.c.ingots.bronze": "Bronze Ingots"` \
+&plus; `"tag.c.ingots.cast_iron": "Cast Iron Ingots"` \
+&plus; `"tag.c.ingots.nethersteel": "Nethersteel Ingots"` \
+&plus; `"tag.c.nuggets.bronze": "Bronze Nuggets"` \
+&plus; `"tag.c.nuggets.cast_iron": "Cast Iron Nuggets"` \
+&plus; `"tag.c.nuggets.nethersteel": "Nethersteel Nuggets"` \
+&plus; `"tag.c.storage_blocks.bronze": "Bronze Blocks"` \
+&plus; `"tag.c.storage_blocks.cast_iron": "Cast Iron Blocks"` \
+&plus; `"tag.c.storage_blocks.nethersteel": "Nethersteel Blocks"`
+
+Removals: \
+&minus; `"tag.c.bronze_nuggets"` \
+&minus; `"tag.c.cast_iron_ingots"` \
+&minus; `"tag.c.cast_iron_nuggets"` \
+&minus; `"tag.c.nethersteel_ingots"` \
+&minus; `"tag.c.nethersteel_nuggets"` \
+&minus; `"tag.c.nuggets.steel"` \
+&minus; `"tag.c.steel_nuggets"` \
+&minus; `"tag.createbigcannons.ingot_brass"` \
+&minus; `"tag.createbigcannons.ingot_bronze"` \
+&minus; `"tag.createbigcannons.ingot_cast_iron"` \
+&minus; `"tag.createbigcannons.ingot_copper"` \
+&minus; `"tag.createbigcannons.ingot_iron"` \
+&minus; `"tag.createbigcannons.ingot_nethersteel"` \
+&minus; `"tag.createbigcannons.ingot_steel"` \
+&minus; `"tag.createbigcannons.nugget_bronze"` \
+&minus; `"tag.createbigcannons.nugget_cast_iron"` \
+&minus; `"tag.createbigcannons.nugget_copper"` \
+&minus; `"tag.createbigcannons.nugget_iron"` \
+&minus; `"tag.createbigcannons.nugget_nethersteel"` \
+&minus; `"tag.createbigcannons.nugget_steel"` \
+&minus; `"tag.createbigcannons.sheet_brass"` \
+&minus; `"tag.createbigcannons.sheet_copper"` \
+&minus; `"tag.createbigcannons.sheet_iron"` \
+&minus; `"tag.createbigcannons.sheet_steel"`
+
 ## 5.8.0 → 5.8.1
 Additions: \
 &plus; `"tag.createbigcannons.ingot_copper": "Copper Ingots"`
