@@ -1,6 +1,38 @@
 {
-  "default_toughness": 0.25,
-  "material_toughness_multiplier": 0.25,
+  "default_toughness": 0.167,
+  "material_toughness_multiplier": 0.167,
   "default_hardness": 1,
-  "material_hardness_multiplier": 1
+  "material_hardness_multiplier": 1,
+  "variants": {
+    "2": {
+      "default_toughness": 0.333,
+      "material_toughness_multiplier": 0.333,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
+    },
+    "3": {
+      "default_toughness": 0.5,
+      "material_toughness_multiplier": 0.5,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
+    },
+    "4": {
+      "default_toughness": 0.667,
+      "material_toughness_multiplier": 0.667,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
+    },
+    "5": {
+      "default_toughness": 0.833,
+      "material_toughness_multiplier": 0.833,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
+    },
+    "6": {
+      "default_toughness": 1,
+      "material_toughness_multiplier": 1,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
+    }
+  }
 }

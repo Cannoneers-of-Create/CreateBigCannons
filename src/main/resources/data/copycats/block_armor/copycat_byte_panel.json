@@ -1,0 +1,26 @@
+{
+  "default_toughness": 0.125,
+  "material_toughness_multiplier": 0.125,
+  "default_hardness": 1,
+  "material_hardness_multiplier": 1,
+  "variants": {
+    "2": {
+      "default_toughness": 0.25,
+      "material_toughness_multiplier": 0.25,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
+    },
+    "3": {
+      "default_toughness": 0.375,
+      "material_toughness_multiplier": 0.375,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
+    },
+    "4": {
+      "default_toughness": 0.5,
+      "material_toughness_multiplier": 0.5,
+      "default_hardness": 1,
+      "material_hardness_multiplier": 1
+    }
+  }
+}

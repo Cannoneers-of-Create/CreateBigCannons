@@ -166,7 +166,7 @@ dependencies {
     // implementation("maven.modrinth:create-unify:${mod.dep("unify_forge_file")}") fixme
 
     // Fixes, integration
-    //implementation("com.copycatsplus:copycats:${copycats_version}+mc.${minecraft_version}-neoforge") { transitive = false }
+    implementation("com.copycatsplus:copycats:${copycats_version}+mc.${minecraft_version}-neoforge") { transitive = false }
     implementation("maven.modrinth:framedblocks:${framedblocks_version}")
 
     // Curios

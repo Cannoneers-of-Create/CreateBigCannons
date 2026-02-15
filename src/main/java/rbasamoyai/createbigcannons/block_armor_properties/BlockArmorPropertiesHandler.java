@@ -16,9 +16,12 @@ import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.Registry;
 import net.minecraft.network.PacketListener;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
@@ -62,6 +65,9 @@ public class BlockArmorPropertiesHandler {
 			cleanUp();
 
 			Set<Block> missingSerializers = new ReferenceOpenHashSet<>(CUSTOM_SERIALIZERS.keySet());
+            ResourceKey<Registry<Block>> regKey = CBCRegistryUtils.getBlockRegistryKey();
+            HolderLookup.RegistryLookup<Block> reg = this.getRegistryLookup().lookupOrThrow(regKey);
+
 			for (Map.Entry<ResourceLocation, JsonElement> entry : map.entrySet()) {
 				JsonElement el = entry.getValue();
 				if (!el.isJsonObject()) continue;
@@ -69,12 +75,12 @@ public class BlockArmorPropertiesHandler {
 					ResourceLocation loc = entry.getKey();
 					if (loc.getPath().startsWith("tags/")) {
 						ResourceLocation pruned = CBCUtils.location(loc.getNamespace(), loc.getPath().substring(5));
-						TagKey<Block> tag = TagKey.create(CBCRegistryUtils.getBlockRegistryKey(), pruned);
+						TagKey<Block> tag = TagKey.create(regKey, pruned);
 						TAGS_TO_EVALUATE.put(tag, SimpleBlockArmorProperties.fromJson(el.getAsJsonObject()));
 					} else {
-						Block block = CBCRegistryUtils.getOptionalBlock(loc).orElseThrow(() -> {
+						Block block = reg.get(ResourceKey.create(regKey, loc)).orElseThrow(() -> {
 							return new JsonSyntaxException("Unknown block '" + loc + "'");
-						});
+						}).value();
 						if (CUSTOM_SERIALIZERS.containsKey(block)) {
 							BLOCK_MAP.put(block, CUSTOM_SERIALIZERS.get(block).loadBlockArmorPropertiesFromJson(block, el.getAsJsonObject()));
 							missingSerializers.remove(block);
