@@ -20,12 +20,15 @@ import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import rbasamoyai.createbigcannons.CBCTags;
+import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.foundry.MoltenMetalLiquidBlock;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCFluids {
+
+    static { ModGroup.useModTab(ModGroup.MAIN_TAB_KEY); }
 
 	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_CAST_IRON = REGISTRATE
         .standardFluid("molten_cast_iron", SolidRenderedPlaceableFluidType.create(0x460A0B,
