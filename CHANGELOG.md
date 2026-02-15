@@ -43,6 +43,7 @@ Fixed:
 - Fixed upside-down cannon mount rendering with Flywheel
 - Fixed turning cannon carriage wheels when turning autocannon
 - Fixed positioning of player after dismounting autocannon on cannon carriage
+- Fixed missing FramedBlocks block armor properties compatibilities
 
 ## [5.10.2] - 2026-01-17
 
