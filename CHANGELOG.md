@@ -24,6 +24,7 @@ Changes:
 - Changed Impact Fuze and Delayed Impact Fuze trigger condition
   - They now do not trigger if the projectile is destroyed on impact or if they bounce/ricochet
 - Updated block armor compatibility for Copycats+ v3.0
+- Updated FramedBlocks compatibility for FramedBlocks 10.5
 - [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
   `RegisterEvent`.
 
