@@ -28,7 +28,7 @@ public class FramedCollapsibleCopycatBlockArmorProperties extends SingleFramedBl
 		int y = 16;
 		int z = 16;
 		for (Direction dir : Iterate.directions) {
-			int offset = fccbe.getFaceOffset(dir);
+			int offset = fccbe.getFaceOffset(state, dir);
 			switch (dir.getAxis()) {
 				case X -> x -= offset;
 				case Y -> y -= offset;
