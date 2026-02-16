@@ -2,7 +2,7 @@
 
 ## [5.11.0] - Unreleased
 
-**Create Big Cannons 5.11.0, now supporting Create v6.0.9 on NeoForge 1.21.1.** \
+**Create Big Cannons 5.11.0, now supporting Create v6.0.9 on NeoForge 1.21.1 and Create v6.0.8 on Forge and Fabric 1.20.1.** \
 You will need to update Ritchie's Projectile Library to v2.1.2 on 1.21.1.
 
 Added:
@@ -14,7 +14,7 @@ Added:
 - Added Inertia Fuze and Delayed Inertia Fuze
 
 Changes:
-- Updated Ritchie's Projectile Library dependency to v2.1.2.
+- [1.21.1] Updated Ritchie's Projectile Library dependency to v2.1.2.
 - Changed cannon drill bit texture
 - Changed how cast iron is made; compacting now requires coal or charcoal
 - Big cannon propellant compatibility data pack format different; maximum_amount => maximum_amount_ahead
@@ -25,6 +25,7 @@ Changes:
     - They now do not trigger if the projectile is destroyed on impact or if they bounce/ricochet
 - Updated block armor compatibility for Copycats+ v3.0
 - Updated FramedBlocks compatibility for FramedBlocks 10.5
+- Create Big Cannons should be playable with Create v6.0.7.
 - [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
   `RegisterEvent`.
 
