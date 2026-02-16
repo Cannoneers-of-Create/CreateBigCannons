@@ -32,7 +32,7 @@ side = "BOTH"
 [[dependencies.createbigcannons]]
 modId = "create"
 mandatory = true
-versionRange="[${create_version},)"
+versionRange="${create_version_range}"
 ordering = "NONE"
 side = "BOTH"
 

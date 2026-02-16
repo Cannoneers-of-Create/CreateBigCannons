@@ -188,6 +188,7 @@ tasks.processResources {
 		"fabric_api_version" to mod.dep("fabric_api_version"),
 		"minecraft_version" to minecraftVersion,
 		"create_version" to mod.dep("create_fabric_version"), // on fabric, use the entire version, unlike forge
+        "create_version_range" to mod.dep("create_fabric_version_range"),
 		"copycats_breaks" to mod.dep("copycats_breaks_fabric"),
 		"trinkets_breaks" to mod.dep("trinkets_breaks_fabric")
 	)

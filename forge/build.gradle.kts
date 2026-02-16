@@ -179,6 +179,7 @@ tasks.processResources {
 		"forge_version" to common.mod.dep("forge_loader").substringBefore("."), // only specify major version of forge
 		"minecraft_version" to minecraftVersion,
 		"create_version" to mod.dep("create_forge_version").substringBefore("-"),
+        "create_version_range" to mod.dep("create_forge_version_range"),
         "rpl_version" to mod.dep("rpl_version"),
 		"unify_version" to mod.dep("unify_forge_version"),
 		"copycats_requirement" to mod.dep("copycats_requirement_forge"),
