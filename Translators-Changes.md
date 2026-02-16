@@ -6,6 +6,77 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
+## 5.8.1 → 5.11.0
+Additions: \
+&plus; `"block.createbigcannons.bronze_block": "Block of Bronze"` \
+&plus; `"block.createbigcannons.steel_block": "Block of Steel"` \
+&plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info": "Time to Detonate: _%ss %s ticks_"` \
+&plus; `"item.createbigcannons.delayed_impact_fuze.tooltip.shell_info.item": "Time to Detonate: %ss %s ticks"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze": "Delayed Inertia Fuze"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip": "DELAYED INERTIA FUZE"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.behaviour1": "Opens the _Set Delayed Inertia Fuze_ menu, where the fuze duration can be set."` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.behaviour2": "The fuze detonates after the set time from when the projectile impacts."` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.chance": "Impact Chance"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.chance.value": "Upon impact this fuze has a _%s%%_ chance to start ticking."` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.condition1": "When R-Clicked"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.condition2": "Detonation"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.durability": "Durability"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.shell_info": "Time to Detonate: _%ss %s ticks_"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.shell_info.chance": "Impact Chance: _%s%%_"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.shell_info.item": "Time to Detonate: %ss %s ticks"` \
+&plus; `"item.createbigcannons.delayed_inertia_fuze.tooltip.summary": "Detonates a _short time_ after _hitting_ something. This fuze is _more sophisticated_ than the Delayed Impact Fuze and detonates more reliably. It will also work as a _base fuze._"` \
+&plus; `"item.createbigcannons.bronze_ingot": "Bronze Ingot"` \
+&plus; `"item.createbigcannons.inertia_fuze": "Inertia Fuze"` \
+&plus; `"item.createbigcannons.inertia_fuze.tooltip": "INERTIA FUZE"` \
+&plus; `"item.createbigcannons.inertia_fuze.tooltip.behaviour1": "The fuze _may_ detonate on _projectile impact_."` \
+&plus; `"item.createbigcannons.inertia_fuze.tooltip.chance": "Impact Chance"` \
+&plus; `"item.createbigcannons.inertia_fuze.tooltip.chance.value": "Upon impact this fuze has a _%s%%_ chance to detonate."` \
+&plus; `"item.createbigcannons.inertia_fuze.tooltip.condition1": "Detonation"` \
+&plus; `"item.createbigcannons.inertia_fuze.tooltip.durability": "Durability"` \
+&plus; `"item.createbigcannons.inertia_fuze.tooltip.durability.value": "This fuze can break through _%s_ blocks before breaking."` \
+&plus; `"item.createbigcannons.inertia_fuze.tooltip.shell_info.chance": "Impact Chance: _%s%%_"` \
+&plus; `"item.createbigcannons.inertia_fuze.tooltip.summary": "Detonates when the projectile _hits something_. This fuze is _more sophisticated_ than the Impact Fuze, and detonates more reliably. It will also work as a _base fuze._"` \
+&plus; `"item.createbigcannons.steel_ingot": "Steel Ingot"` \
+&plus; `"tag.c.ingots.bronze": "Bronze Ingots"` \
+&plus; `"tag.c.ingots.cast_iron": "Cast Iron Ingots"` \
+&plus; `"tag.c.ingots.nethersteel": "Nethersteel Ingots"` \
+&plus; `"tag.c.nuggets.bronze": "Bronze Nuggets"` \
+&plus; `"tag.c.nuggets.cast_iron": "Cast Iron Nuggets"` \
+&plus; `"tag.c.nuggets.nethersteel": "Nethersteel Nuggets"` \
+&plus; `"tag.c.storage_blocks.bronze": "Bronze Blocks"` \
+&plus; `"tag.c.storage_blocks.cast_iron": "Cast Iron Blocks"` \
+&plus; `"tag.c.storage_blocks.nethersteel": "Nethersteel Blocks"`
+
+Content Changes: \
+`"item.createbigcannons.impact_fuze.tooltip.summary"`: `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"` → `"Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact, and does not detonate on _bounces and grazes_. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._"`
+
+Removals: \
+&minus; `"tag.c.bronze_nuggets"` \
+&minus; `"tag.c.cast_iron_ingots"` \
+&minus; `"tag.c.cast_iron_nuggets"` \
+&minus; `"tag.c.nethersteel_ingots"` \
+&minus; `"tag.c.nethersteel_nuggets"` \
+&minus; `"tag.c.nuggets.steel"` \
+&minus; `"tag.c.steel_nuggets"` \
+&minus; `"tag.createbigcannons.ingot_brass"` \
+&minus; `"tag.createbigcannons.ingot_bronze"` \
+&minus; `"tag.createbigcannons.ingot_cast_iron"` \
+&minus; `"tag.createbigcannons.ingot_copper"` \
+&minus; `"tag.createbigcannons.ingot_iron"` \
+&minus; `"tag.createbigcannons.ingot_nethersteel"` \
+&minus; `"tag.createbigcannons.ingot_steel"` \
+&minus; `"tag.createbigcannons.nugget_bronze"` \
+&minus; `"tag.createbigcannons.nugget_cast_iron"` \
+&minus; `"tag.createbigcannons.nugget_copper"` \
+&minus; `"tag.createbigcannons.nugget_iron"` \
+&minus; `"tag.createbigcannons.nugget_nethersteel"` \
+&minus; `"tag.createbigcannons.nugget_steel"` \
+&minus; `"tag.createbigcannons.sheet_brass"` \
+&minus; `"tag.createbigcannons.sheet_copper"` \
+&minus; `"tag.createbigcannons.sheet_iron"` \
+&minus; `"tag.createbigcannons.sheet_steel"`
+
 ## 5.8.0 → 5.8.1
 Additions: \
 &plus; `"tag.createbigcannons.ingot_copper": "Copper Ingots"`

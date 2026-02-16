@@ -1,5 +1,52 @@
 # Changelog
 
+## [5.11.0] - Unreleased
+
+**Create Big Cannons 5.11.0, now supporting Create v6.0.9 on NeoForge 1.21.1.** \
+You will need to update Ritchie's Projectile Library to v2.1.2 on 1.21.1.
+
+Added:
+- Added view transparency config for molten metal fluids
+- Added ability to top up cannon cast fluids in Creative
+- Added bronze and steel ingots and blocks (yes, after over 3 years)
+- Added ability to combine different propellant types
+    - By default, big cartridges must come before powder charges
+- Added Inertia Fuze and Delayed Inertia Fuze
+
+Changes:
+- Updated Ritchie's Projectile Library dependency to v2.1.2.
+- Changed cannon drill bit texture
+- Changed how cast iron is made; compacting now requires coal or charcoal
+- Big cannon propellant compatibility data pack format different; maximum_amount => maximum_amount_ahead
+    - Now based on maximum amount of propellant of block type ahead from first block type of file
+- Increased nethersteel screw breech max stress to 10 charges
+- Increased steel screw breech max stress to 8 charges
+- Changed Impact Fuze and Delayed Impact Fuze trigger condition
+    - They now do not trigger if the projectile is destroyed on impact or if they bounce/ricochet
+- Updated block armor compatibility for Copycats+ v3.0
+- Updated FramedBlocks compatibility for FramedBlocks 10.5
+- [Developers, NeoForge] `CBCNeoForgeRegisterEvent` has been removed in favor of accessing CBC registries via
+  `RegisterEvent`.
+
+Fixed:
+- Fixed positioning of Creative Autocannon Ammo Container screen text
+- Fixed display and attack stats of ram rod and worm items
+- Fixed default stress values for CBC not registering
+- Fixed fluid shell tooltip when potions contained
+- Fixed cannon drill model pipe UVs
+- Fixed incomplete autocannon block waterlogged state on completion
+- Fixed autocannon not syncing creative connections
+- Fixed incorrect top-bottom cannon cast merger fluid capacity
+- Fixed cannon builder assembly and layering collision
+- Fixed white seat flickering when changing autocannon seating when Flywheel is on
+- Fixed tracer spacing of regular Autocannon Ammo Container
+- Fixed upside-down cannon mount rendering with Flywheel
+- Fixed turning cannon carriage wheels when turning autocannon
+- Fixed positioning of player after dismounting autocannon on cannon carriage
+- Fixed missing FramedBlocks block armor properties compatibilities
+- Fixed honey bucket and chocolate buckets not showing up in creative tab
+- Fixed melting basin ponder category and pump orientation
+
 ## [5.10.2] - 2026-01-17
 
 Fixes:
