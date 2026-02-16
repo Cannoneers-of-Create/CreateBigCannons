@@ -45,6 +45,7 @@ Fixed:
 - Fixed positioning of player after dismounting autocannon on cannon carriage
 - Fixed missing FramedBlocks block armor properties compatibilities
 - Fixed honey bucket and chocolate buckets not showing up in creative tab
+- Fixed melting basin ponder category and pump orientation
 
 ## [5.10.2] - 2026-01-17
 
