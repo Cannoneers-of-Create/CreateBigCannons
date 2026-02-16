@@ -96,7 +96,7 @@ public class CBCClientFabric implements ClientModInitializer {
 
 	public static float getFogDensity(Camera info, float currentDensity) {
 		float density = CBCClientCommon.getFogDensity(info, currentDensity);
-		return density == -1 ? currentDensity : density;
+		return density == -1 ? currentDensity : 192.0f * density;
 	}
 
 	public static void setFogColor(FogEvents.ColorData data, float partialTicks) {

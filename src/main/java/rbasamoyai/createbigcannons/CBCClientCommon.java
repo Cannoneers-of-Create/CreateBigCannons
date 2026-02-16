@@ -8,8 +8,6 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import net.createmod.ponder.foundation.PonderIndex;
-
 import org.joml.AxisAngle4f;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -20,6 +18,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.math.VecHelper;
+import net.createmod.ponder.foundation.PonderIndex;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
@@ -58,6 +57,7 @@ import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContr
 import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBoxRenderer;
 import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringBreechBlock;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.welding.CannonWelderSelectionHandler;
 import rbasamoyai.createbigcannons.effects.CBCScreenShakeHandler;
 import rbasamoyai.createbigcannons.effects.particles.ParticleWindHandler;
@@ -65,7 +65,6 @@ import rbasamoyai.createbigcannons.effects.sounds.ShellFlyingSoundInstance;
 import rbasamoyai.createbigcannons.equipment.gas_mask.GasMaskOverlay;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 import rbasamoyai.createbigcannons.index.CBCEntityVisuals;
 import rbasamoyai.createbigcannons.index.CBCFluids;
 import rbasamoyai.createbigcannons.index.CBCFlywheelVisuals;
@@ -212,7 +211,7 @@ public class CBCClientCommon {
 
 		for (Fluid fluid1 : moltenMetals) {
 			if (fluid1.isSame(fluid)) {
-				return 1f / 32f;
+				return 1f / 32f * CBCConfigs.client().moltenMetalTransparencyMultiplier.getF();
 			}
 		}
 		return -1;

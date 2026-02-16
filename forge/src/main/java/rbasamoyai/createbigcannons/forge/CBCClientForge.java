@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.forge;
 
 import java.io.IOException;
 
+import com.mojang.blaze3d.shaders.FogShape;
+
 import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ShaderInstance;
@@ -93,8 +95,9 @@ public class CBCClientForge {
 		if (!event.isCancelable()) return;
 		float density = CBCClientCommon.getFogDensity(event.getCamera(), event.getFarPlaneDistance());
 		if (density != -1) {
-			event.setFarPlaneDistance(density);
-			event.setNearPlaneDistance(density);
+			event.setFarPlaneDistance(96.0f * density);
+			event.setNearPlaneDistance(-8);
+            event.setFogShape(FogShape.CYLINDER);
 			event.setCanceled(true);
 		}
 	}
