@@ -2,8 +2,6 @@ package rbasamoyai.createbigcannons.cannons.autocannon;
 
 import javax.annotation.Nonnull;
 
-import com.simibubi.create.content.contraptions.Contraption;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -106,7 +104,7 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
             if (level.getBlockEntity(pos1) instanceof IAutocannonBlockEntity cbe1) {
                 cbe.cannonBehavior().setConnectedFace(facing, true);
                 cbe1.cannonBehavior().setConnectedFace(facing.getOpposite(), true);
-				cbe1.cannonBehavior().blockEntity.setChanged();
+                cbe1.cannonBehavior().blockEntity.notifyUpdate();
                 Vec3 particlePos = center.add(offset);
                 slevel.sendParticles(ParticleTypes.CRIT, particlePos.x, particlePos.y, particlePos.z, 10, 0.5d, 0.5d, 0.5d, 0.1d);
             }
@@ -126,7 +124,7 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
             if (level.getBlockEntity(pos2) instanceof IAutocannonBlockEntity cbe2) {
                 cbe.cannonBehavior().setConnectedFace(facing.getOpposite(), true);
                 cbe2.cannonBehavior().setConnectedFace(facing, true);
-				cbe2.cannonBehavior().blockEntity.setChanged();
+				cbe2.cannonBehavior().blockEntity.notifyUpdate();
                 Vec3 particlePos = center.add(offset.reverse());
                 slevel.sendParticles(ParticleTypes.CRIT, particlePos.x, particlePos.y, particlePos.z, 10, 0.5d, 0.5d, 0.5d, 0.1d);
             }
