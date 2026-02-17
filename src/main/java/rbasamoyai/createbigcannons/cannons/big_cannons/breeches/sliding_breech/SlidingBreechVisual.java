@@ -35,11 +35,16 @@ public class SlidingBreechVisual extends ShaftVisual<SlidingBreechBlockEntity> i
         this.breechblock = instancerProvider().instancer(InstanceTypes.ORIENTED, Models.partial(CBCClientCommon.getBreechblockForState(this.blockState))).createInstance();
 
         boolean alongFirst = this.blockState.getValue(QuickfiringBreechBlock.AXIS);
-        if (!alongFirst) {
-            this.breechblock.rotateYDegrees(90f);
-        }
         if (facing.getAxis().isHorizontal()) {
-            this.breechblock.rotateTo(Direction.NORTH, Direction.UP);
+            if (this.blockRotation.getAxis().isHorizontal()) {
+                this.breechblock.rotateTo(Direction.NORTH, this.blockRotation).rotateDegrees(90f, Direction.NORTH);
+            } else {
+                this.breechblock.rotateTo(Direction.NORTH, Direction.UP);
+                if (facing.getAxis() == Direction.Axis.X)
+                    this.breechblock.rotateZDegrees(90f);
+            }
+        } else if (!alongFirst) {
+            this.breechblock.rotateYDegrees(90f);
         }
 
         this.transformModels(partialTick);
