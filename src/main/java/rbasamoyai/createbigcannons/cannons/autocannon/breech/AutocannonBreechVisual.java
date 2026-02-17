@@ -82,6 +82,7 @@ public class AutocannonBreechVisual extends AbstractBlockEntityVisual<AbstractAu
     protected void refreshSeat() {
         this.seatColor = this.blockEntity.getSeatColor();
         this.seatInstancer().stealInstance(this.seat);
+        this.seat.setVisible(this.blockState.getValue(AutocannonBreechBlock.HANDLE) && this.seatColor != null);
     }
 
     protected Instancer<OrientedInstance> seatInstancer() {
