@@ -27,6 +27,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
 public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 
@@ -138,7 +139,13 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 		return this.fluid.getFluid().getFluid();
 	}
 
-	@Override
+    @Override
+    protected InvalidCastingError createInvalidCastingError(BlockPos pos, CannonCastShape shape) {
+        FluidStack stack = this.fluid.getFluid();
+        return new InvalidCastingError(pos, new EndFluidStack(stack.getFluid(), stack.getAmount(), stack.getComponents()), shape);
+    }
+
+    @Override
 	protected void addStructureCapacityToController(AbstractCannonCastBlockEntity controller) {
 		if (controller instanceof CannonCastBlockEntity cController) {
 			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.castShape.fluidSize());

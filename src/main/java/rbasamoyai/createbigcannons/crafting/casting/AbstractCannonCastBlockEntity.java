@@ -348,7 +348,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			int i = iter.nextIndex();
 			CannonCastShape shape = iter.next();
 			if (this.recipes.containsKey(shape)) continue;
-			this.invalidCastingError = new InvalidCastingError(this.worldPosition.above(i), this.getFluid(), shape);
+			this.invalidCastingError = this.createInvalidCastingError(this.worldPosition.above(i), shape);
 			return;
 		}
 	}
@@ -358,6 +358,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	}
 
 	protected abstract net.minecraft.world.level.material.Fluid getFluid();
+
+    protected abstract InvalidCastingError createInvalidCastingError(BlockPos pos, CannonCastShape shape);
 
 	protected void finishCasting() {
 		if (!this.isController() || this.structure.isEmpty()) return;
