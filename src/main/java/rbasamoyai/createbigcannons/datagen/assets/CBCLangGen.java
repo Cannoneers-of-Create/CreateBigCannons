@@ -107,7 +107,7 @@ public class CBCLangGen {
 
 		tooltip(CBCItems.IMPACT_FUZE)
 		.header("IMPACT FUZE")
-		.summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._")
+            .summary("Detonates when the projectile _hits something_. Due to its _simplicity_, it does not always detonate on impact, and does not detonate on _bounces and grazes_. This must be mounted on the _front_ of a shell; it will not work as a _base fuze._")
 		.conditionAndBehavior("Detonation", "The fuze _may_ detonate on _projectile impact_.");
 
 		REGISTRATE.addLang("item", CBCItems.IMPACT_FUZE.getId(), "tooltip.chance", "Impact Chance");
@@ -136,6 +136,8 @@ public class CBCLangGen {
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.shell_info.chance", "Impact Chance: _%s%%_");
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.durability", "Durability");
 		REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.durability.value", "This fuze can break through _%s_ blocks before breaking.");
+        REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.shell_info", "Time to Detonate: _%ss %s ticks_");
+        REGISTRATE.addLang("item", CBCItems.DELAYED_IMPACT_FUZE.getId(), "tooltip.shell_info.item", "Time to Detonate: %ss %s ticks");
 
 		tooltip(CBCItems.PROXIMITY_FUZE)
 		.header("PROXIMITY FUZE")
@@ -150,6 +152,31 @@ public class CBCLangGen {
 		.header("WIRED FUZE")
 		.summary("Detonates when the fuzed shell block is _powered by redstone._ Can be used for _improvised explosives._ _Does not explode in flight._")
 		.conditionAndBehavior("Detonation", "The fuze detonates when powered by redstone.");
+
+        tooltip(CBCItems.INERTIA_FUZE)
+            .header("INERTIA FUZE")
+            .summary("Detonates when the projectile _hits something_. This fuze is _more sophisticated_ than the Impact Fuze, and detonates more reliably, particularly on _bounces and ricochets_. It will also work as a _base fuze._")
+            .conditionAndBehavior("Detonation", "The fuze _may_ detonate on _projectile impact_.");
+
+        REGISTRATE.addLang("item", CBCItems.INERTIA_FUZE.getId(), "tooltip.chance", "Impact Chance");
+        REGISTRATE.addLang("item", CBCItems.INERTIA_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to detonate.");
+        REGISTRATE.addLang("item", CBCItems.INERTIA_FUZE.getId(), "tooltip.shell_info.chance", "Impact Chance: _%s%%_");
+        REGISTRATE.addLang("item", CBCItems.INERTIA_FUZE.getId(), "tooltip.durability", "Durability");
+        REGISTRATE.addLang("item", CBCItems.INERTIA_FUZE.getId(), "tooltip.durability.value", "This fuze can break through _%s_ blocks before breaking.");
+
+        tooltip(CBCItems.DELAYED_INERTIA_FUZE)
+            .header("DELAYED INERTIA FUZE")
+            .summary("Detonates a _short time_ after _hitting_ something. This fuze is _more sophisticated_ than the Delayed Impact Fuze and detonates more reliably. It will also work as a _base fuze._")
+            .conditionAndBehavior("When R-Clicked", "Opens the _Set Delayed Inertia Fuze_ menu, where the fuze duration can be set.")
+            .conditionAndBehavior("Detonation", "The fuze detonates after the set time from when the projectile impacts.");
+
+        REGISTRATE.addLang("item", CBCItems.DELAYED_INERTIA_FUZE.getId(), "tooltip.chance", "Impact Chance");
+        REGISTRATE.addLang("item", CBCItems.DELAYED_INERTIA_FUZE.getId(), "tooltip.chance.value", "Upon impact this fuze has a _%s%%_ chance to start ticking.");
+        REGISTRATE.addLang("item", CBCItems.DELAYED_INERTIA_FUZE.getId(), "tooltip.shell_info.chance", "Impact Chance: _%s%%_");
+        REGISTRATE.addLang("item", CBCItems.DELAYED_INERTIA_FUZE.getId(), "tooltip.durability", "Durability");
+        REGISTRATE.addLang("item", CBCItems.DELAYED_INERTIA_FUZE.getId(), "tooltip.durability.value", "This fuze can break through _%s_ blocks before breaking.");
+        REGISTRATE.addLang("item", CBCItems.DELAYED_INERTIA_FUZE.getId(), "tooltip.shell_info", "Time to Detonate: _%ss %s ticks_");
+        REGISTRATE.addLang("item", CBCItems.DELAYED_INERTIA_FUZE.getId(), "tooltip.shell_info.item", "Time to Detonate: %ss %s ticks");
 
 		tooltip(CBCItems.CANNON_CRAFTING_WAND)
 		.header("CANNON CRAFTING WAND")

@@ -35,6 +35,8 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes");
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
 	public final ConfigInt impactFuzeDurability = i(3, -1, "impactFuzeDurability", Comments.impactFuzeDurability);
+    public final ConfigFloat inertiaFuzeDetonationChance = f(0.90f, 0, 1, "inertiaFuzeDetonationChance", Comments.inertiaFuzeDetonationChance);
+    public final ConfigInt inertiaFuzeDurability = i(3, -1, "inertiaFuzeDurability", Comments.inertiaFuzeDurability);
 	public final ConfigInt proximityFuzeArmingTime = i(5, 0, "proximityFuzeArmingTime", Comments.proximityFuzeArmingTime);
 	public final ConfigInt proximityFuzeScale = i(5, 1, 10, "proximityFuzeScale", Comments.proximityFuzeScale);
 	public final ConfigFloat proximityFuzeSpacing = f(1.5f, 0.5f, 2f, "proximityFuzeSpacing", Comments.proximityFuzeSpacing);
@@ -64,6 +66,8 @@ public class CBCCfgMunitions extends ConfigBase {
 		};
 		static String impactFuzeDetonationChance = "Chance that the Impact Fuze/Delayed Impact Fuze will detonate on hitting something. 0 is 0% (never), 1 is 100% (always).";
 		static String impactFuzeDurability = "How many blocks the Impact Fuze/Delayed Impact Fuze can hit before breaking. Set to -1 to never break.";
+        static String inertiaFuzeDetonationChance = "Chance that the Inertia Fuze/Delayed Inertia Fuze will detonate on hitting something. 0 is 0% (never), 1 is 100% (always).";
+        static String inertiaFuzeDurability = "How many blocks the Inertia Fuze/Delayed Inertia Fuze can hit before breaking. Set to -1 to never break.";
 		static String[] proximityFuzeArmingTime = new String[]{
 			"[in Ticks]",
 			"Time it takes for a proximity fuze to arm itself.",

@@ -75,6 +75,21 @@ public abstract class CBCCraftingRecipeProvider extends RecipeProvider {
 			.unlockedBy("has_redstone", has(CBCTags.CBCItemTags.DUSTS_REDSTONE))
 			.save(cons);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, CBCItems.INERTIA_FUZE.get(), 2)
+            .define('T', CBCTags.CBCItemTags.IMPACT_FUZE_HEAD).define('R', CBCTags.CBCItemTags.DUSTS_REDSTONE).define('S', CBCItems.RECOIL_SPRING)
+            .pattern("T")
+            .pattern("S")
+            .pattern("R")
+            .unlockedBy("has_impact_fuze_head", has(CBCTags.CBCItemTags.IMPACT_FUZE_HEAD))
+            .unlockedBy(getHasName(CBCItems.RECOIL_SPRING.get()), has(CBCItems.RECOIL_SPRING.get()))
+            .save(cons);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, CBCItems.DELAYED_INERTIA_FUZE.get())
+            .requires(CBCItems.TIMED_FUZE.get()).requires(CBCItems.INERTIA_FUZE.get())
+            .unlockedBy(getHasName(CBCItems.TIMED_FUZE.get()), has(CBCItems.TIMED_FUZE.get()))
+            .unlockedBy(getHasName(CBCItems.INERTIA_FUZE.get()), has(CBCItems.INERTIA_FUZE.get()))
+            .save(cons);
+
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, CBCItems.TRACER_TIP.get(), 4)
 			.requires(CBCTags.CBCItemTags.DUST_GLOWSTONE).requires(Items.BLAZE_POWDER)
 			.unlockedBy("has_glowstone", has(CBCTags.CBCItemTags.DUST_GLOWSTONE))

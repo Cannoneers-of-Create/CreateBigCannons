@@ -8,6 +8,8 @@ import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.Autocanno
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerScreen;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeContainer;
 import rbasamoyai.createbigcannons.munitions.fuzes.DelayedImpactFuzeScreen;
+import rbasamoyai.createbigcannons.munitions.fuzes.DelayedInertiaFuzeContainer;
+import rbasamoyai.createbigcannons.munitions.fuzes.DelayedInertiaFuzeScreen;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeContainer;
 import rbasamoyai.createbigcannons.munitions.fuzes.ProximityFuzeScreen;
 import rbasamoyai.createbigcannons.munitions.fuzes.TimedFuzeContainer;
@@ -24,8 +26,12 @@ public class CBCMenuTypes {
 		.register();
 
 	public static final MenuEntry<DelayedImpactFuzeContainer> SET_DELAYED_IMPACT_FUZE = REGISTRATE
-		.menu("set_delayed_fuze", DelayedImpactFuzeContainer::getClientMenu, () -> DelayedImpactFuzeScreen::new)
+		.menu("set_delayed_impact_fuze", DelayedImpactFuzeContainer::getClientMenu, () -> DelayedImpactFuzeScreen::new)
 		.register();
+
+    public static final MenuEntry<DelayedInertiaFuzeContainer> SET_DELAYED_INERTIA_FUZE = REGISTRATE
+        .menu("set_delayed_inertia_fuze", DelayedInertiaFuzeContainer::getClientMenu, () -> DelayedInertiaFuzeScreen::new)
+        .register();
 
 	public static final MenuEntry<AutocannonAmmoContainerMenu> AUTOCANNON_AMMO_CONTAINER = REGISTRATE
 		.menu("autocannon_ammo_container", AutocannonAmmoContainerMenu::getClientMenu, () -> AutocannonAmmoContainerScreen::new)

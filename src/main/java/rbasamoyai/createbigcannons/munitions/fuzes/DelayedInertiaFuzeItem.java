@@ -28,9 +28,9 @@ import rbasamoyai.createbigcannons.index.CBCMenuTypes;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile.ImpactResult;
 
-public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
+public class DelayedInertiaFuzeItem extends FuzeItem implements MenuProvider {
 
-	public DelayedImpactFuzeItem(Properties properties) {
+	public DelayedInertiaFuzeItem(Properties properties) {
 		super(properties);
 	}
 
@@ -44,7 +44,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 			}
 			int timer = tag.getInt("FuzeTimer");
 
-			CBCMenuTypes.SET_DELAYED_IMPACT_FUZE.open((ServerPlayer) player, this.getDisplayName(), this, buf -> {
+			CBCMenuTypes.SET_DELAYED_INERTIA_FUZE.open((ServerPlayer) player, this.getDisplayName(), this, buf -> {
 				buf.writeVarInt(timer);
 				buf.writeItem(new ItemStack(this));
 			});
@@ -55,7 +55,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	@Override
 	public AbstractContainerMenu createMenu(int windowId, Inventory playerInv, Player player) {
 		ItemStack stack = player.getMainHandItem();
-		return DelayedImpactFuzeContainer.getServerMenu(windowId, playerInv, stack);
+		return DelayedInertiaFuzeContainer.getServerMenu(windowId, playerInv, stack);
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, ImpactResult impactResult, boolean baseFuze) {
-        if (baseFuze || impactResult.shouldRemove() || impactResult.kinematics() == AbstractCannonProjectile.ImpactResult.KinematicOutcome.BOUNCE)
+        if (impactResult.shouldRemove())
             return false;
 		CompoundTag tag = stack.getOrCreateTag();
 		int damage = tag.contains("Damage") ? tag.getInt("Damage") : this.getFuzeDurability();
@@ -105,16 +105,16 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		tooltip.add(CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".delayed_impact_fuze.tooltip.shell_info.item", seconds, ticks)
+			.translate(CreateBigCannons.MOD_ID + ".delayed_inertia_fuze.tooltip.shell_info.item", seconds, ticks)
 			.component());
 	}
 
 	protected float getDetonateChance() {
-		return CBCConfigs.server().munitions.impactFuzeDetonationChance.getF();
+		return CBCConfigs.server().munitions.inertiaFuzeDetonationChance.getF();
 	}
 
 	protected int getFuzeDurability() {
-		return CBCConfigs.server().munitions.impactFuzeDurability.get();
+		return CBCConfigs.server().munitions.inertiaFuzeDurability.get();
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 	public void addExtraInfo(List<Component> tooltip, boolean isSneaking, ItemStack stack) {
 		super.addExtraInfo(tooltip, isSneaking, stack);
 		MutableComponent info = CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".delayed_impact_fuze.tooltip.shell_info.chance", (int) (this.getDetonateChance() * 100.0f))
+			.translate(CreateBigCannons.MOD_ID + ".delayed_inertia_fuze.tooltip.shell_info.chance", (int) (this.getDetonateChance() * 100.0f))
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info, Style.EMPTY, Style.EMPTY, 6));
 
@@ -134,13 +134,13 @@ public class DelayedImpactFuzeItem extends FuzeItem implements MenuProvider {
 		int seconds = time / 20;
 		int ticks = time - seconds * 20;
 		MutableComponent info1 = CreateLang.builder("item")
-			.translate(CreateBigCannons.MOD_ID + ".delayed_impact_fuze.tooltip.shell_info", seconds, ticks)
+			.translate(CreateBigCannons.MOD_ID + ".delayed_inertia_fuze.tooltip.shell_info", seconds, ticks)
 			.component();
 		tooltip.addAll(TooltipHelper.cutTextComponent(info1, Style.EMPTY, Style.EMPTY, 6));
 	}
 
 	public static ItemStack getCreativeTabItem(int defaultFuze) {
-		ItemStack stack = CBCItems.DELAYED_IMPACT_FUZE.asStack();
+		ItemStack stack = CBCItems.DELAYED_INERTIA_FUZE.asStack();
 		stack.getOrCreateTag().putInt("FuzeTimer", defaultFuze);
 		return stack;
 	}
