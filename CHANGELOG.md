@@ -49,6 +49,7 @@ Fixed:
 - Fixed melting basin ponder category and pump orientation
 - Fixed sliding breech and quick-firing breech breechblock rendering
 - Fixed cannon cast error fluid name display
+- Fixed creative autocannon ammo container screen display title when accessed in block form
 
 ## [5.10.2] - 2026-01-17
 
