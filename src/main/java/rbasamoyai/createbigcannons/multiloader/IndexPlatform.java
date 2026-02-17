@@ -23,6 +23,7 @@ import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
@@ -129,6 +130,7 @@ public class IndexPlatform {
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { throw new AssertionError(); }
 
 	@ExpectPlatform public static void addFluidShellComponents(Fluid fluid, long amount, CompoundTag nbt, List<Component> tooltip) { throw new AssertionError(); }
+    @ExpectPlatform public static MutableComponent getFluidStackText(EndFluidStack fluidStack) { throw new AssertionError(); }
 
 	@ExpectPlatform public static boolean onExplosionStart(Level level, Explosion explosion) { throw new AssertionError(); }
 

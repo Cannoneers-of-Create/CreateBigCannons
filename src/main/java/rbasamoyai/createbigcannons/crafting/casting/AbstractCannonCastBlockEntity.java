@@ -17,9 +17,9 @@ import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
+
 import net.createmod.catnip.animation.LerpedFloat;
 import net.createmod.catnip.animation.LerpedFloat.Chaser;
-
 import net.createmod.catnip.lang.FontHelper.Palette;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -280,6 +280,11 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 		}
 		if (this.getLevel().getBlockState(this.worldPosition.below()).canBeReplaced()) {
 			this.leakContents();
+            this.startCastingTime = 1;
+            this.castingTime = 0;
+            this.castDelay = 8;
+            this.recipes.clear();
+            this.notifyUpdate();
 		} else if (this.canStartCasting() && this.castDelay <= 0) {
 			if (this.updateRecipes) {
 				this.invalidCastingError = null;
@@ -328,7 +333,7 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 			int i = iter.nextIndex();
 			CannonCastShape shape = iter.next();
 			if (this.recipes.containsKey(shape)) continue;
-			this.invalidCastingError = new InvalidCastingError(this.worldPosition.above(i), this.getFluid(), shape);
+			this.invalidCastingError = this.createInvalidCastingError(this.worldPosition.above(i), shape);
 			return;
 		}
 	}
@@ -338,6 +343,8 @@ public abstract class AbstractCannonCastBlockEntity extends SmartBlockEntity imp
 	}
 
 	protected abstract net.minecraft.world.level.material.Fluid getFluid();
+
+    protected abstract InvalidCastingError createInvalidCastingError(BlockPos pos, CannonCastShape shape);
 
 	protected void finishCasting() {
 		if (!this.isController() || this.structure.isEmpty()) return;

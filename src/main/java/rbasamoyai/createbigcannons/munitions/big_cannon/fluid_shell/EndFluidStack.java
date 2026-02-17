@@ -1,5 +1,9 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell;
 
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -12,7 +16,7 @@ import net.minecraft.world.level.material.Fluids;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
-public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
+public record EndFluidStack(Fluid fluid, int amount, @Nullable CompoundTag data) {
 
 	public static EndFluidStack EMPTY = new EndFluidStack(Fluids.EMPTY, 0, new CompoundTag());
 
@@ -21,13 +25,14 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 	public static final Codec<EndFluidStack> CODEC = RecordCodecBuilder.create(i -> i
 			.group(FLUID_CODEC.fieldOf("fluid").forGetter(EndFluidStack::fluid),
 					Codec.INT.fieldOf("amount").forGetter(EndFluidStack::amount),
-					CompoundTag.CODEC.fieldOf("data").forGetter(EndFluidStack::data))
-			.apply(i, EndFluidStack::new));
+					CompoundTag.CODEC.optionalFieldOf("data").forGetter(fs -> Optional.ofNullable(fs.data())))
+			.apply(i, (fluid, amount, dataOp) -> new EndFluidStack(fluid, amount, dataOp.orElse(null))));
 
 	public CompoundTag writeTag(CompoundTag tag) {
 		tag.putString("Fluid", CBCRegistryUtils.getFluidLocation(this.fluid).toString());
 		tag.putInt("FluidAmount", this.amount);
-		tag.put("FluidTag", this.data);
+        if (this.data != null)
+		    tag.put("FluidTag", this.data);
 		return tag;
 	}
 
@@ -53,7 +58,7 @@ public record EndFluidStack(Fluid fluid, int amount, CompoundTag data) {
 	}
 
 	public EndFluidStack copy(int newAmount) {
-		return new EndFluidStack(this.fluid, newAmount, this.data.copy());
+		return new EndFluidStack(this.fluid, newAmount, (this.data == null ? null : this.data.copy()));
 	}
 
 	public EndFluidStack copy() { return this.copy(this.amount); }

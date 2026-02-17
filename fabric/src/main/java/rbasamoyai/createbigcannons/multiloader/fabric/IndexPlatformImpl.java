@@ -36,6 +36,7 @@ import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
@@ -184,6 +185,11 @@ public class IndexPlatformImpl {
 				.addTo(tooltip);
 		}
 	}
+
+    public static MutableComponent getFluidStackText(EndFluidStack efstack) {
+        FluidStack stack = efstack.isEmpty() ? FluidStack.EMPTY : new FluidStack(efstack.fluid(), efstack.amount(), efstack.data());
+        return stack.getDisplayName().copy();
+    }
 
 	public static boolean onExplosionStart(Level level, Explosion explosion) {
 		return ExplosionEvents.START.invoker().onExplosionStart(level, explosion);

@@ -31,7 +31,9 @@ import net.minecraft.world.level.material.FlowingFluid;
 import rbasamoyai.createbigcannons.crafting.casting.AbstractCannonCastBlockEntity;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastingRecipe;
+import rbasamoyai.createbigcannons.crafting.casting.InvalidCastingError;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.EndFluidStack;
 
 public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity implements SidedStorageBlockEntity {
 
@@ -55,9 +57,13 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	protected void onFluidStackChanged(FluidStack stack) {
 		if (!this.hasLevel()) return;
 
+        boolean isLarge = this.castShape != null && this.castShape.isLarge();
+        int horizStart = isLarge ? -1 : 0;
+        int horizEnd = isLarge ? 1 : 2;
+
 		for (int yOffset = 0; yOffset < this.height; yOffset++) {
-			for (int xOffset = 0; xOffset < 3; xOffset++) {
-				for (int zOffset = 0; zOffset < 3; zOffset++) {
+			for (int xOffset = -horizStart; xOffset < horizEnd; xOffset++) {
+				for (int zOffset = -horizStart; zOffset < horizEnd; zOffset++) {
 					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
 					AbstractCannonCastBlockEntity castAt = ConnectivityHandler.partAt(this.getType(), this.getLevel(), pos);
 					if (castAt == null) continue;
@@ -123,7 +129,13 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 		return this.fluid.getFluid().getFluid();
 	}
 
-	@Override
+    @Override
+    protected InvalidCastingError createInvalidCastingError(BlockPos pos, CannonCastShape shape) {
+        FluidStack stack = this.fluid.getFluid();
+        return new InvalidCastingError(pos, new EndFluidStack(stack.getFluid(), (int) stack.getAmount(), stack.getTag()), shape);
+    }
+
+    @Override
 	protected void addStructureCapacityToController(AbstractCannonCastBlockEntity controller) {
 		if (controller instanceof CannonCastBlockEntity cController) {
 			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.castShape.fluidSize());
@@ -138,7 +150,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 	@Override
 	protected void mergeControllerAndOtherFluids(AbstractCannonCastBlockEntity controller, AbstractCannonCastBlockEntity other) {
 		if (controller instanceof CannonCastBlockEntity cController && other instanceof CannonCastBlockEntity cOther) {
-			cController.fluid.setCapacity(cController.fluid.getCapacity() + this.castShape.fluidSize());
+			cController.fluid.setCapacity(cController.fluid.getCapacity() + cOther.fluid.getCapacity());
 			FluidStack extract = TransferUtil.extractAnyFluid(cOther.fluid, cOther.fluid.getCapacity());
 			if (!extract.isEmpty()) TransferUtil.insertFluid(cController.fluid, extract);
 			cOther.fluid = new FluidTank(1);
