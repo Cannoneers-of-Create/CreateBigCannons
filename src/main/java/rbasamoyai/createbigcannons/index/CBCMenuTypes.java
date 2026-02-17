@@ -26,7 +26,7 @@ public class CBCMenuTypes {
 		.register();
 
 	public static final MenuEntry<DelayedImpactFuzeContainer> SET_DELAYED_IMPACT_FUZE = REGISTRATE
-		.menu("set_delayed_fuze", DelayedImpactFuzeContainer::getClientMenu, () -> DelayedImpactFuzeScreen::new)
+		.menu("set_delayed_impact_fuze", DelayedImpactFuzeContainer::getClientMenu, () -> DelayedImpactFuzeScreen::new)
 		.register();
 
     public static final MenuEntry<DelayedInertiaFuzeContainer> SET_DELAYED_INERTIA_FUZE = REGISTRATE
