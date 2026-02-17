@@ -1,4 +1,5 @@
 {
+	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:block/block",
 	"textures": {
@@ -19,12 +20,12 @@
 			"to": [16.98, 12.9, 12.9],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
-				"north": {"uv": [4, 8, 9, 8.5], "rotation": 90, "texture": "#0"},
+				"north": {"uv": [10, 11, 10.5, 16], "rotation": 180, "texture": "#0"},
 				"east": {"uv": [11, 11, 16, 16], "texture": "#0"},
-				"south": {"uv": [4, 8, 9, 8.5], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [10, 11, 10.5, 16], "rotation": 180, "texture": "#0"},
 				"west": {"uv": [11, 11, 16, 16], "texture": "#0"},
-				"up": {"uv": [4, 8, 9, 8.5], "rotation": 270, "texture": "#0"},
-				"down": {"uv": [4, 8, 9, 8.5], "rotation": 270, "texture": "#0"}
+				"up": {"uv": [10, 11, 10.5, 16], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [10, 11, 10.5, 16], "rotation": 180, "texture": "#0"}
 			}
 		},
 		{
@@ -32,12 +33,12 @@
 			"to": [0, 12.9, 12.9],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
-				"north": {"uv": [4, 8, 9, 8.5], "rotation": 90, "texture": "#0"},
+				"north": {"uv": [10, 11, 10.5, 16], "rotation": 180, "texture": "#0"},
 				"east": {"uv": [11, 11, 16, 16], "texture": "#0"},
-				"south": {"uv": [4, 8, 9, 8.5], "rotation": 270, "texture": "#0"},
+				"south": {"uv": [10, 11, 10.5, 16], "rotation": 180, "texture": "#0"},
 				"west": {"uv": [11, 11, 16, 16], "texture": "#0"},
-				"up": {"uv": [4, 8, 9, 8.5], "rotation": 270, "texture": "#0"},
-				"down": {"uv": [4, 8, 9, 8.5], "rotation": 270, "texture": "#0"}
+				"up": {"uv": [10, 11, 10.5, 16], "rotation": 180, "texture": "#0"},
+				"down": {"uv": [10, 11, 10.5, 16], "rotation": 180, "texture": "#0"}
 			}
 		},
 		{

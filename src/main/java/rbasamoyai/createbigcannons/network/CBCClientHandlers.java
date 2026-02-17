@@ -48,8 +48,8 @@ public class CBCClientHandlers {
 		Entity entity = mc.level.getEntity(pkt.id());
 		if (!(entity instanceof AbstractContraptionEntity ace)) return;
 		Contraption contraption = ace.getContraption();
+        contraption.getBlocks().putAll(pkt.changes());
 		if (contraption instanceof AbstractMountedCannonContraption cannon) {
-			contraption.getBlocks().putAll(pkt.changes());
 			for (Map.Entry<BlockPos, StructureBlockInfo> entry : pkt.changes().entrySet()) {
 				BlockEntity be = cannon.presentBlockEntities.get(entry.getKey());
                 BlockEntity rbe = contraption.getOrCreateClientContraptionLazy().getBlockEntity(entry.getKey());
@@ -60,10 +60,12 @@ public class CBCClientHandlers {
 				copy.putInt("y", info.pos().getY());
 				copy.putInt("z", info.pos().getZ());
 				be.load(copy);
-                rbe.load(copy);
+                if (rbe != null)
+                    rbe.load(copy);
             }
-			contraption.invalidateClientContraptionChildren();
 		}
+        contraption.invalidateClientContraptionStructure();
+        contraption.invalidateClientContraptionChildren();
 	}
 
 	public static void animateCannon(ClientboundAnimateCannonContraptionPacket pkt) {
