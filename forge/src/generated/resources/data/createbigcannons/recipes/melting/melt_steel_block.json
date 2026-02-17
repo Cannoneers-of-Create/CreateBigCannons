@@ -1,14 +1,13 @@
 {
-  "type": "createbigcannons:melting",
-  "conditions": [
+  "fabric:load_conditions": [
     {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "createbigcannons:block_steel"
-      }
+      "condition": "fabric:item_tags_populated",
+      "values": [
+        "createbigcannons:block_steel"
+      ]
     }
   ],
+  "type": "createbigcannons:melting",
   "heatRequirement": "heated",
   "ingredients": [
     {

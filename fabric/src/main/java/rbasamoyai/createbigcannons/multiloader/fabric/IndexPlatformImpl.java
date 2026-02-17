@@ -7,7 +7,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.lang.LangBuilder;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
@@ -18,6 +17,7 @@ import io.github.fabricators_of_create.porting_lib.event.common.ExplosionEvents;
 import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.util.FluidTextUtil;
 import io.github.fabricators_of_create.porting_lib.util.FluidUnit;
+import net.createmod.catnip.lang.LangBuilder;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.entity.FakePlayer;
@@ -34,6 +34,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -157,7 +158,7 @@ public class IndexPlatformImpl {
 		return FluidIngredient.fromTag(fluid, amount);
 	}
 
-	public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) {
+	public static void addFluidShellComponents(Fluid fluid, long amount, CompoundTag nbt, List<Component> tooltip) {
 		int capacity = AbstractFluidShellBlockEntity.getFluidShellCapacity();
 		FluidUnit unit = AllConfigs.client().fluidUnitType.get();
 		boolean simplify = AllConfigs.client().simplifyFluidUnit.get();
@@ -165,7 +166,7 @@ public class IndexPlatformImpl {
 
 		if (fluid != Fluids.EMPTY && amount > 0) {
 			CreateLang.text(" ")
-				.add(CreateLang.fluidName(new FluidStack(fluid, 1)).style(ChatFormatting.GRAY))
+				.add(CreateLang.fluidName(new FluidStack(fluid, 1, nbt)).style(ChatFormatting.GRAY))
 				.addTo(tooltip);
 
 			String amountStr = FluidTextUtil.getUnicodeMillibuckets(amount, unit, simplify);

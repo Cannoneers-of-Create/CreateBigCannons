@@ -7,12 +7,12 @@ import com.mojang.blaze3d.platform.InputConstants;
 import com.simibubi.create.content.fluids.FluidFX;
 import com.simibubi.create.foundation.fluid.FluidIngredient;
 import com.simibubi.create.foundation.utility.CreateLang;
-import net.createmod.catnip.lang.LangBuilder;
 import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.builders.BuilderCallback;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
 
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.particle.TerrainParticle;
@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -142,13 +143,13 @@ public class IndexPlatformImpl {
 		return FluidIngredient.fromTag(fluid, amount);
 	}
 
-	public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) {
+	public static void addFluidShellComponents(Fluid fluid, long amount, CompoundTag nbt, List<Component> tooltip) {
 		int capacity = AbstractFluidShellBlockEntity.getFluidShellCapacity();
 		LangBuilder mb = CreateLang.translate("generic.unit.millibuckets");
 		if (fluid != Fluids.EMPTY && amount > 0) {
 			CreateLang.translate("gui.goggles.fluid_container").addTo(tooltip);
 			CreateLang.text(" ")
-				.add(CreateLang.fluidName(new FluidStack(fluid, 1)).style(ChatFormatting.GRAY))
+				.add(CreateLang.fluidName(new FluidStack(fluid, 1, nbt)).style(ChatFormatting.GRAY))
 				.addTo(tooltip);
 
 			CreateLang.text(" ")

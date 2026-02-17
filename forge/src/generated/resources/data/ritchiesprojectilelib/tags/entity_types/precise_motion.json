@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "createbigcannons:shot",
     "createbigcannons:he_shell",

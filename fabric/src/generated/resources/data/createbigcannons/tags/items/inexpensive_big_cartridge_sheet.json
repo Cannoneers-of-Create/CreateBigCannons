@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "#createbigcannons:sheet_gold",
     "#createbigcannons:sheet_copper"

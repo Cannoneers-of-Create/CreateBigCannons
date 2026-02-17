@@ -1,18 +1,17 @@
 {
-  "type": "create:compacting",
-  "conditions": [
+  "fabric:load_conditions": [
     {
-      "type": "forge:not",
-      "value": {
-        "type": "forge:tag_empty",
-        "tag": "createbigcannons:ingot_bronze"
-      }
+      "condition": "fabric:item_tags_populated",
+      "values": [
+        "createbigcannons:ingot_bronze"
+      ]
     }
   ],
+  "type": "create:compacting",
   "ingredients": [
     {
       "amount": 90,
-      "fluidTag": "forge:molten_bronze"
+      "fluidTag": "c:molten_bronze"
     }
   ],
   "results": [

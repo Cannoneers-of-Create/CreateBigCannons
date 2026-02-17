@@ -26,11 +26,6 @@
                 },
                 {
                   "op": "replace",
-                  "source": "FluidContent",
-                  "target": "BlockEntityTag.FluidContent"
-                },
-                {
-                  "op": "replace",
                   "source": "Fuze",
                   "target": "BlockEntityTag.Fuze"
                 }

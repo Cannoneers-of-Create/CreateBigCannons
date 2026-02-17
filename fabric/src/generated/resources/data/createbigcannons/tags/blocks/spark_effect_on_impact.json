@@ -1,4 +1,5 @@
 {
+  "replace": false,
   "values": [
     "minecraft:iron_block",
     "minecraft:iron_door",

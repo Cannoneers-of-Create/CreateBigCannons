@@ -3,7 +3,7 @@
   "ingredients": [
     {
       "amount": 90,
-      "fluidTag": "forge:molten_cast_iron"
+      "fluidTag": "c:molten_cast_iron"
     }
   ],
   "results": [

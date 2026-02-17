@@ -5,10 +5,11 @@ import java.util.List;
 import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import net.createmod.catnip.data.Pair;
 
+import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -113,7 +114,22 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 		return true;
 	}
 
-	public LazyOptional<IFluidHandler> getFluidOptional() {
+    @Override
+    public void setFluidShellItemFluidData(ItemStack stack, HolderLookup.Provider registries) {
+        FluidStack fstack = this.tank.getFluid();
+        if (fstack.isEmpty())
+            return;
+        EndFluidStack efstack = fstack.isEmpty() ? EndFluidStack.EMPTY : new EndFluidStack(fstack.getFluid(), fstack.getAmount(), fstack.getOrCreateTag());
+        stack.getOrCreateTag().put("FluidContent", efstack.writeTag(new CompoundTag()));
+    }
+
+    @Override
+    public void readFluidDataFromFluidShellItem(ItemStack stack, HolderLookup.Provider registries) {
+        EndFluidStack efstack = EndFluidStack.readTag(stack.getOrCreateTag().getCompound("FluidContent"));
+        this.tank.setFluid(efstack.isEmpty() ? FluidStack.EMPTY : new FluidStack(efstack.fluid(), efstack.amount(), efstack.data()));
+    }
+
+    public LazyOptional<IFluidHandler> getFluidOptional() {
 		if (this.fluidOptional == null) {
 			this.fluidOptional = LazyOptional.of(() -> this.tank);
 		}

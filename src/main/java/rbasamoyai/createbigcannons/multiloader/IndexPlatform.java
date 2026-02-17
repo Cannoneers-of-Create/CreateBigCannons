@@ -21,6 +21,7 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleType;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -127,7 +128,7 @@ public class IndexPlatform {
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(Fluid fluid, int amount) { throw new AssertionError(); }
 	@ExpectPlatform public static FluidIngredient fluidIngredientFrom(TagKey<Fluid> fluid, int amount) { throw new AssertionError(); }
 
-	@ExpectPlatform public static void addFluidShellComponents(Fluid fluid, long amount, List<Component> tooltip) { throw new AssertionError(); }
+	@ExpectPlatform public static void addFluidShellComponents(Fluid fluid, long amount, CompoundTag nbt, List<Component> tooltip) { throw new AssertionError(); }
 
 	@ExpectPlatform public static boolean onExplosionStart(Level level, Explosion explosion) { throw new AssertionError(); }
 
