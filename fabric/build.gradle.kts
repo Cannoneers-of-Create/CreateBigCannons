@@ -134,7 +134,7 @@ dependencies {
 
 	// Fixes, integration
 	//modImplementation("curse.maven:free-cam-557076:${freecam_fabric_file}") // Freecam
-	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") { isTransitive = false }
+	modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") { isTransitive = false }
 	// Trinkets and CCA
 	modLocalRuntime("dev.emi:trinkets:${mod.dep("trinkets_fabric_version")}")
 	modCompileOnly("dev.emi:trinkets:${mod.dep("trinkets_fabric_version")}") { exclude(group = "com.terraformersmc") }

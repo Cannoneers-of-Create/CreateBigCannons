@@ -58,7 +58,7 @@ dependencies {
 		isTransitive = false
 	}
 
-	//modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-fabric") {isTransitive=false}
+	modImplementation("com.copycatsplus:copycats:${mod.dep("copycats_version")}+mc.${minecraftVersion}-common") {isTransitive=false}
 
     // VS2 (copied from clockwork)
     modCompileOnly("org.valkyrienskies:valkyrienskies-120-common:${mod.dep("vs2_version")}") {
