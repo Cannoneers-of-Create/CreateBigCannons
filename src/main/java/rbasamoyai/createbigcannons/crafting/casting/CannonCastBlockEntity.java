@@ -84,9 +84,13 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 	protected void onFluidStackChanged(FluidStack stack) {
 		if (!this.hasLevel()) return;
 
-		for (int yOffset = 0; yOffset < this.height; yOffset++) {
-			for (int xOffset = -1; xOffset < 2; xOffset++) {
-				for (int zOffset = -1; zOffset < 2; zOffset++) {
+        boolean isLarge = this.castShape != null && this.castShape.isLarge();
+        int horizStart = isLarge ? -1 : 0;
+        int horizEnd = isLarge ? 1 : 2;
+
+        for (int yOffset = 0; yOffset < this.height; yOffset++) {
+            for (int xOffset = -horizStart; xOffset < horizEnd; xOffset++) {
+                for (int zOffset = -horizStart; zOffset < horizEnd; zOffset++) {
 					BlockPos pos = this.worldPosition.offset(xOffset, yOffset, zOffset);
 					AbstractCannonCastBlockEntity castAt = ConnectivityHandler.partAt(this.getType(), this.getLevel(), pos);
 					if (castAt == null) continue;
