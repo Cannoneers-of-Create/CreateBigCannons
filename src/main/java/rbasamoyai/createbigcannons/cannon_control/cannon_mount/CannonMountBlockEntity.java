@@ -13,7 +13,6 @@ import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.utility.CreateLang;
 import com.simibubi.create.foundation.utility.ServerSpeedProvider;
@@ -455,9 +454,9 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	@Override
-	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
 		Direction vertical = this.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION);
-		return this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).relative(vertical.getOpposite());
+		return Vec3.atBottomCenterOf(this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).relative(vertical.getOpposite()));
 	}
 
 	@Override

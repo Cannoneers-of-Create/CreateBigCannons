@@ -550,8 +550,11 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 	}
 
 	@Override
-	public BlockPos getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
-		return this.blockPosition().relative(this.getDirection().getOpposite()).above();
+	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
+        double yawRad = Math.toRadians(this.getYRot());
+        double xOffs = Math.sin(yawRad) * 2;
+        double zOffs = Math.cos(yawRad) * -2;
+        return this.position().add(xOffs, 0.25, zOffs);
 	}
 
 	@Override
