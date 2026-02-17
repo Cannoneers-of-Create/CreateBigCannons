@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "createbigcannons:ingot_iron"
+            "tag": "forge:ingots/iron"
           }
         ]
       },
@@ -15,7 +15,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "createbigcannons:nugget_iron"
+            "tag": "forge:nuggets/iron"
           }
         ]
       },

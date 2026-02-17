@@ -2,7 +2,7 @@
   "type": "create:cutting",
   "ingredients": [
     {
-      "tag": "createbigcannons:sheet_steel"
+      "tag": "forge:plates/steel"
     }
   ],
   "results": [

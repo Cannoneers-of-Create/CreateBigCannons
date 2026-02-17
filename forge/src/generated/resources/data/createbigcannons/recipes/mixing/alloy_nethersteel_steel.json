@@ -6,16 +6,16 @@
       "item": "minecraft:netherite_scrap"
     },
     {
-      "tag": "createbigcannons:ingot_steel"
+      "tag": "forge:ingots/steel"
     },
     {
-      "tag": "createbigcannons:ingot_steel"
+      "tag": "forge:ingots/steel"
     },
     {
-      "tag": "createbigcannons:ingot_steel"
+      "tag": "forge:ingots/steel"
     },
     {
-      "tag": "createbigcannons:ingot_steel"
+      "tag": "forge:ingots/steel"
     }
   ],
   "processingTime": 100,

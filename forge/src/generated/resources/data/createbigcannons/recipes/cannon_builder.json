@@ -6,13 +6,13 @@
       "item": "create:andesite_casing"
     },
     "H": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "forge:plates/iron"
     },
     "P": {
       "item": "create:piston_extension_pole"
     },
     "h": {
-      "tag": "createbigcannons:nugget_iron"
+      "tag": "forge:nuggets/iron"
     }
   },
   "pattern": [

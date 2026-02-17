@@ -3,7 +3,10 @@
   "heatRequirement": "heated",
   "ingredients": [
     {
-      "item": "minecraft:iron_ingot"
+      "tag": "forge:ingots/iron"
+    },
+    {
+      "tag": "minecraft:coals"
     }
   ],
   "results": [

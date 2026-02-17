@@ -4,6 +4,7 @@ import static rbasamoyai.createbigcannons.CreateBigCannons.REGISTRATE;
 
 import com.simibubi.create.content.processing.sequenced.SequencedAssemblyItem;
 import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.resources.ResourceLocation;
@@ -116,17 +117,23 @@ public class CBCItems {
 		.tag(fabricTag("nuggets/nethersteel"))
 		.tag(fabricTag("nethersteel_nuggets"))
 		.register(),
+    BRONZE_INGOT = REGISTRATE.item("bronze_ingot", Item::new)
+        .tag(forgeTag("ingots/bronze"))
+        .tag(fabricTag("ingots/bronze"))
+        .tag(fabricTag("bronze_ingots"))
+        .register(),
+    BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
+        .tag(forgeTag("nuggets/bronze"))
+        .tag(fabricTag("nuggets/bronze"))
+        .tag(fabricTag("bronze_nuggets"))
+        .register(),
+    STEEL_INGOT = REGISTRATE.item("steel_ingot", Item::new)
+        .tag(CommonMetal.STEEL.ingots)
+        .register(),
+    STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new)
+        .tag(CommonMetal.STEEL.nuggets)
+        .register(),
 
-	BRONZE_SCRAP = REGISTRATE.item("bronze_scrap", Item::new)
-		.tag(forgeTag("nuggets/bronze"))
-		.tag(fabricTag("nuggets/bronze"))
-		.tag(fabricTag("bronze_nuggets"))
-		.register(),
-	STEEL_SCRAP = REGISTRATE.item("steel_scrap", Item::new)
-		.tag(forgeTag("nuggets/steel"))
-		.tag(fabricTag("nuggets/steel"))
-		.tag(fabricTag("steel_nuggets"))
-		.register(),
 	SHOT_BALLS = REGISTRATE.item("shot_balls", Item::new).register(),
 	AUTOCANNON_CARTRIDGE_SHEET = REGISTRATE.item("autocannon_cartridge_sheet", Item::new).register(),
 

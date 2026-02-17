@@ -1,7 +1,7 @@
 {
   "type": "create:sequenced_assembly",
   "ingredient": {
-    "tag": "createbigcannons:ingot_steel"
+    "tag": "forge:ingots/steel"
   },
   "loops": 3,
   "results": [

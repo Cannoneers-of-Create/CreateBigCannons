@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "group": "createbigcannons:bronze_ingot",
+  "key": {
+    "#": {
+      "item": "createbigcannons:bronze_scrap"
+    }
+  },
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "result": {
+    "item": "createbigcannons:bronze_ingot"
+  },
+  "show_notification": true
+}

@@ -3,7 +3,7 @@
   "acceptMirrored": true,
   "key": {
     "I": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "c:iron_ingots"
     },
     "S": {
       "tag": "minecraft:wooden_slabs"

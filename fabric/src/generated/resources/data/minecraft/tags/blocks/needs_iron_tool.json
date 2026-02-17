@@ -45,6 +45,8 @@
     "createbigcannons:incomplete_steel_autocannon_breech",
     "createbigcannons:unbored_steel_autocannon_barrel",
     "createbigcannons:unbored_steel_autocannon_recoil_spring",
-    "createbigcannons:unbored_steel_autocannon_breech"
+    "createbigcannons:unbored_steel_autocannon_breech",
+    "createbigcannons:bronze_block",
+    "createbigcannons:steel_block"
   ]
 }

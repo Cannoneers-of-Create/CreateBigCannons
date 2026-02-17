@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "I": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "forge:ingots/iron"
     },
     "i": {
-      "tag": "createbigcannons:nugget_iron"
+      "tag": "forge:nuggets/iron"
     }
   },
   "pattern": [

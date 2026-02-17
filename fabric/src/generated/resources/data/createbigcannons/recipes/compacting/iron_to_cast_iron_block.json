@@ -3,7 +3,10 @@
   "heatRequirement": "heated",
   "ingredients": [
     {
-      "item": "minecraft:iron_block"
+      "tag": "c:iron_blocks"
+    },
+    {
+      "tag": "c:coal_blocks"
     }
   ],
   "results": [

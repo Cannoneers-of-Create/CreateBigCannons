@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "createbigcannons:bronze_ingot",
+  "ingredients": [
+    {
+      "item": "createbigcannons:bronze_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "createbigcannons:bronze_ingot"
+  }
+}

@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "createbigcannons:ingot_iron"
+            "tag": "forge:ingots/iron"
           }
         ]
       },

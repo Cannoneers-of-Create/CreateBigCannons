@@ -1,17 +1,9 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:item_tags_populated",
-      "values": [
-        "createbigcannons:block_steel"
-      ]
-    }
-  ],
   "type": "createbigcannons:melting",
   "heatRequirement": "heated",
   "ingredients": [
     {
-      "tag": "createbigcannons:block_steel"
+      "tag": "forge:storage_blocks/steel"
     }
   ],
   "processingTime": 1620,

@@ -1,0 +1,14 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "amount": 65610,
+      "fluidTag": "c:molten_bronze"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:bronze_block"
+    }
+  ]
+}

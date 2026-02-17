@@ -1,0 +1,14 @@
+{
+  "type": "create:compacting",
+  "ingredients": [
+    {
+      "amount": 810,
+      "fluidTag": "c:molten_steel"
+    }
+  ],
+  "results": [
+    {
+      "item": "createbigcannons:steel_scrap"
+    }
+  ]
+}

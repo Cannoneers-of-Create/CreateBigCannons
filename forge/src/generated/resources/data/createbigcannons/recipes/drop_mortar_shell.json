@@ -6,7 +6,7 @@
       "item": "createbigcannons:powder_charge"
     },
     "I": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "forge:plates/iron"
     },
     "S": {
       "item": "create:shaft"

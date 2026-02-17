@@ -3,10 +3,10 @@
   "category": "misc",
   "key": {
     "B": {
-      "tag": "createbigcannons:ingot_brass"
+      "tag": "forge:ingots/brass"
     },
     "I": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "forge:plates/iron"
     }
   },
   "pattern": [

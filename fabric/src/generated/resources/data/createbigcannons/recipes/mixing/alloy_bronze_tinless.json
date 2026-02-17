@@ -1,0 +1,21 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "tag": "c:copper_ingots"
+    },
+    {
+      "tag": "c:zinc_ingots"
+    },
+    {
+      "item": "create:cinder_flour"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "item": "createbigcannons:bronze_ingot"
+    }
+  ]
+}

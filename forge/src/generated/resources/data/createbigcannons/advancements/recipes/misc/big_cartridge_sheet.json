@@ -5,7 +5,7 @@
       "conditions": {
         "items": [
           {
-            "tag": "createbigcannons:sheet_brass"
+            "tag": "forge:plates/brass"
           }
         ]
       },

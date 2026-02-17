@@ -1,12 +1,4 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:item_tags_populated",
-      "values": [
-        "createbigcannons:ingot_bronze"
-      ]
-    }
-  ],
   "type": "create:compacting",
   "ingredients": [
     {
@@ -16,7 +8,7 @@
   ],
   "results": [
     {
-      "item": "alloyed:bronze_ingot"
+      "item": "createbigcannons:bronze_ingot"
     }
   ]
 }

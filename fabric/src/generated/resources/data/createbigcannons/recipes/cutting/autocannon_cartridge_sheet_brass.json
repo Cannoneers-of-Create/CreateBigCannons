@@ -2,7 +2,7 @@
   "type": "create:cutting",
   "ingredients": [
     {
-      "tag": "createbigcannons:sheet_brass"
+      "tag": "c:brass_plates"
     }
   ],
   "results": [

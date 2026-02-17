@@ -3,13 +3,13 @@
   "category": "misc",
   "key": {
     "I": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "forge:ingots/iron"
     },
     "S": {
       "tag": "minecraft:wooden_slabs"
     },
     "i": {
-      "tag": "createbigcannons:nugget_iron"
+      "tag": "forge:nuggets/iron"
     }
   },
   "pattern": [

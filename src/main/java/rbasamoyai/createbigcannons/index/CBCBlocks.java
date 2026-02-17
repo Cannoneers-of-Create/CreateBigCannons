@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
+import com.simibubi.create.foundation.data.recipe.CommonMetal;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
@@ -15,7 +16,9 @@ import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.BlockGetter;
@@ -90,6 +93,8 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.solid_shot.SolidShotBloc
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.traffic_cone.TrafficConeBlockItem;
 import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
+import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCBlocks {
 
@@ -943,11 +948,46 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.METAL))
 		.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 		.tag(BlockTags.NEEDS_STONE_TOOL)
+        .tag(forgeTag("storage_blocks/cast_iron"))
+        .tag(fabricTag("storage_blocks/cast_iron"))
+        .tag(fabricTag("cast_iron_blocks"))
 		.lang("Block of Cast Iron")
 		.item()
 		.tag(CBCTags.CBCItemTags.BLOCK_CAST_IRON)
 		.build()
 		.register();
+
+    public static final BlockEntry<Block> BRONZE_BLOCK = REGISTRATE
+        .block("bronze_block", Block::new)
+        .properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
+        .properties(p -> p.requiresCorrectToolForDrops())
+        .properties(p -> p.strength(5.0F, 6.0F))
+        .properties(p -> p.sound(SoundType.METAL))
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(forgeTag("storage_blocks/bronze"))
+        .tag(fabricTag("storage_blocks/bronze"))
+        .tag(fabricTag("bronze_blocks"))
+        .lang("Block of Bronze")
+        .item()
+        .tag(CBCTags.CBCItemTags.BLOCK_BRONZE)
+        .build()
+        .register();
+
+    public static final BlockEntry<Block> STEEL_BLOCK = REGISTRATE
+        .block("steel_block", Block::new)
+        .properties(p -> p.mapColor(MapColor.TERRACOTTA_GRAY))
+        .properties(p -> p.requiresCorrectToolForDrops())
+        .properties(p -> p.strength(5.0F, 6.0F))
+        .properties(p -> p.sound(SoundType.METAL))
+        .tag(BlockTags.MINEABLE_WITH_PICKAXE)
+        .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(CommonMetal.STEEL.storageBlocks.blocks())
+        .lang("Block of Steel")
+        .item()
+        .tag(CommonMetal.STEEL.storageBlocks.items())
+        .build()
+        .register();
 
 	public static final BlockEntry<Block> NETHERSTEEL_BLOCK = REGISTRATE
 		.block("nethersteel_block", Block::new)
@@ -957,6 +997,9 @@ public class CBCBlocks {
 		.properties(p -> p.sound(SoundType.NETHERITE_BLOCK))
 		.tag(BlockTags.MINEABLE_WITH_PICKAXE)
 		.tag(BlockTags.NEEDS_DIAMOND_TOOL)
+        .tag(forgeTag("storage_blocks/nethersteel"))
+        .tag(fabricTag("storage_blocks/nethersteel"))
+        .tag(fabricTag("nethersteel_blocks"))
 		.lang("Block of Nethersteel")
 		.item()
 		.tag(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL)
@@ -1313,5 +1356,9 @@ public class CBCBlocks {
 
 	public static void register() {
 	}
+
+    public static TagKey<Block> tag(ResourceLocation loc) { return CBCRegistryUtils.createBlockTag(loc); }
+    private static TagKey<Block> forgeTag(String loc) { return tag(CBCUtils.location("forge", loc)); }
+    private static TagKey<Block> fabricTag(String loc) { return tag(CBCUtils.location("c", loc)); }
 
 }

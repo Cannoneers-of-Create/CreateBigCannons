@@ -33,7 +33,7 @@
           "item": "createbigcannons:partially_assembled_machine_gun_round"
         },
         {
-          "tag": "createbigcannons:nugget_copper"
+          "tag": "forge:nuggets/copper"
         }
       ],
       "results": [

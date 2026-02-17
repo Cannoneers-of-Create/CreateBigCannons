@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "#createbigcannons:sheet_gold",
-    "#createbigcannons:sheet_copper"
+    "#c:gold_plates",
+    "#c:copper_plates"
   ]
 }

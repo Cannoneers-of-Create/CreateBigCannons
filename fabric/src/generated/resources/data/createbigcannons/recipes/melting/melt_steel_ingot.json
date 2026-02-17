@@ -1,17 +1,9 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:item_tags_populated",
-      "values": [
-        "createbigcannons:ingot_steel"
-      ]
-    }
-  ],
   "type": "createbigcannons:melting",
   "heatRequirement": "heated",
   "ingredients": [
     {
-      "tag": "createbigcannons:ingot_steel"
+      "tag": "c:steel_ingots"
     }
   ],
   "processingTime": 180,

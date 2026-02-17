@@ -1,0 +1,27 @@
+{
+  "type": "create:mixing",
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": {
+        "type": "forge:tag_empty",
+        "tag": "forge:ingots/tin"
+      }
+    }
+  ],
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/copper"
+    },
+    {
+      "tag": "forge:ingots/tin"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "item": "createbigcannons:bronze_ingot"
+    }
+  ]
+}

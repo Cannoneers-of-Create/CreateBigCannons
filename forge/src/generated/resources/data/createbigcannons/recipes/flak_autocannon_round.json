@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "C": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "forge:plates/iron"
     },
     "G": {
       "tag": "createbigcannons:gunpowder"

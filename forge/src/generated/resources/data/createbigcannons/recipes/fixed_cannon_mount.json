@@ -9,7 +9,7 @@
       "tag": "createbigcannons:gunpowder"
     },
     "I": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "forge:plates/iron"
     }
   },
   "pattern": [

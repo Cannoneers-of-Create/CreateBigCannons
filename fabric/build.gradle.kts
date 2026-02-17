@@ -57,7 +57,7 @@ loom {
 			vmArg("-Dfabric-api.datagen")
 			vmArg("-Dfabric-api.datagen.output-dir=${project.rootProject.file("fabric/src/generated/resources")}")
 			vmArg("-Dfabric-api.datagen.modid=createbigcannons")
-			vmArg("-Dporting_lib.datagen.existing_resources=${project.rootProject.file("common/src/main/resources")}")
+			vmArg("-Dporting_lib.datagen.existing_resources=${project.rootProject.file("src/main/resources")}")
 			vmArg("-Dcreatebigcannons.datagen.platform=fabric")
 		}
 		create("DataGenForge") {
@@ -67,7 +67,7 @@ loom {
 			vmArg("-Dfabric-api.datagen")
 			vmArg("-Dfabric-api.datagen.output-dir=${project.rootProject.file("forge/src/generated/resources")}")
 			vmArg("-Dfabric-api.datagen.modid=createbigcannons")
-			vmArg("-Dporting_lib.datagen.existing_resources=${project.rootProject.file("common/src/main/resources")}")
+			vmArg("-Dporting_lib.datagen.existing_resources=${project.rootProject.file("src/main/resources")}")
 			vmArg("-Dcreatebigcannons.datagen.platform=forge")
 		}
 		all {

@@ -1,12 +1,4 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:item_tags_populated",
-      "values": [
-        "createbigcannons:block_nethersteel"
-      ]
-    }
-  ],
   "type": "createbigcannons:melting",
   "heatRequirement": "heated",
   "ingredients": [

@@ -6,10 +6,10 @@
       "item": "minecraft:hay_block"
     },
     "I": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "c:iron_ingots"
     },
     "P": {
-      "tag": "createbigcannons:sheet_iron"
+      "tag": "c:iron_plates"
     }
   },
   "pattern": [

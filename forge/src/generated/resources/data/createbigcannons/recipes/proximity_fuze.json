@@ -9,7 +9,7 @@
       "tag": "createbigcannons:gems_quartz"
     },
     "I": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "forge:ingots/iron"
     },
     "R": {
       "tag": "createbigcannons:dusts_redstone"

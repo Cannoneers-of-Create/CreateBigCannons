@@ -1,0 +1,21 @@
+{
+  "type": "create:mixing",
+  "heatRequirement": "heated",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/brass"
+    },
+    {
+      "tag": "forge:ingots/brass"
+    },
+    {
+      "item": "create:cinder_flour"
+    }
+  ],
+  "results": [
+    {
+      "count": 2,
+      "item": "createbigcannons:bronze_ingot"
+    }
+  ]
+}

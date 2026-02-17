@@ -6,7 +6,7 @@
       "tag": "createbigcannons:ingot_cast_iron"
     },
     "I": {
-      "tag": "createbigcannons:ingot_iron"
+      "tag": "c:iron_ingots"
     },
     "S": {
       "tag": "minecraft:wooden_slabs"

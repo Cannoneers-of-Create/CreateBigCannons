@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     {
       "id": "#forge:storage_blocks/bronze",
@@ -13,9 +12,6 @@
       "id": "#c:bronze_blocks",
       "required": false
     },
-    {
-      "id": "alloyed:bronze_block",
-      "required": false
-    }
+    "createbigcannons:bronze_block"
   ]
 }
