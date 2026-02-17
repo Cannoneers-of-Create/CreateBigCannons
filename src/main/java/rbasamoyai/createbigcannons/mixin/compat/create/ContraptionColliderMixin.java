@@ -31,9 +31,6 @@ public abstract class ContraptionColliderMixin {
 																 @Local BlockState collidedState,
 																 @Local StructureBlockInfo blockInfo) {
 		if (original) return true;
-        if (level.isClientSide) {
-            int x = 0;
-        }
 		if (CBCModifiedContraptionRegistry.canLoadBigCannon(contraption)) {
 			boolean specialCollider = ((CanLoadBigCannon) contraption).createbigcannons$getCannonLoadingColliders().contains(pos);
 			BlockPos offsetPos = pos.relative(movementDirection);
