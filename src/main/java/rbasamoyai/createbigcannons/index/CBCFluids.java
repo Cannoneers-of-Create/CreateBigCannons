@@ -11,6 +11,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.crafting.foundry.MoltenMetalLiquidBlock;
 import rbasamoyai.createbigcannons.index.fluid_utils.CBCFlowingFluid;
 import rbasamoyai.createbigcannons.index.fluid_utils.FluidBuilder;
@@ -19,6 +20,8 @@ import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCFluids {
+
+    static { ModGroup.useModTab(ModGroup.MAIN_TAB_KEY); }
 
 	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_CAST_IRON =
 			standardFluid("molten_cast_iron")
