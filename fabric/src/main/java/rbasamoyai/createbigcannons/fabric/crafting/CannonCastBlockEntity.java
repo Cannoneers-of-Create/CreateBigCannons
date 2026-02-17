@@ -3,16 +3,19 @@ package rbasamoyai.createbigcannons.fabric.crafting;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.api.connectivity.ConnectivityHandler;
+import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.foundation.fluid.FluidHelper;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import net.createmod.catnip.animation.LerpedFloat;
 
 import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
 import io.github.fabricators_of_create.porting_lib.transfer.TransferUtil;
 import io.github.fabricators_of_create.porting_lib.transfer.fluid.FluidTank;
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.data.Pair;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.fabricmc.fabric.api.transfer.v1.storage.base.SidedStorageBlockEntity;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -232,7 +235,31 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity impleme
 
 	@Override
 	public boolean tryEmptyItemIntoBE(Level worldIn, Player player, InteractionHand handIn, ItemStack heldItem, Direction side) {
-		return FluidHelper.tryEmptyItemIntoBE(worldIn, player, handIn, heldItem, this, side);
+        if (!GenericItemEmptying.canItemBeEmptied(worldIn, heldItem)) return false;
+        if (worldIn.isClientSide) return true;
+
+        Pair<FluidStack, ItemStack> emptyingResult = GenericItemEmptying.emptyItem(worldIn, heldItem, true);
+        FluidStack fluidStack = emptyingResult.getFirst();
+
+        try (Transaction t = TransferUtil.getTransaction()) {
+            long fillAmount = this.fluid.insert(fluidStack.getType(), fluidStack.getAmount(), t);
+            if (fluidStack.getAmount() != fillAmount && (!player.isCreative() || fillAmount < 1))
+                return false; // Enable top-up filling in creative
+
+            ItemStack copyOfHeld = heldItem.copy();
+            emptyingResult = GenericItemEmptying.emptyItem(worldIn, copyOfHeld, false);
+            t.commit();
+
+            if (!player.isCreative()) {
+                if (copyOfHeld.isEmpty())
+                    player.setItemInHand(handIn, emptyingResult.getSecond());
+                else {
+                    player.setItemInHand(handIn, copyOfHeld);
+                    player.getInventory().placeItemBackInInventory(emptyingResult.getSecond());
+                }
+            }
+            return true;
+        }
 	}
 
 	@Override

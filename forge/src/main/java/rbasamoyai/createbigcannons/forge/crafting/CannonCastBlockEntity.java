@@ -4,9 +4,9 @@ import com.simibubi.create.api.connectivity.ConnectivityHandler;
 import com.simibubi.create.content.fluids.transfer.GenericItemEmptying;
 import com.simibubi.create.content.fluids.transfer.GenericItemFilling;
 import com.simibubi.create.foundation.fluid.SmartFluidTank;
-import net.createmod.catnip.data.Pair;
-import net.createmod.catnip.animation.LerpedFloat;
 
+import net.createmod.catnip.animation.LerpedFloat;
+import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -263,7 +263,10 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 		Pair<FluidStack, ItemStack> emptyingResult = GenericItemEmptying.emptyItem(worldIn, heldItem, true);
 		FluidStack fluidStack = emptyingResult.getFirst();
 
-		if (fluidStack.getAmount() != this.fluid.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE)) return false;
+        int fillAmount = this.fluid.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE);
+        if (fluidStack.getAmount() != fillAmount && (!player.isCreative() || fillAmount < 1)) {
+            return false; // Enable top-up filling in creative
+        }
 
 		ItemStack copyOfHeld = heldItem.copy();
 		emptyingResult = GenericItemEmptying.emptyItem(worldIn, copyOfHeld, false);
