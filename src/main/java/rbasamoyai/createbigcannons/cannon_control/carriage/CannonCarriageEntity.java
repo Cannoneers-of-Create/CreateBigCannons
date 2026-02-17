@@ -5,9 +5,8 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-
 import org.joml.Vector4f;
+
 import com.simibubi.create.AllItems;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
@@ -20,6 +19,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -428,7 +428,16 @@ public class CannonCarriageEntity extends Entity implements ControlPitchContrapt
 			this.xRotO = flag ? this.cannonContraption.prevPitch : -this.cannonContraption.prevPitch;
 			this.setXRot(flag ? this.cannonContraption.pitch : -this.cannonContraption.pitch);
 			this.yRotO = this.yRotO + Mth.degreesDifference(this.yRotO, this.cannonContraption.prevYaw);
-			this.setYRot(this.getYRot() + Mth.degreesDifference(this.getYRot(), this.cannonContraption.yaw));
+            float deltaYaw = Mth.degreesDifference(this.getYRot(), this.cannonContraption.yaw);
+            this.setYRot(this.getYRot() + deltaYaw);
+
+            if (this.level().isClientSide) {
+                Vector4f newState = this.getWheelState();
+                float f = deltaYaw * 7;
+                newState.add(f, f, f, f);
+                this.setWheelState(newState);
+                NetworkPlatform.sendToServer(new ServerboundCarriageWheelPacket(this));
+            }
 		}
 	}
 
