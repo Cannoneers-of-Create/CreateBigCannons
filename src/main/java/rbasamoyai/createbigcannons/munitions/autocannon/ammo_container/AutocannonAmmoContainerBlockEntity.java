@@ -152,7 +152,9 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 	}
 
 	protected Component getDefaultName() {
-		return Component.translatable(CBCBlocks.AUTOCANNON_AMMO_CONTAINER.get().getDescriptionId());
+		return Component.translatable(this.isCreativeContainer()
+            ? CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER.get().getDescriptionId()
+            : CBCBlocks.AUTOCANNON_AMMO_CONTAINER.get().getDescriptionId());
 	}
 
 	@Override
