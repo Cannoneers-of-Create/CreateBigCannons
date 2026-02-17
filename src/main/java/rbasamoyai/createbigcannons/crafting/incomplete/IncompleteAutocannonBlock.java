@@ -22,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -98,11 +99,12 @@ public class IncompleteAutocannonBlock extends AbstractIncompleteAutocannonBlock
 		return this.resultBlock;
 	}
 
-	@Override
-	public BlockState getCompleteBlockState(BlockState state) {
-		BlockState complete = this.getResultBlock().defaultBlockState();
-		return complete.hasProperty(FACING) ? complete.setValue(FACING, state.getValue(FACING)) : complete;
-	}
+    @Override
+    public BlockState getCompleteBlockState(BlockState state) {
+        BlockState complete = this.getResultBlock().defaultBlockState();
+        return complete.trySetValue(FACING, state.getValue(FACING))
+            .trySetValue(BlockStateProperties.WATERLOGGED, state.getValue(BlockStateProperties.WATERLOGGED));
+    }
 
 	@Override
 	public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult result) {
