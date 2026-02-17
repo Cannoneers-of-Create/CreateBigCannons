@@ -306,7 +306,7 @@ public class CannonLoadingScenes {
 		scene.overlay().chaseBoundingBoxOutline(PonderPalette.WHITE, bb1, bb3, 20);
 		scene.overlay().chaseBoundingBoxOutline(PonderPalette.WHITE, bb2, bb2.move(util.vector().of(-1, 0, 0)), 20);
 
-		scene.idle(40);
+		scene.idle(45);
 
 		scene.overlay().showText(80).text("The barrel that the loaded projectile is in is also counted towards the barrels travelled.");
 		scene.idle(120);

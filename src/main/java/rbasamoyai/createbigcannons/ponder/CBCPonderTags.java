@@ -87,6 +87,7 @@ public class CBCPonderTags {
             .add(CBCBlocks.CREATIVE_AUTOCANNON_AMMO_CONTAINER);
 
         HELPER.addToTag(CANNON_CRAFTING)
+            .add(CBCBlocks.BASIN_FOUNDRY_LID)
             .add(CBCBlocks.CASTING_SAND)
             .add(CBCBlocks.CANNON_DRILL)
             .add(CBCBlocks.CANNON_BUILDER)

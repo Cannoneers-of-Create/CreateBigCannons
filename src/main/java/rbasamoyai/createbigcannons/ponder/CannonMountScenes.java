@@ -480,9 +480,9 @@ public class CannonMountScenes {
 		BlockPos mountPos = util.grid().at(2, 1, 2);
 
 		scene.world().rotateSection(autocannon, 0, 0, -60, 40);
-		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(mountPos, 60, 40));
-		scene.idle(60);
 		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(mountPos, -60, 40));
+		scene.idle(60);
+		scene.addInstruction(CBCAnimateBlockEntityInstruction.cannonMountPitch(mountPos, 60, 40));
 		scene.world().rotateSection(autocannon, 0, 0, 60, 40);
 		scene.idle(60);
 
