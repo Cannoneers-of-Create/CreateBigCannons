@@ -109,7 +109,7 @@ public class AutocannonAmmoContainerItem extends BlockItem implements MenuProvid
 		ItemStack ret = ItemStack.EMPTY;
 		boolean isCreative = ctItem.isCreative();
 
-		if (isCreative && shouldPullTracer(container) || !isCreative && getTotalAmmoCount(container) % getTracerSpacing(container) == 0) {
+		if (isCreative && shouldPullTracer(container) || !isCreative && getTotalAmmoCount(container) % (getTracerSpacing(container) + 1) == 0) {
 			if (!tracerAmmo.isEmpty()) {
 				if (isCreative) {
 					ret = tracerAmmo.copy();
