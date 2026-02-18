@@ -33,14 +33,14 @@ side = "BOTH"
 modId = "create"
 mandatory = true
 versionRange="${create_version_range}"
-ordering = "NONE"
+ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
 modId = "ritchiesprojectilelib"
 mandatory = true
 versionRange="[${rpl_version},)"
-ordering = "NONE"
+ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]

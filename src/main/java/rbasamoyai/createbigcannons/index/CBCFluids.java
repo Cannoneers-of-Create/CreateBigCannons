@@ -6,8 +6,18 @@ import com.tterrag.registrate.AbstractRegistrate;
 import com.tterrag.registrate.util.entry.RegistryEntry;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.BlockSource;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.DispensibleContainerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -36,7 +46,11 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
+            .source(CBCFlowingFluid.Still::new)
 			.block(MoltenMetalLiquidBlock::new).build()
+            .bucket()
+            .onRegister(CBCFluids::registerFluidDispenseBehavior)
+            .build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
@@ -53,7 +67,11 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
-			.block(MoltenMetalLiquidBlock::new).build()
+            .source(CBCFlowingFluid.Still::new)
+            .block(MoltenMetalLiquidBlock::new).build()
+            .bucket()
+            .onRegister(CBCFluids::registerFluidDispenseBehavior)
+            .build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
@@ -70,7 +88,11 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
+            .source(CBCFlowingFluid.Still::new)
 			.block(MoltenMetalLiquidBlock::new).build()
+            .bucket()
+            .onRegister(CBCFluids::registerFluidDispenseBehavior)
+            .build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
 
@@ -87,9 +109,30 @@ public class CBCFluids {
 					.tickRate(25)
 					.flowSpeed(3)
 					.blastResistance(100f))
+            .source(CBCFlowingFluid.Still::new)
 			.block(MoltenMetalLiquidBlock::new).build()
+            .bucket()
+            .onRegister(CBCFluids::registerFluidDispenseBehavior)
+            .build()
 			.transform(IndexPlatform::doFluidBuilderTransforms)
 			.register();
+
+    private static final DispenseItemBehavior DEFAULT = new DefaultDispenseItemBehavior();
+    private static final DispenseItemBehavior DISPENSE_FLUID = new DefaultDispenseItemBehavior() {
+        @Override
+        protected ItemStack execute(BlockSource pSource, ItemStack pStack) {
+            DispensibleContainerItem dispensibleContainerItem = (DispensibleContainerItem) pStack.getItem();
+            BlockPos pos = pSource.getPos().relative(pSource.getBlockState().getValue(DispenserBlock.FACING));
+            Level level = pSource.getLevel();
+            if (dispensibleContainerItem.emptyContents(null, level, pos, null))
+                return new ItemStack(Items.BUCKET);
+            return DEFAULT.dispense(pSource, pStack);
+        }
+    };
+
+    private static void registerFluidDispenseBehavior(BucketItem bucket) {
+        DispenserBlock.registerBehavior(bucket, DISPENSE_FLUID);
+    }
 
 	public static void register() {}
 

@@ -50,15 +50,14 @@ public class CreateBigCannons {
         CBCDisplaySources.register();
 		CBCBlocks.register();
 		CBCItems.register();
-		CBCBlockEntities.register();
+        CBCFluids.register();
+        CBCMenuTypes.register();
 		CBCEntityTypes.register();
-		CBCMenuTypes.register();
-		CBCFluids.register();
+        CBCBlockEntities.register();
 		CBCRecipeTypes.register();
 		CBCCannonContraptionTypes.register();
 
 		CBCChecks.register();
-		CBCTags.register();
 
 		CBCRootNetwork.init();
 	}
