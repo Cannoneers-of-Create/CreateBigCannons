@@ -12,9 +12,18 @@ import com.tterrag.registrate.util.entry.RegistryEntry;
 
 import net.createmod.catnip.theme.Color;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.dispenser.BlockSource;
+import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.DispensibleContainerItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockAndTintGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
@@ -43,7 +52,11 @@ public class CBCFluids {
                 .tickRate(25)
                 .slopeFindDistance(3)
                 .explosionResistance(100f))
-			.block(MoltenMetalLiquidBlock::new).build()
+            .source(BaseFlowingFluid.Source::new)
+            .block(MoltenMetalLiquidBlock::new).build()
+            .bucket()
+            .onRegister(CBCFluids::registerFluidDispenseBehavior)
+            .build()
 			.register();
 
 	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_BRONZE = REGISTRATE
@@ -59,7 +72,11 @@ public class CBCFluids {
                 .tickRate(25)
                 .slopeFindDistance(3)
                 .explosionResistance(100f))
-			.block(MoltenMetalLiquidBlock::new).build()
+            .source(BaseFlowingFluid.Source::new)
+            .block(MoltenMetalLiquidBlock::new).build()
+            .bucket()
+            .onRegister(CBCFluids::registerFluidDispenseBehavior)
+            .build()
 			.register();
 
 	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_STEEL = REGISTRATE
@@ -75,7 +92,11 @@ public class CBCFluids {
                 .tickRate(25)
                 .slopeFindDistance(3)
                 .explosionResistance(100f))
-			.block(MoltenMetalLiquidBlock::new).build()
+            .source(BaseFlowingFluid.Source::new)
+            .block(MoltenMetalLiquidBlock::new).build()
+            .bucket()
+            .onRegister(CBCFluids::registerFluidDispenseBehavior)
+            .build()
 			.register();
 
 	public static final RegistryEntry<Fluid, BaseFlowingFluid.Flowing> MOLTEN_NETHERSTEEL = REGISTRATE
@@ -91,8 +112,29 @@ public class CBCFluids {
                 .tickRate(25)
                 .slopeFindDistance(3)
                 .explosionResistance(100f))
-			.block(MoltenMetalLiquidBlock::new).build()
+            .source(BaseFlowingFluid.Source::new)
+            .block(MoltenMetalLiquidBlock::new).build()
+            .bucket()
+            .onRegister(CBCFluids::registerFluidDispenseBehavior)
+            .build()
 			.register();
+
+    private static final DispenseItemBehavior DEFAULT = new DefaultDispenseItemBehavior();
+    private static final DispenseItemBehavior DISPENSE_FLUID = new DefaultDispenseItemBehavior() {
+        @Override
+        protected ItemStack execute(BlockSource pSource, ItemStack pStack) {
+            DispensibleContainerItem dispensibleContainerItem = (DispensibleContainerItem) pStack.getItem();
+            BlockPos pos = pSource.pos().relative(pSource.state().getValue(DispenserBlock.FACING));
+            Level level = pSource.level();
+            if (dispensibleContainerItem.emptyContents(null, level, pos, null))
+                return new ItemStack(Items.BUCKET);
+            return DEFAULT.dispense(pSource, pStack);
+        }
+    };
+
+    private static void registerFluidDispenseBehavior(BucketItem bucket) {
+        DispenserBlock.registerBehavior(bucket, DISPENSE_FLUID);
+    }
 
 	public static void register() {}
 
