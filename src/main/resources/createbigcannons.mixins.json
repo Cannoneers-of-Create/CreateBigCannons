@@ -23,7 +23,6 @@
     "ContextAwareReloadListenerAccessor",
     "EntityMixin",
     "ExplosionMixin",
-    "LivingEntityMixin",
     "PlayerMixin",
     "ServerEntityMixin",
     "ServerLevelMixin",

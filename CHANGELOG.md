@@ -7,6 +7,7 @@
 Fixes:
 - [1.20.1] Fixed nethersteel and steel screw breech max stress not having been increased in v5.11.0 (8->10 and 6->8)
 - [1.21.1] Fixed splinter particles crashing game
+- [1.21.1] Fixed crash with Accessories
 
 ## [5.11.0] - 2026-02-17
 
