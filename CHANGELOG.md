@@ -4,7 +4,7 @@
 
 **Create Big Cannons 5.11.1, coming with fixes for the initial v5.11 release.**
 
-## [5.11.0] - 2026-17-02
+## [5.11.0] - 2026-02-17
 
 **Create Big Cannons 5.11.0, now supporting Create v6.0.9 on NeoForge 1.21.1 and Create v6.0.8 on Forge and Fabric 1.20.1.** \
 You will need to update Ritchie's Projectile Library to v2.1.2 on 1.21.1.
