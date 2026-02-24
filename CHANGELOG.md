@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.11.1] - Unreleased
+## [5.11.1] - 2026-02-23
 
 **Create Big Cannons 5.11.1, coming with fixes for the initial v5.11 release.**
 
