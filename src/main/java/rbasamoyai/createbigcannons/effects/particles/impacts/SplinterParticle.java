@@ -28,6 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 import rbasamoyai.createbigcannons.index.CBCVertexFormatElements;
+import rbasamoyai.createbigcannons.mixin.client.BufferBuilderAccessor;
 import rbasamoyai.createbigcannons.multiloader.IndexPlatform;
 import rbasamoyai.createbigcannons.remix.LightingRemix;
 
@@ -130,7 +131,8 @@ public class SplinterParticle extends CBCBlockParticle {
 
         // Because we can't have nice things in 1.21.1
         buffer.addVertex(vector3f.x(), vector3f.y(), vector3f.z());
-        long i1 = buffer.beginElement(CBCVertexFormatElements.BLOCK_UV.element);
+        BufferBuilderAccessor bufferAcc = (BufferBuilderAccessor) buffer;
+        long i1 = bufferAcc.callBeginElement(CBCVertexFormatElements.BLOCK_UV.element);
         if (i1 != -1L) {
             MemoryUtil.memPutFloat(i1, blockU0);
             MemoryUtil.memPutFloat(i1 + 4L, blockV0);
