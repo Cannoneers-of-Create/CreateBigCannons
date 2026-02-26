@@ -44,13 +44,6 @@ ordering = "AFTER"
 side = "BOTH"
 
 [[dependencies.createbigcannons]]
-modId = "unify"
-mandatory = false
-versionRange = "[${unify_version},)"
-ordering = "NONE"
-side = "BOTH"
-
-[[dependencies.createbigcannons]]
 modId = "copycats"
 mandatory = false
 versionRange = "${copycats_requirement}"

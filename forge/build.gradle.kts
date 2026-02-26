@@ -181,7 +181,6 @@ tasks.processResources {
 		"create_version" to mod.dep("create_forge_version").substringBefore("-"),
         "create_version_range" to mod.dep("create_forge_version_range"),
         "rpl_version" to mod.dep("rpl_version"),
-		"unify_version" to mod.dep("unify_forge_version"),
 		"copycats_requirement" to mod.dep("copycats_requirement_forge"),
 		"framedblocks_requirement" to mod.dep("framedblocks_requirement_forge"),
 		"curios_requirement" to mod.dep("curios_requirement_forge")
