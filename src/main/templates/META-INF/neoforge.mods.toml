@@ -49,13 +49,6 @@ versionRange="[${rpl_neoforge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
-#[[dependencies.${mod_id}]]
-#modId = "unify"
-#type = "optional"
-# replace version range
-#ordering = "NONE"
-#side = "BOTH"
-
 [[dependencies.${mod_id}]]
 modId = "copycats"
 type = "optional"
