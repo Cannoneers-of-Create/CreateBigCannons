@@ -502,6 +502,15 @@ public abstract class CBCCraftingRecipeProvider extends RecipeProvider {
 			.unlockedBy("has_wool", has(ItemTags.WOOL))
 			.save(recipeOutput);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, CBCItems.BLOCK_ARMOR_INSPECTION_TOOL)
+            .define('M', AllItems.PRECISION_MECHANISM).define('S', CBCItems.RECOIL_SPRING).define('P', Items.IRON_BARS)
+            .pattern("M")
+            .pattern("S")
+            .pattern("P")
+            .unlockedBy(getHasName(CBCItems.RECOIL_SPRING), has(CBCItems.RECOIL_SPRING))
+            .unlockedBy(getHasName(AllItems.PRECISION_MECHANISM), has(AllItems.PRECISION_MECHANISM))
+            .save(recipeOutput);
+
 		specialRecipe(MunitionFuzingRecipe::new, recipeOutput, "munition_fuzing");
 		specialRecipe(CartridgeAssemblyRecipe::new, recipeOutput, "cartridge_assembly");
 		specialRecipe(BigCartridgeFillingRecipe::new, recipeOutput, "big_cartridge_filling");

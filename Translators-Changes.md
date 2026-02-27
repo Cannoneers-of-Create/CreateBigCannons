@@ -6,6 +6,13 @@ Note: Changes to en_us.json before Create Big Cannons 0.5.3.b => 0.5.4 will not 
 
 ---
 
+## 5.11.0 → 5.11.2
+Additions: \
+&plus; `"item.createbigcannons.block_armor_inspection_tool.tooltip": "BLOCK ARMOR INSPECTION TOOL"` \
+&plus; `"item.createbigcannons.block_armor_inspection_tool.tooltip.action1": "Shows _block armor properties._"` \
+&plus; `"item.createbigcannons.block_armor_inspection_tool.tooltip.control1": "Hover over Block"` \
+&plus; `"item.createbigcannons.block_armor_inspection_tool.tooltip.summary": "Displays information about the _material properties_ of a block against _projectile impacts._ Shows the block's _Toughness_ (penetration stopping) and _Hardness_ (surface stopping)."`
+
 ## 5.8.1 → 5.11.0
 Additions: \
 &plus; `"block.createbigcannons.bronze_block": "Block of Bronze"` \

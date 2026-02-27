@@ -282,7 +282,6 @@ public class CBCItems {
 	public static final ItemEntry<BlockArmorInspectionToolItem> BLOCK_ARMOR_INSPECTION_TOOL = REGISTRATE
 		.item("block_armor_inspection_tool", BlockArmorInspectionToolItem::new)
 		.properties(p -> p.stacksTo(1))
-		.properties(p -> p.rarity(Rarity.EPIC))
 		.register();
 
 	public static final ItemEntry<GasMaskItem> GAS_MASK = REGISTRATE

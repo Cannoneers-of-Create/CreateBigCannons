@@ -340,6 +340,11 @@ public class CBCLangGen {
 		.header("GAS MASK")
 		.summary("_Protects against gas clouds_ when worn on the head. _Does not protect_ against _lingering potions_, _dragon's breath_, or _potion fluid blobs_.");
 
+        tooltip(CBCItems.BLOCK_ARMOR_INSPECTION_TOOL)
+        .header("BLOCK ARMOR INSPECTION TOOL")
+        .summary("Displays information about the _material properties_ of a block against _projectile impacts._ Shows the block's _Toughness_ (penetration stopping) and _Hardness_ (surface stopping).")
+        .controlAndAction("Hover over Block", "Shows _block armor properties._");
+
 		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_AMMO_CONTAINERS);
 		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_CARTRIDGES);
 		createEMITagTranslation(CBCTags.CBCItemTags.AUTOCANNON_ROUNDS);
