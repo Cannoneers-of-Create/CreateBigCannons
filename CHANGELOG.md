@@ -6,6 +6,7 @@
 
 Changed:
 - Loosened optional Curios and Trinkets requirements
+- Changed Block Armor Inspection Tool texture
 
 Fixed:
 - [1.20.1] Fixed nethersteel and steel screw breech max stress not having been increased in v5.11.1 (8->10 and 6->8) (but for real)
