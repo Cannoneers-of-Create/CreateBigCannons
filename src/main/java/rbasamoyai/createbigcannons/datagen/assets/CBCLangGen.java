@@ -237,6 +237,11 @@ public class CBCLangGen {
 		.header("TRACER TIP")
 		.summary("_Illuminates_ autocannon rounds, making them visible.");
 
+        tooltip(CBCItems.BLOCK_ARMOR_INSPECTION_TOOL)
+        .header("BLOCK ARMOR INSPECTION TOOL")
+        .summary("Displays information about the _material properties_ of a block against _projectile impacts._ Shows the block's _Toughness_ (penetration stopping) and _Hardness_ (surface stopping).")
+        .controlAndAction("Hover over Block", "Shows _block armor properties._");
+
 		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("jei_info"), "added_fuze", "+ Fuze");
 		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("jei_info"), "added_power", "+ Power");
 		REGISTRATE.addLang("tooltip", CreateBigCannons.resource("tracer"), "+ Tracer");
