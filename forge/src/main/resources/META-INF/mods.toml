@@ -63,3 +63,10 @@ mandatory = false
 versionRange = "${curios_requirement}"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.createbigcannons]]
+modId = "cbc_at"
+mandatory = false
+versionRange = "${cbc_at_requirement}"
+ordering = "NONE"
+side = "BOTH"
