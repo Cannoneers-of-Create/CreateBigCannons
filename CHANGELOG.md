@@ -8,6 +8,9 @@ Changed:
 - [1.20.1] Create Big Cannons will not load with the latest release of CBC: Advanced Technologies until an issue on their end is fixed.
   - CBC: Advanced Technologies breaks Big Cartridges and prevents them from firing. Other issues may also be present.
 
+Fixed:
+- Fixed NO_DAMAGE munition damage setting not applying to shrapnel (including flak and grapeshot)
+
 ## [5.11.2] - 2026-02-27
 
 **Create Big Cannons 5.11.2, with more fixes.**
