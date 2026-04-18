@@ -11,6 +11,7 @@ Changed:
 Fixed:
 - Fixed NO_DAMAGE munition damage setting not applying to shrapnel (including flak and grapeshot)
 - Fixed Create Pulleys and Gantries pushing more blocks than in vanilla Create
+- Fixed display of upside down Cannon Mount and manual Autocannon when solid blocks are above player
 
 ## [5.11.2] - 2026-02-27
 

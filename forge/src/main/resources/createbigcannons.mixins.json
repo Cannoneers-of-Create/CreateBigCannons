@@ -6,6 +6,7 @@
   "client": [
     "client.GasMaskModelMixin",
     "client.GoggleOverlayRendererMixin",
+    "client.ScreenEffectRendererMixin",
     "client.ValueSettingsClientMixin"
   ],
   "mixins": [
