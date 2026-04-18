@@ -10,6 +10,7 @@ Changed:
 
 Fixed:
 - Fixed NO_DAMAGE munition damage setting not applying to shrapnel (including flak and grapeshot)
+- Fixed Create Pulleys and Gantries pushing more blocks than in vanilla Create
 
 ## [5.11.2] - 2026-02-27
 

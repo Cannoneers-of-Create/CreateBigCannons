@@ -14,8 +14,8 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.api.contraption.BlockMovementChecks;
+import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.chassis.ChassisBlockEntity;
 import com.simibubi.create.content.contraptions.gantry.GantryContraption;
@@ -370,9 +370,10 @@ public class ContraptionRemix {
 			&& level.getBlockEntity(offsetPos) instanceof IBigCannonBlockEntity cbe) {
 			pushState = cbe.cannonBehavior().block().state();
 		}
-		boolean push = offset == forcedDirection && !BlockMovementChecks.isNotSupportive(state, forcedDirection);
+        boolean pushingMunition = IBigCannonBlockEntity.isValidMunitionState(forcedAxis, pushState);
+		boolean push = offset == forcedDirection && !BlockMovementChecks.isNotSupportive(state, forcedDirection) && pushingMunition;
 		if ((contraption instanceof GantryContraption || contraption instanceof PulleyContraption && !push)
-			&& !IBigCannonBlockEntity.isValidMunitionState(forcedAxis, pushState)) {
+			&& !pushingMunition) {
 			return false;
 		}
 		if (push
