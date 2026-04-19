@@ -533,7 +533,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 	@Override
 	public List<KineticBlockEntity> getAllKineticBlockEntities() {
-		return List.of(this.pitchInterface, this.yawInterface);
+        return new java.util.ArrayList<>(List.of(this.pitchInterface, this.yawInterface));
 	}
 
 	public void tryUpdatingSpeed() {
