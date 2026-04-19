@@ -369,11 +369,12 @@ public class ContraptionRemix {
 			&& level.getBlockEntity(offsetPos) instanceof IBigCannonBlockEntity cbe) {
 			pushState = cbe.cannonBehavior().block().state();
 		}
-		boolean push = offset == forcedDirection && !BlockMovementChecks.isNotSupportive(state, forcedDirection);
-		if ((contraption instanceof GantryContraption || contraption instanceof PulleyContraption && !push)
-			&& !IBigCannonBlockEntity.isValidMunitionState(forcedAxis, pushState)) {
-			return false;
-		}
+        boolean pushingMunition = IBigCannonBlockEntity.isValidMunitionState(forcedAxis, pushState);
+        boolean push = offset == forcedDirection && !BlockMovementChecks.isNotSupportive(state, forcedDirection) && pushingMunition;
+        if ((contraption instanceof GantryContraption || contraption instanceof PulleyContraption && !push)
+            && !pushingMunition) {
+            return false;
+        }
 		if (push
 			&& !blockAttachedTowardsFace
 			&& offsetState.getBlock() instanceof BigCannonBlock cBlock
