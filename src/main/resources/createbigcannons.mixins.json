@@ -16,6 +16,7 @@
     "client.LevelRendererMixin",
     "client.PitchOrientedContraptionEntityMixin",
     "client.RPLClientHandlersMixin",
+    "client.ScreenEffectRendererMixin",
     "client.SoundEngineMixin",
     "client.ValueSettingsClientMixin"
   ],
