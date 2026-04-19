@@ -21,6 +21,8 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
+import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
@@ -81,7 +83,7 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 			type.getVolume() * 2, type.getPitch(), false);
 	}
 
-	protected boolean canDestroyBlock(BlockState state) { return true; }
+	protected boolean canDestroyBlock(BlockState state) { return CBCConfigs.server().munitions.damageRestriction.get() != CBCCfgMunitions.GriefState.NO_DAMAGE; }
 
 	@Nullable public ParticleOptions getTrailParticle() { return ParticleTypes.SMOKE; }
 
