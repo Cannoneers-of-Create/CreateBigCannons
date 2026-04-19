@@ -77,7 +77,7 @@ public class CannonCastBlockEntity extends AbstractCannonCastBlockEntity {
 
 	private IFluidHandler createHandlerForCap() {
 		return this.isController() ? this.fluid :
-			this.getController() == null ? this.fluid : ((CannonCastBlockEntity) this.getControllerBE()).createHandlerForCap();
+			this.getControllerBE() instanceof CannonCastBlockEntity controller ? controller.createHandlerForCap() : this.fluid;
 	}
 
 	@Override

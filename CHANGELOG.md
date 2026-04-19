@@ -15,6 +15,7 @@ Fixed:
 - Fixed display of upside down Cannon Mount and manual Autocannon when solid blocks are above player
 - Fixed cannon contraption breaking in place of existing cannon resulting in new cannon disconnecting
 - Fixed cannon mount kinetics crashing with other mods (particularly Create: Simulated)
+- Fixed cannon cast crashing game when multiple pipes connected to top
 
 ## [5.11.2] - 2026-02-27
 
