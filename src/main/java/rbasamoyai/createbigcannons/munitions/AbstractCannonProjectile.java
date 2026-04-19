@@ -39,6 +39,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.cannon_control.contraption.CBCPositionTransformers;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
@@ -229,7 +230,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 			BlockHitResult blockResult = this.level().clip(new ClipContext(currentStart, currentEnd, ClipContext.Block.COLLIDER,
 				ClipContext.Fluid.NONE, this));
 			if (blockResult.getType() != HitResult.Type.MISS)
-				currentEnd = blockResult.getLocation();
+				currentEnd = CBCPositionTransformers.transformVec3(this.level(), blockResult.getLocation());
 			if (p == 0) {
 				BlockHitResult fluidResult = this.level().clip(new ClipContext(currentStart, currentEnd, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this));
 				if (fluidResult.getType() != HitResult.Type.MISS) {

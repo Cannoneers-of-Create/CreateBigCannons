@@ -25,6 +25,7 @@ import rbasamoyai.createbigcannons.compat.copycats.CopycatsCompat;
 import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 import rbasamoyai.createbigcannons.compat.curios.CBCCuriosIntegration;
 import rbasamoyai.createbigcannons.compat.framedblocks.FramedBlocksCompat;
+import rbasamoyai.createbigcannons.compat.sable.SableCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
@@ -83,6 +84,7 @@ public class CreateBigCannonsNeoForge {
 		DefaultCannonMountPropertiesSerializers.init();
 		CBCModsNeoForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsNeoForge.COPYCATS::getBlock));
 		CBCModsNeoForge.FRAMEDBLOCKS.executeIfInstalled(() -> () -> FramedBlocksCompat.init());
+        CBCModsNeoForge.SABLE.executeIfInstalled(() -> () -> SableCompat.init());
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {

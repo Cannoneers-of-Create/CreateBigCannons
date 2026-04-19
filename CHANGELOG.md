@@ -17,6 +17,7 @@ Fixed:
 - Fixed cannon mount kinetics crashing with other mods (particularly Create: Simulated)
 - Fixed cannon cast crashing game when multiple pipes connected to top
 - Fixed cannon contraptions not positioning with Sable sublevels (ships, contraptions)
+- Fixed lag spike from large entity finding AABB when projectile impacts ship
 
 ## [5.11.2] - 2026-02-27
 
