@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.cannon_control.cannon_mount;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.simibubi.create.content.kinetics.base.IRotate;
@@ -62,7 +63,10 @@ public abstract class CannonMountInterfaceBlockEntity extends KineticBlockEntity
 		public List<BlockPos> addPropagationLocations(IRotate block, BlockState state, List<BlockPos> neighbours) {
 			Direction.Axis axis = block.getRotationAxis(state);
 			BlockPos pos1 = BlockPos.ZERO.relative(Direction.fromAxisAndDirection(axis, Direction.AxisDirection.POSITIVE));
-			return List.of(this.worldPosition.offset(pos1), this.worldPosition.subtract(pos1));
+            List<BlockPos> li = new ArrayList<>();
+            li.add(this.worldPosition.offset(pos1));
+            li.add(this.worldPosition.subtract(pos1));
+            return li;
 		}
 	}
 
@@ -74,7 +78,9 @@ public abstract class CannonMountInterfaceBlockEntity extends KineticBlockEntity
 		@Override
 		public List<BlockPos> addPropagationLocations(IRotate block, BlockState state, List<BlockPos> neighbours) {
 			Direction vertical = state.getValue(BlockStateProperties.VERTICAL_DIRECTION);
-			return List.of(this.worldPosition.relative(vertical));
+            List<BlockPos> li = new ArrayList<>();
+            li.add(this.worldPosition.relative(vertical));
+			return li;
 		}
 	}
 
