@@ -29,6 +29,7 @@ repositories {
     maven { url = "https://maven.theillusivec4.top/" } // Curios
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
     maven { url = 'https://maven.blamejared.com' }
+    maven { url = "https://maven.ryanhcode.dev/releases" } // Sable
 
     exclusiveContent {
         forRepository {
@@ -172,6 +173,9 @@ dependencies {
     // Curios
     runtimeOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${minecraft_version}")
     compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${minecraft_version}:api")
+
+    // Sable
+    api("dev.ryanhcode.sable:sable-common-${project.minecraft_version}:${project.sable_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
