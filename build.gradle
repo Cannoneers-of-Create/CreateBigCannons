@@ -175,7 +175,7 @@ dependencies {
     compileOnly("top.theillusivec4.curios:curios-neoforge:${curios_version}+${minecraft_version}:api")
 
     // Sable
-    api("dev.ryanhcode.sable:sable-common-${project.minecraft_version}:${project.sable_version}")
+    api("dev.ryanhcode.sable:sable-neoforge-${project.minecraft_version}:${project.sable_version}")
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
