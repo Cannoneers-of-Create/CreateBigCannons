@@ -81,8 +81,9 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 		if (this.canConnectToSide(state, facing)
 			&& state1.getBlock() instanceof BigCannonBlock cBlock1
 			&& cBlock1.getCannonMaterialInLevel(level, state1, pos1) == material
+            && cBlock1.canConnectToSide(state1, opposite)
 			&& be1 instanceof IBigCannonBlockEntity cbe1
-			&& cBlock1.canConnectToSide(state1, opposite)) {
+            && !cbe1.cannonBehavior().isProtectedFromSurroundingRemovals()) {
 			cbe1.cannonBehavior().setConnectedFace(opposite, false);
 			cbe1.cannonBehavior().setWelded(opposite, false);
 			if (cbe1 instanceof LayeredBigCannonBlockEntity layered) {
@@ -99,8 +100,9 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 		if (this.canConnectToSide(state, opposite)
 			&& state2.getBlock() instanceof BigCannonBlock cBlock2
 			&& cBlock2.getCannonMaterialInLevel(level, state2, pos2) == material
+            && cBlock2.canConnectToSide(state2, facing)
 			&& be2 instanceof IBigCannonBlockEntity cbe2
-			&& cBlock2.canConnectToSide(state2, facing)) {
+            && !cbe2.cannonBehavior().isProtectedFromSurroundingRemovals()) {
 			cbe2.cannonBehavior().setConnectedFace(facing, false);
 			cbe2.cannonBehavior().setWelded(facing, false);
 			if (cbe2 instanceof LayeredBigCannonBlockEntity layered) {
@@ -151,7 +153,6 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 			if (be instanceof IBigCannonBlockEntity cbe) {
 				BlockPos pos1 = pos.relative(facing);
 				BlockState state1 = level.getBlockState(pos1);
-				BlockEntity be1 = level.getBlockEntity(pos1);
 
 				if (cBlock.canConnectToSide(state, facing)
 					&& state1.getBlock() instanceof BigCannonBlock cBlock1
@@ -188,7 +189,6 @@ public interface BigCannonBlock extends WeldableBlock, CannonContraptionProvider
 
 				BlockPos pos2 = pos.relative(opposite);
 				BlockState state2 = level.getBlockState(pos2);
-				BlockEntity be2 = level.getBlockEntity(pos2);
 
 				if (cBlock.canConnectToSide(state, opposite)
 					&& state2.getBlock() instanceof BigCannonBlock cBlock2

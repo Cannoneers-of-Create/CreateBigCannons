@@ -52,7 +52,8 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
             if (state1.getBlock() instanceof AutocannonBlock cBlock1
                     && cBlock1.getAutocannonMaterialInLevel(level, state1, pos1) == material
                     && cBlock1.canConnectToSide(state1, opposite)
-                    && be1 instanceof IAutocannonBlockEntity cbe1) {
+                    && be1 instanceof IAutocannonBlockEntity cbe1
+                    && !cbe1.cannonBehavior().isProtectedFromSurroundingRemovals()) {
                 cbe1.cannonBehavior().setConnectedFace(opposite, false);
                 cbe1.cannonBehavior().setWelded(opposite, false);
 				cbe1.cannonBehavior().blockEntity.setChanged();
@@ -67,7 +68,8 @@ public interface AutocannonBlock extends WeldableBlock, CannonContraptionProvide
             if (state2.getBlock() instanceof AutocannonBlock cBlock2
                     && cBlock2.getAutocannonMaterialInLevel(level, state2, pos2) == material
                     && cBlock2.canConnectToSide(state2, facing)
-                    && be2 instanceof IAutocannonBlockEntity cbe2) {
+                    && be2 instanceof IAutocannonBlockEntity cbe2
+                    && !cbe2.cannonBehavior().isProtectedFromSurroundingRemovals()) {
                 cbe2.cannonBehavior().setConnectedFace(facing, false);
                 cbe2.cannonBehavior().setWelded(facing, false);
                 cbe2.cannonBehavior().blockEntity.setChanged();

@@ -21,6 +21,7 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 	protected final Set<Direction> connectedTowards = EnumSet.noneOf(Direction.class);
 	protected final Set<Direction> weldedTowards = EnumSet.noneOf(Direction.class);
 	protected Direction currentFacing;
+    protected boolean protectedFromSurroundingRemovals = false;
 
 	protected CannonBehavior(SmartBlockEntity te) {
 		super(te);
@@ -29,6 +30,7 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 	@Override
 	public void tick() {
 		super.tick();
+        this.protectedFromSurroundingRemovals = false;
 
 		BlockState state = this.blockEntity.getBlockState();
 		if (state.hasProperty(BlockStateProperties.FACING)) {
@@ -111,6 +113,7 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 
 	@Override
 	public void read(CompoundTag nbt, boolean clientPacket) {
+        this.protectedFromSurroundingRemovals = true;
 		this.currentFacing = nbt.contains("Facing") ? Direction.byName(nbt.getString("Facing")) : null;
 
 		boolean updateFlag = false;
@@ -161,5 +164,7 @@ public abstract class CannonBehavior extends BlockEntityBehaviour {
 		BlockState state = this.blockEntity.getBlockState();
 		return state.getBlock() instanceof CannonContraptionProviderBlock cBlock && cBlock.canConnectToSide(state, face);
 	}
+
+    public boolean isProtectedFromSurroundingRemovals() { return this.protectedFromSurroundingRemovals; }
 
 }
