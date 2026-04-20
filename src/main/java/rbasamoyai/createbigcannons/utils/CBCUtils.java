@@ -42,6 +42,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.neoforge.common.conditions.NotCondition;
 import net.neoforged.neoforge.common.conditions.TagEmptyCondition;
+import rbasamoyai.createbigcannons.CBCCompatTransformers;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.multiloader.NetworkPlatform;
 import rbasamoyai.createbigcannons.network.ClientboundBlastSoundPacket;
@@ -249,25 +250,29 @@ public class CBCUtils {
 	}
 
 	/**
-	 * Mixin point for mods such as Valkyrien Skies and Landlord to transform impact vectors. Used for penetration
+	 * Mixin point for mods such as Valkyrien Skies and Sable to transform impact vectors. Used for penetration
 	 * calculations.
-	 *
+	 * <br>
+     * DEPRECATED: Register a transformer through {@link CBCCompatTransformers#addNormalTransformer(CBCCompatTransformers.NormalTransformer)}. This method is no-longer called.
+     *
 	 * @param level
 	 * @param hitPos
 	 * @param normal the untransformed normal
 	 * @return the transformed normal vector
 	 */
+    @Deprecated(forRemoval = true, since = "5.12")
 	public static Vec3 getSurfaceNormalVector(Level level, BlockPos hitPos, Vec3 normal) {
 		return normal;
 	}
 
 	/**
 	 * Version of {@link #getSurfaceNormalVector(Level, BlockPos, Vec3)} that takes in a {@link net.minecraft.world.phys.BlockHitResult}.
-	 * This calls {@link #getSurfaceNormalVector(Level, BlockPos, Vec3)}; apply mixins to that method instead.
+	 * This calls {@link CBCCompatTransformers#transformNormal(Level, BlockHitResult, Vec3)}. Register a transformer
+     * through {@link CBCCompatTransformers#addNormalTransformer(CBCCompatTransformers.NormalTransformer)}.
 	 */
 	public static Vec3 getSurfaceNormalVector(Level level, BlockHitResult hitResult) {
 		Direction dir = hitResult.getDirection();
-		return getSurfaceNormalVector(level, hitResult.getBlockPos(), new Vec3(dir.getStepX(), dir.getStepY(), dir.getStepZ()));
+		return CBCCompatTransformers.transformNormal(level, hitResult, new Vec3(dir.getStepX(), dir.getStepY(), dir.getStepZ()));
 	}
 
 	public static void playBlastLikeSoundOnServer(ServerLevel level, double x, double y, double z, SoundEvent soundEvent,

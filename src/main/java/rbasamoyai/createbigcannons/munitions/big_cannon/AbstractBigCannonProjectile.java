@@ -221,6 +221,8 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 		} else {
 			if (outcome == ImpactResult.KinematicOutcome.STOP) {
 				this.setProjectileMass(0);
+                if (!this.level().isClientSide)
+                    this.impactPos = blockHitResult.getBlockPos();
 			} else {
 				this.setProjectileMass(incidentVel < 1e-4d ? 0 : Math.max(this.getProjectileMass() - durabilityPenalty / 2f, 0));
 			}

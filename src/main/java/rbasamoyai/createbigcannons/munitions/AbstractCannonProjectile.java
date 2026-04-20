@@ -7,6 +7,8 @@ import java.util.WeakHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.joml.Vector3f;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -38,8 +40,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
+import rbasamoyai.createbigcannons.CBCCompatTransformers;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.cannon_control.contraption.CBCPositionTransformers;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
@@ -58,17 +60,18 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 
 	protected static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.BYTE);
 	private static final EntityDataAccessor<Float> PROJECTILE_MASS = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.FLOAT);
+    protected static final EntityDataAccessor<Vector3f> ORIENTATION = SynchedEntityData.defineId(AbstractCannonProjectile.class, EntityDataSerializers.VECTOR3);
 	protected int inGroundTime = 0;
 	@Nullable protected Vec3 inGroundPos = null;
 	protected float damage;
 	protected int inFluidTime = 0;
 	protected int penetrationTime = 0;
 	@Nullable protected Vec3 nextVelocity = null;
-	@Nullable protected Vec3 orientation = null;
 	protected BlockState lastPenetratedBlock = Blocks.AIR.defaultBlockState();
 	protected boolean removeNextTick = false;
 	protected int localSoundCooldown;
 	protected WeakHashMap<Entity, Integer> untouchableEntities = new WeakHashMap<>();
+    @Nullable protected BlockPos impactPos = null;
 
 	protected AbstractCannonProjectile(EntityType<? extends AbstractCannonProjectile> type, Level level) {
 		super(type, level);
@@ -98,6 +101,10 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 		if (this.level().isClientSide || this.level().hasChunk(cpos.x, cpos.z)) {
 			super.tick();
 
+            if (this.impactPos != null) {
+                CBCCompatTransformers.groundProjectile(this.level(), this, this.impactPos);
+                this.impactPos = null;
+            }
 			if (this.nextVelocity != null) {
 				boolean stop = this.nextVelocity.lengthSqr() < 1e-4d;
 				// Bouncing is stochastic
@@ -120,8 +127,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 				this.setDeltaMovement(Vec3.ZERO);
 				if (!this.level().isClientSide) {
 					if (this.shouldFall()) {
-						this.setInGround(false);
-						this.setGroundPos(null);
+						this.startFalling();
 					} else if (!this.canLingerInGround()) {
 						this.inGroundTime++;
 						if (this.inGroundTime == 400) {
@@ -163,10 +169,13 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 				--this.localSoundCooldown;
 
 			if (this.level() instanceof ServerLevel slevel && !this.isRemoved()) {
-				if (CBCConfigs.server().munitions.projectilesCanChunkload.get()) {
-					ChunkPos cpos1 = new ChunkPos(this.blockPosition());
-					RitchiesProjectileLib.queueForceLoad(slevel, cpos1.x, cpos1.z);
-				}
+                if (CBCConfigs.server().munitions.projectilesCanChunkload.get()) {
+                    BlockPos lpos = this.blockPosition();
+                    if (this.isInGround()) // Flying projectiles should not load ship chunks
+                        lpos = CBCCompatTransformers.transformBlockPos(slevel, lpos);
+                    ChunkPos cpos1 = new ChunkPos(lpos);
+                    RitchiesProjectileLib.queueForceLoad(slevel, cpos1.x, cpos1.z);
+                }
 			}
 		}
 	}
@@ -179,10 +188,12 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	}
 
 	public Vec3 getOrientation() {
-		return this.orientation == null ? this.getDeltaMovement() : this.orientation;
+		return new Vec3(this.entityData.get(ORIENTATION));
 	}
 
-	public void setOrientation(Vec3 orientation) { this.orientation = orientation; }
+	public void setOrientation(Vec3 orientation) {
+        this.entityData.set(ORIENTATION, new Vector3f((float) orientation.x, (float) orientation.y, (float) orientation.z));
+    }
 
 	@Override
 	public void lerpTo(double x, double y, double z, float yRot, float xRot, int lerpSteps) {
@@ -230,7 +241,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 			BlockHitResult blockResult = this.level().clip(new ClipContext(currentStart, currentEnd, ClipContext.Block.COLLIDER,
 				ClipContext.Fluid.NONE, this));
 			if (blockResult.getType() != HitResult.Type.MISS)
-				currentEnd = CBCPositionTransformers.transformVec3(this.level(), blockResult.getLocation());
+				currentEnd = CBCCompatTransformers.transformVec3(this.level(), blockResult.getLocation());
 			if (p == 0) {
 				BlockHitResult fluidResult = this.level().clip(new ClipContext(currentStart, currentEnd, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, this));
 				if (fluidResult.getType() != HitResult.Type.MISS) {
@@ -325,7 +336,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 				NetworkPlatform.sendToClientTracking(pkt, this);
 		}
 		if (!this.level().isClientSide || !stop)
-			this.orientation = trajectory;
+			this.setOrientation(trajectory);
 		if (shouldRemove)
 			this.removeNextTick = true;
 	}
@@ -437,6 +448,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		builder.define(ID_FLAGS, (byte) 0);
 		builder.define(PROJECTILE_MASS, 0.0f);
+        builder.define(ORIENTATION, new Vector3f());
 	}
 
 	public void setInGround(boolean inGround) {
@@ -445,7 +457,6 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 		} else {
 			this.entityData.set(ID_FLAGS, (byte)(this.entityData.get(ID_FLAGS) & 0b11111110));
 		}
-		super.setOnGround(inGround);
 	}
 
 	public boolean isInGround() {
@@ -455,18 +466,25 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	public void setGroundPos(@Nullable Vec3 groundPos) { this.inGroundPos = groundPos; }
 	@Nullable public Vec3 getGroundPos() { return this.inGroundPos; }
 
-	@Override
-	public void setOnGround(boolean onGround) {
-		this.setInGround(onGround);
+	private boolean shouldFall() {
+        if (!this.isInGround() || this.inGroundPos == null)
+            return false;
+        AABB aabb = new AABB(this.inGroundPos, this.inGroundPos).inflate(0.06d);
+        if (!this.level().noCollision(aabb)) {
+            return false;
+        }
+        return CBCCompatTransformers.projectileShouldFall(this.level(), this, aabb);
 	}
 
-	private boolean shouldFall() {
-		return this.isInGround() && this.inGroundPos != null && this.level().noCollision(new AABB(this.inGroundPos, this.inGroundPos).inflate(0.06d));
-	}
+    private void startFalling() {
+        this.setInGround(false);
+        this.setGroundPos(null);
+        CBCCompatTransformers.projectileStartFalling(this);
+    }
 
 	public void updateKinematics(ClientboundPreciseMotionSyncPacket packet) {
 		if (this.getDeltaMovement().lengthSqr() > 1e-4d)
-			this.orientation = this.getDeltaMovement();
+			this.setOrientation(this.getDeltaMovement());
 	}
 
 	@Override
@@ -476,11 +494,14 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 		tag.putBoolean("InGround", this.isInGround());
 		if (this.inGroundPos != null)
 			tag.put("InGroundPos", this.newDoubleList(this.inGroundPos.x, this.inGroundPos.y, this.inGroundPos.z));
+        if (this.impactPos != null)
+            tag.put("ImpactPos", NbtUtils.writeBlockPos(this.impactPos));
 		tag.putFloat("Damage", this.damage);
 		if (this.nextVelocity != null)
 			tag.put("NextMotion", this.newDoubleList(this.nextVelocity.x, this.nextVelocity.y, this.nextVelocity.z));
-		if (this.orientation != null)
-			tag.put("Orientation", this.newDoubleList(this.orientation.x, this.orientation.y, this.orientation.z));
+        Vec3 orientation = this.getOrientation();
+		if (orientation != null)
+            tag.put("Orientation", this.newDoubleList(orientation.x, orientation.y, orientation.z));
 		tag.put("LastPenetration", NbtUtils.writeBlockState(this.lastPenetratedBlock));
 		if (this.removeNextTick)
 			tag.putBoolean("RemoveNextTick", true);
@@ -502,9 +523,9 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 		}
 		if (tag.contains("Orientation", Tag.TAG_LIST)) {
 			ListTag orientationTag = tag.getList("Orientation", Tag.TAG_DOUBLE);
-			this.orientation = orientationTag.size() == 3 ? new Vec3(orientationTag.getDouble(0), orientationTag.getDouble(1), orientationTag.getDouble(2)) : null;
+			this.setOrientation(orientationTag.size() == 3 ? new Vec3(orientationTag.getDouble(0), orientationTag.getDouble(1), orientationTag.getDouble(2)) : this.getDeltaMovement());
 		} else {
-			this.orientation = this.getDeltaMovement();
+			this.setOrientation(this.getDeltaMovement());
 		}
 		if (tag.contains("InGroundPos", Tag.TAG_LIST)) {
 			ListTag posTag = tag.getList("InGroundPos", Tag.TAG_DOUBLE);
@@ -512,6 +533,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 		} else {
 			this.inGroundPos = null;
 		}
+        this.impactPos = NbtUtils.readBlockPos(tag, "ImpactPos").orElse(null);
 		this.lastPenetratedBlock = tag.contains("LastPenetration", Tag.TAG_COMPOUND)
 			? NbtUtils.readBlockState(this.level().holderLookup(CBCRegistryUtils.getBlockRegistryKey()), tag.getCompound("LastPenetration"))
 			: Blocks.AIR.defaultBlockState();
@@ -520,7 +542,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 
 	public void baseWriteSpawnData(RegistryFriendlyByteBuf buf) {
 		Vec3 vel = this.getDeltaMovement();
-		Vec3 orientation = this.orientation == null ? vel : this.orientation;
+		Vec3 orientation = this.getOrientation();
 		buf.writeFloat(this.getXRot())
 			.writeFloat(this.getYRot())
 			.writeDouble(vel.x)
@@ -535,7 +557,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 		this.setXRot(buf.readFloat());
 		this.setYRot(buf.readFloat());
 		this.setDeltaMovement(buf.readDouble(), buf.readDouble(), buf.readDouble());
-		this.orientation = new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble());
+		this.setOrientation(new Vec3(buf.readDouble(), buf.readDouble(), buf.readDouble()));
 	}
 
 	public void setProjectileMass(float power) {
@@ -567,7 +589,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	@Override
 	public Vec3 getLightProbePosition(float partialTicks) {
 		Vec3 eyePos = super.getLightProbePosition(partialTicks);
-		return this.isInGround() && this.orientation != null ? eyePos.subtract(this.orientation.normalize().scale(0.1)) : eyePos;
+		return this.isInGround() ? eyePos.subtract(this.getOrientation().normalize().scale(0.1)) : eyePos;
 	}
 
     @Override

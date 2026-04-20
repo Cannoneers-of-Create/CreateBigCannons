@@ -39,6 +39,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCCompatTransformers;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
@@ -493,7 +494,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		}
 
 		if (projectile != null && CBCConfigs.server().munitions.projectilesCanChunkload.get()) {
-			ChunkPos cpos1 = new ChunkPos(BlockPos.containing(projectile.position()));
+            ChunkPos cpos1 = new ChunkPos(CBCCompatTransformers.transformBlockPos(level, BlockPos.containing(projectile.position())));
 			RitchiesProjectileLib.queueForceLoad(level, cpos1.x, cpos1.z);
 		}
 	}
