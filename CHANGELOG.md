@@ -6,7 +6,7 @@
 
 Changed:
 - [1.20.1] Create Big Cannons will not load with the latest release of CBC: Advanced Technologies until an issue on their end is fixed.
-    - CBC: Advanced Technologies breaks Big Cartridges and prevents them from firing. Other issues may also be present.
+  - CBC: Advanced Technologies breaks Big Cartridges and prevents them from firing. Other issues may also be present.
 - [1.21.1] Updated Chinese (Simplified) (zh_cn.json) localization courtesy of pingguomc
 
 Fixed:
@@ -20,6 +20,7 @@ Fixed:
 - Fixed lag spike from large entity finding AABB when projectile impacts Sable sublevel
 - Fixed big cannon projectile collisions and lodging
 - Fixed chunkloading near Sable sublevels
+- [1.21.1] Fixed projectiles fired along the z+ axis being visually distorted
 
 ## [5.11.2] - 2026-02-27
 
