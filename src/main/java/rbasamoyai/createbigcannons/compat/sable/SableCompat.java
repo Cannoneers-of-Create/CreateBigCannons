@@ -5,7 +5,6 @@ import dev.ryanhcode.sable.companion.math.Pose3d;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
@@ -18,11 +17,6 @@ public class SableCompat {
 
     public static Vec3 transformFromShip(Level level, Vec3 pos) {
         return Sable.HELPER.projectOutOfSubLevel(level, pos);
-    }
-
-    public static Vec3 transformNormalFromShip(Level level, BlockHitResult result, Vec3 normal) {
-        SubLevel sublevel = Sable.HELPER.getContaining(level, result.getBlockPos());
-        return sublevel == null ? normal : sublevel.logicalPose().transformNormal(normal);
     }
 
     public static boolean groundProjectile(Level level, AbstractCannonProjectile projectile, BlockPos impactPos) {
@@ -42,7 +36,7 @@ public class SableCompat {
     public static void init() {
         CBCCompatTransformers.addBlockPosTransformer(SableCompat::transformFromShip);
         CBCCompatTransformers.addVec3Transformer(SableCompat::transformFromShip);
-        CBCCompatTransformers.addNormalTransformer(SableCompat::transformNormalFromShip);
+        CBCCompatTransformers.addNormalTransformer(new SableCannonProjectileCompat.NormalTransformer());
         CBCCompatTransformers.addProjectileFallHandler(new SableCannonProjectileCompat.ProjectileFallHandler());
         CBCCompatTransformers.addProjectileGroundingHandler(SableCompat::groundProjectile);
     }

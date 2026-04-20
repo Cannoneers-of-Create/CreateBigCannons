@@ -56,16 +56,26 @@ public class CBCCompatTransformers {
         NORMAL.add(transformer);
     }
 
-    public static Vec3 transformNormal(Level level, BlockHitResult result, Vec3 normal) {
+    public static Vec3 transformHitNormal(Level level, BlockHitResult result, Vec3 normal) {
         for (NormalTransformer t : NORMAL) {
             normal = t.apply(level, result, normal);
         }
         return normal;
     }
 
-    @FunctionalInterface
+    public static Vec3 transformLocationNormal(Level level, BlockPos loc, Vec3 normal) {
+        for (NormalTransformer t : NORMAL) {
+            normal = t.apply(level, loc, normal);
+        }
+        return normal;
+    }
+
     public interface NormalTransformer {
-        Vec3 apply(Level level, BlockHitResult baseHitResult, Vec3 normal);
+        Vec3 apply(Level level, BlockPos loc, Vec3 normal);
+
+        default Vec3 apply(Level level, BlockHitResult baseHitResult, Vec3 normal) {
+            return this.apply(level, baseHitResult.getBlockPos(), normal);
+        }
     }
 
     private static final List<ProjectileFallHandler> PROJECTILE_FALLING = new ReferenceArrayList<>();

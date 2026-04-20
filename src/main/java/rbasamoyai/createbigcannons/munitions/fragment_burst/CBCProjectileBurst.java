@@ -74,6 +74,8 @@ public abstract class CBCProjectileBurst extends ProjectileBurst {
 
 		Vec3 forward = initialVelocity.normalize();
 		Vec3 right = forward.cross(new Vec3(Direction.UP.step()));
+        if (right.lengthSqr() < 1e-6d)
+            right = new Vec3(1, 0, 0); // vertical burst
 		Vec3 up = forward.cross(right);
 		double length = initialVelocity.length();
 		RandomSource random = level.getRandom();

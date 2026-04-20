@@ -30,6 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCCompatTransformers;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
@@ -196,9 +197,9 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 		if (!(projectile instanceof FuzedBigCannonProjectile fuzedProjectile))
 			return;
 
-		Vec3 orientation = new Vec3(dir.step());
+		Vec3 orientation = CBCCompatTransformers.transformLocationNormal(level, pos, new Vec3(state.getValue(FACING).step()));
 		projectile.setOrientation(orientation);
-		projectile.setPos(Vec3.atCenterOf(pos));
+		projectile.setPos(CBCCompatTransformers.transformVec3(level, Vec3.atCenterOf(pos)));
 		projectile.setDeltaMovement(orientation.scale(0.5)); // Velocity boost for burst shells
 		fuzedProjectile.detonate(projectile.position());
 	}

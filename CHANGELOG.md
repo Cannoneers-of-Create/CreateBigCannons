@@ -21,6 +21,9 @@ Fixed:
 - Fixed big cannon projectile collisions and lodging
 - Fixed chunkloading near Sable sublevels
 - [1.21.1] Fixed projectiles fired along the z+ axis being visually distorted
+- Fixed wired fuze detonation on Sable sublevels
+- Fixed wired fuze detonating direction to be based on shell orientation, not redstone activation face
+- Fixed shrapnel burst not widening when detonating facing upwards
 
 ## [5.11.2] - 2026-02-27
 

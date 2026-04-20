@@ -267,12 +267,12 @@ public class CBCUtils {
 
 	/**
 	 * Version of {@link #getSurfaceNormalVector(Level, BlockPos, Vec3)} that takes in a {@link net.minecraft.world.phys.BlockHitResult}.
-	 * This calls {@link CBCCompatTransformers#transformNormal(Level, BlockHitResult, Vec3)}. Register a transformer
+	 * This calls {@link CBCCompatTransformers#transformHitNormal(Level, BlockHitResult, Vec3)}. Register a transformer
      * through {@link CBCCompatTransformers#addNormalTransformer(CBCCompatTransformers.NormalTransformer)}.
 	 */
 	public static Vec3 getSurfaceNormalVector(Level level, BlockHitResult hitResult) {
 		Direction dir = hitResult.getDirection();
-		return CBCCompatTransformers.transformNormal(level, hitResult, new Vec3(dir.getStepX(), dir.getStepY(), dir.getStepZ()));
+		return CBCCompatTransformers.transformHitNormal(level, hitResult, new Vec3(dir.getStepX(), dir.getStepY(), dir.getStepZ()));
 	}
 
 	public static void playBlastLikeSoundOnServer(ServerLevel level, double x, double y, double z, SoundEvent soundEvent,
