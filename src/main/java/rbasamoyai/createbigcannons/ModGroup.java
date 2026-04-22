@@ -92,6 +92,8 @@ public class ModGroup {
 				CBCItems.PACKED_GUNCOTTON.asStack(),
 				CBCItems.EMPTY_POWDER_CHARGE.asStack(),
 
+                CBCItems.SHOT_BALLS.asStack(),
+
 				CBCBlocks.SOLID_SHOT.asStack(),
 				CBCBlocks.AP_SHOT.asStack(),
 				CBCBlocks.MORTAR_STONE.asStack(),
