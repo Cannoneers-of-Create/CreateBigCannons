@@ -49,6 +49,7 @@ public class CBCClientNeoForge {
 		forgeEventBus.addListener(CBCClientNeoForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientNeoForge::onFovModify);
 		forgeEventBus.addListener(CBCClientNeoForge::onPlayerRenderPre);
+        forgeEventBus.addListener(CBCClientNeoForge::onPlayerRenderPost);
 		forgeEventBus.addListener(CBCClientNeoForge::onSetupCamera);
 		forgeEventBus.addListener(CBCClientNeoForge::onPlayerLogOut);
 		forgeEventBus.addListener(CBCClientNeoForge::onClickMouse);
@@ -98,6 +99,10 @@ public class CBCClientNeoForge {
 	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
 		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getEntity(), evt.getPartialTick());
 	}
+
+    public static void onPlayerRenderPost(RenderPlayerEvent.Post evt) {
+        CBCClientCommon.onPlayerRenderPost(evt.getPoseStack(), evt.getEntity(), evt.getPartialTick());
+    }
 
 	public static void onSetupCamera(ViewportEvent.ComputeCameraAngles evt) {
         CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTick(), evt::getYaw, evt::getPitch, evt::getRoll, evt::setYaw, evt::setPitch, evt::setRoll);

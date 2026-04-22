@@ -25,9 +25,8 @@ Fixed:
 - Fixed wired fuze detonating direction to be based on shell orientation, not redstone activation face
 - Fixed shrapnel burst not widening when detonating facing upwards
 - Fixed setting Fixed Cannon Mount orientation on Sable sublevels not working
-- Fixed players on sublevel autocannons not visibly rendering
+- Fixed player rendering on manual autocannon, including invisibility on Sable sublevels
 - Fixed shot balls not present in the Create Big Cannons creative tab
->>>>>>> 4407d093 (bug: Fixed shot balls not present in the Create Big Cannons creative tab)
 
 ## [5.11.2] - 2026-02-27
 
