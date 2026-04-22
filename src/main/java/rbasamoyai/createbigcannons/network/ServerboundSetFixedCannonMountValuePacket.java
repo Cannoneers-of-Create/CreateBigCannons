@@ -50,7 +50,7 @@ public record ServerboundSetFixedCannonMountValuePacket(BlockPos pos, int row, i
         if (player == null)
             return;
         Level level = player.level();
-        if (!level.isLoaded(this.pos) || !this.pos.closerThan(player.blockPosition(), 20))
+        if (!level.isLoaded(this.pos) || !player.canInteractWithBlock(this.pos, 20))
             return;
         BlockEntity blockEntity = level.getBlockEntity(this.pos);
         if (!(blockEntity instanceof FixedCannonMountBlockEntity mount))
