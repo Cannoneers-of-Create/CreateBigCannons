@@ -16,11 +16,11 @@ and conditions of the Creative Commons Attribution-NonCommercial-ShareAlike
 details.
 
 [1] Handwritten localization files are located under
-[`common/src/main/resources/assets/createbigcannons/lang`](common/src/main/resources/assets/createbigcannons/lang).
+[`src/main/resources/assets/createbigcannons/lang`](src/main/resources/assets/createbigcannons/lang).
 Generated localization files are located under
-[`fabric/src/generated/resources/assets/createbigcannons/lang`](fabric/src/generated/resources/assets/createbigcannons/lang) and
-[`forge/src/generated/resources/assets/createbigcannons/lang`](forge/src/generated/resources/assets/createbigcannons/lang).
+[`src/generated/resources/assets/createbigcannons/lang`](src/generated/resources/assets/createbigcannons/lang) and
+[`src/generated/resources/assets/createbigcannons/lang`](src/generated/resources/assets/createbigcannons/lang).
 
 [2] All handmade textures and models are located under
-[`common/src/main/resources/assets/createbigcannons`](common/src/main/resources/assets/createbigcannons).
+[`src/main/resources/assets/createbigcannons`](src/main/resources/assets/createbigcannons).
 
