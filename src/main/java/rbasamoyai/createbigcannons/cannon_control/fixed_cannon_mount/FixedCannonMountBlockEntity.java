@@ -31,6 +31,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -119,6 +120,14 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		this.mountedContraption.pitch = (this.cannonPitch + pitchAdjust) * sgn;
 		float yawAdjust = this.yawSlot == null ? 0 : this.yawSlot.getValue();
 		this.mountedContraption.yaw = this.cannonYaw + yawAdjust;
+
+        Entity controller = this.mountedContraption.getControllingPassenger();
+        if (controller != null) {
+            controller.setXRot(this.mountedContraption.pitch);
+            controller.setYRot(this.mountedContraption.yaw);
+            controller.xRotO = this.mountedContraption.pitch;
+            controller.yRotO = this.mountedContraption.yaw;
+        }
 	}
 
 	@Override
