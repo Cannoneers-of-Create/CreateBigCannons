@@ -25,6 +25,7 @@ Fixed:
 - Fixed wired fuze detonating direction to be based on shell orientation, not redstone activation face
 - Fixed shrapnel burst not widening when detonating facing upwards
 - Fixed setting Fixed Cannon Mount orientation on Sable sublevels not working
+- Fixed players on sublevel autocannons not visibly rendering
 
 ## [5.11.2] - 2026-02-27
 
