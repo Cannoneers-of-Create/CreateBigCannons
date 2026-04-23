@@ -698,7 +698,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		recoilMagnitude *= CBCConfigs.server().cannons.bigCannonRecoilScale.getF();
 		if (controller != null) controller.onRecoil(vec.scale(-recoilMagnitude), entity);
 
-		Vec3 plumePos = spawnPos.subtract(vec);
+		Vec3 plumePos = spawnPos.add(vec);
 		for (ServerPlayer player : slevel.players()) {
 			slevel.sendParticles(player, new DropMortarPlumeParticleData(1f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
 		}
