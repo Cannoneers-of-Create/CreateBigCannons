@@ -67,6 +67,7 @@ public class CBCClientFabric implements ClientModInitializer {
 		FieldOfViewEvents.MODIFY.register(CBCClientFabric::getFov);
 		ScreenEvents.BEFORE_INIT.register(CBCClientFabric::onOpenScreen);
 		LivingEntityRenderEvents.PRE.register(CBCClientFabric::onBeforeRender);
+        LivingEntityRenderEvents.POST.register(CBCClientFabric::onAfterRender);
 		CameraSetupCallback.EVENT.register(CBCClientFabric::onSetupCamera);
 		MouseInputEvents.BEFORE_BUTTON.register(CBCClientFabric::onClickMouse);
 		ClientPlayConnectionEvents.DISCONNECT.register(CBCClientFabric::onPlayerLogOut);
@@ -160,6 +161,13 @@ public class CBCClientFabric implements ClientModInitializer {
 		}
 		return false;
 	}
+
+    public static void onAfterRender(LivingEntity entity, LivingEntityRenderer<?, ?> renderer, float partialRenderTick,
+                                     PoseStack matrixStack, MultiBufferSource buffers, int light) {
+        if (entity.getType() == EntityType.PLAYER) {
+            CBCClientCommon.onPlayerRenderPost(matrixStack, entity, partialRenderTick);
+        }
+    }
 
 	public static boolean onSetupCamera(CameraSetupCallback.CameraInfo info) {
 		return CBCClientCommon.onCameraSetup(info.camera, info.partialTicks, () -> info.yaw, () -> info.pitch, () -> info.roll,

@@ -286,6 +286,17 @@ public class CBCClientCommon {
 		}
 	}
 
+    public static void onPlayerRenderPost(PoseStack stack, LivingEntity player, float partialTicks) {
+        if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
+            float yaw = 90 - Mth.lerp(partialTicks, player.yRotO, player.getYRot());
+            float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+
+            Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
+            stack.translate(0, 1.25, 0);
+            stack.mulPose(new Quaternionf(new AxisAngle4f(pitch * Mth.DEG_TO_RAD, pitchVec)).conjugate());
+        }
+    }
+
 	private static boolean isControllingCannon(Entity entity) {
 		Entity vehicle = entity.getVehicle();
 		return vehicle instanceof CannonCarriageEntity || vehicle instanceof PitchOrientedContraptionEntity;

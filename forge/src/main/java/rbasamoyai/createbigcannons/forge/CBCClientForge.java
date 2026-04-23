@@ -53,6 +53,7 @@ public class CBCClientForge {
 		forgeEventBus.addListener(CBCClientForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientForge::onFovModify);
 		forgeEventBus.addListener(CBCClientForge::onPlayerRenderPre);
+        forgeEventBus.addListener(CBCClientForge::onPlayerRenderPost);
 		forgeEventBus.addListener(CBCClientForge::onSetupCamera);
 		forgeEventBus.addListener(CBCClientForge::onPlayerLogOut);
 		forgeEventBus.addListener(CBCClientForge::onClickMouse);
@@ -123,6 +124,10 @@ public class CBCClientForge {
 	public static void onPlayerRenderPre(RenderPlayerEvent.Pre evt) {
 		CBCClientCommon.onPlayerRenderPre(evt.getPoseStack(), evt.getEntity(), evt.getPartialTick());
 	}
+
+    public static void onPlayerRenderPost(RenderPlayerEvent.Post evt) {
+        CBCClientCommon.onPlayerRenderPost(evt.getPoseStack(), evt.getEntity(), evt.getPartialTick());
+    }
 
 	public static void onSetupCamera(ViewportEvent.ComputeCameraAngles evt) {
 		if (CBCClientCommon.onCameraSetup(evt.getCamera(), evt.getPartialTick(), evt::getYaw, evt::getPitch, evt::getRoll,
