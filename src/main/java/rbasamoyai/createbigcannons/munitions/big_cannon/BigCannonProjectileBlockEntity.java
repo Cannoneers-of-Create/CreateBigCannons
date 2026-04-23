@@ -3,11 +3,13 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 import java.util.List;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
 import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
-public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container {
+public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container, PartialSafeNBT {
 
 	public BigCannonProjectileBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -37,6 +39,20 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
     public void readClient(CompoundTag tag, HolderLookup.Provider registries) {
         super.readClient(tag, registries);
         this.setTracer(ItemStack.parseOptional(registries, tag.getCompound("Tracer")));
+    }
+
+    @Override
+    public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
+        PatchedDataComponentMap restore = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap copy = new PatchedDataComponentMap(DataComponentMap.EMPTY);
+        this.writeSafeComponents(copy);
+        this.setComponents(copy);
+        super.saveAdditional(tag, registries);
+        this.setComponents(restore);
+    }
+
+    protected void writeSafeComponents(PatchedDataComponentMap safeComponents) {
+
     }
 
     @Override

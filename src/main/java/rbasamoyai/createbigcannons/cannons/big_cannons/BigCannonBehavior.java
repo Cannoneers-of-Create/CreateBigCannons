@@ -72,7 +72,12 @@ public class BigCannonBehavior extends CannonBehavior {
 		}
 	}
 
-	@Override
+    @Override
+    public void writeSafe(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.write(nbt, registries, false);
+    }
+
+    @Override
 	public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
 		super.read(nbt, registries, clientPacket);
 		BlockPos pos = BlockPos.of(nbt.getLong("Pos"));

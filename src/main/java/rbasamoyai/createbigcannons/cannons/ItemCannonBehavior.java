@@ -41,6 +41,11 @@ public class ItemCannonBehavior extends CannonBehavior {
 		super.write(nbt, registries, spawnPacket);
 	}
 
+    @Override
+    public void writeSafe(CompoundTag nbt, HolderLookup.Provider registries) {
+        super.write(nbt, registries, false);
+    }
+
 	@Override
 	public void read(CompoundTag nbt, HolderLookup.Provider registries, boolean clientPacket) {
 		this.containedStack = ItemStack.parseOptional(registries, nbt.getCompound("ContainedStack"));

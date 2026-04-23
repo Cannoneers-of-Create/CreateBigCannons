@@ -180,6 +180,12 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
 		if (this.updateInstance) tag.putBoolean("UpdateInstance", true);
 	}
 
+    @Override
+    public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
+        super.writeSafe(tag, registries);
+        tag.putInt("FiringRate", this.fireRate);
+    }
+
 	public boolean isInputFull() { return this.inputBuffer.size() >= this.getQueueLimit() || !this.magazine.isEmpty(); }
 	public boolean isOutputFull() { return !this.outputBuffer.isEmpty(); }
 

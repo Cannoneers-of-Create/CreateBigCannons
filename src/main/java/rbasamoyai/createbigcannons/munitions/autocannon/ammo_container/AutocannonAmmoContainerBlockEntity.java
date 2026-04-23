@@ -2,8 +2,15 @@ package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
 import javax.annotation.Nullable;
 
+import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.PatchedDataComponentMap;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -25,16 +32,16 @@ import net.minecraft.world.level.block.entity.ContainerOpenersCounter;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
+import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.remix.CBCHasIItemHandlerBlockEntity;
 
 public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements IAutocannonAmmoContainerContainer,
-    MenuProvider, Nameable, CBCHasIItemHandlerBlockEntity {
+    MenuProvider, Nameable, CBCHasIItemHandlerBlockEntity, PartialSafeNBT {
 
 	private ItemStack ammo = ItemStack.EMPTY;
 	private ItemStack tracers = ItemStack.EMPTY;
 	private int spacing = 1;
 	private int currentIndex = 0;
-	private Component name;
     private IItemHandler inventory;
 
 	private ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
@@ -104,11 +111,17 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 	@Nullable
 	@Override
 	public Component getCustomName() {
-		return this.name;
+		return this.components().getOrDefault(DataComponents.CUSTOM_NAME, null);
 	}
 
-	public void setCustomName(Component name) {
-		this.name = name;
+	public void setCustomName(@Nullable Component name) {
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        if (name == null) {
+            patched.remove(DataComponents.CUSTOM_NAME);
+        } else {
+            patched.set(DataComponents.CUSTOM_NAME, name);
+        }
+		this.setComponents(patched);
 	}
 
     protected Component getDefaultName() {
@@ -119,7 +132,8 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
 	@Override
 	public Component getName() {
-		return this.name == null ? this.getDefaultName() : this.name;
+        Component custom = this.getCustomName();
+		return custom == null ? this.getDefaultName() : custom;
 	}
 
 	@Override
@@ -224,7 +238,20 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
     @Override
     public IItemHandler getItemHandler(Direction side) {
-        return this.inventory == null ? this.inventory = new AutocannonAmmoContainerInterface((AutocannonAmmoContainerBlockEntity) (Object) this) : this.inventory;
+        return this.inventory == null ? this.inventory = new AutocannonAmmoContainerInterface(this) : this.inventory;
+    }
+
+    @Override
+    public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
+        // NOTE: susceptible to data loss on schematic saving. Hacky solution! --ritchie
+        PatchedDataComponentMap patchedRestore = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap copy = new PatchedDataComponentMap(DataComponentMap.EMPTY);
+        copy.set(CBCDataComponents.TRACER_SPACING, patchedRestore.getOrDefault(CBCDataComponents.TRACER_SPACING, 1));
+        if (patchedRestore.has(DataComponents.CUSTOM_NAME))
+            copy.set(DataComponents.CUSTOM_NAME, patchedRestore.get(DataComponents.CUSTOM_NAME));
+        this.setComponents(copy);
+        super.saveAdditional(tag, registries);
+        this.setComponents(patchedRestore);
     }
 
 }

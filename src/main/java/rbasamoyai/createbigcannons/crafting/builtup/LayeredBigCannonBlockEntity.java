@@ -386,7 +386,7 @@ public class LayeredBigCannonBlockEntity extends SmartBlockEntity implements IBi
 		if (this.completionProgress > 0) tag.putInt("Progress", this.completionProgress);
 	}
 
-	@Override
+    @Override
 	protected void read(CompoundTag tag, HolderLookup.Provider registry, boolean clientPacket) {
 		super.read(tag, registry, clientPacket);
 		boolean justBored = tag.contains("JustBored");

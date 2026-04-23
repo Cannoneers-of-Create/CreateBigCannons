@@ -112,8 +112,7 @@ public class CBCBuilderTransformers {
 			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), model)
 				.texture("side", sideLoc)
 				.texture("end", endLoc)
-				.texture("particle", sideLoc)))
-			.tag(AllBlockTags.SAFE_NBT.tag);
+				.texture("particle", sideLoc)));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> sizedHollowCannon(String sizePath, String pathAndMaterial) {
@@ -122,8 +121,7 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
-				.texture("tube", tubeLoc)))
-			.tag(AllBlockTags.SAFE_NBT.tag);
+				.texture("tube", tubeLoc)));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonEnd(String pathAndMaterial) {
@@ -139,8 +137,7 @@ public class CBCBuilderTransformers {
 				.texture("top", topLoc)
 				.texture("bottom", bottomLoc)
 				.texture("knob", knobLoc)
-				.texture("particle", topLoc)))
-			.tag(AllBlockTags.SAFE_NBT.tag);
+				.texture("particle", topLoc)));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarEnd(String pathAndMaterial) {
@@ -158,8 +155,7 @@ public class CBCBuilderTransformers {
 				.texture("top", topLoc)
 				.texture("bottom", bottomLoc)
 				.texture("knob", knobLoc)
-				.texture("particle", topLoc)))
-			.tag(AllBlockTags.SAFE_NBT.tag);
+				.texture("particle", topLoc)));
 	}
 
 	public static <T extends Block & BigCannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreech(String pathAndMaterial) {
@@ -175,7 +171,6 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate(SlidingBreechBlockGen.create(pathAndMaterial)::generate)
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item(BigCannonBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 				.texture("hole", holeLoc)
@@ -192,15 +187,13 @@ public class CBCBuilderTransformers {
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreechUnbored(String pathAndMaterial) {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(SlidingBreechBlockGen.create(pathAndMaterial)::generate)
-			.tag(AllBlockTags.SAFE_NBT.tag);
+			.blockstate(SlidingBreechBlockGen.create(pathAndMaterial)::generate);
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreechIncomplete(String pathAndMaterial) {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(IncompleteSlidingBreechBlockGen.create(pathAndMaterial)::generate)
-			.tag(AllBlockTags.SAFE_NBT.tag);
+			.blockstate(IncompleteSlidingBreechBlockGen.create(pathAndMaterial)::generate);
 	}
 
 	public static <T extends Block & BigCannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreech(String pathAndMaterial) {
@@ -217,7 +210,6 @@ public class CBCBuilderTransformers {
 				.texture("top", topLoc)
 				.texture("bottom", bottomLoc)
 				.texture("particle", topLoc)))
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item(BigCannonBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 				.texture("side", sideLoc)
@@ -240,7 +232,6 @@ public class CBCBuilderTransformers {
 				.texture("top", topLoc)
 				.texture("bottom", bottomLoc)
 				.texture("particle", topLoc)))
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item(BigCannonBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 				.texture("side", sideLoc)
@@ -252,8 +243,7 @@ public class CBCBuilderTransformers {
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreechIncomplete(String pathAndMaterial) {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(IncompleteScrewBreechBlockGen.create(pathAndMaterial)::generate)
-			.tag(AllBlockTags.SAFE_NBT.tag);
+			.blockstate(IncompleteScrewBreechBlockGen.create(pathAndMaterial)::generate);
 	}
 
 	public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> screwLock(String pathAndMaterial) {
@@ -277,7 +267,6 @@ public class CBCBuilderTransformers {
 				};
 				return p.models().withExistingParent(name, loc).texture("material", texLoc);
 			}))
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item(AutocannonBlockItem::new)
 			.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/barrel")).texture("material", texLoc))
 			.build();
@@ -296,8 +285,7 @@ public class CBCBuilderTransformers {
 					return p.models().withExistingParent(handle ? c.getName() + "_handle" : c.getName(), handle ? handleLoc : baseLoc)
 						.texture("material", texLoc)
 						.texture("handle", tex1Loc);
-				}))
-			.tag(AllBlockTags.SAFE_NBT.tag);
+				}));
 		if (complete) {
 			result = result.andThen(b -> b.item(AutocannonBlockItem::new)
 				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/breech_item")).texture("material", texLoc))
@@ -315,8 +303,7 @@ public class CBCBuilderTransformers {
 		NonNullUnaryOperator<BlockBuilder<T, P>> result = b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p,
-				$ -> p.models().withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring")).texture("material", texLoc)))
-			.tag(AllBlockTags.SAFE_NBT.tag);
+				$ -> p.models().withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring")).texture("material", texLoc)));
 		if (complete) {
 			result = result.andThen(b -> b.item(AutocannonBlockItem::new)
 				.model((c, p) -> p.withExistingParent(c.getName(), CreateBigCannons.resource("block/autocannon/recoil_spring_item")).texture("material", texLoc))
@@ -354,7 +341,6 @@ public class CBCBuilderTransformers {
 				$ -> p.models().withExistingParent(c.getName(), model)
 					.texture("material", tex)
 					.texture("material1", tex1)))
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item(AutocannonBlockItem::new)
 			.model((c, p) -> p.blockItem(c))
 			.build();
@@ -382,7 +368,6 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate(CannonLoaderGen.create()::generate)
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item()
 			.model((c, p) -> {})
 			.build();
@@ -392,7 +377,6 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate(CannonDrillGen.create()::generate)
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item()
 			.model((c, p) -> {})
 			.build();
@@ -409,7 +393,6 @@ public class CBCBuilderTransformers {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate(CannonBuilderGen.create()::generate)
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item()
 			.model((c, p) -> {})
 			.build();
@@ -750,10 +733,6 @@ public class CBCBuilderTransformers {
 		return b -> b.model((c, p) -> p.blockItem(c)
 			.override().model(p.getExistingFile(headFuzeLoc)).predicate(CreateBigCannons.resource("fuze_state"), 1).end()
 			.override().model(p.getExistingFile(baseFuzeLoc)).predicate(CreateBigCannons.resource("fuze_state"), 2).end());
-	}
-
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> safeNbt() {
-		return b -> b.tag(AllBlockTags.SAFE_NBT.tag);
 	}
 
 }
