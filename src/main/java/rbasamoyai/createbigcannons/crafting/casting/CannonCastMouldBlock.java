@@ -1,5 +1,8 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
+import java.util.List;
+import java.util.function.Supplier;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -14,13 +17,12 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
-
-import java.util.function.Supplier;
 
 public class CannonCastMouldBlock extends Block {
 
@@ -92,5 +94,13 @@ public class CannonCastMouldBlock extends Block {
 	protected boolean isSurroundingAreaCompleteForTransformation(BlockState state, Level level, BlockPos pos) {
 		return !this.cannonShape.get().isLarge() || BlockPos.betweenClosedStream(pos.offset(-1, 0, -1), pos.offset(1, 0, 1)).filter(p -> !pos.equals(p)).map(level::getBlockState).allMatch(CBCBlocks.CASTING_SAND::has);
 	}
+
+    @Override
+    public List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        List<ItemStack> list = super.getDrops(state, params);
+        if (state.getValue(SAND))
+            list.add(CBCBlocks.CASTING_SAND.asStack());
+        return list;
+    }
 
 }

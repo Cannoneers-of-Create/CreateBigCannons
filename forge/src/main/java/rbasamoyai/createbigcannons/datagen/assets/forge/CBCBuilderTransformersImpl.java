@@ -1,8 +1,13 @@
 package rbasamoyai.createbigcannons.datagen.assets.forge;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllTags.AllBlockTags;
+import com.simibubi.create.api.schematic.requirement.SchematicRequirementRegistries;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.builders.ItemBuilder;
@@ -20,6 +25,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
@@ -58,6 +64,7 @@ import rbasamoyai.createbigcannons.crafting.builtup.CannonBuilderHeadBlock;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastMouldBlock;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteScrewBreechBlockGen;
 import rbasamoyai.createbigcannons.crafting.incomplete.IncompleteSlidingBreechBlockGen;
+import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerBlock;
 import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.AutocannonAmmoContainerItem;
@@ -674,6 +681,13 @@ public class CBCBuilderTransformersImpl {
 				.addModel()
 				.condition(CannonCastMouldBlock.SAND, true)
 				.end())
+            .onRegister(c -> SchematicRequirementRegistries.BLOCKS.register(c, (state, be) -> {
+                List<ItemStack> stacks = new ArrayList<>();
+                stacks.add(new ItemStack(state.getBlock()));
+                if (state.getValue(CannonCastMouldBlock.SAND))
+                    stacks.add(CBCBlocks.CASTING_SAND.asStack());
+                return new ItemRequirement(ItemRequirement.ItemUseType.CONSUME, stacks);
+            }))
 			.item()
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(baseLoc)))
 			.build();
