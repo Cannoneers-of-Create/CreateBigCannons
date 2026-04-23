@@ -194,7 +194,7 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
 	@Override
 	public boolean stillValid(Player player) {
-		return this.getBlockPos().closerThan(player.blockPosition(), 4);
+		return player.canInteractWithBlock(this.getBlockPos(), 4);
 	}
 
 	@Override

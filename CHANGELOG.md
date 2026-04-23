@@ -32,6 +32,7 @@ Fixed:
 - [Sable] Fixed wired fuze detonation on Sable sublevels
 - [Sable] Fixed setting Fixed Cannon Mount orientation on Sable sublevels not working
 - [Sable] Fixed cannon plume orientation on Sable sublevel
+- [Sable] Fixed autocannon ammo container blocks not accessible on Sable sublevels
 
 ## [5.11.2] - 2026-02-27
 
