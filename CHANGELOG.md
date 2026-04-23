@@ -22,6 +22,7 @@ Fixed:
 - Fixed #create:safe_nbt exploits
 - Fixed casting mould drops and Schematicannon requirements
 - Fixed drop mortar plume positioning
+- Fixed hostile mob targeting when player rides manual autocannon
 - Fixed player rendering on manual autocannons, including invisibility on Sable sublevels
 - [1.21.1] Fixed cannon cast crashing game with NullPointerException when multiple pipes connected to top
 - [1.21.1] Fixed projectiles fired along the z+ axis being visually distorted; was not fixed in v5.10.1

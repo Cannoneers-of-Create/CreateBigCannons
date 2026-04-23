@@ -37,6 +37,16 @@ public abstract class EntityMixin {
         return this.onAutocannon() ? this.self.getBbWidth() * 0.425f : original.call();
 	}
 
+    @WrapMethod(method = "getEyeY")
+    private double createbigcannons$getEyeY(Operation<Double> original) {
+        return this.onAutocannon() ? this.self.getY() + this.self.getBbWidth() * 0.425d : original.call();
+    }
+
+    @WrapMethod(method = "getY(D)D")
+    private double createbigcannons$getY(double scale, Operation<Double> original) {
+        return this.onAutocannon() ? this.self.getY() + this.self.getBbWidth() * (scale - 1) : original.call(scale);
+    }
+
 	@WrapMethod(method = "getEyePosition(F)Lnet/minecraft/world/phys/Vec3;")
 	private Vec3 createbigcannons$getEyePosition(float partialTicks, Operation<Vec3> original) {
         Vec3 o = original.call(partialTicks);
