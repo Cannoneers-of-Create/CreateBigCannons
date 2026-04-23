@@ -29,6 +29,7 @@ Fixed:
 - Fixed shot balls not present in the Create Big Cannons creative tab
 - Fixed player rotation on Fixed Cannon Mount manual autocannon
 - Fixed #create:safe_nbt exploits
+- Fixed casting mould drops and Schematicannon requirements
 
 ## [5.11.2] - 2026-02-27
 

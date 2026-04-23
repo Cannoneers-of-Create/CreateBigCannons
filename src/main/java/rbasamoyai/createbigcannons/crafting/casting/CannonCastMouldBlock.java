@@ -1,5 +1,6 @@
 package rbasamoyai.createbigcannons.crafting.casting;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 import net.minecraft.core.BlockPos;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -99,4 +101,11 @@ public class CannonCastMouldBlock extends Block {
 		return !this.cannonShape.get().isLarge() || BlockPos.betweenClosedStream(pos.offset(-1, 0, -1), pos.offset(1, 0, 1)).filter(p -> !pos.equals(p)).map(level::getBlockState).allMatch(CBCBlocks.CASTING_SAND::has);
 	}
 
+    @Override
+    protected List<ItemStack> getDrops(BlockState state, LootParams.Builder params) {
+        List<ItemStack> list = super.getDrops(state, params);
+        if (state.getValue(SAND))
+            list.add(CBCBlocks.CASTING_SAND.asStack());
+        return list;
+    }
 }
