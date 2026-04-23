@@ -179,7 +179,7 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
 		if (!(projectile instanceof FuzedBigCannonProjectile fuzedProjectile))
 			return;
 
-		Vec3 orientation = new Vec3(dir.step());
+		Vec3 orientation = new Vec3(state.getValue(FACING).step());
 		projectile.setOrientation(orientation);
 		projectile.setPos(Vec3.atCenterOf(pos));
 		projectile.setDeltaMovement(orientation.scale(0.5)); // Velocity boost for burst shells
