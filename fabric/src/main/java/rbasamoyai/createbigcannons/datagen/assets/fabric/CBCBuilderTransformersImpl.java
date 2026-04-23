@@ -127,8 +127,7 @@ public class CBCBuilderTransformersImpl {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate((c, p) -> p.directionalBlock(c.get(), p.models().withExistingParent(c.getName(), baseLoc)
-				.texture("tube", tubeLoc)))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+				.texture("tube", tubeLoc)));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> cannonEnd(String pathAndMaterial) {
@@ -144,8 +143,7 @@ public class CBCBuilderTransformersImpl {
 				.texture("top", topLoc)
 				.texture("bottom", bottomLoc)
 				.texture("knob", knobLoc)
-				.texture("particle", topLoc)))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+				.texture("particle", topLoc)));
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> dropMortarEnd(String pathAndMaterial) {
@@ -163,8 +161,7 @@ public class CBCBuilderTransformersImpl {
 				.texture("top", topLoc)
 				.texture("bottom", bottomLoc)
 				.texture("knob", knobLoc)
-				.texture("particle", topLoc)))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+				.texture("particle", topLoc)));
 	}
 
 	public static <T extends Block & BigCannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreech(String pathAndMaterial) {
@@ -196,15 +193,13 @@ public class CBCBuilderTransformersImpl {
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreechUnbored(String pathAndMaterial) {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(SlidingBreechBlockGen.create(pathAndMaterial)::generate)
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+			.blockstate(SlidingBreechBlockGen.create(pathAndMaterial)::generate);
 	}
 
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> slidingBreechIncomplete(String pathAndMaterial) {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(IncompleteSlidingBreechBlockGen.create(pathAndMaterial)::generate)
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+			.blockstate(IncompleteSlidingBreechBlockGen.create(pathAndMaterial)::generate);
 	}
 
 	public static <T extends Block & BigCannonBlock, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreech(String pathAndMaterial) {
@@ -221,7 +216,6 @@ public class CBCBuilderTransformersImpl {
 				.texture("top", topLoc)
 				.texture("bottom", bottomLoc)
 				.texture("particle", topLoc)))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item(BigCannonBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 				.texture("side", sideLoc)
@@ -244,7 +238,6 @@ public class CBCBuilderTransformersImpl {
 				.texture("top", topLoc)
 				.texture("bottom", bottomLoc)
 				.texture("particle", topLoc)))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item(BigCannonBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(itemBaseLoc))
 				.texture("side", sideLoc)
@@ -256,8 +249,7 @@ public class CBCBuilderTransformersImpl {
 	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> screwBreechIncomplete(String pathAndMaterial) {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
-			.blockstate(IncompleteScrewBreechBlockGen.create(pathAndMaterial)::generate)
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
+			.blockstate(IncompleteScrewBreechBlockGen.create(pathAndMaterial)::generate);
 	}
 
 	public static <T extends Item, P> NonNullUnaryOperator<ItemBuilder<T, P>> screwLock(String pathAndMaterial) {
@@ -355,7 +347,6 @@ public class CBCBuilderTransformersImpl {
 				$ -> p.models().withExistingParent(c.getName(), model)
 					.texture("material", tex)
 					.texture("material1", tex1)))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item(AutocannonBlockItem::new)
 			.model((c, p) -> p.blockItem(c))
 			.build();
@@ -383,7 +374,6 @@ public class CBCBuilderTransformersImpl {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate(CannonLoaderGen.create()::generate)
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item()
 			.model((c, p) -> {})
 			.build();
@@ -393,7 +383,6 @@ public class CBCBuilderTransformersImpl {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate(CannonDrillGen.create()::generate)
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item()
 			.model((c, p) -> {})
 			.build();
@@ -410,7 +399,6 @@ public class CBCBuilderTransformersImpl {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate(CannonBuilderGen.create()::generate)
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item()
 			.model((c, p) -> {})
 			.build();
@@ -503,7 +491,6 @@ public class CBCBuilderTransformersImpl {
 			.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> {
 				return p.models().getExistingFile(s.getValue(BigCartridgeBlock.FILLED) ? filledLoc : emptyLoc);
 			}))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.loot((t, c) -> {
 				CompoundTag dampTag = new CompoundTag();
 				dampTag.putBoolean("Damp", true);
@@ -628,7 +615,6 @@ public class CBCBuilderTransformersImpl {
 		return b -> b.properties(p -> p.noOcclusion())
 			.addLayer(() -> RenderType::cutoutMipped)
 			.blockstate((c, p) -> p.horizontalBlock(c.get(), s -> p.models().getExistingFile(s.getValue(CannonCarriageBlock.SADDLED) ? saddleLoc : blockLoc)))
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.loot((t, u) -> t.add(u, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 					.add(t.applyExplosionDecay(u, LootItem.lootTableItem(u))))
@@ -636,6 +622,7 @@ public class CBCBuilderTransformersImpl {
 					.add(t.applyExplosionDecay(u, LootItem.lootTableItem(Items.SADDLE)))
 					.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(u)
 						.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(CannonCarriageBlock.SADDLED, true))))))
+            .tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item(CannonCarriageBlockItem::new)
 			.model((c, p) -> p.getBuilder(c.getName()).parent(p.getExistingFile(blockLoc)))
 			.build();
@@ -668,7 +655,6 @@ public class CBCBuilderTransformersImpl {
 			.properties(p -> p.sound(SoundType.WOOD))
 			.properties(p -> p.noOcclusion())
 			.tag(BlockTags.MINEABLE_WITH_AXE)
-			.tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.addLayer(() -> RenderType::solid)
 			.blockstate((c, p) -> p.getMultipartBuilder(c.get())
 				.part()
@@ -758,10 +744,6 @@ public class CBCBuilderTransformersImpl {
 		return b -> b.model((c, p) -> p.blockItem(c)
 			.override().model(p.getExistingFile(headFuzeLoc)).predicate(CreateBigCannons.resource("fuze_state"), 1).end()
 			.override().model(p.getExistingFile(baseFuzeLoc)).predicate(CreateBigCannons.resource("fuze_state"), 2).end());
-	}
-
-	public static <T extends Block, P> NonNullUnaryOperator<BlockBuilder<T, P>> safeNbt() {
-		return b -> b.tag(AllTags.AllBlockTags.SAFE_NBT.tag);
 	}
 
 }

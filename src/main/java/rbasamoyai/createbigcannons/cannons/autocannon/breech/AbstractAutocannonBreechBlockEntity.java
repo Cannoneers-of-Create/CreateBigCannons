@@ -187,8 +187,6 @@ public abstract class AbstractAutocannonBreechBlockEntity extends AutocannonBloc
     public void writeSafe(CompoundTag tag) {
         super.write(tag, false);
         tag.putInt("FiringRate", this.fireRate);
-        if (this.seat != null)
-            tag.putString("Seat", this.seat.getSerializedName());
     }
 
     @Override

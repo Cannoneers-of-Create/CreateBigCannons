@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 import java.util.List;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
 import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 import com.simibubi.create.foundation.utility.CreateLang;
 
@@ -17,7 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
-public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container {
+public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container, PartialSafeNBT {
 
 	protected ItemStack tracer = ItemStack.EMPTY;
 
@@ -38,7 +39,12 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 		this.tracer = tag.contains("Tracer", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Tracer")) : ItemStack.EMPTY;
 	}
 
-	@Override
+    @Override
+    public void writeSafe(CompoundTag tag) {
+        super.saveAdditional(tag);
+    }
+
+    @Override
 	public int getContainerSize() {
 		return 1;
 	}
