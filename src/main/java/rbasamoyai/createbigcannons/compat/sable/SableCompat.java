@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.compat.sable;
 
 import dev.ryanhcode.sable.Sable;
 import dev.ryanhcode.sable.companion.math.Pose3d;
+import dev.ryanhcode.sable.companion.math.Pose3dc;
+import dev.ryanhcode.sable.mixinterface.clip_overwrite.LevelPoseProviderExtension;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -11,12 +13,23 @@ import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 public class SableCompat {
 
-    public static BlockPos transformFromShip(Level level, BlockPos pos) {
-        return BlockPos.containing(Sable.HELPER.projectOutOfSubLevel(level, Vec3.atCenterOf(pos)));
+    public static BlockPos transformFromShip(Level level, BlockPos pos, BlockPos root) {
+        // Adapted from ActiveSableCompanion; this implementation is mainly leveraged for cannon particle handling as
+        // the cannon particle spawn points can be far away from the cannon mount. --ritchie
+        SubLevel sublevel = Sable.HELPER.getContaining(level, root);
+        if (sublevel == null)
+            return pos;
+        Pose3dc pose = level instanceof LevelPoseProviderExtension extension ? extension.sable$getPose(sublevel) : sublevel.logicalPose();
+        return BlockPos.containing(pose.transformPosition(Vec3.atCenterOf(pos)));
     }
 
-    public static Vec3 transformFromShip(Level level, Vec3 pos) {
-        return Sable.HELPER.projectOutOfSubLevel(level, pos);
+    public static Vec3 transformFromShip(Level level, Vec3 pos, Vec3 root) {
+        // See the BlockPos version for commentary. --ritchie
+        SubLevel sublevel = Sable.HELPER.getContaining(level, root);
+        if (sublevel == null)
+            return pos;
+        Pose3dc pose = level instanceof LevelPoseProviderExtension extension ? extension.sable$getPose(sublevel) : sublevel.logicalPose();
+        return pose.transformPosition(pos);
     }
 
     public static boolean groundProjectile(Level level, AbstractCannonProjectile projectile, BlockPos impactPos) {

@@ -30,6 +30,8 @@ Fixed:
 - Fixed player rotation on Fixed Cannon Mount manual autocannon
 - Fixed #create:safe_nbt exploits
 - Fixed casting mould drops and Schematicannon requirements
+- Fixed cannon plume orientation on sublevel
+- Fixed drop mortar plume positioning
 
 ## [5.11.2] - 2026-02-27
 

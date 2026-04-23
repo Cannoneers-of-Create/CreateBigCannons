@@ -477,7 +477,7 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		float pitch = (float) Mth.clamp(Math.pow(2, tone / 12f), 0, 2);
 		double shakeDistance = propelCtx.chargesUsed * CBCConfigs.server().cannons.bigCannonBlastDistanceMultiplier.getF();
 		float volume = 10 + soundPower * 30;
-		Vec3 plumePos = spawnPos.subtract(vec);
+		Vec3 plumePos = CBCCompatTransformers.transformVec3(level, spawnPos.subtract(vec), this.entity.position());
 		propelCtx.smokeScale = Math.max(1, propelCtx.smokeScale);
 
 		BigCannonPlumeParticleData plumeParticle = new BigCannonPlumeParticleData(propelCtx.smokeScale, propelCtx.chargesUsed, 10);
@@ -487,8 +487,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		Packet<?> blastWavePacket = new ClientboundLevelParticlesPacket(blastEffect, true, plumePos.x, plumePos.y, plumePos.z, 0, 0, 0, 1, 0);
 
 		double blastDistSqr = volume * volume * 256 * 1.21;
+        Vec3 plumeDir = CBCCompatTransformers.transformLocationNormal(level, this.entity.blockPosition(), vec);
 		for (ServerPlayer player : level.players()) {
-			level.sendParticles(player, plumeParticle, true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
+			level.sendParticles(player, plumeParticle, true, plumePos.x, plumePos.y, plumePos.z, 0, plumeDir.x, plumeDir.y, plumeDir.z, 1.0f);
 			if (player.distanceToSqr(plumePos.x, plumePos.y, plumePos.z) < blastDistSqr)
 				player.connection.send(blastWavePacket);
 		}
@@ -692,19 +693,20 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		projectile.xRotO = projectile.getXRot();
 		projectile.yRotO = projectile.getYRot();
 
-		projectile.addUntouchableEntity(entity, 1);
-		Entity vehicle = entity.getVehicle();
+		projectile.addUntouchableEntity(this.entity, 1);
+		Entity vehicle = this.entity.getVehicle();
 		if (vehicle != null && CBCEntityTypes.CANNON_CARRIAGE.is(vehicle))
 			projectile.addUntouchableEntity(vehicle, 1);
 
 		slevel.addFreshEntity(projectile);
 
 		recoilMagnitude *= CBCConfigs.server().cannons.bigCannonRecoilScale.getF();
-		if (controller != null) controller.onRecoil(vec.scale(-recoilMagnitude), entity);
+		if (controller != null) controller.onRecoil(vec.scale(-recoilMagnitude), this.entity);
 
-		Vec3 plumePos = spawnPos.subtract(vec);
+		Vec3 plumePos = CBCCompatTransformers.transformVec3(slevel, spawnPos.add(vec), this.entity.position());
+        Vec3 plumeDir = CBCCompatTransformers.transformLocationNormal(slevel, this.entity.blockPosition(), vec);
 		for (ServerPlayer player : slevel.players()) {
-			slevel.sendParticles(player, new DropMortarPlumeParticleData(1f), true, plumePos.x, plumePos.y, plumePos.z, 0, vec.x, vec.y, vec.z, 1.0f);
+			slevel.sendParticles(player, new DropMortarPlumeParticleData(1f), true, plumePos.x, plumePos.y, plumePos.z, 0, plumeDir.x, plumeDir.y, plumeDir.z, 1.0f);
 		}
 		CBCSoundEvents.FIRE_DROP_MORTAR.playOnServer(slevel, BlockPos.containing(spawnPos), 4, slevel.getRandom().nextFloat() * 0.05f + 0.97f);
 		this.hasFired = true;

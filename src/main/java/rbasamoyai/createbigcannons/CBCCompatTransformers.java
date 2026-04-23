@@ -1,7 +1,6 @@
 package rbasamoyai.createbigcannons;
 
 import java.util.List;
-import java.util.function.BiFunction;
 
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
 import net.minecraft.core.BlockPos;
@@ -22,15 +21,20 @@ public class CBCCompatTransformers {
         BLOCK_POS.add(transformer);
     }
 
-    public static BlockPos transformBlockPos(Level level, BlockPos pos) {
+    public static BlockPos transformBlockPos(Level level, BlockPos pos, BlockPos root) {
         for (BlockPosTransformer t : BLOCK_POS) {
-            pos = t.apply(level, pos);
+            pos = t.apply(level, pos, root);
         }
         return pos;
     }
 
+    public static BlockPos transformBlockPos(Level level, BlockPos pos) {
+        return transformBlockPos(level, pos, pos);
+    }
+
     @FunctionalInterface
-    public interface BlockPosTransformer extends BiFunction<Level, BlockPos, BlockPos> {
+    public interface BlockPosTransformer {
+        BlockPos apply(Level level, BlockPos pos, BlockPos root);
     }
 
     private static final List<Vec3Transformer> VEC3_POS = new ReferenceArrayList<>();
@@ -39,15 +43,20 @@ public class CBCCompatTransformers {
         VEC3_POS.add(transformer);
     }
 
-    public static Vec3 transformVec3(Level level, Vec3 pos) {
+    public static Vec3 transformVec3(Level level, Vec3 pos, Vec3 root) {
         for (Vec3Transformer t : VEC3_POS) {
-            pos = t.apply(level, pos);
+            pos = t.apply(level, pos, root);
         }
         return pos;
     }
 
+    public static Vec3 transformVec3(Level level, Vec3 pos) {
+        return transformVec3(level, pos, pos);
+    }
+
     @FunctionalInterface
-    public interface Vec3Transformer extends BiFunction<Level, Vec3, Vec3> {
+    public interface Vec3Transformer {
+        Vec3 apply(Level level, Vec3 pos, Vec3 root);
     }
 
     private static final List<NormalTransformer> NORMAL = new ReferenceArrayList<>();

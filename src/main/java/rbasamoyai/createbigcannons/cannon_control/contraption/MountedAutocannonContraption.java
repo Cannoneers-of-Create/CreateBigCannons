@@ -346,7 +346,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
 		Vec3 vec1 = spawnPos.subtract(centerPos).normalize();
 		spawnPos = spawnPos.subtract(vec1.scale(1.5));
-		Vec3 particlePos = spawnPos;
 
 		float recoilMagnitude = properties.baseRecoil();
 
@@ -374,9 +373,11 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		recoilMagnitude *= CBCConfigs.server().cannons.autocannonRecoilScale.getF();
 		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), entity);
 
+        Vec3 particlePos = CBCCompatTransformers.transformVec3(level, spawnPos, this.entity.position());
 		Vec3 particleVel = vec1.scale(1.25);
 		for (ServerPlayer player : level.players()) {
 			if (entity.getControllingPassenger() == player) continue;
+            particleVel = CBCCompatTransformers.transformLocationNormal(level, this.entity.blockPosition(), particleVel);
 			level.sendParticles(player, new AutocannonPlumeParticleData(1f), true, particlePos.x, particlePos.y, particlePos.z, 0, particleVel.x, particleVel.y, particleVel.z, 1.0f);
 		}
 
