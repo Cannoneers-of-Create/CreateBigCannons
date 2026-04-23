@@ -5,6 +5,7 @@
 **Create Big Cannons 5.11.3, with more fixes and support for Sable (Create: Simulated).**
 
 Changed:
+- Improved Cannon Mount syncing
 - [1.20.1] Create Big Cannons will not load with the latest release of CBC: Advanced Technologies until an issue on their end is fixed.
   - CBC: Advanced Technologies breaks Big Cartridges and prevents them from firing. Other issues may also be present.
 - [1.21.1] Updated Chinese (Simplified) (zh_cn.json) localization courtesy of pingguomc

@@ -50,8 +50,8 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	protected PitchOrientedContraptionEntity mountedContraption;
 	private boolean running;
 
-	private float cannonYaw;
-	private float cannonPitch;
+	protected float cannonYaw;
+	protected float cannonPitch;
 	private float prevYaw;
 	private float prevPitch;
 	private float clientYawDiff;
@@ -125,7 +125,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (!this.running && !this.isVirtual()) {
 			if (CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) {
 				this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
-				this.prevYaw = this.cannonYaw;
 				this.cannonPitch = 0;
 				this.prevPitch = 0;
 			}
@@ -133,8 +132,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		}
 
 		if (!(this.mountedContraption != null && this.mountedContraption.isStalled()) && flag) {
+            Direction dir = this.mountedContraption.getInitialOrientation();
+            boolean flag1 = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+            float sgn = flag1 ? 1 : -1;
+
 			float yawSpeed = this.getAngularSpeed(this.yawInterface.getSpeed(), this.clientYawDiff);
-			float pitchSpeed = this.getAngularSpeed(this.pitchInterface.getSpeed(), this.clientPitchDiff);
+			float pitchSpeed = this.getAngularSpeed(this.pitchInterface.getSpeed(), this.clientPitchDiff * sgn);
 
 			double yawAngleLimit = this.yawInterface.getSequencedAngleLimit();
 			if (yawAngleLimit >= 0) {
@@ -147,10 +150,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 				pitchSpeed = (float) Mth.clamp(pitchSpeed, -pitchAngleLimit, pitchAngleLimit);
 				this.pitchInterface.setSequencedAngleLimit(Math.max(0, pitchAngleLimit - Math.abs(pitchSpeed)));
 			}
-
-			Direction dir = this.mountedContraption.getInitialOrientation();
-			boolean flag1 = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-			float sgn = flag1 ? 1 : -1;
 
 			float newYaw = this.cannonYaw - yawSpeed;
 			float newPitch = this.cannonPitch + pitchSpeed * sgn;
@@ -217,7 +216,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	@Override
 	public void lazyTick() {
 		super.lazyTick();
-		if (this.running && this.mountedContraption != null) {
+		if (this.mountedContraption != null && !this.level.isClientSide) {
 			this.sendData();
 		}
 	}
@@ -389,13 +388,14 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 
 	@Override
 	protected void read(CompoundTag tag, boolean clientPacket) {
-		super.read(tag, clientPacket);
-		boolean oldRunning = this.running;
 		this.running = tag.getBoolean("Running");
+        float yawBefore = this.cannonYaw;
+        float pitchBefore = this.cannonPitch;
 		this.cannonYaw = tag.getFloat("CannonYaw");
 		this.cannonPitch = tag.getFloat("CannonPitch");
 		this.lastException = AssemblyException.read(tag);
 
+        super.read(tag, clientPacket);
 		if (clientPacket) {
 			this.pitchInterface.readClient(tag.getCompound("PitchInterface"));
 			this.yawInterface.readClient(tag.getCompound("YawInterface"));
@@ -407,11 +407,11 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (!clientPacket) return;
 
 		if (this.running) {
-			if (oldRunning && (this.mountedContraption == null || !this.mountedContraption.isStalled())) {
-				this.clientYawDiff = AngleHelper.getShortestAngleDiff(this.prevYaw, this.cannonYaw);
-				this.clientPitchDiff = AngleHelper.getShortestAngleDiff(this.prevPitch, this.cannonPitch);
-				this.prevYaw = this.cannonYaw;
-				this.prevPitch = this.cannonPitch;
+			if (this.mountedContraption == null || !this.mountedContraption.isStalled()) {
+				this.clientYawDiff = AngleHelper.getShortestAngleDiff(yawBefore, this.cannonYaw);
+				this.clientPitchDiff = AngleHelper.getShortestAngleDiff(pitchBefore, this.cannonPitch);
+				this.cannonYaw = yawBefore;
+				this.cannonPitch = pitchBefore;
 			}
 		} else {
 			this.mountedContraption = null;
