@@ -14,8 +14,25 @@ Fixed:
 - Fixed Create Pulleys and Gantries pushing more blocks than in vanilla Create
 - Fixed display of upside down Cannon Mount and manual Autocannon when solid blocks are above player
 - Fixed cannon contraption breaking in place of existing cannon resulting in new cannon disconnecting
-- Fixed cannon mount kinetics crashing with other mods (particularly Create: Simulated)
-- Fixed cannon cast crashing game when multiple pipes connected to top
+- Fixed cannon mount kinetics crashing with other mods due to UnsupportedOperationException (particularly Create: Simulated, Create: Gears n' Kinetics)
+- Fixed wired fuze detonating direction to be based on shell orientation, not redstone activation face
+- Fixed shrapnel burst not widening when detonating facing upwards
+- Fixed shot balls not present in the Create Big Cannons creative tab
+- Fixed player rotation on Fixed Cannon Mount manual autocannon
+- Fixed #create:safe_nbt exploits
+- Fixed casting mould drops and Schematicannon requirements
+- Fixed drop mortar plume positioning
+- Fixed hostile mob targeting when player rides manual autocannon
+- Fixed player rendering on manual autocannons, including invisibility on Sable sublevels
+- [1.21.1] Fixed cannon cast crashing game with NullPointerException when multiple pipes connected to top
+- [1.21.1] Fixed projectiles fired along the z+ axis being visually distorted; was not fixed in v5.10.1
+- [Sable] Fixed chunkloading near Sable sublevels
+- [Sable] Fixed cannon contraptions not moving with Sable sublevels (ships, contraptions)
+- [Sable] Fixed big cannon projectile collisions and lodging with Sable sublevels, including lag spike
+- [Sable] Fixed wired fuze detonation on Sable sublevels
+- [Sable] Fixed setting Fixed Cannon Mount orientation on Sable sublevels not working
+- [Sable] Fixed cannon plume orientation on Sable sublevel
+- [Sable] Fixed autocannon ammo container blocks not accessible on Sable sublevels
 
 ## [5.11.2] - 2026-02-27
 
