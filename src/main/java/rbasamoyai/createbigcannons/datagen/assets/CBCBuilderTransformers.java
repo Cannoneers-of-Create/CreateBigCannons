@@ -490,7 +490,6 @@ public class CBCBuilderTransformers {
 			.blockstate((c, p) -> BlockStateGen.directionalBlockIgnoresWaterlogged(c, p, s -> {
 				return p.models().getExistingFile(s.getValue(BigCartridgeBlock.FILLED) ? filledLoc : emptyLoc);
 			}))
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.loot((t, c) -> {
 				CompoundTag dampTag = new CompoundTag();
 				dampTag.putBoolean("Damp", true);
@@ -549,7 +548,6 @@ public class CBCBuilderTransformers {
 							.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)))
 						.apply(func)));
 			})
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.item(AutocannonAmmoContainerItem::new)
 			.properties(p -> p.stacksTo(1))
 			.properties(p -> isCreative ? p.rarity(Rarity.EPIC) : p)
@@ -656,7 +654,6 @@ public class CBCBuilderTransformers {
 			.properties(p -> p.sound(SoundType.WOOD))
 			.properties(p -> p.noOcclusion())
 			.tag(BlockTags.MINEABLE_WITH_AXE)
-			.tag(AllBlockTags.SAFE_NBT.tag)
 			.addLayer(() -> RenderType::solid)
 			.blockstate((c, p) -> p.getMultipartBuilder(c.get())
 				.part()
