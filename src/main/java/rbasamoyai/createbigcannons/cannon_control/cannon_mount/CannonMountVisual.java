@@ -48,14 +48,12 @@ public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlock
             .createInstance()
             .rotateToFace(pitchAxis)
             .setup(this.blockEntity.getPitchInterface())
-            .setColor(this.blockEntity.getPitchInterface())
             .setPosition(this.getVisualPosition());
 
         this.yawShaft = instancerProvider().instancer(AllInstanceTypes.ROTATING, Models.partial(AllPartialModels.SHAFT_HALF))
             .createInstance()
             .rotateToFace(Direction.SOUTH, vertical)
             .setup(this.blockEntity.getYawInterface())
-            .setColor(this.blockEntity.getYawInterface())
             .setPosition(this.getVisualPosition());
 
         this.transformModels();
@@ -94,10 +92,10 @@ public class CannonMountVisual extends KineticBlockEntityVisual<CannonMountBlock
 		float partialTicks = ctx.partialTick();
 		boolean upsideDown = this.blockState.getValue(BlockStateProperties.VERTICAL_DIRECTION) == Direction.UP;
 
-		float yaw = this.blockEntity.getYawOffset(partialTicks);
+		float yaw = this.blockEntity.getYawOffset(partialTicks - 1);
 		Quaternionf qyaw = upsideDown ? Axis.ZP.rotationDegrees(180).mul(Axis.YP.rotationDegrees(yaw)) : Axis.YP.rotationDegrees(-yaw);
 		this.rotatingMount.rotation(qyaw);
-		float pitch = this.blockEntity.getPitchOffset(partialTicks);
+		float pitch = this.blockEntity.getPitchOffset(partialTicks - 1);
 		Quaternionf qpitch = upsideDown ? Axis.XP.rotationDegrees(pitch) : Axis.XP.rotationDegrees(-pitch);
 		Quaternionf qyaw1 = new Quaternionf(qyaw);
 		qyaw1.mul(qpitch);
