@@ -27,6 +27,7 @@ Fixed:
 - Fixed player rendering on manual autocannons, including invisibility on Sable sublevels
 - [1.21.1] Fixed cannon cast crashing game with NullPointerException when multiple pipes connected to top
 - [1.21.1] Fixed projectiles fired along the z+ axis being visually distorted; was not fixed in v5.10.1
+- [1.21.1] Fixed autocannon ammo container block item saving
 - [Sable] Fixed chunkloading near Sable sublevels
 - [Sable] Fixed cannon contraptions not moving with Sable sublevels (ships, contraptions)
 - [Sable] Fixed big cannon projectile collisions and lodging with Sable sublevels, including lag spike
