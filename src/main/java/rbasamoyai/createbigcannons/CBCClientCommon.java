@@ -207,8 +207,14 @@ public class CBCClientCommon {
 			player.yBodyRot = player.yHeadRot;
 			player.yBodyRotO = player.yHeadRotO;
 			float yaw = 90 - Mth.lerp(partialTicks, player.yHeadRotO, player.yHeadRot);
-			float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+            Direction dir = poce.getInitialOrientation();
+            float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+            if (dir.getAxis().isVertical()) {
+                pitch *= -1;
+                pitch += dir == Direction.DOWN ? 90 : -90;
+            }
 
+            stack.pushPose();
 			Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
 			stack.mulPose(new Quaternionf(new AxisAngle4f(pitch * Mth.DEG_TO_RAD, pitchVec)));
 			stack.translate(0, -1.25, 0);
@@ -217,12 +223,7 @@ public class CBCClientCommon {
 
     public static void onPlayerRenderPost(PoseStack stack, LivingEntity player, float partialTicks) {
         if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-            float yaw = 90 - Mth.lerp(partialTicks, player.yRotO, player.getYRot());
-            float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
-
-            Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
-            stack.translate(0, 1.25, 0);
-            stack.mulPose(new Quaternionf(new AxisAngle4f(pitch * Mth.DEG_TO_RAD, pitchVec)).conjugate());
+            stack.popPose();
         }
     }
 
@@ -261,12 +262,16 @@ public class CBCClientCommon {
 
 		if (player != null && camera.getEntity() == player && player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
 			Direction dir = poce.getInitialOrientation();
-			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-			boolean flag1 = mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT;
-			float sgn = (flag == flag1) != flag1 ? 1 : -1;
-			float add = 0;//flag1 ? 180 : 0;
-			setYaw.accept(-poce.getViewYRot((float) partialTicks) + add);
-			setPitch.accept(poce.getViewXRot((float) partialTicks) * sgn);
+            if (dir.getAxis().isHorizontal()) {
+                boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+                boolean flag1 = mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT;
+                float sgn = (flag == flag1) != flag1 ? 1 : -1;
+                setPitch.accept(poce.getViewXRot((float) partialTicks) * sgn);
+            } else if (dir == Direction.DOWN) {
+                setPitch.accept(-poce.getViewXRot((float) partialTicks) + 90);
+            } else { // dir == Direction.UP
+                setPitch.accept(-poce.getViewXRot((float) partialTicks) - 90);
+            }
 			setRoll.accept(0f);
 		}
 		return false;

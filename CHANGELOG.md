@@ -19,7 +19,7 @@ Fixed:
 - Fixed wired fuze detonating direction to be based on shell orientation, not redstone activation face
 - Fixed shrapnel burst not widening when detonating facing upwards
 - Fixed shot balls not present in the Create Big Cannons creative tab
-- Fixed player rotation on Fixed Cannon Mount manual autocannon
+- Fixed player rotation on Fixed Cannon Mount manual autocannon (including on up and down autocannons)
 - Fixed #create:safe_nbt exploits
 - Fixed casting mould drops and Schematicannon requirements
 - Fixed drop mortar plume positioning

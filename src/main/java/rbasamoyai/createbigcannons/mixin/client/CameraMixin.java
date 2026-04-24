@@ -37,7 +37,15 @@ public class CameraMixin {
             return;
         }
 
-        Direction up = Direction.UP; // TODO: up and down cases
+        Direction orientation = poce.getInitialOrientation();
+        Direction up;
+        if (orientation.getAxis().isHorizontal()) {
+            up = Direction.UP;
+        } else if (orientation == Direction.DOWN) {
+            up = Direction.NORTH;
+        } else { // orientation == Direction.UP
+            up = Direction.SOUTH;
+        }
 
         Vec3 upNormal = new Vec3(up.step());
         Vec3 localPos = Vec3.atCenterOf(poce.getSeatPos(player));
