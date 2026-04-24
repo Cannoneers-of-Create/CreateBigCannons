@@ -23,7 +23,7 @@
           "function": "minecraft:copy_components",
           "include": [
             "createbigcannons:ammo",
-            "createbigcannons:tracer",
+            "createbigcannons:tracers",
             "createbigcannons:tracer_spacing",
             "createbigcannons:current_index"
           ],

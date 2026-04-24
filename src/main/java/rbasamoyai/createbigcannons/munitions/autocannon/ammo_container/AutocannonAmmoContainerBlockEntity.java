@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Lists;
 import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
 
 import net.minecraft.core.BlockPos;
@@ -25,6 +26,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,9 +40,6 @@ import rbasamoyai.createbigcannons.remix.CBCHasIItemHandlerBlockEntity;
 public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements IAutocannonAmmoContainerContainer,
     MenuProvider, Nameable, CBCHasIItemHandlerBlockEntity, PartialSafeNBT {
 
-	private ItemStack ammo = ItemStack.EMPTY;
-	private ItemStack tracers = ItemStack.EMPTY;
-	private int spacing = 1;
 	private int currentIndex = 0;
     private IItemHandler inventory;
 
@@ -73,28 +72,38 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
 	@Override
 	public ItemStack getMainAmmoStack() {
-		return this.ammo == null ? ItemStack.EMPTY : this.ammo;
+		return this.components().getOrDefault(CBCDataComponents.AMMO, ItemContainerContents.EMPTY).copyOne();
 	}
 
 	@Override
 	public ItemStack getTracerStack() {
-		return this.tracers == null ? ItemStack.EMPTY : this.tracers;
+        return this.components().getOrDefault(CBCDataComponents.TRACERS, ItemContainerContents.EMPTY).copyOne();
 	}
 
 	public int getSpacing() {
-		return this.spacing;
+		return Math.max(this.components().getOrDefault(CBCDataComponents.TRACER_SPACING, 1), 1);
 	}
 
 	public void setMainAmmoDirect(ItemStack stack) {
-		this.ammo = stack == null ? ItemStack.EMPTY : stack;
+		if (stack == null)
+            stack = ItemStack.EMPTY;
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        patched.set(CBCDataComponents.AMMO, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
+        this.setComponents(patched);
 	}
 
 	public void setTracersDirect(ItemStack stack) {
-		this.tracers = stack == null ? ItemStack.EMPTY : stack;
+        if (stack == null)
+            stack = ItemStack.EMPTY;
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        patched.set(CBCDataComponents.TRACERS, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
+        this.setComponents(patched);
 	}
 
 	public void setSpacing(int spacing) {
-		this.spacing = Mth.clamp(spacing, 1, 6);
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        patched.set(CBCDataComponents.TRACER_SPACING, Mth.clamp(spacing, 1, 6));
+        this.setComponents(patched);
 	}
 
 	public boolean canDropInCreative() {
@@ -165,9 +174,9 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 	public ItemStack removeItemNoUpdate(int slot) {
 		ItemStack ret = this.getItem(slot);
 		if (slot == AMMO_SLOT) {
-			this.ammo = ItemStack.EMPTY;
+			this.setMainAmmoDirect(ItemStack.EMPTY);
 		} else if (slot == TRACER_SLOT) {
-			this.tracers = ItemStack.EMPTY;
+			this.setTracersDirect(ItemStack.EMPTY);
 		}
 		return ret;
 	}
@@ -199,8 +208,8 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
 	@Override
 	public void clearContent() {
-		this.ammo = ItemStack.EMPTY;
-		this.tracers = ItemStack.EMPTY;
+		this.setMainAmmoDirect(ItemStack.EMPTY);
+        this.setTracersDirect(ItemStack.EMPTY);
 	}
 
 	@Override

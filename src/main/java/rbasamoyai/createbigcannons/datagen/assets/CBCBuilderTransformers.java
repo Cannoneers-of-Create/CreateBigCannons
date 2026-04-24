@@ -538,7 +538,7 @@ public class CBCBuilderTransformers {
 			.loot((t, c) -> {
 				CopyComponentsFunction.Builder func = CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
 					.include(CBCDataComponents.AMMO)
-					.include(CBCDataComponents.TRACER)
+					.include(CBCDataComponents.TRACERS)
 					.include(CBCDataComponents.TRACER_SPACING);
 				if (isCreative)
 					func = func.include(CBCDataComponents.CURRENT_INDEX);
