@@ -54,8 +54,8 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	protected PitchOrientedContraptionEntity mountedContraption;
 	private boolean running;
 
-	private float cannonYaw;
-	private float cannonPitch;
+	protected float cannonYaw;
+	protected float cannonPitch;
 	private float prevYaw;
 	private float prevPitch;
 	private float clientYawDiff;
@@ -129,7 +129,6 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (!this.running && !this.isVirtual()) {
 			if (CBCBlocks.CANNON_MOUNT.has(this.getBlockState())) {
 				this.cannonYaw = this.getBlockState().getValue(HORIZONTAL_FACING).toYRot();
-				this.prevYaw = this.cannonYaw;
 				this.cannonPitch = 0;
 				this.prevPitch = 0;
 			}
@@ -137,8 +136,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		}
 
 		if (!(this.mountedContraption != null && this.mountedContraption.isStalled()) && flag) {
-			float yawSpeed = this.getAngularSpeed(this.yawInterface.getSpeed(), this.clientYawDiff);
-			float pitchSpeed = this.getAngularSpeed(this.pitchInterface.getSpeed(), this.clientPitchDiff);
+            Direction dir = this.mountedContraption.getInitialOrientation();
+            boolean flag1 = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+            float sgn = flag1 ? 1 : -1;
+
+			float yawSpeed = this.getAngularSpeed(-this.yawInterface.getSpeed(), this.clientYawDiff);
+			float pitchSpeed = this.getAngularSpeed(this.pitchInterface.getSpeed(), this.clientPitchDiff * sgn);
 
 			double yawAngleLimit = this.yawInterface.getSequencedAngleLimit();
 			if (yawAngleLimit >= 0) {
@@ -152,11 +155,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 				this.pitchInterface.setSequencedAngleLimit(Math.max(0, pitchAngleLimit - Math.abs(pitchSpeed)));
 			}
 
-			Direction dir = this.mountedContraption.getInitialOrientation();
-			boolean flag1 = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-			float sgn = flag1 ? 1 : -1;
-
-			float newYaw = this.cannonYaw - yawSpeed;
+			float newYaw = this.cannonYaw + yawSpeed;
 			float newPitch = this.cannonPitch + pitchSpeed * sgn;
 			this.cannonYaw = newYaw % 360.0f;
 			this.cannonPitch = this.mountedContraption == null ? 0 : Mth.clamp(newPitch % 360.0f, -this.getMaxDepress(), this.getMaxElevate());
@@ -226,21 +225,38 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		}
 	}
 
-	public float getPitchOffset(float partialTicks) {
-		float modifier = this.mountedContraption != null && this.mountedContraption.getInitialOrientation() == Direction.DOWN ? -1 : 1;
-		if (this.isVirtual())
-			return Mth.lerp(partialTicks + 0.5f, this.prevPitch, this.cannonPitch) * modifier;
-		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
-			partialTicks = 0;
-		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this)) {
-			Direction facing = this.getContraptionDirection();
-			boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
-			float sgn = flag ? 1 : -1;
-			return this.mountedContraption.getViewXRot(partialTicks) * sgn * modifier;
-		}
-		float aSpeed = this.getAngularSpeed(this.pitchInterface.getSpeed(), this.clientPitchDiff);
-		return Mth.lerp(partialTicks, this.cannonPitch, this.cannonPitch + aSpeed) * modifier;
-	}
+    public float getPitchOffset(float partialTicks) {
+        float downSgn = this.mountedContraption != null && this.mountedContraption.getInitialOrientation() == Direction.DOWN ? -1 : 1;
+        Direction facing = this.getContraptionDirection();
+
+        boolean flag = (facing.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (facing.getAxis() == Direction.Axis.X);
+        float horizSgn = flag ? 1 : -1;
+
+        if (this.isVirtual())
+            return Mth.lerp(partialTicks + 0.5f, this.prevPitch, this.cannonPitch) * downSgn;
+        if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
+            partialTicks = 0;
+        if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this))
+            return this.mountedContraption.getViewXRot(partialTicks) * horizSgn * downSgn;
+
+        float aSpeed = this.getAngularSpeed(this.pitchInterface.getSpeed(), this.clientPitchDiff * horizSgn);
+        double pitchLimit = this.pitchInterface.getSequencedAngleLimit();
+        if (pitchLimit >= 0)
+            aSpeed = (float) Mth.clamp(aSpeed, -pitchLimit, pitchLimit);
+        float pitchOffs = Mth.lerp(partialTicks, this.cannonPitch, this.cannonPitch + aSpeed * horizSgn);
+        if (this.mountedContraption != null) {
+            float d = -this.getMaxDepress();
+            float e = this.getMaxElevate();
+            if (this.cannonPitch <= d) {
+                pitchOffs = d;
+            } else if (e <= this.cannonPitch) {
+                pitchOffs = e;
+            } else {
+                pitchOffs = Mth.clamp(pitchOffs % 360.0f, d, e);
+            }
+        }
+        return pitchOffs * downSgn;
+    }
 
 	public void setPitch(float pitch) {
 		this.cannonPitch = pitch;
@@ -270,7 +286,10 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this)) {
 			return -this.mountedContraption.getViewYRot(partialTicks);
 		}
-		float aSpeed = this.getAngularSpeed(this.yawInterface.getSpeed(), this.clientYawDiff);
+        float aSpeed = this.getAngularSpeed(-this.yawInterface.getSpeed(), this.clientYawDiff);
+        double yawLimit = this.yawInterface.getSequencedAngleLimit();
+        if (yawLimit >= 0)
+            aSpeed = (float) Mth.clamp(aSpeed, -yawLimit, yawLimit);
 		return Mth.lerp(partialTicks, this.cannonYaw, this.cannonYaw + aSpeed);
 	}
 

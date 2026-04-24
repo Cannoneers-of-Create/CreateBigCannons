@@ -62,7 +62,7 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 			.rotateCentered(qyaw)
 			.renderInto(ms, solidBuf);
 
-		float pitch = be.getPitchOffset(partialTicks);
+		float pitch = be.getPitchOffset(partialTicks - 1);
 		Quaternionf qpitch = upsideDown ? Axis.XP.rotationDegrees(pitch) : Axis.XP.rotationDegrees(-pitch);
 		Quaternionf qyaw1 = new Quaternionf(qyaw);
 		qyaw1.mul(qpitch);
@@ -78,7 +78,7 @@ public class CannonMountBlockEntityRenderer extends SafeBlockEntityRenderer<Cann
 
 	private static float getMountYaw(CannonMountBlockEntity cmbe) {
 		float time = AnimationTickHolder.getPartialTicks(cmbe.getLevel());
-		return cmbe.getYawOffset(time);
+		return cmbe.getYawOffset(time - 1);
 	}
 
 }
