@@ -6,6 +6,7 @@ import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 
 import net.createmod.catnip.math.VecHelper;
+import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -69,6 +70,7 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity {
 		if (this.controllerPos != null)
 			compound.put("ControllerRelative", NbtUtils.writeBlockPos(controllerPos.subtract(blockPosition())));
 		compound.putBoolean("UpdatesOwnRotation", this.updatesOwnRotation);
+        NBTHelper.writeEnum(compound, "InitialOrientation", this.getInitialOrientation());
 	}
 
 	public ControlPitchContraption getController() {

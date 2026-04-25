@@ -233,7 +233,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
 			partialTicks = 0;
 		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this))
-			return this.mountedContraption.getViewXRot(partialTicks) * horizSgn * downSgn;
+			return this.mountedContraption.getViewXRot(partialTicks + 1) * horizSgn * downSgn;
 
 		float aSpeed = this.getAngularSpeed(this.pitchInterface.getSpeed(), this.clientPitchDiff * horizSgn);
         double pitchLimit = this.pitchInterface.getSequencedAngleLimit();
@@ -280,7 +280,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		if (this.mountedContraption == null || this.mountedContraption.isStalled() || !this.running)
 			partialTicks = 0;
 		if (this.mountedContraption != null && !this.mountedContraption.canBeTurnedByController(this)) {
-			return -this.mountedContraption.getViewYRot(partialTicks);
+			return -this.mountedContraption.getViewYRot(partialTicks + 1);
 		}
 		float aSpeed = this.getAngularSpeed(-this.yawInterface.getSpeed(), this.clientYawDiff);
         double yawLimit = this.yawInterface.getSequencedAngleLimit();

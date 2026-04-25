@@ -412,10 +412,15 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		Entity controller = entity.getControllingPassenger();
 		if (this.canBeTurnedByPassenger(controller)) {
 			Direction dir = entity.getInitialOrientation();
-			boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
-			entity.pitch = flag ? -controller.xRotO : controller.xRotO;
-			entity.yaw = Mth.wrapDegrees(controller.yRotO);
-			controller.setYBodyRot(controller.getYRot());
+            if (dir.getAxis().isHorizontal()) {
+                boolean flag = (dir.getAxisDirection() == Direction.AxisDirection.POSITIVE) == (dir.getAxis() == Direction.Axis.X);
+                entity.pitch = flag ? -controller.xRotO : controller.xRotO;
+                entity.yaw = Mth.wrapDegrees(controller.yRotO);
+            } else {
+                entity.pitch = controller.xRotO;
+                entity.yaw = Mth.wrapDegrees(controller.yRotO + 180);
+            }
+            controller.setYBodyRot(controller.getYRot());
 			if (CBCEntityTypes.CANNON_CARRIAGE.is(entity.getVehicle())) {
 				entity.getVehicle().onPassengerTurned(entity);
 			} else if (entity.getController() instanceof CannonMountBlockEntity) {

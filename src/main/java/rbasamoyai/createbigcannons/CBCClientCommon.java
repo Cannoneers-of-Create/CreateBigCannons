@@ -279,7 +279,13 @@ public class CBCClientCommon {
 			player.yBodyRotO = player.yHeadRotO;
 			float yaw = 90 - Mth.lerp(partialTicks, player.yHeadRotO, player.yHeadRot);
 			float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
+            Direction dir = poce.getInitialOrientation();
+            if (dir.getAxis().isVertical()) {
+                pitch *= -1;
+                pitch += dir == Direction.DOWN ? 90 : -90;
+            }
 
+            stack.pushPose();
 			Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
 			stack.mulPose(new Quaternionf(new AxisAngle4f(pitch * Mth.DEG_TO_RAD, pitchVec)));
 			stack.translate(0, -1.25, 0);
@@ -288,12 +294,7 @@ public class CBCClientCommon {
 
     public static void onPlayerRenderPost(PoseStack stack, LivingEntity player, float partialTicks) {
         if (player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
-            float yaw = 90 - Mth.lerp(partialTicks, player.yRotO, player.getYRot());
-            float pitch = Mth.lerp(partialTicks, player.xRotO, player.getXRot());
-
-            Vector3f pitchVec = new Vector3f(Mth.sin(yaw * Mth.DEG_TO_RAD), 0, Mth.cos(yaw * Mth.DEG_TO_RAD));
-            stack.translate(0, 1.25, 0);
-            stack.mulPose(new Quaternionf(new AxisAngle4f(pitch * Mth.DEG_TO_RAD, pitchVec)).conjugate());
+            stack.popPose();
         }
     }
 
@@ -333,7 +334,14 @@ public class CBCClientCommon {
 
 		if (player != null && camera.getEntity() == player && player.getVehicle() instanceof PitchOrientedContraptionEntity poce && poce.getSeatPos(player) != null) {
 			Direction dir = poce.getInitialOrientation();
-			Direction up = Direction.UP; // TODO: up and down cases
+            Direction up;
+            if (dir.getAxis().isHorizontal()) {
+                up = Direction.UP;
+            } else if (dir == Direction.DOWN) {
+                up = Direction.NORTH;
+            } else { // orientation == Direction.UP
+                up = Direction.SOUTH;
+            }
 
 			Vec3 upNormal = new Vec3(up.step());
 			Vec3 localPos = Vec3.atCenterOf(poce.getSeatPos(player));
@@ -352,9 +360,15 @@ public class CBCClientCommon {
 			boolean flag1 = mc.options.getCameraType() == CameraType.THIRD_PERSON_FRONT;
 			float sgn = flag == flag1 ? 1 : -1;
 			float add = flag1 ? 180 : 0;
-			setYaw.accept(-poce.getViewYRot((float) partialTicks) + add);
-			setPitch.accept(poce.getViewXRot((float) partialTicks) * sgn);
-			setRoll.accept(0f);
+            if (dir.getAxis().isHorizontal()) {
+                setYaw.accept(-poce.getViewYRot((float) partialTicks) + add);
+                setPitch.accept(poce.getViewXRot((float) partialTicks) * sgn);
+            } else if (dir == Direction.DOWN) {
+                setPitch.accept(-poce.getViewXRot((float) partialTicks) + 90);
+            } else { // dir == Direction.UP
+                setPitch.accept(-poce.getViewXRot((float) partialTicks) - 90);
+            }
+            setRoll.accept(0f);
 		}
 		return false;
 	}
