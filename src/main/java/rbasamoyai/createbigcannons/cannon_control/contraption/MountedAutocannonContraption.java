@@ -267,7 +267,12 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		if (!(foundProjectile.getItem() instanceof AutocannonAmmoItem round)) return;
 		ControlPitchContraption controller = entity.getController();
 
-		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? Direction.DOWN : this.initialOrientation.getOpposite())), 0);
+        Direction handleEjectDirection = switch (this.initialOrientation) {
+            case DOWN -> Direction.SOUTH;
+            case UP -> Direction.NORTH;
+            default -> Direction.DOWN;
+        };
+		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? handleEjectDirection : this.initialOrientation.getOpposite())), 0);
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0);
 		ItemStack ejectStack = round.getSpentItem(foundProjectile);
 		if (!ejectStack.isEmpty()) {
