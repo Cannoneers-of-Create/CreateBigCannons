@@ -6,6 +6,7 @@
 
 Changed:
 - Improved Cannon Mount syncing
+- Improved casing ejection for up- and down-facing manual autocannon
 - [1.20.1] Create Big Cannons will not load with the latest release of CBC: Advanced Technologies until an issue on their end is fixed.
   - CBC: Advanced Technologies breaks Big Cartridges and prevents them from firing. Other issues may also be present.
 - [1.21.1] Updated Chinese (Simplified) (zh_cn.json) localization courtesy of pingguomc
