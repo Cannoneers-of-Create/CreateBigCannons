@@ -3,6 +3,8 @@
 ## [5.11.3] - Unreleased
 
 **Create Big Cannons 5.11.3, with more fixes and support for Sable (Create: Simulated).**
+Note: Not all fixes for Sable/Aeronautics are implemented, particularly for attachment and splitting. This will be
+addressed in the next patch.
 
 Changed:
 - Improved Cannon Mount syncing
