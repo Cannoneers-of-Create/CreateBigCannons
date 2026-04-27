@@ -95,7 +95,6 @@ public abstract class CannonMountInterfaceBlockEntity extends KineticBlockEntity
 
         @Override
         protected void applyRotationAndAngle() {
-            this.parent.setPitch(Math.round(this.parent.cannonPitch));
             this.parent.applyRotation();
         }
 	}
@@ -115,7 +114,6 @@ public abstract class CannonMountInterfaceBlockEntity extends KineticBlockEntity
 
         @Override
         protected void applyRotationAndAngle() {
-            this.parent.setYaw(Math.round(this.parent.cannonYaw));
             this.parent.applyRotation();
         }
 	}
