@@ -26,6 +26,7 @@ Fixed:
 - Fixed drop mortar plume positioning
 - Fixed hostile mob targeting when player rides manual autocannon
 - Fixed player rendering on manual autocannons, including invisibility on Sable sublevels
+- Fixed obsidian block armor values
 - [1.21.1] Fixed cannon cast crashing game with NullPointerException when multiple pipes connected to top
 - [1.21.1] Fixed projectiles fired along the z+ axis being visually distorted; was not fixed in v5.10.1
 - [1.21.1] Fixed autocannon ammo container block item saving
