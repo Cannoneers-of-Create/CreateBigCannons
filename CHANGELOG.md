@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.11.3] - Unreleased
+## [5.11.3] - 2026-04-27
 
 **Create Big Cannons 5.11.3, with more fixes. Now brings support for Sable (Create: Simulated, Create: Aeronautics)!**
 Note: Not all fixes for Sable/Aeronautics are implemented, particularly for attachment and splitting. This will be
