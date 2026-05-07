@@ -503,6 +503,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 		if (orientation != null)
             tag.put("Orientation", this.newDoubleList(orientation.x, orientation.y, orientation.z));
 		tag.put("LastPenetration", NbtUtils.writeBlockState(this.lastPenetratedBlock));
+		tag.putInt("InGroundTime", this.inGroundTime);
 		if (this.removeNextTick)
 			tag.putBoolean("RemoveNextTick", true);
 	}
@@ -537,6 +538,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 		this.lastPenetratedBlock = tag.contains("LastPenetration", Tag.TAG_COMPOUND)
 			? NbtUtils.readBlockState(this.level().holderLookup(CBCRegistryUtils.getBlockRegistryKey()), tag.getCompound("LastPenetration"))
 			: Blocks.AIR.defaultBlockState();
+		this.inGroundTime = tag.getInt("InGroundTime");
 		this.removeNextTick = tag.contains("RemoveNextTick");
 	}
 
