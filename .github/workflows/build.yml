@@ -80,12 +80,13 @@ jobs:
 
             -   name: Send built file to discord
                 env:
+                    JARS: ${{ steps.find_jars.outputs.jars }}
                     DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
                 if: env.DISCORD_WEBHOOK != ''
                 run: |
                     while IFS= read -r f
-                      do curl -F "file=@\"$f\";filename=\"$(echo ${f##*/} | sed 's/+/-/g')\"" $DISCORD_WEBHOOK
-                    done <<< "${{ steps.find_jars.outputs.jars }}"
+                      do curl -F "file=@$f" $DISCORD_WEBHOOK
+                    done <<< "$JARS"
 
             -   name: Archive Artifacts
                 uses: actions/upload-artifact@v4
