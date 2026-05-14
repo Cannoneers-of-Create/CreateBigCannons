@@ -1,17 +1,66 @@
 package rbasamoyai.createbigcannons.compat.sable;
 
 import dev.ryanhcode.sable.Sable;
+import dev.ryanhcode.sable.api.physics.force.ForceGroup;
+import dev.ryanhcode.sable.api.physics.force.QueuedForceGroup;
+import dev.ryanhcode.sable.api.sublevel.ServerSubLevelContainer;
+import dev.ryanhcode.sable.api.sublevel.SubLevelContainer;
+import dev.ryanhcode.sable.companion.math.JOMLConversion;
 import dev.ryanhcode.sable.companion.math.Pose3d;
 import dev.ryanhcode.sable.companion.math.Pose3dc;
 import dev.ryanhcode.sable.mixinterface.clip_overwrite.LevelPoseProviderExtension;
+import dev.ryanhcode.sable.neoforge.event.ForgeSablePrePhysicsTickEvent;
+import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import dev.ryanhcode.sable.sublevel.SubLevel;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
+
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 public class SableCompat {
+
+    private static final Map<ResourceKey<Level>, Queue<Force>> BY_DIMENSION = new ConcurrentHashMap<>();
+
+    public static void enqueueForce(ServerLevel level, Vec3 pos, Vec3 force, int steps) {
+        SubLevel subLevel = Sable.HELPER.getContaining(level, pos);
+        if (subLevel == null) return;
+        int safeSteps = Math.max(1, steps);
+        Force forceData = new Force(
+            subLevel.getUniqueId(),
+            pos,
+            force,
+            safeSteps
+        );
+        enqueue(level.dimension(), forceData);
+    }
+
+    public static void enqueue(ResourceKey<Level> level, Force forceData) {
+        BY_DIMENSION.computeIfAbsent(level, ignored -> new ConcurrentLinkedDeque<>()).add(forceData);
+    }
+
+    public static List<Force> drain(ResourceKey<Level> level) {
+        Queue<Force> forces = BY_DIMENSION.get(level);
+        if (forces == null || forces.isEmpty()) return List.of();
+        List<Force> drained = new ArrayList<>();
+        Force force;
+        while ((force = forces.poll()) != null) {
+            drained.add(force);
+        }
+        return drained;
+    }
 
     public static BlockPos transformFromShip(Level level, BlockPos pos, BlockPos root) {
         // Adapted from ActiveSableCompanion; this implementation is mainly leveraged for cannon particle handling as
@@ -54,4 +103,32 @@ public class SableCompat {
         CBCCompatTransformers.addProjectileGroundingHandler(SableCompat::groundProjectile);
     }
 
+    public static void recoilCannon(Level level, Vec3 pos, Vec3 direction, float power) {
+        if (level instanceof ServerLevel serverLevel) {
+            enqueueForce(serverLevel, pos, direction.scale(-5 * power * CBCConfigs.server().compacts.recoilingFactor.get()), 10);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPrePhysicsTick(ForgeSablePrePhysicsTickEvent event) {
+        ServerLevel level = event.getPhysicsSystem().getLevel();
+        List<Force> forces = drain(level.dimension());
+        if (forces.isEmpty()) return;
+
+        ServerSubLevelContainer container = SubLevelContainer.getContainer(level);
+        if (container == null) return;
+
+        for (Force force : forces) {
+            SubLevel subLevel = container.getSubLevel(force.sublevelId());
+            if (!(subLevel instanceof ServerSubLevel serverSubLevel) || serverSubLevel.isRemoved()) continue;
+            ForceGroup forceGroup = SableForceGroupsCompact.RECOIL.get();
+            QueuedForceGroup queuedForceGroup = serverSubLevel.getOrCreateQueuedForceGroup(forceGroup);
+            queuedForceGroup.applyAndRecordPointForce(
+                JOMLConversion.toJOML(force.pos()),
+                JOMLConversion.toJOML(force.force())
+            );
+
+            if (force.remainSteps() > 1) enqueue(level.dimension(), force.nextStep());
+        }
+    }
 }

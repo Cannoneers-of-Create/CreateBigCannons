@@ -40,6 +40,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
+import rbasamoyai.createbigcannons.CBCModsNeoForge;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
@@ -52,6 +53,7 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
+import rbasamoyai.createbigcannons.compat.sable.SableCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.effects.particles.explosions.CannonBlastWaveEffectParticleData;
@@ -471,6 +473,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		if (controller != null) controller.onRecoil(vec.scale(-recoilMagnitude), entity);
 
 		this.hasFired = true;
+
+        if (CBCModsNeoForge.SABLE.isLoaded())
+            SableCompat.recoilCannon(level, entity.toGlobalVector(endPos.getCenter(),0), vec, propelCtx.chargesUsed);
 
 		float soundPower = Mth.clamp(propelCtx.chargesUsed / 16f, 0, 1);
 		float tone = 2 + soundPower * -8 + level.random.nextFloat() * 4f - 2f;
