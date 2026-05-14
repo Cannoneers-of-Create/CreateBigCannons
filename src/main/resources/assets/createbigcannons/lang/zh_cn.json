@@ -492,7 +492,7 @@
   "fluid.createbigcannons.molten_cast_iron": "熔融铸铁",
   "fluid.createbigcannons.molten_nethersteel": "熔融下界钢",
   "fluid.createbigcannons.molten_steel": "熔融钢",
-  "force_group.createbigcannons.recoil_force": "Recoil",
+  "force_group.createbigcannons.recoil_force": "后坐力",
   "item.createbigcannons.ap_autocannon_round": "穿甲弹弹头",
   "item.createbigcannons.ap_autocannon_round.tooltip": "穿甲弹弹头",
   "item.createbigcannons.ap_autocannon_round.tooltip.summary": "具有_高穿透力_，最适合_较脆弱的目标_，例如_木制的结构和较薄的墙面_。_不能装备引信或者被引爆_",
