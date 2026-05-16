@@ -8,7 +8,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 
-public class SableForceGroupsCompact {
+public class SableForceGroupsCompat {
     public static final DeferredRegister<ForceGroup> FORCE_GROUPS =
         DeferredRegister.create(ForceGroups.REGISTRY_KEY, CreateBigCannons.MOD_ID);
 

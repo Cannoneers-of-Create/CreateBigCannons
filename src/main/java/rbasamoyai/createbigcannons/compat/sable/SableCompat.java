@@ -105,7 +105,7 @@ public class SableCompat {
 
     public static void recoilCannon(Level level, Vec3 pos, Vec3 direction, float power) {
         if (level instanceof ServerLevel serverLevel) {
-            enqueueForce(serverLevel, pos, direction.scale(-5 * power * CBCConfigs.server().compacts.recoilingFactor.get()), 10);
+            enqueueForce(serverLevel, pos, direction.scale(-5 * power * CBCConfigs.server().compats.recoilingFactor.get()), 1);
         }
     }
 
@@ -121,7 +121,7 @@ public class SableCompat {
         for (Force force : forces) {
             SubLevel subLevel = container.getSubLevel(force.sublevelId());
             if (!(subLevel instanceof ServerSubLevel serverSubLevel) || serverSubLevel.isRemoved()) continue;
-            ForceGroup forceGroup = SableForceGroupsCompact.RECOIL.get();
+            ForceGroup forceGroup = SableForceGroupsCompat.RECOIL.get();
             QueuedForceGroup queuedForceGroup = serverSubLevel.getOrCreateQueuedForceGroup(forceGroup);
             queuedForceGroup.applyAndRecordPointForce(
                 JOMLConversion.toJOML(force.pos()),

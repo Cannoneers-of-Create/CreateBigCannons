@@ -26,7 +26,7 @@ import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 import rbasamoyai.createbigcannons.compat.curios.CBCCuriosIntegration;
 import rbasamoyai.createbigcannons.compat.framedblocks.FramedBlocksCompat;
 import rbasamoyai.createbigcannons.compat.sable.SableCompat;
-import rbasamoyai.createbigcannons.compat.sable.SableForceGroupsCompact;
+import rbasamoyai.createbigcannons.compat.sable.SableForceGroupsCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
@@ -72,7 +72,7 @@ public class CreateBigCannonsNeoForge {
 		CBCModsNeoForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosIntegration.init(modEventBus, forgeEventBus));
 
         if (CBCModsNeoForge.SABLE.isLoaded()) {
-            SableForceGroupsCompact.init(modEventBus);
+            SableForceGroupsCompat.init(modEventBus);
             forgeEventBus.register(SableCompat.class);
         }
 

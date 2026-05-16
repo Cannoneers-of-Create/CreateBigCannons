@@ -7,7 +7,7 @@ public class CBCCfgServer extends CBCConfigBase {
 	public final CBCCfgCannons cannons = nested(0, CBCCfgCannons::new, Comments.cannons);
 	public final CBCCfgKinetics kinetics = nested(0, CBCCfgKinetics::new, Comments.kinetics);
 	public final CBCCfgCrafting crafting = nested(0, CBCCfgCrafting::new, Comments.crafting);
-    public final CBCCfgCompacts compacts = nested(0, CBCCfgCompacts::new, Comments.compacts);
+    public final CBCCfgCompats compats = nested(0, CBCCfgCompats::new, Comments.compats);
 
 	@Override public String getName() { return "server"; }
 
@@ -17,7 +17,7 @@ public class CBCCfgServer extends CBCConfigBase {
 		static String cannons = "These values affect the characteristics of cannon materials and cannon structures";
 		static String kinetics = "These values affect various miscellaneous contraptions.";
 		static String crafting = "These values affect cannon crafting properties.";
-        static String compacts = "These values affect the compact between other mods";
+        static String compats = "These values affect the compat between other mods";
 	}
 
 }
