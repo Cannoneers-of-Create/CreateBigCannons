@@ -105,7 +105,7 @@ public class SableCompat {
 
     public static void recoilCannon(Level level, Vec3 pos, Vec3 direction, float power) {
         if (level instanceof ServerLevel serverLevel) {
-            enqueueForce(serverLevel, pos, direction.scale(-5 * power * CBCConfigs.server().compats.recoilingFactor.get()), 1);
+            enqueueForce(serverLevel, pos, direction.scale(power * -CBCConfigs.server().compats.recoilingFactor.get()), 1);
         }
     }
 

@@ -42,6 +42,7 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
+import rbasamoyai.createbigcannons.CBCModsNeoForge;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
@@ -60,6 +61,7 @@ import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMateria
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialProperties;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
+import rbasamoyai.createbigcannons.compat.sable.SableCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
@@ -274,6 +276,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
         };
 		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? handleEjectDirection : this.initialOrientation.getOpposite())), 0);
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0);
+		Vec3 endPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.initialOrientation)), 0);
 		ItemStack ejectStack = round.getSpentItem(foundProjectile);
 		if (!ejectStack.isEmpty()) {
 			//ItemStack output = breech.insertOutput(ejectStack);
@@ -377,6 +380,10 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 
 		recoilMagnitude *= CBCConfigs.server().cannons.autocannonRecoilScale.getF();
 		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), entity);
+
+		if (CBCModsNeoForge.SABLE.isLoaded()) {
+			SableCompat.recoilCannon(level, endPos, spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0)).normalize(), new Float(0.3));
+		}
 
         Vec3 particlePos = CBCCompatTransformers.transformVec3(level, spawnPos, this.entity.position());
 		Vec3 particleVel = vec1.scale(1.25);

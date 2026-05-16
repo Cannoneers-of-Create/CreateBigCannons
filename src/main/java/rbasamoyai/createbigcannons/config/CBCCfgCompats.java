@@ -5,7 +5,7 @@ import net.createmod.catnip.config.ConfigBase;
 public class CBCCfgCompats extends ConfigBase {
 
     public final ConfigGroup sableCompact = group(0, "sable", "Sable");
-    public final ConfigFloat recoilingFactor = f(5, 0, "recoilingFactor", Comments.recoilingFactor);
+    public final ConfigFloat recoilingFactor = f(40, 0, "recoilingFactor", Comments.recoilingFactor);
 
     public CBCCfgCompats() { super(); }
 
