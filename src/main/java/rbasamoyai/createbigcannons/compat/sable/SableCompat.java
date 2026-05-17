@@ -16,12 +16,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
 
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +36,7 @@ public class SableCompat {
 
     private static final Map<ResourceKey<Level>, Queue<Force>> BY_DIMENSION = new ConcurrentHashMap<>();
 
-    public static void enqueueForce(ServerLevel level, Vec3 pos, Vec3 force, int steps) {
+    public static void enqueueForce(ServerLevel level, Vec3 pos, Vec3 force, int steps, ForceGroup forceGroup) {
         SubLevel subLevel = Sable.HELPER.getContaining(level, pos);
         if (subLevel == null) return;
         int safeSteps = Math.max(1, steps);
@@ -42,7 +44,8 @@ public class SableCompat {
             subLevel.getUniqueId(),
             pos,
             force,
-            safeSteps
+            safeSteps,
+            forceGroup
         );
         enqueue(level.dimension(), forceData);
     }
@@ -105,7 +108,23 @@ public class SableCompat {
 
     public static void recoilCannon(Level level, Vec3 pos, Vec3 direction, float power) {
         if (level instanceof ServerLevel serverLevel) {
-            enqueueForce(serverLevel, pos, direction.scale(power * -CBCConfigs.server().compats.recoilingFactor.get()), 1);
+            ForceGroup forceGroup = SableForceGroupsCompat.RECOIL.get();
+            enqueueForce(serverLevel, pos, direction.scale(power * -CBCConfigs.server().compats.recoilingFactor.get()), 1, forceGroup);
+        }
+    }
+
+    public static void impactContraption(Level level, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, ProjectileContext projectileContext) {
+        float massLost = impactResult.massLost();
+        if (level instanceof ServerLevel serverLevel) {
+            Vec3 projDir = projectileContext.projectile.getDeltaMovement().normalize();
+            Vec3 projLoc = hitResult.getLocation();
+            SubLevel subLevel = Sable.HELPER.getContaining(level, projLoc);
+            if (subLevel == null) return;
+
+            Vec3 direction = subLevel.logicalPose().transformNormalInverse(projDir);
+            ForceGroup forceGroup = SableForceGroupsCompat.IMPACT.get();
+            double recoilingFactor = CBCConfigs.server().compats.recoilingFactor.get();
+            enqueueForce(serverLevel, projLoc, direction.scale(massLost * recoilingFactor), 1, forceGroup);
         }
     }
 
@@ -121,8 +140,7 @@ public class SableCompat {
         for (Force force : forces) {
             SubLevel subLevel = container.getSubLevel(force.sublevelId());
             if (!(subLevel instanceof ServerSubLevel serverSubLevel) || serverSubLevel.isRemoved()) continue;
-            ForceGroup forceGroup = SableForceGroupsCompat.RECOIL.get();
-            QueuedForceGroup queuedForceGroup = serverSubLevel.getOrCreateQueuedForceGroup(forceGroup);
+            QueuedForceGroup queuedForceGroup = serverSubLevel.getOrCreateQueuedForceGroup(force.forceGroup());
             queuedForceGroup.applyAndRecordPointForce(
                 JOMLConversion.toJOML(force.pos()),
                 JOMLConversion.toJOML(force.force())

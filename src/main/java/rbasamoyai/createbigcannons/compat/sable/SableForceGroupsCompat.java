@@ -7,6 +7,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.DefaultFluidCompat;
 
 public class SableForceGroupsCompat {
     public static final DeferredRegister<ForceGroup> FORCE_GROUPS =
@@ -18,6 +19,16 @@ public class SableForceGroupsCompat {
             Component.translatable("force_group.createbigcannons.recoil_force"),
             null,
             0x504550,
+            true
+        )
+    );
+
+    public static final DeferredHolder<ForceGroup, ForceGroup> IMPACT = FORCE_GROUPS.register(
+        "impact",
+        () -> new ForceGroup(
+            Component.translatable("force_group.createbigcannons.impact_force"),
+            null,
+            0x808080,
             true
         )
     );

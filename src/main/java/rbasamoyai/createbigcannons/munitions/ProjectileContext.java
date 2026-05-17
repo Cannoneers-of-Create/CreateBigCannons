@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
+import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
 
 public class ProjectileContext {
@@ -18,12 +19,14 @@ public class ProjectileContext {
 	private final CollisionContext collisionContext;
 	private final Set<Entity> hitEntities = new LinkedHashSet<>();
 	private final CBCCfgMunitions.GriefState griefState;
+    public final AbstractCannonProjectile projectile;
 	private final Map<BlockPos, Float> queuedExplosions = new HashMap<>();
 	private final List<ClientboundPlayBlockHitEffectPacket> effects = new LinkedList<>();
 
 	public ProjectileContext(AbstractCannonProjectile projectile, CBCCfgMunitions.GriefState griefState) {
 		this.collisionContext = CollisionContext.of(projectile);
 		this.griefState = griefState;
+        this.projectile = projectile;
 	}
 
 	public CollisionContext collisionContext() { return this.collisionContext; }

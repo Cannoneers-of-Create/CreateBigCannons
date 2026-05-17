@@ -6,6 +6,7 @@ import java.util.WeakHashMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.swing.*;
 
 import org.joml.Vector3f;
 
@@ -41,7 +42,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
+import rbasamoyai.createbigcannons.CBCModsNeoForge;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.compat.sable.SableCompat;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
@@ -413,7 +416,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	}
 
 	protected boolean onHitEntity(Entity entity, ProjectileContext projectileContext) {
-		if (this.getProjectileMass() <= 0)
+        float mass = this.getProjectileMass();
+		if (mass <= 0)
 			return false;
 		if (!this.level().isClientSide) {
 			EntityDamagePropertiesComponent properties = this.getDamageProperties();
@@ -425,12 +429,15 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 			if (properties == null || !properties.rendersInvulnerable()) entity.invulnerableTime = 0;
 
 			float penalty = entity.isAlive() ? 2f : 0.2f;
-			this.setProjectileMass(Math.max(this.getProjectileMass() - penalty, 0));
+			this.setProjectileMass(Math.max(mass - penalty, 0));
 		}
-		return this.onImpact(new EntityHitResult(entity), new ImpactResult(ImpactResult.KinematicOutcome.PENETRATE, false), projectileContext);
+		return this.onImpact(new EntityHitResult(entity), new ImpactResult(ImpactResult.KinematicOutcome.PENETRATE, false, mass - this.getProjectileMass()), projectileContext);
 	}
 
 	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
+        if (CBCModsNeoForge.SABLE.isLoaded()) {
+            SableCompat.impactContraption(level(), hitResult, impactResult, projectileContext);
+        }
 		return false;
 	}
 
@@ -639,7 +646,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 
 	public boolean canLingerInGround() { return false; }
 
-	public record ImpactResult(KinematicOutcome kinematics, boolean shouldRemove) {
+	public record ImpactResult(KinematicOutcome kinematics, boolean shouldRemove, float massLost) {
 		public enum KinematicOutcome { PENETRATE, STOP, BOUNCE }
 	}
 

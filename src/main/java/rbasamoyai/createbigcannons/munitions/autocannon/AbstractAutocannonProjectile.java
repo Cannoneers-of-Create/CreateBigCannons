@@ -193,6 +193,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			outcome = ImpactResult.KinematicOutcome.BOUNCE;
 		} else {
 			outcome = ImpactResult.KinematicOutcome.STOP;
+            this.setProjectileMass(0);
 		}
 		boolean shatter = surfaceImpact && outcome != ImpactResult.KinematicOutcome.BOUNCE && hardnessPenalty > ballistics.toughness();
 
@@ -219,8 +220,9 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			if (!unbreakable)
 				CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), Math.max(Mth.ceil(momentum), 0), state, this.level());
 		}
-		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
-		return new ImpactResult(outcome, !this.level().isClientSide && (shatter || outcome != ImpactResult.KinematicOutcome.BOUNCE));
+        float massLost = (float) (mass - this.getProjectileMass());
+		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter, massLost), projectileContext);
+		return new ImpactResult(outcome, !this.level().isClientSide && (shatter || outcome != ImpactResult.KinematicOutcome.BOUNCE), massLost);
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
