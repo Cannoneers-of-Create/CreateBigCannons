@@ -69,6 +69,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	protected float damage;
 	protected int inFluidTime = 0;
 	protected int penetrationTime = 0;
+    public float massLost = 0;
 	@Nullable protected Vec3 nextVelocity = null;
 	protected BlockState lastPenetratedBlock = Blocks.AIR.defaultBlockState();
 	protected boolean removeNextTick = false;
@@ -430,13 +431,14 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 
 			float penalty = entity.isAlive() ? 2f : 0.2f;
 			this.setProjectileMass(Math.max(mass - penalty, 0));
+            this.massLost = (mass - this.getProjectileMass()) / getBallisticProperties().durabilityMass();
 		}
-		return this.onImpact(new EntityHitResult(entity), new ImpactResult(ImpactResult.KinematicOutcome.PENETRATE, false, mass - this.getProjectileMass()), projectileContext);
+		return this.onImpact(new EntityHitResult(entity), new ImpactResult(ImpactResult.KinematicOutcome.PENETRATE, false), projectileContext);
 	}
 
 	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
         if (CBCModsNeoForge.SABLE.isLoaded()) {
-            SableCompat.impactContraption(level(), hitResult, impactResult, projectileContext);
+            SableCompat.impactContraption(level(), hitResult, projectileContext);
         }
 		return false;
 	}
@@ -646,7 +648,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 
 	public boolean canLingerInGround() { return false; }
 
-	public record ImpactResult(KinematicOutcome kinematics, boolean shouldRemove, float massLost) {
+	public record ImpactResult(KinematicOutcome kinematics, boolean shouldRemove) {
 		public enum KinematicOutcome { PENETRATE, STOP, BOUNCE }
 	}
 

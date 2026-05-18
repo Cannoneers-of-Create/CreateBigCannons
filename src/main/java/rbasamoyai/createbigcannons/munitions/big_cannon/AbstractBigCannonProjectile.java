@@ -237,9 +237,9 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 				this.level().playSound(null, spallLoc.x, spallLoc.y, spallLoc.z, sound.getBreakSound(), SoundSource.BLOCKS,
 					sound.getVolume(), sound.getPitch());
 		}
-        float massLost = (float) (mass - this.getProjectileMass());
-		shatter |= this.onImpact(blockHitResult, new ImpactResult(outcome, shatter, massLost), projectileContext);
-		return new ImpactResult(outcome, shatter, massLost);
+        this.massLost = (float) (mass - this.getProjectileMass()) / ballistics.durabilityMass();
+		shatter |= this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
+		return new ImpactResult(outcome, shatter);
 	}
 
 	@Override

@@ -24,6 +24,7 @@ import rbasamoyai.createbigcannons.CBCCompatTransformers;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
+import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,12 +110,13 @@ public class SableCompat {
     public static void recoilCannon(Level level, Vec3 pos, Vec3 direction, float power) {
         if (level instanceof ServerLevel serverLevel) {
             ForceGroup forceGroup = SableForceGroupsCompat.RECOIL.get();
-            enqueueForce(serverLevel, pos, direction.scale(power * -CBCConfigs.server().compats.recoilingFactor.get()), 1, forceGroup);
+            Vec3 force = direction.scale(power * -CBCConfigs.server().compats.recoilingFactor.get());
+            enqueueForce(serverLevel, pos, force, 1, forceGroup);
         }
     }
 
-    public static void impactContraption(Level level, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, ProjectileContext projectileContext) {
-        float massLost = impactResult.massLost();
+    public static void impactContraption(Level level, HitResult hitResult, ProjectileContext projectileContext) {
+        float massLost = projectileContext.projectile.massLost;
         if (level instanceof ServerLevel serverLevel) {
             Vec3 projDir = projectileContext.projectile.getDeltaMovement().normalize();
             Vec3 projLoc = hitResult.getLocation();
@@ -124,7 +126,11 @@ public class SableCompat {
             Vec3 direction = subLevel.logicalPose().transformNormalInverse(projDir);
             ForceGroup forceGroup = SableForceGroupsCompat.IMPACT.get();
             double recoilingFactor = CBCConfigs.server().compats.recoilingFactor.get();
-            enqueueForce(serverLevel, projLoc, direction.scale(massLost * recoilingFactor), 1, forceGroup);
+            double power;
+            if (projectileContext.projectile instanceof AbstractAutocannonProjectile) { power = 0.5; }
+            else { power = projectileContext.projectile.getDeltaMovement().length(); }
+            Vec3 force = direction.scale(massLost * recoilingFactor * power);
+            enqueueForce(serverLevel, projLoc, force, 1, forceGroup);
         }
     }
 

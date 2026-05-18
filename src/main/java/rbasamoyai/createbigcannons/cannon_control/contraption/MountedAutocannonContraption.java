@@ -382,7 +382,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), entity);
 
 		if (CBCModsNeoForge.SABLE.isLoaded()) {
-			SableCompat.recoilCannon(level, endPos, spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0)).normalize(), new Float(2.0));
+			SableCompat.recoilCannon(level, endPos, spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0)).normalize(), (float) 0.5);
 		}
 
         Vec3 particlePos = CBCCompatTransformers.transformVec3(level, spawnPos, this.entity.position());

@@ -220,9 +220,9 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			if (!unbreakable)
 				CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), Math.max(Mth.ceil(momentum), 0), state, this.level());
 		}
-        float massLost = (float) (mass - this.getProjectileMass());
-		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter, massLost), projectileContext);
-		return new ImpactResult(outcome, !this.level().isClientSide && (shatter || outcome != ImpactResult.KinematicOutcome.BOUNCE), massLost);
+        this.massLost = (float) (mass - this.getProjectileMass()) / ballistics.durabilityMass();
+		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
+		return new ImpactResult(outcome, !this.level().isClientSide && (shatter || outcome != ImpactResult.KinematicOutcome.BOUNCE));
 	}
 
 	public boolean isTracer() { return (this.entityData.get(ID_FLAGS) & 2) != 0; }
