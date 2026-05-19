@@ -6,6 +6,7 @@
 
 Changed:
 - Changed block light of rendered projectiles
+- [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 
 Fixed:
 - Changed projectile rendering orientation
