@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
+import net.minecraft.core.BlockPos;
+
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -46,9 +48,9 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 			if (vel.horizontalDistanceSqr() > 1e-4d && Math.abs(vel.y) > 1e-2d) {
 				Vec3 horizontal = new Vec3(vel.x, 0, vel.z).normalize();
 				poseStack.mulPose(CBCUtils.mat4x4fFacing(vel.normalize().reverse(), horizontal));
-				poseStack.mulPose(CBCUtils.mat4x4fFacing(horizontal, new Vec3(0, 0, -1)));
+				poseStack.mulPose(CBCUtils.mat4x4fFacing(horizontal));
 			} else {
-				poseStack.mulPose(CBCUtils.mat4x4fFacing(vel.normalize(), new Vec3(0, 0, -1)));
+				poseStack.mulPose(CBCUtils.mat4x4fFacing(vel.normalize()));
 			}
 
 			PoseStack.Pose lastPose = poseStack.last();
@@ -199,4 +201,8 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 
     @Override public ResourceLocation getTextureLocation(T entity) { return null; }
 
+    @Override
+    protected int getBlockLightLevel(T entity, BlockPos pos) {
+        return entity.isTracer() ? 15 : super.getBlockLightLevel(entity, pos);
+    }
 }

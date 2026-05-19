@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon.drop_mortar_shell;
 
+import net.minecraft.core.BlockPos;
+
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -78,6 +80,11 @@ public class DropMortarShellRenderer extends EntityRenderer<DropMortarShellProje
 	public ResourceLocation getTextureLocation(DropMortarShellProjectile entity) {
 		return null;
 	}
+
+    @Override
+    protected int getBlockLightLevel(DropMortarShellProjectile entity, BlockPos pos) {
+        return entity.hasTracer() ? 15 : super.getBlockLightLevel(entity, pos);
+    }
 
     private static void vertex(VertexConsumer builder, Matrix4f pose, int packedLight, float x, float y, int u, int v) {
         builder.addVertex(pose, x, y, 0.0f)
