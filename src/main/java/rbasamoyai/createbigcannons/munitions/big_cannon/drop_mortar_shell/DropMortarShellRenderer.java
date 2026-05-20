@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -88,5 +89,10 @@ public class DropMortarShellRenderer extends EntityRenderer<DropMortarShellProje
 			.normal(normal, 0.0f, 1.0f, 0.0f)
 			.endVertex();
 	}
+
+    @Override
+    protected int getBlockLightLevel(DropMortarShellProjectile entity, BlockPos pos) {
+        return entity.hasTracer() ? 15 : super.getBlockLightLevel(entity, pos);
+    }
 
 }

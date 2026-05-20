@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -92,5 +93,10 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 			.normal(normal, 0.0f, 1.0f, 0.0f)
 			.endVertex();
 	}
+
+    @Override
+    protected int getBlockLightLevel(T entity, BlockPos pos) {
+        return entity.hasTracer() ? 15 : super.getBlockLightLevel(entity, pos);
+    }
 
 }
