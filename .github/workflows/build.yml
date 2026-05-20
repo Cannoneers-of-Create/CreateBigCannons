@@ -89,5 +89,5 @@ jobs:
             -   name: Archive Artifacts
                 uses: actions/upload-artifact@v4
                 with:
-                    name: ${{ steps.read_properties.outputs.mod-id }}-${{ steps.read_properties.outputs.mod-version }}+build.${{ github.run_number }}
+                    name: ${{ steps.read_properties.outputs.mod.id }}-${{ steps.read_properties.outputs.mod.version }}+build.${{ github.run_number }}
                     path: ${{ steps.find_jars.outputs.jars }}
