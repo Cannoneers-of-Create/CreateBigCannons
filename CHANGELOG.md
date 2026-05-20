@@ -9,7 +9,7 @@ Changed:
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 
 Fixed:
-- Changed projectile rendering orientation
+- Fixed projectile rendering orientation
 
 ## [5.11.3] - 2026-04-27
 
