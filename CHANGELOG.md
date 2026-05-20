@@ -10,6 +10,7 @@ Added:
 
 Changed:
 - Changed block light of rendered projectiles
+- Changed default big cannon and drop mortar recoil scale from 4 to 1
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 - [1.21.1] Updated Chinese (Simplified) (zh_cn.json) translation courtesy of wph1234
 

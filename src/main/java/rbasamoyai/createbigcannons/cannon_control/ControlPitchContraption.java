@@ -8,7 +8,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.CBCModsNeoForge;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
+import rbasamoyai.createbigcannons.compat.sable.SableCompat;
 
 public interface ControlPitchContraption {
 
@@ -26,7 +28,8 @@ public interface ControlPitchContraption {
 
 	@Nullable default ResourceLocation getTypeId() { return null; }
 
-	default void onRecoil(Vec3 vector, AbstractContraptionEntity cannon) {
+	default void onRecoil(Vec3 recoilForce, Vec3 recoilPoint, AbstractContraptionEntity cannon) {
+        CBCModsNeoForge.SABLE.executeIfInstalled(() -> () -> SableCompat.recoilCannon(cannon.level(), recoilPoint, recoilForce));
 	}
 
 	interface Block extends ControlPitchContraption {

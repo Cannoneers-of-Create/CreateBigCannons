@@ -254,7 +254,12 @@ public abstract class AbstractBigCannonProjectile extends AbstractCannonProjecti
 
 	@Nonnull protected abstract BigCannonProjectilePropertiesComponent getBigCannonProjectileProperties();
 
-	public enum TrailType {
+    @Override
+    public double impactPower(ProjectileContext context) {
+        return this.getDeltaMovement().length() * CBCConfigs.server().munitions.bigCannonProjectileImpactForceMultiplier.getF();
+    }
+
+    public enum TrailType {
 		NONE,
 		LONG,
 		SHORT

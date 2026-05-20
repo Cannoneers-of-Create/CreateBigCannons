@@ -30,7 +30,7 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigBool allBigCannonProjectilesAreTracers = b(false, "allBigCannonProjectilesAreTracers", Comments.allBigCannonProjectilesAreTracers);
 	public final ConfigInt quickFiringBreechItemPickupDelay = i(20, 0, 100, "quickFiringBreechItemPickupDelay", "[in Ticks]");
 	public final ConfigBool quickFiringBreechItemGoesToInventory = b(false, "quickFiringBreechItemGoesToInventory");
-
+    public final ConfigFloat bigCannonProjectileImpactForceMultiplier = f(1f, 0, "bigCannonProjectileImpactForceMultiplier", Comments.bigCannonProjectileImpactForceMultiplier);
 
 	public final ConfigGroup fuzes = group(0, "fuzes", "Projectile Fuzes");
 	public final ConfigFloat impactFuzeDetonationChance = f(0.67f, 0, 1, "impactFuzeDetonationChance", Comments.impactFuzeDetonationChance);
@@ -51,6 +51,8 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigBool allAutocannonProjectilesAreTracers = b(false, "allAutocannonProjectilesAreTracers", Comments.allAutocannonProjectilesAreTracers);
 	public final ConfigInt ammoContainerAutocannonRoundCapacity = i(16, 1, 128, "autocannonAmmoContainerAutocannonRoundCapacity", Comments.ammoContainerAutocannonRoundCapacity);
 	public final ConfigInt ammoContainerMachineGunRoundCapacity = i(64, 1, 128, "autocannonAmmoContainerMachineGunRoundCapacity", Comments.ammoContainerMachineGunRoundCapacity);
+    public final ConfigFloat autocannonProjectileImpactForceMultiplier = f(0.5f, 0, "autocannonProjectileImpactForceMultiplier", Comments.autocannonProjectileImpactForceMultiplier);
+    public final ConfigFloat machineGunProjectileImpactForceMultiplier = f(0.05f, 0, "machineGunProjectileImpactForceMultiplier", Comments.machineGunProjectileImpactForceMultiplier);
 
 	@Override
 	public String getName() {
@@ -83,6 +85,10 @@ public class CBCCfgMunitions extends ConfigBase {
 		static String ammoContainerAutocannonRoundCapacity = "How many autocannon rounds the Autocannon Ammo Container can store.";
 		static String ammoContainerMachineGunRoundCapacity = "How many machine gun rounds the Autocannon Ammo Container can store.";
 		static String minVelocityForPenetrationBonus = "The minimum velocity necessary to activate the penetration bonus.";
+
+        static String bigCannonProjectileImpactForceMultiplier = "The strength multiplier of big cannon projectile impacts on physics objects (i.e. from Sable, Valkyrien Skies).";
+        static String autocannonProjectileImpactForceMultiplier = "The strength multiplier of autocannon projectile impacts (excluding machine gun rounds) on physics objects (i.e. from Sable, Valkyrien Skies).";
+        static String machineGunProjectileImpactForceMultiplier = "The strength multiplier of machine gun projectile impacts on physics objects (i.e. from Sable, Valkyrien Skies).";
 	}
 
 	public enum GriefState {

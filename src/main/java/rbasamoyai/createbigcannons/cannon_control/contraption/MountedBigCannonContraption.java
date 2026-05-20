@@ -40,7 +40,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
-import rbasamoyai.createbigcannons.CBCModsNeoForge;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_types.CBCCannonContraptionTypes;
@@ -53,7 +52,6 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_bree
 import rbasamoyai.createbigcannons.cannons.big_cannons.cannon_end.BigCannonEnd;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterial;
 import rbasamoyai.createbigcannons.cannons.big_cannons.material.BigCannonMaterialProperties;
-import rbasamoyai.createbigcannons.compat.sable.SableCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.casting.CannonCastShape;
 import rbasamoyai.createbigcannons.effects.particles.explosions.CannonBlastWaveEffectParticleData;
@@ -434,7 +432,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		}
 
 		Vec3 spawnPos = entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 0);
-		Vec3 vec = spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0)).normalize();
+        Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0);
+		Vec3 vec = spawnPos.subtract(centerPos).normalize();
 		spawnPos = spawnPos.subtract(vec.scale(2));
 
 		if (propelCtx.chargesUsed < minimumSpread) propelCtx.chargesUsed = minimumSpread;
@@ -470,12 +469,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 
 		recoilMagnitude += propelCtx.recoil;
 		recoilMagnitude *= CBCConfigs.server().cannons.bigCannonRecoilScale.getF();
-		if (controller != null) controller.onRecoil(vec.scale(-recoilMagnitude), entity);
+		if (controller != null)
+            controller.onRecoil(vec.scale(-recoilMagnitude), centerPos, entity);
 
 		this.hasFired = true;
-
-        if (CBCModsNeoForge.SABLE.isLoaded())
-            SableCompat.recoilCannon(level, entity.toGlobalVector(endPos.getCenter(),0), vec, propelCtx.chargesUsed);
 
 		float soundPower = Mth.clamp(propelCtx.chargesUsed / 16f, 0, 1);
 		float tone = 2 + soundPower * -8 + level.random.nextFloat() * 4f - 2f;
@@ -689,7 +686,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		float spread = properties.mortarSpread();
 
 		Vec3 spawnPos = this.entity.toGlobalVector(Vec3.atCenterOf(currentPos.relative(this.initialOrientation)), 1.0f);
-		Vec3 vec = spawnPos.subtract(this.entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f)).normalize();
+        Vec3 centerPos = this.entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 1.0f);
+		Vec3 vec = spawnPos.subtract(centerPos).normalize();
 		spawnPos = spawnPos.subtract(vec.scale(2));
 
 		projectile.setPos(spawnPos);
@@ -706,7 +704,8 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		slevel.addFreshEntity(projectile);
 
 		recoilMagnitude *= CBCConfigs.server().cannons.bigCannonRecoilScale.getF();
-		if (controller != null) controller.onRecoil(vec.scale(-recoilMagnitude), this.entity);
+		if (controller != null)
+            controller.onRecoil(vec.scale(-recoilMagnitude), centerPos, this.entity);
 
 		Vec3 plumePos = CBCCompatTransformers.transformVec3(slevel, spawnPos.add(vec), this.entity.position());
         Vec3 plumeDir = CBCCompatTransformers.transformLocationNormal(slevel, this.entity.blockPosition(), vec);

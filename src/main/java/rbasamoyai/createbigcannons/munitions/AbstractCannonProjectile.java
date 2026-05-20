@@ -6,7 +6,6 @@ import java.util.WeakHashMap;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
 
 import org.joml.Vector3f;
 
@@ -649,6 +648,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	public void removeUntouchableEntity(Entity entity) { this.untouchableEntities.remove(entity); }
 
 	public boolean canLingerInGround() { return false; }
+
+    public double impactPower(ProjectileContext context) { return 0; }
 
 	public record ImpactResult(KinematicOutcome kinematics, boolean shouldRemove) {
 		public enum KinematicOutcome { PENETRATE, STOP, BOUNCE }

@@ -42,7 +42,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
-import rbasamoyai.createbigcannons.CBCModsNeoForge;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.cannon_control.ControlPitchContraption;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlockEntity;
@@ -61,7 +60,6 @@ import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMateria
 import rbasamoyai.createbigcannons.cannons.autocannon.material.AutocannonMaterialProperties;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlock;
 import rbasamoyai.createbigcannons.cannons.autocannon.recoil_spring.AutocannonRecoilSpringBlockEntity;
-import rbasamoyai.createbigcannons.compat.sable.SableCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.effects.particles.plumes.AutocannonPlumeParticleData;
 import rbasamoyai.createbigcannons.index.CBCAutocannonMaterials;
@@ -379,11 +377,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		recoilMagnitude *= CBCConfigs.server().cannons.autocannonRecoilScale.getF();
-		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), entity);
-
-		if (CBCModsNeoForge.SABLE.isLoaded()) {
-			SableCompat.recoilCannon(level, endPos, spawnPos.subtract(entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0)).normalize(), (float) 0.5);
-		}
+		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), centerPos, entity);
 
         Vec3 particlePos = CBCCompatTransformers.transformVec3(level, spawnPos, this.entity.position());
 		Vec3 particleVel = vec1.scale(1.25);

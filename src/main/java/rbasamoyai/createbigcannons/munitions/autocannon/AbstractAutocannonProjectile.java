@@ -260,7 +260,12 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	public AutocannonAmmoType getAutocannonRoundType() { return AutocannonAmmoType.AUTOCANNON; }
 
-	public enum TrailType {
+    @Override
+    public double impactPower(ProjectileContext context) {
+        return CBCConfigs.server().munitions.autocannonProjectileImpactForceMultiplier.getF();
+    }
+
+    public enum TrailType {
 		NONE,
 		LONG,
 		SHORT
