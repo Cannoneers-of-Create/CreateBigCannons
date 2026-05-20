@@ -136,7 +136,8 @@ public class SableCompat {
             if (impactResult.kinematics() == AbstractCannonProjectile.ImpactResult.KinematicOutcome.BOUNCE && hitResult instanceof BlockHitResult blockHitResult) {
                 Vec3 surfaceNormal = CBCUtils.getSurfaceNormalVector(level, blockHitResult);
                 Vec3 transformedNormal = subLevel.logicalPose().transformNormalInverse(surfaceNormal);
-                enqueueForce(serverLevel, projLoc, transformedNormal.reverse().scale(recoilingFactor * power), 1, forceGroup);
+                double angle = Math.toDegrees(JOMLConversion.toJOML(surfaceNormal.reverse()).angle(JOMLConversion.toJOML(projDir)));
+                enqueueForce(serverLevel, projLoc, transformedNormal.reverse().scale(recoilingFactor * power * (angle / 90)), 1, forceGroup);
             }
             else {
                 Vec3 direction = subLevel.logicalPose().transformNormalInverse(projDir);
