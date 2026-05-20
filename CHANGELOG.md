@@ -4,6 +4,10 @@
 
 **Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable!**
 
+Added:
+- [Sable] Added cannon recoil on Sable physics objects, courtesy of wph1234
+- [Sable] Cannon projectiles now apply some force when impacting Sable physics objects, courtesy of wph1234
+
 Changed:
 - Changed block light of rendered projectiles
 - Changed directionality of screw breech rotation to be consistent across all directions (clockwise closes, counterclockwise opens) courtesy of PilotsMask
