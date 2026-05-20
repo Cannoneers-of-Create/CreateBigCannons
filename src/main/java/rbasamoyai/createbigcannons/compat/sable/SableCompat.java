@@ -12,10 +12,12 @@ import dev.ryanhcode.sable.mixinterface.clip_overwrite.LevelPoseProviderExtensio
 import dev.ryanhcode.sable.neoforge.event.ForgeSablePrePhysicsTickEvent;
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import dev.ryanhcode.sable.sublevel.SubLevel;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -25,6 +27,7 @@ import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +118,7 @@ public class SableCompat {
         }
     }
 
-    public static void impactContraption(Level level, HitResult hitResult, ProjectileContext projectileContext) {
+    public static void impactContraption(Level level, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, ProjectileContext projectileContext) {
         float massLost = projectileContext.projectile.massLost;
         if (level instanceof ServerLevel serverLevel) {
             Vec3 projDir = projectileContext.projectile.getDeltaMovement().normalize();
@@ -123,14 +126,23 @@ public class SableCompat {
             SubLevel subLevel = Sable.HELPER.getContaining(level, projLoc);
             if (subLevel == null) return;
 
-            Vec3 direction = subLevel.logicalPose().transformNormalInverse(projDir);
             ForceGroup forceGroup = SableForceGroupsCompat.IMPACT.get();
             double recoilingFactor = CBCConfigs.server().compats.recoilingFactor.get();
+
             double power;
             if (projectileContext.projectile instanceof AbstractAutocannonProjectile) { power = 0.5; }
             else { power = projectileContext.projectile.getDeltaMovement().length(); }
-            Vec3 force = direction.scale(massLost * recoilingFactor * power);
-            enqueueForce(serverLevel, projLoc, force, 1, forceGroup);
+
+            if (impactResult.kinematics() == AbstractCannonProjectile.ImpactResult.KinematicOutcome.BOUNCE && hitResult instanceof BlockHitResult blockHitResult) {
+                Vec3 surfaceNormal = CBCUtils.getSurfaceNormalVector(level, blockHitResult);
+                Vec3 transformedNormal = subLevel.logicalPose().transformNormalInverse(surfaceNormal);
+                enqueueForce(serverLevel, projLoc, transformedNormal.reverse().scale(recoilingFactor * power), 1, forceGroup);
+            }
+            else {
+                Vec3 direction = subLevel.logicalPose().transformNormalInverse(projDir);
+                Vec3 force = direction.scale(massLost * recoilingFactor * power);
+                enqueueForce(serverLevel, projLoc, force, 1, forceGroup);
+            }
         }
     }
 

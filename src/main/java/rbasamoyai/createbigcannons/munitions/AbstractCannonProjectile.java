@@ -438,7 +438,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 
 	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
         if (CBCModsNeoForge.SABLE.isLoaded()) {
-            SableCompat.impactContraption(level(), hitResult, projectileContext);
+            SableCompat.impactContraption(level(), hitResult, impactResult, projectileContext);
         }
 		return false;
 	}
