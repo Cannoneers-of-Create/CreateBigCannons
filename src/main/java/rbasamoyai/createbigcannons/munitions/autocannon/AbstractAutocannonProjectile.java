@@ -193,6 +193,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			outcome = ImpactResult.KinematicOutcome.BOUNCE;
 		} else {
 			outcome = ImpactResult.KinematicOutcome.STOP;
+            this.setProjectileMass(0);
 		}
 		boolean shatter = surfaceImpact && outcome != ImpactResult.KinematicOutcome.BOUNCE && hardnessPenalty > ballistics.toughness();
 
@@ -219,6 +220,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 			if (!unbreakable)
 				CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), Math.max(Mth.ceil(momentum), 0), state, this.level());
 		}
+        this.massLost = (float) (mass - this.getProjectileMass()) / ballistics.durabilityMass();
 		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
 		return new ImpactResult(outcome, !this.level().isClientSide && (shatter || outcome != ImpactResult.KinematicOutcome.BOUNCE));
 	}
@@ -258,7 +260,12 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 
 	public AutocannonAmmoType getAutocannonRoundType() { return AutocannonAmmoType.AUTOCANNON; }
 
-	public enum TrailType {
+    @Override
+    public double impactPower(ProjectileContext context) {
+        return CBCConfigs.server().munitions.autocannonProjectileImpactForceMultiplier.getF();
+    }
+
+    public enum TrailType {
 		NONE,
 		LONG,
 		SHORT

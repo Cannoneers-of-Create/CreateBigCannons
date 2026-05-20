@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons;
 
-import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
@@ -69,8 +68,7 @@ public class CreateBigCannonsNeoForge {
         CBCCommonNeoForgeEvents.register(modEventBus, forgeEventBus);
 
 		CBCModsNeoForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosIntegration.init(modEventBus, forgeEventBus));
-
-        CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> CBCClientNeoForge.prepareClient(modEventBus, forgeEventBus));
+        CBCModsNeoForge.SABLE.executeIfInstalled(() -> () -> SableCompat.onModCtor(modEventBus, forgeEventBus));
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
@@ -84,7 +82,7 @@ public class CreateBigCannonsNeoForge {
 		DefaultCannonMountPropertiesSerializers.init();
 		CBCModsNeoForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsNeoForge.COPYCATS::getBlock));
 		CBCModsNeoForge.FRAMEDBLOCKS.executeIfInstalled(() -> () -> FramedBlocksCompat.init());
-        CBCModsNeoForge.SABLE.executeIfInstalled(() -> () -> SableCompat.init());
+        CBCModsNeoForge.SABLE.executeIfInstalled(() -> () -> SableCompat.onCommonSetup());
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {

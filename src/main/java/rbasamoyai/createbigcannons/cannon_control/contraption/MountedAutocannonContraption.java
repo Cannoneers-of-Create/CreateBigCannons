@@ -274,6 +274,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
         };
 		Vec3 ejectPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.isHandle ? handleEjectDirection : this.initialOrientation.getOpposite())), 0);
 		Vec3 centerPos = entity.toGlobalVector(Vec3.atCenterOf(BlockPos.ZERO), 0);
+		Vec3 endPos = entity.toGlobalVector(Vec3.atCenterOf(this.startPos.relative(this.initialOrientation)), 0);
 		ItemStack ejectStack = round.getSpentItem(foundProjectile);
 		if (!ejectStack.isEmpty()) {
 			//ItemStack output = breech.insertOutput(ejectStack);
@@ -376,7 +377,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 		}
 
 		recoilMagnitude *= CBCConfigs.server().cannons.autocannonRecoilScale.getF();
-		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), entity);
+		if (controller != null) controller.onRecoil(vec1.scale(-recoilMagnitude), centerPos, entity);
 
         Vec3 particlePos = CBCCompatTransformers.transformVec3(level, spawnPos, this.entity.position());
 		Vec3 particleVel = vec1.scale(1.25);

@@ -8,9 +8,11 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
+import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.munitions.autocannon.AutocannonAmmoType;
 import rbasamoyai.createbigcannons.munitions.autocannon.config.InertAutocannonProjectileProperties;
@@ -41,7 +43,12 @@ public class MachineGunProjectile extends AbstractAutocannonProjectile {
 
 	@Override public AutocannonAmmoType getAutocannonRoundType() { return AutocannonAmmoType.MACHINE_GUN; }
 
-	@Override
+    @Override
+    public double impactPower(ProjectileContext context) {
+        return CBCConfigs.server().munitions.machineGunProjectileImpactForceMultiplier.getF();
+    }
+
+    @Override
 	protected DamageSource getEntityDamage(Entity entity) {
 		ResourceKey<DamageType> type = entity.isInWater() ? CBCDamageTypes.MACHINE_GUN_FIRE_IN_WATER : CBCDamageTypes.MACHINE_GUN_FIRE;
 		return new CannonDamageSource(CannonDamageSource.getDamageRegistry(this.level()).getHolderOrThrow(type), this.getDamageProperties().ignoresEntityArmor());
