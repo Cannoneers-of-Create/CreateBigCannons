@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.autocannon;
 
-import net.minecraft.core.BlockPos;
-
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -16,6 +14,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -48,9 +47,9 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 			if (vel.horizontalDistanceSqr() > 1e-4d && Math.abs(vel.y) > 1e-2d) {
 				Vec3 horizontal = new Vec3(vel.x, 0, vel.z).normalize();
 				poseStack.mulPose(CBCUtils.mat4x4fFacing(vel.normalize().reverse(), horizontal));
-				poseStack.mulPose(CBCUtils.mat4x4fFacing(horizontal));
+				poseStack.mulPose(CBCUtils.mat4x4fFacing(horizontal, new Vec3(0, 0, -1)));
 			} else {
-				poseStack.mulPose(CBCUtils.mat4x4fFacing(vel.normalize()));
+				poseStack.mulPose(CBCUtils.mat4x4fFacing(vel.normalize(), new Vec3(0, 0, -1)));
 			}
 
 			PoseStack.Pose lastPose = poseStack.last();
