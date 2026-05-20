@@ -4,10 +4,16 @@
 
 **Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable!**
 
+Added:
+- Added cannon recoil on Sable physics objects, courtesy of wph1234
+- Cannon projectiles now apply some force when impacting Sable physics objects, courtesy of wph1234
+
 Changed:
 - Changed block light of rendered projectiles
 - Changed directionality of screw breech rotation to be consistent across all directions (clockwise closes, counterclockwise opens) courtesy of PilotsMask
+- Changed default big cannon and drop mortar recoil scale from 4 to 1
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
+- [1.21.1] Updated Chinese (Simplified) (zh_cn.json) translation courtesy of wph1234
 
 Fixed:
 - Fixed storage blocks not tagged correctly (cast iron, bronze, steel, nethersteel)

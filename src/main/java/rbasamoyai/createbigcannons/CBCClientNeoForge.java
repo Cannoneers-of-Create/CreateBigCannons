@@ -8,9 +8,11 @@ import net.minecraft.client.gui.LayeredDraw;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.LevelAccessor;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
@@ -26,15 +28,17 @@ import net.neoforged.neoforge.client.event.RenderPlayerEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import rbasamoyai.createbigcannons.compat.curios.CBCCuriosRenderers;
 import rbasamoyai.createbigcannons.index.CBCBlockPartials;
 import rbasamoyai.createbigcannons.index.CBCRenderTypes;
 
+@Mod(value = CreateBigCannons.MOD_ID, dist = Dist.CLIENT)
 public class CBCClientNeoForge {
 
-	public static void prepareClient(IEventBus modEventBus, IEventBus forgeEventBus) {
+	public CBCClientNeoForge(IEventBus modEventBus) {
 		CBCBlockPartials.init();
 
 		modEventBus.addListener(CBCClientNeoForge::onClientSetup);
@@ -45,6 +49,7 @@ public class CBCClientNeoForge {
 		modEventBus.addListener(CBCClientNeoForge::onRegisterGuiOverlays);
 		modEventBus.addListener(CBCClientNeoForge::onRegisterShaders);
 
+        IEventBus forgeEventBus = NeoForge.EVENT_BUS;
 		forgeEventBus.addListener(CBCClientNeoForge::onClientGameTick);
 		forgeEventBus.addListener(CBCClientNeoForge::onScrollMouse);
 		forgeEventBus.addListener(CBCClientNeoForge::onFovModify);

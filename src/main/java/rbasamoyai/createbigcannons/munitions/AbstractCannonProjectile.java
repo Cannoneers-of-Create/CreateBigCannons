@@ -41,7 +41,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
+import rbasamoyai.createbigcannons.CBCModsNeoForge;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.compat.sable.SableCompat;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions.GriefState;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
@@ -66,6 +68,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	protected float damage;
 	protected int inFluidTime = 0;
 	protected int penetrationTime = 0;
+    public float massLost = 0;
 	@Nullable protected Vec3 nextVelocity = null;
 	protected BlockState lastPenetratedBlock = Blocks.AIR.defaultBlockState();
 	protected boolean removeNextTick = false;
@@ -413,7 +416,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	}
 
 	protected boolean onHitEntity(Entity entity, ProjectileContext projectileContext) {
-		if (this.getProjectileMass() <= 0)
+        float mass = this.getProjectileMass();
+		if (mass <= 0)
 			return false;
 		if (!this.level().isClientSide) {
 			EntityDamagePropertiesComponent properties = this.getDamageProperties();
@@ -425,12 +429,16 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 			if (properties == null || !properties.rendersInvulnerable()) entity.invulnerableTime = 0;
 
 			float penalty = entity.isAlive() ? 2f : 0.2f;
-			this.setProjectileMass(Math.max(this.getProjectileMass() - penalty, 0));
+			this.setProjectileMass(Math.max(mass - penalty, 0));
+            this.massLost = (mass - this.getProjectileMass()) / getBallisticProperties().durabilityMass();
 		}
 		return this.onImpact(new EntityHitResult(entity), new ImpactResult(ImpactResult.KinematicOutcome.PENETRATE, false), projectileContext);
 	}
 
 	protected boolean onImpact(HitResult hitResult, ImpactResult impactResult, ProjectileContext projectileContext) {
+        if (CBCModsNeoForge.SABLE.isLoaded()) {
+            SableCompat.impactContraption(level(), hitResult, impactResult, projectileContext);
+        }
 		return false;
 	}
 
@@ -640,6 +648,8 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	public void removeUntouchableEntity(Entity entity) { this.untouchableEntities.remove(entity); }
 
 	public boolean canLingerInGround() { return false; }
+
+    public double impactPower(ProjectileContext context) { return 0; }
 
 	public record ImpactResult(KinematicOutcome kinematics, boolean shouldRemove) {
 		public enum KinematicOutcome { PENETRATE, STOP, BOUNCE }
