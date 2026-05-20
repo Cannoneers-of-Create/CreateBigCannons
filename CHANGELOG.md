@@ -5,8 +5,8 @@
 **Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable!**
 
 Added:
-- Added cannon recoil on Sable physics objects, courtesy of wph1234
-- Cannon projectiles now apply some force when impacting Sable physics objects, courtesy of wph1234
+- [Sable] Added cannon recoil on Sable physics objects, courtesy of wph1234
+- [Sable] Cannon projectiles now apply some force when impacting Sable physics objects, courtesy of wph1234
 
 Changed:
 - Changed block light of rendered projectiles
