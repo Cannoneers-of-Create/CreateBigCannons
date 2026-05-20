@@ -137,7 +137,7 @@ public class SableCompat {
                 Vec3 surfaceNormal = CBCUtils.getSurfaceNormalVector(level, blockHitResult);
                 Vec3 transformedNormal = subLevel.logicalPose().transformNormalInverse(surfaceNormal);
                 double angle = Math.toDegrees(JOMLConversion.toJOML(surfaceNormal.reverse()).angle(JOMLConversion.toJOML(projDir)));
-                enqueueForce(serverLevel, projLoc, transformedNormal.reverse().scale(recoilingFactor * power * (angle / 90)), 1, forceGroup);
+                enqueueForce(serverLevel, projLoc, transformedNormal.reverse().scale(recoilingFactor * power * (1 - angle / 90)), 1, forceGroup);
             }
             else {
                 Vec3 direction = subLevel.logicalPose().transformNormalInverse(projDir);
