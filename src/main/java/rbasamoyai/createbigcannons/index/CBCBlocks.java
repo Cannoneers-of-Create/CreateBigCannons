@@ -950,10 +950,14 @@ public class CBCBlocks {
 		.tag(BlockTags.NEEDS_STONE_TOOL)
         .tag(forgeTag("storage_blocks/cast_iron"))
         .tag(fabricTag("storage_blocks/cast_iron"))
+        .tag(forgeTag("storage_blocks"))
+        .tag(fabricTag("storage_blocks"))
         .tag(fabricTag("cast_iron_blocks"))
 		.lang("Block of Cast Iron")
 		.item()
 		.tag(CBCTags.CBCItemTags.BLOCK_CAST_IRON)
+        .tag(forgeItemTag("storage_blocks/cast_iron"))
+        .tag(fabricItemTag("storage_blocks/cast_iron"))
 		.build()
 		.register();
 
@@ -967,10 +971,14 @@ public class CBCBlocks {
         .tag(BlockTags.NEEDS_IRON_TOOL)
         .tag(forgeTag("storage_blocks/bronze"))
         .tag(fabricTag("storage_blocks/bronze"))
+        .tag(forgeTag("storage_blocks"))
+        .tag(fabricTag("storage_blocks"))
         .tag(fabricTag("bronze_blocks"))
         .lang("Block of Bronze")
         .item()
         .tag(CBCTags.CBCItemTags.BLOCK_BRONZE)
+        .tag(forgeItemTag("storage_blocks/bronze"))
+        .tag(fabricItemTag("storage_blocks/bronze"))
         .build()
         .register();
 
@@ -982,6 +990,8 @@ public class CBCBlocks {
         .properties(p -> p.sound(SoundType.METAL))
         .tag(BlockTags.MINEABLE_WITH_PICKAXE)
         .tag(BlockTags.NEEDS_IRON_TOOL)
+        .tag(forgeTag("storage_blocks"))
+        .tag(fabricTag("storage_blocks"))
         .tag(CommonMetal.STEEL.storageBlocks.blocks())
         .lang("Block of Steel")
         .item()
@@ -999,10 +1009,14 @@ public class CBCBlocks {
 		.tag(BlockTags.NEEDS_DIAMOND_TOOL)
         .tag(forgeTag("storage_blocks/nethersteel"))
         .tag(fabricTag("storage_blocks/nethersteel"))
+        .tag(forgeTag("storage_blocks"))
+        .tag(fabricTag("storage_blocks"))
         .tag(fabricTag("nethersteel_blocks"))
 		.lang("Block of Nethersteel")
 		.item()
 		.tag(CBCTags.CBCItemTags.BLOCK_NETHERSTEEL)
+        .tag(forgeItemTag("storage_blocks/nethersteel"))
+        .tag(fabricItemTag("storage_blocks/nethersteel"))
 		.build()
 		.register();
 
@@ -1351,5 +1365,9 @@ public class CBCBlocks {
     public static TagKey<Block> tag(ResourceLocation loc) { return CBCRegistryUtils.createBlockTag(loc); }
     private static TagKey<Block> forgeTag(String loc) { return tag(CBCUtils.location("forge", loc)); }
     private static TagKey<Block> fabricTag(String loc) { return tag(CBCUtils.location("c", loc)); }
+
+    public static TagKey<Item> itemTag(ResourceLocation loc) { return CBCRegistryUtils.createItemTag(loc); }
+    private static TagKey<Item> forgeItemTag(String loc) { return itemTag(CBCUtils.location("forge", loc)); }
+    private static TagKey<Item> fabricItemTag(String loc) { return itemTag(CBCUtils.location("c", loc)); }
 
 }
