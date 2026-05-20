@@ -11,6 +11,7 @@ Changed:
 
 Fixed:
 - Fixed storage blocks not tagged correctly (cast iron, bronze, steel, nethersteel)
+- Fixed big cartridge and fluid shell data not loading when placed as block and item consumed
 
 ## [5.11.3] - 2026-04-27
 
