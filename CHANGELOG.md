@@ -1,5 +1,13 @@
 # Changelog
 
+## [5.11.4] - Unreleased
+
+**Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable!**
+
+Changed:
+- Changed block light of rendered projectiles
+- [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
+
 ## [5.11.3] - 2026-04-27
 
 **Create Big Cannons 5.11.3, with more fixes. Now brings support for Sable (Create: Simulated, Create: Aeronautics)!**
