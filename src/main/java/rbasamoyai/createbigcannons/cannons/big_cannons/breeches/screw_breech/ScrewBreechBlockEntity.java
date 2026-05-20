@@ -50,9 +50,11 @@ public class ScrewBreechBlockEntity extends KineticBlockEntity implements IBigCa
 
 		if (this.getSpeed() == 0) return;
 		float progress = this.getOpeningSpeed();
-		if (Math.abs(progress) > 0) {
-			this.openProgress = Mth.clamp(this.openProgress + progress, 0.0f, 1.0f);
-		}
+        if (Math.abs(progress) > 0) {
+            Direction facing = getBlockState().getValue(BlockStateProperties.FACING);
+            progress = convertToDirection(progress, facing);
+            this.openProgress = Mth.clamp(this.openProgress + progress, 0.0f, 1.0f);
+        }
 
 		if (this.getLevel() != null && !this.getLevel().isClientSide) {
 			BigCannonEnd openState = this.getBlockState().getValue(ScrewBreechBlock.OPEN);
@@ -92,9 +94,11 @@ public class ScrewBreechBlockEntity extends KineticBlockEntity implements IBigCa
 		return Math.abs(this.getSpeed()) > 0 ? this.getSpeed() / 512.0f : 0.0f;
 	}
 
-	public float getRenderedBlockOffset(float partialTicks) {
-		return Mth.clamp(this.openProgress + this.getOpeningSpeed() * partialTicks, 0.0f, 1.0f);
-	}
+    public float getRenderedBlockOffset(float partialTicks) {
+        Direction facing = getBlockState().getValue(BlockStateProperties.FACING);
+        partialTicks = convertToDirection(partialTicks,facing);
+        return Mth.clamp(this.openProgress + this.getOpeningSpeed() * partialTicks, 0.0f, 1.0f);
+    }
 
 	@Override
 	protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {

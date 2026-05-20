@@ -6,6 +6,7 @@
 
 Changed:
 - Changed block light of rendered projectiles
+- Changed directionality of screw breech rotation to be consistent across all directions (clockwise closes, counterclockwise opens) courtesy of PilotsMask
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 
 ## [5.11.3] - 2026-04-27
