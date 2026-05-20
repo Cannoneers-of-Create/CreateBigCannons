@@ -76,3 +76,24 @@ type = "optional"
 versionRange = "[${sable_version_range},)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "simulated"
+type = "optional"
+versionRange = "[${simulated_version_range},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "aeronautics"
+type = "optional"
+versionRange = "[${simulated_version_range},)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "offroad"
+type = "optional"
+versionRange = "[${simulated_version_range},)"
+ordering = "NONE"
+side = "BOTH"

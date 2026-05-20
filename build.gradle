@@ -176,6 +176,15 @@ dependencies {
 
     // Sable
     api("dev.ryanhcode.sable:sable-neoforge-${project.minecraft_version}:${project.sable_version}")
+    implementation("dev.simulated_team.simulated:simulated-neoforge-${project.minecraft_version}:${project.simulated_version}") {
+        exclude(group: "cc.tweaked", module: "cc-tweaked-1.21.1-forge")
+    }
+    implementation("dev.eriksonn.aeronautics:aeronautics-neoforge-${project.minecraft_version}:${project.simulated_version}") {
+        exclude(group: "cc.tweaked", module: "cc-tweaked-1.21.1-forge")
+    }
+    implementation("dev.ryanhcode.offroad:offroad-neoforge-${project.minecraft_version}:${project.simulated_version}") {
+        exclude(group: "cc.tweaked", module: "cc-tweaked-1.21.1-forge")
+    }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -197,6 +206,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
         framedblocks_version_range : framedblocks_version_range,
         curios_version_range   : curios_version_range,
         sable_version_range    : sable_version_range,
+        simulated_version_range : simulated_version_range,
     ]
     inputs.properties replaceProperties
     expand replaceProperties
