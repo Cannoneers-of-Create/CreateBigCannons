@@ -9,6 +9,9 @@ Changed:
 - Changed directionality of screw breech rotation to be consistent across all directions (clockwise closes, counterclockwise opens) courtesy of PilotsMask
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 
+Fixed:
+- Fixed storage blocks not tagged correctly (cast iron, bronze, steel, nethersteel)
+
 ## [5.11.3] - 2026-04-27
 
 **Create Big Cannons 5.11.3, with more fixes. Now brings support for Sable (Create: Simulated, Create: Aeronautics)!**
