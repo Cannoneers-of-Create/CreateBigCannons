@@ -1,6 +1,5 @@
 package rbasamoyai.createbigcannons;
 
-import net.createmod.catnip.platform.CatnipServices;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.registries.Registries;
@@ -26,7 +25,6 @@ import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 import rbasamoyai.createbigcannons.compat.curios.CBCCuriosIntegration;
 import rbasamoyai.createbigcannons.compat.framedblocks.FramedBlocksCompat;
 import rbasamoyai.createbigcannons.compat.sable.SableCompat;
-import rbasamoyai.createbigcannons.compat.sable.SableForceGroupsCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
@@ -70,13 +68,7 @@ public class CreateBigCannonsNeoForge {
         CBCCommonNeoForgeEvents.register(modEventBus, forgeEventBus);
 
 		CBCModsNeoForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosIntegration.init(modEventBus, forgeEventBus));
-
-        if (CBCModsNeoForge.SABLE.isLoaded()) {
-            SableForceGroupsCompat.init(modEventBus);
-            forgeEventBus.register(SableCompat.class);
-        }
-
-        CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> CBCClientNeoForge.prepareClient(modEventBus, forgeEventBus));
+        CBCModsNeoForge.SABLE.executeIfInstalled(() -> () -> SableCompat.onModCtor(modEventBus, forgeEventBus));
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
@@ -90,7 +82,7 @@ public class CreateBigCannonsNeoForge {
 		DefaultCannonMountPropertiesSerializers.init();
 		CBCModsNeoForge.COPYCATS.executeIfInstalled(() -> () -> CopycatsCompat.init(CBCModsNeoForge.COPYCATS::getBlock));
 		CBCModsNeoForge.FRAMEDBLOCKS.executeIfInstalled(() -> () -> FramedBlocksCompat.init());
-        CBCModsNeoForge.SABLE.executeIfInstalled(() -> () -> SableCompat.init());
+        CBCModsNeoForge.SABLE.executeIfInstalled(() -> () -> SableCompat.onCommonSetup());
     }
 
     private void onNewRegistry(NewRegistryEvent evt) {

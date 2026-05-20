@@ -1,5 +1,12 @@
 package rbasamoyai.createbigcannons.compat.sable;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 import dev.ryanhcode.sable.Sable;
 import dev.ryanhcode.sable.api.physics.force.ForceGroup;
 import dev.ryanhcode.sable.api.physics.force.QueuedForceGroup;
@@ -12,7 +19,6 @@ import dev.ryanhcode.sable.mixinterface.clip_overwrite.LevelPoseProviderExtensio
 import dev.ryanhcode.sable.neoforge.event.ForgeSablePrePhysicsTickEvent;
 import dev.ryanhcode.sable.sublevel.ServerSubLevel;
 import dev.ryanhcode.sable.sublevel.SubLevel;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -20,8 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.bus.api.SubscribeEvent;
-
+import net.neoforged.bus.api.IEventBus;
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
@@ -29,22 +34,20 @@ import rbasamoyai.createbigcannons.munitions.ProjectileContext;
 import rbasamoyai.createbigcannons.munitions.autocannon.AbstractAutocannonProjectile;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
-
 public class SableCompat {
 
-    private static final Map<ResourceKey<Level>, Queue<Force>> BY_DIMENSION = new ConcurrentHashMap<>();
+    public static void onModCtor(IEventBus modBus, IEventBus forgeBus) {
+        SableForceGroupsCompat.init(modBus);
+        forgeBus.addListener(SableCompat::onPrePhysicsTick);
+    }
+
+    private static final Map<ResourceKey<Level>, Queue<CBCSableForce>> BY_DIMENSION = new ConcurrentHashMap<>();
 
     public static void enqueueForce(ServerLevel level, Vec3 pos, Vec3 force, int steps, ForceGroup forceGroup) {
         SubLevel subLevel = Sable.HELPER.getContaining(level, pos);
         if (subLevel == null) return;
         int safeSteps = Math.max(1, steps);
-        Force forceData = new Force(
+        CBCSableForce forceData = new CBCSableForce(
             subLevel.getUniqueId(),
             pos,
             force,
@@ -54,15 +57,15 @@ public class SableCompat {
         enqueue(level.dimension(), forceData);
     }
 
-    public static void enqueue(ResourceKey<Level> level, Force forceData) {
+    public static void enqueue(ResourceKey<Level> level, CBCSableForce forceData) {
         BY_DIMENSION.computeIfAbsent(level, ignored -> new ConcurrentLinkedDeque<>()).add(forceData);
     }
 
-    public static List<Force> drain(ResourceKey<Level> level) {
-        Queue<Force> forces = BY_DIMENSION.get(level);
+    public static List<CBCSableForce> drain(ResourceKey<Level> level) {
+        Queue<CBCSableForce> forces = BY_DIMENSION.get(level);
         if (forces == null || forces.isEmpty()) return List.of();
-        List<Force> drained = new ArrayList<>();
-        Force force;
+        List<CBCSableForce> drained = new ArrayList<>();
+        CBCSableForce force;
         while ((force = forces.poll()) != null) {
             drained.add(force);
         }
@@ -89,6 +92,7 @@ public class SableCompat {
     }
 
     public static boolean groundProjectile(Level level, AbstractCannonProjectile projectile, BlockPos impactPos) {
+        // TODO fix per wipex issue
         SubLevel sublevel = Sable.HELPER.getContaining(level, impactPos);
         if (sublevel == null)
             return false;
@@ -102,7 +106,7 @@ public class SableCompat {
         return true;
     }
 
-    public static void init() {
+    public static void onCommonSetup() {
         CBCCompatTransformers.addBlockPosTransformer(SableCompat::transformFromShip);
         CBCCompatTransformers.addVec3Transformer(SableCompat::transformFromShip);
         CBCCompatTransformers.addNormalTransformer(new SableCannonProjectileCompat.NormalTransformer());
@@ -147,16 +151,15 @@ public class SableCompat {
         }
     }
 
-    @SubscribeEvent
     public static void onPrePhysicsTick(ForgeSablePrePhysicsTickEvent event) {
         ServerLevel level = event.getPhysicsSystem().getLevel();
-        List<Force> forces = drain(level.dimension());
+        List<CBCSableForce> forces = drain(level.dimension());
         if (forces.isEmpty()) return;
 
         ServerSubLevelContainer container = SubLevelContainer.getContainer(level);
         if (container == null) return;
 
-        for (Force force : forces) {
+        for (CBCSableForce force : forces) {
             SubLevel subLevel = container.getSubLevel(force.sublevelId());
             if (!(subLevel instanceof ServerSubLevel serverSubLevel) || serverSubLevel.isRemoved()) continue;
             QueuedForceGroup queuedForceGroup = serverSubLevel.getOrCreateQueuedForceGroup(force.forceGroup());
@@ -168,4 +171,5 @@ public class SableCompat {
             if (force.remainSteps() > 1) enqueue(level.dimension(), force.nextStep());
         }
     }
+
 }
