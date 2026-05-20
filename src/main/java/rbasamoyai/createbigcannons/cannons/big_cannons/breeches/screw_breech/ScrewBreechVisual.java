@@ -14,7 +14,6 @@ import dev.engine_room.flywheel.lib.instance.OrientedInstance;
 import dev.engine_room.flywheel.lib.model.Models;
 import dev.engine_room.flywheel.lib.visual.SimpleDynamicVisual;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCClientCommon;
 
@@ -36,7 +35,7 @@ public class ScrewBreechVisual extends OrientedRotatingVisual<ScrewBreechBlockEn
 	private void transformModels(float partialTick) {
 		float renderedScrewLockOffset = this.breech.getRenderedBlockOffset(partialTick);
 		float heightOffset = renderedScrewLockOffset * 0.25f;
-		float rotationOffset = renderedScrewLockOffset * (this.facing.getAxisDirection() == AxisDirection.POSITIVE ? 360.0f : -360.0f);
+		float rotationOffset = renderedScrewLockOffset * 360.0f;
 		Vector3f normal = this.facing.step();
 		Vector3f height = new Vector3f(normal);
 		height.mul(heightOffset);

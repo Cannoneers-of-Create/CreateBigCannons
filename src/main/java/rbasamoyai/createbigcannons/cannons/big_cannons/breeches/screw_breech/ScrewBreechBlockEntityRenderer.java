@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.cannons.big_cannons.breeches.screw_breech;
 
-import dev.engine_room.flywheel.api.visualization.VisualizationManager;
-
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -11,6 +9,7 @@ import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 
+import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -18,7 +17,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import rbasamoyai.createbigcannons.CBCClientCommon;
@@ -39,7 +37,7 @@ public class ScrewBreechBlockEntityRenderer extends KineticBlockEntityRenderer {
 
 		float renderedScrewLockOffset = ((ScrewBreechBlockEntity) te).getRenderedBlockOffset(AnimationTickHolder.getPartialTicks());
 		float heightOffset = renderedScrewLockOffset * 0.25f;
-		float rotationOffset = renderedScrewLockOffset * (facing.getAxisDirection() == AxisDirection.POSITIVE ? 360.0f : -360.0f);
+		float rotationOffset = renderedScrewLockOffset * 360.0f;
 		Vector3f normal = facing.step();
 		Vector3f height = new Vector3f(normal);
 		height.mul(heightOffset);
