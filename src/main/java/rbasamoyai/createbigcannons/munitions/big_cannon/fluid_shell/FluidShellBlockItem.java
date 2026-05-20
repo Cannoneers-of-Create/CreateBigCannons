@@ -4,15 +4,21 @@ import static rbasamoyai.createbigcannons.munitions.big_cannon.fluid_shell.Abstr
 
 import java.util.List;
 
+import org.jetbrains.annotations.Nullable;
+
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
@@ -43,8 +49,15 @@ public class FluidShellBlockItem extends FuzedProjectileBlockItem {
     @Override
     public InteractionResult place(BlockPlaceContext context) {
         InteractionResult result = super.place(context);
-        if (context.getLevel().getBlockEntity(context.getClickedPos()) instanceof AbstractFluidShellBlockEntity be)
-            be.readFluidDataFromFluidShellItem(context.getItemInHand(), context.getLevel().registryAccess());
+
         return result;
     }
+
+    @Override
+    protected boolean updateCustomBlockEntityTag(BlockPos pos, Level level, @Nullable Player player, ItemStack stack, BlockState state) {
+        if (level.getBlockEntity(pos) instanceof AbstractFluidShellBlockEntity be)
+            be.readFluidDataFromFluidShellItem(stack, level.registryAccess());
+        return super.updateCustomBlockEntityTag(pos, level, player, stack, state);
+    }
+
 }

@@ -4,12 +4,9 @@ import java.util.List;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
@@ -35,20 +32,7 @@ public class BigCartridgeBlockItem extends BlockItem {
 			tooltipComponents.add(Component.translatable("block." + CreateBigCannons.MOD_ID + ".propellant.tooltip.damp").withStyle(ChatFormatting.BLUE));
 	}
 
-	@Override
-	public InteractionResult place(BlockPlaceContext context) {
-		InteractionResult result = super.place(context);
-
-		Level level = context.getLevel();
-		if (!level.isClientSide && level.getBlockEntity(context.getClickedPos()) instanceof BigCartridgeBlockEntity cart) {
-			cart.setPower(getPower(context.getItemInHand()));
-			cart.setChanged();
-		}
-
-		return result;
-	}
-
-	public int getMaximumPowerLevels() {
+    public int getMaximumPowerLevels() {
 		return CBCMunitionPropertiesHandlers.BIG_CARTRIDGE.getPropertiesOf(this.cartridgeBlock).maxPowerLevels();
 	}
 
