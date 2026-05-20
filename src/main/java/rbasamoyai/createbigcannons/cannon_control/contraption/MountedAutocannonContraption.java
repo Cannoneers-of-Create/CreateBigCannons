@@ -430,7 +430,7 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
                 entity.pitch = flag ? -controller.xRotO : controller.xRotO;
                 entity.yaw = Mth.wrapDegrees(controller.yRotO);
             } else {
-                entity.pitch = controller.xRotO;
+                entity.pitch = -controller.xRotO;
                 entity.yaw = Mth.wrapDegrees(controller.yRotO + 180);
             }
             controller.setYBodyRot(controller.getYRot());

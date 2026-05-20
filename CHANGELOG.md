@@ -18,6 +18,8 @@ Changed:
 Fixed:
 - Fixed storage blocks not tagged correctly (cast iron, bronze, steel, nethersteel)
 - Fixed big cartridge and fluid shell data not loading when placed as block and item consumed
+- Fixed inverted look controls on vertical cannon mount
+- Fixed being able to interact with the world while on a cannon mount
 
 ## [5.11.3] - 2026-04-27
 

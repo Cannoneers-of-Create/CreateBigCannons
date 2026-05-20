@@ -149,15 +149,17 @@ public class CBCClientCommon {
 	public static void onClientGameTick(Minecraft mc) {
 		if (mc.player == null || mc.level == null) return;
 
+        boolean isFiring = CBCClientCommon.FIRE_CONTROLLED_CANNON.isDown();
 		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
 			net.minecraft.client.player.Input input = mc.player.input;
 			boolean isPitching = CBCClientCommon.PITCH_MODE.isDown();
 			carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
-			mc.player.handsBusy |= input.left | input.right | input.up | input.down;
+			mc.player.handsBusy |= input.left | input.right | input.up | input.down | isFiring;
 		}
-
-		if (CBCClientCommon.FIRE_CONTROLLED_CANNON.isDown() && isControllingCannon(mc.player)) {
-			mc.player.handsBusy = true;
+        if (mc.player.getVehicle() instanceof PitchOrientedContraptionEntity) {
+            mc.player.handsBusy = true;
+        }
+		if (isFiring) {
 			NetworkPlatform.sendToServer(ServerboundFiringActionPacket.instance());
 		}
 
