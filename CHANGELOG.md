@@ -10,7 +10,7 @@ Changed:
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 
 Fixed:
-- Fixed storage blocks not tagged correctly (cast iron, bronze, steel)
+- Fixed storage blocks not tagged correctly (cast iron, bronze, steel, nethersteel)
 
 ## [5.11.3] - 2026-04-27
 
