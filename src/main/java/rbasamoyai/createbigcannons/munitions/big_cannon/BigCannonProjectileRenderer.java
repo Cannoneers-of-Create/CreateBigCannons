@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
+import net.minecraft.core.BlockPos;
+
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -81,7 +83,12 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 		return entity.hasTracer() || super.shouldRender(entity, camera, camX, camY, camZ);
 	}
 
-	private static void vertex(VertexConsumer builder, Matrix4f pose, int packedLight, float x, float y, int u, int v) {
+    @Override
+    protected int getBlockLightLevel(T entity, BlockPos pos) {
+        return entity.hasTracer() ? 15 : super.getBlockLightLevel(entity, pos);
+    }
+
+    private static void vertex(VertexConsumer builder, Matrix4f pose, int packedLight, float x, float y, int u, int v) {
 		builder.addVertex(pose, x, y, 0.0f)
 			.setColor(255, 255, 255, 255)
 			.setUv((float) u, (float) v)
