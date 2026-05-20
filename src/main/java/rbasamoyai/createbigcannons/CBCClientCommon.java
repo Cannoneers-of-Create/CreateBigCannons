@@ -220,17 +220,19 @@ public class CBCClientCommon {
 	public static void onClientGameTick(Minecraft mc) {
 		if (mc.player == null || mc.level == null) return;
 
-		if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
-			net.minecraft.client.player.Input input = mc.player.input;
-			boolean isPitching = CBCClientCommon.PITCH_MODE.isDown();
-			carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
-			mc.player.handsBusy |= input.left | input.right | input.up | input.down;
-		}
-
-		if (CBCClientCommon.FIRE_CONTROLLED_CANNON.isDown() && isControllingCannon(mc.player)) {
-			mc.player.handsBusy = true;
-			NetworkPlatform.sendToServer(new ServerboundFiringActionPacket());
-		}
+        boolean isFiring = CBCClientCommon.FIRE_CONTROLLED_CANNON.isDown();
+        if (mc.player.getRootVehicle() instanceof CannonCarriageEntity carriage) {
+            net.minecraft.client.player.Input input = mc.player.input;
+            boolean isPitching = CBCClientCommon.PITCH_MODE.isDown();
+            carriage.setInput(input.left, input.right, input.up, input.down, isPitching);
+            mc.player.handsBusy |= input.left | input.right | input.up | input.down | isFiring;
+        }
+        if (mc.player.getVehicle() instanceof PitchOrientedContraptionEntity) {
+            mc.player.handsBusy = true;
+        }
+        if (isFiring) {
+            NetworkPlatform.sendToServer(new ServerboundFiringActionPacket());
+        }
 
 		CANNON_WELDER_HANDLER.tick();
 		FUZE_GUIDE_HANDLER.tick();

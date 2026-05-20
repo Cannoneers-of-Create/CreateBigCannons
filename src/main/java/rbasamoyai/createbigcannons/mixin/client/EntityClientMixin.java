@@ -7,6 +7,7 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import rbasamoyai.createbigcannons.cannon_control.contraption.PitchOrientedContraptionEntity;
@@ -30,8 +31,10 @@ public abstract class EntityClientMixin {
             this.self.setXRot(this.self.getXRot() + dxr);
             this.self.setYRot(this.self.getYRot() + dyr);
 
-            float e = poce.maximumDepression();
-            float d = -poce.maximumElevation();
+            Direction dir = poce.getInitialOrientation();
+            boolean isHorizontal = dir.getAxis().isHorizontal();
+            float d = isHorizontal ? -poce.maximumElevation() : -poce.maximumDepression();
+            float e = isHorizontal ? poce.maximumDepression() : poce.maximumElevation();
             this.self.setXRot(Mth.clamp(this.self.getXRot(), d, e));
             this.self.xRotO += dxr;
             this.self.yRotO += dyr;
