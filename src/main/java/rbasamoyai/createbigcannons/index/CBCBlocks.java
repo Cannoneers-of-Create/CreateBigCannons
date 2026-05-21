@@ -928,6 +928,7 @@ public class CBCBlocks {
 	public static final BlockEntry<CannonBuilderHeadBlock> CANNON_BUILDER_HEAD = REGISTRATE
 		.block("cannon_builder_head", CannonBuilderHeadBlock::new)
 		.initialProperties(() -> Blocks.PISTON_HEAD)
+        .properties(p -> p.pushReaction(PushReaction.NORMAL))
 		.properties(p -> p.mapColor(MapColor.STONE))
 		.transform(axeOrPickaxe())
 		.transform(CBCBuilderTransformers.cannonBuilderHead())

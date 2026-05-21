@@ -87,6 +87,98 @@ public class CBCChecks {
 		return BlockMovementChecks.CheckResult.PASS;
 	}
 
+    private static BlockMovementChecks.CheckResult attachedCheckCannonDrill(BlockState state, Level level, BlockPos pos, Direction attached) {
+        BlockState rootState = level.getBlockState(pos.relative(attached));
+        state = IBigCannonBlockEntity.getInnerCannonBlockState(level, pos, state);
+        rootState = IBigCannonBlockEntity.getInnerCannonBlockState(level, pos.relative(attached), rootState);
+
+        if (CBCBlocks.CANNON_DRILL.has(state)) {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            if (CBCBlocks.CANNON_DRILL_BIT.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing == facing1 && facing == attached);
+            }
+            if (AllBlocks.PISTON_EXTENSION_POLE.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
+            }
+        }
+        if (AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            if (CBCBlocks.CANNON_DRILL_BIT.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing1 == attached);
+            }
+            if (CBCBlocks.CANNON_DRILL.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
+            }
+            if (AllBlocks.PISTON_EXTENSION_POLE.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
+            }
+        }
+        if (CBCBlocks.CANNON_DRILL_BIT.has(state)) {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            if (CBCBlocks.CANNON_DRILL.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing == facing1 && facing == attached.getOpposite());
+            }
+            if (AllBlocks.PISTON_EXTENSION_POLE.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing == attached.getOpposite());
+            }
+        }
+
+        return BlockMovementChecks.CheckResult.PASS;
+    }
+
+    private static BlockMovementChecks.CheckResult attachedCheckCannonBuilder(BlockState state, Level level, BlockPos pos, Direction attached) {
+        BlockState rootState = level.getBlockState(pos.relative(attached));
+        state = IBigCannonBlockEntity.getInnerCannonBlockState(level, pos, state);
+        rootState = IBigCannonBlockEntity.getInnerCannonBlockState(level, pos.relative(attached), rootState);
+
+        if (CBCBlocks.CANNON_BUILDER.has(state)) {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            if (CBCBlocks.CANNON_BUILDER_HEAD.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing == facing1 && facing == attached);
+            }
+            if (AllBlocks.PISTON_EXTENSION_POLE.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
+            }
+        }
+        if (AllBlocks.PISTON_EXTENSION_POLE.has(state)) {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            if (CBCBlocks.CANNON_BUILDER_HEAD.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing1 == attached);
+            }
+            if (CBCBlocks.CANNON_BUILDER.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
+            }
+            if (AllBlocks.PISTON_EXTENSION_POLE.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing.getAxis() == attached.getAxis());
+            }
+        }
+        if (CBCBlocks.CANNON_BUILDER_HEAD.has(state)) {
+            Direction facing = state.getValue(BlockStateProperties.FACING);
+            if (CBCBlocks.CANNON_BUILDER.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing == facing1 && facing == attached.getOpposite());
+            }
+            if (AllBlocks.PISTON_EXTENSION_POLE.has(rootState)) {
+                Direction facing1 = rootState.getValue(BlockStateProperties.FACING);
+                return BlockMovementChecks.CheckResult.of(facing.getAxis() == facing1.getAxis() && facing == attached.getOpposite());
+            }
+        }
+
+        return BlockMovementChecks.CheckResult.PASS;
+    }
+
 	private static BlockMovementChecks.CheckResult overridePushReactionCheck(BlockState state, Level level, BlockPos pos) {
 		if (state.getBlock() instanceof BigCannonBlock cBlock)
 			return BlockMovementChecks.CheckResult.of(!cBlock.isImmovable(state));
@@ -132,6 +224,8 @@ public class CBCChecks {
 	public static void register() {
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckCannons);
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckCannonLoader);
+		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckCannonDrill);
+		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckCannonBuilder);
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedMountBlocks);
 		BlockMovementChecks.registerAttachedCheck(CBCChecks::attachedCheckAutocannons);
 		BlockMovementChecks.registerMovementAllowedCheck(CBCChecks::overridePushReactionCheck);
