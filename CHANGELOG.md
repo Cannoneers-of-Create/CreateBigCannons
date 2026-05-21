@@ -22,6 +22,7 @@ Fixed:
 - Fixed being able to interact with the world while on a cannon mount
 - Fixed Create contraption attachment of Fixed Cannon Mount
 - Fixed Create contraption attachment of Cannon Drill and Cannon Builder
+- Fixed cannon shots not hitting entities if they are destroyed from hitting a block
 - [Aeronautics] Fixed cannon blocks and cannon contraptions not attaching to ship on assembly
 - [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
 - [Sable] Fixed cannon blocks splitting from cannon mount on physics object

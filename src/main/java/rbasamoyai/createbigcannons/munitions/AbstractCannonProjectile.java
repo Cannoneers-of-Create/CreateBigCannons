@@ -255,7 +255,9 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				if (targetBB.intersects(thisBB) || targetBB.inflate(reach).clip(endStart, endCopy).isPresent())
 					projCtx.addEntity(target);
 			}
-			if (stop)
+            for (Entity e : projCtx.hitEntities())
+                shouldRemove |= this.onHitEntity(e, projCtx);
+			if (stop || shouldRemove)
 				break;
 
 			currentStart = currentEnd;
@@ -292,9 +294,6 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			if (shouldRemove || stop || t <= 0)
 				break;
 		}
-
-		for (Entity e : projCtx.hitEntities())
-			shouldRemove |= this.onHitEntity(e, projCtx);
 
 		if (!this.level().isClientSide) {
 			if (projCtx.griefState() != GriefState.NO_DAMAGE) {
