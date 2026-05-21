@@ -28,8 +28,9 @@ public class APShellProjectile extends FuzedBigCannonProjectile {
 
 	@Override
 	protected void detonate(Position position) {
+        BigCannonCommonShellProperties properties = this.getAllProperties();
 		ShellExplosion explosion = new ShellExplosion(this.level(), this, this.indirectArtilleryFire(false), position.x(),
-			position.y(), position.z(), this.getAllProperties().explosion().explosivePower(), false,
+			position.y(), position.z(), properties.explosion().blockDamagePower(), properties.explosion().entityDamagePower(), false,
 			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 	}

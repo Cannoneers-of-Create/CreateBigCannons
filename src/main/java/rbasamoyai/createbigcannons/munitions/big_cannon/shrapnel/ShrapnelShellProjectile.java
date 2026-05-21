@@ -32,7 +32,7 @@ public class ShrapnelShellProjectile extends FuzedBigCannonProjectile {
 		Vec3 oldDelta = this.getDeltaMovement();
 		ShrapnelShellProperties properties = this.getAllProperties();
 		ShrapnelExplosion explosion = new ShrapnelExplosion(this.level(), null, this.indirectArtilleryFire(false), position.x(),
-			position.y(), position.z(), properties.explosion().explosivePower(),
+			position.y(), position.z(), properties.explosion().blockDamagePower(), properties.explosion().entityDamagePower(),
 			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 		CBCProjectileBurst.spawnConeBurst(this.level(), CBCEntityTypes.SHRAPNEL_BURST.get(), new Vec3(position.x(), position.y(), position.z()),

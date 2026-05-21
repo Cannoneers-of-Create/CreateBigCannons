@@ -29,8 +29,8 @@ public class MortarStoneExplosion extends CustomExplosion.Impl {
 	private final Set<BlockPos> changedBlocks = new HashSet<>();
 
 	public MortarStoneExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-								double toBlowY, double toBlowZ, float radius, BlockInteraction interaction) {
-		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
+								double toBlowY, double toBlowZ, float blockRadius, float entityRadius, BlockInteraction interaction) {
+		super(level, source, damageSource, new CustomDamageCalculator(), toBlowX, toBlowY, toBlowZ, blockRadius, entityRadius, false, interaction);
 	}
 
 	public MortarStoneExplosion(Level level, ClientboundCBCExplodePacket packet) {
@@ -55,8 +55,8 @@ public class MortarStoneExplosion extends CustomExplosion.Impl {
 	protected void spawnParticles() {
 		if (!CBCConfigs.client().showMortarStoneClouds.get())
 			return;
-		ParticleOptions options = new DebrisSmokeParticleData(this.size);
-		float f1 = 0.15f * this.size;
+		ParticleOptions options = new DebrisSmokeParticleData(this.blockSize);
+		float f1 = 0.15f * this.blockSize;
 		for (int i = 0; i < 50; ++i) {
 			double rx = this.x + (this.level.random.nextDouble() - this.level.random.nextDouble()) * 0.1f;
 			double ry = this.y + (this.level.random.nextDouble() - this.level.random.nextDouble()) * 0.1f;
@@ -73,13 +73,14 @@ public class MortarStoneExplosion extends CustomExplosion.Impl {
 		double distSqr = player.distanceToSqr(this.x, this.y, this.z);
 		if (distSqr < 10000.0d) {
 			float f = Math.max(1f - (float) distSqr / 625f, 0);
-			float f1 = this.size * f;
+			float f1 = this.blockSize * f;
 			float shake = Math.min(45, f1 * 2f);
 			CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(0, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1, this.x, this.y, this.z));
 
 			Vec3 knockback = this.getHitPlayers().getOrDefault(player, Vec3.ZERO);
-			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.size, this.getToBlow(),
-				(float) knockback.x, (float) knockback.y, (float) knockback.z, ClientboundCBCExplodePacket.ExplosionType.MORTAR_STONE), player);
+			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.blockSize,
+                this.entitySize, this.getToBlow(), (float) knockback.x, (float) knockback.y, (float) knockback.z,
+                ClientboundCBCExplodePacket.ExplosionType.MORTAR_STONE), player);
 		}
 	}
 

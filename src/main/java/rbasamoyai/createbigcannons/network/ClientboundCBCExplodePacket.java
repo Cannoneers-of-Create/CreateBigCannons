@@ -13,14 +13,15 @@ import net.minecraft.world.entity.player.Player;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 import rbasamoyai.createbigcannons.utils.CBCStreamCodecs;
 
-public record ClientboundCBCExplodePacket(double x, double y, double z, float power, List<BlockPos> toBlow, float knockbackX,
-										  float knockbackY, float knockbackZ, ExplosionType explosionType) implements RootPacket {
+public record ClientboundCBCExplodePacket(double x, double y, double z, float blockPower, float entityPower, List<BlockPos> toBlow, float knockbackX,
+                                          float knockbackY, float knockbackZ, ExplosionType explosionType) implements RootPacket {
 
     public static final StreamCodec<RegistryFriendlyByteBuf, ClientboundCBCExplodePacket> STREAM_CODEC = CBCStreamCodecs.composite(
         ByteBufCodecs.DOUBLE, ClientboundCBCExplodePacket::x,
         ByteBufCodecs.DOUBLE, ClientboundCBCExplodePacket::y,
         ByteBufCodecs.DOUBLE, ClientboundCBCExplodePacket::z,
-        ByteBufCodecs.FLOAT, ClientboundCBCExplodePacket::power,
+        ByteBufCodecs.FLOAT, ClientboundCBCExplodePacket::blockPower,
+        ByteBufCodecs.FLOAT, ClientboundCBCExplodePacket::entityPower,
         CatnipStreamCodecBuilders.list(BlockPos.STREAM_CODEC), ClientboundCBCExplodePacket::toBlow,
         ByteBufCodecs.FLOAT, ClientboundCBCExplodePacket::knockbackX,
         ByteBufCodecs.FLOAT, ClientboundCBCExplodePacket::knockbackY,

@@ -13,6 +13,9 @@ Changed:
 - Changed directionality of screw breech rotation to be consistent across all directions (clockwise closes, counterclockwise opens) courtesy of PilotsMask
 - Changed default big cannon and drop mortar recoil scale from 4 to 1
 - Reduced flak autocannon shell block explosion power from 2 to 1 to reduce overpenetration
+  - Increased flak autocannon shell entity explosion power from 2 to 2.5 to increase entity damage
+- Separated block and entity explosion power configuration for all shells
+  - Default "explosion_power" configuration is still available and sets both to the same value
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 - [1.21.1] Updated Chinese (Simplified) (zh_cn.json) translation courtesy of wph1234
 

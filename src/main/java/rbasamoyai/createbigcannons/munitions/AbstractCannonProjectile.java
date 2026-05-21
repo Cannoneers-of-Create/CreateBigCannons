@@ -329,7 +329,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 				for (Map.Entry<BlockPos, Float> queued : projCtx.getQueuedExplosions().entrySet()) {
 					Vec3 impactPos = Vec3.atCenterOf(queued.getKey());
 					ImpactExplosion explosion = new ImpactExplosion(this.level(), this, this.indirectArtilleryFire(false),
-						impactPos.x, impactPos.y, impactPos.z, queued.getValue(), interaction);
+						impactPos.x, impactPos.y, impactPos.z, queued.getValue(), queued.getValue(), interaction);
 					CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 				}
 				this.setDeltaMovement(oldVel);

@@ -31,16 +31,17 @@ public class ShellExplosion extends CustomExplosion.Impl {
 	private final boolean noEffects;
 
 	public ShellExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						  double toBlowY, double toBlowZ, float radius, boolean fire, BlockInteraction interaction, boolean noEffects) {
-		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, fire, interaction);
+						  double toBlowY, double toBlowZ, float blockRadius, float entityRadius, boolean fire,
+                          BlockInteraction interaction, boolean noEffects) {
+		super(level, source, damageSource, new CustomDamageCalculator(), toBlowX, toBlowY, toBlowZ, blockRadius, entityRadius, fire, interaction);
 		BlockPos pos = BlockPos.containing(this.x, this.y, this.z);
 		this.isPlume = this.level.getBlockState(pos.above()).isAir() && !this.level.getBlockState(pos.below()).isAir();
 		this.noEffects = noEffects;
 	}
 
 	public ShellExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						  double toBlowY, double toBlowZ, float radius, boolean fire, BlockInteraction interaction) {
-		this(level, source, damageSource, toBlowX, toBlowY, toBlowZ, radius, fire, interaction, false);
+						  double toBlowY, double toBlowZ, float blockRadius, float entityRadius, boolean fire, BlockInteraction interaction) {
+		this(level, source, damageSource, toBlowX, toBlowY, toBlowZ, blockRadius, entityRadius, fire, interaction, false);
 	}
 
 	public ShellExplosion(Level level, ClientboundCBCExplodePacket packet) {
@@ -54,10 +55,10 @@ public class ShellExplosion extends CustomExplosion.Impl {
 	protected void spawnParticles() {
 		if (this.noEffects)
 			return;
-		ShellBlastWaveEffectParticleData blastWave = new ShellBlastWaveEffectParticleData(this.size * 12,
+		ShellBlastWaveEffectParticleData blastWave = new ShellBlastWaveEffectParticleData(this.blockSize * 12,
 			CBCRegistryUtils.getSoundEventRegistry().wrapAsHolder(CBCSoundEvents.SHELL_EXPLOSION.getMainEvent()), SoundSource.BLOCKS,
-			Math.max(this.size * 2, 16), 0.8f + level.random.nextFloat() * 0.4f, 2f, this.size);
-		ShellExplosionCloudParticleData explosionCloud = new ShellExplosionCloudParticleData(this.size, this.isPlume);
+			Math.max(this.blockSize * 2, 16), 0.8f + level.random.nextFloat() * 0.4f, 2f, this.blockSize);
+		ShellExplosionCloudParticleData explosionCloud = new ShellExplosionCloudParticleData(this.blockSize, this.isPlume);
 		this.level.addParticle(blastWave, true, this.x, this.y, this.z, 0, 0, 0);
 		this.level.addParticle(explosionCloud, true, this.x, this.y, this.z, 0, 0, 0);
 	}
@@ -79,8 +80,8 @@ public class ShellExplosion extends CustomExplosion.Impl {
 			ClientboundCBCExplodePacket.ExplosionType type = this.noEffects
 				? ClientboundCBCExplodePacket.ExplosionType.SHELL_NO_EFFECTS
 				: ClientboundCBCExplodePacket.ExplosionType.SHELL;
-			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.size, this.getToBlow(),
-				(float) knockback.x, (float) knockback.y, (float) knockback.z, type), player);
+			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.blockSize,
+                this.entitySize, this.getToBlow(), (float) knockback.x, (float) knockback.y, (float) knockback.z, type), player);
 		}
 	}
 

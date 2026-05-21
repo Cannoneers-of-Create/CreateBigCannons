@@ -4,7 +4,6 @@ import javax.annotation.Nonnull;
 
 import net.minecraft.core.Position;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -31,12 +30,9 @@ public class DropMortarShellProjectile extends FuzedBigCannonProjectile implemen
 	@Override
 	protected void detonate(Position position) {
 		DropMortarShellProperties properties = this.getAllProperties();
-		ShellExplosion entityDamage = new ShellExplosion(this.level(), this, this.indirectArtilleryFire(false), position.x(),
-			position.y(), position.z(), properties.entityDamagingExplosivePower(), false, Explosion.BlockInteraction.KEEP, true);
-		CreateBigCannons.handleCustomExplosion(this.level(), entityDamage);
 		ShellExplosion shellExplosion = new ShellExplosion(this.level(), this, this.indirectArtilleryFire(false), position.x(),
-			position.y(), position.z(), properties.blockDamagingExplosivePower(), false,
-			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction(), false);
+			position.y(), position.z(), properties.blockDamagingExplosivePower(), properties.entityDamagingExplosivePower(), false,
+			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level(), shellExplosion);
 	}
 

@@ -47,13 +47,13 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 	@Override
 	protected void detonate(Position position) {
 		Vec3 oldDelta = this.getDeltaMovement();
+        FluidShellProperties properties = this.getAllProperties();
 		FluidExplosion explosion = new FluidExplosion(this.level(), null, this.indirectArtilleryFire(false), position.x(),
-			position.y(), position.z(), this.getAllProperties().explosion().explosivePower(),
+			position.y(), position.z(), properties.explosion().blockDamagePower(), properties.explosion().entityDamagePower(),
 			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction(), this.fluidStack.fluid());
 		CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 
 		if (!this.fluidStack.isEmpty()) {
-			FluidShellProperties properties = this.getAllProperties();
 			int mbPerBlob = properties.mBPerFluidBlob();
 			byte blobSize = (byte)(mbPerBlob / (double) properties.mBPerAoeRadius()); // No conversion because ratio would be same
 			int convertCount = mbPerBlob;

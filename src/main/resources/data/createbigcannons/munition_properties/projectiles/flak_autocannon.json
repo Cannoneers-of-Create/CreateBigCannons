@@ -13,7 +13,8 @@
   "can_squib": true,
   "shrapnel_spread": 0.25,
   "shrapnel_count": 15,
-  "explosive_power": 1.0,
+  "entity_damaging_explosive_power": 2.5,
+  "block_damaging_explosive_power": 1,
   "penetration": 1,
   "toughness": 0.5,
   "deflection": 0.70
