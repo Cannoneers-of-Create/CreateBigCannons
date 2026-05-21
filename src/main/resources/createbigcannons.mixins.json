@@ -49,6 +49,8 @@
     "compat.create.rotation_propagation.KineticNetworkMixin",
     "compat.create.rotation_propagation.RotationPropagatorMixin",
     "compat.framedblocks.FramedAdjustableDoubleBlockEntityAccessor",
+    "compat.sable.SableCommonEventsMixin",
+    "compat.sable.SubLevelHeatMapManagerMixin",
     "compat.simulated.SimAssemblyHelperMixin"
   ],
   "injectors": {
