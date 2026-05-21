@@ -12,6 +12,7 @@ Changed:
 - Changed block light of rendered projectiles
 - Changed directionality of screw breech rotation to be consistent across all directions (clockwise closes, counterclockwise opens) courtesy of PilotsMask
 - Changed default big cannon and drop mortar recoil scale from 4 to 1
+- Reduced flak autocannon shell block explosion power from 2 to 1 to reduce overpenetration
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 - [1.21.1] Updated Chinese (Simplified) (zh_cn.json) translation courtesy of wph1234
 
@@ -20,9 +21,10 @@ Fixed:
 - Fixed big cartridge and fluid shell data not loading when placed as block and item consumed
 - Fixed inverted look controls on vertical cannon mount
 - Fixed being able to interact with the world while on a cannon mount
-- Fixed Create contraption attachment of Fixed Cannon Mount
+- Fixed Create contraption attachment of Fixed Cannon Mount**
 - Fixed Create contraption attachment of Cannon Drill and Cannon Builder
 - Fixed cannon shots not hitting entities if they are destroyed from hitting a block
+- Fixed flak, shrapnel, and grapeshot burst overpenetration
 - [Aeronautics] Fixed cannon blocks and cannon contraptions not attaching to ship on assembly
 - [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
 - [Sable] Fixed cannon blocks splitting from cannon mount on physics object
