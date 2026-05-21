@@ -21,6 +21,7 @@ Fixed:
 - Fixed inverted look controls on vertical cannon mount
 - Fixed being able to interact with the world while on a cannon mount
 - [Aeronautics] Fixed cannon contraptions not attaching to ship on assembly
+- Fixed Create contraption attachment of Fixed Cannon Mount
 - [Sable] Fixed cannon blocks splitting from cannon mount on physics object
 
 ## [5.11.3] - 2026-04-27
