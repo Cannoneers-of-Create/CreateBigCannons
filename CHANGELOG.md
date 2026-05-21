@@ -20,6 +20,8 @@ Changed:
 - Increased shrapnel shell entity explosion power from 2 to 3
 - Increased fluid shell entity explosion power from 2 to 3
 - Increased armor piercing shell entity explosion power from 5 to 7
+- Increased default autocannon rounds capacity of autocannon ammo container to 64 from 16
+- Increased default machine gun rounds capacity of autocannon ammo container to 128 from 64
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 - [1.21.1] Updated Chinese (Simplified) (zh_cn.json) translation courtesy of wph1234
 

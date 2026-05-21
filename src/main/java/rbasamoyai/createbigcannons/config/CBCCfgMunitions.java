@@ -49,8 +49,8 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigGroup autocannonMunitions = group(0, "autocannonMunitions", "Autocannon Munitions");
 	public final ConfigEnum<AbstractAutocannonProjectile.TrailType> autocannonTrailType = e(AbstractAutocannonProjectile.TrailType.SHORT, "trailType");
 	public final ConfigBool allAutocannonProjectilesAreTracers = b(false, "allAutocannonProjectilesAreTracers", Comments.allAutocannonProjectilesAreTracers);
-	public final ConfigInt ammoContainerAutocannonRoundCapacity = i(16, 1, 128, "autocannonAmmoContainerAutocannonRoundCapacity", Comments.ammoContainerAutocannonRoundCapacity);
-	public final ConfigInt ammoContainerMachineGunRoundCapacity = i(64, 1, 128, "autocannonAmmoContainerMachineGunRoundCapacity", Comments.ammoContainerMachineGunRoundCapacity);
+	public final ConfigInt ammoContainerAutocannonRoundCapacity = i(64, 1, 128, "autocannonAmmoContainerAutocannonRoundCapacity", Comments.ammoContainerAutocannonRoundCapacity);
+	public final ConfigInt ammoContainerMachineGunRoundCapacity = i(128, 1, 128, "autocannonAmmoContainerMachineGunRoundCapacity", Comments.ammoContainerMachineGunRoundCapacity);
     public final ConfigFloat autocannonProjectileImpactForceMultiplier = f(0.5f, 0, "autocannonProjectileImpactForceMultiplier", Comments.autocannonProjectileImpactForceMultiplier);
     public final ConfigFloat machineGunProjectileImpactForceMultiplier = f(0.05f, 0, "machineGunProjectileImpactForceMultiplier", Comments.machineGunProjectileImpactForceMultiplier);
 
