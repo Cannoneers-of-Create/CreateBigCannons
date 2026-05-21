@@ -47,6 +47,7 @@ import net.minecraft.world.level.block.state.properties.PistonType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.level.material.PushReaction;
+import rbasamoyai.createbigcannons.cannon_control.fixed_cannon_mount.FixedCannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_loading.CBCModifiedContraptionRegistry;
 import rbasamoyai.createbigcannons.cannon_loading.CanLoadBigCannon;
 import rbasamoyai.createbigcannons.cannons.CannonContraptionProviderBlock;
@@ -112,7 +113,7 @@ public class ContraptionRemix {
 				Direction vertical = state.getValue(BlockStateProperties.VERTICAL_DIRECTION);
 				assemblyPos = pos.relative(vertical, -2);
 			} else if (CBCBlocks.FIXED_CANNON_MOUNT.has(state)) {
-				assemblyPos = pos.above();
+				assemblyPos = pos.relative(state.getValue(FixedCannonMountBlock.FACING));
 			} else if (CBCBlocks.CANNON_CARRIAGE.has(state)) {
 				assemblyPos = pos.above();
 			}
