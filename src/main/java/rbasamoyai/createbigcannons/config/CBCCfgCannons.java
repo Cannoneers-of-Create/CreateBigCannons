@@ -7,7 +7,7 @@ public class CBCCfgCannons extends ConfigBase {
 	public final ConfigInt maxCannonLength = i(64, 3, "maxCannonLength", Comments.maxCannonLength);
 	public final ConfigInt quickfiringBreechLoadingCooldown = i(40, 0, "quickfiringBreechLoadingCooldown", Comments.quickfiringBreechLoadingCooldown);
 	public final ConfigInt quickfiringBreechOpeningCooldown = i(5, 0, "quickfiringBreechOpeningCooldown", Comments.quickfiringBreechOpeningCooldown);
-	public final ConfigFloat bigCannonRecoilScale = f(4f, 0, "bigCannonRecoilScale");
+	public final ConfigFloat bigCannonRecoilScale = f(1f, 0, "bigCannonRecoilScale");
 	public final ConfigFloat autocannonRecoilScale = f(0.5f, 0, "autocannonRecoilScale");
 
 	public final ConfigGroup dropMortar = group(0, "dropMortar", "Drop Mortar");
