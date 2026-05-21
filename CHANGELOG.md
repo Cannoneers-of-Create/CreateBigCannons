@@ -20,8 +20,10 @@ Fixed:
 - Fixed big cartridge and fluid shell data not loading when placed as block and item consumed
 - Fixed inverted look controls on vertical cannon mount
 - Fixed being able to interact with the world while on a cannon mount
-- [Aeronautics] Fixed cannon contraptions not attaching to ship on assembly
 - Fixed Create contraption attachment of Fixed Cannon Mount
+- Fixed Create contraption attachment of Cannon Drill and Cannon Builder
+- [Aeronautics] Fixed cannon blocks and cannon contraptions not attaching to ship on assembly
+- [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
 - [Sable] Fixed cannon blocks splitting from cannon mount on physics object
 
 ## [5.11.3] - 2026-04-27

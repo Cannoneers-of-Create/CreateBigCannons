@@ -25,6 +25,7 @@ import rbasamoyai.createbigcannons.compat.create.DefaultCreateCompat;
 import rbasamoyai.createbigcannons.compat.curios.CBCCuriosIntegration;
 import rbasamoyai.createbigcannons.compat.framedblocks.FramedBlocksCompat;
 import rbasamoyai.createbigcannons.compat.sable.SableCompat;
+import rbasamoyai.createbigcannons.compat.simulated.SimulatedCompat;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeSerializer;
 import rbasamoyai.createbigcannons.crafting.BlockRecipeType;
@@ -69,6 +70,7 @@ public class CreateBigCannonsNeoForge {
 
 		CBCModsNeoForge.CURIOS.executeIfInstalled(() -> () -> CBCCuriosIntegration.init(modEventBus, forgeEventBus));
         CBCModsNeoForge.SABLE.executeIfInstalled(() -> () -> SableCompat.onModCtor(modEventBus, forgeEventBus));
+        CBCModsNeoForge.SIMULATED.executeIfInstalled(() -> () -> SimulatedCompat.onModCtor(modEventBus, forgeEventBus));
     }
 
     private void onCommonSetup(FMLCommonSetupEvent event) {
