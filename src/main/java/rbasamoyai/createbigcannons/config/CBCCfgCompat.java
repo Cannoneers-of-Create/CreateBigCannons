@@ -7,6 +7,7 @@ public class CBCCfgCompat extends ConfigBase {
     public final ConfigGroup sableCompat = group(0, "sable", "Sable");
     public final ConfigFloat sableRecoilMultiplier = f(40, 0, "sableRecoilMultiplier", Comments.sableRecoilMultiplier);
     public final ConfigFloat sableImpactForceMultiplier = f(40, 0, "sableImpactForceMultiplier", Comments.sableImpactForceMultiplier);
+    public final ConfigBool sableProjectilesInheritPhysicsObjectVelocity = b(true, "sableProjectilesInheritPhysicsObjectVelocity");
 
     @Override public String getName() { return "compat"; }
 

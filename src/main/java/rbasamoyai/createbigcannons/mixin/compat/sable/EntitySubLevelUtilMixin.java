@@ -16,6 +16,7 @@ import dev.ryanhcode.sable.sublevel.SubLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 
 @Mixin(EntitySubLevelUtil.class)
@@ -24,7 +25,7 @@ public class EntitySubLevelUtilMixin {
     @WrapOperation(method = "kickEntity", at = @At(value = "INVOKE", target = "Lorg/joml/Vector3d;mul(D)Lorg/joml/Vector3d;"))
     private static Vector3d createbigcannons$kickEntity$mul(Vector3d instance, double scalar, Operation<Vector3d> original,
                                                             @Local(argsOnly = true) Entity entity) {
-        if (entity instanceof AbstractCannonProjectile)
+        if (entity instanceof AbstractCannonProjectile && CBCConfigs.server().compat.sableProjectilesInheritPhysicsObjectVelocity.get())
             Sable.HELPER.getVelocity(entity.level(), JOMLConversion.toJOML(entity.position()), instance);
         return original.call(instance, scalar);
     }

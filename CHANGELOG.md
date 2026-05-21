@@ -38,6 +38,7 @@ Fixed:
 - [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
 - [Sable] Fixed cannon blocks splitting from cannon mount on physics object
 - [Sable] Fixed cannon shots not inheriting physics object velocity
+  - Can be enabled or disabled in server config (enabled by default)
 
 ## [5.11.3] - 2026-04-27
 
