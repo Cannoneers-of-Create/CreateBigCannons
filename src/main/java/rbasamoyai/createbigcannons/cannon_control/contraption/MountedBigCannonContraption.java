@@ -455,8 +455,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			projectile.setPos(spawnPos);
 			projectile.setChargePower(propelCtx.chargesUsed);
 			projectile.shoot(vec.x, vec.y, vec.z, propelCtx.chargesUsed, propelCtx.spread);
-			projectile.xRotO = projectile.getXRot();
-			projectile.yRotO = projectile.getYRot();
 
 			projectile.addUntouchableEntity(entity, 1);
 			Entity vehicle = entity.getVehicle();
@@ -464,6 +462,10 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 				projectile.addUntouchableEntity(vehicle, 1);
 
 			level.addFreshEntity(projectile);
+
+            projectile.xRotO = projectile.getXRot();
+            projectile.yRotO = projectile.getYRot();
+
 			recoilMagnitude += projectile.addedRecoil();
 		}
 
@@ -693,8 +695,6 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 		projectile.setPos(spawnPos);
 		projectile.setChargePower(power);
 		projectile.shoot(vec.x, vec.y, vec.z, power, spread);
-		projectile.xRotO = projectile.getXRot();
-		projectile.yRotO = projectile.getYRot();
 
 		projectile.addUntouchableEntity(this.entity, 1);
 		Entity vehicle = this.entity.getVehicle();
@@ -702,6 +702,9 @@ public class MountedBigCannonContraption extends AbstractMountedCannonContraptio
 			projectile.addUntouchableEntity(vehicle, 1);
 
 		slevel.addFreshEntity(projectile);
+
+        projectile.xRotO = projectile.getXRot();
+        projectile.yRotO = projectile.getYRot();
 
 		recoilMagnitude *= CBCConfigs.server().cannons.bigCannonRecoilScale.getF();
 		if (controller != null)

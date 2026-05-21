@@ -364,8 +364,6 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 			projectile.setTracer(isTracer);
 			projectile.setLifetime(properties.projectileLifetime());
 			projectile.shoot(vec1.x, vec1.y, vec1.z, speed, spread);
-			projectile.xRotO = projectile.getXRot();
-			projectile.yRotO = projectile.getYRot();
 
 			projectile.addUntouchableEntity(entity, 1);
 			Entity vehicle = entity.getVehicle();
@@ -373,6 +371,10 @@ public class MountedAutocannonContraption extends AbstractMountedCannonContrapti
 				projectile.addUntouchableEntity(vehicle, 1);
 
 			level.addFreshEntity(projectile);
+
+            projectile.xRotO = projectile.getXRot();
+            projectile.yRotO = projectile.getYRot();
+
 			if (roundProperties != null) recoilMagnitude += roundProperties.addedRecoil();
 		}
 

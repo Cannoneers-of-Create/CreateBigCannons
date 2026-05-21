@@ -25,6 +25,7 @@ Fixed:
 - [Aeronautics] Fixed cannon blocks and cannon contraptions not attaching to ship on assembly
 - [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
 - [Sable] Fixed cannon blocks splitting from cannon mount on physics object
+- [Sable] Fixed cannon shots not inheriting physics object velocity
 
 ## [5.11.3] - 2026-04-27
 
