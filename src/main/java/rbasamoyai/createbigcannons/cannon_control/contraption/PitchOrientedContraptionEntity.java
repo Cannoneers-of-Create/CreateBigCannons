@@ -5,6 +5,8 @@ import javax.annotation.Nullable;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.OrientedContraptionEntity;
 
+import com.simibubi.create.content.contraptions.StructureTransform;
+
 import net.createmod.catnip.math.VecHelper;
 import net.createmod.catnip.nbt.NBTHelper;
 import net.minecraft.core.BlockPos;
@@ -272,6 +274,11 @@ public class PitchOrientedContraptionEntity extends OrientedContraptionEntity im
     @Override
     public IItemHandler getItemHandler() {
         return this.contraption instanceof GetItemStorage storage ? storage.getItemStorage() : null;
+    }
+
+    @Override
+    public StructureTransform makeStructureTransform() {
+        return super.makeStructureTransform();
     }
 
 }

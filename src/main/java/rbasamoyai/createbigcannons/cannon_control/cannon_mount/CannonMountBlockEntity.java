@@ -60,6 +60,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	private float prevPitch;
 	private float clientYawDiff;
 	private float clientPitchDiff;
+    private boolean reassemble = false;
 
 	protected final CannonMountInterfaceBlockEntity pitchInterface;
 	protected final CannonMountInterfaceBlockEntity yawInterface;
@@ -106,6 +107,10 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	@Override
 	public void tick() {
 		super.tick();
+        if (this.reassemble && this.level instanceof ServerLevel slevel) {
+            this.getBlockState().tick(slevel, this.worldPosition, slevel.getRandom());
+            this.reassemble = false;
+        }
 
 		this.pitchInterface.tick();
 		this.yawInterface.tick();
@@ -194,7 +199,7 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 	}
 
 	public void onRedstoneUpdate(boolean assemblyPowered, boolean prevAssemblyPowered, boolean firePowered, boolean prevFirePowered, int firePower) {
-		if (assemblyPowered != prevAssemblyPowered) {
+		if (assemblyPowered != prevAssemblyPowered || this.reassemble) {
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(CannonMountBlock.ASSEMBLY_POWERED, assemblyPowered), 3);
 			if (assemblyPowered) {
 				try {
@@ -408,6 +413,9 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		CompoundTag yawTag = new CompoundTag();
 		this.yawInterface.saveAdditional(yawTag, registry);
 		tag.put("YawInterface", yawTag);
+
+        if (this.reassemble)
+            tag.putBoolean("TryReassembling", true);
 	}
 
 	@Override
@@ -426,6 +434,8 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 			this.pitchInterface.loadWithComponents(tag.getCompound("PitchInterface"), registry);
 			this.yawInterface.loadWithComponents(tag.getCompound("YawInterface"), registry);
 		}
+
+        this.reassemble = tag.contains("TryReassembling");
 
 		if (!clientPacket) return;
 
@@ -476,7 +486,12 @@ public class CannonMountBlockEntity extends KineticBlockEntity implements IDispl
 		return this.worldPosition;
 	}
 
-	@Override
+    @Override
+    public void markForReassembly() {
+        this.reassemble = true;
+    }
+
+    @Override
 	public Vec3 getDismountPositionForContraption(PitchOrientedContraptionEntity poce) {
 		Direction vertical = this.getBlockState().getValue(BlockStateProperties.VERTICAL_DIRECTION);
 		return Vec3.atBottomCenterOf(this.worldPosition.relative(this.mountedContraption.getInitialOrientation().getOpposite()).relative(vertical.getOpposite()));

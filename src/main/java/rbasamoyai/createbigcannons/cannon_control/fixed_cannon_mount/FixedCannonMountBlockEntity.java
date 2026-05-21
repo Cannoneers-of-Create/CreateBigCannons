@@ -59,6 +59,7 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 
 	private float cannonYaw;
 	private float cannonPitch;
+    private boolean reassemble = false;
 
 	private FixedCannonMountScrollValueBehaviour pitchSlot;
 	private FixedCannonMountScrollValueBehaviour yawSlot;
@@ -77,7 +78,7 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 	}
 
 	public void onRedstoneUpdate(boolean assemblyPowered, boolean prevAssemblyPowered, boolean firePowered, boolean prevFirePowered, int firePower) {
-		if (assemblyPowered != prevAssemblyPowered) {
+		if (assemblyPowered != prevAssemblyPowered || this.reassemble) {
 			this.getLevel().setBlock(this.worldPosition, this.getBlockState().setValue(FixedCannonMountBlock.ASSEMBLY_POWERED, assemblyPowered), 3);
 			if (assemblyPowered) {
 				try {
@@ -103,6 +104,10 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 	@Override
 	public void tick() {
 		super.tick();
+        if (this.reassemble && this.level instanceof ServerLevel slevel) {
+            this.getBlockState().tick(slevel, this.worldPosition, slevel.getRandom());
+            this.reassemble = false;
+        }
 
 		if (this.mountedContraption != null && !this.mountedContraption.isAlive())
 			this.mountedContraption = null;
@@ -250,7 +255,12 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		return this.worldPosition;
 	}
 
-	@Override
+    @Override
+    public void markForReassembly() {
+        this.reassemble = true;
+    }
+
+    @Override
 	public void remove() {
 		this.remove = true;
 		if (!this.level.isClientSide)
@@ -265,6 +275,9 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		tag.putFloat("CannonYaw", this.cannonYaw);
 		tag.putFloat("CannonPitch", this.cannonPitch);
 		AssemblyException.write(tag, registry, this.lastException);
+
+        if (this.reassemble)
+            tag.putBoolean("TryReassembling", true);
 	}
 
 	@Override
@@ -274,6 +287,7 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
 		this.cannonYaw = tag.getFloat("CannonYaw");
 		this.cannonPitch = tag.getFloat("CannonPitch");
 		this.lastException = AssemblyException.read(tag, registry);
+        this.reassemble = tag.contains("TryReassembling");
 
 		if (!clientPacket) return;
 

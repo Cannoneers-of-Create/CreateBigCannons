@@ -8,7 +8,7 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.neoforged.fml.ModList;
+import net.neoforged.fml.loading.LoadingModList;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 // Copied from Create's Mods class --ritchie
@@ -16,12 +16,15 @@ public enum CBCModsNeoForge {
 	COPYCATS,
 	CURIOS,
 	FRAMEDBLOCKS,
-    SABLE;
+    SABLE,
+    SIMULATED;
 
 	private final String id;
+    private final boolean isLoaded;
 
 	CBCModsNeoForge() {
 		this.id = CreateLang.asId(name());
+        this.isLoaded = LoadingModList.get().getModFileById(this.id) != null;
 	}
 
 	public String id() {
@@ -36,9 +39,7 @@ public enum CBCModsNeoForge {
 		return BuiltInRegistries.BLOCK.get(this.resource(id));
 	}
 
-	public boolean isLoaded() {
-		return ModList.get().isLoaded(this.id);
-	}
+	public boolean isLoaded() { return this.isLoaded; }
 
 	public <T> Optional<T> runIfInstalled(Supplier<Supplier<T>> toRun) {
 		return this.isLoaded() ? Optional.of(toRun.get().get()) : Optional.empty();

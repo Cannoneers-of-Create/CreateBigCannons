@@ -2,7 +2,7 @@
 
 ## [5.11.4] - Unreleased
 
-**Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable!**
+**Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable and Create Aeronautics!**
 
 Added:
 - [Sable] Added cannon recoil on Sable physics objects, courtesy of wph1234
@@ -20,6 +20,7 @@ Fixed:
 - Fixed big cartridge and fluid shell data not loading when placed as block and item consumed
 - Fixed inverted look controls on vertical cannon mount
 - Fixed being able to interact with the world while on a cannon mount
+- [Aeronautics] Fixed cannon contraptions not attaching to ship on assembly
 
 ## [5.11.3] - 2026-04-27
 

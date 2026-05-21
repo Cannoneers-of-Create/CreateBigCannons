@@ -34,6 +34,7 @@ public interface ControlPitchContraption {
 
 	interface Block extends ControlPitchContraption {
 		BlockPos getControllerBlockPos();
+        void markForReassembly();
 	}
 
 }

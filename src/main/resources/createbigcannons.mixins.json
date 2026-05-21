@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "rbasamoyai.createbigcannons.mixin",
+  "plugin": "rbasamoyai.createbigcannons.mixin.CBCMixinPlugin",
   "compatibilityLevel": "JAVA_17",
   "client": [
     "client.Blaze3DAudioChannelAccessor",
@@ -47,7 +48,8 @@
     "compat.create.rotation_propagation.KineticBlockEntityMixin",
     "compat.create.rotation_propagation.KineticNetworkMixin",
     "compat.create.rotation_propagation.RotationPropagatorMixin",
-    "compat.framedblocks.FramedAdjustableDoubleBlockEntityAccessor"
+    "compat.framedblocks.FramedAdjustableDoubleBlockEntityAccessor",
+    "compat.simulated.SimAssemblyHelperMixin"
   ],
   "injectors": {
     "defaultRequire": 1
