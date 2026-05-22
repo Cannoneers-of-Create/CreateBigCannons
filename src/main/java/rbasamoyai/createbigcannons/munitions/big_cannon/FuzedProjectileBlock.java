@@ -2,6 +2,8 @@ package rbasamoyai.createbigcannons.munitions.big_cannon;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.simibubi.create.foundation.block.IBE;
 
 import net.createmod.catnip.data.Iterate;
@@ -26,11 +28,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CBCCompatTransformers;
+import rbasamoyai.createbigcannons.index.CBCBlockEntities;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
 import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
@@ -210,6 +216,21 @@ public abstract class FuzedProjectileBlock<BLOCK_ENTITY extends FuzedBlockEntity
         if (level.getBlockEntity(pos) instanceof FuzedBlockEntity be)
             item.set(CBCDataComponents.FUZE, be.components().getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY));
         return item;
+    }
+
+    @Override
+    public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level level, BlockState state, BlockEntityType<S> serverType) {
+        return createTickerHelper(serverType, CBCBlockEntities.FUZED_BLOCK.get(), FuzedProjectileBlock::tickBlockEntity);
+    }
+
+    protected static <T extends FuzedBlockEntity> void tickBlockEntity(Level level, BlockPos pos, BlockState state, T blockEntity) {
+        blockEntity.tick();
+    }
+
+    @Nullable
+    protected static <E extends BlockEntity, A extends BlockEntity> BlockEntityTicker<A> createTickerHelper(
+        BlockEntityType<A> serverType, BlockEntityType<E> clientType, BlockEntityTicker<? super E> ticker) {
+        return clientType == serverType ? (BlockEntityTicker<A>) ticker : null;
     }
 
 }

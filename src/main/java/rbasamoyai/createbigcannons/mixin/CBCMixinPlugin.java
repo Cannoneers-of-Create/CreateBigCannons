@@ -19,6 +19,8 @@ public class CBCMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (mixinClassName.startsWith("rbasamoyai.createbigcannons.mixin.compat.sable") && !CBCModsNeoForge.SABLE.isLoaded())
+            return false;
         if (mixinClassName.startsWith("rbasamoyai.createbigcannons.mixin.compat.simulated") && !CBCModsNeoForge.SIMULATED.isLoaded())
             return false;
         return true;

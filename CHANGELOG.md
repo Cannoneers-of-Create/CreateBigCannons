@@ -7,6 +7,7 @@
 Added:
 - [Sable] Added cannon recoil on Sable physics objects, courtesy of wph1234
 - [Sable] Cannon projectiles now apply some force when impacting Sable physics objects, courtesy of wph1234
+- [Sable] Added integration for impact and inertia fuzes (and delayed variants) to trigger on impacting the ground as a sublevel
 
 Changed:
 - Changed block light of rendered projectiles

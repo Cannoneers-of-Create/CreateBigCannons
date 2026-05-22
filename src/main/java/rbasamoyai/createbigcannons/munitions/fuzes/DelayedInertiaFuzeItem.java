@@ -5,6 +5,7 @@ import java.util.List;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -18,6 +19,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
@@ -64,31 +66,50 @@ public class DelayedInertiaFuzeItem extends FuzeItem implements MenuProvider {
 
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, ImpactResult impactResult, boolean baseFuze) {
+        this.onCommonImpact(stack, projectile.level(), impactResult);
+        return false;
+	}
+
+    @Override
+    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, ImpactResult impactResult) {
+        this.onCommonImpact(stack, level, impactResult);
+        return false;
+    }
+
+    public void onCommonImpact(ItemStack stack, Level level, ImpactResult impactResult) {
         if (impactResult.shouldRemove())
-            return false;
-		int damage = stack.getOrDefault(CBCDataComponents.DAMAGE, this.getFuzeDurability());
-		if (damage > 0 && !stack.has(CBCDataComponents.ACTIVATED)) {
-			--damage;
-			stack.set(CBCDataComponents.DAMAGE, damage);
-			float f = this.getDetonateChance();
-			if (f > 0 && projectile.level().getRandom().nextFloat() < f) {
-				stack.set(CBCDataComponents.ACTIVATED, true);
-			}
-		}
-		return false;
-	}
+            return;
+        int damage = stack.getOrDefault(CBCDataComponents.DAMAGE, this.getFuzeDurability());
+        if (damage > 0 && !stack.has(CBCDataComponents.ACTIVATED)) {
+            --damage;
+            stack.set(CBCDataComponents.DAMAGE, damage);
+            float f = this.getDetonateChance();
+            if (f > 0 && level.getRandom().nextFloat() < f) {
+                stack.set(CBCDataComponents.ACTIVATED, true);
+            }
+        }
+    }
 
-	@Override
+    @Override
 	public boolean onProjectileTick(ItemStack stack, AbstractCannonProjectile projectile) {
-		if (!stack.has(CBCDataComponents.ACTIVATED)) return false;
-		if (!stack.has(CBCDataComponents.FUZE_TIMER)) return true;
-		int timer = stack.get(CBCDataComponents.FUZE_TIMER);
-		--timer;
-		stack.set(CBCDataComponents.FUZE_TIMER, timer);
-		return timer <= 0;
+        return this.onCommonTick(stack);
 	}
 
-	@Override
+    @Override
+    public boolean onBlockTick(ItemStack stack, Level level, BlockPos pos, BlockState state) {
+        return this.onCommonTick(stack);
+    }
+
+    public boolean onCommonTick(ItemStack stack) {
+        if (!stack.has(CBCDataComponents.ACTIVATED)) return false;
+        if (!stack.has(CBCDataComponents.FUZE_TIMER)) return true;
+        int timer = stack.get(CBCDataComponents.FUZE_TIMER);
+        --timer;
+        stack.set(CBCDataComponents.FUZE_TIMER, timer);
+        return timer <= 0;
+    }
+
+    @Override
 	public boolean onProjectileExpiry(ItemStack stack, AbstractCannonProjectile projectile) {
 		return true;
 	}

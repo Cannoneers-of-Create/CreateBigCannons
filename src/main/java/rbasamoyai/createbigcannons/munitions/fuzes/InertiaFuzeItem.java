@@ -5,11 +5,14 @@ import java.util.List;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
@@ -25,17 +28,26 @@ public class InertiaFuzeItem extends FuzeItem {
 
 	@Override
 	public boolean onProjectileImpact(ItemStack stack, AbstractCannonProjectile projectile, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, boolean baseFuze) {
-		if (impactResult.shouldRemove())
-            return false;
-		int damage = stack.getOrDefault(CBCDataComponents.FUZE_DAMAGE, this.getFuzeDurability());
-		if (damage > 0) {
-			--damage;
-			stack.set(CBCDataComponents.FUZE_DAMAGE, damage);
-		}
-		if (damage == 0) return false;
-		float f = this.getDetonateChance();
-		return f > 0 && projectile.level().getRandom().nextFloat() < f;
+		return this.onCommonImpact(stack, projectile.level(), impactResult);
 	}
+
+    @Override
+    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult) {
+        return this.onCommonImpact(stack, level, impactResult);
+    }
+
+    public boolean onCommonImpact(ItemStack stack, Level level, AbstractCannonProjectile.ImpactResult impactResult) {
+        if (impactResult.shouldRemove())
+            return false;
+        int damage = stack.getOrDefault(CBCDataComponents.FUZE_DAMAGE, this.getFuzeDurability());
+        if (damage > 0) {
+            --damage;
+            stack.set(CBCDataComponents.FUZE_DAMAGE, damage);
+        }
+        if (damage == 0) return false;
+        float f = this.getDetonateChance();
+        return f > 0 && level.getRandom().nextFloat() < f;
+    }
 
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext ctx, List<Component> tooltip, TooltipFlag flag) {

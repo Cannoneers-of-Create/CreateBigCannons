@@ -19,6 +19,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.DirectionalBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate.StructureBlockInfo;
@@ -148,6 +150,11 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
             be.setFluidShellItemFluidData(item, level.registryAccess());
         }
         return item;
+    }
+
+    @Override
+    public <S extends BlockEntity> BlockEntityTicker<S> getTicker(Level level, BlockState state, BlockEntityType<S> serverType) {
+        return createTickerHelper(serverType, CBCBlockEntities.FLUID_SHELL.get(), FuzedProjectileBlock::tickBlockEntity);
     }
 
 }

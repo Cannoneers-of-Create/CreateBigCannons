@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.simibubi.create.foundation.utility.CreateLang;
 
@@ -12,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.CreateBigCannons;
@@ -142,5 +144,32 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 		this.setFuze(ItemStack.EMPTY);
 		super.clearContent();
 	}
+
+    public void tick() {
+        if (this.level == null)
+            return;
+        final ItemStack fuze = this.getFuze();
+        if (this.canDetonate(fz -> fz.onBlockTick(fuze, level, this.worldPosition, this.getBlockState()))) {
+            this.detonate();
+            this.setRemoved();
+        }
+        this.setFuze(fuze);
+    }
+
+    protected final boolean canDetonate(Predicate<FuzeItem> cons) {
+        return this.level != null && !this.level.isClientSide && !this.isRemoved()
+            && this.getFuze().getItem() instanceof FuzeItem fuzeItem && cons.test(fuzeItem);
+    }
+
+    protected void detonate() {
+        if (this.level == null)
+            return;
+        BlockState state = this.getBlockState();
+        if (!(state.getBlock() instanceof FuzedProjectileBlock<?,?> fuzedBlock)) {
+            this.level.setBlock(this.worldPosition, Blocks.AIR.defaultBlockState(), 3);
+            return;
+        }
+        fuzedBlock.detonateProjectileOnTheSpot(this.level, this.worldPosition, state, state.getValue(FuzedProjectileBlock.FACING));
+    }
 
 }
