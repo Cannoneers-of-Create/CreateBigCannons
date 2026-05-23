@@ -1,9 +1,8 @@
 package rbasamoyai.createbigcannons;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Supplier;
-
-import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -23,7 +22,7 @@ public enum CBCModsNeoForge {
     private final boolean isLoaded;
 
 	CBCModsNeoForge() {
-		this.id = CreateLang.asId(name());
+		this.id = name().toLowerCase(Locale.ROOT);
         this.isLoaded = LoadingModList.get().getModFileById(this.id) != null;
 	}
 
