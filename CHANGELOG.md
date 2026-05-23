@@ -37,7 +37,7 @@ Fixed:
 - Fixed flak, shrapnel, and grapeshot burst overpenetration
 - Fixed schematic requirements for big cartridges and big cannon projectiles
 - Fixed incorrect data components saving leading to stack overflow crashes
-- Fixed projectile grounding in world
+- Fixed projectile grounding in world, courtesy of Hectoris919
 - [Aeronautics] Fixed cannon blocks and cannon contraptions not attaching to ship on assembly
 - [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
 - [Sable] Fixed cannon blocks splitting from cannon mount on physics object
