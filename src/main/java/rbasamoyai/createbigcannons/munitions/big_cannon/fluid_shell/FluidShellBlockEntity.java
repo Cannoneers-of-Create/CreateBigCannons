@@ -10,6 +10,7 @@ import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -57,7 +58,23 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
 		this.tank.readFromNBT(registries, tag.getCompound("FluidContent"));
 	}
 
-	@Override
+    @Override
+    public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
+        super.writeSafe(tag, registries);
+        tag.put("FluidContent", this.tank.writeToNBT(registries, new CompoundTag()));
+    }
+
+    @Override
+    protected void writeSafeComponentsForItemRequirement(PatchedDataComponentMap safeComponents) {
+        super.writeSafeComponentsForItemRequirement(safeComponents);
+        if (this.level != null) {
+            CompoundTag fluidTag = this.tank.writeToNBT(this.level.registryAccess(), new CompoundTag());
+            if (!fluidTag.isEmpty())
+                safeComponents.set(CBCDataComponents.FLUID_CONTENT, CustomData.of(fluidTag));
+        }
+    }
+
+    @Override
 	protected void setFluidShellStack(FluidShellProjectile shell) {
 		FluidStack fstack = this.tank.getFluid();
 		shell.setFluidStack(fstack.isEmpty()

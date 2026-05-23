@@ -476,7 +476,9 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 	private boolean shouldFall() {
         if (!this.isInGround() || this.inGroundPos == null)
             return false;
-        AABB aabb = new AABB(this.inGroundPos, this.inGroundPos).inflate(0.06d);
+        Vec3 supportPos = this.position();
+        this.setGroundPos(supportPos);
+        AABB aabb = new AABB(supportPos, supportPos).inflate(0.06d);
         if (!this.level().noCollision(aabb)) {
             return false;
         }

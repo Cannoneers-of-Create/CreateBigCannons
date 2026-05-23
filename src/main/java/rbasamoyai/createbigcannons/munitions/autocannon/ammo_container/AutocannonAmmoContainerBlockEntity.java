@@ -36,6 +36,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.remix.CBCHasIItemHandlerBlockEntity;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements IAutocannonAmmoContainerContainer,
     MenuProvider, Nameable, CBCHasIItemHandlerBlockEntity, PartialSafeNBT {
@@ -87,23 +88,23 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 	public void setMainAmmoDirect(ItemStack stack) {
 		if (stack == null)
             stack = ItemStack.EMPTY;
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         patched.set(CBCDataComponents.AMMO, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
-        this.setComponents(patched);
+        this.applyComponents(this.components(), patched.asPatch());
 	}
 
 	public void setTracersDirect(ItemStack stack) {
         if (stack == null)
             stack = ItemStack.EMPTY;
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         patched.set(CBCDataComponents.TRACERS, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
-        this.setComponents(patched);
+        this.applyComponents(this.components(), patched.asPatch());
 	}
 
 	public void setSpacing(int spacing) {
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         patched.set(CBCDataComponents.TRACER_SPACING, Mth.clamp(spacing, 1, 6));
-        this.setComponents(patched);
+        this.applyComponents(this.components(), patched.asPatch());
 	}
 
 	public boolean canDropInCreative() {
@@ -124,13 +125,13 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 	}
 
 	public void setCustomName(@Nullable Component name) {
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         if (name == null) {
             patched.remove(DataComponents.CUSTOM_NAME);
         } else {
             patched.set(DataComponents.CUSTOM_NAME, name);
         }
-		this.setComponents(patched);
+		this.applyComponents(this.components(), patched.asPatch());
 	}
 
     protected Component getDefaultName() {
@@ -252,15 +253,12 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
     @Override
     public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
-        // NOTE: susceptible to data loss on schematic saving. Hacky solution! --ritchie
-        PatchedDataComponentMap patchedRestore = new PatchedDataComponentMap(this.components());
         PatchedDataComponentMap copy = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        copy.set(CBCDataComponents.TRACER_SPACING, patchedRestore.getOrDefault(CBCDataComponents.TRACER_SPACING, 1));
-        if (patchedRestore.has(DataComponents.CUSTOM_NAME))
-            copy.set(DataComponents.CUSTOM_NAME, patchedRestore.get(DataComponents.CUSTOM_NAME));
-        this.setComponents(copy);
-        super.saveAdditional(tag, registries);
-        this.setComponents(patchedRestore);
+        copy.set(CBCDataComponents.TRACER_SPACING, this.getSpacing());
+        if (this.components().has(DataComponents.CUSTOM_NAME))
+            copy.set(DataComponents.CUSTOM_NAME, this.components().get(DataComponents.CUSTOM_NAME));
+        this.saveAdditional(tag, registries);
+        CBCUtils.saveComponentsToStructureTag(tag, copy, registries);
     }
 
 }
