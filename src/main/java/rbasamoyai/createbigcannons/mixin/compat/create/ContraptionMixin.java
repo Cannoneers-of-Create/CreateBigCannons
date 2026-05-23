@@ -134,15 +134,13 @@ public abstract class ContraptionMixin {
 		return false;
 	}
 
-	@WrapMethod(method = "moveChassis", remap = false)
-	private boolean createbigcannons$moveChassis(Level world, BlockPos pos, Direction movementDirection, Queue<BlockPos> frontier,
-                                                 Set<BlockPos> visited, Operation<Boolean> original, @Local ChassisBlockEntity chassis,
-                                                 @Local List<BlockPos> includedBlockPositions) {
-        boolean ret = original.call(world, pos, movementDirection, frontier, visited);
-		if (ret && CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
-			ContraptionRemix.chassisMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, world, includedBlockPositions, frontier, visited, movementDirection, chassis);
-        return ret;
-    }
+	@Inject(method = "moveChassis", at = @At(value = "TAIL", shift = At.Shift.BEFORE), remap = false)
+	private void createbigcannons$moveChassis(Level level, BlockPos pos, Direction movementDirection, Queue<BlockPos> frontier,
+											  Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir,
+											  @Local ChassisBlockEntity chassis, @Local List<BlockPos> includedBlockPositions) {
+		if (CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
+			ContraptionRemix.chassisMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, level, includedBlockPositions, frontier, visited, movementDirection, chassis);
+	}
 
 	@WrapMethod(method = "moveMechanicalPiston", remap = false)
 	private boolean createbigcannons$moveMechanicalPiston(Level world, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited,
