@@ -4,12 +4,15 @@ import java.util.List;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockEntityItemRequirement;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -21,8 +24,10 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
-public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container, PartialSafeNBT {
+public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container, PartialSafeNBT,
+    SpecialBlockEntityItemRequirement {
 
 	public BigCannonProjectileBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -43,16 +48,23 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 
     @Override
     public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
-        PatchedDataComponentMap restore = new PatchedDataComponentMap(this.components());
-        PatchedDataComponentMap copy = new PatchedDataComponentMap(DataComponentMap.EMPTY);
+        PatchedDataComponentMap copy = PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, DataComponentPatch.EMPTY);
         this.writeSafeComponents(copy);
-        this.setComponents(copy);
-        super.saveAdditional(tag, registries);
-        this.setComponents(restore);
+        this.saveAdditional(tag, registries);
+        CBCUtils.saveComponentsToStructureTag(tag, copy, registries);
     }
 
     protected void writeSafeComponents(PatchedDataComponentMap safeComponents) {
+        ItemStack tracer = this.getTracer();
+        if (tracer.isEmpty()) {
+            safeComponents.set(CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
+        } else {
+            safeComponents.set(CBCDataComponents.TRACER, ItemContainerContents.fromItems(List.of(tracer)));
+        }
+    }
 
+    protected void writeSafeComponentsForItemRequirement(PatchedDataComponentMap safeComponents) {
+        this.writeSafeComponents(safeComponents);
     }
 
     @Override
@@ -137,4 +149,16 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 			.forGoggles(tooltip);
 		return true;
 	}
+
+    @Override
+    public ItemRequirement getRequiredItems(BlockState state) {
+        ItemStack stack = new ItemStack(this.getBlockState().getBlock().asItem());
+        if (stack.isEmpty())
+            return ItemRequirement.INVALID;
+        PatchedDataComponentMap safeComponents = PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, DataComponentPatch.EMPTY);
+        this.writeSafeComponentsForItemRequirement(safeComponents);
+        stack.applyComponents(safeComponents);
+        return new ItemRequirement(new ItemRequirement.StrictNbtStackRequirement(stack, ItemRequirement.ItemUseType.CONSUME));
+    }
+
 }

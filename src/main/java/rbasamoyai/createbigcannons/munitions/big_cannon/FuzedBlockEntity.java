@@ -40,6 +40,17 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
     }
 
     @Override
+    protected void writeSafeComponents(PatchedDataComponentMap safeComponents) {
+        super.writeSafeComponents(safeComponents);
+        ItemStack fuze = this.getFuze();
+        if (fuze.isEmpty()) {
+            safeComponents.set(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
+        } else {
+            safeComponents.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(List.of(fuze)));
+        }
+    }
+
+    @Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		CreateLang.builder("block")

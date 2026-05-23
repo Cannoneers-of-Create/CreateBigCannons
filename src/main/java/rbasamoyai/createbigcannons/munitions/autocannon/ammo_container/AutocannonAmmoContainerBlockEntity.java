@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
@@ -36,6 +37,7 @@ import net.neoforged.neoforge.items.IItemHandler;
 import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.remix.CBCHasIItemHandlerBlockEntity;
+import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements IAutocannonAmmoContainerContainer,
     MenuProvider, Nameable, CBCHasIItemHandlerBlockEntity, PartialSafeNBT {
@@ -252,15 +254,12 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
     @Override
     public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
-        // NOTE: susceptible to data loss on schematic saving. Hacky solution! --ritchie
-        PatchedDataComponentMap patchedRestore = new PatchedDataComponentMap(this.components());
-        PatchedDataComponentMap copy = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        copy.set(CBCDataComponents.TRACER_SPACING, patchedRestore.getOrDefault(CBCDataComponents.TRACER_SPACING, 1));
-        if (patchedRestore.has(DataComponents.CUSTOM_NAME))
-            copy.set(DataComponents.CUSTOM_NAME, patchedRestore.get(DataComponents.CUSTOM_NAME));
-        this.setComponents(copy);
-        super.saveAdditional(tag, registries);
-        this.setComponents(patchedRestore);
+        PatchedDataComponentMap copy = PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, DataComponentPatch.EMPTY);
+        copy.set(CBCDataComponents.TRACER_SPACING, this.getSpacing());
+        if (this.components().has(DataComponents.CUSTOM_NAME))
+            copy.set(DataComponents.CUSTOM_NAME, this.components().get(DataComponents.CUSTOM_NAME));
+        this.saveAdditional(tag, registries);
+        CBCUtils.saveComponentsToStructureTag(tag, copy, registries);
     }
 
 }
