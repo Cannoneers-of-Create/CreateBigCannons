@@ -19,7 +19,7 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public record EndFluidStack(Fluid fluid, int amount, PatchedDataComponentMap components) {
 
-	public static EndFluidStack EMPTY = new EndFluidStack(Fluids.EMPTY, 0, PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, DataComponentPatch.EMPTY));
+	public static EndFluidStack EMPTY = new EndFluidStack(Fluids.EMPTY, 0, new PatchedDataComponentMap(DataComponentMap.EMPTY));
 
 	public static final Codec<EndFluidStack> CODEC = RecordCodecBuilder.create(i -> i
 			.group(CBCRegistryUtils.getFluidRegistry().byNameCodec().fieldOf("fluid").forGetter(EndFluidStack::fluid),

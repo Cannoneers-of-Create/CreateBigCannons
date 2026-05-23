@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
@@ -89,23 +88,23 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 	public void setMainAmmoDirect(ItemStack stack) {
 		if (stack == null)
             stack = ItemStack.EMPTY;
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         patched.set(CBCDataComponents.AMMO, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
-        this.setComponents(patched);
+        this.applyComponents(this.components(), patched.asPatch());
 	}
 
 	public void setTracersDirect(ItemStack stack) {
         if (stack == null)
             stack = ItemStack.EMPTY;
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         patched.set(CBCDataComponents.TRACERS, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
-        this.setComponents(patched);
+        this.applyComponents(this.components(), patched.asPatch());
 	}
 
 	public void setSpacing(int spacing) {
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         patched.set(CBCDataComponents.TRACER_SPACING, Mth.clamp(spacing, 1, 6));
-        this.setComponents(patched);
+        this.applyComponents(this.components(), patched.asPatch());
 	}
 
 	public boolean canDropInCreative() {
@@ -126,13 +125,13 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 	}
 
 	public void setCustomName(@Nullable Component name) {
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         if (name == null) {
             patched.remove(DataComponents.CUSTOM_NAME);
         } else {
             patched.set(DataComponents.CUSTOM_NAME, name);
         }
-		this.setComponents(patched);
+		this.applyComponents(this.components(), patched.asPatch());
 	}
 
     protected Component getDefaultName() {
@@ -254,7 +253,7 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
     @Override
     public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
-        PatchedDataComponentMap copy = PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, DataComponentPatch.EMPTY);
+        PatchedDataComponentMap copy = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         copy.set(CBCDataComponents.TRACER_SPACING, this.getSpacing());
         if (this.components().has(DataComponents.CUSTOM_NAME))
             copy.set(DataComponents.CUSTOM_NAME, this.components().get(DataComponents.CUSTOM_NAME));

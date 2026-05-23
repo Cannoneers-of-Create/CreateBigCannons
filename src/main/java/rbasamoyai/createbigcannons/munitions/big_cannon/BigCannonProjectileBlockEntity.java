@@ -12,7 +12,6 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -48,7 +47,7 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 
     @Override
     public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
-        PatchedDataComponentMap copy = PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, DataComponentPatch.EMPTY);
+        PatchedDataComponentMap copy = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         this.writeSafeComponents(copy);
         this.saveAdditional(tag, registries);
         CBCUtils.saveComponentsToStructureTag(tag, copy, registries);
@@ -88,13 +87,13 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 	}
 
     public void setTracer(ItemStack itemStack) {
-        PatchedDataComponentMap components = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap components = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         if (itemStack.isEmpty()) {
             components.remove(CBCDataComponents.TRACER);
         } else {
             components.set(CBCDataComponents.TRACER, ItemContainerContents.fromItems(List.of(itemStack)));
         }
-        this.setComponents(components);
+        this.applyComponents(this.components(), components.asPatch());
     }
 
 	@Override
@@ -155,7 +154,7 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
         ItemStack stack = new ItemStack(this.getBlockState().getBlock().asItem());
         if (stack.isEmpty())
             return ItemRequirement.INVALID;
-        PatchedDataComponentMap safeComponents = PatchedDataComponentMap.fromPatch(DataComponentMap.EMPTY, DataComponentPatch.EMPTY);
+        PatchedDataComponentMap safeComponents = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         this.writeSafeComponentsForItemRequirement(safeComponents);
         stack.applyComponents(safeComponents);
         return new ItemRequirement(new ItemRequirement.StrictNbtStackRequirement(stack, ItemRequirement.ItemUseType.CONSUME));

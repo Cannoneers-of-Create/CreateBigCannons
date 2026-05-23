@@ -8,6 +8,7 @@ import com.simibubi.create.foundation.utility.CreateLang;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -94,13 +95,13 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 	}
 
     public void setFuze(ItemStack itemStack) {
-        PatchedDataComponentMap components = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap components = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         if (itemStack.isEmpty()) {
             components.remove(CBCDataComponents.FUZE);
         } else {
             components.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(List.of(itemStack)));
         }
-        this.setComponents(components);
+        this.applyComponents(this.components(), components.asPatch());
     }
 
 	public boolean hasFuze() {

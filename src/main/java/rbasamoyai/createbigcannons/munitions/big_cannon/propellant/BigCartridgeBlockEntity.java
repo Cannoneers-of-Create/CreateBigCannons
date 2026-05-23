@@ -5,6 +5,7 @@ import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,9 +18,9 @@ public class BigCartridgeBlockEntity extends SyncedBlockEntity implements Specia
 	}
 
 	public void setPower(int power) {
-        PatchedDataComponentMap components = new PatchedDataComponentMap(this.components());
+        PatchedDataComponentMap components = new PatchedDataComponentMap(DataComponentMap.EMPTY);
         components.set(CBCDataComponents.POWER, power);
-        this.setComponents(components);
+        this.applyComponents(this.components(), components.asPatch());
     }
 
 	public int getPower() { return this.components().getOrDefault(CBCDataComponents.POWER, 0); }
