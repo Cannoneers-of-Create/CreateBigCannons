@@ -3,10 +3,9 @@ package rbasamoyai.createbigcannons.mixin.compat.create;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.Contraption;
 
@@ -31,8 +30,9 @@ public abstract class AbstractContraptionEntityMixin extends Entity {
 
 	AbstractContraptionEntityMixin(EntityType<?> entityType, Level level) { super(entityType, level); }
 
-	@Inject(method = "tick", at = @At("TAIL"))
-	private void createbigcannons$tick(CallbackInfo ci) {
+	@WrapMethod(method = "tick")
+	private void createbigcannons$tick(Operation<Void> original) {
+        original.call();
 		if (CBCModifiedContraptionRegistry.isFragileContraption(this.contraption)) {
 			HasFragileContraption fragile = (HasFragileContraption) this.contraption;
 			if (this.level() != null

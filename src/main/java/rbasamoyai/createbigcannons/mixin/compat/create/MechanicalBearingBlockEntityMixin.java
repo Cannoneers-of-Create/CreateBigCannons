@@ -4,10 +4,9 @@ import java.util.List;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.content.contraptions.ControlledContraptionEntity;
 import com.simibubi.create.content.contraptions.bearing.MechanicalBearingBlockEntity;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
@@ -30,9 +29,12 @@ public abstract class MechanicalBearingBlockEntityMixin extends GeneratingKineti
 		super(type, pos, state);
 	}
 
-	@Inject(method = "tick", at = @At("HEAD"), remap = false)
-	public void createbigcannons$tick(CallbackInfo ci) {
-		if (this.getLevel().isClientSide || !this.running || this.movedContraption == null) return;
+	@WrapMethod(method = "tick", remap = false)
+	public void createbigcannons$tick(Operation<Void> original) {
+		if (this.getLevel().isClientSide || !this.running || this.movedContraption == null) {
+            original.call();
+            return;
+        }
 		List<ControlledContraptionEntity> contraptions = this.getLevel().getEntitiesOfClass(ControlledContraptionEntity.class, this.movedContraption.getBoundingBox().inflate(2), e -> !e.equals(this.movedContraption));
 		for (ControlledContraptionEntity e : contraptions) {
 			if (!(e.getContraption() instanceof CannonDrillingContraption drill)) continue;
@@ -40,6 +42,7 @@ public abstract class MechanicalBearingBlockEntityMixin extends GeneratingKineti
 			if (!(this.getLevel().getBlockEntity(drillBase) instanceof AbstractCannonDrillBlockEntity drillBE)) continue;
 			drillBE.collideWithContraptionToBore(this.movedContraption, false);
 		}
+        original.call();
 	}
 
 }

@@ -1,10 +1,9 @@
 package rbasamoyai.createbigcannons.mixin.compat.create;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.content.contraptions.pulley.PulleyBlock;
 
 import net.minecraft.core.BlockPos;
@@ -15,8 +14,9 @@ import rbasamoyai.createbigcannons.remix.ContraptionRemix;
 @Mixin(PulleyBlock.class)
 public abstract class PulleyBlockMixin {
 
-	@Inject(method = "onRemove", at = @At("TAIL"))
-	private void createbigcannons$onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving, CallbackInfo ci) {
+	@WrapMethod(method = "onRemove")
+	private void createbigcannons$onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving, Operation<Void> original) {
+        original.call(state, level, pos, newState, isMoving);
 		ContraptionRemix.removeInnerStateRopes(level, pos.below(), isMoving);
 	}
 

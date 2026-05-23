@@ -4,10 +4,10 @@ import java.util.Set;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.Contraption;
@@ -38,12 +38,12 @@ public abstract class TranslatingContraptionMixin extends Contraption {
 		return !IBigCannonBlockEntity.isValidMunitionState(axis, info) && IBigCannonBlockEntity.isValidMunitionState(axis, offsetInfo);
 	}
 
-	@Inject(method = "createColliders", at = @At("TAIL"), remap = false, cancellable = true)
-	private void createbigcannons$createColliders$1(Level level, Direction movementDirection, CallbackInfoReturnable<Set<BlockPos>> cir) {
-		if (!(CBCModifiedContraptionRegistry.canLoadBigCannon(this))) return;
-		Set<BlockPos> original = cir.getReturnValue();
-		original.addAll(((CanLoadBigCannon) this).createbigcannons$getCannonLoadingColliders());
-		cir.setReturnValue(original); // Not sure if unnecessary but might as well --ritchie
-	}
+	@WrapMethod(method = "createColliders", remap = false)
+	private Set<BlockPos> createbigcannons$createColliders$1(Level world, Direction movementDirection, Operation<Set<BlockPos>> original) {
+        Set<BlockPos> ret = original.call(world, movementDirection);
+		if (CBCModifiedContraptionRegistry.canLoadBigCannon(this))
+		    ret.addAll(((CanLoadBigCannon) this).createbigcannons$getCannonLoadingColliders());
+        return ret;
+    }
 
 }

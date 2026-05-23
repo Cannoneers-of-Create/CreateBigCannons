@@ -1,15 +1,12 @@
 package rbasamoyai.createbigcannons.mixin.client;
 
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 
 import net.minecraft.client.model.AgeableListModel;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import rbasamoyai.createbigcannons.cannon_control.carriage.CannonCarriageEntity;
@@ -18,19 +15,18 @@ import rbasamoyai.createbigcannons.index.CBCEntityTypes;
 @Mixin(HumanoidModel.class)
 public abstract class HumanoidPoseMixin extends AgeableListModel {
 
-    @Shadow @Final public ModelPart hat;
-
-    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("HEAD"))
-    public <T extends LivingEntity> void createbigcannons$setupAnimHead(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
-        Entity vehicle = livingEntity.getVehicle();
+    @WrapMethod(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V")
+    public <T extends LivingEntity> void createbigcannons$setupAnimHead(T entity, float limbSwing, float limbSwingAmount,
+                                                                        float ageInTicks, float netHeadYaw, float headPitch,
+                                                                        Operation<Void> original) {
+        Entity vehicle = entity.getVehicle();
         if (vehicle instanceof CannonCarriageEntity carriage && !carriage.isCannonRider())
             this.riding = false;
-    }
 
-    @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At("TAIL"))
-    public <T extends LivingEntity> void createbigcannons$setupAnimNearTail(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        original.call(entity, limbSwing, limbSwing, ageInTicks, netHeadYaw, headPitch);
+
         HumanoidModel<?> self = (HumanoidModel<?>) (Object) this;
-        if (CBCEntityTypes.PITCH_ORIENTED_CONTRAPTION.is(livingEntity.getVehicle())) {
+        if (CBCEntityTypes.PITCH_ORIENTED_CONTRAPTION.is(entity.getVehicle())) {
             self.head.xRot = 0;
             self.hat.copyFrom(self.head);
 
@@ -43,6 +39,5 @@ public abstract class HumanoidPoseMixin extends AgeableListModel {
             self.rightArm.zRot = 0;
         }
     }
-
 
 }

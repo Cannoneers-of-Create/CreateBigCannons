@@ -16,6 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalBooleanRef;
@@ -58,15 +61,14 @@ public abstract class ContraptionMixin {
 	@Shadow
 	public boolean disassembled;
 
-	@Inject(method = "searchMovedStructure",
-		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/api/contraption/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z", shift = At.Shift.BEFORE))
-	private void createbigcannons$searchMovedStructure$setForcedDirection(Level level, BlockPos pos, Direction forcedDirection,
-																		  CallbackInfoReturnable<Boolean> cir,
-																		  @Local(argsOnly = true) LocalRef<Direction> forcedDirectionRef) {
-		if (!(CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))) return;
-		if (forcedDirectionRef.get() == null)
+	@WrapOperation(method = "searchMovedStructure", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/api/contraption/BlockMovementChecks;isBrittle(Lnet/minecraft/world/level/block/state/BlockState;)Z"))
+	private boolean createbigcannons$searchMovedStructure$setForcedDirection(BlockState state, Operation<Boolean> original,
+                                                                             @Local(argsOnly = true) Level level,
+                                                                             @Local(argsOnly = true) LocalRef<Direction> forcedDirectionRef) {
+		if (CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self) & forcedDirectionRef.get() == null)
 			forcedDirectionRef.set(((CanLoadBigCannon) this.createbigcannons$self).createbigcannons$getAssemblyMovementDirection(level));
-	}
+        return original.call(state);
+    }
 
 	@Inject(method = "searchMovedStructure",
 		at = @At(value = "INVOKE", target = "Ljava/util/Queue;add(Ljava/lang/Object;)Z", shift = At.Shift.AFTER),
@@ -77,13 +79,14 @@ public abstract class ContraptionMixin {
 			ContraptionRemix.pulleyChecks((PulleyContraption) this.createbigcannons$self, level, pos, forcedDirection, frontier);
 	}
 
-	@Inject(method = "addBlocksToWorld", at = @At("HEAD"))
-	private void createbigcannons$addBlocksToWorld(Level world, StructureTransform transform, CallbackInfo ci) {
-		if (this.disassembled || !(CBCModifiedContraptionRegistry.isFragileContraption(this.createbigcannons$self)))
-			return;
-		HasFragileContraption fragile = (HasFragileContraption) this.createbigcannons$self;
-		if (!fragile.createbigcannons$isBrokenDisassembly())
-			fragile.createbigcannons$setBrokenDisassembly(HasFragileContraption.checkForIntersectingBlocks(this.createbigcannons$self.entity.level(), this.createbigcannons$self.entity, fragile));
+	@WrapMethod(method = "addBlocksToWorld")
+	private void createbigcannons$addBlocksToWorld(Level world, StructureTransform transform, Operation<Void> original) {
+		if (!this.disassembled && CBCModifiedContraptionRegistry.isFragileContraption(this.createbigcannons$self)) {
+            HasFragileContraption fragile = (HasFragileContraption) this.createbigcannons$self;
+            if (!fragile.createbigcannons$isBrokenDisassembly())
+                fragile.createbigcannons$setBrokenDisassembly(HasFragileContraption.checkForIntersectingBlocks(this.createbigcannons$self.entity.level(), this.createbigcannons$self.entity, fragile));
+        }
+        original.call(world, transform);
 	}
 
 	@ModifyExpressionValue(method = "addBlocksToWorld", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/contraptions/Contraption;customBlockPlacement(Lnet/minecraft/world/level/LevelAccessor;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;)Z"))
@@ -131,31 +134,38 @@ public abstract class ContraptionMixin {
 		return false;
 	}
 
-	@Inject(method = "moveChassis", at = @At(value = "TAIL", shift = At.Shift.BEFORE), remap = false)
-	private void createbigcannons$moveChassis(Level level, BlockPos pos, Direction movementDirection, Queue<BlockPos> frontier,
-											  Set<BlockPos> visited, CallbackInfoReturnable<Boolean> cir,
-											  @Local ChassisBlockEntity chassis, @Local List<BlockPos> includedBlockPositions) {
+	@WrapMethod(method = "moveChassis", remap = false)
+	private boolean createbigcannons$moveChassis(Level world, BlockPos pos, Direction movementDirection, Queue<BlockPos> frontier,
+                                                 Set<BlockPos> visited, Operation<Boolean> original, @Local ChassisBlockEntity chassis,
+                                                 @Local List<BlockPos> includedBlockPositions) {
+        boolean ret = original.call(world, pos, movementDirection, frontier, visited);
+		if (ret && CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
+			ContraptionRemix.chassisMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, world, includedBlockPositions, frontier, visited, movementDirection, chassis);
+        return ret;
+    }
+
+	@WrapMethod(method = "moveMechanicalPiston", remap = false)
+	private boolean createbigcannons$moveMechanicalPiston(Level world, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited,
+                                                          BlockState state, Operation<Boolean> original) {
+        boolean ret = original.call(world, pos, frontier, visited, state);
+		if (ret && CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
+			ContraptionRemix.pistonMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, world, pos, state);
+        return ret;
+    }
+
+	@WrapMethod(method = "movePistonHead", remap = false)
+	private void createbigcannons$movePistonHead(Level world, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited,
+                                                 BlockState state, Operation<Void> original) {
 		if (CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
-			ContraptionRemix.chassisMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, level, includedBlockPositions, frontier, visited, movementDirection, chassis);
+			ContraptionRemix.pistonHeadMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, world, pos, state);
 	}
 
-	@Inject(method = "moveMechanicalPiston", at = @At("TAIL"), remap = false)
-	private void createbigcannons$moveMechanicalPiston(Level level, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited,
-													   BlockState state, CallbackInfoReturnable<Boolean> cir) {
+	@WrapMethod(method = "moveGantryPinion", remap = false)
+	private void createbigcannons$moveGantryPinion(Level world, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited,
+                                                   BlockState state, Operation<Void> original) {
 		if (CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
-			ContraptionRemix.pistonMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, level, pos, state);
-	}
-
-	@Inject(method = "movePistonHead", at = @At("TAIL"), remap = false)
-	private void createbigcannons$movePistonHead(Level level, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited, BlockState state, CallbackInfo ci) {
-		if (CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
-			ContraptionRemix.pistonHeadMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, level, pos, state);
-	}
-
-	@Inject(method = "moveGantryPinion", at = @At("HEAD"), remap = false)
-	private void createbigcannons$moveGantryPinion(Level level, BlockPos pos, Queue<BlockPos> frontier, Set<BlockPos> visited, BlockState state, CallbackInfo ci) {
-		if (CBCModifiedContraptionRegistry.canLoadBigCannon(this.createbigcannons$self))
-			ContraptionRemix.gantryCarriageMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, level, pos, state);
+			ContraptionRemix.gantryCarriageMarking((Contraption & CanLoadBigCannon) this.createbigcannons$self, world, pos, state);
+        original.call(world, pos, frontier, visited, state);
 	}
 
 	@Inject(method = "moveBlock",

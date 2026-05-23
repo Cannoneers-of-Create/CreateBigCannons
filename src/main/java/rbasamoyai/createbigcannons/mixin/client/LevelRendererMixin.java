@@ -7,11 +7,10 @@ import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.google.common.collect.Sets;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 
 import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
@@ -59,8 +58,9 @@ public abstract class LevelRendererMixin implements CustomBlockDamageDisplay {
 		}
 	}
 
-	@Inject(method = "tick", at = @At("TAIL"))
-	private void createbigcannons$tick(CallbackInfo ci) {
+	@WrapMethod(method = "tick")
+	private void createbigcannons$tick(Operation<Void> original) {
+        original.call();
 		if (this.ticks % 20 == 0) {
 			for (Iterator<BlockDestructionProgress> iter = this.createbigcannons$trackedProgresses.values().iterator(); iter.hasNext(); ) {
 				BlockDestructionProgress blockDestructionProgress = iter.next();

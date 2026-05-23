@@ -3,9 +3,9 @@ package rbasamoyai.createbigcannons.mixin;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.world.entity.Entity;
@@ -18,14 +18,15 @@ public class ServerEntityMixin {
 
 	@Shadow @Final private Entity entity;
 
-	@Inject(method = "sendChanges", at = @At("HEAD"))
-	private void createbigcannons$sendChanges(CallbackInfo ci) {
+	@WrapMethod(method = "sendChanges")
+	private void createbigcannons$sendChanges(Operation<Void> original) {
 		if (this.entity instanceof PitchOrientedContraptionEntity poce) {
 			if (poce.getControllingPassenger() == null) {
 				NetworkPlatform.sendToClientTracking(new ClientboundPreciseRotationSyncPacket(this.entity.getId(), this.entity.getYRot(), this.entity.getXRot()), this.entity);
 			}
 			this.entity.hasImpulse = false;
 		}
+        original.call();
 	}
 
 }

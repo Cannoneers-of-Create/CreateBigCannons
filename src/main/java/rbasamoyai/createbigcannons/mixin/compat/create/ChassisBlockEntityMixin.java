@@ -10,10 +10,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
@@ -39,43 +39,47 @@ public abstract class ChassisBlockEntityMixin extends SmartBlockEntity {
 
 	ChassisBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) { super(type, pos, state); }
 
-	@Inject(method = "getIncludedBlockPositionsRadial", at = @At("HEAD"), remap = false)
-	private void createbigcannons$getIncludedBlockPositionsRadial$0(Direction forcedMovement, boolean visualize, CallbackInfoReturnable<List<BlockPos>> cir,
-																	@Share("cannonFlags") LocalRef<Set<BlockPos>> cannonFlagsRef) {
+	@WrapMethod(method = "getIncludedBlockPositionsRadial", remap = false)
+	private List<BlockPos> createbigcannons$getIncludedBlockPositionsRadial$0(Direction forcedMovement, boolean visualize,
+                                                                              Operation<List<BlockPos>> original,
+                                                                              @Share("cannonFlags") LocalRef<Set<BlockPos>> cannonFlagsRef) {
 		cannonFlagsRef.set(new HashSet<>());
-	}
+        return original.call(forcedMovement, visualize);
+    }
 
 	@ModifyExpressionValue(method = "getIncludedBlockPositionsRadial",
 			at = @At(value = "INVOKE", target = "Lcom/simibubi/create/api/contraption/BlockMovementChecks;isNotSupportive(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z"))
 	private boolean createbigcannons$getIncludedBlockPositionsRadial$1(boolean original, Direction forcedMovement, boolean visualize,
-																	   @Local(ordinal = 0) List<BlockPos> positions,
-																	   @Local(ordinal = 1) BlockPos searchPos,
-																	   @Local(ordinal = 1) BlockState searchedState,
-																	   @Local(ordinal = 2) Direction offset,
+																	   @Local(name = "positions") List<BlockPos> positions,
+																	   @Local(name = "searchPos") BlockPos searchPos,
+																	   @Local(name = "searchedState") BlockState searchedState,
+																	   @Local(name = "offset") Direction offset,
 																	   @Share("cannonFlags") LocalRef<Set<BlockPos>> cannonFlagsRef) {
-		return original || checkBlock(this.level, forcedMovement, cannonFlagsRef.get(), searchPos, searchedState, offset, positions);
+		return original || createbigcannons$checkBlock(this.level, forcedMovement, cannonFlagsRef.get(), searchPos, searchedState, offset, positions);
 	}
 
-	@Inject(method = "getIncludedBlockPositionsLinear", at = @At("HEAD"), remap = false)
-	private void createbigcannons$getIncludedBlockPositionsLinear$0(Direction forcedMovement, boolean visualize, CallbackInfoReturnable<List<BlockPos>> cir,
-																	@Share("cannonFlags") LocalRef<Set<BlockPos>> cannonFlagsRef) {
+	@WrapMethod(method = "getIncludedBlockPositionsLinear", remap = false)
+	private List<BlockPos> createbigcannons$getIncludedBlockPositionsLinear$0(Direction forcedMovement, boolean visualize,
+                                                                              Operation<List<BlockPos>> original,
+                                                                              @Share("cannonFlags") LocalRef<Set<BlockPos>> cannonFlagsRef) {
 		cannonFlagsRef.set(new HashSet<>());
-	}
+        return original.call(forcedMovement, visualize);
+    }
 
 	@ModifyExpressionValue(method = "getIncludedBlockPositionsLinear",
 		at = @At(value = "INVOKE", target = "Lcom/simibubi/create/api/contraption/BlockMovementChecks;isNotSupportive(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/core/Direction;)Z"))
 	private boolean createbigcannons$getIncludedBlockPositionsLinear$1(boolean original, Direction forcedMovement, boolean visualize,
-																	   @Local List<BlockPos> positions,
-																	   @Local BlockPos currentPos,
-																	   @Local(ordinal = 1) BlockState currentState,
-																	   @Local(ordinal = 1) Direction facing,
+																	   @Local(name = "positions") List<BlockPos> positions,
+																	   @Local(name = "current") BlockPos currentPos,
+																	   @Local(name = "currentState") BlockState currentState,
+																	   @Local(name = "facing") Direction facing,
 																	   @Share("cannonFlags") LocalRef<Set<BlockPos>> cannonFlagsRef) {
-		return original || checkBlock(this.level, forcedMovement, cannonFlagsRef.get(), currentPos, currentState, facing, positions);
+		return original || createbigcannons$checkBlock(this.level, forcedMovement, cannonFlagsRef.get(), currentPos, currentState, facing, positions);
 	}
 
 	@Unique
-	private static boolean checkBlock(Level level, @Nullable Direction forcedMovement, Set<BlockPos> cannonFlags,
-									  BlockPos currentPos, BlockState currentState, Direction facing, List<BlockPos> positions) {
+	private static boolean createbigcannons$checkBlock(Level level, @Nullable Direction forcedMovement, Set<BlockPos> cannonFlags,
+                                                       BlockPos currentPos, BlockState currentState, Direction facing, List<BlockPos> positions) {
 		if (forcedMovement == null) return false;
 		Direction.Axis forcedAxis = forcedMovement.getAxis();
 		BlockPos connectedPos = currentPos.relative(facing);

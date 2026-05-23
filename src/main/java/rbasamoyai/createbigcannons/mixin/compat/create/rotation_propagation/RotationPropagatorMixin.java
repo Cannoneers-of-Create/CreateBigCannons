@@ -8,10 +8,9 @@ import java.util.Queue;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
@@ -57,9 +56,9 @@ public class RotationPropagatorMixin {
 		return RotationPropagatorRemix.replaceGetBlockEntity(original, removedBE.getBlockPos().subtract(neighborPos));
 	}
 
-	@Inject(method = "propagateMissingSource", at = @At("HEAD"), remap = false)
-	private static void createbigcannons$propagateMissingSource$0(KineticBlockEntity updateTE, CallbackInfo ci,
-																  @Share("sourceMap") LocalRef<Map<BlockPos, Queue<BlockPos>>> sourceMapRef) {
+	@WrapMethod(method = "propagateMissingSource", remap = false)
+	private static void createbigcannons$propagateMissingSource$0(KineticBlockEntity updateTE, Operation<Void> original,
+                                                                  @Share("sourceMap") LocalRef<Map<BlockPos, Queue<BlockPos>>> sourceMapRef) {
 		Map<BlockPos, Queue<BlockPos>> sourceMap = new HashMap<>();
 		if (updateTE.hasSource() && updateTE.getLevel().getBlockEntity(updateTE.getBlockPos()) instanceof HasMultipleKineticInterfaces) {
 			Queue<BlockPos> queue = new LinkedList<>();
@@ -67,6 +66,7 @@ public class RotationPropagatorMixin {
 			sourceMap.put(updateTE.getBlockPos(), queue);
 		}
 		sourceMapRef.set(sourceMap);
+        original.call(updateTE);
 	}
 
 	@ModifyExpressionValue(method = "propagateMissingSource", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;getBlockEntity(Lnet/minecraft/core/BlockPos;)Lnet/minecraft/world/level/block/entity/BlockEntity;"), remap = false)
@@ -87,20 +87,22 @@ public class RotationPropagatorMixin {
 		return RotationPropagatorRemix.replaceGetBlockEntity(original, sourcePos.subtract(pos));
 	}
 
-	@Inject(method = "propagateMissingSource", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 3), remap = false)
-	private static void createbigcannons$propagateMissingSource$2(KineticBlockEntity updateBE, CallbackInfo ci,
-																  @Local Level level,
-																  @Local(ordinal = 1) KineticBlockEntity currentBE,
-																  @Local(ordinal = 2) KineticBlockEntity neighborBE,
-																  @Share("sourceMap") LocalRef<Map<BlockPos, Queue<BlockPos>>> sourceMapRef) {
+	@WrapOperation(method = "propagateMissingSource", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 3), remap = false)
+	private static boolean createbigcannons$propagateMissingSource$2(List instance, Object e, Operation<Boolean> original,
+                                                                     @Local(name = "world") Level level,
+                                                                     @Local(name = "currentBE") KineticBlockEntity currentBE,
+                                                                     @Local(name = "neighbourBE") KineticBlockEntity neighborBE,
+                                                                     @Share("sourceMap") LocalRef<Map<BlockPos, Queue<BlockPos>>> sourceMapRef) {
+        boolean ret = original.call(instance, e);
 		if (!(level.getBlockEntity(neighborBE.getBlockPos()) instanceof HasMultipleKineticInterfaces))
-			return;
+            return ret;
 		Map<BlockPos, Queue<BlockPos>> sourceMap = sourceMapRef.get();
 		BlockPos pos = neighborBE.getBlockPos();
 		if (!sourceMap.containsKey(pos))
 			sourceMap.put(pos, new LinkedList<>());
 		Queue<BlockPos> queue = sourceMap.get(pos);
 		queue.add(currentBE.getBlockPos()); // Keep track of origin
-	}
+        return ret;
+    }
 
 }

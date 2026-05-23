@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.piston.LinearActuatorBlockEntity;
 import com.simibubi.create.content.contraptions.pulley.PulleyBlockEntity;
+import com.tterrag.registrate.util.entry.BlockEntry;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,17 +29,17 @@ public abstract class PulleyBlockEntityMixin extends LinearActuatorBlockEntity {
 
 	PulleyBlockEntityMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) { super(typeIn, pos, state); }
 
-	@Inject(method = "assemble",
-			at = @At(value = "INVOKE", target = "Lcom/tterrag/registrate/util/entry/BlockEntry;has(Lnet/minecraft/world/level/block/state/BlockState;)Z", ordinal = 0, shift = At.Shift.BEFORE))
-	private void createbigcannons$assemble(CallbackInfo ci, @Local BlockPos ropePos, @Local LocalRef<BlockState> ropeStateRef) {
-		BlockState ropeState = ropeStateRef.get();
-		if (!(ropeState.getBlock() instanceof BigCannonBlock cBlock)
-			|| !cBlock.getFacing(ropeState).getAxis().isVertical()
-			|| !(this.level.getBlockEntity(ropePos) instanceof IBigCannonBlockEntity cbe)) return;
+	@WrapOperation(method = "assemble",
+			at = @At(value = "INVOKE", target = "Lcom/tterrag/registrate/util/entry/BlockEntry;has(Lnet/minecraft/world/level/block/state/BlockState;)Z", ordinal = 0))
+	private boolean createbigcannons$assemble(BlockEntry instance, BlockState state, Operation<Boolean> original,
+                                              @Local(name = "ropePos") BlockPos ropePos) {
+		if (!(state.getBlock() instanceof BigCannonBlock cBlock)
+			|| !cBlock.getFacing(state).getAxis().isVertical()
+			|| !(this.level.getBlockEntity(ropePos) instanceof IBigCannonBlockEntity cbe))
+            return original.call(instance, state);
 		StructureBlockInfo info = cbe.cannonBehavior().block();
-		if (AllBlocks.ROPE.has(info.state()) || AllBlocks.PULLEY_MAGNET.has(info.state()))
-			ropeStateRef.set(info.state());
-	}
+		return AllBlocks.ROPE.has(info.state()) || AllBlocks.PULLEY_MAGNET.has(info.state());
+    }
 
 	@WrapOperation(method = "removeRopes",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z"))
