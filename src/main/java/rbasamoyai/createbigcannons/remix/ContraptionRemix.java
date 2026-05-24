@@ -403,6 +403,8 @@ public class ContraptionRemix {
 		boolean flag = !stickFlag;
 		Direction.Axis forcedAxis = forcedDirection.getAxis();
 
+        boolean purePush = offset == forcedDirection && !BlockMovementChecks.isNotSupportive(state, forcedDirection);
+
 		if (offsetState.getBlock() instanceof BigCannonBlock cBlock
 			&& cBlock.getFacing(offsetState).getAxis() == forcedAxis
 			&& offsetBE instanceof IBigCannonBlockEntity cbe) {
@@ -428,8 +430,10 @@ public class ContraptionRemix {
 				} else if (contraption instanceof PulleyContraption && pos.equals(contraption.anchor) && offset == Direction.DOWN) {
 					prevInfo = new StructureBlockInfo(BlockPos.ZERO, AllBlocks.PULLEY_MAGNET.getDefaultState(), null);
 				}
-				if (!IBigCannonBlockEntity.isValidMunitionState(forcedAxis, state)
-					&& state.getBlock() instanceof BigCannonBlock cBlock1
+                boolean pusherMunition = IBigCannonBlockEntity.isValidMunitionState(forcedAxis, state);
+                if (pusherMunition) {
+                    purePush = false;
+                } else if (state.getBlock() instanceof BigCannonBlock cBlock1
 					&& level.getBlockEntity(pos) instanceof IBigCannonBlockEntity cbe1
 					&& cBlock1.getFacing(state).getAxis() == forcedAxis
 					&& prevInfo != null
@@ -451,6 +455,9 @@ public class ContraptionRemix {
 				}
 			}
 		}
+
+        if (purePush)
+            return false;
 
 		if (IBigCannonBlockEntity.isValidMunitionState(forcedAxis, offsetState) && forcedAxis != offset.getAxis() && stickFlag) {
 			addPosToCannonColliders(contraption, localOffset, forcedDirection);
