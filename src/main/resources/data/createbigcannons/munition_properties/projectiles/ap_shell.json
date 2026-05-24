@@ -13,7 +13,8 @@
   "can_squib": true,
   "added_recoil": 1.0,
   "base_fuze": true,
-  "explosive_power": 5.0,
+  "entity_damaging_explosive_power": 7,
+  "block_damaging_explosive_power": 5,
   "penetration": 2,
   "toughness": 0.5,
   "deflection": 0.70

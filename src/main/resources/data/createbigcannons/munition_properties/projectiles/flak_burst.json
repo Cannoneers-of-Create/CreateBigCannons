@@ -8,7 +8,7 @@
   "drag": 0,
   "knockback": 0.025,
   "lifetime": 5,
-  "penetration": 0,
-  "toughness": 0,
+  "penetration": 0.5,
+  "toughness": 1,
   "deflection": 0
 }
