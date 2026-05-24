@@ -1,9 +1,8 @@
 package rbasamoyai.createbigcannons.forge;
 
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.Supplier;
-
-import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
@@ -21,7 +20,7 @@ public enum CBCModsForge {
 	private final String id;
 
 	CBCModsForge() {
-		this.id = CreateLang.asId(name());
+		this.id = name().toLowerCase(Locale.ROOT);
 	}
 
 	public String id() {
