@@ -12,11 +12,11 @@ import net.minecraft.network.PacketListener;
 import net.minecraft.server.level.ServerPlayer;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 
-public record ClientboundCBCExplodePacket(double x, double y, double z, float power, List<BlockPos> toBlow, float knockbackX,
+public record ClientboundCBCExplodePacket(double x, double y, double z, float blockPower, float entityPower, List<BlockPos> toBlow, float knockbackX,
 										  float knockbackY, float knockbackZ, ExplosionType explosionType) implements RootPacket {
 
 	public ClientboundCBCExplodePacket(FriendlyByteBuf buf) {
-		this(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), readToBlow(buf), buf.readFloat(),
+		this(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(), readToBlow(buf), buf.readFloat(),
 			buf.readFloat(), buf.readFloat(), buf.readEnum(ExplosionType.class));
 	}
 
@@ -33,7 +33,8 @@ public record ClientboundCBCExplodePacket(double x, double y, double z, float po
 		buf.writeDouble(this.x)
 			.writeDouble(this.y)
 			.writeDouble(this.z)
-			.writeFloat(this.power);
+			.writeFloat(this.blockPower)
+            .writeFloat(this.entityPower);
 		buf.writeVarInt(this.toBlow.size());
 		for (BlockPos pos : this.toBlow)
 			buf.writeBlockPos(pos);

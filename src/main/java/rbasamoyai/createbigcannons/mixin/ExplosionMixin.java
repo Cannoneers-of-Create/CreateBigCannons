@@ -2,6 +2,7 @@ package rbasamoyai.createbigcannons.mixin;
 
 import java.util.Optional;
 
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,6 +37,13 @@ public class ExplosionMixin {
             customExplosion.editBlock(this.level, pos, state, fluid, power);
         return original.call(instance, explosion, reader, pos, state, fluid);
 	}
+
+    @WrapOperation(method = "explode", at = @At(value = "FIELD", target = "Lnet/minecraft/world/level/Explosion;radius:F", ordinal = 1, opcode = Opcodes.GETFIELD))
+    private float createbigcannon$explode$setEntityRadius(Explosion instance, Operation<Float> original) {
+        if (this instanceof CustomExplosion customExplosion)
+            return customExplosion.getEntityRadius();
+        return original.call(instance);
+    }
 
 	@WrapOperation(method = "finalizeExplosion",
 			at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;playLocalSound(DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FFZ)V"))

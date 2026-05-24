@@ -14,8 +14,8 @@ import rbasamoyai.createbigcannons.remix.CustomExplosion;
 public class SmokeExplosion extends CustomExplosion.Impl {
 
 	public SmokeExplosion(Level level, @Nullable Entity source, double toBlowX, double toBlowY, double toBlowZ,
-						  float radius, Level.ExplosionInteraction interaction) {
-		super(level, source, null, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
+						  float blockRadius, float entityRadius, Level.ExplosionInteraction interaction) {
+		super(level, source, null, null, toBlowX, toBlowY, toBlowZ, blockRadius, entityRadius, false, interaction);
 	}
 
 	public SmokeExplosion(Level level, ClientboundCBCExplodePacket packet) {
@@ -31,8 +31,9 @@ public class SmokeExplosion extends CustomExplosion.Impl {
 	public void sendExplosionToClient(ServerPlayer player) {
 		if (player.distanceToSqr(this.x, this.y, this.z) < 4096.0d) {
 			Vec3 knockback = this.getHitPlayers().getOrDefault(player, Vec3.ZERO);
-			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.size, this.getToBlow(),
-				(float) knockback.x, (float) knockback.y, (float) knockback.z, ClientboundCBCExplodePacket.ExplosionType.SMOKE), player);
+			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.blockSize,
+                this.entitySize, this.getToBlow(), (float) knockback.x, (float) knockback.y, (float) knockback.z,
+                ClientboundCBCExplodePacket.ExplosionType.SMOKE), player);
 		}
 	}
 

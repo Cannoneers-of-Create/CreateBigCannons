@@ -17,8 +17,8 @@ public class ShrapnelExplosion extends CustomExplosion.Impl {
 
 
 	public ShrapnelExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-							 double toBlowY, double toBlowZ, float radius, Level.ExplosionInteraction interaction) {
-		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
+							 double toBlowY, double toBlowZ, float blockRadius, float entityRadius, Level.ExplosionInteraction interaction) {
+		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, blockRadius, entityRadius, false, interaction);
 	}
 
 	public ShrapnelExplosion(Level level, ClientboundCBCExplodePacket packet) {
@@ -35,8 +35,9 @@ public class ShrapnelExplosion extends CustomExplosion.Impl {
 	public void sendExplosionToClient(ServerPlayer player) {
 		if (player.distanceToSqr(this.x, this.y, this.z) < 250000.0d) {
 			Vec3 knockback = this.getHitPlayers().getOrDefault(player, Vec3.ZERO);
-			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.size, this.getToBlow(),
-				(float) knockback.x, (float) knockback.y, (float) knockback.z, ClientboundCBCExplodePacket.ExplosionType.SHRAPNEL), player);
+			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.blockSize,
+                this.entitySize, this.getToBlow(), (float) knockback.x, (float) knockback.y, (float) knockback.z,
+                ClientboundCBCExplodePacket.ExplosionType.SHRAPNEL), player);
 		}
 	}
 

@@ -22,6 +22,8 @@ public interface CustomExplosion {
 	default void editBlock(Level level, BlockPos pos, BlockState blockState, FluidState fluidState, float power) {
 	}
 
+    float getEntityRadius();
+
 	void sendExplosionToClient(ServerPlayer player);
 	Explosion.BlockInteraction getBlockInteraction();
 
@@ -30,28 +32,31 @@ public interface CustomExplosion {
 		protected final double x;
 		protected final double y;
 		protected final double z;
-		protected final float size;
+		protected final float blockSize;
+		protected final float entitySize;
 		protected final BlockInteraction interaction;
 
 		public Impl(Level level, @Nullable Entity source, @Nullable DamageSource damageSource,
-					@Nullable ExplosionDamageCalculator calculator, double toBlowX, double toBlowY, double toBlowZ, float radius,
-					boolean fire, Level.ExplosionInteraction interaction) {
-			super(level, source, damageSource, calculator, toBlowX, toBlowY, toBlowZ, radius, fire, convertToExplosionBlockInteraction(level, interaction));
+					@Nullable ExplosionDamageCalculator calculator, double toBlowX, double toBlowY, double toBlowZ,
+                    float blockRadius, float entityRadius, boolean fire, Level.ExplosionInteraction interaction) {
+			super(level, source, damageSource, calculator, toBlowX, toBlowY, toBlowZ, blockRadius, fire, convertToExplosionBlockInteraction(level, interaction));
 			this.level = level;
 			this.x = toBlowX;
 			this.y = toBlowY;
 			this.z = toBlowZ;
-			this.size = radius;
+			this.blockSize = blockRadius;
+            this.entitySize = entityRadius;
 			this.interaction = convertToExplosionBlockInteraction(level, interaction);
 		}
 
 		public Impl(Level level, ClientboundCBCExplodePacket packet) {
-			super(level, null, packet.x(), packet.y(), packet.z(), packet.power(), packet.toBlow());
+			super(level, null, packet.x(), packet.y(), packet.z(), packet.blockPower(), packet.toBlow());
 			this.level = level;
 			this.x = packet.x();
 			this.y = packet.y();
 			this.z = packet.z();
-			this.size = packet.power();
+			this.blockSize = packet.blockPower();
+            this.entitySize = packet.entityPower();
 			this.interaction = BlockInteraction.DESTROY;
 		}
 
@@ -66,7 +71,9 @@ public interface CustomExplosion {
 		protected void spawnParticles() {
 		}
 
-		@Override public BlockInteraction getBlockInteraction() { return this.interaction; }
+        @Override public float getEntityRadius() { return this.entitySize; }
+
+        @Override public BlockInteraction getBlockInteraction() { return this.interaction; }
 	}
 
 	static Explosion.BlockInteraction convertToExplosionBlockInteraction(Level level, Level.ExplosionInteraction levelExplosionInteraction) {

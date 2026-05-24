@@ -14,12 +14,13 @@ import net.minecraft.world.level.material.Fluid;
 import rbasamoyai.createbigcannons.multiloader.EnvExecute;
 import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
-public record ClientboundFluidExplodePacket(double x, double y, double z, float power, List<BlockPos> toBlow, float knockbackX,
-											float knockbackY, float knockbackZ, Fluid fluid) implements RootPacket {
+public record ClientboundFluidExplodePacket(double x, double y, double z, float blockPower, float entityPower,
+                                            List<BlockPos> toBlow, float knockbackX, float knockbackY, float knockbackZ,
+                                            Fluid fluid) implements RootPacket {
 
 	public ClientboundFluidExplodePacket(FriendlyByteBuf buf) {
-		this(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), readToBlow(buf), buf.readFloat(),
-			buf.readFloat(), buf.readFloat(), CBCRegistryUtils.getFluid(buf.readResourceLocation()));
+		this(buf.readDouble(), buf.readDouble(), buf.readDouble(), buf.readFloat(), buf.readFloat(), readToBlow(buf),
+            buf.readFloat(), buf.readFloat(), buf.readFloat(), CBCRegistryUtils.getFluid(buf.readResourceLocation()));
 	}
 
 	private static List<BlockPos> readToBlow(FriendlyByteBuf buf) {
@@ -35,7 +36,8 @@ public record ClientboundFluidExplodePacket(double x, double y, double z, float 
 		buf.writeDouble(this.x)
 			.writeDouble(this.y)
 			.writeDouble(this.z)
-			.writeFloat(this.power);
+			.writeFloat(this.blockPower)
+            .writeFloat(this.entityPower);
 		buf.writeVarInt(this.toBlow.size());
 		for (BlockPos pos : this.toBlow)
 			buf.writeBlockPos(pos);
@@ -51,8 +53,8 @@ public record ClientboundFluidExplodePacket(double x, double y, double z, float 
 	}
 
 	public ClientboundCBCExplodePacket asCBCExplodePacket() {
-		return new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.power, this.toBlow, this.knockbackX, this.knockbackY,
-			this.knockbackZ, ClientboundCBCExplodePacket.ExplosionType.SHRAPNEL);
+		return new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.blockPower, this.entityPower, this.toBlow,
+            this.knockbackX, this.knockbackY, this.knockbackZ, ClientboundCBCExplodePacket.ExplosionType.SHRAPNEL);
 	}
 
 }

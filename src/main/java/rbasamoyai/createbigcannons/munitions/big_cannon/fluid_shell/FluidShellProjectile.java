@@ -21,6 +21,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonFuzeProp
 import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.ExplosionPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
 
 public class FluidShellProjectile extends FuzedBigCannonProjectile {
@@ -48,8 +49,9 @@ public class FluidShellProjectile extends FuzedBigCannonProjectile {
 	@Override
 	protected void detonate(Position position) {
 		Vec3 oldDelta = this.getDeltaMovement();
+        ExplosionPropertiesComponent explosionProperties = this.getAllProperties().explosion();
 		FluidExplosion explosion = new FluidExplosion(this.level(), null, this.indirectArtilleryFire(false), position.x(),
-			position.y(), position.z(), this.getAllProperties().explosion().explosivePower(),
+			position.y(), position.z(), explosionProperties.blockDamagePower(), explosionProperties.entityDamagePower(),
 			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction(), this.fluidStack.fluid());
 		CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 

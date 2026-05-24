@@ -26,8 +26,8 @@ public class ImpactExplosion extends CustomExplosion.Impl {
 	private final Set<BlockPos> changedBlocks = new HashSet<>();
 
 	public ImpactExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						   double toBlowY, double toBlowZ, float radius, Level.ExplosionInteraction interaction) {
-		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
+						   double toBlowY, double toBlowZ, float blockRadius, float entityRadius, Level.ExplosionInteraction interaction) {
+		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, blockRadius, entityRadius, false, interaction);
 	}
 
 	public ImpactExplosion(Level level, ClientboundCBCExplodePacket packet) {
@@ -48,12 +48,13 @@ public class ImpactExplosion extends CustomExplosion.Impl {
 		double distSqr = player.distanceToSqr(this.x, this.y, this.z);
 		if (distSqr < 10000.0d) {
 			float f = Math.max(1f - (float) distSqr / 100f, 0);
-			float f1 = this.size * f;
+			float f1 = this.blockSize * f;
 			float shake = Math.min(45, f1 * 4f);
 			CreateBigCannons.shakePlayerScreen(player, new ScreenShakeEffect(0, shake, shake * 0.5f, shake * 0.5f, 1, 1, 1, this.x, this.y, this.z));
 			Vec3 knockback = this.getHitPlayers().getOrDefault(player, Vec3.ZERO);
-			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.size, this.getToBlow(),
-				(float) knockback.x, (float) knockback.y, (float) knockback.z, ClientboundCBCExplodePacket.ExplosionType.IMPACT), player);
+			NetworkPlatform.sendToClientPlayer(new ClientboundCBCExplodePacket(this.x, this.y, this.z, this.blockSize,
+                this.entitySize, this.getToBlow(), (float) knockback.x, (float) knockback.y, (float) knockback.z,
+                ClientboundCBCExplodePacket.ExplosionType.IMPACT), player);
 		}
 	}
 

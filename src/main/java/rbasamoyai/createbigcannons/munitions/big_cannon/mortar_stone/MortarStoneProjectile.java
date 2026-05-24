@@ -21,6 +21,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.AbstractBigCannonProject
 import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.ExplosionPropertiesComponent;
 
 public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 
@@ -51,8 +52,9 @@ public class MortarStoneProjectile extends AbstractBigCannonProjectile {
 			return false;
         if (!this.level().isClientSide) {
             Vec3 hitLoc = hitResult.getLocation();
+            ExplosionPropertiesComponent explosionProperties = this.getAllProperties().explosion();
 			MortarStoneExplosion explosion = new MortarStoneExplosion(this.level(), null, this.indirectArtilleryFire(false),
-				hitLoc.x, hitLoc.y, hitLoc.z, this.getAllProperties().explosion().explosivePower(),
+				hitLoc.x, hitLoc.y, hitLoc.z, explosionProperties.blockDamagePower(), explosionProperties.entityDamagePower(),
 				CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
 			CreateBigCannons.handleCustomExplosion(this.level(), explosion);
         }

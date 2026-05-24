@@ -21,16 +21,16 @@ public class FluidExplosion extends CustomExplosion.Impl {
 	private final float radius;
 
 	public FluidExplosion(Level level, @Nullable Entity source, @Nullable DamageSource damageSource, double toBlowX,
-						  double toBlowY, double toBlowZ, float radius, Level.ExplosionInteraction interaction, Fluid fluid) {
-		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, radius, false, interaction);
+						  double toBlowY, double toBlowZ, float blockRadius, float entityRadius, Level.ExplosionInteraction interaction, Fluid fluid) {
+		super(level, source, damageSource, null, toBlowX, toBlowY, toBlowZ, blockRadius, entityRadius, false, interaction);
 		this.fluid = fluid;
-		this.radius = radius;
+		this.radius = blockRadius;
 	}
 
 	public FluidExplosion(Level level, ClientboundFluidExplodePacket packet) {
 		super(level, packet.asCBCExplodePacket());
 		this.fluid = packet.fluid();
-		this.radius = packet.power();
+		this.radius = packet.blockPower();
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class FluidExplosion extends CustomExplosion.Impl {
 	public void sendExplosionToClient(ServerPlayer player) {
 		if (player.distanceToSqr(this.x, this.y, this.z) < 16400.0d) {
 			Vec3 knockback = this.getHitPlayers().getOrDefault(player, Vec3.ZERO);
-			NetworkPlatform.sendToClientPlayer(new ClientboundFluidExplodePacket(this.x, this.y, this.z, this.size, this.getToBlow(),
-				(float) knockback.x, (float) knockback.y, (float) knockback.z, this.fluid), player);
+			NetworkPlatform.sendToClientPlayer(new ClientboundFluidExplodePacket(this.x, this.y, this.z, this.blockSize,
+                this.entitySize, this.getToBlow(), (float) knockback.x, (float) knockback.y, (float) knockback.z, this.fluid), player);
 		}
 	}
 

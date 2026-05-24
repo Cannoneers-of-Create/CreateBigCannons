@@ -19,6 +19,7 @@ import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonFuzeProp
 import rbasamoyai.createbigcannons.munitions.big_cannon.config.BigCannonProjectilePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
+import rbasamoyai.createbigcannons.munitions.config.components.ExplosionPropertiesComponent;
 
 public class HEShellProjectile extends FuzedBigCannonProjectile {
 
@@ -28,9 +29,10 @@ public class HEShellProjectile extends FuzedBigCannonProjectile {
 
 	@Override
 	protected void detonate(Position position) {
-		ShellExplosion explosion = new ShellExplosion(this.level(), this, this.indirectArtilleryFire(false), position.x(),
-			position.y(), position.z(), this.getAllProperties().explosion().explosivePower(), false,
-			CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
+        ExplosionPropertiesComponent explosionProperties = this.getAllProperties().explosion();
+        ShellExplosion explosion = new ShellExplosion(this.level(), this, this.indirectArtilleryFire(false), position.x(),
+            position.y(), position.z(), explosionProperties.blockDamagePower(), explosionProperties.entityDamagePower(), false,
+            CBCConfigs.server().munitions.damageRestriction.get().explosiveInteraction());
 		CreateBigCannons.handleCustomExplosion(this.level(), explosion);
 	}
 
