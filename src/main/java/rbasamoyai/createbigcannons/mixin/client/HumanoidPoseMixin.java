@@ -23,7 +23,7 @@ public abstract class HumanoidPoseMixin extends AgeableListModel {
         if (vehicle instanceof CannonCarriageEntity carriage && !carriage.isCannonRider())
             this.riding = false;
 
-        original.call(entity, limbSwing, limbSwing, ageInTicks, netHeadYaw, headPitch);
+        original.call(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
         HumanoidModel<?> self = (HumanoidModel<?>) (Object) this;
         if (CBCEntityTypes.PITCH_ORIENTED_CONTRAPTION.is(entity.getVehicle())) {
