@@ -22,10 +22,12 @@ import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.PartialBlockDamageManager;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesHandler;
+import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorPropertiesProvider;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDamageTypes;
 import rbasamoyai.createbigcannons.munitions.CannonDamageSource;
+import rbasamoyai.createbigcannons.munitions.config.components.BallisticPropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.config.components.EntityDamagePropertiesComponent;
 import rbasamoyai.createbigcannons.munitions.fragment_burst.CBCProjectileBurst;
 
@@ -66,9 +68,20 @@ public class ShrapnelBurst extends CBCProjectileBurst {
 		BlockPos pos = result.getBlockPos();
 		BlockState state = this.level().getChunk(pos).getBlockState(pos);
 		if (!this.level().isClientSide && state.getDestroySpeed(this.level(), pos) != -1 && this.canDestroyBlock(state)) {
+            BlockArmorPropertiesProvider blockArmor = BlockArmorPropertiesHandler.getProperties(state);
+            BallisticPropertiesComponent ballistics = this.getProperties().ballistics();
+
 			Vec3 curVel = new Vec3(subProjectile.velocity()[0], subProjectile.velocity()[1], subProjectile.velocity()[2]);
-			double curPom = this.getProperties().ballistics().durabilityMass() * curVel.length();
-			double toughness = BlockArmorPropertiesHandler.getProperties(state).toughness(this.level(), state, pos, true);
+			double curPom = ballistics.durabilityMass() * curVel.length();
+			double toughness = blockArmor.toughness(this.level(), state, pos, true);
+            double hardnessPenalty = Math.max(blockArmor.hardness(this.level(), state, pos, true) - ballistics.penetration(), 0);
+            if (hardnessPenalty > 1e-2d) {
+                if (ballistics.toughness() < 1e-2d){
+                    curPom = 0;
+                } else{
+                    curPom *= Math.max(0.25, 1 - hardnessPenalty / ballistics.toughness());
+                }
+            }
 			BlockPos pos1 = pos.immutable();
 			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, Mth.ceil(Math.min(curPom, toughness)), state, this.level(), PartialBlockDamageManager::voidBlock);
 		}
