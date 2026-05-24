@@ -2,16 +2,27 @@
 
 ## [5.11.4] - Unreleased
 
-**Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable!**
+**Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable and Create Aeronautics!**
 
 Added:
 - [Sable] Added cannon recoil on Sable physics objects, courtesy of wph1234
 - [Sable] Cannon projectiles now apply some force when impacting Sable physics objects, courtesy of wph1234
+- [Sable] Added integration for impact and inertia fuzes (and delayed variants) to trigger on impacting the ground as a sublevel
 
 Changed:
 - Changed block light of rendered projectiles
 - Changed directionality of screw breech rotation to be consistent across all directions (clockwise closes, counterclockwise opens) courtesy of PilotsMask
 - Changed default big cannon and drop mortar recoil scale from 4 to 1
+- Separated block and entity explosion power configuration for all shells
+  - Default "explosion_power" configuration is still available and sets both to the same value
+- Reduced flak autocannon shell block explosion power from 2 to 1 to reduce overpenetration
+  - Increased flak autocannon shell entity explosion power from 2 to 2.5
+- Increased high explosive shell entity explosion power from 8 to 12
+- Increased shrapnel shell entity explosion power from 2 to 3
+- Increased fluid shell entity explosion power from 2 to 3
+- Increased armor piercing shell entity explosion power from 5 to 7
+- Increased default autocannon rounds capacity of autocannon ammo container to 64 from 16
+- Increased default machine gun rounds capacity of autocannon ammo container to 128 from 64
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 - [1.21.1] Updated Chinese (Simplified) (zh_cn.json) translation courtesy of wph1234
 
@@ -20,12 +31,19 @@ Fixed:
 - Fixed big cartridge and fluid shell data not loading when placed as block and item consumed
 - Fixed inverted look controls on vertical cannon mount
 - Fixed being able to interact with the world while on a cannon mount
-- Fixed Create contraption attachment of Fixed Cannon Mount
+- Fixed Create contraption attachment of Fixed Cannon Mount**
 - Fixed Create contraption attachment of Cannon Drill and Cannon Builder
 - Fixed cannon shots not hitting entities if they are destroyed from hitting a block
+- Fixed flak, shrapnel, and grapeshot burst overpenetration
+- Fixed schematic requirements for big cartridges and big cannon projectiles
+- Fixed incorrect data components saving leading to stack overflow crashes
+- Fixed projectile grounding in world, courtesy of Hectoris919
+- Fixed mechanical piston pushing
 - [Aeronautics] Fixed cannon blocks and cannon contraptions not attaching to ship on assembly
 - [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
 - [Sable] Fixed cannon blocks splitting from cannon mount on physics object
+- [Sable] Fixed cannon shots not inheriting physics object velocity
+  - Can be enabled or disabled in server config (enabled by default)
 
 ## [5.11.3] - 2026-04-27
 
