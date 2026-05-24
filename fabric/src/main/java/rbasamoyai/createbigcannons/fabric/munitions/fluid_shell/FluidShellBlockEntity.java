@@ -53,7 +53,13 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity impleme
 		this.tank.readFromNBT(tag.getCompound("FluidContent"));
 	}
 
-	@Override
+    @Override
+    public void writeSafe(CompoundTag tag) {
+        super.writeSafe(tag);
+        tag.put("FluidContent", this.tank.writeToNBT(new CompoundTag()));
+    }
+
+    @Override
 	protected void setFluidShellStack(FluidShellProjectile shell) {
 		FluidStack fstack = this.tank.getFluid();
 		shell.setFluidStack(fstack.isEmpty()

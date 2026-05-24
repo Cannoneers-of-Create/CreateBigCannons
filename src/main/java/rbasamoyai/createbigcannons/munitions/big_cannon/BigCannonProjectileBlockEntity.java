@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
+import com.simibubi.create.api.schematic.requirement.SpecialBlockEntityItemRequirement;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 import com.simibubi.create.foundation.utility.CreateLang;
 
@@ -13,12 +15,14 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCItems;
 
-public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container, PartialSafeNBT {
+public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container, PartialSafeNBT,
+    SpecialBlockEntityItemRequirement {
 
 	protected ItemStack tracer = ItemStack.EMPTY;
 
@@ -42,6 +46,8 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
     @Override
     public void writeSafe(CompoundTag tag) {
         super.saveAdditional(tag);
+        if (!this.tracer.isEmpty())
+            tag.put("Tracer", this.tracer.save(new CompoundTag()));
     }
 
     @Override
@@ -112,4 +118,16 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 			.forGoggles(tooltip);
 		return true;
 	}
+
+    @Override
+    public ItemRequirement getRequiredItems(BlockState state) {
+        ItemStack stack = new ItemStack(this.getBlockState().getBlock().asItem());
+        if (stack.isEmpty())
+            return ItemRequirement.INVALID;
+        CompoundTag beTag = new CompoundTag();
+        this.writeSafe(beTag);
+        BlockItem.setBlockEntityData(stack, this.getType(), beTag);
+        return new ItemRequirement(new ItemRequirement.StrictNbtStackRequirement(stack, ItemRequirement.ItemUseType.CONSUME));
+    }
+
 }

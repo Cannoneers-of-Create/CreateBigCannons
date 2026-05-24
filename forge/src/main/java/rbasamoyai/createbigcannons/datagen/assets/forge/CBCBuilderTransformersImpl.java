@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllTags;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.api.schematic.requirement.SchematicRequirementRegistries;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
@@ -510,6 +511,7 @@ public class CBCBuilderTransformersImpl {
 						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(c)
 							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BigCannonMunitionBlock.DAMP, false)))));
 			})
+            .tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item(BigCartridgeBlockItem::new)
 			.tag(CBCTags.CBCItemTags.BIG_CANNON_CARTRIDGES)
 			.model((c, p) -> {

@@ -37,7 +37,14 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 		this.fuze = tag.contains("Fuze", Tag.TAG_COMPOUND) ? ItemStack.of(tag.getCompound("Fuze")) : ItemStack.EMPTY;
 	}
 
-	@Override
+    @Override
+    public void writeSafe(CompoundTag tag) {
+        super.writeSafe(tag);
+        if (!this.fuze.isEmpty())
+            tag.put("Fuze", this.fuze.save(new CompoundTag()));
+    }
+
+    @Override
 	public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
 		super.addToGoggleTooltip(tooltip, isPlayerSneaking);
 		CreateLang.builder("block")

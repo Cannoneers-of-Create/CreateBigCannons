@@ -509,6 +509,7 @@ public class CBCBuilderTransformersImpl {
 						.when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(c)
 							.setProperties(StatePropertiesPredicate.Builder.properties().hasProperty(BigCannonMunitionBlock.DAMP, false)))));
 			})
+            .tag(AllTags.AllBlockTags.SAFE_NBT.tag)
 			.item(BigCartridgeBlockItem::new)
 			.tag(CBCTags.CBCItemTags.BIG_CANNON_CARTRIDGES)
 			.model((c, p) -> {
