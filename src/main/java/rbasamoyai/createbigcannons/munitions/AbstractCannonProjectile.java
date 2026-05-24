@@ -446,7 +446,11 @@ public abstract class AbstractCannonProjectile extends Projectile {
 	}
 
 	private boolean shouldFall() {
-		return this.isInGround() && this.inGroundPos != null && this.level().noCollision(new AABB(this.inGroundPos, this.inGroundPos).inflate(0.06d));
+        if (!this.isInGround() || this.inGroundPos == null)
+            return false;
+        Vec3 supportPos = this.position();
+        this.setGroundPos(supportPos);
+		return this.level().noCollision(new AABB(supportPos, supportPos).inflate(0.06d));
 	}
 
 	public void updateKinematics(ClientboundPreciseMotionSyncPacket packet) {
@@ -469,6 +473,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 		tag.put("LastPenetration", NbtUtils.writeBlockState(this.lastPenetratedBlock));
 		if (this.removeNextTick)
 			tag.putBoolean("RemoveNextTick", true);
+        tag.putInt("InGroundTime", this.inGroundTime);
 	}
 
 	@Override
@@ -501,6 +506,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 			? NbtUtils.readBlockState(this.level().holderLookup(CBCRegistryUtils.getBlockRegistryKey()), tag.getCompound("LastPenetration"))
 			: Blocks.AIR.defaultBlockState();
 		this.removeNextTick = tag.contains("RemoveNextTick");
+        this.inGroundTime = tag.getInt("InGroundTime");
 	}
 
 	public void baseWriteSpawnData(FriendlyByteBuf buf) {
