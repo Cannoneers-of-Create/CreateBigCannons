@@ -18,14 +18,17 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile> extends EntityRenderer<T> {
 
 	private static final ResourceLocation SHRAPNEL_LOCATION = CreateBigCannons.resource("textures/entity/shrapnel.png");
 	private static final ResourceLocation COLOR_LOCATION = CreateBigCannons.resource("textures/entity/color.png");
+	private static final ResourceLocation COLOR_SPECULAR_LOCATION = CreateBigCannons.resource("textures/entity/color_s.png");
 	private static final RenderType SHRAPNEL = RenderType.entityCutoutNoCull(SHRAPNEL_LOCATION);
 	private static final RenderType COLOR = RenderType.entityTranslucentCull(COLOR_LOCATION);
+	private static final RenderType COLOR_SPECULAR = RenderType.eyes(COLOR_SPECULAR_LOCATION);
 
     public AutocannonProjectileRenderer(EntityRendererProvider.Context context) { super(context); }
 
@@ -61,6 +64,12 @@ public class AutocannonProjectileRenderer<T extends AbstractAutocannonProjectile
 			float thickness = entity.getAutocannonRoundType() == AutocannonAmmoType.MACHINE_GUN ? 1 / 32f : 2 / 32f;
 			renderBox(vcons, pose, normal, 255, 216, 0, length, thickness);
 			renderBoxInverted(vcons, pose, normal, 255, 80, 0, length, thickness * 1.5f);
+
+            if (CBCConfigs.client().enableEmissiveTracers.get()) {
+                vcons = buffers.getBuffer(COLOR_SPECULAR);
+                renderBox(vcons, pose, normal, 255, 216, 0, length, thickness);
+                renderBoxInverted(vcons, pose, normal, 255, 80, 0, length, thickness * 1.5f);
+            }
 
 			poseStack.popPose();
 		} else {

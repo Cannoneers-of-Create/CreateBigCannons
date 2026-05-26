@@ -1,7 +1,5 @@
 package rbasamoyai.createbigcannons.munitions.big_cannon;
 
-import net.minecraft.core.BlockPos;
-
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,11 +13,13 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
+import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> extends EntityRenderer<T> {
@@ -56,7 +56,7 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 		if (isTracer) {
 			int frame = (int)((entity.getId() + entity.level().getGameTime()) % 4L);
 			ResourceLocation textureLoc = CreateBigCannons.resource(String.format("textures/entity/tracer_glow%d.png", frame));
-			RenderType renderType = RenderType.entityCutoutNoCull(textureLoc);
+			RenderType renderType = RenderType.entityTranslucentCull(textureLoc);
 
 			poseStack.pushPose();
 			poseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
@@ -64,12 +64,21 @@ public class BigCannonProjectileRenderer<T extends AbstractBigCannonProjectile> 
 
 			PoseStack.Pose lastPose = poseStack.last();
 			Matrix4f pose = lastPose.pose();
-			VertexConsumer builder = buffers.getBuffer(renderType);
 
+			VertexConsumer builder = buffers.getBuffer(renderType);
 			vertex(builder, pose, LightTexture.FULL_BRIGHT, -0.5f, -0.5f, 0, 1);
+            vertex(builder, pose, LightTexture.FULL_BRIGHT,  0.5f, -0.5f, 1, 1);
+            vertex(builder, pose, LightTexture.FULL_BRIGHT,  0.5f,  0.5f, 1, 0);
 			vertex(builder, pose, LightTexture.FULL_BRIGHT, -0.5f,  0.5f, 0, 0);
-			vertex(builder, pose, LightTexture.FULL_BRIGHT,  0.5f,  0.5f, 1, 0);
-			vertex(builder, pose, LightTexture.FULL_BRIGHT,  0.5f, -0.5f, 1, 1);
+
+            if (CBCConfigs.client().enableEmissiveTracers.get()) {
+                ResourceLocation textureSpecularLoc = CreateBigCannons.resource(String.format("textures/entity/tracer_glow%d_s.png", frame));
+                builder = buffers.getBuffer(RenderType.eyes(textureSpecularLoc));
+                vertex(builder, pose, LightTexture.FULL_BRIGHT, -0.5f, -0.5f, 0, 1);
+                vertex(builder, pose, LightTexture.FULL_BRIGHT,  0.5f, -0.5f, 1, 1);
+                vertex(builder, pose, LightTexture.FULL_BRIGHT,  0.5f,  0.5f, 1, 0);
+                vertex(builder, pose, LightTexture.FULL_BRIGHT, -0.5f,  0.5f, 0, 0);
+            }
 
 			poseStack.popPose();
 		}

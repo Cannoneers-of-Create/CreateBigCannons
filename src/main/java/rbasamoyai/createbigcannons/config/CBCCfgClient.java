@@ -10,6 +10,7 @@ public class CBCCfgClient extends CBCConfigBase {
 	public final ConfigInt fluidBlobParticleCount = i(20, 0, 1000, "fluidBlobParticleCount", Comments.fluidBlobParticleCount);
 	public final ConfigInt blockArmorTooltipPrecision = i(2, 0, 4, "blockArmorInfoPrecision", Comments.blockArmorTooltipPrecision);
 	public final ConfigBool useShaderCompatibleGraphics = b(false, "useShaderCompatibleGraphics", Comments.useShaderCompatibleGraphics);
+    public final ConfigBool enableEmissiveTracers = b(false, "enableEmissiveTracers");
     public final ConfigFloat moltenMetalTransparencyMultiplier = f(1, .125f, 256, "moltenMetalTransparency", Comments.moltenMetalTransparencyMultiplier);
 
 	/**
