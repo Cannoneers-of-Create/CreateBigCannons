@@ -51,8 +51,8 @@ public class CBCCfgMunitions extends ConfigBase {
 	public final ConfigBool allAutocannonProjectilesAreTracers = b(false, "allAutocannonProjectilesAreTracers", Comments.allAutocannonProjectilesAreTracers);
 	public final ConfigInt ammoContainerAutocannonRoundCapacity = i(64, 1, 128, "autocannonAmmoContainerAutocannonRoundCapacity", Comments.ammoContainerAutocannonRoundCapacity);
 	public final ConfigInt ammoContainerMachineGunRoundCapacity = i(128, 1, 128, "autocannonAmmoContainerMachineGunRoundCapacity", Comments.ammoContainerMachineGunRoundCapacity);
-    public final ConfigFloat autocannonProjectileImpactForceMultiplier = f(0.5f, 0, "autocannonProjectileImpactForceMultiplier", Comments.autocannonProjectileImpactForceMultiplier);
-    public final ConfigFloat machineGunProjectileImpactForceMultiplier = f(0.05f, 0, "machineGunProjectileImpactForceMultiplier", Comments.machineGunProjectileImpactForceMultiplier);
+    public final ConfigFloat autocannonProjectileImpactForceMultiplier = f(0.1f, 0, "autocannonProjectileImpactForceMultiplier", Comments.autocannonProjectileImpactForceMultiplier);
+    public final ConfigFloat machineGunProjectileImpactForceMultiplier = f(0.01f, 0, "machineGunProjectileImpactForceMultiplier", Comments.machineGunProjectileImpactForceMultiplier);
 
 	@Override
 	public String getName() {
