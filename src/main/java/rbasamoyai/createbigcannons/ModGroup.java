@@ -274,10 +274,6 @@ public class ModGroup {
         TAB_REGISTER.register(modBus);
     }
 
-    public static void useModTab(ResourceKey<CreativeModeTab> key) {
-        CreateBigCannons.REGISTRATE.setCreativeTab(TABS.get(key));
-    }
-
     public static void setDefaultTabToNull() {
         CreateBigCannons.REGISTRATE.defaultCreativeTab((ResourceKey<CreativeModeTab>) null);
     }
