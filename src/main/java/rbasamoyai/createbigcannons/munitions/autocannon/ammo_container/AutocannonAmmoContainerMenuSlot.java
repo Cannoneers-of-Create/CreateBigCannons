@@ -30,7 +30,7 @@ public class AutocannonAmmoContainerMenuSlot extends Slot {
 		if (ctType == AutocannonAmmoType.NONE) return AutocannonAmmoType.of(stack).getCapacity();
 		int buf = Math.max(ctType.getCapacity() - this.ammoContainer.getTotalCount(), 0);
 		ItemStack item = this.ammoContainer.getItem(this.getContainerSlot());
-		return Math.min(item.getCount() + buf, item.getMaxStackSize());
+		return Math.min(item.getCount() + buf, item.isEmpty() ? stack.getMaxStackSize() : item.getMaxStackSize());
 	}
 
 }

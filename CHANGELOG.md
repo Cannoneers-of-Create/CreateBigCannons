@@ -43,6 +43,7 @@ Fixed:
 - Fixed schematic requirements for big cartridges and big cannon projectiles
 - Fixed projectile grounding in world, courtesy of Hectoris919
 - Fixed mechanical piston pushing
+- Fixed placement of ammunition in autocannon ammo container screen
 - [1.21.1] Fixed incorrect block data saving leading to stack overflow crashes
 - [Aeronautics] Fixed cannon blocks and cannon contraptions not attaching to ship on assembly
 - [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
