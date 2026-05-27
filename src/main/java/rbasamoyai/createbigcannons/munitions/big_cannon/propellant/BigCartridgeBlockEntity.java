@@ -6,24 +6,31 @@ import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 
 public class BigCartridgeBlockEntity extends SyncedBlockEntity implements SpecialBlockEntityItemRequirement {
 
+    protected int power;
+
 	public BigCartridgeBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
 
-	public void setPower(int power) {
-        PatchedDataComponentMap components = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        components.set(CBCDataComponents.POWER, power);
-        this.applyComponents(this.components(), components.asPatch());
+	public void setPower(int power) { this.power = power; }
+
+    public int getPower() { return this.power; }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput componentInput) {
+        this.power = componentInput.getOrDefault(CBCDataComponents.POWER, 0);
     }
 
-	public int getPower() { return this.components().getOrDefault(CBCDataComponents.POWER, 0); }
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        components.set(CBCDataComponents.POWER, this.power);
+    }
 
     @Override
     public ItemRequirement getRequiredItems(BlockState state) {

@@ -23,10 +23,11 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.index.CBCItems;
-import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements IHaveGoggleInformation, Container, PartialSafeNBT,
     SpecialBlockEntityItemRequirement {
+
+    protected ItemStack tracer = ItemStack.EMPTY;
 
 	public BigCannonProjectileBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
@@ -47,10 +48,7 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 
     @Override
     public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
-        PatchedDataComponentMap copy = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        this.writeSafeComponents(copy);
-        this.saveAdditional(tag, registries);
-        CBCUtils.saveComponentsToStructureTag(tag, copy, registries);
+        tag.put("Tracer", this.getTracer().saveOptional(registries));
     }
 
     protected void writeSafeComponents(PatchedDataComponentMap safeComponents) {
@@ -81,22 +79,21 @@ public class BigCannonProjectileBlockEntity extends SyncedBlockEntity implements
 		return slot == 0 ? this.getTracer() : ItemStack.EMPTY;
 	}
 
-	public ItemStack getTracer() {
-        ItemContainerContents contents = this.components().getOrDefault(CBCDataComponents.TRACER, ItemContainerContents.EMPTY);
-        return contents.getSlots() > 0 ? contents.getStackInSlot(0) : ItemStack.EMPTY;
-	}
+	public ItemStack getTracer() { return this.tracer.copy(); }
 
-    public void setTracer(ItemStack itemStack) {
-        PatchedDataComponentMap components = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        if (itemStack.isEmpty()) {
-            components.remove(CBCDataComponents.TRACER);
-        } else {
-            components.set(CBCDataComponents.TRACER, ItemContainerContents.fromItems(List.of(itemStack)));
-        }
-        this.applyComponents(this.components(), components.asPatch());
+    public void setTracer(ItemStack itemStack) { this.tracer = itemStack == null ? ItemStack.EMPTY : itemStack.copy(); }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput componentInput) {
+        this.tracer = componentInput.getOrDefault(CBCDataComponents.TRACER, ItemContainerContents.EMPTY).copyOne();
     }
 
-	@Override
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        components.set(CBCDataComponents.TRACER, ItemContainerContents.fromItems(List.of(this.tracer)));
+    }
+
+    @Override
 	public ItemStack removeItem(int slot, int amount) {
 		if (this.isEmpty() || slot != 0 || amount < 1)
 			return ItemStack.EMPTY;

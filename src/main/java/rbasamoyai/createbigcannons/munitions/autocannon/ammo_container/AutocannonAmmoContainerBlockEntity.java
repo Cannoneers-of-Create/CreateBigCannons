@@ -1,8 +1,9 @@
 package rbasamoyai.createbigcannons.munitions.autocannon.ammo_container;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
-import com.google.common.collect.Lists;
 import com.simibubi.create.api.schematic.nbt.PartialSafeNBT;
 
 import net.minecraft.core.BlockPos;
@@ -12,6 +13,7 @@ import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -41,8 +43,11 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements IAutocannonAmmoContainerContainer,
     MenuProvider, Nameable, CBCHasIItemHandlerBlockEntity, PartialSafeNBT {
 
-	private int currentIndex = 0;
     private IItemHandler inventory;
+    private ItemStack ammoStack = ItemStack.EMPTY;
+    private ItemStack tracerStack = ItemStack.EMPTY;
+    private int tracerSpacing = 1;
+    @Nullable private Component name = null;
 
 	private ContainerOpenersCounter openersCounter = new ContainerOpenersCounter() {
 		@Override
@@ -71,41 +76,37 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		super(type, pos, state);
 	}
 
-	@Override
-	public ItemStack getMainAmmoStack() {
-		return this.components().getOrDefault(CBCDataComponents.AMMO, ItemContainerContents.EMPTY).copyOne();
-	}
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.put("Ammo", this.ammoStack.saveOptional(registries));
+        tag.put("Tracers", this.tracerStack.saveOptional(registries));
+        tag.putInt("TracerSpacing", this.tracerSpacing);
+        if (this.name != null)
+            tag.putString("CustomName", Component.Serializer.toJson(this.name, registries));
+    }
 
-	@Override
-	public ItemStack getTracerStack() {
-        return this.components().getOrDefault(CBCDataComponents.TRACERS, ItemContainerContents.EMPTY).copyOne();
-	}
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        this.ammoStack = ItemStack.parseOptional(registries, tag.getCompound("Ammo"));
+        this.tracerStack = ItemStack.parseOptional(registries, tag.getCompound("Tracers"));
+        this.tracerSpacing = Mth.clamp(tag.getInt("TracerSpacing"), 1, 6);
+        if (tag.contains("CustomName", Tag.TAG_STRING))
+            this.name = parseCustomNameSafe(tag.getString("CustomName"), registries);
+    }
 
-	public int getSpacing() {
-		return Math.max(this.components().getOrDefault(CBCDataComponents.TRACER_SPACING, 1), 1);
-	}
+    @Override public ItemStack getMainAmmoStack() { return this.ammoStack.copy(); }
 
-	public void setMainAmmoDirect(ItemStack stack) {
-		if (stack == null)
-            stack = ItemStack.EMPTY;
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        patched.set(CBCDataComponents.AMMO, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
-        this.applyComponents(this.components(), patched.asPatch());
-	}
+	@Override public ItemStack getTracerStack() { return this.tracerStack.copy(); }
 
-	public void setTracersDirect(ItemStack stack) {
-        if (stack == null)
-            stack = ItemStack.EMPTY;
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        patched.set(CBCDataComponents.TRACERS, ItemContainerContents.fromItems(Lists.newArrayList(stack)));
-        this.applyComponents(this.components(), patched.asPatch());
-	}
+	public int getSpacing() { return Math.max(this.tracerSpacing, 1); }
 
-	public void setSpacing(int spacing) {
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        patched.set(CBCDataComponents.TRACER_SPACING, Mth.clamp(spacing, 1, 6));
-        this.applyComponents(this.components(), patched.asPatch());
-	}
+	public void setMainAmmoDirect(ItemStack stack) { this.ammoStack = stack == null ? ItemStack.EMPTY : stack.copy(); }
+
+	public void setTracersDirect(ItemStack stack) { this.tracerStack = stack == null ? ItemStack.EMPTY : stack.copy(); }
+
+	public void setSpacing(int spacing) { this.tracerSpacing = spacing; }
 
 	public boolean canDropInCreative() {
 		return !this.getMainAmmoStack().isEmpty() || !this.getTracerStack().isEmpty();
@@ -117,22 +118,27 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		return ClientboundBlockEntityDataPacket.create(this);
 	}
 
+    @Override
+    protected void applyImplicitComponents(DataComponentInput componentInput) {
+        this.ammoStack = componentInput.getOrDefault(CBCDataComponents.AMMO, ItemContainerContents.EMPTY).copyOne();
+        this.tracerStack = componentInput.getOrDefault(CBCDataComponents.TRACERS, ItemContainerContents.EMPTY).copyOne();
+        this.tracerSpacing = componentInput.getOrDefault(CBCDataComponents.TRACER_SPACING, 1);
+        this.name = componentInput.getOrDefault(DataComponents.CUSTOM_NAME, null);
+    }
 
-	@Nullable
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        components.set(CBCDataComponents.AMMO, ItemContainerContents.fromItems(List.of(this.ammoStack)));
+        components.set(CBCDataComponents.TRACERS, ItemContainerContents.fromItems(List.of(this.tracerStack)));
+        components.set(CBCDataComponents.TRACER_SPACING, this.tracerSpacing);
+        components.set(DataComponents.CUSTOM_NAME, this.name);
+    }
+
+    @Nullable
 	@Override
-	public Component getCustomName() {
-		return this.components().getOrDefault(DataComponents.CUSTOM_NAME, null);
-	}
+	public Component getCustomName() { return this.name; }
 
-	public void setCustomName(@Nullable Component name) {
-        PatchedDataComponentMap patched = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        if (name == null) {
-            patched.remove(DataComponents.CUSTOM_NAME);
-        } else {
-            patched.set(DataComponents.CUSTOM_NAME, name);
-        }
-		this.applyComponents(this.components(), patched.asPatch());
-	}
+	public void setCustomName(@Nullable Component name) { this.name = name; }
 
     protected Component getDefaultName() {
         return Component.translatable(this.isCreativeContainer()

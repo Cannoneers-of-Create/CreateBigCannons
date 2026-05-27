@@ -10,6 +10,7 @@ import net.createmod.catnip.data.Pair;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.PatchedDataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -62,6 +63,20 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
     public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
         super.writeSafe(tag, registries);
         tag.put("FluidContent", this.tank.writeToNBT(registries, new CompoundTag()));
+    }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput componentInput) {
+        super.applyImplicitComponents(componentInput);
+        if (this.level != null)
+            this.tank.readFromNBT(this.level.registryAccess(), componentInput.getOrDefault(CBCDataComponents.FLUID_CONTENT, CustomData.EMPTY).copyTag());
+    }
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        if (this.level != null)
+            components.set(CBCDataComponents.FLUID_CONTENT, CustomData.of(this.tank.writeToNBT(this.level.registryAccess(), new CompoundTag())));
     }
 
     @Override

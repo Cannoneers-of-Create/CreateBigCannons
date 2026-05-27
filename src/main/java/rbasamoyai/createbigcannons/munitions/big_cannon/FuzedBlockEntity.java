@@ -23,6 +23,8 @@ import rbasamoyai.createbigcannons.munitions.fuzes.FuzeItem;
 
 public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 
+    protected ItemStack fuze = ItemStack.EMPTY;
+
 	public FuzedBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
 	}
@@ -38,6 +40,12 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
     public void readClient(CompoundTag tag, HolderLookup.Provider registries) {
         super.readClient(tag, registries);
         this.setFuze(ItemStack.parseOptional(registries, tag.getCompound("Fuze")));
+    }
+
+    @Override
+    public void writeSafe(CompoundTag tag, HolderLookup.Provider registries) {
+        super.writeSafe(tag, registries);
+        tag.put("Fuze", this.getFuze().saveOptional(registries));
     }
 
     @Override
@@ -74,41 +82,31 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 		return true;
 	}
 
-	@Override
-	public int getContainerSize() {
-		return 2;
-	}
+	@Override public int getContainerSize() { return 2; }
 
-	@Override
-	public boolean isEmpty() {
-		return super.isEmpty() && !this.hasFuze();
-	}
+	@Override public boolean isEmpty() { return super.isEmpty() && !this.hasFuze(); }
 
-	@Override
-	public ItemStack getItem(int slot) {
-		return slot == 1 ? this.getFuze() : super.getItem(slot);
-	}
+	@Override public ItemStack getItem(int slot) { return slot == 1 ? this.getFuze() : super.getItem(slot); }
 
-	public ItemStack getFuze() {
-        ItemContainerContents contents = this.components().getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY);
-		return contents.getSlots() > 0 ? contents.getStackInSlot(0) : ItemStack.EMPTY;
-	}
+	public ItemStack getFuze() { return this.fuze.copy(); }
 
-    public void setFuze(ItemStack itemStack) {
-        PatchedDataComponentMap components = new PatchedDataComponentMap(DataComponentMap.EMPTY);
-        if (itemStack.isEmpty()) {
-            components.remove(CBCDataComponents.FUZE);
-        } else {
-            components.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(List.of(itemStack)));
-        }
-        this.applyComponents(this.components(), components.asPatch());
+    public void setFuze(ItemStack itemStack) { this.fuze = itemStack == null ? ItemStack.EMPTY : itemStack.copy(); }
+
+	public boolean hasFuze() { return !this.getFuze().isEmpty(); }
+
+    @Override
+    protected void applyImplicitComponents(DataComponentInput componentInput) {
+        super.applyImplicitComponents(componentInput);
+        this.fuze = componentInput.getOrDefault(CBCDataComponents.FUZE, ItemContainerContents.EMPTY).copyOne();
     }
 
-	public boolean hasFuze() {
-		return !this.getFuze().isEmpty();
-	}
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        components.set(CBCDataComponents.FUZE, ItemContainerContents.fromItems(List.of(this.fuze)));
+    }
 
-	@Override
+    @Override
 	public ItemStack removeItem(int slot, int amount) {
 		if (slot == 1 && amount > 0) {
             ItemStack originalCopy = this.getFuze(); // internally, ItemContainerContents#getStackInSlot copies
