@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.ModGroup;
@@ -22,6 +21,6 @@ public class ModGroupImpl {
 		return FabricItemGroup.builder();
 	}
 
-	public static void useModTab(ResourceKey<CreativeModeTab> key) { CreateBigCannons.REGISTRATE.setCreativeTab(key); }
+    public static void clearRegistrateModTab() { CreateBigCannons.REGISTRATE.setCreativeTab(null); }
 
 }

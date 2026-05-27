@@ -98,7 +98,7 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCBlocks {
 
-	static { ModGroup.useModTab(ModGroup.MAIN_TAB_KEY); }
+	static { ModGroup.clearRegistrateModTab(); }
 
 	//////// Log cannon blocks ////////
 

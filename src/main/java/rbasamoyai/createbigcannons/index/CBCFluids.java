@@ -31,7 +31,7 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class CBCFluids {
 
-    static { ModGroup.useModTab(ModGroup.MAIN_TAB_KEY); }
+    static { ModGroup.clearRegistrateModTab(); }
 
 	public static final RegistryEntry<CBCFlowingFluid.Flowing> MOLTEN_CAST_IRON =
 			standardFluid("molten_cast_iron")

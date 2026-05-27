@@ -34,8 +34,6 @@ public class ModGroupImpl {
 		TAB_REGISTER.register(modBus);
 	}
 
-	public static void useModTab(ResourceKey<CreativeModeTab> key) {
-		CreateBigCannons.REGISTRATE.setCreativeTab(TABS.get(key));
-	}
+    public static void clearRegistrateModTab() { CreateBigCannons.REGISTRATE.setCreativeTab(null); }
 
 }
