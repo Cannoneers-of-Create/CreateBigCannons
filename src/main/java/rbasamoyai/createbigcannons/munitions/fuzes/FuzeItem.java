@@ -27,7 +27,7 @@ public class FuzeItem extends Item {
 
 	public boolean onRedstoneSignal(ItemStack stack, Level level, BlockPos pos, BlockState state, int signalStrength, Direction from) { return false; }
     public boolean onBlockTick(ItemStack stack, Level level, BlockPos pos, BlockState state) { return false; }
-    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult) { return false; }
+    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, Vec3 impactPos) { return false; }
 
 	public boolean canLingerInGround(ItemStack stack, AbstractCannonProjectile projectile) { return false; }
 

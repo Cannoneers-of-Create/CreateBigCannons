@@ -14,6 +14,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -32,7 +33,7 @@ public class InertiaFuzeItem extends FuzeItem {
 	}
 
     @Override
-    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult) {
+    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, Vec3 impactPos) {
         return this.onCommonImpact(stack, level, impactResult);
     }
 

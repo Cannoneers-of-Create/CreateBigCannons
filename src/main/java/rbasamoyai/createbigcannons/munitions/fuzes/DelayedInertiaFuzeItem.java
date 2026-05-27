@@ -21,6 +21,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
@@ -71,7 +72,7 @@ public class DelayedInertiaFuzeItem extends FuzeItem implements MenuProvider {
 	}
 
     @Override
-    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, ImpactResult impactResult) {
+    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, ImpactResult impactResult, Vec3 impactPos) {
         this.onCommonImpact(stack, level, impactResult);
         return false;
     }

@@ -6,6 +6,7 @@ import com.simibubi.create.foundation.item.TooltipHelper;
 import com.simibubi.create.foundation.utility.CreateLang;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
@@ -14,11 +15,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.CreateBigCannons;
 import rbasamoyai.createbigcannons.base.CBCTooltip;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
+import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedProjectileBlock;
 
 public class ImpactFuzeItem extends FuzeItem {
 
@@ -34,7 +37,15 @@ public class ImpactFuzeItem extends FuzeItem {
 	}
 
     @Override
-    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult) {
+    public boolean onBlockImpact(ItemStack stack, Level level, BlockPos pos, BlockState state, HitResult hitResult, AbstractCannonProjectile.ImpactResult impactResult, Vec3 impactPos) {
+        boolean baseFuze = state.getBlock() instanceof FuzedProjectileBlock<?, ?> fuzedBlock && fuzedBlock.isBaseFuze();
+        Direction shellFacing = state.getValue(FuzedProjectileBlock.FACING);
+        Direction hitFace = baseFuze ? shellFacing.getOpposite() : shellFacing;
+        Vec3 hitDir = impactPos.subtract(pos.getCenter());
+        Direction closest = Direction.getNearest(hitDir.x, hitDir.y, hitDir.z);
+        if (closest != hitFace)
+            return false;
+
         if (impactResult.shouldRemove() || impactResult.kinematics() == AbstractCannonProjectile.ImpactResult.KinematicOutcome.BOUNCE)
             return false;
         return this.onCommonImpact(stack, level);

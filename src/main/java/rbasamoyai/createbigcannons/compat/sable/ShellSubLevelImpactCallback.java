@@ -11,7 +11,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.munitions.AbstractCannonProjectile;
 import rbasamoyai.createbigcannons.munitions.big_cannon.FuzedBlockEntity;
@@ -28,6 +27,9 @@ public class ShellSubLevelImpactCallback implements BlockSubLevelCollisionCallba
     public CollisionResult sable$onCollision(BlockPos blockPos, Vector3d hitPos, double impactVelocity) {
         if (!CBCConfigs.server().compat.sableFuzedProjectilesCanExplodeAsPhysicsObject.get())
             return CollisionResult.NONE;
+        double triggerVelocity = 4.0f;
+        if (impactVelocity * impactVelocity < triggerVelocity * triggerVelocity)
+            return CollisionResult.NONE;
 
         SubLevelPhysicsSystem system = SubLevelPhysicsSystem.getCurrentlySteppingSystem();
         ServerLevel level = system.getLevel();
@@ -42,18 +44,13 @@ public class ShellSubLevelImpactCallback implements BlockSubLevelCollisionCallba
             return CollisionResult.NONE;
 
         Direction shellFacing = state.getValue(FuzedProjectileBlock.FACING);
-        Direction hitFace = fuzedBlock.isBaseFuze() ? shellFacing.getOpposite() : shellFacing;
-        Vec3 hitDir = JOMLConversion.toMojang(hitPos).subtract(blockPos.getCenter());
-        Direction closest = Direction.getNearest(hitDir.x, hitDir.y, hitDir.z);
-        if (closest != hitFace)
-            return CollisionResult.NONE;
 
         // Taken from CBC: Fuze Sable Fix by Zizazr
         BlockHitResult hitResult = new BlockHitResult(JOMLConversion.toMojang(hitPos), Direction.DOWN, blockPos, false);
         AbstractCannonProjectile.ImpactResult impactResult = new AbstractCannonProjectile.ImpactResult(
             AbstractCannonProjectile.ImpactResult.KinematicOutcome.STOP, false);
 
-        if (fuzeItem.onBlockImpact(fuze, level, blockPos, state, hitResult, impactResult)) {
+        if (fuzeItem.onBlockImpact(fuze, level, blockPos, state, hitResult, impactResult, JOMLConversion.toMojang(hitPos))) {
             fuzedBlock.detonateProjectileOnTheSpot(level, blockPos, state, shellFacing);
         } else {
             fuzedBE.setFuze(fuze);
