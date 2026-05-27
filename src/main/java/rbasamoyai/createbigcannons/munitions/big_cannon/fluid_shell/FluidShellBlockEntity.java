@@ -48,7 +48,7 @@ public class FluidShellBlockEntity extends AbstractFluidShellBlockEntity {
     }
 
 	@Override
-	protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+	public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
 		super.saveAdditional(tag, registries);
 		tag.put("FluidContent", this.tank.writeToNBT(registries, new CompoundTag()));
 	}

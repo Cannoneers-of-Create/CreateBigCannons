@@ -5,7 +5,9 @@ import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.foundation.blockEntity.SyncedBlockEntity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
@@ -21,6 +23,18 @@ public class BigCartridgeBlockEntity extends SyncedBlockEntity implements Specia
 	public void setPower(int power) { this.power = power; }
 
     public int getPower() { return this.power; }
+
+    @Override
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.putInt("Power", this.power);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        this.power = Math.max(tag.getInt("Power"), 0);
+    }
 
     @Override
     protected void applyImplicitComponents(DataComponentInput componentInput) {

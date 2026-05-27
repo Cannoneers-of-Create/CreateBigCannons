@@ -30,15 +30,14 @@ public class FuzedBlockEntity extends BigCannonProjectileBlockEntity {
 	}
 
     @Override
-    public CompoundTag writeClient(CompoundTag tag, HolderLookup.Provider registries) {
-        super.writeClient(tag, registries);
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
         tag.put("Fuze", this.getFuze().saveOptional(registries));
-        return tag;
     }
 
     @Override
-    public void readClient(CompoundTag tag, HolderLookup.Provider registries) {
-        super.readClient(tag, registries);
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
         this.setFuze(ItemStack.parseOptional(registries, tag.getCompound("Fuze")));
     }
 
