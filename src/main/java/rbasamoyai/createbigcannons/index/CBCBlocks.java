@@ -30,7 +30,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.common.Tags;
 import rbasamoyai.createbigcannons.CBCTags;
-import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.CannonMountExtensionBlock;
 import rbasamoyai.createbigcannons.cannon_control.cannon_mount.YawControllerBlock;
@@ -96,7 +95,9 @@ import rbasamoyai.createbigcannons.munitions.config.MunitionPropertiesHandler;
 
 public class CBCBlocks {
 
-	static { ModGroup.useModTab(ModGroup.MAIN_TAB_KEY); }
+	static {
+        REGISTRATE.setCreativeTab(null);
+    }
 
 	//////// Log cannon blocks ////////
 

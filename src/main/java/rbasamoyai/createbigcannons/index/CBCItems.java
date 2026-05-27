@@ -19,7 +19,6 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import rbasamoyai.createbigcannons.CBCTags;
 import rbasamoyai.createbigcannons.CreateBigCannons;
-import rbasamoyai.createbigcannons.ModGroup;
 import rbasamoyai.createbigcannons.block_armor_properties.BlockArmorInspectionToolItem;
 import rbasamoyai.createbigcannons.cannons.big_cannons.breeches.quickfiring_breech.QuickfiringMechanismItem;
 import rbasamoyai.createbigcannons.crafting.CannonCraftingWandItem;
@@ -45,7 +44,9 @@ import rbasamoyai.createbigcannons.utils.CBCRegistryUtils;
 
 public class CBCItems {
 
-	static { ModGroup.useModTab(ModGroup.MAIN_TAB_KEY); }
+	static {
+        REGISTRATE.setCreativeTab(null);
+    }
 
 	public static final ItemEntry<ImpactFuzeItem> IMPACT_FUZE = REGISTRATE.item("impact_fuze", ImpactFuzeItem::new)
 		.tag(CBCTags.CBCItemTags.FUZES)
