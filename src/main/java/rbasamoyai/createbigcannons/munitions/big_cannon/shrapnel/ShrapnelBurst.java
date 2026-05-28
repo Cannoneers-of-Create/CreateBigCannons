@@ -82,7 +82,7 @@ public class ShrapnelBurst extends CBCProjectileBurst {
                 }
             }
 			BlockPos pos1 = pos.immutable();
-			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (int) Math.min(curPom, toughness), state, this.level(), PartialBlockDamageManager::voidBlock);
+			CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos1, (float) Math.min(curPom, toughness), state, this.level(), PartialBlockDamageManager::voidBlock);
 		}
 		if (this.level() instanceof ServerLevel slevel) {
 			ParticleOptions options = new BlockParticleOption(ParticleTypes.BLOCK, state);
