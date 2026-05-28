@@ -217,7 +217,7 @@ public abstract class AbstractAutocannonProjectile extends AbstractCannonProject
 				}
 			}
 			if (!unbreakable)
-				CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), Math.max(Mth.ceil(momentum), 0), state, this.level());
+                CreateBigCannons.BLOCK_DAMAGE.damageBlock(pos.immutable(), Math.max((float) momentum, 0f), state, this.level());
 		}
 		this.onImpact(blockHitResult, new ImpactResult(outcome, shatter), projectileContext);
 		return new ImpactResult(outcome, !this.level().isClientSide && (shatter || outcome != ImpactResult.KinematicOutcome.BOUNCE));

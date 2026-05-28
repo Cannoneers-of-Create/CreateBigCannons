@@ -5,7 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import it.unimi.dsi.fastutil.objects.Object2FloatLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2FloatMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -20,8 +23,8 @@ import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class PartialBlockDamageManager {
 
-	private Map<ResourceKey<Level>, Map<BlockPos, Integer>> blockDamage;
-	private Map<ResourceKey<Level>, Map<BlockPos, BlockState>> blockStates;
+    private Map<ResourceKey<Level>, Object2FloatLinkedOpenHashMap<BlockPos>> blockDamage;
+    private Map<ResourceKey<Level>, Object2ObjectMap<BlockPos, BlockState>> blockStates;
 
 	private PartialBlockDamageSaveData savedata;
 
@@ -61,8 +64,8 @@ public class PartialBlockDamageManager {
 		ResourceKey<Level> dimension = level.dimension();
 		if (!this.blockDamage.containsKey(dimension))
 			return;
-		Map<BlockPos, Integer> levelSet = this.blockDamage.get(dimension);
-		Map<BlockPos, BlockState> blockStateSet = this.blockStates.get(dimension);
+        Object2FloatLinkedOpenHashMap<BlockPos> levelSet = this.blockDamage.get(dimension);
+        Object2ObjectMap<BlockPos, BlockState> blockStateSet = this.blockStates.get(dimension);
 		if (levelSet.isEmpty()) {
 			this.blockDamage.remove(dimension);
 			this.blockStates.remove(dimension);
@@ -70,13 +73,13 @@ public class PartialBlockDamageManager {
 		}
 		if (level.getGameTime() % 20 != 0) return;
 
-		Map<BlockPos, Integer> newSet = new Object2ObjectLinkedOpenHashMap<>();
-		for (Iterator<Map.Entry<BlockPos, Integer>> iter = levelSet.entrySet().iterator(); iter.hasNext(); ) {
-			Map.Entry<BlockPos, Integer> entry = iter.next();
+        Object2FloatLinkedOpenHashMap<BlockPos> newSet = new Object2FloatLinkedOpenHashMap<>();
+		for (Iterator<Object2FloatMap.Entry<BlockPos>> iter = levelSet.object2FloatEntrySet().fastIterator(); iter.hasNext(); ) {
+			Object2FloatMap.Entry<BlockPos> entry = iter.next();
 			BlockPos pos = entry.getKey();
 
 			BlockState state = level.getChunkAt(pos).getBlockState(pos);
-			int oldProgress = entry.getValue();
+            float oldProgress = entry.getFloatValue();
 			boolean blockChanged = blockStateSet != null && blockStateSet.containsKey(pos) && !blockStateSet.get(pos).equals(state);
 			if (state.canBeReplaced() || !state.isSolid() || state.getDestroySpeed(level, pos) == -1 || blockChanged) {
 				if (oldProgress > 0) level.destroyBlockProgress(-1, pos, -1);
@@ -87,7 +90,7 @@ public class PartialBlockDamageManager {
 					this.blockStates.put(dimension, blockStateSet);
 				}
 				blockStateSet.put(pos, state);
-				int newProgress = oldProgress - 3;
+                float newProgress = oldProgress - 3;
 				if (newProgress <= 0) {
 					CBCUtils.sendCustomBlockDamage(level, pos, -1);
 					iter.remove();
@@ -112,7 +115,7 @@ public class PartialBlockDamageManager {
 		if (this.savedata != null) this.savedata.setDirty();
 	}
 
-	public boolean damageBlock(BlockPos pos, int added, BlockState state, Level level) {
+	public boolean damageBlock(BlockPos pos, float added, BlockState state, Level level) {
 		return this.damageBlock(pos, added, state, level, PartialBlockDamageManager::destroyBlockDefault);
 	}
 
@@ -124,21 +127,21 @@ public class PartialBlockDamageManager {
 		level.destroyBlock(pos, false);
 	}
 
-	public boolean damageBlock(BlockPos pos, int added, BlockState state, Level level, BiConsumer<Level, BlockPos> onDestroy) {
-		Map<BlockPos, Integer> levelSet = this.blockDamage.computeIfAbsent(level.dimension(), k -> new Object2ObjectLinkedOpenHashMap<>());
+	public boolean damageBlock(BlockPos pos, float added, BlockState state, Level level, BiConsumer<Level, BlockPos> onDestroy) {
+        Object2FloatLinkedOpenHashMap<BlockPos> levelSet = this.blockDamage.computeIfAbsent(level.dimension(), k -> new Object2FloatLinkedOpenHashMap<>());
 
-		int oldProgress = levelSet.getOrDefault(pos, 0);
-		levelSet.merge(pos, added, Integer::sum);
+        float oldProgress = levelSet.getOrDefault(pos, 0f);
+        levelSet.mergeFloat(pos, added, Float::sum);
 
 		double toughnessRec = 1 / BlockArmorPropertiesHandler.getProperties(state).toughness(level, state, pos, true);
 		int oldPart = (int) Math.floor(oldProgress * toughnessRec);
-		int newPart = (int) Math.floor(levelSet.get(pos) * toughnessRec);
+        int newPart = (int) Math.floor(levelSet.getFloat(pos) * toughnessRec);
 
 		boolean destroyed = false;
 		if (newPart >= 10) {
 			if (!level.isClientSide())
 				onDestroy.accept(level, pos);
-			levelSet.remove(pos);
+            levelSet.removeFloat(pos);
 			Map<BlockPos, BlockState> stateSet = this.blockStates.get(level.dimension());
 			if (stateSet != null)
 				stateSet.remove(pos);
