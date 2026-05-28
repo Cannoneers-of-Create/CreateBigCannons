@@ -9,6 +9,6 @@
   "knockback": 0.025,
   "lifetime": 20,
   "penetration": 0.5,
-  "toughness": 1,
+  "toughness": 0.5,
   "deflection": 0
 }
