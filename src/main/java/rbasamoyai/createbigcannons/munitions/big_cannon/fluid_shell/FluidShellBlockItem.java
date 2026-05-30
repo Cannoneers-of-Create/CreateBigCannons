@@ -31,7 +31,7 @@ public class FluidShellBlockItem extends FuzedProjectileBlockItem {
 	}
 
     @Override
-    protected boolean updateCustomBlockEntityTag(BlockPos pos, Level level, @org.jetbrains.annotations.Nullable Player player, ItemStack stack, BlockState state) {
+    protected boolean updateCustomBlockEntityTag(BlockPos pos, Level level, @Nullable Player player, ItemStack stack, BlockState state) {
         if (level.getBlockEntity(pos) instanceof AbstractFluidShellBlockEntity be)
             be.readFluidDataFromFluidShellItem(stack, level.registryAccess());
         return super.updateCustomBlockEntityTag(pos, level, player, stack, state);
