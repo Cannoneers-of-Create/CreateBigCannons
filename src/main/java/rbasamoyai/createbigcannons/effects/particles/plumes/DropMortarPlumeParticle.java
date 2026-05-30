@@ -44,8 +44,10 @@ public class DropMortarPlumeParticle extends NoRenderParticle {
 			this.remove();
 			return;
 		}
-		Vec3 right = this.direction.cross(new Vec3(Direction.UP.step()));
-		Vec3 up = this.direction.cross(right);
+        Vec3 right = this.direction.cross(new Vec3(Direction.UP.step())).normalize();
+        if (right.lengthSqr() < 1e-6d)
+            right = new Vec3(1, 0, 0); // vertical
+        Vec3 up = this.direction.cross(right).normalize();
 
 		int count = Mth.ceil(this.scale * 20);
 		for (int i = 0; i < count; ++i) {

@@ -45,8 +45,10 @@ public class BigCannonPlumeParticle extends NoRenderParticle {
 			return;
 		}
 		ParticleStatus status = CBCClientCommon.getParticleStatus();
-		Vec3 right = this.direction.cross(new Vec3(Direction.UP.step()));
-		Vec3 up = this.direction.cross(right);
+		Vec3 right = this.direction.cross(new Vec3(Direction.UP.step())).normalize();
+        if (right.lengthSqr() < 1e-6d)
+            right = new Vec3(1, 0, 0); // vertical
+		Vec3 up = this.direction.cross(right).normalize();
 		double progress = this.lifetime == 0 ? 1 : Mth.clamp((float) this.age / (float) this.lifetime, 0, 1);
 
 		float smallScale = this.size * 0.25f;
