@@ -261,6 +261,7 @@ public abstract class AbstractCannonProjectile extends Projectile implements IEn
 				}
 			}
 
+            projCtx.setDetonationPositionForClip(currentStart);
 			if (this.onClip(projCtx, currentStart, currentEnd)) {
 				shouldRemove = true;
 				break;

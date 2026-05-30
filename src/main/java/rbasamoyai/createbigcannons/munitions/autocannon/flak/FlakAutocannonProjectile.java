@@ -61,7 +61,7 @@ public class FlakAutocannonProjectile extends AbstractAutocannonProjectile {
 	protected boolean onClip(ProjectileContext ctx, Vec3 start, Vec3 end) {
 		if (super.onClip(ctx, start, end)) return true;
 		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, start, end, ctx, false))) {
-			this.detonate(start);
+			this.detonate(ctx.getDetonationPositionForClip());
 			return true;
 		}
 		return false;

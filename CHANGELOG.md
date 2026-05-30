@@ -48,6 +48,7 @@ Fixed:
 - Fixed crash with CBC: Advanced Technologies
 - Fixed clipboard not correctly copying Fixed Cannon Mount angles
 - Fixed filling autocannon ammo container with hopper and chute
+- Fixed proximity fuze detonation
 - [1.21.1] Fixed incorrect block data saving leading to stack overflow crashes
 - [Aeronautics] Fixed cannon blocks and cannon contraptions not attaching to ship on assembly
 - [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
