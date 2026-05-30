@@ -1,6 +1,6 @@
 # Changelog
 
-## [5.11.4] - Unreleased
+## [5.11.4] - 2026-05-30
 
 **Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable and Create Aeronautics!**
 
