@@ -96,15 +96,15 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
             this.name = parseCustomNameSafe(tag.getString("CustomName"), registries);
     }
 
-    @Override public ItemStack getMainAmmoStack() { return this.ammoStack.copy(); }
+    @Override public ItemStack getMainAmmoStack() { return this.ammoStack; }
 
-	@Override public ItemStack getTracerStack() { return this.tracerStack.copy(); }
+	@Override public ItemStack getTracerStack() { return this.tracerStack; }
 
 	public int getSpacing() { return Math.max(this.tracerSpacing, 1); }
 
-	public void setMainAmmoDirect(ItemStack stack) { this.ammoStack = stack == null ? ItemStack.EMPTY : stack.copy(); }
+	public void setMainAmmoDirect(ItemStack stack) { this.ammoStack = stack == null ? ItemStack.EMPTY : stack; }
 
-	public void setTracersDirect(ItemStack stack) { this.tracerStack = stack == null ? ItemStack.EMPTY : stack.copy(); }
+	public void setTracersDirect(ItemStack stack) { this.tracerStack = stack == null ? ItemStack.EMPTY : stack; }
 
 	public void setSpacing(int spacing) { this.tracerSpacing = spacing; }
 
@@ -254,6 +254,8 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 
     @Override
     public IItemHandler getItemHandler(Direction side) {
+        if (this.isCreativeContainer())
+            return null; // Cannot automate creative autocannon ammo container
         return this.inventory == null ? this.inventory = new AutocannonAmmoContainerInterface(this) : this.inventory;
     }
 
@@ -265,6 +267,11 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
             copy.set(DataComponents.CUSTOM_NAME, this.components().get(DataComponents.CUSTOM_NAME));
         this.saveAdditional(tag, registries);
         CBCUtils.saveComponentsToStructureTag(tag, copy, registries);
+    }
+
+    @Override
+    public boolean canPlaceItem(int index, ItemStack stack) {
+        return !this.isCreativeContainer() && IAutocannonAmmoContainerContainer.super.canPlaceItem(index, stack);
     }
 
 }
