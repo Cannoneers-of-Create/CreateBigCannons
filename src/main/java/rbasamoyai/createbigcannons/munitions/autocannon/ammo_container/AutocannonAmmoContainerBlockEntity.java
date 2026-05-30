@@ -208,7 +208,12 @@ public class AutocannonAmmoContainerBlockEntity extends BlockEntity implements I
 		this.setChanged();
 	}
 
-	@Override
+    @Override
+    public boolean canPlaceItem(int index, ItemStack stack) {
+        return !this.isCreativeContainer() && IAutocannonAmmoContainerContainer.super.canPlaceItem(index, stack);
+    }
+
+    @Override
 	public void setChanged() {
 		super.setChanged();
 		if (this.level != null && this.openersCounter.getOpenerCount() > 0) {

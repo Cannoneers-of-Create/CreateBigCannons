@@ -38,7 +38,8 @@ public class AutocannonAmmoContainerInterface extends SnapshotParticipant<Autoca
 		this.updateSnapshots(transaction);
 		ItemStack mainAmmoStack = this.be.getMainAmmoStack();
 		if (mainAmmoStack.isEmpty() || resource.matches(mainAmmoStack)) {
-			int capacity = this.be.getMainAmmoCapacity() - Math.max(mainAmmoStack.getCount(), 0);
+			int capacity = ammoType == AutocannonAmmoType.NONE ? AutocannonAmmoType.of(stack).getCapacity()
+                : this.be.getMainAmmoCapacity() - Math.max(mainAmmoStack.getCount(), 0);
 			if (capacity > 0) {
 				int add = Math.min((int) maxAmount, capacity);
 				this.be.setMainAmmoDirect(ItemHandlerHelper.copyStackWithSize(stack, mainAmmoStack.getCount() + add));

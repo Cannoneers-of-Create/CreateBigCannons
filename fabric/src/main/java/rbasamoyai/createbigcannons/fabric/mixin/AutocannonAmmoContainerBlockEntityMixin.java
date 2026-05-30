@@ -3,6 +3,7 @@ package rbasamoyai.createbigcannons.fabric.mixin;
 import javax.annotation.Nullable;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
@@ -19,7 +20,10 @@ import rbasamoyai.createbigcannons.munitions.autocannon.ammo_container.Autocanno
 @Mixin(AutocannonAmmoContainerBlockEntity.class)
 public abstract class AutocannonAmmoContainerBlockEntityMixin extends BlockEntity implements SidedStorageBlockEntity {
 
-	@Unique private Storage<ItemVariant> inventory;
+    @Shadow
+    public abstract boolean isCreativeContainer();
+
+    @Unique private Storage<ItemVariant> inventory;
 
 	AutocannonAmmoContainerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState blockState) {
 		super(type, pos, blockState);
@@ -28,6 +32,8 @@ public abstract class AutocannonAmmoContainerBlockEntityMixin extends BlockEntit
 	@Override
 	@Nullable
 	public Storage<ItemVariant> getItemStorage(@Nullable Direction face) {
+        if (this.isCreativeContainer())
+            return null;
 		return this.inventory == null ? this.inventory = new AutocannonAmmoContainerInterface((AutocannonAmmoContainerBlockEntity) (Object) this) : this.inventory;
 	}
 
