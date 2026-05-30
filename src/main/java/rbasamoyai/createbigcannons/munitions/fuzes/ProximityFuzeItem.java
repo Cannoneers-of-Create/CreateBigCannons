@@ -1,6 +1,7 @@
 package rbasamoyai.createbigcannons.munitions.fuzes;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -67,35 +68,62 @@ public class ProximityFuzeItem extends FuzeItem implements MenuProvider {
 
 		double l = Math.max(tag.getInt("DetonationDistance"), 1);
 		Vec3 dir = projectile.getOrientation().normalize();
-		Vec3 right = dir.cross(new Vec3(Direction.UP.step()));
-		Vec3 up = dir.cross(right);
-		dir = dir.scale(l);
-		double reach = Math.max(projectile.getBbWidth(), projectile.getBbHeight()) * 0.5;
+        Vec3 right = dir.cross(new Vec3(Direction.UP.step())).normalize();
+        if (right.lengthSqr() < 1e-6d)
+            right = new Vec3(1, 0, 0); // vertical burst
+        Vec3 up = dir.cross(right).normalize();
+        dir = dir.scale(l);
+        Vec3 disp = end.subtract(start);
 
-		AABB currentMovementRegion = projectile.getBoundingBox()
-			.expandTowards(dir.scale(1.75))
-			.inflate(1)
-			.move(start.subtract(projectile.position()));
-		List<Entity> entities = projectile.level().getEntities(projectile, currentMovementRegion, projectile::canHitEntity);
+        int radius = CBCConfigs.server().munitions.proximityFuzeScale.get();
+        double scale = CBCConfigs.server().munitions.proximityFuzeSpacing.get();
 
-		int radius = CBCConfigs.server().munitions.proximityFuzeScale.get();
-		double scale = CBCConfigs.server().munitions.proximityFuzeSpacing.get();
-		for (int i = -radius; i <= radius; ++i) {
-			for (int j = -radius; j <= radius; ++j) {
-				Vec3 ray = dir.add(right.scale(i * scale)).add(up.scale(j * scale));
-				Vec3 rayEnd = start.add(ray);
+        AABB currentMovementRegion = projectile.getBoundingBox()
+            .expandTowards(dir.scale(1.75))
+            .inflate(radius * scale + 2)
+            .move(start.subtract(projectile.position()));
+        Level level = projectile.level();
+        List<Entity> entities = level.getEntities(projectile, currentMovementRegion, projectile::canHitEntity);
 
-				if (projectile.level().clip(new ClipContext(start, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile)).getType() != HitResult.Type.MISS) {
-					return true;
-				}
+        boolean hit = false;
+        double detonationDistance = disp.length() + l; // Upper bound, if disp and orientation are co-linear
 
-				for (Entity target : entities) {
-					AABB targetBox = target.getBoundingBox().inflate(reach);
-					if (targetBox.clip(start, rayEnd).isPresent())
-						return true;
-				}
-			}
-		}
+        for (int i = -radius; i <= radius; ++i) {
+            for (int j = -radius; j <= radius; ++j) {
+                Vec3 ray = dir.add(right.scale(i * scale)).add(up.scale(j * scale));
+                Vec3 rayEnd = start.add(ray);
+                Vec3 rayExt = rayEnd.add(disp);
+
+                HitResult stemResult = level.clip(new ClipContext(start, rayEnd, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile));
+                if (stemResult.getType() == HitResult.Type.MISS)
+                    stemResult = level.clip(new ClipContext(rayEnd, rayExt, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile));
+                if (stemResult.getType() != HitResult.Type.MISS) {
+                    hit = true;
+                    Vec3 hitLoc = stemResult.getLocation();
+                    double candidateDist = start.distanceTo(hitLoc);
+                    if (candidateDist < detonationDistance)
+                        detonationDistance = candidateDist;
+                }
+
+                for (Entity target : entities) {
+                    AABB targetBox = target.getBoundingBox().inflate(scale * 0.5);
+                    Optional<Vec3> hitOp = targetBox.clip(start, rayEnd);
+                    if (hitOp.isEmpty())
+                        hitOp = targetBox.clip(rayEnd, rayExt);
+                    if (hitOp.isPresent()) {
+                        hit = true;
+                        Vec3 hitLoc = hitOp.get();
+                        double candidateDist = start.distanceTo(hitLoc);
+                        if (candidateDist < detonationDistance)
+                            detonationDistance = candidateDist;
+                    }
+                }
+            }
+        }
+        if (hit) {
+            ctx.setDetonationPositionForClip(start.add(disp.normalize().scale(Math.max(detonationDistance - l, 0)))); // Only looking for offset
+            return true;
+        }
 
 		return super.onProjectileClip(stack, projectile, start, end, ctx, false);
 	}

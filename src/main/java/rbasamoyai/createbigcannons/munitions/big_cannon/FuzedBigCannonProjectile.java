@@ -43,7 +43,7 @@ public abstract class FuzedBigCannonProjectile extends AbstractBigCannonProjecti
 		if (super.onClip(ctx, start, end)) return true;
 		boolean baseFuze = this.getFuzeProperties().baseFuze();
 		if (this.canDetonate(fz -> fz.onProjectileClip(this.fuze, this, start, end, ctx, baseFuze))) {
-			this.detonate(start);
+            this.detonate(ctx.getDetonationPositionForClip());
 			return true;
 		}
 		return false;

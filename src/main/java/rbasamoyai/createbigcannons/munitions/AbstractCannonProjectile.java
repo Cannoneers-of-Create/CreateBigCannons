@@ -237,6 +237,7 @@ public abstract class AbstractCannonProjectile extends Projectile {
 				}
 			}
 
+            projCtx.setDetonationPositionForClip(currentStart);
 			if (this.onClip(projCtx, currentStart, currentEnd)) {
 				shouldRemove = true;
 				break;

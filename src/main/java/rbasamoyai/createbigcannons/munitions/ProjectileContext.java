@@ -9,6 +9,7 @@ import java.util.Set;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import rbasamoyai.createbigcannons.config.CBCCfgMunitions;
 import rbasamoyai.createbigcannons.network.ClientboundPlayBlockHitEffectPacket;
@@ -20,10 +21,12 @@ public class ProjectileContext {
 	private final CBCCfgMunitions.GriefState griefState;
 	private final Map<BlockPos, Float> queuedExplosions = new HashMap<>();
 	private final List<ClientboundPlayBlockHitEffectPacket> effects = new LinkedList<>();
+    private Vec3 detonationPosition;
 
 	public ProjectileContext(AbstractCannonProjectile projectile, CBCCfgMunitions.GriefState griefState) {
 		this.collisionContext = CollisionContext.of(projectile);
 		this.griefState = griefState;
+        this.detonationPosition = projectile.position();
 	}
 
 	public CollisionContext collisionContext() { return this.collisionContext; }
@@ -38,5 +41,8 @@ public class ProjectileContext {
 
 	public void addPlayedEffect(ClientboundPlayBlockHitEffectPacket packet) { this.effects.add(packet); }
 	public List<ClientboundPlayBlockHitEffectPacket> getPlayedEffects() { return this.effects; }
+
+    public void setDetonationPositionForClip(Vec3 position) { this.detonationPosition = position; }
+    public Vec3 getDetonationPositionForClip() { return this.detonationPosition; }
 
 }
