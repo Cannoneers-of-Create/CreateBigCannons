@@ -28,6 +28,7 @@ Changed:
 - Increased armor piercing shell entity explosion power from 5 to 7
 - Increased default autocannon rounds capacity of autocannon ammo container to 64 from 16
 - Increased default machine gun rounds capacity of autocannon ammo container to 128 from 64
+- Changed creative autocannon ammo container to no longer be fillable with hoppers and chutes
 - [1.21.1] Updated Russian (ru_ru.json) translation courtesy of sashafiesta
 - [1.21.1] Updated Chinese (Simplified) (zh_cn.json) translation courtesy of wph1234
 
@@ -45,6 +46,9 @@ Fixed:
 - Fixed mechanical piston pushing
 - Fixed placement of ammunition in autocannon ammo container screen
 - Fixed crash with CBC: Advanced Technologies
+- Fixed clipboard not correctly copying Fixed Cannon Mount angles
+- Fixed filling autocannon ammo container with hopper and chute
+- Fixed proximity fuze detonation
 - [1.21.1] Fixed incorrect block data saving leading to stack overflow crashes
 - [Aeronautics] Fixed cannon blocks and cannon contraptions not attaching to ship on assembly
 - [Aeronautics] Fixed Cannon Loader, Cannon Drill, and Cannon Builder not attaching to ship on assembly
