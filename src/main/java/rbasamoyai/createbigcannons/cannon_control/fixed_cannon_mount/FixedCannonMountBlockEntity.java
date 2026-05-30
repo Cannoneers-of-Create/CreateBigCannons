@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
@@ -323,14 +321,14 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
     @Override public String getClipboardKey() { return "Angles"; }
 
     @Override
-    public boolean writeToClipboard(HolderLookup.@NotNull Provider registries, CompoundTag tag, Direction side) {
+    public boolean writeToClipboard(HolderLookup.Provider registries, CompoundTag tag, Direction side) {
         tag.putInt("Pitch", this.pitchSlot.getValue());
         tag.putInt("Yaw", this.yawSlot.getValue());
         return true;
     }
 
     @Override
-    public boolean readFromClipboard(HolderLookup.@NotNull Provider registries, CompoundTag tag, Player player, Direction side, boolean simulate) {
+    public boolean readFromClipboard(HolderLookup.Provider registries, CompoundTag tag, Player player, Direction side, boolean simulate) {
         if (simulate)
             return true;
         this.pitchSlot.setValue(tag.getInt("Pitch"));
