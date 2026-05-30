@@ -6,12 +6,15 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
 import com.simibubi.create.AllSoundEvents;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.AssemblyException;
 import com.simibubi.create.content.contraptions.IDisplayAssemblyExceptions;
+import com.simibubi.create.content.equipment.clipboard.ClipboardCloneable;
 import com.simibubi.create.content.kinetics.crank.ValveHandleBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
@@ -51,7 +54,7 @@ import rbasamoyai.createbigcannons.index.CBCBlocks;
 import rbasamoyai.createbigcannons.remix.CBCHasIItemHandlerBlockEntity;
 
 public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDisplayAssemblyExceptions,
-    ControlPitchContraption.Block, IHaveGoggleInformation, CBCHasIItemHandlerBlockEntity {
+    ControlPitchContraption.Block, IHaveGoggleInformation, CBCHasIItemHandlerBlockEntity, ClipboardCloneable {
 
 	private AssemblyException lastException = null;
 	protected PitchOrientedContraptionEntity mountedContraption;
@@ -317,7 +320,26 @@ public class FixedCannonMountBlockEntity extends SmartBlockEntity implements IDi
         return this.mountedContraption == null ? null : this.mountedContraption.getCapability(Capabilities.ItemHandler.ENTITY);
     }
 
-	public static class FixedCannonMountScrollValueBehaviour extends ValveHandleBlockEntity.ValveHandleScrollValueBehaviour {
+    @Override public String getClipboardKey() { return "Angles"; }
+
+    @Override
+    public boolean writeToClipboard(HolderLookup.@NotNull Provider registries, CompoundTag tag, Direction side) {
+        tag.putInt("Pitch", this.pitchSlot.getValue());
+        tag.putInt("Yaw", this.yawSlot.getValue());
+        return true;
+    }
+
+    @Override
+    public boolean readFromClipboard(HolderLookup.@NotNull Provider registries, CompoundTag tag, Player player, Direction side, boolean simulate) {
+        if (simulate)
+            return true;
+        this.pitchSlot.setValue(tag.getInt("Pitch"));
+        this.yawSlot.setValue(tag.getInt("Yaw"));
+        this.notifyUpdate();
+        return true;
+    }
+
+    public static class FixedCannonMountScrollValueBehaviour extends ValveHandleBlockEntity.ValveHandleScrollValueBehaviour {
 		public static final BehaviourType<FixedCannonMountScrollValueBehaviour> PITCH_TYPE = new BehaviourType<>();
 		public static final BehaviourType<FixedCannonMountScrollValueBehaviour> YAW_TYPE = new BehaviourType<>();
 
