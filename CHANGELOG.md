@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.11.5] - Unreleased
+
+**Create Big Cannons 5.11.5 fixes a critical issue introduced in v5.11.4 that breaks big cannon munitions.**
+
+Fixed:
+- Fixed big cannon munitions not working when placed as compared to when handloaded
+
 ## [5.11.4] - 2026-05-30
 
 **Create Big Cannons 5.11.4, with more fixes and more support, particularly for Sable and Create Aeronautics!**

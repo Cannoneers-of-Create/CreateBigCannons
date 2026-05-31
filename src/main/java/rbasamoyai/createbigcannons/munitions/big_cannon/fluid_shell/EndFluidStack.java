@@ -44,6 +44,8 @@ public record EndFluidStack(Fluid fluid, int amount, PatchedDataComponentMap com
 	}
 
 	public static EndFluidStack readTag(CompoundTag tag, HolderLookup.Provider registries) {
+        if (tag.isEmpty())
+            return EMPTY;
 		Fluid fluid = CBCRegistryUtils.getFluid(CBCUtils.location(tag.getString("Fluid")));
 		int amount = tag.getInt("FluidAmount");
         DataComponentPatch dataPatch = CatnipCodecUtils.decode(DataComponentPatch.CODEC, registries, tag.get("FluidData")).orElse(DataComponentPatch.EMPTY);

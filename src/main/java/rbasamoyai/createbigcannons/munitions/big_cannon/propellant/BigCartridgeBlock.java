@@ -57,7 +57,6 @@ import rbasamoyai.createbigcannons.index.CBCMunitionPropertiesHandlers;
 import rbasamoyai.createbigcannons.munitions.big_cannon.BigCannonMunitionBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.ProjectileBlock;
 import rbasamoyai.createbigcannons.munitions.big_cannon.propellant.config.BigCartridgeProperties;
-import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, BigCannonPropellantBlock, IBE<BigCartridgeBlockEntity>,
 	SimpleWaterloggedBlock {
@@ -171,8 +170,7 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	}
 
 	public static float getPowerFromData(StructureBlockInfo data) {
-        // Not the desired components -> components access but whatever
-		return data.nbt() == null ? 0 : data.nbt().getCompound("components").getInt("createbigcannons:power");
+		return data.nbt() == null ? 0 : data.nbt().getInt("Power");
 	}
 
 	public float getPowerMultiplier(StructureBlockInfo data) {
@@ -261,7 +259,7 @@ public class BigCartridgeBlock extends DirectionalBlock implements IWrenchable, 
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation, HolderLookup.Provider registries) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
 		CompoundTag blockTag = new CompoundTag();
-        CBCUtils.saveComponentsToStructureTag(blockTag, stack.getComponents(), registries);
+        blockTag.putInt("Power", BigCartridgeBlockItem.getPower(stack));
 		if (stack.getOrDefault(CBCDataComponents.DAMP, false))
 			state = state.setValue(DAMP, true);
 		return new StructureBlockInfo(localPos, state, blockTag);

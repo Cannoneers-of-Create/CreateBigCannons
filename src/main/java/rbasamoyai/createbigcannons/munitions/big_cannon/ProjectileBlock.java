@@ -9,10 +9,7 @@ import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.NbtOps;
-import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -41,7 +38,6 @@ import rbasamoyai.createbigcannons.cannons.big_cannons.BigCannonBlock;
 import rbasamoyai.createbigcannons.config.CBCConfigs;
 import rbasamoyai.createbigcannons.index.CBCDataComponents;
 import rbasamoyai.createbigcannons.remix.CBCExplodableBlock;
-import rbasamoyai.createbigcannons.utils.CBCUtils;
 
 public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile> extends DirectionalBlock
 	implements IWrenchable, BigCannonMunitionBlock, SimpleWaterloggedBlock, CBCExplodableBlock {
@@ -141,7 +137,8 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation, HolderLookup.Provider registries) {
 		BlockState state = this.defaultBlockState().setValue(FACING, cannonOrientation);
         CompoundTag tag = new CompoundTag();
-        CBCUtils.saveComponentsToStructureTag(tag, stack.getComponents(), registries); // TODO not efficient but works
+        ItemStack tracer = getTracerFromItemStack(stack);
+        tag.put("Tracer", tracer.saveOptional(registries));
 		return new StructureBlockInfo(localPos, state, tag);
 	}
 
@@ -149,8 +146,8 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 	public ItemStack getExtractedItem(StructureBlockInfo info, HolderLookup.Provider registries) {
 		ItemStack stack = new ItemStack(this);
 		if (info.nbt() != null) {
-            DataComponentMap components = CBCUtils.readComponentsFromStructureTag(info.nbt(), registries);
-            stack.applyComponents(components);
+            ItemStack tracer = ItemStack.parseOptional(registries, info.nbt().getCompound("Tracer"));
+            stack.set(CBCDataComponents.TRACER, tracer.isEmpty() ? ItemContainerContents.EMPTY : ItemContainerContents.fromItems(List.of(tracer)));
 		}
 		return stack;
 	}
@@ -180,12 +177,7 @@ public abstract class ProjectileBlock<ENTITY extends AbstractBigCannonProjectile
 		StructureBlockInfo info = blocks.get(0);
 		if (info.nbt() == null)
 			return ItemStack.EMPTY;
-        Tag tag = info.nbt().getCompound("components").get("createbigcannons:tracer");
-        ItemContainerContents contents = ItemContainerContents.CODEC
-            .parse(registries.createSerializationContext(NbtOps.INSTANCE), tag)
-            .resultOrPartial()
-            .orElse(ItemContainerContents.EMPTY);
-        return contents.getSlots() > 0 ? contents.getStackInSlot(0) : ItemStack.EMPTY;
+        return ItemStack.parseOptional(registries, info.nbt().getCompound("Tracer"));
 	}
 
 	public static ItemStack getTracerFromBlock(Level level, BlockPos pos, BlockState state) {

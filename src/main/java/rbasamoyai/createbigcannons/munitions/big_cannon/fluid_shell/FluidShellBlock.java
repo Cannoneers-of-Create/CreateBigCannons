@@ -16,6 +16,7 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.DirectionalBlock;
@@ -68,7 +69,7 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 		if (!projectileBlocks.isEmpty()) {
 			StructureBlockInfo info = projectileBlocks.get(0);
 			if (info.nbt() != null) { // jank alert
-				CompoundTag component = info.nbt().getCompound("components").getCompound("createbigcannons:fluid_content");
+				CompoundTag component = info.nbt().getCompound("FluidContent");
                 FluidTank tank = new FluidTank(getFluidShellCapacity()).readFromNBT(level.registryAccess(), component); // It's cheaper than recreating the entire BE.
                 FluidStack fstack = tank.getFluid();
                 projectile.setFluidStack(fstack.isEmpty() ? EndFluidStack.EMPTY : new EndFluidStack(fstack.getFluid(), fstack.getAmount(), fstack.getComponentsPatch()));
@@ -82,7 +83,7 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 		FluidShellProjectile projectile = CBCEntityTypes.FLUID_SHELL.create(level);
 		projectile.setFuze(getFuzeFromItemStack(itemStack));
 		projectile.setTracer(getTracerFromItemStack(itemStack));
-		CompoundTag fluidTag = itemStack.get(CBCDataComponents.FLUID_CONTENT).copyTag();
+		CompoundTag fluidTag = itemStack.getOrDefault(CBCDataComponents.FLUID_CONTENT, CustomData.EMPTY).copyTag();
 		projectile.setFluidStack(EndFluidStack.readTag(fluidTag, level.registryAccess()));
 		return projectile;
     }
@@ -96,6 +97,28 @@ public class FluidShellBlock extends FuzedProjectileBlock<AbstractFluidShellBloc
 			fluidShell.setFluidShellStack(projectile);
 		return projectile;
 	}
+
+    @Override
+    public StructureBlockInfo getHandloadingInfo(ItemStack stack, BlockPos localPos, Direction cannonOrientation, HolderLookup.Provider registries) {
+        StructureBlockInfo info = super.getHandloadingInfo(stack, localPos, cannonOrientation, registries);
+        if (info.nbt() != null) { // More jank
+            CompoundTag fluidTag = stack.getOrDefault(CBCDataComponents.FLUID_CONTENT, CustomData.EMPTY).copyTag();
+            FluidTank tank = new FluidTank(getFluidShellCapacity()).readFromNBT(registries, fluidTag);
+            info.nbt().put("FluidContent", tank.writeToNBT(registries, new CompoundTag()));
+        }
+        return info;
+    }
+
+    @Override
+    public ItemStack getExtractedItem(StructureBlockInfo info, HolderLookup.Provider registries) {
+        ItemStack stack = super.getExtractedItem(info, registries);
+        if (info.nbt() != null) { // More jank
+            CompoundTag component = info.nbt().getCompound("FluidContent");
+            FluidTank tank = new FluidTank(getFluidShellCapacity()).readFromNBT(registries, component);
+            stack.set(CBCDataComponents.FLUID_CONTENT, CustomData.of(tank.writeToNBT(registries, new CompoundTag())));
+        }
+        return stack;
+    }
 
     @Override
 	public EntityType<? extends FluidShellProjectile> getAssociatedEntityType() {
