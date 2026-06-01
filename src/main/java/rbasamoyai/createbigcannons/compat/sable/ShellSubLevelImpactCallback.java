@@ -1,5 +1,7 @@
 package rbasamoyai.createbigcannons.compat.sable;
 
+import net.minecraft.server.TickTask;
+
 import org.joml.Vector3d;
 
 import dev.ryanhcode.sable.api.physics.callback.BlockSubLevelCollisionCallback;
@@ -51,7 +53,13 @@ public class ShellSubLevelImpactCallback implements BlockSubLevelCollisionCallba
             AbstractCannonProjectile.ImpactResult.KinematicOutcome.STOP, false);
 
         if (fuzeItem.onBlockImpact(fuze, level, blockPos, state, hitResult, impactResult, JOMLConversion.toMojang(hitPos))) {
-            fuzedBlock.detonateProjectileOnTheSpot(level, blockPos, state, shellFacing);
+            level.getServer().tell(new TickTask(level.getServer().getTickCount(), ()->{
+                BlockState currentState = level.getBlockState(blockPos);
+                if(currentState.getBlock() instanceof FuzedProjectileBlock<?,?> currentFuzedBlock){
+                    currentFuzedBlock.detonateProjectileOnTheSpot(level,blockPos,currentState,null);
+                }
+            }));
+            return new CollisionResult(JOMLConversion.ZERO, true);
         } else {
             fuzedBE.setFuze(fuze);
         }
